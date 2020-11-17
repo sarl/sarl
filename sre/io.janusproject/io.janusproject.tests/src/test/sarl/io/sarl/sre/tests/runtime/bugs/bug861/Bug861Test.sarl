@@ -91,10 +91,6 @@ class Bug861Test {
 		val initEvent0 = getFirstResultOfType(id0, typeof(Initialized))
 		initEvent0.assertNotNull
 		childAgent.assertEquals(initEvent0.source.UUID)
-		
-		val initEvent1 = getResult(id0, typeof(Initialized), 0)
-		initEvent1.assertNotNull
-		childAgent.assertEquals(initEvent1.source.UUID)
 	}
 
 	@Test

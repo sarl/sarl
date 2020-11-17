@@ -120,7 +120,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	protected AtomicSkillReference $getSkill(Class<? extends Capacity> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {
-			throw new UnimplementedCapacityException(capacity, null);
+			throw new OwnerNotFoundException(this);
 		}
 		return owner.$getSkill(capacity);
 	}

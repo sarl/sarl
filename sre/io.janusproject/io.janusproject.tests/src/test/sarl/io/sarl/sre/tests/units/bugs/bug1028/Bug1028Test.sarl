@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.bugs.bug1028
+package io.sarl.sre.tests.units.bugs.bug1028
 
 import io.sarl.lang.SARLVersion
 import io.sarl.lang.sarl.SarlPackage
@@ -49,7 +49,9 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
  */
 @DisplayName("Bug #1028")
 @SuppressWarnings("all")
-@Tag("core")
+@Tag("unit")
+@Tag("janus")
+@Tag("sre-unit")
 class Bug1028Test extends AbstractSarlTest {
 
 	val SARL_CODE_01 = multilineString(
