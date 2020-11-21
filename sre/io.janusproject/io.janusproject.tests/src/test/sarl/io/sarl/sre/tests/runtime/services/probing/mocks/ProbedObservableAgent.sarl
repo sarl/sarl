@@ -21,8 +21,9 @@
 
 package io.sarl.sre.tests.runtime.services.probing.mocks
 
-import io.sarl.core.Lifecycle
 import io.sarl.api.naming.namespace.Observable
+import io.sarl.core.Lifecycle
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$
@@ -36,20 +37,11 @@ agent ProbedObservableAgent {
 	uses Lifecycle
 
 	@Observable
-	var myfield = 12
+	val myfield = new AtomicInteger(12)
 
-	on ChangeField {
-		synchronized (this) {
-			this.myfield = 24
-		}
-	}
-
-	on StopTest {
+	on ChangeFieldForProbe {
+		this.myfield.set(24)
 		killMe
 	}
 	
 }
-
-event ChangeField
-
-event StopTest

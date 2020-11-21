@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.sre.services.probing.service
 
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
@@ -27,6 +27,7 @@ import io.sarl.sre.internal.SmartListenerCollection
 import java.net.URI
 import java.util.Map
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -52,8 +53,8 @@ class SynchronousProbeService extends AbstractProbeService {
 	 */
 	@Inject
 	new (namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
-		this(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
+		this(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
 	}
 
 	/** Constructor.
@@ -65,8 +66,8 @@ class SynchronousProbeService extends AbstractProbeService {
 	 * @param lockProvider the provider of synchronization locks.
 	 */
 	new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
-		super(internalStructure, namespaceService, nameParser, listenerCollectionProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
+		super(internalStructure, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
 	}
 
 }

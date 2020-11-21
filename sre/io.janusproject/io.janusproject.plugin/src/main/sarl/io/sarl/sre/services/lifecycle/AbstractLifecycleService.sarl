@@ -38,7 +38,8 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
-import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
@@ -90,7 +91,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * In particular, the number of calls to the spawn function was not coherent with the corresponding number of strong agents spawned in the defaultcontext.defaultspace
 	 * Both lock on agentCreatorProvider.getAgentCreator and life.start are REQUIRED
 	 */
-	val lock : ReentrantLock = new ReentrantLock
+	val lock : Lock
+
+	val lockProvider : Provider<ReadWriteLock>
 
 	/** 
 	 * Constructs the service.
@@ -100,6 +103,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param creator the provider of agent creators that is used when spawning agents.
 	 * @param globalListeners is the collection of global listeners to use.
 	 * @param lockProvider the provider of locks.
+	 * @param rwLockProvider the provider of read-write locks.
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
@@ -108,7 +112,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param logger the logging service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
-		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
+		globalListeners : SmartListenerCollection<?>,
+		lockProvider : Provider<Lock>, rwLockProvider : Provider<ReadWriteLock>,
+		lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>, skillUninstaller : SkillUninstaller,
 		executor : ExecutorService, loggingService : LoggingService, lifecycleConfig : LifecycleConfig) {
 		this.sarlSpecificationChecker = sarlSpecificationChecker
@@ -120,6 +126,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.logger = loggingService.getKernelModuleLogger(Messages::AbstractLifecycleService_3)
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
+		this.lock = lockProvider.get
+		this.lockProvider = rwLockProvider
 	}
 
 	override getSpawnEnable : boolean {
@@ -271,7 +279,6 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 			val spawnQueryAccess = new SpawnQueries(this)
 			this.lock.lock
-			// Create the shared injector that is also able to create the agent instance.
 			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID, nbAgents,
 				dynamicSkillProviders)
 			this.lock.unlock
@@ -287,7 +294,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				}
 
 				// Start the agent's life
-				var life = getLife(^agent)
+				var life = getLife(^agent, this.lockProvider)
 				var started = false
 				var spawnError : Throwable = null
 				this.lock.lock

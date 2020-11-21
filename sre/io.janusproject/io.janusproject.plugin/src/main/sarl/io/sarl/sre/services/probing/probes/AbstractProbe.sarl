@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.sre.services.probing.probes
 
 import io.sarl.api.probing.IProbeListener
 import io.sarl.api.probing.IProbeReleaseListener
@@ -26,12 +26,14 @@ import io.sarl.api.probing.Probe
 import io.sarl.sre.internal.SmartListenerCollection
 import java.lang.ref.WeakReference
 import java.net.URI
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Abstract probe implementation. A probe is thread-safe.
  * 
+ * @param <T> the type of the probed value.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -53,7 +55,7 @@ abstract class AbstractProbe<T> implements Probe<T> {
 	@Accessors
 	val type : Class<T>
 
-	protected var active : boolean = true
+	val active = new AtomicBoolean(true)
 
 	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
 
@@ -80,25 +82,17 @@ abstract class AbstractProbe<T> implements Probe<T> {
 
 	@Pure
 	override isActive : boolean {
-
-		return this.active
-
+		return this.active.get
 	}
 
 	override release {
-		var act : boolean = this.active
-
+		val act : boolean = this.active.getAndSet(false)
 		if (act) {
 			var m : IProbeReleaseListener = null
 			try {
-				act = this.active
-				if (act) {
-					this.active = false
-					m = this.manager?.get
-					this.manager.clear
-					this.manager = null
-				}
-
+				m = this.manager?.get
+				this.manager.clear
+				this.manager = null
 			} finally {
 				fireRelease
 				this.listeners = null
@@ -110,13 +104,15 @@ abstract class AbstractProbe<T> implements Probe<T> {
 	}
 
 	/** Notify the listener that the probe's value has changed.
+	 *
+	 * @param isInit indicates if the change is due to initialization.
 	 */
-	protected def fireValueChanged {
+	protected def fireValueChanged(isInit : boolean) {
 		var list : SmartListenerCollection<?> = this.listeners
 
 		if (list !== null) {
 			list.notifyListeners(typeof(IProbeListener)) [
-				probeValueChanged(this)
+				probeValueChanged(this, isInit)
 			]
 		}
 	}

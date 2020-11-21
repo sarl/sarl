@@ -41,12 +41,12 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.locks.ReadWriteLock
-import java.util.concurrent.locks.ReentrantReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
@@ -87,12 +87,17 @@ final class AgentLife {
 	 * @param lockProvider the provider of locks
 	 * @see #getLifeOrNull
 	 */
-	static def getLife(^agent : Agent) : AgentLife {
+	static def getLife(^agent : Agent, lockProvider : Provider<ReadWriteLock> = null) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		var life = ^agent.getSreSpecificData(typeof(AgentLife))
 		if (life === null) {
-			life = new AgentLife [new ReentrantReadWriteLock]
+			if (lockProvider === null) {
+				val lp : Provider<ReadWriteLock> = [ new ReentrantReadWriteLock ]
+				life = new AgentLife(lp)
+			} else {
+				life = new AgentLife(lockProvider)
+			}
 			life.^agent = ^agent
 			^agent.sreSpecificData = life
 		}

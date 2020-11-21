@@ -63,10 +63,14 @@ interface Probe<T> {
 
 	/** Force the synchronization of the probed value.
 	 *
+	 * <p>The synchronization does nothing if the probe is {@link #isActive() inactive}.
+	 *
 	 * @param forceReading indicates if the reading of the probed value must be forced from the probed element.
 	 *     By default, the value of this parameter is {@code true}.
+	 * @param forceIfInactiveObject indicates if the synchronization must be done even if the probe is inactive;
+	 *     By default, the value of this parameter is {@code false}.
 	 */
-	def sync(forceReading : boolean = true)
+	def sync(forceReading : boolean = true, forceIfInactiveObject : boolean = false)
 
 	/** Releases any resource associated to the probe.
 	 */

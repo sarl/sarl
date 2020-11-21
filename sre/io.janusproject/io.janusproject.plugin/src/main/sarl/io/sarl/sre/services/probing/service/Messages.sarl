@@ -19,27 +19,29 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.probing.mocks
+package io.sarl.sre.services.probing.service
 
-import io.sarl.core.Lifecycle
-import java.util.concurrent.atomic.AtomicInteger
+import org.eclipse.osgi.util.NLS
 
-/**
+/** Messages.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @ExcludeFromApidoc
  */
-@SuppressWarnings("all")
-agent ProbedAgent {
+final class Messages extends NLS {
 
-	uses Lifecycle
-
-	val myfield = new AtomicInteger(12)
-
-	on ChangeFieldForProbe {
-		this.myfield.set(24)
-		killMe
-	}
+	static val BUNDLE_NAME = typeof(Messages).getPackage.name + ".messages"
 	
+	static new {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
+	}
+
+	public static var AbstractProbeService_0 : String
+	
+	private new {
+	}
+
 }

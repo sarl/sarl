@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.sre.services.probing.service
 
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.locks.ReadWriteLock
 
 /** 
  * This class is the implementation of a probe service that is updating the values asynchronously.
@@ -63,8 +64,8 @@ class AsynchronousProbeService extends AbstractProbeService {
 	 */
 	@Inject
 	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
-		super(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
+		super(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
 		this.executor = service
 	}
 
@@ -74,6 +75,15 @@ class AsynchronousProbeService extends AbstractProbeService {
 
 	protected override onLastProbe {
 		stopSyncThread
+	}
+
+	/** Replies if the asynchronous synchronization was started or not.
+	 *
+	 * @return {@code true} if the synchronization was started into a thread.
+	 * @since 0.12
+	 */
+	def isAsynchronousSynchronizationRunning : boolean {
+		this.enableSynchronization.get
 	}
 
 	/** Start the thread that dynamically update the probes */
@@ -93,7 +103,8 @@ class AsynchronousProbeService extends AbstractProbeService {
 		[
 			this.enableSynchronization.set(true)
 			while (this.enableSynchronization.get) {
-				sync
+				internalSync
+				System.err.println("Synced")
 				val duration = getSleepingDurationBetweenSyncs
 				if (duration <= 0l) {
 					Thread::yield

@@ -42,7 +42,7 @@ abstract class Wait {
 	val errorContainer : AtomicReference<Throwable>
 
 	package new (errorContainer : AtomicReference<Throwable>) {
-		this.errorContainer = errorContainer
+		this.errorContainer = if (errorContainer === null) new AtomicReference else errorContainer
 	}
 
 	protected abstract def isLocked : boolean

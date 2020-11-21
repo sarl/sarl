@@ -21,7 +21,6 @@
 
 package io.sarl.sre.internal
 
-import java.util.Arrays
 import java.util.EventListener
 import java.util.function.Consumer
 
@@ -46,22 +45,6 @@ interface ListenerNotifier {
 
 }
 
-/** This class implements a parallel execution mechanism for notifying the event listeners.
- * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 0.10
- */
-class ParallelListenerNotifier implements ListenerNotifier {
-
-	override notifyListeners(listeners : L[], action : Consumer<L>) with L extends EventListener {
-		Arrays::asList(listeners).parallelStream.forEach(action)
-	}
-
-}
-
 /** This class implements a sequence execution mechanism for notifying the event listeners.
  * 
  * @author $Author: sgalland$
@@ -73,7 +56,9 @@ class ParallelListenerNotifier implements ListenerNotifier {
 class SequenceListenerNotifier implements ListenerNotifier {
 
 	override notifyListeners(listeners : L[], action : Consumer<L>) with L extends EventListener {
-		Arrays::asList(listeners).stream.forEach(action)
+		for (listener : listeners) {
+			action.accept(listener)
+		}
 	}
 
 }
