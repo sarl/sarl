@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -53,7 +55,7 @@ public class CodeTest extends AbstractSarlTest {
 		assertFalse(PrimitiveCastExtensions.booleanValue("-0xa"));
 		assertFalse(PrimitiveCastExtensions.booleanValue(""));
 		assertFalse(PrimitiveCastExtensions.booleanValue("z"));
-		assertFalse(PrimitiveCastExtensions.booleanValue(null));
+		assertFalse(PrimitiveCastExtensions.booleanValue((String) null));
 		assertTrue(PrimitiveCastExtensions.booleanValue("true"));
 		assertTrue(PrimitiveCastExtensions.booleanValue("tRue"));
 		assertFalse(PrimitiveCastExtensions.booleanValue("false"));
@@ -62,6 +64,13 @@ public class CodeTest extends AbstractSarlTest {
 		assertFalse(PrimitiveCastExtensions.booleanValue("no"));
 		assertFalse(PrimitiveCastExtensions.booleanValue("oui"));
 		assertFalse(PrimitiveCastExtensions.booleanValue("non"));
+	}
+
+	@Test
+	public void booleanValue_AtomicBoolean() {
+		assertFalse(PrimitiveCastExtensions.booleanValue((AtomicBoolean) null));
+		assertFalse(PrimitiveCastExtensions.booleanValue(new AtomicBoolean(false)));
+		assertTrue(PrimitiveCastExtensions.booleanValue(new AtomicBoolean(true)));
 	}
 
 	@Test
@@ -139,6 +148,31 @@ public class CodeTest extends AbstractSarlTest {
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue(""));
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue("z"));
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue(null));
+	}
+
+	@Test
+	public void toAtomicBoolean_CharSequence() {
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("4").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("0xa").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("-4").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("-0xa").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("z").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean(null).get());
+		assertTrue(PrimitiveCastExtensions.toAtomicBoolean("true").get());
+		assertTrue(PrimitiveCastExtensions.toAtomicBoolean("tRue").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("false").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("fAlse").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("yes").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("no").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("oui").get());
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean("non").get());
+	}
+
+	@Test
+	public void toAtomicBoolean_boolean() {
+		assertFalse(PrimitiveCastExtensions.toAtomicBoolean(false).get());
+		assertTrue(PrimitiveCastExtensions.toAtomicBoolean(true).get());
 	}
 
 	@Test
