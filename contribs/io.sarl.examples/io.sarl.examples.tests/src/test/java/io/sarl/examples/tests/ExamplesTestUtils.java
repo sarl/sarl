@@ -55,6 +55,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.Strings;
@@ -69,6 +70,7 @@ import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.util.CliUtilities;
 
 /** Utilities for the example's tests.
  *
@@ -111,6 +113,8 @@ public final class ExamplesTestUtils {
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
 	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
 
+	private static final String[] WIN_EXTS = {".COM", ".EXE", ".BAT", ".CMD"};
+	
 	private volatile static List<ExampleDescription> ARCHIVE_BUFFER = null;
 
 	/** Create the dynamic tests with the given function.
@@ -363,13 +367,38 @@ public final class ExamplesTestUtils {
 		String paths = System.getenv("PATH");
 		if (!Strings.isEmpty(paths)) {
 			for (final String path : paths.split(Pattern.quote(File.pathSeparator))) {
-				final File exec = FileSystem.join(FileSystem.convertStringToFile(path), command);
-				if (exec != null && exec.canExecute()) {
-					return exec.getAbsolutePath();
+				final File pathFile = FileSystem.convertStringToFile(path).getAbsoluteFile();
+				if (pathFile.isDirectory()) {
+					if (OperatingSystem.getCurrentOS() == OperatingSystem.WIN) {
+						for (final String ext : WIN_EXTS) {
+							final String cmd = testExecutable(command, pathFile, ext);
+							if (cmd != null) {
+								return cmd;
+							}
+						}
+					} else {
+						final String cmd = testExecutable(command, pathFile, null);
+						if (cmd != null) {
+							return cmd;
+						}
+					}
 				}
 			}
 		}
 		return command;
+	}
+
+	private static String testExecutable(String command, File path, String extension) {
+		final File exec;
+		if (Strings.isEmpty(extension)) {
+			exec = FileSystem.join(path, command);
+		} else {
+			exec = FileSystem.join(path, command + extension);
+		}
+		if (exec != null && exec.canExecute()) {
+			return exec.getAbsolutePath();
+		}
+		return null;
 	}
 	
 	/** Compile the given project with the standard maven tool.
@@ -389,7 +418,7 @@ public final class ExamplesTestUtils {
 		compiledFile.createNewFile();
 		
 		final String[] command = new String[] {
-				whichCommand(MAVEN_COMMAND), "-q", "clean", "package"
+				whichCommand(MAVEN_COMMAND), CliUtilities.getCommandLineOption("q"), "clean", "package"
 		};
 		final ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(root);
