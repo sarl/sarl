@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -163,7 +164,9 @@ public class ExamplesTest {
 			final Document launch = readXmlContent(launchConfiguration);
 
 			readLaunchConfigurationFromXml(launch, folder, (type, name0, isAgent, root) -> {
-				final String filename = type.replaceAll("\\.", File.separator).concat(".java");
+				final String filename = type.replaceAll(
+						Pattern.quote("."), Matcher.quoteReplacement(File.separator))
+					.concat(".java");
 				File file = FileSystem.convertStringToFile(filename);
 				file = FileSystem.join(root, file);
 				assertFile(file, projectRoot);

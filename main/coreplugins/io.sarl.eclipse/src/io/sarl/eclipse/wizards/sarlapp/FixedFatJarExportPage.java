@@ -982,7 +982,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		}
 
 		// Test if directory exists
-		String path= file.getAbsolutePath();
+		String path = file.getAbsolutePath();
 		int separatorIndex= path.lastIndexOf(File.separator);
 		if (separatorIndex == -1) // i.e.- default directory, which is fine
 			return true;

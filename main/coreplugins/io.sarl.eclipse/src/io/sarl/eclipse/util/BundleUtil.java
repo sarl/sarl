@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -888,7 +889,8 @@ public final class BundleUtil {
 					// A jar inside the bundle.
 					// We have an error at runtime to these referenced jars.
 					try {
-						final URL bundleJARfileFullURL = new URL(bundleInstallURL.toExternalForm().concat(File.separator).concat(entry));
+						final URL bundleJARfileFullURL = new URL(bundleInstallURL.toExternalForm().concat(
+								FileSystem.URL_PATH_SEPARATOR).concat(entry));
 						final File jarFile = Util.toLocalFile(bundleJARfileFullURL.toURI(), null);
 						final IPath jarFilePath = new Path(jarFile.getAbsolutePath());
 						final IClasspathEntry cpEntry = Utilities.newLibraryEntry(bundle, jarFilePath, this.javadocURLs);
