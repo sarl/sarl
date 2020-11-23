@@ -1843,5 +1843,40 @@ public final class Utils {
 		return false;
 	}
 
+	/** Replies if a generic type parameter is declared into the given type.
+	 *
+	 * @param type is the type to explore.
+	 * @return {@code code} if the {@code type} contains a generic type.
+	 */
+	public static boolean containsGenericType(LightweightTypeReference type) {
+		if (type == null) {
+			return false;
+		}
+		final JvmType jtype = type.getType();
+		if (jtype instanceof JvmTypeParameter) {
+			return true;
+		}
+		for (final LightweightTypeReference atype : type.getTypeArguments()) {
+			if (containsGenericType(atype)) {
+				return true;
+			}
+		}
+		switch (type.getKind()) {
+		case LightweightTypeReference.KIND_WILDCARD_TYPE_REFERENCE:
+			if (containsGenericType(type.getLowerBoundSubstitute()) || containsGenericType(type.getUpperBoundSubstitute())) {
+				return true;
+			}
+			break;
+		case LightweightTypeReference.KIND_ARRAY_TYPE_REFERENCE:
+			if (containsGenericType(type.getComponentType())) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+
 }
 

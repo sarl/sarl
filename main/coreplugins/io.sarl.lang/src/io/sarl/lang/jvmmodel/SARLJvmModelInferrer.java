@@ -45,6 +45,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -1849,14 +1851,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									.cloneWithProxies(exception));
 						}
 
+						final JvmTypeReference returnType2;
 						if (selectedReturnType instanceof XComputedTypeReference) {
-							operation2.setReturnType(this.typeReferences.createDelegateTypeReference(selectedReturnType));
+							returnType2 = this.typeReferences.createDelegateTypeReference(selectedReturnType);
 						} else {
-							operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
+							returnType2 = cloneWithTypeParametersAndProxies(selectedReturnType, operation2);
 						}
+						operation2.setReturnType(returnType2);
 
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
-								operation2, container, isVarArgs, otherSignature.getValue());
+								operation2, container, isVarArgs,
+								otherSignature.getValue());
 
 						if (context.isAtLeastJava8()) {
 							operation2.setDefault(container.isInterface());
@@ -1865,6 +1870,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								final JvmTypeReference type = operation2.getReturnType();
 								if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
 									it.append("return "); //$NON-NLS-1$
+								}
+								final LightweightTypeReference ltr = Utils.toLightweightTypeReference(returnType2, this.services);
+								if (Utils.containsGenericType(ltr)) {
+									final String typeId = ltr.getRawTypeReference().getType().getQualifiedName('.');
+									final String javaId = ltr.getRawTypeReference().getJavaIdentifier();
+									final String fullId = ltr.getJavaIdentifier().replaceAll(
+											Pattern.quote(javaId), Matcher.quoteReplacement(typeId));
+									it.append("("); //$NON-NLS-1$
+									it.append(fullId);
+									it.append(")"); //$NON-NLS-1$
 								}
 								it.append(sourceName);
 								it.append("("); //$NON-NLS-1$
@@ -3154,7 +3169,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
-	/** Generate a list of formal parameters with annotations for the default values.
+	/** Generate a list arguments from the formal parameters in order to be used for a call into
+	 * a synthetic operation, such as default-valued parameter function.
 	 *
 	 * @param owner the JVM element to change.
 	 * @param actionContainer the container of the action.
@@ -3169,7 +3185,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmTypeReference paramType = parameterSpec.getType();
 			if (parameterSpec instanceof InferredValuedParameter) {
 				final StringBuilder argumentValue = new StringBuilder();
-				if (paramType.getType() instanceof JvmTypeParameter) {
+				final JvmType jtype = paramType.getType();
+				if (jtype instanceof JvmTypeParameter) {
 					argumentValue.append("("); //$NON-NLS-1$
 					argumentValue.append(paramType.getSimpleName());
 					argumentValue.append(") "); //$NON-NLS-1$
