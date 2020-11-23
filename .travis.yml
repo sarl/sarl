@@ -10,11 +10,7 @@ env:
   global:
     - MAVEN_VERSION: "3.6.3"
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" 
-#    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true\""
-    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dgroups=!sre-run\""
-    - MAVEN_TEST_OPTS: "\"-e -P!generateproduct -Dgroups=!sre-run\""
-    - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
-    - MAVEN_DEPLOYMENT_OPTS: "\"-DskipTests -Dmaven.test.skip=true -Dcheckstyle.skip=true\""
+    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dgroups=!sre-run -Dio.sarl.docs.tests.skip=true\""
     - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.jks"
 
 # Compilation matrix
@@ -29,12 +25,6 @@ jobs:
 install: true
 
 script: "sh -e ./build-tools/scripts/travis-maven-compile.sh"
-
-#after_success: "mvn -B $MAVEN_TEST_OPTS test"
-
-#deploy:
-#  provider: script
-#  script: "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
 
 cache:
   directories:
