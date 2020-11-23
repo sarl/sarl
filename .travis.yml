@@ -21,20 +21,6 @@ env:
 jobs:
   fast_finish: true
   include:
-    - os: linux
-      addons:
-        apt:
-          packages:
-          - openjfx
-          - genisoimage
-      jdk: openjdk8
-      env:
-      - OPENJFX_LIB_PATH: "/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar"
-      - M2_HOME: "$HOME/.binaries/apache-maven-${MAVEN_VERSION}"
-      - PATH: "$M2_HOME/bin:$PATH"
-      before_install:
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
-      - "sh -e ./build-tools/scripts/travis-download-maven.sh ${MAVEN_VERSION}"
     - os: osx
       osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
