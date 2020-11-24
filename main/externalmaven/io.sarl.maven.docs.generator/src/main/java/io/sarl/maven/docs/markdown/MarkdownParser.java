@@ -119,6 +119,25 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	public static final String DEFAULT_OUTLINE_ENTRY_W_AUTONUMBERING = "{0} [{1}. {2}](#{3})"; //$NON-NLS-1$
 
+	/** Name of the property that contains the pattern for information notes.
+	 * @since 0.12
+	 */
+	public static final String INFO_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.infonote";
+
+	/** Name of the property that contains the pattern for warning notes.
+	 * @since 0.12
+	 */
+	public static final String WARNING_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.warningnote";
+
+	/** Name of the property that contains the pattern for danger notes.
+	 * @since 0.12
+	 */
+	public static final String DANGER_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.dangernote";
+
+	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN1 = "^\\>[ \t\n\r]*\\*\\*\\_(.*?):?\\_\\*\\*(.*)$";
+
+	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN2 = "^\\>(.*)$";
+
 	private static final String SECTION_PATTERN_AUTONUMBERING =
 			"^([#]+)\\s*([0-9]+(?:\\.[0-9]+)*\\.?)?\\s*(.*?)\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?\\s*$"; //$NON-NLS-1$
 
@@ -130,6 +149,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private static final String SECTION_PATTERN_TITLE_EXTRACTOR_WITHOUT_MD_PREFIX =
 			"^\\s*([0-9]+(?:\\.[0-9]+)*\\.?)\\s*(.*?)$"; //$NON-NLS-1$
+
+	private static final Set<String> WARNING_LABELS = new TreeSet<>();
+
+	private static final Set<String> DANGER_LABELS = new TreeSet<>();
 
 	private IntegerRange outlineDepthRange = new IntegerRange(DEFAULT_OUTLINE_TOP_LEVEL, DEFAULT_OUTLINE_TOP_LEVEL);
 
@@ -162,6 +185,15 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	private String externalOutlineMarker;
 
 	private boolean kramdown;
+
+	static {
+		for (final String label : Messages.WARNING.split(",")) {
+			WARNING_LABELS.add(label.trim().toLowerCase());
+		}
+		for (final String label : Messages.DANGER.split(",")) {
+			DANGER_LABELS.add(label.trim().toLowerCase());
+		}
+	}
 
 	@Override
 	@Inject
@@ -567,7 +599,112 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final ReferenceContext references = validationOfInternalLinks ? extractReferencableElements(result) : null;
 		result = transformMardownLinks(result, references);
 		result = transformHtmlLinks(result, references);
+		result = transformInformationNotes(result);
 		return result;
+	}
+
+	/** Transform the information notes into the given Markdown text.
+	 *
+	 * @param text the content to parse.
+	 * @return the updated text.
+	 * @since 0.12
+	 */
+	@SuppressWarnings("static-method")
+	protected String transformInformationNotes(String text) {
+		final String info = Strings.emptyIfNull(System.getProperty(INFO_NOTE_PATTERN_PROPERTY));
+		final String warning = Strings.emptyIfNull(System.getProperty(WARNING_NOTE_PATTERN_PROPERTY));
+		final String danger = Strings.emptyIfNull(System.getProperty(DANGER_NOTE_PATTERN_PROPERTY));
+		if (Strings.isEmpty(info) && Strings.isEmpty(warning) && Strings.isEmpty(danger)) {
+			return text;
+		}
+
+		final Pattern startPattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN1);
+		final Pattern continuePattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN2);
+		final StringBuilder result = new StringBuilder();
+		String currentName = null;
+		StringBuilder currentNote = null;
+		for (final String line : text.split("\r*\n\r*")) {
+			String newLine = null;
+			if (currentName == null) {
+				final Matcher matcher = startPattern.matcher(line);
+				if (matcher.matches()) {
+					currentName = matcher.group(1).trim();
+					currentNote = new StringBuilder(matcher.group(2).trim());
+				} else {
+					currentName = null;
+					currentNote = null;
+					newLine = line;
+				}
+			} else {
+				final Matcher matcher = continuePattern.matcher(line);
+				if (matcher.matches()) {
+					assert currentNote != null;
+					currentNote.append(" ").append(matcher.group(1).trim());
+				} else {
+					updateBuffer(result, currentName, currentNote, info, warning, danger);
+					currentName = null;
+					currentNote = null;
+					newLine = line;
+				}
+			}
+			updateBuffer(result, newLine);
+		}
+		updateBuffer(result, currentName, currentNote, info, warning, danger);
+		return result.toString();
+	}
+
+	private static void updateBuffer(StringBuilder result, String name, StringBuilder note, String info, String warning, String danger) {
+		if (!Strings.isEmpty(name) && note != null) {
+			final int type = parseType(name);
+			switch (type) {
+			case 0:
+				if (!Strings.isEmpty(info)) {
+					String res = info.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					updateBuffer(result, res);
+				} else {
+					updateBuffer(result, "> **_" + name + ":_** " + note);
+				}
+				break;
+			case 1:
+				if (!Strings.isEmpty(warning)) {
+					String res = warning.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					updateBuffer(result, res);
+				} else {
+					updateBuffer(result, "> **_" + name + ":_** " + note);
+				}
+				break;
+			case 2:
+				if (!Strings.isEmpty(danger)) {
+					String res = danger.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					updateBuffer(result, res);
+				} else {
+					updateBuffer(result, "> **_" + name + ":_** " + note);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	private static void updateBuffer(StringBuilder result, String line) {
+		if (line != null) {
+			result.append(line).append("\n");
+		}
+	}
+
+	private static int parseType(String name) {
+		final String label = name.toLowerCase();
+		if (WARNING_LABELS.contains(label)) {
+			return 1;
+		}
+		if (DANGER_LABELS.contains(label)) {
+			return 2;
+		}
+		return 0;
 	}
 
 	/** Extract all the referencable objects from the given content.

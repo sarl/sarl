@@ -273,7 +273,7 @@ A nested class may be declared with one or more modifiers, which affect its runt
 * [:staticmodifier:]: the inner class do not have access to the non-static members of the enclosing type.
 * [:strictfpmodifier:]: avoid the methods of the class to use intermediate floating number formats.
 
-> **_Terminology::_** Nested classes are divided into two categories: static and non-static.
+> **_Terminology:_** Nested classes are divided into two categories: static and non-static.
 > Nested classes that are declared static are called **static nested classes**.
 > Non-static nested classes are called **inner classes**.
 
@@ -424,7 +424,7 @@ Since the first name and last name are already sequenced in the function
 its behavior. The [:overridemodifier:] keyword is specified for clearly marking this
 implementation of [:getfullnamefct:] as an override of the parent's implementation.
 
-> **_Nnote:_** The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
+> **_Note:_** The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
 > according to the [property access syntax](./general/MemberAccess.md#property-syntax))
 > is not specified in the overriding prototype since it could be inferred by the SARL compiler.
 
@@ -665,7 +665,7 @@ A nested interface may be declared with one or more modifiers, which affect its 
 * [:staticmodifier:]: the inner interface do not have access to the non-static members of the enclosing type.
 * [:strictfpmodifier:]: avoid the methods of the interface to use intermediate floating number formats.
 
-> **_Terminology::_** Nested interfaces are divided into two categories: static and non-static.
+> **_Terminology:_** Nested interfaces are divided into two categories: static and non-static.
 > Nested interfaces that are declared static are called **static nested interfaces**.
 > Non-static nested interfaces are called **inner interfaces**.
 
@@ -798,7 +798,7 @@ A nested interface may be declared with one or more modifiers, which affect its 
 	* [:privatemodifier:]: the enumeration is accessible only within its class.
 * [:staticmodifier:]: the inner enumeration do not have access to the non-static members of the enclosing type.
 
-> **_Terminology::_**  Nested enumerations are divided into two categories: static and non-static.
+> **_Terminology:_**  Nested enumerations are divided into two categories: static and non-static.
 > Nested enumerations that are declared static are called **static nested enumerations**.
 > Non-static nested enumerations are called **inner enumerations**.
 
@@ -901,7 +901,7 @@ A nested annotation type may be declared with one or more modifiers, which affec
 * [:abstractmodifier:]: the annotation type is abstract and cannot be instanced.
 * [:staticmodifier:]: the inner annotation type do not have access to the non-static members of the enclosing type.
 
-> **_Terminology::_** Nested annotation types are divided into two categories: static and non-static.
+> **_Terminology:_** Nested annotation types are divided into two categories: static and non-static.
 > Nested annotation types that are declared static are called **static nested annotation types**.
 > Non-static nested annotation types are called**inner annotation types**.
 
