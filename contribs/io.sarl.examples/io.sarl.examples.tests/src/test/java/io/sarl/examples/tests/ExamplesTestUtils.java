@@ -70,7 +70,6 @@ import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.util.CliUtilities;
 
 /** Utilities for the example's tests.
  *
@@ -418,7 +417,10 @@ public final class ExamplesTestUtils {
 		compiledFile.createNewFile();
 		
 		final String[] command = new String[] {
-				whichCommand(MAVEN_COMMAND), CliUtilities.getCommandLineOption("q"), "clean", "package"
+				whichCommand(MAVEN_COMMAND),
+				// The options for maven always starts with "-" even on Windows OS
+				"-q",
+				"clean", "package"
 		};
 		final ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(root);
