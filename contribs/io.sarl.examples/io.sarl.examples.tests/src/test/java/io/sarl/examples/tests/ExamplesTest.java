@@ -32,27 +32,25 @@ import static io.sarl.examples.tests.ExamplesTestUtils.dynamicTests;
 import static io.sarl.examples.tests.ExamplesTestUtils.getSourceGenPath;
 import static io.sarl.examples.tests.ExamplesTestUtils.getSourcePath;
 import static io.sarl.examples.tests.ExamplesTestUtils.isMavenProject;
+import static io.sarl.examples.tests.ExamplesTestUtils.preparePomFileForTest;
 import static io.sarl.examples.tests.ExamplesTestUtils.readFileToOpenFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readWizardClassesFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readXmlNode;
-import static io.sarl.examples.tests.ExamplesTestUtils.*;
+import static io.sarl.examples.tests.ExamplesTestUtils.unpackFiles;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
 import static io.sarl.tests.api.tools.TestUtils.isEclipseRuntimeEnvironment;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.core.runtime.IPath;
@@ -60,6 +58,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestFactory;
 import org.opentest4j.AssertionFailedError;
 import org.opentest4j.TestAbortedException;
@@ -77,6 +76,7 @@ import io.sarl.examples.SARLExampleExecutableExtensionFactory;
  */
 @SuppressWarnings("all")
 @DisplayName("Testing all the SARL examples")
+@Tag("examples")
 public class ExamplesTest {
 
 	private static List<File> installFiles(ExampleDescription example, File projectRoot, boolean skipIfInvalidPom) throws Exception {
@@ -102,7 +102,7 @@ public class ExamplesTest {
 	 */
 	@TestFactory
 	@DisplayName("Archive existence")
-	public Stream<DynamicTest> path() throws Exception {
+	public List<DynamicTest> path() throws Exception {
 		return dynamicTests(false, example -> {
 				assertNotNull(example.archive);
 		});
@@ -115,7 +115,7 @@ public class ExamplesTest {
 	 */
 	@TestFactory
 	@DisplayName("SARL compilation of archives")
-	public Stream<DynamicTest> compilation() throws Exception {
+	public List<DynamicTest> compilation() throws Exception {
 		return dynamicTests(example -> {
 			final File projectRoot = createProject();
 			final List<File> installedFiles = installFiles(example, projectRoot, true);
@@ -139,7 +139,7 @@ public class ExamplesTest {
 	 */
 	@TestFactory
 	@DisplayName("Definition of launch configuration")
-	public Stream<DynamicTest> launchConfiguration() throws Exception {
+	public List<DynamicTest> launchConfiguration() throws Exception {
 		return dynamicTests(example -> {
 			final File projectRoot = createProject(); 
 			final List<File> installedFiles = installFiles(example, projectRoot, true);
@@ -181,7 +181,7 @@ public class ExamplesTest {
 	 */
 	@TestFactory
 	@DisplayName("Definition of file to open")
-	public Stream<DynamicTest> fileToOpenInEditor() throws Exception {
+	public List<DynamicTest> fileToOpenInEditor() throws Exception {
 		return dynamicTests(example -> {
 			final File projectRoot = createProject(); 
 			final List<File> installedFiles = installFiles(example, projectRoot, false);
@@ -219,7 +219,7 @@ public class ExamplesTest {
 	 */
 	@TestFactory
 	@DisplayName("Definition of example wizards")
-	public Stream<DynamicTest> exampleWizards() throws Exception {
+	public List<DynamicTest> exampleWizards() throws Exception {
 		final File pluginFile = new File(DEFAULT_RELATIVE_PATH, "plugin.xml");
 		final Document document = readXmlContent(pluginFile);
 		assertNotNull(document, "Cannot read XML from the plugin.xml file");

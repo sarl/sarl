@@ -48,7 +48,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import com.google.inject.Injector;
 import org.apache.commons.io.FileUtils;
@@ -122,7 +121,7 @@ public final class ExamplesTestUtils {
 	 * @return the dynamic tests.
 	 * @throws Exception if the example descriptions cannot be read.
 	 */
-	public static Stream<DynamicTest> dynamicTests(TestExecutable testFunction) throws Exception {
+	public static List<DynamicTest> dynamicTests(TestExecutable testFunction) throws Exception {
 		return dynamicTests(true, testFunction);
 	}
 	
@@ -133,10 +132,15 @@ public final class ExamplesTestUtils {
 	 * @return the dynamic tests.
 	 * @throws Exception if the example descriptions cannot be read.
 	 */
-	public static Stream<DynamicTest> dynamicTests(boolean testIfArchive, TestExecutable testFunction) throws Exception {
-		return getExampleDescriptions().stream()
-				.filter(it -> !testIfArchive || it.archive != null)
-				.map((example) -> DynamicTest.dynamicTest(example.name, () -> testFunction.execute(example)));
+	public static List<DynamicTest> dynamicTests(boolean testIfArchive, TestExecutable testFunction) throws Exception {
+		final List<ExampleDescription> descriptions = getExampleDescriptions();
+		final List<DynamicTest> tests = new ArrayList<>();
+		for (final ExampleDescription description : descriptions) {
+			if (!testIfArchive || description.archive != null) {
+				tests.add(DynamicTest.dynamicTest(description.name, () -> testFunction.execute(description)));
+			}
+		}
+		return tests;
 	}
 
 	/** Replies the descriptions for the examples.
@@ -301,7 +305,7 @@ public final class ExamplesTestUtils {
 	 *
 	 * @param file the file to test.
 	 * @param root the root file.
-	 * @since 0.12
+	 )* @since 0.12
 	 */
 	public static void assertFile(File file, File root) {
 		assertNotNull(file, "The filename cannot be null");
