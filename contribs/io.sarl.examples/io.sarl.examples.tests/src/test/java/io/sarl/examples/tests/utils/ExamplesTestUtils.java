@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.examples.tests;
+package io.sarl.examples.tests.utils;
 
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

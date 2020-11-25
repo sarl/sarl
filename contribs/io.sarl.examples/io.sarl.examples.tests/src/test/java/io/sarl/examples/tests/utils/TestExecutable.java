@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.examples.tests;
+package io.sarl.examples.tests.utils;
 
 /** The code of a test.
  *
