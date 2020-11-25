@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -1123,8 +1124,8 @@ public final class TestAssertions {
 	 * @since 0.12
 	 */
 	public static void assertEqualsExceptNewLines(String expected, String actual, Supplier<String> message) {
-		final String e = expected.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		final String a = actual.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String e = expected.replaceAll(Pattern.quote("\r"), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final String a = actual.replaceAll(Pattern.quote("\r"), ""); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(e, a, message);
 	}
 
