@@ -24,6 +24,7 @@ package io.sarl.sarldoc.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -256,7 +257,7 @@ public class MainTest {
 				"sarlc", "tests", "resources", "test1", "Foo.java");
 		assertTrue(javaFile.exists(), "The Java file " + javaFile.getAbsolutePath() + " was not found");
 		String content = new String(Files.readAllBytes(javaFile.toPath()), Charset.defaultCharset());
-		assertEquals(EXPECTED_TEST1, content);
+		assertEqualsExceptNewLines(EXPECTED_TEST1, content);
 
 		File classFile = FileSystem.join(this.binFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.class");
