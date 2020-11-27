@@ -145,6 +145,10 @@ class HazelcastContextService extends MemoryBasedContextService {
 		// TODO check if it is really necessary to clean this distributed map of Contexts, because it will impact other kernels staying active on the network
 		this.defaultSpaces.clear
 		this.defaultSpaces.removeEntryListener(this.defaultSpacesListenerID)
+
+		if (hazelcastInstance.lifecycleService.running) {
+			hazelcastInstance.shutdown();
+		}
 	}
 
 	/** Listener on Hazelcast's shared map events.
@@ -192,5 +196,7 @@ class HazelcastContextService extends MemoryBasedContextService {
 		}
 
 	}
+
+	
 
 }
