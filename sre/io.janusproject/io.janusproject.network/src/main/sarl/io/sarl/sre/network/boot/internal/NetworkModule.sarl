@@ -32,6 +32,8 @@ import com.hazelcast.logging.LogEvent
 import com.hazelcast.logging.LogListener
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
+import io.sarl.api.bootiquebase.config.LogConfig
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.internal.services.ContextServiceModule
 import io.sarl.sre.network.boot.configs.JoinMethod
 import io.sarl.sre.network.boot.configs.SreNetworkConfig
@@ -56,7 +58,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.PREFIX
-import io.sarl.sre.boot.configs.SreConfig
 
 /**
  * The module for injected the network features of Janus.
@@ -109,7 +110,7 @@ class NetworkModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	def provideHazelcastInstance(logger : LoggingService, netConfig : SreNetworkConfig, sreConfig : SreConfig) : HazelcastInstance {
+	def provideHazelcastInstance(logger : LoggingService, netConfig : SreNetworkConfig, sreConfig : SreConfig, logConfig : LogConfig) : HazelcastInstance {
 		//FIXME config a two hazelcast instances on the same node
 		//FIXME config the log for hazelcast to trace error at startup		
 		val config : Config = new Config()
@@ -129,7 +130,7 @@ class NetworkModule extends AbstractModule {
 		config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")
 		val hzlInstance = Hazelcast.newHazelcastInstance(config)
 
-		hzlInstance.loggingService.addLogListener(Level.INFO, new HazelcastLogListener(logger))
+		hzlInstance.loggingService.addLogListener(logConfig.julLevel, new HazelcastLogListener(logger))
 		return hzlInstance
 	}
 
