@@ -43,7 +43,10 @@ import io.sarl.util.JulPatternFormatter
 class SreJulPatternFormatter extends JulPatternFormatter {
 
 	protected override filterLogName(logName : String) : String {
-		logName.replaceFirst("^" + Pattern::quote(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX), "")
+		if (logName === null) {
+			return null
+		}
+		return logName.replaceFirst("^" + Pattern::quote(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX), "")
 	}
 
 }
