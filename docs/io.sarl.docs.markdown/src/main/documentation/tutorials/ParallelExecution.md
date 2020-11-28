@@ -126,10 +126,10 @@ The killing function is provided by the
 [`[:Lifecycle](Lifecycle)`](../reference/bic/Lifecycle.md) capacity.
 
 The agent killing process is divided into several steps:
-1. Call of the killing function;
+1. Call of the killing function (possibly with the abnormal termination cause);
 2. Synchronous execution of the [:destroyblock] of the agent;
-3. SRE-specific destruction of the agent;
-4. Firing of the [:agentdestroyevent](AgentKilled) event.
+3. Destruction of the agent within the SRE;
+4. Firing of the [:agentdestroyevent](AgentKilled) event (possibly with the abnormal termination cause).
 
 Step 1 is run within the thread of the caller.
 Steps 2 to 4 are run within an internal thread of the SRE.

@@ -269,7 +269,7 @@ class Kernel {
 					assert ag !== null
 					if (agentIds.add(ag.ID)) {
 						codes.add [
-							lifeCycleService.killAgent(ag, true)
+							lifeCycleService.killAgent(ag, true, new KernelShutdownException)
 						]
 					}
 				}
@@ -277,7 +277,8 @@ class Kernel {
 		}
 
 		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceAdapter() {
-			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
+			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+				abnormalTerminationCause : Throwable) {
 				agentIds.remove(^agent.ID)
 			}
 		})
@@ -380,5 +381,18 @@ class Kernel {
 @Target(#[FIELD, PARAMETER, METHOD])
 @Retention(RUNTIME)
 annotation KernelScope {
+	//
+}
+
+/** 
+ * Cause of the agent termination when the kernel is shuting down.
+ * 
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class KernelShutdownException extends RuntimeException {
 	//
 }

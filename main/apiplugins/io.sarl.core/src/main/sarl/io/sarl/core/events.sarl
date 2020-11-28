@@ -177,14 +177,22 @@ final event AgentKilled {
 	 */
 	val agentType : String
 
+	/** The exception that is the cause of the killing of the agent.
+	 * If it is {@code null}, the agent has commited a suicide in "normal" situation.
+	 *
+	 * @since 0.12
+	 */
+	val abnormalTerminationCause : Throwable
+
 	/** Construct the event.
 	 *
 	 * @param source the address of the emitter.
 	 * @param agentType fully qualified name of the type of the agent.
 	 */
-	new (source : Address, agentType : String) {
+	new (source : Address, agentType : String, abnormalTerminationCause : Throwable) {
 		setSource(source)
 		this.agentType = agentType
+		this.abnormalTerminationCause = abnormalTerminationCause
 	}
 
 }
@@ -467,6 +475,34 @@ final event ParticipantLeft {
 	new (source : Address, spaceID : SpaceID) {
 		this.source = source
 		this.spaceID = spaceID
+	}
+
+}
+
+/** Notifies an agent that a failure has occurred.
+ * The event is fired within the default space of the inner context of the failing agent.
+ * Subclasses of this event could be defined in order to specify more in detail the failure.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+event Failure {
+
+	/** The identifier of the space the agent just left.
+	 */
+	val cause : Throwable
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param cause the cause of the failure.
+	 */
+	new (source : Address, cause : Throwable) {
+		this.source = source
+		this.cause = cause
 	}
 
 }

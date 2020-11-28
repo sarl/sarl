@@ -8,6 +8,7 @@ the inner context, as well as the `killMe` action to stop the execution of an ag
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
 [:Fact:]{typeof(io.sarl.core.[:lifecyclecap!]).shouldHaveMethods(
+	"[:fctkillme](killMe)(java.lang.Throwable)",
 	"[:fctkillme](killMe)",
 	"[:fctspawn](spawn)(java.lang.Class, java.lang.Object[])",
 	"spawn(int, java.lang.Class, java.lang.Object[])",
@@ -29,7 +30,7 @@ The [:lifecyclecap:] capacity provides the following function for committing a s
 	package io.sarl.docs.reference.bic
 	interface Tmp {
 	[:On]
-		def [:fctkillme!]
+		def [:fctkillme!]([:killmearg](abnormalTerminationCause) : Throwable = null)
 	[:Off]
 	}
 [:End:]
@@ -61,6 +62,12 @@ Example:
 		}
 	}
 [:End:]
+
+
+The optional argument of the [:fctkillme:] function enables to provide the cause of an abnormal termination of the agent.
+This cause must be a throwable object, e.g. an exception.
+If the argument [:killmearg:] is provided, its value is put into the field [:killmearg:] of the fired [:agentkilledevent:]
+event.
 
 
 ## Spawning in the default context

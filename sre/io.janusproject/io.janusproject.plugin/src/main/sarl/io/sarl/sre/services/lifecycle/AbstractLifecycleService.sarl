@@ -174,11 +174,15 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * 
 	 * @param agents the destroyed agent.
 	 * @param outerContexts the contexts in which the agent w destroyed.
+	 * @param abnormalTerminationCause is the cause of the abnormal termination of the agent.
+	 *     If it is {@code null}, the agent is terminated in a "normal" situation.
+	 * @since 0.12
 	 */
-	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
+	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+		abnormalTerminationCause : Throwable) {
 		// Notify the listeners on the spawn events (not restricted to a single agent)
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
-			agentDestroyed(^agent, outerContexts)
+			agentDestroyed(^agent, outerContexts, abnormalTerminationCause)
 		]
 	}
 
@@ -439,7 +443,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		life.state.isAlive
 	}
 
-	def killAgent(^agent : Agent, forceKillable : boolean) : boolean {
+	def killAgent(^agent : Agent, forceKillable : boolean, abnormalTerminationCause : Throwable) : boolean {
 		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
 		if (life !== null && life.isAlive) {
@@ -448,7 +452,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				var defaultContext = life.defaultContext
 				var contexts = life.stop(this.skillUninstaller, getLogger)
 				^agent.onAgentKilled
-				fireAgentDestructionEvents(^agent, defaultContext, contexts)
+				fireAgentDestructionEvents(^agent, defaultContext, contexts, abnormalTerminationCause)
 				// Test if the agent is the latest on this kernel.
 				defaultContext?.context?.startShutdownLookup
 				return true
@@ -480,13 +484,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	protected def fireAgentDestructionEvents(^agent : Agent, defaultContextBeforeKilled : ContextReference,
-		leavedContexts : ConcurrentLinkedDeque<ContextReference>) {
+		leavedContexts : ConcurrentLinkedDeque<ContextReference>,
+		abnormalTerminationCause : Throwable) {
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
 		this.platformContextEventEmitter.memberLeft(defaultContextBeforeKilled.context,
 			defaultContextBeforeKilled.defaultSpace.spaceID, ^agent.ID, ^agent.class.name)
 		// Fire the agent destroy event
-		^agent.fireAgentDestroy(leavedContexts)
+		^agent.fireAgentDestroy(leavedContexts, abnormalTerminationCause)
 	}
 
 	/** Replies the dynamic skill providers that are defined by the user of the service.

@@ -477,10 +477,13 @@ capacity Lifecycle {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
+	 * @param abnormalTerminationCause indicates the cause of an abnormal termination of the agent.
+	 *      If this argument is {@code null}, the agent terminates in a "normal" situation.
 	 * @fires AgentKilled in DefaultSpace of all Contexts to which this agent belongs
 	 * @fires Destroy inside the agent
+	 * @since 0.12
 	 */
-	def killMe fires AgentKilled, Destroy
+	def killMe(abnormalTerminationCause : Throwable = null) fires AgentKilled, Destroy
 }
 
 
