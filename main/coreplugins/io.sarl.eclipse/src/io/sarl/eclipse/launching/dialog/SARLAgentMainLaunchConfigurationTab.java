@@ -180,16 +180,19 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		if (this.defaultContextIdentifierButton != null) {
 			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, noOpt);
 			this.defaultContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_11, opt));
+			this.defaultContextIdentifierButton.requestLayout();
 			this.defaultContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.randomContextIdentifierButton != null) {
 			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, noOpt);
 			this.randomContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_12, opt));
+			this.randomContextIdentifierButton.requestLayout();
 			this.randomContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.bootContextIdentifierButton != null) {
 			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, noOpt);
 			this.bootContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_13, opt));
+			this.bootContextIdentifierButton.requestLayout();
 			this.bootContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 	}

@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
