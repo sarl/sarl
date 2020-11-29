@@ -136,6 +136,26 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 		}
 	}
 
+	def getDefaultParentID : UUID {
+		return defaultContext.ID
+	}
+
+	def getDefaultParentScope : Scope<Address> {
+		val parentID = defaultParentID
+		return [it.UUID == parentID]
+	}
+
+	def emitToParent(^event : Event) {
+		assert ^event !== null
+		val dspace = defaultSpace
+		if (dspace !== null) {
+			val adr = defaultAddress
+			assert adr !== null
+			^event.source = adr
+			dspace.emit(ID, ^event, getDefaultParentScope) 
+		}
+	}
+
 	@Deprecated
 	def willReceive(receiver : UUID, ^event : Event) {
 		^event.emit [it.UUID == receiver]
