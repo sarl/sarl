@@ -72,4 +72,8 @@ class MyContext0 implements AgentContext {
 		throw new UnsupportedOperationException
 	}
 	
+	def isRootContext : boolean {
+		throw new UnsupportedOperationException
+	}
+
 }

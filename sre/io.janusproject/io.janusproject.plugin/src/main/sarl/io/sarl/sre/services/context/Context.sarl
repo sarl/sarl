@@ -92,14 +92,7 @@ class Context extends AgentTrait implements AgentContext {
 		this.spaceEventEmitterFactory = listenerFactory
 	}
 
-	/** Replies if the context is a root context.
-	 * 
-	 * <p>A root context is associated to the platform kernel agent, which is not created into memory.
-	 * For example, it means that there is no parent registered into the default space.
-	 * 
-	 * @return {@code true} if the context is a root context.
-	 */
-	def isRootContext : boolean {
+	override isRootContext : boolean {
 		this.owner === null
 	}
 

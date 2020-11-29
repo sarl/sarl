@@ -73,4 +73,8 @@ class MyContextA0 extends AgentTrait implements AgentContext {
 		throw new UnsupportedOperationException
 	}
 	
+	def isRootContext : boolean {
+		throw new UnsupportedOperationException
+	}
+	
 }
