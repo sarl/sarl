@@ -60,8 +60,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * <p>The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
  * agents.
  * 
- * <p>To create a Kernel, you should use the function {@link #create(Module...)}.
- * 
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$

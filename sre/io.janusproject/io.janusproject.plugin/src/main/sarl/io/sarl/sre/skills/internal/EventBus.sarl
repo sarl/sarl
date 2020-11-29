@@ -230,9 +230,10 @@ class EventBus {
 					}
 				}
 			}
-			def onError(e : Throwable) {
+			def onError(e : Throwable) : boolean {
 				// Catch exception for notifying the caller
 				runException.set(e)
+				return true
 			}
 		}
 		
