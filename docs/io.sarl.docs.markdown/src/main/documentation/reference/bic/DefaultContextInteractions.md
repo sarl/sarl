@@ -40,10 +40,10 @@ Therefore, it is actually created on top of the other built-in capacities.
 	"[:isdefaultspace](isDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 	"isDefaultSpace(io.sarl.lang.core.SpaceID) : boolean",
 	"isDefaultSpace(java.util.UUID) : boolean",
-	"[:isindefaultspace](isInDefaultSpace)(io.sarl.lang.core.Event) : boolean"),
+	"[:isindefaultspace](isInDefaultSpace)(io.sarl.lang.core.Event) : boolean",
 	"[:getdefaultparentid](getDefaultParentID) : java.util.UUID",
 	"[:getdefaultparentscope](getDefaultParentScope) : io.sarl.lang.core.Scope",
-	"[:emittoparent](emitToParent)(io.sarl.lang.core.Event)",
+	"[:emittoparent](emitToParent)(io.sarl.lang.core.Event)")
 }
 
 
@@ -322,7 +322,7 @@ sending an event to the parent agent only.
 	import io.sarl.lang.core.Event
 	interface Tmp {
 	[:On]
-		def [:emitToParent!](^event : Event)
+		def [:emittoparent!](^event : Event)
 	[:Off]
 	}
 [:End:]
