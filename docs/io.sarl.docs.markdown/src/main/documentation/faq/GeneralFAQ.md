@@ -200,6 +200,20 @@ or use the 32-bit version of the SARL Eclipse product.
 If another error occurs, you should go on the SARL forum and report this problem.
 
 
+### Why does SARL Eclipse fail on MacOS X?
+
+Several MacOS X users reported that errors when they try to launch the SARL Eclipse product.
+Plenty of reasons may be the cause of the failure. As usually, it is always better to
+read the ".log" file for determining this cause.
+
+Nevertheless, the two most reported causes of avoidance of the SARL Eclipse launch are:
+
+1. The Java virtual machine (JVM) is not valid for running SARL Eclipse. To solve this problem:
+   * install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
+   * force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw` or `java` of at least the JDK [:sarl-run.min.jdk.version!].
+[:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
+
+
 ### Why does the SARL product launch but not contain any features related to SARL?
 
 This is due to a problem in your configuration. SARL tools need the Eclipse
@@ -210,13 +224,11 @@ You must run the SARL product with a valid version of the JDK.
 Two ways are available for solving this issue:
 
 1. install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
-2. force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file
-into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the
-path to the binary file `javaw[.exe]` or `java[.exe]` of at least the JDK [:sarl-run.min.jdk.version!].
+2. force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw[.exe]` or `java[.exe]` of at least the JDK [:sarl-run.min.jdk.version!].
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 
-### Why does the content assistant not propose any suggestion on MacOS?
+### Why does the content assistant not propose any suggestion on MacOS X?
 
 By default in the SARL product, the shortcut key for invoking the content assistant is `Ctrl+Space` or `Apple+Space`.
 But, the Spotlight tool on MacOS is also using the same shortcut key.
