@@ -212,6 +212,18 @@ Nevertheless, the two most reported causes of avoidance of the SARL Eclipse laun
    * install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
    * force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw` or `java` of at least the JDK [:sarl-run.min.jdk.version!].
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
+2. The Gatekeeper of MacOS X blocks the launch of the SARL Eclipse, because Gatekeeper considers SARL Eclipse as unstable. You could confirm this problem by looking into your `system.log` file and searching for a message that looks like:
+
+```
+(application.io.sarl.lang.product.72020573.72020798[78958]): removing service since it exited with consistent failure - OS_REASON_EXEC | Gatekeeper policy blocked execution
+```
+
+On order to enable Gatekeper to enable the SARL Eclipse launch, you should type on the Terminal the following command:
+```
+sudo xattr -rd com.apple.quarantine Eclipse.app
+```
+
+Where `Eclipse.app` is the name of the SARL Eclipse application on MacOS X.
 
 
 ### Why does the SARL product launch but not contain any features related to SARL?
