@@ -42,6 +42,7 @@ import org.arakhne.afc.vmutil.Resources;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -60,6 +61,7 @@ import io.sarl.maven.bootiqueapp.utils.SystemPath;
  */
 @SuppressWarnings("all")
 @DisplayName("Entry point test")
+@Tag("sarlc")
 public class MainTest {
 
 	private static final boolean CAPTURE_OUTPUTS = true;
@@ -240,8 +242,6 @@ public class MainTest {
 				"--outputdir", this.binFolder.getAbsolutePath(),
 				"--cp", classPath.toString(),
 				this.srcFolder.getAbsolutePath());
-		//this.originalStdout.print(new String(this.captureStdout.toByteArray()));
-		//this.originalStderr.print(new String(this.captureStderr.toByteArray()));
 		assertEquals(0, retcode);
 		
 		File javaFile = FileSystem.join(this.genFolder, "io", "sarl", "lang",

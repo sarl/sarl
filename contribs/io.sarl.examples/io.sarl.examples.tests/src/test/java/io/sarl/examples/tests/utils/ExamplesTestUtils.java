@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.examples.tests;
+package io.sarl.examples.tests.utils;
 
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,13 +48,13 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import com.google.inject.Injector;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.Strings;
@@ -111,6 +111,8 @@ public final class ExamplesTestUtils {
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
 	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
 
+	private static final String[] WIN_EXTS = {".COM", ".EXE", ".BAT", ".CMD"};
+	
 	private volatile static List<ExampleDescription> ARCHIVE_BUFFER = null;
 
 	/** Create the dynamic tests with the given function.
@@ -119,7 +121,7 @@ public final class ExamplesTestUtils {
 	 * @return the dynamic tests.
 	 * @throws Exception if the example descriptions cannot be read.
 	 */
-	public static Stream<DynamicTest> dynamicTests(TestExecutable testFunction) throws Exception {
+	public static List<DynamicTest> dynamicTests(TestExecutable testFunction) throws Exception {
 		return dynamicTests(true, testFunction);
 	}
 	
@@ -130,10 +132,15 @@ public final class ExamplesTestUtils {
 	 * @return the dynamic tests.
 	 * @throws Exception if the example descriptions cannot be read.
 	 */
-	public static Stream<DynamicTest> dynamicTests(boolean testIfArchive, TestExecutable testFunction) throws Exception {
-		return getExampleDescriptions().stream()
-				.filter(it -> !testIfArchive || it.archive != null)
-				.map((example) -> DynamicTest.dynamicTest(example.name, () -> testFunction.execute(example)));
+	public static List<DynamicTest> dynamicTests(boolean testIfArchive, TestExecutable testFunction) throws Exception {
+		final List<ExampleDescription> descriptions = getExampleDescriptions();
+		final List<DynamicTest> tests = new ArrayList<>();
+		for (final ExampleDescription description : descriptions) {
+			if (!testIfArchive || description.archive != null) {
+				tests.add(DynamicTest.dynamicTest(description.name, () -> testFunction.execute(description)));
+			}
+		}
+		return tests;
 	}
 
 	/** Replies the descriptions for the examples.
@@ -298,7 +305,7 @@ public final class ExamplesTestUtils {
 	 *
 	 * @param file the file to test.
 	 * @param root the root file.
-	 * @since 0.12
+	 )* @since 0.12
 	 */
 	public static void assertFile(File file, File root) {
 		assertNotNull(file, "The filename cannot be null");
@@ -363,13 +370,38 @@ public final class ExamplesTestUtils {
 		String paths = System.getenv("PATH");
 		if (!Strings.isEmpty(paths)) {
 			for (final String path : paths.split(Pattern.quote(File.pathSeparator))) {
-				final File exec = FileSystem.join(FileSystem.convertStringToFile(path), command);
-				if (exec != null && exec.canExecute()) {
-					return exec.getAbsolutePath();
+				final File pathFile = FileSystem.convertStringToFile(path).getAbsoluteFile();
+				if (pathFile.isDirectory()) {
+					if (OperatingSystem.getCurrentOS() == OperatingSystem.WIN) {
+						for (final String ext : WIN_EXTS) {
+							final String cmd = testExecutable(command, pathFile, ext);
+							if (cmd != null) {
+								return cmd;
+							}
+						}
+					} else {
+						final String cmd = testExecutable(command, pathFile, null);
+						if (cmd != null) {
+							return cmd;
+						}
+					}
 				}
 			}
 		}
 		return command;
+	}
+
+	private static String testExecutable(String command, File path, String extension) {
+		final File exec;
+		if (Strings.isEmpty(extension)) {
+			exec = FileSystem.join(path, command);
+		} else {
+			exec = FileSystem.join(path, command + extension);
+		}
+		if (exec != null && exec.canExecute()) {
+			return exec.getAbsolutePath();
+		}
+		return null;
 	}
 	
 	/** Compile the given project with the standard maven tool.
@@ -389,7 +421,10 @@ public final class ExamplesTestUtils {
 		compiledFile.createNewFile();
 		
 		final String[] command = new String[] {
-				whichCommand(MAVEN_COMMAND), "-q", "clean", "package"
+				whichCommand(MAVEN_COMMAND),
+				// The options for maven always starts with "-" even on Windows OS
+				"-q",
+				"clean", "package"
 		};
 		final ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(root);

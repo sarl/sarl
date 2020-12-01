@@ -31,6 +31,7 @@ import io.sarl.sre.internal.ContextMemberEventEmitter
 import io.sarl.sre.internal.SpaceEventEmitterFactory
 import io.sarl.sre.internal.SpaceParticipantEventEmitterFactory
 import io.sarl.sre.internal.SubHolonContextEventEmitterFactory
+import io.sarl.sre.internal.TaskAgentFailureEventEmitterFactory
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.context.InternalContextMembershipListenerFactory
 import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
@@ -39,6 +40,7 @@ import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import javax.inject.Provider
 import javax.inject.Singleton
+import io.sarl.sre.skills.bic.FailureListenerFactory
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
@@ -86,6 +88,14 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@Singleton
 	static def provideLifecycleServiceListener(logging : Provider<LoggingService>) : LifecycleServiceListener {
 		new AgentEventEmitter(logging.get.getKernelLogger)
+	}
+	
+
+	@Provides
+	@KernelScope
+	@Singleton
+	static def provideFailureListenerFactory : FailureListenerFactory {
+		new TaskAgentFailureEventEmitterFactory
 	}
 
 }

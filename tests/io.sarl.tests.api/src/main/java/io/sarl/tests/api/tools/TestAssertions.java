@@ -1123,9 +1123,11 @@ public final class TestAssertions {
 	 * @since 0.12
 	 */
 	public static void assertEqualsExceptNewLines(String expected, String actual, Supplier<String> message) {
-		final String e = expected.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		final String a = actual.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(e, a, message);
+		String es = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		es = es.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		String as = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		as = as.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(es, as, message);
 	}
 
 	/** Assert that the two strings are equal except for the new-line characters.

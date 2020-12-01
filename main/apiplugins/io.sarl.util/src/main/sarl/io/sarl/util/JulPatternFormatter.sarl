@@ -98,7 +98,7 @@ class JulPatternFormatter extends Formatter {
 	/** Filter the log name in order to computer the one that is displayed into the log.
 	 *
 	 * @param logName the log name to filter.
-	 * @return the displyable log name.
+	 * @return the displayable log name.
 	 */
 	protected def filterLogName(logName : String) : String {
 		logName

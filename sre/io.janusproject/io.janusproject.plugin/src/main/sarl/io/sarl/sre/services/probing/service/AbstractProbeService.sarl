@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.sre.services.probing.service
 
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.FieldAccess
@@ -29,12 +29,30 @@ import io.sarl.api.probing.Probe
 import io.sarl.api.probing.ProbeService
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.AbstractSreService
+import io.sarl.sre.services.probing.probes.BigDecimalFieldProbe
+import io.sarl.sre.services.probing.probes.BigIntegerFieldProbe
+import io.sarl.sre.services.probing.probes.BooleanFieldProbe
+import io.sarl.sre.services.probing.probes.ByteFieldProbe
+import io.sarl.sre.services.probing.probes.CharacterFieldProbe
+import io.sarl.sre.services.probing.probes.DoubleFieldProbe
+import io.sarl.sre.services.probing.probes.FloatFieldProbe
+import io.sarl.sre.services.probing.probes.IntegerFieldProbe
+import io.sarl.sre.services.probing.probes.LongFieldProbe
+import io.sarl.sre.services.probing.probes.ReferenceFieldProbe
+import io.sarl.sre.services.probing.probes.ShortFieldProbe
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.net.URI
 import java.util.Collection
 import java.util.Map
-import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
+import java.util.concurrent.atomic.AtomicBoolean
+import java.text.MessageFormat
+import java.util.concurrent.atomic.AtomicInteger
+import com.google.common.util.concurrent.AtomicDouble
+import java.util.concurrent.atomic.AtomicLong
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -55,6 +73,8 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
 
+	val lockProvider : Provider<ReadWriteLock>
+
 	/** Constructor.
 	 * 
 	 * @param internalStructure is the internal structure for storing the probes.
@@ -64,11 +84,12 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	 * @param lockProvider the provider of synchronization locks.
 	 */
 	protected new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
 		this.probes = internalStructure
 		this.namespace = namespaceService
 		this.nameParser = nameParser
 		this.listenerCollectionProvider = listenerCollectionProvider
+		this.lockProvider = lockProvider
 	}
 
 	protected override onStop {
@@ -93,7 +114,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 			return null
 		}
 		val uri = valueName.toURI
-		if (valueName === null) {
+		if (uri === null) {
 			return null
 		}
 		var probe : Probe<T> = this.probes.get(uri) as Probe<T>
@@ -101,7 +122,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		if (probe === null) {
 			var isFirst = false
 			val probedValue = this.namespace.findObject(valueName)
-			val name = if(probeName.isNullOrEmpty) UUID::randomUUID.toString else probeName
+			val name = if(probeName.isNullOrEmpty) uri.toString else probeName
 			probe = probedValue.newProbe(valueType, uri, name)
 			if (probe !== null) {
 				isFirst = this.probes.empty
@@ -134,13 +155,49 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	 * @param valueType the expected type of the probed values, never {@code null}.
 	 * @param probeUri the URI of the probe, never {@code null}.
 	 * @param probeName the name of the probe, never {@code null}.
+	 * @throws IllegalArgumentException if the type of the data is not supported.
 	 */
 	protected def newProbe(probedElement : Object, valueType : Class<T>, probeUri : URI,
 		probeName : String) : Probe<T> with T {
+		var p : Probe<?>
 		if (probedElement instanceof FieldAccess) {
-			return new FieldProbe(this, probeName, probeUri, valueType, probedElement, this.listenerCollectionProvider)
+			if (valueType == typeof(boolean) || valueType == typeof(Boolean)) {
+				p = new BooleanFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(int) || valueType == typeof(Integer)) {
+				p = new IntegerFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(double) || valueType == typeof(Double)) {
+				p = new DoubleFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(float) || valueType == typeof(Float)) {
+				p = new FloatFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(long) || valueType == typeof(Long)) {
+				p = new LongFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(short) || valueType == typeof(Short)) {
+				p = new ShortFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(byte) || valueType == typeof(Byte)) {
+				p = new ByteFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(char) || valueType == typeof(Character)) {
+				p = new CharacterFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(BigInteger)) {
+				p = new BigIntegerFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(BigDecimal)) {
+				p = new BigDecimalFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			} else if (valueType == typeof(AtomicBoolean)) {
+				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
+					valueType.simpleName, typeof(Boolean).simpleName))
+			} else if (valueType == typeof(AtomicInteger)) {
+				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
+					valueType.simpleName, typeof(Integer).simpleName))
+			} else if (valueType == typeof(AtomicDouble)) {
+				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
+					valueType.simpleName, typeof(Double).simpleName))
+			} else if (valueType == typeof(AtomicLong)) {
+				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
+					valueType.simpleName, typeof(Long).simpleName))
+			} else  {
+				p = new ReferenceFieldProbe(this, probeName, probeUri, valueType, probedElement, this.listenerCollectionProvider, this.lockProvider)
+			}
 		}
-		return null
+		return p as Probe<T>
 	}
 
 	override getProbes : Collection<Probe<?>> {
@@ -155,9 +212,16 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	}
 
 	override sync {
-		this.probes.values.forEach [
+		for (it : this.probes.values) {
 			it.sync
-		]
+		}
+	}
+
+	/** Force synchronization. It is for internal usage only. */
+	protected def internalSync {
+		for (it : this.probes.values) {
+			it.sync(true, true)
+		}
 	}
 
 	override onProbeReleasedProbe(probe : Probe<?>) {

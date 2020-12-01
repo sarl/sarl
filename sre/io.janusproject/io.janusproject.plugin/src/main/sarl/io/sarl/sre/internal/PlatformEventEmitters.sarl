@@ -23,6 +23,7 @@ package io.sarl.sre.internal
 
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
+import io.sarl.core.AgentTask
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
 import io.sarl.core.ContextLeft
@@ -33,6 +34,7 @@ import io.sarl.core.ParticipantJoined
 import io.sarl.core.ParticipantLeft
 import io.sarl.core.SpaceCreated
 import io.sarl.core.SpaceDestroyed
+import io.sarl.core.TaskFailure
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
@@ -50,16 +52,18 @@ import io.sarl.sre.services.context.SpaceRepositoryListener
 import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener
+import io.sarl.sre.skills.bic.FailureListener
+import io.sarl.sre.skills.bic.FailureListenerFactory
 import io.sarl.sre.spaces.Participant
 import io.sarl.sre.spaces.SpaceParticipantListener
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** Emit the space platform events.
  *
@@ -220,7 +224,8 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		defSpace.emit(null, ^event) [agentId != it.UUID]
 	}
 	
-	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
+	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+		abnormalTerminationCause : Throwable) {
 		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_1, ^agent.ID)]
 		val size = outerContexts.size
 		val spaces = <EventSpace>newArrayOfSize(size)
@@ -228,7 +233,9 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		var i = 0
 		for (contextReference : outerContexts) {
 			val ^event = new AgentKilled(
-				contextReference.addressInDefaultSpace, ^agent.class.name)
+				contextReference.addressInDefaultSpace,
+				^agent.class.name,
+				abnormalTerminationCause)
 			spaces.set(i, contextReference.defaultSpace)
 			events.set(i, ^event)
 			i++
@@ -378,8 +385,64 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
  */
 class SubHolonContextEventEmitterFactory implements InternalContextMembershipListenerFactory {
 
-	def create(owner : Agent) : InternalContextMembershipListener {
+	override create(owner : Agent) : InternalContextMembershipListener {
 		new SubHolonContextEventEmitter(owner)
+	}
+
+}
+
+/** 
+ * Events related to agent tasks' failures.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("use_reserved_sarl_annotation")
+@PrivateAPI(isCallerOnly = true)
+class TaskAgentFailureEventEmitter implements FailureListener {
+
+	val owner : WeakReference<Agent>
+
+	var behaviorSkill : AtomicSkillReference
+
+	new (owner : Agent) {
+		this.owner = new WeakReference(owner)
+	}
+
+	private def getBehaviors : Behaviors {
+		var o = this.owner.get
+		if (o !== null) {
+			if (this.behaviorSkill?.get === null) {
+				this.behaviorSkill = SREutils::getInternalSkillReference(o, typeof(Behaviors))
+			}
+			return SREutils::castInternalSkillReference(o, this.behaviorSkill, typeof(Behaviors))
+		}
+		return null
+	}
+
+	override taskFailed(task : AgentTask, cause : Throwable) {
+		val ^event = new TaskFailure(task, cause)
+		this.behaviors?.wake(^event)
+	}
+
+}
+
+/** 
+ * Factory of listener for events related to agent tasks' failures.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class TaskAgentFailureEventEmitterFactory implements FailureListenerFactory {
+
+	override create(owner : Agent) : FailureListener {
+		new TaskAgentFailureEventEmitter(owner)
 	}
 
 }

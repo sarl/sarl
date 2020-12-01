@@ -23,10 +23,30 @@ package io.sarl.sre.tests.runtime.services.probing
 
 import io.sarl.api.probing.Probe
 import io.sarl.api.probing.ProbeService
+import io.sarl.lang.core.Agent
 import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
+import io.sarl.sre.services.probing.service.AsynchronousProbeService
+import io.sarl.sre.test.framework.context.BooleanWait
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
+import io.sarl.sre.tests.runtime.services.probing.mocks.ChangeFieldForProbe
+import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedAgent
+import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedObservableAgent
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.test.framework.Constants.*
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -37,24 +57,68 @@ import org.junit.jupiter.api.Tag
 @DisplayName("run: AsynchronousProbe service test")
 @Tag("sre-run")
 @Tag("janus")
-class AsynchronousProbeServiceTest extends AbstractProbeServiceTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+class AsynchronousProbeServiceTest {
 
-	protected def runTestCase_prepare {
-		var prop = VariableNames::toPropertyName(ServicesConfig::ASYNCHRONOUS_PROBE_UPDATE_NAME)
-		System::setProperty(prop, Boolean::TRUE.toString)
+	protected def runProbeTest(extension rc : SreRunContext, agentType : Class<? extends Agent>) : Probe<Integer> {
+		System::setProperty(VariableNames::toPropertyName(ServicesConfig::ASYNCHRONOUS_PROBE_UPDATE_NAME), Boolean.TRUE.toString)
+		//
+		var kernel = setupTheSreKernel(null, null)
+		var service = kernel.getService(typeof(ProbeService))
+		//
+		typeof(AsynchronousProbeService).assertInstanceOf(service)
+		val aservice = service as AsynchronousProbeService
+		//
+		val id = UUID::randomUUID
+		var w = waitForAgentSpawned(id)
+		kernel.startAgentWithID(agentType, id, agentInitializationParameters)
+		w.doWait
+		//
+		var probe = service.probe("agent:" + id + "#myfield", typeof(Integer))
+		//
+		val changed = new AtomicBoolean(false)
+		if (probe !== null) {
+			probe.addProbeListener [
+				if ($0.value == 24) {
+					changed.set(true)
+				}
+			]
+		}
+		//
+		if (probe !== null) {
+			val w0 = new BooleanWait(new AtomicBoolean(true), null)
+			w0.doWait(STANDARD_TIMEOUT) [aservice.isAsynchronousSynchronizationRunning]
+		}
+		//
+		waitForAgentKilled(id) [
+			rootContext.defaultSpace.emit(id, new ChangeFieldForProbe) [it.UUID == id]
+		]
+		//
+		if (probe !== null) {
+			val w1 = new BooleanWait(new AtomicBoolean(true), null)
+			w1.doWait(STANDARD_TIMEOUT) [changed.get]
+		}
+		//
+		waitForTheKernel(STANDARD_TIMEOUT)
+		return probe
 	}
 
-	protected def runTestCase_beforeChangeField(service : ProbeService, probe : Probe<Integer>) {
+	@Test
+	@DisplayName("Observable agent")
+	def observableAgent(rc : SreRunContext) : void {
+		rc.runProbeTest(typeof(ProbedObservableAgent))
 	}
-	
-	protected def runTestCase_beforeStopTest(service : ProbeService, probe : Probe<Integer>) {
-	}
-	
-	protected def runTestCase_afterStopTest(service : ProbeService, probe : Probe<Integer>) {
-	}
-	
-	protected def runTestCase_afterShutdown(service : ProbeService, probe : Probe<Integer>) {
-		probe.sync
+
+	@Test
+	@DisplayName("Agent")
+	def ^agent(rc : SreRunContext) : void {
+		var probe = rc.runProbeTest(typeof(ProbedAgent))
+		probe.assertNull
 	}
 
 }

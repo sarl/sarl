@@ -64,7 +64,7 @@ skill LifeSkill implements Lifecycle {
 		this.installOrder.intValue;
 	}
 	
-	def killMe {
+	def killMe(abnormalTerminationCause : Throwable) {
 	}
 	
 	def spawn(agentType : Class<? extends Agent>, params : Object*) {

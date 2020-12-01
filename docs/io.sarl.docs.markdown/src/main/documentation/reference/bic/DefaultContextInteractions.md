@@ -40,7 +40,10 @@ Therefore, it is actually created on top of the other built-in capacities.
 	"[:isdefaultspace](isDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 	"isDefaultSpace(io.sarl.lang.core.SpaceID) : boolean",
 	"isDefaultSpace(java.util.UUID) : boolean",
-	"[:isindefaultspace](isInDefaultSpace)(io.sarl.lang.core.Event) : boolean")
+	"[:isindefaultspace](isInDefaultSpace)(io.sarl.lang.core.Event) : boolean",
+	"[:getdefaultparentid](getDefaultParentID) : java.util.UUID",
+	"[:getdefaultparentscope](getDefaultParentScope) : io.sarl.lang.core.Scope",
+	"[:emittoparent](emitToParent)(io.sarl.lang.core.Event)")
 }
 
 
@@ -266,6 +269,63 @@ example becomes:
 In the previous code, the receiver of the event is given by the formal parameter [:receiverid:].
 The scope restricts the receiver according to this identifier.
 
+
+
+## Interaction with the parent agent
+
+Each agent is member of a context that is the default context. According to the SARL metamodel, each context
+is own by an agent. This agent is named the "default parent agent".
+
+
+### Getting the identifier of the parent agent
+
+The [:defaultcontextinteractions:] capacity provides the function [:getdefaultparentid:] function for obtaining
+the identifier of the parent agent.
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import java.util.UUID
+	interface Tmp {
+	[:On]
+		def [:getdefaultparentid!] : UUID
+	[:Off]
+	}
+[:End:]
+
+
+### Getting the event scope of the parent agent
+
+The [:defaultcontextinteractions:] capacity provides the function [:getdefaultparentscope:] function for obtaining
+a scope that matches the parent agent.
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Scope
+	import io.sarl.lang.core.Address
+	interface Tmp {
+	[:On]
+		def [:getdefaultparentscope!] : Scope<Address>
+	[:Off]
+	}
+[:End:]
+
+This scope could be used to emit the events.
+
+
+### Emit an event to the parent agent
+
+The [:defaultcontextinteractions:] capacity provides the function [:emittoparent:] function for
+sending an event to the parent agent only.
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Event
+	interface Tmp {
+	[:On]
+		def [:emittoparent!](^event : Event)
+	[:Off]
+	}
+[:End:]
 
 
 ## Testing if an element is related to the default context

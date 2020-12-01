@@ -226,4 +226,16 @@ public interface AgentContext {
 	@Pure
 	<S extends Space> S getSpace(UUID spaceUUID);
 
+	/**
+	 * Replies if the context is a root context.
+	 *
+	 * <p>A root context is associated to the platform kernel agent, which is not created into memory.
+	 * For example, it means that there is no parent registered into the default space.
+	 *
+	 * @return {@code true} if the context is a root context.
+	 * @since 0.12
+	 */
+	@Pure
+	boolean isRootContext();
+
 }

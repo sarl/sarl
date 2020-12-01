@@ -477,10 +477,13 @@ capacity Lifecycle {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
+	 * @param abnormalTerminationCause indicates the cause of an abnormal termination of the agent.
+	 *      If this argument is {@code null}, the agent terminates in a "normal" situation.
 	 * @fires AgentKilled in DefaultSpace of all Contexts to which this agent belongs
 	 * @fires Destroy inside the agent
+	 * @since 0.12
 	 */
-	def killMe fires AgentKilled, Destroy
+	def killMe(abnormalTerminationCause : Throwable = null) fires AgentKilled, Destroy
 }
 
 
@@ -765,6 +768,33 @@ capacity DefaultContextInteractions {
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 */
 	def emit(^event : Event, scope : Scope<Address> = null)
+
+	/**
+	 * Replies the identifier of the default parent.
+	 *
+	 * <p>The default parent agent has the same identifier as the default context.
+	 *
+	 * @return the identifier of the default parent of the current agent.
+	 * @since 0.12
+	 */
+	def getDefaultParentID : UUID
+
+	/**
+	 * Replies the event scope that corresponds to the default parent.
+	 *
+	 * @return the identifier of the default parent of the current agent.
+	 * @since 0.12
+	 */
+	def getDefaultParentScope : Scope<Address>
+
+	/**
+	 * Emits or forward the given event to the parent agent into the default context of the calling agent.
+	 *
+	 * @param event the event to emit.
+	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
+	 * @since 0.12
+	 */
+	def emitToParent(^event : Event)
 
 	/**
 	 * Inverse signature of send. Useful to send events using the agent's UUID.

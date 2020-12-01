@@ -162,7 +162,9 @@ class AgentEventEmitterTest {
 		
 		var contexts = new ConcurrentLinkedDeque(#[ref1, ref2])
 		
-		this.emitter.agentDestroyed(agent2, contexts)
+		val terminationCause = typeof(Throwable).mock
+		
+		this.emitter.agentDestroyed(agent2, contexts, terminationCause)
 
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var scope = ArgumentCaptor::forClass(typeof(Scope))

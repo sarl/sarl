@@ -207,7 +207,7 @@ When an agent wants to move an object by calling the [:moveobjectfct:] method,
 the space is retrieving the instance of this object in the [:entityfield:], and
 move it. 
 
-> **_Important Note::_** The previous implementation has a major problem: it does not permit
+> **_Important Note:_** The previous implementation has a major problem: it does not permit
 > to distribute the information and the interaction objects over a computer network. The space is
 > the support of the interaction. Consequently, it should provide the mechanisms for
 > routing the events to all the agents other the computer network.

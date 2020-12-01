@@ -87,11 +87,13 @@ interface LifecycleService extends Service {
 	 *     Usually, the agent cannot be killed when it contains other agents. This flag
 	 *     enables or disables to the run of this test. If {@code true}, the agent is allways assumed
 	 *     to be killable.
+	 * @param abnormalTerminationCause is the cause of the abnormal termination of the agent.
+	 *     If it is {@code null}, the agent is terminated in "normal" situation.
 	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
 	 *     is unknown or already killed.
-	 * @since 0.11
+	 * @since 0.12
 	 */
-	def killAgent(^agent : Agent, forceKillable : boolean) : boolean
+	def killAgent(^agent : Agent, forceKillable : boolean, abnormalTerminationCause : Throwable) : boolean
 
 	/** 
 	 * Add a listener on the changes in the current state of an agent.
@@ -165,8 +167,11 @@ interface LifecycleServiceListener extends EventListener {
 	 * Invoked when the agent is destroyed.
 	 * @param agent the destroyed agent.
 	 * @param outerContexts the contexts from which the given agent were removed after its destruction.
+	 * @param abnormalTerminationCause the cause of the termination of the agent in an abnormal case.
+	 *     If it is {@code null}, the agent was destroyed in a "normal" situation.
 	 */
-	def agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>)
+	def agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+		abnormalTerminationCause : Throwable)
 
 	/** 
 	 * Invoked when the agent spawning has failed.
@@ -194,7 +199,8 @@ interface LifecycleServiceListener extends EventListener {
 			spawnedAgent : Agent, initializationParameters : Object[]) {
 		}
 
-		override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
+		override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+			abnormalTerminationCause : Throwable) {
 		}
 
 		override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>) {

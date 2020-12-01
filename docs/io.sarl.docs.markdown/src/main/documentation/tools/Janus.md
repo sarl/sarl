@@ -28,7 +28,7 @@ The [:name:] tool takes arguments:
 The [:agname:] is the name of the agent to launch. This name is equal to the
 fully qualified name of the agent's type.
 
-> **_Note::_** Janus enables to launch only one agent from the command-line shell. If you want to launch
+> **_Note:_** Janus enables to launch only one agent from the command-line shell. If you want to launch
 > more than one agent, you should launch a first agent, which will create the other agents.
 
 You could change the behavior of the [:name:] tool with the command-line options.

@@ -53,7 +53,7 @@ final class Messages extends NLS {
 	public static var ContextMemberEventEmitter_1 : String
 	public static var ContextMemberEventEmitter_2 : String
 	public static var ContextMemberEventEmitter_3 : String
-	
+
 	private new {
 	}
 

@@ -29,6 +29,8 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Capacities
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
+import io.sarl.sre.IssueCodes
+import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
@@ -36,6 +38,7 @@ import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import java.lang.ref.WeakReference
 import java.util.Collection
+import java.util.EventListener
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.ExecutionException
@@ -50,7 +53,6 @@ import javax.inject.Inject
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
 import static java.text.MessageFormat.*
-import io.sarl.sre.IssueCodes
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -69,6 +71,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	val executorService : ExecutorService
 
+	val failureListenerFactory : FailureListenerFactory
+
 	var activeTaskRepository : ConcurrentHashMap<String, TaskDescription> = null
 
 	/**
@@ -82,9 +86,10 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Constructor.
 	 */
 	@Inject
-	new (service : ExecutorService) {
+	new (service : ExecutorService, @KernelScope failureListenerFactory : FailureListenerFactory) {
 		super()
 		this.executorService = service
+		this.failureListenerFactory = failureListenerFactory
 	}
 
 	protected override prepareUninstallation {
@@ -398,7 +403,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			var description = preRunTask(null)[task.run]
 			var logger = getLogger
 			val future = this.executorService.executeAsap(logger,
-				new SingleRunner(this, this.owner, description, logger))
+				new SingleRunner(this, this.owner, description, this.failureListenerFactory, logger))
 			description = postRunTask(description, null, future)
 			return description.task
 		}
@@ -411,7 +416,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
 		var description = preRunTask(task, procedure)
 		var logger = getLogger
-		val future = this.executorService.executeAsap(logger, new SingleRunner(this, this.owner, description, logger))
+		val future = this.executorService.executeAsap(logger, new SingleRunner(this, this.owner,
+			description, this.failureListenerFactory, logger))
 		description = postRunTask(description, task, future)
 		return description.task
 	}
@@ -421,7 +427,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.schedule(logger, delay, TimeUnit::MILLISECONDS,
-				new SingleRunner(this, this.owner, description, logger))
+				new SingleRunner(this, this.owner, description, this.failureListenerFactory, logger))
 			description = postRunTask(description, task, sf)
 			return description.task
 		}
@@ -433,7 +439,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.scheduleAtFixedRate(logger, 0, period, TimeUnit::MILLISECONDS,
-				new PeriodicRunner(this, this.owner, description, logger))
+				new PeriodicRunner(this, this.owner, description, this.failureListenerFactory, logger))
 			description = postRunTask(description, task, sf)
 			return description.task
 		}
@@ -445,11 +451,12 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			var description = preRunTask(task, procedure)
 			var future : Future<?>
 			if (delay <= 0) {
-				future = this.executorService.executeAsap(new InfiniteRunner(this, this.owner, description, getLogger))
+				future = this.executorService.executeAsap(new InfiniteRunner(this, this.owner, description,
+					this.failureListenerFactory, getLogger))
 			} else {
 				var logger = getLogger
 				future = this.executorService.scheduleWithFixedDelay(logger, 0, delay, TimeUnit::MILLISECONDS,
-					new PeriodicRunner(this, this.owner, description, logger))
+					new PeriodicRunner(this, this.owner, description, this.failureListenerFactory, logger))
 			}
 			description = postRunTask(description, task, future)
 			return description.task
@@ -637,16 +644,30 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 		protected val agentTaskRef : TaskDescription
 
+		val failureListenerFactory : FailureListenerFactory
+
+		var failureListener : FailureListener
+
 		val state = new ThreadLocal<TaskTermination>
 
-		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
+		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, 
+			failureListenerFactory : FailureListenerFactory, logger : Logger) {
 			super(logger)
 			assert ^skill !== null
 			assert ^agent !== null
 			assert task !== null
+			assert failureListenerFactory !== null
 			this.^skill = new WeakReference(^skill)
 			this.^agent = new WeakReference(^agent)
+			this.failureListenerFactory = failureListenerFactory
 			this.agentTaskRef = task
+		}
+
+		private synchronized def getFailureListener : FailureListener {
+			if (this.failureListener === null) {
+				this.failureListener = this.failureListenerFactory.create(this.^agent.get)
+			}
+			return this.failureListener
 		}
 
 		@SuppressWarnings("discouraged_reference")
@@ -704,8 +725,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 
 		@SuppressWarnings("discouraged_reference")
-		def onError(e : Throwable) {
+		override onError(e : Throwable) : boolean {
 			this.state.set(TaskTermination::ERROR_IN_PROCEDURE)
+			val fl = getFailureListener
+			assert fl !== null
+			val task = this.agentTaskRef.task
+			assert task !== null
+			fl.taskFailed(task, e)
+			return true
 		}
 
 		@SuppressWarnings("discouraged_reference")
@@ -740,10 +767,6 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 */
 	private static class SingleRunner extends TaskRunner {
 
-		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
-			super(^skill, ^agent, task, logger)
-		}
-
 		protected def postRun(termination : TaskTermination) : boolean {
 			true
 		}
@@ -760,10 +783,6 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 */
 	private static class PeriodicRunner extends TaskRunner {
 
-		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
-			super(^skill, ^agent, task, logger)
-		}
-
 		protected def postRun(termination : TaskTermination) : boolean {
 			termination !== TaskTermination::PROCEDURE_RUN
 		}
@@ -779,10 +798,6 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static class InfiniteRunner extends TaskRunner {
-
-		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
-			super(^skill, ^agent, task, logger)
-		}
 
 		private def canRun : boolean {
 			var taskDescription = this.agentTaskRef
@@ -818,5 +833,40 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 
 	}
+
+}
+
+/** 
+ * Listener on events related to the task failures.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+interface FailureListener extends EventListener {
+
+	/** 
+	 * Invoked when a task has failed.
+	 * 
+	 * @param task the failing task.
+	 * @param failureCause the cause of the failure.
+	 */
+	def taskFailed(task : AgentTask, failureCause : Throwable)
+
+}
+
+/** Factory for failure listener.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+interface FailureListenerFactory {
+
+	def create(^agent : Agent) : FailureListener
 
 }

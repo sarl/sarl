@@ -112,9 +112,12 @@ abstract class SreExecutable {
 	 * The default implementation does nothing.
 	 * 
 	 * @param error the error.
+	 * @return {@code true} if the error should be thrown in the current thread.
+	 *     {@code false} if the exception is not thrown.
 	 * @since 0.11
 	 */
-	protected def onError(error : Throwable) {
+	protected def onError(error : Throwable) : boolean {
+		return true
 	}
 
 	/** Invoked when the task is finished whatever it is successful or failing.
@@ -203,13 +206,12 @@ class SreRunnable extends SreExecutable implements Runnable {
 				// Clear the interrupted flag
 				Thread::interrupted
 			} else {
-				this.exception = cause;
+				this.exception = cause
+				val doThrown = onError(cause)
 				val log = getLogger
 				if (log !== null) {
 					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
-				}
-				onError(cause)
-				if (log === null) {
+				} else if (doThrown) {
 					throw cause
 				}
 			}
@@ -307,13 +309,12 @@ class SreCallable<T> extends SreExecutable implements Callable<T> {
 			} else if (cause instanceof InterruptedException) {
 				// Ignore this exception
 			} else {
-				this.exception = cause;
+				this.exception = cause
+				val doThrown = onError(cause)
 				val log = getLogger
 				if (log !== null) {
 					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
-				}
-				onError(cause)
-				if (log === null) {
+				} else if (doThrown) {
 					throw cause
 				}
 			}
@@ -404,13 +405,12 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
 			} else if (cause instanceof InterruptedException) {
 				// Ignore this exception
 			} else {
-				this.exception = cause;
+				this.exception = cause
+				val doThrown = onError(cause)
 				val log = getLogger
 				if (log !== null) {
 					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
-				}
-				onError(cause)
-				if (log === null) {
+				} else if (doThrown) {
 					throw cause
 				}
 			}

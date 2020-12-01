@@ -31,6 +31,8 @@ import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.lifecycle.StandardLifecycleService
 import io.sarl.sre.services.logging.LoggingService
+import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.Provider
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -53,7 +55,7 @@ class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest<Standard
 		lifecycleConfig : Provider<LifecycleConfig>) : StandardLifecycleService {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
 		return new StandardLifecycleService(this.checker, agentCreatorProvider,
-			coll, lifecycleListenerProvider, contextListenerProvider,
+			coll, [new ReentrantLock], [new ReentrantReadWriteLock], lifecycleListenerProvider, contextListenerProvider,
 			skillUninstaller, executor, logger, lifecycleConfig.get);
 	}
 

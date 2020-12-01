@@ -35,8 +35,9 @@ interface IProbeListener extends EventListener {
 
 	/** Invoked when the value of a probe has changed.
 	 *
-	 * @param probe the probe that has changed.
+	 * @param probe is the probe that has changed.
+	 * @param isInit indicates if the change is due to initialization.
 	 */
-	def probeValueChanged(probe : Probe<?>)
+	def probeValueChanged(probe : Probe<?>, isInit : boolean)
 
 }

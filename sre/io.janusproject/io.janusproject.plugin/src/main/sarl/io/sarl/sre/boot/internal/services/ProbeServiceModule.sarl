@@ -33,8 +33,9 @@ import io.sarl.api.probing.ProbeService
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.services.probing.AsynchronousProbeService
-import io.sarl.sre.services.probing.SynchronousProbeService
+import io.sarl.sre.services.probing.service.AsynchronousProbeService
+import io.sarl.sre.services.probing.service.SynchronousProbeService
+import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import javax.inject.Singleton
 
@@ -67,13 +68,14 @@ class ProbeServiceModule extends AbstractModule {
 	def providesProbeService(sreConfig : Provider<SreConfig>, injector : Injector,
 		service : Provider<ExecutorService>, namespaceService : Provider<NamespaceService>,
 		nameParser : Provider<INameParser>,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) : ProbeService {
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
+		lockProvider : Provider<ReadWriteLock>) : ProbeService {
 		var ps : ProbeService
 		var cfgInstance = sreConfig.get
 		if (cfgInstance.services.asynchronousProbeUpdate) {
-			ps = new AsynchronousProbeService(service.get, namespaceService.get, nameParser.get, listenerCollectionProvider)
+			ps = new AsynchronousProbeService(service.get, namespaceService.get, nameParser.get, listenerCollectionProvider, lockProvider)
 		} else {
-			ps = new SynchronousProbeService(namespaceService.get, nameParser.get, listenerCollectionProvider)
+			ps = new SynchronousProbeService(namespaceService.get, nameParser.get, listenerCollectionProvider, lockProvider)
 		}
 		injector.injectMembers(ps)
 		return ps

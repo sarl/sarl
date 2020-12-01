@@ -54,7 +54,7 @@ final class Constants {
 	 * @see #NO_TIMEOUT
 	 * @see #STANDARD_TIMEOUT
 	 */
-	public static val SHORT_TIMEOUT = 20
+	public static val SHORT_TIMEOUT = 10
 
 	/** Standard timeout in seconds.
 	 * 
@@ -63,7 +63,7 @@ final class Constants {
 	 * @see #NO_TIMEOUT
 	 * @see #SHORT_TIMEOUT
 	 */
-	public static val STANDARD_TIMEOUT = 40
+	public static val STANDARD_TIMEOUT = 20
 
 	/** Extra timeout in seconds.
 	 * 
@@ -72,7 +72,7 @@ final class Constants {
 	 * @see #NO_TIMEOUT
 	 * @see #SHORT_TIMEOUT
 	 */
-	public static val EXTRA_TIMEOUT = 120
+	public static val EXTRA_TIMEOUT = 60
 
 	/** No timeout.
 	 * 

@@ -23,6 +23,7 @@ package io.sarl.lang.scoping.extensions.cast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -56,6 +57,21 @@ public final class PrimitiveCastExtensions {
 	@Inline(value = "$2.parseBoolean(($1).toString())", imported = Boolean.class)
 	public static boolean booleanValue(CharSequence value) {
 		return value != null && Boolean.parseBoolean(value.toString());
+	}
+
+	/** Convert the given value to {@code AtomicBoolean} into its {@code boolean value}.
+	 *
+	 * <p>See {@link Integer#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code boolean} type.
+	 * @since 0.12
+	 */
+	@Pure
+	@Inline(value = "($1).get()", imported = Boolean.class)
+	public static boolean booleanValue(AtomicBoolean value) {
+		return value != null && value.get();
 	}
 
 	/** Convert the given value to {@code String}.
@@ -152,6 +168,18 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
+	/** Decodes a {@code CharSequence} into a {@code char}.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code char} type.
+	 * @since 0.12
+	 */
+	@Pure
+	@Inline("($1).charAt(0)")
+	public static char charValue(CharSequence value) {
+		return value.charAt(0);
+	}
+
 	/** Decodes a {@code CharSequence} into a {@code long}.
 	 *
 	 * <p>In opposite to the functions of {@link Long}, this function is
@@ -222,6 +250,36 @@ public final class PrimitiveCastExtensions {
 			// Silent exception.
 		}
 		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code AtomicBoolean}.
+	 *
+	 *
+	 * <p>See {@link Integer#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code AtomicBoolean} type.
+	 * @since 0.12
+	 * @see #booleanValue(CharSequence)
+	 */
+	@Pure
+	@Inline(value = "new $2($3.booleanValue($1))", imported = {AtomicBoolean.class, PrimitiveCastExtensions.class})
+	public static AtomicBoolean toAtomicBoolean(CharSequence value) {
+		return new AtomicBoolean(booleanValue(value));
+	}
+
+	/** Convert the given boolean to its equivalent {@code AtomicBoolean}.
+	 *
+	 *
+	 * @param value a value to convert.
+	 * @return the equivalent value to {@code value} of {@code AtomicBoolean} type.
+	 * @since 0.12
+	 */
+	@Pure
+	@Inline(value = "new $2($1)", imported = {AtomicBoolean.class})
+	public static AtomicBoolean toAtomicBoolean(boolean value) {
+		return new AtomicBoolean(value);
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code AtomicInteger}.

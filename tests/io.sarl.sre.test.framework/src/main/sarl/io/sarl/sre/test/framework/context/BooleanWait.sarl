@@ -39,7 +39,7 @@ class BooleanWait extends Wait {
 	
 	val lock : AtomicBoolean
 
-	package new (lock : AtomicBoolean, errorContainer : AtomicReference<Throwable>) {
+	new (lock : AtomicBoolean, errorContainer : AtomicReference<Throwable>) {
 		super(errorContainer)
 		this.lock = lock
 	}

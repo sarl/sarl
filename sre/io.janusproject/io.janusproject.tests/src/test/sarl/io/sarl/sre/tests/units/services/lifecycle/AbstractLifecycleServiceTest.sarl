@@ -359,7 +359,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	@Test
 	@DisplayName("killAgent without inner context instance - no service")
 	def killAgent_noInnerContext_serviceNotStarted {
-		this.service.killAgent(this.^agent, true).assertFalse
+		this.service.killAgent(this.^agent, true, typeof(Throwable).mock).assertFalse
 	}
 
 	@Test
@@ -378,8 +378,9 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		AgentLife::getLife(this.agent2).addExternalContext(outerContext,
 				new Address(outerContext.defaultSpace.spaceID, this.^agent.ID))
 		AgentLife::getLife(this.agent2).state = AgentState::ALIVE
+		val expectedCause = typeof(Throwable).mock
 
-		this.service.killAgent(this.agent2, true).assertTrue
+		this.service.killAgent(this.agent2, true, expectedCause).assertTrue
 		
 		// Uninstall the skills
 		var capAgent = ArgumentCaptor::forClass(typeof(Agent))
@@ -408,9 +409,11 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		capAgent = ArgumentCaptor::forClass(typeof(Agent))
 		var capContexts : ArgumentCaptor<ConcurrentLinkedDeque<ContextReference>> = ArgumentCaptor::forClass(
 			typeof(ConcurrentLinkedDeque))
-		listener1.verify.agentDestroyed(capAgent.capture, capContexts.capture)
+		var capCause = ArgumentCaptor::forClass(typeof(Throwable))
+		listener1.verify.agentDestroyed(capAgent.capture, capContexts.capture, capCause.capture)
 		this.agent2.assertEquals(capAgent.value)
 		capContexts.value.map[it.getContext].assertContains(defaultContext, outerContext)
+		expectedCause.assertSame(capCause.value)
 		
 		// Kernel destroy
 		verifyNoMoreInteractions(listener2)
