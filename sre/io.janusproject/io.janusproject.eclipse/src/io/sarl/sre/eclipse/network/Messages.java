@@ -36,7 +36,6 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String JanusLaunchNetworkTab_0;
 	public static String JanusLaunchNetworkTab_1;
-	public static String JanusLaunchNetworkTab_10;
 	public static String JanusLaunchNetworkTab_2;
 	public static String JanusLaunchNetworkTab_3;
 	public static String JanusLaunchNetworkTab_4;
@@ -45,6 +44,11 @@ public class Messages extends NLS {
 	public static String JanusLaunchNetworkTab_7;
 	public static String JanusLaunchNetworkTab_8;
 	public static String JanusLaunchNetworkTab_9;
+	public static String JanusLaunchNetworkTab_10;
+	public static String JanusLaunchNetworkTab_11;
+	public static String JanusLaunchNetworkTab_12;
+	public static String JanusLaunchNetworkTab_13;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -29,6 +29,7 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
+
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -44,6 +45,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
@@ -56,6 +58,7 @@ import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.InputExtraJreAr
 import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.OutputExtraJreArguments;
 import io.sarl.lang.util.CliUtilities;
 import io.sarl.sre.eclipse.JanusEclipsePlugin;
+import io.sarl.sre.network.boot.configs.JoinMethod;
 import io.sarl.sre.network.boot.configs.SreNetworkConfig;
 import io.sarl.sre.network.boot.configs.SreNetworkConfigModule;
 
@@ -89,6 +92,12 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	private Spinner minClusterSizeSpinner;
 
 	private Button portAutoIncrementButton;
+	
+	private Group hazelcastMulticastGroup;
+	
+	private Button singlePCRadioButton;
+	
+	private Button multiplePCRadioButton;
 
 	private final WidgetListener defaultListener = new WidgetListener();
 
@@ -166,6 +175,23 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 				null, false, 2);
 		this.portAutoIncrementButton.addSelectionListener(this.defaultListener);
 
+		
+		
+		this.hazelcastMulticastGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_11, 1, 1, GridData.FILL_HORIZONTAL);		
+		this.singlePCRadioButton = createRadioButton(hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_12);
+		this.singlePCRadioButton.addSelectionListener(this.defaultListener);
+		this.multiplePCRadioButton = createRadioButton(hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_13);
+		this.multiplePCRadioButton.addSelectionListener(this.defaultListener);
+		
+		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();	
+		switch(JoinMethod.getDefault()) {
+		case MULTICAST : this.singlePCRadioButton.setSelection(false);this.multiplePCRadioButton.setSelection(true); break;
+		case TCP_IP : this.singlePCRadioButton.setSelection(true);this.multiplePCRadioButton.setSelection(false); break;
+		}
+		
+		
+		
+		
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
 		updateComponentStates();
@@ -180,6 +206,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.minClusterSizeLabel.setEnabled(enable);
 		this.minClusterSizeSpinner.setEnabled(enable);
 		this.portAutoIncrementButton.setEnabled(enable);
+		this.hazelcastMulticastGroup.setEnabled(enable);
 	}
 
 	@Override
@@ -192,6 +219,14 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.clusterNameText.setText(arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE));
 		this.minClusterSizeSpinner.setSelection(arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 		this.portAutoIncrementButton.setSelection(arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE));
+		
+		
+		switch(JoinMethod.valueOfCaseInsensitive(arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.getDefault().toJsonString()))) {
+		case MULTICAST : this.singlePCRadioButton.setSelection(false);this.multiplePCRadioButton.setSelection(true); break;
+		case TCP_IP : this.singlePCRadioButton.setSelection(true);this.multiplePCRadioButton.setSelection(false); break;
+		}
+		
+		
 		updateComponentStates();
 	}
 
@@ -208,6 +243,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		} else {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
 		}
+		
+		arguments.resetArg(SreNetworkConfig.JOIN_METHOD_NAME);		
 		arguments.apply(configuration, this.configurator);
 	}
 
@@ -225,6 +262,16 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		} else {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
 		}
+		
+		if (this.singlePCRadioButton.getSelection()) {
+			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.TCP_IP.toJsonString(), JoinMethod.getDefault().toJsonString());
+		}
+		
+		if (this.multiplePCRadioButton.getSelection()) {
+			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.MULTICAST.toJsonString(), JoinMethod.getDefault().toJsonString());
+		}
+		
+		
 		arguments.apply(configuration, this.configurator);
 	}
 
