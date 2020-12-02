@@ -37,10 +37,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
+import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -73,7 +77,8 @@ import io.sarl.sre.network.boot.configs.SreNetworkConfigModule;
  */
 public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
-	/** Identifier of the contributor for the launch configuration.
+	/**
+	 * Identifier of the contributor for the launch configuration.
 	 */
 	public static final String CONTRIBUTOR_ID = "io.sarl.sre.network"; //$NON-NLS-1$
 
@@ -92,12 +97,16 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	private Spinner minClusterSizeSpinner;
 
 	private Button portAutoIncrementButton;
-	
+
 	private Group hazelcastMulticastGroup;
-	
-	private Button singlePCRadioButton;
-	
-	private Button multiplePCRadioButton;
+
+	private Button tcpIPClusterRadioButton;
+
+	private Button multicastClusterRadioButton;
+
+	private Group hazelcastIPMembersGroup;
+
+	private Text hazelcastIPMembersTextField;
 
 	private final WidgetListener defaultListener = new WidgetListener();
 
@@ -106,8 +115,18 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	@Inject
 	private ILaunchConfigurationAccessor accessor;
+	
+	/**
+	 * Regexp of a quarter of an IP adress
+	 */
+	private static final String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
+	/**
+	 * Regexp of a full IP address
+	 */
+	private static final String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;	
 
-	/** Construct the tab for configuration of the SRE networking feature.
+	/**
+	 * Construct the tab for configuration of the SRE networking feature.
 	 */
 	public JanusLaunchNetworkTab() {
 		//
@@ -138,11 +157,13 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		createSeparator(parent, 2);
 		createVerticalSpacer(topComp, 2);
 
-		this.enableNetworkButton = SWTFactory.createCheckButton(topComp,
-				MessageFormat.format(Messages.JanusLaunchNetworkTab_1,
-						CliUtilities.getCommandLineOption(SreNetworkConfigModule.NETWORK_LONG_OPTION, true),
-						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.ENABLE_NAME), true)),
-				null, false, 2);
+		this.enableNetworkButton = SWTFactory
+				.createCheckButton(topComp,
+						MessageFormat.format(Messages.JanusLaunchNetworkTab_1,
+								CliUtilities.getCommandLineOption(SreNetworkConfigModule.NETWORK_LONG_OPTION, true),
+								CliUtilities.getCommandLineDefinition(
+										VariableNames.toPropertyName(SreNetworkConfig.ENABLE_NAME), true)),
+						null, false, 2);
 		this.enableNetworkButton.addSelectionListener(this.defaultListener);
 
 		createVerticalSpacer(topComp, 2);
@@ -152,52 +173,126 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		final String defaultClusterName = SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6);
 		this.clusterNameLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_2,
-						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.CLUSTER_NAME_NAME), Messages.JanusLaunchNetworkTab_8)),
+						CliUtilities.getCommandLineDefinition(
+								VariableNames.toPropertyName(SreNetworkConfig.CLUSTER_NAME_NAME),
+								Messages.JanusLaunchNetworkTab_8)),
 				1);
 		this.clusterNameText = createSingleText(topComp, 1);
 		this.clusterNameText.setMessage(defaultClusterName);
 		this.clusterNameText.addModifyListener(this.defaultListener);
-		createInfoDecorator(this.clusterNameText,
-				MessageFormat.format(Messages.JanusLaunchNetworkTab_7, defaultClusterName, Messages.JanusLaunchNetworkTab_6));
+		createInfoDecorator(this.clusterNameText, MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
+				defaultClusterName, Messages.JanusLaunchNetworkTab_6));
 
 		this.minClusterSizeLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_3,
-						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME), Messages.JanusLaunchNetworkTab_9)),
+						CliUtilities.getCommandLineDefinition(
+								VariableNames.toPropertyName(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME),
+								Messages.JanusLaunchNetworkTab_9)),
 				1);
 		this.minClusterSizeSpinner = createSpinner(topComp, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
-		createInfoDecorator(this.minClusterSizeSpinner,
-				MessageFormat.format(Messages.JanusLaunchNetworkTab_10, MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
+		createInfoDecorator(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
+				MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_4,
-						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME), true)),
+						CliUtilities.getCommandLineDefinition(
+								VariableNames.toPropertyName(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME), true)),
 				null, false, 2);
 		this.portAutoIncrementButton.addSelectionListener(this.defaultListener);
 
+		this.hazelcastMulticastGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_11, 1, 2,
+				GridData.FILL_HORIZONTAL);
+		this.tcpIPClusterRadioButton = createRadioButton(hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_12);
+		this.tcpIPClusterRadioButton.addSelectionListener(this.defaultListener);
+		this.multicastClusterRadioButton = createRadioButton(hazelcastMulticastGroup,
+				Messages.JanusLaunchNetworkTab_13);
+		this.multicastClusterRadioButton.addSelectionListener(this.defaultListener);
+
+
+
+		this.hazelcastIPMembersGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_14, 2, 1,
+				GridData.FILL_HORIZONTAL);
+		this.hazelcastIPMembersTextField = createSingleText(hazelcastIPMembersGroup, 1);
+		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {		
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String iplist = ((Text) e.widget).getText();
+				String[] ipArray = iplist.split(",");
+				Boolean validIps = true;
+				for (String s: ipArray) {
+					if (!s.matches(IP_REGEXP)) {
+						validIps = false;
+					}
+				}
+				
+				if(!validIps) {
+					setErrorMessage(Messages.JanusLaunchNetworkTab_15);
+				}
+			}
+		});
+
 		
 		
-		this.hazelcastMulticastGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_11, 1, 1, GridData.FILL_HORIZONTAL);		
-		this.singlePCRadioButton = createRadioButton(hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_12);
-		this.singlePCRadioButton.addSelectionListener(this.defaultListener);
-		this.multiplePCRadioButton = createRadioButton(hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_13);
-		this.multiplePCRadioButton.addSelectionListener(this.defaultListener);
-		
-		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();	
-		switch(JoinMethod.getDefault()) {
-		case MULTICAST : this.singlePCRadioButton.setSelection(false);this.multiplePCRadioButton.setSelection(true); break;
-		case TCP_IP : this.singlePCRadioButton.setSelection(true);this.multiplePCRadioButton.setSelection(false); break;
+		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();		
+		switch (JoinMethod.getDefault()) {
+		case MULTICAST:
+			this.tcpIPClusterRadioButton.setSelection(false);
+			this.multicastClusterRadioButton.setSelection(true);
+			this.hazelcastIPMembersTextField.setEnabled(false);
+			this.hazelcastIPMembersTextField.setEditable(false);
+			this.hazelcastMulticastGroup.setEnabled(false);
+			break;
+		case TCP_IP:
+			this.tcpIPClusterRadioButton.setSelection(true);
+			this.multicastClusterRadioButton.setSelection(false);
+			this.hazelcastIPMembersTextField.setEnabled(true);
+			this.hazelcastIPMembersTextField.setEditable(true);
+			this.hazelcastIPMembersTextField.setSelection(1,this.hazelcastIPMembersTextField.getText().length()+1);
+			this.hazelcastMulticastGroup.setEnabled(true);
+			this.hazelcastIPMembersTextField.setText(SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER);
+			this.hazelcastIPMembersGroup.layout();
+			break;
 		}
+
 		
+		this.tcpIPClusterRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEnabled(true);
+				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEditable(true);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// 				
+			}
+		});
+		this.multicastClusterRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEnabled(false);
+				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEditable(false);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// 				
+			}
+		});
 		
-		
-		
+
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
 		updateComponentStates();
 	}
 
-	/** Update the states of the components (enabling).
+	/**
+	 * Update the states of the components (enabling).
 	 */
 	protected void updateComponentStates() {
 		final boolean enable = this.enableNetworkButton.getSelection();
@@ -207,6 +302,12 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.minClusterSizeSpinner.setEnabled(enable);
 		this.portAutoIncrementButton.setEnabled(enable);
 		this.hazelcastMulticastGroup.setEnabled(enable);
+
+		/*final boolean enableTCPIP = enable && this.tcpIPClusterRadioButton.getSelection();
+		System.out.println("netenable: "+enable+" enableTCPIP: "+enableTCPIP);
+		this.hazelcastIPMembersTextField.setEnabled(enableTCPIP);
+		this.hazelcastIPMembersTextField.setEditable(enableTCPIP);*/
+		//this.hazelcastMulticastGroup.setEnabled(enableTCPIP);
 	}
 
 	@Override
@@ -216,24 +317,43 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		arguments.read(configuration, this.accessor);
 		final boolean enable = arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
 		this.enableNetworkButton.setSelection(enable);
-		this.clusterNameText.setText(arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE));
-		this.minClusterSizeSpinner.setSelection(arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
-		this.portAutoIncrementButton.setSelection(arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE));
-		
-		
-		switch(JoinMethod.valueOfCaseInsensitive(arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.getDefault().toJsonString()))) {
-		case MULTICAST : this.singlePCRadioButton.setSelection(false);this.multiplePCRadioButton.setSelection(true); break;
-		case TCP_IP : this.singlePCRadioButton.setSelection(true);this.multiplePCRadioButton.setSelection(false); break;
+		this.clusterNameText.setText(
+				arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE));
+		this.minClusterSizeSpinner.setSelection(
+				arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
+		this.portAutoIncrementButton.setSelection(arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME,
+				SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE));
+
+		switch (JoinMethod.valueOfCaseInsensitive(
+				arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.getDefault().toJsonString()))) {
+		case MULTICAST:
+			this.tcpIPClusterRadioButton.setSelection(false);
+			this.multicastClusterRadioButton.setSelection(true);
+			this.hazelcastIPMembersTextField.setEnabled(false);
+			this.hazelcastIPMembersTextField.setEditable(false);
+			this.hazelcastMulticastGroup.setEnabled(false);
+			break;
+		case TCP_IP:
+			this.tcpIPClusterRadioButton.setSelection(true);
+			this.multicastClusterRadioButton.setSelection(false);
+			this.hazelcastIPMembersTextField.setEnabled(true);
+			this.hazelcastIPMembersTextField.setEditable(true);
+			this.hazelcastIPMembersTextField.setSelection(1,this.hazelcastIPMembersTextField.getText().length()+1);
+			this.hazelcastMulticastGroup.setEnabled(true);
+			this.hazelcastIPMembersTextField.setText(arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER));
+			this.hazelcastIPMembersGroup.layout();
+			break;
 		}
-		
-		
+
 		updateComponentStates();
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		final OutputExtraJreArguments arguments = LaunchConfigurationUtils.createOutputExtraJreArguments(CONTRIBUTOR_ID);
-		arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_IN_ECLIPSE_VALUE, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
+		final OutputExtraJreArguments arguments = LaunchConfigurationUtils
+				.createOutputExtraJreArguments(CONTRIBUTOR_ID);
+		arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_IN_ECLIPSE_VALUE,
+				SreNetworkConfig.DEFAULT_ENABLE_VALUE);
 		arguments.resetArg(SreNetworkConfig.CLUSTER_NAME_NAME);
 		arguments.resetArg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME);
 		arguments.resetArg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME);
@@ -243,39 +363,47 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		} else {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
 		}
-		
-		arguments.resetArg(SreNetworkConfig.JOIN_METHOD_NAME);		
+
+		arguments.resetArg(SreNetworkConfig.JOIN_METHOD_NAME);
 		arguments.apply(configuration, this.configurator);
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		final OutputExtraJreArguments arguments = LaunchConfigurationUtils.createOutputExtraJreArguments(CONTRIBUTOR_ID);
+		final OutputExtraJreArguments arguments = LaunchConfigurationUtils
+				.createOutputExtraJreArguments(CONTRIBUTOR_ID);
 		final boolean enable = this.enableNetworkButton.getSelection();
 		arguments.arg(SreNetworkConfig.ENABLE_NAME, enable, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
-		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText(), SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
-		arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, this.minClusterSizeSpinner.getSelection(), SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE);
-		arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, this.portAutoIncrementButton.getSelection(), SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE);
+		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText(),
+				SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
+		arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, this.minClusterSizeSpinner.getSelection(),
+				SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE);
+		arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, this.portAutoIncrementButton.getSelection(),
+				SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE);
 		if (enable) {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID,
 					JanusNetworkClasspathProvider.class.getName());
 		} else {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
 		}
-		
-		if (this.singlePCRadioButton.getSelection()) {
-			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.TCP_IP.toJsonString(), JoinMethod.getDefault().toJsonString());
+
+		if (this.tcpIPClusterRadioButton.getSelection()) {
+			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.TCP_IP.toJsonString(),
+					JoinMethod.getDefault().toJsonString());			
+			arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, this.hazelcastIPMembersTextField.getText(), SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER);			
 		}
-		
-		if (this.multiplePCRadioButton.getSelection()) {
-			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.MULTICAST.toJsonString(), JoinMethod.getDefault().toJsonString());
+
+		if (this.multicastClusterRadioButton.getSelection()) {
+			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.MULTICAST.toJsonString(),
+					JoinMethod.getDefault().toJsonString());
+			arguments.resetArg(SreNetworkConfig.IP_LIST_CLUSTER);
 		}
-		
-		
+
 		arguments.apply(configuration, this.configurator);
 	}
 
-	/** Listener of events in internal components for refreshing the tab.
+	/**
+	 * Listener of events in internal components for refreshing the tab.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
