@@ -123,11 +123,16 @@ sub selectJvm(\%) {
 
 sub updateIniContent(@) {
 	my $jvm = shift || die("no JVM provided\n");
+	# Check the JVM path
+	my $jvmfolder = "$jvm";
+	if (-x "$jvm/bin/java") {
+		$jvmfolder = "$jvm/bin";
+	}
 	my $content = shift || die("no content\n");
 	if ($content =~ /^-vm$/m) {
-		$content =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$jvm\n/s;
+		$content =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$jvmfolder\n/s;
 	} else {
-		$content =~ s/^-vmargs/-vm\n$jvm\n-vmargs/m;
+		$content =~ s/^-vmargs/-vm\n$jvmfolder\n-vmargs/m;
 	}
 	return $content;
 }
