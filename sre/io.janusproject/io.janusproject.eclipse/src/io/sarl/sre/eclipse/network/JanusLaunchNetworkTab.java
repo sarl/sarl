@@ -29,7 +29,6 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -37,14 +36,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
-import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -82,6 +77,16 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	 */
 	public static final String CONTRIBUTOR_ID = "io.sarl.sre.network"; //$NON-NLS-1$
 
+	/**
+	 * Regexp of a quarter of an IP adress.
+	 */
+	private static final String ZEROTO255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"; //$NON-NLS-1$
+
+	/**
+	 * Regexp of a full IP address.
+	 */
+	private static final String IP_REGEXP = ZEROTO255 + "\\." + ZEROTO255 + "\\." + ZEROTO255 + "\\." + ZEROTO255; //$NON-NLS-1$
+
 	private static final int MIN_CLUSTER_SIZE = 1;
 
 	private static final int MAX_CLUSTER_SIZE = 100;
@@ -115,15 +120,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	@Inject
 	private ILaunchConfigurationAccessor accessor;
-	
-	/**
-	 * Regexp of a quarter of an IP adress
-	 */
-	private static final String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
-	/**
-	 * Regexp of a full IP address
-	 */
-	private static final String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;	
 
 	/**
 	 * Construct the tab for configuration of the SRE networking feature.
@@ -209,32 +205,27 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 				Messages.JanusLaunchNetworkTab_13);
 		this.multicastClusterRadioButton.addSelectionListener(this.defaultListener);
 
-
-
 		this.hazelcastIPMembersGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_14, 2, 1,
 				GridData.FILL_HORIZONTAL);
 		this.hazelcastIPMembersTextField = createSingleText(hazelcastIPMembersGroup, 1);
-		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {		
+		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
-				String iplist = ((Text) e.widget).getText();
-				String[] ipArray = iplist.split(",");
+			public void modifyText(ModifyEvent event) {
+				final String iplist = ((Text) event.widget).getText();
+				final String[] ipArray = iplist.split(",");
 				Boolean validIps = true;
-				for (String s: ipArray) {
+				for (final String s : ipArray) {
 					if (!s.matches(IP_REGEXP)) {
 						validIps = false;
 					}
 				}
-				
-				if(!validIps) {
+
+				if (!validIps) {
 					setErrorMessage(Messages.JanusLaunchNetworkTab_15);
 				}
 			}
 		});
 
-		
-		
-		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();		
 		switch (JoinMethod.getDefault()) {
 		case MULTICAST:
 			this.tcpIPClusterRadioButton.setSelection(false);
@@ -248,43 +239,42 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			this.multicastClusterRadioButton.setSelection(false);
 			this.hazelcastIPMembersTextField.setEnabled(true);
 			this.hazelcastIPMembersTextField.setEditable(true);
-			this.hazelcastIPMembersTextField.setSelection(1,this.hazelcastIPMembersTextField.getText().length()+1);
+			this.hazelcastIPMembersTextField.setSelection(1, this.hazelcastIPMembersTextField.getText().length() + 1);
 			this.hazelcastMulticastGroup.setEnabled(true);
 			this.hazelcastIPMembersTextField.setText(SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER);
 			this.hazelcastIPMembersGroup.layout();
 			break;
+		default:
+			break;
 		}
 
-		
 		this.tcpIPClusterRadioButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				
+			public void widgetSelected(SelectionEvent event) {
+
 				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEnabled(true);
 				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEditable(true);
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// 				
+			public void widgetDefaultSelected(SelectionEvent event) {
+				//
 			}
 		});
 		this.multicastClusterRadioButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				
+			public void widgetSelected(SelectionEvent event) {
 				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEnabled(false);
 				JanusLaunchNetworkTab.this.hazelcastIPMembersTextField.setEditable(false);
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// 				
+			public void widgetDefaultSelected(SelectionEvent event) {
+				//
 			}
 		});
-		
 
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
@@ -303,11 +293,14 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.portAutoIncrementButton.setEnabled(enable);
 		this.hazelcastMulticastGroup.setEnabled(enable);
 
-		/*final boolean enableTCPIP = enable && this.tcpIPClusterRadioButton.getSelection();
-		System.out.println("netenable: "+enable+" enableTCPIP: "+enableTCPIP);
-		this.hazelcastIPMembersTextField.setEnabled(enableTCPIP);
-		this.hazelcastIPMembersTextField.setEditable(enableTCPIP);*/
-		//this.hazelcastMulticastGroup.setEnabled(enableTCPIP);
+		/*
+		 * final boolean enableTCPIP = enable &&
+		 * this.tcpIPClusterRadioButton.getSelection();
+		 * System.out.println("netenable: "+enable+" enableTCPIP: "+enableTCPIP);
+		 * this.hazelcastIPMembersTextField.setEnabled(enableTCPIP);
+		 * this.hazelcastIPMembersTextField.setEditable(enableTCPIP);
+		 */
+		// this.hazelcastMulticastGroup.setEnabled(enableTCPIP);
 	}
 
 	@Override
@@ -338,10 +331,13 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			this.multicastClusterRadioButton.setSelection(false);
 			this.hazelcastIPMembersTextField.setEnabled(true);
 			this.hazelcastIPMembersTextField.setEditable(true);
-			this.hazelcastIPMembersTextField.setSelection(1,this.hazelcastIPMembersTextField.getText().length()+1);
+			this.hazelcastIPMembersTextField.setSelection(1, this.hazelcastIPMembersTextField.getText().length() + 1);
 			this.hazelcastMulticastGroup.setEnabled(true);
-			this.hazelcastIPMembersTextField.setText(arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER));
+			this.hazelcastIPMembersTextField
+					.setText(arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER));
 			this.hazelcastIPMembersGroup.layout();
+			break;
+		default:
 			break;
 		}
 
@@ -389,8 +385,9 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 		if (this.tcpIPClusterRadioButton.getSelection()) {
 			arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.TCP_IP.toJsonString(),
-					JoinMethod.getDefault().toJsonString());			
-			arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, this.hazelcastIPMembersTextField.getText(), SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER);			
+					JoinMethod.getDefault().toJsonString());
+			arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, this.hazelcastIPMembersTextField.getText(),
+					SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER);
 		}
 
 		if (this.multicastClusterRadioButton.getSelection()) {
