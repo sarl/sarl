@@ -161,9 +161,11 @@ public final class CliUtilities {
 	 * @since 0.12
 	 */
 	public static String getCommandLineOption(String name, String value) {
+		assert !Strings.isNullOrEmpty(name);
+		assert !Strings.isNullOrEmpty(value);
 		final StringBuilder buf = new StringBuilder();
 		buf.append(getCommandLineOption(name));
-		buf.append(EQUAL_SIGN).append(Strings.nullToEmpty(value));
+		buf.append(EQUAL_SIGN).append(value);
 		return buf.toString();
 	}
 
@@ -176,7 +178,7 @@ public final class CliUtilities {
 	 * @since 0.12
 	 */
 	public static String getCommandLineDefinition(String name, boolean value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + EQUAL_SIGN + value;
+		return getCommandLineDefinition(name, Boolean.toString(value));
 	}
 
 	/** Replies the option for definition a property.
@@ -188,7 +190,7 @@ public final class CliUtilities {
 	 * @since 0.12
 	 */
 	public static String getCommandLineDefinition(String name, long value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + EQUAL_SIGN + value;
+		return getCommandLineDefinition(name, Long.toString(value));
 	}
 
 	/** Replies the option for definition a property.
@@ -200,7 +202,7 @@ public final class CliUtilities {
 	 * @since 0.12
 	 */
 	public static String getCommandLineDefinition(String name, double value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + EQUAL_SIGN + value;
+		return getCommandLineDefinition(name, Double.toString(value));
 	}
 
 	/** Replies the option for definition a property.
@@ -212,9 +214,12 @@ public final class CliUtilities {
 	 * @since 0.12
 	 */
 	public static String getCommandLineDefinition(String name, String value) {
+		assert !Strings.isNullOrEmpty(name);
+		assert !Strings.isNullOrEmpty(value);
 		final StringBuilder buf = new StringBuilder();
 		buf.append(getCommandLineOption(DEFINITION_PREFIX));
-		buf.append(EQUAL_SIGN).append(Strings.nullToEmpty(value));
+		buf.append(name);
+		buf.append(EQUAL_SIGN).append(value);
 		return buf.toString();
 	}
 
