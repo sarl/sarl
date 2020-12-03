@@ -174,15 +174,15 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * 
 	 * @param agents the destroyed agent.
 	 * @param outerContexts the contexts in which the agent w destroyed.
-	 * @param abnormalTerminationCause is the cause of the abnormal termination of the agent.
-	 *     If it is {@code null}, the agent is terminated in a "normal" situation.
+	 * @param terminationCause is the cause of the termination of the agent.
+	 *     If it is {@code null}, the agent does not provide a cause for its termination.
 	 * @since 0.12
 	 */
 	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
-		abnormalTerminationCause : Throwable) {
+		terminationCause : Object) {
 		// Notify the listeners on the spawn events (not restricted to a single agent)
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
-			agentDestroyed(^agent, outerContexts, abnormalTerminationCause)
+			agentDestroyed(^agent, outerContexts, terminationCause)
 		]
 	}
 
@@ -443,7 +443,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		life.state.isAlive
 	}
 
-	def killAgent(^agent : Agent, forceKillable : boolean, abnormalTerminationCause : Throwable) : boolean {
+	def killAgent(^agent : Agent, forceKillable : boolean, terminationCause : Object) : boolean {
 		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
 		if (life !== null && life.isAlive) {
@@ -452,7 +452,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				var defaultContext = life.defaultContext
 				var contexts = life.stop(this.skillUninstaller, getLogger)
 				^agent.onAgentKilled
-				fireAgentDestructionEvents(^agent, defaultContext, contexts, abnormalTerminationCause)
+				fireAgentDestructionEvents(^agent, defaultContext, contexts, terminationCause)
 				// Test if the agent is the latest on this kernel.
 				defaultContext?.context?.startShutdownLookup
 				return true
@@ -485,13 +485,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	protected def fireAgentDestructionEvents(^agent : Agent, defaultContextBeforeKilled : ContextReference,
 		leavedContexts : ConcurrentLinkedDeque<ContextReference>,
-		abnormalTerminationCause : Throwable) {
+		terminationCause : Object) {
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
 		this.platformContextEventEmitter.memberLeft(defaultContextBeforeKilled.context,
 			defaultContextBeforeKilled.defaultSpace.spaceID, ^agent.ID, ^agent.class.name)
 		// Fire the agent destroy event
-		^agent.fireAgentDestroy(leavedContexts, abnormalTerminationCause)
+		^agent.fireAgentDestroy(leavedContexts, terminationCause)
 	}
 
 	/** Replies the dynamic skill providers that are defined by the user of the service.

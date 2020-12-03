@@ -74,7 +74,7 @@ public class AgentKilledTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void constructor() {
-		assertConstructor(Address.class, String.class, Throwable.class);
+		assertConstructor(Address.class, String.class, Object.class);
 	}
 
 }

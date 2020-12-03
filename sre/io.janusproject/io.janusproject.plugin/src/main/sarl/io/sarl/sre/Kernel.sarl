@@ -276,7 +276,7 @@ class Kernel {
 
 		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceAdapter() {
 			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
-				abnormalTerminationCause : Throwable) {
+				terminationCause : Object) {
 				agentIds.remove(^agent.ID)
 			}
 		})

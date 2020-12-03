@@ -177,22 +177,25 @@ final event AgentKilled {
 	 */
 	val agentType : String
 
-	/** The exception that is the cause of the killing of the agent.
-	 * If it is {@code null}, the agent has commited a suicide in "normal" situation.
+	/** The object that is the cause of the killing of the agent or explains the cause
+	 * of the "abnormal" killing.
+	 * If it is {@code null}, the agent has committed a suicide in "normal" situation.
 	 *
 	 * @since 0.12
 	 */
-	val abnormalTerminationCause : Throwable
+	val terminationCause : Object
 
 	/** Construct the event.
 	 *
 	 * @param source the address of the emitter.
 	 * @param agentType fully qualified name of the type of the agent.
+	 * @param terminationCause cause of the termination of the agent, or {@code null} if there is
+	 *      no specific termination cause.
 	 */
-	new (source : Address, agentType : String, abnormalTerminationCause : Throwable) {
+	new (source : Address, agentType : String, terminationCause : Object) {
 		setSource(source)
 		this.agentType = agentType
-		this.abnormalTerminationCause = abnormalTerminationCause
+		this.terminationCause = terminationCause
 	}
 
 }

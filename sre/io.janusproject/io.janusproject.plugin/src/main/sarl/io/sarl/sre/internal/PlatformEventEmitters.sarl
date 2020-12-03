@@ -225,7 +225,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 	}
 	
 	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
-		abnormalTerminationCause : Throwable) {
+		terminationCause : Object) {
 		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_1, ^agent.ID)]
 		val size = outerContexts.size
 		val spaces = <EventSpace>newArrayOfSize(size)
@@ -235,7 +235,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 			val ^event = new AgentKilled(
 				contextReference.addressInDefaultSpace,
 				^agent.class.name,
-				abnormalTerminationCause)
+				terminationCause)
 			spaces.set(i, contextReference.defaultSpace)
 			events.set(i, ^event)
 			i++
