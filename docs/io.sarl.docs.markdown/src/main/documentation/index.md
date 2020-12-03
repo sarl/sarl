@@ -86,6 +86,7 @@
 * [Behavior Reference](./reference/Behavior.md)
 * [Built-in Capacity Reference](./reference/BIC.md)
 * [Space Reference](./reference/Space.md)
+* [Management of the Failures and Validation Errors](./reference/Failures.md)
 * [Compiler Errors](./reference/CompilerErrors.md)
 
 ### Object-Oriented Programming
