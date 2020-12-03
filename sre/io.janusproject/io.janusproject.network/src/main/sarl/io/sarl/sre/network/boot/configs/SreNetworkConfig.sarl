@@ -58,6 +58,11 @@ import java.util.UUID
 @BQConfig("Configuration for the SRE networking feature")
 class SreNetworkConfig {
 
+	/**
+	 * Default name of the program.
+	 */
+	public static val DEFAULT_PROGRAM_NAME = "janusnode"
+
 	/** 
 	 * Prefix for the configuration entries of the modules.
 	 */

@@ -14,7 +14,7 @@
 
 	<properties>
 		<cliRunnerName>janusnode</cliRunnerName>
-		<cliRunnerMainClass>io.sarl.sre.boot.Boot</cliRunnerMainClass>
+		<cliRunnerMainClass>io.sarl.sre.network.boot.internal.cli.NetworkBoot</cliRunnerMainClass>
 	</properties>
 
 	<dependencies>
@@ -136,7 +136,6 @@
 								<internalName>${cliRunnerName}</internalName>
 								<originalFilename>${cliRunnerName}.exe</originalFilename>
 							</versionInfo>
-							<cmdLine>--network=true</cmdLine>
 						</configuration>
 					</execution>
 				</executions>
@@ -193,7 +192,6 @@
 							<includeApplicationsSymlink>true</includeApplicationsSymlink>
 							<jvmVersion>${user.min.jdk.version}+</jvmVersion>
 							<javaLauncherName>${cliRunnerName}</javaLauncherName>
-							<jvmOptions>--network=true</jvmOptions>
 						</configuration>
 					</execution>
 				</executions>
