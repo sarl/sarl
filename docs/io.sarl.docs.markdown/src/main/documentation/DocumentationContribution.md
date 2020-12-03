@@ -138,7 +138,8 @@ the code itself and in the documentation text, you could use the copying and ref
 
 For saving a piece of the SARL code, you should use the macro [:ParserOff]`[:id](value)`[:ParserOn], where
 `id` is a name that you should give to the saved value (only alphnumerical and dot characters are allowed).
-The `value` is the text to capture.
+The `value` is the text to capture. If the parenthesis characters may cause problem for enclosing the `value`, you
+could replace them by one of `{}`, `||` or `$$`.
 
 For putting back in the text the captured text, you should use the macro [:ParserOff]`[:id:]`[:ParserOn], with
 the `id` is the name of the captured value. This macro put the saved text inside a Markdown code environment.
