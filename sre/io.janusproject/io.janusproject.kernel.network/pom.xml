@@ -136,6 +136,7 @@
 								<internalName>${cliRunnerName}</internalName>
 								<originalFilename>${cliRunnerName}.exe</originalFilename>
 							</versionInfo>
+							<cmdLine>--network=true</cmdLine>
 						</configuration>
 					</execution>
 				</executions>
@@ -191,6 +192,8 @@
 							<diskImageInternetEnable>true</diskImageInternetEnable>
 							<includeApplicationsSymlink>true</includeApplicationsSymlink>
 							<jvmVersion>${user.min.jdk.version}+</jvmVersion>
+							<javaLauncherName>${cliRunnerName}</javaLauncherName>
+							<jvmOptions>--network=true</jvmOptions>
 						</configuration>
 					</execution>
 				</executions>

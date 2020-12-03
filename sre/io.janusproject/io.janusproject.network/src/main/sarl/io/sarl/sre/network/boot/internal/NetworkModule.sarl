@@ -31,7 +31,6 @@ import com.hazelcast.logging.LogEvent
 import com.hazelcast.logging.LogListener
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.api.bootiquebase.config.LogConfig
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.internal.services.ContextServiceModule
 import io.sarl.sre.network.boot.configs.JoinMethod
@@ -51,12 +50,12 @@ import java.text.MessageFormat
 import java.util.Collection
 import java.util.Collections
 import java.util.Map
-import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.PREFIX
+import io.sarl.api.bootiquebase.config.LogConfig
 
 /** 
  * The module for injected the network features of Janus.

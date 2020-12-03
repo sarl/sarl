@@ -69,14 +69,10 @@ class SreNetworkConfig {
 	public static val ENABLE_NAME = PREFIX + ".enable"; // $NON-NLS-1$
 
 	/** 
-	 * Default value for the enabling state of the networking feature.
+	 * Default value for the enabling state of the networking feature outside
+	 * the Eclipse environment.
 	 */
-	public static val DEFAULT_ENABLE_VALUE = true
-
-	/** 
-	 * Default value for the enabling state of the networking feature when it is used in Eclipse.
-	 */
-	public static val DEFAULT_ENABLE_IN_ECLIPSE_VALUE = false
+	public static val DEFAULT_ENABLE_VALUE = false
 
 	/** 
 	 * Name of the property that contains the name of the Hazelcast cluster.
@@ -118,19 +114,19 @@ class SreNetworkConfig {
 	 */
 	public static val DEFAULT_MIN_CLUSTER_SIZE_VALUE = 1
 
-	@Accessors(PUBLIC_GETTER)
-	var enable : boolean = DEFAULT_ENABLE_VALUE
-
-	var clusterName : String
-
-	var joinMethod : JoinMethod
-
 	public static val IP_LIST_CLUSTER = PREFIX + ".iplist"; // $NON-NLS-1$
 
 	/** 
 	 * Default value for the eArray of Cluster members IP addresses represented as Strings.
 	 */
 	public static val DEFAULT_IP_LIST_CLUSTER = "127.0.0.1"
+
+	@Accessors(PUBLIC_GETTER)
+	var enable : boolean = DEFAULT_ENABLE_VALUE
+
+	var clusterName : String
+
+	var joinMethod : JoinMethod
 
 	/**
 	 * Array of Cluster members IP addresses represented as Strings
