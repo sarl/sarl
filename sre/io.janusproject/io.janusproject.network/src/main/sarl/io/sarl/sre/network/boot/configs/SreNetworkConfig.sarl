@@ -76,7 +76,7 @@ class SreNetworkConfig {
 	/** 
 	 * Default value for the enabling state of the networking feature when it is used in Eclipse.
 	 */
-	public static val DEFAULT_ENABLE_IN_ECLIPSE_VALUE = false
+	public static val DEFAULT_ENABLE_IN_ECLIPSE_VALUE = true
 
 	/** 
 	 * Name of the property that contains the name of the Hazelcast cluster.
