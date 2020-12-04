@@ -62,6 +62,8 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	private Button runInEclipseButton;
 
+	private Button logShowStartInformationButton;
+
 	private Button enableAssertionsInDebugModeButton;
 
 	private Button enableAssertionsInRunModeButton;
@@ -126,6 +128,8 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
+		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
@@ -141,8 +145,10 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
+		final boolean showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
 		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
 		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
+		this.logShowStartInformationButton.setSelection(showLaunchingParameters);
 		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
 		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);
 		this.runInEclipseButton.setSelection(runInEclipse);
@@ -156,6 +162,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
+		this.configurator.setLaunhcingParametersPrintedOut(config, this.logShowStartInformationButton.getSelection());
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
 		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());

@@ -88,8 +88,9 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	/** Replies the configuration accessor.
 	 *
 	 * @return the configuration accessor.
+	 * @since 0.12
 	 */
-	protected ILaunchConfigurationAccessor getConfigurationAccessor() {
+	public ILaunchConfigurationAccessor getConfigurationAccessor() {
 		return this.configAccessor;
 	}
 

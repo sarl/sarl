@@ -115,6 +115,8 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	private Combo logLevelCombo;
 
+	private Button logShowStartInformationButton;
+
 	private final WidgetListener defaultListener = new WidgetListener();
 
 	@Inject
@@ -310,6 +312,9 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		this.logLevelCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, new String[0]);
 		this.logLevelCombo.addSelectionListener(this.defaultListener);
 
+		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
+		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
+
 		createVerticalSpacer(group, 2);
 
 		this.enableAssertionsInRunModeButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2, null, false, 2);
@@ -361,6 +366,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		final String logOptValue = this.accessor.getLogArgumentValue(config);
+		final boolean showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
 		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
 		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
 		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
@@ -368,6 +374,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
 			this.logLevelCombo.select(index);
 		}
+		this.logShowStartInformationButton.setSelection(showLaunchingParameters);
 		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
 		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);
 		this.runInEclipseButton.setSelection(runInEclipse);
@@ -480,6 +487,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		final int index = this.logLevelCombo.getSelectionIndex();
 		final String optValue = index >= 0 && index < this.logLevelCombo.getItemCount() ? this.logLevelCombo.getItem(index) : null;
 		this.configurator.setLogArgument(config, opt, optValue);
+		this.configurator.setLaunhcingParametersPrintedOut(config, this.logShowStartInformationButton.getSelection());
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
 		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());

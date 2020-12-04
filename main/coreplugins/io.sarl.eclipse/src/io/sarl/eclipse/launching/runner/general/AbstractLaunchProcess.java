@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -336,6 +335,15 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_0);
 		final String[][] paths = getOwner().getClasspathAndModulepath(this.configuration);
+
+		final AbstractSARLLaunchConfiguration own = getOwner();
+		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_9, Arrays.toString(paths[0])));
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_10, Arrays.toString(paths[1])));
+		}
+
 		setClasspath(paths[0]);
 		setModulepath(paths[1]);
 	}
@@ -355,10 +363,24 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		final String pgmArgs = getProgramArguments(own);
 		final String vmArgs = getVMArguments(own);
 
+		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_6, pgmArgs));
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_7, vmArgs));
+		}
+
 		setExecutionArguments(new ExecutionArguments(vmArgs, pgmArgs));
 
 		// VM-specific attributes
-		setVirtualMachineAttributes(own.getVMSpecificAttributesMap(this.configuration));
+		final Map<String, Object> vmAttrs = own.getVMSpecificAttributesMap(this.configuration);
+
+		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_8, vmAttrs.toString()));
+		}
+
+		setVirtualMachineAttributes(vmAttrs);
 	}
 
 	/** Build the program arguments.
@@ -448,16 +470,9 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 			} else {
 				modulepath = null;
 			}
-			// TODO: Remove this logger when the launch process is fixed for Java 11.
-			final ILog logger = SARLEclipsePlugin.getDefault().getLog();
-			logger.info("CLASSPATH = " + (classpath == null ? null : Arrays.toString(classpath)));
-			logger.info("MODULEPATH = " + (modulepath == null ? null : Arrays.toString(modulepath)));
 		} else {
 			classpath = owner.getClasspath(this.configuration);
 			modulepath = null;
-			// TODO: Remove this logger when the launch process is fixed for Java 11.
-			final ILog logger = SARLEclipsePlugin.getDefault().getLog();
-			logger.info("CLASSPATH = " + (classpath == null ? null : Arrays.toString(classpath)));
 		}
 
 		final VMRunnerConfiguration cfg = new VMRunnerConfiguration(getMainTypeName(), classpath);

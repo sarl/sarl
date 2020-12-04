@@ -120,6 +120,13 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_EMBEDDED_SRE = SARLEclipsePlugin.PLUGIN_ID + ".EMBEDDED_SRE"; //$NON-NLS-1$
 
 	/**
+	 * Launch configuration attribute key. The value indicates if the launching parameters are
+	 * printed out on the console.
+	 * @since 0.12
+	 */
+	public static final String ATTR_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT = SARLEclipsePlugin.PLUGIN_ID + ".ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT"; //$NON-NLS-1$
+
+	/**
 	 * Launch configuration attribute key. The value indicates if the assertions are enabled in the virtual machine
 	 * when it is launched in debug mode.
 	 */
@@ -158,6 +165,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	private static final boolean DEFAULT_USE_PROJECT_SRE = false;
 
 	private static final boolean DEFAULT_EMBEDDED_SRE = false;
+
+	private static final boolean DEFAULT_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT = false;
 
 	private static final boolean DEFAULT_ENABLE_ASSERTIONS_IN_DEBUG_MODE = true;
 
@@ -634,6 +643,20 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		}
 		configuration.setAttribute(ATTR_LOG_OPTION_NAME, name);
 		configuration.setAttribute(ATTR_LOG_OPTION_VALUE, value);
+	}
+
+	@Override
+	public boolean isLaunhcingParametersPrintedOut(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT, DEFAULT_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT);
+		} catch (CoreException e) {
+			return DEFAULT_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT;
+		}
+	}
+
+	@Override
+	public void setLaunhcingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
+		configuration.setAttribute(ATTR_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT, enable);
 	}
 
 }

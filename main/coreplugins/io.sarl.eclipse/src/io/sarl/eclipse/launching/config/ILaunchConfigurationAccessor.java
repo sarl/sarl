@@ -203,6 +203,15 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	boolean isAssertionEnabledInRunMode(ILaunchConfiguration configuration);
 
+	/** Replies if the launching parameters from the launch configuration should be printed out on
+	 * the console.
+	 *
+	 * @param configuration the configuration.
+	 * @return <code>true</code> if the launching parameters are printed out.
+	 * @since 0.12
+	 */
+	boolean isLaunhcingParametersPrintedOut(ILaunchConfiguration configuration);
+
 	/** Replies the identifier of the classpath provider  that is injected into the classpath by the given contributor.
 	 *
 	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
