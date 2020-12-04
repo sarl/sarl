@@ -292,15 +292,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.minClusterSizeSpinner.setEnabled(enable);
 		this.portAutoIncrementButton.setEnabled(enable);
 		this.hazelcastMulticastGroup.setEnabled(enable);
-
-		/*
-		 * final boolean enableTCPIP = enable &&
-		 * this.tcpIPClusterRadioButton.getSelection();
-		 * System.out.println("netenable: "+enable+" enableTCPIP: "+enableTCPIP);
-		 * this.hazelcastIPMembersTextField.setEnabled(enableTCPIP);
-		 * this.hazelcastIPMembersTextField.setEditable(enableTCPIP);
-		 */
-		// this.hazelcastMulticastGroup.setEnabled(enableTCPIP);
 	}
 
 	@Override
