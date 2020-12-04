@@ -370,6 +370,13 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 					MessageFormat.format(Messages.AbstractLaunchProcess_7, vmArgs));
 		}
 
+		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_6, pgmArgs));
+			SARLEclipsePlugin.getDefault().getLog().info(
+					MessageFormat.format(Messages.AbstractLaunchProcess_7, vmArgs));
+		}
+
 		setExecutionArguments(new ExecutionArguments(vmArgs, pgmArgs));
 
 		// VM-specific attributes
