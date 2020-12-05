@@ -80,7 +80,7 @@ public enum JoinMethod {
 	 * @return the default type.
 	 */
 	public static JoinMethod getDefault() {
-		return TCP_IP;
+		return MULTICAST;
 	}
 
 	/** Replies the Json labels for the types of event bus.
