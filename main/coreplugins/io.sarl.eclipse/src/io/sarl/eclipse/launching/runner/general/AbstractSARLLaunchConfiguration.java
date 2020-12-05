@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.CoreException;
@@ -116,6 +117,16 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	public boolean supportsModule() {
 		// Increase the visibility of the function
 		return super.supportsModule();
+	}
+
+	/** Replies if both the current launch configuration and the provided configuration
+	 * supports modules.
+	 *
+	 * @param configuration the configuration to test.
+	 * @return {@code true} if both the configuration (i.e. the project and the concrete launch configuration.
+	 */
+	public boolean supportsModularProjectAndLauncher(ILaunchConfiguration configuration) {
+		return JavaRuntime.isModularConfiguration(configuration) && supportsModule();
 	}
 
 	/** Clear any buffered value.
@@ -577,7 +588,10 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode) throws CoreException {
 		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
-			return new EmbeddedVMRunner();
+			if (!supportsModularProjectAndLauncher(configuration)) {
+				return new EmbeddedNotModularVMRunner();
+			}
+			throw new IllegalStateException();
 		}
 		return super.getVMRunner(configuration, mode);
 	}

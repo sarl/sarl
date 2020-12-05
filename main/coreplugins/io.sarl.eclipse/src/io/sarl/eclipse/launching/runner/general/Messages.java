@@ -46,7 +46,7 @@ public class Messages extends NLS {
 	public static String AbstractLaunchProcess_9;
 	public static String AbstractLaunchProcess_10;
 	public static String AbstractSARLLaunchConfiguration_0;
-	public static String EmbeddedVMRunner_0;
+	public static String AbstractEmbeddedVMRunner_0;
 	public static String SrepathUtils_0;
 	public static String SrepathUtils_1;
 	static {
