@@ -21,7 +21,8 @@
 
 package io.sarl.sre.eclipse.network;
 
-import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoDecorator;
+import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoBubble;
+import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoDecorator_;
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createSpinner;
 import static org.eclipse.debug.internal.ui.SWTFactory.createComposite;
 import static org.eclipse.debug.internal.ui.SWTFactory.createLabel;
@@ -29,6 +30,7 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
+
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -111,7 +113,11 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	private Button tcpIPClusterRadioButton;
 
+	private Label tcpIPClusterRadioButtonBubble;
+
 	private Button multicastClusterRadioButton;
+
+	private Label multicastClusterRadioButtonBubble;
 
 	private Text hazelcastIPMembersTextField;
 
@@ -177,7 +183,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.clusterNameText = createSingleText(this.globalGroup, 1);
 		this.clusterNameText.setMessage(defaultClusterName);
 		this.clusterNameText.addModifyListener(this.defaultListener);
-		createInfoDecorator(this.clusterNameText, MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
+		createInfoDecorator_(this.clusterNameText, MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
 				defaultClusterName, Messages.JanusLaunchNetworkTab_6));
 
 		this.minClusterSizeLabel = createLabel(this.globalGroup,
@@ -188,7 +194,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 				1);
 		this.minClusterSizeSpinner = createSpinner(this.globalGroup, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
-		createInfoDecorator(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
+		createInfoDecorator_(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
 				MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(this.globalGroup,
@@ -208,12 +214,21 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 							VariableNames.toPropertyName(SreNetworkConfig.JOIN_METHOD_NAME),
 							Messages.JanusLaunchNetworkTab_15)),
 				2, 2, GridData.FILL_HORIZONTAL);
+
+		this.multicastClusterRadioButton = createRadioButton(this.hazelcastMulticastGroup,
+				MessageFormat.format(Messages.JanusLaunchNetworkTab_13, Messages.JanusLaunchNetworkTab_15,
+						JoinMethod.MULTICAST.toJsonString()));
+		this.multicastClusterRadioButton.addSelectionListener(this.defaultListener);
+		this.multicastClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_17);
+
 		this.tcpIPClusterRadioButton = createRadioButton(this.hazelcastMulticastGroup,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_12, Messages.JanusLaunchNetworkTab_15,
 						JoinMethod.TCP_IP.toJsonString()));
 		this.tcpIPClusterRadioButton.addSelectionListener(this.defaultListener);
+		this.tcpIPClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_16);
 
-		createVerticalSpacer(topComp, 2);
+		createVerticalSpacer(topComp, 1);
+
 		this.hazelcastIPMembersTextField = createSingleText(this.hazelcastMulticastGroup, 2);
 		((GridData) this.hazelcastIPMembersTextField.getLayoutData()).horizontalIndent = INDENT;
 		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {
@@ -234,13 +249,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			}
 		});
 
-		createVerticalSpacer(topComp, 2);
-
-		this.multicastClusterRadioButton = createRadioButton(this.hazelcastMulticastGroup,
-				MessageFormat.format(Messages.JanusLaunchNetworkTab_13, Messages.JanusLaunchNetworkTab_15,
-						JoinMethod.MULTICAST.toJsonString()));
-		this.multicastClusterRadioButton.addSelectionListener(this.defaultListener);
-
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
 		updateComponentStates();
@@ -251,6 +259,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	 */
 	protected void updateComponentStates() {
 		final boolean enable = this.enableNetworkButton.getSelection();
+		final boolean enableIpList = enable && this.tcpIPClusterRadioButton.getSelection();
 		this.globalGroup.setEnabled(enable);
 		this.clusterNameLabel.setEnabled(enable);
 		this.clusterNameText.setEnabled(enable);
@@ -258,11 +267,10 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.minClusterSizeSpinner.setEnabled(enable);
 		this.portAutoIncrementButton.setEnabled(enable);
 		this.hazelcastMulticastGroup.setEnabled(enable);
-		this.tcpIPClusterRadioButton.setEnabled(enable);
 		this.multicastClusterRadioButton.setEnabled(enable);
-
-		final boolean enableIpList = enable && this.tcpIPClusterRadioButton.getSelection();
-
+		this.multicastClusterRadioButtonBubble.setEnabled(enable);
+		this.tcpIPClusterRadioButton.setEnabled(enable);
+		this.tcpIPClusterRadioButtonBubble.setEnabled(enable);
 		this.hazelcastIPMembersTextField.setEnabled(enableIpList);
 	}
 
