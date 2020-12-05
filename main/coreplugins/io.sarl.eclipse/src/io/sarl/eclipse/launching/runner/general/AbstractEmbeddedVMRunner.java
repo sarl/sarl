@@ -23,9 +23,9 @@ package io.sarl.eclipse.launching.runner.general;
 
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,14 +108,13 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 				final String value = matcher.group(2);
 				props.setProperty(name, value);
 			}
-		}		
+		}
 	}
 
 	/** Create the job that enables to run the SRE into the current Eclipse JVM.
 	 *
 	 * @param configuration description of the VM configuration (that is set without considering the embedding state of the VM).
 	 * @param launch description of the launch.
-	 * @param embeddingClassLoader the class loader to be used for embedding the program, or {@code null} if one.
 	 * @return the job.
 	 */
 	protected Job createJob(VMRunnerConfiguration configuration, ILaunch launch) {

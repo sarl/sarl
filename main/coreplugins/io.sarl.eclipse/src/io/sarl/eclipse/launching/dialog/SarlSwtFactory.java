@@ -111,7 +111,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @param text the information message.
 	 * @return the decorator.
 	 */
-	public static ControlDecoration createInfoDecorator_(Control parent, String text) {
+	public static ControlDecoration createInfoDecorator(Control parent, String text) {
 		return createInfoDecorator(parent, text, SWT.TOP | SWT.LEFT);
 	}
 

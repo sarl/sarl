@@ -60,7 +60,7 @@ public class EmbeddedNotModularVMRunner extends AbstractEmbeddedVMRunner {
 	protected static class CpMainClassFinder implements MainClassFinder {
 
 		private ClassLoader classLoader;
-		
+
 		@Override
 		public void initialize(VMRunnerConfiguration configuration, ILaunch launch) {
 			final String[] classpath = configuration.getClassPath();

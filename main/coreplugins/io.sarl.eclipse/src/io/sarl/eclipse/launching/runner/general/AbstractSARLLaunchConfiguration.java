@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.CoreException;

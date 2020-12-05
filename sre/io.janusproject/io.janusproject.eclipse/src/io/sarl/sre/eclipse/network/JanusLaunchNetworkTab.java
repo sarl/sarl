@@ -22,7 +22,7 @@
 package io.sarl.sre.eclipse.network;
 
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoBubble;
-import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoDecorator_;
+import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoDecorator;
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createSpinner;
 import static org.eclipse.debug.internal.ui.SWTFactory.createComposite;
 import static org.eclipse.debug.internal.ui.SWTFactory.createLabel;
@@ -30,7 +30,6 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -183,7 +182,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.clusterNameText = createSingleText(this.globalGroup, 1);
 		this.clusterNameText.setMessage(defaultClusterName);
 		this.clusterNameText.addModifyListener(this.defaultListener);
-		createInfoDecorator_(this.clusterNameText, MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
+		createInfoDecorator(this.clusterNameText, MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
 				defaultClusterName, Messages.JanusLaunchNetworkTab_6));
 
 		this.minClusterSizeLabel = createLabel(this.globalGroup,
@@ -194,7 +193,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 				1);
 		this.minClusterSizeSpinner = createSpinner(this.globalGroup, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
-		createInfoDecorator_(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
+		createInfoDecorator(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
 				MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(this.globalGroup,
