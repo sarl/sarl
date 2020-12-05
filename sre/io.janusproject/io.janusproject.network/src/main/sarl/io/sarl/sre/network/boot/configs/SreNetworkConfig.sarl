@@ -66,7 +66,7 @@ class SreNetworkConfig {
 	/** 
 	 * Prefix for the configuration entries of the modules.
 	 */
-	public static val PREFIX = "sreNetwork"
+	public static val PREFIX = "srenetwork"
 
 	/** 
 	 * Name of the property that enable or disable the networking features.
@@ -282,8 +282,8 @@ class SreNetworkConfig {
 	 */
 	static def getConfiguration(configFactory : ConfigurationFactory) : SreNetworkConfig {
 		assert configFactory !== null
-		var factory = configFactory.config(typeof(SreNetworkConfig), PREFIX)
-		return factory
+		var config = configFactory.config(typeof(SreNetworkConfig), PREFIX)
+		return config
 	}
 
 }
