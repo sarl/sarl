@@ -68,6 +68,8 @@ public class Messages extends NLS {
 	public static String SARLMainLaunchConfigurationTab_1;
 	public static String SARLMainLaunchConfigurationTab_2;
 	public static String SARLMainLaunchConfigurationTab_3;
+	public static String SARLMainLaunchConfigurationTab_4;
+	public static String SARLMainLaunchConfigurationTab_5;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

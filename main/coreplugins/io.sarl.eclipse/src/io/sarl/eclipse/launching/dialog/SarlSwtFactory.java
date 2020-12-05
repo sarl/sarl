@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
@@ -110,8 +111,34 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @param text the information message.
 	 * @return the decorator.
 	 */
-	public static ControlDecoration createInfoDecorator(Control parent, String text) {
+	public static ControlDecoration createInfoDecorator_(Control parent, String text) {
 		return createInfoDecorator(parent, text, SWT.TOP | SWT.LEFT);
+	}
+
+	/** Create a big information icon that shows up an information message in its tool tip text.
+	 *
+	 * @param parent the component that receives the info bubble.
+	 * @param text the information message.
+	 * @param hspan the number of columns occupied by the bubble icon.
+	 * @return the information icon widget.
+	 */
+	public static Label createInfoBubble(Composite parent, String text, int hspan) {
+		final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
+		final Image img = fieldDecoration.getImage();
+		final Label txtDecorator = createLabel(parent, "", hspan); //$NON-NLS-0$
+		txtDecorator.setImage(img);
+		txtDecorator.setToolTipText(text);
+		return txtDecorator;
+	}
+
+	/** Create a big information icon that shows up an information message in its tool tip text.
+	 *
+	 * @param parent the component that receives the info bubble.
+	 * @param text the information message.
+	 * @return the information icon widget.
+	 */
+	public static Label createInfoBubble(Composite parent, String text) {
+		return createInfoBubble(parent, text, 1);
 	}
 
 }
