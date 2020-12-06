@@ -263,6 +263,7 @@ class SreNetworkConfig {
 	 * @see #getClusterMemberIPsArray()
 	 * @see #setClusterMemberIPsArray(String[])
 	 */
+	@BQConfigProperty("Specify the list of the IP adresses for the members that are allowed to be in the cluster. This configuration is used only if the join method is configured to TCP/IP.")
 	def setClusterMemberIPs(ips : String) {
 		this.memberList = ips;
 		this.memberListArray = null
