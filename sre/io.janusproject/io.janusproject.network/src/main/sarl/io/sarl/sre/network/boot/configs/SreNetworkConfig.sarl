@@ -36,6 +36,9 @@ import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Collections
 import java.util.Map
+import java.util.UUID
+import java.util.regex.Pattern
+import javax.inject.Inject
 import javax.inject.Singleton
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.arakhne.afc.bootique.variables.VariableNames
@@ -44,7 +47,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
-import java.util.UUID
 
 /** 
  * Configuration for the networking features of the SRE. 
@@ -119,30 +121,61 @@ class SreNetworkConfig {
 	 */
 	public static val DEFAULT_MIN_CLUSTER_SIZE_VALUE = 1
 
-	public static val IP_LIST_CLUSTER = PREFIX + ".iplist"; // $NON-NLS-1$
+	public static val IP_LIST_CLUSTER = PREFIX + ".clusterMemberIPs"; // $NON-NLS-1$
 
 	/** 
 	 * Default value for the eArray of Cluster members IP addresses represented as Strings.
 	 */
 	public static val DEFAULT_IP_LIST_CLUSTER = "127.0.0.1"
 
-	@Accessors(PUBLIC_GETTER)
+	/** 
+	 * Regexp of a quarter of an IP adress
+	 */
+	static val ZERO_TO_255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"
+	
+	/**
+	 * Regexp of a full IP address
+	 */
+	static val IP_REGEXP : String = ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255	
+
+	/**
+	 * Regexp of IP list separator
+	 */
+	static val IP_SEPARATOR_REGEXP : String = "[^0-9\\.]+"	
+
+	/**
+	 * Default separator for IP list separator
+	 */
+	static val IP_SEPARATOR : String = ","	
+
 	var enable : boolean = DEFAULT_ENABLE_VALUE
 
 	var clusterName : String
 
 	var joinMethod : JoinMethod
 
-	/**
-	 * Array of Cluster members IP addresses represented as Strings
-	 */
 	var memberList : String
 	
+	var memberListArray : String[]
+
 	@Accessors(PUBLIC_GETTER)
 	var portAutoIncrement : boolean = DEFAULT_PORT_AUTO_INCREMENT_VALUE
 
 	@Accessors(PUBLIC_GETTER)
 	var minClusterSize : int = DEFAULT_MIN_CLUSTER_SIZE_VALUE
+
+	@Inject
+	var generalConfiguration : SreConfig
+	
+	/** Replies the flag that enable or disable the networking features.
+	 * 
+	 * @return the enabling state of the enabling state of the networking extension.
+	 */
+	def getEnable : boolean {
+		// This function is not defined with the name "isEnable" because it is not compatible with
+		// the Bootique API.
+		this.enable
+	}
 
 	/** Change the flag that enable or disable the networking features.
 	 * 
@@ -170,56 +203,103 @@ class SreNetworkConfig {
 	static def createStandardClusterName(rootContextId : String) : String {
 		CLUSTER_NAME_PREFIX + rootContextId
 	}
-
-	/** Replies the name of the Hazelcast cluster name.
-	 * 
-	 * @param generalConfiguration the reference to the general SRE configuration.
-	 * @return the cluster name.
-	 * @see #getExplicitClusterName()
-	 */
-	def getRealClusterName(generalConfiguration : SreConfig) : String {
-		val explicitName = getExplicitClusterName
-		if (explicitName.isNullOrEmpty) {
-			val id = generalConfiguration.boot.rootContextID
-			return id.createStandardClusterName
-		}
-		return explicitName
-	}
-
+	
 	/** Replies the name of the Hazelcast cluster name that is explicitly provided into the configuration.
 	 * 
 	 * @return the cluster name.
-	 * @see #getRealClusterName()
 	 */
-	def getExplicitClusterName : String {
-		return this.clusterName
+	def getClusterName : String {
+		var explicitName = this.clusterName
+		if (explicitName.isNullOrEmpty) {
+			val id = this.generalConfiguration.boot.rootContextID
+			explicitName = id.createStandardClusterName
+			this.clusterName = explicitName
+		}
+		return explicitName
 	}
 
 	/** Replies the list of IP addresses of Hazelcast Cluster members as Strings.
 	 * 
 	 * @return the list of IP addresses of Hazelcast Cluster members.
-	 * @see #getClusterMemberList()
+	 * @see #setClusterMemberIPs(String)
+	 * @see #setClusterMemberIPsArray(String[])
+	 * @see #getClusterMemberIPsArray()
 	 */
-	def getClusterMemberList : String {
+	def getClusterMemberIPs : String {
+		if (this.memberList.isNullOrEmpty) {
+			this.memberList = DEFAULT_IP_LIST_CLUSTER
+		}
 		return this.memberList
+	}
+
+	/** Replies the list of IP addresses of Hazelcast Cluster members as Strings.
+	 * 
+	 * @return the list of IP addresses of Hazelcast Cluster members.
+	 * @see #getClusterMemberIPs()
+	 * @see #setClusterMemberIPs(String)
+	 * @see #setClusterMemberIPsArray(String[])
+	 */
+	def getClusterMemberIPsArray : String[] {
+		if (this.memberListArray === null) {
+			val list = newArrayList
+			val pattern = Pattern.compile(IP_REGEXP)
+			for (ip : getClusterMemberIPs.trim.split(IP_SEPARATOR_REGEXP)) {
+				val matcher = pattern.matcher(ip)
+				if (matcher.matches) {
+					list += ip
+				}
+			}
+			val tab = newArrayOfSize(list.size)
+			list.toArray(tab)
+			this.memberListArray = tab
+		}
+		return this.memberListArray
 	}
 
 	/** Set the list of IP addresses of Hazelcast Cluster members as Strings.
 	 * 
 	 * @param ips the list of IP addresses of Hazelcast Cluster members as Strings.
-	 * @see #getExplicitClusterName()
-	 * @see #getRealClusterName()
+	 * @see #getClusterMemberIPs()
+	 * @see #getClusterMemberIPsArray()
+	 * @see #setClusterMemberIPsArray(String[])
 	 */
-	def setClusterMemberList(ips : String) {
+	def setClusterMemberIPs(ips : String) {
 		this.memberList = ips;
+		this.memberListArray = null
 	}
 	
+	/** Set the list of IP addresses of Hazelcast Cluster members as Strings.
+	 * 
+	 * @param ips the list of IP addresses of Hazelcast Cluster members as Strings.
+	 * @see #getClusterMemberIPs()
+	 * @see #setClusterMemberIPs(String)
+	 * @see #getClusterMemberIPsArray()
+	 */
+	def setClusterMemberIPsArray(ips : String*) {
+		val buf = new StringBuilder
+		val pattern = Pattern.compile(IP_REGEXP)
+		val list = newArrayList
+		for (ip : ips) {
+			val matcher = pattern.matcher(ip)
+			if (matcher.matches) {
+				if (buf.length > 0) {
+					buf.append(IP_SEPARATOR);
+				}
+				buf.append(ip)
+				list += ip
+			}
+		}
+		this.memberList = buf.toString
+		val tab = newArrayOfSize(list.size)
+		list.toArray(tab)
+		this.memberListArray = tab
+	}
 
 	/** Change the name of the Hazelcast cluster name.
 	 * 
 	 * @param name the new cluster name.
-	 * @see #getExplicitClusterName()
-	 * @see #getRealClusterName()
+	 * @see #getClusterName()
+	 * @see #getClusterName(SreConfig)
 	 */
 	@BQConfigProperty("Name of the Hazelcast cluster. By default, this name is based on the identifier of the agent root context.")
 	def setClusterName(name : String) {
