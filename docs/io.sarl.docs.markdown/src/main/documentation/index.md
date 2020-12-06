@@ -107,9 +107,21 @@
 * [Basics of the SARL Compilation Process](./compilation/Basics.md)
 * [Generation to the Python Language](./compilation/PythonGeneration.md)
 
+## Execution and Run-Time Environment
+
 ### Run-time Behavior of SARL Programs
 
 * [Run-time Behavior of SARL Programs](./reference/Runtime.md)
+
+### Janus SRE
+
+* [Janus SRE Official Page](http://www.sarl.io/runtime/janus/index.html)
+* [Creating extensions for Janus](./tutorials/SreExtension.md)
+* Official Janus Extensions:
+  * [Connecting Janus nodes over a computer network](./tools/JanusNetworkExtension.md)
+* Command-line Tools:
+  * [janus](./tools/Janus.md): launching SARL agents with the Janus platform.
+  * [janusnode](./tools/Janusnode.md): launching SARL agents with the Janus platform over a computer network.
 
 ## Other Tools
 
@@ -125,8 +137,6 @@
 
 * [sarlc](./tools/Sarlc.md): command-line SARL compiler.
 * [sarldoc](./tools/Sarldoc.md): command-line SARL documentation generator.
-* [janus](./tools/Janus.md): launching SARL agents with the Janus platform.
-* [janusnode](./tools/Janusnode.md): launching SARL agents with the Janus platform over a computer network.
 
 ## Documentation Format
 
