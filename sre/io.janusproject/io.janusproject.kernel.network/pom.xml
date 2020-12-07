@@ -14,7 +14,7 @@
 
 	<properties>
 		<cliRunnerName>janusnode</cliRunnerName>
-		<cliRunnerMainClass>io.sarl.sre.boot.Boot</cliRunnerMainClass>
+		<cliRunnerMainClass>io.sarl.sre.network.boot.internal.cli.NetworkBoot</cliRunnerMainClass>
 	</properties>
 
 	<dependencies>
@@ -171,27 +171,6 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>sh.tak.appbundler</groupId>
-				<artifactId>appbundle-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-janusnode-osx</id>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-						<configuration>
-							<mainClass>${cliRunnerMainClass}</mainClass>
-							<iconFile>/icons/janus.icns</iconFile>
-							<generateDiskImageFile>true</generateDiskImageFile>
-							<diskImageInternetEnable>true</diskImageInternetEnable>
-							<includeApplicationsSymlink>true</includeApplicationsSymlink>
-							<jvmVersion>${user.min.jdk.version}+</jvmVersion>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

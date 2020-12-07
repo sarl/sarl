@@ -254,6 +254,15 @@ public interface ILaunchConfigurationConfigurator {
 	 */
 	void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
 
+	/** Set if the launching parameters from the launch configuration should be printed out on
+	 * the console.
+	 *
+	 * @param configuration the configuration.
+	 * @param enable is <code>true</code> if the launching parameters are printed out.
+	 * @since 0.12
+	 */
+	void setLaunhcingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable);
+
 	/** Change the identifier of the classpath provider that is injected into the classpath by the given contributor.
 	 *
 	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the

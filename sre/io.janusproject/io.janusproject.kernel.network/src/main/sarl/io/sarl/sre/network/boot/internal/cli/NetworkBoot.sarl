@@ -1,0 +1,60 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.network.boot.internal.cli
+
+import io.sarl.lang.util.CliUtilities
+import io.sarl.sre.boot.Boot
+import io.sarl.sre.network.boot.configs.SreNetworkConfig
+
+/**
+ * Command status Janus with networking feature turned on.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class NetworkBoot extends Boot {
+
+	/** Replies the default name of the program.
+	 * 
+	 * @return the default name of the program.
+	 */
+	static def getDefaultSreProgramName : String {
+		return SreNetworkConfig::DEFAULT_PROGRAM_NAME
+	}
+
+	/** Main program.
+	 *
+	 * @param args the command line arguments.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	static def main(args : String*) : void {
+		val n = args.length
+		val nargs = newArrayOfSize(n + 1)
+		nargs.set(0, CliUtilities::getCommandLineDefinition(SreNetworkConfig::ENABLE_NAME, true))
+		System::arraycopy(args, 0, nargs, 1, n)
+		createMainObject.runSRE(nargs)
+	}
+
+}

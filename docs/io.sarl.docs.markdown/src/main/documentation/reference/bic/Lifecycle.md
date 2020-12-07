@@ -8,7 +8,7 @@ the inner context, as well as the `killMe` action to stop the execution of an ag
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
 [:Fact:]{typeof(io.sarl.core.[:lifecyclecap!]).shouldHaveMethods(
-	"[:fctkillme](killMe)(java.lang.Throwable)",
+	"[:fctkillme](killMe)(java.lang.Object)",
 	"[:fctkillme](killMe)",
 	"[:fctspawn](spawn)(java.lang.Class, java.lang.Object[])",
 	"spawn(int, java.lang.Class, java.lang.Object[])",

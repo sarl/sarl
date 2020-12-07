@@ -51,7 +51,6 @@ public class Messages extends NLS {
 	public static String JanusLaunchNetworkTab_14;
 	public static String JanusLaunchNetworkTab_15;
 	
-	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

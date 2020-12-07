@@ -496,14 +496,14 @@ event Failure {
 
 	/** The identifier of the space the agent just left.
 	 */
-	val cause : Throwable
+	val cause : Object
 
 	/** Construct the event.
 	 * 
 	 * @param source the address of the emitter.
 	 * @param cause the cause of the failure.
 	 */
-	new (source : Address = null, cause : Throwable) {
+	new (source : Address = null, cause : Object) {
 		this.source = source
 		this.cause = cause
 	}
@@ -531,7 +531,7 @@ event TaskFailure extends Failure {
 	 * @param source the address of the emitter.
 	 * @param cause the cause of the failure.
 	 */
-	new (source : Address = null, task : AgentTask, cause : Throwable) {
+	new (source : Address = null, task : AgentTask, cause : Object) {
 		super(source, cause)
 		this.task = task
 	}
