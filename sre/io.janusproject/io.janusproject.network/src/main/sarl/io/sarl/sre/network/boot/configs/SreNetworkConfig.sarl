@@ -322,7 +322,7 @@ class SreNetworkConfig {
 	 * 
 	 * @param method the join method.
 	 */
-	@BQConfigProperty("method for joining the Hazelcast cluster")
+	@BQConfigProperty("Specify the method for joining the Hazelcast cluster over the computer network")
 	def setJoinMethod(type : JoinMethod) {
 		this.joinMethod = type
 		ensureJoinMethod
@@ -332,7 +332,7 @@ class SreNetworkConfig {
 	 * 
 	 * @param clusterSize the minimum number of nodes into the cluster.
 	 */
-	@BQConfigProperty("minimal number of nodes in the cluster before starting the SRE")
+	@BQConfigProperty("Specify the minimal number of nodes to wait for starting in the cluster before really launching the SARL Run-time Environment")
 	def setMinClusterSize(clusterSize : int) {
 		if (clusterSize < 1) {
 			this.minClusterSize = 1

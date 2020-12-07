@@ -263,9 +263,11 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 				final StringBuilder buf = new StringBuilder();
 				for (final Enum<?> cst : etype.getEnumConstants()) {
 					if (buf.length() > 0) {
-						buf.append(prepareStr("|"));
+						buf.append(prepareStr(" | "));
 					}
+					buf.append("*\""); //$NON-NLS-1$
 					buf.append(cst.name().toLowerCase());
+					buf.append("\"*"); //$NON-NLS-1$
 				}
 				return buf.toString();
 			}
