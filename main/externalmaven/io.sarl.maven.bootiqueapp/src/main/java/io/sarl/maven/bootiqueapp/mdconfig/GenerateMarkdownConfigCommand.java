@@ -129,16 +129,17 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	 * @param selectedRoot the name of the configuration root that must be selected and for which the configuration parameters
 	 *     must be replied. If the name is empty or {@code null}, all the roots are selected by default.
 	 * @param replacePipes indicates if the pipe character must be replaced by its HTML equivalent character.
+	 * @param addLineIfNoData indicates if a line should be added if there is no data from the modules.
 	 * @return the configuration parameters.
 	 */
-	public static List<List<String>> getConfigurationParametersAsStrings(ModulesMetadata modulesMetadata, String selectedRoot, boolean replacePipes) {
+	public static List<List<String>> getConfigurationParametersAsStrings(ModulesMetadata modulesMetadata, String selectedRoot, boolean replacePipes, boolean addLineIfNoData) {
 		final List<ConfigMetadataNode> parameters = getConfigurationParameters(modulesMetadata, selectedRoot);
 		final List<List<String>> matrix = new ArrayList<>(parameters.size());
 		final Visitor visitor = new Visitor(matrix, replacePipes);
 		for (final ConfigMetadataNode parameter : parameters) {
 			parameter.accept(visitor);
 		}
-		if (matrix.isEmpty()) {
+		if (addLineIfNoData && matrix.isEmpty()) {
 			addToMatrix(matrix);
 		}
 		return matrix;
@@ -159,7 +160,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	@Override
 	public CommandOutcome run(Cli cli) {
 		final String rootName = System.getProperty(CLI_ROOT_PROPERTY, null);
-		final List<List<String>> parameters = getConfigurationParametersAsStrings(this.modulesMetadata, rootName, true);
+		final List<List<String>> parameters = getConfigurationParametersAsStrings(this.modulesMetadata, rootName, true, true);
 		final StringBuilder content = new StringBuilder();	
 		for (final List<String> row : parameters) {
 			boolean first = true;
