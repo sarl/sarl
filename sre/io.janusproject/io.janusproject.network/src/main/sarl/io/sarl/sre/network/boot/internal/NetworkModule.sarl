@@ -55,6 +55,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.PREFIX
+import java.util.logging.Level
+import java.util.Arrays
 
 /** 
  * The module for injected the network features of Janus.
@@ -111,8 +113,12 @@ class NetworkModule extends AbstractModule {
 		//FIXME config a two hazelcast instances on the same node
 		//FIXME config the log for hazelcast to trace error at startup		
 		val config = new Config()
-		config.clusterName = netConfig.getClusterName
-		if (netConfig.joinMethod === JoinMethod::MULTICAST) {
+		val cname = netConfig.getClusterName
+		config.clusterName = cname
+		logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_3, cname)]
+		val jmethod = netConfig.joinMethod
+		logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_4, jmethod)]
+		if (jmethod === JoinMethod::MULTICAST) {
 			config.networkConfig.join.multicastConfig.enabled = true
 			config.networkConfig.join.tcpIpConfig.enabled = false
 		} else {
@@ -120,6 +126,10 @@ class NetworkModule extends AbstractModule {
 			config.networkConfig.join.tcpIpConfig.enabled = true
 			
 			var iplist = netConfig.clusterMemberIPsArray
+			
+			if (iplist !== null) {
+				logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_5, Arrays::toString(iplist))]			
+			}
 			
 			//Mandatory to have the following line if you want to be sure that two distinct hazelcast instances running in two distinct jvm on the same node/computer join the same cluster
 			// config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")

@@ -42,6 +42,9 @@ final class Messages extends NLS {
 	public static var NetworkModule_0 : String
 	public static var NetworkModule_1 : String
 	public static var NetworkModule_2 : String
+	public static var NetworkModule_3 : String
+	public static var NetworkModule_4 : String
+	public static var NetworkModule_5 : String
 	public static var NetworkModuleProvider_0 : String
 	public static var HazelcastLogListener_0 : String
 	public static var HazelcastLogListener_1 : String
