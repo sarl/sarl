@@ -131,7 +131,19 @@ class NetworkModule extends AbstractModule {
 		
 		config.networkConfig.portAutoIncrement = netConfig.portAutoIncrement
 		//The following line imposes that at least two hazelcast instance been laucnhed on the same cluster before doing anything
-		config.setProperty("hazelcast.initial.min.cluster.size", netConfig.minClusterSize.toString);
+		val minNumber = netConfig.minClusterSize
+		config.setProperty("hazelcast.initial.min.cluster.size", minNumber.toString);
+
+		var otherNumber = minNumber - 1
+		var startLogMsg : String
+		if (otherNumber > 1) {
+			startLogMsg = MessageFormat::format(Messages::NetworkModule_2, otherNumber.toString)
+		} else if (otherNumber > 0) {
+			startLogMsg = MessageFormat::format(Messages::NetworkModule_1, otherNumber.toString)
+		} else {
+			startLogMsg = Messages::NetworkModule_0
+		}
+		logger.kernelLogger.info(startLogMsg)
 
 		val hzlInstance = Hazelcast.newHazelcastInstance(config)
 

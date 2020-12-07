@@ -39,6 +39,9 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
+	public static var NetworkModule_0 : String
+	public static var NetworkModule_1 : String
+	public static var NetworkModule_2 : String
 	public static var NetworkModuleProvider_0 : String
 	public static var HazelcastLogListener_0 : String
 	public static var HazelcastLogListener_1 : String
