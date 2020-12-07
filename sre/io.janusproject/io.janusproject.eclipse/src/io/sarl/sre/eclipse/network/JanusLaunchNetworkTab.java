@@ -30,9 +30,6 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -228,21 +225,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent event) {
-				final String iplist = (((Text) event.widget).getText()).trim();
-				final String[] stringArray = iplist.split(SreNetworkConfig.IP_SEPARATOR_REGEXP);
-				final Pattern pattern = Pattern.compile(SreNetworkConfig.IP_REGEXP);
-				Matcher matcher = null;
-				Boolean validIps = true;
- 				for (final String ip : stringArray) {
-					matcher = pattern.matcher(ip);
-					if (!matcher.matches()) {
-						validIps = false;
-					}
-				}
-
-				if (!validIps) {
-					setErrorMessage(Messages.JanusLaunchNetworkTab_14);
-				}
+				scheduleUpdateJob();
 			}
 		});
 
@@ -356,6 +339,19 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		}
 
 		arguments.apply(configuration, this.configurator);
+	}
+
+	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		setMessage(null);
+		setErrorMessage(null);
+
+		if (!SreNetworkConfig.validateClusterMemberIPsArray(this.hazelcastIPMembersTextField.getText())) {
+			setErrorMessage(Messages.JanusLaunchNetworkTab_14);
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

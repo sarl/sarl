@@ -132,17 +132,17 @@ class SreNetworkConfig {
 	/** 
 	 * Regexp of a quarter of an IP adress
 	 */
-	public static val ZERO_TO_255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"
+	static val ZERO_TO_255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"
 	
 	/**
 	 * Regexp of a full IP address
 	 */
-	public static val IP_REGEXP : String = ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255	
+	static val IP_REGEXP : String = ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255	
 
 	/**
 	 * Regexp of IP list separator
 	 */
-	public static val IP_SEPARATOR_REGEXP : String = "[^0-9\\.]+"	
+	static val IP_SEPARATOR_REGEXP : String = "[^0-9\\.]+"	
 
 	/**
 	 * Default separator for IP list separator
@@ -295,6 +295,23 @@ class SreNetworkConfig {
 		val tab = newArrayOfSize(list.size)
 		list.toArray(tab)
 		this.memberListArray = tab
+	}
+
+	/** Validate the given string of character for being a list of IP addresses.
+	 *
+	 * @param ips is the list of IPs to check.
+	 * @return {@code true} if the given {@code ips} is valid.
+	 */
+	static def validateClusterMemberIPsArray(ips : String) : boolean {
+		val ipsArray = ips.trim.split(IP_SEPARATOR_REGEXP)
+		val pattern = Pattern.compile(IP_REGEXP)
+		for (ip : ipsArray) {
+			val matcher = pattern.matcher(ip)
+			if (!matcher.matches) {
+				return false
+			}
+		}
+		return true
 	}
 
 	/** Change the name of the Hazelcast cluster name.
