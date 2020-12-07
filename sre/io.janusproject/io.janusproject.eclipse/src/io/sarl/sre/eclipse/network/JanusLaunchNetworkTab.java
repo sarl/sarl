@@ -30,6 +30,9 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -77,16 +80,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	 * Identifier of the contributor for the launch configuration.
 	 */
 	public static final String CONTRIBUTOR_ID = "io.sarl.sre.network"; //$NON-NLS-1$
-
-	/**
-	 * Regexp of a quarter of an IP adress.
-	 */
-	private static final String ZEROTO255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"; //$NON-NLS-1$
-
-	/**
-	 * Regexp of a full IP address.
-	 */
-	private static final String IP_REGEXP = ZEROTO255 + "\\." + ZEROTO255 + "\\." + ZEROTO255 + "\\." + ZEROTO255; //$NON-NLS-1$
 
 	private static final int MIN_CLUSTER_SIZE = 1;
 
@@ -209,22 +202,24 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 		this.hazelcastMulticastGroup = SWTFactory.createGroup(this.globalGroup,
 				MessageFormat.format("Node discovery ({0})",
-					CliUtilities.getCommandLineDefinition(
-							VariableNames.toPropertyName(SreNetworkConfig.JOIN_METHOD_NAME),
-							Messages.JanusLaunchNetworkTab_15)),
+						CliUtilities.getCommandLineDefinition(
+								VariableNames.toPropertyName(SreNetworkConfig.JOIN_METHOD_NAME),
+								Messages.JanusLaunchNetworkTab_15)),
 				2, 2, GridData.FILL_HORIZONTAL);
 
 		this.multicastClusterRadioButton = createRadioButton(this.hazelcastMulticastGroup,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_13, Messages.JanusLaunchNetworkTab_15,
 						JoinMethod.MULTICAST.toJsonString()));
 		this.multicastClusterRadioButton.addSelectionListener(this.defaultListener);
-		this.multicastClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_17);
+		this.multicastClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup,
+				Messages.JanusLaunchNetworkTab_17);
 
 		this.tcpIPClusterRadioButton = createRadioButton(this.hazelcastMulticastGroup,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_12, Messages.JanusLaunchNetworkTab_15,
 						JoinMethod.TCP_IP.toJsonString()));
 		this.tcpIPClusterRadioButton.addSelectionListener(this.defaultListener);
-		this.tcpIPClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup, Messages.JanusLaunchNetworkTab_16);
+		this.tcpIPClusterRadioButtonBubble = createInfoBubble(this.hazelcastMulticastGroup,
+				Messages.JanusLaunchNetworkTab_16);
 
 		createVerticalSpacer(topComp, 1);
 
@@ -233,11 +228,14 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.hazelcastIPMembersTextField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent event) {
-				final String iplist = ((Text) event.widget).getText();
-				final String[] ipArray = iplist.split(",");
+				final String iplist = (((Text) event.widget).getText()).trim();
+				final String[] stringArray = iplist.split(SreNetworkConfig.IP_SEPARATOR_REGEXP);
+				final Pattern pattern = Pattern.compile(SreNetworkConfig.IP_REGEXP);
+				Matcher matcher = null;
 				Boolean validIps = true;
-				for (final String s : ipArray) {
-					if (!s.matches(IP_REGEXP)) {
+ 				for (final String ip : stringArray) {
+					matcher = pattern.matcher(ip);
+					if (!matcher.matches()) {
 						validIps = false;
 					}
 				}
@@ -299,8 +297,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		default:
 			break;
 		}
-		this.hazelcastIPMembersTextField.setText(
-				arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER));
+		this.hazelcastIPMembersTextField
+				.setText(arguments.arg(SreNetworkConfig.IP_LIST_CLUSTER, SreNetworkConfig.DEFAULT_IP_LIST_CLUSTER));
 
 		updateComponentStates();
 	}
@@ -384,8 +382,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		public void widgetSelected(SelectionEvent event) {
 			final Object clickedObject = event.getSource();
 			if (clickedObject == JanusLaunchNetworkTab.this.enableNetworkButton
-				|| clickedObject == JanusLaunchNetworkTab.this.tcpIPClusterRadioButton
-				|| clickedObject == JanusLaunchNetworkTab.this.multicastClusterRadioButton) {
+					|| clickedObject == JanusLaunchNetworkTab.this.tcpIPClusterRadioButton
+					|| clickedObject == JanusLaunchNetworkTab.this.multicastClusterRadioButton) {
 				updateComponentStates();
 			}
 			updateLaunchConfigurationDialog();

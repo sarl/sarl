@@ -132,17 +132,17 @@ class SreNetworkConfig {
 	/** 
 	 * Regexp of a quarter of an IP adress
 	 */
-	static val ZERO_TO_255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"
+	public static val ZERO_TO_255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])"
 	
 	/**
 	 * Regexp of a full IP address
 	 */
-	static val IP_REGEXP : String = ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255	
+	public static val IP_REGEXP : String = ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255 + "\\." + ZERO_TO_255	
 
 	/**
 	 * Regexp of IP list separator
 	 */
-	static val IP_SEPARATOR_REGEXP : String = "[^0-9\\.]+"	
+	public static val IP_SEPARATOR_REGEXP : String = "[^0-9\\.]+"	
 
 	/**
 	 * Default separator for IP list separator
