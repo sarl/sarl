@@ -118,6 +118,16 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		return super.supportsModule();
 	}
 
+	/** Replies if both the current launch configuration and the provided configuration
+	 * supports modules.
+	 *
+	 * @param configuration the configuration to test.
+	 * @return {@code true} if both the configuration (i.e. the project and the concrete launch configuration.
+	 */
+	public boolean supportsModularProjectAndLauncher(ILaunchConfiguration configuration) {
+		return JavaRuntime.isModularConfiguration(configuration) && supportsModule();
+	}
+
 	/** Clear any buffered value.
 	 */
 	protected synchronized void clearBuffers() {
@@ -577,7 +587,10 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode) throws CoreException {
 		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
-			return new EmbeddedVMRunner();
+			if (!supportsModularProjectAndLauncher(configuration)) {
+				return new EmbeddedNotModularVMRunner();
+			}
+			throw new IllegalStateException();
 		}
 		return super.getVMRunner(configuration, mode);
 	}

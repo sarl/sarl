@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import com.google.inject.CreationException;
@@ -61,7 +63,11 @@ public class BootiqueMain {
 
 	/** Default log format for a bootique app.
 	 */
-	public static final java.lang.String DEFAULT_LOG_FORMAT = "%-5p %m%n";
+	public static final String DEFAULT_LOG_FORMAT = "%-5p %m%n";
+
+	/** Pattern for command-line definition.
+	 */
+	public static final String D_PATTERN = "(?:(?:\\-\\-?)|(?:\\/))D([^=]+)=(.*)"; //$NON-NLS-1$
 
 	private final BQModuleProvider[] providers;
 
@@ -159,7 +165,8 @@ public class BootiqueMain {
 			if (isExperimental()) {
 				rootLogger.warning(Messages.BootiqueMain_0);
 			}
-			final BQRuntime runtime = createRuntime(args);
+			final String[] fargs = filterCommandLineArguments(args);
+			final BQRuntime runtime = createRuntime(fargs);
 
 			final CommandOutcome outcome = runtime.run();
 			if (!outcome.isSuccess() && outcome.getException() != null) {
@@ -247,6 +254,30 @@ public class BootiqueMain {
 			}
 		}
 		return providers.toArray(new Class[providers.size()]);
+	}
+
+	/** Filter the command-line arguments for extracting the -D parameters.
+	 *
+	 * @param args the arguments.
+	 * @return the filtered arguments.
+	 * @since 0.12
+	 */
+	public static String[] filterCommandLineArguments(String[] args) {
+		final List<String> list = new ArrayList<>();
+		final Pattern pattern = Pattern.compile(D_PATTERN);
+		for (final String arg : args) {
+			final Matcher matcher = pattern.matcher(arg);
+			if (matcher.matches()) {
+				final String name = matcher.group(1);
+				final String value = matcher.group(2);
+				System.setProperty(name, value);
+			} else {
+				list.add(arg);
+			}
+		}
+		final String[] tab = new String[list.size()];
+		list.toArray(tab);
+		return tab;
 	}
 
 }

@@ -43,7 +43,7 @@ import io.sarl.lang.util.CliUtilities;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.1
+ * @since 0.12
  */
 public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 

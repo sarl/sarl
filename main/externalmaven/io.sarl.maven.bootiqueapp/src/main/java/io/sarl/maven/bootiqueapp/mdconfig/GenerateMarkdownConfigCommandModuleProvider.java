@@ -19,34 +19,36 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.network.boot.internal
+package io.sarl.maven.bootiqueapp.mdconfig;
 
-import org.eclipse.osgi.util.NLS
+import com.google.inject.Module;
+import io.bootique.BQModule;
+import io.bootique.BQModuleProvider;
 
-/** Messages.
+/** Provider of the module for displaying the configuration parameter documentation
+ * on the standard output using a Markdown format.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.12
  */
-final class Messages extends NLS {
+public class GenerateMarkdownConfigCommandModuleProvider implements BQModuleProvider {
 
-	static val BUNDLE_NAME = typeof(Messages).getPackage.name + ".messages"
-	
-	static new {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
+	@Override
+	public Module module() {
+		return new GenerateMarkdownConfigCommandModule();
 	}
 
-	public static var NetworkModule_0 : String
-	public static var NetworkModule_1 : String
-	public static var NetworkModule_2 : String
-	public static var NetworkModuleProvider_0 : String
-	public static var HazelcastLogListener_0 : String
-	public static var HazelcastLogListener_1 : String
-	
-	private new {
-	}
+	@Override
+    public BQModule.Builder moduleBuilder() {
+        return BQModule
+                .builder(module())
+                .overrides(overrides())
+                .providerName(name())
+                .configs(configs())
+                .description(Messages.GenerateMarkdownConfigCommandModuleProvider_0);
+    }
 
 }

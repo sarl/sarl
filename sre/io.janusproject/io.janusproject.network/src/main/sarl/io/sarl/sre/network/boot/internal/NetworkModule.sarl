@@ -31,7 +31,7 @@ import com.hazelcast.logging.LogEvent
 import com.hazelcast.logging.LogListener
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.api.bootiquebase.config.LogConfig
 import io.sarl.sre.boot.internal.services.ContextServiceModule
 import io.sarl.sre.network.boot.configs.JoinMethod
 import io.sarl.sre.network.boot.configs.SreNetworkConfig
@@ -55,7 +55,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.PREFIX
-import io.sarl.api.bootiquebase.config.LogConfig
 
 /** 
  * The module for injected the network features of Janus.
@@ -67,16 +66,6 @@ import io.sarl.api.bootiquebase.config.LogConfig
  * @since 0.12
  */
 class NetworkModule extends AbstractModule {
-
-	/** 
-	 * Regexp of a quarter of an IP adress
-	 */
-	val zeroTo255 : String = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
-	
-	/**
-	 * Regexp of a full IP address
-	 */
-	val IP_REGEXP : String = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;	
 
 	protected override configure {
 	}
@@ -118,11 +107,11 @@ class NetworkModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	def provideHazelcastInstance(logger : LoggingService, netConfig : SreNetworkConfig, sreConfig : SreConfig, logConfig : LogConfig) : HazelcastInstance {
+	def provideHazelcastInstance(logger : LoggingService, netConfig : SreNetworkConfig, logConfig : LogConfig) : HazelcastInstance {
 		//FIXME config a two hazelcast instances on the same node
 		//FIXME config the log for hazelcast to trace error at startup		
-		val config : Config = new Config()
-		config.clusterName = netConfig.getRealClusterName(sreConfig)
+		val config = new Config()
+		config.clusterName = netConfig.getClusterName
 		if (netConfig.joinMethod === JoinMethod::MULTICAST) {
 			config.networkConfig.join.multicastConfig.enabled = true
 			config.networkConfig.join.tcpIpConfig.enabled = false
@@ -130,22 +119,31 @@ class NetworkModule extends AbstractModule {
 			config.networkConfig.join.multicastConfig.enabled = false
 			config.networkConfig.join.tcpIpConfig.enabled = true
 			
-				var iplist : String = netConfig.getClusterMemberList();
-				var ipArray : String[] = iplist.split(",");
-				
-				for (s: ipArray) {
-					if (!s.matches(IP_REGEXP)) {
-					//Mandatory to have the following line if you want to be sure that two distinct hazelcast instances running in two distinct jvm on the same node/computer join the same cluster
-					// config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")
-					config.networkConfig.join.tcpIpConfig.addMember(s)
-					}
-				}
+			var iplist = netConfig.clusterMemberIPsArray
+			
+			//Mandatory to have the following line if you want to be sure that two distinct hazelcast instances running in two distinct jvm on the same node/computer join the same cluster
+			// config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")
+			for (memberIp : iplist) {
+				config.networkConfig.join.tcpIpConfig.addMember(memberIp)
+			}
 			
 		}
 		
 		config.networkConfig.portAutoIncrement = netConfig.portAutoIncrement
 		//The following line imposes that at least two hazelcast instance been laucnhed on the same cluster before doing anything
-		config.setProperty("hazelcast.initial.min.cluster.size", netConfig.minClusterSize.toString);
+		val minNumber = netConfig.minClusterSize
+		config.setProperty("hazelcast.initial.min.cluster.size", minNumber.toString);
+
+		var otherNumber = minNumber - 1
+		var startLogMsg : String
+		if (otherNumber > 1) {
+			startLogMsg = MessageFormat::format(Messages::NetworkModule_2, otherNumber.toString)
+		} else if (otherNumber > 0) {
+			startLogMsg = MessageFormat::format(Messages::NetworkModule_1, otherNumber.toString)
+		} else {
+			startLogMsg = Messages::NetworkModule_0
+		}
+		logger.kernelLogger.info(startLogMsg)
 
 		val hzlInstance = Hazelcast.newHazelcastInstance(config)
 

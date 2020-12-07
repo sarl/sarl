@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.eclipse.network;
+package io.sarl.maven.bootiqueapp.mdconfig;
 
 import org.eclipse.osgi.util.NLS;
 
-/** Localized Messages.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -34,25 +34,8 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String JanusLaunchNetworkTab_0;
-	public static String JanusLaunchNetworkTab_1;
-	public static String JanusLaunchNetworkTab_2;
-	public static String JanusLaunchNetworkTab_3;
-	public static String JanusLaunchNetworkTab_4;
-	public static String JanusLaunchNetworkTab_5;
-	public static String JanusLaunchNetworkTab_6;
-	public static String JanusLaunchNetworkTab_7;
-	public static String JanusLaunchNetworkTab_8;
-	public static String JanusLaunchNetworkTab_9;
-	public static String JanusLaunchNetworkTab_10;
-	public static String JanusLaunchNetworkTab_11;
-	public static String JanusLaunchNetworkTab_12;
-	public static String JanusLaunchNetworkTab_13;
-	public static String JanusLaunchNetworkTab_14;
-	public static String JanusLaunchNetworkTab_15;
-	public static String JanusLaunchNetworkTab_16;
-	public static String JanusLaunchNetworkTab_17;
-	
+	public static String GenerateMarkdownConfigCommand_0;
+	public static String GenerateMarkdownConfigCommandModuleProvider_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

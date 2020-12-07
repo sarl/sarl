@@ -93,6 +93,16 @@ public final class ShellExtensions {
 		return CliUtilities.getCommandLineOption(opt);
 	}
 
+	/** Reply a well formatted option for the system that is defining a property and its value.
+	 *
+	 * @param name the name of the property.
+	 * @param value the value to give to the property.
+	 * @return the formatted option.
+	 */
+	public static String makeCliDefinition(String name, String value) {
+		return CliUtilities.getCommandLineDefinition(name, value);
+	}
+
 	/** Run a shell command and capture its standard output and without exception output.
 	 *
 	 * @param command the command.

@@ -22,6 +22,7 @@
 package io.sarl.eclipse.launching.dialog;
 
 import java.lang.ref.SoftReference;
+import java.text.MessageFormat;
 import javax.inject.Inject;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -128,14 +129,18 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
-		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
 		this.enableAssertionsInDebugModeButton.addSelectionListener(this.defaultListener);
-		this.runInEclipseButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_0);
+
+		createVerticalSpacer(group, 1);
+
+		this.runInEclipseButton = createCheckButton(group,
+				MessageFormat.format(Messages.SARLMainLaunchConfigurationTab_0, Messages.SARLMainLaunchConfigurationTab_4));
 		this.runInEclipseButton.addSelectionListener(this.defaultListener);
+		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
+		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
 	}
 
 	/**

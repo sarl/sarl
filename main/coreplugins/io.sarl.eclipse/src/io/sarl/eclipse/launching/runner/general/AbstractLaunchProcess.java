@@ -465,7 +465,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 
 		final String[] classpath;
 		final String[] modulepath;
-		if (JavaRuntime.isModularConfiguration(this.configuration) && owner.supportsModule()) {
+		if (owner.supportsModularProjectAndLauncher(this.configuration)) {
 			final String[][] paths = owner.getClasspathAndModulepath(this.configuration);
 			if (paths != null && paths[0] != null) {
 				classpath = paths[0];

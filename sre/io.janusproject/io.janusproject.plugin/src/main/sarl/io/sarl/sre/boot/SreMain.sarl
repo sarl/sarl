@@ -51,6 +51,7 @@ import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
+import java.util.regex.Pattern
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -64,6 +65,8 @@ import static io.sarl.bootstrap.SRE.*
 class SreMain implements SREBootstrap {
 
 	static val BACKGROUND_SHUTDOWN_TIMEOUT = 20000
+
+	static val D_PATTERN = "(?:(?:\\-\\-?)|(?:\\/))D([^=]+)=(.*)"
 
 	val kernel = new AtomicReference<Kernel>
 
@@ -208,6 +211,30 @@ class SreMain implements SREBootstrap {
 		return this.runtime
 	}
 
+	/** Filter the command-line arguments for extracting the -D parameters.
+	 *
+	 * @param args the arguments.
+	 * @return the filtered arguments.
+	 * @since 0.12
+	 */
+	static def filterCommandLineArguments(args: String[]) : String[] {
+		val list = newArrayList
+		val pattern = Pattern::compile(D_PATTERN)
+		for (arg : args) {
+			val matcher = pattern.matcher(arg)
+			if (matcher.matches) {
+				val name = matcher.group(1)
+				val value = matcher.group(2)
+				System::setProperty(name, value)
+			} else {
+				list += arg
+			}
+		}
+		val tab = newArrayOfSize(list.size)
+		list.toArray(tab)
+		return tab
+	}
+
 	/** Run the SRE.
 	 *
 	 * <p>This function runs the SRE and exits with the return code.
@@ -216,7 +243,8 @@ class SreMain implements SREBootstrap {
 	 * @return the exit code.
 	 */
 	def runSRE(args : String*) : int {
-		var runtime = ensureBootiqueRuntimeInstance(null, null, args)
+		val fargs = args.filterCommandLineArguments
+		var runtime = ensureBootiqueRuntimeInstance(null, null, fargs)
 		try {
 			// Force the bootstrap to be this object
 			SRE::bootstrap = this

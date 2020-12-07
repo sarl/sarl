@@ -21,9 +21,9 @@
 
 package io.sarl.sre.network.boot.internal.cli
 
-import io.sarl.lang.util.CliUtilities
 import io.sarl.sre.boot.Boot
 import io.sarl.sre.network.boot.configs.SreNetworkConfig
+import org.arakhne.afc.bootique.variables.VariableNames
 
 /**
  * Command status Janus with networking feature turned on.
@@ -34,7 +34,7 @@ import io.sarl.sre.network.boot.configs.SreNetworkConfig
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class NetworkBoot extends Boot {
+class NetworkBoot {
 
 	/** Replies the default name of the program.
 	 * 
@@ -50,11 +50,13 @@ class NetworkBoot extends Boot {
 	 */
 	@SuppressWarnings("discouraged_reference")
 	static def main(args : String*) : void {
-		val n = args.length
-		val nargs = newArrayOfSize(n + 1)
-		nargs.set(0, CliUtilities::getCommandLineDefinition(SreNetworkConfig::ENABLE_NAME, true))
-		System::arraycopy(args, 0, nargs, 1, n)
-		createMainObject.runSRE(nargs)
+		// Force the activation of the network if there is no argument provided in the properties.
+		val propName = VariableNames::toPropertyName(SreNetworkConfig::ENABLE_NAME)
+		val propValue = System::getProperty(propName, null)
+		if (propValue.isNullOrEmpty) {
+			System::setProperty(propName, Boolean::TRUE.toString)
+		}
+		Boot::main(args)
 	}
 
 }

@@ -312,9 +312,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		this.logLevelCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, new String[0]);
 		this.logLevelCombo.addSelectionListener(this.defaultListener);
 
-		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
-		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
-
 		createVerticalSpacer(group, 2);
 
 		this.enableAssertionsInRunModeButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2, null, false, 2);
@@ -325,8 +322,13 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 		createVerticalSpacer(group, 2);
 
-		this.runInEclipseButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_0, null, false, 2);
+		this.runInEclipseButton = SWTFactory.createCheckButton(group,
+				MessageFormat.format(Messages.SARLMainLaunchConfigurationTab_0, Messages.SARLMainLaunchConfigurationTab_5),
+				null, false, 2);
 		this.runInEclipseButton.addSelectionListener(this.defaultListener);
+
+		this.logShowStartInformationButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_3, null, false, 2);
+		this.logShowStartInformationButton.addSelectionListener(this.defaultListener);
 	}
 
 	@Override
