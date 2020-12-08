@@ -117,13 +117,13 @@ public class JanusSREInstall extends AbstractSREInstall {
 		//options.put(SRECommandLineOptions.CLI_EMBEDDED, formatCommandLineOption(null, null));
 		// Root context configuration
 		options.put(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID,
-				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.DEFAULT.toJsonString()));
+				CliUtilities.getUnixCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.DEFAULT.toJsonString()));
 		options.put(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID,
-				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.RANDOM.toJsonString()));
+				CliUtilities.getUnixCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.RANDOM.toJsonString()));
 		options.put(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID,
-				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.BOOT_AGENT_NAME.toJsonString()));
+				CliUtilities.getUnixCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.BOOT_AGENT_NAME.toJsonString()));
 		// Option for disabling the command-line options.
-		options.put(SRECommandLineOptions.CLI_NO_MORE_OPTION, CliUtilities.getCommandLineLastOptionPrefix());
+		options.put(SRECommandLineOptions.CLI_NO_MORE_OPTION, CliUtilities.getUnixCommandLineLastOptionPrefix());
 		return Collections.unmodifiableMap(options);
 	}
 

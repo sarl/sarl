@@ -161,7 +161,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 					index = Arrays.asList(logOptValues).indexOf(selectedValue);
 				}
 			}
-			final String logOptStr = CliUtilities.getCommandLineOption(logOpt, Messages.MainLaunchConfigurationTab_16);
+			final String logOptStr = CliUtilities.getUnixCommandLineOption(logOpt, Messages.MainLaunchConfigurationTab_16);
 			this.logLevelLabel.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, logOptStr));
 			this.logLevelLabel.setData(logOpt);
 			this.logLevelCombo.setItems(logOptValues);

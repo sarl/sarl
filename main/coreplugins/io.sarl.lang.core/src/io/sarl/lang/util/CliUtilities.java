@@ -223,4 +223,65 @@ public final class CliUtilities {
 		return buf.toString();
 	}
 
+	/** Replies the option prefixed with the characters to be used as option prefix on the command line.
+	 * This function is for Unix.
+	 *
+	 * @param name the name of the option.
+	 * @return the command-line option.
+	 * @since 0.12
+	 */
+	public static String getUnixCommandLineOption(String name) {
+		if (name.length() > 1) {
+			return getUnixCommandLineLongOptionPrefix() + name;
+		}
+		return getUnixCommandLineShortOptionPrefix() + name;
+	}
+
+	/** Replies the option prefixed with the characters to be used as option prefix on the command line and postfixed
+	 * with the given boolean value.
+	 * This function is for Unix.
+	 *
+	 * @param name the name of the option.
+	 * @param value the value to put in the command-line option.
+	 * @return the command-line option.
+	 * @since 0.12
+	 */
+	public static String getUnixCommandLineOption(String name, String value) {
+		assert !Strings.isNullOrEmpty(name);
+		assert !Strings.isNullOrEmpty(value);
+		final StringBuilder buf = new StringBuilder();
+		buf.append(getUnixCommandLineOption(name));
+		buf.append(EQUAL_SIGN).append(value);
+		return buf.toString();
+	}
+
+	/** Replies the characters to be used as short-option prefix on the command line.
+	 * This function is for Unix.
+	 *
+	 * @return the command-line option prefix.
+	 * @since 0.12
+	 */
+	public static String getUnixCommandLineShortOptionPrefix() {
+		return UNIX_SOPT;
+	}
+
+	/** Replies the characters to be used as long-option prefix on the command line on Unix.
+	 *
+	 * @return the command-line option prefix.
+	 * @since 0.12
+	 */
+	public static String getUnixCommandLineLongOptionPrefix() {
+		return UNIX_LOPT;
+	}
+
+	/** Replies the characters to be used to mark the last option on the command line.
+	 * This function is for Unix.
+	 *
+	 * @return the command-line option prefix.
+	 * @since 0.12
+	 */
+	public static String getUnixCommandLineLastOptionPrefix() {
+		return UNIX_LOPT;
+	}
+
 }

@@ -93,7 +93,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 		final String logOption = getConfigurationAccessor().getLogArgumentName(configuration);
 		final String logValue = getConfigurationAccessor().getLogArgumentValue(configuration);
 		if (!Strings.isNullOrEmpty(logOption) && !Strings.isNullOrEmpty(logValue)) {
-			final String fullOption = CliUtilities.getCommandLineOption(logOption, logValue);
+			final String fullOption = CliUtilities.getUnixCommandLineOption(logOption, logValue);
 			if (!Strings.isNullOrEmpty(fullOption)) {
 				options = join(options, fullOption);
 			}
