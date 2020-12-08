@@ -21,8 +21,9 @@
 
 ### Event Communication
 
-* [Agent Communication with the Ping Pong Agents](./tutorials/PingPong.md)
-* [Agent Communication in Sub-Space with the Ping Pong Agents](./tutorials/PingPongSpace.md)
+* [Agent Communication with the ping-pong agents](./tutorials/PingPong.md)
+* [Agent Communication in sub-space with the ping-pong agents](./tutorials/PingPongSpace.md)
+* [Override the agent event bus with the Behaviors capacity](./tutorials/EventBusOverrideWithCapacity.md)
 
 ### Parallel Execution
 
