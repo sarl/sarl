@@ -58,6 +58,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.StringInputStream;
 import org.osgi.framework.Version;
@@ -149,6 +150,26 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		postProjectInstallation(projectDescriptor, mon.newChild(1));
 	}
 
+	private JavaVersion parseVersion(AbstractVMInstall vmInstall, String minVersion) {
+		final String vmVersion = vmInstall.getJavaVersion();
+		JavaVersion minJversion = JavaVersion.fromQualifier(minVersion);
+		JavaVersion jversion = JavaVersion.fromQualifier(vmVersion);
+		if (jversion == null) {
+			final Version vers = Version.parseVersion(vmVersion);
+			// This is a hard-coded support for the different version formats (1.x or x)
+			// when using Java 9 or higher.
+			if (vers.getMajor() >= 9) {
+				jversion = JavaVersion.fromQualifier(Integer.toString(vers.getMajor()));
+			} else {
+				jversion = JavaVersion.fromQualifier(vers.getMajor() + "." + vers.getMinor());
+			}
+		}
+		if (jversion != null && minJversion != null && !jversion.isAtLeast(minJversion)) {
+			jversion = minJversion;
+		}
+		return jversion;
+	}
+
 	/** Post process the given project.
 	 *
 	 * @param projectDescriptor the descriptor of the project.
@@ -169,8 +190,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
 			if (vmInstall instanceof AbstractVMInstall) {
 				final AbstractVMInstall jvmInstall = (AbstractVMInstall) vmInstall;
-				final Version vers = Version.parseVersion(jvmInstall.getJavaVersion());
-				compliance = vers.getMajor() + "." + vers.getMinor();
+				final JavaVersion jversion = parseVersion(jvmInstall, compliance);
+				if (jversion != null) {
+					compliance = jversion.getQualifier();
+				}
 			}
 			updatePomContent(pomFile, compliance);
 		}
