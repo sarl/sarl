@@ -151,7 +151,7 @@
 				<property>
 					<name>!env.OPENJFX_LIB_PATH</name>
 				</property>
-				<jdk>[1.8,1.11)</jdk>
+				<jdk>[1.8,11)</jdk>
 				<os>
 					<family>unix</family>
 					<name>linux</name>
@@ -173,7 +173,7 @@
 				<property>
 					<name>!env.OPENJFX_LIB_PATH</name>
 				</property>
-				<jdk>[1.8,1.11)</jdk>
+				<jdk>[1.8,11)</jdk>
 				<os>
 					<family>mac</family>
 				</os>
@@ -194,7 +194,7 @@
 				<property>
 					<name>!env.OPENJFX_LIB_PATH</name>
 				</property>
-				<jdk>[1.8,1.11)</jdk>
+				<jdk>[1.8,11)</jdk>
 				<os>
 					<family>windows</family>
 				</os>
