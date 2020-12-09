@@ -13,6 +13,9 @@
 
 	<properties>
 		<path_to_pom_template_jar>../../../main/coreplugins/io.sarl.eclipse/src</path_to_pom_template_jar>
+		<openjfx.fxml.linux.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.linux.path>
+		<openjfx.fxml.mac.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.mac.path>
+		<openjfx.fxml.win.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.win.path>
 	</properties>
 
 	<build>
@@ -158,6 +161,10 @@
 								<replacement>
 									<token>(token="MAVEN_COMPILER_VERSION" +value=")([^"]+)(")</token>
 									<value>$1${mavencompiler.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="OPENJFX_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${openjfx.version}$3</value>
 								</replacement>
 								<replacement>
 									<token>(name="relative_path_to_source_folder_of_pom_template" +value=")([^"]+)(")</token>

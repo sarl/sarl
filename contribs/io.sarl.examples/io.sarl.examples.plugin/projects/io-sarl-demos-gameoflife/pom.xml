@@ -11,6 +11,7 @@
 		<afc.version>@AFC_VERSION@</afc.version>
 		<target.jdk.version>@USER_JAVA_VERSION@</target.jdk.version>
 		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
+		<openjfx.version>@OPENJFX_VERSION@</openjfx.version>
 	</properties>
 	
 	<dependencies>
@@ -39,6 +40,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- @IF JDK11
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${openjfx.version}</version>
+		</dependency>
+		@ENDIF JDK11 -->
 	</dependencies>
 
 	<build>
