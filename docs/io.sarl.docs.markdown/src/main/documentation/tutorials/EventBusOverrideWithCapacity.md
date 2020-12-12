@@ -78,9 +78,10 @@ We decided to declare it as an *inner class* of [:mybehaviorname:].
 	import io.sarl.core.Behaviors
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.EventListener
+	import java.util.UUID
 	abstract skill FilteringEventDispatchingBehavior implements Behaviors {
-		val acceptedType : Class<? extends Event>
-		val behaviorDelegate : Behaviors
+		var acceptedType : Class<? extends Event>
+		var behaviorDelegate : Behaviors
 	[:On]
 private static class [:filteringeventlistener](FilteringEventListener) implements [:eventlistenertype](EventListener) {
 	val parent : FilteringEventDispatchingBehavior
@@ -93,6 +94,11 @@ private static class [:filteringeventlistener](FilteringEventListener) implement
 		if (this.parent.acceptedType.isInstance(occ)) {
 			this.parent.behaviorDelegate.asEventListener.receiveEvent(occ)
 		}
+	}
+
+	@Pure
+	override getID : UUID {
+		this.parent.ID
 	}
 }
 	[:Off]
@@ -119,10 +125,12 @@ the [:mybehaviorname:] skill.
 	import io.sarl.core.Behaviors
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.EventListener
+	import java.util.UUID
 	abstract skill FilteringEventDispatchingBehavior implements Behaviors {
 		private static class FilteringEventListener implements EventListener {
 			new (parent : FilteringEventDispatchingBehavior) {}
 			override receiveEvent(occ : Event) {}
+			override getID : UUID {}
 		}
 	[:On]
 @Pure
@@ -143,21 +151,27 @@ capacity.
 [:Success:]
 	package io.sarl.docs.tutorials.overrideeventbuscapacity
 	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Address
+	import io.sarl.lang.core.Behavior
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.EventListener
+	import io.sarl.lang.core.Scope
+	import java.util.UUID
+	import java.util.concurrent.ConcurrentLinkedDeque
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		var acceptedType : Class<? extends Event>
 		var behaviorDelegate : Behaviors
 		private static class FilteringEventListener implements EventListener {
 			new (parent : FilteringEventDispatchingBehavior) {}
 			override receiveEvent(occ : Event) {}
+			override getID : UUID {}
 		}
 		@Pure
 		override [:aseventlistenerfct](asEventListener) : EventListener {
 			new FilteringEventListener(this)
 		}
 	[:On]
-overide hasRegisteredBehavior : boolean {
+override hasRegisteredBehavior : boolean {
 	this.behaviorDelegate.hasRegisteredBehavior
 }
 
@@ -191,28 +205,30 @@ one type of event accepted by the agents of type [:filteringeventagent:].
 
 [:Success:]
 	package io.sarl.docs.tutorials.overrideeventbuscapacity
-	import io.sarl.core.Behaviors
 	import io.sarl.lang.core.Event
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.Scope
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
 	import io.sarl.core.Initialize
 	import io.sarl.lang.core.EventListener
+	import java.util.UUID
+	import java.util.concurrent.ConcurrentLinkedDeque
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		new (acceptedType : Class<? extends Event>, behaviorDelegate : Behaviors) {
 		}
 		@Pure
 		override asEventListener : EventListener {
 		}
-		overide hasRegisteredBehavior : boolean {
+		override hasRegisteredBehavior : boolean {
+			false
 		}
-
 		override getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
 		}
-
 		override registerBehavior(attitude : Behavior, filter : (Event) => boolean, initializationParameters : Object*) : Behavior {
 		}
-
 		override unregisterBehavior(attitude : Behavior) : Behavior {
 		}
-
 		override wake(^event : Event, scope : Scope<Address>) {
 		}
 	}
