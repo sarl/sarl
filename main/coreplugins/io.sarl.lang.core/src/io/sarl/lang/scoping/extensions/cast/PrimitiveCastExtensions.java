@@ -318,7 +318,7 @@ public final class PrimitiveCastExtensions {
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0l;
+		return 0L;
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code float}.
