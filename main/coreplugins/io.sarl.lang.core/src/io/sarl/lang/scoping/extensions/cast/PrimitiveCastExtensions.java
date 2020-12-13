@@ -121,6 +121,30 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
+	/** Decodes a {@code CharSequence} into a {@code Byte}.
+	 *
+	 * <p>In opposite to the functions of {@link Byte}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Byte#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Byte} type.
+	 * @since 0.12
+	 * @see Byte#decode(String)
+	 */
+	@Pure
+	public static byte toByte(CharSequence value) {
+		try {
+			return Byte.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
 	/** Decodes a {@code CharSequence} into a {@code short}.
 	 *
 	 * <p>In opposite to the functions of {@link Short}, this function is
@@ -145,7 +169,31 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
-	/** Decodes a {@code CharSequence} into a {@code int}.
+	/** Decodes a {@code CharSequence} into a {@code Short}.
+	 *
+	 * <p>In opposite to the functions of {@link Short}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Short#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Short} type.
+	 * @since 0.12
+	 * @see Short#decode(String)
+	 */
+	@Pure
+	public static Short toShort(CharSequence value) {
+		try {
+			return Short.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into an {@code int}.
 	 *
 	 * <p>In opposite to the functions of {@link Integer}, this function is
 	 * null-safe and does not generate a {@link NumberFormatException}.
@@ -169,6 +217,30 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
+	/** Decodes a {@code CharSequence} into an {@code Integer}.
+	 *
+	 * <p>In opposite to the functions of {@link Integer}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Integer#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Integer} type.
+	 * @since 0.12
+	 * @see Integer#decode(String)
+	 */
+	@Pure
+	public static Integer toInteger(CharSequence value) {
+		try {
+			return Integer.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
 	/** Decodes a {@code CharSequence} into a {@code char}.
 	 *
 	 * @param value a value of {@code CharSequence} type.
@@ -176,9 +248,29 @@ public final class PrimitiveCastExtensions {
 	 * @since 0.12
 	 */
 	@Pure
-	@Inline("($1).charAt(0)")
 	public static char charValue(CharSequence value) {
-		return value.charAt(0);
+		try {
+			return value.charAt(0);
+		} catch (Throwable exception) {
+			//
+		}
+		return '\0';
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code Character}.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Character} type.
+	 * @since 0.12
+	 */
+	@Pure
+	public static Character toCharacter(CharSequence value) {
+		try {
+			return value.charAt(0);
+		} catch (Throwable exception) {
+			//
+		}
+		return '\0';
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code long}.
@@ -205,6 +297,30 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
+	/** Decodes a {@code CharSequence} into a {@code Long}.
+	 *
+	 * <p>In opposite to the functions of {@link Long}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Long#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Long} type.
+	 * @since 0.9
+	 * @see Long#decode(String)
+	 */
+	@Pure
+	public static Long toLong(CharSequence value) {
+		try {
+			return Long.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0l;
+	}
+
 	/** Decodes a {@code CharSequence} into a {@code float}.
 	 *
 	 * <p>In opposite to the functions of {@link Float}, this function is
@@ -229,6 +345,30 @@ public final class PrimitiveCastExtensions {
 		return 0;
 	}
 
+	/** Decodes a {@code CharSequence} into a {@code Float}.
+	 *
+	 * <p>In opposite to the functions of {@link Float}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Float#valueOf(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Float} type.
+	 * @since 0.9
+	 * @see Float#valueOf(String)
+	 */
+	@Pure
+	public static Float toFloat(CharSequence value) {
+		try {
+			return Float.parseFloat(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0f;
+	}
+
 	/** Decodes a {@code CharSequence} into a {@code double}.
 	 *
 	 * <p>In opposite to the functions of {@link Double}, this function is
@@ -251,6 +391,30 @@ public final class PrimitiveCastExtensions {
 			// Silent exception.
 		}
 		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code Double}.
+	 *
+	 * <p>In opposite to the functions of {@link Double}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Double#valueOf(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code Double} type.
+	 * @since 0.12
+	 * @see Double#valueOf(String)
+	 */
+	@Pure
+	public static Double toDouble(CharSequence value) {
+		try {
+			return Double.parseDouble(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0.0;
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code AtomicBoolean}.
