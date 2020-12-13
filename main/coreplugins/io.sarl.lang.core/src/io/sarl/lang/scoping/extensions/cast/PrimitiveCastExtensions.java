@@ -23,6 +23,7 @@ package io.sarl.lang.scoping.extensions.cast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -444,6 +445,27 @@ public final class PrimitiveCastExtensions {
 			// Silent error
 		}
 		return BigDecimal.valueOf(0.);
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code UUID}.
+	 *
+	 * <p>In opposite to the functions of {@link UUID}, this function is
+	 * null-safe and does not generate an exception.
+	 * If the given string cannot by parsed, {@code null} is replied.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code UUID} type, or {@code null}
+	 *     if a UUID cannot be parsed from the string of characters.
+	 * @since 0.12
+	 */
+	@Pure
+	public static UUID toUUID(CharSequence value) {
+		try {
+			return UUID.fromString(value.toString());
+		} catch (Throwable exception) {
+			// Silent error
+		}
+		return null;
 	}
 
 }

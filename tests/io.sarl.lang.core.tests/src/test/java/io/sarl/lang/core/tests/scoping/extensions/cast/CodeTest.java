@@ -24,8 +24,9 @@ package io.sarl.lang.core.tests.scoping.extensions.cast;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.DisplayName;
@@ -228,6 +229,19 @@ public class CodeTest extends AbstractSarlTest {
 		assertEpsilonEquals(0., PrimitiveCastExtensions.toBigDecimal("").doubleValue());
 		assertEpsilonEquals(0., PrimitiveCastExtensions.toBigDecimal("z").doubleValue());
 		assertEpsilonEquals(0., PrimitiveCastExtensions.toBigDecimal(null).doubleValue());
+	}
+
+	@Test
+	public void toUUID_CharSequence() throws Exception {
+		final String strValue0 = "433907b7-f201-4727-907a-9a34eb9a136c";
+		final String strValue1 = "d51c801f-9253-4777-82ce-1bfbb5f10ea1";
+		final String strValue2 = "zzzzzzzz-xxxx-zzzz-xxxx-zzzzzzzzzzzz";
+		assertNull(PrimitiveCastExtensions.toUUID(null));
+		assertNull(PrimitiveCastExtensions.toUUID(""));
+		assertNull(PrimitiveCastExtensions.toUUID("a"));
+		assertEquals(UUID.fromString(strValue0), PrimitiveCastExtensions.toUUID(strValue0));
+		assertEquals(UUID.fromString(strValue1), PrimitiveCastExtensions.toUUID(strValue1));
+		assertNull(PrimitiveCastExtensions.toUUID(strValue2));
 	}
 
 }

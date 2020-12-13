@@ -785,4 +785,58 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(STRING_AS_BIGDECIMAL_SARL, STRING_AS_BIGDECIMAL_JAVA);
 	}
 
+	private static final String STRING_AS_UUID_SARL = multilineString(
+			"import java.util.UUID",
+			"class A {",
+			"  def fct(left : String) : UUID {",
+			"    left as UUID",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_UUID_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import java.uutil.UUID;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public UUID fct(final String left) {",
+			"    return (left == null ? null : PrimitiveCastExtensions.toUUID(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_uuid_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_UUID_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toUUID'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_uuid(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_UUID_SARL, STRING_AS_UUID_JAVA);
+	}
+
 }
