@@ -86,6 +86,28 @@ public class CodeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void charValue_CharSequence() {
+		assertEquals('4', PrimitiveCastExtensions.charValue("4"));
+		assertEquals('0', PrimitiveCastExtensions.charValue("0xa"));
+		assertEquals('-', PrimitiveCastExtensions.charValue("-4"));
+		assertEquals('-', PrimitiveCastExtensions.charValue("-0xa"));
+		assertEquals('\0', PrimitiveCastExtensions.charValue(""));
+		assertEquals('z', PrimitiveCastExtensions.charValue("z"));
+		assertEquals('\0', PrimitiveCastExtensions.charValue(null));
+	}
+
+	@Test
+	public void toCharacter_CharSequence() {
+		assertEquals('4', PrimitiveCastExtensions.toCharacter("4"));
+		assertEquals('0', PrimitiveCastExtensions.toCharacter("0xa"));
+		assertEquals('-', PrimitiveCastExtensions.toCharacter("-4"));
+		assertEquals('-', PrimitiveCastExtensions.toCharacter("-0xa"));
+		assertEquals('\0', PrimitiveCastExtensions.toCharacter(""));
+		assertEquals('z', PrimitiveCastExtensions.toCharacter("z"));
+		assertEquals('\0', PrimitiveCastExtensions.toCharacter(null));
+	}
+
+	@Test
 	public void byteValue_CharSequence() {
 		assertEquals(4, PrimitiveCastExtensions.byteValue("4"));
 		assertEquals(10, PrimitiveCastExtensions.byteValue("0xa"));
@@ -94,6 +116,17 @@ public class CodeTest extends AbstractSarlTest {
 		assertEquals(0, PrimitiveCastExtensions.byteValue(""));
 		assertEquals(0, PrimitiveCastExtensions.byteValue("z"));
 		assertEquals(0, PrimitiveCastExtensions.byteValue(null));
+	}
+
+	@Test
+	public void toByte_CharSequence() {
+		assertEquals(4, PrimitiveCastExtensions.toByte("4"));
+		assertEquals(10, PrimitiveCastExtensions.toByte("0xa"));
+		assertEquals(-4, PrimitiveCastExtensions.toByte("-4"));
+		assertEquals(-10, PrimitiveCastExtensions.toByte("-0xa"));
+		assertEquals(0, PrimitiveCastExtensions.toByte(""));
+		assertEquals(0, PrimitiveCastExtensions.toByte("z"));
+		assertEquals(0, PrimitiveCastExtensions.toByte(null));
 	}
 
 	@Test
@@ -108,6 +141,17 @@ public class CodeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void toShort_CharSequence() {
+		assertEquals((short) 4, PrimitiveCastExtensions.toShort("4"));
+		assertEquals((short) 10, PrimitiveCastExtensions.toShort("0xa"));
+		assertEquals((short) -4, PrimitiveCastExtensions.toShort("-4"));
+		assertEquals((short) -10, PrimitiveCastExtensions.toShort("-0xa"));
+		assertEquals((short) 0, PrimitiveCastExtensions.toShort(""));
+		assertEquals((short) 0, PrimitiveCastExtensions.toShort("z"));
+		assertEquals((short) 0, PrimitiveCastExtensions.toShort(null));
+	}
+
+	@Test
 	public void intValue_CharSequence() {
 		assertEquals(4, PrimitiveCastExtensions.intValue("4"));
 		assertEquals(10, PrimitiveCastExtensions.intValue("0xa"));
@@ -116,6 +160,17 @@ public class CodeTest extends AbstractSarlTest {
 		assertEquals(0, PrimitiveCastExtensions.intValue(""));
 		assertEquals(0, PrimitiveCastExtensions.intValue("z"));
 		assertEquals(0, PrimitiveCastExtensions.intValue(null));
+	}
+
+	@Test
+	public void toInteger_CharSequence() {
+		assertEquals(4, PrimitiveCastExtensions.toInteger("4"));
+		assertEquals(10, PrimitiveCastExtensions.toInteger("0xa"));
+		assertEquals(-4, PrimitiveCastExtensions.toInteger("-4"));
+		assertEquals(-10, PrimitiveCastExtensions.toInteger("-0xa"));
+		assertEquals(0, PrimitiveCastExtensions.toInteger(""));
+		assertEquals(0, PrimitiveCastExtensions.toInteger("z"));
+		assertEquals(0, PrimitiveCastExtensions.toInteger(null));
 	}
 
 	@Test
@@ -130,6 +185,17 @@ public class CodeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void toLong_CharSequence() {
+		assertEquals(4l, PrimitiveCastExtensions.toLong("4"));
+		assertEquals(10l, PrimitiveCastExtensions.toLong("0xa"));
+		assertEquals(-4l, PrimitiveCastExtensions.toLong("-4"));
+		assertEquals(-10l, PrimitiveCastExtensions.toLong("-0xa"));
+		assertEquals(0l, PrimitiveCastExtensions.toLong(""));
+		assertEquals(0l, PrimitiveCastExtensions.toLong("z"));
+		assertEquals(0l, PrimitiveCastExtensions.toLong(null));
+	}
+
+	@Test
 	public void floatValue_CharSequence() {
 		assertEpsilonEquals(4f, PrimitiveCastExtensions.floatValue("4"));
 		assertEpsilonEquals(0f, PrimitiveCastExtensions.floatValue("0xa"));
@@ -141,6 +207,17 @@ public class CodeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void toFloat_CharSequence() {
+		assertEpsilonEquals(4f, PrimitiveCastExtensions.toFloat("4"));
+		assertEpsilonEquals(0f, PrimitiveCastExtensions.toFloat("0xa"));
+		assertEpsilonEquals(-4f, PrimitiveCastExtensions.toFloat("-4"));
+		assertEpsilonEquals(0f, PrimitiveCastExtensions.toFloat("-0xa"));
+		assertEpsilonEquals(0f, PrimitiveCastExtensions.toFloat(""));
+		assertEpsilonEquals(0f, PrimitiveCastExtensions.toFloat("z"));
+		assertEpsilonEquals(0f, PrimitiveCastExtensions.toFloat(null));
+	}
+
+	@Test
 	public void doubleValue_CharSequence() {
 		assertEpsilonEquals(4., PrimitiveCastExtensions.doubleValue("4"));
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue("0xa"));
@@ -149,6 +226,17 @@ public class CodeTest extends AbstractSarlTest {
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue(""));
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue("z"));
 		assertEpsilonEquals(0., PrimitiveCastExtensions.doubleValue(null));
+	}
+
+	@Test
+	public void toDoubleCharSequence() {
+		assertEpsilonEquals(4., PrimitiveCastExtensions.toDouble("4"));
+		assertEpsilonEquals(0., PrimitiveCastExtensions.toDouble("0xa"));
+		assertEpsilonEquals(-4., PrimitiveCastExtensions.toDouble("-4"));
+		assertEpsilonEquals(0., PrimitiveCastExtensions.toDouble("-0xa"));
+		assertEpsilonEquals(0., PrimitiveCastExtensions.toDouble(""));
+		assertEpsilonEquals(0., PrimitiveCastExtensions.toDouble("z"));
+		assertEpsilonEquals(0., PrimitiveCastExtensions.toDouble(null));
 	}
 
 	@Test

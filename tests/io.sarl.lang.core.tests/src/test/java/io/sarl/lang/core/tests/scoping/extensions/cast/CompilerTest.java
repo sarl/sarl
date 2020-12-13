@@ -255,6 +255,58 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(STRING_AS_BYTE_SARL, STRING_AS_BYTE_JAVA);
 	}
 
+	private static final String STRING_AS_BYTEOBJ_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Byte {",
+			"    left as Byte",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_BYTEOBJ_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Byte fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toByte(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_Byte_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BYTEOBJ_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'byteValue'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_BYTEOBJ_SARL, STRING_AS_BYTEOBJ_JAVA);
+	}
+
 	private static final String STRING_AS_SHORT_SARL = multilineString(
 			"class A {",
 			"  def fct(left : String) : short {",
@@ -307,6 +359,58 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(STRING_AS_SHORT_SARL, STRING_AS_SHORT_JAVA);
 	}
 
+	private static final String STRING_AS_SHORTOBJ_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Short {",
+			"    left as Short",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_SHORTOBJ_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Short fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toShort(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_Short_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_SHORTOBJ_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toShort'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_SHORTOBJ_SARL, STRING_AS_SHORTOBJ_JAVA);
+	}
+
 	private static final String STRING_AS_INT_SARL = multilineString(
 			"class A {",
 			"  def fct(left : String) : int {",
@@ -353,10 +457,57 @@ public class CompilerTest extends AbstractSarlTest {
 				"'intValue'");
 	}
 
+
+	private static final String STRING_AS_INTEGER_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Integer {",
+			"    left as Integer",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_INTEGER_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Integer fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toInteger(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_integer_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_INTEGER_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toInteger'");
+	}
+
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
-	public void string_as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
-		ctx.compileTo(STRING_AS_INT_SARL, STRING_AS_INT_JAVA);
+	public void string_as_integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_INTEGER_SARL, STRING_AS_INTEGER_JAVA);
 	}
 
 	private static final String STRING_AS_LONG_SARL = multilineString(
@@ -411,6 +562,59 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(STRING_AS_LONG_SARL, STRING_AS_LONG_JAVA);
 	}
 
+
+	private static final String STRING_AS_LONGOBJ_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Long {",
+			"    left as Long",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_LONGOBJ_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Long fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toLong(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_Long_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_LONGOBJ_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toLong'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_LONGOBJ_SARL, STRING_AS_LONGOBJ_JAVA);
+	}
+
 	private static final String STRING_AS_FLOAT_SARL = multilineString(
 			"class A {",
 			"  def fct(left : String) : float {",
@@ -463,6 +667,58 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(STRING_AS_FLOAT_SARL, STRING_AS_FLOAT_JAVA);
 	}
 
+	private static final String STRING_AS_FLOATOBJ_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Float {",
+			"    left as Float",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_FLOATOBJ_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Float fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toFloat(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_Float_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_FLOATOBJ_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toFloat'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_FLOATOBJ_SARL, STRING_AS_FLOATOBJ_JAVA);
+	}
+
 	private static final String STRING_AS_DOUBLE_SARL = multilineString(
 			"class A {",
 			"  def fct(left : String) : double {",
@@ -513,6 +769,58 @@ public class CompilerTest extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void string_as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_DOUBLE_SARL, STRING_AS_DOUBLE_JAVA);
+	}
+
+	private static final String STRING_AS_DOUBLEOBJ_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : Double {",
+			"    left as Double",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_DOUBLEOBJ_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public Double fct(final String left) {",
+			"    return (left == null ? 0 : PrimitiveCastExtensions.toDouble(left));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	@Tag("sarlValidation")
+	public void string_as_Double_issues() throws Exception {
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_DOUBLEOBJ_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'toDouble'");
+	}
+
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	public void string_as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_DOUBLEOBJ_SARL, STRING_AS_DOUBLEOBJ_JAVA);
 	}
 
 	private static final String STRING_AS_ATOMICINTEGER_SARL = multilineString(
