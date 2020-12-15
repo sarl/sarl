@@ -34,7 +34,6 @@ import java.util.concurrent.ConcurrentSkipListSet
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 /** 
  * SRE implementation of SARL's {@link InnerContextAccess} built-in capacity.
@@ -85,21 +84,16 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 
 	def getInnerContext : AgentContext {
 		val myself = owner
-		var newContext = new AtomicBoolean(false)
 		var life = getLife(myself)
 		var context = life.getInnerContext [
-			var spaceId = it.addressInInnerDefaultSpace.spaceID
-			var nctx= this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
-			newContext.set(true)
-			return nctx
-		]
-		if (newContext.get) {
+			val spaceId = it.addressInInnerDefaultSpace.spaceID
+			val nctx= this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
 			// Register the agent in the default space
-			var ^space = context.defaultSpace
-			// Unregister the agent from the default space
+			val ^space = nctx.defaultSpace
 			val listener = associatedEventBusListener
 			^space.registerStrongParticipant(listener)
-		}
+			return nctx
+		]
 		return context
 	}
 

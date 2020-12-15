@@ -34,6 +34,9 @@ import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.*
 
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import com.google.inject.Provider
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.locks.Lock
 
 /**
  * @author $Author: sgalland$
@@ -52,6 +55,9 @@ abstract class AbstractInjectionBasedContextServiceTest<T extends AbstractInject
 	@Nullable
 	protected var loggingService : LoggingService
 
+	@Nullable
+	protected var lockProvider : Provider<ReadWriteLock>
+
 	@BeforeEach
 	override setUp : void {
 		this.injector = typeof(Injector).mock
@@ -66,7 +72,16 @@ abstract class AbstractInjectionBasedContextServiceTest<T extends AbstractInject
 			when(this.context.isRootContext).thenReturn(getArgument(2) === null)
 			return this.context
 		]
-		
+		this.lockProvider = typeof(Provider).mock
+		val rwlock = typeof(ReadWriteLock).mock
+		when(this.lockProvider.get).thenReturn(rwlock)
+		when(rwlock.readLock).thenAnswer [
+			typeof(Lock).mock
+		]
+		when(rwlock.writeLock).thenAnswer [
+			typeof(Lock).mock
+		]
+
 		super.setUp
 	}
 

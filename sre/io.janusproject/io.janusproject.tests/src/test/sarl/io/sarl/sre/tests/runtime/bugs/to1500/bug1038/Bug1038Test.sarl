@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.to1000.bug981
+
+package io.sarl.sre.tests.runtime.bugs.to1500.bug1038
 
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
-import io.sarl.sre.tests.runtime.bugs.to1000.bug981.mocks.Launcher0
-import io.sarl.sre.tests.runtime.bugs.to1000.bug981.mocks.Launcher1
+import io.sarl.sre.tests.runtime.bugs.to1500.bug1038.mocks.TestAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
@@ -32,15 +32,20 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-/** Tests for issue #981: Program does not end.
+import static io.sarl.sre.test.framework.Constants.*
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+
+/** Testing class for issue: getContext is null after a join and it must not be
+.
  *
- * <p>See: https://github.com/sarl/sarl/issues/981
+ * <p>https://github.com/sarl/sarl/issues/1038
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
+ * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/981"
+ * @see "https://github.com/sarl/sarl/issues/1038"
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -48,23 +53,27 @@ import org.junit.jupiter.api.^extension.ExtendWith
 	typeof(PropertyRestoreExtension),
 	typeof(SreRunExtension)
 ])
-@DisplayName("run: Bug #981")
+@DisplayName("run: Bug #1038")
 @Tag("sre-run")
 @Tag("janus")
-class Bug981Test {
+class Bug1038Test {
 
 	@Test
-	@DisplayName("Version 1")
-	def runVersion1(extension rc : SreRunContext) : void {
-		typeof(Launcher0).runSre
-		// Should stop without timeout
-	}
+	@DisplayName("Join inner context")
+	def joinInnerContext(extension rc : SreRunContext) : void {
+		typeof(TestAgent1).runSre(STANDARD_TIMEOUT)
 
-	@Test
-	@DisplayName("Version 2")
-	def runVersion2(extension rc : SreRunContext) : void {
-		typeof(Launcher1).runSre
-		// Should stop without timeout
+		val r = allResultsPerAgent
+		2.assertEquals(r.size)
+		
+		val agent1id = bootAgentId
+		val agent2id = r.keySet.filter[it != agent1id].iterator.next
+
+		val data1 = r.get(agent1id)
+		data1.assertContains("participant-joined" + agent2id.toString)
+
+		val data2 = r.get(agent2id)
+		data2.assertContains("joined=true", "context null = true")
 	}
 
 }

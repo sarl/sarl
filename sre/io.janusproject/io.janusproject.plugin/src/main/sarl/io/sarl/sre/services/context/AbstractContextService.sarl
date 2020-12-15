@@ -22,13 +22,15 @@ package io.sarl.sre.services.context
 
 import io.sarl.lang.core.Agent
 import io.sarl.sre.services.AbstractSreService
-import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Singleton
-import org.eclipse.xtend.lib.annotations.Accessors
 import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
+import javax.inject.Provider
+import javax.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * A service managing the root context and enabling the creation of contexts.
@@ -48,16 +50,22 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	@Accessors(PUBLIC_GETTER)
 	val rootContext : Context
 
+	/** The lock resource. */
+	protected val lock : ReadWriteLock
+
+	/** The logger for this service. */
 	protected val logger : Logger
 
 	/** Constructor.
 	 * 
 	 * @param rootContext the root context.
 	 * @param logger the logging service to be used.
+	 * @param lockProvider a provider of read-write locks.
 	 */
-	protected new (rootContext : Context, logger : LoggingService) {
+	protected new (rootContext : Context, logger : LoggingService, lockProvider : Provider<ReadWriteLock>) {
 		this.rootContext = rootContext
 		this.logger = createLogger(logger)
+		this.lock = lockProvider.get
 	}
 
 	/** Create the instance of the logger for this service.
@@ -82,57 +90,76 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	 * 
 	 * <p>This function is not thread-safe.
 	 */
-	protected abstract def getContextInternalStructure : ConcurrentHashMap<UUID, Context>
+	protected abstract def getContextInternalStructure : Map<UUID, Context>
 
-	final def createContextWithoutRegistration(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
+	final override createContextWithoutRegistration(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
 		assert contextID !== null, "The contextID cannot be null"
 		assert defaultSpaceID !== null, "The defaultSpaceUUID cannot be null"
 		this.logger.fine[MessageFormat::format(Messages::AbstractContextService_1, contextID, defaultSpaceID)]
 		return contextID.newContextInstance(defaultSpaceID, owner)
 	}
 
-	final def createContext(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
+	final override createContext(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
 		assert contextID !== null, "The contextID cannot be null"
 		assert this.rootContext !== null, "No root context yet"
 		if (contextID == this.rootContext.ID) {
 			return this.rootContext
 		}
-		val repository = getContextInternalStructure
-		var existingContext : Context = repository.get(contextID)
+		val rlock = this.lock.readLock
+		var existingContext : Context
+		rlock.lock
+		try {
+			existingContext = getContextInternalStructure.get(contextID)
+		} finally {
+			rlock.unlock
+		}
 		if (existingContext === null) {
 			assert defaultSpaceID !== null, "The defaultSpaceUUID cannot be null"
-
-			existingContext = repository.get(contextID)
-			if (existingContext === null) {
-				existingContext = contextID.newContextInstance(defaultSpaceID, owner)
-				this.logger.fine[MessageFormat::format(Messages::AbstractContextService_0, contextID, defaultSpaceID)]
-				repository.putIfAbsent(contextID, existingContext)
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				val repository = getContextInternalStructure
+				existingContext = repository.get(contextID)
+				if (existingContext === null) {
+					existingContext = contextID.newContextInstance(defaultSpaceID, owner)
+					this.logger.fine[MessageFormat::format(Messages::AbstractContextService_0, contextID, defaultSpaceID)]
+					repository.put(contextID, existingContext)
+				}
+			} finally {
+				wlock.unlock
 			}
-
 		}
 		return existingContext
 	}
 
-	def getContext(contextID : UUID) : Context {
+	override getContext(contextID : UUID) : Context {
 		assert contextID !== null, "The contextID cannot be null"
 		assert rootContext !== null, "The root context cannot be null"
 		if (contextID == this.rootContext.ID) {
 			return this.rootContext
 		}
-		val repository = contextInternalStructure
-		var existingContext : Context = repository.get(contextID)
-
-		return existingContext
+		val rlock = this.lock.readLock
+		rlock.lock
+		try {
+			return contextInternalStructure.get(contextID)
+		} finally {
+			rlock.unlock
+		}
 	}
 
-	def removeContext(contextID : UUID) : Context {
+	override removeContext(contextID : UUID) : Context {
 		assert contextID !== null, "The contextID cannot be null"
 		if (contextID == this.rootContext.ID) {
 			return null
 		}
-		val repository = contextInternalStructure
-		var existingContext : Context = repository.remove(contextID)
-
+		val wlock = this.lock.writeLock
+		var existingContext : Context
+		wlock.lock
+		try {
+			existingContext = contextInternalStructure.remove(contextID)
+		} finally {
+			wlock.unlock
+		}
 		if (existingContext !== null) {
 			this.logger.fine[MessageFormat::format(Messages::AbstractContextService_2, contextID)]
 			existingContext.destroy
@@ -141,6 +168,8 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	}
 
 	/** Create a context instance.
+	 *
+	 * <p>This function is not thread-safe.
 	 * 
 	 * @param contextID the identifier of the context.
 	 * @param defaultSpaceId the identifier of the default space in the context.

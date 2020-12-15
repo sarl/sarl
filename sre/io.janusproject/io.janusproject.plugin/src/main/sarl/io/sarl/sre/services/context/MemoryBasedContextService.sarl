@@ -23,10 +23,14 @@ package io.sarl.sre.services.context
 import com.google.inject.Injector
 import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
+import java.util.ArrayList
+import java.util.Collection
 import java.util.Map
 import java.util.TreeMap
 import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
+import javax.inject.Provider
 
 /** 
  * A service managing the root context and enabling the creation of contexts by injection into the
@@ -52,11 +56,13 @@ class MemoryBasedContextService extends AbstractInjectionBasedContextService {
 	 * @param logger the logging service to be used.
 	 * @param injector is the injector.
 	 * @param factory is the factory of contexts.
-	 * @param lock is the lock that must be used by this service.
+	 * @param lockProvider a provider of read-write locks.
 	 */
 	@Inject
-	new(@KernelScope rootContext : Context, logger : LoggingService, injector : Injector, factory : ContextFactory) {
-		super(rootContext, logger, injector, factory)
+	new(@KernelScope rootContext : Context, logger : LoggingService,
+		lockProvider : Provider<ReadWriteLock>,
+		injector : Injector, factory : ContextFactory) {
+		super(rootContext, logger, lockProvider, injector, factory)
 	}
 
 	protected override getContextInternalStructure : Map<UUID, Context> {
@@ -70,6 +76,17 @@ class MemoryBasedContextService extends AbstractInjectionBasedContextService {
 	}
 
 	override getAllContexts : Collection<Context> {
+		val rlock = this.lock.readLock
+		rlock.lock
+		try {
+			val internal = contextInternalStructure
+			var all = new ArrayList<Context>(internal.size + 1)
+			all.add(rootContext)
+			all.addAll(internal.values)
+			return all
+		} finally {
+			rlock.unlock
+		}
 	}
 
 }

@@ -379,10 +379,10 @@ final class AgentLife {
 			this.state = AgentState::DEAD
 			// Clear the references
 			dyingAgent.setSreSpecificData(null)
-			this.externalContextInstances = null
 			val wlock = this.lock.writeLock
 			wlock.lock
 			try {
+				this.externalContextInstances = null
 				this.defaultContextInstance = null
 			} finally {
 				wlock.unlock
@@ -517,22 +517,27 @@ final class AgentLife {
 	def addExternalContext(context : Context, address : Address) : ContextReference {
 		assert context !== null
 		assert address !== null
-
+		var validation = false
 		val rlock = this.lock.readLock
-		var cr : ContextReference
 		rlock.lock
 		try {
-			cr = this.defaultContextInstance
+			validation = (this.defaultContextInstance === null || context.ID != this.defaultContextInstance.context.ID)
 		} finally {
 			rlock.unlock
 		}
-
-		if (cr === null || context.ID != cr.context.ID) {
-			var ref = new ContextReference(this, context, address)
-
-			ensureExternalContextInstances.put(context.ID, ref)
-
-			return ref
+		if (validation) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				validation = (this.defaultContextInstance === null || context.ID != this.defaultContextInstance.context.ID)
+				if (validation) {
+					var ref = new ContextReference(this, context, address)
+					ensureExternalContextInstances.put(context.ID, ref)
+					return ref
+				}
+			} finally {
+				wlock.unlock
+			}
 		}
 		return null
 	}
@@ -541,30 +546,40 @@ final class AgentLife {
 	 */
 	def removeExternalContext(context : Context) : ContextReference {
 		assert context !== null
-		var ctxs : ConcurrentHashMap<UUID, ContextReference> = this.externalContextInstances
-		if (ctxs !== null) {
-			var ctx = ctxs.remove(context.ID)
-			if (this.externalContextInstances !== null && this.externalContextInstances.empty) {
-				this.externalContextInstances = null
+		var lck = this.lock.writeLock
+		lck.lock
+		try {
+			if (this.externalContextInstances !== null) {
+				var ctx = this.externalContextInstances.remove(context.ID)
+				if (this.externalContextInstances !== null && this.externalContextInstances.empty) {
+					this.externalContextInstances = null
+				}
+				return ctx
 			}
-			return ctx
+			return null
+		} finally {
+			lck.unlock
 		}
-		return null
 	}
 
 	/** Remove a context in which the agent is located.
 	 */
 	def removeExternalContext(context : ContextReference) : ContextReference {
 		assert context !== null
-		var ctxs : Map<UUID, ContextReference> = this.externalContextInstances
-		if (ctxs !== null) {
-			var ctx = ctxs.remove(context.context.ID)
-			if (ctxs.empty) {
-				this.externalContextInstances = null
+		var lck = this.lock.writeLock
+		lck.lock
+		try {
+			if (this.externalContextInstances !== null) {
+				var ctx = this.externalContextInstances.remove(context.context.ID)
+				if (this.externalContextInstances.empty) {
+					this.externalContextInstances = null
+				}
+				return ctx
 			}
-			return ctx
+			return null
+		} finally {
+			lck.unlock
 		}
-		return null
 	}
 
 	/** Replies the external contexts in which the agent is located.
@@ -574,25 +589,22 @@ final class AgentLife {
 	 */
 	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
 		var result = new ConcurrentLinkedDeque
-		val instances = this.externalContextInstances
 		val rlock = this.lock.readLock
-		var dc : ContextReference
 		rlock.lock
 		try {
-			dc = this.defaultContextInstance
-		} finally {
-			rlock.unlock
-		}
-		if (instances !== null) {
-			val dcId = dc?.context?.ID
-			var foundDefaultContext = false
-			for (entry : instances.entrySet) {
-				if (!foundDefaultContext && dcId == entry.key) {
-					foundDefaultContext = true
-				} else {
-					result += entry.value
+			if (this.externalContextInstances !== null) {
+				val dcId = this.defaultContextInstance?.context?.ID
+				var foundDefaultContext = false
+				for (entry : this.externalContextInstances.entrySet) {
+					if (!foundDefaultContext && dcId == entry.key) {
+						foundDefaultContext = true
+					} else {
+						result += entry.value
+					}
 				}
 			}
+		} finally {
+			rlock.unlock
 		}
 		return result
 	}
@@ -603,11 +615,16 @@ final class AgentLife {
 	 * @return the number of external contexts.
 	 */
 	def getExternalContextCount : int {
-		val insts = this.externalContextInstances
-		if (insts === null) {
-			return 0
+		var lck = this.lock.writeLock
+		lck.lock
+		try {
+			if (this.externalContextInstances === null) {
+				return 0
+			}
+			return this.externalContextInstances.size
+		} finally {
+			lck.unlock
 		}
-		return insts.size
 	}
 
 	/** Replies all the contexts in which the agent is located, including the default context and
@@ -617,36 +634,33 @@ final class AgentLife {
 	 */
 	def getEnclosingContexts : ConcurrentLinkedDeque<ContextReference> {
 		val rlock = this.lock.readLock
-		var dc : ContextReference
 		rlock.lock
 		try {
-			dc = this.defaultContextInstance
+			if (this.defaultContextInstance !== null) {
+				var result = new ConcurrentLinkedDeque
+				if (this.externalContextInstances === null) {
+					result.add(this.defaultContextInstance)
+					return result
+				}
+				var foundDefaultContext = false
+				val dcId = this.defaultContextInstance.context.ID
+				for (entry : this.externalContextInstances.entrySet) {
+					result += entry.value
+					if (!foundDefaultContext && dcId == entry.key) {
+						foundDefaultContext = true
+					}				
+				}
+				if (!foundDefaultContext) {
+					result += this.defaultContextInstance
+				}
+				return result
+			} else if (this.externalContextInstances === null) {
+				return new ConcurrentLinkedDeque
+			} else {
+				return new ConcurrentLinkedDeque(this.externalContextInstances.values)
+			}
 		} finally {
 			rlock.unlock
-		}
-		val ec = this.externalContextInstances
-		if (dc !== null) {
-			var result = new ConcurrentLinkedDeque
-			if (ec === null) {
-				result.add(dc)
-				return result
-			}
-			var foundDefaultContext = false
-			val dcId = dc.context.ID
-			for (entry : ec.entrySet) {
-				result += entry.value
-				if (!foundDefaultContext && dcId == entry.key) {
-					foundDefaultContext = true
-				}				
-			}
-			if (!foundDefaultContext) {
-				result += dc
-			}
-			return result
-		} else if (ec === null) {
-			return new ConcurrentLinkedDeque
-		} else {
-			return new ConcurrentLinkedDeque(ec.values)
 		}
 	}
 
@@ -656,11 +670,16 @@ final class AgentLife {
 	 * @return the context, or {@code null} 
 	 */
 	def getExternalContext(identifier : UUID) : ContextReference {
-		val col = this.externalContextInstances
-		if (col !== null) {
-			return col.get(identifier)
+		val rlock = this.lock.readLock
+		rlock.lock
+		try {
+			if (this.externalContextInstances !== null) {
+				return this.externalContextInstances.get(identifier)
+			}
+			return null
+		} finally {
+			rlock.unlock
 		}
-		return null
 	}
 
 	/** Change the default context of the agent.
@@ -687,12 +706,10 @@ final class AgentLife {
 	}
 
 	private def ensureExternalContextInstances : Map<UUID, ContextReference> {
-		var map : ConcurrentHashMap<UUID, ContextReference> = this.externalContextInstances
-		if (map === null) {
-			map = new ConcurrentHashMap<UUID, ContextReference>
-			this.externalContextInstances = map
+		if (this.externalContextInstances === null) {
+			this.externalContextInstances = new ConcurrentHashMap<UUID, ContextReference>
 		}
-		return map
+		return this.externalContextInstances
 	}
 
 	/** Replies the default context of the agent.

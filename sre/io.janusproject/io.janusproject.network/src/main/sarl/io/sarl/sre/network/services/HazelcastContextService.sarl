@@ -38,6 +38,8 @@ import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Logger
 import javax.inject.Inject
+import javax.inject.Provider
+import java.util.concurrent.locks.ReadWriteLock
 
 /** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.
  *
@@ -66,9 +68,10 @@ class HazelcastContextService extends MemoryBasedContextService {
 	var defaultSpacesListenerID : UUID
 
 	@Inject
-	new(sreConfig : SreConfig, @KernelScope rootContext : Context, logger : LoggingService, injector : Injector,
-		factory : ContextFactory, hazelcastInstance : HazelcastInstance) {
-		super(rootContext, logger, injector, factory);
+	new(sreConfig : SreConfig, @KernelScope rootContext : Context, logger : LoggingService,
+		lockProvider : Provider<ReadWriteLock>, injector : Injector, factory : ContextFactory,
+		hazelcastInstance : HazelcastInstance) {
+		super(rootContext, logger, lockProvider, injector, factory);
 
 		this.hazelcastInstance = hazelcastInstance
 

@@ -24,6 +24,8 @@ import com.google.inject.Injector
 import io.sarl.lang.core.Agent
 import io.sarl.sre.services.logging.LoggingService
 import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Provider
 
 /** 
  * A service managing the root context and enabling the creation of contexts by injection.
@@ -49,15 +51,16 @@ abstract class AbstractInjectionBasedContextService extends AbstractContextServi
 	 * @param logger the logging service to be used.
 	 * @param injector is the injector.
 	 * @param factory is the factory of contexts.
-	 * @param lock is the lock that must be used by this service.
+	 * @param lockProvider a provider of read-write locks.
 	 */
-	protected new(rootContext : Context, logger : LoggingService, injector : Injector, factory : ContextFactory) {
-		super(rootContext, logger)
+	protected new(rootContext : Context, logger : LoggingService, lockProvider : Provider<ReadWriteLock>,
+		injector : Injector, factory : ContextFactory) {
+		super(rootContext, logger, lockProvider)
 		this.injector = injector
 		this.contextFactory = factory
 	}
 
-	protected def newContextInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
+	protected override newContextInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
 		var context = this.contextFactory.newInstance(contextID, defaultSpaceID, owner)
 		this.injector.injectMembers(context)
 		return context
