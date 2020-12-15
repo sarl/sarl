@@ -125,6 +125,17 @@ skill TestingSkill implements TestingCapacity {
 		}
 	}
 
+	@Pure
+	override getParam(index : int) : T with T {
+		this.initializationParameters.get(index + 1) as T
+	}
+
+	@Pure
+	override getParam(type : Class<T>, index : int) : T with T {
+		val obj = this.initializationParameters.get(index + 1)
+		return type.cast(obj)
+	}
+
 	@SuppressWarnings("discouraged_reference")
 	override waitAndDo(condition : ()=>boolean, timeout : int = Constants::STANDARD_TIMEOUT, code : ()=>void) {
 		assert condition !== null

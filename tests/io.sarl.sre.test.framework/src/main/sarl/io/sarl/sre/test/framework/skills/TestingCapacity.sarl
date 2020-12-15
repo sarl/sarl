@@ -80,6 +80,22 @@ capacity TestingCapacity {
 	@Pure
 	def getAgentInitializationParameters : Object[]
 
+	/** Replies the initialization parameter at the given index of the agents.
+	 *
+	 * @return the initialization parameters.
+	 * @since 0.12
+	 */
+	@Pure
+	def getParam(index : int) : T with T
+
+	/** Replies the initialization parameter at the given index of the agents.
+	 *
+	 * @return the initialization parameters.
+	 * @since 0.12
+	 */
+	@Pure
+	def getParam(type : Class<T>, index : int) : T with T
+
 	/** Replies the initialization parameters of the agents extended with the given values.
 	 * 
 	 * @param values the additional parameters
