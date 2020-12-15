@@ -24,6 +24,7 @@ package io.sarl.lang.core;
 import java.lang.reflect.Constructor;
 import java.security.InvalidParameterException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -41,7 +42,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 
 	/** Skill repository.
 	 */
-	private final ConcurrentHashMap<Class<? extends Capacity>, AtomicSkillReference> skillRepository = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Class<? extends Capacity>, AtomicSkillReference> skillRepository = new ConcurrentHashMap<>();
 
 	private DynamicSkillProvider skillProvider;
 
@@ -81,7 +82,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	 *
 	 * @return the skill repository.
 	 */
-	final ConcurrentHashMap<Class<? extends Capacity>, AtomicSkillReference> $getSkillRepository() {
+	final ConcurrentMap<Class<? extends Capacity>, AtomicSkillReference> $getSkillRepository() {
 		return this.skillRepository;
 	}
 

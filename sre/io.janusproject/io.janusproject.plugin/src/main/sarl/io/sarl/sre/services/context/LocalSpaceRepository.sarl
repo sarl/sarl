@@ -45,7 +45,7 @@ import io.sarl.sre.services.logging.LoggingService
  */
 class LocalSpaceRepository extends SpaceRepository {
 
-	val spaces : ConcurrentHashMap<UUID, SpaceDescription>
+	val spaces : ConcurrentMap<UUID, SpaceDescription>
 
 	/** Constructor.
 	 * 
@@ -76,7 +76,7 @@ class LocalSpaceRepository extends SpaceRepository {
 	new (injector : Injector, executor : ExecutorService,
 		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
-		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>,
+		internalStructure : ConcurrentMap<UUID, SpaceDescription>,
 		listenerCollection : SmartListenerCollection<?>) {
 		super(injector, executor, loggingService, config, specificationFactory, listenerCollection)
 		if (internalStructure !== null) {
@@ -91,7 +91,7 @@ class LocalSpaceRepository extends SpaceRepository {
 	}
 
 	protected def existsSpace(spaceUUID : UUID) : boolean {
-		this.spaces.contains(spaceUUID)
+		this.spaces.containsKey(spaceUUID)
 	}
 
 	protected def removeSpaceIfEmpty(spaceUUID : UUID) {

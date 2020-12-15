@@ -28,9 +28,9 @@ import io.sarl.core.MemberLeft
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.SpaceID
+import java.util.Collection
 import java.util.EventListener
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * This service enables to store the contexts and to manage the spaces in the SRE platform.
@@ -71,17 +71,19 @@ interface ContextService extends Service {
 	def createContext(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context
 
 	/** 
-	 * Replies an existing context instance.
+	 * Replies an existing context instance. This function does not create the instance of the context
+	 * if it was not created.
 	 * 
 	 * @param contextID the id of the context to create
 	 * @return the context, {@code null}.
 	 */
 	def getContext(contextID : UUID) : Context
+
 	/** 
 	 * Remove the context instance.
 	 * 
 	 * @param contextID the id of the context to remove
-	 * @return the removed context, {@code null}.
+	 * @return the removed context, {@code null} if no context with the given ID was found.
 	 */
 	def removeContext(contextID : UUID) : Context
 
@@ -91,7 +93,7 @@ interface ContextService extends Service {
 	 * @return a view on all the contexts.
 	 * @since 0.10
 	 */
-	def getAllContexts : ConcurrentLinkedDeque<Context>
+	def getAllContexts : Collection<Context>
 
 }
 

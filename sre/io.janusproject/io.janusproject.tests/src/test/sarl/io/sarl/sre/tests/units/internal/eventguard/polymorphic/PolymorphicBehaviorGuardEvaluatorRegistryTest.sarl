@@ -26,8 +26,15 @@ import io.sarl.core.Initialize
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
+import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluator
+import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluatorRegistry
+import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent0
+import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent1
+import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent2
+import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestEvent0
 import io.sarl.tests.api.Nullable
-import java.util.concurrent.ConcurrentHashMap
+import java.util.UUID
+import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.CopyOnWriteArraySet
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
@@ -43,13 +50,6 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.*
-import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluatorRegistry
-import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluator
-import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent1
-import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestEvent0
-import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent2
-import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent0
-import java.util.UUID
 
 /** 
  * @author $Author: sgalland$
@@ -68,7 +68,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistryTest {
 	var registry : PolymorphicBehaviorGuardEvaluatorRegistry
 
 	@Nullable
-	var internalStructure : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
+	var internalStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
 
 	@BeforeEach
 	def setUp : void {

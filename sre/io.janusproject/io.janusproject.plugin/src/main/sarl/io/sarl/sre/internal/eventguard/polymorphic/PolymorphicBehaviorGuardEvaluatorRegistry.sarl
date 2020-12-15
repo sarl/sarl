@@ -33,6 +33,7 @@ import java.util.concurrent.CopyOnWriteArraySet
 
 import static extension io.sarl.lang.core.SREutils.*
 import java.util.Comparator
+import java.util.concurrent.ConcurrentMap
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.
@@ -66,7 +67,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
 	 * receivers to an event without any locking.
 	 */
-	val evaluators : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
+	val evaluators : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
 
 	/** 
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
@@ -84,7 +85,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	 * @return the internal data structure
 	 */
 	@Pure
-	override getInternalDataStructure : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>> {
+	override getInternalDataStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>> {
 		this.evaluators
 	}
 	

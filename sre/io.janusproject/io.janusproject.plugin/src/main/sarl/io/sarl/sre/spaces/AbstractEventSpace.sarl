@@ -37,6 +37,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.ConcurrentMap
 
 /** 
  * Abstract implementation of an event space.
@@ -70,9 +71,9 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	@Accessors(PUBLIC_GETTER)
 	var spaceParticipantListener : SpaceParticipantListener
 
-	val strongRepository : ConcurrentHashMap<UUID, Participant>
+	val strongRepository : ConcurrentMap<UUID, Participant>
 
-	val weakRepository : ConcurrentHashMap<UUID, Participant>
+	val weakRepository : ConcurrentMap<UUID, Participant>
 
 	/** Constructor.
 	 * 
@@ -96,7 +97,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		spaceId : SpaceID,
 		participantListener : SpaceParticipantListener,
 		loggingService : LoggingService,
-		strongRepository : ConcurrentHashMap<UUID, Participant>,
+		strongRepository : ConcurrentMap<UUID, Participant>,
 		weakRepository : ConcurrentHashMap<UUID, Participant>) {
 		super(spaceId)
 		this.spaceParticipantListener = participantListener
@@ -238,12 +239,12 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 			scopedParticipants += this.weakRepository.values
 		} else {
 			// Scope => add the strong and weak participants that are matching the scope
-			this.strongRepository.forEachValue(1) [element |
+			this.strongRepository.forEach [key, element |
 				if (scope.matches(element.address)) {
 					scopedParticipants += element
 				}
 			]
-			this.weakRepository.forEachValue(1) [ element |
+			this.weakRepository.forEach [ key, element |
 				if (scope.matches(element.address)) {
 					scopedParticipants += element
 				}

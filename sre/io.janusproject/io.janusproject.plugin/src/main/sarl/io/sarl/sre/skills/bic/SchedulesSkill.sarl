@@ -53,6 +53,7 @@ import javax.inject.Inject
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
 import static java.text.MessageFormat.*
+import java.util.concurrent.ConcurrentMap
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -73,7 +74,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	val failureListenerFactory : FailureListenerFactory
 
-	var activeTaskRepository : ConcurrentHashMap<String, TaskDescription> = null
+	var activeTaskRepository : ConcurrentMap<String, TaskDescription> = null
 
 	/**
 	 * JUG Time based generator used for naming tasks, enough for this kind of missions not for a string unique UUID
@@ -131,7 +132,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * 
 	 * <p>This function is not thread-safe.
 	 */
-	private def getRepository : ConcurrentHashMap<String, TaskDescription> {
+	private def getRepository : ConcurrentMap<String, TaskDescription> {
 		if (this.activeTaskRepository === null) {
 			this.activeTaskRepository = new ConcurrentHashMap<String,TaskDescription> 
 		}

@@ -35,6 +35,7 @@ import java.util.concurrent.CopyOnWriteArraySet
 import org.eclipse.xtend.lib.annotations.Data
 
 import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
+import java.util.concurrent.ConcurrentMap
 
 /** 
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a
@@ -55,7 +56,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 */
-	val evaluators : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<GuardedEvaluator>>
+	val evaluators : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<GuardedEvaluator>>
 
 	/** 
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
@@ -69,7 +70,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	}
 
 	@Pure
-	override getInternalDataStructure : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<GuardedEvaluator>> {
+	override getInternalDataStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<GuardedEvaluator>> {
 		this.evaluators
 	}
 

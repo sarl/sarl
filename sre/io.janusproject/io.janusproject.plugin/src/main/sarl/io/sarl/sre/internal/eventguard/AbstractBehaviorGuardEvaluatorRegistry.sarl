@@ -26,8 +26,8 @@ import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.ObjectComparator
 import java.util.Set
 import java.util.TreeSet
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArraySet
 
@@ -52,7 +52,7 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 	 * @return the internal data structure
 	 */
 	@Pure
-	abstract def getInternalDataStructure : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<T>>
+	abstract def getInternalDataStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<T>>
 
 	/** Replies the mapper from the internal guard evaluator description to the public description.
 	 * 

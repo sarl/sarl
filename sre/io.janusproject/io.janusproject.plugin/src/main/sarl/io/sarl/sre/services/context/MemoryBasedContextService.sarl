@@ -23,9 +23,9 @@ package io.sarl.sre.services.context
 import com.google.inject.Injector
 import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
+import java.util.Map
+import java.util.TreeMap
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
 
 /** 
@@ -44,7 +44,7 @@ import javax.inject.Inject
  */
 class MemoryBasedContextService extends AbstractInjectionBasedContextService {
 
-	var contextRepository : ConcurrentHashMap<UUID, Context>
+	volatile var contextRepository : Map<UUID, Context>
 
 	/** Constructor.
 	 * 
@@ -59,21 +59,17 @@ class MemoryBasedContextService extends AbstractInjectionBasedContextService {
 		super(rootContext, logger, injector, factory)
 	}
 
-	protected def getContextInternalStructure : ConcurrentHashMap<UUID, Context> {
-		var repository : ConcurrentHashMap<UUID, Context> = this.contextRepository
+	protected override getContextInternalStructure : Map<UUID, Context> {
+		var repository = this.contextRepository
 
 		if (repository === null) {
-			repository = new ConcurrentHashMap<UUID, Context>
+			repository = new TreeMap<UUID, Context>
 			this.contextRepository = repository
 		}
 		return repository
 	}
 
-	def getAllContexts : ConcurrentLinkedDeque<Context> {
-		var all = new ConcurrentLinkedDeque<Context>
-		all.add(rootContext)
-		all.addAll(this.contextInternalStructure.values)
-		return all
+	override getAllContexts : Collection<Context> {
 	}
 
 }

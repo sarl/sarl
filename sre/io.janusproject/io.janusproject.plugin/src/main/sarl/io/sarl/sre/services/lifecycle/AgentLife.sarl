@@ -72,7 +72,7 @@ final class AgentLife {
 
 	var innerSpaceAddress : Address
 
-	var externalContextInstances : ConcurrentHashMap<UUID, ContextReference>
+	var externalContextInstances : Map<UUID, ContextReference>
 
 	var defaultContextInstance : ContextReference
 

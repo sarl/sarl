@@ -56,6 +56,7 @@ import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import io.sarl.api.bootiquebase.config.LogConfig
+import java.util.concurrent.ConcurrentMap
 
 /**
  * Context for running the SRE. This context is thread-safe.
@@ -219,7 +220,7 @@ class SreRunContext {
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	def getAllResultsPerAgent : ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>> {
+	def getAllResultsPerAgent : ConcurrentMap<UUID, CopyOnWriteArrayList<Object>> {
 		return globalResults
 	}
 
@@ -497,7 +498,7 @@ class SreRunContext {
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	@SuppressWarnings("discouraged_reference")
-	def waitForTheKernel(timeout : int, predicate : (ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>)=>boolean) {
+	def waitForTheKernel(timeout : int, predicate : (ConcurrentMap<UUID, CopyOnWriteArrayList<Object>>)=>boolean) {
 		val th = Thread::currentThread
 		val oldName = th.name
 		try {
