@@ -39,11 +39,26 @@ class CannotSpawnException extends RuntimeException {
 	 * @param cause the cause of the exception.
 	 */
 	new (agentClazz : Class<? extends Agent>, cause : Throwable = null) {
-		super(MessageFormat::format(
+		super(makeMessage(agentClazz, cause),
+			cause)
+	}
+
+	private static def makeMessage(agentClazz : Class<? extends Agent>, cause : Throwable) : String {
+		var msg : String = null
+		if (cause !== null) {
+			msg = cause.localizedMessage
+		}
+		if (msg.isNullOrEmpty) {
+			if (cause !== null) {
+				msg = cause.class.simpleName
+			} else {
+				msg = "?"
+			}
+		}
+		return MessageFormat::format(
 			Messages::CannotSpawnException_0,
 			IssueCodes::SPAWN_ERROR,
-			agentClazz, cause?.localizedMessage),
-			cause)
+			agentClazz, cause?.localizedMessage)
 	}
 
 	/** Constructor.
