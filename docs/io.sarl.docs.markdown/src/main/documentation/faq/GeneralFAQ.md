@@ -250,9 +250,27 @@ For enabling the SARL product content assist, we recommend to change its shortcu
 * Window > Preferences
 * General > Keys
 * Content Assist
-* Change the shortcut key
+
+And, change the shortcut key.
 
 ![Content assist shortcut change](./ctrlspaceprefs.png)
+
+
+### Why is the SARL development environment becoming slow or frozen?
+
+Sometimes the SARL product is entering into an invalid state and causes the garbage collector of its Java virtual
+machine to be slower and slower until a quasi freeze of the SARL product.
+Most of the times, it is due to an error occurring into the code-mining feature
+of the SARL editor. This feature shows up (in gray in the editor) the hidden or implicit peaces of code.
+Before the code-mining issues are definitively fixed, you could disable the code-mining feature in order
+to have your SARL development environment running without problem.
+
+For disabling the code-mining feature, go to:
+
+* Window > Preferences
+* SARL > Editors
+
+And, uncheck the option `[:Dynamic:](io.sarl.eclipse.preferences.Messages::SarlEditorPreferencePage_1)`.
 
 
 ## Implementation of SARL Applications
