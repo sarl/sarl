@@ -110,7 +110,7 @@ agent Boot {
 				info(Locale.getString("START_GAME"))
 				paused = false
 				gameRunning = true
-				emit(new RunBeginingOfStep) [it.UUID == environmentUUID]
+				emit(new RunBeginingOfStep) [it.ID == environmentUUID]
 			}
 		} finally {
 			lock.unlock
@@ -152,7 +152,7 @@ agent Boot {
 		try {
 			if (gameRunning && !paused) {
 				Thread.sleep(period)
-				emit(new RunBeginingOfStep) [it.UUID == environmentUUID]
+				emit(new RunBeginingOfStep) [it.ID == environmentUUID]
 			} else if (!gameRunning) {
 				emit(new GameIsDead)
 				killMe

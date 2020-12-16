@@ -59,7 +59,7 @@ public class AgentTest extends AbstractSarlTest {
 	
 	private static Address mockAddress(UUID agentID) {
 		Address adr = mock(Address.class);
-		doReturn(agentID).when(adr).getUUID();
+		doReturn(agentID).when(adr).getID();
 		return adr;
 	}
 

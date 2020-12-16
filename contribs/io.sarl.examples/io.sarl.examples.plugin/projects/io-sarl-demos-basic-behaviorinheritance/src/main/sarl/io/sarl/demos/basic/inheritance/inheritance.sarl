@@ -132,7 +132,7 @@ agent HelloChildAgent extends AbstractAgent {
 	}
 
 	on AgentKilled {
-		info("AgentKilled, agentID:" + occurrence.source.UUID)
+		info("AgentKilled, agentID:" + occurrence.source.ID)
 	}
 	
 }

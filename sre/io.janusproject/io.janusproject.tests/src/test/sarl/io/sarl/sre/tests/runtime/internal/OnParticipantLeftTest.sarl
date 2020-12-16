@@ -87,7 +87,7 @@ class OnParticipantLeftTest {
 		var evt1 = id2.getResult(typeof(ParticipantLeft), 0)
 		evt1.assertNull
 
-		id2.assertEquals(evt0.source.UUID)
+		id2.assertEquals(evt0.source.ID)
 		spcid0.assertEquals(evt0.spaceID)
 	}
 
@@ -126,11 +126,11 @@ class OnParticipantLeftTest {
 		evt0.assertNotSame(evt1)
 
 		spcid0.assertEquals(evt0.source.spaceID)
-		id2.assertEquals(evt0.source.UUID)
+		id2.assertEquals(evt0.source.ID)
 		spcid1.assertEquals(evt0.spaceID)
 
 		spcid0.assertEquals(evt1.source.spaceID)
-		id1.assertEquals(evt1.source.UUID)
+		id1.assertEquals(evt1.source.ID)
 		spcid0.assertEquals(evt1.spaceID)
 	}
 

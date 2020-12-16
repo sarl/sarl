@@ -151,7 +151,7 @@ The reason of the killing of an agent may be retrieved from the [:agentkilledeve
 	agent MyOtherAgent {
 		uses Logging
 		on [:agentkilledevent](AgentKilled) {
-			info("Agent " + occurrence.source.UUID
+			info("Agent " + occurrence.source.ID
 				+ " is dead because: "
 				+ occurrence.terminationCause)
 		}
@@ -209,7 +209,7 @@ In the following code, the agent `A` forwards automatically the failure events t
 	agent AgentA {
 		uses [:innercontextcap](Behaviors)
 		on Failure {
-			wake(occurrence) [ it.UUID != ID ]
+			wake(occurrence) [ it.ID != ID ]
 		}
 	}
 [:End:]

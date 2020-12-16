@@ -71,9 +71,9 @@ class OnAgentKilledTest {
 
 		assertNotNull(^event)
 		assertEquals(typeof(MySpawnedAgent1).name, ^event.agentType)
-		assertEquals(spawnId, ^event.source.UUID)
+		assertEquals(spawnId, ^event.source.ID)
 		assertEquals(^space, ^event.source.spaceID)
-		assertEquals(spawnId, ^event.source.UUID)
+		assertEquals(spawnId, ^event.source.ID)
 	}
 
 }

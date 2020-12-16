@@ -96,7 +96,7 @@ class AsynchronousProbeServiceTest {
 		}
 		//
 		waitForAgentKilled(id) [
-			rootContext.defaultSpace.emit(id, new ChangeFieldForProbe) [it.UUID == id]
+			rootContext.defaultSpace.emit(id, new ChangeFieldForProbe) [it.ID == id]
 		]
 		//
 		if (probe !== null) {

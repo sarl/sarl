@@ -46,7 +46,7 @@ public class BasicInlineTest {
 		return false;
 	}
 	
-	@Inline(value = "($1.getUUID() != null)", constantExpression = true)
+	@Inline(value = "($1.getID() != null)", constantExpression = true)
 	public boolean isMe2(Address adr) {
 		return false;
 	}
@@ -56,12 +56,12 @@ public class BasicInlineTest {
 		return false;
 	}
 
-	@Inline(value = "($1.getUUID() != null)", constantExpression = true)
+	@Inline(value = "($1.getID() != null)", constantExpression = true)
 	public boolean isMe3(Address adr) {
 		return false;
 	}
 	
-	@Inline(value = "($1 != null && $1.getSource().getUUID() != null)", constantExpression = true)
+	@Inline(value = "($1 != null && $1.getSource().getID() != null)", constantExpression = true)
 	public boolean isFromMe3(Event event) {
 		return false;
 	}

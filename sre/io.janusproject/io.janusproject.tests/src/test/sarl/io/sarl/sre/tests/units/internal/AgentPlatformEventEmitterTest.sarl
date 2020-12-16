@@ -176,7 +176,7 @@ class AgentEventEmitterTest {
 		assertInstanceOf(typeof(AgentKilled), evt)
 		var spaceEvent = evt as AgentKilled
 		assertNotNull(spaceEvent.source)
-		assertEquals(agent2.ID, spaceEvent.source.UUID)
+		assertEquals(agent2.ID, spaceEvent.source.ID)
 
 		space2.verify.emit(any, ^event.capture, scope.capture)
 		assertNotNull(scope.value)
@@ -185,7 +185,7 @@ class AgentEventEmitterTest {
 		assertInstanceOf(typeof(AgentKilled), evt)
 		spaceEvent = evt as AgentKilled
 		assertNotNull(spaceEvent.source)
-		assertEquals(agent2.ID, spaceEvent.source.UUID)
+		assertEquals(agent2.ID, spaceEvent.source.ID)
 	}
 
 }

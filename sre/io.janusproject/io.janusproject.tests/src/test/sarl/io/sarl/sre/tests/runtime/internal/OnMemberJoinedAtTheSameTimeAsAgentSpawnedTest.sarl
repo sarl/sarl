@@ -71,7 +71,7 @@ class OnMemberJoinedAtTheSameTimeAsAgentSpawnedTest {
 		var spawnId = all.elementAt(typeof(UUID), 4)
 
 		assertNotNull(^event)
-		assertEquals(parent, ^event.source.UUID)
+		assertEquals(parent, ^event.source.ID)
 		assertEquals(^space, ^event.source.spaceID)
 		assertEquals(spawnId, ^event.agentID)
 		assertEquals(typeof(MySpawnedAgent2).name, ^event.agentType)

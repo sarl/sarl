@@ -114,9 +114,9 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 
 	@Override
 	@Pure
-	@Inline(value = "($1 != null && $0getID().equals($1.getUUID()))", constantExpression = true)
+	@Inline(value = "($1 != null && $0getID().equals($1.getID()))", constantExpression = true)
 	protected boolean isMe(Address address) {
-		return address != null && isMe(address.getUUID());
+		return address != null && isMe(address.getID());
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 
 	@Override
 	@Pure
-	@Inline(value = "($1 != null && $0getID().equals($1.getSource().getUUID()))", constantExpression = true)
+	@Inline(value = "($1 != null && $0getID().equals($1.getSource().getID()))", constantExpression = true)
 	protected boolean isFromMe(Event event) {
 		return event != null && isMe(event.getSource());
 	}

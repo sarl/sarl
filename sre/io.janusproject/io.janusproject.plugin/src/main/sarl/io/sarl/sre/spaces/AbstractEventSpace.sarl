@@ -302,12 +302,10 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	}
 
 	override forEachStrongParticipant(callback : (UUID)=>void) {
-		// TODO: see if participant.address.UUID is better
 		this.strongRepository.forEach[id, participant|callback.apply(id)]
 	}
 
 	override forEachWeakParticipant(callback : (UUID)=>void) {
-		// TODO: see if participant.address.UUID is better
 		this.weakRepository.forEach[id, participant|callback.apply(id)]
 	}
 

@@ -86,7 +86,7 @@ agent Boid {
 			this.speed = myBody.vitesse
 		}
 		in(Settings::pause) [
-			emit(new Action => [influence = think(boids.values)])[it.UUID == this.environment]
+			emit(new Action => [influence = think(boids.values)])[it.ID == this.environment]
 
 			if (Settings::isLogActivated) {
 				info("Sending Influences.")

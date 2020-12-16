@@ -71,7 +71,7 @@ class OnMemberLeftAtTheSameTimeAsAgentKilledTest {
 		^event.assertNotNull
 		typeof(MySpawnedAgent3).name.assertEquals(^event.agentType)
 		^space.assertEquals(^event.source.spaceID)
-		parent.assertEquals(^event.source.UUID)
+		parent.assertEquals(^event.source.ID)
 	}
 
 }

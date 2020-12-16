@@ -266,7 +266,7 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 					if (priceIncrease > 0) {
 						var newPrice = occurrence.price + priceIncrease
 						if (newPrice <= maxPrice) {
-							emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
+							emit(new Bid(newPrice)) [ it.ID == defaultContext.ID]
 							myLastBid = newPrice
 						} else {
 							println(" I give up, this is beyond my resources : " + myLastBid)
@@ -662,7 +662,7 @@ This function is provided by the [:lifecyclecap:] capacity.
 			if (priceIncrease > 0) {
 				var newPrice = occurrence.price + priceIncrease
 				if (newPrice <= maxPrice) {
-					emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
+					emit(new Bid(newPrice)) [ it.ID == defaultContext.ID]
 				}
 			}
 		}

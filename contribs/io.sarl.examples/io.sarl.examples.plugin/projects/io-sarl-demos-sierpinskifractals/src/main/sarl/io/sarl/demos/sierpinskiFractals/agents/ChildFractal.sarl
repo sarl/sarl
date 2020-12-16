@@ -56,7 +56,7 @@ agent ChildFractal extends AbstractFractal {
 	}
 
 	def doRefresh {
-		new Refresh().emit[it.UUID == parentID]
+		new Refresh().emit[it.ID == parentID]
 	}
 	
 }

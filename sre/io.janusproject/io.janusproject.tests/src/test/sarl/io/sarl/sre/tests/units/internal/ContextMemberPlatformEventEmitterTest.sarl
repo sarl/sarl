@@ -108,7 +108,7 @@ class ContextMemberEventEmitterTest {
 		var evt = ^event.value as MemberJoined
 		evt.source.assertNotNull
 		this.agentId.assertEquals(evt.agentID)
-		ctxid.assertEquals(evt.source.UUID)
+		ctxid.assertEquals(evt.source.ID)
 		scope.value.assertNotNull
 	}
 
@@ -132,7 +132,7 @@ class ContextMemberEventEmitterTest {
 		var evt = ^event.value as MemberLeft
 		evt.source.assertNotNull
 		this.agentId.assertEquals(evt.agentID)
-		ctxid.assertEquals(evt.source.UUID)
+		ctxid.assertEquals(evt.source.ID)
 		scope.value.assertNotNull
 	}
 }

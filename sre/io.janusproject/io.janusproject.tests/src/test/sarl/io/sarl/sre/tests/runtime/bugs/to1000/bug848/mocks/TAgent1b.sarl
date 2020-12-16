@@ -57,7 +57,7 @@ agent TAgent1b {
 
 	on AgentSpawned {
 		var pair = new Triplet<Boolean, UUID, UUID>(
-			occurrence.isFromMe, occurrence.source.UUID, occurrence.agentID)
+			occurrence.isFromMe, occurrence.source.ID, occurrence.agentID)
 		addResult(pair)
 		if (this.done.getAndSet(true)) {
 			killMe

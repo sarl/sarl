@@ -77,7 +77,7 @@ class EventRoutingTest {
 		var id = getFirstResultOfType(typeof(UUID))
 		adr.assertNotNull
 		id.assertNotNull
-		id.assertEquals(adr.UUID)
+		id.assertEquals(adr.ID)
 	}
 
 	@Test
@@ -105,15 +105,15 @@ class EventRoutingTest {
 		var id1 = getResult(ag1, typeof(UUID), 1)
 		adr1.assertNotNull
 		id1.assertNotNull
-		id1.assertEquals(adr1.UUID)
+		id1.assertEquals(adr1.ID)
 
 		var adr2 = getResult(ag2, typeof(Address), 0)
 		var id2 = getResult(ag2, typeof(UUID), 1)
 		adr2.assertNotNull
 		id2.assertNotNull
-		id2.assertEquals(adr2.UUID)
+		id2.assertEquals(adr2.ID)
 
-		adr1.UUID.assertEquals(adr2.UUID)
+		adr1.ID.assertEquals(adr2.ID)
 		id1.assertEquals(id1)
 	}
 
@@ -128,7 +128,7 @@ class EventRoutingTest {
 		var id = innerAgent.getResult(typeof(UUID), 1)
 		adr.assertNotNull
 		id.assertNotNull
-		id.assertEquals(adr.UUID)
+		id.assertEquals(adr.ID)
 		innerAgent.assertNotEquals(id)
 		
 		bootAgentId.assertEquals(id)

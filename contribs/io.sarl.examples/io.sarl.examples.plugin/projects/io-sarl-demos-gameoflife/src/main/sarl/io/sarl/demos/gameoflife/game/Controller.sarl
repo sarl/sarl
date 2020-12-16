@@ -52,27 +52,27 @@ class Controller implements GUIListener {
 
 	override play : void {
 		val evt : PlayEvent = new PlayEvent();
-		this.eventSpace.emit(this.controllerUUID, evt)[it.UUID == this.controllerUUID]
+		this.eventSpace.emit(this.controllerUUID, evt)[it.ID == this.controllerUUID]
 	}
 
 	override pause : void {
 		val evt : PauseEvent = new PauseEvent();
-		this.eventSpace.emit(this.controllerUUID, evt)[it.UUID == this.controllerUUID]
+		this.eventSpace.emit(this.controllerUUID, evt)[it.ID == this.controllerUUID]
 	}
 
 	override stop : void {
 		val evt : StopEvent = new StopEvent();
-		this.eventSpace.emit(this.controllerUUID, evt)[it.UUID == this.controllerUUID]
+		this.eventSpace.emit(this.controllerUUID, evt)[it.ID == this.controllerUUID]
 	}
 
 	override setup(width : int, height : int) {
 		val evt : SetupEvent = new SetupEvent(width, height);
-		this.eventSpace.emit(this.controllerUUID, evt)[it.UUID == this.controllerUUID]
+		this.eventSpace.emit(this.controllerUUID, evt)[it.ID == this.controllerUUID]
 	}
 
 	override periodUpdated(period : int) {
 		val evt : PeriodUpdatedEvent = new PeriodUpdatedEvent(period);
-		this.eventSpace.emit(this.controllerUUID, evt)[it.UUID == this.controllerUUID]
+		this.eventSpace.emit(this.controllerUUID, evt)[it.ID == this.controllerUUID]
 	}
 
 	def addControllerListener(listener : ControllerListener){

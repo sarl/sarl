@@ -49,7 +49,7 @@ agent SourceAgent2 {
 		typeof(TargetAgent).spawnInContext(innerContext, agentInitializationParameters)
 	}
 
-	on AgentSpawned [occurrence.source.UUID == ID] {
+	on AgentSpawned [occurrence.source.ID == ID] {
 		addResult(occurrence.agentID)
 		in(1000) [
 			wake(new TestEvent(ID))

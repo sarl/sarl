@@ -78,15 +78,15 @@ agent Environment {
 	on Action {
 		synchronized (boids) {
 			synchronized (influences) { // Two very important "synchronized" blocks that prevent the simulation from thread interblocking
-				if (boids.containsKey(occurrence.source.UUID)) {
-					this.influences.add(occurrence.source.UUID)
-					applyForce(occurrence.influence, boids.get(occurrence.source.UUID))
+				if (boids.containsKey(occurrence.source.ID)) {
+					this.influences.add(occurrence.source.ID)
+					applyForce(occurrence.influence, boids.get(occurrence.source.ID))
 				}
 
 				if (this.influences.size == this.boids.size) {
 					// All boids have sent their influences
 					in(Settings::pause) [
-						new GuiRepaint(boids).emit[it.UUID == BoidsSimulation.id]
+						new GuiRepaint(boids).emit[it.ID == BoidsSimulation.id]
 						new Perception(boids).emit
 						if (Settings::isLogActivated) {
 							info("New Simulation Step.")

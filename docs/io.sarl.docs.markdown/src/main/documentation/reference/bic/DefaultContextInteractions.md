@@ -235,7 +235,7 @@ In the following example,
 			var [:id1identifier](id1) : UUID
 			var [:id2identifier](id2) : UUID
 			[:On]
-			emit(new MyEvent) [ it.UUID == [:id1identifier!] || it.UUID == [:id2identifier!] ]
+			emit(new MyEvent) [ it.ID == [:id1identifier!] || it.ID == [:id2identifier!] ]
 			[:Off]
 		}
 	}
@@ -260,7 +260,7 @@ example becomes:
 	
 		def myaction([:receiverid](receiverId) : UUID) {
 			var ^event : Event = new MyEvent
-			^event.emit [ it.UUID == [:receiverid!] ] 
+			^event.emit [ it.ID == [:receiverid!] ] 
 		}
 	}
 [:End:]

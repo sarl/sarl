@@ -24,6 +24,7 @@ package io.sarl.lang.core;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -72,9 +73,23 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * Replies the participant identifier associated to this address.
 	 *
 	 * @return the participant identifier associated to this address.
+	 * @deprecated since 0.12, see {@link #getID()}
+	 */
+	@Deprecated
+	@Pure
+	@Inline("getID()")
+	public UUID getUUID() {
+		return getID();
+	}
+
+	/**
+	 * Replies the participant identifier associated to this address.
+	 *
+	 * @return the participant identifier associated to this address.
+	 * @since 0.12
 	 */
 	@Pure
-	public UUID getUUID() {
+	public UUID getID() {
 		return this.participantId;
 	}
 
@@ -113,7 +128,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 */
 	@Pure
 	public boolean equals(Address address) {
-		return address != null && this.participantId.equals(address.getUUID())
+		return address != null && this.participantId.equals(address.getID())
 				&& this.spaceId.equals(address.getSpaceID());
 	}
 
@@ -157,7 +172,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 		if (address == null) {
 			return 1;
 		}
-		return this.participantId.compareTo(address.getUUID());
+		return this.participantId.compareTo(address.getID());
 	}
 
 	/** Replies the ID of the space related to this address.

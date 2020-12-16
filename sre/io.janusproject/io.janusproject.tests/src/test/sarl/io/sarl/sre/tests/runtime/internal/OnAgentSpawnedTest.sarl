@@ -74,7 +74,7 @@ class OnAgentSpawnedTest {
 
 		assertNotNull(^event)
 		assertEquals(typeof(MySpawnedAgent0).name, ^event.agentType)
-		assertEquals(spawner, ^event.source.UUID)
+		assertEquals(spawner, ^event.source.ID)
 		assertEquals(^space, ^event.source.spaceID)
 		assertEquals(^event.agentID, spawnId)
 	}

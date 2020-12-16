@@ -57,7 +57,7 @@ abstract agent AbstractSpawnerAgent {
 	}
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on AgentSpawned [occurrence.source.UUID == ID] {
+	on AgentSpawned [occurrence.source.ID == ID] {
 		addResult(occurrence.agentID)		
 	}
 

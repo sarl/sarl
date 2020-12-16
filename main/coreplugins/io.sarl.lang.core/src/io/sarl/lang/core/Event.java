@@ -144,7 +144,7 @@ public abstract class Event implements Serializable {
 	public boolean isFrom(UUID entityId) {
 		final Address iSource = getSource();
 		return (entityId != null) && (iSource != null)
-				&& entityId.equals(iSource.getUUID());
+				&& entityId.equals(iSource.getID());
 	}
 
 }

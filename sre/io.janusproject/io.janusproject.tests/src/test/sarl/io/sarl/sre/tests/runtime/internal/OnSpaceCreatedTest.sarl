@@ -82,7 +82,7 @@ class OnSpaceCreatedTest {
 		assertEquals("SPAWNER", sdata.label)
 		assertEquals(rdata.createdSpace.spaceID, sdata.spaceID)
 		assertEquals(rdata.defaultSpaceID, sdata.source.spaceID)
-		assertEquals(rdata.defaultSpaceID.contextID, sdata.source.UUID)
+		assertEquals(rdata.defaultSpaceID.contextID, sdata.source.ID)
 		return rdata
 	}
 
@@ -91,7 +91,7 @@ class OnSpaceCreatedTest {
 		assertEquals("SPAWNED", d.label)
 		assertEquals(d.createdSpace.spaceID, d.spaceID)
 		assertEquals(d.defaultSpaceID, d.source.spaceID)
-		assertEquals(d.defaultSpaceID.contextID, d.source.UUID)
+		assertEquals(d.defaultSpaceID.contextID, d.source.ID)
 	}
 
 }

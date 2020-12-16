@@ -129,7 +129,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	protected abstract boolean hasSkill(Class<? extends Capacity> capacity);
 
 	/** Replies if the given address is one of the addresses of this agent.
-	 * The test is done on the identifier replied by {@link Address#getUUID()}.
+	 * The test is done on the identifier replied by {@link Address#getID()}.
 	 *
 	 * @param address the address to test.
 	 * @return <code>true</code> if the given address is one of this agent,

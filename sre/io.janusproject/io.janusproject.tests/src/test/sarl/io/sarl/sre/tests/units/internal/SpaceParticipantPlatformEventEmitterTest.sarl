@@ -103,7 +103,7 @@ class SpaceParticipantEventEmitterTest {
 		var participantId = UUID::randomUUID
 		var addr = typeof(Address).mock
 		when(addr.spaceID).thenReturn(spaceId)
-		when(addr.UUID).thenReturn(participantId)
+		when(addr.ID).thenReturn(participantId)
 		var participant = typeof(Participant).mock
 		when(participant.address).thenReturn(addr);
 
@@ -119,7 +119,7 @@ class SpaceParticipantEventEmitterTest {
 		var spaceEvent = evt as ParticipantJoined
 		spaceEvent.source.assertNotNull
 		this.defaultSpaceId.assertSame(spaceEvent.source.spaceID)
-		participantId.assertEquals(spaceEvent.source.UUID)
+		participantId.assertEquals(spaceEvent.source.ID)
 		spaceId.assertSame(spaceEvent.spaceID)
 	}
 
@@ -129,7 +129,7 @@ class SpaceParticipantEventEmitterTest {
 		var participantId = UUID::randomUUID
 		var addr = typeof(Address).mock
 		when(addr.spaceID).thenReturn(spaceId)
-		when(addr.UUID).thenReturn(participantId)
+		when(addr.ID).thenReturn(participantId)
 		var participant = typeof(Participant).mock
 		when(participant.address).thenReturn(addr);
 
@@ -145,7 +145,7 @@ class SpaceParticipantEventEmitterTest {
 		var spaceEvent = evt as ParticipantLeft
 		spaceEvent.source.assertNotNull
 		this.defaultSpaceId.assertSame(spaceEvent.source.spaceID)
-		participantId.assertEquals(spaceEvent.source.UUID)
+		participantId.assertEquals(spaceEvent.source.ID)
 		spaceId.assertSame(spaceEvent.spaceID)
 	}
 

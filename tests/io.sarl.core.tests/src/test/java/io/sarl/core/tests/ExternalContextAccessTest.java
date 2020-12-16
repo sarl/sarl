@@ -88,7 +88,7 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void join() {
-		assertMethod("join", boolean.class, UUID.class, UUID.class); //$NON-NLS-1$
+		assertMethod("join", AgentContext.class, UUID.class, UUID.class); //$NON-NLS-1$
 	}
 
 	/**

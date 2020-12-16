@@ -82,7 +82,7 @@ class OnMemberLeftTest {
 
 		// Kill one agent to generate the MemberLeft event
 		waitForAgentKilled(id1) [
-			rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID == id1]
+			rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.ID == id1]
 		]
 
 		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
@@ -123,10 +123,10 @@ class OnMemberLeftTest {
 
 		// Kill the inner agents, first
 		id1.waitForAgentKilled [
-			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye) [it.UUID == id1]
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye) [it.ID == id1]
 		]
 		id2.waitForAgentKilled [
-			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID == id2]
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.ID == id2]
 		]
 
 		// Kill the containing agent, second

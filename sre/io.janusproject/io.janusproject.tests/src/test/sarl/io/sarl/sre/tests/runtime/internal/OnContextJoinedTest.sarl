@@ -112,7 +112,7 @@ class OnContextJoinedTest {
 
 		// Kill the inner agents, first
 		waitForAgentKilled(#[id1, id2]) [
-			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID != id0]	
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.ID != id0]	
 		]
 		
 		// Kill the containing agent, second

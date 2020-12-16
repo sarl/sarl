@@ -147,13 +147,13 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 		// Send the event in the default space of the context.
 		if (this.defaultSpace !== null) {
 			var participantAddr = participant.address
-			val participantId = participantAddr.UUID
+			val participantId = participantAddr.ID
 			var addr = new Address(this.defaultSpace.spaceID, participantId)
 			// a) The first parameter is null because the event has an address.
 			// b) The scope is defined for avoiding the participant to receive the event.
 			this.defaultSpace.emit(null,
 				new ParticipantJoined(addr, participantAddr.spaceID)
-			) [participantId != it.UUID]
+			) [participantId != it.ID]
 		}
 	}
 
@@ -162,13 +162,13 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 		// Send the event in the default space of the context.
 		if (this.defaultSpace !== null) {
 			var participantAddr = participant.address
-			val participantId = participantAddr.UUID
-			var addr = new Address(this.defaultSpace.spaceID, participantAddr.UUID)
+			val participantId = participantAddr.ID
+			var addr = new Address(this.defaultSpace.spaceID, participantAddr.ID)
 			// a) The first parameter is null because the event has an address.
 			// b) The scope is defined for avoiding the participant to receive the event.
 			this.defaultSpace.emit(null,
 				new ParticipantLeft(addr, participantAddr.spaceID)
-			) [participantId != it.UUID]
+			) [participantId != it.ID]
 		}
 	}
 	
@@ -221,7 +221,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		assert source !== null
 		val ^event = new AgentSpawned(source, agentId, agentType.name)
 		// The first parameter is null because the event has an address.
-		defSpace.emit(null, ^event) [agentId != it.UUID]
+		defSpace.emit(null, ^event) [agentId != it.ID]
 	}
 	
 	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
@@ -242,7 +242,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		} 
 		for (i = 0; i < size; i++) {
 			// The first parameter is null because the event has an address.
-			spaces.get(i).emit(null, events.get(i)) [it.UUID != ^agent.ID]
+			spaces.get(i).emit(null, events.get(i)) [it.ID != ^agent.ID]
 		}
 	}
 	
@@ -283,7 +283,7 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 		val source = new Address(defaultSpace, joinedContext.ID)
 		// The first parameter is null because the event has an address.
 		defSpace.emit(null, new MemberJoined(source, joiningAgentID, joiningAgentType)) [
-			it.UUID != joiningAgentID
+			it.ID != joiningAgentID
 		]
 	}
 
@@ -298,7 +298,7 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 		val source = new Address(defaultSpace, leftContext.ID)
 		// The first parameter is null because the event has an address.
 		defSpace.emit(null, new MemberLeft(source, leftMemberID, agentType)) [
-			it.UUID != leftMemberID
+			it.ID != leftMemberID
 		]
 	}
 

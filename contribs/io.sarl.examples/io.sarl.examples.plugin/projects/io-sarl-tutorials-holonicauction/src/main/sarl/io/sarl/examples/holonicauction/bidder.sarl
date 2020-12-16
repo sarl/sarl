@@ -57,7 +57,7 @@ agent Bidder {
 					info("My new price is: " + newPrice)
 					if(newPrice <= maxPrice) {
 						info("Send my bid: " + newPrice)
-						emit(new Bid(newPrice)) [it.UUID == defaultContext.getID]
+						emit(new Bid(newPrice)) [it.ID == defaultContext.getID]
 						myLastBid = newPrice
 					} else {
 						info(" I give up, this is beyond my resources : " + myLastBid)

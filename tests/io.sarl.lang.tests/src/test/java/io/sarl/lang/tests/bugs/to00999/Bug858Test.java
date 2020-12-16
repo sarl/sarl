@@ -189,7 +189,7 @@ public class Bug858Test extends AbstractSarlTest {
 			"public class SomeType extends BasicInlineTest {",
 			"  @Pure",
 			"  public boolean fct(final Event o) {",
-			"    return (o != null && o.getSource().getUUID() != null);",
+			"    return (o != null && o.getSource().getID() != null);",
 			"  }",
 			"  ",
 			"  @SyntheticMember",

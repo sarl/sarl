@@ -56,7 +56,7 @@ agent JoinerAgent3 {
 		]
 	}
 
-	on ParticipantLeft [it.source.UUID != ID] {
+	on ParticipantLeft [it.source.ID != ID] {
 		addResult(occurrence)
 		killMe
 	}

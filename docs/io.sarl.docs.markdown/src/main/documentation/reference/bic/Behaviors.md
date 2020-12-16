@@ -253,7 +253,7 @@ all the sub-agents (sub-holons) that were created inside the current agent.
 			e = new MyEvent
 			[:wake!](e)
 			[:wake!](e, null)
-			var scope : Scope<Address> = [ it.UUID !== null ]
+			var scope : Scope<Address> = [ it.ID !== null ]
 			[:wake!](e, scope)
 			[:Off]
 		}

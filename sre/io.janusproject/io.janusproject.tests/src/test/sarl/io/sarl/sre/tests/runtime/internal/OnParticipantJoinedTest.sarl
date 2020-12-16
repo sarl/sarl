@@ -84,7 +84,7 @@ class OnParticipantJoinedTest {
 		var spcid = getResult(id1, typeof(SpaceID), 1)
 		spcid.assertNotNull
 
-		id2.assertEquals(evt.source.UUID)
+		id2.assertEquals(evt.source.ID)
 		spcid.assertEquals(evt.spaceID)
 	}
 
@@ -118,7 +118,7 @@ class OnParticipantJoinedTest {
 
 		spcid0.assertNotEquals(spcid1)
 
-		id2.assertEquals(evt.source.UUID)
+		id2.assertEquals(evt.source.ID)
 		spcid1.assertEquals(evt.spaceID)
 	}
 

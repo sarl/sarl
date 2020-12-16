@@ -142,7 +142,7 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 
 	def getDefaultParentScope : Scope<Address> {
 		val parentID = defaultParentID
-		return [it.UUID == parentID]
+		return [it.ID == parentID]
 	}
 
 	def emitToParent(^event : Event) {
@@ -158,7 +158,7 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 
 	@Deprecated
 	def willReceive(receiver : UUID, ^event : Event) {
-		^event.emit [it.UUID == receiver]
+		^event.emit [it.ID == receiver]
 	}
 	
 	@Deprecated	

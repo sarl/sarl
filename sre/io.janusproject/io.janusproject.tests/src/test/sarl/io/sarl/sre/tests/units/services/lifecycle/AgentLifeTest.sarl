@@ -176,7 +176,7 @@ class AgentLifeTest {
 	def getAddressInInnerDefaultSpace {
 		var adr = this.life.addressInInnerDefaultSpace
 		adr.assertNotNull
-		this.^agent.ID.assertEquals(adr.UUID)
+		this.^agent.ID.assertEquals(adr.ID)
 		this.^agent.ID.assertEquals(adr.spaceID.contextID)
 		this.^agent.ID.assertNotEquals(adr.spaceID.ID)
 	}

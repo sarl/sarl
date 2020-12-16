@@ -104,7 +104,7 @@ public class Bug930Test extends AbstractSarlTest {
 			"agent X {",
 			"  uses DefaultContextInteractions",
 			"  on Initialize {",
-			"     emit(new MyEvent) [it.UUID == occurrence.source.UUID]",
+			"     emit(new MyEvent) [it.ID == occurrence.source.ID]",
 			"  }",
 			"}");
 
@@ -129,7 +129,7 @@ public class Bug930Test extends AbstractSarlTest {
 			"agent X {",
 			"  uses Sp",
 			"  on E {",
-			"     emit(null) [it.id == occurrence.source.UUID]",
+			"     emit(null) [it.id == occurrence.source.ID]",
 			"  }",
 			"}");
 

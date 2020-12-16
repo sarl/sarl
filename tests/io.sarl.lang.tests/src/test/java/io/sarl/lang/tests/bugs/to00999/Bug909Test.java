@@ -69,7 +69,7 @@ public class Bug909Test extends AbstractSarlTest {
 			"  on AgentSpawned [it.agentID != ID] {",
 			"    count++",
 			"    if (count == 100) {",
-			"      emit(new StartApplication) [it.UUID != ID]",
+			"      emit(new StartApplication) [it.ID != ID]",
 			"      killMe",
 			"    }",
 			"  }",

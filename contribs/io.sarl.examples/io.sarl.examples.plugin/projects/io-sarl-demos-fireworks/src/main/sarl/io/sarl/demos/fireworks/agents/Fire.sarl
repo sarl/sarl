@@ -171,7 +171,7 @@ agent Fire {
 	on AppExit [!exited && isFrom(this.parentID)] {
 		frozen = true
 		cleanBeforeExit
-		emit(new AppExit)[it.UUID == this.parentAgent]
+		emit(new AppExit)[it.ID == this.parentAgent]
 		killMe
 	}
 

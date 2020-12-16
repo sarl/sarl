@@ -13,7 +13,7 @@ top-right context in the figure above.
 	"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:getuniversecontext](getUniverseContext) : io.sarl.lang.core.AgentContext",
 	"[:getallcontexts](getAllContexts) : java.util.concurrent.ConcurrentLinkedDeque",
-	"[:join](join)(java.util.UUID, java.util.UUID) : boolean",
+	"[:join](join)(java.util.UUID, java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:leave](leave)(java.util.UUID) : boolean",
 	"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
 	"isInSpace(io.sarl.lang.core.Event, io.sarl.lang.core.SpaceID) : boolean",
@@ -124,7 +124,7 @@ Agents must be able to join a new parent context. The following function gives t
 	import java.util.UUID
 	interface Tmp {
 	[:On]
-		def [:join!]([:contextparamid](contextID) : UUID, [:expectedefaultspaceid](expectedDefaultSpaceID) : UUID)
+		def [:join!]([:contextparamid](contextID) : UUID, [:expectedefaultspaceid](expectedDefaultSpaceID) : UUID) : AgentContext
 	[:Off]
 	}
 [:End:]
@@ -137,6 +137,8 @@ The parameter [:expectedefaultspaceid:] is only used to check if the caller of t
 knows the ID of the default space in the context to be involved in. 
 If the given [:expectedefaultspaceid:] does not match the ID of the default space in the context
 [:contextparamid:], then the access to the context is forbidden.
+
+The [:join:] function replies the reference to the joined context.
 
 > **_Important Note:_** The context must already exist, and the default space inside this context must have the same ID 
 > as [:expectedefaultspaceid:].
@@ -157,8 +159,8 @@ Example:
 	[:On]
 	agent A {
 		uses ExternalContextAccess
-			var idc : UUID
-			var ids : UUID
+		var idc : UUID
+		var ids : UUID
 		def myaction {
 			idc = UUID::randomUUID
 			ids = UUID::randomUUID

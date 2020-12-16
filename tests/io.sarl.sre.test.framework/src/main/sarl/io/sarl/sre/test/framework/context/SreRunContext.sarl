@@ -679,7 +679,7 @@ class SreRunContext {
 	def waitForAgentKilled(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
 		val lock = new AtomicBoolean
 		onAgentKilled(^space) [
-			if (it.source.UUID == id) {
+			if (it.source.ID == id) {
 				lock.set(true)
 			}
 		]
@@ -707,7 +707,7 @@ class SreRunContext {
 	def waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentKilled(^space) [
-			lock.remove(it.source.UUID)
+			lock.remove(it.source.ID)
 		]
 		val w = new CollectionWait(lock, this.directFailureCause)
 		if (code !== null) {

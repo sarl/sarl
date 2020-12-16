@@ -78,8 +78,8 @@ public class AddressTest extends AbstractSarlTest {
 	/**
 	 */
 	@Test
-	public void getUUID() {
-		assertSame(this.agentID, this.adr.getUUID());
+	public void getID() {
+		assertSame(this.agentID, this.adr.getID());
 	}
 
 	/**

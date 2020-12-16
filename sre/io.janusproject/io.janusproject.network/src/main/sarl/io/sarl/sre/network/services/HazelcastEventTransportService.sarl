@@ -259,7 +259,7 @@ class HazelcastEventTransportService implements EventTransportService {
 					if (localSpace.spaceID.ID.equals(spaceUIID)) {
 						kernelLogger.log(Level::INFO, MessageFormat::format(Messages::TopicMessageListener_0, 
 							spaceUIID, contextUUID))
-						(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
+						(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.ID,
 							eventToDispatchLocally, incomingMessage.messageObject.trasnferredScope as Scope<Address>)
 					}
 				}

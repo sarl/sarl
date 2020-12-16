@@ -72,7 +72,7 @@ agent SpaceDestroyedAgent0 {
 		} else {
 			msg = "other"
 		}
-		addResult("AG" + this.number + ": space destroyed " + occurrence.source.UUID + " " + occurrence.spaceID.ID + " in " + msg + " space")
+		addResult("AG" + this.number + ": space destroyed " + occurrence.source.ID + " " + occurrence.spaceID.ID + " in " + msg + " space")
 		if (^space !== null) {
 			killMe
 		}

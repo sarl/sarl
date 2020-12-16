@@ -52,7 +52,7 @@ agent SpawnerAgent {
 		synchronized (this) {
 			var size : int
 			synchronized (this) {
-				this.agents += occurrence.source.UUID
+				this.agents += occurrence.source.ID
 				size = this.agents.size
 			}
 			if (size >= Bug481Test::NB_AGENTS) {

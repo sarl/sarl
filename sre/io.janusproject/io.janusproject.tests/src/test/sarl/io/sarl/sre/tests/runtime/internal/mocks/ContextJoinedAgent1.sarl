@@ -68,7 +68,7 @@ agent ContextJoinedAgent1 {
 			msg = "other"
 		}
 		addResult(
-			"AG" + this.number + ": joined " + occurrence.source.UUID + " " + occurrence.holonContextID + " in " + msg +
+			"AG" + this.number + ": joined " + occurrence.source.ID + " " + occurrence.holonContextID + " in " + msg +
 				" space")
 	}
 

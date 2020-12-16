@@ -35,7 +35,7 @@ agent EmptyAgent1 {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		new Initialized().emit[getSpawner == it.UUID]
+		new Initialized().emit[getSpawner == it.ID]
 	}
 
 	on Initialized {

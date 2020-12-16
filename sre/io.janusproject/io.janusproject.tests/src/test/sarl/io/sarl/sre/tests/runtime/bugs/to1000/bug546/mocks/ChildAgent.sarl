@@ -47,7 +47,7 @@ agent ChildAgent {
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		this.waiterId = agentInitializationParameters.get(1) as UUID
-		emit(new Hello) [it.UUID == this.waiterId]
+		emit(new Hello) [it.ID == this.waiterId]
 	}
 	
 	on KillYou {

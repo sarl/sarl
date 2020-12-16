@@ -77,7 +77,7 @@ agent Environment {
 		this.lock.lock
 		try {
 			if (occurrence.type !== null) {
-				actions.add(new Action(occurrence.source.UUID, occurrence.position, occurrence.type))
+				actions.add(new Action(occurrence.source.ID, occurrence.position, occurrence.type))
 			}
 			this.agentCounter++
 			tmp = this.agentCounter
@@ -113,7 +113,7 @@ agent Environment {
 		} else {
 			applyActions(actions)
 			fireGridUpdate
-			emit(new StepFinished) [ this.controller == it.UUID ]
+			emit(new StepFinished) [ this.controller == it.ID ]
 		}
 	}
 
