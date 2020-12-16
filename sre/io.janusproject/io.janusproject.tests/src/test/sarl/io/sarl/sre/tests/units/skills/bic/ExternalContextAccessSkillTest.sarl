@@ -264,7 +264,7 @@ class ExternalContextAccessSkillTest {
 	@Test
 	@DisplayName("join(UUID, UUID) the default context")
 	def join_defaultContext {
-		this.^skill.join(this.contextId, this.defaultSpace.spaceID.ID).assertFalse
+		this.^skill.join(this.contextId, this.defaultSpace.spaceID.ID).assertNull
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext)
@@ -277,7 +277,7 @@ class ExternalContextAccessSkillTest {
 	def join_joinedExternalContext {
 		var ctxs = forceTwoExternalContextCreation
 		
-		this.^skill.join(ctxs.get(0).ID, ctxs.get(0).defaultSpace.spaceID.ID).assertFalse
+		this.^skill.join(ctxs.get(0).ID, ctxs.get(0).defaultSpace.spaceID.ID).assertNull
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext, ctxs.get(0), ctxs.get(1))
@@ -288,7 +288,7 @@ class ExternalContextAccessSkillTest {
 	@Test
 	@DisplayName("join(UUID, UUID) unknown context")
 	def join_unknownContext {
-		this.^skill.join(randomUUID, this.defaultSpace.spaceID.ID).assertFalse
+		this.^skill.join(randomUUID, this.defaultSpace.spaceID.ID).assertNull
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext)
@@ -309,7 +309,7 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 		
-		this.^skill.join(ctxId, this.defaultSpace.spaceID.ID).assertFalse
+		this.^skill.join(ctxId, this.defaultSpace.spaceID.ID).assertNull
 
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext)
@@ -330,7 +330,7 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 
-		this.^skill.join(ctxId, spId).assertFalse
+		this.^skill.join(ctxId, spId).assertNull
 	}
 
 	@Test
@@ -349,7 +349,7 @@ class ExternalContextAccessSkillTest {
 		// Force alive
 		this.^agent.getLife.state = AgentState::ALIVE
 		
-		this.^skill.join(ctxId, spId).assertTrue
+		context.assertSame(this.^skill.join(ctxId, spId))
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext, context)
@@ -388,7 +388,7 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 
-		this.^skill.join(ctxId, spId).assertFalse
+		this.^skill.join(ctxId, spId).assertNull
 	}
 
 	@Test
@@ -409,7 +409,7 @@ class ExternalContextAccessSkillTest {
 		// Force alive
 		this.^agent.getLife.state = AgentState::ALIVE
 
-		this.^skill.join(ctxId, spId).assertTrue
+		context.assertSame(this.^skill.join(ctxId, spId))
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext, ctxs.get(0), ctxs.get(1), context)

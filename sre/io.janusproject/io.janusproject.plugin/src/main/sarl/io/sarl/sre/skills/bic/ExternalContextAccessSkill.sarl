@@ -145,30 +145,30 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		spaceID == ^event.source.spaceID.ID
 	}
 
-	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : boolean {
+	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : AgentContext {
 		assert contextID !== null
 		assert expectedDefaultSpaceID !== null
 
 		var life = getLife(owner)
 		if (life !== null && life.state.alive) {
 			if (life.defaultContext?.context.ID == contextID) {
-				return false
+				return null
 			}
 			var existingContext = life.getExternalContext(contextID)
 			if (existingContext !== null) {
-				return false
+				return null
 			}
 
 			var context = this.contextService.getContext(contextID)
 			if (context === null) {
-				return false
+				return null
 			}
 
 			val defaultSpace = context.defaultSpace
 			val defaultSpaceID = defaultSpace.spaceID
 
 			if (expectedDefaultSpaceID != defaultSpaceID.ID) {
-				return false
+				return null
 			}
 
 			val agentID = ID
@@ -180,9 +180,9 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 			this.externalEventEmitter.memberJoined(context, defaultSpaceID, agentID, this.owner.class.name)
 			this.internalEventEmitter.contextJoined(contextID, expectedDefaultSpaceID)
 
-			return true
+			return context
 		}
-		return false
+		return null
 	}
 
 	def leave(contextID : UUID) : boolean {

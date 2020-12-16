@@ -100,12 +100,12 @@ capacity ExternalContextAccess {
 	 *
 	 * @param contextID the identifier of the context to join.
 	 * @param expectedDefaultSpaceID the known identifier of the default space in the agent context with the given identifier.
-	 * @return {@code true} if the context was joined. {@code false} if one of the conditions described in
-	 *     the function's comment evaluates to true.
+	 * @return the joined context. {@code null} if the context cannot be joined.
 	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
-	 * @fires MemberJoined in its parent Context default Space 
+	 * @fires MemberJoined in its parent Context default Space
+	 * @since 0.12 for the returned context.
 	 */
-	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : boolean fires ContextJoined, MemberJoined
+	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : AgentContext fires ContextJoined, MemberJoined
 
 	/**
 	 * Leaves the parent's context.
