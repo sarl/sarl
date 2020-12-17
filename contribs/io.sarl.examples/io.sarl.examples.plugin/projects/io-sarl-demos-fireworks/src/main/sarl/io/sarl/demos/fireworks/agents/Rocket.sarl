@@ -80,7 +80,7 @@ agent Rocket {
 		frozen = true
 		exited = true
 		move.cancel
-		innerContext.defaultSpace.emit(ID, new AppExit)
+		innerContext.defaultSpace.emit(this.ID, new AppExit)
 	}
 
 	/* Freeze itself.
@@ -158,7 +158,7 @@ agent Rocket {
 	/** Emit a FireReady signal when all fire are created.
 	 */
 	on MemberJoined [!occurrence.agentID.isMe && hasMemberAgent && memberAgentCount == fireQuantity] {
-		innerContext.defaultSpace.emit(ID, new FireReady)
+		innerContext.defaultSpace.emit(this.ID, new FireReady)
 	}
 
 }

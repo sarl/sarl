@@ -61,7 +61,7 @@ agent RocketLauncher {
 	 */
 	on AppExit [hasMemberAgent && !exited] {
 		exited = true
-		innerContext.defaultSpace.emit(ID, new AppExit)
+		innerContext.defaultSpace.emit(this.ID, new AppExit)
 	}
 
 	/** Initialization step invoked with parameters.
@@ -102,7 +102,7 @@ agent RocketLauncher {
 	/** Transmit a Freeze signal.
 	 */
 	on Freeze [!occurrence.isFromMe] {
-		innerContext.defaultSpace.emit(ID, occurrence)
+		innerContext.defaultSpace.emit(this.ID, occurrence)
 	}
 
 	/** Launch a new rocket when the previous is destroyed.

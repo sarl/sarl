@@ -69,7 +69,7 @@ agent Boot {
 
 	on Initialize {
 		gui = GUI.GUI
-		controller = new Controller(defaultSpace, ID)
+		controller = new Controller(defaultSpace, this.ID)
 		gui.addGUIListener(controller)
 		controller.addControllerListener(gui)
 
@@ -174,7 +174,7 @@ agent Boot {
 			numberOfAgent = occurrence.width * occurrence.height + 1
 			emit(new GameIsDead)
 			info(Locale.getString("AGENTS", numberOfAgent))
-			spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, ID)
+			spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, this.ID)
 		} finally {
 			lock.unlock
 		}
