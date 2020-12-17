@@ -30,87 +30,73 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.ParticipantJoined
 import io.sarl.core.Schedules
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 
 @SuppressWarnings("all")
 agent PingAgent {
 
-	uses DefaultContextInteractions, Schedules, Behaviors, ExternalContextAccess, Lifecycle, InnerContextAccess
+	uses DefaultContextInteractions, Behaviors, Schedules, ExternalContextAccess
+	uses InnerContextAccess, Lifecycle
 	uses TestingCapacity
 
-	var comspace : OpenEventSpace
-
-	var MAX_ITERATION : int
-
+	var comSpace = new AtomicReference<OpenEventSpace>
+	var maxIteration : int
 	var level : int
 
-	var sharedSpaceID : UUID
-
-	var spawner : UUID
-
-	var childID : UUID
+	val ready = new AtomicBoolean(false)
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		this.level = typeof(String).getParam(2) as Integer
-		this.sharedSpaceID = typeof(String).getParam(0) as UUID
+		this.maxIteration = getParam(0)
+		this.level = getParam(1)
 
-		this.comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), this.sharedSpaceID)
-		this.comspace.registerStrongParticipant(asEventListener)
-
-		this.MAX_ITERATION = typeof(String).getParam(1) as Integer
-		this.spawner = occurrence.spawner
-		this.childID = UUID::randomUUID
-	}
-
-	on ParticipantJoined [!isFromMe && this.comspace !== null && occurrence.spaceID == comspace.spaceID] {
-		val task = task("waiting_for_partner")
-		task.every(1000) [
-			if (this.comspace.numberOfStrongParticipants > 1) {
-				var evt = new Ping(0)
-				evt.source = this.comspace.getAddress(getID())
-
-				this.comspace.emit(evt)
+		val sharedSpaceId = UUID::randomUUID
+		this.comSpace.set(defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), sharedSpaceId))
+		this.comSpace.get.registerStrongParticipant(asEventListener)
+		
+		val task = "rendez-vous".task
+		task.every(500) [
+			if (this.ready.get) {
 				task.cancel
+			} else {
+				new RendezVous(sharedSpaceId).emit [it.ID != this.ID]
 			}
 		]
 	}
 
-	on Pong [occurrence.index < MAX_ITERATION] {
-		this.comspace.emit(new Ping(occurrence.index + 1))[it.UUID == occurrence.source.UUID]
+	on RendezVousAccepted {
+		this.ready.set(true)
+		this.comSpace.get.emit(new Ping) [it.ID != this.ID]
 	}
 
-	on Pong [occurrence.index == MAX_ITERATION] {
-		if (this.level < MAX_ITERATION) {
-			val ic0 = innerContext
-			assert ic0 !== null
-			typeof(PingAgent).spawnInContextWithID(this.childID, ic0,
+	on Pong [occurrence.isInSpace(this.comSpace.get)] {
+		if (this.level < this.maxIteration) {
+			val ic = innerContext
+			typeof(PingAgent).spawnInContext(ic,
 				buildAgentInitializationParameters(
-					this.sharedSpaceID.toString,
-					this.MAX_ITERATION.toString,
-					(this.level + 1).toString
-				))
-			val ic1 = innerContext
-			assert ic1 !== null
-			assert ic0 === ic1
-			this.comspace.emit(new joinContext(ic1.ID, ic1.defaultSpace.spaceID.ID)) [
-				it.UUID == occurrence.source.UUID
+					this.maxIteration,
+					this.level + 1))
+			this.comSpace.get.emit(new JoinContextQuery(ic.ID, ic.defaultSpace.spaceID.ID)) [
+				it.ID == occurrence.source.ID
 			]
 		} else {
-			killMe
+			emit(new Bye)
 		}
+	}
 
+	on Bye {
+		"LeafPingFinished".addResult
+		killMe
 	}
 
 	on AgentKilled {
-		if (occurrence.isInInnerDefaultSpace) {
-			if (!hasMemberAgent) {
-				killMe
-			}
+		if (!hasMemberAgent) {
+			killMe
 		}
 	}
 

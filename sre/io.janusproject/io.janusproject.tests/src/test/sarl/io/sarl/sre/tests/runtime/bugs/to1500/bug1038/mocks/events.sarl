@@ -23,38 +23,32 @@ package io.sarl.sre.tests.runtime.bugs.to1500.bug1038.mocks
 
 import java.util.UUID
 
-event Ping {
-	
-	val index : int
-	
-	new (i : int) {
-		index = i
-	}
+event Ping
 
+event Pong
+
+event RendezVous {
+
+	val spaceID : UUID
+
+	new (sID : UUID) {
+		this.spaceID = sID
+	}
+	
 }
 
-event Pong {
-	
-	val index : int
-	
-	new (i : int) {
-		index = i
-	}
+event RendezVousAccepted
 
-}
+event Bye
 
-event joinContext {
+event JoinContextQuery {
+
 	val subContextID : UUID
 	val subContextDefaultSpaceID : UUID
 
 	new (cUID : UUID, dsID : UUID) {
-		subContextID = cUID
-		subContextDefaultSpaceID = dsID
-	}
-	
-	new (e : joinContext) {
-		subContextID = e.subContextID
-		subContextDefaultSpaceID = e.subContextDefaultSpaceID
+		this.subContextID = cUID
+		this.subContextDefaultSpaceID = dsID
 	}
 	
 }

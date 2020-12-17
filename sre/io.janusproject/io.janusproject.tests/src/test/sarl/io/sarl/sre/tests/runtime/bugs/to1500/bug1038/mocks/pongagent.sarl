@@ -25,125 +25,65 @@ import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.ParticipantJoined
-import io.sarl.core.Schedules
+import io.sarl.lang.core.AgentContext
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
-import java.util.concurrent.locks.ReentrantLock
-import io.sarl.core.AgentKilled
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import io.sarl.core.Lifecycle
 
 @SuppressWarnings("all")
 agent PongAgent {
 
-	uses DefaultContextInteractions, Behaviors, ExternalContextAccess, Lifecycle, InnerContextAccess, Schedules
+	uses DefaultContextInteractions, Behaviors, ExternalContextAccess, Lifecycle
 	uses TestingCapacity
 
-	var comspace : OpenEventSpace
+	val uniq = new AtomicBoolean(true)
+	val context = new AtomicReference<AgentContext>
+	val comSpace = new AtomicReference<OpenEventSpace>
 
-	var MAX_ITERATION : int
-
-	var level : int
-
-	var sharedSpaceID : UUID
-
-	var spawner : UUID
-
-	var childID : UUID
-	
-	var lock = new ReentrantLock
-	var isChildSpawned = false;
-	var jevent : joinContext = null;
+	var sharedSpaceID : UUID	
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		this.level = typeof(String).getParam(2) as Integer
-		this.sharedSpaceID = typeof(String).getParam(0) as UUID
-		if (this.level === 0) {
-			this.comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), this.sharedSpaceID)
-			this.comspace.registerStrongParticipant(asEventListener)
-		}
-		this.MAX_ITERATION = typeof(String).getParam(1) as Integer
-		this.spawner = occurrence.spawner
-
-		this.childID = UUID.randomUUID
+		val ctx = defaultContext
+		assert ctx !== null, "Default context cannot be null"
+		this.context.set(ctx)
+		this.uniq.set(false)
 	}
 
-	on joinContext [!isFromMe && (this.comspace !=null) && isInSpace(this.comspace)] {
-		this.lock.lock
-		try {
-			this.jevent = new joinContext(occurrence)
-			if (this.isChildSpawned) {
-				innerContext.defaultSpace.emit(this.jevent)[it.UUID == this.childID]		
-			}
-		} finally {
-			this.lock.unlock
+	on RendezVous {
+		if (!this.uniq.getAndSet(true)) {
+			val ctx = this.context.get
+			assert ctx !== null, "Context reference cannot be null"
+			val spc = ctx.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), occurrence.spaceID)
+			assert spc !== null, "Space cannot be null"
+			this.comSpace.set(spc)
+			spc.registerStrongParticipant(asEventListener)
+			ctx.defaultSpace.emit(new RendezVousAccepted) [it.ID == occurrence.source.ID]
 		}
 	}
 
-	on ParticipantJoined [occurrence.spaceID == innerContext.defaultSpace.spaceID && isFrom(this.childID)] {
-		this.lock.lock
-		try {
-			this.isChildSpawned = true
-			if (this.jevent != null) {
-				innerContext.defaultSpace.emit(this.jevent)[it.UUID == this.childID]
-			}
-		} finally {
-			this.lock.unlock
-		}
+	on Ping [occurrence.isInSpace(this.comSpace.get)] {
+		this.comSpace.get.emit(new Pong) [it.ID == occurrence.source.ID]
 	}
 
-	on joinContext [isFrom(this.spawner) && isInDefaultSpace] {
-		var cID = occurrence.subContextID
-		var sID = occurrence.subContextDefaultSpaceID 
-		var joiningState = join(cID, sID)
-		if (!joiningState) {
-			joiningState = join(cID, sID)
-		} 
-		val vv = joiningState
-		assert vv
-		// comspace = getContext(occurrence.subContextID).getSpace(sharedSpaceID)
-		var contextTJustJoined = getContext(cID) 
-		assert(contextTJustJoined !== null)
-		this.comspace = contextTJustJoined.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification),
-			this.sharedSpaceID)		
-		this.comspace.registerStrongParticipant(asEventListener)
+	on JoinContextQuery [occurrence.isInSpace(this.comSpace.get)] {
+		val cID = occurrence.subContextID
+		val sID = occurrence.subContextDefaultSpaceID
+		val newContext = join(cID, sID)
+		assert newContext !== null, "Joined context cannot be null"
+		this.context.set(newContext)
+		assert this.context.get === newContext, "Invalid storage of the new context reference"
+		this.uniq.set(false)
 	}
 
-	on Ping [occurrence.index < this.MAX_ITERATION && isInSpace(this.comspace)] {
-		this.comspace.emit(new Pong(occurrence.index)) [
-			it.UUID == occurrence.source.UUID
-		]
-	}
-
-	on Ping [occurrence.index == MAX_ITERATION && isInSpace(comspace)] {
-		this.comspace.emit(new Pong(occurrence.index)) [
-			it.UUID == occurrence.source.UUID
-		]
-
-		if (this.level < this.MAX_ITERATION) {
-			typeof(PongAgent).spawnInContextWithID(this.childID, innerContext,
-				buildAgentInitializationParameters(
-					this.sharedSpaceID.toString,
-					this.MAX_ITERATION.toString,
-					(this.level + 1).toString)
-			)
-		} else {
-			killMe
-		}
-
-	}
-
-	on AgentKilled {
-		if (occurrence.isInInnerDefaultSpace) {
-			if (!hasMemberAgent) {
-				killMe
-			}
-		}
+	on Bye {
+		"PongFinished".addResult
+		killMe
 	}
 
 }

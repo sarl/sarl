@@ -24,20 +24,21 @@ package io.sarl.sre.tests.runtime.bugs.to1500.bug1038
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
+import io.sarl.sre.tests.runtime.bugs.to1500.bug1038.mocks.BootAgent
 import io.sarl.sre.tests.runtime.bugs.to1500.bug1038.mocks.TestAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
-import static extension org.junit.jupiter.api.Assertions.*
-import static extension io.sarl.tests.api.tools.TestAssertions.*
 
-/** Testing class for issue: getContext is null after a join and it must not be
-.
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+/** Testing class for issue: getContext is null after a join and it must not be.
  *
  * <p>https://github.com/sarl/sarl/issues/1038
  *
@@ -58,7 +59,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 @Tag("janus")
 class Bug1038Test {
 
-	@Test
+	@RepeatedTest(20)
 	@DisplayName("Join inner context")
 	def joinInnerContext(extension rc : SreRunContext) : void {
 		typeof(TestAgent1).runSre(STANDARD_TIMEOUT)
@@ -73,7 +74,14 @@ class Bug1038Test {
 		data1.assertContains("participant-joined" + agent2id.toString)
 
 		val data2 = r.get(agent2id)
-		data2.assertContains("joined=true", "context null = true")
+		data2.assertContains("joined="+agent1id.toString, "context null = true")
+	}
+
+	@RepeatedTest(20)
+	@DisplayName("Holonic joins")
+	def holonicJoins(extension rc : SreRunContext) : void {
+		typeof(BootAgent).runSre(STANDARD_TIMEOUT)
+		allResults.assertContainsAtLeast("PongFinished", "LeafPingFinished")
 	}
 
 }

@@ -50,7 +50,7 @@ agent TestAgent2 {
 		this.sID = getParam(1)
 		in(1.seconds) [
 			var joined = join(this.cID, this.sID)
-			("joined=" + joined).addResult
+			("joined=" + joined.ID).addResult
 			var contextJustJoined = getContext(this.cID)
 			("context null = " + (contextJustJoined !== null)).addResult
 			killMeSoon

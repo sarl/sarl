@@ -46,7 +46,7 @@ agent Child2Agent2 {
 		setSkill(new TestingSkill(occurrence))
 		val newContext = getAgentInitializationParameters.get(1) as AgentContext
 		in(500) [
-			if (join(newContext.ID, newContext.defaultSpace.spaceID.ID) != null) {
+			if (join(newContext.ID, newContext.defaultSpace.spaceID.ID) !== null) {
 				in(500) [killMe]
 			}
 		]

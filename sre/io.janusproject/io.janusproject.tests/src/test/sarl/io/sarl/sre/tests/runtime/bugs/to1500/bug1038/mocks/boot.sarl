@@ -25,20 +25,18 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import java.util.UUID
 
 agent BootAgent {
 
 	uses Lifecycle
 	uses TestingCapacity
 
-	val MAX_ITERATION = 3;
+	val MAX_ITERATION = 3
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		var spaceId = UUID::randomUUID
-		typeof(PingAgent).spawn(buildAgentInitializationParameters(spaceId.toString, MAX_ITERATION.toString, 0.toString))
-		typeof(PongAgent).spawn(buildAgentInitializationParameters(spaceId.toString, MAX_ITERATION.toString, 0.toString))
+		typeof(PingAgent).spawn(buildAgentInitializationParameters(MAX_ITERATION, 0))
+		typeof(PongAgent).spawn(buildAgentInitializationParameters)
 		killMe
 	}
 
