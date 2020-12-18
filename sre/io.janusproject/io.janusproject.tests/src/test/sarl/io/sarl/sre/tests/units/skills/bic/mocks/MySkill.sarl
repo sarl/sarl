@@ -46,13 +46,18 @@ skill MySkill implements InternalEventBusCapacity {
 	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>boolean) {
 	}
 
-	override fireEventAndWait(^event : Event, gatherEvents : boolean,
-		thrownExceptions : boolean) : ConcurrentLinkedDeque<Event> {
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean) {
+	}
+
+	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event> {
 		null
 	}
 
-	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
-		listener : Object) : ConcurrentLinkedDeque<Event> {
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) {
+	}
+
+	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
+		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
 		null
 	}
 

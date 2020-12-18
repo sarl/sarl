@@ -79,6 +79,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
+import io.sarl.lang.core.DynamicSkillProvider
 
 /**
  * @author $Author: sgalland$
@@ -118,6 +119,9 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	protected var checker : SarlSpecificationChecker
 
 	@Nullable
+	var skillProvider : DynamicSkillProvider
+
+	@Nullable
 	var skillUninstaller : SkillUninstaller
 
 	@Nullable
@@ -149,7 +153,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		when(agentProvider.apply(any)).thenReturn(this.^agent2)
 		this.agentCreatorProvider = typeof(AgentCreatorProvider).mock
 		when(this.agentCreatorProvider.getAgentCreator(typeof(Class).any,
-			typeof(UUID).any, anyInt, typeof(ConcurrentLinkedDeque).any)).thenReturn(agentProvider)
+			typeof(UUID).any, anyInt, typeof(DynamicSkillProvider).any)).thenReturn(agentProvider)
 
 		this.executor = typeof(ExecutorService).mock
 		// Execute the code synchronously only for testing purpose
@@ -162,12 +166,14 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		this.logger = typeof(LoggingService).mock
 		when(this.logger.getKernelLogger).thenReturn(typeof(Logger).mock)
 		when(this.logger.getKernelModuleLogger(anyString)).thenReturn(typeof(Logger).mock)
+		this.skillProvider = typeof(DynamicSkillProvider).mock
 		this.skillUninstaller = typeof(SkillUninstaller).mock
 		when(this.skillUninstaller.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 
 		this.service = newService(
 			this.executor,
 			this.logger,
+			this.skillProvider,
 			this.skillUninstaller,
 			this.agentCreatorProvider,
 			[typeof(ExternalContextMemberListener).mock],
@@ -177,7 +183,9 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	}
 
 	protected abstract def newService(executor : ExecutorService, logger : LoggingService,
-		skillUninstaller : SkillUninstaller, agentCreatorProvider : AgentCreatorProvider,
+		skillProvider : DynamicSkillProvider,
+		skillUninstaller : SkillUninstaller,
+		agentCreatorProvider : AgentCreatorProvider,
 		contextListenerProvider : Provider<ExternalContextMemberListener>,
 		lifecycleListenerProvider : Provider<LifecycleServiceListener>,
 		lifecycleConfig: Provider<LifecycleConfig>) : T

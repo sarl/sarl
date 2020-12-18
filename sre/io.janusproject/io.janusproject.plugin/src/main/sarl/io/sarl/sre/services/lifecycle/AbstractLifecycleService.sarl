@@ -33,12 +33,12 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.logging.LoggingService
 import java.lang.ref.WeakReference
+import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
-import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -47,8 +47,9 @@ import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 
-import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static java.text.MessageFormat.*
+
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -80,18 +81,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val lifecycleConfig : LifecycleConfig
 
-	var userDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>
+	// Do not use a concurrent list because it is useless according to the number of times this collection has to change
+	var dynamicSkillProviders : DynamicSkillProvider[]
+
+	val dynamicSkillProviderLock : ReadWriteLock
 
 	val spawnQueries = new AtomicLong
 
 	val spawnEnable = new AtomicBoolean(true)
-
-	/** 
-	 * This lock is very important, it corrects the bug detected in the boids simulation and SARL Benchmarks
-	 * In particular, the number of calls to the spawn function was not coherent with the corresponding number of strong agents spawned in the defaultcontext.defaultspace
-	 * Both lock on agentCreatorProvider.getAgentCreator and life.start are REQUIRED
-	 */
-	val lock : Lock
 
 	val lockProvider : Provider<ReadWriteLock>
 
@@ -102,10 +99,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * the agents to launch.
 	 * @param creator the provider of agent creators that is used when spawning agents.
 	 * @param globalListeners is the collection of global listeners to use.
-	 * @param lockProvider the provider of locks.
 	 * @param rwLockProvider the provider of read-write locks.
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param skillProvider the system-wide provider of agent skills.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
 	 * @param lifecycleConfig the configuration of the lifecycle service.
@@ -113,9 +110,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		globalListeners : SmartListenerCollection<?>,
-		lockProvider : Provider<Lock>, rwLockProvider : Provider<ReadWriteLock>,
+		rwLockProvider : Provider<ReadWriteLock>,
 		lifecycleListener : Provider<LifecycleServiceListener>,
-		externalContextListener : Provider<ExternalContextMemberListener>, skillUninstaller : SkillUninstaller,
+		externalContextListener : Provider<ExternalContextMemberListener>,
+		skillProvider : DynamicSkillProvider, skillUninstaller : SkillUninstaller,
 		executor : ExecutorService, loggingService : LoggingService, lifecycleConfig : LifecycleConfig) {
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
@@ -126,8 +124,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.logger = loggingService.getKernelModuleLogger(Messages::AbstractLifecycleService_3)
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
-		this.lock = lockProvider.get
 		this.lockProvider = rwLockProvider
+		this.dynamicSkillProviderLock = rwLockProvider.get
+		this.dynamicSkillProviders = newArrayOfSize(1)
+		this.dynamicSkillProviders.set(0, skillProvider)
 	}
 
 	override getSpawnEnable : boolean {
@@ -262,14 +262,12 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param nbAgents the number of agents to spawn.
 	 * @param spawningAgent the agent which is spawning.
 	 * @param parent the parent entity that is creating the agents.
-	 * @param agentId the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
-	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
 	 * @param agentClazz the type of the agents to spawn.
 	 * @param callback function that is invoked when an identifier of spawned agent is known. The number of times this callback
 	 * is invoked depends on the service's implementation. But, the contract is that is must be called at least one time when
 	 * one or more agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
-	 * @param agentIds is the lambda that must be used to compute the UUID of an agent.
+	 * @param agentIds is the lambda that must be used to compute the UUID of an agent. This lambda should be thread-safe.
 	 */
 	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
 		agentClazz : Class<? extends Agent>, params : Object[], agentIds : ()=>UUID) : void {
@@ -282,60 +280,34 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			}
 
 			val spawnQueryAccess = new SpawnQueries(this)
-			this.lock.lock
-			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID, nbAgents,
-				dynamicSkillProviders)
-			this.lock.unlock
-			// Create the block of code for creating a single agent
-			val agentCreator : Runnable = [
 
-				val aid = agentIds.apply
-				// Effectively create the agent
-				val ^agent = agentInstanceCreator.apply(aid)
+			// Retrieve the reference to the skill providers.
+			// Since these providers are stored into an array, any change to the list of provider
+			// will cause the creation of a new array. Then it is useless to implement a lock
+			// on the providers' list. 
+			var safeSkillProvidersList : DynamicSkillProvider[]
+			val rlock = this.dynamicSkillProviderLock.readLock
+			rlock.lock
+			try {
+				safeSkillProvidersList = this.dynamicSkillProviders
+			} finally {
+				rlock.unlock
+			}
 
-				if (^agent === null) {
-					throw new CannotSpawnException(agentClazz)
-				}
+			// The following call is assumed to be thread-safe and the replied creator should also
+			// be thread-safe.
+			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(
+				agentClazz, parent.ID, nbAgents, safeSkillProvidersList)
 
-				// Start the agent's life
-				var life = getLife(^agent, this.lockProvider)
-				var started = false
-				var spawnError : Throwable = null
-				this.lock.lock
-				try {
-					started = life.start(this.skillUninstaller, getLogger, spawningAgent, parent, params)
-				} catch (e : Throwable) {
-					started = false
-					spawnError = new CannotSpawnException(agentClazz, e)
-				} finally {
-					spawnQueryAccess.done
-					this.lock.unlock
-				}
-				if (started) {
-					// Add the agent in the system. It is synchronized because additions may occur in parallel
-					^agent.onAgentCreated
-					fireAgentSpawningEvents(spawningAgent, parent, agentClazz, params, ^agent)
-				} else {
-					if (spawnError !== null) {
-						val spawnErrorFinal = spawnError
-						getLogger.log(Level::SEVERE, spawnErrorFinal) [spawnErrorFinal.message]
-					}
-					fireAgentSpawningErrorEvents(spawningAgent, parent, agentClazz)
-					// The agent may be the boot agent, and it may have failed to be launched.
-					// When the root context is still empty the safer decision should be to stop the kernel.
-					// In some cases, the agent that is just not started has spawned another agent
-					// into its "on Initialize" before it returns on failure or with "killMe".
-					// Then, we should give the opportunity to the spawned sub-agent to properly
-					// start before stopping the SRE.
-					parent.startShutdownLookup
-				}
+			// Create the instance of the process that should create the agents.
+			val individualCreationProcess = newAgentCreatorProcess(
+				spawnQueryAccess, spawningAgent, parent, agentClazz, params, agentIds, agentInstanceCreator)
 
-			]
 			if (nbAgents > 1) {
 				getExecutor.executeNotBlockingTask(getLogger, nbAgents,
-					this.lifecycleConfig.agentSpawningCountPerThread, agentCreator)
+					this.lifecycleConfig.agentSpawningCountPerThread, individualCreationProcess)
 			} else {
-				getExecutor.executeAsap(getLogger, agentCreator)
+				getExecutor.executeAsap(getLogger, individualCreationProcess)
 			}
 		} else {
 			throw new SpawnDisabledException(parent.ID, agentClazz)
@@ -345,6 +317,34 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	private def startShutdownLookup(parent : Context) {
 		val lookup = new ShutdownLookUp(this, parent)
 		lookup.start
+	}
+
+	/** Invoked to create the function for launching an agent.
+	 * This function is defined for enabling overrding.
+	 *
+	 * @param spawnQueries the object ot track the spawn queries.
+	 * @param spawningAgent is the identifier of the agent that has invoked the spawn function.
+	 * @param parentContext is the context in which the agent is created.
+	 * @param agentType is the type of agent to be created.
+	 * @param initializationParameters is the list of parameters to pass to the agent for its initialization.
+	 * @param agentIds is a lambda that replies a valid UUID for an agent. This lambda is thread-safe.
+	 * @param agentInstanceCreator is a lambda that enables to create an instance of agent. This lambda is thread-safe.
+	 * @since 0.12
+	 */
+	protected def newAgentCreatorProcess(
+		spawnQueries : SpawnQueries,
+		spawningAgent : UUID, parentContext : Context,
+		agentType : Class<? extends Agent>,
+	 	initializationParameters : Object[],
+		agentIds : ()=>UUID,
+		agentInstanceCreator : (UUID)=>Agent) : AgentCreationProcess {
+		new AgentCreationProcess(
+			this, spawnQueries,
+			spawningAgent, parentContext, agentType, initializationParameters,
+			agentIds, agentInstanceCreator,
+			this.skillUninstaller,
+			this.lockProvider,
+			getLogger)
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -494,15 +494,6 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		^agent.fireAgentDestroy(leavedContexts, terminationCause)
 	}
 
-	/** Replies the dynamic skill providers that are defined by the user of the service.
-	 */
-	protected def getDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider> {
-		if (this.userDynamicSkillProviders === null) {
-			return new ConcurrentLinkedDeque<DynamicSkillProvider>()
-		}
-		return new ConcurrentLinkedDeque<DynamicSkillProvider>(this.userDynamicSkillProviders)
-	}
-
 	/** Add a dynamic skill provider that must be used for the agents that are spawned
 	 * after the call to this function.
 	 * 
@@ -510,12 +501,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	def addDynamicSkillProvider(provider : DynamicSkillProvider) {
 		assert provider !== null
-
-		if (this.userDynamicSkillProviders === null) {
-			this.userDynamicSkillProviders = new ConcurrentLinkedDeque<DynamicSkillProvider>
+		val wlock = this.dynamicSkillProviderLock.writeLock
+		wlock.lock
+		try {
+			this.dynamicSkillProviders = Arrays::copyOf(this.dynamicSkillProviders, this.dynamicSkillProviders.length + 1)
+			this.dynamicSkillProviders.set(this.dynamicSkillProviders.length - 1, provider)
+		} finally {
+			wlock.unlock
 		}
-		this.userDynamicSkillProviders += provider
-
 	}
 
 	/** Remove a dynamic skill provider that must be not be used any more for the agents that are spawned.
@@ -524,12 +517,23 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	def removeDynamicSkillProvider(provider : DynamicSkillProvider) {
 		assert provider !== null
-		var list : ConcurrentLinkedDeque<DynamicSkillProvider> = this.userDynamicSkillProviders
-		if (list !== null) {
-			this.userDynamicSkillProviders.remove(provider)
-			if (this.userDynamicSkillProviders.empty) {
-				this.userDynamicSkillProviders = null
+		val wlock = this.dynamicSkillProviderLock.writeLock
+		wlock.lock
+		try {
+			// Start at index 1 because the first provider is the system-wide provider
+			for (var i = 1; i < this.dynamicSkillProviders.length; i++) {
+				if (provider === this.dynamicSkillProviders.get(i)) {
+					val copy = newArrayOfSize(this.dynamicSkillProviders.length - 1)
+					System::arraycopy(this.dynamicSkillProviders, 0, copy, 0, i)
+					if (i < (this.dynamicSkillProviders.length - 1)) {
+						System::arraycopy(this.dynamicSkillProviders, i + 1, copy, i, this.dynamicSkillProviders.length - i - 1)
+					}
+					this.dynamicSkillProviders = copy
+					return;
+				}
 			}
+		} finally {
+			wlock.unlock
 		}
 	}
 
@@ -543,7 +547,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.11
 	 */
-	private static class SpawnQueries {
+	protected static final class SpawnQueries {
 
 		val enclosing : WeakReference<AbstractLifecycleService>
 
@@ -567,6 +571,111 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 					]
 				}
 			}
+		}
+
+	}
+
+	/** 
+	 * A class that is runnable into a thread and implements the creation of a single agent.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	protected static class AgentCreationProcess implements Runnable {
+
+		val service : AbstractLifecycleService
+		val spawnQueries : SpawnQueries
+		val spawningAgent : UUID
+		val parentContext : Context
+		val agentType : Class<? extends Agent>
+		val initializationParameters : Object[]
+		val agentIds : ()=>UUID
+		val agentInstanceCreator : (UUID)=>Agent
+		val skillUninstaller : SkillUninstaller
+		val lockProvider : Provider<ReadWriteLock>
+		val logger : Logger
+
+		/** Constructor.
+		 *
+		 * @param service is the reference to the spawning service.
+		 * @param spawnQueries the object ot track the spawn queries.
+		 * @param spawningAgent is the identifier of the agent that has invoked the spawn function.
+		 * @param parentContext is the context in which the agent is created.
+		 * @param agentType is the type of the created agents.
+		 * @param initializationParameters is the list of parameters to pass to the agent for its initialization.
+		 * @param agentIds is the lambda that must be used to compute the UUID of an agent. This lambda should be thread-safe.
+		 * @param agentInstanceCreator is a lambda that enables to create an instance of agent. This lambda is thread-safe.
+		 * @param skillUninstaller is the reference to the skill uninstaller.
+		 * @param lockProvider is the provider of read-write locks.
+		 * @param logger is the service logger.
+		 */
+		new (service : AbstractLifecycleService, spawnQueries : SpawnQueries,
+			spawningAgent : UUID, parentContext : Context, agentType : Class<? extends Agent>,
+			initializationParameters : Object[], agentIds : ()=>UUID,
+			agentInstanceCreator : (UUID)=>Agent, skillUninstaller : SkillUninstaller,
+			lockProvider : Provider<ReadWriteLock>, logger : Logger) {
+			this.service = service
+			this.spawnQueries = spawnQueries
+			this.spawningAgent = spawningAgent
+			this.parentContext = parentContext
+			this.agentType = agentType
+			this.initializationParameters = initializationParameters
+			this.agentIds = agentIds
+			this.agentInstanceCreator = agentInstanceCreator
+			this.skillUninstaller = skillUninstaller
+			this.lockProvider = lockProvider
+			this.logger = logger
+		}
+
+		final override run {
+			createAgent
+		}
+
+		protected def createAgent : void {
+				val aid = this.agentIds.apply
+
+				// Effectively create the agent
+				val ^agent = this.agentInstanceCreator.apply(aid)
+
+				if (^agent === null) {
+					throw new CannotSpawnException(this.agentType)
+				}
+
+				// Start the agent's life
+				var life = ^agent.getLife(this.lockProvider)
+				var started = false
+				var spawnError : Throwable = null
+				try {
+					started = life.start(this.skillUninstaller, this.logger, this.spawningAgent, this.parentContext, this.initializationParameters)
+				} catch (e : Throwable) {
+					started = false
+					spawnError = new CannotSpawnException(this.agentType, e)
+				} finally {
+					this.spawnQueries.done
+				}
+				if (started) {
+					// Add the agent in the system. It is synchronized because additions may occur in parallel
+					this.service.onAgentCreated(^agent)
+					this.service.fireAgentSpawningEvents(this.spawningAgent, this.parentContext,
+						this.agentType, this.initializationParameters, ^agent
+					)
+				} else {
+					if (spawnError !== null) {
+						val spawnErrorFinal = spawnError
+						this.logger.log(Level::SEVERE, spawnErrorFinal) [spawnErrorFinal.message]
+					}
+					this.service.fireAgentSpawningErrorEvents(this.spawningAgent, this.parentContext, this.agentType)
+					// The agent may be the boot agent, and it may have failed to be launched.
+					// When the root context is still empty the safer decision should be to stop the kernel.
+					// In some cases, the agent that is just not started has spawned another agent
+					// into its "on Initialize" before it returns on failure or with "killMe".
+					// Then, we should give the opportunity to the spawned sub-agent to properly
+					// start before stopping the SRE.
+					this.service.startShutdownLookup(this.parentContext)
+				}
 		}
 
 	}

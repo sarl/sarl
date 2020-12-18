@@ -21,6 +21,7 @@
 
 package io.sarl.sre.tests.units.services.lifecycle
 
+import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
@@ -31,7 +32,6 @@ import io.sarl.sre.services.lifecycle.InjectionBasedLifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.logging.LoggingService
-import java.util.concurrent.locks.ReentrantLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.Provider
 import org.junit.jupiter.api.DisplayName
@@ -49,14 +49,23 @@ import org.junit.jupiter.api.Tag
 @Tag("sre-unit")
 class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest<InjectionBasedLifecycleService> {
 	
-	override newService(executor : ExecutorService, logger : LoggingService, skillUninstaller : SkillUninstaller,
+	override newService(executor : ExecutorService, logger : LoggingService,
+		skillProvider : DynamicSkillProvider, skillUninstaller : SkillUninstaller,
 		agentCreatorProvider : AgentCreatorProvider, contextListenerProvider : Provider<ExternalContextMemberListener>,
 		lifecycleListenerProvider : Provider<LifecycleServiceListener>,
 		lifecycleConfig : Provider<LifecycleConfig>) : InjectionBasedLifecycleService {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
-		return new InjectionBasedLifecycleService(this.checker, agentCreatorProvider,
-				coll, [new ReentrantLock], [new ReentrantReadWriteLock], lifecycleListenerProvider, contextListenerProvider,
-				skillUninstaller, executor, logger, lifecycleConfig.get)
+		return new InjectionBasedLifecycleService(
+			this.checker,
+			agentCreatorProvider,
+			coll,
+			[new ReentrantReadWriteLock],
+			lifecycleListenerProvider,
+			contextListenerProvider,
+			skillProvider,
+			skillUninstaller,
+			executor,logger,
+			lifecycleConfig.get)
 	}
 
 }

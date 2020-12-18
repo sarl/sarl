@@ -21,24 +21,16 @@
 package io.sarl.sre.services.lifecycle
 
 import com.google.inject.Injector
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.lang.core.SREutils
 import io.sarl.sarlspecification.SarlSpecificationChecker
-import io.sarl.sre.KernelScope
-import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
-import java.lang.reflect.Constructor
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Inject
 import javax.inject.Provider
 
 /** 
@@ -60,7 +52,6 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * the injector that should be used by this service for creating the agents.
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
 	 * the agents to launch.
-	 * @param skillProvider the provider of skills that should be used to init the agents.
 	 * @param globalListeners is the collection of global listeners to use.
 	 * @param lockProvider the provider of locks.
 	 * @param rwLockProvider the provider of read-write locks.
@@ -71,21 +62,21 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param logger the logging service.
 	 * @param sreConfig the configuration of the SRE.
 	 */
-	@Inject
+	/*@Inject
 	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
-		skillProvider : DynamicSkillProvider,
 		globalListeners : SmartListenerCollection<?>,
 		lockProvider : Provider<Lock>, rwLockProvider : Provider<ReadWriteLock>,
 		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
 		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
+		skillProvider : DynamicSkillProvider,
 		skillUninstaller : SkillUninstaller,
 		executor : ExecutorService,
 		logger : LoggingService,
 		sreConfig : SreConfig) {
 		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
 			globalListeners, lockProvider, rwLockProvider, lifecycleListener, externalContextListener,
-			skillUninstaller, executor, logger, sreConfig.services.lifecycle)
-	}
+			skillProvider, skillUninstaller, executor, logger, sreConfig.services.lifecycle)
+	} */
 
 	/** 
 	 * Constructs the service.
@@ -105,14 +96,15 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		globalListeners : SmartListenerCollection<?>,
-		lockProvider : Provider<Lock>, rwLockProvider : Provider<ReadWriteLock>,
+		rwLockProvider : Provider<ReadWriteLock>,
 		lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
+		skillProvider : DynamicSkillProvider,
 		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService,
 		lifecycleConfig : LifecycleConfig) {
 		super(sarlSpecificationChecker, creator, globalListeners,
-			lockProvider, rwLockProvider, lifecycleListener,
-			externalContextListener, skillUninstaller, executor, logger, lifecycleConfig)
+			rwLockProvider, lifecycleListener,
+			externalContextListener, skillProvider, skillUninstaller, executor, logger, lifecycleConfig)
 	}
 
 	/** 
@@ -123,59 +115,21 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class CreatorFactory extends AbstractCreatorFactory  {
+	private static class CreatorFactory extends AbtractAgentCreatorProvider {
 
 		val injector : Injector
 
-		new (injector : Injector, skillProvider : DynamicSkillProvider) {
-			super(skillProvider)
+		new (injector : Injector) {
 			this.injector = injector
 		}
-	
-		@SuppressWarnings("use_reserved_sarl_annotation")
-		@PrivateAPI(isCallerOnly = true)
-		def getAgentCreator(
-			agentClazz : Class<? extends Agent>,
-			parent : UUID,
-			nbAgents : int,
-			skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent {
-			var sproviders = skillProviders.mergeSkillProviders
 
-			assert agentClazz!== null
-			var e1 : Exception = null
-			var cons1 : Constructor<? extends Agent>
-			try {
-				cons1 = agentClazz.getConstructor(typeof(UUID), typeof(UUID))
-			} catch (exception : Exception) {
-				e1 = exception
-				cons1 = null
-			}
-			var e2 : Exception = null
-			var cons2 : Constructor<? extends Agent>
-			try {
-				cons2 = agentClazz.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
-			} catch (exception : Exception) {
-				e2 = exception
-				cons2 = null
-			}
-			if (cons1 === null && cons2 === null) {
-				throw new CannotSpawnException(agentClazz, e1 ?: e2)
-			}
-
-			val constructor1 = cons2
-			val constructor2 = cons2
+		override getAgentCreator(agentType : Class<? extends Agent>, parent : UUID, nbAgents : int,
+				skillProviders : DynamicSkillProvider*) : (UUID)=>Agent {
+			val cons = agentType.agentConstructor
 			return [
-				var ag : Agent
-				if (constructor2 !== null) {
-					constructor2.accessible = true
-					ag = constructor2.newInstance(parent, it, sproviders)
-				} else {
-					constructor1.accessible = true
-					var ^agent = constructor1.newInstance(parent, it)
-					SREutils::setDynamicSkillProvider(^agent, sproviders)
-				}
-				this.injector.injectMembers(ag)
-				return ag
+				val ^agent = cons.createAgent(agentType, parent, it, skillProviders)
+				this.injector.injectMembers(^agent)
+				return ^agent
 			]
 		}
 

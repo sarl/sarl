@@ -19,26 +19,45 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.services.lifecycle.mocks
+package io.sarl.sre.tests.runtime.bugs.to1500.bug1047.mocks
 
-import io.sarl.lang.core.Agent
-import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.sre.services.lifecycle.AbstractCreatorFactory
-import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.11
  */
-class XAbstractCreatorFactoryMock extends AbstractCreatorFactory {
-	
-	def getAgentCreator(agentClazz : Class<? extends Agent>, parent : UUID, nbAgents : int,
-		skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent {
-		null
+@SuppressWarnings("all")
+agent MyAgent0 {
+
+    uses DefaultContextInteractions, Lifecycle, Schedules
+    uses TestingCapacity
+
+	val ready = new AtomicBoolean(false)
+
+    on Initialize {
+    	setSkill(new TestingSkill(occurrence))
+    	val task = "rendez-vous".task
+    	task.every(500) [
+    		if (this.ready.get) {
+    			task.cancel
+    			killMe
+    		} else {
+	    		emit(new RendezVous) [it.ID != this.ID]
+	    	}
+    	]
+    }
+
+	on RendezVousAccepted {
+		this.ready.set(true)
 	}
-	
+
 }

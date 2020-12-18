@@ -199,14 +199,21 @@ final class AgentLife {
 					wlock0.unlock
 				}
 
-				var eb = spawningContext.attachAgentToPlatform
+				// Get the event bus
+				val eb = getEventBus
+				assert eb !== null
+				
+				// Attach to the default context
+				spawningContext.attachAgentToDefaultContext
 
 				// Notify the agent about its creation.
 				// Assume event handlers were run after returning from the fireEventAndWait function.
 				var initEvent = new Initialize(spawningAgent, initializationParameters)
 				initEvent.source = addressInInnerDefaultSpace
 				// Any exception into the inits are thrown outside the call below.
-				var delayedEvents = eb.fireEventAndWait(initEvent, true, true)
+				var delayedEvents = eb.fireEventAndWaitWithEventGathering(initEvent, true) [
+					spawningContext.defaultSpace.registerStrongParticipant(eb.associatedEventBusListener)
+				]
 
 				// State may have changed
 				val rlock1 = this.lock.readLock
@@ -247,25 +254,17 @@ final class AgentLife {
 		return false
 	}
 
-	/** Set up the agent in order to be attached properly to the plaform.
-	 * 
-	 * <p>This function creates the agent's internal event bus, and attach the agent to the default space
-	 * of its default context.
+	/** Set up the agent in order to be attached properly to its default context.
 	 * 
 	 * @param spawningContext the context in which the agent is spawn.
-	 * @return the internal event bus.
+	 * @param eventBus the event bus of the agent.
+	 * @since 0.12
 	 */
-	protected def attachAgentToPlatform(spawningContext : Context) : InternalEventBusCapacity {
-		// Set up the internal bus
-		val eb = getEventBus
-		assert(eb !== null)
-		//
+	protected def attachAgentToDefaultContext(spawningContext : Context) : void {
 		// Register the agent on its parent default space.
 		var defaultSpace = spawningContext.defaultSpace
 		var addressWithinDefaultSpace = new Address(defaultSpace.spaceID, ^agent.ID)
 		setDefaultContext(spawningContext, addressWithinDefaultSpace)
-		defaultSpace.registerStrongParticipant(eb.associatedEventBusListener)
-		return eb
 	}
 
 	/** Detach the agent from the platform.
@@ -344,7 +343,7 @@ final class AgentLife {
 					// Notify the agent about its destruction.
 					var ^event = new Destroy
 					^event.source = addressInInnerDefaultSpace
-					this.eventBus.fireEventAndWait(^event, false, false)
+					this.eventBus.fireEventAndWait(^event, false)
 				} catch (e : Throwable) {
 					try {
 						this.agentLogger.error(e.localizedMessage, e)

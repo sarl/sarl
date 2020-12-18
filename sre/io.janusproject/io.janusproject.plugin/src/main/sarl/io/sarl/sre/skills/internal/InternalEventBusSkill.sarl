@@ -30,6 +30,7 @@ import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
@@ -55,7 +56,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var eventListener : InformedEventListener
 
-	var isEventBufferEnabled = false
+	val isEventBufferEnabled = new AtomicBoolean(false)
 
 	val eventBuffer = new AtomicReference<ConcurrentLinkedDeque<Event>>
 
@@ -144,9 +145,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @return the value of the flag before its change.
 	 */
 	def setEventBuffering(buffering : boolean) : boolean {
-		val old = this.isEventBufferEnabled
-		this.isEventBufferEnabled = buffering
-		return old
+		return this.isEventBufferEnabled.getAndSet(buffering)
 	}
 
 	/** Replies if the events are buffering.
@@ -154,7 +153,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @return {@code true} if the events are buffered.
 	 */
 	def isEventBuffering() : boolean {
-		return this.isEventBufferEnabled
+		return this.isEventBufferEnabled.get
 	}
 
 	/** Replies the buffered events.
@@ -169,54 +168,59 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		return new ConcurrentLinkedDeque(buf)
 	}
 
-	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
-		listener : Object) : ConcurrentLinkedDeque<Event> {
+	def fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) : void {
 		if (getLife(owner).state.blockingEventHandling) {
 			val logger = getLogger
-			if (gatherEvents) {
-				var wasEnabled : boolean = this.isEventBufferEnabled
-				this.isEventBufferEnabled = true
-
-				try {
-					this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
-				} finally {
-					this.isEventBufferEnabled = wasEnabled
-				}
-
-				return this.eventBuffer.getAndSet(null)
-
-			}
 			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
+		}
+	}
+
+	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
+		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
+		if (getLife(owner).state.blockingEventHandling) {
+			val logger = getLogger
+			var wasEnabled : boolean = this.isEventBufferEnabled.getAndSet(true)
+			try {
+				if (handler !== null) {
+					handler.apply
+				}
+				this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
+			} finally {
+				this.isEventBufferEnabled.set(wasEnabled)
+			}
+			return this.eventBuffer.getAndSet(null)
 		}
 		return new ConcurrentLinkedDeque<Event>
 	}
 
-	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : ConcurrentLinkedDeque<Event> {
+	def fireEventAndWait(^event : Event, thrownExceptions : boolean) : void {
 		if (getLife(owner).state.blockingEventHandling) {
 			val logger = getLogger
-			if (gatherEvents) {
-				var wasEnabled : boolean = this.isEventBufferEnabled
-				this.isEventBufferEnabled = true
-
-				try {
-					this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
-				} finally {
-					this.isEventBufferEnabled = wasEnabled
-				}
-
-				return this.eventBuffer.getAndSet(null)
-
-			}
 			this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
+		}
+	}
+
+	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event> {
+		if (getLife(owner).state.blockingEventHandling) {
+			val logger = getLogger
+			var wasEnabled : boolean = this.isEventBufferEnabled.getAndSet(true)
+			try {
+				if (handler !== null) {
+					handler.apply
+				}
+				this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
+			} finally {
+				this.isEventBufferEnabled.set(wasEnabled)
+			}
+
+			return this.eventBuffer.getAndSet(null)
 		}
 		return new ConcurrentLinkedDeque<Event>
 	}
 
 	def fireEvent(^event : Event) {
 		if (getLife(owner).state.asynchronousEventHandling) {
-			var mustBuf : boolean = this.isEventBufferEnabled
-
-			if (mustBuf) {
+			if (this.isEventBufferEnabled.get) {
 				var buf = this.eventBuffer.updateAndGet [
 					if (it === null) {
 						return new ConcurrentLinkedDeque

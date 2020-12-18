@@ -23,10 +23,11 @@ package io.sarl.sre.services.lifecycle
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Provider of agent instance creator.
+ * The implementation of an AgentCreatorProvider must be thread safe, i.e. the call
+ * to the {@code getAgentCreator} function must not need to be synchronized.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -37,15 +38,13 @@ interface AgentCreatorProvider {
 
 	/** Build an agent creator based on the given parameters.
 	 *
-	 * @param <T> the type of agent to create.
 	 * @param agentClazz the type of agent to create.
 	 * @param parent the identifier of the agents' parent.
 	 * @param nbAgents the number of agents to create.
-	 * @param skillProviders is a list of additionnal skill providers that should be considered by the created agent.
+	 * @param skillProviders is a list of additional skill providers that should be considered by the created agent.
 	 * @return the instance of the creator of agent instances.
 	 */
 	def getAgentCreator(agentClazz : Class<? extends Agent>, parent : UUID, nbAgents : int,
-		skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent
+		skillProviders : DynamicSkillProvider*) : (UUID)=>Agent
 
 }
-
