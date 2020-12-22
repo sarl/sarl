@@ -258,17 +258,17 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 					} catch (CoreException exception) {
 						SARLExamplePlugin.getDefault().openError(getShell(),
 								io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-								exception.getStatus().getMessage(), exception);
+								exception.getStatus().getMessage(), exception.getStatus().getMessage(), exception);
 					}
 				}
 			} catch (CoreException exception) {
 				SARLExamplePlugin.getDefault().openError(getShell(),
 						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-						exception.getStatus().getMessage(), exception);
+						exception.getStatus().getMessage(), null, exception);
 			} catch (Exception exception) {
 				SARLExamplePlugin.getDefault().openError(getShell(),
 						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-						exception.getMessage(), exception);
+						exception.getMessage(), exception.getMessage(), exception);
 			}
 		}
 

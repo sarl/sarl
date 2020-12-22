@@ -21,17 +21,24 @@
 
 package io.sarl.lang.ui.codemining;
 
+import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Throwables;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.codemining.ICodeMining;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -48,9 +55,11 @@ import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider;
+import org.eclipse.xtext.ui.editor.model.XtextDocumentUtil;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.util.concurrent.CancelableUnitOfWork;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
@@ -61,6 +70,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.ui.SARLUiPlugin;
 
 /** Provider of a code mining support for SARL.
  *
@@ -93,12 +103,52 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	@Inject
 	private IBatchTypeResolver typeResolver;
 
+	@Inject
+	private XtextDocumentUtil xtextDocumentUtil;
+
 	@Override
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer, IProgressMonitor monitor) {
+		// Only for fixing bug 1041: exception catching around the code mining building in order to show up an error message
 		if (this.codeminingPreferences.isCodeminingEnabled()) {
-			return super.provideCodeMinings(viewer, monitor);
+			Supplier<List<? extends ICodeMining>> task = () -> {
+				final CancelableUnitOfWork<List<ICodeMining>, XtextResource> uow = new CancelableUnitOfWork<List<ICodeMining>, XtextResource>() {
+					@Override
+					public List<ICodeMining> exec(XtextResource resource, CancelIndicator uowCancelIndicator) throws Exception {
+						final CombinedCancelIndicator indicator = new CombinedCancelIndicator(monitor, uowCancelIndicator);
+						return createCodeMinings(viewer.getDocument(), resource, indicator);
+					}
+				};
+				final Supplier<List<ICodeMining>> defaultList = () -> Collections.emptyList();
+				try {
+					return this.xtextDocumentUtil.getXtextDocument(viewer).tryReadOnly(uow, defaultList);
+				} catch (Throwable exception) {
+					disableCodeMining(viewer, exception);
+					return defaultList.get();
+				}
+			};
+			final CompletableFuture<List<? extends ICodeMining>> future = CompletableFuture.supplyAsync(task);
+			return future;
 		}
 		return null;
+	}
+
+	private void disableCodeMining(ITextViewer viewer, Throwable error) {
+		this.codeminingPreferences.setCodeminingEnabled(false);
+		final Throwable rootCause = Throwables.getRootCause(error);
+		String message = Messages.SARLCodeMiningProvider_2;
+		if (rootCause != null) {
+			final String msg = rootCause.getLocalizedMessage();
+			if (!Strings.isEmpty(msg)) {
+				message = msg;
+			}
+		}
+		final String errorMessage = message;
+		Display.getDefault().asyncExec(() -> {
+			final Shell shell = viewer.getTextWidget().getShell();
+			SARLUiPlugin.openError(shell, Messages.SARLCodeMiningProvider_0,
+					MessageFormat.format(Messages.SARLCodeMiningProvider_1, errorMessage), 
+					errorMessage, rootCause);
+		});
 	}
 
 	@Override
@@ -294,6 +344,38 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 				acceptor.accept(createNewLineContentCodeMining(offset, text));
 			}
 		}
+	}
+
+	/** This indicator checks if monitor is canceled or if
+	 * CancelableUnitOfWork-cancelIndicator is canceled.
+	 * <strong>Only for fixing bug 1041.</strong>
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	private static class CombinedCancelIndicator implements CancelIndicator {
+
+		private IProgressMonitor monitor;
+
+		private CancelIndicator uowCancelIndicator;
+
+		public CombinedCancelIndicator(IProgressMonitor monitor, CancelIndicator uowCancelIndicator) {
+			this.monitor = monitor;
+			this.uowCancelIndicator = uowCancelIndicator;
+		}
+
+		@Override
+		public boolean isCanceled() {
+			// uowCancelIndicator.isCanceled() will return true, when the resource was changed
+			// thanks to CancelableUnitOfWork
+			return (this.uowCancelIndicator != null && this.uowCancelIndicator.isCanceled())
+					// monitor.isCanceled() throws an CancellationException when monitor is canceled
+					|| (this.monitor != null && this.monitor.isCanceled());
+		}
+
 	}
 
 }

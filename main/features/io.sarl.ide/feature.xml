@@ -279,6 +279,10 @@ tools upon the Eclipse IDE.
       <import plugin="slf4j.api" version="2.0.0.alpha1" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.core" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ide" version="2.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.ide" version="2.22.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="4.2.3" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.ide" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.builder" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.22.0" match="greaterOrEqual"/>
@@ -286,10 +290,7 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.compare" version="3.7.1000" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.forms" version="3.9.100" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="org.eclipse.xtext.ide" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.ide" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="com.google.inject" version="4.2.3" match="greaterOrEqual"/>
-      <import plugin="io.sarl.lang.ide" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

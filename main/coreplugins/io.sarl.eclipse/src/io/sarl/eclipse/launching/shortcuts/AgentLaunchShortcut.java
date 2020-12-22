@@ -102,7 +102,7 @@ public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, A
 		} catch (CoreException exception) {
 			SARLEclipsePlugin.getDefault().openError(getShell(),
 					io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-					exception.getStatus().getMessage(), exception);
+					exception.getStatus().getMessage(), null, exception);
 			return null;
 		}
 	}

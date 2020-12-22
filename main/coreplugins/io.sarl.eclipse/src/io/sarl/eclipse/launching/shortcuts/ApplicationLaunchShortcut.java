@@ -98,7 +98,7 @@ public class ApplicationLaunchShortcut extends AbstractSarlLaunchShortcut<SarlCl
 		} catch (CoreException exception) {
 			SARLEclipsePlugin.getDefault().openError(getShell(),
 					io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-					exception.getStatus().getMessage(), exception);
+					exception.getStatus().getMessage(), null, exception);
 			return null;
 		}
 	}

@@ -642,7 +642,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				ErrorDialog.openError(
 						getShell(),
 						NewWizardMessages.NewJavaProjectWizardPageTwo_error_title,
-						null,
+						NewWizardMessages.NewJavaProjectWizardPageTwo_error_title,
 						status);
 			}
 		}

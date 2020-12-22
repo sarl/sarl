@@ -368,15 +368,16 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param shell the parent container.
 	 * @param title the title of the dialog box.
 	 * @param message the message to display into the dialog box.
+	 * @param reason the reason to display into the dialog box.
 	 * @param exception the exception to be logged.
-	 * @since 0.6
+	 * @since 0.12
 	 * @see #log(Throwable)
 	 */
-	public void openError(Shell shell, String title, String message, Throwable exception) {
+	public void openError(Shell shell, String title, String message, String reason, Throwable exception) {
 		final Throwable ex = (exception != null) ? Throwables.getRootCause(exception) : null;
 		if (ex != null) {
 			log(ex);
-			final IStatus status = createStatus(IStatus.ERROR, message, ex);
+			final IStatus status = createStatus(IStatus.ERROR, reason, ex);
 			ErrorDialog.openError(shell, title, message, status);
 		} else {
 			MessageDialog.openError(shell, title, message);

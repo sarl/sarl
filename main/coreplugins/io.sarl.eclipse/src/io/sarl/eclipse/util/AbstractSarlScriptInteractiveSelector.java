@@ -282,7 +282,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 					SARLEclipsePlugin.getDefault().openError(getShell(),
 							Messages.AbstractSarlScriptInteractiveSelector_1,
 							MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_2, getElementLabel()),
-							null);
+							null, null);
 				}
 			} else if (elements.size() > 1) {
 				element = chooseElement(elements);
@@ -294,7 +294,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 			//
 		} catch (Exception exception) {
 			SARLEclipsePlugin.getDefault().openError(getShell(), Messages.AbstractSarlScriptInteractiveSelector_1, null,
-					exception);
+					null, exception);
 		}
 		return null;
 	}

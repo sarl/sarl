@@ -754,7 +754,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		} catch (InvocationTargetException e) {
 			final Throwable realException = e.getTargetException();
 			SARLEclipsePlugin.getDefault().openError(getShell(), getTitle(),
-					realException.getMessage(), realException);
+					realException.getMessage(), null, realException);
 		}
 		return size[0];
 	}

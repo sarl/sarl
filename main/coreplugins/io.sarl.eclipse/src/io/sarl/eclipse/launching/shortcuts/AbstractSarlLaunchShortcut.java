@@ -224,7 +224,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 			} catch (CoreException e) {
 				SARLEclipsePlugin.getDefault().openError(getShell(),
 						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
-						e.getStatus().getMessage(), e);
+						e.getStatus().getMessage(), null, e);
 			}
 		}
 	}

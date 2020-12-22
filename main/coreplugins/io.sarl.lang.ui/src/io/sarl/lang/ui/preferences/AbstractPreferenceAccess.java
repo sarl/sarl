@@ -41,7 +41,7 @@ public abstract class AbstractPreferenceAccess {
 
 	private IPreferenceStoreAccess preferenceStoreAccess;
 
-	private IPreferenceStore preferenceStore;
+	private IPreferenceStore writePreferenceStore;
 
 	/** Change the preference accessor.
 	 *
@@ -70,10 +70,10 @@ public abstract class AbstractPreferenceAccess {
 	 * @return the modifiable preference store.
 	 */
 	public IPreferenceStore getWritablePreferenceStore(Object context) {
-		if (this.preferenceStore == null) {
-			this.preferenceStore = getPreferenceStoreAccess().getWritablePreferenceStore(context);
+		if (this.writePreferenceStore == null) {
+			this.writePreferenceStore = getPreferenceStoreAccess().getWritablePreferenceStore(context);
 		}
-		return this.preferenceStore;
+		return this.writePreferenceStore;
 	}
 
 	/** Change the writable preference store to be used for the SARL editor.
@@ -81,7 +81,7 @@ public abstract class AbstractPreferenceAccess {
 	 * @param store the new store.
 	 */
 	public void setWritablePreferenceStore(IPreferenceStore store) {
-		this.preferenceStore = store;
+		this.writePreferenceStore = store;
 	}
 
 	/** Set the values of the preferences to the default values.

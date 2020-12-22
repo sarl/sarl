@@ -41,24 +41,29 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 */
 	public static final String PREFIX = SARLCodeminingPreferenceAccess.class.getPackage().getName() + "."; //$NON-NLS-1$
 
-	/** Key for saving the enabling state of the codemining feature.
+	/** Key for saving the enabling state of the code mining feature.
 	 */
 	public static final String CODEMINING_PROPERTY =  PREFIX + "codemining"; //$NON-NLS-1$
 
-	/** Default value for saving the enabling state of the codemining feature.
+	/** Key for saving the temp enabling state of the code mining feature.
+	 */
+	public static final String CODEMINING_TEMPORARY_PROPERTY =  PREFIX + "codemining.temporary"; //$NON-NLS-1$
+
+	/** Default value for saving the enabling state of the code mining feature.
 	 */
 	public static final boolean CODEMINING_DEFAULT_VALUE = true;
 
-	/** Replies if the codemining feature is enable into the SARL editor.
+	/** Replies if the code mining feature is enable into the SARL editor.
 	 *
 	 * @return {@code true} if it is enabled.
+	 * @see #isCodeminingDisabledOrTemporaryDisabled()
 	 */
 	public boolean isCodeminingEnabled() {
 		final IPreferenceStore store = getWritablePreferenceStore(null);
 		return store.getBoolean(CODEMINING_PROPERTY);
 	}
 
-	/** Enable or disable the codemining feature into the SARL editor.
+	/** Enable or disable the code mining feature into the SARL editor.
 	 *
 	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
 	 *     to restore the default value.
@@ -80,7 +85,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 		store.setToDefault(CODEMINING_PROPERTY);
 	}
 
-	/** Initializer of the preferences for the SARL codemining feature.
+	/** Initializer of the preferences for the SARL code mining feature.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

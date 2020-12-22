@@ -44,7 +44,7 @@ public final class DelegateDynamicSkillProvider implements DynamicSkillProvider 
 		assert delegates != null;
 		this.delegates = delegates;
 	}
-	
+
 	@Pure
 	@Override
 	public Skill createSkill(Class<? extends Capacity> capacity) {
