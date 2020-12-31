@@ -66,7 +66,7 @@ complete support for holons.
 __Yes__.
 
 An extension to SARL is available that defines an organizational space based on the
-[CRIO meta-model](http://www.aspecs.org/CRIO) (Capacity-Role-Interaction-Organization).
+[CRIO meta-model](http://www.aspecs.org/CRIO.html) (Capacity-Role-Interaction-Organization).
 This meta-model defines a system as a set of organizations  in which roles are defined
 and interact together. Agents play roles in organization instances (or groups) and
 provides embedded capacity implementations required by the played roles.

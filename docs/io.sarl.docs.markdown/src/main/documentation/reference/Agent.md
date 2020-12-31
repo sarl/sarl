@@ -72,7 +72,7 @@ of models inspired from their experience in different domains.
 In many cases, we find the idea of _agents composed of other agents_.
 
 More recently, the importance of holonic multi-agent systems has been
-recognized by different methodologies such as [ASPECS](http://www.aspecs.org/Home) or O-MASE.
+recognized by different methodologies such as [ASPECS](http://www.aspecs.org) or O-MASE.
 
 > **_Note:_** In SARL, we recognize that agents can be composed of other agents. Therefore, SARL agents
 > are in fact holons that can compose each other to define hierarchical
