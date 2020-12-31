@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-2021 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1557,12 +1557,12 @@ public class SARLValidator extends AbstractSARLValidator {
 				} else if (details.contains(OverrideCheckDetails.RETURN_MISMATCH)) {
 					final JvmTypeReference inheritedReturnType = inherited.getOverrideCheckResult().getGivenOperation().getReturnType();
 					final LightweightTypeReference resolvedReturnType = inherited.getOverrideCheckResult().getThisOperation().getResolvedReturnType();
-					final String signature = inherited.getSimpleSignature();
-					final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
 					// FIXME: The following test is due to the fact that the resource sets of the two types may be different.
 					final String resolvedIdentifier = resolvedReturnType.getIdentifier();
 					final String inheritedIdentifier = inheritedReturnType.getIdentifier();
 					if (!Objects.equal(resolvedIdentifier, inheritedIdentifier)) {
+						final String signature = inherited.getSimpleSignature();
+						final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
 						error(MessageFormat.format(Messages.SARLValidator_45,
 								signature,
 								resolvedIdentifier,

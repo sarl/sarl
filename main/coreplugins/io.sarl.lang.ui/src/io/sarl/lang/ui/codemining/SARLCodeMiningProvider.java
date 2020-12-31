@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-2021 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
 import javax.inject.Inject;
 
 import com.google.common.base.Supplier;
@@ -110,7 +109,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer, IProgressMonitor monitor) {
 		// Only for fixing bug 1041: exception catching around the code mining building in order to show up an error message
 		if (this.codeminingPreferences.isCodeminingEnabled()) {
-			Supplier<List<? extends ICodeMining>> task = () -> {
+			final Supplier<List<? extends ICodeMining>> task = () -> {
 				final CancelableUnitOfWork<List<ICodeMining>, XtextResource> uow = new CancelableUnitOfWork<List<ICodeMining>, XtextResource>() {
 					@Override
 					public List<ICodeMining> exec(XtextResource resource, CancelIndicator uowCancelIndicator) throws Exception {
@@ -146,7 +145,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		Display.getDefault().asyncExec(() -> {
 			final Shell shell = viewer.getTextWidget().getShell();
 			SARLUiPlugin.openError(shell, Messages.SARLCodeMiningProvider_0,
-					MessageFormat.format(Messages.SARLCodeMiningProvider_1, errorMessage), 
+					MessageFormat.format(Messages.SARLCodeMiningProvider_1, errorMessage),
 					errorMessage, rootCause);
 		});
 	}
@@ -362,7 +361,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 		private CancelIndicator uowCancelIndicator;
 
-		public CombinedCancelIndicator(IProgressMonitor monitor, CancelIndicator uowCancelIndicator) {
+		CombinedCancelIndicator(IProgressMonitor monitor, CancelIndicator uowCancelIndicator) {
 			this.monitor = monitor;
 			this.uowCancelIndicator = uowCancelIndicator;
 		}
