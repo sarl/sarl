@@ -21,19 +21,43 @@
 
 package io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks
 
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.events.Bye
+import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import io.sarl.core.DefaultContextInteractions
+import java.util.concurrent.atomic.AtomicInteger
 
-agent ScalableAgent {
+@SuppressWarnings("all")
+agent AgentNSpawnBootAgent {
 	
 	uses Lifecycle, DefaultContextInteractions
 
+	uses TestingCapacity
+
+	val totalNumber = new AtomicInteger(0)
+	val nbSpawn = new AtomicInteger(0)
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		emit(new Ready) [it.ID != this.ID]
+		val nb : int = getParam(0)
+		this.totalNumber.set(nb)
+		for (var i = 0; i < nb; i++) {
+			typeof(ScalableAgent).spawn(buildAgentInitializationParameters)
+			//System.out.println("SPAWN:" + (i+1))
+		}
+		("nb-spawn-" + nb).addResult
+	}
+
+	on Ready {
+		val n = this.nbSpawn.incrementAndGet
+		//System.out.println("READY:" + n)
+		if (n >= this.totalNumber.get) {
+			"all-spawn".addResult
+			//System.out.println("DIE:" + n)
+			emit(new Bye)
+		}
 	}
 
 	on Bye {

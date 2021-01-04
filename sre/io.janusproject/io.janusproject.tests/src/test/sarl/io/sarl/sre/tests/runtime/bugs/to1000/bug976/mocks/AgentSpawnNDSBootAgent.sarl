@@ -21,23 +21,44 @@
 
 package io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks
 
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.events.Bye
+import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import io.sarl.core.DefaultContextInteractions
+import java.util.concurrent.atomic.AtomicInteger
 
-agent ScalableAgent {
+@SuppressWarnings("all")
+agent AgentSpawnNDSBootAgent {
 	
 	uses Lifecycle, DefaultContextInteractions
 
+	uses TestingCapacity
+
+	val totalNumber = new AtomicInteger(0)
+	val nbSpawn = new AtomicInteger(0)
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		emit(new Ready) [it.ID != this.ID]
+		val nb : int = getParam(0)
+		this.totalNumber.set(nb)
+		spawn(nb, typeof(ScalableAgent), buildAgentInitializationParameters)
+		("nb-spawn-" + nb).addResult
 	}
 
-	on Bye {
-		killMe
+	on Ready {
+		val n = this.nbSpawn.incrementAndGet
+		//System.err.println("RECEIVED=" + n)
+		if (n >= this.totalNumber.get) {
+			"all-spawn".addResult
+			val nb0 = defaultSpace.numberOfStrongParticipants;
+			("strong-participants-" + nb0).addResult
+			val nb1 = defaultSpace.numberOfWeakParticipants;
+			("weak-participants-" + nb1).addResult
+			emit(new Bye) [it.ID != this.ID]
+			killMe
+		}
 	}
 	
 }

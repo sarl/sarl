@@ -21,33 +21,46 @@
 
 package io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks
 
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
 import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.InnerContextAccess
 
 @SuppressWarnings("all")
-agent BootScalableAgent {
+agent AgentSpawnNISBootAgent {
 	
-	uses Lifecycle, Logging
+	uses Lifecycle, DefaultContextInteractions, InnerContextAccess
 
 	uses TestingCapacity
 
+	val totalNumber = new AtomicInteger(0)
+	val nbSpawn = new AtomicInteger(0)
+
 	on Initialize {
-		val nb : int = occurrence.parameters.get(1) as Integer
 		setSkill(new TestingSkill(occurrence))
-		for (i : 0 ..< nb) {
-			info("Spawning agent #" + i)
-			//System.out.println(i)
-			typeof(ScalableAgent).spawn(buildAgentInitializationParameters(i))
-			Thread::yield
-		}
+		val nb : int = getParam(0)
+		this.totalNumber.set(nb)
+		spawnInContext(nb, typeof(ScalableAgent), innerContext, buildAgentInitializationParameters)
+		("nb-spawn-" + nb).addResult
 	}
-	
-	on Bye {
-		killMe
+
+	on Ready {
+		val n = this.nbSpawn.incrementAndGet
+		//System.err.println("RECEIVED=" + n)
+		if (n >= this.totalNumber.get) {
+			"all-spawn".addResult
+			val spc = innerDefaultSpace
+			val nb0 = spc.numberOfStrongParticipants;
+			("strong-participants-" + nb0).addResult
+			val nb1 = spc.numberOfWeakParticipants;
+			("weak-participants-" + nb1).addResult
+			emit(new Bye) [it.ID != this.ID]
+			killMe
+		}
 	}
 	
 }
