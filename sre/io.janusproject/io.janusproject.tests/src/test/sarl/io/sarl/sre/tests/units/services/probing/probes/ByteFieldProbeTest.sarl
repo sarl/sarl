@@ -73,9 +73,9 @@ import static extension org.mockito.Mockito.verify
 @SuppressWarnings("all")
 abstract class ByteFieldProbeTest {
 
-	package val INIT_VALUE = 34 as byte
+	package val INIT_VALUE : byte = 34 as byte
 
-	package val N_VALUE = 56 as byte
+	package val N_VALUE : byte = 56 as byte
 
 	@Nullable
 	var field : FieldAccess
@@ -97,6 +97,8 @@ abstract class ByteFieldProbeTest {
 
 	@Nullable
 	var nameObject : SarlName
+
+	protected abstract def fromFieldToPublicData(fieldValue : Object) : Byte
 
 	@BeforeEach
 	def setUp : void {
@@ -158,11 +160,11 @@ abstract class ByteFieldProbeTest {
 
 		var capture0 = ArgumentCaptor::forClass(typeof(Object))
 		this.field.verify(1.times).set(capture0.capture)
-		N_VALUE.assertEquals(capture0.value)
+		N_VALUE.assertEquals(capture0.value.fromFieldToPublicData)
 
 		var capture1 = ArgumentCaptor::forClass(typeof(Probe))
-		var capture2 = ArgumentCaptor::forClass(typeof(Boolean))
-		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.value)
+		var capture2 = ArgumentCaptor::forClass(typeof(boolean))
+		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture.booleanValue)
 		this.probe.assertSame(capture1.value)
 		capture2.value.assertTrue
 	}
@@ -177,11 +179,11 @@ abstract class ByteFieldProbeTest {
 
 		var capture0 = ArgumentCaptor::forClass(typeof(Object))
 		this.field.verify(1.times).set(capture0.capture)
-		N_VALUE.assertEquals(capture0.value)
+		N_VALUE.assertEquals(capture0.value.fromFieldToPublicData)
 
 		var capture1 = ArgumentCaptor::forClass(typeof(Probe))
 		var capture2 = ArgumentCaptor::forClass(typeof(Boolean))
-		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture)
+		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture.booleanValue)
 		this.probe.assertSame(capture1.value)
 		capture2.value.assertTrue
 	}
@@ -230,6 +232,10 @@ abstract class ByteFieldProbeTest {
 
 		@SuppressWarnings("unused_private_member")
 		var field : byte = INIT_VALUE
+	
+		protected override fromFieldToPublicData(fieldValue : Object) : Byte {
+			fieldValue as Byte
+		}
 
 	}
 
@@ -247,6 +253,10 @@ abstract class ByteFieldProbeTest {
 	static class FinalPrimitiveByteFieldProbeTest extends ByteFieldProbeTest {
 
 		val field : byte = INIT_VALUE
+	
+		protected override fromFieldToPublicData(fieldValue : Object) : Byte {
+			fieldValue as Byte
+		}
 
 	}
 
@@ -264,6 +274,10 @@ abstract class ByteFieldProbeTest {
 	static class ObjectByteFieldProbeTest extends ByteFieldProbeTest {
 
 		var field : Byte = INIT_VALUE
+	
+		protected override fromFieldToPublicData(fieldValue : Object) : Byte {
+			fieldValue as Byte
+		}
 
 	}
 
@@ -281,7 +295,11 @@ abstract class ByteFieldProbeTest {
 	static class FinalObjectByteFieldProbeTest extends ByteFieldProbeTest {
 
 		val field : Byte = INIT_VALUE
-
+	
+		protected override fromFieldToPublicData(fieldValue : Object) : Byte {
+			fieldValue as Byte
+		}
+	
 	}
 
 }

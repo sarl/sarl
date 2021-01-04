@@ -32,6 +32,9 @@ import io.sarl.sre.services.logging.LoggingService
 import java.util.UUID
 import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
+import javax.inject.Inject
+import io.sarl.sre.KernelScope
+import io.sarl.sre.boot.configs.SreConfig
 
 /** 
  * Implementation of a spawning service that is using injection mechanism
@@ -62,10 +65,10 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param logger the logging service.
 	 * @param sreConfig the configuration of the SRE.
 	 */
-	/*@Inject
+	@Inject
 	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
 		globalListeners : SmartListenerCollection<?>,
-		lockProvider : Provider<Lock>, rwLockProvider : Provider<ReadWriteLock>,
+		rwLockProvider : Provider<ReadWriteLock>,
 		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
 		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
 		skillProvider : DynamicSkillProvider,
@@ -73,10 +76,10 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 		executor : ExecutorService,
 		logger : LoggingService,
 		sreConfig : SreConfig) {
-		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
-			globalListeners, lockProvider, rwLockProvider, lifecycleListener, externalContextListener,
+		this(sarlSpecificationChecker, new CreatorFactory(injector),
+			globalListeners, rwLockProvider, lifecycleListener, externalContextListener,
 			skillProvider, skillUninstaller, executor, logger, sreConfig.services.lifecycle)
-	} */
+	}
 
 	/** 
 	 * Constructs the service.

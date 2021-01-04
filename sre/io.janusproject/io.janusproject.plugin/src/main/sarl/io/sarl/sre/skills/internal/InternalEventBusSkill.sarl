@@ -169,6 +169,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	}
 
 	def fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) : void {
+		assert listener !== null
 		if (getLife(owner).state.blockingEventHandling) {
 			val logger = getLogger
 			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)

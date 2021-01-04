@@ -79,7 +79,9 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
+import static extension org.mockito.Mockito.times
 import io.sarl.lang.core.DynamicSkillProvider
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0
 
 /**
  * @author $Author: sgalland$
@@ -310,11 +312,13 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		
 		// Agent Initialize
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
-		var capGatherEvents = ArgumentCaptor::forClass(typeof(boolean))
 		var capThrownExceptions = ArgumentCaptor::forClass(typeof(boolean))
-		this.eventBus.verify.fireEventAndWait(capEvent.capture, capGatherEvents.capture.booleanValue,
-			capThrownExceptions.capture.booleanValue)
-		capGatherEvents.value.assertTrue
+		var capHandler = ArgumentCaptor::forClass(typeof(Procedure0))
+		this.eventBus.verify.fireEventAndWaitWithEventGathering(
+			capEvent.capture,
+			capThrownExceptions.capture.booleanValue,
+			capHandler.capture)
+		capHandler.value.assertNotNull
 		capThrownExceptions.value.assertTrue
 		typeof(Initialize).assertInstanceOf(capEvent.value)
 		var initEvent = capEvent.value as Initialize
@@ -403,11 +407,10 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 		// Destroy event
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
-		var capGatherEvents = ArgumentCaptor::forClass(typeof(boolean))
 		var capThrownExceptions = ArgumentCaptor::forClass(typeof(boolean))
-		this.eventBus.verify.fireEventAndWait(capEvent.capture, capGatherEvents.capture.booleanValue,
+		this.eventBus.verify(1.times).fireEventAndWait(
+			capEvent.capture,
 			capThrownExceptions.capture.booleanValue)
-		capGatherEvents.value.assertFalse
 		capThrownExceptions.value.assertFalse
 		typeof(Destroy).assertInstanceOf(capEvent.value)
 		var destroyEvent = capEvent.value as Destroy

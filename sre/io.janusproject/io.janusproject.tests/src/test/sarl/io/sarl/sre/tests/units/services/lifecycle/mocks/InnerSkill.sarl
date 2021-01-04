@@ -29,6 +29,7 @@ import io.sarl.lang.core.SpaceID
 import java.util.UUID
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.lang.core.EventSpace
 
 /** 
  * @author $Author: sgalland$
@@ -71,6 +72,10 @@ skill InnerSkill implements InnerContextAccess {
 		null
 	}
 	
+	def getInnerDefaultSpace : EventSpace {
+		null
+	}
+
 	def getMemberAgentCount : int {
 		0
 	}

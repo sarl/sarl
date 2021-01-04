@@ -163,8 +163,8 @@ abstract class BooleanFieldProbeTest {
 		capture0.value.fromFieldToPublicData.assertTrue
 
 		var capture1 = ArgumentCaptor::forClass(typeof(Probe))
-		var capture2 = ArgumentCaptor::forClass(typeof(Boolean))
-		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture)
+		var capture2 = ArgumentCaptor::forClass(typeof(boolean))
+		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture.booleanValue)
 		this.probe.assertSame(capture1.value)
 		capture2.value.assertTrue
 	}
@@ -182,8 +182,8 @@ abstract class BooleanFieldProbeTest {
 		capture0.value.fromFieldToPublicData.assertTrue
 
 		var capture1 = ArgumentCaptor::forClass(typeof(Probe))
-		var capture2 = ArgumentCaptor::forClass(typeof(Boolean))
-		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture)
+		var capture2 = ArgumentCaptor::forClass(typeof(boolean))
+		this.probeListener.verify(1.times).probeValueChanged(capture1.capture, capture2.capture.booleanValue)
 		this.probe.assertSame(capture1.value)
 		capture2.value.assertTrue
 	}
