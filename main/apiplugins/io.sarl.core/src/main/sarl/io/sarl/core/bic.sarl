@@ -186,11 +186,19 @@ capacity InnerContextAccess {
 
 	/** Replies the inner context.
 	 *
-	 * @return the instanceof the internal agent context.
+	 * @return the instance of the internal agent context.
 	 */
 	@Pure
 	def getInnerContext : AgentContext
 	
+	/** Replies the inner context.
+	 *
+	 * @return the instanceof the internal agent context.
+	 * @since 0.12
+	 */
+	@Pure
+	def getInnerDefaultSpace : EventSpace
+
 	/** Replies if the calling agent has other agents
 	 * as members of its inner context.
 	 * A member agent is an agent which is not the

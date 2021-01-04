@@ -11,6 +11,7 @@ bottom context in the figure above.
       documented --> 
 [:Fact:]{typeof(io.sarl.core.[:innercontextaccess!]).shouldHaveMethods(
 	"[:getinnercontext](getInnerContext) : io.sarl.lang.core.AgentContext",
+	"[:getinnerdefaultspace](getInnerDefaultSpace) : io.sarl.lang.core.EventSpace",
 	"[:hasmemberagent](hasMemberAgent) : boolean",
 	"[:getmemberagentcount](getMemberAgentCount) : int",
 	"[:getmemberagents](getMemberAgents) : java.util.concurrent.ConcurrentSkipListSet",
@@ -47,6 +48,37 @@ Example:
 		var c : AgentContext
 		def myaction {
 			c = [:getinnercontext!]
+		}
+	}
+[:End:]
+
+
+## Retrieving the Default Space of the Inner Context
+
+For retrieving the default space of the inner context, this built-in capacity provides the following function:
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.EventSpace
+	interface Tmp {
+	[:On]
+		def [:getinnerdefaultspace!] : EventSpace
+	[:Off]
+	}
+[:End:]
+
+
+Example:
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.lang.core.EventSpace
+	[:On]
+	agent A {
+		uses InnerContextAccess
+		var s : EventSpace
+		def myaction {
+			s = [:getinnerdefaultspace!]
 		}
 	}
 [:End:]

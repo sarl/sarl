@@ -109,7 +109,7 @@ class InnerContextSkillTest {
 	}
 
 	@Test
-	@DisplayName("Creation and initialization")
+	@DisplayName("Creation and initialization of the inner context")
 	def getInnerContext_init : void {
 		var ctx = typeof(Context).mock
 		when(this.service.createContext(any, any, any(typeof(Agent)))).thenReturn(ctx)
@@ -146,6 +146,34 @@ class InnerContextSkillTest {
 		listener.value.assertNotNull
 
 		this.service.verify(only).createContext(any, any, any(typeof(Agent)))
+	}
+
+	@Test
+	@DisplayName("Creation and initialization of the inner default space")
+	def getInnerDefaultSpace_init : void {
+		var ctx = typeof(Context).mock
+		when(this.service.createContext(any, any, any(typeof(Agent)))).thenReturn(ctx)
+		var ^space = typeof(OpenEventSpace).mock
+		when(ctx.defaultSpace).thenReturn(^space)
+		
+		var spc = this.^skill.innerDefaultSpace
+		
+		^space.assertSame(spc)
+	}
+	
+	@Test
+	@DisplayName("Two calls to getInnerDefaultSpace")
+	def getInnerDefaultSpace_twoCalls : void {
+		var ctx = typeof(Context).mock
+		when(this.service.createContext(any, any, any(typeof(Agent)))).thenReturn(ctx)
+		var ^space = typeof(OpenEventSpace).mock
+		when(ctx.defaultSpace).thenReturn(^space)
+		
+		var spc1 = this.^skill.getInnerDefaultSpace
+		var spc2 = this.^skill.getInnerDefaultSpace
+		
+		^space.assertSame(spc1)
+		^space.assertSame(spc2)
 	}
 
 	private def forceInnerContextCreation : Context {

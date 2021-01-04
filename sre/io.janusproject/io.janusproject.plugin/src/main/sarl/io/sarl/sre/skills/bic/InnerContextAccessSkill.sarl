@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentSkipListSet
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import io.sarl.lang.core.EventSpace
 
 /** 
  * SRE implementation of SARL's {@link InnerContextAccess} built-in capacity.
@@ -95,6 +96,10 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 			return nctx
 		]
 		return context
+	}
+
+	def getInnerDefaultSpace : EventSpace {
+		return getInnerContext.defaultSpace
 	}
 
 	def isInInnerDefaultSpace(^event : Event) : boolean {

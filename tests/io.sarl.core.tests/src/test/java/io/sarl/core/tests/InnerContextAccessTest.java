@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 
@@ -58,7 +59,7 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(8, this.type.getDeclaredMethods().length);
+		assertEquals(9, this.type.getDeclaredMethods().length);
 	}
 
 	/**
@@ -66,6 +67,13 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	@Test
 	public void getInnerContext() {
 		assertMethod("getInnerContext", AgentContext.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void getInnerDefaultSpace() {
+		assertMethod("getInnerDefaultSpace", EventSpace.class); //$NON-NLS-1$
 	}
 
 	/**
