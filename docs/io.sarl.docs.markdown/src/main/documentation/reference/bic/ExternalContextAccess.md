@@ -18,7 +18,7 @@ top-right context in the figure above.
 	"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
 	"isInSpace(io.sarl.lang.core.Event, io.sarl.lang.core.SpaceID) : boolean",
 	"isInSpace(io.sarl.lang.core.Event, java.util.UUID) : boolean",
-	"emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)",
+	"[:emit](emit)(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)",
 	"emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event,io.sarl.lang.core.Scope)")
 }
 
@@ -260,7 +260,7 @@ Regarding the definition of the `EventSpace` type, the event emiting function ta
 
 The first parameter is used for setting the event's source when it was not already done.
 
-The [:externalcontextaccess:] provides functions for helping to fire events into an event space:
+The [:externalcontextaccess:] provides the [:emit:] function for helping to fire events into an event space:
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.core.ExternalContextAccess
@@ -280,7 +280,7 @@ The [:externalcontextaccess:] provides functions for helping to fire events into
 	}
 [:End:]
 
-This function's call is takes two parameters:
+A call to the [:emit:] function takes two parameters:
 
 * [:spacename:] is the variable which contains the reference to the space in which the event should be fired.
 * [:eventname:] is the variable which contains the event to fire.
