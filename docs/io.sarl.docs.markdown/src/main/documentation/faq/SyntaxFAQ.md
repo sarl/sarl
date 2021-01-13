@@ -481,6 +481,70 @@ Details on the [documentation page for function definition](../reference/general
 
 ## Agent Capacities
 
+### How to restrict the list of agents that will receive an event?
+
+The functions for emitting an event are named [:emitfct:] (for emitting a specific context) and
+[:wakefct:] (for emitting into the internal context only).
+These functions are provided by the agent capacities [:defaultcontextinteractioncap:],
+[:externalcontextaccesscap:] or [:behaviorscap:]
+These two functions have an optional last argument that is the scoping expression:
+
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    import io.sarl.lang.core.Address
+    import io.sarl.lang.core.Event
+    import io.sarl.core.DefaultContextInteractions
+    import io.sarl.core.ExternalContextAccess
+    import io.sarl.core.Behaviors
+    abstract agent X {
+   		uses [:defaultcontextinteractioncap](DefaultContextInteractions)
+   		uses [:externalcontextaccesscap](ExternalContextAccess)
+   		uses [:behaviorscap](Behaviors)
+        [:On]
+        def [:emitfct](emit)(e : Event, scope : (Address) => boolean = null)
+
+        def [:wakefct](wake)(e : Event, scope : (Address) => boolean = null)
+        [:Off]
+    }
+[:End:]
+
+This scoping expression is a lambda expression that takes the agent's address of a candidate for receiving the event,
+and returns `true` if the agent with the given address should receive the event.
+
+Let a local variable named [:selectedagentidfield] of type [:uuidtype:] that contains the identifier of an agent
+that is expected to receive an event of type [:myeventtype:].
+The following code provides the call to the [:emitfct:] for sending the event only to this selected agent. 
+
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    import java.util.UUID
+    import io.sarl.lang.core.Event
+    import io.sarl.core.DefaultContextInteractions
+    event [:myeventtype](MyEvent)
+    agent X {
+   		uses DefaultContextInteractions
+   		var [:selectedagentidfield](selectedAgentID) : [:uuidtype](UUID)
+   		def mytest : void {
+	        [:On]
+	        emit(new MyEvent) [
+	        	[:itkw](it).ID == selectedAgentID
+	        ]
+	        [:Off]
+        }
+    }
+[:End:]
+
+The first argument of the [:emitfct:] is the occurrence of the event to send to the other agents.
+The second argument is the lambda expression for scoping the receivers. This argument is written
+according to the externalized form of the lambda expression (between brackets).
+The lambda expression expression has an argument, named [:itkw:] by default, of type `Address`.
+This address is the one of a agent candidate for receiving the event.
+Then, the expression in the lanmda expression tests if the identifier of the candidate is equal
+to the identifier of the selected agent, namely [:selectedagentidfield:]
+
+By adding the scoping lambda expression, only the selected agent will receive the agent.
+ 
+
 ### How do I control the log-level of the Logging built-in capacity?
 
 Use `setLogLevel()` of the `Logging` capacity, as explained here in the
