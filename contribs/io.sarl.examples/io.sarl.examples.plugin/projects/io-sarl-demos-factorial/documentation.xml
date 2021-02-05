@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.demos.factorial"
+               name="Two examples of factorial computation"
+               category="io.sarl.math">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/screenshot.png</screenshot>
+	<description>The first demo introduces a single agent computing a factorial, the second one introduces two agents in interaction: the first agent asking the second to compute the factorial value of a specified integer.</description>
+</documentation>

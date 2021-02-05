@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.examples.behaviors"
+               name="Agent with a behavior"
+               category="io.sarl.metamodel">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/screenshot.png</screenshot>
+	<description>A simple agent playing an externally described behavior to compute a factorial.</description>
+</documentation>

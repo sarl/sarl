@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.demos.sierpinskifractals"
+               name="Fractals of Sierpinski (JavaFX interface)"
+               category="io.sarl.math">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/sierpinski_screenshot.png</screenshot>
+	<resources>
+		<resource>docs/Fractal_en.png</resource>
+		<resource>docs/MVC_en.png</resource>
+	</resources>
+	<description>Sierpinski's fractals is built with triangles which are recursively divided into 3 triangles. In this application each triangle is supported by an agent in a hierarchy of agents.</description>
+</documentation>

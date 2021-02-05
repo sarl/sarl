@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.tutorials.pingpong"
+               name="Ping-Pong event exchanges"
+               category="io.sarl.tutorials">
+	<mainPage>http://www.sarl.io/docs/official/tutorials/PingPong.html</mainPage>
+	<screenshot>screenshot.png</screenshot>
+	<description>Agents are exchanging events with a ping-pong interaction protocol.</description>
+</documentation>

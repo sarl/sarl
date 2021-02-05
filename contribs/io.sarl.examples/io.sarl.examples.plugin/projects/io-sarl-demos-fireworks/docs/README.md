@@ -141,3 +141,7 @@ When the GUI is closed, an event *Exit* is sent to the *LaunchingArea* which tra
 ## User Interface
 
 ![Application with the GUI](firework_screenshot.png)
+
+## Code
+
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-fireworks)

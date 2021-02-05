@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.demos.basic.holarchy"
+               name="A first example of holarchy"
+               category="io.sarl.metamodel">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/screenshot.png</screenshot>
+	<description>Creation of complete hierarchy of holons.</description>
+</documentation>

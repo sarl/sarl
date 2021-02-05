@@ -21,24 +21,15 @@
 
 package io.sarl.examples.wizard;
 
+import static io.sarl.examples.wizard.XmlUtils.readXmlAttribute;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.base.Strings;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import io.sarl.examples.SARLExamplePlugin;
 
 /** Utilities related to the specification of launch configurations for examples.
  *
@@ -76,22 +67,6 @@ public final class SarlExampleLaunchConfiguration {
 
 	private SarlExampleLaunchConfiguration() {
 		//
-	}
-
-	/** Read the XML content from the given file.
-	 *
-	 * @param jFile the file to read.
-	 * @return the XML content.
-	 * @throws CoreException if some error occurs.
-	 */
-	public static Document readXmlContent(File jFile) throws CoreException {
-		try (InputStream stream = new FileInputStream(jFile)) {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
-			return builder.parse(stream);
-		} catch (ParserConfigurationException | IOException | SAXException exception) {
-			throw new CoreException(SARLExamplePlugin.createStatus(exception));
-		}
 	}
 
 	/** Parse the XML content for extracted information on launch configurations.
@@ -136,21 +111,6 @@ public final class SarlExampleLaunchConfiguration {
 				}
 			}
 		}
-	}
-
-	/** Read the value from an XML attribute.
-	 *
-	 * @param xmlNode the XML node to read.
-	 * @param attributeName the name of the attribute.
-	 * @return the value of the attribute.
-	 */
-	public static String readXmlAttribute(Node xmlNode, String attributeName) {
-		final NamedNodeMap attributes = xmlNode.getAttributes();
-		final Node field = attributes.getNamedItem(attributeName);
-		if (field != null) {
-			return field.getTextContent();
-		}
-		return null;
 	}
 
 }

@@ -105,7 +105,72 @@ Add into the `src-templates/build.xml` file:
 
 	<zip_example name="io-sarl-demos-myexample" />
 
-## 7. Regenerate files
+
+## 7. Add launching configuration
+
+It is possible to specify how the demo could be launch by providing a `launch.xml` file.
+Two cases: launch a Java application that embeds SARL, or launch agents.
+
+
+### 7.1. Launch a Java Application
+
+The content of the `launch.xml` file should be similar to:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<launchConfigurations id="**ID**">
+		<application class="**CLASSNAME**" name="**NAME**" />
+	</launchConfigurations>
+
+
+`**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
+Java class that contains the `main()` function; and `**NAME**` is the name of the example.
+
+
+
+### 7.2. Launch Agents
+
+The content of the `launch.xml` file should be similar to:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<launchConfigurations id="**ID**">
+		<agent class="**CLASSNAME**" name="**NAME**" />
+		<agent class="**CLASSNAME**" name="**NAME**" />
+		...
+	</launchConfigurations>
+
+
+`**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
+agent to launch; and `**NAME**` is the name of the example.
+
+
+## 8. Add an on-line documentation
+
+Create the documentation description `documentation.xml` file:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<documentation id="**ID**"
+	               name="**NAME**"
+	               category="**CATEGORY**">
+		<mainPage>**MAIN**</mainPage>
+		<screenshot>**SCREENSHOT**</screenshot>
+		<description>**DESCRIPTION**</description>
+		<resources>
+			<resource>**FILENAME**</resource>
+			<resource>**FILENAME**</resource>
+			...
+		</resources>
+	</documentation>
+
+* `**ID**` is the identifier of the example;
+* `**NAME**` is the name of the example;
+* `**CATEGORY**` is the fully qualified name of the category (website dependent);
+* `**MAIN**` is the filename (relative to `documentation.xml`) to the main documentation file (usually a Markdown or HTML file);
+* `**SCREENSHOT**` is the filename (relative to `documentation.xml`) to a screnshot picture for the example;
+* `**DESCRIPTION**` is a text that describe the example; and
+* `**FILENAME**` is the filename  (relative to `documentation.xml`) of a file that must be included into the documentation of the example.
+
+
+## 9. Regenerate files
 
 Run: `mvn clean install`
 

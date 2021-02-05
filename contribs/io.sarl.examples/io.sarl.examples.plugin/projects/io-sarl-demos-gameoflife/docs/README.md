@@ -35,3 +35,8 @@ at which this happens is sometimes called a tick. Each generation is a pure func
 The rules continue to be applied repeatedly to create further generations.
 
 ![Application with the GUI](gameoflife_screenshot.png)
+
+
+## Code
+
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-gameoflife)

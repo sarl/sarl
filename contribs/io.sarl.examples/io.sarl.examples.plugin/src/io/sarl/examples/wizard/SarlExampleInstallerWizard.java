@@ -23,7 +23,7 @@ package io.sarl.examples.wizard;
 
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
-import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
+import static io.sarl.examples.wizard.XmlUtils.readXmlContent;
 
 import java.io.BufferedReader;
 import java.io.File;

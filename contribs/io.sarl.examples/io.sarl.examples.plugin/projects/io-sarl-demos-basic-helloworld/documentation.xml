@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.examples.helloworld"
+               name="A hello-world agent in SARL"
+               category="io.sarl.metamodel">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/screenshot.png</screenshot>
+	<description>A simple agent displaying "Hello" on the console and dying 2 seconds later.</description>
+</documentation>

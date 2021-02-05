@@ -59,3 +59,9 @@ agent Fractal {
 This application follows a MVC (Model-View-Controller) pattern for the GUI communication.
 
 ![MVC pattern applied on this project](MVC_en.png)
+
+
+## Code
+
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-sierpinskifractals)
+

@@ -36,3 +36,7 @@ The Boids model can be used for direct control and stabilization of teams of sim
 
 
 ![Application with the GUI](boids_screenshot.png)
+
+
+
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-boids-awt)

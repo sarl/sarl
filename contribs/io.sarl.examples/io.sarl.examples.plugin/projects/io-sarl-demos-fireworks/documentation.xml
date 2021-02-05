@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.demos.fireworks"
+               name="Fireworks (JavaFX interface)"
+               category="io.sarl.simulation.art">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/firework_screenshot.png</screenshot>
+	<resources>
+		<resource>docs/Firework_en.png</resource>
+		<resource>docs/MVC_en.png</resource>
+	</resources>
+	<description>The goal of this demo is to bring out some fireworks using SARL agents. The application is composed of 4 types of agents. The whole structure is holonic.</description>
+</documentation>

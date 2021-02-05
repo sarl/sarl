@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.templates.javafx"
+               name="SARL application with JavaFX"
+               category="io.sarl.templates">
+	<mainPage>docs/README.md</mainPage>
+	<screenshot>docs/javafx.png</screenshot>
+	<description>This is a template of SARL application that is using JavaFX as a graphical user interface.</description>
+</documentation>
