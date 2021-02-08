@@ -9,7 +9,7 @@
 * [Agent Definition Introduction](./gettingstarted/AgentIntroduction.md)
 * [Run SARL Agent in the Eclipse IDE](./gettingstarted/RunSARLAgentEclipse.md)
 * [Run SARL Agent from the Command Line](./gettingstarted/RunSARLAgentCLI.md)
-* [Run SARL Agent from a Java Program](./gettingstarted/RunSARLAgentJava.md)
+* [Run SARL Agent from a Java Program or a SARL class](./gettingstarted/RunSARLAgentJava.md)
 
 ## Frequently Asked Questions (FAQ)
 

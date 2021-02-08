@@ -175,7 +175,7 @@ mvn exec:exec -Dexec.executable=java -Dexec.args="-cp %classpath [:fullbootclass
 
 ## What's next?
 
-In the next section, we will learn how to launch your SARL project from a Java program.
+In the next section, we will learn how to launch your SARL project from a Java program or a SARL class.
 
 [Next>](./RunSARLAgentJava.md)
 
