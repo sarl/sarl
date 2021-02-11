@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 MYSELF=`readlink -f "$0"`
 echo "MYSELF=$MYSELF"
