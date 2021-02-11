@@ -206,13 +206,49 @@ Several MacOS X users reported that errors when they try to launch the SARL Ecli
 Plenty of reasons may be the cause of the failure. As usually, it is always better to
 read the ".log" file for determining this cause.
 
-Nevertheless, the two most reported causes of avoidance of the SARL Eclipse launch are:
+Nevertheless, the three most reported causes of avoidance of the SARL Eclipse launch are:
 
-1. The Java virtual machine (JVM) is not valid for running SARL Eclipse. To solve this problem:
-   * install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
-   * force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw` or `java` of at least the JDK [:sarl-run.min.jdk.version!].
+#### a) The Java virtual machine (JVM) is not valid for running SARL Eclipse
+
+To solve this problem:
+* Install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default;
+* Force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file as follows.
+
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
-2. The Gatekeeper of MacOS X blocks the launch of the SARL Eclipse, because Gatekeeper considers SARL Eclipse as unstable. You could confirm this problem by looking into your `system.log` file and searching for a message that looks like:
+
+The editing of the `eclipse-sarl.ini` could be done by following the steps:
+
+1. Locate the folder in which your JVM (not the standard Mac JRE) is installed, e.g. `/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin`. The previous folder must contains the tools `javac` and `java`.
+2. Open the folder in which the SARL `Eclipse.app` was copied
+3. Right-click on `Eclipse.app` and select `Show Package Contents`
+4. Move to `Contents/Eclipse`
+5. Open `eclipse-sarl.ini` with a text editor
+6. Add the following lines into the file or update the lines if they exist (there is a line break that must be inside the file content):
+```
+-vm
+/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin
+```
+7. Save and start the SARL IDE.
+
+An complete example of the eclipse-sarl.ini file is:
+
+```
+-startup
+../Eclipse/plugins/org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar
+--launcher.library
+../Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.1100.v20190907-0426
+-vm
+/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin
+-vmargs
+-Xms256m
+-Xmx1g
+-XstartOnFirstThread
+-Dorg.eclipse.swt.internal.carbon.smallFonts
+```
+
+#### b) The Gatekeeper of MacOS X blocks the launch of the SARL Eclipse
+
+Because Gatekeeper considers SARL Eclipse as unstable. You could confirm this problem by looking into your `system.log` file and searching for a message that looks like:
 
 ```
 (application.io.sarl.lang.product.72020573.72020798[78958]): removing service since it exited with consistent failure - OS_REASON_EXEC | Gatekeeper policy blocked execution
@@ -224,6 +260,12 @@ sudo xattr -rd com.apple.quarantine Eclipse.app
 ```
 
 Where `Eclipse.app` is the name of the SARL Eclipse application on MacOS X.
+
+
+#### c) The Eclipse.app application is damaged
+
+This error message is shown up on a dialog box, and you have the choices to move the application to the bin or to cancel the launch.
+This error message has the same cause as the Gatekeeper error that is described into the previous section. 
 
 
 ### Why does the SARL product launch but not contain any features related to SARL?
