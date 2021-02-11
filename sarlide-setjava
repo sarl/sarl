@@ -7,6 +7,17 @@ my $CDIR = dirname("$0");
 my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$CDIR/products/updatesite/target/products/io.sarl.lang.product/linux/gtk/x86_64/eclipse-sarl.ini";
 
 my $JVM_ROOT = "/usr/lib/jvm";
+my $JVM_BIN_PATH = "bin";
+my $JVM_JAVACBIN_PATH = "$JVM_BIN_PATH/javac";
+my $JVM_JAVABIN_PATH = "$JVM_BIN_PATH/java";
+
+# Special case for MacOS
+if (-d '/Library/Java/JavaVirtualMachines') {
+	$JVM_ROOT = "/Library/Java/JavaVirtualMachines";
+	$JVM_BIN_PATH = "Contents/Home/bin";
+	$JVM_JAVACBIN_PATH = "$JVM_BIN_PATH/javac";
+	$JVM_JAVABIN_PATH = "$JVM_BIN_PATH/java";
+}
 
 sub findJdks(;$) {
 	my $root = shift || '';
@@ -26,7 +37,7 @@ sub findJdks(;$) {
 				$version = "$1";
 			}
 			my $dir = "$root/$file";
-			my $bin = "$dir/bin/javac";
+			my $bin = "$dir/$JVM_JAVACBIN_PATH";
 			if (-x "$bin") {
 				$jdks{"$version"}{"$vendor"} = "$dir";
 			}
@@ -125,8 +136,8 @@ sub updateIniContent(@) {
 	my $jvm = shift || die("no JVM provided\n");
 	# Check the JVM path
 	my $jvmfolder = "$jvm";
-	if (-x "$jvm/bin/java") {
-		$jvmfolder = "$jvm/bin";
+	if (-x "$jvm/$JVM_JAVABIN_PATH") {
+		$jvmfolder = "$jvm/$JVM_BIN_PATH";
 	}
 	my $content = shift || die("no content\n");
 	if ($content =~ /^-vm$/m) {
