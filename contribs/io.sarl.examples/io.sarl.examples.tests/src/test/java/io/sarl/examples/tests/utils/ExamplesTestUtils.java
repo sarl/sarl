@@ -21,7 +21,7 @@
 
 package io.sarl.examples.tests.utils;
 
-import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
+import static io.sarl.examples.wizard.XmlUtils.readXmlAttribute;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 

@@ -30,7 +30,7 @@ import static io.sarl.examples.tests.utils.ExamplesTestUtils.getSourceGenPath;
 import static io.sarl.examples.tests.utils.ExamplesTestUtils.isMavenProject;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
-import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
+import static io.sarl.examples.wizard.XmlUtils.readXmlContent;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
