@@ -73,7 +73,7 @@ platform, the SARL libraries, and the application classes.
 The last argument is the fully qualified name of the booting class of Janus: [:fullbootclass:]
 
 
-###	Specify the Agent to Launch
+###  Specify the Agent to Launch
 
 The example given in the previous section causes an error. Indeed, it is mandatory to
 specify the fully qualified name of the agent to launch:
@@ -95,6 +95,8 @@ java -cp app.jar [:fullbootclass!] myapp.MyAgent
 In the previous section, we assume that all the application binary files are
 contained into the [:jarfile:] file.
 
+### app.jar by hand
+
 You may replace the [:jarfile:] in the previous command lines by the classpath
 that is containing all the jar files required for running your application, including
 the Janus jar file(s):
@@ -105,7 +107,68 @@ java -cp /path/to/myapplication.jar:/path/to/[:janusjarfile](io.janusproject.ker
 
 The [:janusjarfile:] file may be dowloaded from the [Janus website](http://www.janusproject.io/)
 
+### Creating app.jar with maven-assembly-plugin
+
 You may also create the [:jarfile:] file with Maven by using the assembly plugin for creating a jar file with all the dependencies inside.
+To do so, you have to update the `pom.xml` file of your project and to define the assembly specification.
+
+The content of the `pom.xml` must include the assembly plugin definition:
+
+```xml
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-assembly-plugin</artifactId>
+  <version>3.3.0</version>
+  <executions>
+    <execution>
+      <id>make-assembly-with-deps</id>
+      <phase>package</phase>
+      <goals>
+        <goal>single</goal>
+      </goals>
+      <configuration>
+        <descriptors>
+          <descriptor>with-dependencies.xml</descriptor>
+        </descriptors>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+The previous definition mentions the file `with-dependencies.xml` that contains the assembly specification.
+The content of this file could be:
+
+```xml
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>with-dependencies</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <unpack>true</unpack>
+      <scope>runtime</scope>
+    </dependencySet>
+  </dependencySets>
+  <containerDescriptorHandlers>
+    <!-- Merge service description's files in a proper way -->
+    <containerDescriptorHandler>
+      <handlerName>metaInf-services</handlerName>
+    </containerDescriptorHandler>
+  </containerDescriptorHandlers>
+</assembly>
+```
+
+The tag `containerDescriptorHandlers` is **very important** to be present into the definition.
+Without this tag, the SARL and Janus services will not be correctly merged into the
+generated Jar file with all the dependencies.
+
+> **_Caution:_** You must use the version 3.3.0 (or higher) of `maven-assembly-plugin` to have access
+> to the mentioned capability.
 
 
 ### Janus Command Line Options
