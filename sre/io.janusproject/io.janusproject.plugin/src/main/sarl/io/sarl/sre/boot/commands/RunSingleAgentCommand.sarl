@@ -21,21 +21,21 @@
 
 package io.sarl.sre.boot.commands
 
+import com.google.inject.AbstractModule
+import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
 import io.bootique.cli.Cli
 import io.bootique.command.CommandOutcome
 import io.bootique.meta.application.CommandMetadata
+import io.sarl.sre.IssueCodes
 import io.sarl.sre.boot.configs.SreConfig
+import java.text.MessageFormat
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 import static extension io.bootique.BQCoreModule.extend
-import java.text.MessageFormat
-import javax.inject.Provider
-import com.google.inject.AbstractModule
-import javax.inject.Singleton
-import com.google.inject.Provides
-import com.google.inject.Module
-import io.sarl.sre.IssueCodes
 
 /**
  * Command for running the SRE with a single agent at boot time.
@@ -48,6 +48,7 @@ import io.sarl.sre.IssueCodes
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@Singleton
 class RunSingleAgentCommand extends AbstractRunCommand {
 
 	/** Constructor with all the fields set to {@code null}.
@@ -65,6 +66,7 @@ class RunSingleAgentCommand extends AbstractRunCommand {
 	 * @param configuration the configuration of the tool.
 	 * @param lock the lock to use for synchronizing.
 	 */
+	@Inject
 	new (configuration : Provider<SreConfig>) {
 		super(configuration,
 			CommandMetadata
@@ -113,18 +115,6 @@ class RunSingleAgentCommandModule extends AbstractModule {
 			addCommand(typeof(RunSingleAgentCommand))
 			defaultCommand = typeof(RunSingleAgentCommand)
 		]
-	}
-
-	/** Provide the command for running the SRE.
-	 * 
-	 * @param configuration the configuration of the tool.
-	 * @param lock the provider of lock.
-	 * @return the command.
-	 */
-	@Provides
-	@Singleton
-	def provideRunCommand(configuration : Provider<SreConfig>) : RunSingleAgentCommand {
-		return new RunSingleAgentCommand(configuration)
 	}
 
 }
