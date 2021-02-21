@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 /** 
  * SRE implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -75,6 +76,13 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		assert bus !== null
 		this.eventBus = bus
 	}
+
+	protected override toString(builder : ToStringBuilder) {
+		super.toString(builder)
+		builder.add("eventBuffering", isEventBuffering); //$NON-NLS-1$
+		builder.add("bufferedEventCount", getBufferedEvents.size); //$NON-NLS-1$
+	}
+
 
 	override getEventBus : EventBus {
 		this.eventBus

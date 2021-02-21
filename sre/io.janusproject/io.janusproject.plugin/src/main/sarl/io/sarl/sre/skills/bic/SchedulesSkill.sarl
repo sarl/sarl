@@ -51,6 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
 import javax.inject.Inject
+import org.arakhne.afc.vmutil.json.JsonBuffer
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
@@ -104,6 +105,12 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	protected override uninstall {
 		// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
 		cancelAllRunningTasks(true)
+	}
+
+	override getExecutorServiceStateRepresentation : JsonBuffer {
+		val buffer = new JsonBuffer
+		this.executorService.toJson(buffer)
+		return buffer
 	}
 
 	/** Cancel all the running tasks.
@@ -756,6 +763,10 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 
 		protected abstract def postRun(termination : TaskTermination) : boolean
+
+		override toString : String {
+			this.agentTaskRef?.toString
+		}
 
 	}
 

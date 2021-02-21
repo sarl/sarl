@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 import java.util.logging.Logger
+import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /** 
  * This class enables the SRE kernel to be distributed other a network.
@@ -310,5 +311,13 @@ interface ExecutorService extends Service {
 	 * @since 0.11
 	 */
 	def executeNotBlockingTask(logger : Logger = null, nbExecutions : int, runGroupSize : int, task : Runnable)
+
+
+	/** Fill the given buffer with the state of the executor service.
+	 *
+	 * @param buffer the Json buffer to fill out with the executor service's state.
+	 * @since 0.12
+	 */
+	def toJson(buffer : JsonBuffer)
 
 }

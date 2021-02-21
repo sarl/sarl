@@ -24,6 +24,7 @@ import io.sarl.core.Schedules
 import io.sarl.lang.core.Behavior
 import io.sarl.core.AgentTask
 import java.util.Collection
+import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /** 
  * Capacity for executing tasks with specific functions for the SRE platform.
@@ -71,5 +72,12 @@ capacity InternalSchedules extends Schedules {
 	 * @since 0.11
 	 */
 	def executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean = false)
+
+	/** Replies a Json representation of the internal thread executor's state.
+	 * 
+	 * @return the representation of the executor's state.
+	 * @since 0.12
+	 */
+	def getExecutorServiceStateRepresentation : JsonBuffer
 
 }

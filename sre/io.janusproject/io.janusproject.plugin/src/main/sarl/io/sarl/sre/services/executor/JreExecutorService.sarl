@@ -42,6 +42,10 @@ import javax.inject.Singleton
 
 import static extension io.sarl.sre.services.executor.JreExecutorUtils.*
 import static extension io.sarl.sre.services.executor.Runnables.*
+import org.arakhne.afc.vmutil.json.JsonBuffer
+import java.util.Arrays
+import com.google.common.collect.Iterables
+import java.util.concurrent.FutureTask
 
 /** 
  * Service that executes the tasks asynchronously (in threads) with the JRE executor service.
@@ -281,6 +285,50 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 		var ses = scheduledExecutorService
 		if (ses instanceof ThreadPoolExecutor) {
 			ses.purge
+		}
+	}
+
+	/** Replies the state of this service as a string.
+	 *
+	 * @return the string representation of the service's state.
+	 * @since 0.12
+	 */
+	override toString : String {
+		val json = new JsonBuffer
+		toJson(json)
+		return json.toString
+	}
+
+	private def toTaskString(list : Iterable<Runnable>) : Iterable<String> {
+		Iterables::transform(list) [
+			if (it instanceof FutureTask) {
+				"Internal Future Task (" + System::identityHashCode(it) + ")"
+			} else {
+				it.toString
+			}
+		]
+	}
+
+	override toJson(buffer : JsonBuffer) {
+		val serviceJson = new JsonBuffer
+		if (this.jreExecutor instanceof ThreadPoolExecutor) {
+			val queue = Arrays::asList(this.jreExecutor.getQueue.clone)
+			if (!queue.isEmpty) {
+				val execJson = new JsonBuffer
+				execJson.add("queue", queue.toTaskString)
+				serviceJson.add("directTasks", execJson)
+			}
+		}
+		if (this.jreSchedules instanceof ThreadPoolExecutor) {
+			val queue = Arrays::asList(this.jreSchedules.getQueue.clone)
+			if (!queue.isEmpty) {
+				val execJson = new JsonBuffer
+				execJson.add("queue", queue.toTaskString)
+				serviceJson.add("scheduledTasks", execJson)
+			}
+		}
+		if (!serviceJson.isEmpty) {
+			buffer.add("executorService", serviceJson)
 		}
 	}
 
