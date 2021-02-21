@@ -55,7 +55,6 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	}
 
 	@Override
-	@Pure
 	protected void toString(ToStringBuilder builder) {
 		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
 		builder.add("owner", getOwner()); //$NON-NLS-1$

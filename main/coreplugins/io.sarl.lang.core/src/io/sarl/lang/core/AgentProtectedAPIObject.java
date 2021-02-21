@@ -49,7 +49,6 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * @param builder the string builder.
 	 * @since 0.7
 	 */
-	@Pure
 	protected abstract void toString(ToStringBuilder builder);
 
 	/** Replies the skill corresponding to the given capacity.
