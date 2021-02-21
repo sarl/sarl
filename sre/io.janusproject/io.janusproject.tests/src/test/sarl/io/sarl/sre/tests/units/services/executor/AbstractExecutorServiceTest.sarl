@@ -93,7 +93,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 	@DisplayName("neverReturn -> null")
 	def neverReturn_noPostCommand {
 		typeof(EarlyExitException).assertException [
-			ExecutorService.neverReturn
+			ExecutorService.neverReturn(null)
 		]
 	}
 
@@ -151,7 +151,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		}
 
 		this.service.applyBlockingConsumer(this.logger, list) [
-			ExecutorService.neverReturn
+			ExecutorService.neverReturn(null)
 		]
 	}
 
@@ -200,7 +200,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		}
 
 		this.service.applyBlockingConsumer(null, list) [
-			ExecutorService.neverReturn
+			ExecutorService.neverReturn(null)
 		]
 
 		verifyNoInteractions(this.logger)

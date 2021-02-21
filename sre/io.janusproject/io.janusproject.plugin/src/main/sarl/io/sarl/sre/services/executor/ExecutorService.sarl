@@ -49,7 +49,7 @@ interface ExecutorService extends Service {
 	 *    does an early exit.
 	 * @since 0.6.0
 	 */
-	static def neverReturn(postCommand : Runnable = null) {
+	static def neverReturn(postCommand : Runnable) {
 		throw new EarlyExitException(postCommand)
 	}
 

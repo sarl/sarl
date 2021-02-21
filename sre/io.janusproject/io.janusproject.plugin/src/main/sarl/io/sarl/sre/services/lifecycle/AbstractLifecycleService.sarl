@@ -443,6 +443,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		life.state.isAlive
 	}
 
+	static val nbKills = new AtomicInteger
+
 	def killAgent(^agent : Agent, forceKillable : boolean, terminationCause : Object) : boolean {
 		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
@@ -457,10 +459,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				defaultContext?.context?.startShutdownLookup
 				return true
 			} else {
-				getLogger.warning [
-					format(Messages::AbstractLifecycleService_1,
+				val msg = format(Messages::AbstractLifecycleService_1,
 						IssueCodes::NOT_KILLABLE_ERROR, agentId)
-				]
+				fireAgentKillFailureEvent(^agent, defaultContext, msg)
+				getLogger.warning(msg)
 			}
 		} else {
 			getLogger.warning [

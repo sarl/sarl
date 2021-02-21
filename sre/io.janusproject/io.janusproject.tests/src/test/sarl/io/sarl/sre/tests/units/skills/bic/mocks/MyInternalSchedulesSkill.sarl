@@ -27,6 +27,7 @@ import io.sarl.lang.core.Behavior
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.util.ConcurrentSet
 import java.util.Collection
+import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /**
  * @author $Author: sgalland$
@@ -82,6 +83,9 @@ skill MyInternalSchedulesSkill implements InternalSchedules {
 	override executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean) {
 	}
 	
+	override getExecutorServiceStateRepresentation : JsonBuffer {
+		new JsonBuffer
+	}
 	
 	override unregisterTasksForBehavior(^behavior : Behavior) {
 	}

@@ -80,7 +80,7 @@ class SreRunnableTest {
 	@DisplayName("Early exit #1 with logger")
 	def run_logger_earlyExit1 {
 		var run = new AtomicBoolean
-		var runnable = Runnables::protectRunnable([run.set(true); ExecutorService.neverReturn], this.logger)
+		var runnable = Runnables::protectRunnable([run.set(true); ExecutorService.neverReturn(null)], this.logger)
 		runnable.run
 		runnable.isSuccess.assertTrue
 		run.get.assertTrue
@@ -91,7 +91,7 @@ class SreRunnableTest {
 	@DisplayName("Early exit #2 with logger")
 	def run_logger_earlyExit2 {
 		var run = new AtomicBoolean
-		var runnable = Runnables::protectRunnable([ExecutorService.neverReturn; run.set(true)], this.logger)
+		var runnable = Runnables::protectRunnable([ExecutorService.neverReturn(null); run.set(true)], this.logger)
 		runnable.run
 		runnable.isSuccess.assertTrue
 		run.get.assertFalse
@@ -131,7 +131,7 @@ class SreRunnableTest {
 	@DisplayName("Early exit #1 without logger")
 	def run_noLogger_earlyExit1 {
 		var run = new AtomicBoolean
-		var runnable = Runnables::protectRunnable([run.set(true); ExecutorService.neverReturn], null)
+		var runnable = Runnables::protectRunnable([run.set(true); ExecutorService.neverReturn(null)], null)
 		runnable.run
 		runnable.isSuccess.assertTrue
 		run.get.assertTrue
@@ -142,7 +142,7 @@ class SreRunnableTest {
 	@DisplayName("Early exit #2 without logger")
 	def run_noLogger_earlyExit2 {
 		var run = new AtomicBoolean
-		var runnable = Runnables::protectRunnable([ExecutorService.neverReturn; run.set(true)], null)
+		var runnable = Runnables::protectRunnable([ExecutorService.neverReturn(null); run.set(true)], null)
 		runnable.run
 		runnable.isSuccess.assertTrue
 		run.get.assertFalse

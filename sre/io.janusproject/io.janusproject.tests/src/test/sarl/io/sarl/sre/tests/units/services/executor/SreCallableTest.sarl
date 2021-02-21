@@ -81,7 +81,7 @@ class SreCallableTest {
 	@DisplayName("Early exit #1 with logger")
 	def call_logger_earlyExit1 {
 		var run = new AtomicBoolean
-		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn; return "b"], this.logger)
+		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn(null); return "b"], this.logger)
 		var value = callable.call
 		callable.isSuccess.assertTrue
 		value.assertNull
@@ -93,7 +93,7 @@ class SreCallableTest {
 	@DisplayName("Early exit #2 with logger")
 	def call_logger_earlyExit2 {
 		var run = new AtomicBoolean
-		var callable = Runnables::protectCallable([ExecutorService.neverReturn; run.set(true); return "c"], this.logger)
+		var callable = Runnables::protectCallable([ExecutorService.neverReturn(null); run.set(true); return "c"], this.logger)
 		var value = callable.call
 		callable.isSuccess.assertTrue
 		value.assertNull
@@ -136,7 +136,7 @@ class SreCallableTest {
 	@DisplayName("Early exit #1 without logger")
 	def call_noLogger_earlyExit1 {
 		var run = new AtomicBoolean
-		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn; return "e"], null)
+		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn(null); return "e"], null)
 		var value = callable.call
 		callable.isSuccess.assertTrue
 		value.assertNull
@@ -148,7 +148,7 @@ class SreCallableTest {
 	@DisplayName("Early exit #2 without logger")
 	def call_noLogger_earlyExit2 {
 		var run = new AtomicBoolean
-		var callable = Runnables::protectCallable([ExecutorService.neverReturn; run.set(true); return "f"], null)
+		var callable = Runnables::protectCallable([ExecutorService.neverReturn(null); run.set(true); return "f"], null)
 		var value = callable.call
 		callable.isSuccess.assertTrue
 		value.assertNull

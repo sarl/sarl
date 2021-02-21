@@ -122,7 +122,7 @@ class NotShutdownVerboseThreadExecutorPolicyTest {
 	@Test
 	def uncaughtException_EarlyExit : void {
 		try {
-			ExecutorService.neverReturn
+			ExecutorService.neverReturn(null)
 			fail("Early exit exception is expected")
 		} catch (e : Exception) {
 			this.handler.uncaughtException(Thread.currentThread, e)

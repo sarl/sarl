@@ -699,7 +699,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			// Do not run the alive
 			val agentLife = AgentLife::getLifeOrNull(this.^agent.get)
 			if (agentLife === null || agentLife.state === AgentState::DEAD) {
-				ExecutorService::neverReturn
+				ExecutorService::neverReturn(null)
 			}
 			val taskDescription = this.agentTaskRef
 			if (taskDescription === null) {
