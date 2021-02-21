@@ -104,7 +104,7 @@ class AsynchronousProbeService extends AbstractProbeService {
 			this.enableSynchronization.set(true)
 			while (this.enableSynchronization.get) {
 				internalSync
-				System.err.println("Synced")
+				//System.err.println("Synced")
 				val duration = getSleepingDurationBetweenSyncs
 				if (duration <= 0l) {
 					Thread::yield

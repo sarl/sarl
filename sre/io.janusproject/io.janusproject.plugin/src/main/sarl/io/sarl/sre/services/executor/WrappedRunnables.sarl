@@ -479,4 +479,17 @@ class SreKernelRunnable implements Runnable {
 		}
 	}
 
+	def toString : String {
+		this.source?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		this.source == obj
+	}
+
+	def hashCode : int {
+		val r = this.source
+		if (r !== null) r.hashCode else 0
+	}
+
 }

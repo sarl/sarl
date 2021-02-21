@@ -21,6 +21,7 @@
 
 package io.sarl.sre.internal
 
+import io.sarl.core.AgentKillFailure
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.AgentTask
@@ -248,6 +249,13 @@ class AgentEventEmitter implements LifecycleServiceListener {
 	
 	override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>) {
 		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_2, agentType.name)]
+	}
+
+	override agentKillFailure(killingAgent : UUID, innerContext : ContextReference, cause : Object) {
+		val ^event = new AgentKillFailure(
+			innerContext.addressInDefaultSpace,
+			cause)
+		innerContext.defaultSpace.emit(null, ^event) [it.ID == killingAgent]
 	}
 	
 }

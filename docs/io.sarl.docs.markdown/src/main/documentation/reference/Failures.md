@@ -106,7 +106,7 @@ by the [:behaviorcapacity:] capacity. For example:
  
 
 
-### Abnormal Agent Killing 
+### Killing Agent with Abnormal Termination Cause 
 
 An agent may be destroyed due to an internal fault. However, according to the SARL metamodel and the implementation choices of the SARL Run-time Environment, if a failure or an error occured into the agent, only the associated failing task is broken. The agent is still alive and may react to over events.
 
@@ -157,6 +157,39 @@ The reason of the killing of an agent may be retrieved from the [:agentkilledeve
 		}
 	}
 [:End:]
+
+
+### Failure of Agent Killing 
+
+As explained in the previous section, the agent could stop its execution by calling the
+[:killmefct:] function.
+
+In some cases, the killing of the agent is canceled. For example, an agent cannot kill
+itself if its contains sub-agents in its inner context.
+
+In order to be notified of the cancelation of its killing, the agent receives an
+occurrence of [:agentkillfailureevent:].
+The following code shows up an event handler that outputs an error message when the
+agent killing action has failed.
+
+[:Success:]
+	import io.sarl.core.AgentKillFailure
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Logging
+	[:On]
+	agent MyAgent {
+		uses Lifecycle
+		def aFunction {
+			killMe
+		}
+		on [:agentkillfailureevent](AgentKillFailure) {
+			error("Agent killing has failed with the cause: " + occurrence.[:causeattr](cause))
+		}
+	}
+[:End:]
+
+The cause of the agent kill failure is provided by the [:causeattr:] attribute.
+
 
 
 ## Propagating Failures in Holarchy

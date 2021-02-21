@@ -23,6 +23,11 @@
 			<artifactId>io.sarl.core</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.util</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

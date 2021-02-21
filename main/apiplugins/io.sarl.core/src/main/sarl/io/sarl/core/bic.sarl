@@ -489,9 +489,10 @@ capacity Lifecycle {
 	 *      If this argument is {@code null}, the agent terminates without specific cause.
 	 * @fires AgentKilled in DefaultSpace of all Contexts to which this agent belongs
 	 * @fires Destroy inside the agent
+	 * @fires AgentKillFailure inside the agent
 	 * @since 0.12
 	 */
-	def killMe(terminationCause : Object = null) fires AgentKilled, Destroy
+	def killMe(terminationCause : Object = null) fires AgentKilled, Destroy, AgentKillFailure
 }
 
 

@@ -21,6 +21,7 @@
 
 package io.sarl.sre.tests.units.internal
 
+import io.sarl.core.AgentKillFailure
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.OpenEventSpace
@@ -186,6 +187,31 @@ class AgentEventEmitterTest {
 		spaceEvent = evt as AgentKilled
 		assertNotNull(spaceEvent.source)
 		assertEquals(agent2.ID, spaceEvent.source.ID)
+
+	@Test
+	def agentKillFailure {
+		var adr1 = new Address(
+				new SpaceID(this.contextID, UUID::randomUUID, typeof(OpenEventSpaceSpecification)),
+				this.agent2.ID)
+		var ctx = typeof(Context).mock
+		when(ctx.defaultSpace).thenReturn(this.defaultSpace)
+		when(ctx.ID).thenReturn(this.contextID)
+
+		val contextReference = new ContextReference(this.life2, this.parent, adr1)
+
+		val cause = UUID::randomUUID
+		this.emitter.agentKillFailure(this.contextID, contextReference, cause)
+		
+		var ^event = typeof(Event).forClass
+		var scope = typeof(Scope).forClass
+		this.defaultSpace.verify.emit(any, ^event.capture, scope.capture)
+		scope.value.assertNotNull
+		var evt = ^event.value
+		evt.assertNotNull
+		typeof(AgentKillFailure).assertInstanceOf(evt)
+		var spaceEvent = evt as AgentKillFailure
+		spaceEvent.source.assertNotNull
+		cause.assertSame(spaceEvent.cause)
 	}
 
 }

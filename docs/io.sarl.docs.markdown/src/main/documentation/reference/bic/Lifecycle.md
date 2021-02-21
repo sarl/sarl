@@ -42,13 +42,15 @@ spaces including the default space.
 > **_Very Important Note:_** If the killed agent was a composed agent, it must not have members any more before
 > calling this action, otherwise a `RuntimeException` is thrown.
 
-This action fires two events:
+This action fires two events in case of success, and one event in case of failure:
 
-* [:agentkilledevent:] in the default space of all contexts to which the calling agent belongs.
-* [:destroyevent:] inside the killed agent agent.
+* [:agentkilledevent:] is fired in case of success in the default space of all contexts to which the calling agent belongs.
+* [:destroyevent:] is fired in case of success inside the killed agent agent.
+* [:agentkillfailureevent:] is fired in case of failure into the default space of the inner context of the agent; This event contains the cause of the failure.
 
 [:Fact:]{typeof(io.sarl.core.[:agentkilledevent]$AgentKilled$)}
 [:Fact:]{typeof(io.sarl.core.[:destroyevent]$Destroy$)}
+[:Fact:]{typeof(io.sarl.core.[:agentkillfailureevent]$AgentKillFailure$)}
 
 Example:
 [:Success:]
