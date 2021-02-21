@@ -35,25 +35,26 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.ContextsConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractSpace
 import io.sarl.sre.spaces.SpaceListener
 import io.sarl.sre.spaces.SreSpaceSpecificationFactory
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import io.sarl.util.DefaultSpace
 import java.io.Serializable
 import java.lang.ref.WeakReference
+import java.text.MessageFormat
 import java.util.EventListener
+import java.util.Objects
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import javax.inject.Inject
-import io.sarl.sre.services.context.SpaceRepository.SpaceSpecificationKey
-import java.util.Objects
-import io.sarl.sre.services.logging.LoggingService
-import java.text.MessageFormat
+import org.eclipse.xtend.lib.annotations.Data
 
 /** 
  * A repository of spaces specific to a given context.
@@ -80,9 +81,9 @@ abstract class SpaceRepository implements SpaceListener {
 
 	val listeners : SmartListenerCollection<?>
 
-	val specs = new ConcurrentHashMap<SpaceSpecificationKey, SpaceSpecification<?>>
+	val specs : ConcurrentMap<SpaceSpecificationKey, SpaceSpecification<?>> = new ConcurrentHashMap
 
-	val spacesBySpec = new ConcurrentHashMap<Class<? extends SpaceSpecification<?>>, ConcurrentSkipListSet<SpaceDescription>>
+	val spacesBySpec : ConcurrentMap<Class<? extends SpaceSpecification<?>>, ConcurrentSet<SpaceDescription>> = new ConcurrentHashMap
 
 	/** Reference to the default space of the owning context.
 	 * @since 0.10
@@ -236,7 +237,7 @@ abstract class SpaceRepository implements SpaceListener {
 
 		val list = this.spacesBySpec.computeIfAbsent(
 			id.spaceSpecification) [
-			new ConcurrentSkipListSet<SpaceDescription>
+			new ConcurrentSetSkipListSet<SpaceDescription>
 		]
 		list += description
 
@@ -264,7 +265,7 @@ abstract class SpaceRepository implements SpaceListener {
 			spaceId.life(description)
 			val list = this.spacesBySpec.computeIfAbsent(
 				spaceId.spaceSpecification) [
-				new ConcurrentSkipListSet<SpaceDescription>
+				new ConcurrentSetSkipListSet<SpaceDescription>
 			]
 			list += description
 			if (^space instanceof AbstractSpace) {
@@ -605,7 +606,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.11
 	 */
-	@org.eclipse.xtend.lib.annotations.Data
+	@Data
 	static class SpaceSpecificationKey implements Serializable, Comparable<SpaceSpecificationKey> {
 
 		val type : Class<? extends SpaceSpecification<?>>

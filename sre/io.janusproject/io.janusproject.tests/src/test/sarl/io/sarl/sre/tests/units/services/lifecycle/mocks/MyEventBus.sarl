@@ -25,7 +25,7 @@ import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.util.ConcurrentCollection
 
 /**
  * @author $Author: sgalland$
@@ -67,7 +67,7 @@ skill MyEventBus implements InternalEventBusCapacity {
 		null
 	}
 
-	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
+	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentCollection<T> with T {
 		null
 	}
 

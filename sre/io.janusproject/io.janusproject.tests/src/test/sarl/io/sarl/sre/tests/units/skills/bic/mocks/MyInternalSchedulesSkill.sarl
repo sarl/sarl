@@ -25,7 +25,7 @@ import io.sarl.core.AgentTask
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.capacities.InternalSchedules
-import java.util.concurrent.ConcurrentSkipListSet
+import io.sarl.util.ConcurrentSet
 import java.util.Collection
 
 /**
@@ -36,7 +36,7 @@ import java.util.Collection
  */
 skill MyInternalSchedulesSkill implements InternalSchedules {
 
-	override getActiveTasks : ConcurrentSkipListSet<String> {
+	override getActiveTasks : ConcurrentSet<String> {
 		null
 	}
 

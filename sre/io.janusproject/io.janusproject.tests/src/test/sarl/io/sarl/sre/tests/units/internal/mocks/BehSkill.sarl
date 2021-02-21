@@ -27,7 +27,7 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.util.ConcurrentCollection
 
 skill BehSkill implements Behaviors {
 
@@ -35,7 +35,7 @@ skill BehSkill implements Behaviors {
 		false
 	}
 
-	override getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+	override getRegisteredBehaviors : ConcurrentCollection<Behavior> {
 		null
 	}
 

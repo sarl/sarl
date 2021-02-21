@@ -39,8 +39,8 @@ import io.sarl.sre.tests.units.skills.bic.mocks.MyInternalSchedulesSkill
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.junit.jupiter.api.BeforeEach
@@ -115,7 +115,7 @@ class BehaviorsSkillTest {
 	}
 	
 	private def forceNoBehavior : void {
-		this.eventBus.setRegisteredEventBusListeners(new ConcurrentLinkedDeque)
+		this.eventBus.setRegisteredEventBusListeners(new ConcurrentCollectionLinkedDeque)
 		reset(this.schedules, this.eventBus, this.eventBusListener, this.^agent)
 	}
 
@@ -124,7 +124,7 @@ class BehaviorsSkillTest {
 
 		var beh2 = typeof(Behavior).mock
 
-		var theset = new ConcurrentLinkedDeque<Behavior>
+		var theset = new ConcurrentCollectionLinkedDeque<Behavior>
 		theset += beh1
 		theset += beh2
 		this.eventBus.setRegisteredEventBusListeners(theset)
@@ -198,7 +198,7 @@ class BehaviorsSkillTest {
 		assertSame(beh1, b)
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
 		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1));
 		this.eventBus.verify.registerEventBusListener(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
 		assertSame(beh1, capturedListener.value)
 		assertNull(capturedFilter.value)
@@ -230,7 +230,7 @@ class BehaviorsSkillTest {
 		assertSame(beh1, b)
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
 		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1));
 		this.eventBus.verify.registerEventBusListener(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
 		assertSame(beh1, capturedListener.value)
 		assertSame(filter, capturedFilter.value)

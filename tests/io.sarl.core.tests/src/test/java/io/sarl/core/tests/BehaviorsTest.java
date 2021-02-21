@@ -22,8 +22,6 @@ package io.sarl.core.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +33,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
+import io.sarl.util.ConcurrentCollection;
 
 /**
  * @author $Author: sgalland$
@@ -65,7 +64,7 @@ public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void getRegisteredBehaviors() {
-		assertMethod("getRegisteredBehaviors", ConcurrentLinkedDeque.class); //$NON-NLS-1$
+		assertMethod("getRegisteredBehaviors", ConcurrentCollection.class); //$NON-NLS-1$
 	}
 
 	@Test

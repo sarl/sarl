@@ -35,13 +35,14 @@ import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener.LifecycleServiceAdapter
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceWithParticipants
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentCollectionLinkedDeque
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import java.lang.ref.WeakReference
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Level
@@ -253,8 +254,8 @@ class Kernel {
 		lifeCycleService.spawnEnable = false
 
 		val contexts = contextService.allContexts
-		val agentIds = new ConcurrentSkipListSet<UUID>
-		val codes = new ConcurrentLinkedDeque<Runnable>
+		val agentIds = new ConcurrentSetSkipListSet<UUID>
+		val codes = new ConcurrentCollectionLinkedDeque<Runnable>
 
 		val iter = contexts.iterator
 		while (iter.hasNext) {
@@ -275,7 +276,7 @@ class Kernel {
 		}
 
 		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceAdapter() {
-			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 				terminationCause : Object) {
 				agentIds.remove(^agent.ID)
 			}

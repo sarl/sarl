@@ -39,8 +39,8 @@ import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

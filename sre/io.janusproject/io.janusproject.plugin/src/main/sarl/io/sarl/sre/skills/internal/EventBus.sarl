@@ -28,6 +28,8 @@ import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.executor.SreRunnable
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ExecutionException
@@ -100,8 +102,8 @@ class EventBus {
 	 * @return the number of listeners added to the collection.
 	 * @since 0.6.0
 	 */
-	def getRegisteredEventListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
-		return new ConcurrentLinkedDeque<T>(this.behaviorGuardEvaluatorRegistry.getRegisteredEventListeners(type))
+	def getRegisteredEventListeners(type : Class<T>) : ConcurrentCollection<T> with T {
+		return new ConcurrentCollectionLinkedDeque<T>(this.behaviorGuardEvaluatorRegistry.getRegisteredEventListeners(type))
 	}
 
 	/** 

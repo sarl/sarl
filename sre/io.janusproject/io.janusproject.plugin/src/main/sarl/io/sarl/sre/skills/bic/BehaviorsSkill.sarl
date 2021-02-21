@@ -31,7 +31,7 @@ import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.util.ConcurrentCollection
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -55,7 +55,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 			// Destroy the behavior
 			val ^event = new Destroy
 			^event.source = adr
-			fireEventAndWait(^event, true, it)
+			fireEventAndWait(^event, true, true, it)
 			(it as Behavior).releaseInternalResources
 			// Run this lambda on all the behaviors:
 			return true
@@ -76,7 +76,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 				// Initialize the behavior
 				val ^event = new Initialize(this.ID, initializationParameters)
 				^event.source = adr
-				fireEventAndWait(^event, true, attitude)
+				fireEventAndWait(^event, true, true, attitude)
 			]
 		}
 		return attitude
@@ -90,7 +90,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 			// Destroy the behavior
 			val ^event = new Destroy
 			^event.source = adr
-			fireEventAndWait(^event, true, attitude)
+			fireEventAndWait(^event, true, true, attitude)
 			attitude.releaseInternalResources
 		]
 		return attitude
@@ -122,7 +122,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		}
 	}
 
-	def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+	def getRegisteredBehaviors : ConcurrentCollection<Behavior> {
 		getRegisteredEventBusListeners(typeof(Behavior))
 	}
 

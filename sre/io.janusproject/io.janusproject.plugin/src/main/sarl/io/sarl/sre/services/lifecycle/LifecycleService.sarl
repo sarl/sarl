@@ -24,9 +24,9 @@ import com.google.common.util.concurrent.Service
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.services.context.Context
+import io.sarl.util.ConcurrentCollection
 import java.util.EventListener
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * This service provides the tools to manage the life-cycle of the agents.
@@ -170,7 +170,7 @@ interface LifecycleServiceListener extends EventListener {
 	 * @param terminationCause the cause of the termination of the agent.
 	 *     If it is {@code null}, the agent was destroyed without providing a reason.
 	 */
-	def agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+	def agentDestroyed(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 		terminationCause : Object)
 
 	/** 
@@ -179,10 +179,17 @@ interface LifecycleServiceListener extends EventListener {
 	 * @param spawningAgent the identifier of the agent which spawns the given agent.
 	 * @param parent the context in which the agent was created.
 	 * @param agentType the type of the spawned agents.
-	 * @param spawnedAgent the spawned agent.
-	 * @param initializationParameters list of parameters that were passed to the agent.
 	 */
 	def agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>)
+
+	/** 
+	 * Invoked when the agent killing has failed.
+	 * 
+	 * @param killingAgent the identifier of the agent tried to be killed.
+	 * @param innerContext the inner context of the agent.
+	 * @param cause the cause of the failure
+	 */
+	def agentKillFailure(killingAgent : UUID, innerContext : ContextReference, cause : Object)
 
 	/** 
 	 * Event adapter on events related to the life-cycle of an agent.
@@ -199,11 +206,14 @@ interface LifecycleServiceListener extends EventListener {
 			spawnedAgent : Agent, initializationParameters : Object[]) {
 		}
 
-		override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+		override agentDestroyed(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 			abnormalTerminationCause : Object) {
 		}
 
 		override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>) {
+		}
+
+		override agentKillFailure(killingAgent : UUID, innerContext : ContextReference, cause : Object) {
 		}
 
 	}

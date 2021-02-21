@@ -28,8 +28,8 @@ import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.util.ConcurrentCollection
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject

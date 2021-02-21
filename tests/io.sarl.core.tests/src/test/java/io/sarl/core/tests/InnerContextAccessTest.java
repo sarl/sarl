@@ -23,7 +23,6 @@ package io.sarl.core.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +35,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.util.ConcurrentSet;
 
 /**
  * @author $Author: sgalland$
@@ -94,7 +94,7 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void getMemberAgents() {
-		assertMethod("getMemberAgents", ConcurrentSkipListSet.class); //$NON-NLS-1$
+		assertMethod("getMemberAgents", ConcurrentSet.class); //$NON-NLS-1$
 	}
 
 	/**

@@ -35,6 +35,8 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.List
 import java.util.Map
 import java.util.UUID
@@ -316,7 +318,7 @@ final class AgentLife {
 	 * @return the contexts from which the agent was removed.
 	 */
 	def stop(skillUninstaller : SkillUninstaller, logger : Logger,
-		fireDestroy : boolean = true) : ConcurrentLinkedDeque<ContextReference> {
+		fireDestroy : boolean = true) : ConcurrentCollection<ContextReference> {
 
 		this.state = AgentState::DYING
 
@@ -354,7 +356,7 @@ final class AgentLife {
 			}
 
 			// Copy the contexts in which the agents is registered in order to reply them.
-			var enclosingContextsCopy = new ConcurrentLinkedDeque<ContextReference>
+			var enclosingContextsCopy = new ConcurrentCollectionLinkedDeque<ContextReference>
 			var contexts = getEnclosingContexts
 
 			enclosingContextsCopy += contexts
@@ -373,7 +375,7 @@ final class AgentLife {
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
 			logger.log(Level::SEVERE, e) [e.localizedMessage]
-			return new ConcurrentLinkedDeque
+			return new ConcurrentCollectionLinkedDeque
 		} finally {
 			this.state = AgentState::DEAD
 			// Clear the references

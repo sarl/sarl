@@ -24,11 +24,12 @@ package io.sarl.sre.internal.eventguard
 import io.sarl.lang.core.Event
 import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.ObjectComparator
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.util.Set
 import java.util.TreeSet
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArraySet
 
 import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
@@ -195,8 +196,8 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 	}
 
 	@Pure
-	override getRegisteredEventListeners(type : Class<TT>) : ConcurrentSkipListSet<TT> with TT {
-		var result : ConcurrentSkipListSet<TT> = new ConcurrentSkipListSet(ObjectComparator::SINGLETON)
+	override getRegisteredEventListeners(type : Class<TT>) : ConcurrentSet<TT> with TT {
+		var result = new ConcurrentSetSkipListSet<TT>(ObjectComparator::SINGLETON)
 		getRegisteredEventListeners(type, result)
 		return result
 	}

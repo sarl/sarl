@@ -36,11 +36,13 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.lang.ref.WeakReference
 import java.util.Collection
 import java.util.EventListener
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -53,7 +55,6 @@ import javax.inject.Inject
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
 import static java.text.MessageFormat.*
-import java.util.concurrent.ConcurrentMap
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -499,8 +500,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return false
 	}
 
-	def getActiveTasks : ConcurrentSkipListSet<String> {
-		return new ConcurrentSkipListSet<String>(getRepository.keySet)
+	def getActiveTasks : ConcurrentSet<String> {
+		return new ConcurrentSetSkipListSet<String>(getRepository.keySet)
 	}
 
 	/** 

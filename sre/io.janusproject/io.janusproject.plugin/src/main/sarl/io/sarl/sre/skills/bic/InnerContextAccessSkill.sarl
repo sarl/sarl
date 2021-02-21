@@ -23,18 +23,19 @@ package io.sarl.sre.skills.bic
 import io.sarl.core.InnerContextAccess
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import io.sarl.lang.core.EventSpace
 
 /** 
  * SRE implementation of SARL's {@link InnerContextAccess} built-in capacity.
@@ -136,10 +137,10 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 		return 0
 	}
 
-	def getMemberAgents : ConcurrentSkipListSet<UUID> {
+	def getMemberAgents : ConcurrentSet<UUID> {
 		val context = getLife(owner).getInnerContext(null)
 		if (context !== null) {
-			var filtered = new ConcurrentSkipListSet
+			var filtered = new ConcurrentSetSkipListSet
 			val oid = this.owner.ID
 			context.defaultSpace.forEachStrongParticipant [
 				if (it != oid) {
@@ -148,7 +149,7 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 			]
 			return filtered
 		}
-		return new ConcurrentSkipListSet
+		return new ConcurrentSetSkipListSet
 	}
 
 	def hasMemberAgent : boolean {

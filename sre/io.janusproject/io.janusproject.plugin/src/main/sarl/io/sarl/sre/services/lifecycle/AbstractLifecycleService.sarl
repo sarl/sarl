@@ -32,10 +32,10 @@ import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.logging.LoggingService
+import io.sarl.util.ConcurrentCollection
 import java.lang.ref.WeakReference
 import java.util.Arrays
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
@@ -178,7 +178,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 *     If it is {@code null}, the agent does not provide a cause for its termination.
 	 * @since 0.12
 	 */
-	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 		terminationCause : Object) {
 		// Notify the listeners on the spawn events (not restricted to a single agent)
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
@@ -484,7 +484,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	protected def fireAgentDestructionEvents(^agent : Agent, defaultContextBeforeKilled : ContextReference,
-		leavedContexts : ConcurrentLinkedDeque<ContextReference>,
+		leavedContexts : ConcurrentCollection<ContextReference>,
 		terminationCause : Object) {
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
@@ -492,6 +492,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			defaultContextBeforeKilled.defaultSpace.spaceID, ^agent.ID, ^agent.class.name)
 		// Fire the agent destroy event
 		^agent.fireAgentDestroy(leavedContexts, terminationCause)
+	}
+
+	protected def fireAgentKillFailureEvent(^agent : Agent, defaultContext : ContextReference, cause : String) {
+		this.platformLifecycleEventEmitter.agentKillFailure(^agent.ID, defaultContext, cause)
 	}
 
 	/** Add a dynamic skill provider that must be used for the agents that are spawned

@@ -26,7 +26,7 @@ import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.util.ConcurrentCollection
 
 import static extension org.mockito.Mockito.mock
 
@@ -39,7 +39,7 @@ import static extension org.mockito.Mockito.mock
 @SuppressWarnings("potential_field_synchronization_problem")
 skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 
-	var listeners : ConcurrentLinkedDeque<Behavior> = null
+	var listeners : ConcurrentCollection<Behavior> = null
 		
 	var listener : InformedEventListener
 
@@ -50,7 +50,7 @@ skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 	}
 
-	def setRegisteredEventBusListeners(listeners : ConcurrentLinkedDeque<Behavior>) {
+	def setRegisteredEventBusListeners(listeners : ConcurrentCollection<Behavior>) {
 		this.listeners = listeners
 	}
 
@@ -82,10 +82,10 @@ skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 		this.listener
 	}
 
-	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
+	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentCollection<T> with T {
 		if (type == typeof(Behavior)) {
 			var obj : Object = this.listeners
-			return obj as ConcurrentLinkedDeque<T>
+			return obj as ConcurrentCollection<T>
 		}
 		return null
 	}

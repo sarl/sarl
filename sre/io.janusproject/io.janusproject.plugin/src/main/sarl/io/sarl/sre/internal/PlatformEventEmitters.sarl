@@ -58,10 +58,10 @@ import io.sarl.sre.skills.bic.FailureListenerFactory
 import io.sarl.sre.spaces.Participant
 import io.sarl.sre.spaces.SpaceParticipantListener
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
+import io.sarl.util.ConcurrentCollection
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
@@ -225,7 +225,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		defSpace.emit(null, ^event) [agentId != it.ID]
 	}
 	
-	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>,
+	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 		terminationCause : Object) {
 		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_1, ^agent.ID)]
 		val size = outerContexts.size

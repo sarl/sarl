@@ -21,10 +21,11 @@
 package io.sarl.sre.services.lifecycle
 
 import io.sarl.core.AgentTask
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.lang.ref.WeakReference
 import java.util.Comparator
 import java.util.Set
-import java.util.concurrent.ConcurrentSkipListSet
 
 /** 
  * Describes any information that is required by SRE for supporting the agent trait's life. 
@@ -46,7 +47,7 @@ abstract class AgentTraitLife {
 		System::identityHashCode(t1) <=> System.identityHashCode(t2)
 	]
 
-	var tasks : ConcurrentSkipListSet<WeakReference<AgentTask>>
+	var tasks : ConcurrentSet<WeakReference<AgentTask>>
 
 	/** Add a reference to a task that is assumed to be cancelled if the behavior becomes unregistered.
 	 * 
@@ -54,7 +55,7 @@ abstract class AgentTraitLife {
 	 */
 	def addTaskReference(task : AgentTask) {
 		if (this.tasks === null) {
-			this.tasks = new ConcurrentSkipListSet<WeakReference<AgentTask>>(COMPARATOR)
+			this.tasks = new ConcurrentSetSkipListSet<WeakReference<AgentTask>>(COMPARATOR)
 		}
 		this.tasks += new WeakReference(task)
 	}
@@ -64,7 +65,7 @@ abstract class AgentTraitLife {
 	 * @param task the task to remove.
 	 */
 	def removeTaskReference(task : AgentTask) : void {
-		var tsk : ConcurrentSkipListSet<WeakReference<AgentTask>> = this.tasks
+		var tsk = this.tasks
 		if (tsk !== null) {
 			val ref = new WeakReference(task)
 			tsk -= ref
@@ -76,7 +77,7 @@ abstract class AgentTraitLife {
 	 * @return the removed tasks.
 	 */
 	def removeAllTaskReferences : Set<WeakReference<AgentTask>> {
-		var tsk : ConcurrentSkipListSet<WeakReference<AgentTask>> = this.tasks
+		var tsk = this.tasks
 		if (tsk !== null) {
 			this.tasks = null
 		}

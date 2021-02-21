@@ -30,10 +30,11 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentSet
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 import java.util.logging.Logger
@@ -232,7 +233,7 @@ capacity InnerContextAccess {
 	 * @return the identifiers of the members of the internal context of the current agent.
 	 */	 
 	@Pure
-	def getMemberAgents : ConcurrentSkipListSet<UUID>
+	def getMemberAgents : ConcurrentSet<UUID>
 
 	/** Replies if the given space is the default space of the inner context.
 	 *
@@ -300,7 +301,7 @@ capacity Behaviors {
 	 * @return the unmodifiable collection of the registered behavior.
 	 * @since 0.5
 	 */
-	def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior>
+	def getRegisteredBehaviors : ConcurrentCollection<Behavior>
 
 	/**
 	 * Register a Behavior for the owner agent.
@@ -507,7 +508,7 @@ capacity Schedules {
 	 * @return the names of the active tasks.
 	 * @since 0.5
 	 */
-	def getActiveTasks : ConcurrentSkipListSet<String>
+	def getActiveTasks : ConcurrentSet<String>
 	
 	/**
 	 * Schedule a given task to be executed after the specified delay.

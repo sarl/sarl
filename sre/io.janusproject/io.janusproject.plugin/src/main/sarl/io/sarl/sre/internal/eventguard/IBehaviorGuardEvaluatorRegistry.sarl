@@ -23,9 +23,10 @@ package io.sarl.sre.internal.eventguard
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.internal.ObjectComparator
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetSkipListSet
 import java.util.Set
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.ConcurrentSkipListSet
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.
@@ -144,8 +145,8 @@ interface IBehaviorGuardEvaluatorRegistry {
 	 * @since 0.6
 	 */
 	@Pure
-	def getRegisteredEventListeners(type : Class<T>) : ConcurrentSkipListSet<T> with T {
-		var result : ConcurrentSkipListSet<T> = new ConcurrentSkipListSet(ObjectComparator::SINGLETON)
+	def getRegisteredEventListeners(type : Class<T>) : ConcurrentSet<T> with T {
+		var result = new ConcurrentSetSkipListSet<T>(ObjectComparator::SINGLETON)
 		getRegisteredEventListeners(type, result)
 		return result
 	}

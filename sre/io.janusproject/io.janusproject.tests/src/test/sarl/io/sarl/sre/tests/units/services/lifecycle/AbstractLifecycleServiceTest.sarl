@@ -53,10 +53,10 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.Future
 import java.util.logging.Logger
 import javax.inject.Provider
