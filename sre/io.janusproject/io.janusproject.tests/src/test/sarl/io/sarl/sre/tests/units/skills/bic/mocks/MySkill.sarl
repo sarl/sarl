@@ -26,8 +26,11 @@ import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.util.ConcurrentCollection
+import java.util.List
 
 import static extension org.mockito.Mockito.mock
+import io.sarl.lang.util.OutParameter
+import java.util.function.BooleanSupplier
 
 /**
  * @author $Author: sgalland$
@@ -49,16 +52,12 @@ skill MySkill implements InternalEventBusCapacity {
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean) {
 	}
 
-	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		null
+	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, 
+		events : OutParameter<List<Event>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
+		false
 	}
 
-	override fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) {
-	}
-
-	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		null
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandling : boolean, listener : Object) {
 	}
 
 	override fireEvent(^event : Event) {

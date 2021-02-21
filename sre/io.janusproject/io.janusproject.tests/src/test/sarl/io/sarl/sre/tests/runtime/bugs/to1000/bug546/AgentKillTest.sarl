@@ -55,7 +55,7 @@ import static io.sarl.sre.test.framework.Constants.*
 class AgentKillTest {
 		
 	@Test
-	@DisplayName("Wait for 500 AgentKilled events")
+	@DisplayName("Wait for 300 AgentKilled events")
 	def launchTest(extension rc : SreRunContext) : void {
 		// Should stop without timeout
 		typeof(InitAndWaitAgent0).runSre(EXTRA_TIMEOUT)

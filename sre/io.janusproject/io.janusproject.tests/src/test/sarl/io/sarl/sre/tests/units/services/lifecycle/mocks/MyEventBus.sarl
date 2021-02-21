@@ -26,6 +26,9 @@ import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.util.ConcurrentCollection
+import java.util.List
+import io.sarl.lang.util.OutParameter
+import java.util.function.BooleanSupplier
 
 /**
  * @author $Author: sgalland$
@@ -48,16 +51,14 @@ skill MyEventBus implements InternalEventBusCapacity {
 	}
 
 	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		handler : () => void) : ConcurrentLinkedDeque<Event> {
-		null
+		events : OutParameter<List<Event>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
+		if (handler1 !== null) {
+			return handler1.getAsBoolean
+		}
+		return true
 	}
 
-	override fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) {
-	}
-
-	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		null
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandling : boolean, istener : Object) {
 	}
 
 	override fireEvent(^event : Event) {

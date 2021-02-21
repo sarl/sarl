@@ -63,13 +63,16 @@ skill LifecycleSkill implements Lifecycle {
 		// This event is supported by the internal event bus implementation.
 		if (state == AgentState::INITIALIZING) {
 			// Indicate to the starting function into AgentLife that the initialization has failed.
-			postTreatment = [getLife(owner).state = AgentState::DYING]
+			postTreatment = [
+				getLife(owner).state = AgentState::DYING
+			]
 		} else if (state == AgentState::ALIVE) {
 			// Synchronous killing
-			postTreatment = [this.lifecycle.killAgent(this.owner, false, terminationCause)]
+			postTreatment = [
+				this.lifecycle.killAgent(this.owner, false, terminationCause)
+			]
 		}
 		// Never return from the killMe
-		Thread::yield
 		ExecutorService::neverReturn(postTreatment)
 	}
 

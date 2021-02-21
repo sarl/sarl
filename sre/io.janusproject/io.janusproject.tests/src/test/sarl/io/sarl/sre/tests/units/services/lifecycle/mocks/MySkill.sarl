@@ -22,10 +22,13 @@
 package io.sarl.sre.tests.units.services.lifecycle.mocks
 
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.util.ConcurrentCollection
+import java.util.List
+import java.util.function.BooleanSupplier
 
 /**
  * @author $Author: sgalland$
@@ -59,27 +62,22 @@ skill MySkill implements InternalEventBusCapacity {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		if (this.failure) {
-			throw new RuntimeException
-		}
-		new ConcurrentLinkedDeque
-	}
-
-	@SuppressWarnings("potential_field_synchronization_problem")
-	override fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) {
-		if (this.failure) {
-			throw new RuntimeException
-		}
-	}
-
-	@SuppressWarnings("potential_field_synchronization_problem")
 	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
+		events : OutParameter<List<Event>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
 		if (this.failure) {
 			throw new RuntimeException
 		}
-		null
+		if (handler1 !== null) {
+			return handler1.getAsBoolean
+		}
+		return true
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandling : boolean, listener : Object) {
+		if (this.failure) {
+			throw new RuntimeException
+		}
 	}
 
 	override fireEvent(^event : Event) {

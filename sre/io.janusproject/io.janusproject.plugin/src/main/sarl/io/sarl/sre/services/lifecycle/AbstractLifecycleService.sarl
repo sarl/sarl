@@ -443,15 +443,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		life.state.isAlive
 	}
 
-	static val nbKills = new AtomicInteger
-
 	def killAgent(^agent : Agent, forceKillable : boolean, terminationCause : Object) : boolean {
 		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
 		if (life !== null && life.isAlive) {
+			var defaultContext = life.defaultContext
 			// We should check if it is possible to kill the agent BEFORE killing it.
 			if (forceKillable || life.isKillableAgent(agentId)) {
-				var defaultContext = life.defaultContext
 				var contexts = life.stop(this.skillUninstaller, getLogger)
 				^agent.onAgentKilled
 				fireAgentDestructionEvents(^agent, defaultContext, contexts, terminationCause)
@@ -644,8 +642,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				val aid = this.agentIds.apply
 
 				// Effectively create the agent
-				val ^agent = this.agentInstanceCreator.apply(aid)
-
+				val ^agent : Agent = this.agentInstanceCreator.apply(aid)
 				if (^agent === null) {
 					throw new CannotSpawnException(this.agentType)
 				}

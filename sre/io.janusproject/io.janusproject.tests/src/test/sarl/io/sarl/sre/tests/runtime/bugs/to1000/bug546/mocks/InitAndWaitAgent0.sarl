@@ -43,8 +43,6 @@ agent InitAndWaitAgent0 {
 
 	uses Lifecycle, DefaultContextInteractions
 
-	val nbHello = new AtomicInteger
-
 	var nbKilled = new AtomicInteger
 
 	uses TestingCapacity
@@ -57,10 +55,7 @@ agent InitAndWaitAgent0 {
 	}
 
 	on Hello {
-		var n = this.nbHello.incrementAndGet
-		if (n >= NB_AGENTS) {
-			emit(new KillYou)
-		}
+		emit(new KillYou) [it.ID == occurrence.source.ID]
 	}
 
 	on AgentKilled {

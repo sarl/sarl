@@ -21,9 +21,11 @@
 package io.sarl.sre.capacities
 
 import io.sarl.lang.core.Event
-import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.util.ConcurrentCollection
+import java.util.List
+import io.sarl.lang.util.OutParameter
+import java.util.function.BooleanSupplier
 
 /**
  * Capacity that provides an event bus to notify the different components of an agent.
@@ -80,45 +82,22 @@ capacity InternalEventBusCapacity {
 	 *
 	 * <p>The events that are received during the execution of this function treated in the normal way, i.e. associated
 	 * event handlers are run.
-	 * 
-	 * <p>This function does not considered the agent's state for determining of the event should be fired.
-	 * In other words, the given event is always fired, whatever the agent's state. 
+	 *
+	 * <p>This function considers the agent's state for determining of the event should be fired or not.
+	 * In other words, the given event may be fired or buffered depending on the event buffering flag. 
 	 * 
 	 * @param event the event to fire.
 	 * @param thrownExceptions indicates if any exception, which occurs into the event handler should be thrown outside this function.
 	 *     If {@code true}, an exception is thrown outside and should be catch. If {@code false}, the exceptions are logging out
 	 *     to the agent's logger, and never thrown outside this function.
+	 * @param forceEventHandlerExecution indicates if the event handler execution must be forced even if the event
+	 *     gathering feature is activated. Give a {@code true} value with caution. 
 	 * @param listener the sole receiver of the event. If {@code null}, all the listeners on the event bus will
 	 *     receive the event. If not {@code null}, only the given listener will receive the event.
 	 * @return the events that were received during the execution of this function. These events are not fired into the agent context yet.
 	 * @since 0.12
 	 */
-	def fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object)
-
-	/** Fire the given event into the agent context, and wait for the execution of all the event handlers.
-	 *
-	 * <p>This function does not set the event's source if it is not already set.
-	 *
-	 * <p>All the exceptions thrown by the event handlers are gathered and fired into a single exception after
-	 * all the event handlers have been executed or failed.
-	 *
-	 * <p>The events that are received during the execution of this function are gathered and replied.
-	 * 
-	 * <p>This function does not considered the agent's state for determining of the event should be fired.
-	 * In other words, the given event is always fired, whatever the agent's state. 
-	 * 
-	 * @param event the event to fire.
-	 * @param thrownExceptions indicates if any exception, which occurs into the event handler should be thrown outside this function.
-	 *     If {@code true}, an exception is thrown outside and should be catch. If {@code false}, the exceptions are logging out
-	 *     to the agent's logger, and never thrown outside this function.
-	 * @param listener the sole receiver of the event. If {@code null}, all the listeners on the event bus will
-	 *     receive the event. If not {@code null}, only the given listener will receive the event.
-	 * @param handler that is invoked just before the firing of the event. If {@code null}, it is ignore.
-	 * @return the events that were received during the execution of this function. These events are not fired into the agent context yet.
-	 * @since 0.12
-	 */
-	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event>
+	def fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandlerExecution : boolean, listener : Object)
 
 	/** Fire the given event into the agent context, and wait for the execution of all the event handlers.
 	 * 
@@ -129,9 +108,9 @@ capacity InternalEventBusCapacity {
 	 *
 	 * <p>The events that are received during the execution of this function treated in the normal way, i.e. associated
 	 * event handlers are run.
-	 * 
-	 * <p>This function does not considered the agent's state for determining of the event should be fired.
-	 * In other words, the given event is always fired, whatever the agent's state. 
+	 *
+	 * <p>This function considers the agent's state for determining of the event should be fired or not.
+	 * In other words, the given event may be fired or buffered depending on the event buffering flag. 
 	 * 
 	 * @param event the event to fire.
 	 * @param thrownExceptions indicates if any exception, which occurs into the event handler should be thrown outside this function.
@@ -151,17 +130,26 @@ capacity InternalEventBusCapacity {
 	 * <p>The events that are received during the execution of this function are gathered and replied.
 	 * 
 	 * <p>This function does not considered the agent's state for determining of the event should be fired.
-	 * In other words, the given event is always fired, whatever the agent's state. 
+	 * In other words, the given event is always fired, whatever the agent's state or if the event buffering
+	 * was turned on.
+	 *
+	 * <p>The event buffering is turned off at the return of this function.
 	 * 
 	 * @param event the event to fire.
 	 * @param thrownExceptions indicates if any exception, which occurs into the event handler should be thrown outside this function.
 	 *     If {@code true}, an exception is thrown outside and should be catch. If {@code false}, the exceptions are logging out
 	 *     to the agent's logger, and never thrown outside this function.
-	 * @param handler that is invoked just before the firing of the event. If {@code null}, it is ignore.
-	 * @return the events that were received during the execution of this function. These events are not fired into the agent context yet.
+	 * @param bufferedEvents the events that were received during the execution of this function. These events are not fired into the agent context yet.
+	 *     The returned value may be {@code null}.
+	 * @param beforeEventFiringHandler that is invoked just before the firing of the event. If {@code null}, it is ignore.
+	 * @param beforeReturn this is invoked just before the function return and the event buffering is turn off.
+	 * @return the value returned by {@code beforeReturn} or {@code true} if {@code beforeReturn} is {@code null}.
 	 * @since 0.12  
 	 */
-	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event>
+	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
+		bufferedEvents : OutParameter<List<Event>>,
+		beforeEventFiringHandler : () => void,
+		beforeReturnHandler : BooleanSupplier) : boolean
 
 	/** Fire the given event into the agent context, and do not wait for the termination of the event handlers.
 	 * 
@@ -169,8 +157,8 @@ capacity InternalEventBusCapacity {
 	 *
 	 * <p>Any exception thrown by an event handler is catch by the associated thread.
 	 *
-	 * <p>The event is not fired if the agent's state does not allow it.
-	 * See {@link AgentState}. 
+	 * <p>This function considers the agent's state for determining of the event should be fired or not.
+	 * In other words, the given event may be fired or buffered depending on the event buffering flag. 
 	 * 
 	 * @param event the event to fire.
 	 */

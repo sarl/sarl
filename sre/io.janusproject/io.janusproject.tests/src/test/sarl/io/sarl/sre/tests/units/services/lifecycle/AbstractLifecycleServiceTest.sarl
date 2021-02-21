@@ -27,8 +27,10 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.OutParameter
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.services.context.Context
@@ -58,9 +60,11 @@ import java.util.ArrayList
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.Future
+import java.util.function.BooleanSupplier
 import java.util.logging.Logger
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -78,10 +82,8 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
-import static extension org.mockito.Mockito.verify
 import static extension org.mockito.Mockito.times
-import io.sarl.lang.core.DynamicSkillProvider
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure0
+import static extension org.mockito.Mockito.verify
 
 /**
  * @author $Author: sgalland$
@@ -313,12 +315,17 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		// Agent Initialize
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
 		var capThrownExceptions = ArgumentCaptor::forClass(typeof(boolean))
-		var capHandler = ArgumentCaptor::forClass(typeof(Procedure0))
+		var capHandler0 = ArgumentCaptor::forClass(typeof(Procedure0))
+		var capHandler1 = ArgumentCaptor::forClass(typeof(BooleanSupplier))
+		var eventList = ArgumentCaptor::forClass(typeof(OutParameter))
 		this.eventBus.verify.fireEventAndWaitWithEventGathering(
 			capEvent.capture,
 			capThrownExceptions.capture.booleanValue,
-			capHandler.capture)
-		capHandler.value.assertNotNull
+			eventList.capture,
+			capHandler0.capture,
+			capHandler1.capture)
+		capHandler0.value.assertNotNull
+		capHandler1.value.assertNotNull
 		capThrownExceptions.value.assertTrue
 		typeof(Initialize).assertInstanceOf(capEvent.value)
 		var initEvent = capEvent.value as Initialize
@@ -411,15 +418,15 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		this.eventBus.verify(1.times).fireEventAndWait(
 			capEvent.capture,
 			capThrownExceptions.capture.booleanValue)
-		capThrownExceptions.value.assertFalse
+		capThrownExceptions.value.assertTrue
 		typeof(Destroy).assertInstanceOf(capEvent.value)
 		var destroyEvent = capEvent.value as Destroy
 		destroyEvent.source.assertNotNull
 		
 		// Agent destroy notification
 		capAgent = ArgumentCaptor::forClass(typeof(Agent))
-		var capContexts : ArgumentCaptor<ConcurrentLinkedDeque<ContextReference>> = ArgumentCaptor::forClass(
-			typeof(ConcurrentLinkedDeque))
+		var capContexts : ArgumentCaptor<ConcurrentCollectionLinkedDeque<ContextReference>> = ArgumentCaptor::forClass(
+			typeof(ConcurrentCollectionLinkedDeque))
 		var capCause = ArgumentCaptor::forClass(typeof(Throwable))
 		listener1.verify.agentDestroyed(capAgent.capture, capContexts.capture, capCause.capture)
 		this.agent2.assertEquals(capAgent.value)

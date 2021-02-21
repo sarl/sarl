@@ -43,12 +43,14 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
-import java.util.concurrent.locks.ReentrantReadWriteLock
+import io.sarl.lang.util.OutParameter
+import io.sarl.lang.core.Event
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
@@ -180,20 +182,20 @@ final class AgentLife {
 	def start(skillUninstaller : SkillUninstaller, logger : Logger, spawningAgent : UUID,
 		spawningContext : Context, initializationParameters : Object*) : boolean {
 		val rlock0 = this.lock.readLock
-		var st : AgentState
+		val st = new OutParameter<AgentState>
 		rlock0.lock
 		try {
-			st = this.stateObject
+			st.set(this.stateObject)
 		} finally {
 			rlock0.unlock
 		}
-		if (st === AgentState::UNSTARTED) {
+		if (st.get === AgentState::UNSTARTED) {
 			try {
 				val wlock0 = this.lock.writeLock
 				wlock0.lock
 				try {
-					st = this.stateObject
-					if (st !== AgentState::UNSTARTED) {
+					st.set(this.stateObject)
+					if (st.get !== AgentState::UNSTARTED) {
 						return false
 					}
 					this.stateObject = AgentState::INITIALIZING
@@ -213,28 +215,37 @@ final class AgentLife {
 				var initEvent = new Initialize(spawningAgent, initializationParameters)
 				initEvent.source = addressInInnerDefaultSpace
 				// Any exception into the inits are thrown outside the call below.
-				var delayedEvents = eb.fireEventAndWaitWithEventGathering(initEvent, true) [
+				val delayedEvents = new OutParameter<List<Event>>
+				val result = eb.fireEventAndWaitWithEventGathering(initEvent, true, delayedEvents, [
 					spawningContext.defaultSpace.registerStrongParticipant(eb.associatedEventBusListener)
-				]
-
-				// State may have changed
-				val rlock1 = this.lock.readLock
-				rlock1.lock
-				try {
-					st = this.stateObject
-				} finally {
-					rlock1.unlock
-				}
-				if (st === AgentState::INITIALIZING) {
-					val wlock1 = this.lock.writeLock
-					wlock1.lock
+				], [
+					val rlock1 = this.lock.readLock
+					rlock1.lock
 					try {
-						this.stateObject = AgentState::ALIVE
+						st.set(this.stateObject)
 					} finally {
-						wlock1.unlock
+						rlock1.unlock
 					}
-					if (delayedEvents !== null) {
-						for (delayedEvent : delayedEvents) {
+					if (st.get === AgentState::INITIALIZING) {
+						val wlock1 = this.lock.writeLock
+						wlock1.lock
+						try {
+							st.set(this.stateObject)
+							if (st.get === AgentState::INITIALIZING) {
+								this.stateObject = AgentState::ALIVE
+								return true
+							}
+						} finally {
+							wlock1.unlock
+						}
+					}
+					return false
+				])
+				// Fire buffered events if the bufer is ont empty.
+				if (result) {
+					val eventList : List<Event> = delayedEvents.get
+					if (eventList !== null) {
+						for (delayedEvent : eventList) {
 							eb.fireEvent(delayedEvent)
 						}
 					}
@@ -317,17 +328,19 @@ final class AgentLife {
 	 * @param fireDestroy indicates if the {@code Destroy} event should be fired.
 	 * @return the contexts from which the agent was removed.
 	 */
-	def stop(skillUninstaller : SkillUninstaller, logger : Logger,
-		fireDestroy : boolean = true) : ConcurrentCollection<ContextReference> {
-
+	def stop(skillUninstaller : SkillUninstaller, logger : Logger, fireDestroy : boolean = true) : ConcurrentCollection<ContextReference> {
+		// The following line is synchronized
 		this.state = AgentState::DYING
 
 		val dyingAgent = ^agent
 		assert dyingAgent !== null
 
 		try {
+			val eb = getEventBus
+			assert eb !== null
+			
 			// Copy the external event listener in order to unregistered it later.
-			var listener = this.eventBus.associatedEventBusListener
+			var listener = eb.associatedEventBusListener
 
 			// Pre-stage for uninstalling the skills (BIC and user defined)
 			var skills : List<? extends Skill>
@@ -345,7 +358,7 @@ final class AgentLife {
 					// Notify the agent about its destruction.
 					var ^event = new Destroy
 					^event.source = addressInInnerDefaultSpace
-					this.eventBus.fireEventAndWait(^event, false)
+					eb.fireEventAndWait(^event, true)
 				} catch (e : Throwable) {
 					try {
 						this.agentLogger.error(e.localizedMessage, e)

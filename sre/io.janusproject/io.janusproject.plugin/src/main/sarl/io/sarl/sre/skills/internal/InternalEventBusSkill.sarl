@@ -25,17 +25,21 @@ import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.Skill
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.util.ConcurrentCollection
+import java.util.ArrayList
+import java.util.List
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.function.BooleanSupplier
 import javax.inject.Inject
+import javax.inject.Provider
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 /** 
  * SRE implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -57,14 +61,17 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var eventListener : InformedEventListener
 
-	val isEventBufferEnabled = new AtomicBoolean(false)
+	var isEventBufferingEnabled = true
 
-	val eventBuffer = new AtomicReference<ConcurrentLinkedDeque<Event>>
+	var bufferOfEvents : List<Event>
+
+	val bufferLock : ReadWriteLock
 
 	@SuppressWarnings("raw_type")
 	@Inject
 	@PrivateAPI(isCallerOnly = true)
-	new (busFactory : EventBusFactory) {
+	new (busFactory : EventBusFactory, lockProvider : Provider<ReadWriteLock>) {
+		this.bufferLock = lockProvider.get
 		this.eventBus = busFactory.createEventBus [
 			var instance = typeof(InternalSchedules).getSkill
 			assert instance !== null, "the owner of the InternalEventBusSkill must also have an InternalSchedules skill"
@@ -72,9 +79,11 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		]
 	}
 
-	new (bus : EventBus) {
+	new (bus : EventBus, bufferLock : ReadWriteLock) {
 		assert bus !== null
+		assert bufferLock !== null
 		this.eventBus = bus
+		this.bufferLock = bufferLock
 	}
 
 	protected override toString(builder : ToStringBuilder) {
@@ -103,12 +112,8 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	}
 
 	protected override uninstall {
-		var bus = this.eventBus
-		if (bus !== null) {
-			bus.unregisterAll(null)
-		}
-		this.eventBuffer.set(null);
-
+		this.eventBus?.unregisterAll(null)
+		this.bufferOfEvents = null
 		// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
 		var listener = this.eventListener
 		if (listener instanceof ExternalEventBusAccessor) {
@@ -119,11 +124,11 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	/** 
 	 * Must be synchronized multiple thread may call it at the same time and we must ensure that only one instance of ExternalEventBusAccessor is effectively created
 	 */
-	final def getAssociatedEventBusListener : InformedEventListener {
+	final override getAssociatedEventBusListener : InformedEventListener {
 		return this.eventListener
 	}
 
-	def registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
+	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 		this.eventBus.register(listener, filter, callback);
 	}
 
@@ -132,7 +137,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @param listener the listener to unregister.
 	 * @param callback function which is invoked just before the object is unregistered.
 	 */
-	def unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
+	override unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
 		this.eventBus.unregister(listener, callback)
 	}
 
@@ -143,7 +148,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 *     The callback functions replies {@code true} if it should be called on the next removed object.
 	 *     If it replies {@code false}, it will be not called anymore.
 	 */
-	def unregisterEventBusListener(listenerType : Class<?>, callback : (Object)=>boolean) {
+	override unregisterEventBusListener(listenerType : Class<?>, callback : (Object)=>boolean) {
 		this.eventBus.unregister(listenerType, callback)
 	}
 
@@ -153,7 +158,15 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @return the value of the flag before its change.
 	 */
 	def setEventBuffering(buffering : boolean) : boolean {
-		return this.isEventBufferEnabled.getAndSet(buffering)
+		val wlock = this.bufferLock.writeLock
+		wlock.lock
+		try {
+			val old = this.isEventBufferingEnabled
+			this.isEventBufferingEnabled = buffering
+			return old
+		} finally {
+			wlock.unlock
+		}
 	}
 
 	/** Replies if the events are buffering.
@@ -161,89 +174,121 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @return {@code true} if the events are buffered.
 	 */
 	def isEventBuffering() : boolean {
-		return this.isEventBufferEnabled.get
+		val rlock = this.bufferLock.readLock
+		rlock.lock
+		try {
+			return this.isEventBufferingEnabled
+		} finally {
+			rlock.unlock
+		}
 	}
 
 	/** Replies the buffered events.
 	 * 
 	 * @return an unmodifiable iterable of the buffered elements.
 	 */
-	def getBufferedEvents : ConcurrentLinkedDeque<Event> {
-		val buf = this.eventBuffer.get
-		if (buf === null) {
-			return new ConcurrentLinkedDeque<Event>();
+	def getBufferedEvents : List<Event> {
+		val rlock = this.bufferLock.readLock
+		rlock.lock
+		try {
+			val buf = this.bufferOfEvents
+			if (buf === null) {
+				return new ArrayList<Event>
+			}
+			return new ArrayList(buf)
+		} finally {
+			rlock.unlock
 		}
-		return new ConcurrentLinkedDeque(buf)
 	}
 
-	def fireEventAndWait(^event : Event, thrownExceptions : boolean, listener : Object) : void {
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandlerExecution : boolean, listener : Object) : void {
 		assert listener !== null
-		if (getLife(owner).state.blockingEventHandling) {
-			val logger = getLogger
-			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
+		if (getLife(owner).state.blockingEventHandling && (forceEventHandlerExecution || ^event.prepareFiring)) {
+			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, getLogger)
 		}
 	}
 
-	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		listener : Object, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		if (getLife(owner).state.blockingEventHandling) {
-			val logger = getLogger
-			var wasEnabled : boolean = this.isEventBufferEnabled.getAndSet(true)
+	override fireEventAndWait(^event : Event, thrownExceptions : boolean) : void {
+		if (getLife(owner).state.blockingEventHandling && ^event.prepareFiring) {
+			this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
+		}
+	}
+
+	override fireEvent(^event : Event) {
+		if (getLife(owner).state.asynchronousEventHandling && ^event.prepareFiring) {
+			this.eventBus.asyncDispatch(^event, getLogger)
+		}
+	}
+
+	private def prepareFiring(^event : Event) : boolean {
+		var mustBuff  = false
+		val rlock = this.bufferLock.readLock
+		rlock.lock
+		try {
+			mustBuff = this.isEventBufferingEnabled
+		} finally {
+			rlock.unlock
+		}
+		if (mustBuff) {
+			val wlock = this.bufferLock.writeLock
+			wlock.lock
 			try {
-				if (handler !== null) {
-					handler.apply
-				}
-				this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
-			} finally {
-				this.isEventBufferEnabled.set(wasEnabled)
-			}
-			return this.eventBuffer.getAndSet(null)
-		}
-		return new ConcurrentLinkedDeque<Event>
-	}
-
-	def fireEventAndWait(^event : Event, thrownExceptions : boolean) : void {
-		if (getLife(owner).state.blockingEventHandling) {
-			val logger = getLogger
-			this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
-		}
-	}
-
-	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean, handler : () => void) : ConcurrentLinkedDeque<Event> {
-		if (getLife(owner).state.blockingEventHandling) {
-			val logger = getLogger
-			var wasEnabled : boolean = this.isEventBufferEnabled.getAndSet(true)
-			try {
-				if (handler !== null) {
-					handler.apply
-				}
-				this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
-			} finally {
-				this.isEventBufferEnabled.set(wasEnabled)
-			}
-
-			return this.eventBuffer.getAndSet(null)
-		}
-		return new ConcurrentLinkedDeque<Event>
-	}
-
-	def fireEvent(^event : Event) {
-		if (getLife(owner).state.asynchronousEventHandling) {
-			if (this.isEventBufferEnabled.get) {
-				var buf = this.eventBuffer.updateAndGet [
-					if (it === null) {
-						return new ConcurrentLinkedDeque
+				mustBuff = this.isEventBufferingEnabled
+				if (mustBuff) {
+					if (this.bufferOfEvents === null) {
+						this.bufferOfEvents = newLinkedList
 					}
-					return it
-				]
-				buf.add(^event)
-			} else {
-				this.eventBus.asyncDispatch(^event, getLogger)
+					this.bufferOfEvents.add(^event)
+				}
+			} finally {
+				wlock.unlock
 			}
 		}
+		return !mustBuff
 	}
 
-	def getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
+	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
+		bufferedEvents : OutParameter<List<Event>>,
+		beforeEventFiringHandler : () => void,
+		beforeReturnHandler : BooleanSupplier) : boolean {
+		if (getLife(owner).state.blockingEventHandling) {
+			// Prepare firing
+			var wlock = this.bufferLock.writeLock
+			wlock.lock
+			try {
+				this.isEventBufferingEnabled = true
+			} finally {
+				wlock.unlock
+			}
+			if (beforeEventFiringHandler !== null) {
+				beforeEventFiringHandler.apply
+			}
+			// Fire the event
+			this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
+			// 
+			wlock = this.bufferLock.writeLock
+			wlock.lock
+			var result = true
+			try {
+				// Post treatment
+				if (beforeReturnHandler !== null) {
+					result = beforeReturnHandler.getAsBoolean
+				}
+				// Reset the event buffering flag
+				assert this.isEventBufferingEnabled
+				this.isEventBufferingEnabled = false
+				bufferedEvents.set(this.bufferOfEvents)
+				this.bufferOfEvents = null
+			} finally {
+				wlock.unlock
+			}
+			return result
+		}
+		return false
+	}
+
+
+	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentCollection<T> with T {
 		this.eventBus.getRegisteredEventListeners(type)
 	}
 
@@ -268,12 +313,8 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 			this.owner = owner;
 		}
 
-		private def getOwnerSkill : InternalEventBusSkill {
-			this.owner		
-		}
-
 		override receiveEvent(^event : Event) {
-			this.ownerSkill?.fireEvent(^event)
+			this.owner?.fireEvent(^event)
 		}
 
 		override getID : UUID {
@@ -285,7 +326,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		}
 
 		override getOwnerInstance : Agent {
-			this.ownerSkill?.owner
+			this.owner?.owner
 		}
 	}
 
