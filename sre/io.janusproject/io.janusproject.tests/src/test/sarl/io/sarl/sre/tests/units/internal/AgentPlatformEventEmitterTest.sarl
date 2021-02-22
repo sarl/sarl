@@ -58,6 +58,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentCaptor.forClass
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
+import io.sarl.core.AgentSpawnFailure
 
 /**
  * @author $Author: sgalland$
@@ -211,9 +212,27 @@ class AgentEventEmitterTest {
 		var evt = ^event.value
 		evt.assertNotNull
 		typeof(AgentKillFailure).assertInstanceOf(evt)
-		var spaceEvent = evt as AgentKillFailure
-		spaceEvent.source.assertNotNull
-		cause.assertSame(spaceEvent.cause)
+		var killEvent = evt as AgentKillFailure
+		killEvent.source.assertNotNull
+		cause.assertSame(killEvent.cause)
+	}
+
+	@Test
+	def agentSpawnFailure {
+		val cause = UUID::randomUUID
+		this.emitter.agentSpawnFailure(this.contextID, this.parent, typeof(ShortLifeTestingAgent), cause)
+		
+		var ^event = typeof(Event).forClass
+		var scope = typeof(Scope).forClass
+		this.defaultSpace.verify.emit(any, ^event.capture, scope.capture)
+		scope.value.assertNotNull
+		var evt = ^event.value
+		evt.assertNotNull
+		typeof(AgentSpawnFailure).assertInstanceOf(evt)
+		var failureEvent = evt as AgentSpawnFailure
+		failureEvent.source.assertNotNull
+		typeof(ShortLifeTestingAgent).assertEquals(failureEvent.agentType)
+		cause.assertSame(failureEvent.cause)
 	}
 
 }

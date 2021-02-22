@@ -61,7 +61,7 @@ interface LifecycleService extends Service {
 	 * <p>This function is not blocking until all the agents are spawned.
 	 * 
 	 * @param nbAgents the number of agents to spawn.
-	 * @param spawningAgent the agent which is spawning.
+	 * @param spawningAgent the agent which is spawning, if {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param parent the parent entity that is creating the agents.
 	 * @param agentId the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
@@ -152,7 +152,7 @@ interface LifecycleServiceListener extends EventListener {
 	/** 
 	 * Invoked when the agent is spawned.
 	 * 
-	 * @param spawningAgent the identifier of the agent which spawns the given agent.
+	 * @param spawningAgent the identifier of the agent which spawns the given agent, if {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param parent the context in which the agent was created.
 	 * @param agentType the type of the spawned agents.
 	 * @param spawnedAgent the spawned agent.
@@ -179,8 +179,9 @@ interface LifecycleServiceListener extends EventListener {
 	 * @param spawningAgent the identifier of the agent which spawns the given agent.
 	 * @param parent the context in which the agent was created.
 	 * @param agentType the type of the spawned agents.
+	 * @param cause the cause of the failure.
 	 */
-	def agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>)
+	def agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>, cause : Object)
 
 	/** 
 	 * Invoked when the agent killing has failed.
@@ -210,7 +211,7 @@ interface LifecycleServiceListener extends EventListener {
 			abnormalTerminationCause : Object) {
 		}
 
-		override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>) {
+		override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>, cause : Object) {
 		}
 
 		override agentKillFailure(killingAgent : UUID, innerContext : ContextReference, cause : Object) {

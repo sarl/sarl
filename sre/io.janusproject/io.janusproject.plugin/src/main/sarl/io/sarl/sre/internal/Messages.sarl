@@ -47,7 +47,6 @@ final class Messages extends NLS {
 
 	public static var AgentEventEmitter_0 : String
 	public static var AgentEventEmitter_1 : String
-	public static var AgentEventEmitter_2 : String
 
 	public static var ContextMemberEventEmitter_0 : String
 	public static var ContextMemberEventEmitter_1 : String

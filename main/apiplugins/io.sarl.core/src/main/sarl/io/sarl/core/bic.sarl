@@ -385,9 +385,10 @@ capacity Lifecycle {
 	 * @param agentType the type of the agent to spawn.
 	 * @param params the arguments to pass in the initialization event to the spawned agent.
 	 * @fires AgentSpawned in DefaultSpace
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
-	def spawn(agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned
+	def spawn(agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
 	 * Spawns a group of agents inside the default context of this agent.
@@ -408,9 +409,10 @@ capacity Lifecycle {
 	 * @param params the arguments to pass in the initialization event to the spawned agents. All the agents
 	 *     will receive the same initialization parameters.
 	 * @fires AgentSpawned in DefaultSpace
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
-	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned
+	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
@@ -428,8 +430,9 @@ capacity Lifecycle {
 	 * @param context the context in which the agent must be spawned.
 	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agent.
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 */
-	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned
+	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 	
 	/**
 	 * Spawns a group of agents in the parent's context (parentID).
@@ -449,9 +452,10 @@ capacity Lifecycle {
 	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agents. All the agents
 	 *     will receive the same initialization parameters.
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
-	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned
+	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
@@ -470,8 +474,9 @@ capacity Lifecycle {
 	 * @param context the context in which the agent must be spawned.
 	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agent.
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 */
-	def spawnInContextWithID(agentClass : Class <? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) fires AgentSpawned
+	def spawnInContextWithID(agentClass : Class <? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
     /**
 	 * Kills this agent. 

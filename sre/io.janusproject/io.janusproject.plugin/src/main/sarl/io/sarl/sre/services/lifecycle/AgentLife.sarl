@@ -175,6 +175,7 @@ final class AgentLife {
 	 * @param logger the logger to use for reporting initialization errors when the agent's logger is unavailable
 	 * @param startError the exception that avoid to start the agent.
 	 * @param spawningAgent the identifier of the agent which has spawn this starting agent. This agent could be outside the spawningContext.
+	 *      If {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param spawningContext the context in which the agent is spawned.
 	 * @param initializationParameters the parameters to give to the agent for its start-up.
 	 * @return {@code true} is successful, i.e. the {@code AgentSpawned} could be fired.

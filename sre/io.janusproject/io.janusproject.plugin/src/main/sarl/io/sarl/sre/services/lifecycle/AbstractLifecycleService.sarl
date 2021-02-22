@@ -260,7 +260,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * <p>This function is not blocking until all the agents are spawned.
 	 * 
 	 * @param nbAgents the number of agents to spawn.
-	 * @param spawningAgent the agent which is spawning.
+	 * @param spawningAgent the agent which is spawning, if {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param parent the parent entity that is creating the agents.
 	 * @param agentClazz the type of the agents to spawn.
 	 * @param callback function that is invoked when an identifier of spawned agent is known. The number of times this callback
@@ -301,7 +301,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 			// Create the instance of the process that should create the agents.
 			val individualCreationProcess = newAgentCreatorProcess(
-				spawnQueryAccess, spawningAgent, parent, agentClazz, params, agentIds, agentInstanceCreator)
+				spawnQueryAccess,
+				spawningAgent,
+				parent, agentClazz, params, agentIds, agentInstanceCreator)
 
 			if (nbAgents > 1) {
 				getExecutor.executeNotBlockingTask(getLogger, nbAgents,
@@ -333,14 +335,16 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	protected def newAgentCreatorProcess(
 		spawnQueries : SpawnQueries,
-		spawningAgent : UUID, parentContext : Context,
+		spawningAgent : UUID,
+		parentContext : Context,
 		agentType : Class<? extends Agent>,
 	 	initializationParameters : Object[],
 		agentIds : ()=>UUID,
 		agentInstanceCreator : (UUID)=>Agent) : AgentCreationProcess {
 		new AgentCreationProcess(
 			this, spawnQueries,
-			spawningAgent, parentContext, agentType, initializationParameters,
+			spawningAgent,
+			parentContext, agentType, initializationParameters,
 			agentIds, agentInstanceCreator,
 			this.skillUninstaller,
 			this.lockProvider,
@@ -375,7 +379,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	/** Fire the events related to the agent spawn.
 	 * 
-	 * @param spawningAgent the creator.
+	 * @param spawningAgent the creator, if {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param parent the context in which the agents are created.
 	 * @param agentClazz the type of the spawned agents.
 	 * @param spawnedAgent the spawned agent.
@@ -392,10 +396,12 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param spawningAgent the creator.
 	 * @param parent the context in which the agents are created.
 	 * @param agentClazz the type of the spawned agents.
+	 * @param cause the cause of the failure.
 	 */
-	protected def fireAgentSpawningErrorEvents(spawningAgent : UUID, parent : Context,
-		agentClazz : Class<? extends Agent>) {
-		this.platformLifecycleEventEmitter.agentSpawnFailure(spawningAgent, parent, agentClazz)
+	protected def fireAgentSpawnFailureEvent(spawningAgent : UUID, parent : Context,
+		agentClazz : Class<? extends Agent>, cause : String) {
+		this.platformLifecycleEventEmitter.agentSpawnFailure(
+			spawningAgent, parent, agentClazz, cause)
 	}
 
 	/** Replies if the given context is the root context and is empty.
@@ -494,8 +500,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		^agent.fireAgentDestroy(leavedContexts, terminationCause)
 	}
 
-	protected def fireAgentKillFailureEvent(^agent : Agent, defaultContext : ContextReference, cause : String) {
-		this.platformLifecycleEventEmitter.agentKillFailure(^agent.ID, defaultContext, cause)
+	/** Fire the events related a failure of agent killing.
+	 * 
+	 * @param agent the agent that has failed to commit a suicide.
+	 * @param innerContext the context in which the events should be fired. 
+	 * @param cause the cause of the failure.
+	 */
+	protected def fireAgentKillFailureEvent(^agent : Agent, innerContext : ContextReference, cause : Object) {
+		this.platformLifecycleEventEmitter.agentKillFailure(^agent.ID, innerContext, cause)
 	}
 
 	/** Add a dynamic skill provider that must be used for the agents that are spawned
@@ -606,7 +618,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		 *
 		 * @param service is the reference to the spawning service.
 		 * @param spawnQueries the object ot track the spawn queries.
-		 * @param spawningAgent is the identifier of the agent that has invoked the spawn function.
+		 * @param spawningAgent is the identifier of the agent that has invoked the spawn function, if {@code null}, the root agent (Janus kernel) is assumed.
 		 * @param parentContext is the context in which the agent is created.
 		 * @param agentType is the type of the created agents.
 		 * @param initializationParameters is the list of parameters to pass to the agent for its initialization.
@@ -617,7 +629,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		 * @param logger is the service logger.
 		 */
 		new (service : AbstractLifecycleService, spawnQueries : SpawnQueries,
-			spawningAgent : UUID, parentContext : Context, agentType : Class<? extends Agent>,
+			spawningAgent : UUID,
+			parentContext : Context, agentType : Class<? extends Agent>,
 			initializationParameters : Object[], agentIds : ()=>UUID,
 			agentInstanceCreator : (UUID)=>Agent, skillUninstaller : SkillUninstaller,
 			lockProvider : Provider<ReadWriteLock>, logger : Logger) {
@@ -666,11 +679,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 						this.agentType, this.initializationParameters, ^agent
 					)
 				} else {
+					var cause : String = null
 					if (spawnError !== null) {
-						val spawnErrorFinal = spawnError
-						this.logger.log(Level::SEVERE, spawnErrorFinal) [spawnErrorFinal.message]
+						val errmsg = spawnError.message
+						cause = errmsg
+						this.logger.log(Level::SEVERE, spawnError) [errmsg]
 					}
-					this.service.fireAgentSpawningErrorEvents(this.spawningAgent, this.parentContext, this.agentType)
+					val creator = this.spawningAgent ?: this.parentContext.ID
+					this.service.fireAgentSpawnFailureEvent(creator, this.parentContext, this.agentType, cause)
 					// The agent may be the boot agent, and it may have failed to be launched.
 					// When the root context is still empty the safer decision should be to stop the kernel.
 					// In some cases, the agent that is just not started has spawned another agent

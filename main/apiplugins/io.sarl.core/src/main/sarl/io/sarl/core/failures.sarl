@@ -1,0 +1,141 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.core
+
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
+import java.util.UUID
+
+/** Notifies an agent that a failure has occurred.
+ * The event is fired within the default space of the inner context of the failing agent.
+ * Subclasses of this event could be defined in order to specify more in detail the failure.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+event Failure {
+
+	/** The identifier of the space the agent just left.
+	 */
+	val cause : Object
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param cause the cause of the failure.
+	 */
+	new (source : Address = null, cause : Object) {
+		this.source = source
+		this.cause = cause
+	}
+
+}
+
+/** Notifies an agent that a failure has occurred in one of its parallel tasks.
+ * The event is fired within the default space of the inner context of the failing agent.
+ * Subclasses of this event could be defined in order to specify more in detail the failure.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+event TaskFailure extends Failure {
+
+	/** The failing task.
+	 */
+	val task : AgentTask
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param task the failing task.
+	 * @param cause the cause of the failure.
+	 */
+	new (source : Address = null, task : AgentTask, cause : Object) {
+		super(source, cause)
+		this.task = task
+	}
+
+}
+
+/** Notifies an agent that a failure has occurred when it tried to commit a suicide.
+ * The event is fired within the default space of the inner context of the failing agent.
+ * Subclasses of this event could be defined in order to specify more in detail the failure.
+ * Only the killing agent receives this event.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+event AgentKillFailure extends Failure {
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param cause the cause of the failure.
+	 */
+	new (source : Address = null, cause : Object) {
+		super(source, cause)
+	}
+
+}
+
+
+/** Notifies an agent that a failure has occurred when it tried to spawn another agent.
+ * The event is fired within the default space of the context in which the spawn tentative was.
+ * Subclasses of this event could be defined in order to specify more in detail the failure.
+ * Only the spawning agent receives this event.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+event AgentSpawnFailure extends Failure {
+
+	/** The identifier of the context in which the spawn has failed. */
+	val contextId : UUID
+
+	/** The type of agent for which the spawn has failed. */
+	val agentType : Class<? extends Agent>
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param contextId the identifier of the context in which the spawn has failed.
+	 * @param agentType the type of the agent for which the spawn has failed.
+	 * @param cause the cause of the failure.
+	 */
+	new (source : Address = null, contextId : UUID, agentType : Class<? extends Agent>, cause : Object) {
+		super(source, cause)
+		this.contextId = contextId
+		this.agentType = agentType
+	}
+
+}
