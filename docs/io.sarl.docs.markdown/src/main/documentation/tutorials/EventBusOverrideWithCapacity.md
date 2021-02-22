@@ -156,8 +156,8 @@ capacity.
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.EventListener
 	import io.sarl.lang.core.Scope
+	import io.sarl.util.ConcurrentCollection
 	import java.util.UUID
-	import java.util.concurrent.ConcurrentLinkedDeque
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		var acceptedType : Class<? extends Event>
 		var behaviorDelegate : Behaviors
@@ -175,7 +175,7 @@ override hasRegisteredBehavior : boolean {
 	this.behaviorDelegate.hasRegisteredBehavior
 }
 
-override getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+override getRegisteredBehaviors : ConcurrentCollection<Behavior> {
 	this.behaviorDelegate.getRegisteredBehaviors
 }
 
@@ -213,7 +213,7 @@ one type of event accepted by the agents of type [:filteringeventagent:].
 	import io.sarl.core.Initialize
 	import io.sarl.lang.core.EventListener
 	import java.util.UUID
-	import java.util.concurrent.ConcurrentLinkedDeque
+	import io.sarl.util.ConcurrentCollection
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		new (acceptedType : Class<? extends Event>, behaviorDelegate : Behaviors) {
 		}
@@ -223,7 +223,7 @@ one type of event accepted by the agents of type [:filteringeventagent:].
 		override hasRegisteredBehavior : boolean {
 			false
 		}
-		override getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+		override getRegisteredBehaviors : ConcurrentCollection<Behavior> {
 		}
 		override registerBehavior(attitude : Behavior, filter : (Event) => boolean, initializationParameters : Object*) : Behavior {
 		}

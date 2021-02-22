@@ -14,7 +14,7 @@ bottom context in the figure above.
 	"[:getinnerdefaultspace](getInnerDefaultSpace) : io.sarl.lang.core.EventSpace",
 	"[:hasmemberagent](hasMemberAgent) : boolean",
 	"[:getmemberagentcount](getMemberAgentCount) : int",
-	"[:getmemberagents](getMemberAgents) : java.util.concurrent.ConcurrentSkipListSet",
+	"[:getmemberagents](getMemberAgents) : io.sarl.util.ConcurrentSet",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.SpaceID) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(java.util.UUID) : boolean",
@@ -130,14 +130,14 @@ Examples:
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.core.InnerContextAccess
-	import java.util.concurrent.ConcurrentSkipListSet
+	import io.sarl.util.ConcurrentSet
 	import java.util.UUID
 	[:On]
 	agent A {
 		uses InnerContextAccess
 		var b : boolean
 		var n : int
-		var m : ConcurrentSkipListSet<UUID>
+		var m : ConcurrentSet<UUID>
 		def myaction {
 			b = hasMemberAgent
 			n = getMemberAgentCount

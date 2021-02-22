@@ -51,7 +51,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.generator.trace.ILocationData;
 import org.eclipse.xtext.generator.trace.LocationData;
 import org.eclipse.xtext.generator.trace.TraceRegionSerializer;
@@ -667,12 +666,12 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append(ProxySelector.class).append(" newSelector = new ")
 			.append(ProxySelector.class).append("() {").increaseIndentation().newLine();
 			it.append("public ").append(List.class).append("<").append(Proxy.class)
-			.append("> select(").append(URI.class).append(" uri) {").increaseIndentation().newLine();
+			.append("> select(").append(java.net.URI.class).append(" uri) {").increaseIndentation().newLine();
 			it.append(List.class).append("<").append(Proxy.class).append("> proxies = new ")
 			.append(ArrayList.class).append("(defaultSelector.select(uri));").newLine();
 
 			for (final org.apache.maven.settings.Proxy proxy : this.session.getRequest().getProxies()) {
-				it.append("if (\"").append(str(proxy.getProtocol())).append(".equals(uri.getScheme())) {").increaseIndentation().newLine();
+				it.append("if (\"").append(str(proxy.getProtocol())).append("\".equals(uri.getScheme())) {").increaseIndentation().newLine();
 
 				final String nonProxyHosts = proxy.getNonProxyHosts();
 				boolean hasProxy = false;
@@ -708,12 +707,14 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					it.append("}"); //$NON-NLS-1$
 				}
 
+				it.decreaseIndentation().newLine();
+				it.append("}"); //$NON-NLS-1$
 			}
 
 			it.newLine().append("return ").append(Collections.class).append(".unmodifiableList(proxies);")
 			.decreaseIndentation().newLine();
 			it.append("}").newLine();
-			it.append("public void connectFailed(").append(URI.class).append(" uri, ")
+			it.append("public void connectFailed(").append(java.net.URI.class).append(" uri, ")
 			.append(SocketAddress.class).append(" sa, ").append(IOException.class).append(" ioe) {")
 			.increaseIndentation().newLine();
 			it.append("throw new ").append(RuntimeException.class).append("(ioe);").decreaseIndentation().newLine();

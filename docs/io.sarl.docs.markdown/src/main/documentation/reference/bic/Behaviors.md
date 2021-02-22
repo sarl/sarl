@@ -23,7 +23,7 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 	"wake(io.sarl.lang.core.Event)",
 	"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 	"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-	"[:getregisteredbehaviors](getRegisteredBehaviors) : java.util.concurrent.ConcurrentLinkedDeque")
+	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.util.ConcurrentCollection")
 }
 
 
@@ -324,13 +324,13 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 	import io.sarl.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	import io.sarl.lang.core.EventListener
-	import java.util.concurrent.ConcurrentLinkedDeque
+	import io.sarl.util.ConcurrentCollection
 	agent A {
 		uses Behaviors
 		def myaction {
 			[:On]
 			var b : boolean = hasRegisteredBehavior
-			var c : ConcurrentLinkedDeque<Behavior> = getRegisteredBehaviors
+			var c : ConcurrentCollection<Behavior> = getRegisteredBehaviors
 			[:Off]
 		}
 	}
