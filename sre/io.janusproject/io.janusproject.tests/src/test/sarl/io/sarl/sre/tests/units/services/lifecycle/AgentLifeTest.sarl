@@ -555,7 +555,7 @@ class AgentLifeTest {
 		this.eventBus.failure = true
 		
 		try {
-			this.life.start(installer, typeof(Logger).mock, spawner, spawningContext, params)
+			this.life.start(this.^agent, installer, typeof(Logger).mock, spawner, spawningContext, params)
 		} catch (ex : RuntimeException) {
 			//
 		}
@@ -607,7 +607,7 @@ class AgentLifeTest {
 		var defaultSpaceID = new SpaceID(parent, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		when(defaultSpace.spaceID).thenReturn(defaultSpaceID)
 
-		this.life.start(installer, typeof(Logger).mock, spawner, spawningContext, params).assertTrue
+		this.life.start(this.^agent, installer, typeof(Logger).mock, spawner, spawningContext, params).assertTrue
 
 		AgentState::ALIVE.assertSame(this.life.state)
 
@@ -639,7 +639,7 @@ class AgentLifeTest {
 		var it = new ArrayList(Collections.singletonList(this.eventBus))
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(it)
 		
-		this.life.stop(installer, typeof(Logger).mock, true)
+		this.life.stop(this.^agent, installer, typeof(Logger).mock, true)
 		
 		AgentState::DEAD.assertSame(this.life.state)
 		
@@ -672,9 +672,9 @@ class AgentLifeTest {
 	@RepeatedTest(10)
 	@DisplayName("getEventBus")
 	def getEventBus {
-		val eb0 = this.life.eventBus
+		val eb0 = this.life.getEventBus(null)
 		eb0.assertNotNull
-		val eb1 = this.life.eventBus
+		val eb1 = this.life.getEventBus(null)
 		eb0.assertSame(eb1)
 	}
 

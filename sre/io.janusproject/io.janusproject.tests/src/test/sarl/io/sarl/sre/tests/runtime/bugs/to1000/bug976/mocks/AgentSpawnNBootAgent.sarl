@@ -24,6 +24,7 @@ package io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger
 @SuppressWarnings("all")
 agent AgentSpawnNBootAgent {
 	
-	uses Lifecycle, DefaultContextInteractions
+	uses Lifecycle, DefaultContextInteractions, InternalSchedules
 
 	uses TestingCapacity
 
@@ -43,18 +44,23 @@ agent AgentSpawnNBootAgent {
 		setSkill(new TestingSkill(occurrence))
 		val nb : int = getParam(0)
 		this.totalNumber.set(nb)
-		spawn(nb, typeof(ScalableAgent), buildAgentInitializationParameters)
+		spawn(nb, typeof(ScalableAgent), buildAgentInitializationParameters(1))
 		("nb-spawn-" + nb).addResult
 	}
 
 	on Ready {
 		val n = this.nbSpawn.incrementAndGet
-		//System.err.println("RECEIVED=" + n)
+		//System.out.println("READY:" + n)
+		//System.out.println("[" + n + "]: " + executorServiceStateRepresentation)
 		if (n >= this.totalNumber.get) {
 			"all-spawn".addResult
-			emit(new Bye) [it.ID != this.ID]
-			killMe
+			//System.out.println("DIE:" + n)
+			emit(new Bye)
 		}
+	}
+
+	on Bye {
+		killMe
 	}
 	
 }

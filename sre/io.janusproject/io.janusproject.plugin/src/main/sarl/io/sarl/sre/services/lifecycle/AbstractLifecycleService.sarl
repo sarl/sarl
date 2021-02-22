@@ -456,7 +456,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			var defaultContext = life.defaultContext
 			// We should check if it is possible to kill the agent BEFORE killing it.
 			if (forceKillable || life.isKillableAgent(agentId)) {
-				var contexts = life.stop(this.skillUninstaller, getLogger)
+				var contexts = life.stop(^agent, this.skillUninstaller, getLogger)
 				^agent.onAgentKilled
 				fireAgentDestructionEvents(^agent, defaultContext, contexts, terminationCause)
 				// Test if the agent is the latest on this kernel.
@@ -665,7 +665,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				var started = false
 				var spawnError : Throwable = null
 				try {
-					started = life.start(this.skillUninstaller, this.logger, this.spawningAgent, this.parentContext, this.initializationParameters)
+					started = life.start(^agent, this.skillUninstaller, this.logger, this.spawningAgent, this.parentContext, this.initializationParameters)
 				} catch (e : Throwable) {
 					started = false
 					spawnError = new CannotSpawnException(this.agentType, e)

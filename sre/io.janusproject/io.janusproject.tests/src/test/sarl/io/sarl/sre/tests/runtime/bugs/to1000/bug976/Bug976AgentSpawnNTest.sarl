@@ -23,7 +23,6 @@ package io.sarl.sre.tests.runtime.bugs.to1000.bug976
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
-import io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks.AgentSpawnNBootAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.Disabled
@@ -31,6 +30,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
+import io.sarl.sre.tests.runtime.bugs.to1000.bug976.mocks.AgentSpawnNBootAgent
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
  *
@@ -52,8 +52,8 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @Tag("sre-run")
 @Tag("janus")
 @Tag("long-test")
+@Tag("sre-dbg")
 @SuppressWarnings("all")
-@Disabled
 class Bug976AgentSpawnNTest extends AbstractBug976Test {
 
 	private def run(extension rc : SreRunContext, nb : int) : void {

@@ -28,7 +28,6 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -54,26 +53,25 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @Tag("janus")
 @Tag("long-test")
 @SuppressWarnings("all")
-@Disabled
-class Bug976InnerSpaceMembersSpawnNTest extends AbstractBug976Test {
+class Bug976InnerSpaceMembersNSpawnTest extends AbstractBug976Test {
 
 	private def run(extension rc : SreRunContext, nb : int) : void {
 		rc.runInnerSpace(typeof(AgentSpawnNISBootAgent), nb)
 	}
 
-	@RepeatedTest(20)
+	@Test
 	@DisplayName("up to 1 agent")
 	def run1(extension rc : SreRunContext) : void {
 		rc.run(1)
 	}
 
-	@RepeatedTest(20)
+	@Test
 	@DisplayName("up to 10 agents")
 	def run10(extension rc : SreRunContext) : void {
 		rc.run(10)
 	}
 
-	@RepeatedTest(10)
+	@Test
 	@DisplayName("up to 100 agents")
 	def run100(extension rc : SreRunContext) : void {
 		rc.run(100)

@@ -894,10 +894,11 @@ capacity DefaultContextInteractions {
 	 * @param params the arguments to pass in the initialization event to the spawned agent.
 	 * @return the identifier of the spawned agent.
 	 * @fires AgentSpawned in DefaultSpace
+	 * @fires AgentSpawnFailure if the cannot be spawn.
 	 * @deprecated See the {@link Lifecycle} capacity.
 	 */
 	@Deprecated
-	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
+	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned, AgentSpawnFailure
 
 }
 

@@ -43,22 +43,23 @@ agent AgentSpawnNDSBootAgent {
 		setSkill(new TestingSkill(occurrence))
 		val nb : int = getParam(0)
 		this.totalNumber.set(nb)
-		spawn(nb, typeof(ScalableAgent), buildAgentInitializationParameters)
+		spawn(nb, typeof(ScalableAgent), buildAgentInitializationParameters(nb))
 		("nb-spawn-" + nb).addResult
 	}
 
 	on Ready {
 		val n = this.nbSpawn.incrementAndGet
-		//System.err.println("RECEIVED=" + n)
+		//System.out.println("READY:" + n)
+		//System.out.println("[" + n + "]: " + executorServiceStateRepresentation)
 		if (n >= this.totalNumber.get) {
 			"all-spawn".addResult
-			val nb0 = defaultSpace.numberOfStrongParticipants;
-			("strong-participants-" + nb0).addResult
-			val nb1 = defaultSpace.numberOfWeakParticipants;
-			("weak-participants-" + nb1).addResult
-			emit(new Bye) [it.ID != this.ID]
-			killMe
+			//System.out.println("DIE:" + n)
+			emit(new Bye)
 		}
+	}
+
+	on Bye {
+		killMe
 	}
 	
 }
