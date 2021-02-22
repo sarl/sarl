@@ -53,7 +53,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @Tag("janus")
 @Tag("long-test")
 @SuppressWarnings("all")
-@Disabled
 class Bug976AgentNSpawnTest extends AbstractBug976Test {
 
 	private def run(extension rc : SreRunContext, nb : int) : void {

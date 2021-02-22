@@ -26,14 +26,18 @@ import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingSkill
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.sre.test.framework.skills.TestingCapacity
 
 agent ScalableAgent {
 	
-	uses Lifecycle, DefaultContextInteractions
+	uses Lifecycle, DefaultContextInteractions, TestingCapacity
 
+	@SuppressWarnings("unused_local_variable")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		emit(new Ready) [it.ID != this.ID]
+		val i : int = getParam(0)
+		emit(new Ready) [it.ID == occurrence.spawner]
+		//System.out.println("INITIALIZED: " + (i + 1))
 	}
 
 	on Bye {
