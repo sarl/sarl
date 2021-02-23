@@ -62,11 +62,11 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		]
 	}
 
-	def asEventListener : EventListener {
+	override asEventListener : EventListener {
 		associatedEventBusListener
 	}
 
-	def registerBehavior(attitude : Behavior, filter : (Event)=>boolean,
+	override registerBehavior(attitude : Behavior, filter : (Event)=>boolean,
 		initializationParameters : Object*) : Behavior {
 		assert attitude !== null
 		val life = getLife(owner)
@@ -82,7 +82,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		return attitude
 	}
 
-	def unregisterBehavior(attitude : Behavior) : Behavior {
+	override  unregisterBehavior(attitude : Behavior) : Behavior {
 		assert attitude !== null
 		var adr = getLife(owner).addressInInnerDefaultSpace
 		attitude.unregisterTasksForBehavior
@@ -96,7 +96,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		return attitude
 	}
 
-	def wake(^event : Event, scope : Scope<Address> = null) {
+	override wake(^event : Event, scope : Scope<Address> = null) {
 		// Use the inner space so all behaviors (even agents inside the holon
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent
@@ -122,11 +122,27 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		}
 	}
 
-	def getRegisteredBehaviors : ConcurrentCollection<Behavior> {
+	override wake(^behavior : Behavior, ^event : Event) {
+		val life = getLife(owner)
+		if (life.state.alive) {
+			fireEvent(^event, ^behavior)
+		}
+	}
+
+	override wake(behaviors : Iterable<Behavior>, ^event : Event) {
+		val life = getLife(owner)
+		if (life.state.alive) {
+			for (beh : behaviors) {
+				fireEvent(^event, beh)
+			}
+		}
+	}
+
+	override getRegisteredBehaviors : ConcurrentCollection<Behavior> {
 		getRegisteredEventBusListeners(typeof(Behavior))
 	}
 
-	def hasRegisteredBehavior : boolean {
+	override hasRegisteredBehavior : boolean {
 		val iterable = getRegisteredEventBusListeners(typeof(Behavior))
 		return iterable.iterator.hasNext
 	}

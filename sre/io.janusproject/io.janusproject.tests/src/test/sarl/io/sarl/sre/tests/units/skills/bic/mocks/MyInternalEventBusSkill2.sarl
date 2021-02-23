@@ -66,6 +66,9 @@ skill MyInternalEventBusSkill2 implements InternalEventBusCapacity {
 	override fireEvent(^event : Event) {
 	}
 
+	override fireEvent(^event : Event, listener : Object) {
+	}
+
 	override getAssociatedEventBusListener : InformedEventListener {
 		return this.listener
 	}

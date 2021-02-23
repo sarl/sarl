@@ -21,6 +21,8 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 	"[:unregisterbehavior](unregisterBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
 	"[:wake](wake)(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)",
 	"wake(io.sarl.lang.core.Event)",
+	"wake(io.sarl.lang.core.Behavior, io.sarl.lang.core.Event)",
+	"wake(java.lang.Iterable, io.sarl.lang.core.Event)",
 	"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 	"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
 	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.util.ConcurrentCollection")
@@ -212,7 +214,15 @@ According to the SARL syntax reference, the example could be also written as:
 ## Executing a Behavior
 
 A behavior is executed through its event handlers. Consequently, for running a behavior, it is mandatory
-to wake it with an event. This particular feature is supported by:
+to wake it with an event. 
+This section describes the functions for awaking
+the behaviors with an event occurrence.
+
+
+### Awaking all behaviors and sub-agents
+
+The regular way for awaking agent behaviors is to fire an event into all the registered behaviors.
+This particular feature is supported by:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
@@ -259,6 +269,50 @@ all the sub-agents (sub-holons) that were created inside the current agent.
 		}
 	}
 [:End:]
+
+
+### Awaking a specific behavior
+
+In some specific cases, you may want to wake up a single specific behavior with an event, such that, the other
+behaviors of the agents and its sub-agents are not receiving the event occurrence.
+This particular feature is supported by:
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.Event
+	interface Tmp {
+	[:On]
+		def [:wake!](beh : Behavior, evt : Event)
+	[:Off]
+	}
+[:End:]
+
+
+This function emits the given event into the given behavior, and neither in the inner space of the agent nor the other
+registered behaviors of the agent.
+
+
+### Awaking multiple specific behaviors
+
+As an extension of the [:wake:] function that is presented into the previous section, you could wake up multiple
+behaviors with a single event occurrence, assuming that the list of the behaviors to wake up is known and provided.
+This feature is implemented by:
+
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.Event
+	interface Tmp {
+	[:On]
+		def [:wake!]([:behaviorslistforwake](behs) : Iterable<Behavior>, evt : Event)
+	[:Off]
+	}
+[:End:]
+
+
+This function emits the given event into each of the given behaviors, and neither in the inner space of the agent nor the other
+registered behaviors of the agent that are not specified into the [:behaviorslistforwake:] argument.
 
 
 ## Creating an Event Listener

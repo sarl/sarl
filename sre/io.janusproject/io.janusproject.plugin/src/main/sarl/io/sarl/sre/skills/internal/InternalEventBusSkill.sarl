@@ -220,6 +220,12 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		}
 	}
 
+	override fireEvent(^event : Event, listener : Object) {
+		if (getLife(owner).state.asynchronousEventHandling && ^event.prepareFiring) {
+			this.eventBus.asyncDispatchTo(listener, ^event, getLogger)
+		}
+	}
+
 	private def prepareFiring(^event : Event) : boolean {
 		var mustBuff  = false
 		val rlock = this.bufferLock.readLock

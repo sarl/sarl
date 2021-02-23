@@ -83,6 +83,9 @@ skill MySkill implements InternalEventBusCapacity {
 	override fireEvent(^event : Event) {
 	}
 
+	override fireEvent(^event : Event, listener : Object) {
+	}
+
 	override getAssociatedEventBusListener : InformedEventListener {
 		null
 	}

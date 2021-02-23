@@ -1013,4 +1013,158 @@ class InternalEventBusSkillTest {
 		verifyNoMoreInteractions(handler1)
 	}
 
+	@Test
+	@DisplayName("fireEvent(event,listener) not started agent no event handling")
+	def fireEventListener_agentNotStarted_notEventCaching {
+		this.^agent.getLife.state = AgentState::UNSTARTED
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) initialization no event handling")
+	def fireEventListener_agentInitialization_notEventCaching {
+		this.^agent.getLife.state = AgentState::INITIALIZING
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		var listener = typeof(Object).mock
+		
+		this.^skill.fireEvent(^event, listener)
+		
+		var capturedListener = typeof(Object).forClass
+		var capturedEvent = typeof(Event).forClass
+		var capturedLogger = typeof(Logger).forClass
+		this.eventBus.verify.asyncDispatchTo(capturedListener.capture, capturedEvent.capture, capturedLogger.capture)
+		listener.assertSame(capturedListener.value)
+		^event.assertSame(capturedEvent.value)
+		this.logger.logger.assertSame(capturedLogger.value)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) no event handling")
+	def fireEventListener_agentAlive_notEventCaching {
+		this.^agent.getLife.state = AgentState::ALIVE
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		var listener = typeof(Object).mock
+		
+		this.^skill.fireEvent(^event, listener)
+		
+		var capturedListener = typeof(Object).forClass
+		var capturedEvent = typeof(Event).forClass
+		var capturedLogger = typeof(Logger).forClass
+		this.eventBus.verify.asyncDispatchTo(capturedListener.capture, capturedEvent.capture, capturedLogger.capture)
+		listener.assertSame(capturedListener.value)
+		^event.assertSame(capturedEvent.value)
+		this.logger.logger.assertSame(capturedLogger.value)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) dying agent no event handling")
+	def fireEventListener_agentDying_notEventCaching {
+		this.^agent.getLife.state = AgentState::DYING
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) dead agent")
+	def fireEventListener_agentDead_notEventCaching {
+		this.^agent.getLife.state = AgentState::DEAD
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) dying agent")
+	def fireEventListener_agentNotStarted_eventCaching {
+		this.^agent.getLife.state = AgentState::UNSTARTED
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) not started agent event handling")
+	def fireEventListener_agentInitialization_eventCaching {
+		this.^agent.getLife.state = AgentState::INITIALIZING
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		assertContains(this.^skill.bufferedEvents, ^event)
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) event handling")
+	def fireEventListener_agentAlive_eventCaching {
+		this.^agent.getLife.state = AgentState::ALIVE
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.assertContains(^event)
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) dying agent event handling")
+	def fireEventListener_agentDying_eventCaching {
+		this.^agent.getLife.state = AgentState::DYING
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("fireEvent(event,listener) dead agent event handling")
+	def fireEventListener_agentDead_eventCaching {
+		this.^agent.getLife.state = AgentState::DEAD
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event, null)
+		
+		verifyNoMoreInteractions(this.eventBus)
+		this.^skill.bufferedEvents.iterator.hasNext.assertFalse
+	}
+
 }

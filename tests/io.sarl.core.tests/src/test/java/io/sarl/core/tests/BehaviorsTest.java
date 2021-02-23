@@ -54,7 +54,7 @@ public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void memberCount() {
-		assertEquals(8, this.type.getDeclaredMethods().length);
+		assertEquals(10, this.type.getDeclaredMethods().length);
 	}
 
 	@Test

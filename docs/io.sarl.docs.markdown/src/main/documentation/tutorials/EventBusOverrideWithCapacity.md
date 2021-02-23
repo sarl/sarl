@@ -190,6 +190,14 @@ override unregisterBehavior(attitude : Behavior) : Behavior {
 override wake(^event : Event, scope : Scope<Address>) {
 	this.behaviorDelegate.wake(^event, scope)
 }
+
+override wake(beh : Behavior, ^event : Event) {
+	this.behaviorDelegate.wake(beh, ^event)
+}
+
+override wake(behs : Iterable<Behavior>, ^event : Event) {
+	this.behaviorDelegate.wake(behs, ^event)
+}
 	[:Off]
 	}
 [:End:]
@@ -230,6 +238,10 @@ one type of event accepted by the agents of type [:filteringeventagent:].
 		override unregisterBehavior(attitude : Behavior) : Behavior {
 		}
 		override wake(^event : Event, scope : Scope<Address>) {
+		}
+		override wake(beh : Behavior, ^event : Event) {
+		}
+		override wake(behs : Iterable<Behavior>, ^event : Event) {
 		}
 	}
 	event [:myeventtype](MyEvent)

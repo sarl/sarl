@@ -210,6 +210,87 @@ class EventBusTest {
 
 	@SuppressWarnings("raw_type")
 	@Test
+	@DisplayName("asyncDispatchTo with single event handler")
+	def asyncDispatchTo_singleHandler {
+		// Prepare mocks
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
+		var logger = typeof(Logger).mock
+		//
+		var evaluator = typeof(IBehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler = typeof(Runnable).mock
+		doAnswer [
+			(it.getArgument(1) as Collection) += eventHandler
+			return null
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
+
+		// Prepare event
+		var ^event = typeof(Event).mock
+	
+		// Dispatch
+		this.eventBus.asyncDispatchTo(typeof(Object).mock, ^event, logger)
+		
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
+
+		var capturedRunnable = typeof(Runnable).forClass
+		this.executor.verify(1.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
+	}
+
+	@SuppressWarnings("raw_type")
+	@Test
+	@DisplayName("asyncDispatchTo with two event handlers")
+	def asyncDispatchTo_twoHandlers {
+		// Prepare mocks
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
+		var logger = typeof(Logger).mock
+		//
+		var evaluator = typeof(IBehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler1 = typeof(Runnable).mock
+		var eventHandler2 = typeof(Runnable).mock
+		doAnswer [
+			var col = it.getArgument(1) as Collection
+			col += eventHandler1
+			col += eventHandler2
+			return null
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
+
+		// Prepare event
+		var ^event = typeof(Event).mock
+
+		// Dispatch
+		this.eventBus.asyncDispatchTo(typeof(Object).mock, ^event, logger)
+
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
+
+		var capturedRunnable = typeof(Runnable).forClass
+		this.executor.verify(1.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
+	}
+
+	@SuppressWarnings("raw_type")
+	@Test
 	def immediateDispatch : void {
 		// Prepare mocks
 		var logger = typeof(Logger).mock

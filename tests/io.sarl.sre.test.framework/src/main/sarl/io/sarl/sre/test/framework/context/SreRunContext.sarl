@@ -745,4 +745,39 @@ class SreRunContext {
 		return w
 	}
 
+	/** Assert that this context has no result that is an error.
+	 */
+	def assertNoError(failOnExistingContent : boolean) {
+		val results = getAllResults
+		if (!results.empty) {
+			for (r : results) {
+				if (r !== null && "io.sarl.sre.services.lifecycle.SpawnDisabledException" == r.class.name) {
+					// Ignore this error because the boot agent may want to spawn an agent when the
+					// testing framework stops the test.
+				} else if (r instanceof Throwable) {
+					fail("Error when running an agent behavior", r)
+				} else if (r instanceof LogRecord) {
+					if (r.level === Level::SEVERE) {
+						val th = r.thrown
+						if (th !== null) {
+							fail(r.toMessageString, th)
+						} else {
+							fail(r.toMessageString)
+						}
+					}
+				} else if (failOnExistingContent) {
+					fail("Unexpected result: " + r)
+				}
+			}
+		}
+	}
+
+	private def toMessageString(r : LogRecord) : String {
+		val msg = r.message
+		if (msg.nullOrEmpty) {
+			return "Error in method: " + r.sourceMethodName
+		}
+		return msg
+	}
+
 }

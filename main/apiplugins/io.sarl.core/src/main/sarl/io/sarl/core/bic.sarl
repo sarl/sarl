@@ -354,6 +354,34 @@ capacity Behaviors {
 	def wake(^event : Event, scope : Scope<Address> = null)
 	
 	/**
+	 * Wake a specific agent's behavior reacting to the Event evt.
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
+	 * @param behavior the agent's behavior to wake up.
+	 * @param event the event to emit to the agent's behaviors and in the internal context.
+	 * @since 0.12
+	 */
+	def wake(^behavior : Behavior, ^event : Event)
+
+	/**
+	 * Wake a set of specific agent's behaviors reacting to the Event evt.
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
+	 * @param behaviors the agent's behaviors to wake up.
+	 * @param event the event to emit to the agent's behaviors and in the internal context.
+	 * @since 0.12
+	 */
+	def wake(behaviors : Iterable<Behavior>, ^event : Event)
+
+	/**
 	 * Replies the interface to dispatch an event to agent's Behaviors.
 	 *
 	 * @return the event listener.

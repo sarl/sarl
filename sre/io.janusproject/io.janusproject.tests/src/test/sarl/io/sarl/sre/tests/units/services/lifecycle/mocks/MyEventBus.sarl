@@ -61,6 +61,9 @@ skill MyEventBus implements InternalEventBusCapacity {
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandling : boolean, istener : Object) {
 	}
 
+	override fireEvent(^event : Event, listener : Object) {
+	}
+
 	override fireEvent(^event : Event) {
 	}
 

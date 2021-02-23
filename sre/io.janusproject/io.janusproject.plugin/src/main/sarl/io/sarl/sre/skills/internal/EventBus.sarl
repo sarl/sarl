@@ -210,6 +210,45 @@ class EventBus {
 	}
 
 	/** 
+	 * Posts an event to the registered {@code BehaviorGuardEvaluator} of the given listener only.
+	 * The dispatch of this event will be done asynchronously.
+	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
+	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
+	 * 
+	 * @param listener the listener to dispatch to.
+	 * @param event an event to dispatch asynchronously.
+	 * @param logger the logger to use for notifying the errors.
+	 * @since 0.12
+	 */
+	def asyncDispatchTo(listener : Object, ^event : Event, logger : Logger = null) {
+		assert ^event !== null
+		val runException = new OutParameter
+		var asyncTask = new SreRunnable(logger) {
+			def internalRun {
+				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
+				if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
+					// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
+					var behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
+					if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+						behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
+					}
+				}
+			}
+			def onError(e : Throwable) : boolean {
+				// Catch exception for notifying the caller
+				runException.set(e)
+				return true
+			}
+		}
+		
+		this.executor.executeAsap(asyncTask)
+		// Re-throw the run-time exception
+		if (runException.get() !== null) {
+			throw new ExecutionException(runException.get)
+		}
+	}
+
+	/** 
 	 * Posts an event to all registered {@code BehaviorGuardEvaluator}.
 	 * The dispatch of this event will be done asynchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless

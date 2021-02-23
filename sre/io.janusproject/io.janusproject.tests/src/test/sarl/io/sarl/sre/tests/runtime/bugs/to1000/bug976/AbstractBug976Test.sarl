@@ -21,16 +21,14 @@
 package io.sarl.sre.tests.runtime.bugs.to1000.bug976
 
 import io.sarl.lang.core.Agent
-import io.sarl.sre.services.lifecycle.SpawnDisabledException
 import io.sarl.sre.test.framework.context.LogTrackingMode
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.exception.SreTimeoutException
 import java.util.UUID
 import java.util.logging.Level
-import java.util.logging.LogRecord
 
 import static io.sarl.sre.test.framework.Constants.*
-import static org.junit.jupiter.api.Assertions.*
+
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
@@ -44,39 +42,6 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
  * @see "https://github.com/sarl/sarl/issues/976"
  */
 abstract class AbstractBug976Test {
-
-	protected def assertNoError(extension rc : SreRunContext, failOnExistingContent : boolean) {
-		val results = getAllResults
-		if (!results.empty) {
-			for (r : results) {
-				if (r instanceof SpawnDisabledException) {
-					// Ignore this error because the boot agent may want to spawn an agent when the
-					// testing framework stops the test.
-				} else if (r instanceof Throwable) {
-					fail("Error when running an agent behavior", r)
-				} else if (r instanceof LogRecord) {
-					if (r.level === Level::SEVERE) {
-						val th = r.thrown
-						if (th !== null) {
-							fail(r.toMessageString, th)
-						} else {
-							fail(r.toMessageString)
-						}
-					}
-				} else if (failOnExistingContent) {
-					fail("Unexpected result: " + r)
-				}
-			}
-		}
-	}
-
-	private def toMessageString(r : LogRecord) : String {
-		val msg = r.message
-		if (msg.nullOrEmpty) {
-			return "Error in method: " + r.sourceMethodName
-		}
-		return msg
-	}
 
 	protected def run(extension rc : SreRunContext, agentType : Class<? extends Agent>,
 		nb : int, timeout : int = EXTRA_TIMEOUT) : void {

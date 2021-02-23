@@ -50,6 +50,12 @@ skill BehSkill implements Behaviors {
 	override wake(^event : Event, scope : Scope<Address>) {
 	}
 
+	override wake(beh : Behavior, ^event : Event) {
+	}
+
+	override wake(behs : Iterable<Behavior>, ^event : Event) {
+	}
+
 	override asEventListener : EventListener {
 		null
 	}

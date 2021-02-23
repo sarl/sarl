@@ -164,6 +164,22 @@ capacity InternalEventBusCapacity {
 	 */
 	def fireEvent(^event : Event)
 
+	/** Fire the given event into the agent context, and do not wait for the termination of the event handlers.
+	 * 
+	 * <p>This function does not set the event's source if it is not already set.
+	 *
+	 * <p>Any exception thrown by an event handler is catch by the associated thread.
+	 *
+	 * <p>This function considers the agent's state for determining of the event should be fired or not.
+	 * In other words, the given event may be fired or buffered depending on the event buffering flag. 
+	 * 
+	 * @param event the event to fire.
+	 * @param listener the sole receiver of the event. If {@code null}, all the listeners on the event bus will
+	 *     receive the event. If not {@code null}, only the given listener will receive the event.
+	 * @since 0.12
+	 */
+	def fireEvent(^event : Event, listener : Object)
+
 	/**  Replies the event listener linked to the owner of this capacity.
 	 * 
 	 * @return the event listener of the owner of this skill.
