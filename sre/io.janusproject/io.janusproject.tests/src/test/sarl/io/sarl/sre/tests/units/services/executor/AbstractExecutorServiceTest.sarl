@@ -91,7 +91,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 	
 	@Test
 	@DisplayName("neverReturn -> null")
-	def neverReturn_noPostCommand {
+	def neverReturn_noPostCommand : void {
 		typeof(EarlyExitException).assertException [
 			ExecutorService.neverReturn(null)
 		]
@@ -99,7 +99,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 	@Test
 	@DisplayName("neverReturn -> []")
-	def neverReturn_postCommand {
+	def neverReturn_postCommand : void {
 		typeof(EarlyExitException).assertException [
 			ExecutorService.neverReturn[]
 		]

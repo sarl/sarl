@@ -271,7 +271,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 	@Test
 	@DisplayName("spawnAgent 0 agent when service stopped")
-	def spawnAgent_0_serviceNotStarted {
+	def spawnAgent_0_serviceNotStarted : void {
 		typeof(SpawnDisabledException).assertException [
 			this.service.spawnAgent(0, null, this.outContext, null, null, null)
 		]
@@ -279,7 +279,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	
 	@Test
 	@DisplayName("spawnAgent 0 agent")
-	def spawnAgent_0 {
+	def spawnAgent_0 : void {
 		startService
 		typeof(SpawnDisabledException).assertException [
 			this.service.spawnAgent(0, null, this.outContext, null, null, null)
@@ -288,7 +288,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 	@Test
 	@DisplayName("spawnAgent 1 agent when service stopped")
-	def spawnAgent_1_serviceNotStarted {
+	def spawnAgent_1_serviceNotStarted : void {
 		typeof(SpawnDisabledException).assertException [
 			this.service.spawnAgent(1, null, this.outContext, null, null, null)
 		]
@@ -357,7 +357,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 	@Test
 	@DisplayName("spawnAgent 1 agent no specification")
-	def spawnAgent_1_noSpec {
+	def spawnAgent_1_noSpec : void {
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [
@@ -367,7 +367,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 	@Test
 	@DisplayName("spawnAgent 1 agent invalid specification")
-	def spawnAgent_1_invalidSpec {
+	def spawnAgent_1_invalidSpec : void {
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [

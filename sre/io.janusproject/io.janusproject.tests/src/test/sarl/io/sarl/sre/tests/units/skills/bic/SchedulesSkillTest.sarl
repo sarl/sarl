@@ -452,7 +452,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("execute(running task) when not alive")
-	def execute_task_notFinished_notAlive {
+	def execute_task_notFinished_notAlive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(false, [a, b|this.^skill.execute(a, b)], getExecuteExecutorConfig, typeof(Future))
 		]
@@ -460,7 +460,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("execute(running task) when alive")
-	def execute_task_notFinished_alive {
+	def execute_task_notFinished_alive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.execute(a, b)], getExecuteExecutorConfig, typeof(Future))
 		]
@@ -601,7 +601,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("in(running task) when alive")
-	def in_task_notFinished_alive {
+	def in_task_notFinished_alive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.in(a, 34, b)], getInExecutorConfig, typeof(ScheduledFuture))
 		]
@@ -747,7 +747,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("every(running task) when alive")
-	def every_task_notFinished_alive {
+	def every_task_notFinished_alive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.every(a, 34, b)], getEveryExecutorConfig,
 				typeof(ScheduledFuture))
@@ -880,7 +880,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("atFixedDelay(running task) when alive")
-	def atFixedDelay_task_notFinished_alive {
+	def atFixedDelay_task_notFinished_alive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.atFixedDelay(a, 34, b)], getAtFixedDelayExecutorConfig(),
 				typeof(ScheduledFuture))
@@ -1272,7 +1272,7 @@ class SchedulesSkillTest {
 
 	@Test
 	@DisplayName("at(running task) when alive")
-	def at_task_notFinished_alive {
+	def at_task_notFinished_alive : void {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture))
 		]

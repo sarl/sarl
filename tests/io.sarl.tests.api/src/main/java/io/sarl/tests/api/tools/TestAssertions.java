@@ -1076,18 +1076,23 @@ public final class TestAssertions {
 
 	/** Assert that the given code generates an exception of the given type.
 	 *
+	 * @param <T> the type of the expected exception.
 	 * @param expected the type of the expected exception.
 	 * @param code the code to run.
+	 * @return the exception if it is thrown.
 	 */
-	public static void assertException(Class<? extends Throwable> expected, Code code) throws Exception {
+	public static <T extends Throwable> T assertException(Class<T> expected, Code code) throws Exception {
 		try {
 			code.run();
 			fail("Expecting exception of type " + expected.getName());
+			return null;
 		} catch (Throwable ex) {
 			final Throwable cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
 				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause);
+				return null;
 			}
+			return expected.cast(ex);
 		}
 	}
 
