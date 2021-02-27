@@ -82,4 +82,7 @@ skill LifeSkill implements Lifecycle {
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
 	}
 	
+	def spawnWithID(agentClass : Class<? extends Agent>, agentID : UUID, params : Object*) {
+	}
+
 }

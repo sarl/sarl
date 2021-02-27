@@ -263,4 +263,37 @@ class LifecycleSkillTest {
 		argument6.value.assertContains(1, "value")
 	}
 
+	@Test
+	@DisplayName("spawnWithID(Class, UUID, Object*) with dead agent")
+	def spawnWithID_notAlive : void {
+		var agentID = UUID::randomUUID
+		this.^skill.spawnWithID(typeof(MyAgent3), agentID, 1, "value")
+		verifyNoMoreInteractions(this.service)
+	}
+
+	@Test
+	@DisplayName("spawnWithID(Class, UUID, Object*)")
+	def spawnWithID_alive : void {
+		var agentID = UUID::randomUUID
+
+		forceAlive
+
+		this.^skill.spawnWithID(typeof(MyAgent3), agentID, 1, "value")
+		
+		var argument0 = typeof(int).forClass
+		var argument1 = typeof(UUID).forClass
+		var argument2 = typeof(Context).forClass
+		var argument3 = typeof(UUID).forClass
+		var argument4 = typeof(Class).forClass
+		var argument6 = typeof(Object[]).forClass
+		verify(this.service, times(1)).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument6.capture)
+		1.assertEquals(argument0.value)
+		this.spawnerID.assertSame(argument1.value)
+		this.context.assertSame(argument2.value)
+		agentID.assertSame(argument3.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
+		argument6.value.assertContains(1, "value")
+	}
+
 }

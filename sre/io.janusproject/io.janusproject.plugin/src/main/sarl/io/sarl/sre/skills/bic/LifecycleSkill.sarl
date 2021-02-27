@@ -153,4 +153,21 @@ skill LifecycleSkill implements Lifecycle {
 		}
 	}
 
+	def spawnWithID(agentClass : Class<? extends Agent>, agentID : UUID, params : Object*) {
+		val life = getLife(owner)
+		if (life.state.alive) {
+			val ctx = life.defaultContext?.context
+			if (ctx !== null) {
+				var o = this.owner
+				this.lifecycle.spawnAgent(
+					1, // single agent
+					o.ID, // owner
+					ctx,
+					agentID,
+					agentClass,
+					params)
+			}
+		}
+	}
+
 }

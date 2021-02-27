@@ -486,7 +486,7 @@ capacity Lifecycle {
 	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
-	 * Spawns a new member agent in the parent's context (parentID).
+	 * Spawns a new member agent in the given context.
 	 * 
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
 	 * is initialized at the time of the return.
@@ -505,6 +505,27 @@ capacity Lifecycle {
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 */
 	def spawnInContextWithID(agentClass : Class <? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
+
+	/**
+	 * Spawns a new member agent in the parent's context (parentID).
+	 * 
+	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
+	 * is initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * 
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
+	 * @param agentClass the type of the agent to spawn.
+	 * @param agentID the identifier of the spawned agent.
+	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agent.
+	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 * @fires AgentSpawnFailure if the agent cannot be spawned.
+	 * @since 0.12
+	 */
+	def spawnWithID(agentClass : Class <? extends Agent>, agentID : UUID, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
     /**
 	 * Kills this agent. 

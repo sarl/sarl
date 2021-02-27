@@ -1086,13 +1086,16 @@ public final class TestAssertions {
 			code.run();
 			fail("Expecting exception of type " + expected.getName());
 			return null;
+		} catch (AssertionFailedError innerException) {
+			// See fail above
+			return null;
 		} catch (Throwable ex) {
 			final Throwable cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
 				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause);
 				return null;
 			}
-			return expected.cast(ex);
+			return expected.cast(cause);
 		}
 	}
 
