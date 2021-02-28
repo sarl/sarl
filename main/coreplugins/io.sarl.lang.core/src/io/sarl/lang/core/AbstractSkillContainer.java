@@ -230,7 +230,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 				final Constructor<? extends Skill> cons = type.getConstructor();
 				cons.setAccessible(true);
 				final Skill skillInstance = cons.newInstance();
-				$attachOwner(skill);
+				$attachOwner(skillInstance);
 				return new AtomicSkillReference(skillInstance);
 			} catch (Throwable exception) {
 				throw new UnimplementedCapacityException(capacity, getID(), exception);
