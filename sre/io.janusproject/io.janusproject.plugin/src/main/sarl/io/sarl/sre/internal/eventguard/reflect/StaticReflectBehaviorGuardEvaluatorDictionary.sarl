@@ -68,6 +68,19 @@ final class StaticReflectBehaviorGuardEvaluatorDictionary {
 		FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass)
 	}
 
+	/** 
+	 * Flattens a class's type hierarchy into a set of {@code Class} objects including all super-classes (transitively) and all interfaces implemented
+	 * by these super-classes.
+	 * 
+	 * @param concreteClass the class you find the hierarchy
+	 * @return the set of class in the hierarchy of the specififed class
+	 */
+	@Pure
+	static def getFlattenHierarchy(concreteClass : Class<? extends T>, expectedType : Class<T>) : ImmutableSet<Class<? extends T>> with T {
+		val types : Object = FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass)
+		return types as ImmutableSet<Class<? extends T>>
+	}
+
 	/** Replies the declared methods for the guard evaluation into the given type.
 	 *
 	 * @param type the type to explore.

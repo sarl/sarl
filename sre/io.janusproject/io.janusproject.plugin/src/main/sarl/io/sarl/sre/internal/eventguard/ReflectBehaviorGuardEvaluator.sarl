@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.internal.eventguard.reflect
+package io.sarl.sre.internal.eventguard
 
 import com.google.common.base.Strings
 import io.sarl.sre.IssueCodes
@@ -69,10 +69,10 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 			this.method.invoke(this.target, ^event, behaviorsMethodsToExecute)
 		} catch (e : IllegalArgumentException) {
 			throw new Error(
-				MessageFormat::format(Messages::BehaviorGuardEvaluator_0, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
+				MessageFormat::format(Messages::ReflectBehaviorGuardEvaluator_0, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
 		} catch (e : IllegalAccessException) {
 			throw new Error(
-				MessageFormat::format(Messages::BehaviorGuardEvaluator_1, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
+				MessageFormat::format(Messages::ReflectBehaviorGuardEvaluator_1, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
 		} catch (e : InvocationTargetException) {
 			if (e.cause instanceof Error) {
 				throw e.cause as Error

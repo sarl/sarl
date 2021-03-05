@@ -24,9 +24,9 @@ package io.sarl.sre.internal.eventguard
 import io.sarl.lang.core.Event
 import io.sarl.sre.internal.ObjectComparator
 import io.sarl.util.ConcurrentSet
-import io.sarl.util.ConcurrentSetSkipListSet
 import java.util.Set
-import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentSetSkipListSet
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.
@@ -111,7 +111,8 @@ interface IBehaviorGuardEvaluatorRegistry {
 	 * @return the set of guard evaluators associated to the specified event
 	 */
 	@Pure
-	def getBehaviorGuardEvaluators(^event : Event) : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator>
+	def getBehaviorGuardEvaluatorsForRegisteredListeners(^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator>
+
 	/**
 	 * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators of the given listener
 	 * to the given event at the time this method is called.
@@ -125,7 +126,7 @@ interface IBehaviorGuardEvaluatorRegistry {
 	 * @since 0.5
 	 */
 	@Pure
-	def getBehaviorGuardEvaluatorsFor(^event : Event, listener : Object) : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator>
+	def getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator>
 
 	/** Extract the registered listeners with the given type.
 	 *

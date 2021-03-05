@@ -24,6 +24,7 @@ package io.sarl.sre.tests.units.internal.eventguard.polymorphic
 import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluator
 import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestEvent0
+import java.util.UUID
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -32,7 +33,6 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.Mockito.*
-import java.util.UUID
 
 /** 
  * @author $Author: sgalland$

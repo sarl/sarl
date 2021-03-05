@@ -26,16 +26,16 @@ import io.sarl.core.Initialize
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
+import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.reflect.GuardedEvaluator
-import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent0
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent2
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestEvent0
 import io.sarl.tests.api.Nullable
+import io.sarl.util.ConcurrentSet
 import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.CopyOnWriteArraySet
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.junit.jupiter.api.BeforeEach
@@ -68,12 +68,12 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 	var registry : ReflectBehaviorGuardEvaluatorRegistry
 
 	@Nullable
-	var internalStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<GuardedEvaluator>>
+	var internalStructure : ConcurrentMap<Class<? extends Event>, ConcurrentSet<GuardedEvaluator>>
 
 	@BeforeEach
 	def setUp : void {
 		this.registry = new ReflectBehaviorGuardEvaluatorRegistry
-		this.internalStructure = this.registry.internalDataStructure
+		this.internalStructure = this.registry.internalDataStructureForRegisteredListeners
 	}
 
 	@Test
@@ -767,8 +767,8 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 	}
 
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(e,listener0)")
-	def getBehaviorGuardEvaluatorsForEventObject_obj_listener0 : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(e,listener0)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_obj_listener0 : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -776,7 +776,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		val ^event = typeof(TestEvent0).mock
-		var evaluators = this.registry.getBehaviorGuardEvaluatorsFor(^event, listener0)
+		var evaluators = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, listener0)
 
 		1.assertEquals(evaluators.size)
 		var evaluator = evaluators.get(0) as ReflectBehaviorGuardEvaluator
@@ -786,8 +786,8 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 	}
 
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(e,listener1)")
-	def getBehaviorGuardEvaluatorsForEventObject_obj_listener1 : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(e,listener1)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_obj_listener1 : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -795,7 +795,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		val ^event = typeof(TestEvent0).mock
-		var evaluators = this.registry.getBehaviorGuardEvaluatorsFor(^event, listener1)
+		var evaluators = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, listener1)
 
 		2.assertEquals(evaluators.size)
 
@@ -811,8 +811,8 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 	}
 
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(e,listener2)")
-	def getBehaviorGuardEvaluatorsForEventObject_obj_listener2 : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(e,listener2)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_obj_listener2 : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		val listener2 = typeof(TestAgent0).mock
@@ -821,15 +821,15 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		val ^event = typeof(TestEvent0).mock
-		var evaluators = this.registry.getBehaviorGuardEvaluatorsFor(^event, listener2)
+		var evaluators = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, listener2)
 
 		evaluators.empty.assertTrue
 	}
 
 	@SuppressWarnings("unused_local_variable")
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(e,null)")
-	def getBehaviorGuardEvaluatorsForEventObject_obj_null : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(e,null)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_obj_null : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -838,14 +838,14 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 
 		val ^event = typeof(TestEvent0).mock
 		typeof(AssertionError).assertException [
-			var x = this.registry.getBehaviorGuardEvaluatorsFor(^event, null)
+			var x = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, null)
 		]
 	}
 
 	@SuppressWarnings("unused_local_variable")
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(null,listener0)")
-	def getBehaviorGuardEvaluatorsForEventObject_null_listener0 : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(null,listener0)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_null_listener0 : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -853,14 +853,14 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		typeof(AssertionError).assertException [
-			var x = this.registry.getBehaviorGuardEvaluatorsFor(null, listener0)
+			var x = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(null, listener0)
 		]
 	}
 
 	@SuppressWarnings("unused_local_variable")
 	@Test
-	@DisplayName("getBehaviorGuardEvaluatorsFor(null,null)")
-	def getBehaviorGuardEvaluatorsForEventObject_null_null : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForDirectAccessListener(null,null)")
+	def getBehaviorGuardEvaluatorsForDirectAccessListenerEventObject_null_null : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -868,13 +868,13 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		typeof(AssertionError).assertException [
-			var x = this.registry.getBehaviorGuardEvaluatorsFor(null, null)
+			var x = this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(null, null)
 		]
 	}
 
 	@Test
-	@DisplayName("getBehaviorGuardEvaluators(e)")
-	def getBehaviorGuardEvaluatorsEvent_obj : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForRegisteredListeners(e)")
+	def getBehaviorGuardEvaluatorsForRegisteredListenersEvent_obj : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -882,7 +882,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		reset(listener0, listener1)
 
 		val ^event = typeof(TestEvent0).mock
-		var evaluators = this.registry.getBehaviorGuardEvaluators(^event)
+		var evaluators = this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(^event)
 
 		3.assertEquals(evaluators.size)
 
@@ -927,8 +927,8 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 
 	@SuppressWarnings("unused_local_variable")
 	@Test
-	@DisplayName("getBehaviorGuardEvaluators(null)")
-	def getBehaviorGuardEvaluatorsEvent_null : void {
+	@DisplayName("getBehaviorGuardEvaluatorsForRegisteredListeners(null)")
+	def getBehaviorGuardEvaluatorsForRegisteredListenersEvent_null : void {
 		val listener0 = typeof(TestAgent1).mock
 		val listener1 = typeof(TestAgent2).mock
 		this.registry.register(listener0)
@@ -937,7 +937,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 
 		val ^event : TestEvent0 = null
 		typeof(AssertionError).assertException [
-			var x = this.registry.getBehaviorGuardEvaluators(^event)
+			var x = this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(^event)
 		]
 	}
 

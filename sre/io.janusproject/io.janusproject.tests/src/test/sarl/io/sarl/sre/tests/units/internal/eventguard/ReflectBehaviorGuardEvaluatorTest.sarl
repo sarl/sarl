@@ -19,9 +19,8 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.internal.eventguard.reflect
+package io.sarl.sre.tests.units.internal.eventguard
 
-import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestEvent0
 import java.util.Collection
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Test
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
 
 /** 
  * @author $Author: sgalland$

@@ -23,6 +23,7 @@ package io.sarl.sre.internal.eventguard.reflect
 
 import io.sarl.lang.core.Event
 import org.eclipse.xtend.lib.annotations.Data
+import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
 
 /** 
  * Description of a set of guard evaluators with a shared activation guard.

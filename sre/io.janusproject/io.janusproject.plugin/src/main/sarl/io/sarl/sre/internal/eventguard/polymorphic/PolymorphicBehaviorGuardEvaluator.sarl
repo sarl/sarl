@@ -58,9 +58,9 @@ class PolymorphicBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 	/** Creates a {@code Subscriber}.
 	 * 
 	 * @param target the listener
-	 * @param filter is the filter to apply when emitting; or {@code null} if no filter.
+	 * @param filter the filter
 	 */
-	new (target : IBehaviorGuardEvaluatorReceiver, filter : (Event)=>boolean) {
+	new (target : IBehaviorGuardEvaluatorReceiver, filter : (Event) => boolean) {
 		assert target !== null
 		this.target = target
 		this.filter = filter

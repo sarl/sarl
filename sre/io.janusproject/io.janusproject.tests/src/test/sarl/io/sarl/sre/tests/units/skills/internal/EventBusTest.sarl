@@ -23,13 +23,15 @@ package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
+import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.Collection
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
@@ -43,8 +45,6 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.ArgumentMatchers.*
 import static extension org.mockito.Mockito.*
-import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
-import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 
 /**
  * @author $Author: sgalland$
@@ -140,8 +140,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -159,7 +159,7 @@ class EventBusTest {
 		this.eventBus.asyncDispatch(^event, logger)
 		
 		// Verify
-		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)
 
 		var capturedRunnable = typeof(Runnable).forClass
 		this.executor.verify(2.times).executeAsap(capturedRunnable.capture)
@@ -179,8 +179,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -201,7 +201,7 @@ class EventBusTest {
 		this.eventBus.asyncDispatch(^event, logger)
 
 		// Verify
-		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)
 
 		var capturedRunnable = typeof(Runnable).forClass
 		this.executor.verify(3.times).executeAsap(capturedRunnable.capture)
@@ -221,8 +221,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -240,7 +240,7 @@ class EventBusTest {
 		this.eventBus.asyncDispatchTo(typeof(Object).mock, ^event, logger)
 		
 		// Verify
-		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForDirectAccessListener(typeof(Event).any, typeof(Object).any)
 
 		var capturedRunnable = typeof(Runnable).forClass
 		this.executor.verify(1.times).executeAsap(capturedRunnable.capture)
@@ -260,8 +260,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -282,7 +282,7 @@ class EventBusTest {
 		this.eventBus.asyncDispatchTo(typeof(Object).mock, ^event, logger)
 
 		// Verify
-		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForDirectAccessListener(typeof(Event).any, typeof(Object).any)
 
 		var capturedRunnable = typeof(Runnable).forClass
 		this.executor.verify(1.times).executeAsap(capturedRunnable.capture)
@@ -296,8 +296,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -324,7 +324,7 @@ class EventBusTest {
 
 		verifyNoMoreInteractions(this.executor)
 
-		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)
 	}
 
 	@SuppressWarnings("raw_type")
@@ -336,8 +336,8 @@ class EventBusTest {
 		var logger = typeof(Logger).mock
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
-		when(this.registry.getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)).thenAnswer [
-			var evaluators = new ConcurrentLinkedDeque
+		when(this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(typeof(Event).any, typeof(Object).any)).thenAnswer [
+			var evaluators = new ConcurrentCollectionLinkedDeque
 			evaluators += evaluator
 			return evaluators
 		]
@@ -364,7 +364,7 @@ class EventBusTest {
 
 		verifyNoMoreInteractions(this.executor)
 
-		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)
 	}
 
 }

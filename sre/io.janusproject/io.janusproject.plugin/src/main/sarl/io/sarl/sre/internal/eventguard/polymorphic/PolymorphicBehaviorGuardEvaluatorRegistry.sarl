@@ -28,12 +28,15 @@ import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver
 import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentCollectionLinkedDeque
+import io.sarl.util.ConcurrentSet
+import io.sarl.util.ConcurrentSetCopyOnWriteSet
+import java.util.Comparator
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.ConcurrentMap
 
 import static extension io.sarl.lang.core.SREutils.*
-import java.util.Comparator
-import java.util.concurrent.ConcurrentMap
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.
@@ -63,11 +66,8 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 
 	/** 
 	 * All registered guard evaluator receivers, indexed by event type.
-	 * 
-	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
-	 * receivers to an event without any locking.
 	 */
-	val evaluators : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
+	val registeredEvaluators : ConcurrentMap<Class<? extends Event>, ConcurrentSet<PolymorphicBehaviorGuardEvaluator>>
 
 	/** 
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
@@ -77,29 +77,42 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	 * @param internalMap the internal map.
 	 */
 	new {
-		this.evaluators = new ConcurrentHashMap
+		this.registeredEvaluators = new ConcurrentHashMap
 	}
 
-	/** Replies the internal data structure.
+	/** Replies the internal data structure for registered listeners.
 	 * 
 	 * @return the internal data structure
 	 */
 	@Pure
-	override getInternalDataStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>> {
-		this.evaluators
+	override getInternalDataStructureForRegisteredListeners : ConcurrentMap<Class<? extends Event>, ConcurrentSet<PolymorphicBehaviorGuardEvaluator>> {
+		this.registeredEvaluators
 	}
 	
-	protected override getInternalEvaluatorMapper : (PolymorphicBehaviorGuardEvaluator)=>IBehaviorGuardEvaluator {
+	protected override getInternalEvaluatorMapperForRegisteredListeners : (PolymorphicBehaviorGuardEvaluator)=>IBehaviorGuardEvaluator {
 		[
 			it
 		]
 	}
 	
-	protected override getInternalEvaluatorFilter : (PolymorphicBehaviorGuardEvaluator, Event)=>boolean {
+	protected override getInternalEvaluatorFilterForRegisteredListeners : (PolymorphicBehaviorGuardEvaluator, Event)=>boolean {
 		[
 			val filter = $0.filter
 			return filter === null || filter.apply($1)
 		]
+	}
+
+	@Pure
+	override getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
+		assert ^event !== null
+		assert listener !== null
+		val allEvaluators = new ConcurrentCollectionLinkedDeque
+		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
+			if (listener.doIsSupportedEvent(^event.class)) {
+				allEvaluators += new PolymorphicBehaviorGuardEvaluator(listener, null)
+			}
+		}
+		return allEvaluators
 	}
 
 	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void = null) {
@@ -111,9 +124,10 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 			listener.doGetSupportedEvents(events)
 
 			if (!events.isEmpty) {
+				val dt = internalDataStructureForRegisteredListeners
 				for (eventType : events) {
-					val evaluators = internalDataStructure.computeIfAbsent(eventType) [
-						new CopyOnWriteArraySet
+					val evaluators = dt.computeIfAbsent(eventType) [
+						new ConcurrentSetCopyOnWriteSet
 					]
 					val success = evaluators += evaluator
 					if (!success) {
@@ -139,8 +153,9 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 			val hasCallback = new MutableBoolean(callback !== null)
 
 			if (!events.isEmpty) {
+				val dt = internalDataStructureForRegisteredListeners
 				for (eventType : events) {
-					val evaluators = internalDataStructure.get(eventType)
+					val evaluators = dt.get(eventType)
 					if (evaluators !== null) {
 						val success = evaluators.removeIf [
 							listener === it.target

@@ -24,13 +24,14 @@ package io.sarl.sre.internal.eventguard
 import io.sarl.lang.core.Event
 import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.ObjectComparator
+import io.sarl.util.ConcurrentCollection
+import io.sarl.util.ConcurrentCollectionLinkedDeque
 import io.sarl.util.ConcurrentSet
 import io.sarl.util.ConcurrentSetSkipListSet
+import java.lang.reflect.Method
 import java.util.Set
 import java.util.TreeSet
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.CopyOnWriteArraySet
 
 import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
 
@@ -40,41 +41,63 @@ import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBeh
  * 
  * <p>This class is thread-safe.
  *
- * @param <T> the type of stored data.
+ * <p>Two types of listeners are supported:<ul>
+ * <li><i>Registered listener</i>: it is registered with the function of the same name.
+ *     It is notified when an event should be provided to anyone;</li>
+ * <li><i>Direct-access listener</i>: it is not registered (if it is, it does not matter).
+ *     It is notified when it is passed as argument of a notification function. In this
+ *     case, only this listener will receive the event.</li>
+ * </ul>
+ *
+ * @param <REGT> the type of stored data for registered listeners.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGuardEvaluatorRegistry {
+abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehaviorGuardEvaluatorRegistry {
 
-	/** Replies the internal data structure.
+	/** Replies the internal data structure for the registered listeners.
 	 *
 	 * @return the internal data structure
 	 */
 	@Pure
-	abstract def getInternalDataStructure : ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<T>>
+	abstract def getInternalDataStructureForRegisteredListeners : ConcurrentMap<Class<? extends Event>, ConcurrentSet<REGT>>
 
-	/** Replies the mapper from the internal guard evaluator description to the public description.
+	/** Replies the mapper from the internal guard evaluator description of register listeners to the public description.
 	 * 
 	 * @return the internal data structure
 	 */
 	@Pure
-	protected abstract def getInternalEvaluatorMapper : (T)=>IBehaviorGuardEvaluator
+	protected abstract def getInternalEvaluatorMapperForRegisteredListeners : (REGT)=>IBehaviorGuardEvaluator
+
+	/** Replies the mapper from the internal guard evaluator description of direct-access listeners to the public description.
+	 * 
+	 * @param listener the listener for which the guard evaluator should be replied.
+	 * @return the internal data structure
+	 * @since 0.12
+	 */
+	@Pure
+	protected def getInternalEvaluatorMapperForDirectAccessListeners(listener : Object) : (Method)=>IBehaviorGuardEvaluator {
+		[
+			new ReflectBehaviorGuardEvaluator(listener, it)
+		]
+	}
 
 	/** Replies the filtering of evaluator.
 	 * 
 	 * @return the filter
 	 */
 	@Pure
-	protected abstract def getInternalEvaluatorFilter : (T, Event)=>boolean
+	protected abstract def getInternalEvaluatorFilterForRegisteredListeners : (REGT, Event)=>boolean
 
 	override unregisterAll(callback : (Object)=>boolean) : void {
 		val removedListeners = new TreeSet(ObjectComparator::SINGLETON)
+		val dt = internalDataStructureForRegisteredListeners
 		if (callback !== null) {
 			val hasCallback = new MutableBoolean(true)
-			val iterator0 = internalDataStructure.values.iterator
-			val mapper = getInternalEvaluatorMapper
+			val iterator0 = dt.values.iterator
+			val mapper = getInternalEvaluatorMapperForRegisteredListeners
 			while (hasCallback.get && iterator0.hasNext) {
 				val iterator1 = iterator0.next.iterator
 				while (hasCallback.get && iterator1.hasNext) {
@@ -90,15 +113,15 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 			}
 		}
 		// TODO: Is it the most efficient way to clear the map?
-		internalDataStructure.clear
+		dt.clear
 	}
 
 	override unregister(listenerType : Class<?>, callback : (Object)=>boolean) {
 		assert listenerType !== null
 		val notifiedListeners = new TreeSet(ObjectComparator::SINGLETON)
 		val hasCallback = new MutableBoolean(callback !== null)
-		val mapper = getInternalEvaluatorMapper
-		for (guardedEvaluators : internalDataStructure.values) {
+		val mapper = getInternalEvaluatorMapperForRegisteredListeners
+		for (guardedEvaluators : internalDataStructureForRegisteredListeners.values) {
 			guardedEvaluators.removeIf [
 				val target = mapper.apply(it).target
 				assert target !== null
@@ -123,8 +146,8 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 	@Pure
 	override hasRegisteredEventListener(type : Class<?>) : boolean {
 		if (type !== null) {
-			val mapper = getInternalEvaluatorMapper
-			for (guardedEvaluators : internalDataStructure.values) {
+			val mapper = getInternalEvaluatorMapperForRegisteredListeners
+			for (guardedEvaluators : internalDataStructureForRegisteredListeners.values) {
 				for (evaluator : guardedEvaluators) {
 					if (type.isInstance(mapper.apply(evaluator).target)) {
 						return true
@@ -136,39 +159,18 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 	}
 
 	@Pure
-	override getBehaviorGuardEvaluators(^event : Event) : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator> {
+	override getBehaviorGuardEvaluatorsForRegisteredListeners(^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		val eventTypes = ^event.class.flattenHierarchy
-		val allEvaluators : ConcurrentLinkedDeque<IBehaviorGuardEvaluator> = new ConcurrentLinkedDeque
-		val mapper = getInternalEvaluatorMapper
-		val filter = getInternalEvaluatorFilter
+		val allEvaluators = new ConcurrentCollectionLinkedDeque
+		val mapper = getInternalEvaluatorMapperForRegisteredListeners
+		val filter = getInternalEvaluatorFilterForRegisteredListeners
+		val dt = internalDataStructureForRegisteredListeners
 		for (eventType : eventTypes) {
-			val eventSubscribers = internalDataStructure.get(eventType)
+			val eventSubscribers = dt.get(eventType)
 			if (eventSubscribers !== null) {
 				for (guardedEvaluator : eventSubscribers) {
 					if (filter.apply(guardedEvaluator, ^event)) {
-						allEvaluators += mapper.apply(guardedEvaluator)
-					}
-				}
-			}
-		}
-		return allEvaluators
-	}
-
-	@Pure
-	override getBehaviorGuardEvaluatorsFor(^event : Event,
-		listener : Object) : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator> {
-		assert ^event !== null
-		assert listener !== null
-		val allEvaluators : ConcurrentLinkedDeque<IBehaviorGuardEvaluator> = new ConcurrentLinkedDeque
-		val eventTypes = ^event.class.flattenHierarchy
-		val mapper = getInternalEvaluatorMapper
-		for (eventType : eventTypes) {
-			val eventSubscribers = internalDataStructure.get(eventType)
-			if (eventSubscribers !== null) {
-				for (guardedEvaluator : eventSubscribers) {
-					val target = mapper.apply(guardedEvaluator).target
-					if (target === listener) {
 						allEvaluators += mapper.apply(guardedEvaluator)
 					}
 				}
@@ -181,8 +183,8 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 		assert type !== null
 		assert collection !== null
 		var nb = 0
-		val mapper = getInternalEvaluatorMapper
-		for (guardedEvaluators : internalDataStructure.values) {
+		val mapper = getInternalEvaluatorMapperForRegisteredListeners
+		for (guardedEvaluators : internalDataStructureForRegisteredListeners.values) {
 			for (evaluator : guardedEvaluators) {
 				val target = mapper.apply(evaluator).target
 				if (type.isInstance(target)) {

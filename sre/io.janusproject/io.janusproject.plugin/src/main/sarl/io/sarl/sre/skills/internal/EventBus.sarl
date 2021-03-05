@@ -173,7 +173,7 @@ class EventBus {
 	def immediateDispatch(^event : Event, thrownExceptions : boolean, logger : Logger = null) {
 		assert ^event !== null
 
-		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
+		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsForRegisteredListeners(^event)
 
 		if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 			val behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
@@ -199,7 +199,7 @@ class EventBus {
 		assert ^event !== null
 		assert listener !== null
 
-		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
+		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, listener)
 
 		if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
 			val behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
@@ -225,7 +225,7 @@ class EventBus {
 		val runException = new OutParameter
 		var asyncTask = new SreRunnable(logger) {
 			def internalRun {
-				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
+				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsForDirectAccessListener(^event, listener)
 				if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 					// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
 					var behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
@@ -262,7 +262,7 @@ class EventBus {
 		val runException = new OutParameter
 		var asyncTask = new SreRunnable(logger) {
 			def internalRun {
-				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
+				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsForRegisteredListeners(^event)
 				if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 					// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
 					var behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
@@ -306,7 +306,7 @@ class EventBus {
 	 */
 	@SuppressWarnings("potential_inefficient_value_conversion")
 	protected def evaluateGuards(^event : Event,
-		behaviorGuardEvaluators : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator>,
+		behaviorGuardEvaluators : ConcurrentCollection<? extends IBehaviorGuardEvaluator>,
 		logger : Logger) : Collection<Runnable> {
 
 		assert ^event !== null
