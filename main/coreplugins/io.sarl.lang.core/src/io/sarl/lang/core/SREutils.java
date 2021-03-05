@@ -246,4 +246,15 @@ public final class SREutils {
 		receiver.$getSupportedEvents(events);
 	}
 
+	/** Replies if the given event is supported by the given receiver.
+	 *
+	 * @param receiver is the object that receives the events.
+	 * @param event is the event to test.
+	 * @return {@code true} if the event is supported; {@code false} otherwise.
+	 * @since 0.12
+	 */
+	public static boolean doIsSupportedEvent(IBehaviorGuardEvaluatorReceiver receiver, Class<? extends Event> event) {
+		return receiver.$isSupportedEvent(event);
+	}
+
 }

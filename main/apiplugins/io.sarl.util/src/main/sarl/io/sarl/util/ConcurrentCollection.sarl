@@ -32,5 +32,13 @@ import java.util.Collection
  * @since 0.12
  */
 interface ConcurrentCollection<T> extends Collection<T> {
-	//
+
+	/** Replies the first element in the collection.
+	 * If there is no element, an exception is thrown.
+	 *
+	 * @return the first element.
+	 */
+	@Pure
+	def getFirst : T
+
 }

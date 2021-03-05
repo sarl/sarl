@@ -2567,19 +2567,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				functionNames.add(behName);
 			}
 
-			appendEventGuardEvaluatorsForPolymorphicMethod(guardDefs, container, context);
+			boolean isRootType = true;
+			final JvmTypeReference superType = container.getExtendedClass();
+			if (superType != null) {
+				final String containerName = superType.getIdentifier();
+				isRootType = containerName.equals(Agent.class.getName())
+						|| containerName.equals(Behavior.class.getName())
+						|| containerName.equals(Skill.class.getName());
+			}
+
+			appendEventGuardEvaluatorsForPolymorphicMethod(guardDefs, isRootType, container, context);
 		}
 	}
 
 	/** Append the guard evaluators for the polymorphic method.
 	 *
 	 * @param guardDefs the definition of the guards.
+	 * @param isRootType indicates if the containing type is considered as a root type from the polymorphic method
+	 *     point of view.
 	 * @param container the receiver of the generated components.
 	 * @param context the generation context.
 	 * @since 0.12
 	 */
 	protected void appendEventGuardEvaluatorsForPolymorphicMethod(Map<JvmTypeReference, Set<String>> guardDefs,
-			JvmGenericType container, GenerationContext context) {
+			boolean isRootType, JvmGenericType container, GenerationContext context) {
 		final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 
 		// Function "$getSupportedEvents"
@@ -2617,6 +2628,50 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		});
 
+		// Function "$isSupportedEvent"
+		final JvmOperation eventSupportOperation = this.typesFactory.createJvmOperation();
+		appendGeneratedAnnotation(eventSupportOperation, context);
+		addAnnotationSafe(eventSupportOperation, Override.class);
+
+		eventSupportOperation.setAbstract(false);
+		eventSupportOperation.setNative(false);
+		eventSupportOperation.setSynchronized(false);
+		eventSupportOperation.setStrictFloatingPoint(false);
+		eventSupportOperation.setFinal(false);
+		eventSupportOperation.setVisibility(JvmVisibility.PUBLIC);
+		eventSupportOperation.setStatic(false);
+		eventSupportOperation.setSimpleName("$isSupportedEvent"); //$NON-NLS-1$
+		eventSupportOperation.setReturnType(this._typeReferenceBuilder.typeRef(boolean.class));
+
+		final JvmFormalParameter jvmParam1 = this.typesFactory.createJvmFormalParameter();
+		jvmParam1.setName("event"); //$NON-NLS-1$
+		jvmParam1.setParameterType(this._typeReferenceBuilder.typeRef(Class.class,
+					this._typeReferenceBuilder.wildcardExtends(
+						this._typeReferenceBuilder.typeRef(Event.class))));
+		eventSupportOperation.getParameters().add(jvmParam1);
+
+		container.getMembers().add(eventSupportOperation);
+
+		setBody(eventSupportOperation, it -> {
+			for (final JvmTypeReference type : guardDefs.keySet()) {
+				it.append("if ("); //$NON-NLS-1$
+				it.append(type.getType());
+				it.append(".class.isAssignableFrom(event)) {"); //$NON-NLS-1$
+				it.increaseIndentation().newLine();
+				it.append("return true;"); //$NON-NLS-1$
+				it.decreaseIndentation().newLine();
+				it.append("}"); //$NON-NLS-1$
+				it.newLine();
+			}
+			it.append("return "); //$NON-NLS-1$
+			if (isRootType) {
+				it.append("false"); //$NON-NLS-1$
+			} else {
+				it.append("super.$isSupportedEvent(event)"); //$NON-NLS-1$
+			}
+			it.append(";"); //$NON-NLS-1$
+		});
+
 		// Function "$evaluateBehaviorGuards"
 		final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
 		final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
@@ -2634,15 +2689,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		evaluateOperation.setSimpleName("$evaluateBehaviorGuards"); //$NON-NLS-1$
 		evaluateOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
 
-		final JvmFormalParameter jvmParam1 = this.typesFactory.createJvmFormalParameter();
-		jvmParam1.setName("event"); //$NON-NLS-1$
-		jvmParam1.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
-		evaluateOperation.getParameters().add(jvmParam1);
-
 		final JvmFormalParameter jvmParam2 = this.typesFactory.createJvmFormalParameter();
-		jvmParam2.setName("callbacks"); //$NON-NLS-1$
-		jvmParam2.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
+		jvmParam2.setName("event"); //$NON-NLS-1$
+		jvmParam2.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
 		evaluateOperation.getParameters().add(jvmParam2);
+
+		final JvmFormalParameter jvmParam3 = this.typesFactory.createJvmFormalParameter();
+		jvmParam3.setName("callbacks"); //$NON-NLS-1$
+		jvmParam3.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
+		evaluateOperation.getParameters().add(jvmParam3);
 
 		container.getMembers().add(evaluateOperation);
 

@@ -54,4 +54,13 @@ public interface IBehaviorGuardEvaluatorReceiver {
 		//
 	}
 
+	/** Replies if the given type is supported.
+	 *
+	 * @param event is the type to be tested.
+	 * @return {@code true} is the event type is supported.
+	 */
+	default boolean $isSupportedEvent(Class<? extends Event> event) {
+		return false;
+	}
+
 }

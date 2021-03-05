@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -94,6 +95,15 @@ public class Bug553Test extends AbstractSarlTest {
 			"  public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {",
 			"    super.$getSupportedEvents(toBeFilled);",
 			"    toBeFilled.add(MyEvent.class);",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  @Override",
+			"  public boolean $isSupportedEvent(final Class<? extends Event> event) {", 
+			"    if (MyEvent.class.isAssignableFrom(event)) {",
+			"      return true;",
+			"    }",
+			"    return false;", 
 			"  }",
 			"  ",
 			"  @SyntheticMember",
