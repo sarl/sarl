@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -81,7 +82,9 @@ public final class ReflectExtensions {
 	private static final String PLUGIN_HELP_PATH =
 			"/META-INF/maven/%s/%s/plugin-help.xml"; //$NON-NLS-1$
 
-	private static Function<Method, String> defaultNameFormatter;
+	private static Function<Method, String> defaultMethodNameFormatter;
+
+	private static Function<Field, String> defaultFieldNameFormatter;
 
 	private ReflectExtensions() {
 		//
@@ -90,22 +93,68 @@ public final class ReflectExtensions {
 	/** Change the default name formatter.
 	 *
 	 * @param formatter the default name formatter.
+	 * @deprecated since 0.12, see {@link #setDefaultFieldNameFormatter(Function)}
 	 */
+	@Deprecated
 	public static void setDefaultNameFormatter(Function<Method, String> formatter) {
-		defaultNameFormatter = formatter;
+		defaultMethodNameFormatter = formatter;
+	}
+
+	/** Change the default name formatter.
+	 *
+	 * @param formatter the default name formatter.
+	 * @since 0.12
+	 */
+	public static void setDefaultMethodNameFormatter(Function<Method, String> formatter) {
+		defaultMethodNameFormatter = formatter;
 	}
 
 	/** Replies the default name formatter.
 	 *
 	 * @return the default name formatter.
+	 * @deprecated since 0.12, see {@link #getDefaultMethodNameFormatter()}
 	 */
 	@Pure
+	@Deprecated
 	public static Function<Method, String> getDefaultNameFormatter() {
-		return defaultNameFormatter;
+		return getDefaultMethodNameFormatter();
+	}
+
+	/** Replies the default name formatter.
+	 *
+	 * @return the default name formatter.
+	 * @since 0.12
+	 */
+	@Pure
+	public static Function<Method, String> getDefaultMethodNameFormatter() {
+		return defaultMethodNameFormatter;
+	}
+
+	/** Change the default name formatter.
+	 *
+	 * @param formatter the default name formatter.
+	 * @since 0.12
+	 */
+	public static void setDefaultFieldNameFormatter(Function<Field, String> formatter) {
+		defaultFieldNameFormatter = formatter;
+	}
+
+	/** Replies the default field name formatter.
+	 *
+	 * @return the default field name formatter.
+	 * @since 0.12
+	 */
+	@Pure
+	public static Function<Field, String> getDefaultFieldNameFormatter() {
+		return defaultFieldNameFormatter;
 	}
 
 	private static boolean isDeprecated(Method method) {
 		return Flags.isDeprecated(method.getModifiers()) || method.getAnnotation(Deprecated.class) != null;
+	}
+
+	private static boolean isDeprecated(Field field) {
+		return Flags.isDeprecated(field.getModifiers()) || field.getAnnotation(Deprecated.class) != null;
 	}
 
 	/** Extract the public methods from the given types.
@@ -184,7 +233,7 @@ public final class ReflectExtensions {
 					}
 					Function<Method, String> nformatter = nameFormatter;
 					if (nformatter == null) {
-						nformatter = getDefaultNameFormatter();
+						nformatter = getDefaultMethodNameFormatter();
 					}
 					final String formattedName;
 					if (nformatter != null) {
@@ -281,6 +330,85 @@ public final class ReflectExtensions {
 			}
 		}
 		return null;
+	}
+
+	/** Extract the public fields from the given types.
+	 *
+	 * @param it the output.
+	 * @param indent indicates if the code should be indented.
+	 * @param types the types to parse.
+	 * @since 0.12
+	 */
+	@Inline(value = "appendPublicFields($1, $2, null, $4.asList($3))", imported = Arrays.class)
+	public static void appendPublicFields(StringBuilder it, boolean indent, Class<?>... types) {
+		appendPublicFields(it, indent, null, Arrays.asList(types));
+	}
+
+	/** Extract the public fields from the given types.
+	 *
+	 * @param it the output.
+	 * @param indent indicates if the code should be indented.
+	 * @param nameFormatter the formatter for the field's names. If {@code null}, no formatting is applied.
+	 * @param types the types to parse.
+	 * @since 0.12
+	 */
+	public static void appendPublicFields(StringBuilder it, boolean indent, Function<Field, String> nameFormatter, 
+			Iterable<? extends Class<?>> types) {
+		appendFields(it, indent, nameFormatter, types, (it0) -> {
+			return Flags.isPublic(it0.getModifiers()) && !Utils.isHiddenMember(it0.getName())
+				&& !isDeprecated(it0) && !it0.isSynthetic()
+				&& it0.getAnnotation(SyntheticMember.class) == null;
+		});
+	}
+
+	/** Extract the fields from the given types.
+	 *
+	 * @param it the output.
+	 * @param indent indicates if the code should be indented.
+	 * @param nameFormatter the formatter for the field's names. If {@code null}, no formatting is applied.
+	 * @param types the types to parse.
+	 * @param selector the selector of field.
+	 */
+	private static void appendFields(StringBuilder it, boolean indent, Function<Field, String> nameFormatter, 
+			Iterable<? extends Class<?>> types, Predicate<Field> selector) {
+		final List<String> lines = new LinkedList<>();
+		for (final Class<?> type : types) {
+			for (final Field field : type.getDeclaredFields()) {
+				if (selector.test(field)) {
+					final StringBuilder line = new StringBuilder();
+					if (indent) {
+						line.append("\t"); //$NON-NLS-1$
+					}
+					Function<Field, String> nformatter = nameFormatter;
+					if (nformatter == null) {
+						nformatter = getDefaultFieldNameFormatter();
+					}
+					final String formattedName;
+					if (nformatter != null) {
+						formattedName = nformatter.apply(field);
+					} else {
+						formattedName = field.getName();
+					}
+					if (Modifier.isFinal(field.getModifiers())) {
+						line.append("val ");
+					} else {
+						line.append("var ");
+					}
+					line.append(formattedName); //$NON-NLS-1$
+					if (field.getGenericType() != null && !Objects.equals(field.getGenericType(), Void.class)
+							&& !Objects.equals(field.getGenericType(), void.class)) {
+						line.append(" : "); //$NON-NLS-1$
+						toType(line, field.getGenericType(), false);
+					}
+					line.append("\n"); //$NON-NLS-1$
+					lines.add(line.toString());
+				}
+			}
+		}
+		lines.sort(null);
+		for (final String line : lines) {
+			it.append(line);
+		}
 	}
 
 	/** Extract the type name.

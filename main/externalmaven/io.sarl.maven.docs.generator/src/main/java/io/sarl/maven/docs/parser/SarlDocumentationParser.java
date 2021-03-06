@@ -55,6 +55,8 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Event;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.maven.docs.testing.NoXtextResourceException;
@@ -2640,13 +2642,21 @@ public class SarlDocumentationParser {
 					}
 					final String block;
 					if (javaType.isInterface()) {
-						block = extractInterface(javaType);
+						if (Capacity.class.isAssignableFrom(javaType)) {
+							block = extractCapacity(javaType.asSubclass(Capacity.class));
+						} else {
+							block = extractInterface(javaType);
+						}
 					} else if (javaType.isEnum()) {
 						block = extractEnumeration(javaType);
 					} else if (javaType.isAnnotation()) {
 						block = extractAnnotation(javaType);
 					} else {
-						block = extractClass(javaType);
+						if (Event.class.isAssignableFrom(javaType)) {
+							block = extractEvent(javaType.asSubclass(Event.class));
+						} else {
+							block = extractClass(javaType);
+						}
 					}
 					return formatBlockText(block, context.getOutputLanguage(), context.getBlockCodeFormat());
 				}
@@ -2667,6 +2677,30 @@ public class SarlDocumentationParser {
 					}
 					it.append(">"); //$NON-NLS-1$
 				}
+			}
+
+			private String extractCapacity(Class<? extends Capacity> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("capacity ").append(type.getSimpleName()); //$NON-NLS-1$
+				if (type.getSuperclass() != null && !Capacity.class.equals(type.getSuperclass())) {
+					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
+				}
+				it.append(" {\n"); //$NON-NLS-1$
+				ReflectExtensions.appendPublicMethods(it, true, type);
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
+			}
+
+			private String extractEvent(Class<? extends Event> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("event ").append(type.getSimpleName()); //$NON-NLS-1$
+				if (type.getSuperclass() != null && !Event.class.equals(type.getSuperclass())) {
+					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
+				}
+				it.append(" {\n"); //$NON-NLS-1$
+				ReflectExtensions.appendPublicFields(it, true, type);
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
 			}
 
 			private String extractInterface(Class<?> type) {
