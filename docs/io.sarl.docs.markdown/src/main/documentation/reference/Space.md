@@ -94,11 +94,12 @@ The [:emitfct:] functions permits fire of an event in the space.
 Event spaces that are allowing the agents to be register and unregister are "open event spaces":
 
 [:ShowType:](io.sarl.core.OpenEventSpace)
-[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerfct](register)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerstrongfct](registerStrongParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerweakfct](registerWeakParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
 [:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
 
-The functions [:registerfct:] and [:unregisterfct:] permit an agent to be involved or not.
-The function [:registerfct:] fires the event `ParticipantJoined`.
+The functions [:registerstrongfct:], [:registerweakfct:] and [:unregisterfct:] permit an agent to be involved or not.
+The functions [:registerstrongfct:] and [:registerweakfct:] fires the event `ParticipantJoined`.
 And, the function [:unregisterfct:] fires the event `ParticipantLeft`.
 
 [:Fact:]{typeof(io.sarl.core.ParticipantJoined)}
