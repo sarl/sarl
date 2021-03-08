@@ -18,9 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.concurrent.ConcurrentLinkedDeque
+package io.sarl.lang.util;
+
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /** Represent a collection of objects with is thread-safe.
  *
@@ -31,6 +33,28 @@ import java.util.concurrent.ConcurrentLinkedDeque
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class ConcurrentCollectionLinkedDeque<T> extends ConcurrentLinkedDeque<T> implements ConcurrentCollection<T> {
-	//
+public class ConcurrentCollectionLinkedDeque<T> extends ConcurrentLinkedDeque<T> implements ConcurrentCollection<T> {
+
+	private static final long serialVersionUID = -8579091213574817297L;
+
+    /**
+     * Constructs an empty deque.
+     */
+    public ConcurrentCollectionLinkedDeque() {
+        super();
+    }
+
+    /**
+     * Constructs a deque initially containing the elements of
+     * the given collection, added in traversal order of the
+     * collection's iterator.
+     *
+     * @param source the collection of elements to initially contain
+     * @throws NullPointerException if the specified collection or any
+     *         of its elements are null
+     */
+    public ConcurrentCollectionLinkedDeque(Collection<? extends T> source) {
+    	super(source);
+    }
+
 }

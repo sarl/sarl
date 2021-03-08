@@ -23,7 +23,6 @@ package io.sarl.core.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +36,7 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ConcurrentCollection;
 
 /**
  * @author $Author: sgalland$
@@ -67,7 +67,7 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void getAllContexts() {
-		assertMethod("getAllContexts", ConcurrentLinkedDeque.class); //$NON-NLS-1$
+		assertMethod("getAllContexts", ConcurrentCollection.class); //$NON-NLS-1$
 	}
 
 	/**

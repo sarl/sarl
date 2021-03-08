@@ -18,19 +18,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.List
+package io.sarl.lang.util;
 
-/** Represent a list of objects with is thread-safe.
+import java.util.Collection;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
+/** Represent a collection of objects with is thread-safe.
  *
- * @param <T> the type of the objects in the list.
+ * @param <T> the type of the objects in the collection.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-interface ConcurrentList<T> extends List<T> {
-	//
+public interface ConcurrentCollection<T> extends Collection<T> {
+
+	/** Replies the first element in the collection.
+	 * If there is no element, an exception is thrown.
+	 *
+	 * @return the first element.
+	 */
+	@Pure
+	T getFirst();
+
 }

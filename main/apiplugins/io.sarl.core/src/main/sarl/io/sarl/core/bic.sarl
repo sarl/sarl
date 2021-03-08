@@ -30,11 +30,10 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.util.ConcurrentCollection
-import io.sarl.util.ConcurrentSet
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentSet
 import java.text.MessageFormat
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 import java.util.logging.Logger
@@ -50,7 +49,7 @@ capacity ExternalContextAccess {
 	 * @return the list of the known agent contexts.
 	 */	 
 	@Pure
-	def getAllContexts : ConcurrentLinkedDeque<AgentContext>
+	def getAllContexts : ConcurrentCollection<AgentContext>
 
 	/**
 	 * Replies the AgentContext for the given ID.

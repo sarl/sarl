@@ -18,27 +18,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.Collection
+package io.sarl.lang.util;
 
-/** Represent a collection of objects with is thread-safe.
+import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+/** Represent a set of objects with is thread-safe.
  *
- * @param <T> the type of the objects in the collection.
+ * @param <T> the type of the objects in the set.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-interface ConcurrentCollection<T> extends Collection<T> {
+public class ConcurrentSetCopyOnWriteSet<T> extends CopyOnWriteArraySet<T> implements ConcurrentSet<T> {
 
-	/** Replies the first element in the collection.
-	 * If there is no element, an exception is thrown.
-	 *
-	 * @return the first element.
-	 */
-	@Pure
-	def getFirst : T
+	private static final long serialVersionUID = 4737324020507178960L;
+
+    /**
+     * Creates an empty set.
+     */
+    public ConcurrentSetCopyOnWriteSet() {
+        super();
+    }
+
+    /**
+     * Creates a set containing all of the elements of the specified
+     * collection.
+     *
+     * @param source the collection of elements to initially contain
+     * @throws NullPointerException if the specified collection is null
+     */
+    public ConcurrentSetCopyOnWriteSet(Collection<? extends T> source) {
+        super(source);
+    }
 
 }

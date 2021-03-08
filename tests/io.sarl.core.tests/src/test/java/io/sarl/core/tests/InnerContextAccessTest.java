@@ -35,7 +35,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.util.ConcurrentSet;
+import io.sarl.lang.util.ConcurrentSet;
 
 /**
  * @author $Author: sgalland$

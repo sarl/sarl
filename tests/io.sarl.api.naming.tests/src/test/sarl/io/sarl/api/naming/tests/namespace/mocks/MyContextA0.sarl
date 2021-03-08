@@ -22,12 +22,12 @@
 package io.sarl.api.naming.tests.namespace.mocks
 
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceSpecification
+import io.sarl.lang.util.ConcurrentCollection
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
-import io.sarl.lang.core.AgentTrait
 
 /** Mock of an agent context.
  *
@@ -65,11 +65,11 @@ class MyContextA0 extends AgentTrait implements AgentContext {
 		throw new UnsupportedOperationException
 	}
 	
-	def getSpaces : ConcurrentLinkedDeque<? extends Space> {
+	def getSpaces : ConcurrentCollection<? extends Space> {
 		throw new UnsupportedOperationException
 	}
 	
-	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : ConcurrentLinkedDeque<S> with S extends Space {
+	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : ConcurrentCollection<S> with S extends Space {
 		throw new UnsupportedOperationException
 	}
 	

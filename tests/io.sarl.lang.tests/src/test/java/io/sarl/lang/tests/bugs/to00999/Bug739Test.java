@@ -73,7 +73,7 @@ public class Bug739Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.EventListener",
 			"import io.sarl.lang.core.Scope",
 			"import io.sarl.lang.core.Address",
-			"import io.sarl.util.ConcurrentCollection",
+			"import io.sarl.lang.util.ConcurrentCollection",
 			"skill BehaviorsSkill implements Behaviors {",
 			"	def asEventListener : EventListener {",
 			"      null",

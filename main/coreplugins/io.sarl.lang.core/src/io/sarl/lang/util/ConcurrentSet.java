@@ -18,9 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.Set
+package io.sarl.lang.util;
+
+import java.util.Set;
 
 /** Represent a set of objects with is thread-safe.
  *
@@ -31,6 +32,6 @@ import java.util.Set
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-interface ConcurrentSet<T> extends Set<T> {
+public interface ConcurrentSet<T> extends Set<T> {
 	//
 }

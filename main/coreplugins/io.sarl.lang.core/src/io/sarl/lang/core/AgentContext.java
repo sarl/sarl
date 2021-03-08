@@ -22,9 +22,10 @@
 package io.sarl.lang.core;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.util.ConcurrentCollection;
 
 /**
  * An AgentContext defines the boundary of a sub-system, and gathers a
@@ -61,7 +62,7 @@ public interface AgentContext {
 	 * @return the spaces.
 	 */
 	@Pure
-	ConcurrentLinkedDeque<? extends Space> getSpaces();
+	ConcurrentCollection<? extends Space> getSpaces();
 
 	/**
 	 * Replies all the spaces that are implementing the given specification.
@@ -71,7 +72,7 @@ public interface AgentContext {
 	 * @return the spaces associated to the given space specification.
 	 */
 	@Pure
-	<S extends Space> ConcurrentLinkedDeque<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
+	<S extends Space> ConcurrentCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
 
 	/**
 	 * Create an instance of space following the given specification. This function

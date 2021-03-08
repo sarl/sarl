@@ -33,10 +33,10 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.util.ConcurrentSetSkipListSet
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.exception.SreLogException
 import io.sarl.sre.test.framework.exception.SreTimeoutException
-import io.sarl.util.ConcurrentSetSkipListSet
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

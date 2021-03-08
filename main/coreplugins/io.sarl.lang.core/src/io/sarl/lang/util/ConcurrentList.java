@@ -18,10 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.Collection
-import java.util.concurrent.CopyOnWriteArrayList
+package io.sarl.lang.util;
+
+import java.util.List;
 
 /** Represent a list of objects with is thread-safe.
  *
@@ -32,36 +32,6 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> implements ConcurrentList<T> {
-
-    /**
-     * Creates an empty list.
-     */
-    new {
-        super()
-    }
-
-    /**
-     * Creates a list containing the elements of the specified
-     * collection, in the order they are returned by the collection's
-     * iterator.
-     *
-     * @param c the collection of initially held elements
-     * @throws NullPointerException if the specified collection is null
-     */
-    new (c : Collection<? extends T>) {
-        super(c)
-    }
-
-    /**
-     * Creates a list holding a copy of the given array.
-     *
-     * @param toCopyIn the array (a copy of this array is used as the
-     *        internal array)
-     * @throws NullPointerException if the specified array is null
-     */
-    new (toCopyIn : T[]) {
-        super(toCopyIn)
-    }
-
+public interface ConcurrentList<T> extends List<T> {
+	//
 }

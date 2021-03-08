@@ -33,7 +33,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
-import io.sarl.util.ConcurrentCollection;
+import io.sarl.lang.util.ConcurrentCollection;
 
 /**
  * @author $Author: sgalland$
