@@ -25,11 +25,11 @@ import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.Skill
+import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.util.ConcurrentCollection
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID

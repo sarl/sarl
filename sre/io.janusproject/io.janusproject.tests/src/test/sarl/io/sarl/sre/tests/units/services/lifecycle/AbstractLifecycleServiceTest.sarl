@@ -30,6 +30,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.OutParameter
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
@@ -55,7 +56,6 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID

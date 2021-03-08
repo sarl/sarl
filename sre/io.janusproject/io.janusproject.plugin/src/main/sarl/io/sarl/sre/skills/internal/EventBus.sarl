@@ -22,14 +22,14 @@ package io.sarl.sre.skills.internal
 
 import com.google.common.collect.Collections2
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.executor.SreRunnable
-import io.sarl.util.ConcurrentCollection
-import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ExecutionException

@@ -14,7 +14,7 @@ bottom context in the figure above.
 	"[:getinnerdefaultspace](getInnerDefaultSpace) : io.sarl.lang.core.EventSpace",
 	"[:hasmemberagent](hasMemberAgent) : boolean",
 	"[:getmemberagentcount](getMemberAgentCount) : int",
-	"[:getmemberagents](getMemberAgents) : io.sarl.util.ConcurrentSet",
+	"[:getmemberagents](getMemberAgents) : io.sarl.lang.util.ConcurrentSet",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.SpaceID) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(java.util.UUID) : boolean",
@@ -116,11 +116,11 @@ The second function replies the number of agents that are members of the inner c
 The third function replies all the member agents in the inner context:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import java.util.concurrent.ConcurrentSkipListSet
+	import io.sarl.lang.util.ConcurrentSet
 	import java.util.UUID
 	interface Tmp {
 	[:On]
-		def [:getmemberagents!] : ConcurrentSkipListSet<UUID>
+		def [:getmemberagents!] : ConcurrentSet<UUID>
 	[:Off]
 	}
 [:End:]
@@ -130,7 +130,7 @@ Examples:
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.core.InnerContextAccess
-	import io.sarl.util.ConcurrentSet
+	import io.sarl.lang.util.ConcurrentSet
 	import java.util.UUID
 	[:On]
 	agent A {

@@ -26,6 +26,7 @@ import io.sarl.core.Initialize
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.reflect.GuardedEvaluator
 import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluatorRegistry
@@ -34,7 +35,6 @@ import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent2
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestEvent0
 import io.sarl.tests.api.Nullable
-import io.sarl.util.ConcurrentSet
 import java.util.concurrent.ConcurrentMap
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1

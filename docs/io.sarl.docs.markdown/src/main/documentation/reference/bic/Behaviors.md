@@ -25,7 +25,7 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 	"wake(java.lang.Iterable, io.sarl.lang.core.Event)",
 	"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 	"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.util.ConcurrentCollection")
+	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.lang.util.ConcurrentCollection")
 }
 
 
@@ -359,11 +359,11 @@ Two functions are provided for accessing to the collection of the registered beh
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.lang.core.Behavior
-	import java.util.concurrent.ConcurrentLinkedDeque
+	import io.sarl.lang.util.ConcurrentCollection
 	interface Tmp {
 	[:On]
 		def [:hasregisteredbehavior!] : boolean
-		def [:getregisteredbehaviors!] : ConcurrentLinkedDeque<Behavior>
+		def [:getregisteredbehaviors!] : ConcurrentCollection<Behavior>
 	[:Off]
 	}
 [:End:]
@@ -378,7 +378,7 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 	import io.sarl.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	import io.sarl.lang.core.EventListener
-	import io.sarl.util.ConcurrentCollection
+	import io.sarl.lang.util.ConcurrentCollection
 	agent A {
 		uses Behaviors
 		def myaction {

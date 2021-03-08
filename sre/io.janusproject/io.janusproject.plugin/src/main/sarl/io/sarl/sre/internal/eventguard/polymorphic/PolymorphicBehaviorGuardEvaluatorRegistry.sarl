@@ -25,13 +25,13 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
+import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.util.ConcurrentSetCopyOnWriteSet
 import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
-import io.sarl.util.ConcurrentCollection
-import io.sarl.util.ConcurrentCollectionLinkedDeque
-import io.sarl.util.ConcurrentSet
-import io.sarl.util.ConcurrentSetCopyOnWriteSet
 import java.util.Comparator
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

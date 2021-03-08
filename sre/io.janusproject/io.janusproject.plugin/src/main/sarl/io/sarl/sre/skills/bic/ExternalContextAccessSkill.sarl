@@ -29,6 +29,8 @@ import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.ContextService
@@ -37,7 +39,6 @@ import io.sarl.sre.services.context.InternalContextMembershipListener
 import io.sarl.sre.services.context.InternalContextMembershipListenerFactory
 import io.sarl.sre.services.lifecycle.ContextReference
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -121,8 +122,8 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		return context.context
 	}
 
-	def getAllContexts : ConcurrentLinkedDeque<AgentContext> {
-		val result : ConcurrentLinkedDeque<AgentContext> = new ConcurrentLinkedDeque<AgentContext>();
+	def getAllContexts : ConcurrentCollection<AgentContext> {
+		val result = new ConcurrentCollectionLinkedDeque<AgentContext>();
 		val collection = getLife(owner)?.enclosingContexts
 		if (collection !== null) {
 			// TODO optimize the following loop

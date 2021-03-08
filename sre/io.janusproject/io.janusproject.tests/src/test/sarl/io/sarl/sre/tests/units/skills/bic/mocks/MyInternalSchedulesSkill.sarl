@@ -24,8 +24,8 @@ package io.sarl.sre.tests.units.skills.bic.mocks
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
+import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.util.ConcurrentSet
 import java.util.Collection
 import org.arakhne.afc.vmutil.json.JsonBuffer
 

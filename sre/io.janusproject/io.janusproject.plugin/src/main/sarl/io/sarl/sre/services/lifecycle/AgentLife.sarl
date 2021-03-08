@@ -29,14 +29,16 @@ import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AtomicSkillReference
+import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
-import io.sarl.util.ConcurrentCollection
-import io.sarl.util.ConcurrentCollectionLinkedDeque
 import java.util.List
 import java.util.Map
 import java.util.UUID
@@ -49,8 +51,6 @@ import java.util.logging.Logger
 import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
-import io.sarl.lang.util.OutParameter
-import io.sarl.lang.core.Event
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 

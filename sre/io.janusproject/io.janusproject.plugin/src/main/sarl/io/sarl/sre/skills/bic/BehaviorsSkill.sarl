@@ -29,9 +29,9 @@ import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
+import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.util.ConcurrentCollection
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 

@@ -156,7 +156,7 @@ capacity.
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.EventListener
 	import io.sarl.lang.core.Scope
-	import io.sarl.util.ConcurrentCollection
+	import io.sarl.lang.util.ConcurrentCollection
 	import java.util.UUID
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		var acceptedType : Class<? extends Event>
@@ -221,7 +221,7 @@ one type of event accepted by the agents of type [:filteringeventagent:].
 	import io.sarl.core.Initialize
 	import io.sarl.lang.core.EventListener
 	import java.util.UUID
-	import io.sarl.util.ConcurrentCollection
+	import io.sarl.lang.util.ConcurrentCollection
 	skill FilteringEventDispatchingBehavior implements Behaviors {
 		new (acceptedType : Class<? extends Event>, behaviorDelegate : Behaviors) {
 		}

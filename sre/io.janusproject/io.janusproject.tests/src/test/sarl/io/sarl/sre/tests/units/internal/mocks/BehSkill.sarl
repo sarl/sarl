@@ -27,7 +27,7 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
-import io.sarl.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentCollection
 
 skill BehSkill implements Behaviors {
 

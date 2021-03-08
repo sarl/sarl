@@ -49,7 +49,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 
 import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
+import static extension org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
@@ -57,6 +57,10 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.mockito.MockitoAnnotations.initMocks
 import io.sarl.sre.services.logging.LoggingService
 import java.util.logging.Logger
+import javax.inject.Provider
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.locks.Lock
+import org.junit.jupiter.api.DisplayName
 
 /**
  * @author $Author: sgalland$
@@ -93,8 +97,18 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 	@Nullable
 	protected var repository : T 
 
+	@Nullable
+	protected var lockProvider : Provider<ReadWriteLock>
+
 	@BeforeEach
 	def setUp : void {
+		this.lockProvider = typeof(Provider).mock
+		when(this.lockProvider.get).thenAnswer [
+			val l = typeof(ReadWriteLock).mock
+			when(l.readLock).thenReturn(typeof(Lock).mock)
+			when(l.writeLock).thenReturn(typeof(Lock).mock)
+			return l
+		]
 		this.executorsConfig = typeof(ExecutorsConfig).mock
 		var services = typeof(ServicesConfig).mock
 		when(services.getExecutors).thenReturn(this.executorsConfig)		
@@ -182,7 +196,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		
 		var expectedIds = <SpaceID>newArrayList()
 		for (elt : expectedDescs) {
-			expectedIds += elt.spaceID
+			expectedIds += elt.spaceId
 		}
 
 		var actualIds = <SpaceID>newArrayList()
@@ -219,7 +233,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 			var idx = -1
 			for (var i = 0; idx == -1 && i < expectedDescs.length; i++) {
 				var desc = expectedDescs.get(i)
-				if (desc.spaceID == ^space.spaceID) {
+				if (desc.spaceId == ^space.spaceID) {
 					idx = i
 				}
 			}
@@ -243,9 +257,9 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 	def getSpace_1 {
 		var expectedDescs = fillRepository()
 		for (desc : expectedDescs) {
-			var ^space = this.repository.getSpace(desc.spaceID)
+			var ^space = this.repository.getSpace(desc.spaceId)
 			assertNotNull(^space)
-			assertEquals(desc.spaceID, ^space.spaceID)
+			assertEquals(desc.spaceId, ^space.spaceID)
 			assertSame(desc.^space, ^space)
 		}
 		var contextId = UUID::randomUUID
@@ -290,7 +304,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		var expectedDescs = fillRepository
 		for (desc : expectedDescs) {
 			this.repository.removeSpace(desc.^space)
-			var ^space = this.repository.getSpace(desc.spaceID)
+			var ^space = this.repository.getSpace(desc.spaceId)
 			assertNull(^space)
 		}
 	}
@@ -319,10 +333,10 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 	def getOrCreateSpaceWithSpec_1 {
 		var expectedDescs = fillRepository
 		for (desc : expectedDescs) {
-			var spec : Class = desc.spaceID.spaceSpecification
-			var createdSpace = this.repository.getOrCreateSpaceWithSpec(desc.spaceID, spec)
+			var spec : Class = desc.spaceId.spaceSpecification
+			var createdSpace = this.repository.getOrCreateSpaceWithSpec(desc.spaceId, spec)
 			assertNotNull(createdSpace)
-			assertEquals(desc.spaceID.spaceSpecification, createdSpace.spaceID.spaceSpecification)
+			assertEquals(desc.spaceId.spaceSpecification, createdSpace.spaceID.spaceSpecification)
 		}
 	}
 
@@ -350,8 +364,8 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 	def getOrCreateSpaceWithID_1 {
 		var expectedDescs = fillRepository
 		for (desc : expectedDescs) {
-			var spec : Class = desc.spaceID.spaceSpecification
-			var createdSpace = this.repository.getOrCreateSpaceWithID(desc.spaceID, spec)
+			var spec : Class = desc.spaceId.spaceSpecification
+			var createdSpace = this.repository.getOrCreateSpaceWithID(desc.spaceId, spec)
 			assertSame(desc.^space, createdSpace)
 		}
 	}
@@ -426,6 +440,128 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		var fake = this.repository.getOrCreateSpaceWithID(sid, typeof(OpenEventSpaceSpecification))
 		
 		verifyNoMoreInteractions(listener)
+	}
+
+	@Test
+	@DisplayName("hasSpace(not registered)")
+	def hasSpace_0 : void {
+		this.repository.hasSpace(UUID::randomUUID).assertFalse
+	}
+
+	@Test
+	@DisplayName("hasSpace(null)")
+	def hasSpace_1 : void {
+		this.repository.hasSpace(null).assertFalse
+	}
+
+	@Test
+	@DisplayName("hasSpace(registered)")
+	def hasSpace_2 : void {
+		var contextId = UUID::randomUUID
+		var id = UUID::randomUUID
+		var sid = new SpaceID(contextId, id, typeof(OpenEventSpaceSpecification))
+		var ^space = typeof(OpenEventSpace).mock
+		when(^space.spaceID).thenReturn(sid)
+		var specification = typeof(OpenEventSpaceSpecification).mock
+		when(specification.create(any, any)).thenReturn(^space)
+		this.internalStructure.put(id, new SpaceRepository.SpaceDescription(sid, ^space))
+		
+		this.repository.hasSpace(id).assertTrue
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(UUID) null")
+	def removeSpaceIfEmptyUUID_0 : void {
+		var descs = fillRepository
+
+		this.repository.removeSpaceIfEmpty(null as UUID)
+
+		for (desc : descs) {
+			this.internalStructure.containsKey(desc.spaceId.ID).assertTrue
+		}
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(UUID) empty")
+	def removeSpaceIfEmptyUUID_1 : void {
+		var descs = fillRepository
+		val firstDesc = descs.iterator.next
+		val firstId = firstDesc.spaceId.ID
+		when(firstDesc.^space.numberOfStrongParticipants).thenReturn(0)
+		
+		this.repository.removeSpaceIfEmpty(firstId)
+
+		for (desc : descs) {
+			val b = this.internalStructure.containsKey(desc.spaceId.ID)
+			if (firstId == desc.spaceId.ID) {
+				b.assertFalse
+			} else {
+				b.assertTrue
+			}
+		}
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(UUID) not empty")
+	def removeSpaceIfEmptyUUID_2 : void {
+		var descs = fillRepository
+		val firstDesc = descs.iterator.next
+		val firstId = firstDesc.spaceId.ID
+		when(firstDesc.^space.numberOfStrongParticipants).thenReturn(1)
+		
+		this.repository.removeSpaceIfEmpty(firstId)
+
+		for (desc : descs) {
+			this.internalStructure.containsKey(desc.spaceId.ID).assertTrue
+		}
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(Space) null")
+	def removeSpaceIfEmptySpace_0 : void {
+		var descs = fillRepository
+
+		this.repository.removeSpaceIfEmpty(null as Space)
+
+		for (desc : descs) {
+			this.internalStructure.containsKey(desc.spaceId.ID).assertTrue
+		}
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(Space) empty")
+	def removeSpaceIfEmptySpace_1 : void {
+		var descs = fillRepository
+		val firstDesc = descs.iterator.next
+		val firstId = firstDesc.spaceId.ID
+		val sp = firstDesc.^space
+		when(sp.numberOfStrongParticipants).thenReturn(0)
+		
+		this.repository.removeSpaceIfEmpty(sp)
+
+		for (desc : descs) {
+			val b = this.internalStructure.containsKey(desc.spaceId.ID)
+			if (firstId == desc.spaceId.ID) {
+				b.assertFalse
+			} else {
+				b.assertTrue
+			}
+		}
+	}
+
+	@Test
+	@DisplayName("removeSpaceIfEmpty(Space) not empty")
+	def removeSpaceIfEmptySpace_2 : void {
+		var descs = fillRepository
+		val firstDesc = descs.iterator.next
+		val sp = firstDesc.^space
+		when(sp.numberOfStrongParticipants).thenReturn(1)
+		
+		this.repository.removeSpaceIfEmpty(sp)
+
+		for (desc : descs) {
+			this.internalStructure.containsKey(desc.spaceId.ID).assertTrue
+		}
 	}
 
 }

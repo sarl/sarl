@@ -44,6 +44,8 @@ import java.util.UUID
 import java.util.logging.Level
 import javax.inject.Inject
 import java.util.logging.Logger
+import javax.inject.Provider
+import java.util.concurrent.locks.ReadWriteLock
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
@@ -89,8 +91,9 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
 		listenerCollection : SmartListenerCollection<?>,
+		lockProvider : Provider<ReadWriteLock>,
 		icontextService : ContextService, iHazelcastInstance : HazelcastInstance) {
-		super(injector, executor, loggingService, config, specificationFactory, listenerCollection)
+		super(injector, executor, loggingService, config, specificationFactory, listenerCollection, lockProvider)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 		this.logger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)
@@ -120,7 +123,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 			}
 
 			override mapCleared(^event : MapEvent) {
-				removeLocalSpaceDefinitions();
+				removeLocalSpaceDefinitions
 			}
 
 			override mapEvicted(^event : MapEvent) {
@@ -163,7 +166,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	 * @param initializationParameters parameters for initialization.
 	 */
 	protected def ensureLocalSpaceDefinition(id : SpaceID, initializationParameters : Object[]) with S extends Space {
-		if (!existsSpace(id.ID)) {
+		if (!hasSpace(id.ID)) {
 			var spec : Class<? extends SpaceSpecification<S>> = id.
 				spaceSpecification as Class<? extends SpaceSpecification<S>>
 			super.createSpace(id, spec, initializationParameters)
@@ -183,13 +186,13 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	 * Remove all the local/remote spaces.
 	 * 
 	 */
-	protected def removeLocalSpaceDefinitions() {
+	protected def removeLocalSpaceDefinitions {
 		// FIXME update this.availableTopicsName to remove all empty spaces that are effectively empty all over the network
-		super.removeAllSpacesIfEmpty
+		removeEmptySpaces
 	}
 
-	protected override safeDestroy {
-		super.safeDestroy
+	protected override destroyThreadUnsafe {
+		super.destroyThreadUnsafe
 		// TODO check if it is really necessary to clean this distributed map of spaces, because it will impact other kernels staying active on the network
 		this.spaceIDs.clear
 		this.spaceIDs.removeEntryListener(this.spaceIDsListernerID);

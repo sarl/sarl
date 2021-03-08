@@ -22,12 +22,12 @@
 package io.sarl.sre.tests.units.services.lifecycle.mocks
 
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
-import io.sarl.util.ConcurrentCollection
 import java.util.List
-import io.sarl.lang.util.OutParameter
 import java.util.function.BooleanSupplier
 
 /**

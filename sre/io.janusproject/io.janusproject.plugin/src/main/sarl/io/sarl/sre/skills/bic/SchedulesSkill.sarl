@@ -36,8 +36,8 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
-import io.sarl.util.ConcurrentSet
-import io.sarl.util.ConcurrentSetSkipListSet
+import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.util.ConcurrentSetSkipListSet
 import java.lang.ref.WeakReference
 import java.util.Collection
 import java.util.EventListener

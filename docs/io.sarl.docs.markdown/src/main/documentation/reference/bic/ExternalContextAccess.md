@@ -12,7 +12,7 @@ top-right context in the figure above.
 [:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
 	"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:getuniversecontext](getUniverseContext) : io.sarl.lang.core.AgentContext",
-	"[:getallcontexts](getAllContexts) : java.util.concurrent.ConcurrentLinkedDeque",
+	"[:getallcontexts](getAllContexts) : io.sarl.lang.util.ConcurrentCollection",
 	"[:join](join)(java.util.UUID, java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:leave](leave)(java.util.UUID) : boolean",
 	"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
@@ -87,10 +87,10 @@ The following function enables an agent to retrieve all the contexts in which it
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.lang.core.AgentContext
-	import java.util.concurrent.ConcurrentLinkedDeque
+	import io.sarl.lang.util.ConcurrentCollection
 	interface Tmp {
 	[:On]
-		def [:getallcontexts!] : ConcurrentLinkedDeque<AgentContext>
+		def [:getallcontexts!] : ConcurrentCollection<AgentContext>
 	[:Off]
 	}
 [:End:]
@@ -102,11 +102,11 @@ The default context is included in the replied collection.
 	package io.sarl.docs.reference.bic
 	import io.sarl.core.ExternalContextAccess
 	import io.sarl.lang.core.AgentContext
-	import java.util.concurrent.ConcurrentLinkedDeque
+	import io.sarl.lang.util.ConcurrentCollection
 	[:On]
 	agent A {
 		uses ExternalContextAccess
-		var c : ConcurrentLinkedDeque<AgentContext>
+		var c : ConcurrentCollection<AgentContext>
 		def myaction {
 			c = getAllContexts
 		}

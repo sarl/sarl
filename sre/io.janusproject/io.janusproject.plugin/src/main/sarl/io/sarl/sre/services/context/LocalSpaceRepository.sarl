@@ -21,16 +21,17 @@
 package io.sarl.sre.services.context
 
 import com.google.inject.Injector
-import io.sarl.lang.core.Space
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.spaces.SreSpaceSpecificationFactory
-import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
-import javax.inject.Inject
 import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
+import java.util.Map
+import java.util.TreeMap
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Inject
+import javax.inject.Provider
 
 /** 
  * A repository of spaces specific to a given context.
@@ -45,7 +46,7 @@ import io.sarl.sre.services.logging.LoggingService
  */
 class LocalSpaceRepository extends SpaceRepository {
 
-	val spaces : ConcurrentMap<UUID, SpaceDescription>
+	val spaces : Map<UUID, SpaceDescription>
 
 	/** Constructor.
 	 * 
@@ -59,8 +60,9 @@ class LocalSpaceRepository extends SpaceRepository {
 	 */
 	@Inject
 	new (injector : Injector, executor : ExecutorService, loggingService : LoggingService, config : SreConfig,
-		specificationFactory : SreSpaceSpecificationFactory, listenerCollection : SmartListenerCollection<?>) {
-		this(injector, executor, loggingService, config, specificationFactory, null, listenerCollection)
+		specificationFactory : SreSpaceSpecificationFactory, listenerCollection : SmartListenerCollection<?>,
+		lockProvider : Provider<ReadWriteLock>) {
+		this(injector, executor, loggingService, config, specificationFactory, null, listenerCollection, lockProvider)
 	}
 
 	/** Constructor.
@@ -76,39 +78,20 @@ class LocalSpaceRepository extends SpaceRepository {
 	new (injector : Injector, executor : ExecutorService,
 		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
-		internalStructure : ConcurrentMap<UUID, SpaceDescription>,
-		listenerCollection : SmartListenerCollection<?>) {
-		super(injector, executor, loggingService, config, specificationFactory, listenerCollection)
+		internalStructure : Map<UUID, SpaceDescription>,
+		listenerCollection : SmartListenerCollection<?>,
+		lockProvider : Provider<ReadWriteLock>) {
+		super(injector, executor, loggingService, config, specificationFactory, listenerCollection, lockProvider)
 		if (internalStructure !== null) {
 			this.spaces = internalStructure
 		} else {
-			this.spaces = new ConcurrentHashMap<UUID, SpaceDescription>
+			this.spaces = new TreeMap<UUID, SpaceDescription>
 		}
 	}
 
-	protected override getSharedStructure : ConcurrentMap<UUID, SpaceDescription> {
+	@Pure
+	protected override getSharedStructure : Map<UUID, SpaceDescription> {
 		this.spaces
-	}
-
-	protected def existsSpace(spaceUUID : UUID) : boolean {
-		this.spaces.containsKey(spaceUUID)
-	}
-
-	protected def removeSpaceIfEmpty(spaceUUID : UUID) {
-		var spaceToRemove : Space = this.spaces.get(spaceUUID).^space
-		if (spaceToRemove.isPseudoEmpty) {
-			super.removeSpace(spaceToRemove)
-		}
-	}
-
-	protected def removeAllSpacesIfEmpty() {
-		var spaceToRemove : Space
-		for (spaceDesc : this.spaces.values) {
-			spaceToRemove = spaceDesc.^space
-			if (spaceToRemove.isPseudoEmpty) {
-				super.removeSpace(spaceToRemove)
-			}
-		}
 	}
 
 }

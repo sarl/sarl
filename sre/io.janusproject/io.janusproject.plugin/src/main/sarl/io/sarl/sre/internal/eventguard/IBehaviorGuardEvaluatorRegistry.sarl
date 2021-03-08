@@ -22,11 +22,11 @@
 package io.sarl.sre.internal.eventguard
 
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.util.ConcurrentSetSkipListSet
 import io.sarl.sre.internal.ObjectComparator
-import io.sarl.util.ConcurrentSet
 import java.util.Set
-import io.sarl.util.ConcurrentCollection
-import io.sarl.util.ConcurrentSetSkipListSet
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.

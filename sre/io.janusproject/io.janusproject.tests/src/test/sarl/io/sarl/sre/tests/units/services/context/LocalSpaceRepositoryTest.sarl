@@ -26,8 +26,8 @@ import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
+import java.util.TreeMap
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 
@@ -43,17 +43,17 @@ import static extension org.mockito.Mockito.*
 @Tag("unit")
 @Tag("janus")
 @Tag("sre-unit")
-class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, ConcurrentHashMap<UUID, SpaceDescription>> {
+class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, TreeMap<UUID, SpaceDescription>> {
 
 	protected def newSpaceRepository : LocalSpaceRepository {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
 		new LocalSpaceRepository(typeof(Injector).mock, this.executor, this.logger, this.configuration,
 			this.specificationFactory, this.internalStructure,
-			coll)
+			coll, this.lockProvider)
 	}
 
-	protected override newInternalStructure : ConcurrentHashMap<UUID, SpaceDescription> {
-		new ConcurrentHashMap
+	protected override newInternalStructure : TreeMap<UUID, SpaceDescription> {
+		new TreeMap
 	}
 	
 }
