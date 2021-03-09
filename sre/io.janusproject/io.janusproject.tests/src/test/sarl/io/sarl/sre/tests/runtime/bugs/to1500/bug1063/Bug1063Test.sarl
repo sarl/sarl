@@ -27,8 +27,9 @@ import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.to1500.bug1063.mocks.BootAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.List
 import java.util.UUID
+import java.util.concurrent.ConcurrentMap
+import java.util.concurrent.CopyOnWriteArrayList
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -60,41 +61,61 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("janus")
 class Bug1063Test {
 
-	def extractIdFromResults(results : List<Object>, prefix : String) : String {
-		for (res : results) {
+	def extractIdFromResults(results : ConcurrentMap<UUID, CopyOnWriteArrayList<Object>>, id : UUID, prefix : String) : String {
+		val ares = results.get(id)
+		ares.assertNotNull ["Unable to find results provided by the agent " + id + "\nin: " + results]
+		for (res : ares) {
 			val s = res.toString
 			if (s.startsWith(prefix)) {
 				val v = s.substring(prefix.length)
 				if (v !== null) {
 					return v
 				}
-				fail("Illegal UUID value for prefix: " + prefix)
+				fail("Illegal UUID value for prefix: " + prefix + "\nin: " + results.toString)
 			}
 		}
-		fail("Cannot find the value for prefix: " + prefix)
+		fail("Cannot find the value for prefix: " + prefix + "\nin: " + results.toString)
 	}
 
-	@RepeatedTest(10)
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	def extractBootIdFromResults(results : ConcurrentMap<UUID, CopyOnWriteArrayList<Object>>) : UUID {
+		for (entry : results.entrySet) {
+			for (value : entry.value) {
+				val s = value.toString
+				if (s.startsWith("BID = ")) {
+					val v = s.substring("BID = ".length)
+					if (v !== null) {
+						return v as UUID
+					}
+					fail("Illegal UUID value for BID: " + results.toString)
+				}
+			}
+		}
+		fail("Cannot find the BID value: " + results.toString)
+	}
+
+	@RepeatedTest(20)
 	@DisplayName("run Ping-Pong 5 times")
 	@SuppressWarnings("potential_inefficient_value_conversion")
 	def run(extension rc : SreRunContext) : void {
 		typeof(BootAgent).runSre(NO_TIMEOUT)
 
-		val id1 = results.extractIdFromResults("ID1 = ") as UUID
-		val id2 = results.extractIdFromResults("ID2 = ") as UUID
-		val sid = results.extractIdFromResults("SID = ") as UUID
+		val ar = allResultsPerAgent
 
-		val r1 = getResults(id1)
-		val r2 = getResults(id2)
+		val bid = ar.extractBootIdFromResults
 
-		val s1 = r1.extractIdFromResults("SID = ") as UUID
-		val s2 = r2.extractIdFromResults("SID = ") as UUID
+		val id1 = ar.extractIdFromResults(bid, "ID1 = ") as UUID
+		val id2 = ar.extractIdFromResults(bid, "ID2 = ") as UUID
+		val sid = ar.extractIdFromResults(bid, "SID = ") as UUID
+
+		val s1 = ar.extractIdFromResults(id1, "SID = ") as UUID
+		val s2 = ar.extractIdFromResults(id2, "SID = ") as UUID
 
 		sid.assertEquals(s1) [ "Unexpected space identifier is Ping agent"]
 		sid.assertEquals(s2) [ "Unexpected space identifier is Pong agent"]
 
-		val o1 = r1.extractIdFromResults("SPACE = ")
-		val o2 = r2.extractIdFromResults("SPACE = ")
+		val o1 = ar.extractIdFromResults(id1, "SPACE = ")
+		val o2 = ar.extractIdFromResults(id2, "SPACE = ")
 
 		o1.assertEquals(o2) [ "Space objects are not the same"]
 	}

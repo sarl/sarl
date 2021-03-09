@@ -142,6 +142,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.annotation.Injectable;
 import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -938,6 +939,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Override the visibility
 			setVisibility(inferredJvmType, source);
 
+			// Change the injectable flag
+			context.setInjectable(inferredJvmType.getExtendedClass());
+
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
 					source,
@@ -961,6 +965,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 		} finally {
 			closeContext(context);
 		}
@@ -1013,6 +1020,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 		} finally {
 			closeContext(context);
 		}
@@ -1050,6 +1060,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 		} finally {
 			closeContext(context);
 		}
@@ -1087,6 +1100,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 		} finally {
 			closeContext(context);
 		}
@@ -1135,6 +1151,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
+			// Change the injectable flag
+			context.setInjectable(inferredJvmType.getExtendedClass());
+
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
 
@@ -1152,6 +1171,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1203,6 +1225,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
+			// Change the injectable flag
+			context.setInjectable(inferredJvmType.getExtendedClass());
+
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
 
@@ -1220,6 +1245,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1271,6 +1299,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
+			// Change the injectable flag
+			context.setInjectable(inferredJvmType.getExtendedClass());
+
 			// Add the default constructors for the behavior, if not already added
 			appendDefaultConstructors(source, inferredJvmType);
 
@@ -1291,6 +1322,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1343,6 +1377,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
+			// Change the injectable flag
+			context.setInjectable(inferredJvmType.getExtendedClass());
+
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
 
@@ -1360,6 +1397,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1418,6 +1458,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the type of SARL Element
 			appendSARLElementType(source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendInjectableAnnotationIfInjectable(inferredJvmType, context);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1588,6 +1631,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		context.getPreFinalizationElements().add(differedGeneration);
 		context.setActionIndex(context.getActionIndex() + 1);
 		context.incrementSerial(sigKey.hashCode());
+		context.setInjectable(constructor);
 	}
 
 	/** Transform the field.
@@ -1612,6 +1656,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (type != null) {
 				context.incrementSerial(type.getIdentifier().hashCode());
 			}
+			context.setInjectable(field);
 		}
 	}
 
@@ -1968,6 +2013,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			context.getPreFinalizationElements().add(differedGeneration);
 			context.setActionIndex(context.getActionIndex() + 1);
 			context.incrementSerial(actSigKey.hashCode());
+			context.setInjectable(operation);
 		}
 	}
 
@@ -3128,6 +3174,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendSARLElementType(XtendTypeDeclaration source, JvmDeclaredType target) {
 		addAnnotationSafe(target, SarlElementType.class, source.eClass().getClassifierID());
+	}
+
+	/** Append the injectable annotation to the given container.
+	 *
+	 * @param target the inferred JVM object.
+	 * @param context the generation context.
+	 * @since 0.12
+	 */
+	protected void appendInjectableAnnotationIfInjectable(JvmDeclaredType target, GenerationContext context) {
+		if (context.isInjectable()) {
+			addAnnotationSafe(target, Injectable.class);
+		}
 	}
 
 	/** Remove the type parameters from the given type.

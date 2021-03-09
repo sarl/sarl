@@ -49,6 +49,7 @@ agent BootAgent {
 		this.ids += id2
 		this.sids += id1
 		this.sids += id2
+		addResult("BID = " + ID)
 		addResult("ID1 = " + id1)
 		addResult("ID2 = " + id2)
 		addResult("SID = " + spaceId)

@@ -26,14 +26,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
@@ -41,7 +45,9 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.annotation.Injectable;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
@@ -60,6 +66,10 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 abstract class GenerationContext {
 
 	private JvmDeclaredType target;
+
+	/** Indicate if the object is injectable.
+	 */
+	private boolean isInjectable;
 
 	/** Compute serial number for serializable objects.
 	 */
@@ -138,6 +148,9 @@ abstract class GenerationContext {
 	private GenerationContext parent;
 
 	private IActionPrototypeContext actionPrototypeContext;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
 
 	/** Construct a information about the generation.
 	 *
@@ -459,6 +472,53 @@ abstract class GenerationContext {
 		this.preFinalization.clear();
 		this.postFinalization.clear();
 		this.guardEvaluators.clear();
+	}
+
+	/** Replies if the generated type is injectable.
+	 *
+	 * @return {@code true} if the generated type is injectable.
+	 * @since 0.12
+	 */
+	@Pure
+	public boolean isInjectable() {
+		return this.isInjectable;
+	}
+
+	/** Change the flag that indicates if the generated type is injectable.
+	 *
+	 * @param injectable {@code true} if the generated type is injectable.
+	 * @since 0.12
+	 */
+	public void setInjectable(boolean injectable) {
+		this.isInjectable = injectable;
+	}
+
+	/** Change the flag that indicates if the given element is injected.
+	 *
+	 * @param element the element to test.
+	 * @since 0.12
+	 */
+	public void setInjectable(JvmAnnotationTarget element) {
+		if (element != null
+			&& (this.annotationFinder.findAnnotation(element, Inject.class) != null
+			   || this.annotationFinder.findAnnotation(element, com.google.inject.Inject.class) != null)) {
+			setInjectable(true);
+		}
+	}
+
+	/** Change the flag that indicates if the given element is injected.
+	 *
+	 * @param element the element to test.
+	 * @since 0.12
+	 */
+	public void setInjectable(JvmTypeReference element) {
+		if (element != null) {
+			final JvmType type = element.getType();
+			if (type instanceof JvmAnnotationTarget
+				&& this.annotationFinder.findAnnotation((JvmAnnotationTarget) type, Injectable.class) != null) {
+				setInjectable(true);
+			}
+		}
 	}
 
 }
