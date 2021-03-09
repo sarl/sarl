@@ -32,6 +32,7 @@ import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.skills.bic.DefaultContextInteractionsSkill
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent3
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -86,14 +87,14 @@ class DefaultContextInteractionsSkillTest {
 		this.contextId = UUID::randomUUID
 		this.^agentId = UUID::randomUUID
 		this.^agent = new MyAgent3(contextId, this.^agentId).spy
-		this.^skill = new DefaultContextInteractionsSkill
+		this.^skill = new DefaultContextInteractionsSkill[SreTestUtilities::newFactories]
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 
 	@Test
 	def getDefaultContext {
 		var ctx = typeof(Context).mock
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 		assertSame(ctx, this.^skill.defaultContext)
 	}
 
@@ -102,7 +103,7 @@ class DefaultContextInteractionsSkillTest {
 		var ctx = typeof(Context).mock
 		var ^space = typeof(OpenEventSpace).mock
 		when(ctx.defaultSpace).thenReturn(^space)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 
 		assertSame(^space, this.^skill.defaultSpace)
 	}
@@ -110,7 +111,7 @@ class DefaultContextInteractionsSkillTest {
 	@Test
 	def getDefaultAddress {
 		var adr = typeof(Address).mock
-		AgentLife::getLife(this.^agent).setDefaultContext(typeof(Context).mock, adr)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(typeof(Context).mock, adr)
 
 		assertSame(adr, this.^skill.defaultAddress)
 	}
@@ -123,7 +124,7 @@ class DefaultContextInteractionsSkillTest {
 		var id1 = UUID::randomUUID
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(id1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx1, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx1, typeof(Address).mock)
 
 		assertFalse(this.^skill.isDefaultContext(ctx0))
 		assertTrue(this.^skill.isDefaultContext(ctx1))
@@ -137,7 +138,7 @@ class DefaultContextInteractionsSkillTest {
 		var id1 = UUID::randomUUID
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(id1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx1, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx1, typeof(Address).mock)
 
 		assertFalse(this.^skill.isDefaultContext(id0))
 		assertTrue(this.^skill.isDefaultContext(id1))
@@ -155,7 +156,7 @@ class DefaultContextInteractionsSkillTest {
 		var id1 = typeof(SpaceID).mock
 		when(space1.spaceID).thenReturn(id1)
 		when(ctx1.defaultSpace).thenReturn(space1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx1, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx1, typeof(Address).mock)
 
 		assertFalse(this.^skill.isDefaultSpace(space0))
 		assertTrue(this.^skill.isDefaultSpace(space1))
@@ -173,7 +174,7 @@ class DefaultContextInteractionsSkillTest {
 		var id1 = typeof(SpaceID).mock
 		when(space1.spaceID).thenReturn(id1)
 		when(ctx1.defaultSpace).thenReturn(space1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx1, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx1, typeof(Address).mock)
 
 		assertFalse(this.^skill.isDefaultSpace(id0))
 		assertTrue(this.^skill.isDefaultSpace(id1))
@@ -191,7 +192,7 @@ class DefaultContextInteractionsSkillTest {
 		var id1 = UUID::randomUUID
 		when(space1.spaceID).thenReturn(new SpaceID(UUID::randomUUID, id1, typeof(OpenEventSpaceSpecification)))
 		when(ctx1.defaultSpace).thenReturn(space1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx1, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx1, typeof(Address).mock)
 
 		assertFalse(this.^skill.isDefaultSpace(id0))
 		assertTrue(this.^skill.isDefaultSpace(id1))
@@ -215,7 +216,7 @@ class DefaultContextInteractionsSkillTest {
 
 		var ctx0 = typeof(Context).mock
 		when(ctx0.defaultSpace).thenReturn(space1)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx0, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx0, typeof(Address).mock)
 
 		assertFalse(this.^skill.isInDefaultSpace(event0))
 		assertTrue(this.^skill.isInDefaultSpace(event1))
@@ -227,7 +228,7 @@ class DefaultContextInteractionsSkillTest {
 		var ctx = typeof(Context).mock
 		when(ctx.defaultSpace).thenReturn(^space)
 		var ^event = new Event {}.spy
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 		
 		this.^skill.emit(^event)
 		
@@ -246,7 +247,7 @@ class DefaultContextInteractionsSkillTest {
 		var ^space = typeof(OpenEventSpace).mock
 		var ctx = typeof(Context).mock
 		when(ctx.defaultSpace).thenReturn(^space)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 		var ^event = new Event {}.spy
 		var scope = typeof(Scope).mock
 		
@@ -267,7 +268,7 @@ class DefaultContextInteractionsSkillTest {
 		var ctx = typeof(Context).mock
 		val expectedParentId = UUID::randomUUID
 		when(ctx.ID).thenReturn(expectedParentId)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 
 		val parentID = this.^skill.defaultParentID
 
@@ -279,7 +280,7 @@ class DefaultContextInteractionsSkillTest {
 		var ctx = typeof(Context).mock
 		val expectedParentId = UUID::randomUUID
 		when(ctx.ID).thenReturn(expectedParentId)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 
 		val scope = this.^skill.defaultParentScope
 
@@ -302,7 +303,7 @@ class DefaultContextInteractionsSkillTest {
 		var ctx = typeof(Context).mock
 		when(ctx.ID).thenReturn(expectedParentId)
 		when(ctx.defaultSpace).thenReturn(^space)
-		AgentLife::getLife(this.^agent).setDefaultContext(ctx, typeof(Address).mock)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(ctx, typeof(Address).mock)
 		var ^event = new Event {}.spy
 		
 		this.^skill.emitToParent(^event)

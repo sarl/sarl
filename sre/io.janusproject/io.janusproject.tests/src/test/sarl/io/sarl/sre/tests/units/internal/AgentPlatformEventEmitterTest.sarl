@@ -32,13 +32,13 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.internal.AgentEventEmitter
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -121,7 +121,7 @@ class AgentEventEmitterTest {
 		this.agent1 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
 		this.params = #[]
 		this.agent2 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
-		this.life2 = AgentLife::getLife(this.agent2)
+		this.life2 = AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories])
 		this.emitter = new AgentEventEmitter(this.logger)
 	}
 	
@@ -163,7 +163,7 @@ class AgentEventEmitterTest {
 		when(ctx.ID).thenReturn(secondContext)
 		var ref2 = this.life2.addExternalContext(ctx, adr2)
 		
-		var contexts = new ConcurrentCollectionLinkedDeque(#[ref1, ref2])
+		var contexts = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection(#[ref1, ref2])
 		
 		val terminationCause = typeof(Throwable).mock
 		

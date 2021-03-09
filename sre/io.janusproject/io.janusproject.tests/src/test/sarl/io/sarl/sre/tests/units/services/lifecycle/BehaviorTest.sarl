@@ -25,6 +25,7 @@ import io.sarl.core.AgentTask
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.services.lifecycle.BehaviorLife
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -64,7 +65,7 @@ class BehaviorTest {
 	@BeforeEach
 	def setUp : void {
 		this.^behavior = typeof(Behavior).mock
-		this.life = BehaviorLife::getLife(this.^behavior)
+		this.life = BehaviorLife::getLife(this.^behavior) [SreTestUtilities::newFactories]
 	}
 
 	@Test

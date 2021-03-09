@@ -19,15 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.internal
+package io.sarl.util
 
 import java.util.EventListener
 import java.util.function.Consumer
-import javax.inject.Inject
-import org.arakhne.afc.util.ListenerCollection
 
-/** A smart implementation of an event listeners' collection.
- * This collection knows how to schedule the calls to the listeners. 
+/** This interface represents an object that is able to provide a notification policy
+ * for calling Java event listeners.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -35,32 +33,32 @@ import org.arakhne.afc.util.ListenerCollection
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-@SuppressWarnings("manual_inline_definition")
-class SmartListenerCollection<T extends EventListener> extends ListenerCollection<T> implements ListenerNotifier {
-
-	val notifier : ListenerNotifier
-
-	/** Constructor.
-	 * 
-	 * @param notifier is the notifier to the listeners that must be used by this collection.
-	 */
-	@Inject
-	new (notifier : ListenerNotifier) {
-		this.notifier = notifier
-	}
-
-	override notifyListeners(listeners : L[], action : Consumer<L>) with L extends EventListener {
-		this.notifier.notifyListeners(listeners, action)
-	}
+interface ListenerNotifier {
 
 	/** Build a call policy for the given list of listeners and call them.
 	 * 
 	 * @param <L> the type of event listener to support.
-	 * @param type the type of the listeners to be called.
+	 * @param listeners is the list of listeners to call.
 	 * @param action is the action to apply on each listener.
 	 */
-	def notifyListeners(type : Class<L>, action : Consumer<L>) with L extends EventListener {
-		type.getListeners.notifyListeners(action)
+	def notifyListeners(listeners : L[], action : Consumer<L>) with L extends EventListener
+
+}
+
+/** This class implements a sequence execution mechanism for notifying the event listeners.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class SequenceListenerNotifier implements ListenerNotifier {
+
+	override notifyListeners(listeners : L[], action : Consumer<L>) with L extends EventListener {
+		for (listener : listeners) {
+			action.accept(listener)
+		}
 	}
 
 }

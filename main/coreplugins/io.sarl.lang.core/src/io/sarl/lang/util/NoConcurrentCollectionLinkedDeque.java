@@ -22,9 +22,9 @@
 package io.sarl.lang.util;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.LinkedList;
 
-/** Represent a collection of objects which is thread-safe.
+/** Represent a collection of objects which is not thread-safe.
  *
  * @param <T> the type of the objects in the collection.
  * @author $Author: sgalland$
@@ -33,14 +33,14 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class ConcurrentCollectionLinkedDeque<T> extends ConcurrentLinkedDeque<T> implements ConcurrentCollection<T> {
+class NoConcurrentCollectionLinkedDeque<T> extends LinkedList<T> implements ConcurrentCollection<T> {
 
 	private static final long serialVersionUID = -8579091213574817297L;
 
     /**
      * Constructs an empty deque.
      */
-    ConcurrentCollectionLinkedDeque() {
+    NoConcurrentCollectionLinkedDeque() {
         super();
     }
 
@@ -53,7 +53,7 @@ class ConcurrentCollectionLinkedDeque<T> extends ConcurrentLinkedDeque<T> implem
      * @throws NullPointerException if the specified collection or any
      *         of its elements are null
      */
-    ConcurrentCollectionLinkedDeque(Collection<? extends T> source) {
+    NoConcurrentCollectionLinkedDeque(Collection<? extends T> source) {
     	super(source);
     }
 

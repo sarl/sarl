@@ -27,17 +27,14 @@ import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.probing.Probe
-import io.sarl.sre.internal.SequenceListenerNotifier
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.probing.service.AsynchronousProbeService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI
 import java.util.UUID
-import java.util.concurrent.locks.Lock
-import java.util.concurrent.locks.ReadWriteLock
 import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -123,11 +120,6 @@ class ThreadedAsynchronousProbeServiceTest {
 			return new ArtifactName(it.getArgument(0) as URI, UUID::randomUUID)
 		]
 
-		val coll = new SmartListenerCollection(new SequenceListenerNotifier)
-		val lock = typeof(ReadWriteLock).mock
-		when(lock.readLock).thenReturn(typeof(Lock).mock)
-		when(lock.writeLock).thenReturn(typeof(Lock).mock)
-
 		val executor = typeof(ExecutorService).mock
 		when(executor.executeAsap(any(typeof(Runnable)))).thenAnswer [
 			val r = it.getArgument(0) as Runnable
@@ -140,8 +132,7 @@ class ThreadedAsynchronousProbeServiceTest {
 
 		this.service = new AsynchronousProbeService(
 			executor,
-			nameService, nameParser,
-			[coll], [lock])
+			nameService, nameParser, [SreTestUtilities::newFactories])
 	}
 
 	@Test

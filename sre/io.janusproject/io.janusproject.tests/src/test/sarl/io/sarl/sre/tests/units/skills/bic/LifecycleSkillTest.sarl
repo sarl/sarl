@@ -51,6 +51,7 @@ import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import io.sarl.sre.tests.framework.SreTestUtilities
 
 /**
  * @author $Author: sgalland$
@@ -91,14 +92,14 @@ class LifecycleSkillTest {
 		this.context = typeof(Context).mock
 		when(this.context.ID).thenReturn(UUID::randomUUID)
 		this.^agent = new MyAgent3(this.context.ID, this.spawnerID).spy
-		AgentLife::getLife(^agent).setDefaultContext(this.context, typeof(Address).mock)
-		this.^skill = new LifecycleSkill(this.service)
+		AgentLife::getLife(^agent, [SreTestUtilities::newFactories]).setDefaultContext(this.context, typeof(Address).mock)
+		this.^skill = new LifecycleSkill(this.service) [SreTestUtilities::newFactories]
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 
 	private def forceAlive {
 		// Force being alive
-		this.^agent.getLife.state = AgentState::ALIVE
+		this.^agent.getLife[SreTestUtilities::newFactories].state = AgentState::ALIVE
 	}
 
 	@Test

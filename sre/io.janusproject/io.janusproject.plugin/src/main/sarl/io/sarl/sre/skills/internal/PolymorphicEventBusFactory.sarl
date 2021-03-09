@@ -23,6 +23,8 @@ package io.sarl.sre.skills.internal
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluatorRegistry
 import java.util.function.Supplier
+import javax.inject.Provider
+import io.sarl.sre.internal.Factories
 
 /** 
  * Factory of event bus that is using the polymorphic method for accessing the event handlers.
@@ -35,8 +37,14 @@ import java.util.function.Supplier
  */
 class PolymorphicEventBusFactory implements EventBusFactory {
 
+	val factories : Provider<Factories>
+
+	new (factories : Provider<Factories>) {
+		this.factories = factories
+	}
+
 	override createEventBus(taskSchedulerProvider : Supplier<InternalSchedules>) : EventBus {
-		new EventBus(taskSchedulerProvider, new ReflectBehaviorGuardEvaluatorRegistry)
+		new EventBus(taskSchedulerProvider, new ReflectBehaviorGuardEvaluatorRegistry(this.factories), this.factories)
 	}
 
 }

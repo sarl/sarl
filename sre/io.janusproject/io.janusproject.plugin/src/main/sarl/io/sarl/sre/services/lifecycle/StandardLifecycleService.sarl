@@ -26,12 +26,11 @@ import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.KernelScope
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -54,11 +53,9 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
 	 * the agents to launch.
 	 * @param skillProvider the provider of skills that should be used to init the agents.
-	 * @param globalListeners is the collection of global listeners to use.
-	 * @param lockProvider the providers of locks.
-	 * @param rwLockProvider the providers of read-write locks.
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param factories the provider of factories tool.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
 	 * @param logger the logging service.
@@ -66,18 +63,17 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 */
 	@Inject
 	new (sarlSpecificationChecker : SarlSpecificationChecker,
-		globalListeners : SmartListenerCollection<?>,
-		rwLockProvider : Provider<ReadWriteLock>,
 		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
 		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
+		factories : Provider<Factories>,
 		skillProvider : DynamicSkillProvider,
 		skillUninstaller : SkillUninstaller,
 		executor : ExecutorService,
 		logger : LoggingService,
 		sreConfig : SreConfig) {
 		this(sarlSpecificationChecker, new CreatorFactory,
-			globalListeners, rwLockProvider, lifecycleListener,
-			externalContextListener, skillProvider, skillUninstaller, executor, logger,
+			lifecycleListener, externalContextListener, factories,
+			skillProvider, skillUninstaller, executor, logger,
 			sreConfig.services.lifecycle)
 	}
 
@@ -87,10 +83,9 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
 	 * the agents to launch.
 	 * @param creator the provider of agent creators that is used when spawning agents.
-	 * @param globalListeners is the collection of global listeners to use.
-	 * @param rwLockProvider the providers of read-write locks.
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param factories the provider of factories tool.
 	 * @param skillProvider the system-wide provider of agent skills.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
@@ -98,16 +93,15 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * @param lifecycleConfig the configuration of the lifecycle service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
-		globalListeners : SmartListenerCollection<?>,
-		rwLockProvider : Provider<ReadWriteLock>,
 		lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
+		factories : Provider<Factories>,
 		skillProvider : DynamicSkillProvider, skillUninstaller : SkillUninstaller,
 		executor : ExecutorService, logger : LoggingService,
 		lifecycleConfig : LifecycleConfig) {
-		super(sarlSpecificationChecker, creator, globalListeners,
-			rwLockProvider, lifecycleListener,
-			externalContextListener, skillProvider, skillUninstaller, executor, logger, lifecycleConfig)
+		super(sarlSpecificationChecker, creator,
+			lifecycleListener, externalContextListener, factories,
+			skillProvider, skillUninstaller, executor, logger, lifecycleConfig)
 	}
 
 	/** 

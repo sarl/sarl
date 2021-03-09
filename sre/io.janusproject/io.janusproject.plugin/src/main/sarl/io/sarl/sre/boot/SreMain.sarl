@@ -46,12 +46,12 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Level
 import java.util.logging.Logger
+import java.util.regex.Pattern
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
-import java.util.regex.Pattern
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.

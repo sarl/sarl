@@ -20,6 +20,7 @@
  */
 package io.sarl.sre.services.probing.service
 
+import com.google.common.util.concurrent.AtomicDouble
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.naming.namespace.NamespaceService
@@ -27,7 +28,7 @@ import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.api.probing.Probe
 import io.sarl.api.probing.ProbeService
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.probing.probes.BigDecimalFieldProbe
 import io.sarl.sre.services.probing.probes.BigIntegerFieldProbe
@@ -43,16 +44,14 @@ import io.sarl.sre.services.probing.probes.ShortFieldProbe
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URI
+import java.text.MessageFormat
 import java.util.Collection
 import java.util.Map
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Provider
 import java.util.concurrent.atomic.AtomicBoolean
-import java.text.MessageFormat
 import java.util.concurrent.atomic.AtomicInteger
-import com.google.common.util.concurrent.AtomicDouble
 import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Provider
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -71,25 +70,21 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	val probes : Map<URI, Probe<?>>
 
-	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
-
-	val lockProvider : Provider<ReadWriteLock>
+	val factories : Provider<Factories>
 
 	/** Constructor.
 	 * 
 	 * @param internalStructure is the internal structure for storing the probes.
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
 	protected new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
+		factories : Provider<Factories>) {
 		this.probes = internalStructure
 		this.namespace = namespaceService
 		this.nameParser = nameParser
-		this.listenerCollectionProvider = listenerCollectionProvider
-		this.lockProvider = lockProvider
+		this.factories = factories
 	}
 
 	protected override onStop {
@@ -162,25 +157,25 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		var p : Probe<?>
 		if (probedElement instanceof FieldAccess) {
 			if (valueType == typeof(boolean) || valueType == typeof(Boolean)) {
-				p = new BooleanFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new BooleanFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(int) || valueType == typeof(Integer)) {
-				p = new IntegerFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new IntegerFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(double) || valueType == typeof(Double)) {
-				p = new DoubleFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new DoubleFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(float) || valueType == typeof(Float)) {
-				p = new FloatFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new FloatFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(long) || valueType == typeof(Long)) {
-				p = new LongFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new LongFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(short) || valueType == typeof(Short)) {
-				p = new ShortFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new ShortFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(byte) || valueType == typeof(Byte)) {
-				p = new ByteFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new ByteFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(char) || valueType == typeof(Character)) {
-				p = new CharacterFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new CharacterFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(BigInteger)) {
-				p = new BigIntegerFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new BigIntegerFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(BigDecimal)) {
-				p = new BigDecimalFieldProbe(this, probeName, probeUri, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new BigDecimalFieldProbe(this, probeName, probeUri, probedElement, this.factories)
 			} else if (valueType == typeof(AtomicBoolean)) {
 				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
 					valueType.simpleName, typeof(Boolean).simpleName))
@@ -194,7 +189,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 				throw new IllegalArgumentException(MessageFormat::format(Messages::AbstractProbeService_0,
 					valueType.simpleName, typeof(Long).simpleName))
 			} else  {
-				p = new ReferenceFieldProbe(this, probeName, probeUri, valueType, probedElement, this.listenerCollectionProvider, this.lockProvider)
+				p = new ReferenceFieldProbe(this, probeName, probeUri, valueType, probedElement, this.factories)
 			}
 		}
 		return p as Probe<T>

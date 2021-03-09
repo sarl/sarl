@@ -231,6 +231,7 @@
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.api.naming" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.core.util" version="16.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

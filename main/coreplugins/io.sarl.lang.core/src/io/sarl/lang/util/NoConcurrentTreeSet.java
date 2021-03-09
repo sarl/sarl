@@ -23,9 +23,9 @@ package io.sarl.lang.util;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.TreeSet;
 
-/** Represent a set of objects with is thread-safe.
+/** Represent a set of objects which is not thread-safe.
  *
  * @param <T> the type of the objects in the set.
  * @author $Author: sgalland$
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class ConcurrentSetSkipListSet<T> extends ConcurrentSkipListSet<T> implements ConcurrentSet<T> {
+class NoConcurrentTreeSet<T> extends TreeSet<T> implements ConcurrentSet<T> {
 
 	private static final long serialVersionUID = -2543691730298074996L;
 
@@ -42,7 +42,7 @@ class ConcurrentSetSkipListSet<T> extends ConcurrentSkipListSet<T> implements Co
      * Constructs a new, empty set that orders its elements according to
      * their {@linkplain Comparable natural ordering}.
      */
-    ConcurrentSetSkipListSet() {
+    NoConcurrentTreeSet() {
         super();
     }
 
@@ -54,7 +54,7 @@ class ConcurrentSetSkipListSet<T> extends ConcurrentSkipListSet<T> implements Co
      *        If {@code null}, the {@linkplain Comparable natural
      *        ordering} of the elements will be used.
      */
-    ConcurrentSetSkipListSet(Comparator<? super T> comparator) {
+    NoConcurrentTreeSet(Comparator<? super T> comparator) {
         super(comparator);
     }
 
@@ -69,7 +69,7 @@ class ConcurrentSetSkipListSet<T> extends ConcurrentSkipListSet<T> implements Co
      * @throws NullPointerException if the specified collection or any
      *         of its elements are null
      */
-    ConcurrentSetSkipListSet(Collection<? extends T> source) {
+    NoConcurrentTreeSet(Collection<? extends T> source) {
         super(source);
     }
 

@@ -23,15 +23,15 @@ package io.sarl.sre.internal.eventguard
 
 import io.sarl.lang.core.Event
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetSkipListSet
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.internal.MutableBoolean
 import io.sarl.sre.internal.ObjectComparator
 import java.lang.reflect.Method
 import java.util.Set
 import java.util.TreeSet
 import java.util.concurrent.ConcurrentMap
+import javax.inject.Provider
 
 import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
 
@@ -56,6 +56,12 @@ import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBeh
  * @mavenartifactid $ArtifactId$
  */
 abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehaviorGuardEvaluatorRegistry {
+
+	protected val factories : Factories
+
+	new (factories : Provider<Factories>) {
+		this.factories = factories.get
+	}
 
 	/** Replies the internal data structure for the registered listeners.
 	 *
@@ -162,7 +168,7 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehavior
 	override getBehaviorGuardEvaluatorsForRegisteredListeners(^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		val eventTypes = ^event.class.flattenHierarchy
-		val allEvaluators = new ConcurrentCollectionLinkedDeque
+		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
 		val mapper = getInternalEvaluatorMapperForRegisteredListeners
 		val filter = getInternalEvaluatorFilterForRegisteredListeners
 		val dt = internalDataStructureForRegisteredListeners
@@ -199,7 +205,7 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehavior
 
 	@Pure
 	override getRegisteredEventListeners(type : Class<TT>) : ConcurrentSet<TT> with TT {
-		var result = new ConcurrentSetSkipListSet<TT>(ObjectComparator::SINGLETON)
+		var result = this.factories.concurrentCollectionFactory.<TT>newSet(ObjectComparator::SINGLETON)
 		getRegisteredEventListeners(type, result)
 		return result
 	}

@@ -38,6 +38,7 @@ import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.skills.bic.ExternalContextAccessSkill
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent4
 import io.sarl.sre.tests.units.skills.bic.mocks.MyInternalEventBusSkill2
 import io.sarl.tests.api.Nullable
@@ -132,10 +133,10 @@ class ExternalContextAccessSkillTest {
 		this.defaultContext = typeof(Context).mock
 		when(this.defaultContext.ID).thenReturn(this.contextId)
 		when(this.defaultContext.defaultSpace).thenReturn(this.defaultSpace)
-		AgentLife::getLife(this.^agent).setDefaultContext(defaultContext, adr)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(defaultContext, adr)
 		this.emitter1 = typeof(ExternalContextMemberListener).mock
 		this.emitter2 = typeof(InternalContextMembershipListener).mock
-		this.^skill = new ExternalContextAccessSkill(this.service, [emitter1], [emitter2])
+		this.^skill = new ExternalContextAccessSkill(this.service, [emitter1], [emitter2], [SreTestUtilities::newFactories])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 		invokeProc(this.^skill.class, this.^skill, "install", #[])
 	}
@@ -149,7 +150,7 @@ class ExternalContextAccessSkillTest {
 		when(space1.spaceID).thenReturn(sid1)
 		when(ctx1.defaultSpace).thenReturn(space1)
 		var adr1 = new Address(sid1, this.^agentId)
-		this.^agent.getLife.addExternalContext(ctx1, adr1)
+		this.^agent.getLife[SreTestUtilities::newFactories].addExternalContext(ctx1, adr1)
 		return #[ctx1]
 	}
 
@@ -163,7 +164,7 @@ class ExternalContextAccessSkillTest {
 		when(space2.spaceID).thenReturn(sid2)
 		when(ctx2.defaultSpace).thenReturn(space2)
 		var adr2 = new Address(sid2, this.^agentId)
-		this.^agent.getLife.addExternalContext(ctx2, adr2)
+		this.^agent.getLife[SreTestUtilities::newFactories].addExternalContext(ctx2, adr2)
 
 		return #[first.get(0), ctx2]
 	}
@@ -347,7 +348,7 @@ class ExternalContextAccessSkillTest {
 		when(this.service.getContext(any)).thenReturn(context)
 
 		// Force alive
-		this.^agent.getLife.state = AgentState::ALIVE
+		this.^agent.getLife[SreTestUtilities::newFactories].state = AgentState::ALIVE
 		
 		context.assertSame(this.^skill.join(ctxId, spId))
 		
@@ -407,7 +408,7 @@ class ExternalContextAccessSkillTest {
 		when(this.service.getContext(any)).thenReturn(context)
 
 		// Force alive
-		this.^agent.getLife.state = AgentState::ALIVE
+		this.^agent.getLife[SreTestUtilities::newFactories].state = AgentState::ALIVE
 
 		context.assertSame(this.^skill.join(ctxId, spId))
 		
@@ -440,7 +441,7 @@ class ExternalContextAccessSkillTest {
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext)
-		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
+		this.defaultContext.assertSame(this.^agent.getLife[SreTestUtilities::newFactories].defaultContext.context)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
@@ -452,7 +453,7 @@ class ExternalContextAccessSkillTest {
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext)
-		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
+		this.defaultContext.assertSame(this.^agent.getLife[SreTestUtilities::newFactories].defaultContext.context)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
@@ -466,7 +467,7 @@ class ExternalContextAccessSkillTest {
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(ctxs.get(0), ctxs.get(1))
-		ctxs.get(0).assertSame(this.^agent.getLife.defaultContext.context)
+		ctxs.get(0).assertSame(this.^agent.getLife[SreTestUtilities::newFactories].defaultContext.context)
 
 		var captedContextId = typeof(UUID).forClass
 		emitter2.verify(1.times).contextLeft(captedContextId.capture)
@@ -494,7 +495,7 @@ class ExternalContextAccessSkillTest {
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(ctxs.get(0))
-		ctxs.get(0).assertSame(this.^agent.getLife.defaultContext.context)
+		ctxs.get(0).assertSame(this.^agent.getLife[SreTestUtilities::newFactories].defaultContext.context)
 
 		var captedContextId = typeof(UUID).forClass
 		emitter2.verify(1.times).contextLeft(captedContextId.capture)
@@ -524,7 +525,7 @@ class ExternalContextAccessSkillTest {
 		
 		var actual = this.^skill.allContexts
 		actual.assertContains(this.defaultContext, ctxs.get(0))
-		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
+		this.defaultContext.assertSame(this.^agent.getLife[SreTestUtilities::newFactories].defaultContext.context)
 
 
 		var captedContextId = typeof(UUID).forClass

@@ -31,15 +31,14 @@ import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.probing.ProbeService
 import io.sarl.sre.boot.configs.SreConfig
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.probing.service.AsynchronousProbeService
 import io.sarl.sre.services.probing.service.SynchronousProbeService
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
+import io.sarl.sre.internal.Factories
 
 /** 
  * Module for the probing services.
@@ -60,7 +59,7 @@ class ProbeServiceModule extends AbstractModule {
 	 * @param sreConfig the SRE configuration.
 	 * @param injector the injector to use for initializing the new instance.
 	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of the factories tool.
 	 * @return the created service.
 	 */
 	@Singleton
@@ -68,14 +67,13 @@ class ProbeServiceModule extends AbstractModule {
 	def providesProbeService(sreConfig : Provider<SreConfig>, injector : Injector,
 		service : Provider<ExecutorService>, namespaceService : Provider<NamespaceService>,
 		nameParser : Provider<INameParser>,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) : ProbeService {
+		factories : Provider<Factories>) : ProbeService {
 		var ps : ProbeService
 		var cfgInstance = sreConfig.get
 		if (cfgInstance.services.asynchronousProbeUpdate) {
-			ps = new AsynchronousProbeService(service.get, namespaceService.get, nameParser.get, listenerCollectionProvider, lockProvider)
+			ps = new AsynchronousProbeService(service.get, namespaceService.get, nameParser.get, factories)
 		} else {
-			ps = new SynchronousProbeService(namespaceService.get, nameParser.get, listenerCollectionProvider, lockProvider)
+			ps = new SynchronousProbeService(namespaceService.get, nameParser.get, factories)
 		}
 		injector.injectMembers(ps)
 		return ps

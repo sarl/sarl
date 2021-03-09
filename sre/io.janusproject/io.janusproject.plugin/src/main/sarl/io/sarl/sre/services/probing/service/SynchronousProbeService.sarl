@@ -23,11 +23,10 @@ package io.sarl.sre.services.probing.service
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.probing.Probe
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import java.net.URI
 import java.util.Map
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -48,13 +47,11 @@ class SynchronousProbeService extends AbstractProbeService {
 	 * 
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
 	@Inject
-	new (namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
-		this(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+	new (namespaceService : NamespaceService, nameParser : INameParser, factories : Provider<Factories>) {
+		this(new ConcurrentHashMap, namespaceService, nameParser, factories)
 	}
 
 	/** Constructor.
@@ -62,12 +59,11 @@ class SynchronousProbeService extends AbstractProbeService {
 	 * @param internalStructure is the internal structure for storing the probes.
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
 	new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
-		super(internalStructure, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+		factories : Provider<Factories>) {
+		super(internalStructure, namespaceService, nameParser, factories)
 	}
 
 }

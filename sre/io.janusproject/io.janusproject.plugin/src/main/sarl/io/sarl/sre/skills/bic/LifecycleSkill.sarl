@@ -23,12 +23,14 @@ package io.sarl.sre.skills.bic
 import io.sarl.core.Lifecycle
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.LifecycleService
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -47,24 +49,27 @@ skill LifecycleSkill implements Lifecycle {
 
 	val lifecycle : LifecycleService
 
+	val factories : Provider<Factories>
+
 	/** Constructor.
 	 */
 	@Inject
-	new (service : LifecycleService) {
+	new (service : LifecycleService, factories : Provider<Factories>) {
 		super()
 		this.lifecycle = service
+		this.factories = factories
 	}
 
 	@SuppressWarnings("discouraged_reference")
 	def killMe(terminationCause : Object) {
 		var postTreatment : Runnable = null
-		var state = getLife(owner).state
+		var state = getLife(owner, this.factories).state
 		// The agent should be killed by a specific asynchronous event.
 		// This event is supported by the internal event bus implementation.
 		if (state == AgentState::INITIALIZING) {
 			// Indicate to the starting function into AgentLife that the initialization has failed.
 			postTreatment = [
-				getLife(owner).state = AgentState::DYING
+				getLife(owner, this.factories).state = AgentState::DYING
 			]
 		} else if (state == AgentState::ALIVE) {
 			// Synchronous killing
@@ -77,7 +82,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawn(agentType : Class<? extends Agent>, params : Object*) {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {
@@ -94,7 +99,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {
@@ -112,7 +117,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -126,7 +131,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
-		if (getLife(owner).state.alive && context !== null) {
+		if (getLife(owner, this.factories).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -140,7 +145,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
-		if (getLife(owner).state.alive && context !== null) {
+		if (getLife(owner, this.factories).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -154,7 +159,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnWithID(agentClass : Class<? extends Agent>, agentID : UUID, params : Object*) {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {

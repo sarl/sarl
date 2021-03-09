@@ -30,9 +30,9 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.context.InternalContextMembershipListener
@@ -67,15 +67,19 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	var internalEventEmitter : InternalContextMembershipListener
 
+	var factories : Provider<Factories>
+
 	/** Constructor.
 	 */
 	@Inject
 	new (service : ContextService, @KernelScope outerContextProvider : Provider<ExternalContextMemberListener>,
-		@KernelScope innerContextProvider : InternalContextMembershipListenerFactory) {
+		@KernelScope innerContextProvider : InternalContextMembershipListenerFactory,
+		factories : Provider<Factories>) {
 		super()
 		this.contextService = service
 		this.externalEventEmitter = outerContextProvider.get
 		this.innerContextProvider = innerContextProvider
+		this.factories = factories
 	}
 
 	protected override install {
@@ -104,7 +108,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	def getContext(contextID : UUID) : AgentContext {
 		assert contextID !== null
-		var life = getLife(owner)
+		var life = getLife(owner, this.factories)
 		if (life === null) {
 			return null
 		}
@@ -123,8 +127,8 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	}
 
 	def getAllContexts : ConcurrentCollection<AgentContext> {
-		val result = new ConcurrentCollectionLinkedDeque<AgentContext>();
-		val collection = getLife(owner)?.enclosingContexts
+		val result = this.factories.get.concurrentCollectionFactory.newCollection
+		val collection = getLife(owner, this.factories)?.enclosingContexts
 		if (collection !== null) {
 			// TODO optimize the following loop
 			for (t : collection.map[var local : AgentContext = it.context; local]) {
@@ -150,7 +154,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		assert contextID !== null
 		assert expectedDefaultSpaceID !== null
 
-		var life = getLife(owner)
+		var life = getLife(owner, this.factories)
 		if (life !== null && life.state.alive) {
 			if (life.defaultContext?.context.ID == contextID) {
 				return null
@@ -189,7 +193,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	def leave(contextID : UUID) : boolean {
 		assert contextID !== null
 
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life === null) {
 			return false
 		}

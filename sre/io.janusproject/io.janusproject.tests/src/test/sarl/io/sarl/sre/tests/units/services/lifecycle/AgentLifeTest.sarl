@@ -40,6 +40,7 @@ import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent1
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyLogging
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill
@@ -114,7 +115,7 @@ class AgentLifeTest {
 		this.eventBus = new MySkill().spy
 		this.logging = new MyLogging().spy
 		this.^agent = new MyAgent1(this.eventBus, this.logging).spy
-		this.life = ^agent.getLife
+		this.life = ^agent.getLife[SreTestUtilities::newFactories]
 		// Remove the interaction
 		reset(this.eventBus)
 	}

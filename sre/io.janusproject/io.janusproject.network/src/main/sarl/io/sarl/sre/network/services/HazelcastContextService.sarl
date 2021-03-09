@@ -30,6 +30,7 @@ import com.hazelcast.map.MapEvent
 import io.sarl.lang.core.Agent
 import io.sarl.sre.KernelScope
 import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextFactory
 import io.sarl.sre.services.context.MemoryBasedContextService
@@ -39,7 +40,6 @@ import java.util.UUID
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
-import java.util.concurrent.locks.ReadWriteLock
 
 /** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.
  *
@@ -69,9 +69,10 @@ class HazelcastContextService extends MemoryBasedContextService {
 
 	@Inject
 	new(sreConfig : SreConfig, @KernelScope rootContext : Context, logger : LoggingService,
-		lockProvider : Provider<ReadWriteLock>, injector : Injector, factory : ContextFactory,
+		injector : Injector, factory : ContextFactory,
+		factories : Provider<Factories>,
 		hazelcastInstance : HazelcastInstance) {
-		super(rootContext, logger, lockProvider, injector, factory);
+		super(rootContext, logger, injector, factory, factories);
 
 		this.hazelcastInstance = hazelcastInstance
 

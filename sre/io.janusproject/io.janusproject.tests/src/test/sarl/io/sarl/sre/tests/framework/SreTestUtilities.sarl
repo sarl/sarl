@@ -22,15 +22,23 @@
 package io.sarl.sre.tests.framework
 
 import io.sarl.lang.core.Agent
+import io.sarl.lang.util.DefaultConcurrentCollectionFactory
 import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.util.SequenceListenerNotifier
+import io.sarl.util.SmartListenerCollection
 import java.util.UUID
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReadWriteLock
+
+import static extension org.mockito.Mockito.*
 
 /** Various utilities for helping to set up the tests for the SRE.
  * These utilities are specific to the Janus framework.
@@ -91,6 +99,26 @@ final class SreTestUtilities {
 	static def getSreConfig(rc : SreRunContext) : SreConfig {
 		var kern = (rc.bootstrap as SreMain).getKernel
 		return kern.configuration
+	}
+
+	/** Create an instance of factories. */
+	static def newFactories : Factories {
+		new Factories(
+			[
+				new DefaultConcurrentCollectionFactory
+			],
+			[
+				val lock = typeof(ReadWriteLock).mock
+				when(lock.writeLock).thenAnswer [typeof(Lock).mock]
+				when(lock.readLock).thenAnswer [typeof(Lock).mock]
+				return lock
+			],
+			[
+				typeof(Lock).mock
+			],
+			[
+				new SmartListenerCollection(new SequenceListenerNotifier).spy
+			])
 	}
 
 }

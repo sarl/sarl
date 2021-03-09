@@ -23,7 +23,8 @@ package io.sarl.sre.services.probing.probes
 import io.sarl.api.probing.IProbeListener
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.api.probing.Probe
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
+import io.sarl.util.SmartListenerCollection
 import java.lang.ref.WeakReference
 import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
@@ -57,7 +58,7 @@ abstract class AbstractProbe<T> implements Probe<T> {
 
 	val active = new AtomicBoolean(true)
 
-	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
+	val factories : Factories
 
 	/** Constructor.
 	 * 
@@ -65,19 +66,16 @@ abstract class AbstractProbe<T> implements Probe<T> {
 	 * @param name the name of the probe
 	 * @param uri the UI of the field.
 	 * @param type the expected type of the probed value.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
-	protected new (manager : IProbeReleaseListener, name : String, uri : URI, type : Class<T>,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+	protected new (manager : IProbeReleaseListener, name : String, uri : URI, type : Class<T>, factories : Provider<Factories>) {
 		assert manager !== null
 		assert type !== null
-		assert listenerCollectionProvider !== null
 		this.manager = new WeakReference(manager)
 		this.name = name
 		this.uri = uri
 		this.type = type
-		this.listenerCollectionProvider = listenerCollectionProvider
+		this.factories = factories.get
 	}
 
 	@Pure
@@ -121,7 +119,7 @@ abstract class AbstractProbe<T> implements Probe<T> {
 		assert listener !== null
 
 		if (this.listeners === null) {
-			this.listeners = this.listenerCollectionProvider.get
+			this.listeners = this.factories.newListenerCollection
 		}
 		this.listeners.add(typeof(IProbeListener), listener)
 
@@ -153,7 +151,7 @@ abstract class AbstractProbe<T> implements Probe<T> {
 		assert listener !== null
 
 		if (this.listeners === null) {
-			this.listeners = this.listenerCollectionProvider.get
+			this.listeners = this.factories.newListenerCollection
 		}
 		this.listeners.add(typeof(IProbeReleaseListener), listener)
 	}

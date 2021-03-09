@@ -32,18 +32,17 @@ import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetSkipListSet
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.ContextsConfig
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractSpace
 import io.sarl.sre.spaces.SpaceListener
 import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import io.sarl.util.DefaultSpace
+import io.sarl.util.SmartListenerCollection
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
@@ -100,6 +99,8 @@ abstract class SpaceRepository implements SpaceListener {
 	@Accessors(PROTECTED_GETTER)
 	val lock : ReadWriteLock
 
+	val factories : Factories
+
 	/** Constructor.
 	 * 
 	 * @param injector the injector.
@@ -107,20 +108,20 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @param logger the logging service.
 	 * @param config the configuration.
 	 * @param specificiationFactory the factory of space spacification.
-	 * @param listenerCollection the instance of the listener collection.
+	 * @param factories the provider of factories tool.
 	 */
 	@Inject
 	new (injector : Injector, executor : ExecutorService, logger : LoggingService, 
 		config : SreConfig, specificationFactory : SreSpaceSpecificationFactory,
-		listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>) {
+		factories : Provider<Factories>) {
 		this.injector = injector
 		this.executor = executor
+		this.factories = factories.get
 		this.logger = createLogger(logger)
 		this.contextsRepositoryConfig = config.contexts
-		this.listeners = listenerCollection
+		this.listeners = this.factories.newListenerCollection
 		this.specificationFactory = specificationFactory
-		this.lock = lockProvider.get
+		this.lock = this.factories.newReadWriteLock
 	}
 
 	/** Create the logger for this repository.
@@ -301,7 +302,7 @@ abstract class SpaceRepository implements SpaceListener {
 	
 			val list = this.spacesBySpec.computeIfAbsent(
 				id.spaceSpecification) [
-				new ConcurrentSetSkipListSet<SpaceDescription>
+				this.factories.concurrentCollectionFactory.<SpaceDescription>newSet(null)
 			]
 			list += description
 	
@@ -340,7 +341,7 @@ abstract class SpaceRepository implements SpaceListener {
 				spaceId.life(description)
 				val list = this.spacesBySpec.computeIfAbsent(
 					spaceId.spaceSpecification) [
-					new ConcurrentSetSkipListSet<SpaceDescription>
+					this.factories.concurrentCollectionFactory.<SpaceDescription>newSet(null)
 				]
 				list += description
 				if (^space instanceof AbstractSpace) {
@@ -632,7 +633,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @return the collection of all spaces stored in this repository.
 	 */
 	def getSpaces : ConcurrentCollection<? extends Space> {
-		var translated = new ConcurrentCollectionLinkedDeque
+		var translated = this.factories.concurrentCollectionFactory.newCollection
 		val rlock = getLock.readLock
 		rlock.lock
 		try {
@@ -655,7 +656,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @return the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository
 	 */
 	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : ConcurrentCollection<S> with S extends Space {
-		var mapped = new ConcurrentCollectionLinkedDeque<S>
+		var mapped = this.factories.concurrentCollectionFactory.newCollection
 		val rlock = getLock.readLock
 		rlock.lock
 		try {

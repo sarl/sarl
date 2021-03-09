@@ -24,44 +24,44 @@ import com.google.inject.AbstractModule
 import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.util.ListenerNotifier
-import io.sarl.util.SequenceListenerNotifier
+import io.sarl.lang.util.ConcurrentCollectionFactory
+import io.sarl.lang.util.DefaultConcurrentCollectionFactory
 import javax.inject.Singleton
 
 /** 
- * Module for configuring the methods for notifying the event listeners.
+ * Module for configuring the providers of concurrent collections.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.12
  */
-class ListenerNotifierModule extends AbstractModule {
+class ConcurrentCollectionModule extends AbstractModule {
 
 	protected override configure {
-		typeof(ListenerNotifier).bind.to(typeof(SequenceListenerNotifier)).in(typeof(Singleton))
+		typeof(ConcurrentCollectionFactory).bind.to(typeof(DefaultConcurrentCollectionFactory)).in(typeof(Singleton))
 	}
 
 }
 
-/** Provider of the module for configuring the methods for notifying the event listeners..
+/** Provider of the module for configuring the providers of concurrent collections.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.12
  */
-class ListenerNotifierModuleProvider implements BQModuleProvider {
+class ConcurrentCollectionModuleProvider implements BQModuleProvider {
 
 	override module : Module {
-		return new ListenerNotifierModule
+		return new ConcurrentCollectionModule
 	}
 
 	override moduleBuilder : BQModule.Builder {
 		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
-			Messages::ListenerNotifierModuleProvider_0);
+			Messages::ConcurrentCollectionModuleProvider_0);
 	}
 
 }

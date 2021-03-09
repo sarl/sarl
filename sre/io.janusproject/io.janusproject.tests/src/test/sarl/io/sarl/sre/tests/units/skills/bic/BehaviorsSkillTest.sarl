@@ -27,13 +27,13 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.Scope
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.skills.bic.BehaviorsSkill
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent
 import io.sarl.sre.tests.units.skills.bic.mocks.MyInternalEventBusSkill
 import io.sarl.sre.tests.units.skills.bic.mocks.MyInternalSchedulesSkill
@@ -104,18 +104,18 @@ class BehaviorsSkillTest {
 		this.schedules = new MyInternalSchedulesSkill().spy
 		this.^agentId = UUID::randomUUID
 		this.^agent = new MyAgent(contextId, this.^agentId, this.eventBus, this.schedules).spy
-		this.^skill = new BehaviorsSkill
+		this.^skill = new BehaviorsSkill [SreTestUtilities::newFactories]
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 		reset(this.schedules, this.eventBus, this.eventBusListener, this.^agent)
 	}
 
 	private def forceAlive : void {
 		// Force being alive
-		AgentLife::getLife(this.^agent).state = AgentState::ALIVE
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).state = AgentState::ALIVE
 	}
 	
 	private def forceNoBehavior : void {
-		this.eventBus.setRegisteredEventBusListeners(new ConcurrentCollectionLinkedDeque)
+		this.eventBus.setRegisteredEventBusListeners(SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection)
 		reset(this.schedules, this.eventBus, this.eventBusListener, this.^agent)
 	}
 
@@ -124,7 +124,7 @@ class BehaviorsSkillTest {
 
 		var beh2 = typeof(Behavior).mock
 
-		var theset = new ConcurrentCollectionLinkedDeque<Behavior>
+		var theset = SreTestUtilities::newFactories.concurrentCollectionFactory.<Behavior>newCollection
 		theset += beh1
 		theset += beh2
 		this.eventBus.setRegisteredEventBusListeners(theset)
@@ -137,7 +137,7 @@ class BehaviorsSkillTest {
 		var innerContext = typeof(Context).mock
 		var defaultSpace = typeof(OpenEventSpace).mock
 		when(innerContext.defaultSpace).thenReturn(defaultSpace)
-		AgentLife::getLife(this.^agent).innerContext = innerContext
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).innerContext = innerContext
 		return defaultSpace
 	}
 

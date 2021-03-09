@@ -22,12 +22,12 @@
 package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -76,7 +76,7 @@ class EventBusTest {
 	def setUp : void {
 		this.registry = typeof(IBehaviorGuardEvaluatorRegistry).mock
 		this.executor = typeof(InternalSchedules).mock
-		this.eventBus = new EventBus([this.executor], this.registry)
+		this.eventBus = new EventBus([this.executor], this.registry, [SreTestUtilities::newFactories])
 	}
 
 	@Test
@@ -141,7 +141,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]
@@ -180,7 +180,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]
@@ -222,7 +222,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]
@@ -261,7 +261,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]
@@ -297,7 +297,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForRegisteredListeners(typeof(Event).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]
@@ -337,7 +337,7 @@ class EventBusTest {
 		//
 		var evaluator = typeof(IBehaviorGuardEvaluator).mock
 		when(this.registry.getBehaviorGuardEvaluatorsForDirectAccessListener(typeof(Event).any, typeof(Object).any)).thenAnswer [
-			var evaluators = new ConcurrentCollectionLinkedDeque
+			var evaluators = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			evaluators += evaluator
 			return evaluators
 		]

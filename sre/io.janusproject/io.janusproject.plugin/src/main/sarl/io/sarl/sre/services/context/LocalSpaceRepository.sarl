@@ -22,14 +22,13 @@ package io.sarl.sre.services.context
 
 import com.google.inject.Injector
 import io.sarl.sre.boot.configs.SreConfig
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.util.Map
 import java.util.TreeMap
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -55,14 +54,13 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * @param loggingService the logging service.
 	 * @param config accessor to the configuration.
 	 * @param specificationFactory the factory of space specifications.
-	 * @param listenerCollection the instance of the listener collection.
-	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
+	 * @param factories the provider of factories tool.
 	 */
 	@Inject
 	new (injector : Injector, executor : ExecutorService, loggingService : LoggingService, config : SreConfig,
-		specificationFactory : SreSpaceSpecificationFactory, listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>) {
-		this(injector, executor, loggingService, config, specificationFactory, null, listenerCollection, lockProvider)
+		specificationFactory : SreSpaceSpecificationFactory,
+		factories : Provider<Factories>) {
+		this(injector, executor, loggingService, config, specificationFactory, null, factories)
 	}
 
 	/** Constructor.
@@ -72,16 +70,14 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * @param loggingService the logging service.
 	 * @param config the configuration.
 	 * @param specificationFactory the factory of space specifications.
-	 * @param listenerCollection the instance of the listener collection.
-	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
+	 * @param factories the provider of factories tool.
 	 */
 	new (injector : Injector, executor : ExecutorService,
 		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
 		internalStructure : Map<UUID, SpaceDescription>,
-		listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(injector, executor, loggingService, config, specificationFactory, listenerCollection, lockProvider)
+		factories : Provider<Factories>) {
+		super(injector, executor, loggingService, config, specificationFactory, factories)
 		if (internalStructure !== null) {
 			this.spaces = internalStructure
 		} else {

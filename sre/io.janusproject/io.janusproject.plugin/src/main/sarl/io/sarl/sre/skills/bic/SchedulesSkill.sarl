@@ -29,15 +29,15 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Capacities
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
+import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.IssueCodes
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
-import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetSkipListSet
 import java.lang.ref.WeakReference
 import java.util.Collection
 import java.util.EventListener
@@ -51,6 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
 import javax.inject.Inject
+import javax.inject.Provider
 import org.arakhne.afc.vmutil.json.JsonBuffer
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
@@ -85,14 +86,17 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	//val uuidTimeBasedGenerator : TimeBasedGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
 	var taskCountID : AtomicLong = new AtomicLong(Long.MAX_VALUE)
 
+	val factories : Provider<Factories>
+
 	/** 
 	 * Constructor.
 	 */
 	@Inject
-	new (service : ExecutorService, @KernelScope failureListenerFactory : FailureListenerFactory) {
+	new (service : ExecutorService, @KernelScope failureListenerFactory : FailureListenerFactory, factories : Provider<Factories>) {
 		super()
 		this.executorService = service
 		this.failureListenerFactory = failureListenerFactory
+		this.factories = factories
 	}
 
 	protected override prepareUninstallation {
@@ -211,7 +215,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	private def bindToBehavior(task : AgentTask, caller : Object = null) {
 		var initiator = caller ?: (task.initiator ?: (Capacities::getCaller ?: this.owner))
 		if (initiator instanceof Behavior) {
-			getLife(initiator).addTaskReference(task)
+			getLife(initiator, this.factories).addTaskReference(task)
 		}
 	}
 
@@ -379,14 +383,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def task(name : String) : AgentTask {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			return createTaskIfNecessary(name, false, false).task
 		}
 		return null
 	}
 
 	def setName(task : AgentTask, name : String) {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			val realName = name.ensureTaskName
 			val prefix = realName + "-"
 			var i = 0
@@ -432,7 +436,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def in(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.schedule(logger, delay, TimeUnit::MILLISECONDS,
@@ -444,7 +448,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def every(task : AgentTask = null, period : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.scheduleAtFixedRate(logger, 0, period, TimeUnit::MILLISECONDS,
@@ -456,7 +460,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner, this.factories).state.alive) {
 			var description = preRunTask(task, procedure)
 			var future : Future<?>
 			if (delay <= 0) {
@@ -508,7 +512,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def getActiveTasks : ConcurrentSet<String> {
-		return new ConcurrentSetSkipListSet<String>(getRepository.keySet)
+		return this.factories.get.concurrentCollectionFactory.newSet(null, getRepository.keySet)
 	}
 
 	/** 

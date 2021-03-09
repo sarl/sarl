@@ -29,17 +29,18 @@ import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.KernelScope
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
-import io.sarl.lang.util.ConcurrentCollection
-import java.util.concurrent.locks.ReadWriteLock
-import io.sarl.lang.util.OutParameter
 
 /** 
  * Implementation of an agent context in the SRE platform.
@@ -81,22 +82,20 @@ class Context extends AgentTrait implements AgentContext {
 	 * @param id identifier of the context.
 	 * @param defaultSpaceID identifier of the default space in the context.
 	 * @param owner is the owner of the context. If {@code null}, it is the root context.
-	 * @param lock the synchronization lock to use.
+	 * @param factories the provider of factories.
 	 * @param spaceRepositoryProvider the provider of space repository
 	 * @param logger the logging service.
 	 * @param listenerFactory the factory of space listeners.
-	 * @param lockProvider the provider of locks.
 	 */
 	new (id : UUID, defaultSpaceID : UUID, owner : Agent, spaceRepositoryProvider : Provider<SpaceRepository>,
-		loggingService : LoggingService, listenerFactory : SpaceRepositoryListenerFactory,
-		lockProvider : Provider<ReadWriteLock>) {
+		factories : Provider<Factories>, loggingService : LoggingService, listenerFactory : SpaceRepositoryListenerFactory) {
 		super(owner)
 		this.id = id
 		this.defaultSpaceID = defaultSpaceID
 		this.repositoryProvider = spaceRepositoryProvider
 		this.logger = loggingService.getKernelModuleLogger(Messages::Context_1)
 		this.spaceEventEmitterFactory = listenerFactory
-		this.lock = lockProvider.get
+		this.lock = factories.get.newReadWriteLock
 	}
 
 	/** Replies the lock to be used.
@@ -334,9 +333,9 @@ interface ContextFactory {
 class DefaultContextFactory implements ContextFactory {
 
 	val spaceRepositoryProvider : Provider<SpaceRepository>
-	val lockProvider : Provider<ReadWriteLock>
 	val logger : LoggingService
 	val listenerFactory : Provider<SpaceRepositoryListenerFactory>
+	val factories : Provider<Factories>
 
 	/** Constructor with injected parameters.
 	 * 
@@ -344,21 +343,22 @@ class DefaultContextFactory implements ContextFactory {
 	 * @param lockProvider the provider of synchronization locks.
 	 * @param logger the logging service.
 	 * @param listenerFactory the factory of space listeners.
+	 * @param factories the provider of factories tool.
 	 */
 	@Inject
 	new (spaceRepositoryProvider : Provider<SpaceRepository>,
-		lockProvider : Provider<ReadWriteLock>,
 		logger : LoggingService,
-		@KernelScope listenerFactory : Provider<SpaceRepositoryListenerFactory>) {
+		@KernelScope listenerFactory : Provider<SpaceRepositoryListenerFactory>,
+		factories : Provider<Factories>) {
 		this.spaceRepositoryProvider = spaceRepositoryProvider
-		this.lockProvider = lockProvider
 		this.logger = logger
 		this.listenerFactory = listenerFactory
+		this.factories = factories
 	}
 
 	override newInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
-		new Context(contextID, defaultSpaceID, owner, this.spaceRepositoryProvider, this.logger,
-			this.listenerFactory.get, this.lockProvider)
+		new Context(contextID, defaultSpaceID, owner, this.spaceRepositoryProvider,
+			this.factories, this.logger, this.listenerFactory.get)
 	}
 
 }

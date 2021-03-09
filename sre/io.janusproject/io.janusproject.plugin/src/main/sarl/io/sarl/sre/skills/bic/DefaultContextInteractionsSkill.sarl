@@ -30,7 +30,10 @@ import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
+import io.sarl.sre.internal.Factories
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -45,9 +48,16 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  */
 skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInteractions {
 
+	val factories : Provider<Factories>
+
+	@Inject
+	new (factories : Provider<Factories>) {
+		this.factories = factories
+	}
+
 
 	def getDefaultContext : AgentContext {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		assert life !== null
 		val reference = life.defaultContext
 		if (reference === null) {
@@ -57,7 +67,7 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 	}
 
 	def getDefaultSpace : EventSpace {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		assert life !== null
 		val reference = life.defaultContext
 		if (reference === null) {
@@ -67,7 +77,7 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 	}
 
 	def getDefaultAddress : Address {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		assert life !== null
 		val reference = life.defaultContext
 		if (reference === null) {

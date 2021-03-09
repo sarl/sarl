@@ -22,9 +22,8 @@ package io.sarl.sre.services.probing.probes
 
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.probing.IProbeReleaseListener
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import java.net.URI
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 
 /** 
@@ -48,12 +47,10 @@ class FloatFieldProbe extends AbstractFieldProbe<Float> {
 	 * @param name the name of the probe
 	 * @param uri the UI of the field.
 	 * @param field the accessor to the probed field.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
-	new (manager : IProbeReleaseListener, name : String, uri : URI, field : FieldAccess,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
-		super(manager, name, uri, typeof(Float), field, listenerCollectionProvider, lockProvider)
+	new (manager : IProbeReleaseListener, name : String, uri : URI, field : FieldAccess, factories : Provider<Factories>) {
+		super(manager, name, uri, typeof(Float), field, factories)
 	}
 	
 	protected override areEqualValues(newValue : Float, oldValue : Float) : boolean {

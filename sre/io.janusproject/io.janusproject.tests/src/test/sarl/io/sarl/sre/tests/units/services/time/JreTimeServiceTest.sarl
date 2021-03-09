@@ -21,8 +21,6 @@
 
 package io.sarl.sre.tests.units.services.time
 
-import io.sarl.sre.internal.SequenceListenerNotifier
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.time.JreTimeService
 import io.sarl.sre.services.time.TimeListener
 import io.sarl.sre.services.time.TimeService
@@ -30,6 +28,8 @@ import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.SequenceListenerNotifier
+import io.sarl.util.SmartListenerCollection
 import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

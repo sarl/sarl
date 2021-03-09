@@ -31,6 +31,7 @@ import io.sarl.sre.skills.internal.PolymorphicEventBusFactory
 import io.sarl.sre.skills.internal.ReflectEventBusFactory
 import javax.inject.Provider
 import javax.inject.Singleton
+import io.sarl.sre.internal.Factories
 
 /** 
  * Module for configuring the agents' event buses.
@@ -48,16 +49,16 @@ class EventBusModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	def providesEventBusFactory(sreConfig : Provider<SreConfig>) : EventBusFactory {
+	def providesEventBusFactory(sreConfig : Provider<SreConfig>, factories : Provider<Factories>) : EventBusFactory {
 		var cfg = sreConfig.get
 		var type = cfg.services.lifecycle.eventBusType
 		assert type !== null
 		switch (type) {
 			case POLYMORPHIC: {
-				return new PolymorphicEventBusFactory
+				return new PolymorphicEventBusFactory(factories)
 			}
 			default: {
-				return new ReflectEventBusFactory
+				return new ReflectEventBusFactory(factories)
 			}
 		}
 	}

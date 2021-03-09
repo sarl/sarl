@@ -26,10 +26,10 @@ import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetCopyOnWriteSet
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.internal.MutableBoolean
+import io.sarl.sre.internal.ObjectComparator
 import io.sarl.sre.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 import java.util.Comparator
@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 import static extension io.sarl.lang.core.SREutils.*
+import javax.inject.Provider
 
 /** 
  * Registry of all {@code IBehaviorGuardEvaluator}.
@@ -73,10 +74,9 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
 	 * 
 	 * <p>The registry will use concurrent data structures.
-	 * 
-	 * @param internalMap the internal map.
 	 */
-	new {
+	new (factories : Provider<Factories>) {
+		super(factories)
 		this.registeredEvaluators = new ConcurrentHashMap
 	}
 
@@ -106,7 +106,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	override getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		assert listener !== null
-		val allEvaluators = new ConcurrentCollectionLinkedDeque
+		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
 		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
 			if (listener.doIsSupportedEvent(^event.class)) {
 				allEvaluators += new PolymorphicBehaviorGuardEvaluator(listener, null)
@@ -127,7 +127,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 				val dt = internalDataStructureForRegisteredListeners
 				for (eventType : events) {
 					val evaluators = dt.computeIfAbsent(eventType) [
-						new ConcurrentSetCopyOnWriteSet
+						this.factories.concurrentCollectionFactory.<PolymorphicBehaviorGuardEvaluator>newSet(ObjectComparator::SINGLETON)
 					]
 					val success = evaluators += evaluator
 					if (!success) {

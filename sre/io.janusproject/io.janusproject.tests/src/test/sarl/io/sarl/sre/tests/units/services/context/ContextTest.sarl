@@ -33,12 +33,11 @@ import io.sarl.sre.services.context.SpaceRepositoryListener
 import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.locks.Lock
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
 import javax.inject.Provider
 import org.junit.jupiter.api.BeforeEach
@@ -87,17 +86,8 @@ class ContextTest {
 	@Nullable
 	var logging : LoggingService
 
-	@Nullable
-	protected var lockProvider : Provider<ReadWriteLock>
-
 	@BeforeEach
 	def setUp : void {
-		this.lockProvider = [
-			val l = typeof(ReadWriteLock).mock
-			when(l.readLock).thenReturn(typeof(Lock).mock)
-			when(l.writeLock).thenReturn(typeof(Lock).mock)
-			return l
-		]
 		this.logging = typeof(LoggingService).mock
 		this.contextId = UUID::randomUUID
 		this.spaceId = UUID::randomUUID
@@ -115,7 +105,7 @@ class ContextTest {
 		}
 
 		this.context = new Context(this.contextId, this.spaceId, this.root,
-			provider, this.logging, factory, this.lockProvider)
+			provider, [SreTestUtilities::newFactories], this.logging, factory)
 	}
 
 	@Test

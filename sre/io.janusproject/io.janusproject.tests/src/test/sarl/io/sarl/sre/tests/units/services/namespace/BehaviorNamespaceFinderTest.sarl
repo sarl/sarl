@@ -30,7 +30,6 @@ import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
@@ -38,6 +37,7 @@ import io.sarl.sre.services.namespace.BehaviorNamespaceFinder
 import io.sarl.sre.spaces.Participant
 import io.sarl.sre.spaces.SpaceWithParticipants
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -356,7 +356,7 @@ class BehaviorNamespaceFinderTest {
 		@SuppressWarnings("use_reserved_sarl_annotation")
 		@PrivateAPI(isCallerOnly = true)
 		def initBeh(beh0 : Behavior, beh1 : Behavior) {
-			var set = new ConcurrentCollectionLinkedDeque
+			var set = SreTestUtilities::newFactories.concurrentCollectionFactory.newCollection
 			set += beh0
 			set += beh1
 			var behs = typeof(MyBehaviors).mock

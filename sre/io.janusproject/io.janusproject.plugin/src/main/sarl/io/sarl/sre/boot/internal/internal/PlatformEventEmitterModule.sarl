@@ -28,6 +28,7 @@ import io.bootique.BQModuleProvider
 import io.sarl.sre.KernelScope
 import io.sarl.sre.internal.AgentEventEmitter
 import io.sarl.sre.internal.ContextMemberEventEmitter
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.internal.SpaceEventEmitterFactory
 import io.sarl.sre.internal.SpaceParticipantEventEmitterFactory
 import io.sarl.sre.internal.SubHolonContextEventEmitterFactory
@@ -37,10 +38,10 @@ import io.sarl.sre.services.context.InternalContextMembershipListenerFactory
 import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.skills.bic.FailureListenerFactory
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import javax.inject.Provider
 import javax.inject.Singleton
-import io.sarl.sre.skills.bic.FailureListenerFactory
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
@@ -65,8 +66,8 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@Provides
 	@KernelScope
 	@Singleton
-	static def provideInternalContextMembershipListenerFactory : InternalContextMembershipListenerFactory {
-		new SubHolonContextEventEmitterFactory
+	static def provideInternalContextMembershipListenerFactory(factories : Provider<Factories>) : InternalContextMembershipListenerFactory {
+		new SubHolonContextEventEmitterFactory(factories)
 	}
 
 	@Provides

@@ -22,10 +22,11 @@ package io.sarl.sre.services.lifecycle
 
 import io.sarl.core.AgentTask
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetSkipListSet
+import io.sarl.sre.internal.Factories
 import java.lang.ref.WeakReference
 import java.util.Comparator
 import java.util.Set
+import javax.inject.Provider
 
 /** 
  * Describes any information that is required by SRE for supporting the agent trait's life. 
@@ -49,13 +50,23 @@ abstract class AgentTraitLife {
 
 	var tasks : ConcurrentSet<WeakReference<AgentTask>>
 
+	val factories : Provider<Factories>
+
+	/** Constructor.
+	 *
+	 * @param factories the provider of factories tool.
+	 */
+	new (factories : Provider<Factories>) {
+		this.factories = factories
+	}
+
 	/** Add a reference to a task that is assumed to be cancelled if the behavior becomes unregistered.
 	 * 
 	 * @param task the task to save.
 	 */
 	def addTaskReference(task : AgentTask) {
 		if (this.tasks === null) {
-			this.tasks = new ConcurrentSetSkipListSet<WeakReference<AgentTask>>(COMPARATOR)
+			this.tasks = this.factories.get.concurrentCollectionFactory.<WeakReference<AgentTask>>newSet(COMPARATOR)
 		}
 		this.tasks += new WeakReference(task)
 	}

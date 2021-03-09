@@ -22,7 +22,7 @@ package io.sarl.sre.services.probing.service
 
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import java.util.concurrent.ConcurrentHashMap
@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.concurrent.locks.ReadWriteLock
 
 /** 
  * This class is the implementation of a probe service that is updating the values asynchronously.
@@ -59,13 +58,12 @@ class AsynchronousProbeService extends AbstractProbeService {
 	 * @param service the executor service.
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories the provider of factories tool.
 	 */
 	@Inject
 	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : INameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
-		super(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+		factories : Provider<Factories>) {
+		super(new ConcurrentHashMap, namespaceService, nameParser, factories)
 		this.executor = service
 	}
 

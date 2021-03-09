@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.services.time
 
+import io.sarl.util.SmartListenerCollection
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import javax.inject.Inject
-import io.sarl.sre.internal.SmartListenerCollection
+import javax.inject.Singleton
 
 /**
  * Time service based on the JRE standard time.

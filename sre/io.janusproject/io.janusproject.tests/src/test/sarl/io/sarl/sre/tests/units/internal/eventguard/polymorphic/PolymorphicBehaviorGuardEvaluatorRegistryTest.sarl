@@ -29,6 +29,7 @@ import io.sarl.lang.core.Event
 import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluatorRegistry
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent0
 import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.polymorphic.mocks.TestAgent2
@@ -72,7 +73,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistryTest {
 
 	@BeforeEach
 	def setUp : void {
-		this.registry = new PolymorphicBehaviorGuardEvaluatorRegistry
+		this.registry = new PolymorphicBehaviorGuardEvaluatorRegistry [SreTestUtilities::newFactories]
 		this.internalStructure = this.registry.internalDataStructureForRegisteredListeners
 	}
 

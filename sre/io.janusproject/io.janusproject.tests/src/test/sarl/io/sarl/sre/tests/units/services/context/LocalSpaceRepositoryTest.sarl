@@ -22,10 +22,9 @@
 package io.sarl.sre.tests.units.services.context
 
 import com.google.inject.Injector
-import io.sarl.sre.internal.SequenceListenerNotifier
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
+import io.sarl.sre.tests.framework.SreTestUtilities
 import java.util.TreeMap
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName
@@ -46,10 +45,8 @@ import static extension org.mockito.Mockito.*
 class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, TreeMap<UUID, SpaceDescription>> {
 
 	protected def newSpaceRepository : LocalSpaceRepository {
-		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
 		new LocalSpaceRepository(typeof(Injector).mock, this.executor, this.logger, this.configuration,
-			this.specificationFactory, this.internalStructure,
-			coll, this.lockProvider)
+			this.specificationFactory, this.internalStructure, [SreTestUtilities::newFactories])
 	}
 
 	protected override newInternalStructure : TreeMap<UUID, SpaceDescription> {

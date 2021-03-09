@@ -24,10 +24,10 @@ package io.sarl.sre.internal.eventguard.reflect
 import io.sarl.lang.annotation.PerceptGuardEvaluator
 import io.sarl.lang.core.Event
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetCopyOnWriteSet
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.internal.MutableBoolean
+import io.sarl.sre.internal.ObjectComparator
 import io.sarl.sre.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
@@ -38,6 +38,7 @@ import java.util.Map.Entry
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.CopyOnWriteArraySet
+import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Data
 
 import static extension io.sarl.sre.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
@@ -76,7 +77,8 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * 
 	 * <p>The registry will use concurrent data structures.
 	 */
-	new {
+	new (factories : Provider<Factories>) {
+		super(factories)
 		this.registeredEvaluators = new ConcurrentHashMap
 		this.directEvaluators = new ConcurrentHashMap
 	}
@@ -136,7 +138,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 			val method = methodIterator.next
 			for (meth : method.methods) {
 				val evaluators = content.computeIfAbsent(method.type) [
-					new ConcurrentSetCopyOnWriteSet
+					this.factories.concurrentCollectionFactory.<Method>newSet(ObjectComparator::SINGLETON)
 				]
 				evaluators += meth
 			}
@@ -148,7 +150,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	override getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		assert listener !== null
-		val allEvaluators = new ConcurrentCollectionLinkedDeque
+		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
 		//
 		val eventTypes = ^event.class.flattenHierarchy
 		val dt = internalDataStructureForDirectAccessListeners
@@ -179,7 +181,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 			val method = methodIterator.next
 
 			val evaluators = internalDataStructureForRegisteredListeners.computeIfAbsent(method.type) [
-				new ConcurrentSetCopyOnWriteSet
+				this.factories.concurrentCollectionFactory.<GuardedEvaluator>newSet(ObjectComparator::SINGLETON)
 			]
 
 			for (meth : method.methods) {

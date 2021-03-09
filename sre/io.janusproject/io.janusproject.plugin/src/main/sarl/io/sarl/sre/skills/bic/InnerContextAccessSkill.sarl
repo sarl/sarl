@@ -28,12 +28,13 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.ConcurrentSet
-import io.sarl.lang.util.ConcurrentSetSkipListSet
 import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.AgentLife
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -56,12 +57,15 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 
 	val contextService : ContextService
 
+	val factories : Provider<Factories>
+
 	/** Constructor.
 	 */
 	@Inject
-	new (service : ContextService) {
+	new (service : ContextService, factories : Provider<Factories>) {
 		super()
 		this.contextService = service
+		this.factories = factories
 	}
 
 	/** Destroy the inner context instance.
@@ -69,7 +73,7 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 	 * <p>This function is thread-safe.
 	 */
 	private def detroyInnerContext {
-		var context = getLife(owner).setInnerContext(null)
+		var context = getLife(owner, this.factories).setInnerContext(null)
 		if (context !== null) {
 			var ^space = context.defaultSpace
 			// Unregister the agent from the default space
@@ -86,7 +90,7 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 
 	def getInnerContext : AgentContext {
 		val myself = owner
-		var life = getLife(myself)
+		var life = getLife(myself, this.factories)
 		var context = life.getInnerContext [
 			val spaceId = it.addressInInnerDefaultSpace.spaceID
 			val nctx= this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
@@ -118,17 +122,17 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 	}
 
 	def isInnerDefaultSpace(spaceID : SpaceID) : boolean {
-		val context = getLife(owner).getInnerContext(null)
+		val context = getLife(owner, this.factories).getInnerContext(null)
 		context !== null && spaceID == context.defaultSpace.spaceID
 	}
 
 	def isInnerDefaultSpace(spaceID : UUID) : boolean {
-		val context = getLife(owner).getInnerContext(null)
+		val context = getLife(owner, this.factories).getInnerContext(null)
 		context !== null && spaceID == context.defaultSpace.spaceID.ID
 	}
 
 	def getMemberAgentCount : int {
-		val context = getLife(owner).getInnerContext(null)
+		val context = getLife(owner, this.factories).getInnerContext(null)
 		if (context !== null) {
 			val nb = context.defaultSpace.numberOfStrongParticipants
 			assert nb >= 1, "The agent must be a participant of its inner conntext's default space"
@@ -138,9 +142,9 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 	}
 
 	def getMemberAgents : ConcurrentSet<UUID> {
-		val context = getLife(owner).getInnerContext(null)
+		val context = getLife(owner, this.factories).getInnerContext(null)
 		if (context !== null) {
-			var filtered = new ConcurrentSetSkipListSet
+			var filtered = this.factories.get.concurrentCollectionFactory.newSet(null)
 			val oid = this.owner.ID
 			context.defaultSpace.forEachStrongParticipant [
 				if (it != oid) {
@@ -149,11 +153,11 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 			]
 			return filtered
 		}
-		return new ConcurrentSetSkipListSet
+		return this.factories.get.concurrentCollectionFactory.newSet(null)
 	}
 
 	def hasMemberAgent : boolean {
-		val context = getLife(owner).getInnerContext(null)
+		val context = getLife(owner, this.factories).getInnerContext(null)
 		if (context !== null) {
 			return !context.defaultSpace.isPseudoEmpty(owner.ID)
 		}

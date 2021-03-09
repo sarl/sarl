@@ -34,6 +34,9 @@ import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import javax.inject.Provider
+import io.sarl.sre.internal.Factories
+import javax.inject.Inject
 
 /** 
  * SRE implementation of SARL's {@link Behaviors} built-in capacity.
@@ -49,8 +52,15 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 
 	uses InternalEventBusCapacity, InternalSchedules
 
+	val factories : Provider<Factories>
+
+	@Inject
+	new (factories : Provider<Factories>) {
+		this.factories = factories
+	}
+
 	protected override prepareUninstallation {
-		val adr = getLife(owner).addressInInnerDefaultSpace
+		val adr = getLife(owner, this.factories).addressInInnerDefaultSpace
 		typeof(Behavior).unregisterEventBusListener [
 			// Destroy the behavior
 			val ^event = new Destroy
@@ -69,7 +79,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 	override registerBehavior(attitude : Behavior, filter : (Event)=>boolean,
 		initializationParameters : Object*) : Behavior {
 		assert attitude !== null
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			val adr = life.addressInInnerDefaultSpace
 			attitude.registerEventBusListener(filter) [
@@ -84,7 +94,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 
 	override  unregisterBehavior(attitude : Behavior) : Behavior {
 		assert attitude !== null
-		var adr = getLife(owner).addressInInnerDefaultSpace
+		var adr = getLife(owner, this.factories).addressInInnerDefaultSpace
 		attitude.unregisterTasksForBehavior
 		attitude.unregisterEventBusListener [
 			// Destroy the behavior
@@ -101,7 +111,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent
 		// for real posting
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			var context = life.getInnerContext(null)
 			if (context !== null) {
@@ -123,14 +133,14 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 	}
 
 	override wake(^behavior : Behavior, ^event : Event) {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			fireEvent(^event, ^behavior)
 		}
 	}
 
 	override wake(behaviors : Iterable<Behavior>, ^event : Event) {
-		val life = getLife(owner)
+		val life = getLife(owner, this.factories)
 		if (life.state.alive) {
 			for (beh : behaviors) {
 				fireEvent(^event, beh)

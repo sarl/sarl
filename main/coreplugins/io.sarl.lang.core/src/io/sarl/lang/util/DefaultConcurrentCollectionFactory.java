@@ -19,28 +19,41 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.services.context;
+package io.sarl.lang.util;
 
-import io.sarl.sre.services.context.Context
-import io.sarl.sre.services.context.MemoryBasedContextService
-import io.sarl.sre.tests.framework.SreTestUtilities
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Tag
+import java.util.Collection;
+import java.util.Comparator;
 
-/**
+/** Factory of concurrent collections.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see NoConcurrencyCollectionFactory
  */
-@DisplayName("unit: MemoryBasedContextService test")
-@Tag("unit")
-@Tag("janus")
-@Tag("sre-unit")
-class MemoryBasedContextServiceTest extends AbstractInjectionBasedContextServiceTest<MemoryBasedContextService> {
+public class DefaultConcurrentCollectionFactory implements ConcurrentCollectionFactory {
 
-	override newService(rootContext : Context) : MemoryBasedContextService {
-		new MemoryBasedContextService(rootContext, this.loggingService, this.injector, this.contextFactory, [SreTestUtilities::newFactories])
+	@Override
+	public <T> ConcurrentCollection<T> newCollection() {
+		return new ConcurrentCollectionLinkedDeque<T>();
+	}
+
+	@Override
+	public <T> ConcurrentCollection<T> newCollection(Collection<T> toCopy) {
+		return new ConcurrentCollectionLinkedDeque<T>(toCopy);
+	}
+
+	@Override
+	public <T> ConcurrentSet<T> newSet(Comparator<? super T> comparator) {
+		return new ConcurrentSetSkipListSet<>(comparator);
+	}
+
+	@Override
+	public <T> ConcurrentSet<T> newSet(Comparator<? super T> comparator, Collection<T> toCopy) {
+		return new ConcurrentSetSkipListSet<>(toCopy);
 	}
 
 }
+

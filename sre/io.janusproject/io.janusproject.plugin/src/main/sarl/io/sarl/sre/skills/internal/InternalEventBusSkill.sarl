@@ -30,16 +30,17 @@ import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.Factories
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.function.BooleanSupplier
 import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import javax.inject.Provider
 
 /** 
  * SRE implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -67,11 +68,14 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	val bufferLock : ReadWriteLock
 
+	val factories : Provider<Factories>
+
 	@SuppressWarnings("raw_type")
 	@Inject
 	@PrivateAPI(isCallerOnly = true)
-	new (busFactory : EventBusFactory, lockProvider : Provider<ReadWriteLock>) {
-		this.bufferLock = lockProvider.get
+	new (busFactory : EventBusFactory, factories : Provider<Factories>) {
+		this.factories = factories
+		this.bufferLock = factories.get.newReadWriteLock
 		this.eventBus = busFactory.createEventBus [
 			var instance = typeof(InternalSchedules).getSkill
 			assert instance !== null, "the owner of the InternalEventBusSkill must also have an InternalSchedules skill"
@@ -79,9 +83,11 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		]
 	}
 
-	new (bus : EventBus, bufferLock : ReadWriteLock) {
+	new (bus : EventBus, bufferLock : ReadWriteLock, factories : Provider<Factories>) {
 		assert bus !== null
 		assert bufferLock !== null
+		assert factories !== null
+		this.factories = factories
 		this.eventBus = bus
 		this.bufferLock = bufferLock
 	}
@@ -203,25 +209,25 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandlerExecution : boolean, listener : Object) : void {
 		assert listener !== null
-		if (getLife(owner).state.blockingEventHandling && (forceEventHandlerExecution || ^event.prepareFiring)) {
+		if (getLife(owner, this.factories).state.blockingEventHandling && (forceEventHandlerExecution || ^event.prepareFiring)) {
 			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, getLogger)
 		}
 	}
 
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean) : void {
-		if (getLife(owner).state.blockingEventHandling && ^event.prepareFiring) {
+		if (getLife(owner, this.factories).state.blockingEventHandling && ^event.prepareFiring) {
 			this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
 		}
 	}
 
 	override fireEvent(^event : Event) {
-		if (getLife(owner).state.asynchronousEventHandling && ^event.prepareFiring) {
+		if (getLife(owner, this.factories).state.asynchronousEventHandling && ^event.prepareFiring) {
 			this.eventBus.asyncDispatch(^event, getLogger)
 		}
 	}
 
 	override fireEvent(^event : Event, listener : Object) {
-		if (getLife(owner).state.asynchronousEventHandling && ^event.prepareFiring) {
+		if (getLife(owner, this.factories).state.asynchronousEventHandling && ^event.prepareFiring) {
 			this.eventBus.asyncDispatchTo(listener, ^event, getLogger)
 		}
 	}
@@ -257,7 +263,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		bufferedEvents : OutParameter<List<Event>>,
 		beforeEventFiringHandler : () => void,
 		beforeReturnHandler : BooleanSupplier) : boolean {
-		if (getLife(owner).state.blockingEventHandling) {
+		if (getLife(owner, this.factories).state.blockingEventHandling) {
 			// Prepare firing
 			var wlock = this.bufferLock.writeLock
 			wlock.lock

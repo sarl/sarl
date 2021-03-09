@@ -23,8 +23,6 @@ package io.sarl.sre.tests.units.services.lifecycle
 
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
-import io.sarl.sre.internal.SequenceListenerNotifier
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.lifecycle.AgentCreatorProvider
@@ -32,7 +30,7 @@ import io.sarl.sre.services.lifecycle.InjectionBasedLifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.logging.LoggingService
-import java.util.concurrent.locks.ReentrantReadWriteLock
+import io.sarl.sre.tests.framework.SreTestUtilities
 import javax.inject.Provider
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -54,14 +52,12 @@ class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest<In
 		agentCreatorProvider : AgentCreatorProvider, contextListenerProvider : Provider<ExternalContextMemberListener>,
 		lifecycleListenerProvider : Provider<LifecycleServiceListener>,
 		lifecycleConfig : Provider<LifecycleConfig>) : InjectionBasedLifecycleService {
-		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
 		return new InjectionBasedLifecycleService(
 			this.checker,
 			agentCreatorProvider,
-			coll,
-			[new ReentrantReadWriteLock],
 			lifecycleListenerProvider,
 			contextListenerProvider,
+			[SreTestUtilities::newFactories],
 			skillProvider,
 			skillUninstaller,
 			executor,logger,

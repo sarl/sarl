@@ -33,7 +33,7 @@ import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.boot.configs.SreConfig
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.executor.ExecutorService
@@ -42,10 +42,9 @@ import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Level
-import javax.inject.Inject
 import java.util.logging.Logger
+import javax.inject.Inject
 import javax.inject.Provider
-import java.util.concurrent.locks.ReadWriteLock
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
@@ -90,10 +89,10 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	new(injector : Injector, executor : ExecutorService,
 		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
-		listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>,
-		icontextService : ContextService, iHazelcastInstance : HazelcastInstance) {
-		super(injector, executor, loggingService, config, specificationFactory, listenerCollection, lockProvider)
+		icontextService : ContextService,
+		factories : Provider<Factories>,
+		iHazelcastInstance : HazelcastInstance) {
+		super(injector, executor, loggingService, config, specificationFactory, factories)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 		this.logger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)

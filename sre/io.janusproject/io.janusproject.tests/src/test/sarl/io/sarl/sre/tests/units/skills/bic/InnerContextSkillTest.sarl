@@ -34,6 +34,7 @@ import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.skills.bic.InnerContextAccessSkill
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent0
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -103,8 +104,8 @@ class InnerContextSkillTest {
 		var defaultSpaceID = new SpaceID(this.context.ID, this.parentID, typeof(OpenEventSpaceSpecification))
 		var defaultAdr = typeof(Address).mock
 		when(defaultAdr.spaceID).thenReturn(defaultSpaceID)
-		AgentLife::getLife(this.^agent).setDefaultContext(this.context, defaultAdr)
-		this.^skill = new InnerContextAccessSkill(this.service)
+		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(this.context, defaultAdr)
+		this.^skill = new InnerContextAccessSkill(this.service, [SreTestUtilities::newFactories])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 

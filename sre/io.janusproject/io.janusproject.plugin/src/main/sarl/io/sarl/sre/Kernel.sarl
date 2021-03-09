@@ -26,16 +26,15 @@ import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
-import io.sarl.lang.util.ConcurrentSetSkipListSet
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.capacities.InformedEventListener
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
-import io.sarl.sre.services.lifecycle.LifecycleServiceListener.LifecycleServiceAdapter
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceWithParticipants
 import java.lang.Thread.UncaughtExceptionHandler
@@ -87,6 +86,8 @@ class Kernel {
 
 	val contextService : ContextService
 
+	val factories : Factories
+
 	@Accessors(PUBLIC_GETTER)
 	val configuration : SreConfig
 	
@@ -97,17 +98,20 @@ class Kernel {
 	 * The service manager must already have registered services inside itself.
 	 * @param exceptionHandler is the handler of the uncaught exceptions.
 	 * @param configuration is the provider of SRE configuration.
+	 * @param factories is the provider of the factories tool.
 	 */
 	@SuppressWarnings("discouraged_reference")
 	@Inject
 	new (
 		serviceManager : Provider<IServiceManager>,
 		exceptionHandler : Provider<UncaughtExceptionHandler>,
-		configuration : Provider<SreConfig>) {
+		configuration : Provider<SreConfig>,
+		factories : Provider<Factories>) {
 		// Initialize the fields
 		this.configuration = configuration.get
 		this.stopListener = createKernelListener
 		this.serviceManager = serviceManager.get
+		this.factories = factories.get
 		this.loggingService = this.serviceManager.getService(typeof(LoggingService))
 		this.spawnService = this.serviceManager.getService(typeof(LifecycleService))
 		this.contextService = this.serviceManager.getService(typeof(ContextService))
@@ -254,8 +258,8 @@ class Kernel {
 		lifeCycleService.spawnEnable = false
 
 		val contexts = contextService.allContexts
-		val agentIds = new ConcurrentSetSkipListSet<UUID>
-		val codes = new ConcurrentCollectionLinkedDeque<Runnable>
+		val agentIds = this.factories.concurrentCollectionFactory.newSet(null)
+		val codes = this.factories.concurrentCollectionFactory.<Runnable>newCollection
 
 		val iter = contexts.iterator
 		while (iter.hasNext) {
@@ -275,7 +279,7 @@ class Kernel {
 			]
 		}
 
-		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceAdapter() {
+		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceListener.LifecycleServiceAdapter() {
 			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentCollection<ContextReference>,
 				terminationCause : Object) {
 				agentIds.remove(^agent.ID)

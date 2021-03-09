@@ -24,7 +24,7 @@ package io.sarl.lang.util;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/** Represent a list of objects with is thread-safe.
+/** Represent a list of objects which is thread-safe.
  *
  * @param <T> the type of the objects in the list.
  * @author $Author: sgalland$
@@ -33,14 +33,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> implements ConcurrentList<T> {
+class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> implements ConcurrentList<T> {
 
 	private static final long serialVersionUID = 1160714015698422513L;
 
 	/**
      * Creates an empty list.
      */
-	public ConcurrentListCopyOnWriteList() {
+	ConcurrentListCopyOnWriteList() {
         super();
     }
 
@@ -52,7 +52,7 @@ public class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> im
      * @param source the collection of initially held elements
      * @throws NullPointerException if the specified collection is null
      */
-    public ConcurrentListCopyOnWriteList(Collection<? extends T> source) {
+    ConcurrentListCopyOnWriteList(Collection<? extends T> source) {
         super(source);
     }
 
@@ -63,7 +63,7 @@ public class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> im
      *        internal array)
      * @throws NullPointerException if the specified array is null
      */
-    public ConcurrentListCopyOnWriteList(T[] toCopyIn) {
+    ConcurrentListCopyOnWriteList(T[] toCopyIn) {
         super(toCopyIn);
     }
 

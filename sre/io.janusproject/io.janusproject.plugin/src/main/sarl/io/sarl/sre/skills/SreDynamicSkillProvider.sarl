@@ -79,7 +79,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 				return ^skill
 			}
 			case typeof(DefaultContextInteractions): {
-				var ^skill = new DefaultContextInteractionsSkill
+				var ^skill = this.injector.getInstance(typeof(DefaultContextInteractionsSkill))
 				return ^skill
 			}
 			case typeof(Lifecycle): {
@@ -95,7 +95,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 				return ^skill
 			}
 			case typeof(Behaviors): {
-				var ^skill = new BehaviorsSkill()
+				var ^skill = this.injector.getInstance(typeof(BehaviorsSkill))
 				return ^skill
 			}
 			case typeof(Logging): {

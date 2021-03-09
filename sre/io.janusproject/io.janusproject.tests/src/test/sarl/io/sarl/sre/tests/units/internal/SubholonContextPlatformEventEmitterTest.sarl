@@ -27,6 +27,7 @@ import io.sarl.core.Logging
 import io.sarl.lang.core.Event
 import io.sarl.sre.internal.SubHolonContextEventEmitter
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.internal.mocks.BehSkill
 import io.sarl.sre.tests.units.internal.mocks.LogSkill
 import io.sarl.sre.tests.units.internal.mocks.MyAgent0
@@ -89,7 +90,7 @@ class SubHolonContextEventEmitterTest {
 		this.logger = new LogSkill().spy
 		this.behaviors = new BehSkill().spy
 		this.^agent = new MyAgent0(this.behaviors, this.logger, this.contextID, this.agentId).spy
-		this.emitter = new SubHolonContextEventEmitter(this.^agent)
+		this.emitter = new SubHolonContextEventEmitter(this.^agent, [SreTestUtilities::newFactories])
 	}
 	
 	@Test

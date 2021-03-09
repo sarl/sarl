@@ -30,6 +30,7 @@ import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.internal.eventguard.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.internal.eventguard.reflect.GuardedEvaluator
 import io.sarl.sre.internal.eventguard.reflect.ReflectBehaviorGuardEvaluatorRegistry
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent0
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.tests.units.internal.eventguard.reflect.mocks.TestAgent2
@@ -72,7 +73,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 
 	@BeforeEach
 	def setUp : void {
-		this.registry = new ReflectBehaviorGuardEvaluatorRegistry
+		this.registry = new ReflectBehaviorGuardEvaluatorRegistry [SreTestUtilities::newFactories]
 		this.internalStructure = this.registry.internalDataStructureForRegisteredListeners
 	}
 

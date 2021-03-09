@@ -24,7 +24,7 @@ package io.sarl.lang.util;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-/** Represent a set of objects with is thread-safe.
+/** Represent a set of objects which is thread-safe.
  *
  * @param <T> the type of the objects in the set.
  * @author $Author: sgalland$
@@ -33,14 +33,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public class ConcurrentSetCopyOnWriteSet<T> extends CopyOnWriteArraySet<T> implements ConcurrentSet<T> {
+class ConcurrentSetCopyOnWriteSet<T> extends CopyOnWriteArraySet<T> implements ConcurrentSet<T> {
 
 	private static final long serialVersionUID = 4737324020507178960L;
 
     /**
      * Creates an empty set.
      */
-    public ConcurrentSetCopyOnWriteSet() {
+    ConcurrentSetCopyOnWriteSet() {
         super();
     }
 
@@ -51,7 +51,7 @@ public class ConcurrentSetCopyOnWriteSet<T> extends CopyOnWriteArraySet<T> imple
      * @param source the collection of elements to initially contain
      * @throws NullPointerException if the specified collection is null
      */
-    public ConcurrentSetCopyOnWriteSet(Collection<? extends T> source) {
+    ConcurrentSetCopyOnWriteSet(Collection<? extends T> source) {
         super(source);
     }
 

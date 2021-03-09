@@ -35,9 +35,9 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentCollectionLinkedDeque
 import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.Context
 import java.util.List
 import java.util.Map
@@ -45,7 +45,6 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.locks.ReadWriteLock
-import java.util.concurrent.locks.ReentrantReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
@@ -84,24 +83,21 @@ final class AgentLife {
 
 	var eventBusCapacity : AtomicSkillReference
 
+	val factories : Factories
+
 	/** Replies the data structure that is storing the living data of the agent for the SRE.
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
-	 * @param lockProvider the provider of locks
+	 * @param factories the provider of factories tool.
 	 * @see #getLifeOrNull
 	 */
-	static def getLife(^agent : Agent, lockProvider : Provider<ReadWriteLock> = null) : AgentLife {
+	static def getLife(^agent : Agent, factories : Provider<Factories>) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		var life = ^agent.getSreSpecificData(typeof(AgentLife))
 		if (life === null) {
-			if (lockProvider === null) {
-				val lp : Provider<ReadWriteLock> = [ new ReentrantReadWriteLock ]
-				life = new AgentLife(lp)
-			} else {
-				life = new AgentLife(lockProvider)
-			}
+			life = new AgentLife(factories)
 			life.setAgent(^agent)
 			^agent.sreSpecificData = life
 		}
@@ -124,10 +120,11 @@ final class AgentLife {
 
 	/** Constructor.
 	 *
-	 * @param lockProvider the provider of locks
+	 * @param factories the provider of factories tool.
 	 */
-	new (lockProvider : Provider<ReadWriteLock>) {
-		this.lock = lockProvider.get
+	new(factories : Provider<Factories>) {
+		this.factories = factories.get
+		this.lock = this.factories.newReadWriteLock
 	}
 
 	override toString : String {
@@ -292,7 +289,7 @@ final class AgentLife {
 	 * @param listener the listener on space events that must be unregistered.
 	 * @param enclosingContexts is the list of context for which we should be sure that the agent is out.
 	 */
-	protected def detachAgentFromPlatform(listener : EventListener, enclosingContexts : ConcurrentLinkedDeque<ContextReference>) : void {
+	protected def detachAgentFromPlatform(listener : EventListener, enclosingContexts : ConcurrentCollection<ContextReference>) : void {
 		val rlock = this.lock.readLock
 		var contextReference : ContextReference
 		rlock.lock
@@ -374,7 +371,7 @@ final class AgentLife {
 			}
 
 			// Copy the contexts in which the agents is registered in order to reply them.
-			var enclosingContextsCopy = new ConcurrentCollectionLinkedDeque<ContextReference>
+			var enclosingContextsCopy = this.factories.concurrentCollectionFactory.<ContextReference>newCollection
 			var contexts = getEnclosingContexts
 
 			enclosingContextsCopy += contexts
@@ -393,7 +390,7 @@ final class AgentLife {
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
 			logger.log(Level::SEVERE, e) [e.localizedMessage]
-			return new ConcurrentCollectionLinkedDeque
+			return this.factories.concurrentCollectionFactory.newCollection
 		} finally {
 			this.state = AgentState::DEAD
 			// Clear the references

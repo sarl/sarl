@@ -33,7 +33,7 @@ import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Behavior
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.BehaviorLife
 import java.net.URI
@@ -80,8 +80,6 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 	 * @param uri the UI of the field.
 	 * @param type the expected type of the probed value.
 	 * @param field the accessor to the probed field.
-	 * @param listenerCollectionProvider the provider of listener collections. 
-	 * @param lockProvider the provider of synchronization locks.
 	 */
 	protected new (
 		manager : IProbeReleaseListener,
@@ -89,13 +87,12 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 		uri : URI,
 		type : Class<T>,
 		field : FieldAccess,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(manager, name, uri, type, listenerCollectionProvider)
+		factories : Provider<Factories>) {
+		super(manager, name, uri, type, factories)
 		assert field !== null
 		this.field = field
-		this.ilock = lockProvider.get
-		this.olock = lockProvider.get
+		this.ilock = factories.get.newReadWriteLock
+		this.olock = factories.get.newReadWriteLock
 	}
 
 	@Pure

@@ -26,13 +26,14 @@ import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.IssueCodes
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
-import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.logging.LoggingService
+import io.sarl.util.SmartListenerCollection
 import java.lang.ref.WeakReference
 import java.util.Arrays
 import java.util.UUID
@@ -64,6 +65,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val globalListeners : SmartListenerCollection<?>
 
+	val factories : Provider<Factories>
+
 	val sarlSpecificationChecker : SarlSpecificationChecker
 
 	val agentCreatorProvider : AgentCreatorProvider
@@ -90,18 +93,15 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val spawnEnable = new AtomicBoolean(true)
 
-	val lockProvider : Provider<ReadWriteLock>
-
 	/** 
 	 * Constructs the service.
 	 * 
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
 	 * the agents to launch.
 	 * @param creator the provider of agent creators that is used when spawning agents.
-	 * @param globalListeners is the collection of global listeners to use.
-	 * @param rwLockProvider the provider of read-write locks.
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param factories the provider of factories tool.
 	 * @param skillProvider the system-wide provider of agent skills.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
@@ -109,23 +109,22 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param logger the logging service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
-		globalListeners : SmartListenerCollection<?>,
-		rwLockProvider : Provider<ReadWriteLock>,
 		lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
+		factories : Provider<Factories>,
 		skillProvider : DynamicSkillProvider, skillUninstaller : SkillUninstaller,
 		executor : ExecutorService, loggingService : LoggingService, lifecycleConfig : LifecycleConfig) {
+		this.factories = factories
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
-		this.globalListeners = globalListeners
+		this.globalListeners = this.factories.get.newListenerCollection
 		this.skillUninstaller = skillUninstaller
 		this.executor = executor
 		this.lifecycleConfig = lifecycleConfig
 		this.logger = loggingService.getKernelModuleLogger(Messages::AbstractLifecycleService_3)
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
-		this.lockProvider = rwLockProvider
-		this.dynamicSkillProviderLock = rwLockProvider.get
+		this.dynamicSkillProviderLock = this.factories.get.newReadWriteLock
 		this.dynamicSkillProviders = newArrayOfSize(1)
 		this.dynamicSkillProviders.set(0, skillProvider)
 	}
@@ -347,8 +346,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			parentContext, agentType, initializationParameters,
 			agentIds, agentInstanceCreator,
 			this.skillUninstaller,
-			this.lockProvider,
-			getLogger)
+			getLogger,
+			this.factories)
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -611,8 +610,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		val agentIds : ()=>UUID
 		val agentInstanceCreator : (UUID)=>Agent
 		val skillUninstaller : SkillUninstaller
-		val lockProvider : Provider<ReadWriteLock>
 		val logger : Logger
+		val factories : Provider<Factories>
 
 		/** Constructor.
 		 *
@@ -625,15 +624,16 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		 * @param agentIds is the lambda that must be used to compute the UUID of an agent. This lambda should be thread-safe.
 		 * @param agentInstanceCreator is a lambda that enables to create an instance of agent. This lambda is thread-safe.
 		 * @param skillUninstaller is the reference to the skill uninstaller.
-		 * @param lockProvider is the provider of read-write locks.
 		 * @param logger is the service logger.
+		 * @param factories the provider of factories tool.
 		 */
 		new (service : AbstractLifecycleService, spawnQueries : SpawnQueries,
 			spawningAgent : UUID,
 			parentContext : Context, agentType : Class<? extends Agent>,
 			initializationParameters : Object[], agentIds : ()=>UUID,
 			agentInstanceCreator : (UUID)=>Agent, skillUninstaller : SkillUninstaller,
-			lockProvider : Provider<ReadWriteLock>, logger : Logger) {
+			logger : Logger,
+			factories : Provider<Factories>) {
 			this.service = service
 			this.spawnQueries = spawnQueries
 			this.spawningAgent = spawningAgent
@@ -643,8 +643,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			this.agentIds = agentIds
 			this.agentInstanceCreator = agentInstanceCreator
 			this.skillUninstaller = skillUninstaller
-			this.lockProvider = lockProvider
 			this.logger = logger
+			this.factories = factories
 		}
 
 		final override run {
@@ -661,7 +661,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				}
 
 				// Start the agent's life
-				var life = ^agent.getLife(this.lockProvider)
+				var life = ^agent.getLife(this.factories)
 				var started = false
 				var spawnError : Throwable = null
 				try {

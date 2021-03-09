@@ -22,6 +22,9 @@ package io.sarl.sre.services.lifecycle
 
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
+import io.sarl.sre.internal.Factories
+import javax.inject.Provider
+
 import static extension io.sarl.lang.core.SREutils.*
 
 /** 
@@ -41,12 +44,13 @@ final class BehaviorLife extends AgentTraitLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param behavior the instance of the behavior for which the life description should be retrieved
+	 * @param factories the provider of factories tool.
 	 * @see #getLifeOrNull
 	 */
-	static def getLife(^behavior : Behavior) : BehaviorLife {
+	static def getLife(^behavior : Behavior, factories : Provider<Factories>) : BehaviorLife {
 		var life = ^behavior.getSreSpecificData(typeof(BehaviorLife))
 		if (life === null) {
-			life = new BehaviorLife()
+			life = new BehaviorLife(factories)
 			^behavior.sreSpecificData = life
 		}
 		return life

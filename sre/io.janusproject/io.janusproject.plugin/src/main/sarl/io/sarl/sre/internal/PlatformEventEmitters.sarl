@@ -66,6 +66,8 @@ import java.util.UUID
 import java.util.logging.Logger
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import javax.inject.Provider
+import javax.inject.Inject
 
 /** Emit the space platform events.
  *
@@ -337,13 +339,16 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 
 	var loggingSkill : AtomicSkillReference
 
+	val factories : Provider<Factories>
+
 	/** Constructors.
 	 * 
 	 * @param owner the owner of this emitter.
-	 * @param lockProvider the provider of synchronization locks.
+	 * @param factories provider of factories tool.
 	 */
-	new (owner : Agent) {
-		this.owner = new WeakReference(owner)		
+	new (owner : Agent, factories : Provider<Factories>) {
+		this.owner = new WeakReference(owner)
+		this.factories = factories
 	}
 
 	private def getBehaviors : Behaviors {
@@ -373,7 +378,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_0, o.ID, futureContext)]
 			var evt = new ContextJoined(futureContext, futureContextDefaultSpaceID)
-			evt.source = getLife(o).addressInInnerDefaultSpace
+			evt.source = getLife(o, this.factories).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -383,7 +388,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_1, o.ID, contextID)]
 			var evt = new ContextLeft(contextID)
-			evt.source = getLife(o).addressInInnerDefaultSpace
+			evt.source = getLife(o, this.factories).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -401,8 +406,15 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
  */
 class SubHolonContextEventEmitterFactory implements InternalContextMembershipListenerFactory {
 
+	val factories : Provider<Factories>
+
+	@Inject
+	new (factories : Provider<Factories>) {
+		this.factories = factories
+	}
+
 	override create(owner : Agent) : InternalContextMembershipListener {
-		new SubHolonContextEventEmitter(owner)
+		new SubHolonContextEventEmitter(owner, this.factories)
 	}
 
 }

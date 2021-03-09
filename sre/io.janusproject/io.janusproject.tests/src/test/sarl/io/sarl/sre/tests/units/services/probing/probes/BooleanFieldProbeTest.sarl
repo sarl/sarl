@@ -27,17 +27,14 @@ import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.probing.IProbeListener
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.api.probing.Probe
-import io.sarl.sre.internal.SequenceListenerNotifier
-import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.probing.probes.BooleanFieldProbe
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.locks.Lock
-import java.util.concurrent.locks.ReadWriteLock
 import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -107,12 +104,7 @@ abstract class BooleanFieldProbeTest {
 		this.probeListener = typeof(IProbeListener).mock
 		this.uri = URI::create("context://mycontext#myfield")
 		this.name = UUID::randomUUID.toString
-		val coll = new SmartListenerCollection(new SequenceListenerNotifier)
-		val lock = typeof(ReadWriteLock).mock
-		when(lock.readLock).thenReturn(typeof(Lock).mock)
-		when(lock.writeLock).thenReturn(typeof(Lock).mock)
-		this.probe = new BooleanFieldProbe(this.releaseListener, this.name, this.uri, this.field,
-			[coll], [lock]) 
+		this.probe = new BooleanFieldProbe(this.releaseListener, this.name, this.uri, this.field, [SreTestUtilities::newFactories]) 
 		this.probe.addProbeListener(this.probeListener)
 	}
 
