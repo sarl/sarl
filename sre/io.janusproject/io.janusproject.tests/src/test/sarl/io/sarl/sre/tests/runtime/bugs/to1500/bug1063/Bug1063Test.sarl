@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.to1000.bug986
+
+package io.sarl.sre.tests.runtime.bugs.to1500.bug1063
 
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
-import io.sarl.sre.tests.runtime.bugs.to1000.bug986.mock.Bug986A
+import io.sarl.sre.tests.runtime.bugs.to1500.bug1063.mocks.BootAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
@@ -33,19 +34,20 @@ import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static org.junit.jupiter.api.Assertions.*
+import static io.sarl.sre.test.framework.Constants.*
 
-import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
 
-/** Tests for issue #986: AgentSpawned of the creating agent is received by the created agent.
+/** Testing class for issue: Bug on Context.getOrCreateSpaceWithSpec in concurrent applications
+ * (but without the network, local context).
  *
- * <p>See: https://github.com/sarl/sarl/issues/986
+ * <p>https://github.com/sarl/sarl/issues/1063
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
+ * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/986"
+ * @see "https://github.com/sarl/sarl/issues/1063"
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -53,17 +55,16 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 	typeof(PropertyRestoreExtension),
 	typeof(SreRunExtension)
 ])
-@DisplayName("run: Bug #986")
+@DisplayName("run: Bug #1063")
 @Tag("sre-run")
 @Tag("janus")
-class Bug986Test {
+class Bug1063Test {
 
-	@SuppressWarnings("potential_inefficient_value_conversion")
-	def extractIdFromResults(results : List<Object>, prefix : String) : UUID {
+	def extractIdFromResults(results : List<Object>, prefix : String) : String {
 		for (res : results) {
 			val s = res.toString
 			if (s.startsWith(prefix)) {
-				val v = s.substring(prefix.length) as UUID
+				val v = s.substring(prefix.length)
 				if (v !== null) {
 					return v
 				}
@@ -74,26 +75,28 @@ class Bug986Test {
 	}
 
 	@RepeatedTest(10)
-	@DisplayName("test")
+	@DisplayName("run Ping-Pong 5 times")
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	def run(extension rc : SreRunContext) : void {
-		typeof(Bug986A).runSre
-		
-		val id1 = results.extractIdFromResults("ID1 = ")
-		val id2 = results.extractIdFromResults("ID2 = ")
+		typeof(BootAgent).runSre(NO_TIMEOUT)
 
-		var res2 = getResults(id2)
-		
-		results.assertContainsCollection(#[
-			"ID1 = " + id1,
-			"ID2 = " + id2,
-			"B (" + id2 + ") is spawn from A"
-		]) [ "ID1="+id1+"\nID2="+id2 ]
+		val id1 = results.extractIdFromResults("ID1 = ") as UUID
+		val id2 = results.extractIdFromResults("ID2 = ") as UUID
+		val sid = results.extractIdFromResults("SID = ") as UUID
 
-		if (!res2.isNullOrEmpty) {
-			res2.assertContainsCollection(#[
-				"B (" + id1 + ") is spawn from B"
-			]) [ "ID1="+id1+"\nID2="+id2 ]
-		}
+		val r1 = getResults(id1)
+		val r2 = getResults(id2)
+
+		val s1 = r1.extractIdFromResults("SID = ") as UUID
+		val s2 = r2.extractIdFromResults("SID = ") as UUID
+
+		sid.assertEquals(s1) [ "Unexpected space identifier is Ping agent"]
+		sid.assertEquals(s2) [ "Unexpected space identifier is Pong agent"]
+
+		val o1 = r1.extractIdFromResults("SPACE = ")
+		val o2 = r2.extractIdFromResults("SPACE = ")
+
+		o1.assertEquals(o2) [ "Space objects are not the same"]
 	}
 
 }
