@@ -119,13 +119,13 @@ class SchedulesSkillTest {
 		this.time = new MyTimeSkill().spy
 		this.failureListenerFactory = typeof(FailureListenerFactory).mock
 		this.^agent = new MyAgent1(contextId, this.^agentId, this.logger, this.time).spy
-		this.^skill = new SchedulesSkill(this.executor, this.failureListenerFactory, [SreTestUtilities::newFactories])
+		this.^skill = new SchedulesSkill(this.executor, this.failureListenerFactory, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 
 	private def forceAlive {
 		// Force the agent being alive
-		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		AgentLife::getAgentLife(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 	}
 
 	@Test

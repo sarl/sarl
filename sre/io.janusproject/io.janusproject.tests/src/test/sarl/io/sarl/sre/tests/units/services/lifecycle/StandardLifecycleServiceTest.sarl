@@ -58,6 +58,7 @@ class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest<Standard
 			lifecycleListenerProvider,
 			contextListenerProvider,
 			[SreTestUtilities::newFactories],
+			[SreTestUtilities::newConfigurableAgentInjector],
 			skillProvider,
 			skillUninstaller,
 			executor,

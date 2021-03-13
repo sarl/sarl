@@ -201,7 +201,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	
 	private def createInnerContext(ids : UUID*) {
 		var innerContext = typeof(Context).mock
-		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).innerContext = innerContext
+		AgentLife::getAgentLife(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).innerContext = innerContext
 		var ^space = typeof(OpenEventSpace).mock
 		when(innerContext.defaultSpace).thenReturn(^space)
 		doAnswer[
@@ -240,34 +240,34 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	def isKillableAgent_emptyInnerContext_serviceStarted {
 		startService
 		createInnerContext
-		this.service.isKillableAgent(this.^agent.getLife[SreTestUtilities::newFactories], this.^agent.ID).assertTrue
+		this.service.isKillableAgent(this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]), this.^agent.ID).assertTrue
 	}
 
 	@Test
 	@DisplayName("isKillableAgent without inner context instance")
 	def isKillableAgent_noInnerContext {
-		this.service.isKillableAgent(this.^agent.getLife[SreTestUtilities::newFactories], this.^agent.ID).assertTrue
+		this.service.isKillableAgent(this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]), this.^agent.ID).assertTrue
 	}
 
 	@Test
 	@DisplayName("isKillableAgent with empty inner context instance")
 	def isKillableAgent_emptyInnerContext {
 		createInnerContext
-		this.service.isKillableAgent(this.^agent.getLife[SreTestUtilities::newFactories], this.^agent.ID).assertTrue
+		this.service.isKillableAgent(this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]), this.^agent.ID).assertTrue
 	}
 
 	@Test
 	@DisplayName("isKillableAgent with 1 sub agent")
 	def isKillableAgent_oneChild {
 		createInnerContext(UUID::randomUUID)
-		this.service.isKillableAgent(this.^agent.getLife[SreTestUtilities::newFactories], this.^agent.ID).assertFalse
+		this.service.isKillableAgent(this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]), this.^agent.ID).assertFalse
 	}
 
 	@Test
 	@DisplayName("isKillableAgent with 2 sub agents")
 	def isKillableAgent_twoChild {
 		createInnerContext(UUID::randomUUID, UUID::randomUUID)
-		this.service.isKillableAgent(this.^agent.getLife[SreTestUtilities::newFactories], this.^agent.ID).assertFalse
+		this.service.isKillableAgent(this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]), this.^agent.ID).assertFalse
 	}
 
 	@Test
@@ -311,7 +311,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(MyAgent0), #[1, "a"])
 
 		// Agent State
-		AgentState.ALIVE.assertSame(AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories]).state)
+		AgentState.ALIVE.assertSame(AgentLife::getAgentLife(this.agent2, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state)
 		
 		// Agent Initialize
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
@@ -392,12 +392,12 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 		startService
 		var defaultContext = createOuterContext(this.agent2)
-		AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories]).setDefaultContext(defaultContext,
+		AgentLife::getAgentLife(this.agent2, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).setDefaultContext(defaultContext,
 				new Address(defaultContext.defaultSpace.spaceID, this.^agent.ID))
 		var outerContext = createOuterContext(this.agent2)
-		AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories]).addExternalContext(outerContext,
+		AgentLife::getAgentLife(this.agent2, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).addExternalContext(outerContext,
 				new Address(outerContext.defaultSpace.spaceID, this.^agent.ID))
-		AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		AgentLife::getAgentLife(this.agent2, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		val expectedCause = typeof(Throwable).mock
 
 		this.service.killAgent(this.agent2, true, expectedCause).assertTrue

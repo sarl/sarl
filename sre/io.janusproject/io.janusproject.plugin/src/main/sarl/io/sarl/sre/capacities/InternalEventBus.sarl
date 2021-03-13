@@ -140,14 +140,14 @@ capacity InternalEventBusCapacity {
 	 *     If {@code true}, an exception is thrown outside and should be catch. If {@code false}, the exceptions are logging out
 	 *     to the agent's logger, and never thrown outside this function.
 	 * @param bufferedEvents the events that were received during the execution of this function. These events are not fired into the agent context yet.
-	 *     The returned value may be {@code null}.
+	 *     The pairs are composed by the event, and the optional listener that is supposed to receive the event.
 	 * @param beforeEventFiringHandler that is invoked just before the firing of the event. If {@code null}, it is ignore.
 	 * @param beforeReturn this is invoked just before the function return and the event buffering is turn off.
 	 * @return the value returned by {@code beforeReturn} or {@code true} if {@code beforeReturn} is {@code null}.
 	 * @since 0.12  
 	 */
 	def fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		bufferedEvents : OutParameter<List<Event>>,
+		bufferedEvents : OutParameter<List<Pair<Event, Object>>>,
 		beforeEventFiringHandler : () => void,
 		beforeReturnHandler : BooleanSupplier) : boolean
 

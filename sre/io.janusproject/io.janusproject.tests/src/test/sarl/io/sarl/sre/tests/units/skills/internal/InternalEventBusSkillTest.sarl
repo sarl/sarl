@@ -109,7 +109,7 @@ class InternalEventBusSkillTest {
 		when(this.lock.readLock).thenAnswer [typeof(Lock).mock]
 		when(this.lock.writeLock).thenAnswer [typeof(Lock).mock]
 		this.^agent = new MyAgent(contextId, this.^agentId, this.logger).spy
-		this.^skill = new InternalEventBusSkill(this.eventBus, this.lock, [SreTestUtilities::newFactories])
+		this.^skill = new InternalEventBusSkill(this.eventBus, this.lock, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		this.^skill.eventBuffering = false
 		this.^skill.class.invokeProc(this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
@@ -222,7 +222,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) not started agent no event handling")
 	def fireEvent_agentNotStarted_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -236,7 +236,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) initialization no event handling")
 	def fireEvent_agentInitialization_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -254,7 +254,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) no event handling")
 	def fireEvent_agentAlive_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -272,7 +272,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) dying agent no event handling")
 	def fireEvent_agentDying_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -286,7 +286,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) dead agent")
 	def fireEvent_agentDead_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -300,7 +300,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) dying agent")
 	def fireEvent_agentNotStarted_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -314,7 +314,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) not started agent event handling")
 	def fireEvent_agentInitialization_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -322,13 +322,13 @@ class InternalEventBusSkillTest {
 		this.^skill.fireEvent(^event)
 		
 		verifyNoMoreInteractions(this.eventBus)
-		assertContains(this.^skill.bufferedEvents, ^event)
+		this.^skill.bufferedEvents.assertContains(Pair::of(^event, null))
 	}
 
 	@Test
 	@DisplayName("fireEvent(event) event handling")
 	def fireEvent_agentAlive_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -336,13 +336,13 @@ class InternalEventBusSkillTest {
 		this.^skill.fireEvent(^event)
 		
 		verifyNoMoreInteractions(this.eventBus)
-		this.^skill.bufferedEvents.assertContains(^event)
+		this.^skill.bufferedEvents.assertContains(Pair::of(^event, null))
 	}
 
 	@Test
 	@DisplayName("fireEvent(event) dying agent event handling")
 	def fireEvent_agentDying_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -356,7 +356,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event) dead agent event handling")
 	def fireEvent_agentDead_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -370,7 +370,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, no listener) agent not initialized")
 	def fireEventAndWait_notExceptionThrowing_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		
@@ -383,7 +383,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch) agent initializing")
 	def fireEventAndWait_notExceptionThrowing_agentInitializing {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		
@@ -405,7 +405,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch) alive agent")
 	def fireEventAndWait_notExceptionThrowing_agentAlive {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		
@@ -427,7 +427,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch) dying agent")
 	def fireEventAndWait_notExceptionThrowing_agentDying {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		
@@ -449,7 +449,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch) dead agent")
 	def fireEventAndWait_notExceptionThrowing_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		
@@ -462,7 +462,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, no listener) agent not initialized")
 	def fireEventAndWait_exceptionThrowing_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		
@@ -475,7 +475,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch) agent initializing")
 	def fireEventAndWait_exceptionThrowing_agentInitializing {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		
@@ -497,7 +497,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch) alive agent")
 	def fireEventAndWait_exceptionThrowing_agentAlive {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		
@@ -519,7 +519,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch) dying agent")
 	def fireEventAndWait_exceptionThrowing_agentDying {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		
@@ -541,7 +541,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch) dead agent")
 	def fireEventAndWait_exceptionThrowing_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		
@@ -553,7 +553,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, listener) agent not initialized")
 	def fireEventAndWait_notExceptionThrowing_listener_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -567,7 +567,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, listener) agent initializing")
 	def fireEventAndWait_notExceptionThrowing_listener_agentInitializing {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -593,7 +593,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, listener) alive agent")
 	def fireEventAndWait_notExceptionThrowing_listener_agentAlive {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -619,7 +619,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, listener) dying agent")
 	def fireEventAndWait_notExceptionThrowing_listener_agentDying {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -645,7 +645,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, no exception catch, listener) dead agent")
 	def fireEventAndWait_notExceptionThrowing_listener_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -659,7 +659,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, listener) agent not initialized")
 	def fireEventAndWait_exceptionThrowing_listener_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -673,7 +673,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, listener) agent initializing")
 	def fireEventAndWait_exceptionThrowing_listener_agentInitializing {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -699,7 +699,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, listener) alive agent")
 	def fireEventAndWait_exceptionThrowing_listener_agentAlive {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -725,7 +725,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, listener) dying agent")
 	def fireEventAndWait_exceptionThrowing_listener_agentDying {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -751,7 +751,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWait(event, exception catch, listener) dead agent")
 	def fireEventAndWait_exceptionThrowing_listener_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		var listener = typeof(Object).mock
@@ -766,7 +766,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWaitWithEventGathering(event, no exception catch, no listener) agent not initialized")
 	def fireEventAndWaitWithEventGathering_notExceptionThrowing_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -786,7 +786,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, no exception catch) agent initializing")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_notExceptionThrowing_agentInitializing : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -815,7 +815,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, no exception catch) alive agent")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_notExceptionThrowing_agentAlive : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -844,7 +844,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, no exception catch) dying agent")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_notExceptionThrowing_agentDying : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -872,7 +872,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWaitWithEventGathering(event, no exception catch) dead agent")
 	def fireEventAndWaitWithEventGathering_notExceptionThrowing_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -891,7 +891,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWaitWithEventGathering(event, exception catch, no listener) agent not initialized")
 	def fireEventAndWaitWithEventGathering_exceptionThrowing_agentNotStarted {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -911,7 +911,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, exception catch) agent initializing")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_exceptionThrowing_agentInitializing : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -940,7 +940,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, exception catch) alive agent")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_exceptionThrowing_agentAlive : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -969,7 +969,7 @@ class InternalEventBusSkillTest {
 	@DisplayName("fireEventAndWaitWithEventGathering(event, exception catch) dying agent")
 	@SuppressWarnings("unused_local_variable")
 	def fireEventAndWaitWithEventGathering_exceptionThrowing_agentDying : void {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -997,7 +997,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEventAndWaitWithEventGathering(event, exception catch) dead agent")
 	def fireEventAndWaitWithEventGathering_exceptionThrowing_agentDead {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		var ^event = typeof(Event).mock
 		var handler0 : () => void = typeof(Procedure0).mock
@@ -1016,7 +1016,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) not started agent no event handling")
 	def fireEventListener_agentNotStarted_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -1030,7 +1030,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) initialization no event handling")
 	def fireEventListener_agentInitialization_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -1051,7 +1051,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) no event handling")
 	def fireEventListener_agentAlive_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -1072,7 +1072,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) dying agent no event handling")
 	def fireEventListener_agentDying_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -1086,7 +1086,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) dead agent")
 	def fireEventListener_agentDead_notEventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		this.^skill.eventBuffering = false
 		var ^event = typeof(Event).mock
@@ -1100,7 +1100,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) dying agent")
 	def fireEventListener_agentNotStarted_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::UNSTARTED
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::UNSTARTED
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -1114,7 +1114,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) not started agent event handling")
 	def fireEventListener_agentInitialization_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::INITIALIZING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::INITIALIZING
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -1122,13 +1122,13 @@ class InternalEventBusSkillTest {
 		this.^skill.fireEvent(^event, null)
 		
 		verifyNoMoreInteractions(this.eventBus)
-		assertContains(this.^skill.bufferedEvents, ^event)
+		this.^skill.bufferedEvents.assertContains(Pair::of(^event, null))
 	}
 
 	@Test
 	@DisplayName("fireEvent(event,listener) event handling")
 	def fireEventListener_agentAlive_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -1136,13 +1136,13 @@ class InternalEventBusSkillTest {
 		this.^skill.fireEvent(^event, null)
 		
 		verifyNoMoreInteractions(this.eventBus)
-		this.^skill.bufferedEvents.assertContains(^event)
+		this.^skill.bufferedEvents.assertContains(Pair::of(^event, null))
 	}
 
 	@Test
 	@DisplayName("fireEvent(event,listener) dying agent event handling")
 	def fireEventListener_agentDying_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DYING
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DYING
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock
@@ -1156,7 +1156,7 @@ class InternalEventBusSkillTest {
 	@Test
 	@DisplayName("fireEvent(event,listener) dead agent event handling")
 	def fireEventListener_agentDead_eventCaching {
-		this.^agent.getLife([SreTestUtilities::newFactories]).state = AgentState::DEAD
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::DEAD
 		
 		this.^skill.eventBuffering = true
 		var ^event = typeof(Event).mock

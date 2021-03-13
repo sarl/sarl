@@ -20,7 +20,6 @@
  */
 
 package io.sarl.sre.internal.eventguard.reflect
-
 import io.sarl.lang.annotation.PerceptGuardEvaluator
 import io.sarl.lang.core.Event
 import io.sarl.lang.util.ConcurrentCollection

@@ -64,10 +64,10 @@ import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Logger
-
-import static io.sarl.sre.services.lifecycle.AgentLife.*
-import javax.inject.Provider
 import javax.inject.Inject
+import javax.inject.Provider
+
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
 
 /** Emit the space platform events.
  *
@@ -341,14 +341,18 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 
 	val factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	/** Constructors.
 	 * 
 	 * @param owner the owner of this emitter.
 	 * @param factories provider of factories tool.
+	 * @param agentLevelInjector the dynamic injector at the agent level.
 	 */
-	new (owner : Agent, factories : Provider<Factories>) {
+	new (owner : Agent, factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		this.owner = new WeakReference(owner)
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 	}
 
 	private def getBehaviors : Behaviors {
@@ -378,7 +382,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_0, o.ID, futureContext)]
 			var evt = new ContextJoined(futureContext, futureContextDefaultSpaceID)
-			evt.source = getLife(o, this.factories).addressInInnerDefaultSpace
+			evt.source = o.getAgentLife(this.factories, this.agentLevelInjector).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -388,7 +392,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_1, o.ID, contextID)]
 			var evt = new ContextLeft(contextID)
-			evt.source = getLife(o, this.factories).addressInInnerDefaultSpace
+			evt.source = o.getAgentLife(this.factories, this.agentLevelInjector).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -408,13 +412,16 @@ class SubHolonContextEventEmitterFactory implements InternalContextMembershipLis
 
 	val factories : Provider<Factories>
 
+	val agentTraitInitializer : Provider<ConfigurableAgentInjector>
+
 	@Inject
-	new (factories : Provider<Factories>) {
+	new (factories : Provider<Factories>, agentTraitInitializer : Provider<ConfigurableAgentInjector>) {
 		this.factories = factories
+		this.agentTraitInitializer = agentTraitInitializer
 	}
 
 	override create(owner : Agent) : InternalContextMembershipListener {
-		new SubHolonContextEventEmitter(owner, this.factories)
+		new SubHolonContextEventEmitter(owner, this.factories, this.agentTraitInitializer)
 	}
 
 }

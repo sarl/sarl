@@ -32,6 +32,7 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.internal.ConfigurableAgentInjector
 import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.ExternalContextMemberListener
@@ -42,7 +43,7 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
 
-import static io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
 
 /** 
  * Skill that permits to access to the context in which the agent is located.
@@ -69,17 +70,21 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	var factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	/** Constructor.
 	 */
 	@Inject
 	new (service : ContextService, @KernelScope outerContextProvider : Provider<ExternalContextMemberListener>,
 		@KernelScope innerContextProvider : InternalContextMembershipListenerFactory,
-		factories : Provider<Factories>) {
+		factories : Provider<Factories>,
+		agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		super()
 		this.contextService = service
 		this.externalEventEmitter = outerContextProvider.get
 		this.innerContextProvider = innerContextProvider
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 	}
 
 	protected override install {
@@ -87,7 +92,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	}
 
 	protected override uninstall {
-		var life = getLifeOrNull(owner)
+		var life = getAgentLifeOrNull(owner)
 		if (life !== null) {
 			// Unregister from the external context.
 			// The unregistration to the default context is be done into the AgentLife class.
@@ -108,7 +113,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	def getContext(contextID : UUID) : AgentContext {
 		assert contextID !== null
-		var life = getLife(owner, this.factories)
+		var life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life === null) {
 			return null
 		}
@@ -128,7 +133,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	def getAllContexts : ConcurrentCollection<AgentContext> {
 		val result = this.factories.get.concurrentCollectionFactory.newCollection
-		val collection = getLife(owner, this.factories)?.enclosingContexts
+		val collection = owner.getAgentLife(this.factories, this.agentLevelInjector)?.enclosingContexts
 		if (collection !== null) {
 			// TODO optimize the following loop
 			for (t : collection.map[var local : AgentContext = it.context; local]) {
@@ -154,7 +159,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		assert contextID !== null
 		assert expectedDefaultSpaceID !== null
 
-		var life = getLife(owner, this.factories)
+		var life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life !== null && life.state.alive) {
 			if (life.defaultContext?.context.ID == contextID) {
 				return null
@@ -193,7 +198,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	def leave(contextID : UUID) : boolean {
 		assert contextID !== null
 
-		val life = getLife(owner, this.factories)
+		val life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life === null) {
 			return false
 		}

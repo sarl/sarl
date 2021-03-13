@@ -35,8 +35,6 @@ import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.test.framework.Constants.*
-
 import static extension org.junit.jupiter.api.Assertions.*
 
 /** Testing class for issue: Bug on Context.getOrCreateSpaceWithSpec in concurrent applications
@@ -98,7 +96,7 @@ class Bug1063Test {
 	@DisplayName("run Ping-Pong 5 times")
 	@SuppressWarnings("potential_inefficient_value_conversion")
 	def run(extension rc : SreRunContext) : void {
-		typeof(BootAgent).runSre(NO_TIMEOUT)
+		typeof(BootAgent).runSre
 
 		val ar = allResultsPerAgent
 

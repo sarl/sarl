@@ -1,0 +1,144 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.internal
+
+import com.google.inject.Injector
+import io.sarl.lang.annotation.Injectable
+import io.sarl.lang.core.AgentTrait
+import javax.inject.Inject
+import io.sarl.lang.core.Agent
+
+/** An injector of agent components that may be enable or disable according to the SRE configuration.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("raw_type")
+interface ConfigurableAgentInjector {
+
+	/** Inject the members into the given agent.
+	 * 
+	 * @param obj the agent to initialize.
+	 * @return {@code obj}.
+	 */
+	def injectAgentMembers(obj : T) : T with T extends Agent
+
+	/** Inject the members into the given agent trait.
+	 * 
+	 * @param obj the agent trait to initialize.
+	 * @return {@code obj}.
+	 */
+	def injectAgentTraitMembers(obj : T) : T with T extends AgentTrait
+
+}
+
+/** An injector of agent components that injects nothing (NOP).
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("raw_type")
+class NopConfigurableAgentInjector implements ConfigurableAgentInjector {
+
+	override injectAgentMembers(obj : T) : T with T extends Agent {
+		obj
+	}
+
+	override injectAgentTraitMembers(obj : T) : T with T extends AgentTrait {
+		obj
+	}
+
+}
+
+/** An injector of agent components that injects only the members of the agent traits..
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("raw_type")
+class AgentTraitLevelConfigurableAgentInjector implements ConfigurableAgentInjector {
+
+	val injector : Injector
+	
+	@Inject
+	new (injector : Injector) {
+		this.injector = injector
+	}
+
+	override injectAgentMembers(obj : T) : T with T extends Agent {
+		obj
+	}
+
+	override injectAgentTraitMembers(obj : T) : T with T extends AgentTrait {
+		if (obj.class.isAnnotationPresent(typeof(Injectable))) {
+			this.injector.injectMembers(obj)
+		}
+		return obj
+	}
+
+}
+
+/** An injector of agent components that inject nothing (NOP).
+ * This injector may be used when the component instance is created by hand ("new" operator),
+ * and needs to be injected when it is marked with the {@code @Injectable} annotation. 
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("raw_type")
+class AgentLevelConfigurableAgentInjector implements ConfigurableAgentInjector {
+
+	val injector : Injector
+	
+	@Inject
+	new (injector : Injector) {
+		this.injector = injector
+	}
+
+	override injectAgentMembers(obj : T) : T with T extends Agent {
+		if (obj.class.isAnnotationPresent(typeof(Injectable))) {
+			this.injector.injectMembers(obj)
+		}
+		return obj
+	}
+
+	override injectAgentTraitMembers(obj : T) : T with T extends AgentTrait {
+		if (obj.class.isAnnotationPresent(typeof(Injectable))) {
+			this.injector.injectMembers(obj)
+		}
+		return obj
+	}
+
+}
+

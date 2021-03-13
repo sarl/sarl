@@ -58,6 +58,7 @@ class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest<In
 			lifecycleListenerProvider,
 			contextListenerProvider,
 			[SreTestUtilities::newFactories],
+			[SreTestUtilities::newConfigurableAgentInjector],
 			skillProvider,
 			skillUninstaller,
 			executor,logger,

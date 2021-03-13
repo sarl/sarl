@@ -65,7 +65,7 @@ class BehaviorTest {
 	@BeforeEach
 	def setUp : void {
 		this.^behavior = typeof(Behavior).mock
-		this.life = BehaviorLife::getLife(this.^behavior) [SreTestUtilities::newFactories]
+		this.life = BehaviorLife::getBehaviorLife(this.^behavior) [SreTestUtilities::newFactories]
 	}
 
 	@Test

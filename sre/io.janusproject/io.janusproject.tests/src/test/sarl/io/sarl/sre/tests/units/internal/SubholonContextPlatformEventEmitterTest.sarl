@@ -90,7 +90,7 @@ class SubHolonContextEventEmitterTest {
 		this.logger = new LogSkill().spy
 		this.behaviors = new BehSkill().spy
 		this.^agent = new MyAgent0(this.behaviors, this.logger, this.contextID, this.agentId).spy
-		this.emitter = new SubHolonContextEventEmitter(this.^agent, [SreTestUtilities::newFactories])
+		this.emitter = new SubHolonContextEventEmitter(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 	}
 	
 	@Test

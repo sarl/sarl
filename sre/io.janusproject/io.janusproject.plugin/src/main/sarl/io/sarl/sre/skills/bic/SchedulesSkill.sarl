@@ -33,10 +33,10 @@ import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.IssueCodes
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.ConfigurableAgentInjector
 import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
-import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import java.lang.ref.WeakReference
 import java.util.Collection
@@ -54,9 +54,10 @@ import javax.inject.Inject
 import javax.inject.Provider
 import org.arakhne.afc.vmutil.json.JsonBuffer
 
-import static io.sarl.sre.services.lifecycle.AgentLife.*
-import static io.sarl.sre.services.lifecycle.BehaviorLife.*
 import static java.text.MessageFormat.*
+
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.sre.services.lifecycle.BehaviorLife.*
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -88,15 +89,20 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	val factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+	
 	/** 
 	 * Constructor.
 	 */
 	@Inject
-	new (service : ExecutorService, @KernelScope failureListenerFactory : FailureListenerFactory, factories : Provider<Factories>) {
+	new (service : ExecutorService, @KernelScope failureListenerFactory : FailureListenerFactory,
+		factories : Provider<Factories>,
+		agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		super()
 		this.executorService = service
 		this.failureListenerFactory = failureListenerFactory
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 	}
 
 	protected override prepareUninstallation {
@@ -208,14 +214,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	private def unbindToBehavior(task : AgentTask) {
 		var caller = task.initiator
 		if (caller instanceof Behavior) {
-			getLifeOrNull(caller)?.removeTaskReference(task)
+			caller.getBehaviorLifeOrNull?.removeTaskReference(task)
 		}
 	}
 
 	private def bindToBehavior(task : AgentTask, caller : Object = null) {
 		var initiator = caller ?: (task.initiator ?: (Capacities::getCaller ?: this.owner))
 		if (initiator instanceof Behavior) {
-			getLife(initiator, this.factories).addTaskReference(task)
+			initiator.getBehaviorLife(this.factories).addTaskReference(task)
 		}
 	}
 
@@ -366,7 +372,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** Called by a behavior when it is destroyed.
 	 */
 	def unregisterTasksForBehavior(^behavior : Behavior) {
-		var tasksToCancel = getLifeOrNull(^behavior)?.removeAllTaskReferences
+		var tasksToCancel = ^behavior.getBehaviorLifeOrNull?.removeAllTaskReferences
 		if (tasksToCancel !== null) {
 			for (taskToCancel : tasksToCancel.map[it.get]) {
 				if (taskToCancel !== null) {
@@ -383,14 +389,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def task(name : String) : AgentTask {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			return createTaskIfNecessary(name, false, false).task
 		}
 		return null
 	}
 
 	def setName(task : AgentTask, name : String) {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			val realName = name.ensureTaskName
 			val prefix = realName + "-"
 			var i = 0
@@ -436,7 +442,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def in(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.schedule(logger, delay, TimeUnit::MILLISECONDS,
@@ -448,7 +454,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def every(task : AgentTask = null, period : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.scheduleAtFixedRate(logger, 0, period, TimeUnit::MILLISECONDS,
@@ -460,7 +466,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			var future : Future<?>
 			if (delay <= 0) {
@@ -701,7 +707,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		@SuppressWarnings("discouraged_reference")
 		final override internalRun {
 			// Do not run the alive
-			val agentLife = AgentLife::getLifeOrNull(this.^agent.get)
+			val agentLife = this.^agent.get.getAgentLifeOrNull
 			if (agentLife === null || agentLife.state === AgentState::DEAD) {
 				ExecutorService::neverReturn(null)
 			}

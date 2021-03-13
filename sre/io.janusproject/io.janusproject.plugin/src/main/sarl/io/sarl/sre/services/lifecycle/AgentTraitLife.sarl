@@ -21,6 +21,7 @@
 package io.sarl.sre.services.lifecycle
 
 import io.sarl.core.AgentTask
+import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.util.ConcurrentSet
 import io.sarl.sre.internal.Factories
 import java.lang.ref.WeakReference
@@ -54,9 +55,11 @@ abstract class AgentTraitLife {
 
 	/** Constructor.
 	 *
+	 * @param associatedContainer the associated container of this living object.
 	 * @param factories the provider of factories tool.
+	 * @param injector the injector to be used for treating {@code @Injectable} annotations.
 	 */
-	new (factories : Provider<Factories>) {
+	new (associatedContainer : AgentTrait, factories : Provider<Factories>) {
 		this.factories = factories
 	}
 

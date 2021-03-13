@@ -104,8 +104,8 @@ class InnerContextSkillTest {
 		var defaultSpaceID = new SpaceID(this.context.ID, this.parentID, typeof(OpenEventSpaceSpecification))
 		var defaultAdr = typeof(Address).mock
 		when(defaultAdr.spaceID).thenReturn(defaultSpaceID)
-		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).setDefaultContext(this.context, defaultAdr)
-		this.^skill = new InnerContextAccessSkill(this.service, [SreTestUtilities::newFactories])
+		AgentLife::getAgentLife(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).setDefaultContext(this.context, defaultAdr)
+		this.^skill = new InnerContextAccessSkill(this.service, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 

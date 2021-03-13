@@ -12,6 +12,7 @@ io.sarl.sre.boot.internal.internal.ConcurrentCollectionModuleProvider
 io.sarl.sre.boot.internal.internal.ListenerNotifierModuleProvider
 io.sarl.sre.boot.internal.internal.LockProviderModuleProvider
 io.sarl.sre.boot.internal.internal.PlatformEventEmitterModuleProvider
+io.sarl.sre.boot.internal.internal.ConfigurableAgentInjectorModuleProvider
 
 io.sarl.sre.boot.internal.kernel.KernelModuleProvider
 io.sarl.sre.boot.internal.kernel.SarlSpecificationCheckerModuleProvider

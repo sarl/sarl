@@ -33,6 +33,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import io.sarl.sre.internal.ConfigurableAgentInjector
 
 /** 
  * Skill that permits to manage the life cycle of the agents.
@@ -51,25 +52,28 @@ skill LifecycleSkill implements Lifecycle {
 
 	val factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	/** Constructor.
 	 */
 	@Inject
-	new (service : LifecycleService, factories : Provider<Factories>) {
+	new (service : LifecycleService, factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		super()
 		this.lifecycle = service
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 	}
 
 	@SuppressWarnings("discouraged_reference")
 	def killMe(terminationCause : Object) {
 		var postTreatment : Runnable = null
-		var state = getLife(owner, this.factories).state
+		var state = getAgentLife(owner, this.factories, this.agentLevelInjector).state
 		// The agent should be killed by a specific asynchronous event.
 		// This event is supported by the internal event bus implementation.
 		if (state == AgentState::INITIALIZING) {
 			// Indicate to the starting function into AgentLife that the initialization has failed.
 			postTreatment = [
-				getLife(owner, this.factories).state = AgentState::DYING
+				getAgentLife(owner, this.factories, this.agentLevelInjector).state = AgentState::DYING
 			]
 		} else if (state == AgentState::ALIVE) {
 			// Synchronous killing
@@ -82,7 +86,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawn(agentType : Class<? extends Agent>, params : Object*) {
-		val life = getLife(owner, this.factories)
+		val life = getAgentLife(owner, this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {
@@ -99,7 +103,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) {
-		val life = getLife(owner, this.factories)
+		val life = getAgentLife(owner, this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {
@@ -117,7 +121,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
-		if (getLife(owner, this.factories).state.alive) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -131,7 +135,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
-		if (getLife(owner, this.factories).state.alive && context !== null) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -145,7 +149,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
-		if (getLife(owner, this.factories).state.alive && context !== null) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -159,7 +163,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnWithID(agentClass : Class<? extends Agent>, agentID : UUID, params : Object*) {
-		val life = getLife(owner, this.factories)
+		val life = getAgentLife(owner, this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			val ctx = life.defaultContext?.context
 			if (ctx !== null) {

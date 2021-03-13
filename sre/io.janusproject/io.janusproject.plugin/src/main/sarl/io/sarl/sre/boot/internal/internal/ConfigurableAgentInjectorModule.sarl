@@ -1,0 +1,87 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.boot.internal.internal
+
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.internal.AgentLevelConfigurableAgentInjector
+import io.sarl.sre.internal.AgentTraitLevelConfigurableAgentInjector
+import io.sarl.sre.internal.ConfigurableAgentInjector
+import io.sarl.sre.internal.NopConfigurableAgentInjector
+import javax.inject.Provider
+import javax.inject.Singleton
+
+/** 
+ * Module for configuring the injector of agents and agent components.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ConfigurableAgentInjectorModule extends AbstractModule {
+
+	protected override configure {
+		//
+	}
+
+	@Provides
+	@Singleton
+	def providesConfigurableAgentInjector(sreConfig : Provider<SreConfig>, injector : Injector) : ConfigurableAgentInjector {
+		val config = sreConfig.get
+		val lf = config.services.lifecycle
+		if (lf.enableInjectableSupport) {
+			if (lf.createAgentsWithInjector) {
+				return new AgentTraitLevelConfigurableAgentInjector(injector)
+			}
+			return new AgentLevelConfigurableAgentInjector(injector)
+		}
+		return new NopConfigurableAgentInjector
+	}
+
+}
+
+/** Provider of the module for configuring the agent trait initializer.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ConfigurableAgentInjectorModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new ConfigurableAgentInjectorModule
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::ConfigurableAgentInjectorModuleProvider_0);
+	}
+
+}

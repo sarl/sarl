@@ -56,7 +56,7 @@ skill MyInternalEventBusSkill2 implements InternalEventBusCapacity {
 	}
 
 	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		events : OutParameter<List<Event>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
+		events : OutParameter<List<Pair<Event, Object>>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
 		false
 	}
 

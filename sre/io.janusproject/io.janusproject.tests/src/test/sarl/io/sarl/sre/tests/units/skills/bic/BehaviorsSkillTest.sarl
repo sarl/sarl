@@ -104,14 +104,14 @@ class BehaviorsSkillTest {
 		this.schedules = new MyInternalSchedulesSkill().spy
 		this.^agentId = UUID::randomUUID
 		this.^agent = new MyAgent(contextId, this.^agentId, this.eventBus, this.schedules).spy
-		this.^skill = new BehaviorsSkill [SreTestUtilities::newFactories]
+		this.^skill = new BehaviorsSkill([SreTestUtilities::newConfigurableAgentInjector]) [SreTestUtilities::newFactories]
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 		reset(this.schedules, this.eventBus, this.eventBusListener, this.^agent)
 	}
 
 	private def forceAlive : void {
 		// Force being alive
-		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).state = AgentState::ALIVE
+		AgentLife::getAgentLife(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 	}
 	
 	private def forceNoBehavior : void {
@@ -137,7 +137,7 @@ class BehaviorsSkillTest {
 		var innerContext = typeof(Context).mock
 		var defaultSpace = typeof(OpenEventSpace).mock
 		when(innerContext.defaultSpace).thenReturn(defaultSpace)
-		AgentLife::getLife(this.^agent, [SreTestUtilities::newFactories]).innerContext = innerContext
+		AgentLife::getAgentLife(this.^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).innerContext = innerContext
 		return defaultSpace
 	}
 

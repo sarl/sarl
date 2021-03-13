@@ -50,6 +50,7 @@ import java.util.logging.Logger
 import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
+import io.sarl.sre.internal.ConfigurableAgentInjector
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
@@ -85,19 +86,22 @@ final class AgentLife {
 
 	val factories : Factories
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	/** Replies the data structure that is storing the living data of the agent for the SRE.
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
 	 * @param factories the provider of factories tool.
-	 * @see #getLifeOrNull
+	 * @param agentLevelInjector the injector that must be used for injecting members into an agent.
+	 * @see #getAgentLifeOrNull
 	 */
-	static def getLife(^agent : Agent, factories : Provider<Factories>) : AgentLife {
+	static def getAgentLife(^agent : Agent, factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		var life = ^agent.getSreSpecificData(typeof(AgentLife))
 		if (life === null) {
-			life = new AgentLife(factories)
+			life = new AgentLife(factories, agentLevelInjector)
 			life.setAgent(^agent)
 			^agent.sreSpecificData = life
 		}
@@ -109,10 +113,10 @@ final class AgentLife {
 	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
 	 * @since 0.10
-	 * @see #getLife
+	 * @see #getAgentLife
 	 */
 	@Pure
-	static def getLifeOrNull(^agent : Agent) : AgentLife {
+	static def getAgentLifeOrNull(^agent : Agent) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		return ^agent.getSreSpecificData(typeof(AgentLife))
@@ -121,9 +125,11 @@ final class AgentLife {
 	/** Constructor.
 	 *
 	 * @param factories the provider of factories tool.
+	 * @param agentLevelInjector the initializer of the agent trait.
 	 */
-	new(factories : Provider<Factories>) {
+	new(factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		this.factories = factories.get
+		this.agentLevelInjector = agentLevelInjector
 		this.lock = this.factories.newReadWriteLock
 	}
 
@@ -163,6 +169,13 @@ final class AgentLife {
 			this.eventBusCapacity = capRef
 		}
 		return SREutils::castInternalSkillReference(owner, capRef, typeof(InternalEventBusCapacity))
+	}
+
+	/** Replies the callback to be run when a skill is attached to the agent. */
+	protected def getInternalSkillCallback : (Agent, Skill) => void {
+		[
+			this.agentLevelInjector.get.injectAgentTraitMembers($1)
+		]
 	}
 
 	/** Start the agent's life.
@@ -205,6 +218,9 @@ final class AgentLife {
 					wlock0.unlock
 				}
 
+				// Attach internal skill callback
+				SREutils::setSkillInstallationCallback(^agent, internalSkillCallback)
+
 				// Get the event bus
 				val eb = getEventBus(startingAgent)
 				assert eb !== null
@@ -217,7 +233,7 @@ final class AgentLife {
 				var initEvent = new Initialize(spawningAgent, initializationParameters)
 				initEvent.source = addressInInnerDefaultSpace
 				// Any exception into the inits are thrown outside the call below.
-				val delayedEvents = new OutParameter<List<Event>>
+				val delayedEvents = new OutParameter<List<Pair<Event, Object>>>
 				val result = eb.fireEventAndWaitWithEventGathering(initEvent, true, delayedEvents, [
 					spawningContext.defaultSpace.registerStrongParticipant(eb.associatedEventBusListener)
 				], [
@@ -245,10 +261,15 @@ final class AgentLife {
 				])
 				// Fire buffered events if the bufer is ont empty.
 				if (result) {
-					val eventList : List<Event> = delayedEvents.get
+					val eventList = delayedEvents.get
 					if (eventList !== null) {
 						for (delayedEvent : eventList) {
-							eb.fireEvent(delayedEvent)
+							val listener = delayedEvent.value
+							if (listener === null) {
+								eb.fireEvent(delayedEvent.key)
+							} else {
+								eb.fireEvent(delayedEvent.key, listener)
+							}
 						}
 					}
 					return true
@@ -338,6 +359,9 @@ final class AgentLife {
 		this.state = AgentState::DYING
 
 		try {
+			// Detach any internal skill callback
+			SREutils::setSkillInstallationCallback(dyingAgent, null)
+
 			val eb = getEventBus(dyingAgent)
 			assert eb !== null
 			

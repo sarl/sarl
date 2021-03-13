@@ -44,13 +44,17 @@ final class BehaviorLife extends AgentTraitLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param behavior the instance of the behavior for which the life description should be retrieved
-	 * @param factories the provider of factories tool.
-	 * @see #getLifeOrNull
+	 * @param factories the provider of factories
+	 * @param init the code to run when the behavior life is created.
+	 * @see #getBehaviorLifeOrNull
 	 */
-	static def getLife(^behavior : Behavior, factories : Provider<Factories>) : BehaviorLife {
+	static def getBehaviorLife(^behavior : Behavior, factories : Provider<Factories>, init : (BehaviorLife)=>void = null) : BehaviorLife {
 		var life = ^behavior.getSreSpecificData(typeof(BehaviorLife))
 		if (life === null) {
-			life = new BehaviorLife(factories)
+			life = new BehaviorLife(^behavior, factories)
+			if (init !== null) {
+				init.apply(life)
+			}
 			^behavior.sreSpecificData = life
 		}
 		return life
@@ -61,10 +65,10 @@ final class BehaviorLife extends AgentTraitLife {
 	 * 
 	 * @param behavior the instance of the behavior for which the life description should be retrieved
 	 * @since 0.10
-	 * @see #getLife
+	 * @see #getBehaviorLife
 	 */
 	@Pure
-	static def getLifeOrNull(^behavior : Behavior) : BehaviorLife {
+	static def getBehaviorLifeOrNull(^behavior : Behavior) : BehaviorLife {
 		return ^behavior.getSreSpecificData(typeof(BehaviorLife))
 	}
 

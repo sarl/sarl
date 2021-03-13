@@ -63,7 +63,7 @@ skill MySkill implements InternalEventBusCapacity {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		events : OutParameter<List<Event>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
+		events : OutParameter<List<Pair<Event, Object>>>, handler0 : () => void, handler1 : BooleanSupplier) : boolean {
 		if (this.failure) {
 			throw new RuntimeException
 		}

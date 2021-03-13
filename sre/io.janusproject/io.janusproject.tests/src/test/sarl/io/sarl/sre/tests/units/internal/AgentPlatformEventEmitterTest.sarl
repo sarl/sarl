@@ -121,7 +121,7 @@ class AgentEventEmitterTest {
 		this.agent1 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
 		this.params = #[]
 		this.agent2 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
-		this.life2 = AgentLife::getLife(this.agent2, [SreTestUtilities::newFactories])
+		this.life2 = AgentLife::getAgentLife(this.agent2, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		this.emitter = new AgentEventEmitter(this.logger)
 	}
 	

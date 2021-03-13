@@ -26,6 +26,7 @@ import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.IssueCodes
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
+import io.sarl.sre.internal.ConfigurableAgentInjector
 import io.sarl.sre.internal.Factories
 import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.context.Context
@@ -66,6 +67,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	val globalListeners : SmartListenerCollection<?>
 
 	val factories : Provider<Factories>
+
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
 
 	val sarlSpecificationChecker : SarlSpecificationChecker
 
@@ -111,10 +114,11 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
-		factories : Provider<Factories>,
+		factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>,
 		skillProvider : DynamicSkillProvider, skillUninstaller : SkillUninstaller,
 		executor : ExecutorService, loggingService : LoggingService, lifecycleConfig : LifecycleConfig) {
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
 		this.globalListeners = this.factories.get.newListenerCollection
@@ -347,7 +351,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			agentIds, agentInstanceCreator,
 			this.skillUninstaller,
 			getLogger,
-			this.factories)
+			this.factories,
+			this.agentLevelInjector)
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -450,7 +455,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	def killAgent(^agent : Agent, forceKillable : boolean, terminationCause : Object) : boolean {
 		val agentId = ^agent.ID
-		val life = getLifeOrNull(^agent)
+		val life = getAgentLifeOrNull(^agent)
 		if (life !== null && life.isAlive) {
 			var defaultContext = life.defaultContext
 			// We should check if it is possible to kill the agent BEFORE killing it.
@@ -612,6 +617,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		val skillUninstaller : SkillUninstaller
 		val logger : Logger
 		val factories : Provider<Factories>
+		val agentLevelInjector: Provider<ConfigurableAgentInjector>
 
 		/** Constructor.
 		 *
@@ -633,7 +639,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			initializationParameters : Object[], agentIds : ()=>UUID,
 			agentInstanceCreator : (UUID)=>Agent, skillUninstaller : SkillUninstaller,
 			logger : Logger,
-			factories : Provider<Factories>) {
+			factories : Provider<Factories>,
+			agentLevelInjector: Provider<ConfigurableAgentInjector>) {
 			this.service = service
 			this.spawnQueries = spawnQueries
 			this.spawningAgent = spawningAgent
@@ -645,6 +652,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			this.skillUninstaller = skillUninstaller
 			this.logger = logger
 			this.factories = factories
+			this.agentLevelInjector = agentLevelInjector
 		}
 
 		final override run {
@@ -661,7 +669,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				}
 
 				// Start the agent's life
-				var life = ^agent.getLife(this.factories)
+				var life = ^agent.getAgentLife(this.factories, this.agentLevelInjector)
 				var started = false
 				var spawnError : Throwable = null
 				try {

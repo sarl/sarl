@@ -42,6 +42,7 @@ import io.sarl.sre.skills.bic.FailureListenerFactory
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import javax.inject.Provider
 import javax.inject.Singleton
+import io.sarl.sre.internal.ConfigurableAgentInjector
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
@@ -66,8 +67,9 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@Provides
 	@KernelScope
 	@Singleton
-	static def provideInternalContextMembershipListenerFactory(factories : Provider<Factories>) : InternalContextMembershipListenerFactory {
-		new SubHolonContextEventEmitterFactory(factories)
+	static def provideInternalContextMembershipListenerFactory(factories : Provider<Factories>,
+		agentTraitInitializer : Provider<ConfigurableAgentInjector>) : InternalContextMembershipListenerFactory {
+		new SubHolonContextEventEmitterFactory(factories, agentTraitInitializer)
 	}
 
 	@Provides

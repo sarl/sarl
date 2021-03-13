@@ -115,7 +115,7 @@ class AgentLifeTest {
 		this.eventBus = new MySkill().spy
 		this.logging = new MyLogging().spy
 		this.^agent = new MyAgent1(this.eventBus, this.logging).spy
-		this.life = ^agent.getLife[SreTestUtilities::newFactories]
+		this.life = ^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		// Remove the interaction
 		reset(this.eventBus)
 	}

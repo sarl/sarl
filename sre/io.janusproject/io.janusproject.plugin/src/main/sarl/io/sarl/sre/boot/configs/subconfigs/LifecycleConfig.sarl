@@ -70,6 +70,24 @@ class LifecycleConfig {
 	public static val CREATE_AGENT_WITH_INJECTOR_VALUE = false
 
 	/** 
+	 * Name of property that indicates if the support of the {@code @Injectable} is enable
+	 * when the creation of the agents is not injection based.
+	 * 
+	 * @see #ENABLE_INJECTABLE_ANNOTATION_VALUE
+	 * @since 0.12
+	 */
+	public static val ENABLE_INJECTABLE_ANNOTATION_NAME = PREFIX + ".enableInjectableAnnotation"
+	
+	/** 
+	 * Indicates if the support of the {@code @Injectable} is enable
+	 * when the creation of the agents is not injection based.
+	 * 
+	 * @see #ENABLE_INJECTABLE_ANNOTATION_NAME
+	 * @since 0.12
+	 */
+	public static val ENABLE_INJECTABLE_ANNOTATION_VALUE = true
+
+	/** 
 	 * Name of property that indicates the maximal number of agents that could be spawn by a single
 	 * thread of the lifecycle service. This value is used to create threads that are spawning
 	 * blocks of agents.
@@ -111,6 +129,9 @@ class LifecycleConfig {
 	var createAgentsWithInjector : boolean = CREATE_AGENT_WITH_INJECTOR_VALUE
 
 	@Accessors(PUBLIC_GETTER)
+	var enableInjectableSupport : boolean = ENABLE_INJECTABLE_ANNOTATION_VALUE
+
+	@Accessors(PUBLIC_GETTER)
 	var agentSpawningCountPerThread : int = AGENT_SPAWNING_COUNT_PER_THREAD_VALUE
 
 	@Accessors(PUBLIC_GETTER)
@@ -133,6 +154,17 @@ class LifecycleConfig {
 	@BQConfigProperty("Is agents created with the injection mechanism")
 	def setCreateAgentsWithInjector(useInjector : boolean) : void {
 		this.createAgentsWithInjector = useInjector
+	}
+
+	/** Change the flag that indicates the {@code @Injectable} annotation is supported
+	 * when the agents are not created with an injector.
+	 *
+	 * @param enableInjectable is {@code true} if agents ar injected if their are annoted with {@code @Injectable}.
+	 * @since 0.12
+	 */
+	@BQConfigProperty("Is agents injected when they are not created with injector but annotated with @Injectable")
+	def setEnableInjectableSupport(enableInjectable : boolean) : void {
+		this.enableInjectableSupport = enableInjectable
 	}
 
 	/** Change the maximal number of agents that could be spawn by a single

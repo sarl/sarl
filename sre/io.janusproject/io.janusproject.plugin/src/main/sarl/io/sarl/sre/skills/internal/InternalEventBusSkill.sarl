@@ -30,6 +30,7 @@ import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.ConfigurableAgentInjector
 import io.sarl.sre.internal.Factories
 import java.util.ArrayList
 import java.util.List
@@ -37,10 +38,10 @@ import java.util.UUID
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.function.BooleanSupplier
 import javax.inject.Inject
+import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import javax.inject.Provider
 
 /** 
  * SRE implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -64,17 +65,20 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var isEventBufferingEnabled = true
 
-	var bufferOfEvents : List<Event>
+	var bufferOfEvents : List<Pair<Event, Object>>
 
 	val bufferLock : ReadWriteLock
 
 	val factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	@SuppressWarnings("raw_type")
 	@Inject
 	@PrivateAPI(isCallerOnly = true)
-	new (busFactory : EventBusFactory, factories : Provider<Factories>) {
+	new (busFactory : EventBusFactory, factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 		this.bufferLock = factories.get.newReadWriteLock
 		this.eventBus = busFactory.createEventBus [
 			var instance = typeof(InternalSchedules).getSkill
@@ -83,11 +87,12 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		]
 	}
 
-	new (bus : EventBus, bufferLock : ReadWriteLock, factories : Provider<Factories>) {
+	new (bus : EventBus, bufferLock : ReadWriteLock, factories : Provider<Factories>, agentLevelInjector : Provider<ConfigurableAgentInjector>) {
 		assert bus !== null
 		assert bufferLock !== null
 		assert factories !== null
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 		this.eventBus = bus
 		this.bufferLock = bufferLock
 	}
@@ -193,13 +198,13 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * 
 	 * @return an unmodifiable iterable of the buffered elements.
 	 */
-	def getBufferedEvents : List<Event> {
+	def getBufferedEvents : List<Pair<Event, Object>> {
 		val rlock = this.bufferLock.readLock
 		rlock.lock
 		try {
 			val buf = this.bufferOfEvents
 			if (buf === null) {
-				return new ArrayList<Event>
+				return newArrayList
 			}
 			return new ArrayList(buf)
 		} finally {
@@ -209,30 +214,30 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean, forceEventHandlerExecution : boolean, listener : Object) : void {
 		assert listener !== null
-		if (getLife(owner, this.factories).state.blockingEventHandling && (forceEventHandlerExecution || ^event.prepareFiring)) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.blockingEventHandling && (forceEventHandlerExecution || ^event.prepareFiring)) {
 			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, getLogger)
 		}
 	}
 
 	override fireEventAndWait(^event : Event, thrownExceptions : boolean) : void {
-		if (getLife(owner, this.factories).state.blockingEventHandling && ^event.prepareFiring) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.blockingEventHandling && ^event.prepareFiring) {
 			this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
 		}
 	}
 
 	override fireEvent(^event : Event) {
-		if (getLife(owner, this.factories).state.asynchronousEventHandling && ^event.prepareFiring) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.asynchronousEventHandling && ^event.prepareFiring) {
 			this.eventBus.asyncDispatch(^event, getLogger)
 		}
 	}
 
 	override fireEvent(^event : Event, listener : Object) {
-		if (getLife(owner, this.factories).state.asynchronousEventHandling && ^event.prepareFiring) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.asynchronousEventHandling && ^event.prepareFiring(listener)) {
 			this.eventBus.asyncDispatchTo(listener, ^event, getLogger)
 		}
 	}
 
-	private def prepareFiring(^event : Event) : boolean {
+	private def prepareFiring(^event : Event, listener : Object = null) : boolean {
 		var mustBuff  = false
 		val rlock = this.bufferLock.readLock
 		rlock.lock
@@ -250,7 +255,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 					if (this.bufferOfEvents === null) {
 						this.bufferOfEvents = newLinkedList
 					}
-					this.bufferOfEvents.add(^event)
+					this.bufferOfEvents.add(Pair::of(^event, listener))
 				}
 			} finally {
 				wlock.unlock
@@ -260,10 +265,10 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	}
 
 	override fireEventAndWaitWithEventGathering(^event : Event, thrownExceptions : boolean,
-		bufferedEvents : OutParameter<List<Event>>,
+		bufferedEvents : OutParameter<List<Pair<Event, Object>>>,
 		beforeEventFiringHandler : () => void,
 		beforeReturnHandler : BooleanSupplier) : boolean {
-		if (getLife(owner, this.factories).state.blockingEventHandling) {
+		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.blockingEventHandling) {
 			// Prepare firing
 			var wlock = this.bufferLock.writeLock
 			wlock.lock

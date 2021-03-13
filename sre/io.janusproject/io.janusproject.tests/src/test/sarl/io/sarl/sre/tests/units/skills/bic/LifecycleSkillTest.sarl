@@ -92,14 +92,14 @@ class LifecycleSkillTest {
 		this.context = typeof(Context).mock
 		when(this.context.ID).thenReturn(UUID::randomUUID)
 		this.^agent = new MyAgent3(this.context.ID, this.spawnerID).spy
-		AgentLife::getLife(^agent, [SreTestUtilities::newFactories]).setDefaultContext(this.context, typeof(Address).mock)
-		this.^skill = new LifecycleSkill(this.service) [SreTestUtilities::newFactories]
+		AgentLife::getAgentLife(^agent, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).setDefaultContext(this.context, typeof(Address).mock)
+		this.^skill = new LifecycleSkill(this.service, [SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 
 	private def forceAlive {
 		// Force being alive
-		this.^agent.getLife[SreTestUtilities::newFactories].state = AgentState::ALIVE
+		this.^agent.getAgentLife([SreTestUtilities::newFactories], [SreTestUtilities::newConfigurableAgentInjector]).state = AgentState::ALIVE
 	}
 
 	@Test

@@ -99,7 +99,8 @@ class InternalSchedulesSkillTest {
 		this.^agent = new MyAgent(contextId, this.^agentId, this.logger).spy
 		this.executor = typeof(ExecutorService).mock
 		this.failureListenerFactory = typeof(FailureListenerFactory).mock
-		this.^skill = new SchedulesSkill(this.executor, this.failureListenerFactory, [SreTestUtilities::newFactories])
+		this.^skill = new SchedulesSkill(this.executor, this.failureListenerFactory, [SreTestUtilities::newFactories],
+			[SreTestUtilities::newConfigurableAgentInjector])
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 

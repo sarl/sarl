@@ -34,13 +34,14 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.internal.Factories
-import io.sarl.sre.services.lifecycle.AgentLife
-import io.sarl.sre.services.lifecycle.BehaviorLife
 import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
+
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.sre.services.lifecycle.BehaviorLife.*
 
 /** 
  * Abstract probe implementation is linked to a field. A probe is thread-safe.
@@ -306,7 +307,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 		switch (scheme) {
 			case AgentName::SCHEME: {
 				return [
-					var life = AgentLife::getLifeOrNull(it as Agent)
+					var life = (it as Agent).getAgentLifeOrNull
 					if (life !== null) {
 						return life.state.alive
 					}
@@ -315,7 +316,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 			}
 			case BehaviorName::SCHEME: {
 				return [
-					return BehaviorLife::getLifeOrNull(it as Behavior) !== null
+					return (it as Behavior).getBehaviorLifeOrNull !== null
 				]
 			}
 			case SkillName::SCHEME,
@@ -323,7 +324,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 				return [
 					var ag = (it as AgentTrait).owner
 					if (ag !== null) {
-						var life = AgentLife::getLifeOrNull(ag)
+						var life = ag.getAgentLifeOrNull
 						if (life !== null) {
 							return life.state.alive
 						}

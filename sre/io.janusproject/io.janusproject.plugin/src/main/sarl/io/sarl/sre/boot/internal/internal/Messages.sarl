@@ -44,6 +44,7 @@ final class Messages extends NLS {
 	public static var ListenerNotifierModuleProvider_0 : String
 	public static var LockProviderModuleProvider_0 : String
 	public static var ConcurrentCollectionModuleProvider_0 : String
+	public static var ConfigurableAgentInjectorModuleProvider_0 : String
 
 	private new {
 	}

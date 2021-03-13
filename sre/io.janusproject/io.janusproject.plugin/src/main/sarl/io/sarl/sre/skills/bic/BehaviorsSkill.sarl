@@ -23,20 +23,24 @@ package io.sarl.sre.skills.bic
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
+import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
 import io.sarl.lang.util.ConcurrentCollection
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-
-import static io.sarl.sre.services.lifecycle.AgentLife.*
-import javax.inject.Provider
+import io.sarl.sre.internal.ConfigurableAgentInjector
 import io.sarl.sre.internal.Factories
 import javax.inject.Inject
+import javax.inject.Provider
+
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.sre.services.lifecycle.BehaviorLife.*
 
 /** 
  * SRE implementation of SARL's {@link Behaviors} built-in capacity.
@@ -54,19 +58,27 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 
 	val factories : Provider<Factories>
 
+	val agentLevelInjector : Provider<ConfigurableAgentInjector>
+
 	@Inject
-	new (factories : Provider<Factories>) {
+	new (agentLevelInjector : Provider<ConfigurableAgentInjector>, factories : Provider<Factories>) {
 		this.factories = factories
+		this.agentLevelInjector = agentLevelInjector
 	}
 
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
 	protected override prepareUninstallation {
-		val adr = getLife(owner, this.factories).addressInInnerDefaultSpace
+		val adr = owner.getAgentLife(this.factories, this.agentLevelInjector).addressInInnerDefaultSpace
 		typeof(Behavior).unregisterEventBusListener [
+			val beh = it as Behavior
 			// Destroy the behavior
 			val ^event = new Destroy
 			^event.source = adr
 			fireEventAndWait(^event, true, true, it)
-			(it as Behavior).releaseInternalResources
+			// Do internal uninstallation
+			SREutils::doBehaviorUninstallation(beh)
+			beh.releaseInternalResources
 			// Run this lambda on all the behaviors:
 			return true
 		]
@@ -76,13 +88,21 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		associatedEventBusListener
 	}
 
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
 	override registerBehavior(attitude : Behavior, filter : (Event)=>boolean,
 		initializationParameters : Object*) : Behavior {
 		assert attitude !== null
-		val life = getLife(owner, this.factories)
+		val life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			val adr = life.addressInInnerDefaultSpace
 			attitude.registerEventBusListener(filter) [
+				// Inject the behavior if needed
+				attitude.getBehaviorLife(this.factories) [
+					this.agentLevelInjector.get.injectAgentTraitMembers(attitude)
+				]
+				// Do internal installation
+				SREutils::doBehaviorInstallation(attitude)
 				// Initialize the behavior
 				val ^event = new Initialize(this.ID, initializationParameters)
 				^event.source = adr
@@ -92,15 +112,19 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		return attitude
 	}
 
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
 	override  unregisterBehavior(attitude : Behavior) : Behavior {
 		assert attitude !== null
-		var adr = getLife(owner, this.factories).addressInInnerDefaultSpace
+		var adr = owner.getAgentLife(this.factories, this.agentLevelInjector).addressInInnerDefaultSpace
 		attitude.unregisterTasksForBehavior
 		attitude.unregisterEventBusListener [
 			// Destroy the behavior
 			val ^event = new Destroy
 			^event.source = adr
 			fireEventAndWait(^event, true, true, attitude)
+			// Do internal uninstallation
+			SREutils::doBehaviorUninstallation(attitude)
 			attitude.releaseInternalResources
 		]
 		return attitude
@@ -111,7 +135,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent
 		// for real posting
-		val life = getLife(owner, this.factories)
+		val life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			var context = life.getInnerContext(null)
 			if (context !== null) {
@@ -133,14 +157,18 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 	}
 
 	override wake(^behavior : Behavior, ^event : Event) {
-		val life = getLife(owner, this.factories)
+		val life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
+			// Inject the behavior if needed
+			^behavior.getBehaviorLife(this.factories) [
+				this.agentLevelInjector.get.injectAgentTraitMembers(^behavior)
+			]
 			fireEvent(^event, ^behavior)
 		}
 	}
 
 	override wake(behaviors : Iterable<Behavior>, ^event : Event) {
-		val life = getLife(owner, this.factories)
+		val life = owner.getAgentLife(this.factories, this.agentLevelInjector)
 		if (life.state.alive) {
 			for (beh : behaviors) {
 				fireEvent(^event, beh)
