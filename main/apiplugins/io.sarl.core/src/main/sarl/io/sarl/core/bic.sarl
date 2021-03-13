@@ -37,6 +37,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 import java.util.logging.Logger
+import io.sarl.lang.annotation.SarlAsynchronousExecution
 
 /**
  * Provides functions for accessing and managing the external contexts of an agent.
@@ -175,6 +176,8 @@ capacity ExternalContextAccess {
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 * @since 0.6
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def emit(^space : EventSpace, ^event : Event, scope : Scope<Address> = null)
 
 }
@@ -350,6 +353,8 @@ capacity Behaviors {
 	 * @param event the event to emit to the agent's behaviors and in the internal context.
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events.
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def wake(^event : Event, scope : Scope<Address> = null)
 	
 	/**
@@ -364,6 +369,8 @@ capacity Behaviors {
 	 * @param event the event to emit to the agent's behaviors and in the internal context.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def wake(^behavior : Behavior, ^event : Event)
 
 	/**
@@ -378,6 +385,8 @@ capacity Behaviors {
 	 * @param event the event to emit to the agent's behaviors and in the internal context.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def wake(behaviors : Iterable<Behavior>, ^event : Event)
 
 	/**
@@ -403,6 +412,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
 	 * is initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -415,6 +426,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawn(agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
@@ -425,6 +438,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agents
 	 * are initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 * 
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -439,6 +454,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
@@ -447,6 +464,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
 	 * is initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 * 
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -459,6 +478,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 	
 	/**
@@ -467,6 +488,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agents
 	 * are initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 * 
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -482,6 +505,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.5
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
@@ -490,6 +515,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
 	 * is initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 * 
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -503,6 +530,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawnInContextWithID(agentClass : Class <? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
 	/**
@@ -511,6 +540,8 @@ capacity Lifecycle {
 	 * <p>Caution: when this function returns, there is no warranty that the spawned agent
 	 * is initialized at the time of the return.
 	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 * This parallel task for spawning is not considered as an agent task, i.e. it cannot
+	 * be stopped or cancelled by the spawning agent, or if this agent is killed.
 	 * 
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -524,6 +555,8 @@ capacity Lifecycle {
 	 * @fires AgentSpawnFailure if the agent cannot be spawned.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawnWithID(agentClass : Class <? extends Agent>, agentID : UUID, params : Object*) fires AgentSpawned, AgentSpawnFailure
 
     /**
@@ -830,6 +863,8 @@ capacity DefaultContextInteractions {
 	 * @param event the event to emit.
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def emit(^event : Event, scope : Scope<Address> = null)
 
 	/**
@@ -857,6 +892,8 @@ capacity DefaultContextInteractions {
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def emitToParent(^event : Event)
 
 	/**
@@ -868,6 +905,8 @@ capacity DefaultContextInteractions {
 	 * @deprecated since 0.11, see {@link #emit(Event,Scope)} 
 	 */
 	@Deprecated
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def willReceive(receiver : UUID, ^event : Event)
 
 	/** Replies if the given space is the default space of the default context.
@@ -946,6 +985,8 @@ capacity DefaultContextInteractions {
 	 * @deprecated See the {@link Lifecycle} capacity.
 	 */
 	@Deprecated
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SarlAsynchronousExecution
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned, AgentSpawnFailure
 
 }
