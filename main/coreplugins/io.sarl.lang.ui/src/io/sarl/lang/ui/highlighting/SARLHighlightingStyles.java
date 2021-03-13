@@ -39,4 +39,9 @@ public interface SARLHighlightingStyles extends XtendHighlightingStyles {
 	 */
 	String CAPACITY_METHOD_INVOCATION = "sarl.capacity.method.invocation"; //$NON-NLS-1$
 
+	/** Style for an asynchronous call to a method.
+	 * @since 0.12
+	 */
+	String ASYNCHRONOUS_METHOD_INVOCATION = "sarl.asynchronous.method.invocation"; //$NON-NLS-1$
+
 }

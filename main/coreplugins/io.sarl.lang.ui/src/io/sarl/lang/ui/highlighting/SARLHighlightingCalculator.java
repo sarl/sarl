@@ -33,6 +33,7 @@ import org.eclipse.xtext.ide.editor.syntaxcoloring.IHighlightedPositionAcceptor;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 
+import io.sarl.lang.annotation.SarlAsynchronousExecution;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.InheritanceHelper;
 
@@ -72,25 +73,31 @@ public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 
 		JvmIdentifiableElement feature = featureCall.getFeature();
 		if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation && !featureCall.isOperation()) {
-			if (isCapacityMethodCall((JvmOperation) feature)) {
-				highlightFeatureCall(featureCall, acceptor, SARLHighlightingStyles.CAPACITY_METHOD_INVOCATION);
+			final String code = getSarlSpecificHighlighting((JvmOperation) feature);
+			if (code != null) {
+				highlightFeatureCall(featureCall, acceptor, code);
 			}
 		}
 	}
 
-	/** Replies if the given call is for a capacity function call.
+	/** Replies the highlighting that is specific to SARL.
 	 *
 	 * @param feature the feature to test.
-	 * @return {@code true} if the feature is capacity(s method.
+	 * @return the highlighting, or {@code null} if none.
+	 * @since 0.12
 	 */
-	protected boolean isCapacityMethodCall(JvmOperation feature) {
+	protected String getSarlSpecificHighlighting(JvmOperation feature) {
 		if (feature != null) {
+			if (this.annotationLookup.findAnnotation(feature, SarlAsynchronousExecution.class) != null) {
+				return SARLHighlightingStyles.ASYNCHRONOUS_METHOD_INVOCATION;
+			}
 			final JvmDeclaredType container = feature.getDeclaringType();
-			if (container instanceof JvmGenericType) {
-				return this.inheritanceHelper.isSarlCapacity((JvmGenericType) container);
+			if (container instanceof JvmGenericType
+				&& this.inheritanceHelper.isSarlCapacity((JvmGenericType) container)) {
+				return SARLHighlightingStyles.CAPACITY_METHOD_INVOCATION;
 			}
 		}
-		return false;
+		return null;
 	}
 
 }

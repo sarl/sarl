@@ -22,6 +22,7 @@
 package io.sarl.lang.ui.highlighting;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfigurationAcceptor;
 import org.eclipse.xtext.ui.editor.utils.TextStyle;
@@ -46,6 +47,10 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 				SARLHighlightingStyles.CAPACITY_METHOD_INVOCATION,
 				"Capacity method invocations", //$NON-NLS-1$
 				capacityMethodInvocation());
+		acceptor.acceptDefaultHighlighting(
+				SARLHighlightingStyles.ASYNCHRONOUS_METHOD_INVOCATION,
+				"Asynchronous method invocations", //$NON-NLS-1$
+				asynchronousMethodInvocation());
 	}
 
 	/** Style for the capacity method extension.
@@ -55,7 +60,18 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	@SuppressWarnings("checkstyle:magicnumber")
 	public TextStyle capacityMethodInvocation() {
 		final TextStyle textStyle = extensionMethodInvocation().copy();
-		//textStyle.setColor(new RGB(128, 36, 0));
+		textStyle.setStyle(SWT.ITALIC);
+		return textStyle;
+	}
+
+	/** Style for the asynchronous method extension.
+	 *
+	 * @return the style.
+	 */
+	@SuppressWarnings("checkstyle:magicnumber")
+	public TextStyle asynchronousMethodInvocation() {
+		final TextStyle textStyle = defaultTextStyle().copy();
+		textStyle.setColor(new RGB(227, 149, 0));
 		textStyle.setStyle(SWT.ITALIC);
 		return textStyle;
 	}
