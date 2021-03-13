@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.highlighting;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfigurationAcceptor;
 import org.eclipse.xtext.ui.editor.utils.TextStyle;
@@ -70,9 +69,8 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public TextStyle asynchronousMethodInvocation() {
-		final TextStyle textStyle = defaultTextStyle().copy();
-		textStyle.setColor(new RGB(227, 149, 0));
-		textStyle.setStyle(SWT.ITALIC);
+		final TextStyle textStyle = extensionMethodInvocation().copy();
+		textStyle.setStyle(SWT.BOLD);
 		return textStyle;
 	}
 

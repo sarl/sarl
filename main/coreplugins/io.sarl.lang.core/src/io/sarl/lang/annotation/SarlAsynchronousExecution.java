@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * @since 0.12
  */
 @Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 public @interface SarlAsynchronousExecution {
 	//
 }
