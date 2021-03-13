@@ -258,6 +258,29 @@ public final class SREutils {
 		return receiver.$isSupportedEvent(event);
 	}
 
+	/** Do the installation of the given behavior.
+	 *
+	 * <p>This function invokes {@link Behavior#install()} and nothing more.
+	 *
+	 * @param behavior the behavior to be installed.
+	 * @since 0.12
+	 * @see #doBehaviorUninstallation(Behavior)
+	 */
+	public static void doBehaviorInstallation(Behavior behavior) {
+		behavior.install();
+	}
+
+	/** Do the uninstallation of the given behavior.
+	 *
+	 * <p>This function invokes {@link Behavior#uninstall()} and nothing more.
+	 *
+	 * @param behavior the behavior to be uninstalled.
+	 * @since 0.12
+	 * @see #doBehaviorInstallation(Behavior)
+	 */
+	public static void doBehaviorUninstallation(Behavior behavior) {
+		behavior.uninstall();
+	}
 
 	/** Provide an agent with a callback function for the skill installation.
 	 *

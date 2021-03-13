@@ -49,4 +49,24 @@ public abstract class Behavior extends AgentTrait implements IBehaviorGuardEvalu
 		return Capacities.createSkillDelegatorIfPossible(original, capacity, this);
 	}
 
+	/**
+	 * This method is called just after the installation of this behavior into its
+	 * owner agent. In this method you could init the behavior outside the scheme of
+	 * the {@code Initialize} event, i.e. it is called before the firing of the event.
+	 * @since 0.12
+	 */
+	protected void install() {
+		//
+	}
+
+	/**
+	 * This method is called just after the uninstallation of this behavior from its
+	 * owner agent. In this method you could uninit the behavior outside the scheme of
+	 * the {@code Destroy} event, i.e. it is called before the firing of the event.
+	 * @since 0.12
+	 */
+	protected void uninstall() {
+		//
+	}
+
 }
