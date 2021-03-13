@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.annotation.PrivateAPI;
@@ -255,6 +256,17 @@ public final class SREutils {
 	 */
 	public static boolean doIsSupportedEvent(IBehaviorGuardEvaluatorReceiver receiver, Class<? extends Event> event) {
 		return receiver.$isSupportedEvent(event);
+	}
+
+
+	/** Provide an agent with a callback function for the skill installation.
+	 *
+	 * @param agent is the agent to equip.
+	 * @param callback is the callback to install.
+	 * @since 0.12
+	 */
+	public static void setSkillInstallationCallback(Agent agent, Procedure2<Agent, Skill> callback) {
+		agent.setSkillCallback(callback);
 	}
 
 }

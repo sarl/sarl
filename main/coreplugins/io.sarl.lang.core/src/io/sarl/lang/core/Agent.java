@@ -25,6 +25,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -49,6 +50,8 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	private final UUID id;
 
 	private final UUID parentID;
+
+	private volatile Procedure2<Agent, Skill> skillCallback;
 
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
@@ -94,6 +97,20 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	@Override
 	protected final void $attachOwner(Skill skill) {
 		skill.setOwner(this);
+		final Procedure2<Agent, Skill> cb = this.skillCallback;
+		if (cb != null) {
+			cb.apply(this, skill);
+		}
+	}
+
+	/** Change the callback for the skill.
+	 * This callback is invoked each time a skill is attached to the agent.
+	 *
+	 * @param callback the callback.
+	 * @since 0.12
+	 */
+	void setSkillCallback(Procedure2<Agent, Skill> callback) {
+		this.skillCallback = callback;
 	}
 
 	/**
