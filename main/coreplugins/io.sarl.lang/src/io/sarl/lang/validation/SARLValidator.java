@@ -228,6 +228,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.ErrorOnCall;
 import io.sarl.lang.annotation.InfoOnCall;
 import io.sarl.lang.annotation.WarningOnCall;
+import io.sarl.lang.async.ISynchronizedFieldDetector;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -456,6 +457,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ProxyAwareUIStrings proxyAwareUIStrings;
+
+	@Inject
+	private ISynchronizedFieldDetector synchronizedFieldDetector;
 
 	// Update the annotation target information
 	{
@@ -2831,6 +2835,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public void checkUnsynchronizedField(XtendField field) {
 		if (doCheckValidMemberName(field) && !isIgnored(POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
+			/*if (this.synchronizedFieldDetector.isSynchronizedField(field)) {
+				return;
+			}*/
 			final JvmField jvmField = this.associations.getJvmField(field);
 			if (jvmField == null || jvmField.eContainer() == null || jvmField.isConstant() || jvmField.isFinal()) {
 				return;
