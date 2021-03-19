@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SpaceID extends SRESpecificDataContainer implements Serializable, Comparable<SpaceID> {
+public class SpaceID extends SRESpecificDataContainer implements Serializable, Comparable<SpaceID>, Cloneable {
 
 	private static final long serialVersionUID = 8764568066583474825L;
 
@@ -59,6 +59,16 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 		this.id = id;
 		this.contextID = contextID;
 		this.spaceSpec = spaceSpec;
+	}
+
+	@Override
+	@Pure
+	public SpaceID clone() {
+		try {
+			return (SpaceID) super.clone();
+		} catch (Throwable exception) {
+			throw new Error(exception);
+		}
 	}
 
 	/**

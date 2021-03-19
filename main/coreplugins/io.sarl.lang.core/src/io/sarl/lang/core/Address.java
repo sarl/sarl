@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Address extends SRESpecificDataContainer implements Serializable, Comparable<Address> {
+public class Address extends SRESpecificDataContainer implements Serializable, Comparable<Address>, Cloneable {
 
 	private static final long serialVersionUID = 1519844913685586094L;
 
@@ -59,6 +59,16 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 		this.spaceId = spaceId;
 	}
 
+	@Override
+	@Pure
+	public Address clone() {
+		try {
+			return (Address) super.clone();
+		} catch (Throwable exception) {
+			throw new Error(exception);
+		}
+	}
+	
 	@Override
 	@Pure
 	public String toString() {
