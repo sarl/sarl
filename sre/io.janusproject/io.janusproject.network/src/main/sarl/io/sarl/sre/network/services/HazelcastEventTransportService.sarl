@@ -47,6 +47,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Implementation of a MTS using Hazeclast topics to distribute messages over a network of SARL's SREs. 
@@ -147,7 +148,10 @@ class HazelcastEventTransportService implements EventTransportService {
 	 */
 	static class TopicMessage implements Serializable {
 
+		@Accessors
 		val transferredEvent : Event
+
+		@Accessors
 		val trasnferredScope : Scope<? super Address>
 
 		new(e : Event, s : Scope<? super Address>) {
