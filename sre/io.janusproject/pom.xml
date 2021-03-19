@@ -30,6 +30,7 @@
 				<module>io.janusproject.kernel.network</module>
 				<module>io.janusproject.test.framework</module>
 				<module>io.janusproject.tests</module>
+				<module>io.janusproject.network.tests</module>
 				<module>io.janusproject.feature</module>
 			</modules>
 		</profile>

@@ -1,0 +1,422 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.network.tests.units.services.mocks
+
+import com.hazelcast.map.IMap
+import com.hazelcast.map.listener.MapListener
+import java.util.UUID
+import com.hazelcast.query.Predicate
+import com.hazelcast.config.IndexConfig
+import com.hazelcast.map.MapInterceptor
+import com.hazelcast.map.listener.MapPartitionLostListener
+import com.hazelcast.aggregation.Aggregator
+import java.util.Map.Entry
+import java.util.Set
+import com.hazelcast.map.EntryProcessor
+import java.util.Map
+import java.util.concurrent.CompletionStage
+import com.hazelcast.core.EntryView
+import com.hazelcast.map.LocalMapStats
+import com.hazelcast.map.QueryCache
+import java.util.concurrent.TimeUnit
+import com.hazelcast.projection.Projection
+import java.util.Collection
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class IMapMock<K, V> implements IMap<K, V> {
+	
+	public val internalMap = <K, V>newTreeMap(null)
+
+	override toString : String {
+		this.internalMap.toString
+	}
+
+	override equals(obj : Object) : boolean {
+		this.internalMap.equals(obj)
+	}
+
+	def addEntryListener(listener : MapListener, includeValue : boolean) : UUID {
+		return UUID::randomUUID
+	}
+	
+	def addEntryListener(listener : MapListener, key : K, includeValue : boolean) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addEntryListener(listener : MapListener, predicate : Predicate<K, V>, includeValue : boolean) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addEntryListener(listener : MapListener, predicate : Predicate<K, V>, key : K, includeValue : boolean) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addIndex(indexConfig : IndexConfig) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addInterceptor(interceptor : MapInterceptor) : String {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addLocalEntryListener(listener : MapListener) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addLocalEntryListener(listener : MapListener, predicate : Predicate<K, V>, includeValue : boolean) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addLocalEntryListener(listener : MapListener, predicate : Predicate<K, V>, key : K, includeValue : boolean) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def addPartitionLostListener(listener : MapPartitionLostListener) : UUID {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def aggregate(aggregator : Aggregator<? super Entry<K, V>, R>) : R with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def aggregate(aggregator : Aggregator<? super Entry<K, V>, R>, predicate : Predicate<K, V>) : R with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def clear {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def containsKey(key : Object) : boolean {
+		this.internalMap.containsKey(key)
+	}
+	
+	def containsValue(value : Object) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def delete(key : Object) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def entrySet : Set<Entry<K, V>> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def entrySet(predicate : Predicate<K, V>) : Set<Entry<K, V>> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def evict(key : K) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def evictAll {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def executeOnEntries(entryProcessor : EntryProcessor<K, V, R>) : Map<K, R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def executeOnEntries(entryProcessor : EntryProcessor<K, V, R>, predicate : Predicate<K, V>) : Map<K, R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def executeOnKey(key : K, entryProcessor : EntryProcessor<K, V, R>) : R with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def executeOnKeys(keys : Set<K>, entryProcessor : EntryProcessor<K, V, R>) : Map<K, R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def flush {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def forceUnlock(key : K) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def get(key : Object) : V {
+		this.internalMap.get(key)
+	}
+	
+	def getAll(keys : Set<K>) : Map<K, V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getAsync(key : K) : CompletionStage<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getEntryView(key : K) : EntryView<K, V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getLocalMapStats : LocalMapStats {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getQueryCache(name : String) : QueryCache<K, V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getQueryCache(name : String, predicate : Predicate<K, V>, includeValue : boolean) : QueryCache<K, V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getQueryCache(name : String, listener : MapListener, predicate : Predicate<K, V>, includeValue : boolean) : QueryCache<K, V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def isLocked(key : K) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def keySet : Set<K> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def keySet(predicate : Predicate<K, V>) : Set<K> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def loadAll(replaceExistingValues : boolean) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def loadAll(keys : Set<K>, replaceExistingValues : boolean) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def localKeySet : Set<K> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def localKeySet(predicate : Predicate<K, V>) : Set<K> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def lock(key : K) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def lock(key : K, leaseTime : long, timeUnit : TimeUnit) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def project(projection : Projection<? super Entry<K, V>, R>) : Collection<R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def project(projection : Projection<? super Entry<K, V>, R>, predicate : Predicate<K, V>) : Collection<R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def put(key : K, value : V) : V {
+		this.internalMap.put(key, value)
+	}
+	
+	def put(key : K, value : V, ttl : long, ttlUnit : TimeUnit) : V {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def put(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) : V {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putAll(m : Map<? extends K, ? extends V>) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putAllAsync(map : Map<? extends K, ? extends V>) : CompletionStage<Void> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putAsync(key : K, value : V) : CompletionStage<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putAsync(key : K, value : V, ttl : long, ttlUnit : TimeUnit) : CompletionStage<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putAsync(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) : CompletionStage<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putIfAbsent(key : K, value : V) : V {
+		this.internalMap.putIfAbsent(key, value)
+	}
+	
+	def putIfAbsent(key : K, value : V, ttl : long, ttlUnit : TimeUnit) : V {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putIfAbsent(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) : V {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putTransient(key : K, value : V, ttl : long, ttlUnit : TimeUnit) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def putTransient(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def remove(key : Object) : V {
+		this.internalMap.remove(key)
+	}
+	
+	def remove(key : Object, value : Object) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def removeAll(predicate : Predicate<K, V>) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def removeAsync(key : K) : CompletionStage<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def removeEntryListener(id : UUID) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def removeInterceptor(id : String) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def removePartitionLostListener(id : UUID) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def replace(key : K, value : V) : V {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def replace(key : K, oldValue : V, newValue : V) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def set(key : K, value : V) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def set(key : K, value : V, ttl : long, ttlUnit : TimeUnit) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def set(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def setAsync(key : K, value : V) : CompletionStage<Void> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def setAsync(key : K, value : V, ttl : long, ttlUnit : TimeUnit) : CompletionStage<Void> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def setAsync(key : K, value : V, ttl : long, ttlUnit : TimeUnit, maxIdle : long, maxIdleUnit : TimeUnit) : CompletionStage<Void> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def setTtl(key : K, ttl : long, timeunit : TimeUnit) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def submitToKey(key : K, entryProcessor : EntryProcessor<K, V, R>) : CompletionStage<R> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def submitToKeys(keys : Set<K>, entryProcessor : EntryProcessor<K, V, R>) : CompletionStage<Map<K, R>> with R {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def tryLock(key : K) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def tryLock(key : K, time : long, timeunit : TimeUnit) : boolean throws InterruptedException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def tryLock(key : K, time : long, timeunit : TimeUnit, leaseTime : long, leaseTimeunit : TimeUnit) : boolean throws InterruptedException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def tryPut(key : K, value : V, timeout : long, timeunit : TimeUnit) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def tryRemove(key : K, timeout : long, timeunit : TimeUnit) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def unlock(key : K) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def values : Collection<V> {
+		this.internalMap.values
+	}
+	
+	def values(predicate : Predicate<K, V>) : Collection<V> {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def isEmpty : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def size : int {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def destroy {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getName : String {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getPartitionKey : String {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def getServiceName : String {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}
