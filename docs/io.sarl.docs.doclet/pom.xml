@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
-			<version>${java.version}</version>
+			<version>${sarl-dsl.min.jdk.version}</version>
 			<scope>system</scope>
 			<systemPath>${tools.jar}</systemPath>
 		</dependency>
@@ -80,6 +80,18 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>javadoc-default-profile-2</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<file>
+					<exists>${java.home}/lib/tools.jar</exists>
+				</file>
+			</activation>
+			<properties>
+				<tools.jar>${java.home}/lib/tools.jar</tools.jar>
+			</properties>
+		</profile>
+		<profile>
 			<id>javadoc-mac-profile</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -89,6 +101,18 @@
 			</activation>
 			<properties>
 				<tools.jar>${java.home}/../Classes/classes.jar</tools.jar>
+			</properties>
+		</profile>
+		<profile>
+			<id>javadoc-mac-profile-2</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<file>
+					<exists>${java.home}/Classes/classes.jar</exists>
+				</file>
+			</activation>
+			<properties>
+				<tools.jar>${java.home}/Classes/classes.jar</tools.jar>
 			</properties>
 		</profile>
 	</profiles>
