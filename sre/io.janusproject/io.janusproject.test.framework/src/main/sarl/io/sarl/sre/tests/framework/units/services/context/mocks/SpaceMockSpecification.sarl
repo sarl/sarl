@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.services.context.mocks
+package io.sarl.sre.tests.framework.units.services.context.mocks
 
 import io.sarl.lang.core.SpaceSpecification
 

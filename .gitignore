@@ -27,6 +27,8 @@
 **/io.janusproject.plugin/src/main/generated-sources
 **/io.janusproject.kernel/src-gen/
 **/io.janusproject.kernel/src/main/generated-sources
+**/io.janusproject.test.framework/src/main/generated-sources
+**/io.janusproject.test.framework/src/test/generated-sources
 **/io.janusproject.tests/src/main/generated-sources
 **/io.janusproject.tests/src/test/generated-sources
 **/io.janusproject.network/src-gen/

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.services.context
+package io.sarl.sre.tests.framework.units.services.context
 
 import com.google.inject.Injector
 import io.sarl.sre.services.context.AbstractInjectionBasedContextService

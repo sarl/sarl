@@ -24,6 +24,7 @@ package io.sarl.sre.tests.units.services.context;
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.MemoryBasedContextService
 import io.sarl.sre.tests.framework.SreTestUtilities
+import io.sarl.sre.tests.framework.units.services.context.AbstractInjectionBasedContextServiceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 

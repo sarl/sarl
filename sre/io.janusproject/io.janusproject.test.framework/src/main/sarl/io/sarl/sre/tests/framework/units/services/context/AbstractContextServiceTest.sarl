@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.services.context
+package io.sarl.sre.tests.framework.units.services.context
 
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification

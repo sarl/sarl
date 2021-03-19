@@ -8,13 +8,17 @@
 		<version>0.12.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.janusproject.tests</artifactId>
-	<name>Janus SRE Tests</name>
+	<artifactId>io.janusproject.test.framework</artifactId>
+	<name>Framework for Janus SRE Tests</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>io.janusproject.sre</groupId>
-			<artifactId>io.janusproject.test.framework</artifactId>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.sre.test.framework</artifactId>
 		</dependency>
 	</dependencies>
 

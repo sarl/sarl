@@ -25,6 +25,7 @@ import com.google.inject.Injector
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.tests.framework.SreTestUtilities
+import io.sarl.sre.tests.framework.units.services.context.AbstractSpaceRepositoryTest
 import java.util.TreeMap
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName

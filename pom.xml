@@ -466,6 +466,11 @@
 				<version>${janus.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.janusproject.sre</groupId>
+				<artifactId>io.janusproject.test.framework</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 				<version>${xtext.version}</version>
