@@ -45,6 +45,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
+import java.util.Map
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
@@ -91,14 +92,16 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		specificationFactory : SreSpaceSpecificationFactory,
 		icontextService : ContextService,
 		factories : Provider<Factories>,
-		iHazelcastInstance : HazelcastInstance) {
-		super(injector, executor, loggingService, config, specificationFactory, factories)
+		iHazelcastInstance : HazelcastInstance,
+		internalStructure0 : Map<UUID, SpaceDescription> = null,
+		internalStructure1 : IMap<SpaceID, Object[]> = null) {
+		super(injector, executor, loggingService, config, specificationFactory, internalStructure0, factories)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 		this.logger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)
 		availableTopicsName = this.hazelcastInstance.getSet(
 			HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_NAME_SET);
-		spaceIDs = this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
+		spaceIDs = internalStructure1 ?: this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
 
 		var spaceIDsListerner = new EntryListener<SpaceID, Object[]>() {
 
