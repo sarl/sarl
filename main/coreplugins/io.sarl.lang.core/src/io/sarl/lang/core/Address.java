@@ -68,7 +68,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 			throw new Error(exception);
 		}
 	}
-	
+
 	@Override
 	@Pure
 	public String toString() {
