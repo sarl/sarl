@@ -48,7 +48,7 @@ agent FailToSpawnAgent {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		typeof(FailToSpawnSubAgent).spawn(this.child, buildAgentInitializationParameters)
+		typeof(FailToSpawnSubAgent).spawnWithID(this.child, buildAgentInitializationParameters)
 	}
 
 	on AgentSpawnFailure {

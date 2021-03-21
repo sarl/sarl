@@ -23,7 +23,7 @@ package io.sarl.sre.test.framework.context
 
 import java.util.Collection
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.ConcurrentLinkedDeque
 import org.eclipse.xtend.lib.annotations.ToString
 
 /**
@@ -40,7 +40,7 @@ class CollectionWait extends Wait {
 	
 	val lock : Collection<UUID>
 
-	package new (lock : Collection<UUID>, errorContainer : AtomicReference<Throwable>) {
+	package new (lock : Collection<UUID>, errorContainer : ConcurrentLinkedDeque<Throwable>) {
 		super(errorContainer)
 		this.lock = lock
 	}

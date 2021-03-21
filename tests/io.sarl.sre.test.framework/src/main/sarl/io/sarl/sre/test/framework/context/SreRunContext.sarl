@@ -39,12 +39,12 @@ import io.sarl.sre.test.framework.exception.SreTimeoutException
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
@@ -83,7 +83,7 @@ class SreRunContext {
 
 	val globalResults = new ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>
 
-	val directFailureCause = new AtomicReference<Throwable>
+	val directFailureCause = new ConcurrentLinkedDeque<Throwable>
 
 	@Accessors(PUBLIC_GETTER)
 	volatile var bootAgentId : UUID
@@ -467,7 +467,7 @@ class SreRunContext {
 				if (exception === null) {
 					exception = new SreLogException(record)
 				}
-				directFailureCause.set(exception)
+				SreRunContext.this.directFailureCause.add(exception)
 			}
 		}
 
@@ -510,15 +510,25 @@ class SreRunContext {
 				endTime = -1
 			}
 			var isSreRunning = this.bootstrap.running
-			while (this.directFailureCause.get === null && isSreRunning &&
+			while (this.directFailureCause.isEmpty && isSreRunning &&
 				(endTime == -1 || System::currentTimeMillis() <= endTime)) {
 				isSreRunning = this.bootstrap.isRunning() ||
 					(predicate !== null && (!(predicate.apply(this.globalResults))))
 				Thread.sleep(100)
 			}
-			val directException = this.directFailureCause.get
-			if (directException !== null) {
-				throw directException
+			if (!this.directFailureCause.isNullOrEmpty) {
+				if (this.directFailureCause.size == 1) {
+					throw this.directFailureCause.get(0)
+				}
+				var ex0 : RuntimeException
+				for (directFailure : this.directFailureCause) {
+					if (ex0 === null) {
+						ex0 = new RuntimeException(directFailure)
+					} else {
+						ex0.addSuppressed(directFailure)
+					}
+				}
+				throw ex0
 			} else if (isSreRunning) {
 				var cause : Throwable = null
 				for (result : allResults) {

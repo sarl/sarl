@@ -21,7 +21,7 @@
 
 package io.sarl.sre.tests.runtime.internal
 
-import io.sarl.sre.test.framework.Constants
+import io.sarl.sre.test.framework.context.LogTrackingMode
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
@@ -57,7 +57,7 @@ class OnAgentKillFailureTest {
 	@Test
 	@DisplayName("run")
 	def run(extension rc : SreRunContext) {
-		typeof(FailToSpawnAgent).runSre(Constants::STANDARD_TIMEOUT)
+		typeof(FailToSpawnAgent).runSre(LogTrackingMode::SILENT)
 		
 		var all = allResults
 		1.assertEquals(all.size)

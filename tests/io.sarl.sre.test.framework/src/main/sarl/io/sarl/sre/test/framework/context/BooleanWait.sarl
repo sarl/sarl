@@ -21,8 +21,8 @@
 
 package io.sarl.sre.test.framework.context
 
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.ToString
 
 /**
@@ -39,7 +39,7 @@ class BooleanWait extends Wait {
 	
 	val lock : AtomicBoolean
 
-	new (lock : AtomicBoolean, errorContainer : AtomicReference<Throwable>) {
+	new (lock : AtomicBoolean, errorContainer : ConcurrentLinkedDeque<Throwable>) {
 		super(errorContainer)
 		this.lock = lock
 	}

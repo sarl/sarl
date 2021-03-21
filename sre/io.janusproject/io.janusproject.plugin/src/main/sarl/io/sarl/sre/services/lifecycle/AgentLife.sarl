@@ -278,11 +278,6 @@ final class AgentLife {
 					return false
 				}
 			} catch (e : Throwable) {
-				try {
-					this.agentLogger.error(e.localizedMessage, e)
-				} catch (iex : Throwable) {
-					logger.log(Level::SEVERE, e) [e.localizedMessage]
-				}
 				stop(startingAgent, skillUninstaller, logger, true)
 				throw e
 			}

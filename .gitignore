@@ -21,6 +21,8 @@
 **/io.sarl.lang/model/generated/
 **/io.sarl.lang.tests/src/main/generated-sources/
 **/io.sarl.lang.tests/src/test/generated-sources/
+**/io.sarl.sre.test.framework/src/main/generated-sources
+**/io.sarl.sre.test.framework/src/test/generated-sources
 **/io.sarl.experienceindex.plugin/src-gen/
 **/io.sarl.experienceindex.plugin/src/main/generated-sources/
 **/io.janusproject.plugin/src-gen/
@@ -35,6 +37,7 @@
 **/io.janusproject.network/src/main/generated-sources
 **/io.janusproject.network.tests/src-gen/
 **/io.janusproject.network.tests/src/main/generated-sources
+**/io.janusproject.network.tests/src/test/generated-sources
 **/io.janusproject.kernel.network/src-gen/
 **/io.janusproject.kernel.network/src/main/generated-sources
 

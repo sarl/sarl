@@ -45,10 +45,11 @@ final class JreExecutorUtils {
 	 * 
 	 * @param executorService the service to use.
 	 * @param tasks the tasks to run.
-	 * @param thrownExceptions indicates if the exceptions in the tasks are thrown into a combined exception.
-	 * @param a callback for wrapping the tasks.
+	 * @param interceptExceptions indicates if the exceptions in the tasks are thrown into a combined exception.
+	 * @param a callback for wrapping the tasks. The first argument of the lambda indicates if the errors should be catched and
+	 *     the second argument is the task to run.
 	 */
-	static def executeInThreadsAndWait(executorService : java.util.concurrent.ExecutorService, tasks : Collection<Runnable>, thrownExceptions : boolean,
+	static def executeInThreadsAndWait(executorService : java.util.concurrent.ExecutorService, tasks : Collection<Runnable>, interceptExceptions : boolean,
 		wrapper : (boolean, Runnable)=>Runnable) {
 		assert executorService !== null
 
@@ -57,11 +58,10 @@ final class JreExecutorUtils {
 		if (tasks.size == 1) {
 			val runnable = tasks.head
 			assert runnable !== null
-			if (thrownExceptions) {
+			if (interceptExceptions) {
 				val finalRunExceptions = new LinkedList<Throwable>
 				runExceptions = finalRunExceptions
 				try {
-					// Catch the early-exit exception
 					wrapper.apply(false, runnable).run
 				} catch (e : Throwable) {
 					finalRunExceptions += e
@@ -71,13 +71,12 @@ final class JreExecutorUtils {
 			}
 		} else {
 			val doneSignal = new CountDownLatch(tasks.size)
-			if (thrownExceptions) {
+			if (interceptExceptions) {
 				val finalRunExceptions = new LinkedList<Throwable>
 				runExceptions = finalRunExceptions
 				for (runnable : tasks) {
 					var wrunnable : Runnable = [
 						try {
-							// Catch the early-exit exception
 							wrapper.apply(false, runnable).run
 						} catch (e : Throwable) {
 							synchronized (finalRunExceptions) {
@@ -93,7 +92,6 @@ final class JreExecutorUtils {
 				for (runnable : tasks) {
 					executorService.execute [
 						try {
-							// Catch the early-exit exception
 							wrapper.apply(true, runnable).run
 						} finally {
 							doneSignal.countDown
