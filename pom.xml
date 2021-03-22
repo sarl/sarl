@@ -93,6 +93,9 @@
 		<!-- Version of Checkstyle. Must be the same version as inside Eclipse IDE (com.puppycrawl.tools:checkstyle) -->
 		<checkstyle.version>8.32</checkstyle.version>
 		<checkstyle.full.version>${checkstyle.version}.0</checkstyle.full.version>
+		<!-- Version of Hazelcast that is used by Maven and Tycho -->
+		<hazelcast.version>4.0.3</hazelcast.version>
+		<hazelcast.osgi.version>${hazelcast.version}</hazelcast.osgi.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -117,7 +120,6 @@
 		<junit5.version>5.7.0-M1</junit5.version>
 		<!-- The following Jackson declaration are temporary fix for issue #1007 -->
 		<jacksonapi.version>2.10.0</jacksonapi.version>
-		<!-- End of the fix section -->
 	</properties>
 
 	<!-- ======================================= -->
@@ -629,7 +631,7 @@
 			<dependency>
 				<groupId>com.hazelcast</groupId>
 				<artifactId>hazelcast</artifactId>
-				<version>4.0.3</version>
+				<version>${hazelcast.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>

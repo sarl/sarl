@@ -26,7 +26,6 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.network.services.HazelcastContextService
-import io.sarl.sre.network.tests.units.services.mocks.IMapMock
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.tests.framework.SreTestUtilities
 import io.sarl.sre.tests.framework.units.services.context.AbstractInjectionBasedContextServiceTest
@@ -77,7 +76,7 @@ class HazelcastContextServiceTest extends AbstractInjectionBasedContextServiceTe
 		this.sreConfig = typeof(SreConfig).mock
 		when(this.sreConfig.boot).thenReturn(bootConfig)
 		//
-		this.istructure = new IMapMock
+		this.istructure = typeof(IMap).mock
 		//
 		this.internalSet = typeof(ISet).mock
 		//

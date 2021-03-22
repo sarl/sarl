@@ -158,6 +158,13 @@
 								<version>${afc.osgi.version}</version>
 							</restrictTo>
 						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>com.hazelcast</id>
+							<restrictTo>
+								<version>${hazelcast.osgi.version}</version>
+							</restrictTo>
+						</filter>
 					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->

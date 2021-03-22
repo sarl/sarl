@@ -26,7 +26,6 @@ import com.hazelcast.collection.ISet
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import io.sarl.sre.network.services.HazelcastSpaceRepository
-import io.sarl.sre.network.tests.units.services.mocks.IMapMock
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.tests.framework.SreTestUtilities
@@ -71,7 +70,7 @@ class HazelcastSpaceRepositoryTest extends AbstractSpaceRepositoryTest<Hazelcast
 
 	@BeforeEach
 	override setUp : void {
-		this.istructure = new IMapMock
+		this.istructure = typeof(IMap).mock
 		//
 		this.contextService = typeof(ContextService).mock
 		//

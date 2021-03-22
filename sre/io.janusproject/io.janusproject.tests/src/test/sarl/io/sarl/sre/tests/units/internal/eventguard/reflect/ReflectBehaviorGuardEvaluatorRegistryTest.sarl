@@ -888,42 +888,23 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		3.assertEquals(evaluators.size)
 
 		var evaluator0 = evaluators.get(0) as ReflectBehaviorGuardEvaluator
-		evaluator0.assertNotNull
-		var listener0consumed0 = (evaluator0.target === listener0)
-		if (listener0consumed0) {
-			listener0.assertSame(evaluator0.target)
-		} else {
-			listener1.assertSame(evaluator0.target)
-		}
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.name)
-
 		var evaluator1 = evaluators.get(1) as ReflectBehaviorGuardEvaluator
-		evaluator1.assertNotNull
-		if (listener0consumed0) {
-			listener1.assertSame(evaluator1.target)
-		} else {
-			listener0consumed0 = (evaluator1.target === listener0)
-			if (listener0consumed0) {
-				listener0.assertSame(evaluator1.target)
-			} else {
-				listener1.assertSame(evaluator1.target)
-			}
-		}
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.name)
-
 		var evaluator2 = evaluators.get(2) as ReflectBehaviorGuardEvaluator
-		evaluator2.assertNotNull
-		if (listener0consumed0) {
-			listener1.assertSame(evaluator1.target)
-		} else {
-			listener0consumed0 = (evaluator1.target === listener0)
-			if (listener0consumed0) {
-				listener0.assertSame(evaluator1.target)
-			} else {
-				listener1.assertSame(evaluator1.target)
-			}
-		}
+		
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.name)
 		"$guardEvaluator$TestEvent0".assertEquals(evaluator2.method.name)
+		
+		val targets = <Agent>newLinkedList
+		targets += listener0
+		targets += listener1
+		targets += listener1
+
+		targets.remove(evaluator0.target).assertTrue
+		targets.remove(evaluator1.target).assertTrue
+		targets.remove(evaluator2.target).assertTrue
+		
+		targets.assertContainsCollection(#[])
 	}
 
 	@SuppressWarnings("unused_local_variable")
