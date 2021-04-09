@@ -25,9 +25,8 @@ import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.ServiceLoader;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -114,21 +113,51 @@ public final class SRE {
 	 * @since 0.7
 	 */
 	@Pure
-	public static Set<URL> getBootstrappedLibraries() {
-		final String name = PREFIX + SREBootstrap.class.getName();
-		final Set<URL> result = new TreeSet<>();
-		try {
-			final Enumeration<URL> enumr = ClassLoader.getSystemResources(name);
-			while (enumr.hasMoreElements()) {
-				final URL url = enumr.nextElement();
-				if (url != null) {
-					result.add(url);
-				}
-			}
-		} catch (Exception exception) {
-			//
-		}
-        return result;
+	@Inline(value = "getServiceLibraries($1.class.getName())", imported = {SREBootstrap.class})
+	public static Iterable<URL> getBootstrappedLibraries() {
+		return getServiceLibraries(SREBootstrap.class.getName());
+	}
+
+
+	/** Replies all the libraries that contains a Java service for the given service name.
+	 *
+	 * @param libraryName the name of the service that is the fully qualified name of the service class.
+	 * @return the set of libraries.
+	 * @since 0.12
+	 */
+	@Pure
+	public static Iterable<URL> getServiceLibraries(String libraryName) {
+		final String name = PREFIX + libraryName;
+        return () -> {
+        	try {
+	    		final Enumeration<URL> enumr = ClassLoader.getSystemResources(name);
+	    		return new Iterator<URL>() {
+	    			final Enumeration<URL> enumeration = enumr;
+
+	    			@Override
+	    			public boolean hasNext() {
+	    				return this.enumeration.hasMoreElements();
+	    			}
+
+	    			@Override
+	    			public URL next() {
+	    				return this.enumeration.nextElement();
+	    			}
+	    		};
+        	} catch (Throwable exception) {
+        		return new Iterator<URL>() {
+	    			@Override
+	    			public boolean hasNext() {
+	    				return false;
+	    			}
+
+	    			@Override
+	    			public URL next() {
+	    				throw new NoSuchElementException();
+	    			}
+	    		};
+        	}
+        };
 	}
 
 	/** Change the current SRE.
@@ -200,7 +229,7 @@ public final class SRE {
 		}
 
 		@Override
-		public AgentContext startWithoutAgent() {
+		public AgentContext startWithoutAgent(boolean asCommandLineApp) {
 			return null;
 		}
 
@@ -246,6 +275,11 @@ public final class SRE {
 
 		@Override
 		public void removeSREListener(SREListener listener) {
+			//
+		}
+
+		@Override
+		public void setCommandLineArguments(String[] arguments) {
 			//
 		}
 

@@ -44,6 +44,32 @@ import io.sarl.lang.core.AgentContext;
  */
 public interface SREBootstrap {
 
+
+	/**
+	 * Specify arguments that should be used by the SRE as command-line arguments.
+	 * These arguments are usually used as start-up of the SRE.
+	 *
+	 * @param arguments the command-line arguments.
+	 * @since 0.12
+	 */
+	void setCommandLineArguments(String[] arguments);
+
+	/**
+	 * Start the SRE without an agent.
+	 * This function prepare the default context.
+	 *
+	 * @param asCommandLineApp indicates if the application should be started as a commend-line application.
+	 *     If {@code true}, the SRE is started and run directly. Then, the "start agent" functions becomes
+	 *     unusable because the SRE has started everything as it is called from the shell command line.
+	 *     If {@code false}, the SRE is started in is normal way and all the functions are available according
+	 *     to their own specifications.
+	 *     If it not recommended to invoke this function with this argument evaluated to {@code true}.
+	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
+	 * @since 0.12
+	 * @see #startWithoutAgent()
+	 */
+	AgentContext startWithoutAgent(boolean asCommandLineApp);
+
 	/**
 	 * Start the SRE without an agent.
 	 * This function prepare the default context.
@@ -51,7 +77,9 @@ public interface SREBootstrap {
 	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
 	 * @since 0.7
 	 */
-	AgentContext startWithoutAgent();
+	default AgentContext startWithoutAgent() {
+		return startWithoutAgent(false);
+	}
 
 	/**
 	 * Launch the SRE and the first agent in the kernel.

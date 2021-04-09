@@ -41,6 +41,7 @@ import io.sarl.sre.boot.configs.subconfigs.RootContextType
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
+import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicReference
@@ -81,6 +82,24 @@ class SreMain implements SREBootstrap {
 
 	val listeners = new ListenerCollection<SREListener>
 	
+	@Accessors(PUBLIC_SETTER)
+	var commandLineArguments : String[]
+
+	private def addToCommandLineArguments(args : String[]) : String[] {
+		if (args !== null && args.length > 0) {
+			if (this.commandLineArguments !== null && this.commandLineArguments.length > 0) {
+				val nargs = Arrays::copyOf(this.commandLineArguments, this.commandLineArguments.length + args.length)
+				System::arraycopy(args, 0, nargs, this.commandLineArguments.length, args.length)
+				return nargs
+			}
+			return args
+		}
+		if (this.commandLineArguments !== null && this.commandLineArguments.length > 0) {
+			return this.commandLineArguments
+		}
+		return #[]
+	}
+
 	/** Replies the reference to the kernel.
 	 *
 	 * @return the reference to the kernel.
@@ -268,10 +287,21 @@ class SreMain implements SREBootstrap {
 		return 255
 	}
 
-	private def ensureKernelInstance(bootique : Bootique, module : Class<? extends Module>, args : String*) : Kernel {
+	private def ensureKernelInstance(asCommandLineApp : boolean, bootique : Bootique, module : Class<? extends Module>, args : String*) : Kernel {
 		var k = getKernel
 		if (k === null) {
-			var runtime = ensureBootiqueRuntimeInstance(bootique, module, args)
+			var runtime = ensureBootiqueRuntimeInstance(bootique, module, args.addToCommandLineArguments)
+			// Start the SRE as it was called from a shell command line.
+			// This option breaks the programmatic usage of the bootstrap. It is provided for debugging purpose.
+			if (asCommandLineApp) {
+				val outcome = runtime.run
+				if (outcome !== null) {
+					if (!outcome.success && outcome.exception !== null) {
+						Logger::getGlobal.log(Level::SEVERE, outcome.message, outcome.exception)
+					}
+				}
+				return null
+			}
 			val injector = runtime.getInstance(typeof(Injector))
 			// Update the method for selecting the root context identifier
 			if (this.bootType !== null
@@ -300,17 +330,24 @@ class SreMain implements SREBootstrap {
 		}
 		// Force the bootstrap to be this object
 		SRE::bootstrap = this
-		return getKernel
+		return k
 	}
 
 	/** Start the agent framework without agent.
 	 * 
+	 * @param asCommandLineApp indicates if the application should be started as a commend-line application.
+	 *     If {@code true}, the SRE is started and run directly. Then, the "start agent" functions becomes
+	 *     unusable because the SRE has started everything as it is called from the shell command line.
+	 *     If {@code false}, the SRE is started in is normal way and all the functions are available according
+	 *     to their own specifications.
+	 *     If it not recommended to invoke this function with this argument evaluated to {@code true}.
 	 * @param bootique the Bootique instance to set up the framework. If it is {@code null},
 	 * the default Bootique instance is created.
 	 * @param module the injection module to use. If it is {@code null}, the default module is used.
 	 */
-	def startWithoutAgent(bootique : Bootique = null, module : Class<? extends Module> = null) : AgentContext {
-		ensureKernelInstance(bootique, module).rootContext
+	def startWithoutAgent(asCommandLineApp : boolean, bootique : Bootique = null, module : Class<? extends Module> = null) : AgentContext {
+		val ctx = ensureKernelInstance(asCommandLineApp, bootique, module)
+		return ctx?.rootContext
 	}
 	
 	def startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
@@ -319,7 +356,7 @@ class SreMain implements SREBootstrap {
 		val old = System::setProperty(propName, agentCls.name)
 		var kernel : Kernel
 		try {
-			kernel = ensureKernelInstance(null, null)
+			kernel = ensureKernelInstance(false, null, null)
 		} finally {
 			if (old === null) {
 				System::clearProperty(propName)
@@ -348,7 +385,7 @@ class SreMain implements SREBootstrap {
 			// Force the property that indicates the booted agent
 			System::setProperty(propName, agentCls.name)
 		}
-		val kernel = ensureKernelInstance(null, null)
+		val kernel = ensureKernelInstance(false, null, null)
 		kernel.spawn(agentCls, params)
 	}
 	
@@ -360,7 +397,7 @@ class SreMain implements SREBootstrap {
 			// Force the property that indicates the booted agent
 			System::setProperty(propName, agentCls.name)
 		}
-		val kernel = ensureKernelInstance(null, null)
+		val kernel = ensureKernelInstance(false, null, null)
 		kernel.spawn(agentID, agentCls, params)
 	}
 
@@ -436,5 +473,5 @@ class SreMain implements SREBootstrap {
 			}
 		}
 	}
-
+	
 }

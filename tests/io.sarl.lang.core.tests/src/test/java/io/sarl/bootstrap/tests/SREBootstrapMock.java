@@ -51,7 +51,7 @@ public class SREBootstrapMock implements SREBootstrap {
 	}
 
 	@Override
-	public AgentContext startWithoutAgent() {
+	public AgentContext startWithoutAgent(boolean asCommandLineApp) {
 		throw new IllegalStateException();
 	}
 
@@ -72,6 +72,11 @@ public class SREBootstrapMock implements SREBootstrap {
 
 	@Override
 	public void removeSREListener(SREListener listener) {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public void setCommandLineArguments(String[] arguments) {
 		throw new IllegalStateException();
 	}
 

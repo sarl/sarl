@@ -34,6 +34,7 @@ import org.junit.jupiter.api.^extension.ReflectiveInvocationContext
 import static io.sarl.bootstrap.SRE.*
 
 import static extension java.lang.Boolean.*
+import io.sarl.sre.test.framework.context.SreRunContextImpl
 
 /**
  * JUnit 5 extension that is running the SRE.
@@ -46,7 +47,7 @@ import static extension java.lang.Boolean.*
  */
 class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 
-	val SKIP_PROPERTY = "srerun.test.skip"
+	protected val SKIP_PROPERTY = "srerun.test.skip"
 
 	override supportsParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : boolean {
 		if (parameterContext.index === 0) {
@@ -61,7 +62,7 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 	override resolveParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : Object {
 		SRE::resetServiceLoader
 		SRE::bootstrap = null
-		var context = new SreRunContext
+		var context = new SreRunContextImpl
 		context.executableName = parameterContext.declaringExecutable.declaringClass.name + "#" + parameterContext.declaringExecutable.name
 		return context
 	}
