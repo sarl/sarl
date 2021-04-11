@@ -46,6 +46,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
 import java.util.Map
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
@@ -61,6 +62,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	/** 
 	 * Local Hazelcast instance
 	 */
+	@Accessors(PUBLIC_GETTER)
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 

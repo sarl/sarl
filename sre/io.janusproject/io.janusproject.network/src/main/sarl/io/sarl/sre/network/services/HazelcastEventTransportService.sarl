@@ -74,6 +74,7 @@ class HazelcastEventTransportService implements EventTransportService {
 	/** 
 	 * Local Hazelcast instance
 	 */
+	@Accessors(PUBLIC_GETTER)
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 

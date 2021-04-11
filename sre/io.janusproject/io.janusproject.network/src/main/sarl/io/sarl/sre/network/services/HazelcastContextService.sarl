@@ -40,6 +40,7 @@ import java.util.UUID
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.
  *
@@ -54,6 +55,7 @@ class HazelcastContextService extends MemoryBasedContextService {
 	/** 
 	 * Local Hazelcast instance
 	 */
+	@Accessors(PUBLIC_GETTER)
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
