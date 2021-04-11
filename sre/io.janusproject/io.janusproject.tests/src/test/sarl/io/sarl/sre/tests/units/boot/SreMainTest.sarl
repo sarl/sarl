@@ -221,7 +221,7 @@ class SreMainTest {
 	@Test
 	def getKernel_start1 {
 		createBootiqueMock
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.kernel.assertSame(this.bootstrap.kernel)
 	}
 
@@ -233,7 +233,7 @@ class SreMainTest {
 	@Test
 	def getRuntime_start1 {
 		createBootiqueMock
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.runtime.assertSame(this.bootstrap.runtime)
 	}
 
@@ -245,7 +245,7 @@ class SreMainTest {
 	@Test
 	def getService_start1 {
 		createBootiqueMock
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		var serv = this.bootstrap.getService(typeof(LifecycleService))
 		serv.assertNotNull
 		typeof(LifecycleService).assertInstanceOf(serv)
@@ -259,7 +259,7 @@ class SreMainTest {
 	@Test
 	def isActive_start1 {
 		createBootiqueMock
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.bootstrap.active.assertTrue
 	}
 
@@ -310,7 +310,7 @@ class SreMainTest {
 	def startAgentClassObjectArray {
 		createBootiqueMock
 		typeof(ShortLifeTestingAgent).createConfiguration
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.bootstrap.startAgent(typeof(ShortLifeTestingAgent), "a")
 		var arg0 = typeof(Class).forClass
 		var arg1 = typeof(Object[]).forClass
@@ -323,7 +323,7 @@ class SreMainTest {
 	def startAgentIntClassObjectArray {
 		createBootiqueMock
 		typeof(ShortLifeTestingAgent).createConfiguration
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.bootstrap.startAgent(1, typeof(ShortLifeTestingAgent), "a")
 		var arg0 = typeof(int).forClass
 		var arg1 = typeof(Class).forClass
@@ -343,7 +343,7 @@ class SreMainTest {
 					return configInstance
 				}
 			]
-			this.bootstrap.startWithoutAgent(this.bootique)
+			this.bootstrap.startWithoutAgent(false, this.bootique)
 			this.bootstrap.startBootAgent
 		]
 	}
@@ -358,7 +358,7 @@ class SreMainTest {
 				}
 			]
 			typeof(String).createConfiguration(configInstance)
-			this.bootstrap.startWithoutAgent(this.bootique)
+			this.bootstrap.startWithoutAgent(false, this.bootique)
 			this.bootstrap.startBootAgent
 		]
 	}
@@ -373,7 +373,7 @@ class SreMainTest {
 			}
 		]
 		typeof(ShortLifeTestingAgent).createConfiguration(configInstance)
-		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.bootstrap.startBootAgent
 		var arg0 = typeof(Class).forClass
 		var arg1 = typeof(Object[]).forClass
@@ -385,7 +385,7 @@ class SreMainTest {
 	@Test
 	def startWithoutAgentBootique_start0 {
 		createBootiqueMock
-		var ctx = this.bootstrap.startWithoutAgent(this.bootique)
+		var ctx = this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.rootContext.assertSame(ctx)
 		this.kernel.assertSame(this.bootstrap.kernel)
 		this.runtime.assertSame(this.bootstrap.runtime)
@@ -394,11 +394,11 @@ class SreMainTest {
 	@Test
 	def startWithoutAgentBootique_start1 {
 		createBootiqueMock
-		var ctx0 = this.bootstrap.startWithoutAgent(this.bootique)
+		var ctx0 = this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.rootContext.assertSame(ctx0)
 		this.kernel.assertSame(this.bootstrap.kernel)
 		this.runtime.assertSame(this.bootstrap.runtime)
-		var ctx1 = this.bootstrap.startWithoutAgent(this.bootique)
+		var ctx1 = this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.rootContext.assertSame(ctx1)
 		ctx0.assertSame(ctx1)
 		this.kernel.assertSame(this.bootstrap.kernel)
@@ -408,7 +408,7 @@ class SreMainTest {
 	@Test
 	def startWithoutAgentBootiqueClass_start0 {
 		createBootiqueMock
-		var ctx = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		var ctx = this.bootstrap.startWithoutAgent(false, this.bootique, typeof(ModuleMock))
 		this.rootContext.assertSame(ctx);
 		this.kernel.assertSame(this.bootstrap.getKernel());
 		this.runtime.assertSame(this.bootstrap.getRuntime());
@@ -417,11 +417,11 @@ class SreMainTest {
 	@Test
 	def startWithoutAgentBootiqueClass_start1 {
 		createBootiqueMock
-		var ctx0 = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		var ctx0 = this.bootstrap.startWithoutAgent(false, this.bootique, typeof(ModuleMock))
 		this.rootContext.assertSame(ctx0)
 		this.kernel.assertSame(this.bootstrap.kernel)
 		this.runtime.assertSame(this.bootstrap.runtime)
-		var ctx1 = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		var ctx1 = this.bootstrap.startWithoutAgent(false, this.bootique, typeof(ModuleMock))
 		this.rootContext.assertSame(ctx1)
 		ctx0.assertSame(ctx1)
 		this.kernel.assertSame(this.bootstrap.kernel)

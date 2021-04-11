@@ -1,0 +1,82 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.network.tests.framework
+
+/**
+ * Context for running the SRE with multiple Hazelcast. This context is thread-safe.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+interface MultiHazelcastRunContext {
+
+	def getHazelcastInstances : HazelcastRunContext[]
+
+	def getFirstHazelcastInstance : HazelcastRunContext
+
+	def getSecondHazelcastInstance : HazelcastRunContext
+
+}
+
+/**
+ * Context for running the SRE with Hazelcast. This context is thread-safe.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class MultiHazelcastRunContextImpl implements MultiHazelcastRunContext {
+
+	val name : String
+
+	volatile var instance0 : HazelcastRunContext
+
+	volatile var instance1 : HazelcastRunContext
+
+	new(name : String) {
+		this.name = name
+	}
+
+	def getHazelcastInstances : HazelcastRunContext[] {
+		#[ firstHazelcastInstance, secondHazelcastInstance ]
+	}
+	
+	def getFirstHazelcastInstance : HazelcastRunContext {
+		if (this.instance0 === null) {
+			this.instance0 = HazelcastRunContextImpl::newInstance(this.name + "__1")
+		}
+		return this.instance0
+	}
+	
+	def getSecondHazelcastInstance : HazelcastRunContext {
+		if (this.instance1 === null) {
+			this.instance1 = HazelcastRunContextImpl::newInstance(this.name + "__1")
+		}
+		return this.instance1
+	}
+
+}

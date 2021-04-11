@@ -598,7 +598,14 @@ class SreRunContextImpl implements SreRunContext {
 		setupTheSreKernel(loggingLevel, trackMode, false)
 	}
 	
-	private def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode, asCommandLineApp : boolean) : SREBootstrap {
+	/** Internal initialization of the SRE kernel.
+	 *
+	 * @param loggingLevel the expected logging level.
+	 * @param trackMode the expected exception tracking mode.
+	 * @param asCommandLine indicates if the kernel should be launch as from the command line.
+	 * @return bootstrap instance.
+	 */
+	protected def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode, asCommandLineApp : boolean) : SREBootstrap {
 		assertNull(this.rootContext, "SRE already launched.")
 
 		val tm = trackMode ?: LogTrackingMode::FAIL_ON_ERROR

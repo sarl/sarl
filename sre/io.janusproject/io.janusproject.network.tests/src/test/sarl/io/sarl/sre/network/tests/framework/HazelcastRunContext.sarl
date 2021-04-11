@@ -1,0 +1,110 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.network.tests.framework
+
+import com.hazelcast.core.HazelcastInstance
+import io.bootique.BQModuleProvider
+import io.sarl.bootstrap.SRE
+import io.sarl.bootstrap.SREBootstrap
+import io.sarl.sre.network.boot.configs.SreNetworkConfig
+import io.sarl.sre.network.services.HazelcastContextService
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.test.framework.context.LogTrackingMode
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.context.SreRunContextImpl
+import java.util.logging.Level
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.bootstrap.SRE.*
+import static org.junit.jupiter.api.Assertions.*
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+
+/**
+ * Context for running the SRE with Hazelcast. This context is thread-safe.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+interface HazelcastRunContext extends SreRunContext {
+
+	def getHazelcastInstance : HazelcastInstance
+
+}
+
+/**
+ * Context for running the SRE with Hazelcast. This context is thread-safe.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class HazelcastRunContextImpl extends SreRunContextImpl implements HazelcastRunContext {
+
+	static val BOOTIQUE_RESOURCE = "io.janusproject.network/target/classes/META-INF/services/io.bootique.BQModuleProvider"
+
+	@Accessors(PUBLIC_GETTER)
+	var hazelcastInstance : HazelcastInstance
+
+	override setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode, asCommandLineApp : boolean) : SREBootstrap {
+		val varName0 = VariableNames::toPropertyName(SreNetworkConfig::LOCAL_HAZELCAST_INSTANCE_NAME)
+		System::setProperty(varName0, Boolean::TRUE.toString)
+		
+		val varName1 = VariableNames::toPropertyName(SreNetworkConfig::ENABLE_NAME)
+		System::setProperty(varName1, Boolean::TRUE.toString)
+
+		val loaders = SRE::getServiceLibraries(typeof(BQModuleProvider).name)
+		val urls = loaders.iterator
+		var found = false
+		while (urls.hasNext) {
+			val url = urls.next
+			System.out.println(url)
+			if (url.toString.endsWith(BOOTIQUE_RESOURCE)) {
+				found = true
+			}
+		}
+		if (!found) {
+			fail("Expecting to find the Bootique service declaration in the classpath: " + BOOTIQUE_RESOURCE)
+		}
+
+		val bs = super.setupTheSreKernel(loggingLevel, trackMode, asCommandLineApp)
+		val srv = bs.getService(typeof(ContextService))
+		typeof(HazelcastContextService).assertInstanceOf(srv)
+		this.hazelcastInstance = (srv as HazelcastContextService).hazelcastInstance
+		return bs
+	}
+
+	static def newInstance(executableName : String) : HazelcastRunContextImpl {
+		SRE::resetServiceLoader
+		SRE::bootstrap = null
+		var context = new HazelcastRunContextImpl
+		context.executableName = executableName
+		return context
+	}
+
+}
