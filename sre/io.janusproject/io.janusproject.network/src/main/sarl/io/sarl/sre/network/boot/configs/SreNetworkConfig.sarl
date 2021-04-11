@@ -129,6 +129,20 @@ class SreNetworkConfig {
 	 */
 	public static val DEFAULT_IP_LIST_CLUSTER = "127.0.0.1"
 
+	/**
+	 * Name of the property that enable or disable the special configuration for
+	 * a local instance of Hazelcast. If this property is evaluated to {@code true},
+	 * it overrides all the other hazelcast configuration.
+	 */
+	public static val LOCAL_HAZELCAST_INSTANCE_NAME = PREFIX + ".localHazelcastInstance"; // $NON-NLS-1$
+
+	/** 
+	 * Default value of the property that enable or disable the special configuration for
+	 * a local instance of Hazelcast. If this property is evaluated to {@code true},
+	 * it overrides all the other hazelcast configuration.
+	 */
+	public static val DEFAULT_LOCAL_HAZELCAST_INSTANCE_VALUE = false
+
 	/** 
 	 * Regexp of a quarter of an IP adress
 	 */
@@ -151,6 +165,8 @@ class SreNetworkConfig {
 
 	var enable : boolean = DEFAULT_ENABLE_VALUE
 
+	var localHazelcastInstance : boolean = DEFAULT_LOCAL_HAZELCAST_INSTANCE_VALUE
+
 	var clusterName : String
 
 	var joinMethod : JoinMethod
@@ -167,7 +183,7 @@ class SreNetworkConfig {
 
 	@Inject
 	var generalConfiguration : SreConfig
-	
+
 	/** Replies the flag that enable or disable the networking features.
 	 * 
 	 * @return the enabling state of the enabling state of the networking extension.
@@ -185,6 +201,29 @@ class SreNetworkConfig {
 	@BQConfigProperty("Enable or disable the networking features.")
 	def setEnable(enable : boolean) {
 		this.enable = enable
+	}
+
+	/** Replies the property that enable or disable the special configuration for
+	 * a local instance of Hazelcast. If this property is evaluated to {@code true},
+	 * it overrides all the other hazelcast configuration.
+	 * 
+	 * @return the enabling state for local Hazelcast instance.
+	 */
+	def getLocalHazelcastInstance : boolean {
+		// This function is not defined with the name "isEnable" because it is not compatible with
+		// the Bootique API.
+		this.localHazelcastInstance
+	}
+
+	/** Change the property that enable or disable the special configuration for
+	 * a local instance of Hazelcast. If this property is evaluated to {@code true},
+	 * it overrides all the other hazelcast configuration.
+	 * 
+	 * @param enable the enabling state.
+	 */
+	@BQConfigProperty("Enable or disable the local Hazelcast instance.")
+	def setLocalHazelcastInstance(enable : boolean) {
+		this.localHazelcastInstance = enable
 	}
 
 	/** Replies a cluster name following the standard naming convention.
@@ -401,13 +440,16 @@ class SreNetworkConfigModule extends AbstractModule {
 	public static val NETWORK_LONG_OPTION = "network"
 
 	override configure : void {
-		VariableDecls::extend(binder).declareVar(NETWORK_LONG_OPTION)
+		VariableDecls::extend(binder).declareVar(ENABLE_NAME)
+		//
 		val cpDescription = MessageFormat::format(Messages::SreNetworkConfigModule_1, DEFAULT_ENABLE_VALUE.toString,
 				VariableNames::toEnvironmentVariableName(ENABLE_NAME))
 		binder.extend.addOption(OptionMetadata::builder(NETWORK_LONG_OPTION, cpDescription)
 				.valueRequired(Messages::SreNetworkConfigModule_0)
 				.build)
 				.mapConfigPath(NETWORK_LONG_OPTION, ENABLE_NAME)
+		//
+		VariableDecls::extend(binder).declareVar(LOCAL_HAZELCAST_INSTANCE_NAME)
 	}
 
 	/** Replies the instance of the network configuration.
