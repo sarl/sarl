@@ -116,44 +116,51 @@ class NetworkModule extends AbstractModule {
 		val cname = netConfig.getClusterName
 		config.clusterName = cname
 		logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_3, cname)]
-		val jmethod = netConfig.joinMethod
-		logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_4, jmethod)]
-		if (jmethod === JoinMethod::MULTICAST) {
-			config.networkConfig.join.multicastConfig.enabled = true
-			config.networkConfig.join.tcpIpConfig.enabled = false
-		} else {
+		if (netConfig.localHazelcastInstance) {
+			// Special instance configuration for local Hazelcast implementation (for tests for example).
 			config.networkConfig.join.multicastConfig.enabled = false
-			config.networkConfig.join.tcpIpConfig.enabled = true
-			
-			var iplist = netConfig.clusterMemberIPsArray
-			
-			if (iplist !== null) {
-				logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_5, Arrays::toString(iplist))]			
-			}
-			
-			//Mandatory to have the following line if you want to be sure that two distinct hazelcast instances running in two distinct jvm on the same node/computer join the same cluster
-			// config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")
-			for (memberIp : iplist) {
-				config.networkConfig.join.tcpIpConfig.addMember(memberIp)
-			}
-			
-		}
-		
-		config.networkConfig.portAutoIncrement = netConfig.portAutoIncrement
-		//The following line imposes that at least two hazelcast instance been laucnhed on the same cluster before doing anything
-		val minNumber = netConfig.minClusterSize
-		config.setProperty("hazelcast.initial.min.cluster.size", minNumber.toString);
-
-		var otherNumber = minNumber - 1
-		var startLogMsg : String
-		if (otherNumber > 1) {
-			startLogMsg = MessageFormat::format(Messages::NetworkModule_2, otherNumber.toString)
-		} else if (otherNumber > 0) {
-			startLogMsg = MessageFormat::format(Messages::NetworkModule_1, otherNumber.toString)
+		    config.networkConfig.join.tcpIpConfig.enabled = true
+		    config.networkConfig.join.tcpIpConfig.members = #["127.0.0.1"]
 		} else {
-			startLogMsg = Messages::NetworkModule_0
+			val jmethod = netConfig.joinMethod
+			logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_4, jmethod)]
+			if (jmethod === JoinMethod::MULTICAST) {
+				config.networkConfig.join.multicastConfig.enabled = true
+				config.networkConfig.join.tcpIpConfig.enabled = false
+			} else {
+				config.networkConfig.join.multicastConfig.enabled = false
+				config.networkConfig.join.tcpIpConfig.enabled = true
+				
+				var iplist = netConfig.clusterMemberIPsArray
+				
+				if (iplist !== null) {
+					logger.kernelLogger.log(Level::FINE) [MessageFormat::format(Messages::NetworkModule_5, Arrays::toString(iplist))]			
+				}
+				
+				//Mandatory to have the following line if you want to be sure that two distinct hazelcast instances running in two distinct jvm on the same node/computer join the same cluster
+				// config.networkConfig.join.tcpIpConfig.addMember("127.0.0.1")
+				for (memberIp : iplist) {
+					config.networkConfig.join.tcpIpConfig.addMember(memberIp)
+				}
+				
+			}
+			
+			config.networkConfig.portAutoIncrement = netConfig.portAutoIncrement
+			//The following line imposes that at least two hazelcast instance been laucnhed on the same cluster before doing anything
+			val minNumber = netConfig.minClusterSize
+			config.setProperty("hazelcast.initial.min.cluster.size", minNumber.toString);
+
+			var otherNumber = minNumber - 1
+			var startLogMsg : String
+			if (otherNumber > 1) {
+				startLogMsg = MessageFormat::format(Messages::NetworkModule_2, otherNumber.toString)
+			} else if (otherNumber > 0) {
+				startLogMsg = MessageFormat::format(Messages::NetworkModule_1, otherNumber.toString)
+			} else {
+				startLogMsg = Messages::NetworkModule_0
+			}
+			logger.kernelLogger.info(startLogMsg)
 		}
-		logger.kernelLogger.info(startLogMsg)
 
 		val hzlInstance = Hazelcast.newHazelcastInstance(config)
 
@@ -212,7 +219,7 @@ class NetworkModuleProvider implements BQModuleProvider {
 	}
 	
 	override overrides : Collection<Class<? extends Module>> {
-		#[ContextServiceModule]
+		#[typeof(ContextServiceModule)]
 	}
 
 	override configs : Map<String, Type> {
