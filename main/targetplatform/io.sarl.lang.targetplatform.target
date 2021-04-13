@@ -46,7 +46,8 @@
 			<unit id="com.google.inject" version="4.2.3"/>
 			<unit id="javax.inject" version="1.0.0"/>
 			<unit id="java-uuid-generator" version="4.0.1"/>
-			<unit id="com.hazelcast" version="4.0.3"/>
+			<unit id="com.hazelcast" version="4.1.1"/>
+			<unit id="com.hazelcast.source" version="4.1.1"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.eclipse.org/releases/2020-06"/>
