@@ -230,13 +230,22 @@ public class EventParsingTest extends AbstractSarlTest {
 		@Test
 		@Tag("sarlValidation")
 		public void eventmodifier_abstract() throws Exception {
-			SarlScript mas = file(getParseHelper(), multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract event E1"
 					));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlEvent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertTrue(event.isAbstract());
+			assertFalse(event.isFinal());
+			assertFalse(event.isStatic());
 		}
 
 		@Test

@@ -1278,11 +1278,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			setVisibility(inferredJvmType, source);
 			inferredJvmType.setStatic(false);
-			inferredJvmType.setAbstract(false);
+			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setStrictFloatingPoint(false);
-			if (!inferredJvmType.isAbstract()) {
-				inferredJvmType.setFinal(source.isFinal());
-			}
+			inferredJvmType.setFinal(!isAbstract && source.isFinal());
 
 			// Generate the annotations.
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);

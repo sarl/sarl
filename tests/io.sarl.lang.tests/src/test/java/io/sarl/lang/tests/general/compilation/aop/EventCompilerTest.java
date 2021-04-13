@@ -370,6 +370,39 @@ public class EventCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void eventmodifier_abstract() throws Exception {
+		getCompileHelper().assertCompilesTo(
+			multilineString(
+				"abstract event E1"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
+				"@SuppressWarnings(\"all\")",
+				"public abstract class E1 extends Event {",
+				"  @SyntheticMember",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public E1(final Address arg0) {",
+				"    super(arg0);",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  private static final long serialVersionUID = 588368462L;",
+				"}",
+				""));
+	}
+
+	@Test
 	public void eventmodifier_package() throws Exception {
 		getCompileHelper().assertCompilesTo(
 			multilineString(

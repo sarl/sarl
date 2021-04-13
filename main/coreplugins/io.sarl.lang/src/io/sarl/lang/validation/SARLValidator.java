@@ -354,7 +354,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			newArrayList("public", "package", "final", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
