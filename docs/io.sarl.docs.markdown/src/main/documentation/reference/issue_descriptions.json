@@ -2001,9 +2001,16 @@
 	},
 	{
 		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.forbidden_reference",
-		"message": "Forbidden reference to not final field *name* from a default value expression",
-		"cause": "This error message is generated when a reference to a non-final field is detected into the expression of the default value for a formal parameter. Only unmodifiable and side-effect free features could be used for building a default value expression",
-		"solution": "Remove the reference to the invalid field",
+		"message": "Default value's expression cannot reference to a not-pure operation",
+		"cause": "This error message is generated when a reference to a non-pure function is detected into the expression of the default value for a formal parameter. Only pure functions could be used for building a default value expression in order to avoid unexpected side-effects",
+		"solution": "Remove the reference to the not-pure function",
+		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.forbidden_reference",
+		"message": "Forbidden reference to not final field {0} from a constructor's default value expression",
+		"cause": "This error message is generated when a reference to a not-final field is detected into the expression of the default value for a constructor's formal parameter. Only final fields could be used for building a default value expression of a constructor in order to avoid unexpected side-effects",
+		"solution": "Remove the reference to the not final field",
 		"level": "error"
 	},
 	{
