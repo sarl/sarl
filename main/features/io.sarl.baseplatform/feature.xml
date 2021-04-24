@@ -285,10 +285,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.jboss.tools.maven.apt.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.sonatype.m2e.mavenarchiver.feature"
          version="0.0.0"/>
 

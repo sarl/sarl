@@ -30,10 +30,6 @@
 			<unit id="org.arakhne.afc.slf4j.log4j" version="16.0.0"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.jboss.org/jbosstools/photon/snapshots/builds/m2e-apt/latest/all/repo/"/>
-			<unit id="org.jboss.tools.maven.apt.feature.feature.group" version="1.5.3.201911081053"/>
-		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/"/>
 			<unit id="org.jboss.tools.m2e.jdt.feature.feature.group" version="1.0.1.201209200903"/>
 		</location>

@@ -282,10 +282,6 @@ for the SARL DSL Environment
          version="0.0.0"/>
 
    <includes
-         id="org.jboss.tools.maven.apt.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.sf.eclipsecs"
          version="0.0.0"/>
 
