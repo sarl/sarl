@@ -180,6 +180,7 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.DynamicArgumentName;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 import io.sarl.lang.sarl.actionprototype.InferredStandardParameter;
@@ -344,6 +345,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IDefaultVisibilityProvider defaultVisibilityProvider;
+
+	@Inject
+	private IDefaultValueAccessDetector defaultValueAccessDetector;
 
 	/** Generation contexts.
 	 */
@@ -1535,7 +1539,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmOperation staticConstructor = this.typesFactory.createJvmOperation();
 			container.getMembers().add(staticConstructor);
 			this.associator.associatePrimary(source, staticConstructor);
-			staticConstructor.setSimpleName(Utils.STATIC_CONSTRUCTOR_NAME);
+			staticConstructor.setSimpleName(Utils.getStaticConstructorName());
 			staticConstructor.setVisibility(JvmVisibility.PRIVATE);
 			staticConstructor.setStatic(true);
 			staticConstructor.setReturnType(this._typeReferenceBuilder.typeRef(Void.TYPE));
@@ -3220,6 +3224,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * 							or a class (<code>false</code>).
 	 * @param paramSpec the specification of the parameter as computed by a {@link IActionPrototypeProvider}.
 	 */
+	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected void translateSarlFormalParameters(
 			GenerationContext context,
 			JvmExecutable owner,
@@ -3240,38 +3245,70 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				translateParameter(owner, param);
 				final JvmFormalParameter lastParam = owner.getParameters().get(owner.getParameters().size() - 1);
 				// Treat the default value
-				if (i < paramSpec.size() && param instanceof SarlFormalParameter
-						&& ((SarlFormalParameter) param).getDefaultValue() != null) {
-					final XExpression defaultValue = ((SarlFormalParameter) param).getDefaultValue();
-					assert defaultValue != null;
-					hasDefaultValue = true;
-					final InferredStandardParameter inferredParam = paramSpec.get(i);
-					assert inferredParam != null;
-					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
-					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
-					final JvmTypeReference fieldType = skipTypeParameters(paramType, actionContainer);
-					final JvmField field = this.typeBuilder.toField(defaultValue, name, fieldType, it -> {
-						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
-								MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
-						it.setStatic(true);
-						it.setFinal(true);
-						if (isForInterface) {
-							it.setVisibility(JvmVisibility.PUBLIC);
-						} else {
-							it.setVisibility(JvmVisibility.PRIVATE);
-						}
-						SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
-					});
-					actionContainer.getMembers().add(field);
-					if (owner instanceof JvmConstructor) {
-						this.readAndWriteTracking.markInitialized(field, (JvmConstructor) owner);
-					} else {
-						this.readAndWriteTracking.markInitialized(field, null);
-					}
-					addAnnotationSafe(lastParam, DefaultValue.class, namePostPart);
+				if (i < paramSpec.size() && param instanceof SarlFormalParameter) {
+					final SarlFormalParameter sarlParam = (SarlFormalParameter) param;
+					if (sarlParam.getDefaultValue() != null) {
+						final XExpression defaultValue = sarlParam.getDefaultValue();
+						assert defaultValue != null;
+						hasDefaultValue = true;
+						final InferredStandardParameter inferredParam = paramSpec.get(i);
+						assert inferredParam != null;
+						final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
+						final JvmTypeReference inferredType = skipTypeParameters(paramType, actionContainer);
+						if (this.defaultValueAccessDetector.isStaticFieldStorage(sarlParam, defaultValue, owner, actionContainer)) {
+							//
+							// Generate a static definition of the default value
+							//
+							final String fieldName = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
+							final JvmField field = this.typeBuilder.toField(defaultValue, fieldName, inferredType, it -> {
+								SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
+										MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
+								it.setStatic(true);
+								it.setFinal(true);
+								if (isForInterface) {
+									it.setVisibility(JvmVisibility.PUBLIC);
+								} else {
+									it.setVisibility(JvmVisibility.PRIVATE);
+								}
+								SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
+							});
+							actionContainer.getMembers().add(field);
+							if (owner instanceof JvmConstructor) {
+								this.readAndWriteTracking.markInitialized(field, (JvmConstructor) owner);
+							} else {
+								this.readAndWriteTracking.markInitialized(field, null);
+							}
+							addAnnotationSafe(lastParam, DefaultValue.class, namePostPart);
 
-					final String rawCode = Utils.getSarlCodeFor(defaultValue);
-					appendGeneratedAnnotation(field, context, rawCode);
+							final String rawCode = Utils.getSarlCodeFor(defaultValue);
+							appendGeneratedAnnotation(field, context, rawCode);
+						} else {
+							//
+							// Generate an instance definition of the default value
+							//
+							final String functionName = this.sarlSignatureProvider.createFunctionNameForDefaultValueID(namePostPart);
+							final JvmOperation method = this.typeBuilder.toMethod(defaultValue, functionName, inferredType, it -> {
+								SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
+										MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
+								it.setReturnType(inferredType);
+								it.setFinal(true);
+								it.setVisibility(JvmVisibility.PRIVATE);
+							});
+							actionContainer.getMembers().add(method);
+							addAnnotationSafe(lastParam, DefaultValue.class, namePostPart);
+
+							addAnnotationSafe(method, Pure.class);
+
+							final String rawCode = Utils.getSarlCodeFor(defaultValue);
+							appendGeneratedAnnotation(method, context, rawCode);
+
+							setBody(method, defaultValue);
+
+							final DynamicArgumentName argument = inferredParam.getDynamicCallingArgument();
+							final String originalArgument = argument.getArgument();
+							argument.setArgument(originalArgument + "()");
+						}
+					}
 				}
 			}
 		}

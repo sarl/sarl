@@ -110,6 +110,14 @@ public interface IActionPrototypeProvider {
 	 */
 	String createFieldNameForDefaultValueID(String id);
 
+	/** Replies the name of the function that should store the default value associated to the parameter with the given id.
+	 *
+	 * @param id the parameter's identifier.
+	 * @return the field's name.
+	 * @since 0.12
+	 */
+	String createFunctionNameForDefaultValueID(String id);
+
 	/** Qualify the default value identifier with the given container's qualified name if the ID is not qualified.
 	 *
 	 * @param containerQualifiedName the qualified name.

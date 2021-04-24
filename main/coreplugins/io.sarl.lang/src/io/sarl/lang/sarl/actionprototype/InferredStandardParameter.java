@@ -56,15 +56,31 @@ public class InferredStandardParameter {
 	 */
 	protected String defaultValueAnnotationValueBasename;
 
+	/** The value of the calling argument.
+	 */
+	protected DynamicArgumentName dynamicArgument;
+
 	/** Constructor.
 	 * @param source the original parameter.
 	 * @param name the name of the formal parameter.
 	 * @param type the type of the formal parameter.
+	 * @param dynamicArgument the argument name that could be changed dynamically.
+	 * @since 0.12
 	 */
-	public InferredStandardParameter(EObject source, String name, JvmTypeReference type) {
+	public InferredStandardParameter(EObject source, String name, JvmTypeReference type, DynamicArgumentName dynamicArgument) {
 		this.source = new WeakReference<>(source);
 		this.name = name;
 		this.type = type;
+		this.dynamicArgument = dynamicArgument;
+	}
+
+	/** Replies the value of the calling argument.
+	 *
+	 * @return the value of the calling argument.
+	 * @since 0.12
+	 */
+	public DynamicArgumentName getDynamicCallingArgument() {
+		return this.dynamicArgument;
 	}
 
 	/** Replies the source parameter.

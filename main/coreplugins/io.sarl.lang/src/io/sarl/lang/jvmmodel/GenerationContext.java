@@ -474,6 +474,16 @@ abstract class GenerationContext {
 		this.guardEvaluators.clear();
 	}
 
+	/** Replies the context object.
+	 *
+	 * @return the context object.
+	 * @since 0.12
+	 */
+	@Pure
+	public EObject getContextObject() {
+		return this.contextObject;
+	}
+
 	/** Replies if the generated type is injectable.
 	 *
 	 * @return {@code true} if the generated type is injectable.

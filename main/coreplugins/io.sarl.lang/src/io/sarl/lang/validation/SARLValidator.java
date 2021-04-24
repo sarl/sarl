@@ -1250,43 +1250,61 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	/** Check if the default values has not a reference to the not final fields.
+	/** Check if the default values have not a reference to a not-pure operation.
 	 *
 	 * @param param the formal parameter to check.
 	 */
 	@Check
-	public void checkDefaultValueFieldReference(SarlFormalParameter param) {
+	public void checkDefaultValuePureExpression(SarlFormalParameter param) {
 		final XExpression defaultValue = param.getDefaultValue();
 		if (defaultValue != null) {
-			final Iterator<XFeatureCall> iter;
-			if (defaultValue instanceof XFeatureCall) {
-				iter = Iterators.singletonIterator((XFeatureCall) defaultValue);
-			} else {
-				iter = Iterators.filter(defaultValue.eAllContents(), XFeatureCall.class);
+			if (this.operationHelper.hasSideEffects(null, defaultValue)) {
+				error(Messages.SARLValidator_19,
+						defaultValue,
+						XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						FORBIDDEN_REFERENCE);
 			}
-			while (iter.hasNext()) {
-				final XFeatureCall call = iter.next();
-				final JvmIdentifiableElement feature = call.getFeature();
-				String invalidFieldName = null;
-				if (feature instanceof XtendField) {
-					final XtendField field = (XtendField) feature;
-					if (!field.isFinal()) {
-						invalidFieldName = field.getName();
+		}
+	}
+
+	/** Check if the default values have valid references to read-only fields from constructors.
+	 *
+	 * @param param the formal parameter to check.
+	 */
+	@Check
+	public void checkDefaultValueFinalFieldReferenceInConstructor(SarlFormalParameter param) {
+		final XExpression defaultValue = param.getDefaultValue();
+		if (defaultValue != null) {
+			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(param);
+			if (container instanceof JvmConstructor) {
+				final Iterator<? extends XAbstractFeatureCall> iter;
+				if (defaultValue instanceof XAbstractFeatureCall) {
+					final Iterator<XAbstractFeatureCall> iter2 = Iterators.filter(defaultValue.eAllContents(), XAbstractFeatureCall.class);
+					final Iterator<XAbstractFeatureCall> iter3 = Iterators.singletonIterator((XAbstractFeatureCall) defaultValue);
+					if (iter2.hasNext()) {
+						iter = Iterators.concat(iter3, iter2);
+					} else {
+						iter = iter3;
 					}
-				} else if (feature instanceof JvmField) {
-					final JvmField field = (JvmField) feature;
-					if (!field.isFinal()) {
-						invalidFieldName = field.getSimpleName();
-					}
+				} else {
+					iter = Iterators.filter(defaultValue.eAllContents(), XAbstractFeatureCall.class);
 				}
-				if (invalidFieldName != null) {
-					error(MessageFormat.format(
-							Messages.SARLValidator_19,
-							invalidFieldName),
-							call,
-							XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							FORBIDDEN_REFERENCE);
+				while (iter.hasNext()) {
+					final XAbstractFeatureCall call = iter.next();
+					final JvmIdentifiableElement feature = call.getFeature();
+					if (feature instanceof JvmField) {
+						final JvmField field = (JvmField) feature;
+						if (!field.isFinal()) {
+							error(MessageFormat.format(
+									Messages.SARLValidator_102,
+									field.getSimpleName()),
+									call,
+									XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									FORBIDDEN_REFERENCE);
+						}
+					}
 				}
 			}
 		}
@@ -2967,7 +2985,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				if (container != null && container instanceof JvmOperation) {
 					final JvmOperation operation = (JvmOperation) container;
 					if (operation.isStatic() && field.getDeclaringType() == operation.getDeclaringType()
-							&& Utils.STATIC_CONSTRUCTOR_NAME.equals(operation.getSimpleName())) {
+							&& Utils.isStaticConstructorName(operation.getSimpleName())) {
 						return;
 					}
 				}

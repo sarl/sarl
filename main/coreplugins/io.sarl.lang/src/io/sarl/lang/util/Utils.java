@@ -89,6 +89,7 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -127,9 +128,12 @@ public final class Utils {
 	 *
 	 * @since 0.6
 	 */
-	public static final String STATIC_CONSTRUCTOR_NAME = "static$new"; //$NON-NLS-1$
+	private static final String STATIC_CONSTRUCTOR_NAME = "static$new"; //$NON-NLS-1$
 
-	private static final String PREFIX_DEFAULT_VALUE = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
+	private static final String PREFIX_DEFAULT_VALUE_FIELD = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_DEFAULT_VALUE_FUNCTION = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
 			+ HIDDEN_MEMBER_CHARACTER;
 
 	private static final String PREFIX_CAPACITY_IMPLEMENTATION = HIDDEN_MEMBER_CHARACTER + "CAPACITY_USE" //$NON-NLS-1$
@@ -171,6 +175,38 @@ public final class Utils {
 
 	private Utils() {
 		//
+	}
+
+	/** Replies if the given name is the hidden name for a parameter's default value.
+	 *
+	 * @param name the name to test.
+	 * @return {@code true} if the given name is the one for a default value.
+	 * @since 0.12
+	 */
+	@Pure
+	public static boolean isDynamicDefaultValueFunctionName(String name) {
+		return name != null && name.startsWith(PREFIX_DEFAULT_VALUE_FUNCTION);
+	}
+
+	/** Replies if the given name is the hidden name for a static constructor.
+	 *
+	 * @param name the name to test.
+	 * @return {@code true} if the given name is the one for a static constructor.
+	 * @since 0.12
+	 */
+	@Pure
+	public static boolean isStaticConstructorName(String name) {
+		return STATIC_CONSTRUCTOR_NAME.equals(name);
+	}
+
+	/** Replies the name given to the static constructors.
+	 *
+	 * @return the hidden name for static constructors.
+	 * @since 0.12
+	 */
+	@Pure
+	public static String getStaticConstructorName() {
+		return STATIC_CONSTRUCTOR_NAME;
 	}
 
 	/** Analyzing the type hierarchy of the given interface and
@@ -413,10 +449,20 @@ public final class Utils {
 	/** Create the name of the hidden attribute that is containing a parameter's default value.
 	 *
 	 * @param id the id of the default value.
-	 * @return the method name.
+	 * @return the field name.
 	 */
 	public static String createNameForHiddenDefaultValueAttribute(String id) {
-		return PREFIX_DEFAULT_VALUE + fixHiddenMember(id.toUpperCase());
+		return PREFIX_DEFAULT_VALUE_FIELD + fixHiddenMember(id.toUpperCase());
+	}
+
+	/** Create the name of the hidden function that is containing a parameter's default value.
+	 *
+	 * @param id the id of the default value.
+	 * @return the method name.
+	 * @since 0.12
+	 */
+	public static String createNameForHiddenDefaultValueFunction(String id) {
+		return PREFIX_DEFAULT_VALUE_FUNCTION + fixHiddenMember(id.toUpperCase());
 	}
 
 	/** Create the name of the hidden field that is containing a capacity implementation.

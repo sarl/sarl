@@ -44,6 +44,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see "https://github.com/sarl/sarl/issues/592"
+ * @see "https://github.com/sarl/sarl/issues/612"
  */
 @DisplayName("Bug #592")
 @SuppressWarnings("all")
@@ -139,10 +141,8 @@ public class Bug592Test extends AbstractSarlTest {
 				"  def fct(param : int = myField) { }",
 				"}"));
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertError(
-				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.FORBIDDEN_REFERENCE,
-				"Forbidden reference to not final field myField from a default value");
+		// Test has been changed due to the evolution of the default value support (Issue #612)
+		validator.assertNoIssues();
 	}
 
 	@Test
@@ -166,10 +166,8 @@ public class Bug592Test extends AbstractSarlTest {
 				"  def fct(param : int = myField) { }",
 				"}"));
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertError(
-				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.STATIC_ACCESS_TO_INSTANCE_MEMBER,
-				"Cannot make a static reference to the non-static field myField");
+		// Test has been changed due to the evolution of the default value support (Issue #612)
+		validator.assertNoIssues();
 	}
 
 	@Test
@@ -181,10 +179,8 @@ public class Bug592Test extends AbstractSarlTest {
 				"  def fct(param : int = myField) { }",
 				"}"));
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertError(
-				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.STATIC_ACCESS_TO_INSTANCE_MEMBER,
-				"Cannot make a static reference to the non-static field myField");
+		// Test has been changed due to the evolution of the default value support (Issue #612)
+		validator.assertNoIssues();
 	}
 
 	@Test

@@ -343,7 +343,7 @@ public class Bug736Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-				"Duplicate method " + Utils.STATIC_CONSTRUCTOR_NAME);
+				"Duplicate method " + Utils.getStaticConstructorName());
 	}
 
 	@Test

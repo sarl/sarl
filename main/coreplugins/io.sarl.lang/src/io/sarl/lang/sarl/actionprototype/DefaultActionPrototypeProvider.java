@@ -147,7 +147,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	private static Pair<InnerMap<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> buildParameter(
 			int parameterIndex,
 			final int lastParameterIndex,
-			String argumentValue,
+			DynamicArgumentName argumentValue,
 			FormalParameterProvider params,
 			InnerMap<ActionParameterTypes, List<InferredStandardParameter>> signatures,
 			ActionParameterTypes fillSignatureKeyOutputParameter) {
@@ -178,7 +178,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			final List<InferredStandardParameter> value = new ArrayList<>();
 			value.add(new InferredStandardParameter(
 					params.getFormalParameter(parameterIndex),
-					name, type));
+					name, type, argumentValue));
 			tmpSignatures.put(key, value);
 		} else {
 			// Other parameters
@@ -199,7 +199,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				final List<InferredStandardParameter> paramList = entry.getValue();
 				paramList.add(new InferredStandardParameter(
 						params.getFormalParameter(parameterIndex),
-						name, type));
+						name, type, argumentValue));
 				tmpSignatures.put(key, paramList);
 			}
 		}
@@ -253,10 +253,11 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			final String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
 					+ actionId.toUpperCase() + "_"; //$NON-NLS-1$
 			for (int i = 0; i <= lastParamIndex; ++i) {
+				final DynamicArgumentName argumentName = new DynamicArgumentName(prefix + defaultValueIndex);
 				final Pair<InnerMap<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
 						i,
 						lastParamIndex,
-						prefix + defaultValueIndex,
+						argumentName,
 						params,
 						signatures,
 						fillSignatureKeyOutputParameter);
@@ -477,6 +478,15 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			return Utils.createNameForHiddenDefaultValueAttribute(id.substring(index + 1));
 		}
 		return Utils.createNameForHiddenDefaultValueAttribute(id);
+	}
+
+	@Override
+	public String createFunctionNameForDefaultValueID(String id) {
+		final int index = id.indexOf('#');
+		if (index > 0) {
+			return Utils.createNameForHiddenDefaultValueFunction(id.substring(index + 1));
+		}
+		return Utils.createNameForHiddenDefaultValueFunction(id);
 	}
 
 	@Override

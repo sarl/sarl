@@ -41,6 +41,7 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension;
 import io.sarl.tests.api.extensions.MockInitializerExtension;
 import io.sarl.tests.api.extensions.FieldResetExtension;
 import io.sarl.tests.api.extensions.SarlInjectionExtension;
+import io.sarl.tests.api.helper.SarlCompilationTestHelper;
 import io.sarl.tests.api.tools.SarlValidationTestHelper;
 
 /** Abstract class that is providing useful tools for unit tests.
@@ -74,7 +75,7 @@ public abstract class AbstractSarlTest {
 	private ParseHelper<SarlScript> parser;
 
 	@Inject
-	private CompilationTestHelper compiler;
+	private SarlCompilationTestHelper compiler;
 
 	@Inject
 	private Provider<SarlJvmModelAssociations> associations;
@@ -119,7 +120,7 @@ public abstract class AbstractSarlTest {
 	 * @return the compile helper.
 	 * @since 0.9
 	 */
-	protected CompilationTestHelper getCompileHelper() {
+	protected SarlCompilationTestHelper getCompileHelper() {
 		return this.compiler;
 	}
 
