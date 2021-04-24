@@ -176,6 +176,28 @@
 			</plugin>
 
 			<plugin>
+				<groupId>net.jsign</groupId>
+				<artifactId>jsign-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>janusnode-exe-sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${cliRunnerName}.exe</file>
+							<name>Janus Node</name>
+							<url>${sarlUrl}</url>
+							<keystore>../../../build-tools/keyring/app.p12</keystore>
+							<storetype>PKCS12</storetype>
+							<alias>sarl-developpers</alias>
+							<storepass>sarl-developpers</storepass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<executions>
