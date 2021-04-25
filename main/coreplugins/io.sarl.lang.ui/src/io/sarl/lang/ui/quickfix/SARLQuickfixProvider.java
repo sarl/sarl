@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
@@ -44,6 +45,7 @@ import org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.common.types.util.jdt.IJavaElementFinder;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -81,6 +83,7 @@ import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.AnnotationRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.CapacityUseAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.FiredEventRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.ImplementedTypeRemoveModification;
@@ -147,6 +150,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private JvmTypesBuilder typeBuilder;
+
+	@Inject
+	private IJavaElementFinder javaElementFinder;
 
 	/** Replies if the given code is for a ignorable warning.
 	 *
@@ -244,6 +250,15 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public ReplacingAppendable.Factory getAppendableFactory() {
 		return this.appendableFactory;
+	}
+
+	/** Replies the Java element finder.
+	 *
+	 * @return the finder.
+	 * @since 0.12
+	 */
+	public IJavaElementFinder getJavaElementFinder() {
+		return this.javaElementFinder;
 	}
 
 	/** Replies the project utilities.
@@ -984,6 +999,13 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Fix(io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION)
 	public void fixManualInlineDefinition(final Issue issue, IssueResolutionAcceptor acceptor) {
 		AnnotationRemoveModification.accept(this, issue, acceptor);
+	}
+
+	@Override
+	protected void createLinkingIssueQuickfixes(Issue issue, IssueResolutionAcceptor issueResolutionAcceptor,
+			IXtextDocument xtextDocument, XtextResource resource, EObject referenceOwner, EReference unresolvedReference) throws Exception {
+		CapacityUseAddModification.accept(this, issue, referenceOwner, issueResolutionAcceptor);
+		super.createLinkingIssueQuickfixes(issue, issueResolutionAcceptor, xtextDocument, resource, referenceOwner, unresolvedReference);
 	}
 
 }
