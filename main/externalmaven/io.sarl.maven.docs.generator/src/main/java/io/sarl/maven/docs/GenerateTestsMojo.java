@@ -806,12 +806,12 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		} else {
 			nm = name;
 		}
-		return MessageFormat.format(nm, index, component.getLinenoInSourceFile());
+		return str(MessageFormat.format(nm, index, component.getLinenoInSourceFile()));
 	}
 
 	private static String toClassDisplayName(File inputFile, String basicTestName, String generalTestName) {
-		return MessageFormat.format(Messages.GenerateTestsMojo_12, inputFile.getName(), basicTestName, generalTestName,
-				inputFile.getParentFile().getPath());
+		return str(MessageFormat.format(Messages.GenerateTestsMojo_12, inputFile.getName(), basicTestName, generalTestName,
+				inputFile.getParentFile().getPath()));
 	}
 
 	private static String str(Object obj) {
