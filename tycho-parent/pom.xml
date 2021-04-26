@@ -341,11 +341,13 @@
 			<url>http://dependencies.sarl.io</url>
 		</repository>
 		<!-- For Checkstyle in Eclipse -->
+		<!-- REMOVED BECAUSE OF THE END-OF-LIFE OF BINTRAY!!!!
 		<repository>
 			<id>org.checkstyle.eclipse-cs.update</id>
 			<layout>p2</layout>
 			<url>https://dl.bintray.com/eclipse-cs/eclipse-cs/${checkstyle.full.version}/</url>
 		</repository>
+		-->
 		<!-- For pre-installing the m2e connectors -->
 		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
