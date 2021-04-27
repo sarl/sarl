@@ -63,23 +63,24 @@
 								<mkdir dir="${project.basedir}/target/tmp_arch"/>
 								<unzip src="${productZip.macos.64}"
 								       dest="${project.basedir}/target/tmp_arch"/>
-								<move file="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}/eclipse-sarl"
-								      tofile="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}/eclipse-sarl-exe" />
-								<copy file="${project.basedir}/rootfiles/macos/eclipse-sarl-perl-ini"
-								      tofile="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}/eclipse-sarl" />
-								<chmod perm="ugo+x">
-									<fileset file="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}/eclipse-sarl" />
-									<fileset file="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}/eclipse-sarl-exe" />
-									<fileset file="${project.basedir}/target/tmp_arch/Eclipse.app/Contents/Eclipse/${productZipFolder.macos.64}/launcher" />
-								</chmod>
 								<delete dir="${project.basedir}/target/tmp.zip" quiet="true"/>
-								<zip destfile="${project.basedir}/target/tmp.zip"
-								     basedir="${project.basedir}/target/tmp_arch"/>
-								<exec executable="zip" dir="${project.basedir}/target/tmp_arch">
-									<arg value="-qR"/>
-									<arg value="${project.basedir}/target/tmp.zip"/>
-									<arg value="*"/>
-								</exec>
+								<zip destfile="${project.basedir}/target/tmp.zip">
+									<zipfileset src="${productZip.macos.64}"
+									            prefix=""
+									            excludesfile="${project.basedir}/macosexcludes.list" />
+									<zipfileset dir="${project.basedir}/target/tmp_arch/Eclipse.app/Contents/Eclipse/${productZipFolder.macos.64}"
+									            includes="launcher"
+									            fullpath="Eclipse.app/Contents/Eclipse/${productZipFolder.macos.64}/launcher"
+									            filemode="755" />
+									<zipfileset dir="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}"
+									            includes="eclipse-sarl"
+									            fullpath="${productZipFolder.macos.64}/eclipse-sarl-exe"
+									            filemode="755" />
+									<zipfileset dir="${project.basedir}/rootfiles/macos"
+									            includes="eclipse-sarl-perl-ini"
+									            fullpath="${productZipFolder.macos.64}/eclipse-sarl"
+									            filemode="755" />
+								</zip>
 								<delete dir="${productZip.macos.64}" quiet="true"/>
 								<move file="${project.basedir}/target/tmp.zip" tofile="${productZip.macos.64}"/>
 							</target>
