@@ -350,7 +350,7 @@ class SreMain implements SREBootstrap {
 		return ctx?.rootContext
 	}
 	
-	def startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
+	override startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
 		params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		val old = System::setProperty(propName, agentCls.name)
@@ -377,7 +377,7 @@ class SreMain implements SREBootstrap {
 		startAgent(bootAgent, args)
 	}
 
-	def startAgent(agentCls : Class<? extends Agent>, params : Object*) {
+	override startAgent(agentCls : Class<? extends Agent>, params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		assert propName !== null
 		var alreadyLaunched = System::getProperty(propName)
@@ -389,7 +389,7 @@ class SreMain implements SREBootstrap {
 		kernel.spawn(agentCls, params)
 	}
 	
-	def startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) {
+	override startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		assert propName !== null
 		var alreadyLaunched = System::getProperty(propName)
@@ -402,7 +402,7 @@ class SreMain implements SREBootstrap {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	def shutdown(timeout : int) {
+	override shutdown(timeout : int) {
 		val kern = this.kernel.getAndSet(null)
 		if (kern !== null) {
 			if (timeout !== 0) {

@@ -42,7 +42,7 @@ skill MyLogging implements Logging {
 	def error(messageProvider : Supplier<String>) {
 	}
 	
-	def error(message : Object, exception : Throwable = null, parameters : Object*) {
+	def error(message : Object, exception : Throwable, parameters : Object*) {
 	}
 	
 	def getLogLevel : int {
@@ -87,7 +87,7 @@ skill MyLogging implements Logging {
 	def warning(messageProvider : Supplier<String>) {
 	}
 	
-	def warning(message : Object, exception : Throwable = null, parameters : Object*) {
+	def warning(message : Object, exception : Throwable, parameters : Object*) {
 	}
 	
 }

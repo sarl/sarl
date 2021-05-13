@@ -139,7 +139,7 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 		return false
 	}
 
-	def emit(^event : Event, scope : Scope<Address> = null) {
+	override emit(^event : Event, scope : Scope<Address>) {
 		assert ^event !== null
 		val dspace = defaultSpace
 		if (dspace !== null) {

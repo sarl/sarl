@@ -137,7 +137,7 @@ skill TestingSkill implements TestingCapacity {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	override waitAndDo(condition : ()=>boolean, timeout : int = Constants::STANDARD_TIMEOUT, code : ()=>void) {
+	override waitAndDo(condition : ()=>boolean, timeout : int, code : ()=>void) {
 		assert condition !== null
 		assert code !== null
 		var endTime : long

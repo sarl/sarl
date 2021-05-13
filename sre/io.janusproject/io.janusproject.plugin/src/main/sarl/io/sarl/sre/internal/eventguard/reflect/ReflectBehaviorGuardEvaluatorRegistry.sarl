@@ -172,7 +172,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 		return allEvaluators
 	}
 
-	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void = null) {
+	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 		assert listener !== null
 		val hasCallback = new MutableBoolean(callback !== null)
 		var methodIterator = new MethodIterator(listener.class)

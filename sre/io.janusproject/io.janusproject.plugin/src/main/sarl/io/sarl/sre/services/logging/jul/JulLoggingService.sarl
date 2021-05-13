@@ -89,7 +89,7 @@ class JulLoggingService extends AbstractSreService implements LoggingService {
 		return this.loggerCreator.createModuleLogger(moduleName, getKernelLogger)
 	}
 	
-	override createAgentLogger(name : String, initialLevel : Level = null) : Logger {
+	override createAgentLogger(name : String, initialLevel : Level) : Logger {
 		val logger = this.loggerCreator.createModuleLogger(name, getPlatformLogger)
 		if (initialLevel !== null) {
 			logger.level = initialLevel

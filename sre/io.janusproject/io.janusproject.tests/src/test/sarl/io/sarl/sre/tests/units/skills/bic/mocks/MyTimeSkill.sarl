@@ -55,7 +55,7 @@ skill MyTimeSkill implements Time {
 		1
 	}
 	
-	def getTime(timeUnit : TimeUnit = null) : double {
+	def getTime(timeUnit : TimeUnit) : double {
 		this.time
 	}
 	

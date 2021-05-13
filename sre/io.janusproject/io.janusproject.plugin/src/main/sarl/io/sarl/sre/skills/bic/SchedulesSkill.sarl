@@ -371,7 +371,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	/** Called by a behavior when it is destroyed.
 	 */
-	def unregisterTasksForBehavior(^behavior : Behavior) {
+	override unregisterTasksForBehavior(^behavior : Behavior) {
 		var tasksToCancel = ^behavior.getBehaviorLifeOrNull?.removeAllTaskReferences
 		if (tasksToCancel !== null) {
 			for (taskToCancel : tasksToCancel.map[it.get]) {
@@ -384,18 +384,18 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	/** Called by a behavior when it is destroyed.
 	 */
-	def releaseInternalResources(^behavior : Behavior) {
+	override releaseInternalResources(^behavior : Behavior) {
 		SREutils::setSreSpecificData(^behavior, null)
 	}
 
-	def task(name : String) : AgentTask {
+	override task(name : String) : AgentTask {
 		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			return createTaskIfNecessary(name, false, false).task
 		}
 		return null
 	}
 
-	def setName(task : AgentTask, name : String) {
+	override setName(task : AgentTask, name : String) {
 		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			val realName = name.ensureTaskName
 			val prefix = realName + "-"
@@ -417,7 +417,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 	}
 
-	def executeAsap(task : Runnable) : AgentTask {
+	override executeAsap(task : Runnable) : AgentTask {
 		if (task !== null) {
 			var description = preRunTask(null)[task.run]
 			var logger = getLogger
@@ -428,11 +428,11 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 	}
 
-	def executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean) {
+	override executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean) {
 		this.executorService.executeBlockingTasks(logger, thrownExceptions, task)
 	}
 	
-	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
+	override execute(task : AgentTask, procedure : (Agent)=>void) : AgentTask {
 		var description = preRunTask(task, procedure)
 		var logger = getLogger
 		val future = this.executorService.executeAsap(logger, new SingleRunner(this, this.owner,
@@ -441,7 +441,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return description.task
 	}
 
-	def in(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
+	override in(task : AgentTask, delay : long, procedure : (Agent)=>void) : AgentTask {
 		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
@@ -453,7 +453,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return task
 	}
 
-	def every(task : AgentTask = null, period : long, procedure : (Agent)=>void) : AgentTask {
+	override every(task : AgentTask, period : long, procedure : (Agent)=>void) : AgentTask {
 		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
@@ -465,7 +465,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return task
 	}
 
-	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
+	override atFixedDelay(task : AgentTask, delay : long, procedure : (Agent)=>void) : AgentTask {
 		if (getAgentLife(owner, this.factories, this.agentLevelInjector).state.alive) {
 			var description = preRunTask(task, procedure)
 			var future : Future<?>
@@ -483,7 +483,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return task
 	}
 
-	def at(task : AgentTask = null, time : long, procedure : (Agent)=>void) : AgentTask {
+	override at(task : AgentTask, time : long, procedure : (Agent)=>void) : AgentTask {
 		val delay = Math::round(time - getTime)
 		if (delay > 0.0) {
 			return in(task, delay, procedure)
@@ -491,7 +491,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return task
 	}
 
-	def isCanceled(task : AgentTask) : boolean {
+	override isCanceled(task : AgentTask) : boolean {
 		if (task !== null) {
 			var description = task.taskDescription
 			if (description !== null) {
@@ -504,7 +504,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return false
 	}
 
-	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean {
+	override cancel(task : AgentTask, mayInterruptIfRunning : boolean) : boolean {
 		if (task !== null) {
 			var description = task.taskDescription
 			if (description !== null) {
@@ -517,7 +517,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		return false
 	}
 
-	def getActiveTasks : ConcurrentSet<String> {
+	override getActiveTasks : ConcurrentSet<String> {
 		return this.factories.get.concurrentCollectionFactory.newSet(null, getRepository.keySet)
 	}
 
@@ -893,3 +893,4 @@ interface FailureListenerFactory {
 	def create(^agent : Agent) : FailureListener
 
 }
+

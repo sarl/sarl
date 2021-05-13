@@ -91,11 +91,11 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		releaseAllProbes
 	}
 
-	override probe(valueName : String, valueType : Class<T>, probeName : String = null) : Probe<T> with T {
+	override probe(valueName : String, valueType : Class<T>, probeName : String) : Probe<T> with T {
 		this.nameParser.decode(valueName).probe(valueType, probeName)
 	}
 
-	override probe(valueName : URI, valueType : Class<T>, probeName : String = null) : Probe<T> with T {
+	override probe(valueName : URI, valueType : Class<T>, probeName : String) : Probe<T> with T {
 		var nuri = this.nameParser.normalize(valueName)
 		if (nuri !== null) {
 			return this.nameParser.decode(nuri).probe(valueType, probeName)
@@ -103,7 +103,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		return null
 	}
 
-	override probe(valueName : SarlName, valueType : Class<T>, probeName : String = null) : Probe<T> with T {
+	override probe(valueName : SarlName, valueType : Class<T>, probeName : String) : Probe<T> with T {
 		assert valueType !== null
 		if (valueName === null) {
 			return null

@@ -215,8 +215,7 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 		}
 	}
 
-	def executeBlockingTasks(logger : Logger, thrownExceptions : boolean = false,
-		tasks : Collection<Runnable>) {
+	override executeBlockingTasks(logger : Logger, thrownExceptions : boolean, tasks : Collection<Runnable>) {
 		getExecutorService.executeInThreadsAndWait(tasks, thrownExceptions) [ catchErrors, runnable |
 			if (catchErrors) {
 				runnable.protectRunnable(logger)

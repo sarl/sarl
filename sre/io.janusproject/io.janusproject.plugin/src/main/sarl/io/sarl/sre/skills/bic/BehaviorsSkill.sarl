@@ -130,7 +130,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		return attitude
 	}
 
-	override wake(^event : Event, scope : Scope<Address> = null) {
+	override wake(^event : Event, scope : Scope<Address>) {
 		// Use the inner space so all behaviors (even agents inside the holon
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent

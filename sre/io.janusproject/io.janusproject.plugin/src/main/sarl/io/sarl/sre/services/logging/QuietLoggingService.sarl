@@ -61,7 +61,7 @@ class QuietLoggingService extends AbstractSreService implements LoggingService {
 		ensureLogger
 	}
 
-	override createAgentLogger(name : String, initialLevel : Level = null) : Logger {
+	override createAgentLogger(name : String, initialLevel : Level) : Logger {
 		ensureLogger
 	}
 

@@ -446,7 +446,7 @@ class SreRunContextImpl implements SreRunContext {
 		return id
 	}
 
-	override getResult(agentId : UUID = null, type : Class<T>, index : int) : T with T {
+	override getResult(agentId : UUID, type : Class<T>, index : int) : T with T {
 		try {
 			val res = this.globalResults.get(agentId.key)
 			if (res !== null) {
@@ -458,7 +458,7 @@ class SreRunContextImpl implements SreRunContext {
 		return null
 	}
 
-	override getFirstResultOfType(agentId : UUID = null, type : Class<T>) : T with T {
+	override getFirstResultOfType(agentId : UUID, type : Class<T>) : T with T {
 		try {
 			val res = this.globalResults.get(agentId.key)
 			if (res !== null) {
@@ -474,7 +474,7 @@ class SreRunContextImpl implements SreRunContext {
 		return null
 	}
 
-	override getNumberOfResults(agentId : UUID = null) : int {
+	override getNumberOfResults(agentId : UUID) : int {
 		val list = this.globalResults.get(agentId.key)
 		if (list !== null) {
 			return list.size
@@ -482,11 +482,11 @@ class SreRunContextImpl implements SreRunContext {
 		return 0
 	}
 
-	override assertNumberOfResults(expected : int, agentId : UUID = null) {
+	override assertNumberOfResults(expected : int, agentId : UUID) {
 		expected.assertEquals(agentId.numberOfResults)["Invalid number of results provided by the platform."]
 	}
 
-	override getResults(agentId : UUID = null) : List<Object> {
+	override getResults(agentId : UUID) : List<Object> {
 		val res = this.globalResults.get(agentId.key)
 		if (res !== null) {
 			return res.unmodifiableView
@@ -494,7 +494,7 @@ class SreRunContextImpl implements SreRunContext {
 		return emptyList
 	}
 
-	override addResult(agentId : UUID = null, value : Object) : void {
+	override addResult(agentId : UUID, value : Object) : void {
 		val id = agentId.key
 		var res = this.globalResults.computeIfAbsent(id) [
 			new CopyOnWriteArrayList
@@ -526,7 +526,7 @@ class SreRunContextImpl implements SreRunContext {
 		return t
 	}
 
-	override indexOfResult(agentId : UUID = null, type : Class<?>, fromIndex : int = 0) : int {
+	override indexOfResult(agentId : UUID, type : Class<?>, fromIndex : int) : int {
 		try {
 			val res = this.globalResults.get(agentId.key)
 			if (res !== null) {
@@ -545,9 +545,7 @@ class SreRunContextImpl implements SreRunContext {
 
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	override runSre(type : Class<? extends Agent>, loggingLevel : Level = null,
-		trackMode : LogTrackingMode = null,
-		timeout : int = Constants::STANDARD_TIMEOUT) : SREBootstrap {
+	override runSre(type : Class<? extends Agent>, loggingLevel : Level, trackMode : LogTrackingMode, timeout : int) : SREBootstrap {
 		val kern = setupTheSreKernel(type, loggingLevel, trackMode)
 		try {
 			waitForTheKernel(timeout)
@@ -809,23 +807,23 @@ class SreRunContextImpl implements SreRunContext {
 		})
 	}
 
-	override onEvent(type : Class<? extends Event>, ^space : OpenEventSpace = null, code : (Event)=>void) {
+	override onEvent(type : Class<? extends Event>, ^space : OpenEventSpace, code : (Event)=>void) {
 		type.registerEventHandler(^space, UUID::randomUUID, code)
 	}
 	
-	override onAgentSpawned(^space : OpenEventSpace = null, code : (AgentSpawned)=>void) {
+	override onAgentSpawned(^space : OpenEventSpace, code : (AgentSpawned)=>void) {
 		typeof(AgentSpawned).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
-	override onAgentKilled(^space : OpenEventSpace = null, code : (AgentKilled)=>void) {
+	override onAgentKilled(^space : OpenEventSpace, code : (AgentKilled)=>void) {
 		typeof(AgentKilled).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
-	override onSpaceDestroyed(^space : OpenEventSpace = null, code : (SpaceDestroyed)=>void) {
+	override onSpaceDestroyed(^space : OpenEventSpace, code : (SpaceDestroyed)=>void) {
 		typeof(SpaceDestroyed).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
-	override waitForAgentSpawned(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
+	override waitForAgentSpawned(id : UUID, ^space : OpenEventSpace, timeout : int , code : (UUID)=>void) : Wait {
 		val lock = new AtomicBoolean
 		onAgentSpawned(^space) [
 			if (it.agentID == id) {
@@ -840,8 +838,7 @@ class SreRunContextImpl implements SreRunContext {
 		return w
 	}
 
-	override waitForAgentSpawned(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT,
-		code : ()=>void = null) : Wait {
+	override waitForAgentSpawned(identifiers : UUID[], ^space : OpenEventSpace, timeout : int, code : ()=>void) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentSpawned(^space) [
 			lock.remove(it.agentID)
@@ -854,7 +851,7 @@ class SreRunContextImpl implements SreRunContext {
 		return w
 	}
 
-	override waitForAgentKilled(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
+	override waitForAgentKilled(id : UUID, ^space : OpenEventSpace, timeout : int, code : (UUID)=>void) : Wait {
 		val lock = new AtomicBoolean
 		onAgentKilled(^space) [
 			if (it.source.ID == id) {
@@ -869,7 +866,7 @@ class SreRunContextImpl implements SreRunContext {
 		return w
 	}
 
-	override waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
+	override waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace, timeout : int, code : ()=>void) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentKilled(^space) [
 			lock.remove(it.source.ID)
@@ -882,7 +879,7 @@ class SreRunContextImpl implements SreRunContext {
 		return w
 	}
 
-	override waitForSpaceDestroyed(identifier : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
+	override waitForSpaceDestroyed(identifier : UUID, ^space : OpenEventSpace, timeout : int, code : ()=>void) : Wait {
 		val lock = new AtomicBoolean
 		onSpaceDestroyed(^space) [
 			if (it.spaceID.ID == identifier) {

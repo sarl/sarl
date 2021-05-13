@@ -115,7 +115,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 		return allEvaluators
 	}
 
-	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void = null) {
+	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
 			val hasCallback = new MutableBoolean(callback !== null)
 			var evaluator = new PolymorphicBehaviorGuardEvaluator(listener, filter)

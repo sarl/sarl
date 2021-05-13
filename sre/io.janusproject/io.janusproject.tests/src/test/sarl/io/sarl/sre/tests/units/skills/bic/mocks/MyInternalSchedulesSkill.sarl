@@ -45,7 +45,7 @@ skill MyInternalSchedulesSkill implements InternalSchedules {
 		null
 	}
 
-	override at(task : AgentTask = null, time : long, procedure : (Agent)=>void) : AgentTask {
+	override at(task : AgentTask, time : long, procedure : (Agent)=>void) : AgentTask {
 		null
 	}
 
