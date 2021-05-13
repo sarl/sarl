@@ -56,6 +56,7 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 		"contains(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
 		"cosh", //$NON-NLS-1$
 		"equals", //$NON-NLS-1$
+		"empty(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
 		"exp", //$NON-NLS-1$
 		"floor", //$NON-NLS-1$
 		"get(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
