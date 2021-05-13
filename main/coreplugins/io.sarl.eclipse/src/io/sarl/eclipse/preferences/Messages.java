@@ -46,6 +46,11 @@ public class Messages extends NLS {
 	public static String SREsPreferencePage_9;
 	public static String SarlEditorPreferencePage_0;
 	public static String SarlEditorPreferencePage_1;
+	public static String SarlEditorPreferencePage_2;
+	public static String SarlEditorPreferencePage_3;
+	public static String SarlEditorPreferencePage_4;
+	public static String SarlEditorPreferencePage_5;
+	public static String SarlEditorPreferencePage_6;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

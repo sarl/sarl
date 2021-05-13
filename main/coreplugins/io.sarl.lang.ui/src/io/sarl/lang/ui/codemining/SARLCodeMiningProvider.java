@@ -153,9 +153,18 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	@Override
 	protected void createCodeMinings(IDocument document, XtextResource resource, CancelIndicator indicator,
 			IAcceptor<? super ICodeMining> acceptor) throws BadLocationException {
-		createImplicitActionReturnType(resource, acceptor);
-		createImplicitFieldType(resource, acceptor);
-		createImplicitVariableType(resource, acceptor);
+		if (this.codeminingPreferences.isCodeminingActionReturnTypeEnabled()) {
+			createImplicitActionReturnType(resource, acceptor);
+		}
+		if (this.codeminingPreferences.isCodeminingFieldTypeEnabled()) {
+			createImplicitFieldType(resource, acceptor);
+		}
+		if (this.codeminingPreferences.isCodeminingVariableTypeEnabled()) {
+			createImplicitVariableType(resource, acceptor);
+		}
+		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
+			createFeatureCallArgumentNames(resource, acceptor);
+		}
 	}
 
 	/** Add an annotation when the var/val declaration's type is implicit and inferred by the SARL compiler.
@@ -343,6 +352,16 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 				acceptor.accept(createNewLineContentCodeMining(offset, text));
 			}
 		}
+	}
+
+	/** Add an annotation with the names of the arguments into a feature call.
+	 *
+	 * @param resource the resource to parse.
+	 * @param acceptor the code mining acceptor.
+	 * @since 0.12
+	 */
+	private void createFeatureCallArgumentNames(XtextResource resource, IAcceptor<? super ICodeMining> acceptor) {
+		//
 	}
 
 	/** This indicator checks if monitor is canceled or if

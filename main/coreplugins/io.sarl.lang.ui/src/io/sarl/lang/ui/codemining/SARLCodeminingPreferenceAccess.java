@@ -53,6 +53,46 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 */
 	public static final boolean CODEMINING_DEFAULT_VALUE = true;
 
+	/** Key for saving the enabling state of the code mining feature of the action return type.
+	 * @since 0.12
+	 */
+	public static final String CODEMINING_ACTION_RETURN_TYPE_PROPERTY =  PREFIX + "codemining.actionReturnType"; //$NON-NLS-1$
+
+	/** Default value for saving the enabling state of the code mining feature of the action return type.
+	 * @since 0.12
+	 */
+	public static final boolean CODEMINING_ACTION_RETURN_TYPE_VALUE = true;
+
+	/** Key for saving the enabling state of the code mining feature of the field type.
+	 * @since 0.12
+	 */
+	public static final String CODEMINING_FIELD_TYPE_PROPERTY =  PREFIX + "codemining.fieldType"; //$NON-NLS-1$
+
+	/** Default value for saving the enabling state of the code mining feature of the field type.
+	 * @since 0.12
+	 */
+	public static final boolean CODEMINING_FIELD_TYPE_VALUE = true;
+
+	/** Key for saving the enabling state of the code mining feature of the variable type.
+	 * @since 0.12
+	 */
+	public static final String CODEMINING_VARIABLE_TYPE_PROPERTY =  PREFIX + "codemining.variableType"; //$NON-NLS-1$
+
+	/** Default value for saving the enabling state of the code mining feature of the variable type.
+	 * @since 0.12
+	 */
+	public static final boolean CODEMINING_VARIABLE_TYPE_VALUE = true;
+
+	/** Key for saving the enabling state of the code mining feature of the function's argument names.
+	 * @since 0.12
+	 */
+	public static final String CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY =  PREFIX + "codemining.featureCallArgumentName"; //$NON-NLS-1$
+
+	/** Default value for saving the enabling state of the code mining feature of the function's argument names.
+	 * @since 0.12
+	 */
+	public static final boolean CODEMINING_FEATURECALL_ARGUMENT_NAME_VALUE = true;
+
 	/** Replies if the code mining feature is enable into the SARL editor.
 	 *
 	 * @return {@code true} if it is enabled.
@@ -79,10 +119,114 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 		}
 	}
 
+	/** Replies if the code mining feature is enable into the SARL editor for the action return types.
+	 *
+	 * @return {@code true} if it is enabled.
+	 * @since 0.12
+	 */
+	public boolean isCodeminingActionReturnTypeEnabled() {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		return store.getBoolean(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
+	}
+
+	/** Enable or disable the code mining feature into the SARL editor for the action return types.
+	 *
+	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
+	 *     to restore the default value.
+	 * @since 0.12
+	 */
+	public void setCodeminingActionReturnTypeEnabled(Boolean enable) {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		if (enable == null) {
+			store.setToDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
+		} else {
+			store.setValue(CODEMINING_ACTION_RETURN_TYPE_PROPERTY, enable.booleanValue());
+		}
+	}
+
+	/** Replies if the code mining feature is enable into the SARL editor for the field types.
+	 *
+	 * @return {@code true} if it is enabled.
+	 * @since 0.12
+	 */
+	public boolean isCodeminingFieldTypeEnabled() {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		return store.getBoolean(CODEMINING_FIELD_TYPE_PROPERTY);
+	}
+
+	/** Enable or disable the code mining feature into the SARL editor for the field types.
+	 *
+	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
+	 *     to restore the default value.
+	 * @since 0.12
+	 */
+	public void setCodeminingFieldTypeEnabled(Boolean enable) {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		if (enable == null) {
+			store.setToDefault(CODEMINING_FIELD_TYPE_PROPERTY);
+		} else {
+			store.setValue(CODEMINING_FIELD_TYPE_PROPERTY, enable.booleanValue());
+		}
+	}
+
+	/** Replies if the code mining feature is enable into the SARL editor for the variable types.
+	 *
+	 * @return {@code true} if it is enabled.
+	 * @since 0.12
+	 */
+	public boolean isCodeminingVariableTypeEnabled() {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		return store.getBoolean(CODEMINING_VARIABLE_TYPE_PROPERTY);
+	}
+
+	/** Enable or disable the code mining feature into the SARL editor for the variable types.
+	 *
+	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
+	 *     to restore the default value.
+	 * @since 0.12
+	 */
+	public void setCodeminingVariableTypeEnabled(Boolean enable) {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		if (enable == null) {
+			store.setToDefault(CODEMINING_VARIABLE_TYPE_PROPERTY);
+		} else {
+			store.setValue(CODEMINING_VARIABLE_TYPE_PROPERTY, enable.booleanValue());
+		}
+	}
+
+	/** Replies if the code mining feature is enable into the SARL editor for the function's argument names.
+	 *
+	 * @return {@code true} if it is enabled.
+	 * @since 0.12
+	 */
+	public boolean isCodeminingFeatureCallArgumentNameEnabled() {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		return store.getBoolean(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY);
+	}
+
+	/** Enable or disable the code mining feature into the SARL editor for the function's argument names.
+	 *
+	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
+	 *     to restore the default value.
+	 * @since 0.12
+	 */
+	public void setCodeminingFeatureCallArgumentNameEnabled(Boolean enable) {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		if (enable == null) {
+			store.setToDefault(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY);
+		} else {
+			store.setValue(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY, enable.booleanValue());
+		}
+	}
+
 	@Override
 	public void setToDefault(Object context) {
 		final IPreferenceStore store = getWritablePreferenceStore(context);
 		store.setToDefault(CODEMINING_PROPERTY);
+		store.setToDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
+		store.setToDefault(CODEMINING_FIELD_TYPE_PROPERTY);
+		store.setToDefault(CODEMINING_VARIABLE_TYPE_PROPERTY);
+		store.setToDefault(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY);
 	}
 
 	/** Initializer of the preferences for the SARL code mining feature.
@@ -96,7 +240,12 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	public static class Initializer implements IPreferenceStoreInitializer {
 		@Override
 		public void initialize(IPreferenceStoreAccess access) {
-			access.getWritablePreferenceStore().setDefault(CODEMINING_PROPERTY, CODEMINING_DEFAULT_VALUE);
+			final IPreferenceStore store = access.getWritablePreferenceStore();
+			store.setDefault(CODEMINING_PROPERTY, CODEMINING_DEFAULT_VALUE);
+			store.setDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY, CODEMINING_ACTION_RETURN_TYPE_VALUE);
+			store.setDefault(CODEMINING_FIELD_TYPE_PROPERTY, CODEMINING_FIELD_TYPE_VALUE);
+			store.setDefault(CODEMINING_VARIABLE_TYPE_PROPERTY, CODEMINING_VARIABLE_TYPE_VALUE);
+			store.setDefault(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY, CODEMINING_FEATURECALL_ARGUMENT_NAME_VALUE);
 		}
 	}
 

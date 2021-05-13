@@ -27,11 +27,14 @@ import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -62,6 +65,14 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	private Button autoformattingButton;
 
 	private Button codeminingButton;
+
+	private Button codeminingFieldTypeButton;
+
+	private Button codeminingVariableTypeButton;
+
+	private Button codeminingActionReturnTypeButton;
+
+	private Button codeminingArgumentNameButton;
 
 	/**
 	 * Constructor.
@@ -125,30 +136,88 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 				null,
 				getSourceViewerPreferenceAccessor().isAutoFormattingEnabled(),
 				2);
+
+		SWTFactory.createVerticalSpacer(pageComponent, 1);
+
 		this.codeminingButton = SWTFactory.createCheckButton(pageComponent,
 				Messages.SarlEditorPreferencePage_1,
 				null,
 				getCodeminingPreferenceAccessor().isCodeminingEnabled(),
 				2);
+		this.codeminingButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				enableButtons();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				enableButtons();
+			}
+		});
+		final Group codeminingGroup = SWTFactory.createGroup(parent, Messages.SarlEditorPreferencePage_2, 1, 2, GridData.FILL_HORIZONTAL);
+		this.codeminingFieldTypeButton = SWTFactory.createCheckButton(codeminingGroup,
+				Messages.SarlEditorPreferencePage_3,
+				null,
+				getCodeminingPreferenceAccessor().isCodeminingFieldTypeEnabled(),
+				1);
+		this.codeminingVariableTypeButton = SWTFactory.createCheckButton(codeminingGroup,
+				Messages.SarlEditorPreferencePage_4,
+				null,
+				getCodeminingPreferenceAccessor().isCodeminingVariableTypeEnabled(),
+				1);
+		this.codeminingActionReturnTypeButton = SWTFactory.createCheckButton(codeminingGroup,
+				Messages.SarlEditorPreferencePage_5,
+				null,
+				getCodeminingPreferenceAccessor().isCodeminingActionReturnTypeEnabled(),
+				1);
+		this.codeminingArgumentNameButton = SWTFactory.createCheckButton(codeminingGroup,
+				Messages.SarlEditorPreferencePage_6,
+				null,
+				getCodeminingPreferenceAccessor().isCodeminingFeatureCallArgumentNameEnabled(),
+				1);
 
 		SWTFactory.createVerticalSpacer(pageComponent, 1);
 
 		applyDialogFont(parent);
 
+		enableButtons();
+
 		return parent;
+	}
+
+	/**
+	 * Enables the buttons.
+	 */
+	private void enableButtons() {
+		final boolean isCodeminingEnabled = this.codeminingButton.getSelection();
+		this.codeminingFieldTypeButton.setEnabled(isCodeminingEnabled);
+		this.codeminingVariableTypeButton.setEnabled(isCodeminingEnabled);
+		this.codeminingActionReturnTypeButton.setEnabled(isCodeminingEnabled);
+		this.codeminingArgumentNameButton.setEnabled(isCodeminingEnabled);
 	}
 
 	@Override
 	protected void performDefaults() {
 		this.autoformattingButton.setSelection(SARLSourceViewerPreferenceAccess.AUTOFORMATTING_DEFAULT_VALUE);
+		this.codeminingFieldTypeButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_FIELD_TYPE_VALUE);
+		this.codeminingVariableTypeButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_VARIABLE_TYPE_VALUE);
+		this.codeminingActionReturnTypeButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_ACTION_RETURN_TYPE_VALUE);
+		this.codeminingArgumentNameButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_FEATURECALL_ARGUMENT_NAME_VALUE);
 		this.codeminingButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_DEFAULT_VALUE);
 		super.performDefaults();
+		enableButtons();
 	}
 
 	@Override
 	public boolean performOk() {
 		getSourceViewerPreferenceAccessor().setAutoFormattingEnabled(this.autoformattingButton.getSelection());
-		getCodeminingPreferenceAccessor().setCodeminingEnabled(this.codeminingButton.getSelection());
+		final SARLCodeminingPreferenceAccess codeminingAccessor = getCodeminingPreferenceAccessor();
+		codeminingAccessor.setCodeminingFieldTypeEnabled(this.codeminingFieldTypeButton.getSelection());
+		codeminingAccessor.setCodeminingVariableTypeEnabled(this.codeminingVariableTypeButton.getSelection());
+		codeminingAccessor.setCodeminingActionReturnTypeEnabled(this.codeminingActionReturnTypeButton.getSelection());
+		codeminingAccessor.setCodeminingFeatureCallArgumentNameEnabled(this.codeminingArgumentNameButton.getSelection());
+		codeminingAccessor.setCodeminingEnabled(this.codeminingButton.getSelection());
 		return super.performOk();
 	}
 
