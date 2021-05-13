@@ -46,6 +46,8 @@ import com.google.common.collect.Iterables;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -629,6 +631,17 @@ public final class Utils {
 		return true;
 	}
 
+	private static ResourceSet getResoutceSet(EObject object) {
+		if (object == null) {
+			return null;
+		}
+		final Resource r = object.eResource();
+		if (r == null) {
+			return null;
+		}
+		return r.getResourceSet();
+	}
+
 	/** Convert a type reference to a lightweight type reference.
 	 *
 	 * @param typeRef - reference to convert.
@@ -637,7 +650,20 @@ public final class Utils {
 	 */
 	public static LightweightTypeReference toLightweightTypeReference(
 			JvmTypeReference typeRef, CommonTypeComputationServices services) {
-		return toLightweightTypeReference(typeRef, services, false);
+		return toLightweightTypeReference(typeRef, services, getResoutceSet(typeRef), false);
+	}
+
+	/** Convert a type reference to a lightweight type reference.
+	 *
+	 * @param typeRef - reference to convert.
+	 * @param services - services used for the conversion
+	 * @param context the context of the reference.
+	 * @return the lightweight type reference.
+	 * @since 0.12
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(
+			JvmTypeReference typeRef, CommonTypeComputationServices services, ResourceSet context) {
+		return toLightweightTypeReference(typeRef, services, context, false);
 	}
 
 	/** Convert a type reference to a lightweight type reference.
@@ -651,10 +677,26 @@ public final class Utils {
 	public static LightweightTypeReference toLightweightTypeReference(
 			JvmTypeReference typeRef, CommonTypeComputationServices services,
 			boolean keepUnboundWildcardInformation) {
+		return toLightweightTypeReference(typeRef, services, getResoutceSet(typeRef), keepUnboundWildcardInformation);
+	}
+
+	/** Convert a type reference to a lightweight type reference.
+	 *
+	 * @param typeRef - reference to convert.
+	 * @param services - services used for the conversion
+	 * @param context the context of the reference.
+	 * @param keepUnboundWildcardInformation - indicates if the unbound wild card
+	 *        information must be keeped in the lightweight reference.
+	 * @return the lightweight type reference.
+	 * @since 0.12
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(
+			JvmTypeReference typeRef, CommonTypeComputationServices services,
+			ResourceSet context, boolean keepUnboundWildcardInformation) {
 		if (typeRef == null) {
 			return null;
 		}
-		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, typeRef);
+		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, context);
 		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner,
 				keepUnboundWildcardInformation);
 		final LightweightTypeReference reference = factory.toLightweightReference(typeRef);
