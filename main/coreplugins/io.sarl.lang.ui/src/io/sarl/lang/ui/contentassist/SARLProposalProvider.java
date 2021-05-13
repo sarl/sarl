@@ -83,7 +83,7 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
 import io.sarl.lang.ui.labeling.SARLImages;
-import io.sarl.lang.util.Utils;
+import io.sarl.lang.util.SarlUtils;
 
 /** Provides proposal for the content assist mechanism.
  *
@@ -431,7 +431,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	@Override
 	protected boolean isValidProposal(String proposal, String prefix, ContentAssistContext context) {
 		// A valid proposal cannot be an hidden feature
-		return !Utils.isHiddenMember(proposal) && super.isValidProposal(proposal, prefix, context);
+		return !SarlUtils.isHiddenMember(proposal) && super.isValidProposal(proposal, prefix, context);
 	}
 
 	@Override

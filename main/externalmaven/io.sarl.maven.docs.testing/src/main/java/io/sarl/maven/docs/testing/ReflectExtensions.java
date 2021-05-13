@@ -67,6 +67,7 @@ import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Functions that are based on Java reflection, for building the documentation.
@@ -207,7 +208,7 @@ public final class ReflectExtensions {
 	public static void appendPublicMethods(StringBuilder it, boolean indent, Function<Method, String> nameFormatter, 
 			Iterable<? extends Class<?>> types) {
 		appendMethods(it, indent, nameFormatter, types, (it0) -> {
-			return Flags.isPublic(it0.getModifiers()) && !Utils.isHiddenMember(it0.getName())
+			return Flags.isPublic(it0.getModifiers()) && !SarlUtils.isHiddenMember(it0.getName())
 				&& !isDeprecated(it0) && !it0.isSynthetic()
 				&& it0.getAnnotation(SyntheticMember.class) == null;
 		});
@@ -355,7 +356,7 @@ public final class ReflectExtensions {
 	public static void appendPublicFields(StringBuilder it, boolean indent, Function<Field, String> nameFormatter, 
 			Iterable<? extends Class<?>> types) {
 		appendFields(it, indent, nameFormatter, types, (it0) -> {
-			return Flags.isPublic(it0.getModifiers()) && !Utils.isHiddenMember(it0.getName())
+			return Flags.isPublic(it0.getModifiers()) && !SarlUtils.isHiddenMember(it0.getName())
 				&& !isDeprecated(it0) && !it0.isSynthetic()
 				&& it0.getAnnotation(SyntheticMember.class) == null;
 		});

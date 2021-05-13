@@ -65,6 +65,8 @@ import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Version;
 
+import io.sarl.lang.util.SarlUtils;
+
 /** Should functions for the documentation facts.
  *
  * @author $Author: sgalland$
@@ -699,6 +701,16 @@ public final class ShouldExtensions {
 					type.getName(), Iterables.toString(methods)));
 		}
 		return true;
+	}
+
+	/** Ensure that the given string is an hidden name according to the SARL specification.
+	 *
+	 * @param string the text to validate.
+	 * @return {@code true} if the given string is an hidden name.
+	 * @since 0.12
+	 */
+	public static boolean shouldBeHiddenName(String string) {
+		return SarlUtils.isHiddenMember(string);
 	}
 
 	/** Ensure that the given type has the given type has the given deprecated field.

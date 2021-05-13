@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,34 +18,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.lang.core.tests.utils;
 
-package io.sarl.lang.validation;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.util.SarlUtils;
-import io.sarl.lang.util.Utils;
+import io.sarl.tests.api.AbstractSarlTest;
 
-/** Validator of the feature names.
+/** This class tests the {@link SarlUtils} for SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
+ * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.10
  */
-public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameValidator {
+@SuppressWarnings("all")
+@DisplayName("Utils")
+@Tag("core")
+@Tag("unit")
+public class SarlUtilsTest extends AbstractSarlTest {
 
-	/** Construct a validator for the feature's names.
-	 */
-	public SARLFeatureNameValidator() {
-		//
-	}
-
-	@Override
-	public boolean isDisallowedName(QualifiedName name) {
-		final String id = name.getLastSegment();
-		return super.isDisallowedName(name) || (SarlUtils.isHiddenMember(id) && !Utils.isImplicitLambdaParameterName(id));
+	@Test
+	public void isHiddenMember() {
+		assertFalse(SarlUtils.isHiddenMember(""));
+		assertFalse(SarlUtils.isHiddenMember("abcde"));
+		assertTrue(SarlUtils.isHiddenMember("ab$cd$e"));
 	}
 
 }

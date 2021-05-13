@@ -58,11 +58,12 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.util.OutParameter;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 import io.sarl.tests.api.AbstractSarlTest;
 
-/** This class tests the {@link Utils} for SARL.
+/** This class tests the {@link SarlUtils} for SARL.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -75,13 +76,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @Tag("core")
 @Tag("unit")
 public class UtilsTest extends AbstractSarlTest {
-
-	@Test
-	public void isHiddenMember() {
-		assertFalse(Utils.isHiddenMember(""));
-		assertFalse(Utils.isHiddenMember("abcde"));
-		assertTrue(Utils.isHiddenMember("ab$cd$e"));
-	}
 
 	@Test
 	public void fixHiddenMember() {

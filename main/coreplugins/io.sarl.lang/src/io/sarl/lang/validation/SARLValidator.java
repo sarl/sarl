@@ -273,6 +273,7 @@ import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 

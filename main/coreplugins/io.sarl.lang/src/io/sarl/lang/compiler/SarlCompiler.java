@@ -107,6 +107,7 @@ import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.ContextAwareTreeAppendable;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.SerializableProxy;
 import io.sarl.lang.util.Utils;
 
@@ -1015,7 +1016,7 @@ public class SarlCompiler extends Bug626XtendCompiler {
 						if (enableExpressionNaming) {
 							final String refName = getReferenceName(root, appendable);
 							if (!forceNaming || Strings.isEmpty(refName)) {
-								final String proposedName = Utils.HIDDEN_MEMBER_CHARACTER + makeJavaIdentifier(getFavoriteVariableName(root));
+								final String proposedName = SarlUtils.HIDDEN_MEMBER_CHARACTER + makeJavaIdentifier(getFavoriteVariableName(root));
 								appendable.declareSyntheticVariable(root, proposedName);
 							}
 						}

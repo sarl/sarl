@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.lib.InputOutput;
 
 import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Validator of the feature calls.
@@ -83,7 +84,7 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 			}
 			// Avoid any call to the hidden functions (function name contains "$" character).
 			final String simpleName = feature.getSimpleName();
-			if (Utils.isHiddenMember(simpleName)
+			if (SarlUtils.isHiddenMember(simpleName)
 				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(simpleName)
 				&& (!Utils.isImplicitLambdaParameterName(simpleName) || !isInsideClosure(call))) {
 				return true;

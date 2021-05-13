@@ -80,12 +80,13 @@ import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 
 /** Utilities for creating Ecore SARL elements from the JDT model.
  *
- * <p>This class extends the {@link Utils} from the <code>io.sarl.lang</code> project.
+ * <p>This class extends the {@link SarlUtils} from the <code>io.sarl.lang</code> project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -259,7 +260,7 @@ public class Jdt2Ecore {
 							&& !operation.isLambdaMethod()
 							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
-								&& !Utils.isHiddenMember(operation.getElementName())) {
+								&& !SarlUtils.isHiddenMember(operation.getElementName())) {
 							final ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							final ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
@@ -297,7 +298,7 @@ public class Jdt2Ecore {
 				if (inheritedFields != null) {
 					for (final IField field : type.getFields()) {
 						if (!Flags.isStatic(field.getFlags())
-								&& !Utils.isHiddenMember(field.getElementName())
+								&& !SarlUtils.isHiddenMember(field.getElementName())
 								&& isVisible(typeFinder, type, field)) {
 							inheritedFields.putIfAbsent(field.getElementName(), field);
 						}

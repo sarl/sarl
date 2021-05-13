@@ -25,7 +25,7 @@ import com.google.common.base.Strings;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.XbaseQualifiedNameConverter;
 
-import io.sarl.lang.util.Utils;
+import io.sarl.lang.util.SarlUtils;
 
 /** This class is fixing the
  * <a href="https://github.com/sarl/sarl/issues/356">issue #356</a>.
@@ -44,8 +44,8 @@ public class SARLQualifiedNameConverter extends XbaseQualifiedNameConverter {
 	@Override
 	public QualifiedName toQualifiedName(String qualifiedNameAsString) {
 		if (Strings.isNullOrEmpty(qualifiedNameAsString)) {
-			return QualifiedName.create("io.sarl.lostAndFound", Utils.HIDDEN_MEMBER_CHARACTER //$NON-NLS-1$
-					+ Utils.HIDDEN_MEMBER_CHARACTER + "Foo"); //$NON-NLS-1$
+			return QualifiedName.create("io.sarl.lostAndFound", SarlUtils.HIDDEN_MEMBER_CHARACTER //$NON-NLS-1$
+					+ SarlUtils.HIDDEN_MEMBER_CHARACTER + "Foo"); //$NON-NLS-1$
 		}
 		return super.toQualifiedName(qualifiedNameAsString);
 	}

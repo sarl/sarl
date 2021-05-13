@@ -192,6 +192,7 @@ import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.util.JvmVisibilityComparator;
+import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Infers a JVM model from the source model.
