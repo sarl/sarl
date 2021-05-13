@@ -432,15 +432,6 @@ public final class Utils {
 				Matcher.quoteReplacement(HIDDEN_MEMBER_REPLACEMENT_CHARACTER));
 	}
 
-	/** Create the name of the hidden attribute that is containing a parameter's default value.
-	 *
-	 * @param id the id of the default value.
-	 * @return the field name.
-	 */
-	public static String createNameForHiddenDefaultValueAttribute(String id) {
-		return PREFIX_DEFAULT_VALUE_FIELD + fixHiddenMember(id.toUpperCase());
-	}
-
 	/** Create the name of the hidden function that is containing a parameter's default value.
 	 *
 	 * @param id the id of the default value.
@@ -1948,6 +1939,21 @@ public final class Utils {
 			break;
 		}
 		return false;
+	}
+
+	/** Convert the given string of characters in order to be readable from a user's message.
+	 *
+	 * @param text the text to convert.
+	 * @return the readable text.
+	 * @since 0.12
+	 */
+	@Pure
+	public static Object toReadableString(String text) {
+		final String str = Strings.emptyToNull(text);
+		if (str == null) {
+			return Messages.Utils_0;
+		}
+		return text;
 	}
 
 }
