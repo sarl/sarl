@@ -26,12 +26,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+
 import javax.inject.Inject;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Throwables;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -57,8 +61,11 @@ import org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider;
 import org.eclipse.xtext.ui.editor.model.XtextDocumentUtil;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.IAcceptor;
+import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.concurrent.CancelableUnitOfWork;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
@@ -66,10 +73,12 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.SARLUiPlugin;
+import io.sarl.lang.util.Utils;
 
 /** Provider of a code mining support for SARL.
  *
@@ -104,6 +113,17 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Inject
 	private XtextDocumentUtil xtextDocumentUtil;
+	
+	@Inject
+	private CommonTypeComputationServices services;
+
+	private final PolymorphicDispatcher<Object> codeminingDispatcher;
+
+	/** Constructor.
+	 */
+	public SARLCodeMiningProvider() {
+		this.codeminingDispatcher = PolymorphicDispatcher.createForSingleTarget("_codemining", 2, 2, this);
+	}
 
 	@Override
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer, IProgressMonitor monitor) {
@@ -150,68 +170,221 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		});
 	}
 
+	/** Root dispatch function for code mining.
+	 * 
+	 * @param element the element to mine.
+	 * @param acceptor the code mining receiver.
+	 */
+	protected void _codemining(EObject element, IAcceptor<? super ICodeMining> acceptor) {
+		//
+	}
+
+	/** Add an annotation when the action's return type is implicit and inferred by the SARL compiler.
+	 *
+	 * @param action the action to mine.
+	 * @param acceptor the code mining acceptor.
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	protected void _codemining(XtendFunction action, IAcceptor<? super ICodeMining> acceptor) {
+		if (this.codeminingPreferences.isCodeminingActionReturnTypeEnabled()) {
+			// inline annotation only for methods with no return type
+			if (action.getReturnType() != null) {
+				return;
+			}
+			// get return type name from the generated JVM operation itself
+			final JvmOperation inferredOperation = (JvmOperation) this.jvmModelAssocitions.getPrimaryJvmElement(action);
+			if (inferredOperation == null) {
+				return;
+			}
+			final JvmTypeReference returnType = inferredOperation.getReturnType();
+			if (returnType == null) {
+				return;
+			}
+			// find document offset for inline annotation
+			final Keyword parenthesis = this.grammar.getAOPMemberAccess().getRightParenthesisKeyword_2_5_6_2();
+			final Assignment actionName = this.grammar.getAOPMemberAccess().getNameAssignment_2_5_5();
+			final CodeRegion region = findNode(action,
+					candidate -> candidate instanceof RuleCall && EcoreUtil.equals(actionName, candidate.eContainer()),
+					candidate -> EcoreUtil.equals(parenthesis, candidate));
+			int offset = -1;
+			if (region.end != null) {
+				offset = region.end.getTotalEndOffset();
+			} else if (region.start != null) {
+				offset = region.start.getTotalEndOffset();
+			}
+			if (offset >= 0) {
+				final String returnTypeName = Utils.toLightweightTypeReference(returnType, this.services).getHumanReadableName();
+				final String text = " " + this.keywords.getColonKeyword() + " " + returnTypeName; //$NON-NLS-1$ //$NON-NLS-2$
+				acceptor.accept(createNewLineContentCodeMining(offset, text));
+			}
+		}
+	}
+
+	/** Add an annotation when the field's type is implicit and inferred by the SARL compiler.
+	 *
+	 * @param field the field to mine.
+	 * @param acceptor the code mining acceptor.
+	 */
+	protected void _codemining(XtendField field, IAcceptor<? super ICodeMining> acceptor) {
+		if (this.codeminingPreferences.isCodeminingFieldTypeEnabled()) {
+			createImplicitVarValType(field, acceptor, XtendField.class,
+				it -> it.getType(),
+				it -> {
+					final JvmField inferredField = (JvmField) this.jvmModelAssocitions.getPrimaryJvmElement(it);
+					if (inferredField == null || inferredField.getType() == null || inferredField.getType().eIsProxy()) {
+						return null;
+					}
+					return inferredField.getType().getSimpleName();
+				},
+				null,
+				() -> this.grammar.getAOPMemberAccess().getInitialValueAssignment_2_3_3_1());
+		}
+	}
+
+	/** Add an annotation when the variable's type is implicit and inferred by the SARL compiler.
+	 *
+	 * @param variable the variable to mine.
+	 * @param acceptor the code mining acceptor.
+	 */
+	protected void _codemining(XtendVariableDeclaration variable, IAcceptor<? super ICodeMining> acceptor) {
+		if (this.codeminingPreferences.isCodeminingFieldTypeEnabled()) {
+			createImplicitVarValType(variable, acceptor, XtendVariableDeclaration.class,
+					it -> it.getType(),
+					it -> {
+						LightweightTypeReference type = getLightweightType(it.getRight());
+						if (type.isAny()) {
+							type = getTypeForVariableDeclaration(it.getRight());
+						}
+						return type.getSimpleName();
+					},
+					it -> it.getRight(),
+					() -> this.grammar.getXVariableDeclarationAccess().getRightAssignment_3_1());
+		}
+	}
+
+	/** Add an annotation for the formal argument names.
+	 *
+	 * @param featureCall the feature call..
+	 * @param acceptor the code mining acceptor.
+	 */
+	protected void _codemining(XAbstractFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
+		createImplicitArgumentName();
+	}
+
+	/** Add an annotation for the formal argument names.
+	 *
+	 * @param featureCall the feature call..
+	 * @param acceptor the code mining acceptor.
+	 */
+	protected void _codemining(XConstructorCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
+		createImplicitArgumentName();
+	}
+
+	private void createImplicitArgumentName() {
+		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {			
+		}
+	}
+
 	@Override
 	protected void createCodeMinings(IDocument document, XtextResource resource, CancelIndicator indicator,
 			IAcceptor<? super ICodeMining> acceptor) throws BadLocationException {
-		if (this.codeminingPreferences.isCodeminingActionReturnTypeEnabled()) {
-			createImplicitActionReturnType(resource, acceptor);
-		}
-		if (this.codeminingPreferences.isCodeminingFieldTypeEnabled()) {
-			createImplicitFieldType(resource, acceptor);
-		}
-		if (this.codeminingPreferences.isCodeminingVariableTypeEnabled()) {
-			createImplicitVariableType(resource, acceptor);
-		}
-		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
-			createFeatureCallArgumentNames(resource, acceptor);
+		final TreeIterator<EObject> iterator = EcoreUtil2.eAll(resource.getContents().get(0));
+		while (iterator.hasNext() && !isCanceled(indicator)) {
+			final EObject obj = iterator.next();
+			this.codeminingDispatcher.invoke(obj, acceptor);
 		}
 	}
 
 	/** Add an annotation when the var/val declaration's type is implicit and inferred by the SARL compiler.
-	 *
-	 * @param resource the resource to parse.
-	 * @param acceptor the code mining acceptor.
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity" })
-	private <T extends EObject> void createImplicitVarValType(XtextResource resource, IAcceptor<? super ICodeMining> acceptor,
+	private <T extends EObject> void createImplicitVarValType(T element,IAcceptor<? super ICodeMining> acceptor,
 			Class<T> elementType,
-			Function1<T, JvmTypeReference> getDeclaredTypeLambda,
-			Function1<T, String> getInferredTypeLambda,
-			Function1<T, XExpression> getExprLambda,
-			Function0<Assignment> getAssignmentLambda) {
-		final List<T> elements = EcoreUtil2.eAllOfType(resource.getContents().get(0), elementType);
+			Function1<T, JvmTypeReference> declaredTypeLambda,
+			Function1<T, String> inferredTypeLambda,
+			Function1<T, XExpression> exprLambda,
+			Function0<Assignment> assignmentLambda) {
+		// inline annotation only for fields with no type
+		final JvmTypeReference declaredType = declaredTypeLambda.apply(element);
+		final XExpression expr = exprLambda != null ? exprLambda.apply(element) : null;
+		if (declaredType != null || (exprLambda != null && expr == null)) {
+			return;
+		}
+		// get inferred type name from JVM element
+		final String inferredType = inferredTypeLambda.apply(element);
+		if (Strings.isEmpty(inferredType)) {
+			return;
+		}
+		// find document offset for inline annotation
+		final Assignment reference = assignmentLambda.apply(); 
+		final INode node = findNode(element,
+				candidate -> candidate instanceof RuleCall && EcoreUtil.equals(reference, candidate.eContainer()));
+		if (node != null) {
+			final String text = this.keywords.getColonKeyword() + " " + inferredType + " "; //$NON-NLS-1$ //$NON-NLS-2$
+			final int offset = node.getPreviousSibling().getTotalOffset();
+			acceptor.accept(createNewLineContentCodeMining(offset, text));
+		}
+	}
 
-		for (final T element : elements) {
-			// inline annotation only for fields with no type
-			final JvmTypeReference declaredType = getDeclaredTypeLambda.apply(element);
-			final XExpression expr = getExprLambda != null ? getExprLambda.apply(element) : null;
-			if (declaredType != null || (getExprLambda != null && expr == null)) {
-				continue;
-			}
-			// get inferred type name from JVM element
-			final String inferredType = getInferredTypeLambda.apply(element);
-			if (Strings.isEmpty(inferredType)) {
-				continue;
-			}
-			// find document offset for inline annotation
-			final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
-			final Assignment elementAssignment = getAssignmentLambda.apply();
-			assert elementAssignment != null;
-			for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
-				final INode child = it.next();
-				if (child != node) {
-					final EObject grammarElement = child.getGrammarElement();
-					if (grammarElement instanceof RuleCall) {
-						if (elementAssignment.equals(grammarElement.eContainer())) {
-							final String text = this.keywords.getColonKeyword() + " " + inferredType + " "; //$NON-NLS-1$ //$NON-NLS-2$
-							final int offset = child.getPreviousSibling().getTotalOffset();
-							acceptor.accept(createNewLineContentCodeMining(offset, text));
-							break;
-						}
-					}
+	/** Find the grammar node for the given element.
+	 *
+	 * @param element is the element for which the grammar node should be find.
+	 * @param candidatValidator is the lambda to use for validating a grammar candidate.
+	 * @return the node or {@code null}.
+	 * @since 0.12
+	 */
+	protected INode findNode(EObject element, Predicate<EObject> reference) {
+		assert element != null;
+		assert reference != null;
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		//System.err.println(NodeModelUtils.compactDump(node, false));
+		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final INode child = it.next();
+			if (child != node) {
+				//System.err.println(NodeModelUtils.compactDump(child, false));
+				final EObject grammarElement = child.getGrammarElement();
+				if (reference.test(grammarElement)) {
+					return child;
 				}
 			}
 		}
+		return null;
+	}
+
+	/** Find the grammar node for the given element.
+	 *
+	 * @param element is the element for which the grammar node should be find.
+	 * @param grammarBeginAnchor the begin anchor to search for into the source code.
+	 * @param grammarEndAnchor the end anchor to search for into the source code.
+	 * @return the region.
+	 * @since 0.12
+	 */
+	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor, Predicate<EObject> grammarEndAnchor) {
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		assert grammarBeginAnchor != null;
+		assert grammarEndAnchor != null;
+		INode start = null;
+		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final INode child = it.next();
+			if (child != node) {
+				final EObject grammarElement = child.getGrammarElement();
+				if (grammarBeginAnchor.test(grammarElement)) {
+					start = child;
+				} else if (grammarEndAnchor.test(grammarElement)) {
+					return new CodeRegion(start, child);
+				}
+			}
+		}
+		return new CodeRegion(start, null);
+	}
+
+	private static boolean isCanceled(CancelIndicator indicator) {
+		try {
+			return indicator.isCanceled();
+		} catch (Throwable exception) {
+			//
+		}
+		return true;
 	}
 
 	/** Replies the resolved types associated to the given object.
@@ -263,107 +436,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		return actualType;
 	}
 
-	/** Add an annotation when the variable's type is implicit and inferred by the SARL compiler.
-	 *
-	 * @param resource the resource to parse.
-	 * @param acceptor the code mining acceptor.
-	 */
-	private void createImplicitVariableType(XtextResource resource, IAcceptor<? super ICodeMining> acceptor) {
-		createImplicitVarValType(resource, acceptor, XtendVariableDeclaration.class,
-			it -> it.getType(),
-			it -> {
-				LightweightTypeReference type = getLightweightType(it.getRight());
-				if (type.isAny()) {
-					type = getTypeForVariableDeclaration(it.getRight());
-				}
-				return type.getSimpleName();
-			},
-			it -> it.getRight(),
-			() -> this.grammar.getXVariableDeclarationAccess().getRightAssignment_3_1());
-	}
-
-	/** Add an annotation when the field's type is implicit and inferred by the SARL compiler.
-	 *
-	 * @param resource the resource to parse.
-	 * @param acceptor the code mining acceptor.
-	 */
-	private void createImplicitFieldType(XtextResource resource, IAcceptor<? super ICodeMining> acceptor) {
-		createImplicitVarValType(resource, acceptor, XtendField.class,
-			it -> it.getType(),
-			it -> {
-				final JvmField inferredField = (JvmField) this.jvmModelAssocitions.getPrimaryJvmElement(it);
-				if (inferredField == null || inferredField.getType() == null || inferredField.getType().eIsProxy()) {
-					return null;
-				}
-				return inferredField.getType().getSimpleName();
-			},
-			null,
-			() -> this.grammar.getAOPMemberAccess().getInitialValueAssignment_2_3_3_1());
-	}
-
-	/** Add an annotation when the action's return type is implicit and inferred by the SARL compiler.
-	 *
-	 * @param resource the resource to parse.
-	 * @param acceptor the code mining acceptor.
-	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	private void createImplicitActionReturnType(XtextResource resource, IAcceptor<? super ICodeMining> acceptor) {
-		final List<XtendFunction> actions = EcoreUtil2.eAllOfType(resource.getContents().get(0), XtendFunction.class);
-
-		for (final XtendFunction action : actions) {
-			// inline annotation only for methods with no return type
-			if (action.getReturnType() != null) {
-				continue;
-			}
-			// get return type name from operation
-			final JvmOperation inferredOperation = (JvmOperation) this.jvmModelAssocitions.getPrimaryJvmElement(action);
-			if (inferredOperation == null || inferredOperation.getReturnType() == null) {
-				continue;
-			}
-			// find document offset for inline annotationn
-			final ICompositeNode node = NodeModelUtils.findActualNodeFor(action);
-			final Keyword parenthesis = this.grammar.getAOPMemberAccess().getRightParenthesisKeyword_2_5_6_2();
-			final Assignment fctname = this.grammar.getAOPMemberAccess().getNameAssignment_2_5_5();
-			int offsetFctname = -1;
-			int offsetParenthesis = -1;
-			for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
-				final INode child = it.next();
-				if (child != node) {
-					final EObject grammarElement = child.getGrammarElement();
-					if (grammarElement instanceof RuleCall) {
-						if (fctname.equals(grammarElement.eContainer())) {
-							offsetFctname = child.getTotalEndOffset();
-						}
-					} else if (parenthesis.equals(grammarElement)) {
-						offsetParenthesis = child.getTotalEndOffset();
-						break;
-					}
-				}
-			}
-			int offset = -1;
-			if (offsetParenthesis >= 0) {
-				offset = offsetParenthesis;
-			} else if (offsetFctname >= 0) {
-				offset = offsetFctname;
-			}
-			if (offset >= 0) {
-				final String returnType = inferredOperation.getReturnType().getSimpleName();
-				final String text = " " + this.keywords.getColonKeyword() + " " + returnType; //$NON-NLS-1$ //$NON-NLS-2$
-				acceptor.accept(createNewLineContentCodeMining(offset, text));
-			}
-		}
-	}
-
-	/** Add an annotation with the names of the arguments into a feature call.
-	 *
-	 * @param resource the resource to parse.
-	 * @param acceptor the code mining acceptor.
-	 * @since 0.12
-	 */
-	private void createFeatureCallArgumentNames(XtextResource resource, IAcceptor<? super ICodeMining> acceptor) {
-		//
-	}
-
 	/** This indicator checks if monitor is canceled or if
 	 * CancelableUnitOfWork-cancelIndicator is canceled.
 	 * <strong>Only for fixing bug 1041.</strong>
@@ -392,6 +464,36 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			return (this.uowCancelIndicator != null && this.uowCancelIndicator.isCanceled())
 					// monitor.isCanceled() throws an CancellationException when monitor is canceled
 					|| (this.monitor != null && this.monitor.isCanceled());
+		}
+
+	}
+
+	/** Region of the code
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	protected static class CodeRegion {
+
+		/** Start node.
+		 */
+		public final INode start;
+
+		/** End node.
+		 */
+		public final INode end;
+
+		/** Constructor.
+		 *
+		 * @param start the start node.
+		 * @param end the end node.
+		 */
+		protected CodeRegion(INode start, INode end) {
+			this.start = start;
+			this.end = end;
 		}
 
 	}
