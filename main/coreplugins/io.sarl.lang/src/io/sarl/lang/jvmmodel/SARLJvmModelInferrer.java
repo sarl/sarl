@@ -3239,6 +3239,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final boolean isForInterface,
 			List<InferredStandardParameter> paramSpec,
 			boolean ignoreOverridableOperations) {
+		if (paramSpec == null) {
+			return;
+		}
 		boolean hasDefaultValue = false;
 		final boolean isStaticOwner = owner instanceof JvmConstructor || (owner instanceof JvmOperation && ((JvmOperation) owner).isStatic());
 		for (int i = 0; i < params.size(); ++i) {
