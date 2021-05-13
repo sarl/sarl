@@ -22,7 +22,7 @@
 package io.sarl.lang.sarl.actionprototype;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
  * This class permits to wrap a default value when building the function signatures.
@@ -40,7 +40,7 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	 * @param type the type of the formal parameter.
 	 * @param argument the value of the calling argument for the formal parameter.
 	 */
-	public InferredValuedParameter(EObject source, String name, JvmTypeReference type, DynamicArgumentName argument) {
+	public InferredValuedParameter(EObject source, String name, LightweightTypeReference type, DynamicArgumentName argument) {
 		super(source, name, type, argument);
 	}
 

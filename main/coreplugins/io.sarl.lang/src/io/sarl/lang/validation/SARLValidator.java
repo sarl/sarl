@@ -37,6 +37,7 @@ import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE;
 import static io.sarl.lang.validation.IssueCodes.GENERIC_TYPE_NAME_SHADOWING;
+import static io.sarl.lang.validation.IssueCodes.ILLEGAL_PARAMETER_DEFAULT_VALUE_REDEFINITION;
 import static io.sarl.lang.validation.IssueCodes.INVALID_CAPACITY_TYPE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION;
 import static io.sarl.lang.validation.IssueCodes.INVALID_EXTENDED_TYPE;
@@ -48,6 +49,7 @@ import static io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH;
 import static io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD;
 import static io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION;
 import static io.sarl.lang.validation.IssueCodes.MISSING_BODY;
+import static io.sarl.lang.validation.IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION;
 import static io.sarl.lang.validation.IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM;
 import static io.sarl.lang.validation.IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION;
 import static io.sarl.lang.validation.IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION;
@@ -199,6 +201,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
@@ -212,6 +215,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -265,13 +269,15 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.FeatureCallAdapter;
 import io.sarl.lang.typesystem.IImmutableTypeValidator;
-import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLOperationHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
@@ -430,7 +436,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private LocalClassAwareTypeNames localClassAwareTypeNames;
 
 	@Inject
-	private IOperationHelper operationHelper;
+	private SARLOperationHelper operationHelper;
 
 	@Inject
 	private IProgrammaticWarningSuppressor warningSuppressor;
@@ -461,6 +467,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ISynchronizedFieldDetector synchronizedFieldDetector;
+
+	@Inject
+	private IBatchTypeResolver typeResolver;
 
 	// Update the annotation target information
 	{
@@ -1202,11 +1211,25 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/** Replies if the given expression has no specific type.
+	 *
+	 * @param expression the expression to test
+	 * @return {@code true} if the given {@code expression} cannot have a specific type.
+	 */
+	protected boolean isTypeFreeExpression(XExpression expression) {
+		return expression instanceof XNullLiteral;
+	}
+
+	protected LightweightTypeReference getExpectedType(XExpression expression) {
+		return this.typeResolver.resolveTypes(expression).getExpectedType(expression);
+	}
+
 	/** Check if the default values of the formal parameters have a compatible type with the formal parameter.
 	 *
 	 * @param param the formal parameter to check.
 	 */
 	@Check
+	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
 		final XExpression defaultValue = param.getDefaultValue();
 		if (defaultValue != null) {
@@ -1223,21 +1246,46 @@ public class SARLValidator extends AbstractSARLValidator {
 						INVALID_TYPE);
 				return;
 			}
-			LightweightTypeReference fromType = getExpectedType(defaultValue);
-			if (fromType == null) {
-				fromType = getActualType(defaultValue);
+			LightweightTypeReference fromType;
+			if (isTypeFreeExpression(defaultValue)) {
+				if (toType.isPrimitive()) {
+					fromType = toLightweightTypeReference(this.typeReferences.getTypeForName(Object.class, param), true);
+				} else {
+					fromType = toType;
+				}
+			} else {
+				fromType = getExpectedType(defaultValue);
 				if (fromType == null) {
-					error(MessageFormat.format(
-							Messages.SARLValidator_21,
-							param.getName()),
-							param,
-							SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							INVALID_TYPE);
-					return;
+					fromType = getActualType(defaultValue);
+					if (fromType == null) {
+						// When the type of the default value cannot be inferred, it means that the default value
+						// expression is not stored into a JVM element.
+						// This case occurs when the function overrides another function with the default parameter.
+						// In this case, the JVM model inferrer do not generate locally an hidden method with the default
+						// value expression. Indeed, this hidden function is generated into the super type.
+						// The following code tests if the validator is facing this limitation of the Xtext
+						// API related to the computation of expressions types (i.e. a type could be computed only
+						// if the expression is associated to a generated JVM element).
+						final JvmFormalParameter jvmParam = this.associations.getJvmParameter(param);
+						boolean generateError = true;
+						if (jvmParam != null) {
+							final String defaultValueId = this.sarlActionSignatures.extractDefaultValueString(jvmParam);
+							generateError = Strings.isEmpty(defaultValueId);
+						}
+						if (generateError) {
+							error(MessageFormat.format(
+									Messages.SARLValidator_21,
+									param.getName()),
+									param,
+									SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									INVALID_TYPE);
+						}
+						return;
+					}
 				}
 			}
-			if (!Utils.canCast(fromType, toType, true, false, true)) {
+			if (fromType != toType && !Utils.canCast(fromType, toType, true, false, true)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_38,
 						getNameOfTypes(fromType), canonicalName(toType)),
@@ -1247,8 +1295,25 @@ public class SARLValidator extends AbstractSARLValidator {
 						INCOMPATIBLE_TYPES,
 						canonicalName(fromType),
 						canonicalName(toType));
+				return;
 			}
 		}
+	}
+
+	private Iterator<? extends XAbstractFeatureCall> getAllFeatureCalls(XExpression expr) {
+		final Iterator<? extends XAbstractFeatureCall> iter;
+		if (expr instanceof XAbstractFeatureCall) {
+			final Iterator<XAbstractFeatureCall> iter2 = Iterators.filter(expr.eAllContents(), XAbstractFeatureCall.class);
+			final Iterator<XAbstractFeatureCall> iter3 = Iterators.singletonIterator((XAbstractFeatureCall) expr);
+			if (iter2.hasNext()) {
+				iter = Iterators.concat(iter3, iter2);
+			} else {
+				iter = iter3;
+			}
+		} else {
+			iter = Iterators.filter(expr.eAllContents(), XAbstractFeatureCall.class);
+		}
+		return iter;
 	}
 
 	/** Check if the default values have not a reference to a not-pure operation.
@@ -1259,10 +1324,35 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkDefaultValuePureExpression(SarlFormalParameter param) {
 		final XExpression defaultValue = param.getDefaultValue();
 		if (defaultValue != null) {
-			if (this.operationHelper.hasSideEffects(null, defaultValue)) {
-				error(Messages.SARLValidator_19,
-						defaultValue,
-						XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(param);
+			final InferredPrototype prototype;
+			if (container instanceof JvmOperation) {
+				prototype = this.operationHelper.getInferredPrototype((JvmOperation) container);
+			} else if (container instanceof JvmConstructor) {
+				prototype = this.operationHelper.getInferredPrototype((JvmConstructor) container);
+			} else {
+				throw new Error("internal error: not an operation or a constructor");
+			}
+			final Iterable<XExpression> sideEffects = this.operationHelper.getSideEffectExpressions(prototype, defaultValue);
+			for (final XExpression call : sideEffects) {
+				final String code;
+				if (call instanceof XAbstractFeatureCall) {
+					final XAbstractFeatureCall acall = (XAbstractFeatureCall) call;
+					final JvmIdentifiableElement element = acall.getFeature();
+					if (element instanceof JvmExecutable) {
+						code = this.uiStrings.signature((JvmExecutable) element);
+					} else {
+						code = Utils.getSarlCodeFor(call);
+					}
+				} else if (call instanceof XConstructorCall) {
+					final XConstructorCall cons = (XConstructorCall) call;
+					code = this.grammarAccess.getNewKeyword() + this.uiStrings.arguments(cons);
+				} else {
+					code = Utils.getSarlCodeFor(call);
+				}
+				error(MessageFormat.format(Messages.SARLValidator_19, code),
+						call,
+						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						FORBIDDEN_REFERENCE);
 			}
@@ -1279,18 +1369,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (defaultValue != null) {
 			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(param);
 			if (container instanceof JvmConstructor) {
-				final Iterator<? extends XAbstractFeatureCall> iter;
-				if (defaultValue instanceof XAbstractFeatureCall) {
-					final Iterator<XAbstractFeatureCall> iter2 = Iterators.filter(defaultValue.eAllContents(), XAbstractFeatureCall.class);
-					final Iterator<XAbstractFeatureCall> iter3 = Iterators.singletonIterator((XAbstractFeatureCall) defaultValue);
-					if (iter2.hasNext()) {
-						iter = Iterators.concat(iter3, iter2);
-					} else {
-						iter = iter3;
-					}
-				} else {
-					iter = Iterators.filter(defaultValue.eAllContents(), XAbstractFeatureCall.class);
-				}
+				final Iterator<? extends XAbstractFeatureCall> iter = getAllFeatureCalls(defaultValue);
 				while (iter.hasNext()) {
 					final XAbstractFeatureCall call = iter.next();
 					final JvmIdentifiableElement feature = call.getFeature();
@@ -1311,6 +1390,61 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/** Check if the default value expression is redefined from an inherited definition.
+	 *
+	 * @param param the formal parameter to check.
+	 */
+	@Check
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	public void checkDefaultValueRedefinition(SarlFormalParameter param) {
+		final XExpression defaultValue = param.getDefaultValue();
+		if (defaultValue != null) {
+			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(param);
+			if (container instanceof JvmOperation) {
+				final JvmOperation operation = (JvmOperation) container;
+				final Map<ActionPrototype, JvmOperation> overridableOperations = new TreeMap<>();
+				final Map<ActionPrototype, JvmOperation> operationsToImplement = new TreeMap<>();
+				Utils.populateInheritanceContext(
+						operation.getDeclaringType(),
+						null,
+						overridableOperations,
+						null,
+						operationsToImplement,
+						null,
+						this.sarlActionSignatures);
+				final InferredPrototype inferredPrototype = this.operationHelper.getInferredPrototype(operation);
+				final ActionPrototype actionPrototype = this.sarlActionSignatures.createActionPrototype(
+						operation.getSimpleName(),
+						inferredPrototype.getFormalParameterTypes());
+				JvmOperation inheritedOperation = overridableOperations.get(actionPrototype);
+				if (inheritedOperation == null) {
+					inheritedOperation = operationsToImplement.get(actionPrototype);
+				}
+				if (inheritedOperation != null) {
+					final JvmFormalParameter currentParam = this.associations.getJvmParameter(param);
+					final String referencedCode = this.sarlActionSignatures.extractDefaultValueString(currentParam);
+					final String currentCode = Utils.getSarlCodeFor(defaultValue);
+					if (Strings.equal(currentCode, referencedCode)) {
+						if (!isIgnored(PARAMETER_DEFAULT_VALUE_REDFINITION)) {
+							addIssue(MessageFormat.format(Messages.SARLValidator_103, param.getName()),
+									param,
+									SarlPackage.Literals.SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									PARAMETER_DEFAULT_VALUE_REDFINITION);
+						}
+					} else {
+						error(MessageFormat.format(Messages.SARLValidator_104, param.getName(),
+								Utils.toReadableString(referencedCode), Utils.toReadableString(currentCode)),
+								param,
+								SarlPackage.Literals.SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								ILLEGAL_PARAMETER_DEFAULT_VALUE_REDEFINITION);
+					}
+				}
+			}
+		}
+	}
+
 	/** This functions checks of the given name is disallowed.
 	 * The {@link SARLFeatureNameValidator} provides the basic conditions.
 	 * It is not detecting the implicit lambda's parameter names. This specific
@@ -1324,7 +1458,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			return true;
 		}
 		final String base = name.getLastSegment();
-		if (Utils.isHiddenMember(base) && Utils.isImplicitLambdaParameterName(base)) {
+		if (SarlUtils.isHiddenMember(base) && Utils.isImplicitLambdaParameterName(base)) {
 			return true;
 		}
 		return false;
@@ -1338,7 +1472,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkGenericTypeNameShadowing(JvmTypeParameter type) {
 		final XtendMember declarator = EcoreUtil2.getContainerOfType(type.eContainer(), XtendMember.class);
-		if (declarator instanceof XtendFunction && !Utils.isHiddenMember(type.getName())) {
+		if (declarator instanceof XtendFunction && !SarlUtils.isHiddenMember(type.getName())) {
 			final XtendTypeDeclaration enclosingType = declarator.getDeclaringType();
 			List<JvmTypeParameter> params = null;
 			if (enclosingType instanceof XtendClass) {
@@ -1384,7 +1518,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					validName);
 		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
 				&& this.featureNames.isDiscouragedName(name)) {
-			warning(MessageFormat.format(
+			addIssue(MessageFormat.format(
 					Messages.SARLValidator_39,
 					action.getName()),
 					action,
@@ -1431,7 +1565,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkFieldNameShadowing(SarlField field) {
 		if (!isIgnored(VARIABLE_NAME_SHADOWING)
-				&& !Utils.isHiddenMember(field.getName())) {
+				&& !SarlUtils.isHiddenMember(field.getName())) {
 			final JvmField inferredField = this.associations.getJvmField(field);
 			final Map<String, JvmField> inheritedFields = new TreeMap<>();
 			Utils.populateInheritanceContext(
@@ -1600,7 +1734,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					&& sourceElement instanceof SarlAction) {
 				final SarlAction function = (SarlAction) sourceElement;
 				if (function.getReturnType() == null && !inherited.getResolvedReturnType().isPrimitiveVoid()) {
-					warning(MessageFormat.format(Messages.SARLValidator_46,
+					addIssue(MessageFormat.format(Messages.SARLValidator_46,
 							resolved.getResolvedReturnType().getHumanReadableName()),
 							sourceElement,
 							returnTypeFeature(sourceElement), RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
@@ -1615,7 +1749,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final SarlAction function = (SarlAction) sourceElement;
 			if (!overrideProblems && !function.isOverride() && !function.isStatic()
 					&& !isIgnored(MISSING_OVERRIDE, sourceElement)) {
-				warning(MessageFormat.format(Messages.SARLValidator_47,
+				addIssue(MessageFormat.format(Messages.SARLValidator_47,
 						resolved.getSimpleSignature(),
 						getDeclaratorName(resolved)),
 						function,

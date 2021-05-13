@@ -52,8 +52,9 @@ public class AgentKillFailureTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(2, this.type.getDeclaredFields().length);
-		assertEquals(2, this.type.getDeclaredConstructors().length);
+		assertEquals(1, this.type.getDeclaredFields().length, "number of fields");
+		assertEquals(2, this.type.getDeclaredConstructors().length, "number of constructors");
+		assertEquals(1, this.type.getDeclaredMethods().length, "number of methods");
 	}
 
 	/**

@@ -37,7 +37,6 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLConfig;
-import io.sarl.lang.jvmmodel.IDefaultValueAccessDetector;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
@@ -77,20 +76,6 @@ public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
 	private IResourceTypeDetector resourceTypeDetector;
-
-	@Inject
-	private IDefaultValueAccessDetector defaultValueAccessDetector;
-
-	@Override
-	protected ITreeAppendable _generateModifier(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
-		if (Utils.isDynamicDefaultValueFunctionName(it.getSimpleName())) {
-			// The operation is dedicated to the support of a dynamic and instance based default value.
-			if (this.defaultValueAccessDetector.isStaticAccess(it)) {
-				it.setStatic(true);
-			}
-		}
-		return super._generateModifier(it, appendable, config);
-	}
 
 	@Override
 	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {

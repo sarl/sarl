@@ -2001,7 +2001,7 @@
 	},
 	{
 		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.forbidden_reference",
-		"message": "Default value's expression cannot reference to a not-pure operation",
+		"message": "Default value's expression cannot reference the not-pure operation: *name*",
 		"cause": "This error message is generated when a reference to a non-pure function is detected into the expression of the default value for a formal parameter. Only pure functions could be used for building a default value expression in order to avoid unexpected side-effects",
 		"solution": "Remove the reference to the not-pure function",
 		"level": "error"
@@ -2359,8 +2359,22 @@
 	{
 		"code": "io.sarl.lang.validation.IssueCodes.generic_type_name_shadowing",
 		"message": "The generic type parameter '*name*' is hiding the generic type parameter of '*type-name*'",
-		"cause": "This error is generated you declared a generic type parameter for an action that has the same name as another generic type parameter that is declared into the enclosing type (class, or interface)",
+		"cause": "This error is generated when you declared a generic type parameter for an action that has the same name as another generic type parameter that is declared into the enclosing type (class, or interface)",
 		"solution": "Change the *name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.parameter_default_value_redefinition",
+		"message": "Redundant definition of the default value for the formal parameter *name*",
+		"cause": "This warning message is generated when you declared a default value for a formal parameter that has already a default value declared into one of the super types. It is not necessary to redefine the same default value for the formal parameter",
+		"solution": "Remove the redundant declaration fo the default value",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.illegal_parameter_default_value_redefinition",
+		"message": "Illegal redefinition of the default value for the formal parameter *name*. Inherited value is: *original value*. While the current value is: *redefined value*.",
+		"cause": "This error message is generated when you declared a default value for a formal parameter that is different from the corresponding default value that was declared into the super types. You cannot change the default value of a formal parameter because it may cause unexpected side-effects for the callers of the function",
+		"solution": "Remove the redundant declaration fo the default value",
 		"level": "error"
 	}
 ]

@@ -23,11 +23,15 @@ package io.sarl.lang.jvmmodel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.inject.Inject;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -107,6 +111,11 @@ abstract class GenerationContext {
 	 */
 	private final Map<ActionPrototype, JvmOperation>  operationsToImplement = CollectionLiterals.newTreeMap(null);
 
+	/** Collection of the local operations.
+	 * @since 0.12
+	 */
+	private final Map<ActionPrototype, JvmOperation>  localOperations = CollectionLiterals.newTreeMap(null);
+
 	/** List of elements that must be generated at the end of the generation process.
 	 */
 	private final List<Runnable> preFinalization = CollectionLiterals.newLinkedList();
@@ -151,6 +160,8 @@ abstract class GenerationContext {
 
 	@Inject
 	private AnnotationLookup annotationFinder;
+
+	private Map<String, List<Object>> userData = new TreeMap<>();
 
 	/** Construct a information about the generation.
 	 *
@@ -334,6 +345,71 @@ abstract class GenerationContext {
 	 */
 	public Map<ActionPrototype, JvmOperation> getInheritedOperationsToImplement() {
 		return this.operationsToImplement;
+	}
+
+	/** Replies the operation with the given prototype that is locally defined.
+	 * This function does not search in inherited operations.
+	 *
+	 * @param prototype the prototype to search for.
+	 * @return the locally defined operation.
+	 * @since 0.12
+	 */
+	public JvmOperation getLocalOperation(ActionPrototype prototype) {
+		return this.localOperations.get(prototype);
+	}
+
+	/** Register a locally defined operation.
+	 *
+	 * @param prototype the prototype of the operation.
+	 * @param operation the JVM operation.
+	 * @since 0.12
+	 */
+	public void doLocalOperationDefinition(ActionPrototype prototype, JvmOperation operation) {
+		getInheritedOperationsToImplement().remove(prototype);
+		getInheritedOverridableOperations().remove(prototype);
+		this.localOperations.put(prototype, operation);
+	}
+
+	/** Replies the inherited operation with the given prototype.
+	 * The operation may be implemented or not into the super types.
+	 *
+	 * @param prototype the prototype to search for.
+	 * @return the operation or {@code null}.
+	 * @since 0.12
+	 */
+	public JvmOperation getInheritedOperation(ActionPrototype prototype) {
+		JvmOperation inheritedOperation = getInheritedImplementedOperation(prototype);
+		if (inheritedOperation == null) {
+			inheritedOperation = getInheritedOperationsToImplement().get(prototype);
+		}
+		return inheritedOperation;
+	}
+
+	/** Replies the inherited and implemented operation with the given prototype.
+	 *
+	 * @param prototype the prototype to search for.
+	 * @return the operation or {@code null}.
+	 * @since 0.12
+	 */
+	public JvmOperation getInheritedImplementedOperation(ActionPrototype prototype) {
+		JvmOperation inheritedOperation = getInheritedFinalOperations().get(prototype);
+		if (inheritedOperation == null) {
+			inheritedOperation = getInheritedOverridableOperations().get(prototype);
+		}
+		return inheritedOperation;
+	}
+
+	/** Replies the locally or inherited operation.
+	 *
+	 * @param prototype the prototype to search for.
+	 * @return the operation or {@code null}.
+	 */
+	public JvmOperation getDefinedOperation(ActionPrototype prototype) {
+		final JvmOperation localOperation = this.localOperations.get(prototype);
+		if (localOperation != null) {
+			return localOperation;
+		}
+		return getInheritedOperation(prototype);
 	}
 
 	/** Replies the collection of the elements that must be generated at the end of
@@ -529,6 +605,58 @@ abstract class GenerationContext {
 				setInjectable(true);
 			}
 		}
+	}
+
+	/** Add a user data associated to the given id.
+	 *
+	 * @param id the identifier of the user data.
+	 * @param value the value to put into the list of user data with the given id.
+	 * @since 0.12
+	 */
+	public void addUserObject(String id, Object value) {
+		if (!Strings.isNullOrEmpty(id) && value != null) {
+			final List<Object> usrData = this.userData.computeIfAbsent(id, it -> {
+				return new ArrayList<>();
+			});
+			usrData.add(value);
+		}
+	}
+
+	/** Consume the user data associated to the given id.
+	 *
+	 * @param id the identifier of the user data.
+	 * @return the value to put into the list of user data with the given id.
+	 * @since 0.12
+	 */
+	public Iterable<Object> consumeUserObject(String id) {
+		if (!Strings.isNullOrEmpty(id)) {
+			final List<Object> usrData = this.userData.remove(id);
+			if (usrData != null) {
+				return usrData;
+			}
+		}
+		return Collections.emptyList();
+	}
+
+	/** Consume the user data associated to the given id.
+	 *
+	 * @param <T> the type of the data.
+	 * @param id the identifier of the user data.
+	 * @param dataType the type of the data.
+	 * @return the value to put into the list of user data with the given id.
+	 * @since 0.12
+	 */
+	public <T> Iterable<T> consumeUserObject(String id, Class<T> dataType) {
+		if (!Strings.isNullOrEmpty(id)) {
+			final List<Object> usrData = this.userData.remove(id);
+			if (usrData != null) {
+				final Collection<T> output = Collections2.transform(usrData, it -> {
+					return dataType.cast(it);
+				});
+				return output;
+			}
+		}
+		return Collections.emptyList();
 	}
 
 }

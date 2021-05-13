@@ -26,6 +26,7 @@ import java.util.List;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
 
@@ -103,13 +104,6 @@ public interface IActionPrototypeProvider {
 	 */
 	ActionPrototype createActionPrototype(String actionName, ActionParameterTypes parameters);
 
-	/** Replies the name of the field that should store the default value associated to the parameter with the given id.
-	 *
-	 * @param id the parameter's identifier.
-	 * @return the field's name.
-	 */
-	String createFieldNameForDefaultValueID(String id);
-
 	/** Replies the name of the function that should store the default value associated to the parameter with the given id.
 	 *
 	 * @param id the parameter's identifier.
@@ -141,6 +135,7 @@ public interface IActionPrototypeProvider {
 	 * @param parameter the parameter for which the default value should be extracted.
 	 * @return the default value, or {@code null} if none.
 	 */
+	@Pure
 	String extractDefaultValueString(JvmFormalParameter parameter);
 
 	/** Reset all the prototypes associated to the given container.

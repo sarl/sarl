@@ -672,17 +672,37 @@ public final class ShouldExtensions {
 	 * <li>ID : TYPE</li>
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
+	 * The methods with hidden names according to SARL are not considered.
 	 *
 	 * @param type the type to check.
 	 * @param prototypes the prototypes, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveMethods(Class<?> type, String... prototypes) {
+		return shouldHaveMethods(type,false, prototypes);
+	}
+	
+	/** Ensure that the given type has the given methods.
+	 * The format of the prototypes may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID(TYPE, TYPE...)</li>
+	 * <li>ID : TYPE</li>
+	 * <li>ID(TYPE, TYPE...) : TYPE</li>
+	 * </ul>
+	 *
+	 * @param type the type to check.
+	 * @param considerHiddenNames indicates if the methods with hidden names are considered.
+	 * @param prototypes the prototypes, e.g. <code>fct(java.lang.String):int</code>.
+	 * @return the validation status.
+	 * @since 0.12
+	 */
+	public static boolean shouldHaveMethods(Class<?> type, boolean considerHiddenNames, String... prototypes) {
 		List<Method> methods = new ArrayList<>();
 		for (final Method method : type.getDeclaredMethods()) {
 			if (Flags.isPublic(method.getModifiers())) {
 				final Deprecated deprecatedAnnotation = method.getAnnotation(Deprecated.class);
-				if (deprecatedAnnotation == null) {
+				if (deprecatedAnnotation == null &&
+						(considerHiddenNames || !shouldBeHiddenName(method.getName()))) {
 					methods.add(method);
 				}
 			}

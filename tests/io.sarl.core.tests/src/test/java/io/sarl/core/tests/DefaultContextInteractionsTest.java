@@ -60,7 +60,9 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(16, this.type.getDeclaredMethods().length);
+		assertEquals(0, this.type.getDeclaredFields().length, "number of fields");
+		assertEquals(0, this.type.getDeclaredConstructors().length, "number of constructors");
+		assertEquals(15+1+1, this.type.getDeclaredMethods().length, "number of methods");
 	}
 
 	/**

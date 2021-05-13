@@ -239,6 +239,20 @@ public final class IssueCodes {
 	public static final String GENERIC_TYPE_NAME_SHADOWING =
 			ISSUE_CODE_PREFIX + "generic_type_name_shadowing"; //$NON-NLS-1$
 
+	/**
+	 * The value of a default parameter is inherited and locally redefined.
+	 * @since 0.12
+	 */
+	public static final String PARAMETER_DEFAULT_VALUE_REDFINITION =
+			ISSUE_CODE_PREFIX + "parameter_default_value_redefinition"; //$NON-NLS-1$
+
+	/**
+	 * The value of a default parameter does not correspond to the value of the inherited parameter.
+	 * @since 0.12
+	 */
+	public static final String ILLEGAL_PARAMETER_DEFAULT_VALUE_REDEFINITION =
+			ISSUE_CODE_PREFIX + "illegal_parameter_default_value_redefinition"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

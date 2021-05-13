@@ -571,7 +571,7 @@ public class Bug593Test {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private static final long serialVersionUID = -844578811L;",
+					"  private static final long serialVersionUID = 2070834854L;",
 					"}",
 					""));
 		}
@@ -600,6 +600,7 @@ public class Bug593Test {
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Tuple2f<T extends Tuple2f<?>> implements Serializable, Cloneable, Comparable<T> {",
+					"  @Pure",
 					"  public int compareTo(final T t) {",
 					"    return 0;",
 					"  }",
@@ -621,7 +622,7 @@ public class Bug593Test {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private static final long serialVersionUID = -844578811L;",
+					"  private static final long serialVersionUID = 87934145L;",
 					"}",
 					""));
 		}

@@ -268,7 +268,6 @@ public class Bug694Test extends AbstractSarlTest {
 			"    return _xblockexpression;",
 			"  }",
 			"  ",
-			"  @Pure",
 			"  public boolean myfunction13(final List<Object> p) {",
 			"    boolean _xblockexpression = false;",
 			"    {",

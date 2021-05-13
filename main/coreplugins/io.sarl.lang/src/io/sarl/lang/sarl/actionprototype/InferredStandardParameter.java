@@ -24,7 +24,7 @@ package io.sarl.lang.sarl.actionprototype;
 import java.lang.ref.WeakReference;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
  * This class permits to wrap the formal parameters.
@@ -46,7 +46,7 @@ public class InferredStandardParameter {
 
 	/** Name.
 	 */
-	protected final JvmTypeReference type;
+	protected final LightweightTypeReference type;
 
 	/** Default value annotation value.
 	 */
@@ -67,7 +67,7 @@ public class InferredStandardParameter {
 	 * @param dynamicArgument the argument name that could be changed dynamically.
 	 * @since 0.12
 	 */
-	public InferredStandardParameter(EObject source, String name, JvmTypeReference type, DynamicArgumentName dynamicArgument) {
+	public InferredStandardParameter(EObject source, String name, LightweightTypeReference type, DynamicArgumentName dynamicArgument) {
 		this.source = new WeakReference<>(source);
 		this.name = name;
 		this.type = type;
@@ -103,7 +103,7 @@ public class InferredStandardParameter {
 	 *
 	 * @return the type.
 	 */
-	public JvmTypeReference getType() {
+	public LightweightTypeReference getType() {
 		return this.type;
 	}
 

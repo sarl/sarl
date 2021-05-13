@@ -437,10 +437,10 @@ public class Jdt2Ecore {
 		final Object value = annotation.getMemberValuePairs()[0].getValue();
 		final String fieldId = (value == null) ? null : value.toString();
 		if (!Strings.isNullOrEmpty(fieldId)) {
-			final String fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
-			final IField field = operation.getDeclaringType().getField(fieldName);
-			if (field != null) {
-				annotation = getAnnotation(field, SarlSourceCode.class.getName());
+			final String methodName = Utils.createNameForHiddenDefaultValueFunction(fieldId);
+			final IMethod method = operation.getDeclaringType().getMethod(methodName, new String[0]);
+			if (method != null) {
+				annotation = getAnnotation(method, SarlSourceCode.class.getName());
 				if (annotation != null) {
 					return annotation.getMemberValuePairs()[0].getValue().toString();
 				}

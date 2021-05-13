@@ -81,7 +81,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 			return false;
 		}
 
-		if (super.equals(object) && this.getClass() == object.getClass()) {
+		if (this.getClass() == object.getClass() && object instanceof ActionParameterTypes && super.equals(object)) {
 			final ActionParameterTypes types = (ActionParameterTypes) object;
 			return this.isVarargs == types.isVarargs;
 		}

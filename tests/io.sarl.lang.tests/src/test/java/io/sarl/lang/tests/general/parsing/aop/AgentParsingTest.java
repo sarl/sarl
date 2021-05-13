@@ -767,6 +767,7 @@ public class AgentParsingTest {
 					"import java.util.List",
 					"event E1 { var parameters : List<Object> }",
 					"agent A1 {",
+					"   var t = 5",
 					"	on E1 [ ((t += 5) > 0) as boolean ] {",
 					"	}",
 					"}"

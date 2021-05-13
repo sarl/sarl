@@ -296,34 +296,34 @@ public final class ReflectExtensions {
 		if (defaultValueAnnotation == null) {
 			return null;
 		}
-		final String fieldId = defaultValueAnnotation.value();
-		if (!Strings.isEmpty(fieldId)) {
+		final String methodId = defaultValueAnnotation.value();
+		if (!Strings.isEmpty(methodId)) {
 			final Class<?> container = parameter.getDeclaringExecutable().getDeclaringClass();
 			if (container != null) {
-				final int index = fieldId.indexOf('#');
+				final int index = methodId.indexOf('#');
 				Class<?> target;
-				final String fieldName;
+				final String methodName;
 				if (index > 0) {
 					try {
-						final Class<?> type = Class.forName(fieldId.substring(0, index), true, container.getClassLoader());
+						final Class<?> type = Class.forName(methodId.substring(0, index), true, container.getClassLoader());
 						target = type;
 					} catch (Throwable exception) {
 						target = container;
 					}
-					fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId.substring(index + 1));
+					methodName = Utils.createNameForHiddenDefaultValueFunction(methodId.substring(index + 1));
 				} else {
 					target = container;
-					fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
+					methodName = Utils.createNameForHiddenDefaultValueFunction(methodId);
 				}
 
-				final Field field = Iterables.find(Arrays.asList(target.getDeclaredFields()),
-						(it) -> Strings.equal(it.getName(), fieldName),
+				final Method method = Iterables.find(Arrays.asList(target.getDeclaredMethods()),
+						(it) -> Strings.equal(it.getName(), methodName),
 						null);
-				if (field != null) {
+				if (method != null) {
 					final SarlSourceCode sourceCodeAnnotation = parameter.getAnnotation(SarlSourceCode.class);
 					if (sourceCodeAnnotation != null) {
 						final String value = sourceCodeAnnotation.value();
-						if (!Strings.isEmpty(fieldId)) {
+						if (!Strings.isEmpty(methodId)) {
 							return value;
 						}
 					}
