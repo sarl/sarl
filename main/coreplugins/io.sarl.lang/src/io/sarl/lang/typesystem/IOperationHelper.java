@@ -80,8 +80,22 @@ public interface IOperationHelper {
 	 * @param calledOperation the called operation. It is used for detecting recursive calls.
 	 * @param expr the expression to test, usually, the body of the expression.
 	 * @return <code>true</code> if a side effect was detected into the expression.
+	 * @see #getSideEffectCalls(InferredPrototype, XExpression)
 	 */
 	boolean hasSideEffects(InferredPrototype calledOperation, XExpression expr);
+
+	/** Replies the list of calls that have side effects into the given expression.
+	 *
+	 * <p>This function differs from {@link XExpressionHelper#hasSideEffects(XExpression)} because it explore the
+	 * syntax tree for determining if one action has a side effect.
+	 *
+	 * @param calledOperation the called operation. It is used for detecting recursive calls.
+	 * @param expr the expression to test, usually, the body of the expression.
+	 * @return the list of side-effect calls.
+	 * @since 0.12
+	 * @see #hasSideEffects(InferredPrototype, XExpression)
+	 */
+	Iterable<XExpression> getSideEffectExpressions(InferredPrototype calledOperation, XExpression expr);
 
 	/** Replies if the given operation could be annotated with {@code @Pure} according
 	 * to its associated adapters.

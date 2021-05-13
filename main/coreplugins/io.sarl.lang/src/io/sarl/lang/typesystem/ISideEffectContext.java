@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 
@@ -109,5 +110,28 @@ public interface ISideEffectContext {
 	 * @return the values.
 	 */
 	List<? extends XExpression> getVariableValues(String name);
+
+	/** Replies if the side-effect exploration should stop at the first discovered side effect.
+	 *
+	 * @return {@code true} if the algorithm stops at first side-effect occurrence.
+	 * @since 0.12
+	 */
+	@Pure
+	boolean isStoppingAtFirstSideEffect();
+
+	/** Register the given call to have a side effect.
+	 *
+	 * @param expression the side-effect expression.
+	 * @since 0.12
+	 */
+	void registerSideEffect(XExpression expression);
+
+	/** Replies the detected side effect expressions.
+	 *
+	 * @return the side-effect expressions.
+	 * @since 0.12
+	 */
+	@Pure
+	Iterable<XExpression> getSideEffectExpressions();
 
 }
