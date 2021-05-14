@@ -27,12 +27,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
-
 import javax.inject.Inject;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Throwables;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -50,7 +50,10 @@ import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.RuleCall;
+import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
@@ -64,9 +67,10 @@ import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.concurrent.CancelableUnitOfWork;
-import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -76,6 +80,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarAccess.AOPMemberElements;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.SARLUiPlugin;
 import io.sarl.lang.util.Utils;
@@ -94,6 +99,7 @@ import io.sarl.lang.util.Utils;
  * @since 0.8
  * @see "https://blogs.itemis.com/en/code-mining-support-in-xtext"
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Inject
@@ -113,7 +119,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Inject
 	private XtextDocumentUtil xtextDocumentUtil;
-	
+
 	@Inject
 	private CommonTypeComputationServices services;
 
@@ -171,7 +177,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	}
 
 	/** Root dispatch function for code mining.
-	 * 
+	 *
 	 * @param element the element to mine.
 	 * @param acceptor the code mining receiver.
 	 */
@@ -201,16 +207,19 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 				return;
 			}
 			// find document offset for inline annotation
-			final Keyword parenthesis = this.grammar.getAOPMemberAccess().getRightParenthesisKeyword_2_5_6_2();
-			final Assignment actionName = this.grammar.getAOPMemberAccess().getNameAssignment_2_5_5();
+			final AOPMemberElements aop = this.grammar.getAOPMemberAccess();
+			final Assignment actionName = aop.getNameAssignment_2_5_5();
+			final Keyword leftParenthesis = aop.getLeftParenthesisKeyword_2_5_6_0();
+			final Keyword rightParenthesis = aop.getRightParenthesisKeyword_2_5_6_2();
 			final CodeRegion region = findNode(action,
-					candidate -> candidate instanceof RuleCall && EcoreUtil.equals(actionName, candidate.eContainer()),
-					candidate -> EcoreUtil.equals(parenthesis, candidate));
+				candidate -> candidate instanceof RuleCall && EcoreUtil.equals(actionName, candidate.eContainer()),
+				candidate -> EcoreUtil.equals(leftParenthesis, candidate),
+				candidate -> EcoreUtil.equals(rightParenthesis, candidate));
 			int offset = -1;
-			if (region.end != null) {
-				offset = region.end.getTotalEndOffset();
-			} else if (region.start != null) {
-				offset = region.start.getTotalEndOffset();
+			if (region.getEnd() != null) {
+				offset = region.getEnd().getTotalEndOffset();
+			} else if (region.getStart() != null) {
+				offset = region.getStart().getTotalEndOffset();
 			}
 			if (offset >= 0) {
 				final String returnTypeName = Utils.toLightweightTypeReference(returnType, this.services).getHumanReadableName();
@@ -249,39 +258,55 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	protected void _codemining(XtendVariableDeclaration variable, IAcceptor<? super ICodeMining> acceptor) {
 		if (this.codeminingPreferences.isCodeminingFieldTypeEnabled()) {
 			createImplicitVarValType(variable, acceptor, XtendVariableDeclaration.class,
-					it -> it.getType(),
-					it -> {
-						LightweightTypeReference type = getLightweightType(it.getRight());
-						if (type.isAny()) {
-							type = getTypeForVariableDeclaration(it.getRight());
-						}
-						return type.getSimpleName();
-					},
-					it -> it.getRight(),
-					() -> this.grammar.getXVariableDeclarationAccess().getRightAssignment_3_1());
+				it -> it.getType(),
+				it -> {
+					LightweightTypeReference type = getLightweightType(it.getRight());
+					if (type.isAny()) {
+						type = getTypeForVariableDeclaration(it.getRight());
+					}
+					return type.getSimpleName();
+				},
+				it -> it.getRight(),
+				() -> this.grammar.getXVariableDeclarationAccess().getRightAssignment_3_1());
 		}
 	}
 
 	/** Add an annotation for the formal argument names.
 	 *
-	 * @param featureCall the feature call..
+	 * @param featureCall the feature call.
 	 * @param acceptor the code mining acceptor.
 	 */
-	protected void _codemining(XAbstractFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
-		createImplicitArgumentName();
+	protected void _codemining(XFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
+		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
+			final JvmIdentifiableElement feature = featureCall.getFeature();
+			if (feature instanceof JvmExecutable) {
+				createImplicitArgumentName((JvmExecutable) feature, featureCall.getActualArguments(), acceptor);
+			}
+		}
 	}
 
 	/** Add an annotation for the formal argument names.
 	 *
-	 * @param featureCall the feature call..
+	 * @param featureCall the feature call.
+	 * @param acceptor the code mining acceptor.
+	 */
+	protected void _codemining(XMemberFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
+		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
+			final JvmIdentifiableElement feature = featureCall.getFeature();
+			if (feature instanceof JvmExecutable) {
+				createImplicitArgumentName((JvmExecutable) feature, featureCall.getActualArguments(), acceptor);
+			}
+		}
+	}
+
+	/** Add an annotation for the formal argument names.
+	 *
+	 * @param featureCall the feature call.
 	 * @param acceptor the code mining acceptor.
 	 */
 	protected void _codemining(XConstructorCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
-		createImplicitArgumentName();
-	}
-
-	private void createImplicitArgumentName() {
-		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {			
+		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
+			createImplicitArgumentName(featureCall.getConstructor(), featureCall.getArguments(), acceptor);
 		}
 	}
 
@@ -295,10 +320,52 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		}
 	}
 
+	/** Create the annotation for the argument name.
+	 *
+	 * @param feature the called feature.
+	 * @param arguments the list of arguments.
+	 * @param acceptor the acceptor.
+	 */
+	private void createImplicitArgumentName(JvmExecutable feature, EList<XExpression> arguments, IAcceptor<? super ICodeMining> acceptor) {
+		final List<JvmFormalParameter> parameters = feature.getParameters();
+		if (parameters.size() > 0 && parameters.size() <= arguments.size()) {
+			final Iterator<XExpression> args = arguments.iterator();
+			final Iterator<JvmFormalParameter> params = parameters.iterator();
+			provideArgumentName(params.next().getSimpleName(), findArgumentOffset(args.next()), acceptor);
+			while (args.hasNext() && params.hasNext()) {
+				final XExpression arg = args.next();
+				final JvmFormalParameter param = params.next();
+				provideArgumentName(param.getSimpleName(), findArgumentOffset(arg), acceptor);
+			}
+		}
+	}
+
+	private int findArgumentOffset(XExpression semanticObject) {
+		final INode node = NodeModelUtils.findActualNodeFor(semanticObject);
+		// Sometimes the node contains white spaces at the beginning.
+		// The offset should be increased to put the annotation after the white spaces.
+		final String text = node.getText();
+		int offset = node.getTotalOffset();
+		if (text.length() > 0) {
+			int i = 0;
+			while (Character.isWhitespace(text.charAt(i))) {
+				++offset;
+				++i;
+			}
+		}
+		return offset;
+	}
+
+	private void provideArgumentName(String name, int offset, IAcceptor<? super ICodeMining> acceptor) {
+		final String text = MessageFormat.format(Messages.SARLCodeMiningProvider_3, name);
+		acceptor.accept(createNewLineContentCodeMining(offset, text));
+	}
+
 	/** Add an annotation when the var/val declaration's type is implicit and inferred by the SARL compiler.
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity" })
-	private <T extends EObject> void createImplicitVarValType(T element,IAcceptor<? super ICodeMining> acceptor,
+	private <T extends EObject> void createImplicitVarValType(T element,
+			IAcceptor<? super ICodeMining> acceptor,
 			Class<T> elementType,
 			Function1<T, JvmTypeReference> declaredTypeLambda,
 			Function1<T, String> inferredTypeLambda,
@@ -316,9 +383,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			return;
 		}
 		// find document offset for inline annotation
-		final Assignment reference = assignmentLambda.apply(); 
+		final Assignment reference = assignmentLambda.apply();
 		final INode node = findNode(element,
-				candidate -> candidate instanceof RuleCall && EcoreUtil.equals(reference, candidate.eContainer()));
+			candidate -> candidate instanceof RuleCall && EcoreUtil.equals(reference, candidate.eContainer()));
 		if (node != null) {
 			final String text = this.keywords.getColonKeyword() + " " + inferredType + " "; //$NON-NLS-1$ //$NON-NLS-2$
 			final int offset = node.getPreviousSibling().getTotalOffset();
@@ -329,8 +396,8 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	/** Find the grammar node for the given element.
 	 *
 	 * @param element is the element for which the grammar node should be find.
-	 * @param candidatValidator is the lambda to use for validating a grammar candidate.
-	 * @return the node or {@code null}.
+	 * @param reference is the lambda to use for validating a grammar candidate.
+	 * @return the node or {@code null} if no node found.
 	 * @since 0.12
 	 */
 	protected INode findNode(EObject element, Predicate<EObject> reference) {
@@ -351,12 +418,13 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		return null;
 	}
 
-	/** Find the grammar node for the given element.
+	/** Find the region of grammar nodes for the given element between the two nodes that are matching
+	 * the given conditions.
 	 *
 	 * @param element is the element for which the grammar node should be find.
 	 * @param grammarBeginAnchor the begin anchor to search for into the source code.
 	 * @param grammarEndAnchor the end anchor to search for into the source code.
-	 * @return the region.
+	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
 	 * @since 0.12
 	 */
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor, Predicate<EObject> grammarEndAnchor) {
@@ -368,10 +436,62 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			final INode child = it.next();
 			if (child != node) {
 				final EObject grammarElement = child.getGrammarElement();
-				if (grammarBeginAnchor.test(grammarElement)) {
-					start = child;
+				if (start == null) {
+					if (grammarBeginAnchor.test(grammarElement)) {
+						start = child;
+					}
 				} else if (grammarEndAnchor.test(grammarElement)) {
 					return new CodeRegion(start, child);
+				}
+			}
+		}
+		return new CodeRegion(start, null);
+	}
+
+	/** Find the region of grammar nodes for the given element between the two nodes that are matching
+	 * the given conditions and if the continuation matches.
+	 *
+	 * <p><ol>
+	 * <li>Search for the begin anchor.</li>
+	 * <li>If the continuation anchor follows the begin anchor, then:<ul>
+	 *     <li>search for the end anchor,</li>
+	 *     <li>replies the the region between the begin and end anchors.</li></ul></li>
+	 * <li>If the continuation anchor does not follow the begin anchor, then:<ul>
+	 *     <li>replies a region starting with the start anchor, but without end.</li></ul></li>
+	 * </ol>
+	 *
+	 * @param element is the element for which the grammar node should be find.
+	 * @param grammarBeginAnchor the begin anchor to search for into the source code.
+	 * @param grammarContinuationAnchor the continuation anchor to search for into the source code.
+	 * @param grammarEndAnchor the end anchor to search for into the source code.
+	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
+	 * @since 0.12
+	 */
+	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor,
+			Predicate<Keyword> grammarContinuationAnchor, Predicate<EObject> grammarEndAnchor) {
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		assert grammarBeginAnchor != null;
+		assert grammarEndAnchor != null;
+		INode start = null;
+		boolean continuation = false;
+		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final INode child = it.next();
+			if (child != node) {
+				final EObject grammarElement = child.getGrammarElement();
+				if (start == null) {
+					if (grammarBeginAnchor.test(grammarElement)) {
+						start = child;
+					}
+				} else if (continuation) {
+					if (grammarEndAnchor.test(grammarElement)) {
+						return new CodeRegion(start, child);
+					}
+				} else if (grammarElement instanceof Keyword) {
+					if (grammarContinuationAnchor.test((Keyword) grammarElement)) {
+						continuation = true;
+					} else {
+						return new CodeRegion(start, null);
+					}
 				}
 			}
 		}
@@ -468,7 +588,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	}
 
-	/** Region of the code
+	/** Region of the code.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -478,22 +598,34 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 */
 	protected static class CodeRegion {
 
-		/** Start node.
-		 */
-		public final INode start;
+		private final INode start;
 
-		/** End node.
-		 */
-		public final INode end;
+		private final INode end;
 
 		/** Constructor.
 		 *
 		 * @param start the start node.
 		 * @param end the end node.
 		 */
-		protected CodeRegion(INode start, INode end) {
+		CodeRegion(INode start, INode end) {
 			this.start = start;
 			this.end = end;
+		}
+
+		/** Replies the start node.
+		 *
+		 * @return the start node.
+		 */
+		public INode getStart() {
+			return this.start;
+		}
+
+		/** Replies the end node.
+		 *
+		 * @return the end node.
+		 */
+		public INode getEnd() {
+			return this.end;
 		}
 
 	}

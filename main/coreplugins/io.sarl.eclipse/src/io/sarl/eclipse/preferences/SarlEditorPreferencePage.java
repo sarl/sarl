@@ -146,12 +146,12 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 				2);
 		this.codeminingButton.addSelectionListener(new SelectionListener() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				enableButtons();
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
 				enableButtons();
 			}
 		});

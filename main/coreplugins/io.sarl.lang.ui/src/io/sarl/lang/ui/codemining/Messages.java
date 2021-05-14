@@ -36,6 +36,7 @@ public class Messages extends NLS {
 	public static String SARLCodeMiningProvider_0;
 	public static String SARLCodeMiningProvider_1;
 	public static String SARLCodeMiningProvider_2;
+	public static String SARLCodeMiningProvider_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
