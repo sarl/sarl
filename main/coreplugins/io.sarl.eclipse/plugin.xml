@@ -745,4 +745,35 @@
          <keywordReference id="org.eclipse.jdt.ui.jarpackager"/>
       </wizard>
    </extension>
+
+  <!-- Generate JavaDoc comment -->
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:xtext.ui.SourceMenu?after=org.eclipse.xtext.ui.ToggleCommentAction">
+       <command commandId="io.sarl.eclipse.javadoc.generateComment"
+                label="%action.generateElementDocumentation"
+                style="push"
+                mnemonic="t">
+          <visibleWhen checkEnabled="false">
+             <reference definitionId="isActiveEditorAnInstanceOfXtextEditor" />
+          </visibleWhen>
+      </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="io.sarl.eclipse.javadoc.generateComment"
+            categoryId="org.eclipse.xtext.ui.category.XtextEditor"
+            name="%action.generateElementDocumentation" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.javadoc.GenerateJavadocHandler"
+            commandId="io.sarl.eclipse.javadoc.generateComment" />
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+      <key sequence="M2+M3+J"
+           commandId="io.sarl.eclipse.javadoc.generateComment"
+           contextId="org.eclipse.xtext.ui.XtextEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
 </plugin>
