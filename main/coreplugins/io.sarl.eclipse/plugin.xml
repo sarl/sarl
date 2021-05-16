@@ -754,7 +754,7 @@
                 style="push"
                 mnemonic="t">
           <visibleWhen checkEnabled="false">
-             <reference definitionId="isActiveEditorAnInstanceOfXtextEditor" />
+             <reference definitionId="io.sarl.lang.SARL.Editor.opened" />
           </visibleWhen>
       </command>
       </menuContribution>
@@ -772,6 +772,40 @@
    <extension point="org.eclipse.ui.bindings">
       <key sequence="M2+M3+J"
            commandId="io.sarl.eclipse.javadoc.generateComment"
+           contextId="org.eclipse.xtext.ui.XtextEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+
+  <!-- Introduce SARL Element moving -->
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:#TextEditorContext?after=org.eclipse.xtext.ui.refactoring.RenameElement">
+       <command commandId="io.sarl.lang.ui.refactor.moveSarlElement"
+                label="%action.moveSarlElement"
+                style="push">
+          <visibleWhen checkEnabled="false">
+             <reference definitionId="io.sarl.lang.SARL.Editor.opened" />
+          </visibleWhen>
+      </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="io.sarl.lang.ui.refactor.moveSarlElement"
+            categoryId="org.eclipse.xtext.ui.category.XtextEditor"
+            name="%action.moveSarlElement" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.refactoring.SarlMoveElementHandler"
+            commandId="io.sarl.lang.ui.refactor.moveSarlElement">
+          <activeWhen>
+             <reference definitionId="io.sarl.lang.SARL.Editor.opened" />
+          </activeWhen>
+        </handler>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+      <key sequence="M2+M3+V"
+           commandId="io.sarl.lang.ui.refactor.moveSarlElement"
            contextId="org.eclipse.xtext.ui.XtextEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
