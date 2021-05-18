@@ -94,7 +94,7 @@ public final class ReflectExtensions {
 	/** Change the default name formatter.
 	 *
 	 * @param formatter the default name formatter.
-	 * @deprecated since 0.12, see {@link #setDefaultFieldNameFormatter(Function)}
+	 * @deprecated since 0.12, see {@link #setDefaultMethodNameFormatter(Function)}
 	 */
 	@Deprecated
 	public static void setDefaultNameFormatter(Function<Method, String> formatter) {

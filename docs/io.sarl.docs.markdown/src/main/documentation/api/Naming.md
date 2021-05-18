@@ -264,7 +264,7 @@ By default, into the SRE, the algorithm for checking the field access from an in
     * The access to the field is denied to the invoking entity. It will be notified that the field was not found.
 
 
-### @Obsersable Annotation
+### @Observable Annotation
 
 In the following example, two fields are defined for the agent [:myagent:].
 The first field is named [:obsfield:] and it is marked as observable because it is annotated with [:observableannotation:].

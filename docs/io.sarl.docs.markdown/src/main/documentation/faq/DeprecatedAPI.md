@@ -10,6 +10,118 @@ the SARL Run-time Environment (SRE).
 
 ## Changes in the SARL API
 
+### Since 0.12
+
+
+<table>
+<thead>
+<tr><th>Deprecated Type or Module</th><th>Deprecated Feature</th><th>Replacement</th></tr>
+</thead><tbody>
+
+
+<tr><td>AbstractDocumentationMojo</td><td>getBootClassPath</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>AbstractSARLLaunchConfiguration</td><td>getClasspath</td>
+	<td>Replace `getClasspath(...)` by `getClasspathAndModulepath(...)`.
+	</td></tr>
+
+
+
+<tr><td>Address</td><td>getUUID</td>
+	<td>Replace `getUUID` by `getID`.
+	</td></tr>
+
+[:Success:]
+    package io.sarl.docs.faq.deprecation
+    import java.util.UUID
+    import io.sarl.lang.core.Address
+    agent X {
+        def test(a : Address) : UUID {
+            a.getID
+        }
+    }
+[:End:]
+
+
+<tr><td>Module io.sarl.eclipse-slf4j</td><td>all</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>OpenEventSpace</td><td>register</td>
+	<td>Replace `register(listener, true)` by `registerWeakParticipant(listener)`, and `register(listener, false)` by `registerStrongParticipant(listener)`.
+	</td></tr>
+
+[:Success:]
+    package io.sarl.docs.faq.deprecation
+    import io.sarl.lang.core.EventListener
+    import io.sarl.core.OpenEventSpace
+    agent X {
+        def weak(listener : EventListener, s : OpenEventSpace) : void {
+            s.registerWeakParticipant(listener)
+        }
+        def strong(listener : EventListener, s : OpenEventSpace) : void {
+            s.registerStrongParticipant(listener)
+        }
+    }
+[:End:]
+
+
+
+<tr><td>ReflectExtensions</td><td>getDefaultNameFormatter</td>
+	<td>Replace `getDefaultNameFormatter` by `getDefaultMethodNameFormatter`.
+	</td></tr>
+<tr><td>ReflectExtensions</td><td>setDefaultNameFormatter</td>
+	<td>Replace `setDefaultNameFormatter` by `setDefaultMethodNameFormatter`.
+	</td></tr>
+
+
+
+<tr><td>SarlBatchCompiler</td><td>getJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+<tr><td>SarlBatchCompiler</td><td>setJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>SarlcConfig</td><td>getJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+<tr><td>SarlcConfig</td><td>setJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>SARLClasspathProvider</td><td>getJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+<tr><td>SARLClasspathProvider</td><td>setJavaBootClasspath</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>ScriptExecutor</td><td>setBootClassPath</td>
+	<td>No replacement.
+	</td></tr>
+
+
+
+<tr><td>SREBootstrap</td><td>setOffline</td>
+	<td>No replacement.
+	</td></tr>
+
+
+</tbody></table>
+
 ### Since 0.11
 
 

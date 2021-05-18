@@ -16,7 +16,7 @@
 * [General FAQ on SARL](./faq/GeneralFAQ.md)
 * [SARL Syntax FAQ](./faq/SyntaxFAQ.md)
 * [Runtime Environment FAQ](./faq/RuntimeEnvironmentFAQ.md)
-* [What are the deprecated and removed features](./faq/DeprecatedAPI.md)
+* [What are the deprecated and removed features?](./faq/DeprecatedAPI.md)
 
 ## Tutorials
 
