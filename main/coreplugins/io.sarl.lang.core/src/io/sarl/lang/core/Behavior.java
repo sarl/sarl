@@ -62,7 +62,7 @@ public abstract class Behavior extends AgentTrait implements IBehaviorGuardEvalu
 	/**
 	 * This method is called just after the uninstallation of this behavior from its
 	 * owner agent. In this method you could uninit the behavior outside the scheme of
-	 * the {@code Destroy} event, i.e. it is called before the firing of the event.
+	 * the {@code Destroy} event, i.e. it is called after the firing of the event.
 	 * @since 0.12
 	 */
 	protected void uninstall() {
