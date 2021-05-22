@@ -212,7 +212,7 @@ class SchedulesSkillTest {
 			forceAlive
 		}
 
-		var future = type.mock
+		var future : T = type.mock
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
@@ -244,7 +244,7 @@ class SchedulesSkillTest {
 			forceAlive
 		}
 
-		var future = type.mock
+		var future : T = type.mock
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
@@ -283,7 +283,7 @@ class SchedulesSkillTest {
 			forceAlive
 		}
 
-		var future = type.mock
+		var future : T = type.mock
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
@@ -311,7 +311,7 @@ class SchedulesSkillTest {
 			forceAlive
 		}
 		
-		var future = type.mock
+		var future : T = type.mock
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = proced
 		if (procedure === null) {
@@ -357,7 +357,7 @@ class SchedulesSkillTest {
 			forceAlive
 		}
 		
-		var future = type.mock
+		var future : T = type.mock
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void =  []
 
@@ -944,7 +944,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("isCanceled(running)")
 	def isCanceled_running {
-		var future = typeof(Future).mock
+		var future : Future<?> = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		var task = this.^skill.execute []
 		this.^skill.isCanceled(task).assertFalse
@@ -953,7 +953,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("isCanceled(finished)")
 	def isCanceled_finished {
-		var future = typeof(Future).mock
+		var future : Future<?> = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		when(future.done).thenReturn(true)
 
@@ -964,7 +964,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("isCanceled(cancelled)")
 	def isCanceled_cancelled {
-		var future = typeof(Future).mock
+		var future : Future<?> = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		when(future.isCancelled()).thenReturn(true)
 
@@ -976,7 +976,7 @@ class SchedulesSkillTest {
 	@PrivateAPI(isCallerOnly = true)
 	@DisplayName("cancel(not submitted)")
 	def cancel_notSubmitted : void {
-		var future = typeof(Future).mock
+		var future : Future<?> = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 
@@ -995,7 +995,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(running) when not alive")
 	def cancel_running_notAlive {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 		
@@ -1008,7 +1008,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(running) when alive")
 	def cancel_running_alive {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 		
@@ -1026,7 +1026,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(finished) when not alive")
 	def cancel_finished_notAlive {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.done).thenReturn(true)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
@@ -1041,7 +1041,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(finished) when alive")
 	def cancel_finished_alive : void {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.done).thenReturn(true)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
@@ -1060,7 +1060,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(cancelled) when not alive")
 	def cancel_cancelled_notAlive {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.isCancelled()).thenReturn(true)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
@@ -1074,7 +1074,7 @@ class SchedulesSkillTest {
 	@Test
 	@DisplayName("cancel(cancelled) when alive")
 	def cancel_cancelled_alive : void {
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.isCancelled()).thenReturn(true)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
@@ -1118,7 +1118,7 @@ class SchedulesSkillTest {
 	@DisplayName("getActiveTasks w/ 2 submissions first cancelled")
 	def getActiveTasks_twoTasks_firstCancelled {
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenAnswer [
-			var future = typeof(Future).mock
+			var future : Future<?> = typeof(Future).mock
 			when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 			return future
 		]
@@ -1134,7 +1134,7 @@ class SchedulesSkillTest {
 	@DisplayName("getActiveTasks w/ 2 submissions second cancelled")
 	def getActiveTasks_twoTasks_secondCancelled {
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenAnswer [
-			var future = typeof(Future).mock
+			var future : Future<?> = typeof(Future).mock
 			when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 			return future
 		]
@@ -1152,7 +1152,7 @@ class SchedulesSkillTest {
 	def unregisterTasksForBehavior_notAlive {
 		var beh = new MyBehavior(this.^agent)
 		
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 
 		var task1 = new AgentTask(this.taskName, beh)
@@ -1184,7 +1184,7 @@ class SchedulesSkillTest {
 	def unregisterTasksForBehavior_alive {
 		var beh = new MyBehavior(this.^agent)
 		
-		var future = typeof(ScheduledFuture).mock
+		var future : ScheduledFuture<?> = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 
 		var task1 = new AgentTask(this.taskName, beh)
