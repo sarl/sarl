@@ -65,8 +65,8 @@ then
 		echo "Assuming 'maven-sources-plugin:jar' is activated"
 		echo "Have you activated the released profile? -DperformRelease=true"
 
-		echo "$MAVEN_CMD" -Dgpg.passphrase="<hidden>" -Darguments=-Dgpg.passphrase="<hidden>" "$@"  clean verify
-		"$MAVEN_CMD" -Dgpg.passphrase="$PASSPHRASE" -Darguments=-Dgpg.passphrase="$PASSPHRASE" "$@"  clean verify || exit 255
+		echo "$MAVEN_CMD" -Dgpg.passphrase="<hidden>" -Darguments=-Dgpg.passphrase="<hidden>" "$@"  clean install
+		"$MAVEN_CMD" -Dgpg.passphrase="$PASSPHRASE" -Darguments=-Dgpg.passphrase="$PASSPHRASE" "$@"  clean install || exit 255
 		
 		CDIR=`pwd`
 
