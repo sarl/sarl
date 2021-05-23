@@ -163,10 +163,6 @@
 					</sourceDirectories>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-source-plugin</artifactId>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -174,6 +170,20 @@
 	<!-- ==== Release Management === -->
 	<!-- ======================================= -->
 	<profiles>
+		<profile>
+			<id>default-profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-source-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>maven-release-of-janus-sre</id>
 			<activation>

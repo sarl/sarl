@@ -1618,12 +1618,29 @@ public class SarlBatchCompiler {
 	 * @since 0.8
 	 */
 	protected void reportInternalError(String message, Object... parameters) {
-		getLogger().severe(MessageFormat.format(message, parameters));
+		String msg;
+		Throwable error = null;
+		if (parameters == null || parameters.length <= 0) {
+			msg = message;
+		} else {
+			try {
+				msg = MessageFormat.format(message, parameters);
+			} catch (Throwable exception) {
+				msg = message;
+				error = exception;
+			}
+		}
+		if (error != null) {
+			getLogger().log(Level.SEVERE, msg, error);
+
+		} else {
+			getLogger().severe(msg);
+		}
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
 			final Issue.IssueImpl issue = new Issue.IssueImpl();
 			issue.setCode(INTERNAL_ERROR_CODE);
-			issue.setMessage(message);
+			issue.setMessage(msg);
 			issue.setUriToProblem(uri);
 			issue.setSeverity(Severity.ERROR);
 			notifiesIssueMessageListeners(issue, uri, message);

@@ -13,28 +13,8 @@
 
 	<name>SARL Runtime Environment Parent</name>
 
-	<profiles>
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>io.janusproject</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>public-sre-api-module-set</id>
-			<activation>
-				<property>
-					<name>publicSarlApiModuleSet</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<modules>
-				<module>io.janusproject</module>
-			</modules>
-		</profile>
-	</profiles>
+	<modules>
+		<module>io.janusproject</module>
+	</modules>
 
 </project>

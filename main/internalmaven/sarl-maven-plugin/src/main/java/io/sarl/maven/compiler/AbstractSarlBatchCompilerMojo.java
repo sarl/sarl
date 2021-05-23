@@ -263,6 +263,14 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			return;
 		}
 		final String baseDir = project.getBasedir().getAbsolutePath();
+		if (getLog().isDebugEnabled()) {
+			final StringBuilder out = new StringBuilder();
+			out.append("sarlOutputPath = ");
+			out.append(sarlOutputPath);
+			out.append("\nclassOutputPath = ");
+			out.append(classOutputPath);
+			getLog().debug(out.toString());
+		}
 		final JavaCompiler compilerType = getJavaCompiler();
 		compiler.setJavaPostCompilationEnable(compilerType != JavaCompiler.NONE);
 		compiler.setOptimizationLevel(getOptimization());
