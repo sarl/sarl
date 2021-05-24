@@ -45,39 +45,48 @@ Test the generation of the Javadoc for the public API (the real generation will 
 
 == 2) PHASE 2: RELEASE VERSION
 
-=== 2.1) Remove snapshot markers
+=== 2.1) Update the Javadoc Tags
+
+In the `.sarl` and `.java` files:
+
+* Replace `$FullVersion$` by the current SARL version number, with the release date.
+* Replace `$GroupId$` by the group name of the current Maven module.
+* Replace `$ArtifactId$` by the artifact name of the current Maven module.
+* Replace `$Author: ID$` by the hyperlink of the contributor with the identifier `ID`.
+
+=== 2.2) Remove snapshot markers
 
 Remove all the occurrences of `-SNAPSHOT` in all the poms.
 
 CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
 
-=== 2.2) Update the versions in the Eclipse configurations
+=== 2.3) Update the versions in the Eclipse configurations
 
 * Remove `.qualifier` in the `MANIFEST.MF` files (in `Bundle-Version`).
 * Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
 * Remove `.qualifier` in the `*.product` files (in root tag and feature tag).
 * Remove `.qualifier` in the `category.xml` files (in feature tags, url and version).
 
-=== 2.3) Comment any reference to the Snapshot Maven repository
+=== 2.4) Comment any reference to the Snapshot Maven repository
 
-=== 2.4) Update General and Contributor Readme Files
+=== 2.5) Update General and Contributor Readme Files
 
 Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using the new version numbers.
 
-=== 2.5) Update the graphical resources
+=== 2.6) Update the graphical resources
 
 Splash screen, icons...
 
-=== 2.6) Compiling locally without error
+=== 2.7) Compiling locally without error
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-=== 2.7) Check auto-generated files
+=== 2.8) Check auto-generated files
 
 Check if the `about.mappings` files and the `SARLVersion.java` file are containing the correct version numbers.
 
-=== 2.8) Maven Central Bundles
+=== 2.9) Maven Central Bundles
 
 Prepare the bundles for Maven Central:
 
@@ -85,23 +94,23 @@ Prepare the bundles for Maven Central:
 
 Copy the bundles inside a safe folder for the Phase 3.
 
-=== 2.9) Javadoc Generation
+=== 2.10) Javadoc Generation
 
 Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
 
      $> ./build-tools/scripts/generate-aggregate-javadoc.sh
 
-=== 2.10) Commit and push to Github
+=== 2.11) Commit and push to Github
 
      $> git commit
      $> git push --all
 
-=== 2.11) Tag the Git with the version number
+=== 2.12) Tag the Git with the version number
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-=== 2.12) Release onto the SARL servers.
+=== 2.13) Release onto the SARL servers.
 
 For uploading the release files onto the SARL server, you could use the provided script:
 
