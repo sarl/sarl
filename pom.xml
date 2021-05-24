@@ -145,14 +145,15 @@
 
 	<developers>
 		<developer>
-			<id>srodriguez</id>
-			<name>Sebastian Rodriguez</name>
-			<email>sebastian.rodriguez@rmit.edu.au</email>
-			<url>http://www.sebastianrodriguez.com.ar/</url>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/author-10836/</url>
 			<organization>
-				Royal Melbourne Institute of Technology
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
 			</organization>
-			<organizationUrl>http://www.rmit.edu.au/</organizationUrl>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
 			<roles>
 				<role>Co-founder</role>
 				<role>Architect</role>
@@ -163,28 +164,12 @@
 			<id>ngaud</id>
 			<name>Nicolas Gaud</name>
 			<email>nicolas.gaud@utbm.fr</email>
-			<url>http://www.multiagent.fr/People:Gaud_nicolas</url>
+			<url>http://www.ciad-lab.fr/author-10834/</url>
 			<organization>
 				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
 				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
 			</organization>
-			<organizationUrl>http://www.multiagent.fr</organizationUrl>
-			<roles>
-				<role>Co-founder</role>
-				<role>Architect</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>sgalland</id>
-			<name>St&amp;eacute;phane Galland</name>
-			<email>stephane.galland@utbm.fr</email>
-			<url>http://www.multiagent.fr/People:Galland_stephane</url>
-			<organization>
-				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
-				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
-			</organization>
-			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
 			<roles>
 				<role>Co-founder</role>
 				<role>Architect</role>
@@ -200,8 +185,23 @@
 				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
 				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
 			</organization>
-			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
 			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>sebastian.rodriguez@rmit.edu.au</email>
+			<url>http://www.sebastianrodriguez.com.ar/</url>
+			<organization>
+				Royal Melbourne Institute of Technology
+			</organization>
+			<organizationUrl>http://www.rmit.edu.au/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
 				<role>Architect</role>
 				<role>Developer</role>
 			</roles>
