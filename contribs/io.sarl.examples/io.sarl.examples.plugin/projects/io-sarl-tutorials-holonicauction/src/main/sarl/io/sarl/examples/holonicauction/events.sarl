@@ -22,7 +22,7 @@
 package io.sarl.examples.holonicauction
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 event Price {
 	val price : float
@@ -32,7 +32,7 @@ event Price {
 }
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 event Bid {
 	val value : float
@@ -42,6 +42,6 @@ event Bid {
 }
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 event StopAuction

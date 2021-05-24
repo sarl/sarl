@@ -26,8 +26,8 @@ import javafx.application.Application
 
 /** Main application for the Fireworks.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class Fireworks {
 	

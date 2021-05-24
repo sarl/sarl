@@ -23,8 +23,8 @@ package io.sarl.demos.fireworks
 
 /** General configuration.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 final class Configuration {
 

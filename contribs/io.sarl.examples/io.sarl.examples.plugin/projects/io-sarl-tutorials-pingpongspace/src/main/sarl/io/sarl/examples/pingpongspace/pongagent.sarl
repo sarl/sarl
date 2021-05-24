@@ -32,8 +32,8 @@ import io.sarl.core.Lifecycle
 
 /** 
  * Agent waiting a ping event and replies with a pong event
- * @author Stephane Galland.
- * @author Nicolas GAUD
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
  */
 agent PongAgent {
 

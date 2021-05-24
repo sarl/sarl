@@ -30,8 +30,8 @@ import io.sarl.core.Logging
 /**
  * Declaration of a simple Factorial event with two internal variables.
  *
- * @author Nicolas Gaud
- * @author Stephane Galland
+ * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 event Factorial {
 	var number : Long

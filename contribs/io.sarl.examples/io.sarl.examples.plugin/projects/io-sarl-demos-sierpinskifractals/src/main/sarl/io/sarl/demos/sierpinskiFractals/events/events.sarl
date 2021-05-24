@@ -24,15 +24,15 @@ package io.sarl.demos.sierpinskiFractals.events
 /**
  * Multiply signal to make Fractal agent multiply
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event Multiply
 
 /**
  * Multiply signal to make Fractal agent multiply
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event Refresh

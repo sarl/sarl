@@ -40,8 +40,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 /** Fire agent moving with a nice trajectory.
  * 
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 agent Fire {
 

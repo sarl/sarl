@@ -33,7 +33,7 @@ import io.sarl.core.Lifecycle
 
 /** 
  * The environmental agent in charge of collecting boids influences and computing the new state of the virtual world
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent Environment {
 

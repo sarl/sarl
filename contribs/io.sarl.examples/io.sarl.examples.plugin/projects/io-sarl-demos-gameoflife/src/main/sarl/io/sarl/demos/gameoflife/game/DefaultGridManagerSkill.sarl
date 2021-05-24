@@ -34,9 +34,9 @@ import org.arakhne.afc.math.geometry.d2.i.Point2i
 import org.arakhne.afc.vmutil.locale.Locale
 
 /**
- * @author Jerome BOULMIER
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: jboulmier$
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 skill DefaultGridManagerSkill implements GridManager {
 

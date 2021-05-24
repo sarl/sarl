@@ -22,6 +22,6 @@
 package io.sarl.demos.gameoflife.game.events
 
 /**
- * @author Maxime PINARD
+ * @author $Author: mpinard$
  */
 event StopEvent

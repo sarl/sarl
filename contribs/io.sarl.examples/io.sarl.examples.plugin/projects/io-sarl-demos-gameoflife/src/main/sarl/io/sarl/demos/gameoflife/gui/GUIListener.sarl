@@ -24,7 +24,7 @@ package io.sarl.demos.gameoflife.gui
 /**
  * The listener on UI events.
  *
- * @author Maxime PINARD
+ * @author $Author: mpinard$
  */
 interface GUIListener {
 

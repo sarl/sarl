@@ -34,8 +34,8 @@ import io.sarl.core.ExternalContextAccess
 /**
  * Abstract implementation of a fractal agent
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 abstract agent AbstractFractal {
 

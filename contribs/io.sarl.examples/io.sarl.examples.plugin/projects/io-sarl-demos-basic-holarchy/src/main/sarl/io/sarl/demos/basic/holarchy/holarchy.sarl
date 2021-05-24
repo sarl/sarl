@@ -33,13 +33,13 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 /** 
  * Event sent by the root holon to the holarchymanager when the whole holarchy has been destroyed
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event HolarchyDestroyed
 
 /** 
  * Simple agent creating the root holon
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent HolarchyManager {
 
@@ -65,7 +65,7 @@ agent HolarchyManager {
 
 /** 
  * Holon architecture used to create a whole self-similar hierarchy of agent
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent Holon {
 

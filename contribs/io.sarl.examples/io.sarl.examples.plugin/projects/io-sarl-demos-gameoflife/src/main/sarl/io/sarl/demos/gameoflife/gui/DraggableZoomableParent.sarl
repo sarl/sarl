@@ -27,8 +27,8 @@ import javafx.scene.Parent
 /**
  * The type DraggableZoomableParent.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 abstract class DraggableZoomableParent extends Parent {
 

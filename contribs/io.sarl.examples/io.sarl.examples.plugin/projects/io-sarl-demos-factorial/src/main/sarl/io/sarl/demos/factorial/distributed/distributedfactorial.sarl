@@ -29,7 +29,7 @@ import io.sarl.core.Logging
 import io.sarl.core.Schedules
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Factorial {
 	var number : Long
@@ -37,31 +37,31 @@ event Factorial {
 }
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Calculate {
 	var number : Long
 }
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event ComputationDone {
 	var result : Long
 }
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Hello
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Die
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent DistributedFactorialBootAgent {
 	uses DefaultContextInteractions, Lifecycle
@@ -74,7 +74,7 @@ agent DistributedFactorialBootAgent {
 }
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent FactorialQueryAgent {
 	uses Lifecycle, DefaultContextInteractions, Schedules, Logging
@@ -117,7 +117,7 @@ agent FactorialQueryAgent {
 }
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent FactorialAgent {
 	uses Lifecycle, Behaviors, Logging, DefaultContextInteractions

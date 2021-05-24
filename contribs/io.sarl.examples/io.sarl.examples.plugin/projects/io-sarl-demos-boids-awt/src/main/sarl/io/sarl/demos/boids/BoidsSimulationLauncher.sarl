@@ -27,7 +27,7 @@ import java.awt.Color
  * 
  * The main class configuring the various boids populations and launching the simulation
  * 
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 class BoidsSimulationLauncher {
 

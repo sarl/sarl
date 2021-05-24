@@ -26,8 +26,8 @@ import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxApplication
 
 /** Application launching.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class SierpinskiFractals {
 

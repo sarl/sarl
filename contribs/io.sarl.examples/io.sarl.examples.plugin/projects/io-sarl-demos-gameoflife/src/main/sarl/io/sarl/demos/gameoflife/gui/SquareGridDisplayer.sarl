@@ -24,8 +24,8 @@ package io.sarl.demos.gameoflife.gui
 /**
  * The type SquareGridDisplayer.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class SquareGridDisplayer extends DraggableZoomableParent {
 

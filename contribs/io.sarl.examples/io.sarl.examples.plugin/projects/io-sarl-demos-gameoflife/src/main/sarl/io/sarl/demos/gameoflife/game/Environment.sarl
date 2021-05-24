@@ -39,9 +39,9 @@ import org.arakhne.afc.vmutil.locale.Locale
 import java.util.UUID
 
 /**
- * @author Jerome BOULMIER
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: jboulmier$
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 agent Environment {

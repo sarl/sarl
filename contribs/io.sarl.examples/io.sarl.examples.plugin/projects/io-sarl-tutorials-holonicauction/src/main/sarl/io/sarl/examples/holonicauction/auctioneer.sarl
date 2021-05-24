@@ -30,7 +30,7 @@ import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 agent Auctioneer {
 					

@@ -28,7 +28,7 @@ import io.sarl.core.Logging
 import java.util.Random
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 agent Bidder {
 	

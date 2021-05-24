@@ -25,7 +25,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 agent BootAgent {
 

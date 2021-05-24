@@ -34,8 +34,8 @@ import java.util.UUID
 
 /** 
  * Agent waiting its buddy PongAgent to send him a ping event, and replies to pong event with a ping event
- * @author Stephane Galland.
- * @author Nicolas GAUD
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
  */
 agent PingAgent {
 

@@ -26,7 +26,7 @@ import static extension java.lang.Math.cos
 /** 
  * Properties of a boids population/group.
  * 
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 class Population {
 

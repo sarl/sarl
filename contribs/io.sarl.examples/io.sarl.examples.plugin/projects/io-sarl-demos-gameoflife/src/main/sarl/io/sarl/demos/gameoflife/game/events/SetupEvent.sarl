@@ -22,7 +22,7 @@
 package io.sarl.demos.gameoflife.game.events
 
 /**
- * @author Jerome BoULMIER
+ * @author $Author: jboulmier$
  */
 event SetupEvent {
 

@@ -28,8 +28,8 @@ import java.util.List
  * Object referencing every Fractal position.
  * Used by the GUI for printing in canvas.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class Positions {
 	

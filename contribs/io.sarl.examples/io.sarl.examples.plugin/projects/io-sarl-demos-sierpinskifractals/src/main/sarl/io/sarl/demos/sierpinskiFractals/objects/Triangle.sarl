@@ -24,8 +24,8 @@ package io.sarl.demos.sierpinskiFractals.objects
 /**
  * Triangle object created by Fractal.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class Triangle {
 	

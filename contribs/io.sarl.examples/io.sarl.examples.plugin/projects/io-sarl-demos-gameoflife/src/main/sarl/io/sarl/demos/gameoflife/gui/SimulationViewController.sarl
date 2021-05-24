@@ -32,8 +32,8 @@ import javafx.scene.layout.Pane
 /**
  * The type SimulationViewController.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class SimulationViewController {
 	@FXML

@@ -42,8 +42,8 @@ import java.util.regex.Pattern
 /**
  * The type GUI.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class GUI extends Application implements EnvironmentListener, ControllerListener {
 

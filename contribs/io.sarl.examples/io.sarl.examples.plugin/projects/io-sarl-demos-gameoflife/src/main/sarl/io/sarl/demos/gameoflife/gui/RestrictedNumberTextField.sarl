@@ -27,8 +27,8 @@ import javafx.scene.control.TextField
 /**
  * The type RestrictedNumberTextField.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class RestrictedNumberTextField extends TextField {
 

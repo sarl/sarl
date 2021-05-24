@@ -27,7 +27,7 @@ import java.util.UUID
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * @author Jerome Boulmier
+ * @author $Author: jboulmier$
  */
 capacity GridManager {
 

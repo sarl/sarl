@@ -27,7 +27,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Factorial {
 	var number : Long
@@ -35,7 +35,7 @@ event Factorial {
 } 
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent FactorialAgent {
 

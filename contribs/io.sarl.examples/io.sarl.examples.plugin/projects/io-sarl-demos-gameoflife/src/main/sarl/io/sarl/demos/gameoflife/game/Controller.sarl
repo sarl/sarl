@@ -32,9 +32,9 @@ import io.sarl.lang.core.EventSpace
 import java.util.UUID
 
 /**
- * @author Jerome BOULMIER
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: jboulmier$
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class Controller implements GUIListener {
 

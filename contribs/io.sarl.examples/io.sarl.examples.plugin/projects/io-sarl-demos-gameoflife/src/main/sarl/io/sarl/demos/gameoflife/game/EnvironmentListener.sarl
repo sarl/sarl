@@ -27,8 +27,8 @@ import java.util.UUID
 /**
  * Listener on events that occur within the environment.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 interface EnvironmentListener extends EventListener {
 

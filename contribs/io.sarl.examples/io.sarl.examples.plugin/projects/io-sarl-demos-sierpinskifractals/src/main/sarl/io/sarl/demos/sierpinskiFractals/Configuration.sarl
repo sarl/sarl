@@ -26,8 +26,8 @@ import io.sarl.demos.sierpinskiFractals.objects.Vector2D
 
 /** General configuration.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 final class Configuration {
 

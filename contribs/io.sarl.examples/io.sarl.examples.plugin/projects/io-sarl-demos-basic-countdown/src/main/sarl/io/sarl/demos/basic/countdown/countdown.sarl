@@ -29,12 +29,12 @@ import io.sarl.core.Schedules
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Element
 
 /**
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 agent CountDownAgent {
 	uses Lifecycle, Schedules, Logging

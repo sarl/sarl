@@ -36,8 +36,8 @@ import io.sarl.javafx.AppExit
 
 /** A rocket launcher that own a rocket in it's inner context.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 agent RocketLauncher {
 

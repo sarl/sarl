@@ -23,7 +23,7 @@ package io.sarl.demos.boids
 /**
  * General configuration of the boids simulation.
  * 
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 interface Settings {
 

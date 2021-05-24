@@ -26,8 +26,8 @@ import java.util.UUID
 
 /** 
  * Boot agent launching two other agents Ping and Pong 
- * @author Stephane Galland.
- * @author Nicolas GAUD
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
  */
 agent BootAgent {
 

@@ -39,8 +39,8 @@ import static extension javafx.util.Duration.*
 
 /** JavaFX controller for fireworks.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class FireworksFxViewerController extends FxViewerController {
 

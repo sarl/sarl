@@ -27,7 +27,7 @@ import io.sarl.core.Schedules
 import io.sarl.core.Logging
 
 /**
- * @author Stephane Galland
+ * @author $Author: sgalland$
  */
 agent PingAgent {
 

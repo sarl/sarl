@@ -31,8 +31,8 @@ import javafx.stage.Stage
 
 /** JavaFX application for Sierpinski fractals.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class SierpinskiFractalsFxApplication extends FxApplication {
 

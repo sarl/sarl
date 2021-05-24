@@ -23,78 +23,78 @@ package io.sarl.demos.fireworks.events
 
 /** Trigger the launching area for starting the demo.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event Launch
 
 /** Setup the Area.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event CreateArea
 
 /** Make a rocket explode.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event Explode
 
 /** Ask a rocket to kill itself.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event KillRocket
 
 /** Ask a fire to kill itself.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event KillFire
 
 /** Say that a rocket is ready.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event RocketReady
 
 /** Trigger a rocket to update it's position.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event UpdateRocketPosition
 
 /** Trigger a fire to update it's position.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event UpdateFirePosition
 
 /** Say that a fire is ready.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event FireReady
 
 /** Makes a fire spray everywhere.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event SprayFire
 
 /** Carry all setup informations, send by the GUI.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event SetupSettings {
 	val rocketsQuantity : int
@@ -113,8 +113,8 @@ event SetupSettings {
 
 /** Freeze signal send by the GUI.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 event Freeze {
 	val value : boolean

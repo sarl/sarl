@@ -25,8 +25,8 @@ package io.sarl.demos.sierpinskiFractals.objects
  * Simple 2D vector.
  * Contains x and y position.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class Vector2D {
 	

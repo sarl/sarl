@@ -24,8 +24,8 @@ package io.sarl.demos.gameoflife.gui;
 /**
  * The interface ControllerListener.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 interface ControllerListener {
 

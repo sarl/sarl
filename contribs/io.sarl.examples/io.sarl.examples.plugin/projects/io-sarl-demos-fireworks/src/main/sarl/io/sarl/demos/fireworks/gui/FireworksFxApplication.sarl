@@ -31,8 +31,8 @@ import javafx.stage.Stage
 
 /** JavaFX application for fireworks.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 class FireworksFxApplication extends FxApplication {
 

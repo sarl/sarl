@@ -24,8 +24,8 @@ package io.sarl.demos.gameoflife.game
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /** 
- * @author Jerome BOULMIER
- * @author Maxime PINARD
+ * @author $Author: jboulmier$
+ * @author $Author: mpinard$
  */
 class AgentBody {
 

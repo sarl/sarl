@@ -28,8 +28,8 @@ import javafx.scene.shape.Rectangle
 /**
  * The type GridSquare.
  *
- * @author Maxime PINARD
- * @author Stephane GALLAND
+ * @author $Author: mpinard$
+ * @author $Author: sgalland$
  */
 class GridSquare extends Parent {
 

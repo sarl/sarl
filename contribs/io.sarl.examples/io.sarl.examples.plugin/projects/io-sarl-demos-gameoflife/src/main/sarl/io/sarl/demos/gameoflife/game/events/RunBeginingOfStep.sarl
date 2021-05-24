@@ -24,6 +24,6 @@ package io.sarl.demos.gameoflife.game.events
 /**
  * Event fired when the simulator start a step.
  *
- * @author Jerome BOULMIER
+ * @author $Author: jboulmier$
  */
 event RunBeginingOfStep

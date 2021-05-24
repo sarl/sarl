@@ -33,8 +33,8 @@ import io.sarl.core.Behaviors
  * Child fractal agent.
  * Contains other Fractal agent in its inner context.
  *
- * @author Antoine Bartuccio
- * @author Nicolas Gaud
+ * @author $Author: abartuccio$
+ * @author $Author: ngaud$
  */
 agent ChildFractal extends AbstractFractal {
 

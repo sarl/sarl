@@ -32,7 +32,7 @@ event Die
 
 /**
  * Event from a boid to the environment containing his corresponding influence for the current simulation step.
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Action {
 	var influence : Vector2d
@@ -40,7 +40,7 @@ event Action {
 
 /** 
  * Event from the environment to the boids with the global state of the environment, could be optimized to reduce it to the true local perception of each boids
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Perception {
 	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
@@ -52,7 +52,7 @@ event Perception {
 
 /** 
  * Event informing the environment from the real startup of the simulation with the corresponding boids inside
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event Start {
 	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
@@ -65,7 +65,7 @@ event Start {
 
 /** 
  * Event specifying when the GUI must be refresh according to the new environmental state embodied by the specified map
- * @author Nicolas Gaud
+ * @author $Author: ngaud$
  */
 event GuiRepaint {
 	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
@@ -79,7 +79,7 @@ event GuiRepaint {
 /** 
  * The representation of a boid in the environment : his physical body
  *
- * @author Nicolas Gaud 
+ * @author $Author: ngaud$ 
  */
 class PerceivedBoidBody {
 
