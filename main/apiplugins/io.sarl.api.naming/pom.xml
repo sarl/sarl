@@ -131,29 +131,22 @@
 					<value>true</value>
 				</property>
 			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.arakhne.afc.maven</groupId>
-							<artifactId>tag-replacer</artifactId>
-							<configuration>
-								<sources>
-									<source>${project.basedir}/src/main/sarl</source>
-									<source>${project.basedir}/src/main/generated-sources/sarl</source>
-								</sources>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
+			<dependencies>
+				<!-- The following dependencies have been added for enabling Javadoc 
+					to find classes that are indirectly used. -->
+				<dependency>
+					<groupId>org.apache.maven.shared</groupId>
+					<artifactId>maven-shared-utils</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.google.code.findbugs</groupId>
+					<artifactId>jsr305</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.google.errorprone</groupId>
+					<artifactId>error_prone_annotations</artifactId>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 

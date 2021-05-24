@@ -807,12 +807,6 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
-					<artifactId>tag-replacer</artifactId>
-					<version>${afc.version}</version>
-				</plugin>
-
-				<plugin>
 					<groupId>net.jsign</groupId>
 					<artifactId>jsign-maven-plugin</artifactId>
 					<version>3.1</version>
@@ -1388,19 +1382,6 @@
 								<id>attach-javadocs</id>
 								<goals>
 									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.arakhne.afc.maven</groupId>
-						<artifactId>tag-replacer</artifactId>
-						<executions>
-							<execution>
-								<id>update-source-tags</id>
-								<phase>process-sources</phase>
-								<goals>
-									<goal>generatereplacesrc</goal>
 								</goals>
 							</execution>
 						</executions>
