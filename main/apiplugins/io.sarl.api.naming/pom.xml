@@ -135,16 +135,9 @@
 				<!-- The following dependencies have been added for enabling Javadoc 
 					to find classes that are indirectly used. -->
 				<dependency>
-					<groupId>org.apache.maven.shared</groupId>
-					<artifactId>maven-shared-utils</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>com.google.code.findbugs</groupId>
-					<artifactId>jsr305</artifactId>
-				</dependency>
-				<dependency>
 					<groupId>com.google.errorprone</groupId>
 					<artifactId>error_prone_annotations</artifactId>
+					<version>${google.error_prone_annotations.version}</version>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -120,6 +120,8 @@
 		<junit5.version>5.7.0-M1</junit5.version>
 		<!-- The following Jackson declaration are temporary fix for issue #1007 -->
 		<jacksonapi.version>2.10.0</jacksonapi.version>
+		<!-- Google error prone library -->
+		<google.error_prone_annotations.version>2.4.0</google.error_prone_annotations.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -661,7 +663,7 @@
 			<dependency>
 				<groupId>com.google.errorprone</groupId>
 				<artifactId>error_prone_annotations</artifactId>
-				<version>2.4.0</version>
+				<version>${google.error_prone_annotations.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>me.tongfei</groupId>
@@ -811,7 +813,7 @@
 					<artifactId>jsign-maven-plugin</artifactId>
 					<version>3.1</version>
 				</plugin>
-          
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -913,7 +915,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.0</version>
 					<configuration>
 						<doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
 						<docletArtifact>
@@ -938,20 +940,24 @@
 						</bottom>
 						<groups>
 							<group>
-								<title>Standard Development Kit</title>
-								<packages>io.sarl.core*:io.sarl.util*:io.sarl.javafx*</packages>
+								<title>Standard Development Kit and Other Utilities</title>
+								<packages>io.sarl.core*:io.sarl.util*:io.sarl.api*:io.sarl.maven.bootiqueapp*:io.sarl.maven.compiler*:io.sarl.javafx*</packages>
 							</group>
 							<group>
 								<title>SARL Language</title>
 								<packages>io.sarl.lang*</packages>
 							</group>
 							<group>
-								<title>Tools for SARL Run-time Environments</title>
+								<title>Generic Tools for SARL Run-time Environments</title>
 								<packages>io.sarl.bootstrap*:io.sarl.sarlspecification</packages>
 							</group>
 							<group>
 								<title>Janus Run-time Environment</title>
 								<packages>io.sarl.sre*</packages>
+							</group>
+							<group>
+								<title>API Documentation Generator</title>
+								<packages>io.sarl.maven.docs*</packages>
 							</group>
 						</groups>
 						<tags>

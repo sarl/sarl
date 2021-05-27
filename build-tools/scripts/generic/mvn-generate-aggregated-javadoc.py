@@ -8,16 +8,17 @@ import argparse
 ##
 def buildJavaDocPath(modules):
 	source_path = []
-	for module in modules:
-		pom_path = os.path.join(module, "pom.xml")
-		if os.path.exists(pom_path):
-			module_path = os.path.join(module, "target", "generated-sources", "java")
-			source_path.append(module_path)
-		else:
-			print >> sys.stderr, "Module not found: " + module
-			return None
-	source_path = ':'.join(source_path)
-	print("Source Paths = " + source_path)
+	if modules:
+		for module in modules:
+			pom_path = os.path.join(module, "pom.xml")
+			if os.path.exists(pom_path):
+				module_path = os.path.join(module, "target", "generated-sources", "java")
+				source_path.append(module_path)
+			else:
+				print >> sys.stderr, "Module not found: " + module
+				return None
+		source_path = ':'.join(source_path)
+	print("Source Paths = " + str(source_path))
 	return source_path
 
 ##############################
@@ -69,8 +70,7 @@ retcode = 255
 
 doc_path = buildJavaDocPath(args.module)
 
-if doc_path:
-	retcode = generateDocumentation(doc_path, rargs)
+retcode = generateDocumentation(doc_path, rargs)
 
 sys.exit(retcode)
 
