@@ -45,18 +45,7 @@ Test the generation of the Javadoc for the public API (the real generation will 
 
 == 2) PHASE 2: RELEASE VERSION
 
-=== 2.1) Update the Javadoc Tags
-
-In the `.sarl` and `.java` files:
-
-* Replace `$FullVersion$` by the current SARL version number, with the release date.
-* Replace `$GroupId$` by the group name of the current Maven module.
-* Replace `$ArtifactId$` by the artifact name of the current Maven module.
-* Replace `$Author: ID$` by the hyperlink of the contributor with the identifier `ID`.
-
-NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
-
-=== 2.2) Remove snapshot markers
+=== 2.1) Remove snapshot markers
 
 Remove all the occurrences of `-SNAPSHOT` in all the poms.
 
@@ -64,7 +53,7 @@ CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
 
 NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
 
-=== 2.3) Update the versions in the Eclipse configurations
+=== 2.2) Update the versions in the Eclipse configurations
 
 * Remove `.qualifier` in the `MANIFEST.MF` files (in `Bundle-Version`).
 * Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
@@ -73,11 +62,26 @@ NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` s
 
 NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
 
-=== 2.4) Comment any reference to the Snapshot Maven repository
-
-=== 2.5) Update General and Contributor Readme Files
+=== 2.3) Update General and Contributor Readme Files
 
 Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using the new version numbers.
+
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
+
+=== 2.4) Update the Javadoc Tags
+
+In the `.sarl` and `.java` files:
+
+* Replace `$FullVersion$` by the current SARL version number, with the release date.
+* Replace `$GroupId$` by the group name of the current Maven module.
+* Replace `$ArtifactId$` by the artifact name of the current Maven module.
+* Replace `$Author$` by the hyperlink of the contributor with the identifier `ID`.
+
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
+
+=== 2.5) Comment any reference to the Snapshot Maven repository
+
+Into the root `pom.xml`, comment any reference to a snapshot maven repository.
 
 === 2.6) Update the graphical resources
 

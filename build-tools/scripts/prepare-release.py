@@ -3,6 +3,7 @@
 import argparse
 import re
 import os
+import sys
 from xml.etree import ElementTree
 from datetime import datetime
 
@@ -109,6 +110,23 @@ def buildEclipseFileList():
 	return fileList
 
 #########################
+##
+def buildReadmeFileList():
+	candidates = [
+		'README',
+		'CONTRIBUTING',
+		os.path.join('dev-tools', 'README'),
+		]
+	extensions = [ '', '.txt', '.md', '.adoc' ]
+	fileList = []
+	for candidate in candidates:
+		for extension in extensions:
+			filename = candidate + extension
+			if os.path.exists(filename):
+				fileList.append(filename)
+	return fileList
+
+#########################
 ## source: text to replace in the regex
 ## contributors: the hash map of contributors
 def doAuthorReplacement(source, contributors):
@@ -150,42 +168,51 @@ def detectEnclosingProjectPom(filename):
 #########################
 ## filename: the filename to update
 ## generation_date: date of the generation
-def replaceMaven(filename, generation_date):
+## exclusions: list of pom files that are not compatible
+def replaceMaven(filename, generation_date, exclusions):
 	pomFolder = detectEnclosingProjectPom(filename)
 	if not pomFolder:
 		raise Exception("Cannot detect POM file for project")
-	pom = readXMLRootNode(os.path.join(pomFolder, 'pom.xml'))
-	artifactId = readXml(pom, 'artifactId')
-	groupId = readXml(pom, 'groupId')
-	if not groupId:
-		parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-		groupId = readXml(parent, 'groupId')
-	version = readXml(pom, 'version')
-	if not version:
-		parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-		version = readXml(parent, 'version')
-	if not groupId:
-		raise Exception("Unable to determine the Maven group id for: " + filename)
-	if not artifactId:
-		raise Exception("Unable to determine the Maven artifact id for: " + filename)
-	if not version:
-		raise Exception("Unable to determine the Maven artifact version for: " + filename)
-	full_version = str(version) + " " + generation_date
-	with open (filename, "r") as myfile:
-		data = myfile.readlines()
-	data2 = []
-	for line in data:
-		line2 = re.sub("\$GroupId\$", groupId, line)
-		line2 = re.sub("\$ArtifactId\$", artifactId, line2)
-		line2 = re.sub("\$Name\$", artifactId, line2)
-		line2 = re.sub("\$Version\$", version, line2)
-		line2 = re.sub("\$Revision\$", version, line2)
-		line2 = re.sub("\$Date\$", generation_date, line2)
-		line2 = re.sub("\$FullVersion\$", full_version, line2)
-		line2 = re.sub("\$Filename\$", os.path.basename(filename), line2)
-		data2.append(line2)
-	with open (filename, "w") as myfile:
-		myfile.write("".join(data2))
+	pomFile = os.path.join(pomFolder, 'pom.xml')
+	if pomFile in exclusions:
+		print("[INFO] Skipping " + filename)
+	else:
+		try:
+			pom = readXMLRootNode(pomFile)
+			artifactId = readXml(pom, 'artifactId')
+			groupId = readXml(pom, 'groupId')
+			if not groupId:
+				parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
+				groupId = readXml(parent, 'groupId')
+			version = readXml(pom, 'version')
+			if not version:
+				parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
+				version = readXml(parent, 'version')
+			if not groupId:
+				raise Exception("Unable to determine the Maven group id for: " + filename)
+			if not artifactId:
+				raise Exception("Unable to determine the Maven artifact id for: " + filename)
+			if not version:
+				raise Exception("Unable to determine the Maven artifact version for: " + filename)
+			full_version = str(artifactId) + " " + str(version) + " " + str(generation_date)
+			with open (filename, "r") as myfile:
+				data = myfile.readlines()
+			data2 = []
+			for line in data:
+				line2 = re.sub("\$GroupId\$", groupId, line)
+				line2 = re.sub("\$ArtifactId\$", artifactId, line2)
+				line2 = re.sub("\$Name\$", artifactId, line2)
+				line2 = re.sub("\$Version\$", version, line2)
+				line2 = re.sub("\$Revision\$", version, line2)
+				line2 = re.sub("\$Date\$", generation_date, line2)
+				line2 = re.sub("\$FullVersion\$", full_version, line2)
+				line2 = re.sub("\$Filename\$", os.path.basename(filename), line2)
+				data2.append(line2)
+			with open (filename, "w") as myfile:
+				myfile.write("".join(data2))
+		except Exception as ex:
+			exclusions.append(pomFile)
+			print >> sys.stderr, "[ERROR] " + pomFile + ": " + filename + ": " + str(ex)
 
 #########################
 ## source: text to replace
@@ -229,112 +256,214 @@ def readMavenVersion(root):
 	return version
 
 #########################
-## version: the version number in the pom xml file
+## current_devel_version: the version number of the current devel in the pom xml file
+## next_stable_version: the version number of the next stable in the pom xml file
 ## filename: the filename to change
-def moveToReleaseVersionInMaven(version, filename):
-	if version.endswith("-SNAPSHOT"):
-		release_version = version[0:-9]
+def moveToReleaseVersionInMaven(current_devel_version, next_stable_version, filename):
+	if current_devel_version.endswith("-SNAPSHOT"):
 		with open (filename, "r") as myfile:
 			data = myfile.readlines()
 		data2 = []
 		for line in data:
-			line2 = line.replace(version, release_version)
+			line2 = line.replace(current_devel_version, next_stable_version)
 			data2.append(line2)
 		with open (filename, "w") as myfile:
 			myfile.write("".join(data2))
 
 #########################
-## version: the version number in the eclipse files
+## current_devel_version: the current devel version number in the eclipse files
+## next_stable_version: the next stable version number in the eclipse files
 ## filename: the filename to change
-def moveToReleaseVersionInEclipse(version, filename):
-	if version.endswith(".qualifier"):
-		release_version = version[0:-10]
+def moveToReleaseVersionInEclipse(current_devel_version, next_stable_version, filename):
+	if current_devel_version.endswith(".qualifier"):
 		with open (filename, "r") as myfile:
 			data = myfile.readlines()
 		data2 = []
 		for line in data:
-			line2 = line.replace(version, release_version)
+			line2 = line.replace(current_devel_version, next_stable_version)
 			data2.append(line2)
 		with open (filename, "w") as myfile:
 			myfile.write("".join(data2))
 
 #########################
-## current_version: the current version number in the pom xml file
-## devel_version: the devel version number (without -SNAPSHOT) in the pom xml file
+## current_stable_version: the version number of the current stable in the pom xml file
+## next_stable_version: the version number of the next stable in the pom xml file
+## current_devel_version: the version number of the current snapshot in the pom xml file
+## next_devel_version: the version number of the next snapshot in the pom xml file
 ## filename: the filename to change
-def moveToDevelVersionInMaven(current_version, devel_version, filename):
-	f_devel_version = devel_version + "-SNAPSHOT"
+def moveToReleaseVersionInReadme(current_stable_version, next_stable_version, current_devel_version, next_devel_version, filename):
+	if current_devel_version.endswith("-SNAPSHOT"):
+		with open (filename, "r") as myfile:
+			data = myfile.readlines()
+		data2 = []
+		for line in data:
+			line2 = line.replace(current_stable_version, next_stable_version)
+			line2 = line2.replace(current_devel_version, next_devel_version)
+			data2.append(line2)
+		with open (filename, "w") as myfile:
+			myfile.write("".join(data2))
+
+#########################
+## current_devel_version: the current devel version number in the pom xml file
+## next_devel_version: the next devel version number in the pom xml file
+## filename: the filename to change
+def moveToDevelVersionInMaven(current_devel_version, next_devel_version, filename):
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
-		line2 = line.replace(current_version, f_devel_version)
+		line2 = line.replace(current_devel_version, next_devel_version)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
 
 #########################
-## current_version: the current version number in the pom xml file
-## devel_version: the devel version number (without .qualifier) in the pom xml file
+## current_devel_version: the current devel_version number in the eclipse file
+## next_devel_version: the next devel version number in the eclipse file
 ## filename: the filename to change
-def moveToDevelVersionInEclipse(current_version, devel_version, filename):
-	f_devel_version = devel_version + ".qualifier"
+def moveToDevelVersionInEclipse(current_devel_version, next_devel_version, filename):
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
-		line2 = line.replace(current_version, f_devel_version)
+		line2 = line.replace(current_devel_version, next_devel_version)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
 
 #########################
 ##
+def show_update_file_msg(filename, filenames):
+	if filename not in filenames:
+		filenames.append(filename)
+		print("Updating " + filename)
+
+#########################
+## current_version: the current version (snapshot)
+## previous_stable: the previous stable version (not snapshot)
+def buildCurrentStableVersion(current_version, previous_stable):
+	if previous_stable:
+		return previous_stable
+	elements = current_version.split(".")
+	if elements[1] <= 0:
+		return str(int(elements[0]) - 1) + ".0.0"
+	return str(elements[0]) + "." + str(int(elements[1]) - 1) + ".0"
+
+#########################
+## current_version: the current version (snapshot)
+## next_stable: the next stable version (not snapshot)
+def buildNextStableVersion(current_version, next_stable):
+	if next_stable:
+		return next_stable
+	return current_version.replace("-SNAPSHOT", "")
+
+#########################
+## current_version: the current version (snapshot)
+## next_devel: the next devel version (snapshot)
+def buildNextDevelVersion(current_version, next_devel):
+	if next_devel:
+		return next_devel
+	elements = current_version.split(".")
+	return str(elements[0]) + "." + str(int(elements[1]) + 1) + ".0"
+
+#########################
+##
 parser = argparse.ArgumentParser()
 parser.add_argument('pom', help="path to the root Maven pom file")
-group = parser.add_mutually_exclusive_group()
+parser.add_argument('--test', help="test cli configuration", action="store_true")
+group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--author', help="replace $Author: id$", action="store_true")
 group.add_argument('--maven', help="replace $GroupId$ and $ArtifactId$", action="store_true")
 group.add_argument('--copyrights', help="replace the copyright strings", action="store_true")
 group.add_argument('--releaseversion', help="move to the next release version", action="store_true")
-group.add_argument('--develversion', help="move to the next devel version, specified as argument (without -SNAPSHOT and .qualifier)", type=str)
+group.add_argument('--develversion', help="move to the next devel version", action="store_true")
+parser.add_argument('--currentstable', help="current stable version number without -SNAPSHOT and .qualifier", type=str)
+parser.add_argument('--nextstable', help="next stable version number without -SNAPSHOT and .qualifier", type=str)
+parser.add_argument('--nextdevel', help="next development version number without -SNAPSHOT and .qualifier", type=str)
 args = parser.parse_args()
 
 mvn_root = readXMLRootNode(args.pom)
 if mvn_root is not None:
-	generation_date = str(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-	contributors = getMavenContributors(mvn_root)
+	generation_date = str(datetime.now().strftime("%Y%m%d-%H%M%S"))
 
+	changed_filenames = []
+
+	contributors = getMavenContributors(mvn_root)
+	mvn_version_number = readMavenVersion(mvn_root)
+	eclipse_version_number = mvn_version_number.replace("-SNAPSHOT", ".qualifier")
+	
+	current_stable_version = buildCurrentStableVersion(mvn_version_number, args.currentstable)
+	next_stable_version = buildNextStableVersion(mvn_version_number, args.nextstable)
+	next_devel_version = buildNextDevelVersion(mvn_version_number, args.nextdevel)
+	mvn_next_devel_version = next_devel_version + "-SNAPSHOT"
+	eclipse_next_devel_version = next_devel_version + ".qualifier"
+
+	print("> Current stable version: " + current_stable_version)
+	print("> Current devel version: " + mvn_version_number)
+	print("> Next stable version: " + next_stable_version)
+	print("> Next Devel version: " + mvn_next_devel_version)
+	if args.author:
+		print("> Action: update Maven author tags")
+	elif args.maven:
+		print("> Action: update Maven general tags")
+	elif args.copyrights:
+		print("> Action: update the copyright text")
+	elif args.releaseversion:
+		print("> Action: move to the release version")
+	elif args.develversion:
+		print("> Action: move to the development version")
+	else:
+		print("> Action: unknow")
+
+	if args.test:
+		sys.exit(0)
+
+	# README
+	files = buildReadmeFileList()
+	for filename in files:
+		if args.releaseversion:
+			show_update_file_msg(filename, changed_filenames)
+			moveToReleaseVersionInReadme(current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version, filename)
+		
 	# Java and SARL files
 	files = buildCodeFileList()
+	exclusions = []
 	for filename in files:
-		print("Updating " + filename)
 		if args.author:
+			show_update_file_msg(filename, changed_filenames)
 			replaceAuthors(filename, contributors)
 		if args.maven:
-			replaceMaven(filename, generation_date)
+			show_update_file_msg(filename, changed_filenames)
+			replaceMaven(filename, generation_date, exclusions)
 		if args.copyrights:
+			show_update_file_msg(filename, changed_filenames)
 			replaceCopyrights(filename)
 
 	# Maven pom.xml
 	files = buildMavenFileList()
-	mvn_version_number = readMavenVersion(mvn_root)
 	for filename in files:
-		print("Updating " + filename)
 		if args.releaseversion:
-			moveToReleaseVersionInMaven(mvn_version_number, filename)
+			show_update_file_msg(filename, changed_filenames)
+			moveToReleaseVersionInMaven(mvn_version_number, next_stable_version, filename)
 		if args.develversion:
-			moveToDevelVersionInMaven(mvn_version_number, args.develversion, filename)
+			show_update_file_msg(filename, changed_filenames)
+			moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
 
 	# Eclipse plugins and features
 	files = buildEclipseFileList()
-	eclipse_version_number = mvn_version_number.replace("-SNAPSHOT", ".qualifier")
 	for filename in files:
-		print("Updating " + filename)
 		if args.copyrights:
+			show_update_file_msg(filename, changed_filenames)
 			replaceCopyrights(filename)
 		if args.releaseversion:
-			moveToReleaseVersionInEclipse(eclipse_version_number, filename)
+			show_update_file_msg(filename, changed_filenames)
+			moveToReleaseVersionInEclipse(eclipse_version_number, next_stable_version, filename)
 		if args.develversion:
-			moveToDevelVersionInEclipse(eclipse_version_number, args.develversion, filename)
+			show_update_file_msg(filename, changed_filenames)
+			moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
+
+	sys.exit(0)
+
+else:
+	sys.exit(255)
 
