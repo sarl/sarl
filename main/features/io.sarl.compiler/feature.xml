@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.compiler"
       label="SARL Compiler"
-      version="0.12.0.qualifier"
+      version="0.13.0.qualifier"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">

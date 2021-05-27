@@ -99,9 +99,15 @@ def execute_maven(args):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
+	os.environ["MAVENSARLIO_USER"] = MAVENSARLIO_USER
+	os.environ["MAVENSARLIO_PWD"] = pass_phrase
+	os.environ["MAVENSARLIO_URL"] = MAVENSARLIO_URL
+	os.environ["UPDATESSARLIO_URL"] = UPDATESSARLIO_URL
+	os.environ["DEPENDENCIESSARLIO_URL"] = DEPENDENCIESSARLIO_URL
 	cmd = [ maven_cmd,
 	         "-Dmaven.test.skip=true",
 	         "-DskipTests=true",
+	         "-Dcheckstyle.skip=true",
 	         "-DMAVENSARLIO_USER=\"" + MAVENSARLIO_USER + "\"",
 	         "-DMAVENSARLIO_PWD=\"" + pass_phrase + "\"",
 	         "-DMAVENSARLIO_URL=\"" + MAVENSARLIO_URL + "\"",

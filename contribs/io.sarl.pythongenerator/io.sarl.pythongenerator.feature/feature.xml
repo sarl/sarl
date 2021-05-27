@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.pythongenerator.feature"
       label="Python Generator for SARL"
-      version="0.12.0.qualifier"
+      version="0.13.0.qualifier"
       plugin="io.sarl.pythongenerator.ui">
 
    <description url="http://www.sarl.io/about/">

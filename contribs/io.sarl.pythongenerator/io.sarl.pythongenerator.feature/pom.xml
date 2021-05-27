@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl.pythongenerator</groupId>
 		<artifactId>io.sarl.pythongenerator</artifactId>
-		<version>0.12.0-SNAPSHOT</version>
+		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>io.sarl.pythongenerator.feature</artifactId>

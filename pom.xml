@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.12.0-SNAPSHOT</version>
+	<version>0.13.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -54,7 +54,7 @@
 		<user.next.unsupported.jdk.version>15</user.next.unsupported.jdk.version>
 
 		<!-- Version of the SARL API -->
-		<sarl.version>0.12.0-SNAPSHOT</sarl.version>
+		<sarl.version>0.13.0-SNAPSHOT</sarl.version>
 		<janus.version>3.${sarl.version}</janus.version>
 		<sarl.maven.compiler.version>${sarl.version}</sarl.maven.compiler.version>
 

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.products</artifactId>
-		<version>0.12.0-SNAPSHOT</version>
+		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>io.sarl.sarldoc</artifactId>

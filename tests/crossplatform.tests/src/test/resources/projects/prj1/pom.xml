@@ -6,7 +6,7 @@
 
 	<groupId>crossplatform.tests</groupId>
 	<artifactId>prj1</artifactId>
-	<version>0.12.0-SNAPSHOT</version>
+	<version>0.13.0-SNAPSHOT</version>
 	<name>This is for Test ONLY</name>
 	
 	<dependencies>

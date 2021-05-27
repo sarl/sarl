@@ -16,7 +16,7 @@
         <dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
-			<version>0.12.0-SNAPSHOT</version>
+			<version>0.13.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -34,7 +34,7 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.12.0-SNAPSHOT</version>
+				<version>0.13.0-SNAPSHOT</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${javac.level}</source>

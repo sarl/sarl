@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.sarl.maven</groupId>
 		<artifactId>io.sarl.maven.external</artifactId>
-		<version>0.12.0-SNAPSHOT</version>
+		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>io.sarl.javafx</artifactId>

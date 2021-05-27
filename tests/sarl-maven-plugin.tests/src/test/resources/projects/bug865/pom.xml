@@ -5,7 +5,7 @@
 	<artifactId>testMavenBug865</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<sarl.version>0.12.0-SNAPSHOT</sarl.version>
+		<sarl.version>0.13.0-SNAPSHOT</sarl.version>
         <javac.level>1.8</javac.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

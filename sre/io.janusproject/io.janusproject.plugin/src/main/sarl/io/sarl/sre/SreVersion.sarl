@@ -33,7 +33,7 @@ final class SreVersion {
 
 	/** The version number of the current release of the SRE platform.
 	 */
-	public static val RELEASE_VERSION = "3.0.12.0-SNAPSHOT"
+	public static val RELEASE_VERSION = "3.0.13.0-SNAPSHOT"
 
 	/** Flag that indicates if the current SRE platform is a stable release.
 	 *
