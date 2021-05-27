@@ -34,7 +34,7 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d
 
 /** 
  * The boids simulation launching the SARL environment with the corresponding agent and ensuring the communication between agents and the GUI
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 class BoidsSimulation implements EventListener {
 

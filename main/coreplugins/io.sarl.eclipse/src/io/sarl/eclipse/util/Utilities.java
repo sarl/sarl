@@ -40,10 +40,10 @@ import io.sarl.lang.SARLConfig;
 
 /** Utilities.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  */
 public final class Utilities {
 
@@ -292,10 +292,10 @@ public final class Utilities {
 
 	/** Define a mapping from bundles to URLs.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface BundleURLMappings {
@@ -311,10 +311,10 @@ public final class Utilities {
 
 	/** Define a mapping from bundles to URLs.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	public static class SARLBundleJavadocURLMappings implements BundleURLMappings {
 

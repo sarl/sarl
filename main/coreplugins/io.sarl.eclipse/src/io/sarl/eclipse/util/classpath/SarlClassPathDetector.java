@@ -75,10 +75,10 @@ import io.sarl.lang.SARLConfig;
  * Unfortunately, the {@link ClassPathDetector} class cannot be overridden because
  * most of its logic is defined in protected methods.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.10
  * @see ClassPathDetector
  */

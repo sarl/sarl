@@ -46,10 +46,10 @@ import org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil;
  *
  * <p>This class provides additional utilities than {@link XAnnotationUtil} and {@link AnnotationLookup}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @see XAnnotationUtil for Xbase annotations
  * @see AnnotationLookup for retreiving annotations.
  */

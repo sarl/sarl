@@ -31,10 +31,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The eclipse plugin providing the JANUS platform as default SRE.
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.janusproject.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.eclipse
  */
 public class JanusEclipsePlugin extends AbstractUIPlugin {
 

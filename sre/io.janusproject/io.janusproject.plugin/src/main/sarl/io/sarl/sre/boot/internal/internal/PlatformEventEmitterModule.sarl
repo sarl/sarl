@@ -47,10 +47,10 @@ import io.sarl.sre.internal.ConfigurableAgentInjector
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 class PlatformEventEmitterModule extends AbstractModule {
 
@@ -105,10 +105,10 @@ class PlatformEventEmitterModule extends AbstractModule {
 
 /** Provider of the module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class PlatformEventEmitterModuleProvider implements BQModuleProvider {

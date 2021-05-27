@@ -37,10 +37,10 @@ import io.sarl.lang.mwe2.externalspec.IXmlStyleCloseable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the GTK source viewer.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.mwe2
  * @see "https://wiki.gnome.org/Projects/GtkSourceView"
  */
 public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 {

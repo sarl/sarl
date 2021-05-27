@@ -32,10 +32,10 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.SpaceID;
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.core.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core.tests
  */
 @DisplayName("SpaceDestroyed")
 @Tag("unit")

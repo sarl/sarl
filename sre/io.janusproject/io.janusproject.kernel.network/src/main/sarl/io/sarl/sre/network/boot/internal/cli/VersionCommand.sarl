@@ -35,10 +35,10 @@ import javax.inject.Singleton
 /**
  * Command for showing the SRE version with the network feature inside.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.kernel.network 3.0.12.0 20210527-171007
+ * @mavengroupid io.janusproject
+ * @mavenartifactid io.janusproject.kernel.network
  * @since 0.12
  */
 class VersionCommand extends io.sarl.maven.bootiqueapp.version.VersionCommand {
@@ -63,10 +63,10 @@ class VersionCommand extends io.sarl.maven.bootiqueapp.version.VersionCommand {
 
 /** Module for the command for printing out the SRE version with the network feature inside.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.kernel.network 3.0.12.0 20210527-171007
+ * @mavengroupid io.janusproject
+ * @mavenartifactid io.janusproject.kernel.network
  * @since 0.9
  */
 class VersionCommandModule extends AbstractModule {
@@ -89,10 +89,10 @@ class VersionCommandModule extends AbstractModule {
 
 /** Provider of the module for the version command.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.kernel.network 3.0.12.0 20210527-171007
+ * @mavengroupid io.janusproject
+ * @mavenartifactid io.janusproject.kernel.network
  * @since 0.9
  */
 class VersionCommandModuleProvider implements BQModuleProvider {

@@ -28,7 +28,7 @@ import io.sarl.core.Logging
 import java.util.Random
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  */
 agent Bidder {
 	

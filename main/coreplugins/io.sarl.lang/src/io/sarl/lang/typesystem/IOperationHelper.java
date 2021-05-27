@@ -38,10 +38,10 @@ import io.sarl.lang.sarl.actionprototype.InferredPrototype;
  * with a name starting with "get", "is", "has" is a pure function.
  * It also assumes that "equals", "hashCode", "clone" and "toString" are also pure functions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.6
  */
 @ImplementedBy(SARLOperationHelper.class)

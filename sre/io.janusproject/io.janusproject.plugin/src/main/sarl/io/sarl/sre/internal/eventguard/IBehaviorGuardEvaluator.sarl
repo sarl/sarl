@@ -31,11 +31,11 @@ import java.util.Collection
  * <p>The {@code BehaviorGuardEvaluator} is comparable in order to be storable into a collection (usually a sorted set) that
  * needs the elements to be comparable.
  *
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.12
  */
 interface IBehaviorGuardEvaluator extends Comparable<IBehaviorGuardEvaluator> {

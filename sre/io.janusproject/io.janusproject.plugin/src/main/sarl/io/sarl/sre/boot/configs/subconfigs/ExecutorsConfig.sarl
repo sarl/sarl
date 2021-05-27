@@ -42,10 +42,10 @@ import java.util.logging.Level
 /** 
  * Configuration for the parallel executors.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.8
  */
 @BQConfig("Configuration of the executor service")
@@ -269,10 +269,10 @@ class ExecutorsConfig {
 /** 
  * Module for the parallel executors' configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class ExecutorsConfigModule extends AbstractModule {
@@ -340,10 +340,10 @@ class ExecutorsConfigModule extends AbstractModule {
 
 /** Provider of the module for the parallel executors' configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class ExecutorsConfigModuleProvider implements BQModuleProvider {

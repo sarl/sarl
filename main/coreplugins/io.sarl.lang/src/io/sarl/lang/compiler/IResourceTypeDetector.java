@@ -32,10 +32,10 @@ import org.eclipse.emf.ecore.resource.Resource;
  *
  * <p>The way how a folder is detected as a test folder depends on the implementation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.8
  */
 @ImplementedBy(DefaultResourceTypeDetector.class)

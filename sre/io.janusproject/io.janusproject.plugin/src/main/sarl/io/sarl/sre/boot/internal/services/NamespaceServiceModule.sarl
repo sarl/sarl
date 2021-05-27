@@ -44,10 +44,10 @@ import static extension com.google.inject.multibindings.Multibinder.*
 /** 
  * Module for the namespace services.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class NamespaceServiceModule extends AbstractModule {
@@ -73,10 +73,10 @@ class NamespaceServiceModule extends AbstractModule {
 /** 
  * Injectable implementation of the name space service.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.12
  */
 class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
@@ -101,10 +101,10 @@ class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
 
 /** Provider of the module for the namespace services.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class NamespaceServiceModuleProvider implements BQModuleProvider {

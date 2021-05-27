@@ -46,10 +46,10 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * But, this configurable issue severity provider should not change the preferences.
  * The contract is to have internal overriding of the preferences in this provider.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.5
  */
 @Singleton
@@ -97,10 +97,10 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 	/** Configurable value provider.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.5
 	 */
 	public static class ConfigurableValueProvider implements IPreferenceValuesProvider {
@@ -129,10 +129,10 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 	/** Configurable values.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.5
 	 */
 	public static class ConfigurableValues implements IPreferenceValues {

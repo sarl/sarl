@@ -41,10 +41,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Provider of a configuration for the SARL-to-Python generator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.pythongenerator.generator 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.pythongenerator
+ * @mavenartifactid io.sarl.pythongenerator.generator
  * @since 0.8
  */
 @Singleton
@@ -103,10 +103,10 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 
 	/** Adapter for providing the SARL generator configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.pythongenerator.generator 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.pythongenerator
+	 * @mavenartifactid io.sarl.pythongenerator.generator
 	 */
 	@EmfAdaptable
 	public static class PyGeneratorConfigAdapter {
@@ -172,10 +172,10 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 
 		/** EMF Adapter.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.pythongenerator.generator 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl.pythongenerator
+		 * @mavenartifactid io.sarl.pythongenerator.generator
 		 */
 		public static class PyGeneratorConfigAdapterAdapter extends AdapterImpl {
 

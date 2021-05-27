@@ -53,10 +53,10 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Converter from Jvm feature name to the extra language feature name.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.6
  */
 public class ExtraLanguageFeatureNameConverter {
@@ -296,10 +296,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Describes the result of a replacement.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.6
 	 */
 	public static class ConversionResult {
@@ -354,10 +354,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Reader of the conversion rules.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.6
 	 */
 	public static class FeatureNameConverterRuleReader {
@@ -378,10 +378,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Feature pattern.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.6
 	 */
 	public static class FeaturePattern {
@@ -532,10 +532,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Feature replacement.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.6
 	 */
 	public static class FeatureReplacement {
@@ -684,10 +684,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Type of feature conversion.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.6
 	 */
 	public enum ConversionType {

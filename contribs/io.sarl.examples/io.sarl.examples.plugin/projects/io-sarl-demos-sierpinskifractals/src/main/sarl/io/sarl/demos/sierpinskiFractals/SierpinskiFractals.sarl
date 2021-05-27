@@ -26,8 +26,8 @@ import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxApplication
 
 /** Application launching.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 class SierpinskiFractals {
 

@@ -32,10 +32,10 @@ import org.eclipse.emf.common.util.URI;
  * <p>A resource may be inside a standard source folder or a folder that is dedicated
  * to test code. Detecting in which case a resource is is the purpose of this interface.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.8
  */
 public abstract class AbstractResourceTypeDetector implements IResourceTypeDetector {

@@ -22,7 +22,7 @@
 package io.sarl.examples.pingpong
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  */
 event Ping {
 	
@@ -35,7 +35,7 @@ event Ping {
 }
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  */
 event Pong {
 	

@@ -50,10 +50,10 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for the SARL run-time environment. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 @BQConfig("Configuration for the SARL run-time environment")
@@ -170,10 +170,10 @@ class SreConfig {
 /** 
  * Module for creating and configuring the general SRE configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class SreConfigModule extends AbstractModule {
@@ -216,10 +216,10 @@ class SreConfigModule extends AbstractModule {
 
 /** Provider of the module for creating and configuring the general SRE configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class SreConfigModuleProvider implements BQModuleProvider {

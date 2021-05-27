@@ -55,11 +55,11 @@ import io.sarl.sre.internal.ConfigurableAgentInjector
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
  * 
- * @author $Author: sgalland$
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
@@ -778,10 +778,10 @@ final class AgentLife {
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 final class ContextReference implements Comparable<ContextReference>, Cloneable {

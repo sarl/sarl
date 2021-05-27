@@ -74,10 +74,10 @@ import io.sarl.lang.util.Utils;
  * The PR was refused in Xtend project, see <a href="https://github.com/eclipse/xtext-xtend/pull/193">Xtend Issue 193</a>.
  * FIXME: Xtext upgrade, Remove this fix when Xtend support Java 8.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  */
 public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 

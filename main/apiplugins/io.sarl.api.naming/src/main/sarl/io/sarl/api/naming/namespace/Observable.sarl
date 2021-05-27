@@ -29,10 +29,10 @@ import java.lang.annotation.RetentionPolicy
  * Annotation that is used for marking SARL elements as an observable object.
  * An observable object is an object on which the fields could be accessed.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.api.naming 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.api.naming
  * @since 0.12
  */
 @Target(ElementType::FIELD, ElementType::TYPE)

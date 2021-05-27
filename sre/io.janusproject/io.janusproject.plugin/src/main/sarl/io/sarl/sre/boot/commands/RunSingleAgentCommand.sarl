@@ -42,10 +42,10 @@ import static extension io.bootique.BQCoreModule.extend
  * The first command-line argument that is a agent's class is considered
  * as the agent to be launched.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.8
  */
 @Singleton
@@ -102,10 +102,10 @@ class RunSingleAgentCommand extends AbstractRunCommand {
 
 /** Module for the command for running the SRE with a single agent.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class RunSingleAgentCommandModule extends AbstractModule {
@@ -121,10 +121,10 @@ class RunSingleAgentCommandModule extends AbstractModule {
 
 /** Provider of the module for running the SRE with a single agent.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class RunSingleAgentCommandModuleProvider implements BQModuleProvider {

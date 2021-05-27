@@ -26,10 +26,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** This provides an implementation of a dynamic skill provider that delegates
  * to the first known dynamic skill provider that is able to provide a skill.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  * @since 0.12
  */
 public final class DelegateDynamicSkillProvider implements DynamicSkillProvider {

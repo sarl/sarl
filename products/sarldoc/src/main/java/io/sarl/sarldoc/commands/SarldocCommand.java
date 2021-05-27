@@ -49,10 +49,10 @@ import io.sarl.sarldoc.configs.SarldocConfig;
 /**
  * Command for launching sarldoc.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sarldoc 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sarldoc
  * @since 0.10
  */
 public class SarldocCommand extends AbstractSarldocCommand {
@@ -158,10 +158,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	/** Print writer that is able to output message with the logger.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.sarldoc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.sarldoc
 	 * @since 0.10
 	 */
 	private abstract static class LogWriter extends Writer {
@@ -215,10 +215,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	/** Print writer that is able to output information with the logger.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.sarldoc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.sarldoc
 	 * @since 0.10
 	 */
 	private static class InformationWriter extends LogWriter {
@@ -246,10 +246,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	/** Print writer that is able to output warning message with the logger.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.sarldoc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.sarldoc
 	 * @since 0.10
 	 */
 	private static class WarningWriter extends LogWriter {
@@ -273,10 +273,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	/** Print writer that is able to output error message with the logger.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.sarldoc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.sarldoc
 	 * @since 0.10
 	 */
 	private static class ErrorWriter extends LogWriter {

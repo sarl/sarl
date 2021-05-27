@@ -30,11 +30,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Unique Identifier for a {@link Space}.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 public class SpaceID extends SRESpecificDataContainer implements Serializable, Comparable<SpaceID>, Cloneable {
 

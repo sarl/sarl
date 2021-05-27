@@ -42,10 +42,10 @@ import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
  *
  * <p>The Janus classpath library is an application library, i.e. it is included into the run-time classpath.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.eclipse
  */
 public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
 
@@ -158,10 +158,10 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 	/** Define a mapping from bundles to URLs.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.eclipse
 	 */
 	public static class JanusBundleJavadocURLMappings extends SARLBundleJavadocURLMappings {
 

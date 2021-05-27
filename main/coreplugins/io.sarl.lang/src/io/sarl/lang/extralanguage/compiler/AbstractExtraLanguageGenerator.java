@@ -84,10 +84,10 @@ import io.sarl.lang.util.Utils;
 
 /** Abstract implementation for the generator from SARL to an extra language.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.6
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity"})
@@ -808,10 +808,10 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	/** Specific properties with reading order.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.8
 	 */
 	private static class OrderedProperties extends Properties {

@@ -43,10 +43,10 @@ import io.sarl.maven.docs.parser.SarlDocumentationParser.Tag;
 
 /** Abstract parser for all the marker languages.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.docs.generator
  * @since 0.6
  */
 public abstract class AbstractMarkerLanguageParser {
@@ -331,10 +331,10 @@ public abstract class AbstractMarkerLanguageParser {
 
 	/** Validation handler.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.docs.generator
 	 * @since 0.6
 	 */
 	private static class ValidationHandler implements Procedure1<Map<Tag, List<ValidationComponentData>>> {
@@ -394,10 +394,10 @@ public abstract class AbstractMarkerLanguageParser {
 
 	/** Context that describes the references.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.docs.generator
 	 * @since 0.7
 	 */
 	public static class ReferenceContext {

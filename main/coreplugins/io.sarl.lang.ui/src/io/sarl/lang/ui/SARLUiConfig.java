@@ -24,10 +24,10 @@ package io.sarl.lang.ui;
 /**
  * Provides the constants for the SARL projects.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  */
 public final class SARLUiConfig {
 

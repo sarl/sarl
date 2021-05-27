@@ -32,9 +32,9 @@ import io.sarl.lang.core.EventSpace
 import java.util.UUID
 
 /**
- * @author $Author: jboulmier$
- * @author $Author: mpinard$
- * @author $Author: sgalland$
+ * @author <a href="https://github.com/Lomadriel/">J&eacute;r&ocirc;me Boulmier</a>
+ * @author <a href="https://github.com/pinam45/">Maxime Pinard</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  */
 class Controller implements GUIListener {
 

@@ -30,10 +30,10 @@ import java.lang.annotation.Target;
  * Annotation for marking the functions that decides if the agent internal event dispatcher may execute the corresponding
  *  behavior (<b>on</b> clause) to process the incoming event.
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)

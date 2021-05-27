@@ -44,12 +44,12 @@ import static extension io.sarl.sre.services.lifecycle.AgentLife.*
  * 
  * <p>The inner context instance is stored into the {@link AgentLife}.
  * 
- * @author $Author: srodriguez$
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 skill InnerContextAccessSkill extends Skill implements InnerContextAccess {

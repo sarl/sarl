@@ -30,10 +30,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Abstract implementation of a task that could be run on the JRE executor service.
  * See {@link Runnables} for creating an instance.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6
  * @see Runnables
  */
@@ -140,10 +140,10 @@ abstract class SreExecutable {
  * thrown to the Java execution layer. If a logger is not defined, the exceptions are thrown
  * to the Java execution layer. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6
  * @see Runnables
  */
@@ -245,10 +245,10 @@ class SreRunnable extends SreExecutable implements Runnable {
  * to the Java execution layer. 
  * 
  * @param <T> the type of the result.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6
  * @see Runnables
  */
@@ -343,10 +343,10 @@ class SreCallable<T> extends SreExecutable implements Callable<T> {
  * A specific SRE consumer that is catching the {@link EarlyExitException}.
  * 
  * @param <T> the type of the result.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.7
  * @see Runnables
  */
@@ -438,10 +438,10 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
  * A specific SRE runnable for kernel tasks.
  * See {@link Runnables} for creating an instance.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  * @see Runnables
  */

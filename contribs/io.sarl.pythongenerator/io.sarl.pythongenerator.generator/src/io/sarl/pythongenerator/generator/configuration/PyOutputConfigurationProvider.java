@@ -36,10 +36,10 @@ import io.sarl.pythongenerator.generator.generator.Messages;
 
 /** Provide the output configuration from the SARL code and the extra languages.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.pythongenerator.generator 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.pythongenerator
+ * @mavenartifactid io.sarl.pythongenerator.generator
  * @since 0.6
  */
 @Singleton

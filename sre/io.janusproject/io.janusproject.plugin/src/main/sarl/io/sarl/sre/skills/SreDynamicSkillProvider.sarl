@@ -50,10 +50,10 @@ import javax.inject.Singleton
 /** 
  * Provider of the built-in capacities of the SRE platform.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 @SuppressWarnings("use_reserved_sarl_annotation")

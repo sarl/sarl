@@ -34,10 +34,10 @@ import io.sarl.lang.ui.internal.LangActivator;
 /**
  * Utility functions for the plugin. The plugin activator is an instance of {@link LangActivator}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.12
  * @see LangActivator
  */

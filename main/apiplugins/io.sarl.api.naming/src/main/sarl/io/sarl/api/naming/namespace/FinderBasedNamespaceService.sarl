@@ -27,10 +27,10 @@ import java.util.Set
  * Implementation of a namespace service that uses the namespace finders.
  * The finders are in charge of finding a specific type of element.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.api.naming 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.api.naming
  * @since 0.12
  */
 class FinderBasedNamespaceService extends AbstractNamespaceService {

@@ -25,7 +25,7 @@ import io.sarl.demos.gameoflife.game.Action
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * @author $Author: jboulmier$
+ * @author <a href="https://github.com/Lomadriel/">J&eacute;r&ocirc;me Boulmier</a>
  */
 event CellAgentUpdated {
 

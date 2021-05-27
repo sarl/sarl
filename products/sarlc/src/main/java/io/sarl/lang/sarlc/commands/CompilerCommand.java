@@ -47,10 +47,10 @@ import io.sarl.maven.bootiqueapp.BootiqueMain;
 /**
  * Command for compiling with SARL.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.sarlc 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.sarlc
  * @since 0.8
  */
 public class CompilerCommand extends CommandWithMetadata {
@@ -211,10 +211,10 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	/** Progress monitor that outputs on the console.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.sarlc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.lang.sarlc
 	 * @since 0.8
 	 */
 	private static class ConsoleProgressMonitor implements IProgressMonitor {

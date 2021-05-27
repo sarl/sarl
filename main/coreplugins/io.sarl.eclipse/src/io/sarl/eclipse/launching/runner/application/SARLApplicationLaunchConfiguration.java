@@ -36,10 +36,10 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * <p>This delegate is in charge of running a SARL application with the specific
  * SRE.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfiguration {
@@ -57,10 +57,10 @@ public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfig
 	/** Definition of the launching process, split in separated steps for
 	 * making easier the cancellation.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 * @sincec 0.7
 	 */
 	private class LaunchProcess extends AbstractLaunchProcess<SARLApplicationLaunchConfiguration> {

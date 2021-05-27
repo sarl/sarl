@@ -28,10 +28,10 @@ import javafx.stage.Stage
 /**
  * Abstract implementation of a JavaFX application that is embedding SARL agents.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.javafx 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.javafx
  * @since 0.7
  */
 abstract class FxApplication extends Application {

@@ -38,11 +38,11 @@ import io.sarl.lang.annotation.SarlSpecification;
  * An agent is an autonomous entity having some intrinsic skills to realize
  * the capacities it exhibits. An agent defines a context.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvaluatorReceiver {

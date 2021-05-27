@@ -54,10 +54,10 @@ import io.sarl.lang.core.UnimplementedCapacityException;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core.tests
  */
 @SuppressWarnings("all")
 @DisplayName("AbstractSkillContainer")
@@ -523,10 +523,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 
 	/** Only for making public several protected methods.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	public static class AbstractSkillContainerMock extends AbstractSkillContainer {
 
@@ -603,30 +603,30 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static interface Capacity1 extends Capacity {
 		//
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static interface Capacity2 extends Capacity {
 		//
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	@DefaultSkill(Skill5.class)
 	private static interface Capacity3 extends Capacity {
@@ -634,10 +634,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {
@@ -646,10 +646,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill2 extends Skill implements Capacity2 {
 		public Skill2() {
@@ -658,10 +658,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill3 extends Skill {
 		public Skill3() {
@@ -670,30 +670,30 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static interface Capacity4 extends Capacity {
 		//
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static interface Capacity5 extends Capacity4 {
 		//
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill6 extends Skill implements Capacity4 {
 		public Skill6() {
@@ -702,10 +702,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill7 extends Skill implements Capacity5 {
 		public Skill7() {
@@ -714,10 +714,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill4 extends Skill1 implements Capacity2 {
 		private final AtomicInteger installCalls = new AtomicInteger();
@@ -753,10 +753,10 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.core.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.core.tests
 	 */
 	private static class Skill5 extends Skill implements Capacity3 {
 		public Skill5() {

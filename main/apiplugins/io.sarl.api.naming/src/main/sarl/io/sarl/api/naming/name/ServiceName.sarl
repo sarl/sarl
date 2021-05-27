@@ -32,10 +32,10 @@ import io.sarl.lang.annotation.PrivateAPI
  * <li>{@code serviceType} (mandatory) : the fully qualified name of the service interface for the service implementation to retrieve.</li>
  * </ul>
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.api.naming 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.api.naming
  * @since 0.12
  */
 class ServiceName extends SarlName {

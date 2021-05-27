@@ -33,10 +33,10 @@ import io.sarl.lang.sarl.SarlSkill;
  *
  * <p>This processor ensures that SARL type declarations are supported by the compilation unit.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.9
  */
 public class SarlCompilationUnitImpl extends CompilationUnitImpl {
@@ -66,10 +66,10 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL agent declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.9
 	 */
 	protected static class SarlAgentDeclarationImpl extends XtendTypeDeclarationImpl<SarlAgent> {
@@ -78,10 +78,10 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL behavior declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.9
 	 */
 	protected static class SarlBehaviorDeclarationImpl extends XtendTypeDeclarationImpl<SarlBehavior> {
@@ -90,10 +90,10 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL skill declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.9
 	 */
 	protected static class SarlSkillDeclarationImpl extends XtendTypeDeclarationImpl<SarlSkill> {

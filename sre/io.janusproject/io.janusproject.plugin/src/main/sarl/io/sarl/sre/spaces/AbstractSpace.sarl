@@ -30,10 +30,10 @@ import java.util.EventListener
 /** 
  * Abstract implementation of a space.
  * 
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 abstract class AbstractSpace extends SRESpecificDataContainer implements Space {
 
@@ -82,10 +82,10 @@ abstract class AbstractSpace extends SRESpecificDataContainer implements Space {
 /** 
  * Listener on events related to the space.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 interface SpaceListener extends EventListener {
 	/** 

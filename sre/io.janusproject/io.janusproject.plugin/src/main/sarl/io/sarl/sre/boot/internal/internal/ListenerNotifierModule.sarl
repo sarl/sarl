@@ -31,10 +31,10 @@ import javax.inject.Singleton
 /** 
  * Module for configuring the methods for notifying the event listeners.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class ListenerNotifierModule extends AbstractModule {
@@ -47,10 +47,10 @@ class ListenerNotifierModule extends AbstractModule {
 
 /** Provider of the module for configuring the methods for notifying the event listeners..
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class ListenerNotifierModuleProvider implements BQModuleProvider {

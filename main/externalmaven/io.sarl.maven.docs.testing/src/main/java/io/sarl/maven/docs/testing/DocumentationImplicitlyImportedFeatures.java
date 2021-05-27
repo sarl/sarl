@@ -27,10 +27,10 @@ import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
 
 /** Implicitly imported extensions for the testing of the documentation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.docs.testing 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.docs.testing
  * @since 0.6
  */
 @SuppressWarnings({"checkstyle:methodname"})

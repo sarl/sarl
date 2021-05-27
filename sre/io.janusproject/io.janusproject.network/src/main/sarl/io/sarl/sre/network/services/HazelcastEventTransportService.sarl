@@ -62,10 +62,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * <li>Skill: io.sarl.topics.service.serviceType</li>
  * </ul>
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.janusproject.network 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject
+ * @mavenartifactid io.janusproject.network
  * @since 0.12
  */
 @Singleton
@@ -141,10 +141,10 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	/** Envelope for Hazelcast messages.
 	 *
-	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+	 * @version io.janusproject.network 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject
+	 * @mavenartifactid io.janusproject.network
 	 * @since 0.12
 	 */
 	static class TopicMessage implements Serializable {
@@ -164,10 +164,10 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	/** Listener on Hazelcast events.
 	 *
-	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+	 * @version io.janusproject.network 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject
+	 * @mavenartifactid io.janusproject.network
 	 * @since 0.12
 	 */
 	protected static class TopicNameListener implements ItemListener<String> {
@@ -224,10 +224,10 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	/** Envelope for Hazelcast topic messages.
 	 *
-	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+	 * @version io.janusproject.network 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject
+	 * @mavenartifactid io.janusproject.network
 	 * @since 0.12
 	 */
 	protected static class TopicMessageListener implements MessageListener<TopicMessage> {

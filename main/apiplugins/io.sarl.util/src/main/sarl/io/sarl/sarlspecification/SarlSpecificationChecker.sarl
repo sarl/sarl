@@ -28,10 +28,10 @@ import io.sarl.lang.SARLVersion
 
 /** Check if a given agent class follows a specific version of the SARL specifications.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.util 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.util
  * @since 0.5
  */
 interface SarlSpecificationChecker {
@@ -104,10 +104,10 @@ interface SarlSpecificationChecker {
  *
  * <p>This implementation uses the default implementation given by the interface.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.util 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.util
  * @since 0.5
  */
 final class StandardSarlSpecificationChecker implements SarlSpecificationChecker {

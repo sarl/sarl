@@ -33,10 +33,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * The most basic Scope is represented by a collection of Addresses (Agent, Role, etc.
  *
  * @param <T> is the type of objects that should be matched by this scope.
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 @FunctionalInterface
 public interface Scope<T> extends Serializable {

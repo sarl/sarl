@@ -41,11 +41,11 @@ import java.util.UUID
  * <h4>For Agent Members</h4>
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event Initialize {
 
@@ -112,11 +112,11 @@ final event Initialize {
  * The member agents do not receive this event from the parent agent because the parent agent cannot be
  * destroyed if it has agent members.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 @EarlyExit
 final event Destroy
@@ -128,10 +128,10 @@ final event Destroy
  * The source of the event is the spawning agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event AgentSpawned {
 
@@ -165,11 +165,11 @@ final event AgentSpawned {
  * The source of the event is the killed agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event AgentKilled {
 
@@ -206,10 +206,10 @@ final event AgentKilled {
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event SpaceCreated {
 
@@ -234,10 +234,10 @@ final event SpaceCreated {
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  * The source of the event is the parent agent.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event SpaceDestroyed {
 
@@ -264,10 +264,10 @@ final event SpaceDestroyed {
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event MemberJoined {
 
@@ -301,10 +301,10 @@ final event MemberJoined {
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event MemberExcluded {
 
@@ -336,10 +336,10 @@ final event MemberExcluded {
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event MemberLeft {
 
@@ -369,10 +369,10 @@ final event MemberLeft {
  * The event is fired within the internal bus of the agent that have joined a super-holon.
  * The source of the event is the agent itself.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event ContextJoined {
 
@@ -401,10 +401,10 @@ final event ContextJoined {
  * The event is fired within the internal bus of the agent that have left a super-holon.
  * The source of the event is the agent itself.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 final event ContextLeft {
 
@@ -428,10 +428,10 @@ final event ContextLeft {
  * The joining agent does not receive this event.
  * The source of the event is the entering agent.
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  * @since 0.10
  */
 final event ParticipantJoined {
@@ -458,10 +458,10 @@ final event ParticipantJoined {
  * The leaving agent does not receive this event.
  * The source of the event is the leaving agent.
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  * @since 0.10
  */
 final event ParticipantLeft {

@@ -60,12 +60,12 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * <p>The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
  * agents.
  * 
- * @author $Author: srodriguez$
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @Singleton
 class Kernel {
@@ -307,10 +307,10 @@ class Kernel {
 	/** 
 	 * Asynchronous listener on platform events.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 */
 	protected static class AsynchronousKernelStoppingListener implements KernelAgentLifecycleListener, Runnable, UncaughtExceptionHandler {
 
@@ -375,10 +375,10 @@ class Kernel {
 /** 
  * Annotation for injection of the kernel.
  * 
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @BindingAnnotation
 @Target(#[FIELD, PARAMETER, METHOD])
@@ -390,10 +390,10 @@ annotation KernelScope {
 /** 
  * Cause of the agent termination when the kernel is shuting down.
  * 
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.12
  */
 class KernelShutdownException extends RuntimeException {

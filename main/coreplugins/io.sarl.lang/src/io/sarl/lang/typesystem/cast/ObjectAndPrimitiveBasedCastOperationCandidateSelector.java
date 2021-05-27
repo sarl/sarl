@@ -51,10 +51,10 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  * <li>{@code E} is assignable from the argument's type.</li>
  * </ul>
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.9
  */
 @Singleton
@@ -82,10 +82,10 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 	 * <li>{@code E} is assignable from the argument's type.</li>
 	 * </ul>
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.9
 	 */
 	protected static class ObjectAndPrimitiveBasedSelector implements ISelector {

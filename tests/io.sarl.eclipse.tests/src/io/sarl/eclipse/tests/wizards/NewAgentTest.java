@@ -42,7 +42,7 @@ import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

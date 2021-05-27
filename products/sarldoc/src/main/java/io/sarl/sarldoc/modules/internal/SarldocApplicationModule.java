@@ -41,10 +41,10 @@ import io.sarl.sarldoc.configs.SarldocConfig;
 
 /** Module for configuring the sarldoc application information.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sarldoc 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sarldoc
  * @since 0.10
  */
 public class SarldocApplicationModule extends AbstractModule {
@@ -66,10 +66,10 @@ public class SarldocApplicationModule extends AbstractModule {
 
 	/** Provider of the long description of the application.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.sarldoc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.sarldoc
 	 * @since 0.10
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {

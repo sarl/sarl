@@ -62,10 +62,10 @@ import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
  * external tools.
  *
  * @param <T> the type of appendable.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.mwe2
  */
 public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppendable> extends AbstractXtextGeneratorFragment {
 
@@ -705,10 +705,10 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	/** Appendable for script-based styles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 * @since 0.6
 	 */
 	protected abstract static class AbstractAppendable extends AbstractStringBuilderBasedAppendable implements IStyleAppendable {

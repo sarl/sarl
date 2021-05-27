@@ -44,10 +44,10 @@ import io.sarl.lang.sarl.SarlScript;
 /** Set of utilities for validating SARL code.
  *
  * @param <S> - the type of the service.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.tests.api 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.tests.api
  * @since 0.11
  */
 public class TestValidator {
@@ -84,10 +84,10 @@ public class TestValidator {
 
 	/** Validation helper on a specific resource. This validator keep track of all the resources.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.tests.api 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.tests.api
 	 */
 	public interface Validator {
 
@@ -210,10 +210,10 @@ public class TestValidator {
 
 	/** Wrapper for the validation helper on a specific resource.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.tests.api 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.tests.api
 	 */
 	public static class XtextValidator implements Validator {
 

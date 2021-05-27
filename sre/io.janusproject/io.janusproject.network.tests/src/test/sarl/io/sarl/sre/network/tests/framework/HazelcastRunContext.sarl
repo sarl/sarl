@@ -43,10 +43,10 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 /**
  * Context for running the SRE with Hazelcast. This context is thread-safe.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.network.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.network.tests
  * @since 0.12
  */
 interface HazelcastRunContext extends SreRunContext {
@@ -58,10 +58,10 @@ interface HazelcastRunContext extends SreRunContext {
 /**
  * Context for running the SRE with Hazelcast. This context is thread-safe.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.network.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.network.tests
  * @since 0.12
  */
 class HazelcastRunContextImpl extends SreRunContextImpl implements HazelcastRunContext {

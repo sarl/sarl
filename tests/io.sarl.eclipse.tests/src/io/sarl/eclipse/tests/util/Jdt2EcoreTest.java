@@ -80,7 +80,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -524,7 +524,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -567,7 +567,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -612,7 +612,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -637,7 +637,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -656,7 +656,7 @@ public class Jdt2EcoreTest {
 	public static class IsVisible {
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -725,7 +725,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -794,7 +794,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -863,7 +863,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -932,7 +932,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1001,7 +1001,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1070,7 +1070,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1139,7 +1139,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1210,7 +1210,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1280,7 +1280,7 @@ public class Jdt2EcoreTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1575,7 +1575,7 @@ public class Jdt2EcoreTest {
 		}
 
 		/**
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$

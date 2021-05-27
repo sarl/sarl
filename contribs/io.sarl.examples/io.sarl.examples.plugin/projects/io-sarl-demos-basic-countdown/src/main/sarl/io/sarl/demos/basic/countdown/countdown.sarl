@@ -29,12 +29,12 @@ import io.sarl.core.Schedules
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 event Element
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 agent CountDownAgent {
 	uses Lifecycle, Schedules, Logging

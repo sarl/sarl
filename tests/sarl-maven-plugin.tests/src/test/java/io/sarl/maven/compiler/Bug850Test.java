@@ -36,10 +36,10 @@ import io.sarl.lang.sarl.SarlPackage;
 
 /** Test for issue #850: CLI Compile error when using {@code occurrence.xxxx}.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version sarl-maven-plugin.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid sarl-maven-plugin.tests
  * @see "https://github.com/sarl/sarl/issues/850"
  */
 @SuppressWarnings("all")

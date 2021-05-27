@@ -65,10 +65,10 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract implementation for the quick fix tests.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.ui.tests
  */
 public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
@@ -246,10 +246,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	protected static class QuickFixAsserts {
 
@@ -443,10 +443,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	} // class QuickFixAsserts
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	private static class TestModificationContext implements IModificationContext {
 
@@ -472,10 +472,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	} // class TestModificationContext
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	private static class TestFragmentProvider implements IFragmentProvider {
 
@@ -500,10 +500,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	} // class TestFragmentProvider
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	private static class TestTextStore implements ITextStore {
 
@@ -552,10 +552,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	} // class TestTextStore
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	private static class TestLineTracker implements ILineTracker {
 
@@ -717,10 +717,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	} // class TestLineTracker
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	private static class TestXtextDocument extends Document implements IXtextDocument {
 

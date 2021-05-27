@@ -207,11 +207,11 @@ import io.sarl.lang.util.Utils;
  * <li>{@link SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 @Singleton
@@ -675,10 +675,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				/** Safe runnable.
 				 *
-				 * @author $Author: sgalland$
-				 * @version $FullVersion$
-				 * @mavengroupid $GroupId$
-				 * @mavenartifactid $ArtifactId$
+				 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+				 * @version io.sarl.lang 0.12.0 20210527-171007
+				 * @mavengroupid io.sarl.lang
+				 * @mavenartifactid io.sarl.lang
 				 */
 				final class SafeRunnable implements Runnable {
 
@@ -4209,10 +4209,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Internal error.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 */
 	private abstract static class InternalError extends RuntimeException {
 
@@ -4226,10 +4226,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Internal error.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 */
 	private static class GenerationContextNotFoundInternalError extends InternalError {
 

@@ -36,10 +36,10 @@ import io.sarl.lang.sarl.SarlPackage;
 
 /** Test for issue #865: Maven complains on guava version in 0.8.2.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version sarl-maven-plugin.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid sarl-maven-plugin.tests
  * @see "https://github.com/sarl/sarl/issues/865"
  */
 @SuppressWarnings("all")

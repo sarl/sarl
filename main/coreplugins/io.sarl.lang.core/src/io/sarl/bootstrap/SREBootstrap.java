@@ -36,10 +36,10 @@ import io.sarl.lang.core.AgentContext;
  *
  * <p>Depending on the implementation of the SRE, an instance of this SRE access point could be injected.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  * @since 0.6
  */
 public interface SREBootstrap {

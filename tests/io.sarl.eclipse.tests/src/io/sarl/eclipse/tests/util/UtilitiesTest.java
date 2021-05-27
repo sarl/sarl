@@ -49,7 +49,7 @@ import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -63,7 +63,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 public final class UtilitiesTest {
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -443,7 +443,7 @@ public final class UtilitiesTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -30,10 +30,10 @@ import org.apache.log4j.spi.LoggerFactory;
 
 /** Apache logger that is converting info messages to debug messages.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.batchcompiler
  * @since 0.7
  */
 final class InternalXtextLogger extends org.apache.log4j.Logger {
@@ -85,10 +85,10 @@ final class InternalXtextLogger extends org.apache.log4j.Logger {
 
 	/** Factory of internal logger.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.batchcompiler
 	 * @since 0.7
 	 */
 	public static class InternalXtextLoggerFactory implements LoggerFactory {

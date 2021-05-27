@@ -44,10 +44,10 @@ import io.sarl.docs.doclet.exclude.ApidocExcluder;
 /** Install the proxies for the {@code Doc}.
  * This object is filtering the arrays that are replied functions in {@link RootDoc} or {@link ProgramElementDoc}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid io.sarl.docs.doclet
  * @since 0.7
  */
 public class JreProxyInstaller implements ProxyInstaller {
@@ -162,10 +162,10 @@ public class JreProxyInstaller implements ProxyInstaller {
 
 	/** Excluder of documentation.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	private class ProxyHandler implements InvocationHandler {

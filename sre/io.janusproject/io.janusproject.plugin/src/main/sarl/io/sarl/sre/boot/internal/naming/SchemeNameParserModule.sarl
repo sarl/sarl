@@ -41,10 +41,10 @@ import io.sarl.api.naming.parser.ArtifactSchemeNameParser
 /**
  * Module for the scheme name parsers.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class SchemeNameParserModule extends AbstractModule {
@@ -65,10 +65,10 @@ class SchemeNameParserModule extends AbstractModule {
 /** 
  * Annotation to mark the set of scheme name parsers.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 @Target(PARAMETER, FIELD)
@@ -80,10 +80,10 @@ annotation SchemeNameParsers {
 
 /** Provider of the module for the scheme name parser.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  */
 class SchemeNameParserModuleProvider implements BQModuleProvider {

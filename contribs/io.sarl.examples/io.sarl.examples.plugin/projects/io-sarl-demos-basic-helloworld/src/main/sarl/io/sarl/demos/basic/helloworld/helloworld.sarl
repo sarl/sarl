@@ -29,8 +29,8 @@ import io.sarl.core.Schedules
 /* 
  * A "Hello World" Agent.
  * 
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  */
 agent HelloAgent {
 	uses Lifecycle, Schedules, Logging

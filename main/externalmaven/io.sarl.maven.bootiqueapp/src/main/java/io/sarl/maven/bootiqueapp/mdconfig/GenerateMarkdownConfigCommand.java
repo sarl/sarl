@@ -56,10 +56,10 @@ import org.eclipse.xtext.util.Strings;
 /**
  * Command for displaying the help for configuration parameters on the standard output using a Markdown format.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.bootiqueapp 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.bootiqueapp
  * @since 0.12
  */
 public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
@@ -182,10 +182,10 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	/**
 	 * Command for displaying the help for configuration parameters on the standard output using a Markdown format.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.bootiqueapp 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.bootiqueapp
 	 * @since 0.12
 	 */
 	private static class Visitor implements ConfigMetadataVisitor<Void> {

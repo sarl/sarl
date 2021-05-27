@@ -41,10 +41,10 @@ import io.sarl.m2e.SARLMavenEclipsePlugin;
 
 /** Factory of project SRE provider for the Maven projects.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.m2e 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.m2e
+ * @mavenartifactid io.sarl.m2e
  */
 public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory {
 
@@ -88,10 +88,10 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 
 	/** Provider of SRE from a maven project.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.m2e 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.m2e
+	 * @mavenartifactid io.sarl.m2e
 	 */
 	private static class MavenProjectSREProvider implements ProjectSREProvider {
 

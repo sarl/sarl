@@ -24,6 +24,6 @@ package io.sarl.demos.gameoflife.game.events
 /**
  * Event fired when the game is over.
  *
- * @author $Author: jboulmier$
+ * @author <a href="https://github.com/Lomadriel/">J&eacute;r&ocirc;me Boulmier</a>
  */
 event GameIsDead

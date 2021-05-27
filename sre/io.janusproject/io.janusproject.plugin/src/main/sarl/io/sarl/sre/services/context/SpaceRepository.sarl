@@ -65,11 +65,11 @@ import org.eclipse.xtend.lib.annotations.Data
  * 
  * <p>This repository is thread-safe.
  * 
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
 @PrivateAPI(isCallerOnly = true)
@@ -775,10 +775,10 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * Description of a space.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 */
 	static class SpaceDescription implements Serializable, Comparable<SpaceDescription> {
 
@@ -863,10 +863,10 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * An injection module that is able to inject the default space instance into another space implementation.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 * @since 0.10
 	 */
 	private static class JustInTimeDefaultSpaceInjectionModule extends AbstractModule {
@@ -890,10 +890,10 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * Key for a space specification.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 * @since 0.11
 	 */
 	@Data
@@ -936,10 +936,10 @@ abstract class SpaceRepository implements SpaceListener {
 /** 
  * Listener on events related to the space repository.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 interface SpaceRepositoryListener extends EventListener {
 
@@ -963,10 +963,10 @@ interface SpaceRepositoryListener extends EventListener {
 
 /** Factory for a space event emitter.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.7.0
  */
 interface SpaceRepositoryListenerFactory {

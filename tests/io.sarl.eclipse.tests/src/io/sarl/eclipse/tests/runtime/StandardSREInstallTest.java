@@ -77,7 +77,7 @@ import io.sarl.eclipse.runtime.StandardSREInstall;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -90,7 +90,7 @@ public class StandardSREInstallTest {
 	public static final String TESTING_PREFERENCE_KEY = SARLEclipsePlugin.PLUGIN_ID + ".tests.runtime.PREF_SRE_XML"; //$NON-NLS-1$
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -342,7 +342,7 @@ public class StandardSREInstallTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -29,10 +29,10 @@ import java.util.UUID
 /**
  * A capacity that provides the agent with testing functions.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sre.test.framework 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sre.test.framework
  * @since 0.11
  */
 capacity TestingCapacity {

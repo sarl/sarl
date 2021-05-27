@@ -53,10 +53,10 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  *
  * <p>This class provides the tools for helping to build a tab group for running SARL agents and SARL applications.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {

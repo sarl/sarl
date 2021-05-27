@@ -67,11 +67,11 @@ import io.sarl.lang.SARLConfig;
 /** Utilities around bundles. It should be replaced
  * by the OSGi, Eclipse and Xtext API.
  *
- * @author $Author: sgalland$
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  */
 public final class BundleUtil {
 
@@ -262,10 +262,10 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	public static class BundleDependency {
 
@@ -335,10 +335,10 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	public interface IBundleDependencies {
 
@@ -426,10 +426,10 @@ public final class BundleUtil {
 	 *
 	 * <p>The set entries are sorted in the insertion order.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private static class DependencyDefinition {
 
@@ -496,10 +496,10 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private static class BundleDependencies implements IBundleDependencies {
 
@@ -916,10 +916,10 @@ public final class BundleUtil {
 
 		/** Iterator on symbolic names.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.eclipse 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl
+		 * @mavenartifactid io.sarl.eclipse
 		 */
 		private class SymbolicNameIterator implements Iterator<String> {
 
@@ -951,10 +951,10 @@ public final class BundleUtil {
 
 		/** Iterator on classpath entries.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.eclipse 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl
+		 * @mavenartifactid io.sarl.eclipse
 		 */
 		private class ClasspathEntryIterator implements Iterator<IClasspathEntry> {
 
@@ -986,10 +986,10 @@ public final class BundleUtil {
 
 		/** Iterator on runtime classpath entries.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.eclipse 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl
+		 * @mavenartifactid io.sarl.eclipse
 		 */
 		private class RuntimeClasspathEntryIterator implements Iterator<IRuntimeClasspathEntry> {
 
@@ -1021,10 +1021,10 @@ public final class BundleUtil {
 
 		/** Iterator on transitive dependencies.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.eclipse 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl
+		 * @mavenartifactid io.sarl.eclipse
 		 */
 		private class TransitiveDependencyIterator implements Iterator<BundleDependency> {
 

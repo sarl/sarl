@@ -43,7 +43,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestScope;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

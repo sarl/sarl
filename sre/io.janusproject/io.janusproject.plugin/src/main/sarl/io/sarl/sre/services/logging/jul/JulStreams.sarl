@@ -30,10 +30,10 @@ import org.arakhne.afc.inputoutput.stream.WriterOutputStream
 
 /** A console handler that supports to be link to the standard output or the standard error output.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 class JulOutputStreamConsoleHandler extends StreamHandler {
@@ -96,10 +96,10 @@ class JulOutputStreamConsoleHandler extends StreamHandler {
 
 /** A console handler that supports to be link to the standard output.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 class JulStandardOutputConsoleHandler extends JulOutputStreamConsoleHandler {
@@ -119,10 +119,10 @@ class JulStandardOutputConsoleHandler extends JulOutputStreamConsoleHandler {
 
 /** A console handler that supports to be link to the standard error output.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.6.0
  */
 class JulStandardErrorOutputConsoleHandler extends JulOutputStreamConsoleHandler {

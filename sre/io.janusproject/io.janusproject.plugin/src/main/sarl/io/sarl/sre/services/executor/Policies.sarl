@@ -40,10 +40,10 @@ import javax.inject.Singleton
  * unless the executor has been shut down, in which case the task
  * is discarded (see {@link ThreadPoolExecutor.CallerRunsPolicy}).
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @see {@link ThreadPoolExecutor.CallerRunsPolicy} 
  */
 @Singleton
@@ -79,10 +79,10 @@ abstract class AbstractThreadExecutorPolicy implements RejectedExecutionHandler,
 /** 
  * A handler for rejected tasks that log a warning on the platform logger.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @Singleton
 abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecutorPolicy {
@@ -159,10 +159,10 @@ abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecuto
  * A handler for rejected tasks and uncaught exceptions that logs a warning on the platform logger
  * when a task is rejected, and an error for each uncaught exception.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @see {@link ThreadPoolExecutor.CallerRunsPolicy}
  */
 @Singleton
@@ -189,10 +189,10 @@ class VerboseThreadExecutorPolicy extends AbstractLoggingThreadExecutorPolicy {
 /** 
  * A handler for rejected tasks and uncaught exceptions that logs nothing.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 @Singleton
 class QuietThreadExecutorPolicy extends AbstractThreadExecutorPolicy {

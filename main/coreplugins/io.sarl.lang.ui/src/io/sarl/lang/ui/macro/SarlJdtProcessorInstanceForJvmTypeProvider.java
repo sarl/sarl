@@ -33,10 +33,10 @@ import io.sarl.lang.macro.SarlProcessorInstanceForJvmTypeProvider;
  * <p>This processor ensures that the visibility of the generated functions is not higher
  * than the visility allowed into the containing type.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.9
  */
 public class SarlJdtProcessorInstanceForJvmTypeProvider extends JdtBasedProcessorProvider {

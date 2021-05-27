@@ -25,10 +25,10 @@ import com.sun.javadoc.Doc;
 
 /** Check if an element should be ignored into the API doc.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid io.sarl.docs.doclet
  * @since 0.7
  */
 public interface ApidocExcluder {

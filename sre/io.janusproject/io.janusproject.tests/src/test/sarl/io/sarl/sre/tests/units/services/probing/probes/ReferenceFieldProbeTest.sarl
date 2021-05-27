@@ -58,10 +58,10 @@ import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.tests
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -221,10 +221,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test")
 	@Nested
@@ -242,10 +242,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with null field")
 	@Nested
@@ -267,10 +267,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with final object")
 	@Nested
@@ -288,10 +288,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with AtomicReference")
 	@Nested
@@ -309,10 +309,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with null AtomicReference")
 	@Nested
@@ -334,10 +334,10 @@ abstract class ReferenceFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with final AtomicReference")
 	@Nested

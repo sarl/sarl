@@ -61,10 +61,10 @@ import io.sarl.lang.util.Utils;
 
 /** Abstract tools for providing SARL documentation for JVM elements.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.12
  */
 public abstract class AbstractSarlDocumentationProvider implements ISarlDocumentationProvider {
@@ -271,10 +271,10 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	/**
 	 * Wrapper for source appender.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.12
 	 */
 	private class Receiver implements ISourceAppender {

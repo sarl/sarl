@@ -34,10 +34,10 @@ import javax.inject.Provider
  * This class is the implementation of a probe service that is updating the values synchronously.
  * Synchronous updates must be explicitly started by invoking {@link #sync()}.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.10
  * @see AsynchronousProbeService
  */

@@ -29,10 +29,10 @@ import io.sarl.lang.ui.preferences.AbstractPreferenceAccess;
 
 /** Preferences for the code mining support of SARL.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.8
  */
 public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
@@ -231,10 +231,10 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 
 	/** Initializer of the preferences for the SARL code mining feature.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.8
 	 */
 	public static class Initializer implements IPreferenceStoreInitializer {

@@ -24,10 +24,10 @@ package io.sarl.eclipse.runtime;
 /**
  * Constants that are representing elements to be saved into the XML preferences that are associated to the SRE.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.11
  */
 public final class SREXmlPreferenceConstants {

@@ -29,10 +29,10 @@ import io.sarl.lang.SARLRuntimeModule;
 
 /** Provider of the module for the SARL compiler runtime.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.bootiquebatchcompiler 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.bootiquebatchcompiler
  * @since 0.12
  */
 public class SARLRuntimeModuleProvider implements BQModuleProvider {

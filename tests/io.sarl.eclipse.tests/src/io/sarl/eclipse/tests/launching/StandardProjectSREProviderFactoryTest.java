@@ -35,7 +35,7 @@ import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

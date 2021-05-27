@@ -24,6 +24,6 @@ package io.sarl.demos.gameoflife.game.events
 /**
  * Event fired at the end of the step.
  *
- * @author $Author: jboulmier$
+ * @author <a href="https://github.com/Lomadriel/">J&eacute;r&ocirc;me Boulmier</a>
  */
 event RunEndOfStep

@@ -30,10 +30,10 @@ import io.sarl.api.naming.name.SarlName
  * 
  * @param <N> the type of name that is supported by this finder.
  * @param <O> the type of object that is searching for.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.api.naming 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.api.naming
  * @since 0.12
  */
 interface INamespaceFinder<N extends SarlName, O> {

@@ -33,10 +33,10 @@ import org.w3c.dom.NodeList;
 
 /** Utilities related to the specification of launch configurations for examples.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.examples.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.examples
+ * @mavenartifactid io.sarl.examples.plugin
  * @since 0.10
  */
 public final class SarlExampleLaunchConfiguration {

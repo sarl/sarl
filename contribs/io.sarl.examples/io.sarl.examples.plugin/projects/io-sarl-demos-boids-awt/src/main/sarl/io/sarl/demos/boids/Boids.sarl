@@ -31,7 +31,7 @@ import io.sarl.core.Lifecycle
 
 /** 
  * A boid agent evolving according C. Reynolds basic behavioral rules
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 agent Boid {

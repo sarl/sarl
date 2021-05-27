@@ -51,10 +51,10 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for specifying the SRE booting parameters.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.8.0
  */
 @BQConfig("Booting configuration for the SARL Run-time Environment")
@@ -381,10 +381,10 @@ class BootConfig {
 /** 
  * The name of the boot agent is not provided, e.g. on the command line.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.8.0
  */
 class NoBootAgentNameException extends RuntimeException {
@@ -393,10 +393,10 @@ class NoBootAgentNameException extends RuntimeException {
 /** 
  * The name of the boot agent is not a sub-type of {@code Agent}.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.8.0
  */
 class InvalidAgentNameException extends RuntimeException {
@@ -405,10 +405,10 @@ class InvalidAgentNameException extends RuntimeException {
 /** 
  * Module for the SRE booting parameters.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class BootConfigModule extends AbstractModule {
@@ -509,10 +509,10 @@ class BootConfigModule extends AbstractModule {
 
 /** Provider of the module for the SRE booting parameters.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.9
  */
 class BootConfigModuleProvider implements BQModuleProvider {

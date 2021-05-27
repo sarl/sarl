@@ -31,10 +31,10 @@ package io.sarl.lang.core;
  * Directly copy from com.google.common.eventbus.DeadEvent
  * </p>
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  * @deprecated no more used since 0.5.
  */
 @Deprecated

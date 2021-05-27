@@ -36,10 +36,10 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
  *
  * <p>This filter permits to hide/show the fields.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 

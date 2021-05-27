@@ -80,10 +80,10 @@ import io.sarl.docs.doclet.utils.Utils;
  * <p>These proxies are implemented because the code of Javadoc contains hard casts to the implementation types.
  * {@link JreProxyInstaller In-memory proxies} cannot be use.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid io.sarl.docs.doclet
  * @since 0.7
  */
 public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
@@ -377,10 +377,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 	/** Proxy definition.
 	 *
 	 * @param <T> the type of the delegate.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	private interface Proxy<T extends Doc> {
@@ -395,10 +395,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for RootDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -653,10 +653,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for ClassDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -1118,10 +1118,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for PackageDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -1357,10 +1357,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for AnnotationTypeDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -1825,10 +1825,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for FieldDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -2103,10 +2103,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for ConstructorDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -2416,10 +2416,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for MethodDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -2769,10 +2769,10 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	/** Wrapper for AnnotationTypeElementDoc.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	@SuppressWarnings("checkstyle:all")

@@ -33,10 +33,10 @@ import org.eclipse.xtext.ui.resource.UriValidator;
 
 /** Callback associated to the editor for configuring the SARL editor.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.8
  */
 public class SARLNatureAddingEditorCallback extends IXtextEditorCallback.NullImpl {

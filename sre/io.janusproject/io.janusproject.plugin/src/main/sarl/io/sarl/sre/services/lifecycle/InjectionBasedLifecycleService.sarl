@@ -40,11 +40,11 @@ import javax.inject.Provider
  * Implementation of a spawning service that is using injection mechanism
  * for creating the agent.
  * 
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 class InjectionBasedLifecycleService extends AbstractLifecycleService {
 
@@ -110,10 +110,10 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	/** 
 	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 */
 	private static class CreatorFactory extends AbtractAgentCreatorProvider {
 

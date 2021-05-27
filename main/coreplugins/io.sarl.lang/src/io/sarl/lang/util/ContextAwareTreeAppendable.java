@@ -29,10 +29,10 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 /**
  * A delegating tree appendable which is aware of th current compilation context.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.8.6
  */
 public class ContextAwareTreeAppendable extends DelegateTreeAppendable {

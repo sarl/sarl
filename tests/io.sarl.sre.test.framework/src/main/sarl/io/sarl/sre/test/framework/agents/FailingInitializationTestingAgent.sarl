@@ -26,10 +26,10 @@ import io.sarl.core.Initialize
 /**
  * Agent fails during its initialization.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sre.test.framework 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sre.test.framework
  * @since 0.11
  */
 agent FailingInitializationTestingAgent {

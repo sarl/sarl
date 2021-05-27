@@ -40,10 +40,10 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/799
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.tests
  * @see "https://github.com/sarl/sarl/issues/799"
  */
 @DisplayName("Bug #799")

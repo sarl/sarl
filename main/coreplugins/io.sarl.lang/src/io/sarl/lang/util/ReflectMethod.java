@@ -28,10 +28,10 @@ import java.lang.reflect.Method;
  *
  * @param <RT> the type of the receiver.
  * @param <T> the type of the returned value.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.8
  */
 public final class ReflectMethod<RT, T> {

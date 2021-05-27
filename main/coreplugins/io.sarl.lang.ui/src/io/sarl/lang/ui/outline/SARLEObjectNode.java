@@ -29,10 +29,10 @@ import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 /**
  * Customize the outline page.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  */
 class SARLEObjectNode extends EObjectNode {
 

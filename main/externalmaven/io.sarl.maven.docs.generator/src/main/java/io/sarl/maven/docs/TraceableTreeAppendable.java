@@ -39,10 +39,10 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /** A tree-based appendable that is able to trace.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.docs.generator
  * @since 0.11
  */
 class TraceableTreeAppendable extends StringBuilderBasedAppendable implements ITreeAppendable {
@@ -247,10 +247,10 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	/** REgion for a tree-based appendable that is able to trace.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.docs.generator
 	 * @since 0.11
 	 */
 	protected static class AppendableBasedTraceRegion extends AbstractTraceRegion {

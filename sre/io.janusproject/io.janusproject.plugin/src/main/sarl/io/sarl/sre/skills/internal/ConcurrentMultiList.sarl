@@ -34,11 +34,11 @@ import java.util.concurrent.ConcurrentLinkedDeque
  * <p>This collection is read-only.
  *
  * @param <E> is the type of elements in the collections.
- * @author $Author: sgalland$
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  */
 class ConcurrentMultiList<E> implements Collection<E> {
 
@@ -165,10 +165,10 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	/** Iterator on multicollection.
 	 *
 	 * @param <E> is the type of elements in the collections.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 */
 	static class MultiIterator<E> implements Iterator<E> {
 

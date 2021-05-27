@@ -27,10 +27,10 @@ import io.sarl.lang.ui.SARLExecutableExtensionFactory;
 
 /** Factory for injecting SARL instances.
 *
-* @author $Author: sgalland$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
+* @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+* @version io.sarl.pythongenerator.ui 0.12.0 20210527-171007
+* @mavengroupid io.sarl
+* @mavenartifactid io.sarl.pythongenerator.ui
 */
 public class PyExecutableExtensionFactory extends SARLExecutableExtensionFactory {
 

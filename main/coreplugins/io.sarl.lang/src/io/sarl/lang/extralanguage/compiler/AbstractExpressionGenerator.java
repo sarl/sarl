@@ -65,10 +65,10 @@ import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter.Con
 
 /** Abstract Generator of XExpression.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.6
  */
 public abstract class AbstractExpressionGenerator implements IExpressionGenerator {
@@ -476,10 +476,10 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 *
 	 * <p>Thus generator should be overriden in order to provide specific language implementation.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 */
 	protected abstract class FeatureCallGenerator {
 

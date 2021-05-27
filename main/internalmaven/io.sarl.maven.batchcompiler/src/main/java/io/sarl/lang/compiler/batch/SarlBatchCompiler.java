@@ -121,10 +121,10 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  *
  * <p>This compiler is inspired by the Xtend batch compiler.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.batchcompiler
  * @since 0.5
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount",
@@ -2510,10 +2510,10 @@ public class SarlBatchCompiler {
 
 	/** Formatter for the issue messages.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.batchcompiler
 	 */
 	@FunctionalInterface
 	public interface IssueMessageFormatter {
@@ -2530,10 +2530,10 @@ public class SarlBatchCompiler {
 
 	/** Listener for the issue messages.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.batchcompiler
 	 */
 	@FunctionalInterface
 	public interface IssueMessageListener {
@@ -2550,10 +2550,10 @@ public class SarlBatchCompiler {
 
 	/** Comparator of issues.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.batchcompiler 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.batchcompiler
 	 */
 	public static class DefaultIssueComparator implements Comparator<Issue> {
 

@@ -65,10 +65,10 @@ import io.sarl.sre.network.boot.configs.SreNetworkConfigModule;
 /**
  * Configuration tab for the JRE and the SARL runtime environment.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.eclipse
  * @since 0.12
  */
 public class JanusLaunchNetworkTab extends JavaLaunchTab {
@@ -357,10 +357,10 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	/**
 	 * Listener of events in internal components for refreshing the tab.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.eclipse
 	 */
 	private class WidgetListener implements SelectionListener, ModifyListener {
 

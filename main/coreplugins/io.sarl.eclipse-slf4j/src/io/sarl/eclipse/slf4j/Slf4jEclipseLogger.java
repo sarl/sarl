@@ -30,10 +30,10 @@ import org.slf4j.Marker;
 /**
  * SLF4J logger that is linked to the M2E plugin.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse-slf4j 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse-slf4j
  * @since 0.11
  * @deprecated Remove when SLF4J is properly configured for Eclipse.
  */

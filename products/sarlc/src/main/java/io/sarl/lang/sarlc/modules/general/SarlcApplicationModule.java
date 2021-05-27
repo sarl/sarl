@@ -41,10 +41,10 @@ import io.sarl.maven.bootiqueapp.utils.SystemProperties;
 
 /** Module for configuring the sarlc application information.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.sarlc 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.sarlc
  * @since 0.8
  */
 public class SarlcApplicationModule extends AbstractModule {
@@ -66,10 +66,10 @@ public class SarlcApplicationModule extends AbstractModule {
 
 	/** Provider of the long description of the application.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.sarlc 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.lang.sarlc
 	 * @since 0.8
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {

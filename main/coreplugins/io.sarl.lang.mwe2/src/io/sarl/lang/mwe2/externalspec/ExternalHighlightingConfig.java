@@ -36,10 +36,10 @@ import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
 /**
  * The configuration for the external highlighting tools.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.mwe2
  */
 public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent {
 
@@ -264,10 +264,10 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	/**
 	 * Color for LaTeX.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 */
 	public static class Color {
 
@@ -363,10 +363,10 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	/**
 	 * Color configuration for LaTeX.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 */
 	public static class ColorConfig {
 

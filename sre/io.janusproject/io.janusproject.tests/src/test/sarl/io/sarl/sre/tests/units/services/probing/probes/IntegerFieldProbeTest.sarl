@@ -58,10 +58,10 @@ import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.tests
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -219,10 +219,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with primitive int")
 	@Nested
@@ -241,10 +241,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with final primitive int")
 	@Nested
@@ -262,10 +262,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with Integer")
 	@Nested
@@ -283,10 +283,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with null Integer")
 	@Nested
@@ -308,10 +308,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with final Integer")
 	@Nested
@@ -329,10 +329,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with AtomicInteger")
 	@Nested
@@ -350,10 +350,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with null AtomicInteger")
 	@Nested
@@ -375,10 +375,10 @@ abstract class IntegerFieldProbeTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.tests
 	 */
 	@DisplayName("unit: IntegerFieldProbe test with final AtomicInteger")
 	@Nested

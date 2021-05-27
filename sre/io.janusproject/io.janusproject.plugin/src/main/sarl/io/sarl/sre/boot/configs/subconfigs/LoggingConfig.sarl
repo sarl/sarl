@@ -36,10 +36,10 @@ import static io.sarl.sre.boot.configs.subconfigs.LoggingConfig.*
 /** 
  * Configuration for the agent logging service.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.11
  */
 @BQConfig("Configuration of the SRE logging service")
@@ -115,10 +115,10 @@ class LoggingConfig {
 /** 
  * Module for the agent logging service configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.11
  */
 class LoggingConfigModule extends AbstractModule {
@@ -130,10 +130,10 @@ class LoggingConfigModule extends AbstractModule {
 
 /** Provider of the module for the logging service configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.11
  */
 class LoggingConfigModuleProvider implements BQModuleProvider {

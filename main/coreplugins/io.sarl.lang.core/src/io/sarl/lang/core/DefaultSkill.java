@@ -39,10 +39,10 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation is supported by an implementation of {@link DynamicSkillProvider}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  * @since 0.7
  * @see DynamicSkillProvider
  */

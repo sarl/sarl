@@ -77,10 +77,10 @@ import io.sarl.m2e.wizards.importproject.MavenImportUtils;
  * <p>This wizard extends the EMF wizard with the initialization of the SARL nature on the project,
  * the creation of launch configurations, and the closing of the welcome page of Eclipse.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.examples.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.examples
+ * @mavenartifactid io.sarl.examples.plugin
  * @since 0.6
  */
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
@@ -405,10 +405,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Configuration page.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.examples.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.examples
+	 * @mavenartifactid io.sarl.examples.plugin
 	 * @since 0.8
 	 */
 	public class ConfigurationPage extends WizardPage {
@@ -481,10 +481,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** A file to be opened that is associated to a project.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.examples.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.examples
+	 * @mavenartifactid io.sarl.examples.plugin
 	 * @since 0.10
 	 */
 	public static class ProjectFileToOpen extends FileToOpen {
@@ -556,10 +556,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Description of a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.examples.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.examples
+	 * @mavenartifactid io.sarl.examples.plugin
 	 * @since 0.10
 	 */
 	public static class ConfigurationToLaunch {

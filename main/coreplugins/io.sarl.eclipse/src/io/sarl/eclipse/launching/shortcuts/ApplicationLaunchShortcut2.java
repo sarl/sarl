@@ -44,10 +44,10 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 
 /** Shortcut for launching a SARL application.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.6
  */
 public class ApplicationLaunchShortcut2 extends JavaApplicationLaunchShortcut {

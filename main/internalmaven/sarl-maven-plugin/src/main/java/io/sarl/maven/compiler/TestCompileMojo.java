@@ -36,10 +36,10 @@ import org.apache.maven.project.MavenProject;
 
 /** Mojo for compiling SARL.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version sarl-maven-plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid sarl-maven-plugin
  */
 @Mojo(name = "testCompile", defaultPhase = LifecyclePhase.TEST_COMPILE,
 		requiresDependencyResolution = ResolutionScope.TEST)

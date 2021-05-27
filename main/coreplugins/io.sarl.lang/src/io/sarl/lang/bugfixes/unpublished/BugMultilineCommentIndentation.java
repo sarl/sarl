@@ -41,10 +41,10 @@ import org.eclipse.xtext.util.Strings;
 /** FIXME: Xtext upgrade, Fixing a bug in Xtext Formatter2 API that avoid to have a good
  * indentation for the first comment in a block.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  */
 @Singleton
 public class BugMultilineCommentIndentation {
@@ -98,10 +98,10 @@ public class BugMultilineCommentIndentation {
 
 	/** Comment fixer.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 */
 	private static class FixedReplacementContext implements ITextReplacerContext {
 

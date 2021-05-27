@@ -39,7 +39,7 @@ import static extension java.lang.Math.*
 /** 
  * Graphical user interface for boids.
  * 
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 class EnvironmentGui extends Frame {
 
@@ -93,7 +93,7 @@ package class Closer extends WindowAdapter {
 /** 
  * The GUI of the Simulation
  * 
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 package class EnvironmentGuiPanel extends Panel {
 

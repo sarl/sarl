@@ -38,10 +38,10 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
  *
  * <p>https://github.com/sarl/sarl/issues/1062
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.tests
  * @see "https://github.com/sarl/sarl/issues/1062"
  */
 @ExtendWith(#[

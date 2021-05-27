@@ -48,10 +48,10 @@ import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
  * A {@link IGeneratorFragment} that create the language specification for
  * the TextMate-compatible viewers.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.mwe2
  * @see "https://manual.macromates.com/en/language_grammars"
  * @see "https://github.com/staltz/SublimeXtend/"
  */
@@ -530,10 +530,10 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 	/** Definition of a pattern.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 * @since 0.6
 	 */
 	protected final class Pattern {
@@ -684,10 +684,10 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 *
 	 * <p>This appendable uses the old property-file syntax.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 * @since 0.6
 	 */
 	protected static class OldStyleTmAppendable extends AbstractAppendable implements ITmStyleAppendable {
@@ -791,10 +791,10 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 *
 	 * <p>This appendable uses the XML-based syntax.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 * @since 0.6
 	 */
 	protected static class XmlBasedTmAppendable extends AbstractAppendable implements ITmStyleAppendable {
@@ -929,10 +929,10 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	/** Appendable for TextMate styles that combines the old syntax and the new syntax for the
 	 * property file..
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.mwe2 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.mwe2
 	 * @since 0.6
 	 */
 	protected static final class CombinedTmAppendable implements ITmStyleAppendable {

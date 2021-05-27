@@ -40,10 +40,10 @@ import io.sarl.eclipse.util.BundleUtil;
  * <p>The SARL classpath container is a system library, i.e. it will not be included into the run-time
  * classpath.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  */
 public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer {
 

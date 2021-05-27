@@ -33,7 +33,7 @@ import io.sarl.eclipse.natures.SARLProjectNature;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

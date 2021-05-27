@@ -40,10 +40,10 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 /**
  * Unit test for the issue #91: Stop agent on initialization failure?
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.tests
  * @see https://github.com/janus-project/janusproject/issues/91
  */
 @ExtendWith(#[

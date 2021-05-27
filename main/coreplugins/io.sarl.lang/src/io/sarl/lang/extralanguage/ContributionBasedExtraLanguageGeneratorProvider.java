@@ -33,10 +33,10 @@ import io.sarl.lang.extralanguage.compiler.IRootGenerator;
 
 /** Provider of the extra-language generators.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.8
  */
 public class ContributionBasedExtraLanguageGeneratorProvider implements IExtraLanguageGeneratorProvider {

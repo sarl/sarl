@@ -64,10 +64,10 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /** Compiler for creating inline expressions with Java syntax.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.4
  * @see Inline
  */
@@ -486,10 +486,10 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * Information about the line annotation.
 	 *
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.4
 	 */
 	@SuppressWarnings("checkstyle:visibilitymodifier")
@@ -541,10 +541,10 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/**
 	 * Appendable for creating an inline expression.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 * @since 0.4
 	 */
 	@SuppressWarnings("checkstyle:visibilitymodifier")

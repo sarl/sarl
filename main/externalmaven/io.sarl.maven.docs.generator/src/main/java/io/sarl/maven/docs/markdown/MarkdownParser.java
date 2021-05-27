@@ -74,10 +74,10 @@ import io.sarl.maven.docs.testing.ReflectExtensions;
 
 /** Markdown parser.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.docs.generator 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.docs.generator
  * @since 0.6
  */
 public class MarkdownParser extends AbstractMarkerLanguageParser {

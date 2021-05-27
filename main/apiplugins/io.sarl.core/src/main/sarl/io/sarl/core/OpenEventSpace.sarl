@@ -37,11 +37,11 @@ import io.sarl.lang.core.EventSpace
  * <p>A weak participant is participant that could be considered as not a first-order member of the space.
  * When a participant is weak, it is not considered by functions such as {@link #isPseudoEmpty(java.lang.UUID)}.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.core
  */
 interface OpenEventSpace extends EventSpace {
 

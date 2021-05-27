@@ -28,10 +28,10 @@ import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 
 /** Property page for configuring the Python generator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.pythongenerator.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.pythongenerator.ui
  * @since 0.6
  */
 public class PropertyPage extends AbstractExtraLanguagePropertyPage {

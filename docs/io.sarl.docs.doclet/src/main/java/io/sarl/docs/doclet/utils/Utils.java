@@ -50,10 +50,10 @@ import io.sarl.docs.doclet.SarlConfiguration;
 
 /** Utilities.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid io.sarl.docs.doclet
  * @since 0.7
  */
 public final class Utils {
@@ -455,10 +455,10 @@ public final class Utils {
 	/** Filter function.
 	 *
 	 * @param <T> the type of the element to filter.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.docs.doclet 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid io.sarl.docs.doclet
 	 * @since 0.7
 	 */
 	public interface Filter<T> {

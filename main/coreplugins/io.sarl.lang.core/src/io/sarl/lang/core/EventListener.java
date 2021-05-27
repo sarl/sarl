@@ -29,10 +29,10 @@ package io.sarl.lang.core;
  * any entity implementing the {@link EventListener} can interact inside an
  * {@link EventSpace} (e.g. UI)
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 public interface EventListener extends Identifiable {
 

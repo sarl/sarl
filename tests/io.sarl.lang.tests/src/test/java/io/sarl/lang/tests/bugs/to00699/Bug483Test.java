@@ -36,10 +36,10 @@ import io.sarl.tests.api.AbstractSarlTest;
 
 /** Issue 483: Events are not cloned before they are given to the behavior units.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.tests
  * @see https://github.com/sarl/sarl/issues/483
  */
 @DisplayName("Bug #483")

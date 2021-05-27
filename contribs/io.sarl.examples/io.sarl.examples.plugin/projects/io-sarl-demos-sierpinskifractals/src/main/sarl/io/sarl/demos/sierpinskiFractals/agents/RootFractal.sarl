@@ -33,8 +33,8 @@ import io.sarl.core.ExternalContextAccess
  * Can communicate with the GUI if not contained in an other agent.
  * Contains other Fractal agent in its inner context.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 agent RootFractal extends AbstractFractal {
 

@@ -33,10 +33,10 @@ import io.sarl.sarldoc.configs.SarldocConfig;
 
 /** Provider of the module for the general sarldoc specific configuration.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sarldoc 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sarldoc
  * @since 0.10
  */
 public class SarldocConfigModuleProvider implements BQModuleProvider {

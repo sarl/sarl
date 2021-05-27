@@ -45,8 +45,8 @@ import java.util.Vector
 /**
  * A Rocket that contains fire particles.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
  */
 agent Rocket {
 

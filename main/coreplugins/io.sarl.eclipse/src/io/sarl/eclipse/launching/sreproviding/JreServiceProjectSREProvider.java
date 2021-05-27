@@ -41,10 +41,10 @@ import io.sarl.eclipse.runtime.ProjectSREProvider;
 /** Implementation of a project SRE provider based on the Java service definitions.
  * This provider is reading the JRE service definitions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  * @see ServiceLoader
  * @see JreServiceProjectSREProviderFactory
@@ -100,10 +100,10 @@ public class JreServiceProjectSREProvider implements ProjectSREProvider {
 
 	/** Implementation of an SREInstall that is related to a bootstrapped SRE.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.7
 	 */
 	private static class BootstrappedSREInstall extends AbstractSREInstall {

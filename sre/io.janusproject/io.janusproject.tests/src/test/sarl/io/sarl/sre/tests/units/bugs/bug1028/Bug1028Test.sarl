@@ -41,10 +41,10 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
  *
  * <p>See general tests in the "io.sarl.lang.tests" project.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.tests 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.tests
  * @see "https://github.com/sarl/sarl/issues/1028"
  */
 @DisplayName("unit: Bug #1028")

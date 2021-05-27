@@ -30,10 +30,10 @@ import io.sarl.lang.core.Capacity;
 
 /** Annotation for marking a function as imported due to a capacity use.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.core 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.core
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

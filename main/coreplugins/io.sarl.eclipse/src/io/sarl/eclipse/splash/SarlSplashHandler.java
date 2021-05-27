@@ -33,10 +33,10 @@ import io.sarl.lang.SARLVersion;
 /**
  * Dynamic splash screen that add the "BETA" picture when the product is in unstable state.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @see io.sarl.lang.SARLConfig
  */
 public class SarlSplashHandler extends EclipseSplashHandler {

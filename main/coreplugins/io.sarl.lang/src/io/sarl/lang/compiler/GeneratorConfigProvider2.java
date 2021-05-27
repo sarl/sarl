@@ -40,10 +40,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Provider of a generator configuration v2.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.4
  */
 public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
@@ -93,10 +93,10 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 
 	/** Adapter for providing the SARL generator configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang
 	 */
 	@EmfAdaptable
 	public static class GeneratorConfigAdapter {
@@ -161,10 +161,10 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 
 		/** EMF Adapter.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+		 * @version io.sarl.lang 0.12.0 20210527-171007
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid io.sarl.lang
 		 */
 		public static class GeneratorConfigAdapterAdapter extends AdapterImpl {
 

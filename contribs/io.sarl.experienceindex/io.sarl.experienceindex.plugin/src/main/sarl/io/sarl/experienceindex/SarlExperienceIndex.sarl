@@ -97,10 +97,10 @@ import javax.crypto.spec.SecretKeySpec
  * <p>The disk score measures disk bandwidth (in Mega Bytes per Second). The conversion
  * to an index number is set up in a way that all modern disks will score at least 2.0.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.experienceindex.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.experienceindex
+ * @mavenartifactid io.sarl.experienceindex.plugin
  * @since 0.6
  */
 final class SarlExperienceIndex {
@@ -204,10 +204,10 @@ final class SarlExperienceIndex {
 
 	/** This class contains the different SEI of your machine.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.experienceindex.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.experienceindex
+	 * @mavenartifactid io.sarl.experienceindex.plugin
 	 */
 	static class SEI {
 
@@ -633,10 +633,10 @@ final class SarlExperienceIndex {
 
 /** This interace is a tool for canceling the SEI computation.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.experienceindex.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.experienceindex
+ * @mavenartifactid io.sarl.experienceindex.plugin
  */
 interface SeiCanceler {
 	/**

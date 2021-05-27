@@ -28,10 +28,10 @@ import io.sarl.core.Schedules
 /**
  * Agent that does nothing and commits a suicide after few seconds.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.sre.test.framework 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.sre.test.framework
  * @since 0.12
  */
 agent MiddleLifeTestingAgent {

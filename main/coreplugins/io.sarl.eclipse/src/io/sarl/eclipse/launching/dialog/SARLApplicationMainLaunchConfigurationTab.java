@@ -51,10 +51,10 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * <p>This configuration tab enables to enter the name of the main class to launch,
  * the launching parameters.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab implements ISreChangeListener {
@@ -176,10 +176,10 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	/** Listener of events in internal components for refreshing the tab.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.7
 	 */
 	private class WidgetListener implements SelectionListener {

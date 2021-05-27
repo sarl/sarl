@@ -30,7 +30,7 @@ import io.sarl.demos.gameoflife.game.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.game.events.GameIsDead
 
 /**
- * @author $Author: jboulmier$
+ * @author <a href="https://github.com/Lomadriel/">J&eacute;r&ocirc;me Boulmier</a>
  */
 agent CellAgent {
 

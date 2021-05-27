@@ -62,10 +62,10 @@ import io.sarl.lang.validation.IssueCodes;
  *
  * <p>This type computer resolves the types for the SARL keywords: break, continue and assert.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.5
  */
 public class SARLTypeComputer extends XtendTypeComputer {

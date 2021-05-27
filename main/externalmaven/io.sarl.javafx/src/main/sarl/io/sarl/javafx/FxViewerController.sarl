@@ -37,10 +37,10 @@ import javafx.fxml.FXML
 
 /** Abstract implementation of a JavaFX viewer controller.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.javafx 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.javafx
  * @since 0.7
  */
 abstract class FxViewerController implements EventListener {
@@ -160,10 +160,10 @@ abstract class FxViewerController implements EventListener {
 
 	/** Callback for launched agents.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.javafx 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.javafx
 	 * @since 0.7
 	 */
 	private static class LaunchingCallback implements EventListener {

@@ -36,10 +36,10 @@ import io.sarl.lang.annotations.SarlAccessorsProcessor;
  *
  * <p>TODO: The macro API should use the injection mechanism into the Xtend library.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @since 0.9
  */
 public class SarlProcessorInstanceForJvmTypeProvider extends ProcessorInstanceForJvmTypeProvider {

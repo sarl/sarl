@@ -24,10 +24,10 @@ package io.sarl.lang.scoping;
 /**
  * Custom scoping description.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang
  * @see "https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping"
  */
 public class SARLScopeProvider extends AbstractSARLScopeProvider {

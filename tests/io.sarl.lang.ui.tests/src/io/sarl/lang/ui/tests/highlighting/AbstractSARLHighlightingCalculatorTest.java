@@ -42,10 +42,10 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 /**
  * Unit tests for the higlighting feature dedicated to SARL.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid io.sarl.lang.ui.tests
  */
 public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSarlUiTest {
 
@@ -77,10 +77,10 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 	/** Provides tools for highlighting assertions.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui.tests 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 */
 	protected static final class HighlightingAsserts implements IHighlightedPositionAcceptor {
 

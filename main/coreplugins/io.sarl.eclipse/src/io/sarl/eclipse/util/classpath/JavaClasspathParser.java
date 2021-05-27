@@ -69,10 +69,10 @@ import org.xml.sax.SAXException;
 /**
  * Class mostly inspired from jdt See {@link JavaProject#decodeClasspath} and {@code ClasspathEntry}.
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+ * @version io.sarl.eclipse 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public final class JavaClasspathParser {
@@ -80,10 +80,10 @@ public final class JavaClasspathParser {
     /**
      * UnknownXmlElements.
      *
-     * @author $Author: ngaud$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
+     * @author <a href="http://www.ciad-lab.fr/author-10834/">Nicolas Gaud</a>
+     * @version io.sarl.eclipse 0.12.0 20210527-171007
+     * @mavengroupid io.sarl
+     * @mavenartifactid io.sarl.eclipse
      */
     static class UnknownXmlElements {
         /**

@@ -46,10 +46,10 @@ import io.sarl.lang.compiler.AbstractResourceTypeDetector;
  *
  * <p>This detector tests if one source folder has a name prefixed with {@code src/test}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.8
  * @see SARLConfig#FOLDER_TEST_SOURCE_SARL
  * @see SARLConfig#FOLDER_TEST_SOURCE_GENERATED

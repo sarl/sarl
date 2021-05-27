@@ -69,10 +69,10 @@ import io.sarl.lang.util.SarlUtils;
 
 /** Should functions for the documentation facts.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.docs.testing 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.docs.testing
  * @since 0.6
  */
 @SuppressWarnings({"checkstyle:methodname"})
@@ -948,10 +948,10 @@ public final class ShouldExtensions {
 
 	/** Iterator on array.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.docs.testing 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.docs.testing
 	 */
 	private static class ArrayIterator implements Iterator<Object> {
 
@@ -1002,10 +1002,10 @@ public final class ShouldExtensions {
 
 	/** Major exception in a should function.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.sarl.maven.docs.testing 0.12.0 20210527-171007
+	 * @mavengroupid io.sarl.maven
+	 * @mavenartifactid io.sarl.maven.docs.testing
 	 */
 	public static class ShouldException extends RuntimeException {
 

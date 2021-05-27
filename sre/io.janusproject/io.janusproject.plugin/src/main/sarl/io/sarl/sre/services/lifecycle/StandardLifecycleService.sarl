@@ -42,10 +42,10 @@ import javax.inject.Provider
  * for creating the agents.
  * No injection mechanism is used.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.janusproject.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.janusproject.sre
+ * @mavenartifactid io.janusproject.plugin
  * @since 0.11
  */
 class StandardLifecycleService extends AbstractLifecycleService {
@@ -123,10 +123,10 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * A factory of agent creator that provides the parent ID and agent ID to the created agent.
 	 * This factory does not support the {@code @Injectable} annotation.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 * @since 0.11
 	 */
 	private static class CreatorFactoryWithoutInjectableSupport extends AbtractAgentCreatorProvider {
@@ -145,10 +145,10 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * A factory of agent creator that provides the parent ID and agent ID to the created agent.
 	 * This factory supports the {@code @Injectable} annotation.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+	 * @version io.janusproject.plugin 0.12.0 20210527-171007
+	 * @mavengroupid io.janusproject.sre
+	 * @mavenartifactid io.janusproject.plugin
 	 * @since 0.11
 	 */
 	private static class CreatorFactoryWithInjectableSupport extends AbtractAgentCreatorProvider {

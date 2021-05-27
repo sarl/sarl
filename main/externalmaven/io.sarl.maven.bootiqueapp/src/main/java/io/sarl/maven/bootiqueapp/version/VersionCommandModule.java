@@ -30,10 +30,10 @@ import io.bootique.log.BootLogger;
 
 /** Module for the command for printing out the version.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.maven.bootiqueapp 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.maven
+ * @mavenartifactid io.sarl.maven.bootiqueapp
  * @since 0.8
  */
 public class VersionCommandModule extends AbstractModule {

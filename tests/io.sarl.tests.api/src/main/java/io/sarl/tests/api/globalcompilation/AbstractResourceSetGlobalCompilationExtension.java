@@ -35,10 +35,10 @@ import io.sarl.tests.api.tools.SarlValidationTestHelper;
 
 /** Abstract JUnit5 extension for running tests within a global compilation process. 
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.tests.api 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.tests.api
  * @since 0.11
  */
 @InjectWith(ExtendedSARLInjectorProvider.class)

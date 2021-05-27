@@ -83,10 +83,10 @@ import io.sarl.lang.ui.validation.SARLUIStrings;
 /**
  * Provides labels for a EObjects.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider"
  */
 @SuppressWarnings("checkstyle:classfanoutcomplexity")

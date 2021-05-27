@@ -36,10 +36,10 @@ import org.eclipse.ui.PlatformUI
  * <p>Launching the computation in the Eclipse environment may provide lower results
  * than on the command line.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.experienceindex.plugin 0.12.0 20210527-171007
+ * @mavengroupid io.sarl.experienceindex
+ * @mavenartifactid io.sarl.experienceindex.plugin
  * @since 0.6
  */
 class SarlExperienceIndexEvaluatorHandler extends AbstractHandler {

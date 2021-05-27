@@ -28,10 +28,10 @@ import io.sarl.tests.api.tools.TestMockito;
 
 /** JUnit 5 extension that injects the mocks according to the annotations.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.tests.api 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.tests.api
  * @since 0.11
  */
 public class MockInitializerExtension implements TestInstancePostProcessor {

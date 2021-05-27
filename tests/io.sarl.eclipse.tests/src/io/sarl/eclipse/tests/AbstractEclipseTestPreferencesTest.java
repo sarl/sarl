@@ -39,7 +39,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract class that is forcing the Eclipse preferences to be specific for tests.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

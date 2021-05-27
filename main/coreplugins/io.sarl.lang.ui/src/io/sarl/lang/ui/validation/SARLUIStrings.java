@@ -47,10 +47,10 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * <p>This class extends the standard XBase tool by replacing the example of code, written
  * in Java or Xtend, by the same example in the SARL syntax.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/author-10836/">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.12.0 20210527-171007
+ * @mavengroupid io.sarl
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.5
  */
 @Singleton
