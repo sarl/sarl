@@ -61,6 +61,36 @@ import io.sarl.lang.SARLConfig;
  */
 public abstract class AbstractSarlMojo extends AbstractMojo {
 
+	/** Environment variable that is defined in Maven for skipping tests.
+	 *
+	 * @since 0.12
+	 */
+	public static final String MAVEN_TEST_SKIP_NAME = "maven.test.skip"; //$NON-NLS-1$
+
+	/** Environment variable that is defined in SARL for skipping tests.
+	 *
+	 * @since 0.12
+	 */
+	public static final String SARL_TEST_SKIP_NAME = "sarl.test.skip"; //$NON-NLS-1$
+
+	/** Environment variable that is defined in SARL for skipping compilation of code (excluding tests).
+	 *
+	 * @since 0.12
+	 */
+	public static final String SARL_COMPILE_SKIP_NAME = "sarl.compile.skip"; //$NON-NLS-1$
+
+	/** Environment variable that is defined in SARL for skipping inferring of JVM elements.
+	 *
+	 * @since 0.12
+	 */
+	public static final String SARL_JVMINFERRER_SKIP_NAME = "sarl.jvminferrer.skip"; //$NON-NLS-1$
+
+	/** Environment variable that is defined in SARL for skipping cleaning stage.
+	 *
+	 * @since 0.12
+	 */
+	public static final String SARL_CLEAN_SKIP_NAME = "sarl.clean.skip"; //$NON-NLS-1$
+
 	/** The tool that permits to access to Maven features.
 	 */
 	protected MavenHelper mavenHelper;

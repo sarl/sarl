@@ -229,15 +229,49 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			// Check the general Maven test skipping flag
 			boolean mavenTestSkip = false;
 			try {
-				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty("maven.test.skip", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(MAVEN_TEST_SKIP_NAME, "false")); //$NON-NLS-1$
 			} catch (Throwable exception) {
 				mavenTestSkip = false;
 			}
 			if (mavenTestSkip) {
 				return true;
 			}
+			try {
+				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_TEST_SKIP_NAME, "false")); //$NON-NLS-1$
+			} catch (Throwable exception) {
+				mavenTestSkip = false;
+			}
+			if (mavenTestSkip) {
+				return true;
+			}
+		} else {
+			// Check the general SARL compile skipping flag
+			boolean mavenCompileSkip = false;
+			try {
+				mavenCompileSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_COMPILE_SKIP_NAME, "false")); //$NON-NLS-1$
+			} catch (Throwable exception) {
+				mavenCompileSkip = false;
+			}
+			if (mavenCompileSkip) {
+				return true;
+			}
 		}
 		return super.isSkipped();
+	}
+
+	/** Replies if the SARL JVM Inferring should be skipped or not.
+	 *
+	 * @return {@code true} if the JVM Inferring is skipped.
+	 * @since 0.12
+	 */
+	protected boolean isSarlJvmInferrerSkipped() {
+		boolean sarlCompileSkip = false;
+		try {
+			sarlCompileSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_JVMINFERRER_SKIP_NAME, "false")); //$NON-NLS-1$
+		} catch (Throwable exception) {
+			sarlCompileSkip = false;
+		}
+		return sarlCompileSkip;
 	}
 
 	/** Run compilation.
@@ -271,6 +305,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			out.append(classOutputPath);
 			getLog().debug(out.toString());
 		}
+		compiler.setSarlCompilationEnable(!isSarlJvmInferrerSkipped());
 		final JavaCompiler compilerType = getJavaCompiler();
 		compiler.setJavaPostCompilationEnable(compilerType != JavaCompiler.NONE);
 		compiler.setOptimizationLevel(getOptimization());

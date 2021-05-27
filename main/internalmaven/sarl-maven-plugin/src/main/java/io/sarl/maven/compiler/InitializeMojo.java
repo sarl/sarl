@@ -45,16 +45,18 @@ public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException {
-		final MavenProject project = this.mavenHelper.getSession().getCurrentProject();
-		for (final File f : new File[] {getInput(), getOutput()}) {
-			final String absPath = f.getAbsolutePath();
-			getLog().info(MessageFormat.format(Messages.InitializeMojo_0, absPath));
-			project.addCompileSourceRoot(absPath);
-		}
-		for (final File f : new File[] {getTestInput(), getTestOutput()}) {
-			final String absPath = f.getAbsolutePath();
-			getLog().info(MessageFormat.format(Messages.InitializeMojo_1, absPath));
-			project.addTestCompileSourceRoot(absPath);
+		if (!isSkipped()) {
+			final MavenProject project = this.mavenHelper.getSession().getCurrentProject();
+			for (final File f : new File[] {getInput(), getOutput()}) {
+				final String absPath = f.getAbsolutePath();
+				getLog().info(MessageFormat.format(Messages.InitializeMojo_0, absPath));
+				project.addCompileSourceRoot(absPath);
+			}
+			for (final File f : new File[] {getTestInput(), getTestOutput()}) {
+				final String absPath = f.getAbsolutePath();
+				getLog().info(MessageFormat.format(Messages.InitializeMojo_1, absPath));
+				project.addTestCompileSourceRoot(absPath);
+			}
 		}
 	}
 

@@ -42,17 +42,31 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class CleanMojo extends AbstractSarlMojo {
 
 	@Override
+	protected boolean isSkipped() {
+		// Check the general SARL clean skipping flag
+		boolean mavenCleanSkip = false;
+		try {
+			mavenCleanSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_CLEAN_SKIP_NAME, "false")); //$NON-NLS-1$
+		} catch (Throwable exception) {
+			mavenCleanSkip = false;
+		}
+		return mavenCleanSkip || super.isSkipped();
+	}
+
+	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException {
-		final String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
-		final String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
-		final String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
-		final String cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
-		executeMojo(
-				cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
-				MessageFormat.format(
-				this.mavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
-				getOutput().getAbsolutePath(),
-				getTestOutput().getAbsolutePath()));
+		if (!isSkipped()) {
+			final String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
+			final String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
+			final String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
+			final String cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
+			executeMojo(
+					cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
+					MessageFormat.format(
+					this.mavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
+					getOutput().getAbsolutePath(),
+					getTestOutput().getAbsolutePath()));
+		}
 	}
 
 }

@@ -165,6 +165,8 @@ public class SarlBatchCompiler {
 
 	private boolean verbose;
 
+	private boolean enableSarlCompilation = true;
+
 	private boolean enableJavaPostCompilation;
 
 	private List<File> sourcePath;
@@ -362,7 +364,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the Java compiler should be invoked after the SARL compiler is invoked.
 	 *
-	 * @return <code>true</code> if the Java compiler is invoked after the SARL compiler.
+	 * @return {@code true} if the Java compiler is invoked after the SARL compiler.
 	 */
 	public boolean isJavaPostCompilationEnable() {
 		return this.enableJavaPostCompilation;
@@ -370,10 +372,28 @@ public class SarlBatchCompiler {
 
 	/** Set if the Java compiler should be invoked after the SARL compiler is invoked.
 	 *
-	 * @param enable <code>true</code> if the Java compiler is invoked after the SARL compiler.
+	 * @param enable {@code true} if the Java compiler is invoked after the SARL compiler.
 	 */
 	public void setJavaPostCompilationEnable(boolean enable) {
 		this.enableJavaPostCompilation = enable;
+	}
+
+	/** Replies if the SARL compiler should be invoked before the Java compiler is invoked.
+	 *
+	 * @return {@code true} if the SARL compiler is invoked before the Java compiler.
+	 * @since 0.12
+	 */
+	public boolean isSarlCompilationEnable() {
+		return this.enableSarlCompilation;
+	}
+
+	/** Set if the SARL compiler should be invoked before the Java compiler is invoked.
+	 *
+	 * @param enable is {@code true} if the SARL compiler is invoked before the Java compiler.
+	 * @since 0.12
+	 */
+	public void setSarlCompilationEnable(boolean enable) {
+		this.enableSarlCompilation = enable;
 	}
 
 	/** Replies the formatter of the issue messages.
@@ -493,7 +513,7 @@ public class SarlBatchCompiler {
 	 * <p>The usual filename for the trace files follows the pattern
 	 * {@code .Type.java._trace}, where {@code Type} is the name of the SARL type declaration.
 	 *
-	 * @return <code>true</code> for generation.
+	 * @return {@code true} for generation.
 	 */
 	public boolean isWriteTraceFiles() {
 		return this.writeTraceFiles;
@@ -508,7 +528,7 @@ public class SarlBatchCompiler {
 	 * <p>The usual filename for the trace files follows the pattern
 	 * {@code .Type.java._trace}, where {@code Type} is the name of the SARL type declaration.
 	 *
-	 * @param writeTraceFiles <code>true</code> for generation.
+	 * @param writeTraceFiles {@code true} for generation.
 	 */
 	public void setWriteTraceFiles(boolean writeTraceFiles) {
 		this.writeTraceFiles = writeTraceFiles;
@@ -522,7 +542,7 @@ public class SarlBatchCompiler {
 	 * <p>The usual filename for the storage files follows the pattern
 	 * {@code .Type.sarlbin}, where {@code Type} is the name of the SARL type declaration.
 	 *
-	 * @return <code>true</code> for generation.
+	 * @return {@code true} for generation.
 	 */
 	@Pure
 	public boolean isWriteStorageFiles() {
@@ -537,7 +557,7 @@ public class SarlBatchCompiler {
 	 * <p>The usual filename for the storage files follows the pattern
 	 * {@code .Type.sarlbin}, where {@code Type} is the name of the SARL type declaration.
 	 *
-	 * @param writeStorageFiles <code>true</code> for generation.
+	 * @param writeStorageFiles {@code true} for generation.
 	 */
 	public void setWriteStorageFiles(boolean writeStorageFiles) {
 		this.writeStorageFiles = writeStorageFiles;
@@ -545,7 +565,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the compiler is verbose.
 	 *
-	 * @return <code>true</code> if the compiler is verbose.
+	 * @return {@code true} if the compiler is verbose.
 	 */
 	@Pure
 	public boolean isJavaCompilerVerbose() {
@@ -554,7 +574,7 @@ public class SarlBatchCompiler {
 
 	/** Set the underlying Java compiler verbosity.
 	 *
-	 * @param verbose <code>true</code> if the Java compiler is verbose.
+	 * @param verbose {@code true} if the Java compiler is verbose.
 	 */
 	public void setJavaCompilerVerbose(boolean verbose) {
 		this.verbose = verbose;
@@ -582,7 +602,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the class loaderr of this batch compiler must be used as sthe parent class loader.
 	 *
-	 * @param useCurrentClassLoaderAsParent <code>true</code> for using the class loader of this batch compiler.
+	 * @param useCurrentClassLoaderAsParent {@code true} for using the class loader of this batch compiler.
 	 */
 	public void setUseCurrentClassLoaderAsParent(boolean useCurrentClassLoaderAsParent) {
 		this.useCurrentClassLoaderAsParent = useCurrentClassLoaderAsParent;
@@ -590,7 +610,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the class loaderr of this batch compiler must be used as sthe parent class loader.
 	 *
-	 * @return <code>true</code> for using the class loader of this batch compiler.
+	 * @return {@code true} for using the class loader of this batch compiler.
 	 */
 	@Pure
 	public boolean isUseCurrentClassLoaderAsParent() {
@@ -862,7 +882,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the temp folder must be deleted at the end of the compilation.
 	 *
-	 * @return <code>true</code> if the temp folder is deleted.
+	 * @return {@code true} if the temp folder is deleted.
 	 * @deprecated since 0.10, see {@link #getCleaningPolicy()}.
 	 */
 	@Pure
@@ -874,7 +894,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the temp folder must be deleted at the end of the compilation.
 	 *
-	 * @param delete <code>true</code> if the temp folder is deleted.
+	 * @param delete {@code true} if the temp folder is deleted.
 	 * @deprecated since 0.10, see {@link #setCleaningPolicy(CleaningPolicy)}.
 	 */
 	@Deprecated
@@ -980,7 +1000,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the compiler generate the Xbase expressions.
 	 *
-	 * @return <code>true</code> if the compiler generates the expressions
+	 * @return {@code true} if the compiler generates the expressions
 	 */
 	@Pure
 	public boolean isGenerateExpressions() {
@@ -989,7 +1009,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the compiler generate the Xbase expressions.
 	 *
-	 * @param generateExpressions <code>true</code> if the compiler generates the expressions
+	 * @param generateExpressions {@code true} if the compiler generates the expressions
 	 */
 	public void setGenerateExpressions(boolean generateExpressions) {
 		getGeneratorConfig().setGenerateExpressions(generateExpressions);
@@ -997,7 +1017,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the <code>@SuppressWarnings</code> is generated.
 	 *
-	 * @return <code>true</code> if the compiler generates the warning supression annotations.
+	 * @return {@code true} if the compiler generates the warning supression annotations.
 	 */
 	@Pure
 	public boolean isGenerateSyntheticSuppressWarnings() {
@@ -1006,7 +1026,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the <code>@SuppressWarnings</code> is generated.
 	 *
-	 * @param generateAnnotations <code>true</code> if the compiler generates the warning supression annotations.
+	 * @param generateAnnotations {@code true} if the compiler generates the warning supression annotations.
 	 */
 	public void setGenerateSyntheticSuppressWarnings(boolean generateAnnotations) {
 		getGeneratorConfig().setGenerateSyntheticSuppressWarnings(generateAnnotations);
@@ -1014,7 +1034,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the <code>@Generated</code> is generated.
 	 *
-	 * @return <code>true</code> if the compiler generates the generated annotations.
+	 * @return {@code true} if the compiler generates the generated annotations.
 	 */
 	@Pure
 	public boolean isGenerateGeneratedAnnotation() {
@@ -1023,7 +1043,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the <code>@Generated</code> is generated.
 	 *
-	 * @param generateAnnotations <code>true</code> if the compiler generates the generated annotations.
+	 * @param generateAnnotations {@code true} if the compiler generates the generated annotations.
 	 */
 	public void setGenerateGeneratedAnnotation(boolean generateAnnotations) {
 		getGeneratorConfig().setGenerateGeneratedAnnotation(generateAnnotations);
@@ -1031,7 +1051,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the generation date is included in the <code>@Generated</code> annotations.
 	 *
-	 * @return <code>true</code> if the generation date is added.
+	 * @return {@code true} if the generation date is added.
 	 */
 	@Pure
 	public boolean isIncludeDateInGeneratedAnnotation() {
@@ -1040,7 +1060,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the generation date is included in the <code>@Generated</code> annotations.
 	 *
-	 * @param includeDateInGeneratedAnnotation <code>true</code> if the generation date is added.
+	 * @param includeDateInGeneratedAnnotation {@code true} if the generation date is added.
 	 */
 	public void setIncludeDateInGeneratedAnnotation(boolean includeDateInGeneratedAnnotation) {
 		getGeneratorConfig().setIncludeDateInGeneratedAnnotation(includeDateInGeneratedAnnotation);
@@ -1065,7 +1085,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isGenerateInlineAnnotation() {
@@ -1074,7 +1094,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the <code>@Inline</code> shall be generated.
 	 *
-	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setGenerateInlineAnnotation(final boolean generateInlineAnnotation) {
 		getGeneratorConfig2().setGenerateInlineAnnotation(generateInlineAnnotation);
@@ -1082,7 +1102,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if constant expression interpreter shall be called for generated <code>@Inline</code>.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isUseExpressionInterpreterForInlineAnnotation() {
@@ -1091,7 +1111,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the constant expression interpreter shall be called for generated <code>@Inline</code>.
 	 *
-	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setUseExpressionInterpreterForInlineAnnotation(final boolean generateInlineAnnotation) {
 		getGeneratorConfig2().setUseExpressionInterpreterForInlineAnnotation(generateInlineAnnotation);
@@ -1099,7 +1119,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the <code>@Pure</code> shall be generated.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isGeneratePureAnnotation() {
@@ -1108,7 +1128,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the <code>@Pure</code> shall be generated.
 	 *
-	 * @param generatePureAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generatePureAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setGeneratePureAnnotation(final boolean generatePureAnnotation) {
 		getGeneratorConfig2().setGeneratePureAnnotation(generatePureAnnotation);
@@ -1116,7 +1136,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the equality test functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -1126,7 +1146,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the equality test functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @param generateFunctions {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateEqualityTestFunctions(final boolean generateFunctions) {
@@ -1135,7 +1155,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the toString functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -1145,7 +1165,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the toString functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @param generateFunctions {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateToStringFunctions(final boolean generateFunctions) {
@@ -1154,7 +1174,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the clone functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -1164,7 +1184,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the clone functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @param generateFunctions {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateCloneFunctions(final boolean generateFunctions) {
@@ -1173,7 +1193,7 @@ public class SarlBatchCompiler {
 
 	/** Replies if the serial number fields shall be generated.
 	 *
-	 * @return <code>true</code> if the fields shall be generated.
+	 * @return {@code true} if the fields shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -1183,7 +1203,7 @@ public class SarlBatchCompiler {
 
 	/** Set if the serial number fields shall be generated.
 	 *
-	 * @param generateFields <code>true</code> if the fields shall be generated.
+	 * @param generateFields {@code true} if the fields shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateSerialNumberFields(final boolean generateFields) {
@@ -1347,82 +1367,84 @@ public class SarlBatchCompiler {
 			if (monitor.isCanceled()) {
 				return false;
 			}
-			monitor.worked(4);
-			try {
-				monitor.subTask(Messages.SarlBatchCompiler_45);
-				this.compilerPhases.setIndexing(resourceSet, true);
-				if (monitor.isCanceled()) {
-					return false;
-				}
-				monitor.worked(5);
-				// install a type provider without index lookup for the first phase
-				installJvmTypeProvider(resourceSet, stubClassDirectory, true, monitor);
-				if (monitor.isCanceled()) {
-					return false;
-				}
-				monitor.worked(6);
-				loadSARLFiles(resourceSet, monitor);
-				if (monitor.isCanceled()) {
-					return false;
-				}
-				monitor.worked(7);
-				final File stubSourceDirectory = createStubs(resourceSet, monitor);
-				if (monitor.isCanceled()) {
-					return false;
-				}
-				monitor.worked(8);
-				CompilerStatus compilerStatus = preCompileStubs(stubSourceDirectory, stubClassDirectory, monitor);
-				if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
-					if (compilerStatus != CompilerStatus.CANCELED) {
-						reportInternalError(MessageFormat.format(Messages.SarlBatchCompiler_2, compilerStatus.getFailureExplanation()));
-					}
-					return false;
-				}
-				monitor.worked(9);
-				compilerStatus = preCompileJava(stubSourceDirectory, stubClassDirectory, monitor);
-				if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
-					if (compilerStatus == CompilerStatus.CANCELED) {
+			if (isSarlCompilationEnable()) {
+				monitor.worked(4);
+				try {
+					monitor.subTask(Messages.SarlBatchCompiler_45);
+					this.compilerPhases.setIndexing(resourceSet, true);
+					if (monitor.isCanceled()) {
 						return false;
 					}
-					if (getLogger().isLoggable(Level.FINEST)) {
-						getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_3, compilerStatus.getFailureExplanation()));
+					monitor.worked(5);
+					// install a type provider without index lookup for the first phase
+					installJvmTypeProvider(resourceSet, stubClassDirectory, true, monitor);
+					if (monitor.isCanceled()) {
+						return false;
+					}
+					monitor.worked(6);
+					loadSARLFiles(resourceSet, monitor);
+					if (monitor.isCanceled()) {
+						return false;
+					}
+					monitor.worked(7);
+					final File stubSourceDirectory = createStubs(resourceSet, monitor);
+					if (monitor.isCanceled()) {
+						return false;
+					}
+					monitor.worked(8);
+					CompilerStatus compilerStatus = preCompileStubs(stubSourceDirectory, stubClassDirectory, monitor);
+					if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
+						if (compilerStatus != CompilerStatus.CANCELED) {
+							reportInternalError(MessageFormat.format(Messages.SarlBatchCompiler_2, compilerStatus.getFailureExplanation()));
+						}
+						return false;
+					}
+					monitor.worked(9);
+					compilerStatus = preCompileJava(stubSourceDirectory, stubClassDirectory, monitor);
+					if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
+						if (compilerStatus == CompilerStatus.CANCELED) {
+							return false;
+						}
+						if (getLogger().isLoggable(Level.FINEST)) {
+							getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_3, compilerStatus.getFailureExplanation()));
+						}
+					}
+					monitor.worked(10);
+				} finally {
+					monitor.subTask(Messages.SarlBatchCompiler_46);
+					this.compilerPhases.setIndexing(resourceSet, false);
+					if (monitor.isCanceled()) {
+						return false;
 					}
 				}
-				monitor.worked(10);
-			} finally {
-				monitor.subTask(Messages.SarlBatchCompiler_46);
-				this.compilerPhases.setIndexing(resourceSet, false);
+				monitor.worked(11);
+				// install a fresh type provider for the second phase, so we clear all previously cached classes and misses.
+				installJvmTypeProvider(resourceSet, stubClassDirectory, false, monitor);
 				if (monitor.isCanceled()) {
 					return false;
 				}
-			}
-			monitor.worked(11);
-			// install a fresh type provider for the second phase, so we clear all previously cached classes and misses.
-			installJvmTypeProvider(resourceSet, stubClassDirectory, false, monitor);
-			if (monitor.isCanceled()) {
-				return false;
-			}
-			monitor.worked(12);
-			generateJvmElements(resourceSet, monitor);
-			if (monitor.isCanceled()) {
-				return false;
-			}
-			monitor.worked(13);
-			final List<Resource> validatedResources = new ArrayList<>();
-			final List<Issue> issues = validate(resourceSet, validatedResources, monitor);
-			if (monitor.isCanceled()) {
-				return false;
-			}
-			if (!issues.isEmpty()) {
-				if (reportCompilationIssues(issues)) {
+				monitor.worked(12);
+				generateJvmElements(resourceSet, monitor);
+				if (monitor.isCanceled()) {
 					return false;
 				}
-			}
-			monitor.worked(14);
-			overrideXtextInternalLoggers();
-			generateJavaFiles(validatedResources, monitor);
-			if (monitor.isCanceled()) {
-				return false;
+				monitor.worked(13);
+				final List<Resource> validatedResources = new ArrayList<>();
+				final List<Issue> issues = validate(resourceSet, validatedResources, monitor);
+				if (monitor.isCanceled()) {
+					return false;
+				}
+				if (!issues.isEmpty()) {
+					if (reportCompilationIssues(issues)) {
+						return false;
+					}
+				}
+				monitor.worked(14);
+				overrideXtextInternalLoggers();
+				generateJavaFiles(validatedResources, monitor);
+				if (monitor.isCanceled()) {
+					return false;
+				}
 			}
 			monitor.worked(15);
 			if (isJavaPostCompilationEnable()) {
@@ -1792,7 +1814,7 @@ public class SarlBatchCompiler {
 	/** Replies if the given resource is a script.
 	 *
 	 * @param resource the resource to test.
-	 * @return <code>true</code> if the given resource is a script.
+	 * @return {@code true} if the given resource is a script.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isSourceFile(Resource resource) {
@@ -2103,7 +2125,7 @@ public class SarlBatchCompiler {
 	/** Check the compiler configuration; and logs errors.
 	 *
 	 * @param progress monitor of the progress of the compilation.
-	 * @return success status. Replies <code>false</code> if the operation is canceled.
+	 * @return success status. Replies {@code false} if the operation is canceled.
 	 */
 	protected boolean checkConfiguration(IProgressMonitor progress) {
 		assert progress != null;
