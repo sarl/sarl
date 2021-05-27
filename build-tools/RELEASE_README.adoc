@@ -35,13 +35,13 @@ If a manual test is failing, fix the problem, and go to step 1.2.
 
 Test the generation of the  bundles for Maven Central:
 
-     $> ./build-tools/scripts/prepare-bundles-for-central.sh
+     $> ./build-tools/scripts/prepare-bundles-for-central.py
 
 === 1.7) Javadoc Generation
 
 Test the generation of the Javadoc for the public API (the real generation will be done by the Rake script of the website):
 
-     $> ./build-tools/scripts/generate-aggregate-javadoc.sh
+     $> ./build-tools/scripts/generate-aggregate-javadoc.py
 
 == 2) PHASE 2: RELEASE VERSION
 
@@ -54,11 +54,15 @@ In the `.sarl` and `.java` files:
 * Replace `$ArtifactId$` by the artifact name of the current Maven module.
 * Replace `$Author: ID$` by the hyperlink of the contributor with the identifier `ID`.
 
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
+
 === 2.2) Remove snapshot markers
 
 Remove all the occurrences of `-SNAPSHOT` in all the poms.
 
 CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
+
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
 
 === 2.3) Update the versions in the Eclipse configurations
 
@@ -66,6 +70,8 @@ CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
 * Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
 * Remove `.qualifier` in the `*.product` files (in root tag and feature tag).
 * Remove `.qualifier` in the `category.xml` files (in feature tags, url and version).
+
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
 
 === 2.4) Comment any reference to the Snapshot Maven repository
 
@@ -90,7 +96,7 @@ Check if the `about.mappings` files and the `SARLVersion.java` file are containi
 
 Prepare the bundles for Maven Central:
 
-     $> ./build-tools/scripts/prepare-bundles-for-central.sh
+     $> ./build-tools/scripts/prepare-bundles-for-central.py
 
 Copy the bundles inside a safe folder for the Phase 3.
 
@@ -98,7 +104,7 @@ Copy the bundles inside a safe folder for the Phase 3.
 
 Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
 
-     $> ./build-tools/scripts/generate-aggregate-javadoc.sh
+     $> ./build-tools/scripts/generate-aggregate-javadoc.py
 
 === 2.11) Commit and push to Github
 
@@ -114,7 +120,7 @@ Generate the Javadoc for the public API (the real generation will be done by the
 
 For uploading the release files onto the SARL server, you could use the provided script:
 
-     $> ./build-tools/scripts/mvn-release-sarl.sh
+     $> ./build-tools/scripts/mvn-release-sarl.py
 
 This script needs to have environment variables for defining the SARL server addresses, and the access login.
 
@@ -204,6 +210,7 @@ Revert steps 2.1 to 2.5; and change the following:
 * Versions in the `category.xml` (in feature tags, url and version).
 * Uncomment the Snapshot Maven repository.
 
+NOTE: This task is automated by the `./build-tools/scripts/prepare-release.py` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
 
 === 4.2) Upgrade versions
 

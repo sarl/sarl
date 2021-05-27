@@ -177,10 +177,11 @@ def replaceMaven(filename, generation_date):
 	for line in data:
 		line2 = re.sub("\$GroupId\$", groupId, line)
 		line2 = re.sub("\$ArtifactId\$", artifactId, line2)
+		line2 = re.sub("\$Name\$", artifactId, line2)
 		line2 = re.sub("\$Version\$", version, line2)
-		line2 = re.sub("\$FullVersion\$", full_version, line2)
+		line2 = re.sub("\$Revision\$", version, line2)
 		line2 = re.sub("\$Date\$", generation_date, line2)
-		line2 = re.sub("\$Filename\$", os.path.basename(filename), line2)
+		line2 = re.sub("\$FullVersion\$", full_version, line2)
 		line2 = re.sub("\$Filename\$", os.path.basename(filename), line2)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
