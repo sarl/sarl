@@ -16,9 +16,12 @@ If you want to add getter and or setter methods for your fields, [:accessorsanno
 This annotation can be applied to either object-oriented types and several agent-oriented types.
 The agent-oriented types in which you could uses the [:accessorsannon:] annotation are the agents,
 the behaviors and the skills.
+To uses this annotation, you have to import it as:
 
 [:Success:]
-	import org.eclipse.xtend.lib.annotations.Accessors
+	[:On]
+	import [:accessorsannonfqn](org.eclipse.xtend.lib.annotations.Accessors)
+	[:Off]
 	agent MyAgent {
 		[:accessorsannon!] var name : String
 	}
@@ -154,11 +157,10 @@ It is compiled to the code:
 	[:Off]
 [:End:]
 
-
 ## @Data
 
 The annotation [:dataannon:] will turn an annotated class into a value object class. A class annotated with
-[:dataannon] is processed according to the following rules:
+[:dataannon:] is processed according to the following rules:
 
 * all fields are final, i.e. they must be declared with [:valkw:],
 * getter methods will be generated (if they do not yet exist),
@@ -170,8 +172,8 @@ This annotation can be applied to object-oriented types. The agent-oriented type
 
 Example:
 [:Success:]
-	import org.eclipse.xtend.lib.annotations.Data
 	[:On]
+	import [:dataannonfqn](org.eclipse.xtend.lib.annotations.Data)
 	[:dataannon](@Data) class Person {
 	  [:valkw](val) firstName : String
 	  val lastName : String
@@ -189,7 +191,6 @@ Example:
 	}
 [:End:]
 
-
 ## @Delegate
 
 The [:delegateannon:] annotation automatically generates delegate methods for all interfaces shared between the delegate
@@ -198,8 +199,8 @@ This annotation can be applied to object-oriented types. The agent-oriented type
 
 Let's start with a basic example:
 [:Success:]
-	import org.eclipse.xtend.lib.annotations.Delegate
 	[:On]
+	import [:delegationannonfqn](org.eclipse.xtend.lib.annotations.Delegate)
 	interface SomeInterface {
 		def function(param : String) : int
 	}
@@ -329,8 +330,8 @@ The annotation may mark a type, as in the following example.
 In this case, no equality test function is generated within the marked type and all its subtypes.
 
 [:Success:]
-	import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration
 	[:On]
+	import [:noeqtestannonfqn](io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration)
 	[:noeqtestannon](@NoEqualityTestFunctionsGeneration)
 	class MyClass {
 	  var field1 : int
@@ -357,7 +358,6 @@ by the `hashCode()` function does not include the hash code of the [:noeqtestfie
 [:End:]
 
 
-
 ## @ToString
 
 The [:tostringannon:] annotation enables to generate the function that replies the string representation
@@ -368,8 +368,8 @@ This annotation can be applied to object-oriented types. The agent-oriented type
 Let's a basic example:
 
 [:Success:]
-	import org.eclipse.xtend.lib.annotations.ToString
 	[:On]
+	import [:tostringannonfqn](org.eclipse.xtend.lib.annotations.ToString)
 	[:tostringannon](@ToString)
 	class MyClass {
 	  var field1 : int
@@ -406,7 +406,6 @@ The previous code is equivalent to:
 
 
 For brevity there are options to the annotation to hide field names, skip fields with null values and print everything on one line.
-
 
 
 
