@@ -390,7 +390,7 @@
 
    <preferencesInfo>
       <sourcefile path="sarl.epf"/>
-      <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
+      <targetfile overwrite="false" path="/io.sarl.eclipse-dsl4sarl/plugin_customization.ini"/>
    </preferencesInfo>
 
    <cssInfo>
