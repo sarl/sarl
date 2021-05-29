@@ -85,7 +85,22 @@ Into the root `pom.xml`, comment any reference to a snapshot maven repository.
 
 === 2.6) Update the graphical resources
 
-Splash screen, icons...
+* **Splash screens**
+** Update the picture into the `sarl-data-repository` Git repository:
+*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse`
+*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse-dsl4sarl`
+*** Copy the slash screens into the associated modules
+*** Find the name of the author of the background image, and update the following files to mention this author:
+**** file: `io.sarl.eclipse/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+**** file: `io.sarl.eclipse-dsl4sarl/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+* **Picture for the "about" dialog box**
+** Update the picture into the `sarl-data-repository` Git repository:
+*** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration
+*** Copy the slash screens into the folders `io.sarl.eclipse/icons` and `io.sarl.eclipse-dsl4sarl/icons`
+*** If the author of the background is different than for the splash screen, add the author's name into the properties as explained above
+		
 
 === 2.7) Compiling locally without error
 
@@ -222,7 +237,21 @@ Change the version numbers into the archive files stored in the `io.sarl.tests.t
 
 === 4.3) Change the UI resources.
 
-Change the UI resources (splash screen, etc.)
+* **Splash screens**
+** Update the picture into the `sarl-data-repository` Git repository:
+*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse`
+*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse-dsl4sarl`
+*** Copy the slash screens into the associated modules
+*** Find the name of the author of the background image, and update the following files to mention this author:
+**** file: `io.sarl.eclipse/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+**** file: `io.sarl.eclipse-dsl4sarl/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+* **Picture for the "about" dialog box**
+** Update the picture into the `sarl-data-repository` Git repository:
+*** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration
+*** Copy the slash screens into the folders `io.sarl.eclipse/icons` and `io.sarl.eclipse-dsl4sarl/icons`
+*** If the author of the background is different than for the splash screen, add the author's name into the properties as explained above
 
 === 4.4) Compiling locally without error.
 
