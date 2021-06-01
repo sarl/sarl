@@ -336,6 +336,7 @@ The modifiers for the fields in a Skill are:
 	* [:protectedmodifier:]: the field is accessible within the same package, and in derived Agents;
 	* [:packagemodifier:]: the field is accessible only within the same package as its Agent;
 	* [:privatemodifier:]: the field is accessible only within its Agent (default).
+* [:staticmodifier:]: the field is a class field, not an instance field.
 
 Examples:
 
@@ -350,6 +351,7 @@ Examples:
 		[:protectedmodifier](protected) var example2 : Object
 		package var example3 : Object
 		[:privatemodifier](private) var example4 : Object
+		[:staticmodifier](static) var example5 : Object
 	[:Off]
 	}
 [:End:]
@@ -367,6 +369,7 @@ The modifiers for the methods in a Skill are:
 * [:abstractmodifier:]: the method has no implementation in the class.
 * [:dispatchmodifier:]: the method provides an implementation for the dispatch method mechanism.
 * [:finalmodifier:]: the method cannot be overridden in derived classes.
+* [:staticmodifier:]: the method is a class method, not an instance method.
 
 Examples:
 
@@ -392,6 +395,8 @@ Examples:
 		// Dispatch functions
 		[:dispatchmodifier](dispatch) def example7(p : Integer) { }
 		dispatch def example7(p : Float) { }
+		// Static / Class function
+		static def example8 { }
 	[:Off]
 	}
 [:End:]

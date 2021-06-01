@@ -59,6 +59,8 @@ public class Messages extends NLS {
 	public static String SARLQuickfixProvider_15;
 	public static String SARLQuickfixProvider_16;
 	public static String SARLQuickfixProvider_17;
+	public static String SARLQuickfixProvider_18;
+	public static String SARLQuickfixProvider_19;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

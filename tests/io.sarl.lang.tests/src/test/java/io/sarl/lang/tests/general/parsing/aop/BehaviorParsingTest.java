@@ -48,6 +48,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlField;
@@ -980,9 +981,22 @@ public class BehaviorParsingTest {
 					"behavior B1 {",
 					"	static def name { }",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior behavior1 = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", behavior1.getName());
+			assertNull(behavior1.getExtends());
+			assertEquals(1, behavior1.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) behavior1.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertNull(act1.getReturnType());
+			assertEquals(0, act1.getParameters().size());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isFinal());
+			assertTrue(act1.isStatic());
 		}
 
 		@Test
@@ -1509,9 +1523,25 @@ public class BehaviorParsingTest {
 					"behavior B1 {",
 					"	static var field : int",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior behavior1 = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", behavior1.getName());
+			assertNull(behavior1.getExtends());
+			assertEquals(1, behavior1.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) behavior1.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertTrue(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1871,14 +1901,25 @@ public class BehaviorParsingTest {
 		@Test
 		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(getParseHelper(), multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"	static new { super(null) }",
+					"	static new { }",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.PUBLIC, cons.getVisibility());
+			assertTrue(cons.isStatic());
+			assertFalse(cons.isFinal());
 		}
 
 		@Test

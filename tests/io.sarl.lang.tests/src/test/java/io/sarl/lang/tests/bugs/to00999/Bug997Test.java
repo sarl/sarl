@@ -50,7 +50,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
 @DisplayName("Bug #997")
 @SuppressWarnings("all")
 @Tag("core")
-@Tag("sarlParsing")
+@Tag("sarlValidation")
 public class Bug997Test extends AbstractSarlTest {
 
 	/** Expression elements are inside the same resource as the expression.

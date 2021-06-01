@@ -57,6 +57,7 @@ import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlField;
@@ -964,9 +965,22 @@ public class SkillParsingTest {
 					"skill S1 implements C1 {",
 					"	static def name { }",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill1.getName());
+			assertNull(skill1.getExtends());
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill1.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertNull(act1.getReturnType());
+			assertEquals(0, act1.getParameters().size());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isFinal());
+			assertTrue(act1.isStatic());
 		}
 
 		@Test
@@ -1909,9 +1923,25 @@ public class SkillParsingTest {
 					"skill S1 implements C1 {",
 					"	static var field : int",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill1.getName());
+			assertNull(skill1.getExtends());
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill1.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertTrue(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test

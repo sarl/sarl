@@ -797,7 +797,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final boolean notInitializedValueField = Iterables.any(source.getMembers(), it -> {
 				if (it instanceof XtendField) {
 					final XtendField op = (XtendField) it;
-					if (op.isFinal() && op.getInitialValue() == null) {
+					if (op.isFinal() && !op.isStatic() && op.getInitialValue() == null) {
 						return true;
 					}
 				}

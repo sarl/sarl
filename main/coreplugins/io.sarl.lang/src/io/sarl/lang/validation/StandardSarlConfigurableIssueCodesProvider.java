@@ -131,6 +131,10 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

@@ -328,7 +328,8 @@ public class SARLValidator extends AbstractSARLValidator {
 			newArrayList(
 					"package",  //$NON-NLS-1$
 					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"static")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
@@ -339,7 +340,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS3$
 					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
@@ -348,7 +349,8 @@ public class SARLValidator extends AbstractSARLValidator {
 			newArrayList(
 					"public", "package", //$NON-NLS-1$//$NON-NLS-2$
 					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"static")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
@@ -378,7 +380,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
@@ -387,7 +389,8 @@ public class SARLValidator extends AbstractSARLValidator {
 			newArrayList(
 					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"static")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedClassInAgentModifierValidator = new SARLModifierValidator(
@@ -708,14 +711,12 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (declaringType != null) {
 			final String typeName = declaringType.getName();
 			final String msg = MessageFormat.format(Messages.SARLValidator_61, typeName);
-			if (declaringType instanceof SarlEvent
-					|| declaringType instanceof SarlAgent
-					|| declaringType instanceof SarlSkill
-					|| declaringType instanceof SarlBehavior) {
-				this.constructorModifierValidatorForSpecialContainer.checkModifiers(constructor, msg);
-			} else if (constructor.isStatic()) {
+			if (constructor.isStatic()) {
 				this.staticConstructorModifierValidator.checkModifiers(constructor, msg);
+			} else if (isAOConstructorContainer(declaringType)) {
+				this.constructorModifierValidatorForSpecialContainer.checkModifiers(constructor, msg);
 			} else {
+				// Other standard OOP cases
 				super.checkModifiers(constructor);
 			}
 		}
@@ -753,24 +754,38 @@ public class SARLValidator extends AbstractSARLValidator {
 	protected void checkModifiers(XtendField field) {
 		final XtendTypeDeclaration declaringType = field.getDeclaringType();
 		if (declaringType != null) {
+			boolean generateMemorySharingWarning = false;
 			if (declaringType instanceof SarlEvent) {
 				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInEventModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_10, field.getName(), typeName));
 			} else if (declaringType instanceof SarlAgent) {
+				generateMemorySharingWarning = true;
 				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInAgentModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_10, field.getName(), typeName));
 			} else if (declaringType instanceof SarlSkill) {
+				generateMemorySharingWarning = true;
 				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInSkillModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_10, field.getName(), typeName));
 			} else if (declaringType instanceof SarlBehavior) {
+				generateMemorySharingWarning = true;
 				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInBehaviorModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_10, field.getName(), typeName));
 			} else {
 				super.checkModifiers(field);
+			}
+			if (generateMemorySharingWarning && field.isStatic() && !isIgnored(IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL)) {
+				if (!field.isFinal()
+						|| field.getInitialValue() == null
+						|| getExpressionHelper().hasSideEffects(field.getInitialValue())) {
+					addIssue(
+							MessageFormat.format(Messages.SARLValidator_105, field.getName()),
+							field,
+							IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL);
+				}
 			}
 		}
 	}
@@ -1045,31 +1060,33 @@ public class SARLValidator extends AbstractSARLValidator {
 			for (final XtendMember member : container.getMembers()) {
 				if (member instanceof SarlConstructor) {
 					final SarlConstructor constructor = (SarlConstructor) member;
-					//hasDeclaredConstructor = true;
-					boolean invokeDefaultConstructor = true;
-					final XExpression body = constructor.getExpression();
-					if (body instanceof XBlockExpression) {
-						final XBlockExpression block = (XBlockExpression) body;
-						if (!block.getExpressions().isEmpty()) {
-							final XExpression firstStatement = block.getExpressions().get(0);
-							if (firstStatement instanceof XConstructorCall || isDelegateConstructorCall(firstStatement)) {
-								invokeDefaultConstructor = false;
+					if (!constructor.isStatic()) {
+						//hasDeclaredConstructor = true;
+						boolean invokeDefaultConstructor = true;
+						final XExpression body = constructor.getExpression();
+						if (body instanceof XBlockExpression) {
+							final XBlockExpression block = (XBlockExpression) body;
+							if (!block.getExpressions().isEmpty()) {
+								final XExpression firstStatement = block.getExpressions().get(0);
+								if (firstStatement instanceof XConstructorCall || isDelegateConstructorCall(firstStatement)) {
+									invokeDefaultConstructor = false;
+								}
 							}
+						} else if (body instanceof XConstructorCall || isDelegateConstructorCall(body)) {
+							invokeDefaultConstructor = false;
 						}
-					} else if (body instanceof XConstructorCall || isDelegateConstructorCall(body)) {
-						invokeDefaultConstructor = false;
-					}
-					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
-						final List<String> issueData = new ArrayList<>();
-						for (final ActionParameterTypes defaultSignature : defaultSignatures) {
-							issueData.add(defaultSignature.toString());
+						if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
+							final List<String> issueData = new ArrayList<>();
+							for (final ActionParameterTypes defaultSignature : defaultSignatures) {
+								issueData.add(defaultSignature.toString());
+							}
+							error(MessageFormat.format(Messages.SARLValidator_33, supertype.getSimpleName()),
+									member,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									MUST_INVOKE_SUPER_CONSTRUCTOR,
+									toArray(issueData, String.class));
 						}
-						error(MessageFormat.format(Messages.SARLValidator_33, supertype.getSimpleName()),
-								member,
-								null,
-								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								MUST_INVOKE_SUPER_CONSTRUCTOR,
-								toArray(issueData, String.class));
 					}
 				}
 			}
@@ -3261,6 +3278,20 @@ public class SARLValidator extends AbstractSARLValidator {
 		return container instanceof SarlAgent
 				|| container instanceof SarlBehavior
 				|| container instanceof SarlSkill;
+	}
+
+	/** Replies if the given type is an agent-oriented type that could receives a constructor declaration.
+	 *
+	 * @param type is the type to test.
+	 * @return {@code true} if the given type could contain a constructor declaration.
+	 * @since 0.12
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isAOConstructorContainer(XtendTypeDeclaration type) {
+		return type instanceof SarlAgent
+				|| type instanceof SarlBehavior
+				|| type instanceof SarlSkill
+				|| type instanceof SarlEvent;
 	}
 
 	/** Replies if the given annotation is a forbidden active annotation.

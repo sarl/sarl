@@ -92,6 +92,7 @@ import io.sarl.lang.ui.quickfix.acceptors.MemberRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.MemberRenameModification;
 import io.sarl.lang.ui.quickfix.acceptors.Messages;
 import io.sarl.lang.ui.quickfix.acceptors.MissedMethodAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.ModifierRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
 import io.sarl.lang.ui.quickfix.acceptors.ProtectKeywordModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
@@ -1006,6 +1007,17 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			IXtextDocument xtextDocument, XtextResource resource, EObject referenceOwner, EReference unresolvedReference) throws Exception {
 		CapacityUseAddModification.accept(this, issue, referenceOwner, issueResolutionAcceptor);
 		super.createLinkingIssueQuickfixes(issue, issueResolutionAcceptor, xtextDocument, resource, referenceOwner, unresolvedReference);
+	}
+
+	/** Quick fix for "Potential problem of data sharing outside the control of the agent".
+	 *
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
+	 * @since 0.12
+	 */
+	@Fix(io.sarl.lang.validation.IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL)
+	public void fixPotentialMemorySharingOutsideAgentControl(final Issue issue, IssueResolutionAcceptor acceptor) {
+		ModifierRemoveModification.accept(this, issue, acceptor, this.grammarAccess.getStaticStaticKeyword());
 	}
 
 }

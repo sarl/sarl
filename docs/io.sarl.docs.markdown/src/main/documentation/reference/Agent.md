@@ -271,6 +271,7 @@ The modifiers for the fields in an agent are:
 	* [:protectedmodifier:]: the field is accessible within the same package, and derived agents;
 	* [:packagemodifier:]: the field is accessible only within the same package of its agent;
 	* [:privatemodifier:]: the field is accessible only within its agent (default).
+* [:staticmodifier:]: the field is a class field, not an instance field.
 
 Examples:
 
@@ -281,6 +282,7 @@ Examples:
 		[:protectedmodifier](protected) var example1 : Object
 		package var example2 : Object
 		[:privatemodifier](private) var example3 : Object
+		[:staticmodifier](static) var example4 : Object
 	[:Off]
 	}
 [:End:]

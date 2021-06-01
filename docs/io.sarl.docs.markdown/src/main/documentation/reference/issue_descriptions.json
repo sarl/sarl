@@ -2376,6 +2376,13 @@
 		"cause": "This error message is generated when you declared a default value for a formal parameter that is different from the corresponding default value that was declared into the super types. You cannot change the default value of a formal parameter because it may cause unexpected side-effects for the callers of the function",
 		"solution": "Remove the redundant declaration fo the default value",
 		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.potential_memory_sharing_outside_agent_control",
+		"message": "Potential problem of data sharing outside the control of the agent. The field '**name**' is declared with the static modifier. It enables the code to change the field value outside a direct control of the agent; that is breaking partly the agent autonomy principle",
+		"cause": "This warning message is generated when you declared a field with the `static` modifier into an agent or on of its components. Basically, a static field is defined outside an instance of agent or component. In other words, the static field could be used for sharing data between the components of the agents, and between the agents themselves. This method of data sharing is breaking the agent autonomy principle. It should be used only for sharing constant data between the agents",
+		"solution": "Remove the `static` modifier",
+		"level": "c/warning"
 	}
 ]
 

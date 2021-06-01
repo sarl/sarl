@@ -1178,9 +1178,25 @@ public class AgentParsingTest {
 					"agent A1 {",
 					"	static var field : int",
 					"}"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(1, agent1.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) agent1.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertTrue(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test

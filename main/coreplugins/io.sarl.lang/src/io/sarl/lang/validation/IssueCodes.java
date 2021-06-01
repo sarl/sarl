@@ -253,6 +253,15 @@ public final class IssueCodes {
 	public static final String ILLEGAL_PARAMETER_DEFAULT_VALUE_REDEFINITION =
 			ISSUE_CODE_PREFIX + "illegal_parameter_default_value_redefinition"; //$NON-NLS-1$
 
+	/**
+	 * A static field may enable to share data between components outside the control of the agent.
+	 * It brokes the agent autonomy principle.
+	 *
+	 * @since 0.7
+	 */
+	public static final String POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL =
+			ISSUE_CODE_PREFIX + "potential_memory_sharing_outside_agent_control"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}
