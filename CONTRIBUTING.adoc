@@ -81,7 +81,7 @@ According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issu
 For setting up the development environment, you should follow the steps:
 
 * Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2019-09` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+** Version: `2021-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Install the Checkstyle CS-Eclipse plugin.
 ** Version: `8.18`.

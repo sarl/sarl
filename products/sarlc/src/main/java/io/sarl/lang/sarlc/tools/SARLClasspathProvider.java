@@ -39,28 +39,6 @@ import io.sarl.maven.bootiqueapp.utils.SystemPath;
 @ImplementedBy(SarlEmbededSdkClasspathProvider.class)
 public interface SARLClasspathProvider {
 
-	/** Replies the boot class path that must be used for compiling a SARL program.
-	 *
-	 * @param path the classpath to fill.
-	 * @param logger the logger to use for notifying about the process of the task.
-	 * @since 0.10
-	 * @deprecated since 0.12, will be removed definitively when support of Java 8 is removed.
-	 */
-	@Deprecated
-	void getBootClasspath(SystemPath path, Logger logger);
-
-	/** Replies the class path that must be used for compiling a SARL program.
-	 *
-	 * @param path the classpath to fill.
-	 * @param logger the logger to use for notifying about the process of the task.
-	 * @since 0.10
-	 * @deprecated since 0.12, see {@link #getClassPath(SystemPath, Logger)}.
-	 */
-	@Deprecated
-	default void getClasspath(SystemPath path, Logger logger) {
-		getClassPath(path, logger);
-	}
-
 	/** Replies the class path that must be used for compiling a SARL program.
 	 *
 	 * @param path the classpath to fill.

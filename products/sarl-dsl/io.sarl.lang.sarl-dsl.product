@@ -40,10 +40,10 @@
    </launcher>
 
    <vm>
-      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
-      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
-      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
    </vm>
 
    <license>
@@ -272,6 +272,7 @@
       <feature id="org.eclipse.egit" installMode="root"/>
       <feature id="org.eclipse.wst.common_core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.m2e.lemminx.feature" installMode="root"/>
       <feature id="org.eclipse.emf.mapping.ecore.editor.source" installMode="root"/>
       <feature id="org.sonatype.tycho.m2e.feature" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.ui" installMode="root"/>
@@ -289,6 +290,7 @@
       <feature id="org.eclipse.emf.mapping.source" installMode="root"/>
       <feature id="org.eclipse.wst.xml_userdoc.feature" installMode="root"/>
       <feature id="org.eclipse.emf.codegen.ecore.ui.source" installMode="root"/>
+      <feature id="org.eclipse.jgit.gpg.bc" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.lib" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.source" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.sdk" installMode="root"/>
@@ -304,6 +306,7 @@
       <feature id="org.eclipse.oomph.setup" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
+      <feature id="org.eclipse.m2e.sse.ui.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.examples" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature.source" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
@@ -374,9 +377,9 @@
       <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
       <feature id="org.eclipse.emf.source" installMode="root"/>
       <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
-      <feature id="org.jboss.tools.maven.apt.feature" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.oomph.setup.core" installMode="root"/>
+      <feature id="org.eclipse.mylyn.commons" installMode="root"/>
    </features>
 
    <configurations>

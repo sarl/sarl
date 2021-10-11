@@ -65,7 +65,6 @@ public class Bug291Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.AgentTrait;",
 			"import io.sarl.lang.core.Capacities;",
 			"import io.sarl.lang.core.Skill;",
-			"import io.sarl.lang.tests.bug291.C1;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",

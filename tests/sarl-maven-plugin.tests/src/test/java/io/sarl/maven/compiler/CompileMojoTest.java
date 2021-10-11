@@ -51,4 +51,10 @@ public class CompileMojoTest extends AbstractMojoTest {
 		});
 	}
 
+	@Test
+	public void validCode() throws Exception {
+		System.setProperty("verifier.forkMode", "embedded");
+		executeMojo("prj3", "compile");
+	}
+
 }

@@ -21,11 +21,9 @@
 
 package io.sarl.maven.bootiqueapp.batchcompiler.lang;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-
-import io.sarl.lang.SARLRuntimeModule;
+import io.bootique.di.BQModule;
 
 /** Provider of the module for the SARL compiler runtime.
  *
@@ -38,13 +36,13 @@ import io.sarl.lang.SARLRuntimeModule;
 public class SARLRuntimeModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new SARLRuntimeModule();
 	}
 
 	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
+    public BQModuleMetadata.Builder moduleBuilder() {
+        return BQModuleMetadata
                 .builder(module())
                 .overrides(overrides())
                 .providerName(name())

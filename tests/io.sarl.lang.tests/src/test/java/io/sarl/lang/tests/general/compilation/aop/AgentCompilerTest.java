@@ -2295,8 +2295,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.Destroy;",
-				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
@@ -2404,8 +2402,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.Destroy;",
-				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
@@ -2521,8 +2517,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.Destroy;",
-				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
@@ -2687,8 +2681,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.Destroy;",
-				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
@@ -2857,7 +2849,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.C1;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
@@ -2923,7 +2914,6 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import foo.test.C1;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
 				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",

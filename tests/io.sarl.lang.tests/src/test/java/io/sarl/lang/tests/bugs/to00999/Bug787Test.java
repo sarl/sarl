@@ -63,7 +63,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED01 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.SuperReturnInt;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -110,7 +109,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED02 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.SuperReturnVoid;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -156,7 +154,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED03 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.SuperReturnObject;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -202,7 +199,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED04 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.SuperParamInt;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -244,7 +240,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED05 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.SuperParamObject;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -291,8 +286,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED06 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.X;",
-			"import foo.bug787.Y;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -338,7 +331,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED07 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.X;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -378,7 +370,6 @@ public class Bug787Test extends AbstractSarlTest {
 	private static final String EXPECTED08 = multilineString(
 			"package foo.bug787;",
 			"",
-			"import foo.bug787.Type1;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",

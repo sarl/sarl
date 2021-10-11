@@ -26,7 +26,8 @@ import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.ALL_ERRORS_N
 import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.ALL_WARNINGS_NAME;
 import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.IGNORE_WARNINGS_NAME;
 
-import com.google.inject.AbstractModule;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 
@@ -38,7 +39,7 @@ import org.arakhne.afc.bootique.variables.VariableDecls;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class ValidatorConfigModule extends AbstractModule {
+public class ValidatorConfigModule implements BQModule {
 
 	private static final String WNONE_OPTION = "wnone"; //$NON-NLS-1$
 
@@ -47,21 +48,21 @@ public class ValidatorConfigModule extends AbstractModule {
 	private static final String WERROR_OPTION = "werror"; //$NON-NLS-1$
 
 	@Override
-	protected void configure() {
-		VariableDecls.extend(binder()).declareVar(IGNORE_WARNINGS_NAME);
-		extend(binder()).addOption(OptionMetadata.builder(
+	public void configure(Binder binder) {
+		VariableDecls.extend(binder).declareVar(IGNORE_WARNINGS_NAME);
+		extend(binder).addOption(OptionMetadata.builder(
 				WNONE_OPTION, Messages.ValidatorConfigModule_0)
 				.build())
 			.mapConfigPath(WNONE_OPTION, IGNORE_WARNINGS_NAME);
 
-		VariableDecls.extend(binder()).declareVar(ALL_WARNINGS_NAME);
-		extend(binder()).addOption(OptionMetadata.builder(
+		VariableDecls.extend(binder).declareVar(ALL_WARNINGS_NAME);
+		extend(binder).addOption(OptionMetadata.builder(
 				WALL_OPTION, Messages.ValidatorConfigModule_2)
 				.build())
 			.mapConfigPath(WALL_OPTION, ALL_WARNINGS_NAME);
 
-		VariableDecls.extend(binder()).declareVar(ALL_ERRORS_NAME);
-		extend(binder()).addOption(OptionMetadata.builder(
+		VariableDecls.extend(binder).declareVar(ALL_ERRORS_NAME);
+		extend(binder).addOption(OptionMetadata.builder(
 				WERROR_OPTION, Messages.ValidatorConfigModule_1)
 				.build())
 			.mapConfigPath(WERROR_OPTION, ALL_ERRORS_NAME);

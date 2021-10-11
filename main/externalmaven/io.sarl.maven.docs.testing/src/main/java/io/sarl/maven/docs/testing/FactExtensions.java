@@ -24,7 +24,6 @@ package io.sarl.maven.docs.testing;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,8 +31,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.google.inject.ImplementedBy;
-import org.arakhne.afc.vmutil.ClasspathUtil;
-import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.Functions.Function3;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -108,29 +105,6 @@ public final class FactExtensions {
 			}
 		}
 		return true;
-	}
-
-	/** Replies the URL of the bundle's file.
-	 *
-	 * @param bundleName the name of the bundle, i.e. the name of the jar file.
-	 * @param filename the name of the file.
-	 * @return the URL, or {@code null}.
-	 */
-	public static URL getBundlePropertyURL(String bundleName, String filename) {
-		try {
-			final Iterator<URL> urls = ClasspathUtil.getClasspath();
-			URL url;
-			while (urls.hasNext()) {
-				url = urls.next();
-				final String resourceName = FileSystem.basename(url);
-				if (resourceName != null && resourceName.startsWith(bundleName + "-")) { //$NON-NLS-1$
-					return FileSystem.toJarURL(url, filename);
-				}
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return null;
 	}
 
 	/** Replies the two iterable objects are equal.

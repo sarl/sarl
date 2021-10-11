@@ -37,13 +37,22 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<classifier>no_aop</classifier>
+			<!-- <classifier>no_aop</classifier> -->
 		</dependency>
 		<!-- Force the version of Guava because the Xbase is no more forcing a 
 			specific version (version range use) and its transitive dependencies -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+		</dependency>
+		<!-- Force the version of Eclipse libs because the Xbase has multiple versions -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
 		</dependency>
 		<!-- Force the version of ASM -->
 		<dependency>

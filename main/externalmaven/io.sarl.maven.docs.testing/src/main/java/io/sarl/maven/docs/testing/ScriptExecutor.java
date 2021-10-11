@@ -88,14 +88,6 @@ public interface ScriptExecutor {
 	 */
 	void setClassLoaderBuilder(UnaryOperator<ClassLoader> builder);
 
-	/** Change the boot classpath that the executor should used.
-	 *
-	 * @param classpath the boot classpath.
-	 * @deprecated since 0.12, will be removed definitively when JAva 8 is not more supported.
-	 */
-	@Deprecated
-	void setBootClassPath(String classpath);
-
 	/** Change the version of the Java sources.
 	 *
 	 * @param version the version.

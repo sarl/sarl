@@ -106,7 +106,7 @@ public final class ExamplesTestUtils {
 
 	/** Current Java version.
 	 */
-	public static final String CURRENT_JAVA_VERSION = "1.8"; //$NON-NLS-1$
+	public static final String CURRENT_JAVA_VERSION = "11"; //$NON-NLS-1$
 
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
 	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$

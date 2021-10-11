@@ -5,7 +5,7 @@ Automatic-Module-Name: io.sarl.api.probing
 Bundle-Version: 0.13.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.lang.core;bundle-version="0.12.0",
- io.sarl.api.naming;bundle-version="0.12.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
+ io.sarl.api.naming;bundle-version="0.13.0"
 Export-Package: io.sarl.api.probing

@@ -68,7 +68,6 @@ public class Bug553Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.DynamicSkillProvider;",
 			"import io.sarl.lang.core.Event;",
 			"import io.sarl.lang.scoping.extensions.time.TimeExtensions;",
-			"import io.sarl.lang.tests.bug553.MyEvent;",
 			"import java.util.Collection;",
 			"import java.util.Set;",
 			"import java.util.UUID;",

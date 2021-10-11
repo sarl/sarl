@@ -66,6 +66,9 @@ public class Messages extends NLS {
 	public static String AbstractSarlBatchCompilerMojo_8;
 	public static String AbstractSarlBatchCompilerMojo_9;
 	public static String AbstractSarlBatchCompilerMojo_10;
+	public static String AbstractSarlBatchCompilerMojo_11;
+	public static String AbstractSarlBatchCompilerMojo_12;
+	public static String AbstractSarlBatchCompilerMojo_13;
 	public static String AbstractSarlMojo_0;
 	public static String AbstractSarlMojo_1;
 	public static String AbstractSarlMojo_2;
@@ -77,6 +80,7 @@ public class Messages extends NLS {
 	public static String AbstractCompileMojo_1;
 	public static String AbstractCompileMojo_2;
 	public static String AbstractCompileMojo_3;
+	public static String AbstractCompileMojo_4;
 	public static String Utils_0;
 	public static String Utils_1;
 	static {

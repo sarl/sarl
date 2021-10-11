@@ -21,11 +21,11 @@
 
 package io.sarl.sre.network.boot.internal.cli
 
-import com.google.inject.AbstractModule
-import com.google.inject.Module
 import com.google.inject.Provides
-import io.bootique.BQModule
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.log.BootLogger
 import io.sarl.sre.SreVersion
 import java.text.MessageFormat
@@ -69,9 +69,9 @@ class VersionCommand extends io.sarl.maven.bootiqueapp.version.VersionCommand {
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-class VersionCommandModule extends AbstractModule {
+class VersionCommandModule implements BQModule {
 
-	override configure {
+	override configure(binder : Binder) {
 	}
 
 	/** Provide the command for displaying the SRE version.
@@ -97,16 +97,16 @@ class VersionCommandModule extends AbstractModule {
  */
 class VersionCommandModuleProvider implements BQModuleProvider {
 
-	override module : Module {
+	override module : BQModule {
 		return new VersionCommandModule
 	}
 	
-	override overrides : Collection<Class<? extends Module>> {
+	override overrides : Collection<Class<? extends BQModule>> {
 		#[typeof(io.sarl.sre.boot.internal.cli.VersionCommandModule)]
 	}
 
-	override moduleBuilder : BQModule.Builder {
-		return BQModule.builder(module).overrides(overrides).providerName(name).configs(configs).description(
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata.builder(module).overrides(overrides).providerName(name).configs(configs).description(
 			Messages::VersionCommandModuleProvider_0);
 	}
 

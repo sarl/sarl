@@ -11,7 +11,7 @@
 
 	<artifactId>io.sarl.api.bootiquebase</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>Bootique into Eclipse</name>
+	<name>Bootique Eclipse Plugin</name>
 
 	<build>
 		<plugins>

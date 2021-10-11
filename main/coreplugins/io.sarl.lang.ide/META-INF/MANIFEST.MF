@@ -3,16 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: io.sarl.lang.ide
 Bundle-SymbolicName: io.sarl.lang.ide;singleton:=true
 Bundle-Version: 0.13.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ide.contentassist.antlr,
  io.sarl.lang.ide.contentassist.antlr.internal
-Require-Bundle: io.sarl.lang.core;bundle-version="0.12.0",
- io.sarl.lang;bundle-version="0.12.0",
- org.eclipse.xtext.common.types.ui;bundle-version="2.22.0",
- org.eclipse.xtext.ide;bundle-version="2.22.0",
- org.eclipse.xtext.xbase.ide;bundle-version="2.22.0",
- org.eclipse.xtend.core;bundle-version="2.22.0",
- com.google.inject;bundle-version="4.2.3"
+Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
+ io.sarl.lang;bundle-version="0.13.0",
+ org.eclipse.xtext.common.types.ui;bundle-version="2.25.0",
+ org.eclipse.xtext.ide;bundle-version="2.25.0",
+ org.eclipse.xtext.xbase.ide;bundle-version="2.25.0",
+ org.eclipse.xtend.core;bundle-version="2.25.0",
+ com.google.inject;bundle-version="5.0.1",
+ org.antlr.runtime;bundle-version="3.2.0"
 Automatic-Module-Name: io.sarl.lang.ide

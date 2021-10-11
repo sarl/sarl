@@ -67,7 +67,6 @@ public class Bug741Test extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.bug741.X;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",

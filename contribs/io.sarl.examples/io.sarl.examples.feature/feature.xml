@@ -222,19 +222,19 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.eclipse" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.m2e" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.117.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.18.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.m2e" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.17.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.debug.ui" version="3.14.500" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.13.700" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.17.100" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.google.inject" version="4.2.3" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.119.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.23.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.18.300" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.ui" version="3.15.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.15.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.19.300" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.27.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

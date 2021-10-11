@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language: SARL
-" Version: 0.12
+" Version: 0.13
 " 
 "  $Id$
 " 
@@ -10,7 +10,7 @@
 "  SARL is an general-purpose agent programming language.
 "  More details on http://www.sarl.io
 " 
-"  Copyright (C) 2014-2020 the original authors or authors.
+"  Copyright (C) 2014-2021 the original authors or authors.
 " 
 "  Licensed under the Apache License, Version 2.0 (the "License");
 "  you may not use this file except in compliance with the License.

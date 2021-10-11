@@ -21,9 +21,9 @@
 
 package io.sarl.lang.sarlc.modules.general;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 /** Provider of the module for the SARL batch compiler.
  *
@@ -36,13 +36,13 @@ import io.bootique.BQModuleProvider;
 public class SarlBatchCompilerModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new SarlBatchCompilerModule();
 	}
 
 	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
+    public BQModuleMetadata.Builder moduleBuilder() {
+        return BQModuleMetadata
                 .builder(module())
                 .overrides(overrides())
                 .providerName(name())

@@ -384,7 +384,6 @@ public class ClassCompilerTest {
 			final String expectedPersonEx = multilineString(
 					"package io.sarl.docs.reference.oop;",
 					"",
-					"import io.sarl.docs.reference.oop.Person;",
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",

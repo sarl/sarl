@@ -23,9 +23,10 @@ package io.sarl.maven.bootiqueapp.version;
 
 import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 import io.bootique.log.BootLogger;
 
 /** Module for the command for printing out the version.
@@ -36,11 +37,11 @@ import io.bootique.log.BootLogger;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class VersionCommandModule extends AbstractModule {
+public class VersionCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(VersionCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(VersionCommand.class);
 	}
 
 	/** Provide the command for displaying the version.

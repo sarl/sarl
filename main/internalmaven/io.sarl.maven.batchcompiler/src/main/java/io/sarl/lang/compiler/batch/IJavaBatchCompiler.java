@@ -23,7 +23,6 @@ package io.sarl.lang.compiler.batch;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.inject.ImplementedBy;
@@ -50,7 +49,7 @@ public interface IJavaBatchCompiler {
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
 	 * @param modulePathEntries classpath entries. No more used.
-	 * @param javaVersion the version of Java that is the target, e.g. {@code 1.8}.
+	 * @param javaVersion the version of Java that is the target, e.g. {@code 11}.
 	 * @param encoding the encoding of the files.
 	 * @param isCompilerMoreVerbose indicates if the Java compiler should be more verbose.
 	 * @param optimizationLevel the level of optimization to apply to the byte code or {@code null} if the defaults must be applied.
@@ -64,7 +63,6 @@ public interface IJavaBatchCompiler {
 	CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			String javaVersion,
 			String encoding,
 			boolean isCompilerMoreVerbose,

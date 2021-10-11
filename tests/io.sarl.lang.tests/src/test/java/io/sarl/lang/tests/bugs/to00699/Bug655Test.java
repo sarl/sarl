@@ -81,8 +81,6 @@ public class Bug655Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.AtomicSkillReference;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
-			"import io.sarl.lang.tests.bug655.InitAgents;",
-			"import io.sarl.lang.tests.bug655.MyCapacity;",
 			"import java.util.Timer;",
 			"import java.util.TimerTask;",
 			"import java.util.UUID;",

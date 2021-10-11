@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <!-- SARL FEATURES -->
+
+   <feature id="io.sarl.baseplatform" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.lib" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature  id="io.sarl.compiler" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.ide" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.examples.feature" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+
+   <category-def name="io.sarl" label="SARL Language">
+      <description>
+         SARL is a general-purpose agent-oriented language. 
+SARL aims at providing the fundamental abstractions for dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic reconfiguration.
+      </description>
+   </category-def>
+
+   <!-- SARL SOURCES -->
+
+   <feature id="io.sarl.lib.source" version="0.13.0.qualifier">
+      <category name="io.sarl.sources"/>
+   </feature>
+
+   <category-def name="io.sarl.sources" label="SARL Developer Resources">
+      <description>
+         Bundle sources for the SARL agent programming language, and the related tools.
+      </description>
+   </category-def>
+
+   <!-- JANUS FEATURES -->
+
+   <feature id="io.janusproject.feature" version="0.13.0.qualifier">
+      <category name="io.janusproject"/>
+   </feature>
+
+   <category-def name="io.janusproject" label="Janus Run-time Platform">
+      <description>
+         Janus is an open-source multi-agent platform, which is reimplemented to support the SARL Agent-Oriented Programming Language.
+      </description>
+   </category-def>
+
+   <!-- JANUS SOURCES -->
+
+   <feature id="io.janusproject.feature.source" version="0.13.0.qualifier">
+      <category name="io.janusproject.sources"/>
+   </feature>
+
+   <category-def name="io.janusproject.sources" label="Janus Developer Resources">
+      <description>
+         Bundle sources for the Janus platform. 
+      </description>
+   </category-def>
+
+</site>

@@ -38,12 +38,11 @@
       </win>
    </launcher>
 
-
    <vm>
-      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
-      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
-      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
    </vm>
 
    <license>
@@ -258,15 +257,10 @@
 
    <features>
       <feature id="io.sarl.baseplatform" installMode="root"/>
-      <feature id="io.sarl.compiler" installMode="root"/>
-      <feature id="io.sarl.examples.feature" installMode="root"/>
-      <feature id="io.sarl.experienceindex.feature" installMode="root"/>
-      <feature id="io.sarl.ide" installMode="root"/>
       <feature id="io.sarl.lib" installMode="root"/>
-      <feature id="io.sarl.lib.source" installMode="root"/>
-      <feature id="io.sarl.pythongenerator.feature" installMode="root"/>
-      <feature id="io.janusproject.feature" installMode="root"/>
-      <feature id="io.janusproject.feature.source" installMode="root"/>
+      <feature id="io.sarl.compiler" installMode="root"/>
+      <feature id="io.sarl.ide" installMode="root"/>
+      <feature id="io.sarl.examples.feature" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
       <feature id="org.eclipse.jdt" installMode="root"/>
@@ -291,11 +285,9 @@
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
-      <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
-      <feature id="org.jboss.tools.maven.apt.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
       <feature id="org.eclipse.epp.mpc" installMode="root"/>

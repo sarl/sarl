@@ -380,7 +380,6 @@ public class Bug694Test extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;", 
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.bug694.X;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

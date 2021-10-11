@@ -207,7 +207,7 @@ public class Bug735Test {
 				"class Test {",
 				"  @SuppressWarnings(\"org.eclipse.xtext.xbase.validation.IssueCodes.raw_type\")",
 				"  def test(t : Class) : Object {",
-				"    t.newInstance",
+				"    t.constructor.newInstance",
 				"  }",
 				"}");
 		

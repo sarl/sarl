@@ -7,7 +7,7 @@
 % SARL is an general-purpose agent programming language.
 % More details on http://www.sarl.io
 %
-% Copyright (C) 2014-2020 the original authors or authors.
+% Copyright (C) 2014-2021 the original authors or authors.
 %
 % Licensed under the Apache License, Version 2.0 (the "License");
 % you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-beamer-listing}[2020/09/04]
+\ProvidesPackage{sarl-beamer-listing}[2021/10/09]
 \newif\ifusesarlcolors\usesarlcolorstrue
 \DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
 \DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
@@ -74,9 +74,9 @@
    xleftmargin=20pt,
    numberstyle=\color{SARLlinenumber}\tiny,
 }
-\newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}\else\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}\fi\ignorespaces}
+\newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}\else\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}
-\newcommand{\sarlversion}{0.12}
+\newcommand{\sarlversion}{0.13}
 \ifusesarlcolors
   \setbeamercolor*{code keyword}{fg=SARLkeyword}
   \setbeamercolor*{code string}{fg=SARLstring}

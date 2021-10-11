@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<sarl.version>0.13.0-SNAPSHOT</sarl.version>
-        <javac.level>1.8</javac.level>
+        <javac.level>11</javac.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>

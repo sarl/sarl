@@ -23,9 +23,10 @@ package io.sarl.maven.bootiqueapp.mdconfig;
 
 import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 import io.bootique.meta.module.ModulesMetadata;
 
 /** Module for displaying the help for configuration parameters on the standard output using a Markdown format.
@@ -36,11 +37,11 @@ import io.bootique.meta.module.ModulesMetadata;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public class GenerateMarkdownConfigCommandModule extends AbstractModule {
+public class GenerateMarkdownConfigCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(GenerateMarkdownConfigCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(GenerateMarkdownConfigCommand.class);
 	}
 
 	/** Provide the command for displaying the configuration parameters.

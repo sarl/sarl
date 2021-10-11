@@ -20,22 +20,21 @@
  */
 package io.sarl.sre.boot.internal.cli
 
-import com.google.inject.AbstractModule
-import com.google.inject.Module
-import io.bootique.BQModule
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.sarl.lang.SARLVersion
 import io.sarl.maven.bootiqueapp.utils.SystemProperties
 import io.sarl.sre.boot.commands.RunSingleAgentCommand
 import io.sarl.sre.boot.configs.SreConfig
+import java.text.MessageFormat
 import javax.inject.Provider
-import javax.inject.Singleton
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription
 
 import static extension io.bootique.BQCoreModule.*
-import java.text.MessageFormat
-import io.sarl.lang.SARLVersion
 
 /** 
  * Module for configuring the janus application information.
@@ -46,18 +45,18 @@ import io.sarl.lang.SARLVersion
  * @mavenartifactid $ArtifactId$
  * @since 3.0.11.0
  */
-class JanusApplicationModule extends AbstractModule {
+class JanusApplicationModule implements BQModule {
 
-	protected override configure {
+	override configure(extension binder : Binder) {
 		// Name of the application.
-		typeof(String).bind.annotatedWith(typeof(DefaultApplicationName)).toInstance(
+		typeof(String).bind(typeof(DefaultApplicationName)).toInstance(
 				SystemProperties::getValue(SreConfig::PREFIX + ".programName", SreConfig::DEFAULT_PROGRAM_NAME))
 		// Short description of the application.
 		binder.extend.applicationDescription = Messages::JanusApplicationModule_0
 		// Long description of the application.
-		typeof(String).bind.annotatedWith(typeof(ApplicationDetailedDescription)).toProvider(typeof(LongDescriptionProvider)).in(typeof(Singleton))
+		typeof(String).bind(typeof(ApplicationDetailedDescription)).toProvider(typeof(LongDescriptionProvider)).inSingletonScope
 		// Synopsis of the application's arguments.
-		typeof(String).bind.annotatedWith(typeof(ApplicationArgumentSynopsis)).toInstance(Messages.JanusApplicationModule_1)
+		typeof(String).bind(typeof(ApplicationArgumentSynopsis)).toInstance(Messages.JanusApplicationModule_1)
 		// Default command
 		binder.extend.defaultCommand = typeof(RunSingleAgentCommand)
 	}
@@ -91,12 +90,12 @@ class JanusApplicationModule extends AbstractModule {
  */
 class JanusApplicationModuleProvider implements BQModuleProvider {
 
-	override module : Module {
+	override module : BQModule {
 		return new JanusApplicationModule
 	}
 
-	override moduleBuilder : BQModule.Builder {
-		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
 			Messages::JanusApplicationModuleProvider_0)
 	}
 

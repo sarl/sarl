@@ -26,29 +26,23 @@
 	<properties>
 		<!-- Java Configuration for compiling this project (useful for the SARL 
 			development team) -->
-		<sarl-dsl.min.jdk.version>1.8</sarl-dsl.min.jdk.version>
+		<sarl-dsl.min.jdk.version>11</sarl-dsl.min.jdk.version>
 		<sarl-dsl.min.jre.environment>JavaSE-${sarl-dsl.min.jdk.version}</sarl-dsl.min.jre.environment>
-		<sarl-dsl.max.jdk.version>1.8</sarl-dsl.max.jdk.version>
-		<sarl-dsl.next.unsupported.jdk.version>1.9</sarl-dsl.next.unsupported.jdk.version>
+		<sarl-dsl.max.jdk.version>11</sarl-dsl.max.jdk.version>
+		<sarl-dsl.next.unsupported.jdk.version>12</sarl-dsl.next.unsupported.jdk.version>
 
 		<!-- Java Configuration for running the SARL tools (IDE, sarlc, sarldoc...): 
-			***********
-			* CAUTION *
-			***********
-			The versions below must include the versions 
+			*********** * CAUTION * *********** The versions below must include the versions 
 			for the properties "sarl-dsl.*" -->
-		<sarl-run.min.jdk.version>1.8</sarl-run.min.jdk.version>
+		<sarl-run.min.jdk.version>11</sarl-run.min.jdk.version>
 		<sarl-run.min.jre.environment>JavaSE-${sarl-run.min.jdk.version}</sarl-run.min.jre.environment>
 		<sarl-run.max.jdk.version>14</sarl-run.max.jdk.version>
 		<sarl-run.next.unsupported.jdk.version>15</sarl-run.next.unsupported.jdk.version>
 
 		<!-- Java Configuration that should be used by the projects compiled with 
-			SARL IDE or sarlc:
-			***********
-			* CAUTION *
-			***********
-			The versions below must include the versions for the properties "sarl-run.*" -->
-		<user.min.jdk.version>1.8</user.min.jdk.version>
+			SARL IDE or sarlc: *********** * CAUTION * *********** The versions below 
+			must include the versions for the properties "sarl-run.*" -->
+		<user.min.jdk.version>11</user.min.jdk.version>
 		<user.min.jre.environment>JavaSE-${user.min.jdk.version}</user.min.jre.environment>
 		<user.max.jdk.version>14</user.max.jdk.version>
 		<user.next.unsupported.jdk.version>15</user.next.unsupported.jdk.version>
@@ -61,37 +55,47 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.22.0</xtext.version>
-		<xtext.version.current>2.22.0</xtext.version.current>
-		<xtext.version.next>2.22.1</xtext.version.next>
-		<xtext.version.javadoc>2.22</xtext.version.javadoc>
+		<xtext.version>2.25.0</xtext.version>
+		<xtext.version.current>2.25.0</xtext.version.current>
+		<xtext.version.next>2.25.1</xtext.version.next>
+		<xtext.version.javadoc>2.25</xtext.version.javadoc>
 
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
-		<mwe2.version>2.11.3</mwe2.version>
+		<mwe2.version>2.12.1</mwe2.version>
 		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 		<!-- Version of Guice (package: com.google.inject:guice). -->
-		<guice.version>4.2.3</guice.version>
+		<guice.version>5.0.1</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
-		<afc.version>16.0</afc.version>
-		<afc.osgi.version>${afc.version}.0</afc.osgi.version>
+		<afc.version>18.0-SNAPSHOT</afc.version>
+		<afc.osgi.version>18.0.0</afc.osgi.version>
+		<afc.osgi.version.next>18.0.1</afc.osgi.version.next>
 		<!-- Version of the Guava API -->
-		<guava.version>28.0-jre</guava.version>
+		<guava.version>30.1.1-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
 			central) -->
-		<tycho.version>1.7.0</tycho.version>
+		<tycho.version>2.0.0</tycho.version>
 		<!-- Version of the SWT library (search for org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
-		<swt.version>3.114.100</swt.version>
+		<swt.version>3.117.0</swt.version>
+		<!-- Version of the Eclipse Equinox common library. This version is explicitly 
+			defined for avoiding security issues (org.eclipse.platform:org.eclipse.equinox.common). 
+			This version should be the same as on the Eclipse platform. -->
+		<eclipse.equinox.common.version>3.15.0</eclipse.equinox.common.version>
+		<!-- Version of the Eclipse core library. This version is explicitly defined 
+			for avoiding security issues (org.eclipse.platform:org.eclipse.core.runtime). 
+			The version should be the same as in the Eclipse platform. -->
+		<eclipse.eclipse.core.runtime.version>3.23.0</eclipse.eclipse.core.runtime.version>
 		<!-- Version of JavaFX (search for org.openjfx:*) -->
 		<openjfx.version>11.0.2</openjfx.version>
-		<!-- Version of Checkstyle. Must be the same version as inside Eclipse IDE (com.puppycrawl.tools:checkstyle) -->
-		<checkstyle.version>8.32</checkstyle.version>
+		<!-- Version of Checkstyle. Must be the same version as inside Eclipse 
+			IDE (com.puppycrawl.tools:checkstyle) -->
+		<checkstyle.version>8.44</checkstyle.version>
 		<checkstyle.full.version>${checkstyle.version}.0</checkstyle.full.version>
 		<!-- Version of Hazelcast that is used by Maven and Tycho -->
 		<hazelcast.version>4.1.1</hazelcast.version>
@@ -109,7 +113,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central (maven-core) -->
-		<maven.api.version>3.6.3</maven.api.version>
+		<maven.api.version>3.8.3</maven.api.version>
 		<!-- Version of the Maven Java compiler (maven-compiler-plugin). -->
 		<mavencompiler.version>3.8.1</mavencompiler.version>
 		<!-- String to put after the copyright sign -->
@@ -117,11 +121,13 @@
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Version of Junit 5 library (junit-jupiter-engine) -->
-		<junit5.version>5.7.0-M1</junit5.version>
+		<junit5.version>5.8.1</junit5.version>
 		<!-- The following Jackson declaration are temporary fix for issue #1007 -->
-		<jacksonapi.version>2.10.0</jacksonapi.version>
+		<jacksonapi.version>2.12.3</jacksonapi.version>
 		<!-- Google error prone library -->
-		<google.error_prone_annotations.version>2.4.0</google.error_prone_annotations.version>
+		<google.error_prone_annotations.version>2.9.0</google.error_prone_annotations.version>
+		<!-- OW2 ASM (org.ow2.asm:asm) -->
+		<ow2asm.version>9.2</ow2asm.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -495,6 +501,16 @@
 				<version>${xtext.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.platform</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>${eclipse.equinox.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.platform</groupId>
+				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>${eclipse.eclipse.core.runtime.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
 				<version>${javaxinject.version}</version>
@@ -538,7 +554,7 @@
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
 				<version>${guice.version}</version>
-				<classifier>no_aop</classifier>
+				<!-- <classifier>no_aop</classifier> -->
 			</dependency>
 			<dependency>
 				<groupId>commons-cli</groupId>
@@ -548,13 +564,8 @@
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.7</version>
+				<version>2.11.0</version>
 			</dependency>
-			<!--<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>2.8.6</version>
-			</dependency>-->
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava-testlib</artifactId>
@@ -563,17 +574,17 @@
 			<dependency>
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
-				<version>1.1</version>
+				<version>2.0.B1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.27.0-GA</version>
+				<version>3.28.0-GA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-tools</groupId>
 				<artifactId>maven-plugin-annotations</artifactId>
-				<version>3.6.0</version>
+				<version>3.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -628,7 +639,8 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>3.3.3</version>
+				<!-- <version>3.11.1</version> -->
+				<version>4.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.hazelcast</groupId>
@@ -643,17 +655,17 @@
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
-				<version>1.13.1</version>
+				<version>1.14.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.10</version>
+				<version>3.12.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.shared</groupId>
 				<artifactId>maven-shared-utils</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.4</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.findbugs</groupId>
@@ -668,27 +680,27 @@
 			<dependency>
 				<groupId>me.tongfei</groupId>
 				<artifactId>progressbar</artifactId>
-				<version>0.8.1</version>
+				<version>0.9.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
-				<version>8.0.1</version>
+				<version>${ow2asm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm-commons</artifactId>
-				<version>8.0.1</version>
+				<version>${ow2asm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm-tree</artifactId>
-				<version>8.0.1</version>
+				<version>${ow2asm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm-analysis</artifactId>
-				<version>8.0.1</version>
+				<version>${ow2asm.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -702,7 +714,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>3.4.1</version>
+				<version>3.4.3</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -762,7 +774,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 
 				<plugin>
@@ -786,14 +798,13 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
-					<version>2.0.0</version>
+					<version>2.0.2</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
-					<!-- version 1.6 does not work because a function is not found -->
-					<version>1.9.0</version>
+					<version>1.11.1</version>
 				</plugin>
 
 				<plugin>
@@ -806,12 +817,24 @@
 					<groupId>sh.tak.appbundler</groupId>
 					<artifactId>appbundle-maven-plugin</artifactId>
 					<version>1.2.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-archiver</artifactId>
+							<version>4.2.5</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.velocity</groupId>
+							<artifactId>velocity-tools</artifactId>
+							<version>2.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 
 				<plugin>
 					<groupId>net.jsign</groupId>
 					<artifactId>jsign-maven-plugin</artifactId>
-					<version>3.1</version>
+					<version>4.0</version>
 				</plugin>
 
 				<plugin>
@@ -855,7 +878,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.6.0</version>
+					<version>3.6.1</version>
 					<executions>
 						<execution>
 							<id>generated-helpmojo</id>
@@ -869,13 +892,13 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.25</version>
+					<version>2.1.2</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.1.2</version>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -915,7 +938,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.3.1</version>
 					<configuration>
 						<doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
 						<docletArtifact>
@@ -1022,7 +1045,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -1035,7 +1058,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -1049,7 +1072,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute></execute>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -1062,7 +1085,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -1203,7 +1226,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<id>enforce-jdk-versions</id>
@@ -1369,7 +1392,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+						<version>3.0.1</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -1398,12 +1421,18 @@
 	</profiles>
 
 	<repositories>
-		<!--<repository> <id>org.eclipse.xtext-snapshot</id> <snapshots> <enabled>true</enabled> 
-			</snapshots> <releases> <enabled>true</enabled> </releases> <url>https://oss.sonatype.org/content/repositories/snapshots</url> 
-			</repository> -->
-		<!--<repository> <id>org.arakhne-snapshot</id> <snapshots> <enabled>true</enabled> 
-			</snapshots> <releases> <enabled>true</enabled> </releases> <url>http://download.tuxfamily.org/arakhne/maven</url> 
-			</repository> -->
+		<!-- The following repository is defined for enabling the access to the 
+			development version of the AFC libraries -->
+		<repository>
+			<id>org.arakhne-snapshot</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>http://download.tuxfamily.org/arakhne/maven</url>
+		</repository>
 	</repositories>
 
 </project>

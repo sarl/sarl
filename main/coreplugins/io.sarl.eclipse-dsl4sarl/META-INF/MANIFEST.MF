@@ -5,9 +5,9 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 0.13.0.qualifier
 Bundle-SymbolicName: io.sarl.eclipse-dsl4sarl;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse_dsl4sarl
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.18.0",
- org.eclipse.ui.workbench;bundle-version="3.119.0"
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.23.0",
+ org.eclipse.ui.workbench;bundle-version="3.123.0"
 Bundle-Activator: io.sarl.eclipsedsl4sarl.DSL4SARLEclipsePlugin
 

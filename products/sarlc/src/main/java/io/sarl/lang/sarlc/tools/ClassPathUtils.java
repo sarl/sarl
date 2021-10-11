@@ -54,20 +54,12 @@ public final class ClassPathUtils {
 	 * @param logger the logger to use.
 	 * @return the concrete class path.
 	 */
-	@SuppressWarnings("deprecation")
 	public static SystemPath buildClassPath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
 			JavaVersion jversion, Logger logger) {
 		final SystemPath fullClassPath = new SystemPath();
 		// Boot class path
 		if (!SarlBatchCompilerUtils.isModuleSupported(jversion)) {
 			fullClassPath.addEntries(cfg.getBootClasspath());
-			if (fullClassPath.isEmpty()) {
-				try {
-					classpathProvider.getBootClasspath(fullClassPath, logger);
-				} catch (Throwable exception) {
-					logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
-				}
-			}
 		}
 		logger.fine(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
 		// User class path

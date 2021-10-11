@@ -62,8 +62,8 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.annotation.nullanalysis=enabled
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.compliance=1.8
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=11
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.compliance=11
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.maxProblemPerUnit=50
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.annotationSuperInterface=error
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
@@ -133,7 +133,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=error
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedTypeParameter=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedWarningToken=error
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.source=1.8
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.source=11
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.incompatibleJDKLevel=warning
 /instance/org.eclipse.jdt.debug.ui/org.eclipse.debug.ui.ExpressionView.org.eclipse.jdt.debug.ui.show_null_entries=true
 /instance/org.eclipse.jdt.debug.ui/org.eclipse.debug.ui.VariableView.org.eclipse.jdt.debug.ui.show_null_entries=true

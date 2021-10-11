@@ -69,8 +69,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private File tmpFolder = null;
 
-	private String bootClassPath = Strings.emptyIfNull(null);
-
 	private String classPath = Strings.emptyIfNull(null);
 
 	private String modulePath = Strings.emptyIfNull(null);
@@ -114,12 +112,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	}
 
 	@Override
-	@Deprecated
-	public void setBootClassPath(String classpath) {
-		this.bootClassPath = Strings.emptyIfNull(classpath);
-	}
-
-	@Override
 	public void setJavaSourceVersion(String version) {
 		this.sourceVersion = Strings.emptyIfNull(version);
 	}
@@ -152,7 +144,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		return file;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public CompiledFile compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
 		File rootFolder = createRootFolder();
@@ -171,8 +162,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setClassPath(this.classPath);
 		if (isModuleSupported()) {
 			compiler.setModulePath(this.modulePath);
-		} else {
-			compiler.setBootClassPath(this.bootClassPath);
 		}
 		compiler.setJavaSourceVersion(this.sourceVersion);
 		compiler.setAllWarningSeverities(Severity.IGNORE);

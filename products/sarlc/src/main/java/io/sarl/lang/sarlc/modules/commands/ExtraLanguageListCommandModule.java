@@ -23,10 +23,12 @@ package io.sarl.lang.sarlc.modules.commands;
 
 import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
 
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
@@ -40,11 +42,11 @@ import io.sarl.lang.sarlc.commands.ExtraLanguageListCommand;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class ExtraLanguageListCommandModule extends AbstractModule {
+public class ExtraLanguageListCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(ExtraLanguageListCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(ExtraLanguageListCommand.class);
 	}
 
 	/** Provide the command for displaying the available extra-language generators.

@@ -151,12 +151,9 @@ class ImportMavenSarlProjectsJob extends WorkspaceJob {
 			final List<IProject> createdProjects = importOperation.getCreatedProjects();
 			final MappingDiscoveryJob discoveryJob = new MappingDiscoveryJob(createdProjects);
 			discoveryJob.schedule();
-		} catch (InvocationTargetException e) {
+		} catch (InvocationTargetException exception) {
 			restorePom();
-			return AbstractCreateMavenProjectsOperation.toStatus(e);
-		} catch (InterruptedException e) {
-			restorePom();
-			return Status.CANCEL_STATUS;
+			return AbstractCreateMavenProjectsOperation.toStatus(exception);
 		}
 		return Status.OK_STATUS;
 	}

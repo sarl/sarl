@@ -8,7 +8,7 @@
 # SARL is an general-purpose agent programming language.
 # More details on http://www.sarl.io
 #
-# Copyright (C) 2014-2020 the original authors or authors.
+# Copyright (C) 2014-2021 the original authors or authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Style for SARL 0.12
+# Style for SARL 0.13
 
 
 from setuptools import setup
 
 setup (
   name='sarl.pylexer',
-  version='0.12',
+  version='0.13',
   packages=['sarl.pylexer'],
   entry_points =
   """

@@ -92,6 +92,10 @@
                 name="preferenceCustomization"
                 value="platform:/plugin/io.sarl.eclipse-dsl4sarl/plugin_customization.ini">
           </property>
+          <property
+                name="appName"
+                value="%product.name">
+          </property>
        </product>
     </extension>
 </plugin>

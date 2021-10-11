@@ -20,12 +20,6 @@
  */
 package io.sarl.sre.boot.internal.services
 
-import com.google.common.util.concurrent.Service
-import com.google.inject.AbstractModule
-import com.google.inject.Module
-import com.google.inject.Provides
-import io.bootique.BQModule
-import io.bootique.BQModuleProvider
 import io.sarl.api.naming.namespace.AnnotationFieldAccessValidator
 import io.sarl.api.naming.namespace.CapacityFieldAccessValidator
 import io.sarl.api.naming.namespace.CascadeFieldAccessValidator
@@ -38,8 +32,12 @@ import io.sarl.api.naming.parser.INameParser
 import java.util.Set
 import javax.inject.Inject
 import javax.inject.Singleton
-
-import static extension com.google.inject.multibindings.Multibinder.*
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.bootique.di.Provides
+import com.google.common.util.concurrent.Service
 
 /** 
  * Module for the namespace services.
@@ -50,12 +48,11 @@ import static extension com.google.inject.multibindings.Multibinder.*
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-class NamespaceServiceModule extends AbstractModule {
+class NamespaceServiceModule implements BQModule {
 
-	protected override configure {
-		typeof(NamespaceService).bind.to(typeof(InjectedFinderBasedNamespaceService)).in(typeof(Singleton))
-
-		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(typeof(NamespaceService))
+	override configure(extension binder : Binder) {
+		typeof(NamespaceService).bind.to(typeof(InjectedFinderBasedNamespaceService)).inSingletonScope
+		binder.bindSet(typeof(Service), typeof(SreServices)).add(typeof(NamespaceService))
 	}
 
 	@Provides
@@ -109,12 +106,12 @@ class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
  */
 class NamespaceServiceModuleProvider implements BQModuleProvider {
 
-	override module : Module {
+	override module : BQModule {
 		return new NamespaceServiceModule
 	}
 
-	override moduleBuilder : BQModule.Builder {
-		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
 			Messages::NamespaceServiceModuleProvider_0)
 	}
 

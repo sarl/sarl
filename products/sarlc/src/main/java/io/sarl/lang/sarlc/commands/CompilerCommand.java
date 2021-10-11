@@ -25,8 +25,9 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Provider;
+
 import com.google.common.base.Strings;
-import com.google.inject.Provider;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;

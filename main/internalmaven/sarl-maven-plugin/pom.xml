@@ -49,22 +49,25 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
-		<!-- The following dependency is included in order to be sure that correct version is used
-		     due to a conflict between the base libs for SARL and maven-core -->
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>vmutils</artifactId>
+		</dependency>
+		<!-- The following dependency is included in order to be sure that correct 
+			version is used due to a conflict between the base libs for SARL and maven-core -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<classifier>no_aop</classifier>
+			<!-- <classifier>no_aop</classifier> -->
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
-		<!--  The following dependency is included in order to have extra-language generators -->
-		<!-- <dependency>
-			<groupId>io.sarl.pythongenerator</groupId>
-			<artifactId>io.sarl.pythongenerator.generator</artifactId>
-		</dependency> -->
+		<!-- The following dependency is included in order to have extra-language 
+			generators -->
+		<!-- <dependency> <groupId>io.sarl.pythongenerator</groupId> <artifactId>io.sarl.pythongenerator.generator</artifactId> 
+			</dependency> -->
 	</dependencies>
 
 	<build>
@@ -88,7 +91,9 @@
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
 							<file>${project.basedir}/src/main/java/io/sarl/maven/compiler/MavenBatchCompiler.java</file>
-							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+							</regexFlags>
 							<replacements>
 								<replacement>
 									<token>(DEFAULT_COMPILER_VERSION *= *")([^"]+)(";)</token>

@@ -37,10 +37,6 @@ public class Messages extends NLS {
 	public static String ClassPathUtils_0;
 	public static String ClassPathUtils_1;
 	public static String ClassPathUtils_2;
-	public static String SarlEmbededSdkClasspathProvider_0;
-	public static String SarlEmbededSdkClasspathProvider_1;
-	public static String SarlEmbededSdkClasspathProvider_2;
-	public static String SarlEmbededSdkClasspathProvider_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

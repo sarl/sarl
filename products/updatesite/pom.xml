@@ -145,7 +145,7 @@
 									<outputDirectory>${productPath.win.64}</outputDirectory>
 									<destFileName>sarlc.exe</destFileName>
 								</artifactItem>
-								<artifactItem>
+								<!-- <artifactItem>
 									<groupId>io.sarl</groupId>
 									<artifactId>io.sarl.sarldoc</artifactId>
 									<version>${sarl.version}</version>
@@ -180,7 +180,7 @@
 									<overWrite>true</overWrite>
 									<outputDirectory>${productPath.win.64}</outputDirectory>
 									<destFileName>janus.exe</destFileName>
-								</artifactItem>
+								</artifactItem> -->
 							</artifactItems>
 						</configuration>
 					</execution>

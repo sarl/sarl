@@ -152,7 +152,6 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	public final CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			String javaVersion,
 			String encoding,
 			boolean isCompilerMoreVerbose,
@@ -162,7 +161,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 			Logger logger,
 			IProgressMonitor progress) {
 		final JavaVersion jversion = SarlBatchCompilerUtils.parserJavaVersion(javaVersion);
-		return compile(classDirectory, sourcePathDirectories, classPathEntries, modulePathEntries, bootClassPathEntries,
+		return compile(classDirectory, sourcePathDirectories, classPathEntries, modulePathEntries,
 				jversion, SarlBatchCompilerUtils.isModuleSupported(jversion),
 				encoding, isCompilerMoreVerbose, optimizationLevel, outWriter, errWriter, logger, progress);
 	}
@@ -173,7 +172,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
 	 * @param modulePathEntries classpath entries. No more used.
-	 * @param javaVersion the version of Java that is the target, e.g. {@code 1.8}.
+	 * @param javaVersion the version of Java that is the target, e.g. {@code 11}.
 	 * @param isModuleSupport indicates if modules are supported.
 	 * @param encoding the encoding of the files.
 	 * @param isCompilerMoreVerbose indicates if the Java compiler should be more verbose.
@@ -188,7 +187,6 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	protected abstract CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			JavaVersion javaVersion,
 			boolean isModuleSupport,
 			String encoding,

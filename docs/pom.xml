@@ -15,7 +15,7 @@
 
 	<modules>
 		<module>io.sarl.docs.doclet</module>
-		<module>io.sarl.docs.markdown</module>
+		<!-- <module>io.sarl.docs.markdown</module> -->
 	</modules>
 
 </project>

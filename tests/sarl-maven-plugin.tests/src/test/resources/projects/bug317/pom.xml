@@ -8,7 +8,7 @@
     <name>HARMS Demo of the SARL Agent Oriented Programming Language</name>
 
     <properties>
-        <javac.level>1.8</javac.level>
+        <javac.level>11</javac.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

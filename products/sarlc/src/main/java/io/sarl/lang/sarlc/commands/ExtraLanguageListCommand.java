@@ -24,7 +24,8 @@ package io.sarl.lang.sarlc.commands;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.inject.Provider;
+import javax.inject.Provider;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;

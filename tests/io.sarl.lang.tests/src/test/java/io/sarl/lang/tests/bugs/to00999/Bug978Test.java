@@ -71,7 +71,6 @@ public class Bug978Test extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SyntheticMember;", 
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.Skill;",
-			"import io.sarl.lang.tests.bug978.MyCapacity;",
 			"import java.util.Objects;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",

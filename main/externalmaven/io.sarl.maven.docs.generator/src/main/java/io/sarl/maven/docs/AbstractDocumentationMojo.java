@@ -407,7 +407,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if the parser cannot be created.
 	 * @throws IOException if a classpath entry cannot be found.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "deprecation" })
+	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final JavaVersion javaVersion = SarlBatchCompilerUtils.parserJavaVersion(this.source);
 
@@ -447,10 +447,6 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 		scriptExecutor.setModulePath(mp.toString());
 		scriptExecutor.setClassLoaderBuilder(it -> getProjectClassLoader(it, fullCp, fullCp.size()));
-		final String bootPath = getBootClassPath();
-		if (!Strings.isEmpty(bootPath)) {
-			scriptExecutor.setBootClassPath(bootPath);
-		}
 		scriptExecutor.setJavaSourceVersion(javaVersion.getQualifier());
 		scriptExecutor.setTempFolder(this.tempDirectory.getAbsoluteFile());
 

@@ -64,9 +64,7 @@ public class TestReflections {
 	@SuppressWarnings("unchecked")
 	public static <T> T getStatic(Class<?> receiverType, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Field f = getDeclaredField(receiverType, fieldName);
-		if (!f.isAccessible()) {
-			f.setAccessible(true);
-		}
+		f.setAccessible(true);
 		return (T) f.get(null);
 	}
 
@@ -84,9 +82,7 @@ public class TestReflections {
 	 */
 	public static <T> void setStatic(Class<?> receiverType, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Field f = getDeclaredField(receiverType, fieldName);
-		if (!f.isAccessible()) {
-			f.setAccessible(true);
-		}
+		f.setAccessible(true);
 		f.set(null, value);
 	}
 
@@ -102,9 +98,7 @@ public class TestReflections {
 		while (type != null) {
 			try {
 				Field f = getDeclaredField(type, fieldName);
-				if (!f.isAccessible()) {
-					f.setAccessible(true);
-				}
+				f.setAccessible(true);
 				f.set(instance, value);
 				return;
 			} catch (NoSuchFieldException exception) {
@@ -128,9 +122,7 @@ public class TestReflections {
 		while (type != null) {
 			try {
 				Field f = getDeclaredField(type, fieldName);
-				if (!f.isAccessible()) {
-					f.setAccessible(true);
-				}
+				f.setAccessible(true);
 				return (T) f.get(instance);
 			} catch (NoSuchFieldException exception) {
 				//
@@ -170,9 +162,7 @@ public class TestReflections {
 			}
 		}
 		if (compatible != null) {
-			if (!compatible.isAccessible()) {
-				compatible.setAccessible(true);
-			}
+			compatible.setAccessible(true);
 			return type.cast(compatible.newInstance(arguments));
 		}
 		// not found provoke constructor not found exception
@@ -304,8 +294,7 @@ public class TestReflections {
 			}
 		} while(compatible == null && (clazz = clazz.getSuperclass()) != null);
 		if (compatible != null) {
-			if (!compatible.isAccessible())
-				compatible.setAccessible(true);
+			compatible.setAccessible(true);
 			return compatible.invoke(receiver);
 		}
 		// not found provoke method not found exception
@@ -361,8 +350,7 @@ public class TestReflections {
 			}
 		} while(compatible == null && (clazz = clazz.getSuperclass()) != null);
 		if (compatible != null) {
-			if (!compatible.isAccessible())
-				compatible.setAccessible(true);
+			compatible.setAccessible(true);
 			if (compatible.isVarArgs()) {
 				Object[] newArgs = new Object[compatible.getParameterCount()];
 				for (int i = 0; i < compatible.getParameterCount() - 1; ++i) {

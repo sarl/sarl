@@ -21,6 +21,17 @@
 
 package io.sarl.maven.bootiqueapp.batchcompiler.lang;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import com.google.inject.Injector;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
+
+import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+
 /** Empty module that is defined for enabling automatic loading of modules
  * from command-line tools when their CLI options should be computed.
  *
@@ -30,6 +41,25 @@ package io.sarl.maven.bootiqueapp.batchcompiler.lang;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public final class SARLRuntimeModule extends io.sarl.lang.SARLRuntimeModule {
-	//
+public final class SARLRuntimeModule extends io.sarl.lang.SARLRuntimeModule implements BQModule {
+
+	@Override
+	public void configure(Binder binder) {
+		//
+	}
+
+	@Singleton
+	@Provides
+	public Injector providesSarlCompilerInjector() {
+		final Injector injector = new SARLStandaloneSetup().createInjector();
+		return injector;
+	}
+
+	@Singleton
+	@Provides
+	public SarlBatchCompiler providesSarlCompiler(Provider<Injector> sarlInjector) {
+		final SarlBatchCompiler compiler = sarlInjector.get().getInstance(SarlBatchCompiler.class);
+		return compiler;
+	}
+
 }

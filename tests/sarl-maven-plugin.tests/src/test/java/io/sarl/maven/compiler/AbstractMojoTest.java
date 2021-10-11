@@ -33,12 +33,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Properties;
+import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
-import org.apache.maven.shared.utils.cli.CommandLineUtils;
-import org.apache.maven.shared.utils.io.FileUtils;
 import org.opentest4j.TestAbortedException;
 
 /** Abstract test of Maven Mojo.
@@ -174,8 +173,22 @@ public abstract class AbstractMojoTest {
 	 * @param goalName the goal to run.
 	 * @return the verifier.
 	 * @throws Exception any exception.
+	 * @since 0.13
 	 */
 	protected Verifier executeMojo(String projectName, String goalName) throws Exception {
+		return executeMojo(projectName, goalName, false);
+	}
+
+	/** Execute a Mojo.
+	 *
+	 * @param projectName the name of the project to test for the unit test.
+	 * @param goalName the goal to run.
+	 * @param forkJvm indicates if the JVM should be forked for running Maven.
+	 * @return the verifier.
+	 * @throws Exception any exception.
+	 * @since 0.13
+	 */
+	protected Verifier executeMojo(String projectName, String goalName, boolean forkJvm) throws Exception {
 		String tempDirPath = System.getProperty("maven.test.tmpdir", //$NON-NLS-1$
 				System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
 		File tempDir = new File(tempDirPath);
@@ -190,7 +203,7 @@ public abstract class AbstractMojoTest {
 		}
 		File resourceFile = new File(new URI(url.toExternalForm()));
 		assertTrue(resourceFile.isDirectory());
-		FileUtils.copyDirectoryStructure(resourceFile, baseDir);
+		FileUtils.copyDirectory(resourceFile, baseDir);
 
 		assertTrue(baseDir.exists());
 		assertTrue(baseDir.isDirectory());
@@ -203,9 +216,14 @@ public abstract class AbstractMojoTest {
 		//verifier.addCliOption("-o"); //$NON-NLS-1$
 		final String m2home = findDefaultMavenHome();
 		if (m2home != null && !m2home.isEmpty()) {
-			verifier.setForkJvm(false);
+			verifier.setForkJvm(forkJvm);
 			verifier.getSystemProperties().put("maven.multiModuleProjectDirectory", m2home); //$NON-NLS-1$
-			verifier.getVerifierProperties().put("use.mavenRepoLocal", Boolean.FALSE.toString()); //$NON-NLS-1$
+			final String useLocal = Boolean.valueOf(forkJvm).toString();
+			verifier.getVerifierProperties().put("use.mavenRepoLocal", useLocal); //$NON-NLS-1$
+			if (forkJvm) {
+				verifier.getSystemProperties().put("verifier.forkMode", "embedded");
+				verifier.getVerifierProperties().put("verifier.forkMode", "embedded");
+			}
 		}
 		verifier.executeGoals(Arrays.asList("clean", goalName)); //$NON-NLS-1$
 		return verifier;
@@ -215,8 +233,8 @@ public abstract class AbstractMojoTest {
 		String defaultMavenHome = System.getProperty("maven.home"); //$NON-NLS-1$
 
 		if ( defaultMavenHome == null ) {
-			Properties envVars = CommandLineUtils.getSystemEnvVars();
-			defaultMavenHome = envVars.getProperty("M2_HOME"); //$NON-NLS-1$
+			final Map<String, String> envVars = System.getenv();
+			defaultMavenHome = envVars.get("M2_HOME"); //$NON-NLS-1$
 		}
 
 		if ( defaultMavenHome == null )

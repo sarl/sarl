@@ -20,17 +20,6 @@
  */
 package io.sarl.api.bootiquebase.config
 
-import com.google.inject.AbstractModule
-import com.google.inject.Injector
-import com.google.inject.Module
-import com.google.inject.Provides
-import com.google.inject.Singleton
-import io.bootique.BQModule
-import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
-import io.bootique.config.ConfigurationFactory
-import io.bootique.meta.application.OptionMetadata
 import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Collections
@@ -40,6 +29,17 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.arakhne.afc.bootique.variables.VariableNames
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfig
+import io.bootique.annotation.BQConfigProperty
+import io.bootique.config.ConfigurationFactory
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.bootique.di.Injector
+import io.bootique.di.Provides
+import io.bootique.meta.application.OptionMetadata
+import javax.inject.Singleton
 
 import static io.sarl.api.bootiquebase.config.LogConfig.*
 
@@ -227,16 +227,16 @@ class LogConfig implements Comparable<LogConfig> {
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class LogConfigModule extends AbstractModule {
+class LogConfigModule implements BQModule {
 
 	/** Name of the command-line option.
 	 */
 	public static val LOG_LONG_OPTION = "log"
 	
-	override configure : void {
-		VariableDecls.extend(binder()).declareVar(LogConfig::LEVEL);
+	override configure(binder : Binder) : void {
+		VariableDecls::extend(binder).declareVar(LogConfig::LEVEL)
 		val cpDescription = MessageFormat::format(Messages::LogConfigModule_0,
-				VariableNames.toEnvironmentVariableName(LogConfig::LEVEL),
+				VariableNames::toEnvironmentVariableName(LogConfig::LEVEL),
 				LOG_LONG_OPTION,
 				LogLevel::toJsonString(DEFAULT_LEVEL),
 				LogLevel::getAllJsonLabels(true))
@@ -273,16 +273,16 @@ class LogConfigModule extends AbstractModule {
  */
 class LogConfigModuleProvider implements BQModuleProvider {
 
-	override module : Module {
-		return new LogConfigModule
+	override module : BQModule {
+		new LogConfigModule
 	}
 
 	override configs : Map<String, Type> {
-		return Collections::singletonMap(LogConfig::PREFIX, typeof(LogConfig))
+		Collections::singletonMap(LogConfig::PREFIX, typeof(LogConfig))
 	}
 
-	override moduleBuilder : BQModule.Builder {
-		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+	override moduleBuilder : BQModuleMetadata.Builder {
+		BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
 			Messages::LogConfigModuleProvider_0)
 	}
 

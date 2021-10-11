@@ -49,9 +49,9 @@
 					<filter token="PROJECT_NAME" value="@{name}"/>
 					<filter token="PROJECT_VERSION" value="0.13.0-SNAPSHOT"/>
 					<filter token="SARL_VERSION" value="0.13.0-SNAPSHOT"/>
-					<filter token="AFC_VERSION" value="16.0"/>
+					<filter token="AFC_VERSION" value="18.0-SNAPSHOT"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="1.8"/>
+					<filter token="JAVA_VERSION" value="11"/>
 					<filter token="RELEASE_YEAR" value="2021"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.8.1"/>
 					<filter token="OPENJFX_VERSION" value="11.0.2"/>
@@ -64,9 +64,9 @@
 					<filter token="PROJECT_NAME" value="@{name}"/>
 					<filter token="PROJECT_VERSION" value="0.13.0-SNAPSHOT"/>
 					<filter token="SARL_VERSION" value="0.13.0-SNAPSHOT"/>
-					<filter token="AFC_VERSION" value="16.0"/>
+					<filter token="AFC_VERSION" value="18.0-SNAPSHOT"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="1.8"/>
+					<filter token="JAVA_VERSION" value="11"/>
 					<filter token="RELEASE_YEAR" value="2021"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.8.1"/>
 					<filter token="OPENJFX_VERSION" value="11.0.2"/>

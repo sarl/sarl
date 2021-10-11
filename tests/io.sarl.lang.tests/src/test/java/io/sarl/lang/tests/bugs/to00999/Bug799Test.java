@@ -68,7 +68,6 @@ public class Bug799Test extends AbstractSarlTest {
 	private static final String EXPECTED01a = multilineString(
 			"package foo.bug799;",
 			"",
-			"import foo.bug799.Cap;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -99,7 +98,6 @@ public class Bug799Test extends AbstractSarlTest {
 	private static final String EXPECTED01b = multilineString(
 			"package foo.bug799;",
 			"",
-			"import foo.bug799.Cap;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",

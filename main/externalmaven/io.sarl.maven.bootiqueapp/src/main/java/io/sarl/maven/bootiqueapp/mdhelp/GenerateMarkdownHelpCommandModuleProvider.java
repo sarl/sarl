@@ -21,9 +21,9 @@
 
 package io.sarl.maven.bootiqueapp.mdhelp;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 /** Provider of the module for displaying the help on the standard output using a Markdown format.
  *
@@ -36,13 +36,13 @@ import io.bootique.BQModuleProvider;
 public class GenerateMarkdownHelpCommandModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new GenerateMarkdownHelpCommandModule();
 	}
 
 	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
+    public BQModuleMetadata.Builder moduleBuilder() {
+        return BQModuleMetadata
                 .builder(module())
                 .overrides(overrides())
                 .providerName(name())

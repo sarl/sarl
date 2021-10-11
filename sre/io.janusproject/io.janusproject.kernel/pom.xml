@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<classifier>no_aop</classifier>
+			<!-- <classifier>no_aop</classifier> -->
 		</dependency>
 
 		<!-- The following dependency is necessary to avoid version conflict

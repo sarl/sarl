@@ -25,15 +25,14 @@ import static io.bootique.BQCoreModule.extend;
 
 import java.util.logging.Logger;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Binding;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.spi.ProvisionListener;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
@@ -50,21 +49,18 @@ import io.sarl.lang.sarlc.tools.PathDetector;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class CompilerCommandModule extends AbstractModule {
+public class CompilerCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder())
+	public void configure(Binder binder) {
+		extend(binder)
 			.addOption(OptionMetadata.builder(
 				CompilerCommand.PROGRESS_OPTION_NAME, Messages.CompilerCommandModule_0)
 				.valueOptionalWithDefault(Boolean.TRUE.toString())
 				.build())
 			.mapConfigPath(CompilerCommand.PROGRESS_OPTION_NAME, ProgressBarConfig.ENABLE);
 
-		extend(binder()).addCommand(CompilerCommand.class);
-
-		binder().bindListener(new BindingMatcher(), new LoggerProvisionListener(
-				binder().getProvider(ProgressBarConfig.class)));
+		extend(binder).addCommand(CompilerCommand.class);
 	}
 
 	/** Provide the command for running the compiler.
@@ -99,59 +95,17 @@ public class CompilerCommandModule extends AbstractModule {
 		return config;
 	}
 
-	/** Listener on logger provision.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.8
-	 */
-	private static class LoggerProvisionListener implements ProvisionListener {
-
-		private final Provider<ProgressBarConfig> commandConfig;
-
-		/** Constructor.
-		 *
-		 * @param commandConfig the configuration of the compiler command.
-		 */
-		LoggerProvisionListener(Provider<ProgressBarConfig> commandConfig) {
-			this.commandConfig = commandConfig;
-		}
-
-		@Override
-		public <T> void onProvision(ProvisionInvocation<T> provision) {
-			final T object = provision.provision();
-			final ProgressBarConfig cfg = this.commandConfig.get();
-			if (cfg.getEnable() && object instanceof Logger) {
-				final Logger logger = (Logger) object;
-				logger.setLevel(cfg.getLevel());
+	@Singleton
+	@Provides
+	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
+		final Logger root = Logger.getAnonymousLogger();
+		if (root != null) {
+			ProgressBarConfig cfg = config.get();
+			if (cfg.getEnable()) {
+				root.setLevel(cfg.getLevel());
 			}
 		}
-
-	}
-
-	/** Matcher of sub types.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.8
-	 */
-	private static class BindingMatcher extends AbstractMatcher<Binding<?>> {
-
-		/** Constructor.
-		 */
-		BindingMatcher() {
-			//
-		}
-
-		@Override
-		public boolean matches(Binding<?> binding) {
-			return Logger.class.isAssignableFrom(binding.getKey().getTypeLiteral().getRawType());
-		}
-
+		return root;
 	}
 
 }

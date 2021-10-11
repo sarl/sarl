@@ -4,10 +4,10 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.sarl.lang.core;singleton:=true
 Automatic-Module-Name: io.sarl.lang.core
 Bundle-Version: 0.13.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %Bundle-Vendor
-Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.22.0";visibility:=reexport,
- org.eclipse.xtend.lib;bundle-version="2.22.0",
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.25.0";visibility:=reexport,
+ org.eclipse.xtend.lib;bundle-version="2.25.0",
  javax.inject;bundle-version="1.0.0"
 Export-Package: io.sarl.bootstrap,
  io.sarl.lang,

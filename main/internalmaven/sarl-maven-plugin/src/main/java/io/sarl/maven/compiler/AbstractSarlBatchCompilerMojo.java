@@ -25,26 +25,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Provider;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -52,22 +53,16 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.utils.io.DirectoryScanner;
-import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;
-import org.apache.maven.toolchain.ToolchainPrivate;
-import org.apache.maven.toolchain.java.JavaToolchain;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
-import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 
 /** Abstract mojo that is able to use the SARL batch compiler.
  *
@@ -77,6 +72,19 @@ import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
+
+	/** Regular expression that is used for detecting the potential conflicts with
+	 * the Java libraries.
+	 *
+	 * @since 0.12
+	 */
+	private static final String CONFLICTING_JAR_PATTERN = "^java([0-9]+)api\\.jar$"; //$NON-NLS-1$
+
+	/** Regular expression for integer numbers.
+	 *
+	 * @since 0.12
+	 */
+	private static final String NUM_PATTERN = "^([0-9]+)"; //$NON-NLS-1$
 
 	private Injector injector;
 
@@ -98,11 +106,137 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 
 	private List<File> bufferedTestModulePath;
 
+	/** Replies if the classpath must be fixed.
+	 *
+	 * @return {@code true} if the classpath is fixed.
+	 * @since 0.13
+	 */
+	protected abstract boolean isFixingJavaClasspathForJre();
+
+	/** Replies if the plugin is run into with Tycho Eclipse RCP environment.
+	 *
+	 * @return {@code true} if the tycho is activated.
+	 * @since 0.13
+	 */
+	protected abstract boolean isTychoEnvironment();
+
+	/** Fix the classpath because the JDT libraries that are included by tycho
+	 * automatically add "javaXapi.jar" on the classpath. Sometimes, the
+	 * included jar files contains API for newer JSE, that causes incompatible
+	 * class format.
+	 *
+	 * @param currentClassPath is the classpath to fix.
+	 * @param classpathName is the name of the classpath to fix.
+	 * @return the fixed classpath.
+	 * @since 0.12
+	 */
+	protected List<File> fixJreClassPathFiles(List<File> currentClassPath, String classpathName) {
+		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
+		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
+		final List<File> newClassPath = new ArrayList<>(currentClassPath.size());
+		final int currentVersion = parseInt(numPattern, System.getProperty("java.version"));
+		for (final File file : currentClassPath) {
+			final String basename = file.getName();
+			final Matcher matcher = conflictPattern.matcher(basename);
+			if (matcher.find()) {
+				final int version = parseInt(numPattern, matcher.group(1));
+				if (version <= currentVersion) {
+					newClassPath.add(file);
+				} else {
+					getLog().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_11, basename, classpathName));
+				}
+			} else {
+				newClassPath.add(file);
+			}
+		}
+		return newClassPath;
+	}
+
+	/** Fix the classpath because the JDT libraries that are included by tycho
+	 * automatically which adds "javaXapi.jar" on the classpath. Sometimes, the
+	 * included jar files contains API for newer JSE, that causes incompatible
+	 * class format.
+	 *
+	 * @param currentClassPath is the classpath to fix.
+	 * @param classpathName is the name of the classpath to fix.
+	 * @return the fixed classpath.
+	 * @since 0.13
+	 */
+	protected List<URL> fixJreClassPathURLs(List<URL> currentClassPath, String classpathName) {
+		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
+		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
+		final List<URL> newClassPath = new ArrayList<>(currentClassPath.size());
+		final int currentVersion = parseInt(numPattern, System.getProperty("java.version"));
+		for (final URL file : currentClassPath) {
+			final String basename = FileSystem.largeBasename(file);
+			final Matcher matcher = conflictPattern.matcher(basename);
+			if (matcher.find()) {
+				final int version = parseInt(numPattern, matcher.group(1));
+				if (version <= currentVersion) {
+					newClassPath.add(file);
+				} else {
+					getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_11, basename, classpathName));
+				}
+			} else {
+				newClassPath.add(file);
+			}
+		}
+		return newClassPath;
+	}
+
+	private static int parseInt(Pattern pattern, String text) {
+		final Matcher matcher = pattern.matcher(text);
+		if (matcher.find()) {
+			try {
+				return Integer.parseInt(matcher.group(1));
+			} catch (Throwable ex) {
+				//
+			}
+		}
+		return 0;
+	}
+
 	@Override
-	protected void prepareExecution() throws MojoExecutionException {
+	@SuppressWarnings({"resource", "unchecked"})
+	protected synchronized void prepareExecution() throws MojoExecutionException {
 		if (this.injector == null) {
-			final Injector mainInjector = SARLStandaloneSetup.doSetup();
-			this.injector = mainInjector.createChildInjector(Arrays.asList(new MavenPrivateModule()));
+			try {
+				ClassLoader classLoader = getClass().getClassLoader();
+				/*
+				// Override the standard class loader in order to remove the conflicting
+				// internal libs (in *.jar/lib/) from the classpath
+				if (isTychoEnvironment() && isFixingJavaClasspathForJre()) {
+					getLog().warn(Messages.AbstractSarlBatchCompilerMojo_13);
+					final ClassLoader realm = getClass().getClassLoader();
+					classLoader = new TychoCompliantClassLoader(realm);
+					Thread.currentThread().setContextClassLoader(classLoader);
+				}
+				*/
+				// Create the SARL injector by using a reflect approach in order to use the
+				// class loader that is defined above
+				//
+				// Create the SARL setup and create the injector
+				final Class<?> setup = classLoader.loadClass(SARLStandaloneSetup.class.getName());
+				final Method method = setup.getDeclaredMethod("doSetup");
+				final Injector mainInjector = (Injector) method.invoke(null);
+				// Create the plugin's injection module
+				final Class<? extends Module> innerModuleType = (Class<? extends Module>) classLoader.loadClass(MavenPrivateModule.class.getName());
+				final Module innerModule = innerModuleType.getConstructor(AbstractSarlBatchCompilerMojo.class).newInstance(this);
+				// Create the sub-injector
+				this.injector = mainInjector.createChildInjector(Arrays.asList(innerModule));
+				//
+				/*classLoader.loadClass("javax.tools.JavaCompiler");
+				URL res0 = this.injector.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class");
+				URL res1 = classLoader.getResource("javax/tools/JavaCompiler.class");
+				getLog().info("RES0 = " + res0);
+				getLog().info("RES1 = " + res1);
+				getLog().info("CLS = " + classLoader.toString());
+				getLog().info("CLS2 = " + mainInjector.getClass().getClassLoader());
+				getLog().info("CLS3 = " + this.injector.getClass().getClassLoader());
+				this.injector.getClass().getClassLoader().loadClass("javax.tools.JavaCompiler");*/
+			} catch (Throwable ex) {
+				throw new RuntimeException(ex);
+			}
 		}
 		if (this.sarlBatchCompilerProvider == null) {
 			this.sarlBatchCompilerProvider = this.injector.getProvider(SarlBatchCompiler.class);
@@ -284,7 +418,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @throws MojoExecutionException if error.
 	 * @throws MojoFailureException if failure.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "deprecation" })
+	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	protected void compile(List<File> classPath, List<File> modulePath, List<File> sourcePaths, File sarlOutputPath,
 			File classOutputPath) throws MojoExecutionException, MojoFailureException {
 		final SarlBatchCompiler compiler = getBatchCompiler();
@@ -316,7 +450,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(classPath);
 		compiler.setModulePath(modulePath);
-		compiler.setBootClassPath(getBootClassPath());
 		final List<File> filteredSourcePaths = Lists.newArrayList(filtered);
 		compiler.setSourcePath(filteredSourcePaths);
 		compiler.setOutputPath(sarlOutputPath);
@@ -377,72 +510,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			}
 			throw new MojoFailureException(errorMessage[0]);
 		}
-	}
-
-	@Deprecated
-	private String getBootClassPath() throws MojoExecutionException {
-		// Bootclasspath is only supported on Java8 and older
-		if (SarlBatchCompilerUtils.isModuleSupported(getSourceVersion())) {
-			return ""; //$NON-NLS-1$
-		}
-		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.mavenHelper.getSession()); //$NON-NLS-1$
-		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
-			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
-			final ToolchainPrivate privateJavaToolChain = (ToolchainPrivate) toolchain;
-			getLog().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_5, javaToolChain));
-
-			String[] includes = {"jre/lib/*", "jre/lib/ext/*", "jre/lib/endorsed/*"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			String[] excludes = new String[0];
-			final Xpp3Dom config = (Xpp3Dom) privateJavaToolChain.getModel().getConfiguration();
-			if (config != null) {
-				final Xpp3Dom bootClassPath = config.getChild("bootClassPath"); //$NON-NLS-1$
-				if (bootClassPath != null) {
-					final Xpp3Dom includeParent = bootClassPath.getChild("includes"); //$NON-NLS-1$
-					if (includeParent != null) {
-						includes = getValues(includeParent.getChildren("include")); //$NON-NLS-1$
-					}
-					final Xpp3Dom excludeParent = bootClassPath.getChild("excludes"); //$NON-NLS-1$
-					if (excludeParent != null) {
-						excludes = getValues(excludeParent.getChildren("exclude")); //$NON-NLS-1$
-					}
-				}
-			}
-
-			try {
-				return scanBootclasspath(Objects.toString(this.reflect.invoke(javaToolChain, "getJavaHome")), includes, excludes); //$NON-NLS-1$
-			} catch (Exception e) {
-				throw new MojoExecutionException(e.getLocalizedMessage(), e);
-			}
-		}
-		return ""; //$NON-NLS-1$
-	}
-
-	private String scanBootclasspath(String javaHome, String[] includes, String[] excludes) {
-		getLog().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_6,
-				javaHome, Arrays.toString(includes), Arrays.toString(excludes)));
-		final DirectoryScanner scanner = new DirectoryScanner();
-		scanner.setBasedir(new File(javaHome));
-		scanner.setIncludes(includes);
-		scanner.setExcludes(excludes);
-		scanner.scan();
-
-		final StringBuilder bootClassPath = new StringBuilder();
-		final String[] includedFiles = scanner.getIncludedFiles();
-		for (int i = 0; i < includedFiles.length; i++) {
-			if (i > 0) {
-				bootClassPath.append(File.pathSeparator);
-			}
-			bootClassPath.append(new File(javaHome, includedFiles[i]).getAbsolutePath());
-		}
-		return bootClassPath.toString();
-	}
-
-	private static String[] getValues(Xpp3Dom[] children) {
-		final String[] values = new String[children.length];
-		for (int i = 0; i < values.length; i++) {
-			values[i] = children[i].getValue();
-		}
-		return values;
 	}
 
 	/** Replies temporary directory.
@@ -680,41 +747,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			this.bufferedTestModulePath = buildTestModulePath();
 		}
 		return this.bufferedTestModulePath;
-	}
-
-	/** Child injection module for the SARL maven plugin.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.8
-	 */
-	private class MavenPrivateModule implements Module {
-
-		/**
-		 * Constructor.
-		 */
-		MavenPrivateModule() {
-			//
-		}
-
-		@Override
-		public void configure(Binder binder) {
-			//
-		}
-
-		@Provides
-		@Singleton
-		public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector) {
-			final JavaCompiler cmp = getJavaCompiler();
-			final IJavaBatchCompiler compiler = cmp.newCompilerInstance(getProject(),
-					AbstractSarlBatchCompilerMojo.this.mavenHelper,
-					isTestContext());
-			injector.injectMembers(compiler);
-			return compiler;
-		}
-
 	}
 
 }

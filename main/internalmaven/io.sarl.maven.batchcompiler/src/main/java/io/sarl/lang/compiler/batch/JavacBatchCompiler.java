@@ -66,7 +66,6 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			JavaVersion javaVersion,
 			boolean isModuleSupport,
 			String encoding,
@@ -105,21 +104,6 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		}
 		if (progress.isCanceled()) {
 			return CompilerStatus.CANCELED;
-		}
-
-		//
-		// Boot classpath
-		//
-		// TODO: Remove when Java 8 is no more supported
-		if (!bootClassPathEntries.isEmpty() && !isModuleSupport) {
-			final String path = buildPath(bootClassPathEntries, progress);
-			if (path == null || progress.isCanceled()) {
-				return CompilerStatus.CANCELED;
-			}
-			if (!Strings.isEmpty(path)) {
-				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-				commandLineArguments.add(path);
-			}
 		}
 
 		//
@@ -165,8 +149,8 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		commandLineArguments.add("-target"); //$NON-NLS-1$
 		commandLineArguments.add(javaVersion.getQualifier());
 		if (javaVersion.isAtLeast(JavaVersion.JAVA11)) {
-			commandLineArguments.add("-release"); //$NON-NLS-1$
-			commandLineArguments.add(javaVersion.getQualifier());
+			//TODO commandLineArguments.add("-release"); //$NON-NLS-1$
+			//TODO commandLineArguments.add(javaVersion.getQualifier());
 		}
 
 		//

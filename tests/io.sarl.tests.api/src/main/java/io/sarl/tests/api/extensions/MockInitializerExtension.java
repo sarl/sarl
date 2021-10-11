@@ -40,7 +40,7 @@ public class MockInitializerExtension implements TestInstancePostProcessor {
 	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
 		final int mockFeaturing = TestMockito.getAutomaticMockableFeatures(testInstance.getClass());
 		if (mockFeaturing != 0) {
-			MockitoAnnotations.initMocks(testInstance);
+			MockitoAnnotations.openMocks(testInstance).close();
 		}
 	}
 

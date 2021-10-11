@@ -28,7 +28,7 @@
 		<module>io.sarl.api.naming.tests</module>
 		<module>sarl-maven-plugin.tests</module>
 		<module>io.sarl.maven.docs.generator.tests</module>
-		<module>crossplatform.tests</module>
+		<!-- <module>crossplatform.tests</module> -->
 
 		<!-- To be included after refactoring
 

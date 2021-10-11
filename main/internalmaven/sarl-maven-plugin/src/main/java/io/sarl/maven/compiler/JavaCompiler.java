@@ -22,6 +22,7 @@
 package io.sarl.maven.compiler;
 
 import com.google.common.base.Strings;
+import com.google.inject.Injector;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -49,8 +50,10 @@ public enum JavaCompiler {
 		}
 
 		@Override
-		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
-			return new MavenBatchCompiler(helper, isTestContext);
+		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector) {
+			final IJavaBatchCompiler cmp = new MavenBatchCompiler(helper, isTestContext);
+			injector.injectMembers(cmp);
+			return cmp;
 		}
 	},
 
@@ -63,7 +66,7 @@ public enum JavaCompiler {
 		}
 
 		@Override
-		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
+		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector) {
 			return SarlBatchCompilerUtils.newDefaultJavaBatchCompiler();
 		}
 	},
@@ -77,8 +80,8 @@ public enum JavaCompiler {
 		}
 
 		@Override
-		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
-			return new EcjBatchCompiler();
+		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector) {
+			return injector.getInstance(EcjBatchCompiler.class);
 		}
 	},
 
@@ -91,8 +94,8 @@ public enum JavaCompiler {
 		}
 
 		@Override
-		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
-			return new JavacBatchCompiler();
+		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector) {
+			return injector.getInstance(JavacBatchCompiler.class);
 		}
 	};
 
@@ -125,9 +128,10 @@ public enum JavaCompiler {
 	 * @param project the current Maven project.
 	 * @param helper the Maven helper for accessing special services.
 	 * @param isTestContext indicates if the compiler is created within the context of test code compilation.
+	 * @param injector the injector.
 	 * @return the Java batch compiler, never {@code null}.
 	 */
-	public abstract IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext);
+	public abstract IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector);
 
 	/** Replies the standard implementation type for the type of compiler.
 	 *

@@ -5,18 +5,18 @@ Automatic-Module-Name: io.sarl.experienceindex.plugin
 Bundle-Version: 0.13.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: io.sarl.experienceindex,
  io.sarl.experienceindex.eclipse
-Require-Bundle: io.sarl.lang.core;bundle-version="0.12.0",
- io.sarl.eclipse;bundle-version="0.12.0",
- io.sarl.lang.ui;bundle-version="0.12.0",
- org.eclipse.xtext.ui;bundle-version="2.22.0",
- org.eclipse.osgi;bundle-version="3.15.300",
- org.eclipse.core.commands;bundle-version="3.9.700",
- org.eclipse.core.runtime;bundle-version="3.18.0",
- org.eclipse.jface;bundle-version="3.20.0",
- org.eclipse.ui;bundle-version="3.117.0",
+Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
+ io.sarl.eclipse;bundle-version="0.13.0",
+ io.sarl.lang.ui;bundle-version="0.13.0",
+ org.eclipse.xtext.ui;bundle-version="2.25.0",
+ org.eclipse.osgi;bundle-version="3.16.300",
+ org.eclipse.core.commands;bundle-version="3.10.0",
+ org.eclipse.core.runtime;bundle-version="3.22.0",
+ org.eclipse.jface;bundle-version="3.22.200",
+ org.eclipse.ui;bundle-version="3.119.0",
  com.google.inject;bundle-version="4.2.3"
 Bundle-Activator: io.sarl.experienceindex.eclipse.SarlExperienceIndexPlugin

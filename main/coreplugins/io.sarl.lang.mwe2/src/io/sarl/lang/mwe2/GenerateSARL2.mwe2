@@ -162,6 +162,7 @@ Workflow {
 					enabled = true
 					name = ideProjectName
 				}
+				
 				runtimeTest = auto-inject {
 					enabled = true
 					root = testProjectPath

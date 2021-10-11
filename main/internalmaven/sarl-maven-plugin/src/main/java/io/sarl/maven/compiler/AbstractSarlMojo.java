@@ -22,6 +22,8 @@
 package io.sarl.maven.compiler;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,7 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.repository.RepositorySystem;
+import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
@@ -372,6 +375,26 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		buffer.append("output = ").append(this.output).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("testInput = ").append(this.testInput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("testOutput = ").append(this.testOutput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+	}
+
+	/** Replies the classpath of the Maven platform. Assuming that it is not the module path.
+	 *
+	 * @return the current classpath.
+	 * @since 0.13
+	 */
+	@SuppressWarnings("resource")
+	protected List<URL> getMavenPlatformClassPath() {
+		final ClassLoader cl = getClass().getClassLoader();
+		if (cl instanceof URLClassLoader) {
+			final URLClassLoader ucl = (URLClassLoader) cl;
+			return Arrays.asList(ucl.getURLs());
+		}
+		final String[] paths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator));
+		final List<URL> files = new ArrayList<>(paths.length);
+		for (final String path : paths) {
+			files.add(FileSystem.convertStringToURL(path, false));
+		}
+		return files;
 	}
 
 }

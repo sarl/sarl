@@ -297,22 +297,24 @@ public final class Utils {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null && extendedInterfaces != null) {
 			for (final JvmTypeReference interfaceReference : extendedInterfaces) {
-				for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
-					if (!"java.lang.Object".equals(//$NON-NLS-1$
-							feature.getDeclaringType().getQualifiedName())) {
-						if (feature instanceof JvmOperation) {
-							final JvmOperation operation = (JvmOperation) feature;
-							final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
-									operation.isVarArgs(), operation.getParameters());
-							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
-									operation.getSimpleName(), sig);
-							if (operation.isDefault()) {
-								if (overridableOperations != null) {
-									overridableOperations.put(actionKey, operation);
-								}
-							} else {
-								if (operationsToImplement != null) {
-									operationsToImplement.put(actionKey, operation);
+				if (interfaceReference instanceof JvmGenericType) {
+					for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
+						if (!"java.lang.Object".equals(//$NON-NLS-1$
+								feature.getDeclaringType().getQualifiedName())) {
+							if (feature instanceof JvmOperation) {
+								final JvmOperation operation = (JvmOperation) feature;
+								final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+										operation.isVarArgs(), operation.getParameters());
+								final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+										operation.getSimpleName(), sig);
+								if (operation.isDefault()) {
+									if (overridableOperations != null) {
+										overridableOperations.put(actionKey, operation);
+									}
+								} else {
+									if (operationsToImplement != null) {
+										operationsToImplement.put(actionKey, operation);
+									}
 								}
 							}
 						}
@@ -323,49 +325,52 @@ public final class Utils {
 
 		// Check on the implemented features, inherited from the super type
 		if (extendedClass != null) {
-			final JvmGenericType parentType = (JvmGenericType) extendedClass.getType();
-			for (final JvmFeature feature : parentType.getAllFeatures()) {
-				if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
-						&& isVisible(jvmElement, feature)
-						&& !isHiddenMember(feature.getSimpleName())) {
-					if (feature instanceof JvmOperation) {
-						if (!feature.isStatic()) {
-							final JvmOperation operation = (JvmOperation) feature;
-							final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
-									operation.isVarArgs(), operation.getParameters());
-							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
-									feature.getSimpleName(), sig);
-							if (operation.isAbstract() && !operation.isDefault()) {
-								if (operationsToImplement != null) {
-									operationsToImplement.put(actionKey, operation);
-								}
-							} else if (operation.isFinal()) {
-								if (finalOperations != null) {
-									finalOperations.put(actionKey, operation);
-								}
-								if (operationsToImplement != null) {
-									operationsToImplement.remove(actionKey);
-								}
-							} else {
-								if (overridableOperations != null) {
-									overridableOperations.put(actionKey, operation);
-								}
-								if (operationsToImplement != null) {
-									operationsToImplement.remove(actionKey);
+			final JvmType extendedClassJvmType = extendedClass.getType();
+			if (extendedClassJvmType instanceof JvmGenericType) {
+				final JvmGenericType parentType = (JvmGenericType) extendedClassJvmType;
+				for (final JvmFeature feature : parentType.getAllFeatures()) {
+					if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
+							&& isVisible(jvmElement, feature)
+							&& !isHiddenMember(feature.getSimpleName())) {
+						if (feature instanceof JvmOperation) {
+							if (!feature.isStatic()) {
+								final JvmOperation operation = (JvmOperation) feature;
+								final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+										operation.isVarArgs(), operation.getParameters());
+								final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+										feature.getSimpleName(), sig);
+								if (operation.isAbstract() && !operation.isDefault()) {
+									if (operationsToImplement != null) {
+										operationsToImplement.put(actionKey, operation);
+									}
+								} else if (operation.isFinal()) {
+									if (finalOperations != null) {
+										finalOperations.put(actionKey, operation);
+									}
+									if (operationsToImplement != null) {
+										operationsToImplement.remove(actionKey);
+									}
+								} else {
+									if (overridableOperations != null) {
+										overridableOperations.put(actionKey, operation);
+									}
+									if (operationsToImplement != null) {
+										operationsToImplement.remove(actionKey);
+									}
 								}
 							}
+						} else if (feature instanceof JvmField && inheritedFields != null) {
+							inheritedFields.put(feature.getSimpleName(), (JvmField) feature);
 						}
-					} else if (feature instanceof JvmField && inheritedFields != null) {
-						inheritedFields.put(feature.getSimpleName(), (JvmField) feature);
 					}
 				}
-			}
 
-			if (superConstructors != null) {
-				for (final JvmConstructor cons : parentType.getDeclaredConstructors()) {
-					final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
-							cons.isVarArgs(), cons.getParameters());
-					superConstructors.put(sig,  cons);
+				if (superConstructors != null) {
+					for (final JvmConstructor cons : parentType.getDeclaredConstructors()) {
+						final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+								cons.isVarArgs(), cons.getParameters());
+						superConstructors.put(sig,  cons);
+					}
 				}
 			}
 		}

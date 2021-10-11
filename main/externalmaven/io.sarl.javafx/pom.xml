@@ -12,16 +12,15 @@
 	<packaging>jar</packaging>
 	<name>SDK JavaFX Library</name>
 
-	<properties>
-		<openjfx.fxml.linux.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.linux.path>
-		<openjfx.fxml.mac.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.mac.path>
-		<openjfx.fxml.win.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.win.path>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${openjfx.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -112,103 +111,6 @@
 	<!-- ==== Release Management === -->
 	<!-- ======================================= -->
 	<profiles>
-		<profile>
-			<id>openjfx-with-env-var</id>
-			<activation>
-				<property>
-					<name>env.OPENJFX_LIB_PATH</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.openjfx</groupId>
-					<artifactId>javafx-fxml</artifactId>
-					<version>${java.version}</version>
-					<scope>system</scope>
-					<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>openjfx-on-jdk11-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<jdk>[11,)</jdk>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.openjfx</groupId>
-					<artifactId>javafx-fxml</artifactId>
-					<version>${openjfx.version}</version>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>openjfx-on-linux-jdk1.8-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<jdk>[1.8,11)</jdk>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-				</os>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.openjfx</groupId>
-					<artifactId>javafx-fxml</artifactId>
-					<version>${java.version}</version>
-					<scope>system</scope>
-					<systemPath>${openjfx.fxml.linux.path}</systemPath>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>openjfx-on-mac-jdk8-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<jdk>[1.8,11)</jdk>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.openjfx</groupId>
-					<artifactId>javafx-fxml</artifactId>
-					<version>${java.version}</version>
-					<scope>system</scope>
-					<systemPath>${openjfx.fxml.mac.path}</systemPath>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>openjfx-on-windows-jdk8-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<jdk>[1.8,11)</jdk>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.openjfx</groupId>
-					<artifactId>javafx-fxml</artifactId>
-					<version>${java.version}</version>
-					<scope>system</scope>
-					<systemPath>${openjfx.fxml.win.path}</systemPath>
-				</dependency>
-			</dependencies>
-		</profile>
 		<profile>
 			<id>maven-release-of-maven-javafx-plugin</id>
 			<activation>

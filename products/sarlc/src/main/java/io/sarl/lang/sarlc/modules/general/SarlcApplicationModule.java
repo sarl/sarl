@@ -25,9 +25,10 @@ import static io.bootique.BQCoreModule.extend;
 
 import java.text.MessageFormat;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
@@ -47,21 +48,21 @@ import io.sarl.maven.bootiqueapp.utils.SystemProperties;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class SarlcApplicationModule extends AbstractModule {
+public class SarlcApplicationModule implements BQModule {
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		// Name of the application.
-		bind(String.class).annotatedWith(DefaultApplicationName.class).toInstance(
+		binder.bind(String.class, DefaultApplicationName.class).toInstance(
 				SystemProperties.getValue(SarlcConfig.PREFIX + ".programName", Constants.PROGRAM_NAME)); //$NON-NLS-1$
 		// Short description of the application.
-		extend(binder()).setApplicationDescription(Messages.SarlcApplicationModule_0);
+		extend(binder).setApplicationDescription(Messages.SarlcApplicationModule_0);
 		// Long description of the application.
-		bind(String.class).annotatedWith(ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).in(Singleton.class);
+		binder.bind(String.class, ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).inSingletonScope();
 		// Synopsis of the application's arguments.
-		bind(String.class).annotatedWith(ApplicationArgumentSynopsis.class).toInstance(Messages.SarlcApplicationModule_1);
+		binder.bind(String.class, ApplicationArgumentSynopsis.class).toInstance(Messages.SarlcApplicationModule_1);
 		// Default command
-		extend(binder()).setDefaultCommand(CompilerCommand.class);
+		extend(binder).setDefaultCommand(CompilerCommand.class);
 	}
 
 	/** Provider of the long description of the application.

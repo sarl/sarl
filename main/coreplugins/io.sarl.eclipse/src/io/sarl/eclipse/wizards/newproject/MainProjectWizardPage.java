@@ -128,6 +128,7 @@ import io.sarl.lang.SARLVersion;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public class MainProjectWizardPage extends WizardPage implements SarlDefaultClassPathProvider {
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
@@ -149,7 +150,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/**
 	 * Creates a new {@link MainProjectWizardPage}.
 	 */
-	@SuppressWarnings("synthetic-access")
+	@SuppressWarnings({ "synthetic-access" })
 	public MainProjectWizardPage() {
 		super(Messages.SARLProjectNewWizard_3);
 		setPageComplete(false);

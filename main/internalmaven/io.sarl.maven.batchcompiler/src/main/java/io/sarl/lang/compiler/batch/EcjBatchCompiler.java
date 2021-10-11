@@ -59,7 +59,6 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries_,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			JavaVersion javaVersion,
 			boolean isModuleSupport,
 			String encoding,
@@ -99,19 +98,6 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		}
 		if (progress.isCanceled()) {
 			return CompilerStatus.CANCELED;
-		}
-		//
-		// Boot classpath
-		//
-		if (!bootClassPathEntries.isEmpty() && !isModuleSupport) {
-			final String path = buildPath(classPathEntries_, progress);
-			if (path == null) {
-				return CompilerStatus.CANCELED;
-			}
-			if (!Strings.isEmpty(path)) {
-				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-				commandLineArguments.add(path);
-			}
 		}
 		//
 		// Classpath

@@ -21,9 +21,9 @@
 
 package io.sarl.maven.bootiqueapp.version;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 /** Provider of the module for the version command.
  *
@@ -36,13 +36,13 @@ import io.bootique.BQModuleProvider;
 public class VersionCommandModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new VersionCommandModule();
 	}
 
 	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
+    public BQModuleMetadata.Builder moduleBuilder() {
+        return BQModuleMetadata
                 .builder(module())
                 .overrides(overrides())
                 .providerName(name())

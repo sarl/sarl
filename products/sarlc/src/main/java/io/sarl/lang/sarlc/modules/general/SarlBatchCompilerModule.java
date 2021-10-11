@@ -24,11 +24,13 @@ package io.sarl.lang.sarlc.modules.general;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
@@ -53,10 +55,10 @@ import io.sarl.maven.bootiqueapp.utils.SystemPath;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class SarlBatchCompilerModule extends AbstractModule {
+public class SarlBatchCompilerModule implements BQModule {
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		//
 	}
 
@@ -84,7 +86,7 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	 * @param logger the logger.
 	 * @return the SARL batch compiler
 	 */
-	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity", "deprecation"})
+	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
 	@Provides
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
@@ -111,10 +113,6 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		compiler.setClassPath(fullClassPath.toFileList());
 		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cfg, jversion, logger.get());
 		compiler.setModulePath(fullModulePath.toFileList());
-
-		if (!SarlBatchCompilerUtils.isModuleSupported(jversion) && !Strings.isEmpty(cfg.getJavaBootClasspath())) {
-			compiler.setBootClassPath(cfg.getJavaBootClasspath());
-		}
 
 		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
 		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);

@@ -52,14 +52,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -93,7 +93,6 @@ import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.UriUtil;
-import org.eclipse.xtext.util.internal.AlternateJdkLoader;
 import org.eclipse.xtext.validation.CheckMode;
 import org.eclipse.xtext.validation.IResourceValidator;
 import org.eclipse.xtext.validation.Issue;
@@ -150,8 +149,6 @@ public class SarlBatchCompiler {
 	private File tempPath;
 
 	private CleaningPolicy cleaningPolicy = CleaningPolicy.getDefault();
-
-	private List<File> bootClasspath;
 
 	private List<File> classpath;
 
@@ -674,66 +671,6 @@ public class SarlBatchCompiler {
 	@Pure
 	public void setClassOutputPath(File path) {
 		this.classOutputPath = path;
-	}
-
-	/** Change the boot classpath.
-	 * This option is only supported on JDK 8 and older and will be ignored when source level is 9 or newer.
-	 *
-	 * <p>The boot classpath is a list the names of folders or jar files that are separated by {@link File#pathSeparator}.
-	 *
-	 * @param bootClasspath the new boot classpath.
-	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
-	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
-	 */
-	@Deprecated
-	public void setBootClassPath(String bootClasspath) {
-		if (isModuleSupported()) {
-			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63, bootClasspath));
-		}
-		if (Strings.isEmpty(bootClasspath)) {
-			this.bootClasspath = null;
-		} else {
-			this.bootClasspath = new ArrayList<>();
-			for (final String path : Strings.split(bootClasspath, File.pathSeparator)) {
-				this.bootClasspath.add(normalizeFile(path));
-			}
-		}
-	}
-
-	/** Change the boot classpath.
-	 * This option is only supported on JDK 8 and older and will be ignored when source level is 9 or newer.
-	 *
-	 * @param bootClasspath the new boot classpath.
-	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
-	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
-	 */
-	@Deprecated
-	public void setBootClassPath(Collection<File> bootClasspath) {
-		if (isModuleSupported()) {
-			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63,
-					Joiner.on(File.pathSeparator).join(bootClasspath)));
-		}
-		if (bootClasspath == null || bootClasspath.isEmpty()) {
-			this.bootClasspath = null;
-		} else {
-			this.bootClasspath = new ArrayList<>(bootClasspath);
-		}
-	}
-
-	/** Replies the boot classpath.
-	 * This option is only supported on JDK 8 and older and will be ignored when source level is 9 or newer.
-	 *
-	 * @return the boot classpath.
-	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
-	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
-	 */
-	@Pure
-	@Deprecated
-	public List<File> getBootClassPath() {
-		if (this.bootClasspath == null) {
-			return Collections.emptyList();
-		}
-		return Collections.unmodifiableList(this.bootClasspath);
 	}
 
 	/** Change the classpath.
@@ -1944,7 +1881,6 @@ public class SarlBatchCompiler {
 				sourcePathDirectories,
 				classPathEntries,
 				modulePathEntries,
-				getBootClassPath(),
 				getJavaSourceVersion(),
 				encoding,
 				isJavaCompilerVerbose(),
@@ -2412,10 +2348,8 @@ public class SarlBatchCompiler {
 		final ClassLoader parentClassLoader;
 		if (isUseCurrentClassLoaderAsParent()) {
 			parentClassLoader = getClass().getClassLoader();
-		} else if (getBootClassPath().isEmpty()) {
-			parentClassLoader = getCurrentClassLoader();
 		} else {
-			parentClassLoader = new AlternateJdkLoader(getBootClassPath());
+			parentClassLoader = getCurrentClassLoader();
 		}
 		if (progress.isCanceled()) {
 			return;

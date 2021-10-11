@@ -24,7 +24,6 @@ package io.sarl.maven.compiler;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -94,7 +93,6 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 			Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
-			List<File> bootClassPathEntries,
 			String javaVersion,
 			String encoding,
 			boolean isCompilerMoreVerbose,

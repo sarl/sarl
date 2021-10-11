@@ -132,7 +132,7 @@ public class BootiqueMain {
 				provider = null;
 			}
 			if (provider != null) {
-				bootique = bootique.module(provider);
+				bootique = bootique.moduleProvider(provider);
 			}
 		}
 		return createRuntime(bootique);
@@ -141,7 +141,7 @@ public class BootiqueMain {
 	private BQRuntime createRuntime(Bootique bootique) {
 		if (this.providers != null) {
 			for (final BQModuleProvider provider : this.providers) {
-				bootique = bootique.module(provider);
+				bootique = bootique.moduleProvider(provider);
 			}
 		}
 		final BQRuntime runtime = bootique.createRuntime();

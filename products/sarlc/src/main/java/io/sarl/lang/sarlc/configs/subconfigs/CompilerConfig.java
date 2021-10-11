@@ -382,7 +382,7 @@ public class CompilerConfig {
 	 *
 	 * @param version the java version.
 	 */
-	@BQConfigProperty("Version of Java to be used (1.8 or higher)")
+	@BQConfigProperty("Version of Java to be used (11 or higher)")
 	public void setJavaVersion(String version) {
 		this.javaVersion = version;
 	}

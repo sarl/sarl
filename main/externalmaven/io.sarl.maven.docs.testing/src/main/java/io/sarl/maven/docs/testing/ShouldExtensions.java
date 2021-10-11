@@ -423,7 +423,7 @@ public final class ShouldExtensions {
 			b = (Boolean) expected;
 		} else {
 			try {
-				b =  new Boolean(expected.toString());
+				b =  Boolean.parseBoolean(expected.toString());
 			} catch (Throwable exception) {
 				return false;
 			}

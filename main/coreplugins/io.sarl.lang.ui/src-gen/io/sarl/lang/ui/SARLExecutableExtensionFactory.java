@@ -25,9 +25,9 @@ package io.sarl.lang.ui;
 
 import com.google.inject.Injector;
 import io.sarl.lang.ui.internal.LangActivator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * This class was generated. Customizations should only happen in a newly
@@ -37,7 +37,7 @@ public class SARLExecutableExtensionFactory extends AbstractGuiceAwareExecutable
 
 	@Override
 	protected Bundle getBundle() {
-		return Platform.getBundle(LangActivator.PLUGIN_ID);
+		return FrameworkUtil.getBundle(LangActivator.class);
 	}
 	
 	@Override

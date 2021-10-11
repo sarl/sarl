@@ -74,8 +74,6 @@ public class Bug643Test extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlSourceCode;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.bug643.Shape2f;",
-			"import io.sarl.lang.tests.bug643.ShapedObject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

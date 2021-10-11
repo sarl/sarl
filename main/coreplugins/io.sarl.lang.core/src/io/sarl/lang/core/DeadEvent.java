@@ -21,6 +21,9 @@
 
 package io.sarl.lang.core;
 
+import io.sarl.lang.annotation.SarlElementType;
+import io.sarl.lang.annotation.SarlSpecification;
+
 /**
  * Wraps an event that was posted, but which had no subscribers and thus could not be delivered.
  *
@@ -38,6 +41,9 @@ package io.sarl.lang.core;
  * @deprecated no more used since 0.5.
  */
 @Deprecated
+@SuppressWarnings("all")
+@SarlSpecification("0.4")
+@SarlElementType(15)
 public final class DeadEvent extends Event {
 
 	private static final long serialVersionUID = 1117818766135181831L;

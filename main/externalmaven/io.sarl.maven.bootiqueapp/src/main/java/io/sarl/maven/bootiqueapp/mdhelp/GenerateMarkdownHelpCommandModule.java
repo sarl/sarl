@@ -23,10 +23,11 @@ package io.sarl.maven.bootiqueapp.mdhelp;
 
 import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 
 /** Module for displaying the help on the standard output using a Markdown format.
  *
@@ -36,11 +37,11 @@ import com.google.inject.Singleton;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public class GenerateMarkdownHelpCommandModule extends AbstractModule {
+public class GenerateMarkdownHelpCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(GenerateMarkdownHelpCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(GenerateMarkdownHelpCommand.class);
 	}
 
 	/** Provide the command for displaying the help options.
