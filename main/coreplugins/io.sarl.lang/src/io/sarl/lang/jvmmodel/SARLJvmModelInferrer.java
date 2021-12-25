@@ -108,7 +108,6 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
-import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -151,8 +150,6 @@ import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.compiler.IInlineExpressionCompiler;
-import io.sarl.lang.compiler.SARLJvmGenerator;
-import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentTrait;
@@ -190,7 +187,6 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
-import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
@@ -202,10 +198,10 @@ import io.sarl.lang.util.Utils;
  * the JVM model rather than the source model.
  *
  * <p>The roles of the different generation tools are:<ul>
- * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
- * <li>{@link ILinker}: Create links among the SARL Ecore models.<li>
- * <li>{@link SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
- * <li>{@link SarlCompiler}: Generate the Java code for the XExpression objects.</li>
+ * <li>{@link io.sarl.lang.jvmmodel.SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
+ * <li>{@link org.eclipse.xtext.linking.ILinker}: Create links among the SARL Ecore models.<li>
+ * <li>{@link io.sarl.lang.compiler.SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
+ * <li>{@link io.sarl.lang.compiler.SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
  * @author $Author: srodriguez$
@@ -2174,7 +2170,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Transform the uses of SARL capacities.
 	 *
-	 * <p>Resolving the calls to the capacities' functions is done in {@link SARLReentrantTypeResolver}.
+	 * <p>Resolving the calls to the capacities' functions is done in {@link io.sarl.lang.typesystem.SARLReentrantTypeResolver}.
 	 *
 	 * @param source the feature to transform.
 	 * @param container the target container of the transformation result.
@@ -3225,8 +3221,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param actionContainer the container of the action.
 	 * @param varargs indicates if the signature has variadic parameter.
 	 * @param params the parameters.
-	 * @param isForInterface indicates if the formal parameters are for an interface (<code>true</code>)
-	 * 							or a class (<code>false</code>).
+	 * @param isForInterface indicates if the formal parameters are for an interface ({@code true})
+	 * 							or a class ({@code false}).
 	 * @param paramSpec the specification of the parameter as computed by a {@link IActionPrototypeProvider}.
 	 * @param ignoreOverridableOperations indicates if the operations are ignored if it is marked as overridable.
 	 */
@@ -3718,7 +3714,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * <p>This function ensures that the resource of the reference clone is not pointing
 	 * to the resource of the original reference.
 	 *
-	 * <p>This function calls {@link JvmTypesBuilder#cloneWithProxies(JvmTypeReference)} or
+	 * <p>This function calls {@link org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder#cloneWithProxies(JvmTypeReference)} or
 	 * {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)} if the
 	 * {@code target} is {@code null} for the first, and not {@code null} for the second.
 	 *
@@ -3753,7 +3749,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param sourceOperation the source for the documentation.
 	 * @param targetOperation the target for the documentation.
-	 * @return <code>true</code> if a documentation was added.
+	 * @return {@code true} if a documentation was added.
 	 */
 	protected boolean copyAndCleanDocumentationTo(JvmExecutable sourceOperation, JvmExecutable targetOperation) {
 		assert sourceOperation != null;
@@ -3776,7 +3772,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param sourceOperation the source for the documentation.
 	 * @param targetOperation the target for the documentation.
-	 * @return <code>true</code> if a documentation was added.
+	 * @return {@code true} if a documentation was added.
 	 */
 	protected boolean copyAndCleanDocumentationTo(XtendExecutable sourceOperation, JvmExecutable targetOperation) {
 		assert sourceOperation != null;
@@ -3799,7 +3795,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param sourceParameters the parameters of the source.
 	 * @param targetParameters the parameters of the target.
-	 * @return <code>true</code> if a documentation was added.
+	 * @return {@code true} if a documentation was added.
 	 */
 	private static String cleanDocumentation(String comment, Iterable<String> sourceParameters, Iterable<String> targetParameters) {
 		String clean = comment;
@@ -3833,9 +3829,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
-	 * @see SarlUtils#copyTypeParametersFromJvmOperation(JvmOperation, JvmOperation,
-	 *     org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences,
-	 *     TypesFactory)
 	 */
 	protected void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation) {
 		Utils.copyTypeParametersFromJvmOperation(fromOperation, toOperation,

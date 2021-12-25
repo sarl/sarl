@@ -144,7 +144,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining SARL events if the proposals are enabled.
 	 *
-	 * @param allowEventType is <code>true</code> for enabling the {@link Event} type to be in the proposals.
+	 * @param allowEventType is {@code true} for enabling the {@link Event} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
@@ -163,7 +163,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining SARL capacities if the proposals are enabled.
 	 *
-	 * @param allowCapacityType is <code>true</code> for enabling the {@link Capacity} type to be in the proposals.
+	 * @param allowCapacityType is {@code true} for enabling the {@link Capacity} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
@@ -182,7 +182,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining SARL agents if the proposals are enabled.
 	 *
-	 * @param allowAgentType is <code>true</code> for enabling the {@link Agent} type to be in the proposals.
+	 * @param allowAgentType is {@code true} for enabling the {@link Agent} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
@@ -201,7 +201,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining SARL behaviors if the proposals are enabled.
 	 *
-	 * @param allowBehaviorType is <code>true</code> for enabling the {@link Behavior} type to be in the proposals.
+	 * @param allowBehaviorType is {@code true} for enabling the {@link Behavior} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
@@ -220,7 +220,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining SARL skills if proposals are enabled.
 	 *
-	 * @param allowSkillType is <code>true</code> for enabling the {@link Skill} type to be in the proposals.
+	 * @param allowSkillType is {@code true} for enabling the {@link Skill} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
@@ -239,7 +239,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	/** Complete for obtaining exception types if proposals are enabled.
 	 *
-	 * @param allowExceptionType is <code>true</code> for enabling the {@link Exception} type to be in the proposals.
+	 * @param allowExceptionType is {@code true} for enabling the {@link Exception} type to be in the proposals.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
 	 * @see #isSarlProposalEnabled()
@@ -417,7 +417,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	}
 
 	/** Replies if the SARL proposals are enabled.
-	 * @return <code>true</code> if the proposals are proposed.
+	 * @return {@code true} if the proposals are proposed.
 	 */
 	protected boolean isSarlProposalEnabled() {
 		final XbaseReferenceProposalCreator creator = getXbaseCrossReferenceProposalCreator();

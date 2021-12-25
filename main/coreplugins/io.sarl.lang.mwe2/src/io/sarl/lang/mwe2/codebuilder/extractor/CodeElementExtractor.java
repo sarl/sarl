@@ -436,7 +436,7 @@ public interface CodeElementExtractor {
 
 		/** Replies if the annotationInfo field is declared for the element.
 		 *
-		 * @return <code>true</code> if the annotationInfo is declared.
+		 * @return {@code true} if the annotationInfo is declared.
 		 */
 		public boolean isAnnotationInfo() {
 			return this.isAnnotationInfo;

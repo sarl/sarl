@@ -32,7 +32,7 @@ import io.sarl.lang.annotation.PrivateAPI;
  * A possible implementation of a capacity fulfilling all the constraints of
  * this specification. Require Capacities should be accessed via the
  * {@link #getSkill(Class)} inside the {@link #install()} The Skill should
- * release all resources in the {@link #uninstall(UninstallationStage)}.
+ * release all resources in the {@link #uninstall()}.
  *
  * @author $Author: srodriguez$
  * @version $FullVersion$

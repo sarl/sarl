@@ -95,7 +95,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	/** Replies if this signature has a variatic parameter.
 	 *
-	 * @return <code>true</code> if the last element is variatic.
+	 * @return {@code true} if the last element is variatic.
 	 */
 	public boolean isVarArg() {
 		return this.isVarargs;
@@ -103,7 +103,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	/** Replies if this signature is for Void.
 	 *
-	 * @return <code>true</code> if the signature is for Void.
+	 * @return {@code true} if the signature is for Void.
 	 */
 	public boolean isVoid() {
 		return size() == 0;

@@ -284,7 +284,7 @@ abstract class GenerationContext {
 
 	/** Replies if a constructor is generated.
 	 *
-	 * @return <code>true</code> if the constructor is generated; <code>false</code> if created.
+	 * @return {@code true} if the constructor is generated; {@code false} if created.
 	 */
 	public boolean hasConstructor() {
 		return !this.generatedConstructors.isEmpty();
@@ -495,13 +495,13 @@ abstract class GenerationContext {
 	/** Replies if the given member is supported in the current context.
 	 *
 	 * @param member the member to test.
-	 * @return <code>true</code> if the member is supported, <code>false</code> for ignoring it.
+	 * @return {@code true} if the member is supported, {@code false} for ignoring it.
 	 */
 	public abstract boolean isSupportedMember(XtendMember member);
 
 	/** Replies if the compiler is using Java8 or higher.
 	 *
-	 * @return <code>true</code> if the compiler uses Java8 or higher. Otherwise <code>false</code>.
+	 * @return {@code true} if the compiler uses Java8 or higher. Otherwise {@code false}.
 	 */
 	public boolean isAtLeastJava8() {
 		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
@@ -509,7 +509,7 @@ abstract class GenerationContext {
 
 	/** Replies if the compiler is using Java11 or higher.
 	 *
-	 * @return <code>true</code> if the compiler uses Java8 or higher. Otherwise <code>false</code>.
+	 * @return {@code true} if the compiler uses Java8 or higher. Otherwise {@code false}.
 	 * @since 0.10
 	 */
 	public boolean isAtLeastJava11() {

@@ -33,7 +33,6 @@ import java.lang.annotation.Target;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see Generated
  * @see DefaultValue
  * @see SarlSourceCode
  */

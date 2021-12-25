@@ -184,7 +184,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	/** Replies if the given grammar may be treated.
 	 *
 	 * @param grammar the grammar to test.
-	 * @return <code>true</code> if the grammar could be treated.
+	 * @return {@code true} if the grammar could be treated.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isValidGrammar(Grammar grammar) {
@@ -485,7 +485,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.newLine();
 				it.append("\t * @param str the string of characters."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @return <code>true</code> if the string of characters is a SARL keyword."); //$NON-NLS-1$
+				it.append("\t * @return {@code true} if the string of characters is a SARL keyword."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -557,7 +557,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.newLine();
 				it.append("\t * @param str the string of characters."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @return <code>true</code> if the string of characters is a SARL keyword."); //$NON-NLS-1$
+				it.append("\t * @return {@code true} if the string of characters is a SARL keyword."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

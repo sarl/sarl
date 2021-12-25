@@ -41,14 +41,14 @@ public @interface TestProject {
 
 	/** Indicates if the project is created automatically.
 	 *
-	 * @return <code>true</code> if the project is created; <code>false</code>
+	 * @return {@code true} if the project is created; {@code false}
 	 * otherwise.
 	 */
 	boolean automaticProjectCreation() default true;
 
 	/** Clear the workspace at start up.
 	 *
-	 * @return <code>true</code> if the workspace is clear at startup.
+	 * @return {@code true} if the workspace is clear at startup.
 	 */
 	boolean clearWorkspaceAtStartup() default false;
 

@@ -37,7 +37,6 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
-import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
@@ -67,7 +66,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	 * <p>This function is overriden for:<ul>
 	 * <li>The XAbstractFeatureCall statements are not considered as potential early exit causes.
 	 *     in the super function. We need to mark the dead code for the XAbstractFeatureCall statements
-	 *     which refer to a function with the {@link EarlyExit} annotation.</li>
+	 *     which refer to a function with the {@link io.sarl.lang.annotation.EarlyExit} annotation.</li>
 	 * <li>Mark as dead the code after a "break" statement.</li>
 	 * </ul>
 	 */

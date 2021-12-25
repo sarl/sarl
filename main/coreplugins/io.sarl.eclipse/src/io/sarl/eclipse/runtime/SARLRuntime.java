@@ -352,7 +352,7 @@ public final class SARLRuntime {
 	 * @param sre The SRE to make the default. May be {@code null} to clear
 	 * 				the default.
 	 * @param monitor progress monitor or {@code null}
-	 * @param savePreference If <code>true</code>, update workbench preferences to reflect
+	 * @param savePreference If {@code true}, update workbench preferences to reflect
 	 * 		   				  the new default SRE.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
@@ -414,7 +414,7 @@ public final class SARLRuntime {
 	 * through an extension point.
 	 *
 	 * @param sre the sre.
-	 * @return <code>true</code> if the SRE was provided through an extension
+	 * @return {@code true} if the SRE was provided through an extension
 	 *     point.
 	 */
 	public static boolean isPlatformSRE(ISREInstall sre) {
@@ -863,7 +863,7 @@ public final class SARLRuntime {
 	/** Replies if the given directory contains a SRE.
 	 *
 	 * @param directory the directory.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @see #isPackedSRE(File)
 	 */
 	public static boolean isUnpackedSRE(File directory) {
@@ -892,7 +892,7 @@ public final class SARLRuntime {
 	/** Replies if the given directory contains a SRE.
 	 *
 	 * @param directory the directory.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @see #isPackedSRE(File)
 	 */
 	public static boolean isUnpackedSRE(IPath directory) {
@@ -921,7 +921,7 @@ public final class SARLRuntime {
 	 * <p>The SRE detection is based on the content of the manifest.
 	 *
 	 * @param jarFile the JAR file to test.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @see #isUnpackedSRE(File)
 	 */
 	public static boolean isPackedSRE(File jarFile) {
@@ -950,7 +950,7 @@ public final class SARLRuntime {
 	 * <p>The SRE detection is based on the content of the manifest.
 	 *
 	 * @param jarFile the JAR file to test.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @see #isUnpackedSRE(File)
 	 */
 	public static boolean isPackedSRE(IPath jarFile) {
@@ -979,7 +979,7 @@ public final class SARLRuntime {
 	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
 	 *
 	 * @param directory the directory.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.=
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.=
 	 * @since 0.7
 	 * @see #containsPackedBootstrap(File)
 	 */
@@ -1012,7 +1012,7 @@ public final class SARLRuntime {
 	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
 	 *
 	 * @param directory the directory.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @since 0.7
 	 * @see #containsPackedBootstrap(File)
 	 * @see #getDeclaredBootstrap(IPath)
@@ -1039,7 +1039,7 @@ public final class SARLRuntime {
 	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
 	 *
 	 * @param jarFile the JAR file to test.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @since 0.7
 	 * @see #containsUnpackedBootstrap(File)
 	 */
@@ -1070,7 +1070,7 @@ public final class SARLRuntime {
 	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
 	 *
 	 * @param jarFile the JAR file to test.
-	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @return {@code true} if the given directory contains a SRE. Otherwise {@code false}.
 	 * @since 0.7
 	 * @see #containsUnpackedBootstrap(File)
 	 * @see #getDeclaredBootstrap(IPath)

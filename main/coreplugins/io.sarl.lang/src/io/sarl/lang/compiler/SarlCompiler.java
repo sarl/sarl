@@ -67,7 +67,6 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
@@ -100,7 +99,6 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import io.sarl.lang.bugfixes.pending.bug626.Bug626XtendCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.jvmmodel.Messages;
-import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCastedExpression;
@@ -133,10 +131,10 @@ import io.sarl.lang.util.Utils;
  * in Java. In this case a Java "return" statement must be added implicitly.
  *
  * <p>The roles of the different generation tools are:<ul>
- * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
- * <li>{@link ILinker}: Create links among the SARL Ecore models.<li>
- * <li>{@link SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
- * <li>{@link SarlCompiler}: Generate the Java code for the XExpression objects.</li>
+ * <li>{@link io.sarl.lang.jvmmodel.SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
+ * <li>{@link org.eclipse.xtext.linking.ILinker}: Create links among the SARL Ecore models.<li>
+ * <li>{@link io.sarl.lang.compiler.SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
+ * <li>{@link io.sarl.lang.compiler.SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
  * @author $Author: sgalland$

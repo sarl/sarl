@@ -1,0 +1,52 @@
+div.doclet-detailbox {
+	width: 100%;
+	background-color: #eeeeee;
+	border-style: solid;
+	border-color: #353833;
+	border-width: thin;
+	margin: 10px 0 10px 0;
+	padding: 5px 5px 5px 5px;
+	display: block;
+}
+p.doclet-detailbox {
+	margin: 0 0 0 0;
+}
+div.doclet-detailbox-title {
+	background-color: darksalmon;
+	border-style: none;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0 0 0 0;
+	padding: 5px 5px 5px 5px;
+	display: block;
+}
+dt.doclet-detailbox {
+	background-color: #708489;
+	color: white;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 10px 0 5px 0;
+	padding: 5px 5px 5px 5px;
+	font-weight: bold;
+}
+dt.doclet-detailbox-tag {
+	background-color: inherit;
+	color: inherit;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+}
+dd.doclet-detailbox-tag {
+	background-color: inherit;
+	color: inherit;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+dd.doclet-detailbox-tag ul {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+dd.doclet-detailbox-tag div {
+	display: block;
+}

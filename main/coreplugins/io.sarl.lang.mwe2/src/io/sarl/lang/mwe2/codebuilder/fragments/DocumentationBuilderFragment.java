@@ -594,7 +594,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param type the type of objects."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @return <code>true</code> if multiline comment is the default."); //$NON-NLS-1$
+				it.append("\t * @return {@code true} if multiline comment is the default."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t *      Otherwise singleline comment is the default."); //$NON-NLS-1$
 				it.newLine();

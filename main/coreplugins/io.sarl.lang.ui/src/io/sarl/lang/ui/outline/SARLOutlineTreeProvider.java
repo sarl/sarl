@@ -382,7 +382,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	/** Replies if the type declaration element is a leaf in the outline.
 	 *
 	 * @param modelElement the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
+	 * @return {@code true} if it is a leaf, {@code false} otherwise.
 	 */
 	protected boolean _isLeaf(XtendTypeDeclaration modelElement) {
 		return modelElement.getMembers().isEmpty() && !hasInheritedConstructors(modelElement);
@@ -391,7 +391,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	/** Replies if the member element is a leaf in the outline.
 	 *
 	 * @param modelElement the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
+	 * @return {@code true} if it is a leaf, {@code false} otherwise.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(XtendMember modelElement) {
@@ -401,7 +401,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	/** Replies if the JVM elements are leafs in the outline.
 	 *
 	 * @param modelElement the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
+	 * @return {@code true} if it is a leaf, {@code false} otherwise.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(JvmIdentifiableElement modelElement) {

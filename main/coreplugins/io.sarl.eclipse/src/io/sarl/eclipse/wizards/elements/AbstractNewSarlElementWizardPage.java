@@ -274,7 +274,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Replies if the super-type field is activiated.
 	 *
-	 * @return <code>true</code> if the super-type control were added.
+	 * @return {@code true} if the super-type control were added.
 	 */
 	public boolean isSuperTypeActivated() {
 		return this.hasSuperTypeField;
@@ -282,7 +282,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Replies if the super-interface field is activiated.
 	 *
-	 * @return <code>true</code> if the super-interface control were added.
+	 * @return {@code true} if the super-interface control were added.
 	 */
 	public boolean isSuperInterfaceActivated() {
 		return this.hasSuperInterfaceField;
@@ -369,7 +369,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * @param packageFragment the package in which the file should be search for.
 	 * @param filename the filename to test.
-	 * @return <code>true</code> if a file (SALR or Java) with the given name exists.
+	 * @return {@code true} if a file (SALR or Java) with the given name exists.
 	 */
 	protected boolean isSarlFile(IPackageFragment packageFragment, String filename) {
 		if (isFileExists(packageFragment, filename, this.sarlFileExtension)) {
@@ -397,7 +397,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param packageFragment the package in which the file should be search for.
 	 * @param filename the filename to test.
 	 * @param extension the filename extension to search for.
-	 * @return <code>true</code> if a file (SARL or Java) with the given name exists.
+	 * @return {@code true} if a file (SARL or Java) with the given name exists.
 	 */
 	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String extension) {
 		if (packageFragment != null) {
@@ -504,7 +504,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * The expected super-type is replied by {@link #getRootSuperType()}.
 	 *
 	 * @param className the name of the class to be tested.
-	 * @return <code>true</code> if the given name is the one of a subtype
+	 * @return {@code true} if the given name is the one of a subtype
 	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
 	 */
@@ -535,7 +535,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * The expected super-interface is replied by {@link #getRootSuperInterface()}.
 	 *
 	 * @param className the name of the class to be tested.
-	 * @return <code>true</code> if the given name implements a type
+	 * @return {@code true} if the given name implements a type
 	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
 	 */
@@ -665,8 +665,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Replies if the created type must have one super-interface.
 	 *
-	 * @return <code>true</code> if the type needs a super-interface;
-	 * <code>false</code> if not.
+	 * @return {@code true} if the type needs a super-interface;
+	 * {@code false} if not.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isSuperInterfaceNeeded() {
@@ -1128,8 +1128,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param createInherited initial selection state of the 'Create inherited abstract methods' checkbox.
 	 * @param createEventHandlers initial selection state of the 'Create standard event handlers' checkbox.
 	 * @param createLifecycleFunctions initial selection state of the 'Create standard lifecycle functions' checkbox.
-	 * @param canBeModified if <code>true</code> the method stub checkboxes can be changed by
-	 *     the user. If <code>false</code> the buttons are "read-only"
+	 * @param canBeModified if {@code true} the method stub checkboxes can be changed by
+	 *     the user. If {@code false} the buttons are "read-only"
 	 */
 	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited,
 			boolean createEventHandlers, boolean createLifecycleFunctions, boolean canBeModified) {

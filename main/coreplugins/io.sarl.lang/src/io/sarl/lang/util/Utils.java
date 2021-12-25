@@ -49,7 +49,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -96,7 +95,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
-import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
@@ -214,7 +212,7 @@ public final class Utils {
 	 * @param operations - filled with the operations inside and inherited by the element.
 	 * @param fields - filled with the fields inside and inherited by the element.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
-	 * @see OverrideHelper
+	 * @see org.eclipse.xtext.xbase.typesystem.override.OverrideHelper
 	 */
 	public static void populateInterfaceElements(
 			JvmDeclaredType jvmElement,
@@ -247,7 +245,7 @@ public final class Utils {
 	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
 	 * @param superConstructors - filled with the construstors of the super type.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
-	 * @see OverrideHelper
+	 * @see org.eclipse.xtext.xbase.typesystem.override.OverrideHelper
 	 */
 	public static void populateInheritanceContext(
 			JvmDeclaredType jvmElement,
@@ -277,7 +275,7 @@ public final class Utils {
 	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
 	 * @param superConstructors - filled with the construstors of the super type.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
-	 * @see OverrideHelper
+	 * @see org.eclipse.xtext.xbase.typesystem.override.OverrideHelper
 	 */
 	@SuppressWarnings({
 		"checkstyle:cyclomaticcomplexity",
@@ -1157,8 +1155,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
-	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment(String version) {
 		if (version != null && !version.isEmpty()) {
@@ -1183,8 +1181,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
-	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment() {
 		return isCompatibleJDKVersionWithSARLCompilationEnvironment(System.getProperty("java.specification.version")); //$NON-NLS-1$
@@ -1198,8 +1196,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see SARLVersion#MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
-	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
 	 */
 	public static boolean isCompatibleJDKVersionWhenInSARLProjectClasspath(String version) {
 		if (version != null && !version.isEmpty()) {
@@ -1364,7 +1362,7 @@ public final class Utils {
 	 * @param directContainerChild the child of the container that is or contains the given element.
 	 * @return {@code true} if the container was found.
 	 * @since 0.5
-	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 * @see org.eclipse.xtext.EcoreUtil2#getContainerOfType(EObject, Class)
 	 */
 	public static boolean getContainerNotOfType(EObject element, Class<? extends EObject> type,
 			OutParameter<EObject> container, OutParameter<EObject> directContainerChild) {
@@ -1395,7 +1393,7 @@ public final class Utils {
 	 * @param types the unexpected types.
 	 * @return {@code true} if the container was found.
 	 * @since 0.8
-	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 * @see org.eclipse.xtext.EcoreUtil2#getContainerOfType(EObject, Class)
 	 */
 	@SafeVarargs
 	public static boolean getContainerOfType(EObject element,
@@ -1435,7 +1433,7 @@ public final class Utils {
 	 * @param predicate the predicate to test.
 	 * @return the container or {@code null}.
 	 * @since 0.5
-	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 * @see org.eclipse.xtext.EcoreUtil2#getContainerOfType(EObject, Class)
 	 */
 	public static EObject getFirstContainerForPredicate(EObject element, Function1<? super EObject, ? extends Boolean> predicate) {
 		if (predicate == null || element == null) {
@@ -1477,7 +1475,7 @@ public final class Utils {
 		/** SARL version value not found.
 		 */
 		NO_SARL_VERSION_VALUE,
-		/** The byte code (the class) of {@link SARLVersion} does not contains the expected field.
+		/** The byte code (the class) of {@link io.sarl.lang.SARLVersion} does not contains the expected field.
 		 */
 		INVALID_SARL_VERSION_BYTECODE,
 	}
@@ -1723,12 +1721,10 @@ public final class Utils {
 
 	/** Copy the type parameters from a JvmOperation.
 	 *
-	 * <p>This function differs from {@link XtendJvmModelInferrer#copyAndFixTypeParameters(List,
-	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
-	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * <p>This function differs from {@link org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer XtendJvmModelInferrer.copyAndFixTypeParameters(List, JvmTypeParameterDeclarator)}
+	 * and {@link org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer XtendJvmModelInferrer.copyTypeParameters(List, JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder,
-	 * JvmTypesBuilder, TypeReferences, TypesFactory)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory)}.
 	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
@@ -1753,12 +1749,10 @@ public final class Utils {
 
 	/** Copy the type parameters from a JvmOperation.
 	 *
-	 * <p>This function differs from {@link XtendJvmModelInferrer#copyAndFixTypeParameters(List,
-	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
-	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * <p>This function differs from {@link org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer XtendJvmModelInferrer.copyAndFixTypeParameters(List, JvmTypeParameterDeclarator)}
+	 * and {@link org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer XtendJvmModelInferrer.copyTypeParameters(List, JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder,
-	 * JvmTypesBuilder, TypeReferences, TypesFactory)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory)}.
 	 *
 	 * @param inputParameters the type parameters in the source operation.
 	 * @param outputParameters the list of type parameters to be filled out.

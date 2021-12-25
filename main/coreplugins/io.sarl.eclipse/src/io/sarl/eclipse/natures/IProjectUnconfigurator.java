@@ -41,7 +41,7 @@ public interface IProjectUnconfigurator {
 	 *
 	 * @param project the project.
 	 * @param monitor the progress monitor.
-	 * @return <code>true</code> if the project could be unconfigured.
+	 * @return {@code true} if the project could be unconfigured.
 	 */
 	boolean canUnconfigure(IProject project, IProgressMonitor monitor);
 

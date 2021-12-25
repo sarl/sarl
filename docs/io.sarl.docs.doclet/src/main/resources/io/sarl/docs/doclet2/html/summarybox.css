@@ -1,0 +1,59 @@
+div.doclet-summarybox {
+	width: 100%;
+	background-color: #eeeeee;
+	border-style: solid;
+	border-color: #353833;
+	border-width: thin;
+	margin: 10px 0 10px 0;
+	padding: 5px 5px 5px 5px;
+	display: block;
+}
+p.doclet-summarybox {
+	margin: 0 0 0 0;
+}
+div.doclet-summarybox-title {
+	background-color: orange;
+	border-style: none;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0 0 0 0;
+	padding: 5px 5px 5px 5px;
+	display: block;
+}
+table.doclet-summarytable {
+	table-layout: auto;
+	width: 100%;
+	font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0 0 0 0;
+}
+thead.doclet-summarytable {
+	background-color: #dee3e9;
+}
+th.doclet-summarytable {
+	text-align: left;
+	column-fill: inherit;
+}
+td.doclet-summarytable {
+	vertical-align: top;
+}
+td.doclet-summarytable:last-child {
+	vertical-align: top;
+	width: 100%;
+}
+tbody.doclet-summarytable tr.doclet-summarytable:nth-child(odd) {
+	background-color: none;
+}
+tbody.doclet-summarytable tr.doclet-summarytable:nth-child(even) {
+	background-color: #e5e5e5;
+}
+span.doclet-summarybox-id {
+	font-weight: bold;
+}
+div.doclet-summarybox-inherited {
+	margin: 5px 0 5px 0;
+}
+span.doclet-summarybox-inherited {
+	font-weight: bold;
+}

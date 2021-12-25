@@ -167,7 +167,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param formatting <code>true</code> if the appender is formatting the generated code."); //$NON-NLS-1$
+				it.append("\t * @param formatting {@code true} if the appender is formatting the generated code."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -182,7 +182,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @return <code>true</code> if the appender is formatting the generated code."); //$NON-NLS-1$
+				it.append("\t * @return {@code true} if the appender is formatting the generated code."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

@@ -222,8 +222,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	/** Generate the members of the builder.
 	 *
 	 * @param description the description of the member.
-	 * @param forInterface <code>true</code> if the code must be generated for an interface.
-	 * @param forAppender <code>true</code> if the code must be generated for an appender.
+	 * @param forInterface {@code true} if the code must be generated for an interface.
+	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
 	@SuppressWarnings("checkstyle:all")
@@ -1178,7 +1178,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 		/** Replies if this element is a top element too.
 		 *
-		 * @return <code>true</code> if the element is a top element.
+		 * @return {@code true} if the element is a top element.
 		 */
 		public boolean isTopElement() {
 			return this.isTopElement;
@@ -1186,7 +1186,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 		/** Replies if this element has the annotationInfo field.
 		 *
-		 * @return <code>true</code> if the field was declared.
+		 * @return {@code true} if the field was declared.
 		 */
 		public boolean isAnnotationInfo() {
 			return this.isAnnotationInfo;

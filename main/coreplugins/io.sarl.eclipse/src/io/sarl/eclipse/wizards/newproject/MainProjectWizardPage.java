@@ -331,7 +331,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	/** Replies if the system default SRE must be used for the new project.
 	 *
-	 * @return <code>true</code> if the system default must be used.
+	 * @return {@code true} if the system default must be used.
 	 */
 	public boolean isSystemDefaultSRE() {
 		return this.sreGroup.isSystemWideDefaultSRE();

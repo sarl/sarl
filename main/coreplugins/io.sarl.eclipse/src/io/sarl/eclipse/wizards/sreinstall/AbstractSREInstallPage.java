@@ -78,7 +78,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * getSelection) into its model.
 	 *
 	 * @return if the operation was successful. Only when returned
-	 * <code>true</code>, the wizard will close.
+	 * {@code true}, the wizard will close.
 	 */
 	public abstract boolean performFinish();
 
@@ -87,7 +87,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * the cancel button.
 	 *
 	 * @return if the operation was successful. Only when returned
-	 * <code>true</code>, the wizard will close.
+	 * {@code true}, the wizard will close.
 	 */
 	@SuppressWarnings("static-method")
 	public boolean performCancel() {

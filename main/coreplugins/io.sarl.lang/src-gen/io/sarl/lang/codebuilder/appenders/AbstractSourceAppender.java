@@ -68,7 +68,7 @@ public abstract class AbstractSourceAppender {
 
 	/** Set if this building is formatting the generated code.
 	 *
-	 * @param formatting <code>true</code> if the appender is formatting the generated code.
+	 * @param formatting {@code true} if the appender is formatting the generated code.
 	 */
 	public void setFormatting(boolean formatting) {
 		this.isFormatting = formatting;
@@ -76,7 +76,7 @@ public abstract class AbstractSourceAppender {
 
 	/** Replies if this building is formatting the generated code.
 	 *
-	 * @return <code>true</code> if the appender is formatting the generated code.
+	 * @return {@code true} if the appender is formatting the generated code.
 	 */
 	public boolean isFormatting() {
 		return this.isFormatting;

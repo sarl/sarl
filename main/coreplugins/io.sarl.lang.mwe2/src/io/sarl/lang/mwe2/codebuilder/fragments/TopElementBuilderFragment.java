@@ -431,9 +431,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 *
 	 * @param grammarContainers the containers from which the members' definitions could be retreived.
 	 * @param description the description of the top element.
-	 * @param forInterface <code>true</code> if the generation is for an interface.
-	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
-	 * @param namedMembers <code>true</code> if the members have name.
+	 * @param forInterface {@code true} if the generation is for an interface.
+	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
+	 * @param namedMembers {@code true} if the members have name.
 	 * @return the code.
 	 */
 	protected List<StringConcatenationClient> generateMembers(
@@ -451,8 +451,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param memberDescription the description of the member.
 	 * @param topElementDescription the description of the top element.
 	 * @param forInterface indicates if the generated code is for interfaces.
-	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
-	 * @param namedMember <code>true</code> if the member has name.
+	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
+	 * @param namedMember {@code true} if the member has name.
 	 * @return the member functions.
 	 */
 	protected List<StringConcatenationClient> generateMember(CodeElementExtractor.ElementDescription memberDescription,
@@ -846,7 +846,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate top elements from the grammar.
 	 *
 	 * @param forInterface indicates if the generated code is for interfaces.
-	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
+	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
 	 * @return the top elements.
 	 */
 	@SuppressWarnings("unlikely-arg-type")
@@ -875,7 +875,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 *
 	 * @param description the description of the top element.
 	 * @param forInterface indicates if the generated code is for interfaces.
-	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
+	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
 	 */
 	@SuppressWarnings("checkstyle:all")
 	protected void generateTopElement(TopElementDescription description,
@@ -1681,7 +1681,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 		/** Replies if this top element is a member element too.
 		 *
-		 * @return <code>true</code> if the top element is also a member element.
+		 * @return {@code true} if the top element is also a member element.
 		 */
 		public boolean isMemberElement() {
 			return this.isMemberElement;
@@ -1689,7 +1689,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 		/** Replies if this top element has annotation info.
 		 *
-		 * @return <code>true</code> if the top element has annotation info.
+		 * @return {@code true} if the top element has annotation info.
 		 */
 		public boolean isAnnotationInfo() {
 			return this.isAnnotationInfo;

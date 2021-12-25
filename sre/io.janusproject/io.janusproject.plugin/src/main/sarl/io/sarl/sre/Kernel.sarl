@@ -143,7 +143,7 @@ class Kernel {
 	 * 
 	 * <p>The kernel is running if at least one agent is alive.
 	 * 
-	 * @return <code>true</code> if the kernel is running; <code>false</code> otherwise.
+	 * @return <code>true</code> if the kernel is running; {@code false} otherwise.
 	 */
 	def isRunning : boolean {
 		this.isRunning.get

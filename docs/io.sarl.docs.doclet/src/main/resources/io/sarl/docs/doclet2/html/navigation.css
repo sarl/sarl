@@ -1,0 +1,75 @@
+div.doclet-navigation {
+	display: block;
+	width: 100%;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+div.doclet-navigation-global {
+	display: block;
+	background-color: #4D7A97;
+	width: 100%;
+	color: white;
+	margin: 0 0 0 0;
+	padding: 10px 3px 10px 3px;
+}
+ul.doclet-navigation-mainlist {
+	display: inline-block;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	list-style: none;
+}
+ul.doclet-navigation-mainlist li {
+	font-family:'DejaVu Sans Mono', monospace;
+	font-size:16px;
+    text-transform: uppercase;
+	margin: 0 0 0 0;
+	padding: 5px 5px 5px 5px;
+	display: inline-block;
+	list-style: none;
+}
+ul.doclet-navigation-mainlist li.doclet-active {
+	background-color: orange;
+	color: black;
+}
+ul.doclet-navigation-mainlist a {
+	color:white;
+}
+ul.doclet-navigation-mainlist a:hover {
+	color:orange;
+}
+div.doclet-navigation-local {
+	display: block;
+	background-color: #dee3e9;
+	width: 100%;
+	color: #353833;
+	margin: 0 0 0 0;
+	padding: 3px 3px 3px 3px;
+}
+ul.doclet-navigation-list {
+	display: inline-block;
+	margin: 0 20px 0 0;
+	padding: 0 0 0 0;
+	list-style: none;
+}
+ul.doclet-navigation-list li {
+	font-family:'DejaVu Sans Mono', monospace;
+	font-size: 12px;
+    text-transform: uppercase;
+	margin: 0 10px 0 0;
+	display: inline-block;
+	list-style: none;
+}
+ul.doclet-navigation-sublist {
+	display: inline-block;
+	margin: 0 20px 0 0;
+	padding: 0 0 0 0;
+	list-style: none;
+}
+ul.doclet-navigation-sublist li {
+	font-family:'DejaVu Sans Mono', monospace;
+	font-size: 12px;
+    text-transform: uppercase;
+	margin: 0 0 0 0;
+	display: inline-block;
+	list-style: none;
+}

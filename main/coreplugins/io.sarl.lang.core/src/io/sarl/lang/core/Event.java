@@ -124,8 +124,8 @@ public abstract class Event implements Serializable {
 	/** Replies if the event was emitted by an entity with the given address.
 	 *
 	 * @param address the address of the emitter to test.
-	 * @return <code>true</code> if the given event was emitted by
-	 *     an entity with the given address; otherwise <code>false</code>.
+	 * @return {@code true} if the given event was emitted by
+	 *     an entity with the given address; otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -136,8 +136,8 @@ public abstract class Event implements Serializable {
 	/** Replies if the event was emitted by an entity with the given identifier.
 	 *
 	 * @param entityId the identifier of the emitter to test.
-	 * @return <code>true</code> if the given event was emitted by
-	 *     an entity with the given identifier; otherwise <code>false</code>.
+	 * @return {@code true} if the given event was emitted by
+	 *     an entity with the given identifier; otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure

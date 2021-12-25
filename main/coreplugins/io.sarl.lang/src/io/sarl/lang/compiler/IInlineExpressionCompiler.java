@@ -26,17 +26,17 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.xbase.lib.Inline;
 
 
-/** Compiler for creating inline expressions.
+/** Compiler for creating inline expressions. Inline expressions are usually attached
+ * to the SARL code with the {@link org.eclipse.xtext.xbase.lib.Inline @Inline} annotation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
+ * @see org.eclipse.xtext.xbase.lib.Inline
  */
 @ImplementedBy(JavaInlineExpressionCompiler.class)
 public interface IInlineExpressionCompiler {

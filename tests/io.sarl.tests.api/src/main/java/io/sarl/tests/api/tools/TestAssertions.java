@@ -368,7 +368,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the value is the string representation of
-	 * the boolean value <code>true</code>.
+	 * the boolean value {@code true}.
 	 *
 	 * @param actual the value.
 	 */
@@ -377,7 +377,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the value is the string representation of
-	 * the boolean value <code>true</code>.
+	 * the boolean value {@code true}.
 	 *
 	 * @param actual the value.
 	 * @param message the error message.
@@ -387,7 +387,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the value is the string representation of
-	 * the boolean value <code>false</code>.
+	 * the boolean value {@code false}.
 	 *
 	 * @param actual the value.
 	 */
@@ -396,7 +396,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the value is the string representation of
-	 * the boolean value <code>false</code>.
+	 * the boolean value {@code false}.
 	 *
 	 * @param actual the value.
 	 * @param message the error message.
@@ -406,7 +406,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the system property with the given name has
-	 * the boolean value <code>true</code>.
+	 * the boolean value {@code true}.
 	 *
 	 * The property must be defined
 	 *
@@ -421,7 +421,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the system property with the given name has
-	 * the boolean value <code>false</code>.
+	 * the boolean value {@code false}.
 	 *
 	 * @param name the name of the property.
 	 */
@@ -434,7 +434,7 @@ public final class TestAssertions {
 	}
 
 	/** Assert if the system property with the given name has
-	 * the boolean value <code>false</code>.
+	 * the boolean value {@code false}.
 	 *
 	 * @param name the name of the property.
 	 */

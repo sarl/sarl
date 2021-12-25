@@ -207,7 +207,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set if the TeX style shows the line numbers.
 	 *
-	 * @param showLineNumbers <code>true</code> for showing the line numbers.
+	 * @param showLineNumbers {@code true} for showing the line numbers.
 	 */
 	public void setLineNumbers(boolean showLineNumbers) {
 		this.showLines = showLineNumbers;
@@ -231,7 +231,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set if the TeX style shows the special characters (including spaces).
 	 *
-	 * @param showSpecialChars <code>true</code> for showing the special characters.
+	 * @param showSpecialChars {@code true} for showing the special characters.
 	 */
 	public void setShowSpecialChars(boolean showSpecialChars) {
 		this.showSpecialCharacters = showSpecialChars;

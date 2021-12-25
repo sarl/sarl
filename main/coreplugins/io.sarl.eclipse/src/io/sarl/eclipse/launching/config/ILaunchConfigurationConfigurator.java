@@ -123,9 +123,9 @@ public interface ILaunchConfigurationConfigurator {
 
 	/** Change the runtime configuration of the given launch configuration.
 	 *
-	 * <p>Only one of {@code useSystemSre} and {@code useProjectSre} could be <code>true</code> at the same time.
-	 * If both are <code>true</code>, {@code useSystemSre} will be unchanged and {@code useProjectSre} sets to
-	 * <code>false</code>.
+	 * <p>Only one of {@code useSystemSre} and {@code useProjectSre} could be {@code true} at the same time.
+	 * If both are {@code true}, {@code useSystemSre} will be unchanged and {@code useProjectSre} sets to
+	 * {@code false}.
 	 *
 	 * @param configuration the configuration to change.
 	 * @param sre the SRE to use; or {@code null} for removing the SRE configuration entries.
@@ -230,7 +230,7 @@ public interface ILaunchConfigurationConfigurator {
 	/** Set if the agent should be launched in the current Eclipse VM.
 	 *
 	 * @param configuration the configuration to change.
-	 * @param embedded <code>true</code> if the current Eclipse VM must be used for running the agent.
+	 * @param embedded {@code true} if the current Eclipse VM must be used for running the agent.
 	 */
 	void setEmbeddedSRE(ILaunchConfigurationWorkingCopy configuration, boolean embedded);
 
@@ -239,7 +239,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
-	 * @param enable <code>true</code> if the assertions are enabled.
+	 * @param enable {@code true} if the assertions are enabled.
 	 * @since 0.5
 	 */
 	void setAssertionEnabledInDebugMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
@@ -249,7 +249,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
-	 * @param enable <code>true</code> if the assertions are enabled.
+	 * @param enable {@code true} if the assertions are enabled.
 	 * @since 0.5
 	 */
 	void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
@@ -258,7 +258,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * the console.
 	 *
 	 * @param configuration the configuration.
-	 * @param enable is <code>true</code> if the launching parameters are printed out.
+	 * @param enable is {@code true} if the launching parameters are printed out.
 	 * @since 0.12
 	 */
 	void setLaunhcingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable);

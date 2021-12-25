@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.xbase.lib.Inline;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlEvent;
@@ -63,23 +64,53 @@ public interface IDefaultVisibilityProvider {
 	 *
 	 * @param element the element
 	 * @param visibility the visibility to test.
-	 * @return <code>true</code> if the given visibility is the default one.
+	 * @return {@code true} if the given visibility is the default one.
 	 */
 	default boolean isDefaultVisibility(EObject element, JvmVisibility visibility) {
 		return Objects.equals(getDefaultJvmVisibility(element), visibility);
 	}
-
+	
 	/** Replies the default visibility of a field when inside the given container.
 	 *
 	 * @param container the container.
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getFieldDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getFieldDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlEvent
-				|| container instanceof XtendInterface
-				|| container instanceof XtendAnnotationType) {
-			return JvmVisibility.PUBLIC;
+		return getFieldDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of a field when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getFieldDefaultVisibilityIn(Class<?> container) {
+		if (container != null) {
+			if (SarlEvent.class.isAssignableFrom(container)
+					|| XtendInterface.class.isAssignableFrom(container)
+					|| XtendAnnotationType.class.isAssignableFrom(container)) {
+				return JvmVisibility.PUBLIC;
+			}
+		}
+		return JvmVisibility.PRIVATE;
+	}
+
+	/** Replies the default visibility of a field when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getFieldDefaultVisibilityIn(Tester container) {
+		if (container != null) {
+			if (container.isEvent()
+					|| container.isInterface()
+					|| container.isAnnotationType()) {
+				return JvmVisibility.PUBLIC;
+			}
 		}
 		return JvmVisibility.PRIVATE;
 	}
@@ -90,8 +121,32 @@ public interface IDefaultVisibilityProvider {
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getActionDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getActionDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlAgent) {
+		return getActionDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of an action when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getActionDefaultVisibilityIn(Class<?> container) {
+		if (container != null && SarlAgent.class.isAssignableFrom(container)) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an action when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getActionDefaultVisibilityIn(Tester container) {
+		if (container != null && container.isAgent()) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;
@@ -103,8 +158,32 @@ public interface IDefaultVisibilityProvider {
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getAnnotationTypeDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlAgent) {
+		return getAnnotationTypeDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of an annotation type when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(Class<?> container) {
+		if (container != null && SarlAgent.class.isAssignableFrom(container)) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an annotation type when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(Tester container) {
+		if (container != null && container.isAgent()) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;
@@ -116,8 +195,32 @@ public interface IDefaultVisibilityProvider {
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getClassDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getClassDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlAgent) {
+		return getClassDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of a class when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getClassDefaultVisibilityIn(Class<?> container) {
+		if (container != null && SarlAgent.class.isAssignableFrom(container)) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of a class when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getClassDefaultVisibilityIn(Tester container) {
+		if (container != null && container.isAgent()) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;
@@ -129,8 +232,32 @@ public interface IDefaultVisibilityProvider {
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getEnumerationDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getEnumerationDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlAgent) {
+		return getEnumerationDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of an enumeration when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getEnumerationDefaultVisibilityIn(Class<?> container) {
+		if (container != null && SarlAgent.class.isAssignableFrom(container)) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an enumeration when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getEnumerationDefaultVisibilityIn(Tester container) {
+		if (container != null && container.isAgent()) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;
@@ -142,11 +269,71 @@ public interface IDefaultVisibilityProvider {
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
+	@Inline("getInterfaceDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getInterfaceDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlAgent) {
+		return getInterfaceDefaultVisibilityIn(container.getClass());
+	}
+
+	/** Replies the default visibility of an interface when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getInterfaceDefaultVisibilityIn(Class<?> container) {
+		if (container != null && SarlAgent.class.isAssignableFrom(container)) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an interface when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.13
+	 */
+	static JvmVisibility getInterfaceDefaultVisibilityIn(Tester container) {
+		if (container != null && container.isAgent()) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Test the types of the elements.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.13
+	 */
+	interface Tester {
+
+		/** Replies if the container is an agent.
+		 *
+		 * @return {@code true} if the container is an agent.
+		 */
+		boolean isAgent();
+
+		/** Replies if the container is an event.
+		 *
+		 * @return {@code true} if the container is an event.
+		 */
+		boolean isEvent();
+
+		/** Replies if the container is an interface.
+		 *
+		 * @return {@code true} if the container is an interface.
+		 */
+		boolean isInterface();
+
+		/** Replies if the container is an annotation type.
+		 *
+		 * @return {@code true} if the container is an annotation type.
+		 */
+		boolean isAnnotationType();
+
 	}
 
 }

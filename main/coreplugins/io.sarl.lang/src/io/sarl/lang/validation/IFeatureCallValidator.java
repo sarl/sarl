@@ -35,7 +35,7 @@ public interface IFeatureCallValidator {
 	/** Replies if the given call is disallowed or not.
 	 *
 	 * @param call the call to test.
-	 * @return <code>true</code> if the call is disallowed.
+	 * @return {@code true} if the call is disallowed.
 	 *
 	 */
 	boolean isDisallowedCall(XAbstractFeatureCall call);
@@ -43,7 +43,7 @@ public interface IFeatureCallValidator {
 	/** Replies if the given call is discouraged or not.
 	 *
 	 * @param call the call to test.
-	 * @return <code>true</code> if the call is discouraged.
+	 * @return {@code true} if the call is discouraged.
 	 *
 	 */
 	boolean isDiscouragedCall(XAbstractFeatureCall call);

@@ -1,0 +1,89 @@
+@import url('resources/fonts/dejavu.css');
+body {
+    background-color:#ffffff;
+    color:#353833;
+    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size:14px;
+    margin: 0;
+}
+body.doclet-frame {
+    margin: 5px 5px 5px 5px;
+}
+a:link, a:visited {
+    text-decoration:none;
+    color:#4A6782;
+}
+a:hover, a:focus {
+    text-decoration:none;
+    color:#bb7a2a;
+}
+a:active {
+    text-decoration:none;
+    color:#4A6782;
+}
+a[name] {
+    color:#353833;
+}
+a[name]:hover {
+    text-decoration:none;
+    color:#353833;
+}
+pre {
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+}
+pre p.doclet-pre-indent {
+    margin: 0 0 0 0;
+}
+ul {
+    list-style-type:disc;
+}
+code, tt {
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+    padding-top:4px;
+    margin-top:8px;
+    line-height:1.4em;
+}
+dt code {
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+    padding-top:4px;
+}
+table tr td dt code {
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+    vertical-align:top;
+    padding-top:4px;
+}
+sup {
+    font-size:8px;
+}
+.doclet-content {
+    margin: 0 20px 0 20px;
+}
+span.doclet-emph {
+	font-weight: bold;
+}
+span.doclet-keyword {
+	font-weight: bold;
+}
+div.doclet-copyrightbox {
+    margin: 5px 10px 5px 10px;
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:10px;
+}
+div.doclet-deprecationinfo {
+	font-style: italic;
+}
+span.doclet-deprecationinfo-title {
+	font-weight: bolder;
+}
+ul.doclet-bulletlesslist {
+	margin-block-start: 0px;
+    margin-block-end: 0px;
+	padding-inline-start: 0px;
+}
+li.doclet-bulletlesslist {
+    list-style-type:none;
+}

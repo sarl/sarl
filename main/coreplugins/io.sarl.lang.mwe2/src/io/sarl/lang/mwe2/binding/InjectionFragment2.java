@@ -65,7 +65,7 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	/** Set if all the injection definitions are assumed to accept overriding of
 	 * previously defined elements.
 	 *
-	 * @param override <code>true</code> for accepting overriding.
+	 * @param override {@code true} for accepting overriding.
 	 */
 	public void setOverrideAll(boolean override) {
 		this.overrideAll = override;
@@ -74,7 +74,7 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	/** Replies if all the injection definitions are assumed to accept overriding of
 	 * previously defined elements.
 	 *
-	 * @return <code>true</code> for accepting overriding.
+	 * @return {@code true} for accepting overriding.
 	 */
 	public boolean isOverrideAll() {
 		return this.overrideAll;

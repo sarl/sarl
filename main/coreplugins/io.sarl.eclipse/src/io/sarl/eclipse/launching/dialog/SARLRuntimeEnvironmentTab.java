@@ -285,7 +285,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	 * a SARL application.
 	 *
 	 * @param config the configuration.
-	 * @return <code>true</code> if the JRE is compatible with SARL.
+	 * @return {@code true} if the JRE is compatible with SARL.
 	 */
 	protected boolean isValidJREVersion(ILaunchConfiguration config) {
 		final IVMInstall install = this.fJREBlock.getJRE();

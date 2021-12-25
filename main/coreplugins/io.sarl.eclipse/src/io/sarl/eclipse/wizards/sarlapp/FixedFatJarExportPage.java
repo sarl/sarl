@@ -705,7 +705,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 * Returns the label of a path.
 	 *
 	 * @param path the path
-	 * @param isOSPath if <code>true</code>, the path represents an OS path, if <code>false</code> it is a workspace path.
+	 * @param isOSPath if {@code true}, the path represents an OS path, if {@code false} it is a workspace path.
 	 * @return the label of the path to be used in the UI.
 	 */
 	protected static String getPathLabel(IPath path, boolean isOSPath) {
@@ -966,7 +966,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 *
 	 * @param	parent	the parent for the dialog,
 	 * 			or {@code null} if no dialog should be presented
-	 * @return	<code>true</code> if it is OK to create the JAR
+	 * @return	{@code true} if it is OK to create the JAR
 	 */
 	private boolean canCreateAntScript(Shell parent) {
 

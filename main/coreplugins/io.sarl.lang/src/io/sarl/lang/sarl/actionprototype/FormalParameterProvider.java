@@ -66,7 +66,7 @@ public interface FormalParameterProvider {
 	/** Replies if the formal parameter at the given position has a default value.
 	 *
 	 * @param position the position of the formal parameter.
-	 * @return <code>true</code> if the parameter has a default value, <code>false</code> if not.
+	 * @return {@code true} if the parameter has a default value, {@code false} if not.
 	 */
 	boolean hasFormalParameterDefaultValue(int position);
 

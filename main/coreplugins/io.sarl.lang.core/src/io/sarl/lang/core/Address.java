@@ -133,8 +133,8 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * Test if this address and the given one are equal.
 	 *
 	 * @param address is the address to be compared.
-	 * @return <code>true</code> if this address and the given one are equal,
-	 *         otherwise <code>false</code>
+	 * @return {@code true} if this address and the given one are equal,
+	 *         otherwise {@code false}
 	 */
 	@Pure
 	public boolean equals(Address address) {

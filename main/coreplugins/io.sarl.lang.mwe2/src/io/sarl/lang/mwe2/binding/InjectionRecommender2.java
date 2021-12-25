@@ -75,7 +75,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Enable or disable the recommendations.
 	 *
-	 * @param enable <code>true</code> if enable.
+	 * @param enable {@code true} if enable.
 	 */
 	public void setEnable(boolean enable) {
 		this.enable = enable;
@@ -83,7 +83,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Replies if the recommendations were enabled.
 	 *
-	 * @return <code>true</code> if enable.
+	 * @return {@code true} if enable.
 	 */
 	public boolean isEnable() {
 		return this.enable;
@@ -91,7 +91,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Enable or disable the runtime recommendations.
 	 *
-	 * @param enable <code>true</code> if enable.
+	 * @param enable {@code true} if enable.
 	 */
 	public void setShowRuntimeRecommendations(boolean enable) {
 		this.runtimeEnable = enable;
@@ -99,7 +99,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Replies if the runtime recommendations were enabled.
 	 *
-	 * @return <code>true</code> if enable.
+	 * @return {@code true} if enable.
 	 */
 	public boolean isShowRuntimeRecommendations() {
 		return this.runtimeEnable;
@@ -107,7 +107,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Enable or disable the UI recommendations.
 	 *
-	 * @param enable <code>true</code> if enable.
+	 * @param enable {@code true} if enable.
 	 */
 	public void setShowUiRecommendations(boolean enable) {
 		this.uiEnable = enable;
@@ -115,7 +115,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Replies if the UI recommendations were enabled.
 	 *
-	 * @return <code>true</code> if enable.
+	 * @return {@code true} if enable.
 	 */
 	public boolean isShowUiRecommendations() {
 		return this.uiEnable;

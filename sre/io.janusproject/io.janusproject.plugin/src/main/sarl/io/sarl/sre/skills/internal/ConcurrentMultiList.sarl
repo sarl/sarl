@@ -48,7 +48,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	 *
 	 * @param collection the collection to add.
 	 * @return <code>true</code> if the multi-collection has changed,
-	 *      otherwise <code>false</code>.
+	 *      otherwise {@code false}.
 	 */
 	def addCollection(collection : ConcurrentLinkedDeque<? extends E>) : boolean {
 		var b = true
@@ -62,7 +62,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	 *
 	 * @param collection the collection to remove.
 	 * @return <code>true</code> if the multi-collection has changed,
-	 *      otherwise <code>false</code>.
+	 *      otherwise {@code false}.
 	 */
 	def removeCollection(collection : ConcurrentLinkedDeque<? extends E>) : boolean {
 		this.collections.remove(collection)

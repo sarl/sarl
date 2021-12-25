@@ -77,7 +77,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	/** Indicates if the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}
 	 * are used.
 	 *
-	 * @param inheritFromGrammarKeywordAccess <code>true</code> for using inherited configuration.
+	 * @param inheritFromGrammarKeywordAccess {@code true} for using inherited configuration.
 	 */
 	public void setInheritFromGrammarKeywordAccesss(boolean inheritFromGrammarKeywordAccess) {
 		this.inheritFromGrammarKeywordAccess = inheritFromGrammarKeywordAccess;
@@ -86,7 +86,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	/** Replies if the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}
 	 * are used.
 	 *
-	 * @return <code>true</code> for using inherited configuration.
+	 * @return {@code true} for using inherited configuration.
 	 */
 	@Pure
 	public boolean getInheritFromGrammarKeywordAccesss() {
@@ -98,7 +98,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	/** Indicates if the native types must be added in the keyword list.
 	 *
-	 * @param addNativeTypes <code>true</code> for adding the native types.
+	 * @param addNativeTypes {@code true} for adding the native types.
 	 */
 	public void setAddNativeTypes(boolean addNativeTypes) {
 		this.addNativeTypes = addNativeTypes;
@@ -106,7 +106,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	/** Replies if the native types must be added in the keyword list.
 	 *
-	 * @return <code>true</code> for adding the native types.
+	 * @return {@code true} for adding the native types.
 	 */
 	@Pure
 	public boolean getAddNativeTypes() {

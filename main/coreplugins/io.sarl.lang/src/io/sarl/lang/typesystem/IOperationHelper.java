@@ -26,8 +26,6 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
-import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 
@@ -47,46 +45,46 @@ import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 @ImplementedBy(SARLOperationHelper.class)
 public interface IOperationHelper {
 
-	/** Check if the given operation could be annoted with "@Pure".
+	/** Check if the given operation could be annoted with {@link org.eclipse.xtext.xbase.lib.Pure @Pure}.
 	 *
 	 * <p>This function is usually used by the inferrers for automatically generating the pure function
 	 * annotation.
 	 *
-	 * <p>This function does not consider the <code>@Pure</code> annotation that is associated to the
+	 * <p>This function does not consider the {@link org.eclipse.xtext.xbase.lib.Pure @Pure} annotation that is associated to the
 	 * overridden function declaration. Only the current operation block is considered
 	 *
 	 * @param operation the operation to test.
-	 * @return <code>true</code> if the given operation has not a side effect;
-	 *     otherwise <code>false</code>.
-	 * @see Pure
+	 * @return {@code true} if the given operation has not a side effect;
+	 *     otherwise {@code false}.
+	 * @see org.eclipse.xtext.xbase.lib.Pure
 	 * @see #isPureOperation(JvmOperation)
 	 */
 	boolean isPurableOperation(XtendFunction operation);
 
-	/** Check if the given operation is annoted with "@Pure".
+	/** Check if the given operation is annoted with {@link org.eclipse.xtext.xbase.lib.Pure @Pure}.
 	 *
 	 * @param operation the operation to test.
-	 * @return <code>true</code> if the operation is marked as pure; otherwise <code>false</code>.
-	 * @see Pure
+	 * @return {@code true} if the operation is marked as pure; otherwise {@code false}.
+	 * @see org.eclipse.xtext.xbase.lib.Pure
 	 * @see #isPurableOperation(XtendFunction)
 	 */
 	boolean isPureOperation(JvmOperation operation);
 
 	/** Replies if the given expression has a side effect in the context of its containing operation.
 	 *
-	 * <p>This function differs from {@link XExpressionHelper#hasSideEffects(XExpression)} because it explore the
+	 * <p>This function differs from {@link org.eclipse.xtext.xbase.util.XExpressionHelper#hasSideEffects(XExpression)} because it explore the
 	 * syntax tree for determining if one action has a side effect.
 	 *
 	 * @param calledOperation the called operation. It is used for detecting recursive calls.
 	 * @param expr the expression to test, usually, the body of the expression.
-	 * @return <code>true</code> if a side effect was detected into the expression.
-	 * @see #getSideEffectCalls(InferredPrototype, XExpression)
+	 * @return {@code true} if a side effect was detected into the expression.
+	 * @see #getSideEffectExpressions(InferredPrototype, XExpression)
 	 */
 	boolean hasSideEffects(InferredPrototype calledOperation, XExpression expr);
 
 	/** Replies the list of calls that have side effects into the given expression.
 	 *
-	 * <p>This function differs from {@link XExpressionHelper#hasSideEffects(XExpression)} because it explore the
+	 * <p>This function differs from {@link org.eclipse.xtext.xbase.util.XExpressionHelper#hasSideEffects(XExpression)} because it explore the
 	 * syntax tree for determining if one action has a side effect.
 	 *
 	 * @param calledOperation the called operation. It is used for detecting recursive calls.
@@ -97,11 +95,12 @@ public interface IOperationHelper {
 	 */
 	Iterable<XExpression> getSideEffectExpressions(InferredPrototype calledOperation, XExpression expr);
 
-	/** Replies if the given operation could be annotated with {@code @Pure} according
+	/** Replies if the given operation could be annotated with {@link org.eclipse.xtext.xbase.lib.Pure @Pure} according
 	 * to its associated adapters.
 	 *
 	 * @param operation the operation to update.
 	 * @return {@code true} if the given operation could be annotated.
+	 * @see org.eclipse.xtext.xbase.lib.Pure
 	 */
 	boolean evaluatePureAnnotationAdapters(JvmOperation operation);
 
@@ -109,8 +108,8 @@ public interface IOperationHelper {
 	 *
 	 * @param operation the operation to update.
 	 * @param dynamicCallback the code to run for adapting the operation. This call back replies {@code true}
-	 *     if the operation could be annotated with {@code @Pure}.
-	 * @see Pure
+	 *     if the operation could be annotated with {@link org.eclipse.xtext.xbase.lib.Pure @Pure}.
+	 * @see org.eclipse.xtext.xbase.lib.Pure
 	 * @see #evaluatePureAnnotationAdapters(JvmOperation)
 	 */
 	void attachPureAnnotationAdapter(JvmOperation operation,

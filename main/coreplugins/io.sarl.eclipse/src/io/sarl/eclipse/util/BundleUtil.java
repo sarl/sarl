@@ -320,7 +320,7 @@ public final class BundleUtil {
 
 		/** Replies if the dependency is a fragment bundle.
 		 *
-		 * @return <code>true</code> if the bundle is a fragment.
+		 * @return {@code true} if the bundle is a fragment.
 		 */
 		public boolean isFragment() {
 			return this.isFragment;

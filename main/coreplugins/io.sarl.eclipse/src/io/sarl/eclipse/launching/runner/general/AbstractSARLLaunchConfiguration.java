@@ -221,8 +221,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	/** Replies if the given classpath entry is NOT a  SRE.
 	 *
 	 * @param entry the entry.
-	 * @return <code>false</code> if the entry points to a SRE;
-	 * <code>true</code> otherwise.
+	 * @return {@code false} if the entry points to a SRE;
+	 * {@code true} otherwise.
 	 */
 	private static boolean isNotSREEntry(IRuntimeClasspathEntry entry) {
 		try {

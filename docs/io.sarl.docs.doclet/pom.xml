@@ -11,12 +11,16 @@
 	<groupId>io.sarl.docs</groupId>
 	<artifactId>io.sarl.docs.doclet</artifactId>
 	<name>SARL Doclet</name>
-	<description>Provides Doclet for Javadoc.</description>
+	<description>Provides Doclet for generaring an API documentation</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -33,7 +37,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<!-- <classifier>no_aop</classifier> -->
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -45,29 +48,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<compilerArgs>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.toolkit=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-opens</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.toolkit=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.formats.html=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-opens</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.formats.html=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.util=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.util.links=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.markup=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-exports</compilerArg>
-						<compilerArg>jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED</compilerArg>
-						<compilerArg>--add-opens</compilerArg>
-						<compilerArg>java.base/java.lang.reflect=ALL-UNNAMED</compilerArg>
-					</compilerArgs>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

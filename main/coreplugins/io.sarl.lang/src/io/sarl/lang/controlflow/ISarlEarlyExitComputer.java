@@ -40,24 +40,24 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	 * function was is calling the firing function.
 	 *
 	 * @param reference the event reference.
-	 * @return <code>true</code> if the event may causes early exit of the function,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the event may causes early exit of the function,
+	 *     otherwise {@code false}.
 	 */
 	boolean isEarlyExitEvent(JvmTypeReference reference);
 
 	/** Replies if the given statement is annotated with the "early-exit" annotation.
 	 *
 	 * @param element the element to test.
-	 * @return <code>true</code> if the given element is annotated with the "early-flag"
-	 *     annotation, otherwise <code>false</code>.
+	 * @return {@code true} if the given element is annotated with the "early-flag"
+	 *     annotation, otherwise {@code false}.
 	 */
 	boolean isEarlyExitAnnotatedElement(Object element);
 
 	/** Replies if the given expression causes an early exist from a loop.
 	 *
 	 * @param expression the expression.
-	 * @return <code>true</code> if the expression causes early exit of the loop statement,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the expression causes early exit of the loop statement,
+	 *     otherwise {@code false}.
 	 * @since 0.5
 	 */
 	boolean isEarlyExitLoop(XExpression expression);
@@ -65,8 +65,8 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	/** Replies if the given operation causes an early exist within its caller.
 	 *
 	 * @param operation the operation.
-	 * @return <code>true</code> if the operation causes early exit of the caller,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the operation causes early exit of the caller,
+	 *     otherwise {@code false}.
 	 * @since 0.7
 	 */
 	boolean isEarlyExitOperation(SarlAction operation);
@@ -78,7 +78,7 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	 * early exist expressions.
 	 *
 	 * @param expression the expression to test.
-	 * @return <code>true</code> if the given expression will definitely exit early in Java or Xbase.
+	 * @return {@code true} if the given expression will definitely exit early in Java or Xbase.
 	 * @since 0.8
 	 */
 	boolean isEarlyExitInJava(XExpression expression);

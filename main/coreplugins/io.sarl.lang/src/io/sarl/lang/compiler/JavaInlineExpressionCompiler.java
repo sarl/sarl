@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
@@ -61,15 +62,16 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-
-/** Compiler for creating inline expressions with Java syntax.
+/** Compiler for creating inline expressions with Java syntax. Inline expressions
+ * are usually attached to the SARL code with the {@link org.eclipse.xtext.xbase.lib.Inline @Inline}
+ * annotation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
+ * @see org.eclipse.xtext.xbase.lib.Inline
  */
 @Singleton
 public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {

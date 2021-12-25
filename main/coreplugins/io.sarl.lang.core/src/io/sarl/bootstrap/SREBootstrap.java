@@ -84,25 +84,27 @@ public interface SREBootstrap {
 	/**
 	 * Launch the SRE and the first agent in the kernel.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the first launched agent.
+	 * <p>To know the identifier of the started agent, you must start the initial agent with
+	 * {@link #startAgentWithID(Class, UUID, Object...)}.
 	 *
 	 * @param agentCls type of the first agent to launch.
 	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @throws Exception - if it is impossible to start the platform.
-	 * @see #getBootAgentIdentifier()
+	 * @see #startAgentWithID(Class, UUID, Object...)
 	 */
 	void startAgent(Class<? extends Agent> agentCls, Object... params) throws Exception;
 
 	/**
 	 * Launch the SRE and the first agent in the kernel.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the first launched agent.
+	 * <p>To know the identifier of the started agent, you must start the initial agent with
+	 * {@link #startAgentWithID(Class, UUID, Object...)}.
 	 *
 	 * @param nbAgents the number of agents to be launched.
 	 * @param agentCls type of the first agent to launch.
 	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @throws Exception - if it is impossible to start the platform.
-	 * @see #getBootAgentIdentifier()
+	 * @see #startAgentWithID(Class, UUID, Object...)
 	 */
 	void startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception;
 
@@ -196,8 +198,8 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the identifier of the root/universe context in case the SRE is run when the {@link #setDefaultContextUUID() default
-	 * identifier mode is enabled}.
+	 * Force the identifier of the root/universe context in case the SRE is run when the
+	 * {@link #setSpecificContextUUID() default identifier mode} is enabled.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
@@ -224,8 +226,8 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the identifier of the root/universe default space in case the SRE is run when the {@link #setDefaultContextUUID() default
-	 * identifier mode is enabled}.
+	 * Force the identifier of the root/universe default space in case the SRE is run when the
+	 * {@link #setSpecificContextUUID() default identifier mode} is enabled.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
@@ -259,8 +261,8 @@ public interface SREBootstrap {
 	 *
 	 * <p>The value of the {@code level} argument does not depend on a specific logging infrastructure.
 	 * Indeed, JUL, Log4J and SLF4J attach different numeric values to the different logging levels.
-	 * Consequently, the numerical values that are assummed by this function are: <ul>
-	 * <li>{@code &lt;= 0}: off, no logging.</li>
+	 * Consequently, the numerical values that are assumed by this function are: <ul>
+	 * <li>{@code <= 0}: off, no logging.</li>
 	 * <li>{@code = 1}: errors only.</li>
 	 * <li>{@code = 2}: errors and warnings.</li>
 	 * <li>{@code = 3}: errors, warnings and info.</li>
@@ -300,7 +302,6 @@ public interface SREBootstrap {
 	 * @since 0.10
 	 * @see #shutdown(boolean)
 	 * @see #shutdown(int)
-	 * @see #shutdown(boolean, int)
 	 */
 	@Inline("shutdown(-1)")
 	default void shutdown() throws InterruptedException {
@@ -323,7 +324,6 @@ public interface SREBootstrap {
 	 * @since 0.10
 	 * @see #shutdown()
 	 * @see #shutdown(int)
-	 * @see #shutdown(boolean, int)
 	 */
 	@Inline("shutdown(($1) ? -1 : 0)")
 	default void shutdown(boolean blocking) throws InterruptedException {

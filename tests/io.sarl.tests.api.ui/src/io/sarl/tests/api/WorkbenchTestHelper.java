@@ -550,7 +550,7 @@ public class WorkbenchTestHelper {
 	 * @param fileName the filename.
 	 * @param content the content.
 	 * @param assertNoError indicates if this function asserts no error in the content.
-	 * If <code>true</code> this function may fail. Otherwise, it never fails on syntax errors.
+	 * If {@code true} this function may fail. Otherwise, it never fails on syntax errors.
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
@@ -1202,7 +1202,7 @@ public class WorkbenchTestHelper {
 	/** Replies if a file exists in the source folder.
 	 *
 	 * @param basename the basename of the file in the source folder.
-	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
+	 * @return {@code true} if the file exists, otherwise {@code false}.
 	 */
 	public boolean isFileInSourceFolder(String basename) {
 		String fullFileName = getFullFileNameInSources(basename);

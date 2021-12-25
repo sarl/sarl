@@ -35,7 +35,6 @@ import javax.inject.Inject;
 
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
@@ -45,7 +44,6 @@ import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
@@ -336,8 +334,9 @@ public class ExtraLanguageFeatureNameConverter {
 
 		/** Replies the complex conversion.
 		 *
-		 * <p>The replied value is an array of {@link CharSequence}, {@link JvmType}, {@link LightweightTypeReference},
-		 * or {@link XExpression}.
+		 * <p>The replied value is an array of {@link CharSequence}, {@link org.eclipse.xtext.common.types.JvmType},
+		 * {@link org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference}, or
+		 * {@link org.eclipse.xtext.xbase.XExpression}.
 		 *
 		 * @return the complex conversion.
 		 */

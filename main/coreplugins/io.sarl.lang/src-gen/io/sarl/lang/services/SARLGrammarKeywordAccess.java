@@ -930,7 +930,7 @@ public class SARLGrammarKeywordAccess {
 
 	/** Replies if the given string of characters is a SARL keyword.
 	 * @param str the string of characters.
-	 * @return <code>true</code> if the string of characters is a SARL keyword.
+	 * @return {@code true} if the string of characters is a SARL keyword.
 	 */
 	public boolean isKeyword(String str) {
 		assert !Strings.isEmpty(str);
@@ -979,7 +979,7 @@ public class SARLGrammarKeywordAccess {
 	/** Replies if the given string of characters is a pure SARL keyword.
 	 * Pure SARL keywords are SARL keywords that are not Java keywords.
 	 * @param str the string of characters.
-	 * @return <code>true</code> if the string of characters is a SARL keyword.
+	 * @return {@code true} if the string of characters is a SARL keyword.
 	 */
 	public boolean isPureKeyword(String str) {
 		assert !Strings.isEmpty(str);

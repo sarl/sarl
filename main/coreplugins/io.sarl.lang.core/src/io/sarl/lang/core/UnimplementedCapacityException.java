@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Thrown when an {@link Agent} tries to access a skill associated to a Capacity
  * and no implementation has been mapped. To define the skill use
- * {@link Agent#setSkill}.
+ * {@link Agent#setSkill(Skill, Class...)} or {@link Agent#setSkillIfAbsent(Skill, Class...)}.
  *
  * @author $Author: srodriguez$
  * @version $FullVersion$

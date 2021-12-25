@@ -26,7 +26,7 @@ import java.io.Serializable;
 import io.sarl.lang.annotation.PrivateAPI;
 
 /** A reference to a skill that could be clear dynamically and that is managing the calls to the
- * {@link AtomicSkillReference#install()}, {@link AtomicSkillReference#prepareUninstallation()} and {@link AtomicSkillReference#uninstall()}
+ * {@link Skill#install()}, {@link Skill#prepareUninstallation()} and {@link Skill#uninstall()}
  * automatically.
  *
  * <p>This class is thread-safe.

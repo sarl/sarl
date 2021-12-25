@@ -61,8 +61,8 @@ public class ExtendedSARLEarlyExitComputer extends ExtendedEarlyExitComputer {
 	/** Replies if the given expression is a early-exit SARL statement.
 	 *
 	 * @param expression the expression to test.
-	 * @return <code>true</code> if the given expression is a SARL early-exit
-	 *     statement, <code>false</code> otherwise.
+	 * @return {@code true} if the given expression is a SARL early-exit
+	 *     statement, {@code false} otherwise.
 	 * @see ISarlEarlyExitComputer#isEarlyExitAnnotatedElement(Object)
 	 */
 	protected boolean isEarlyExitSARLStatement(XExpression expression) {

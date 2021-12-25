@@ -126,7 +126,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isGenerateInlineAnnotation() {
@@ -135,7 +135,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the <code>@Inline</code> shall be generated.
 	 *
-	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setGenerateInlineAnnotation(final boolean generateInlineAnnotation) {
 		this.generateInlineAnnotation = generateInlineAnnotation;
@@ -143,7 +143,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if constant expression interpreter shall be called for generated <code>@Inline</code>.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isUseExpressionInterpreterForInlineAnnotation() {
@@ -152,7 +152,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the constant expression interpreter shall be called for generated <code>@Inline</code>.
 	 *
-	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setUseExpressionInterpreterForInlineAnnotation(final boolean generateInlineAnnotation) {
 		this.useExpressionInterpreterForInlineAnnotation = generateInlineAnnotation;
@@ -160,7 +160,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the <code>@Pure</code> shall be generated.
 	 *
-	 * @return <code>true</code> if annotation shall be generated.
+	 * @return {@code true} if annotation shall be generated.
 	 */
 	@Pure
 	public boolean isGeneratePureAnnotation() {
@@ -169,7 +169,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the <code>@Pure</code> shall be generated.
 	 *
-	 * @param generatePureAnnotation <code>true</code> if annotation shall be generated.
+	 * @param generatePureAnnotation {@code true} if annotation shall be generated.
 	 */
 	public void setGeneratePureAnnotation(final boolean generatePureAnnotation) {
 		this.generatePureAnnotation = generatePureAnnotation;
@@ -177,7 +177,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the equality test functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -187,7 +187,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the equality test functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @param generateFunctions {@code true} if functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateEqualityTestFunctions(final boolean generateFunctions) {
@@ -196,7 +196,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the toString functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -206,7 +206,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the toString functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @param generateFunctions {@code true} if functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateToStringFunctions(final boolean generateFunctions) {
@@ -215,7 +215,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the clone functions shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -225,7 +225,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the clone functions shall be generated.
 	 *
-	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @param generateFunctions {@code true} if functions shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateCloneFunctions(final boolean generateFunctions) {
@@ -234,7 +234,7 @@ public class GeneratorConfig2 {
 
 	/** Replies if the serial number field shall be generated.
 	 *
-	 * @return <code>true</code> if the functions shall be generated.
+	 * @return {@code true} if the functions shall be generated.
 	 * @since 0.8
 	 */
 	@Pure
@@ -244,7 +244,7 @@ public class GeneratorConfig2 {
 
 	/** Set if the clone functions shall be generated.
 	 *
-	 * @param generateFields <code>true</code> if fields shall be generated.
+	 * @param generateFields {@code true} if fields shall be generated.
 	 * @since 0.8
 	 */
 	public void setGenerateSerialNumberFields(final boolean generateFields) {

@@ -33,16 +33,16 @@ public interface ProjectSREProvider {
 
 	/** Replies if the project has a specific project configuration.
 	 *
-	 * @return <code>true</code> if the project has a specific configuration;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the project has a specific configuration;
+	 *     otherwise {@code false}.
 	 */
 	boolean hasProjectSpecificSREConfiguration();
 
 	/** Replies if the project has a specific project configuration that is
 	 * using the system SRE.
 	 *
-	 * @return <code>true</code> if the project has a specific configuration AND
-	 *     this configuration specifies that the system SRE is used; <code>false</code>
+	 * @return {@code true} if the project has a specific configuration AND
+	 *     this configuration specifies that the system SRE is used; {@code false}
 	 *     in the other cases.
 	 */
 	boolean isSystemSREUsed();

@@ -657,7 +657,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 *
 	 * @param element the element.
 	 * @param pattern the name pattern.
-	 * @return <code>true</code> if the element's name is matching.
+	 * @return {@code true} if the element's name is matching.
 	 */
 	protected static boolean nameMatches(EObject element, String pattern) {
 		if (element instanceof RuleCall) {

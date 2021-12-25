@@ -121,8 +121,8 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * <code>capacity</code>.
 	 *
 	 * @param capacity capacity to check
-	 * @return <code>true</code> if it has a skill associate to this capacity,
-	 *     <code>false</code> otherwise
+	 * @return {@code true} if it has a skill associate to this capacity,
+	 *     {@code false} otherwise
 	 */
 	@Pure
 	protected abstract boolean hasSkill(Class<? extends Capacity> capacity);
@@ -131,8 +131,8 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * The test is done on the identifier replied by {@link Address#getID()}.
 	 *
 	 * @param address the address to test.
-	 * @return <code>true</code> if the given address is one of this agent,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given address is one of this agent,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	protected abstract boolean isMe(Address address);
@@ -145,8 +145,8 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * </code></pre>
 	 *
 	 * @param uID the identifier to test.
-	 * @return <code>true</code> if the given identifier is the one of this agent,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given identifier is the one of this agent,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	protected abstract boolean isMe(UUID uID);
@@ -154,8 +154,8 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	/** Replies if the given event was emitted by this agent.
 	 *
 	 * @param event the event to test.
-	 * @return <code>true</code> if the given event was emitted by
-	 *     this agent; otherwise <code>false</code>.
+	 * @return {@code true} if the given event was emitted by
+	 *     this agent; otherwise {@code false}.
 	 */
 	@Pure
 	protected abstract boolean isFromMe(Event event);

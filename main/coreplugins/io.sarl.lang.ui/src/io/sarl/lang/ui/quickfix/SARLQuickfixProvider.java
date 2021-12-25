@@ -158,7 +158,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	/** Replies if the given code is for a ignorable warning.
 	 *
 	 * @param code the code of the warning.
-	 * @return <code>true</code> if the warning could be ignored, <code>false</code> otherwise.
+	 * @return {@code true} if the warning could be ignored, {@code false} otherwise.
 	 */
 	public boolean isIgnorable(String code) {
 		return this.issueCodesProvider.getConfigurableIssueCodes().containsKey(code);
@@ -325,7 +325,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param document the document.
 	 * @param separator the separator to consider.
-	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public boolean removeToPreviousSeparator(Issue issue, IXtextDocument document, String separator)
@@ -339,7 +339,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param length the length of the text to remove.
 	 * @param document the document.
 	 * @param separator the separator to consider.
-	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator)
@@ -393,7 +393,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param document the document.
 	 * @param separator the separator to consider.
-	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
@@ -431,7 +431,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param document the document.
 	 * @param keyword1 the first keyword to consider.
 	 * @param otherKeywords other keywords.
-	 * @return <code>true</code> if one keyword was found, <code>false</code> if not.
+	 * @return {@code true} if one keyword was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
@@ -475,7 +475,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param document the document.
 	 * @param beginSeparator the separator before the element.
 	 * @param endSeparator the separator after the element.
-	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public boolean removeBetweenSeparators(Issue issue, IXtextDocument document,

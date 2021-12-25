@@ -268,7 +268,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Replies if the Xtend support is enabled.
 	 *
-	 * @return <code>true</code> if the Xtend support is enabled.
+	 * @return {@code true} if the Xtend support is enabled.
 	 */
 	@Pure
 	public boolean isXtendSupportEnabled() {
@@ -277,7 +277,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Change if the Xtend support is enabled.
 	 *
-	 * @param enable <code>true</code> if the Xtend support is enabled.
+	 * @param enable {@code true} if the Xtend support is enabled.
 	 */
 	public void setXtendSupportEnabled(boolean enable) {
 		this.isXtendSupportEnable = enable;
@@ -294,7 +294,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Enable or disable the generation of the unit tests.
 	 *
-	 * @param enable <code>true</code> for enabling, <code>false</code> for disabling.
+	 * @param enable {@code true} for enabling, {@code false} for disabling.
 	 */
 	public void setGenerateUnitTests(boolean enable) {
 		this.generateUnitTests.set(enable);
@@ -302,7 +302,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Replies if the generation of the unit tests is enable.
 	 *
-	 * @return <code>true</code> for enabling, <code>false</code> for disabling.
+	 * @return {@code true} for enabling, {@code false} for disabling.
 	 */
 	@Pure
 	public boolean isUnitTestGenerationEnable() {
@@ -311,7 +311,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Enable or disable the generation of the <code>ISourceAppendable}</code> API.
 	 *
-	 * @param enable <code>true</code> for enabling, <code>false</code> for disabling.
+	 * @param enable {@code true} for enabling, {@code false} for disabling.
 	 */
 	public void setEnableISourceAppendable(boolean enable) {
 		this.enableISourceAppendable.set(enable);
@@ -319,7 +319,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Replies if the generation of the <code>ISourceAppendable}</code> API is enable.
 	 *
-	 * @return <code>true</code> for enabling, <code>false</code> for disabling.
+	 * @return {@code true} for enabling, {@code false} for disabling.
 	 */
 	@Pure
 	public boolean isISourceAppendableEnable() {

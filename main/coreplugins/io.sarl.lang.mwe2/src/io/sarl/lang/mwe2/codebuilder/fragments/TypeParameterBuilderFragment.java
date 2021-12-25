@@ -190,8 +190,8 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 
 	/** Generate the members of the builder.
 	 *
-	 * @param forInterface <code>true</code> if the code must be generated for an interface.
-	 * @param forAppender <code>true</code> if the code must be generated for an appender.
+	 * @param forInterface {@code true} if the code must be generated for an interface.
+	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
 	@SuppressWarnings("checkstyle:all")

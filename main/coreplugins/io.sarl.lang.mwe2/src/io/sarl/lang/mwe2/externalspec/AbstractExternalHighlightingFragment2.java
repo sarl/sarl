@@ -262,7 +262,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	/** Change if the colors could be output.
 	 *
-	 * @param useColors <code>true</code> to active the colors.
+	 * @param useColors {@code true} to active the colors.
 	 */
 	public void setEnableColors(boolean useColors) {
 		this.enableColors = useColors;
@@ -270,7 +270,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	/** Replies if the colors could be output.
 	 *
-	 * @return <code>true</code> to active the colors.
+	 * @return {@code true} to active the colors.
 	 */
 	@Pure
 	public boolean getEnableColors() {

@@ -93,7 +93,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	 * @param project the scope of the search.
 	 * @param type the expected super type.
 	 * @param onlySubTypes indicates if only the subtypes of the given types are allowed. If
-	 *     <code>false</code>, the super type is allowed too.
+	 *     {@code false}, the super type is allowed too.
 	 * @return the search scope.
 	 */
 	public static IJavaSearchScope createSearchScope(IJavaProject project, Class<?> type, boolean onlySubTypes) {
@@ -181,7 +181,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	 *
 	 * @param wizardPage the wizard page to update.
 	 * @param qualifiedName the qualified name.
-	 * @return <code>true</code> if the qualified name is new is the wizard page.
+	 * @return {@code true} if the qualified name is new is the wizard page.
 	 */
 	protected abstract boolean addTypeToWizardPage(T wizardPage, String qualifiedName);
 

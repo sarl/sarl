@@ -539,7 +539,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * @param issueCode the code if the issue.
 	 * @param currentObject the current object.
-	 * @return <code>true</code> if the issue is ignored.
+	 * @return {@code true} if the issue is ignored.
 	 * @see #isIgnored(String)
 	 */
 	protected boolean isIgnored(String issueCode, EObject currentObject) {
@@ -2009,8 +2009,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param feature the syntactic feature related to the supertypes.
 	 * @param superTypes the current super types.
 	 * @param expectedType the expected root type.
-	 * @param onlySubTypes if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
-	 * <code>false</code> if the <code>expectedType</code> is allowed.
+	 * @param onlySubTypes if {@code true} only the subtype of the <code>expectedType</code> are valid;
+	 * {@code false} if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
@@ -2191,8 +2191,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param implementedTypes the current super types.
 	 * @param expectedType the expected root type.
 	 * @param mandatoryNumberOfTypes the minimal number of implemented types.
-	 * @param onlySubTypes if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
-	 * <code>false</code> if the <code>expectedType</code> is allowed.
+	 * @param onlySubTypes if {@code true} only the subtype of the <code>expectedType</code> are valid;
+	 * {@code false} if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
 	protected boolean checkImplementedTypes(
@@ -3146,7 +3146,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		super.checkAssignment(expression, feature, simpleAssignment);
 	}
 
-	/** Check the correct usage of the {@link DefaultSkill} annotation.
+	/** Check the correct usage of the {@link io.sarl.lang.core.DefaultSkill} annotation.
 	 *
 	 * @param capacity the associated capacity to check.
 	 */

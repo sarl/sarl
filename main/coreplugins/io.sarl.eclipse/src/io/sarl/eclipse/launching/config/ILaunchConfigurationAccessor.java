@@ -70,14 +70,14 @@ public interface ILaunchConfigurationAccessor {
 	/** Replies if the configuration uses the system-wide SRE.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the system-wide SRE is used.
+	 * @return {@code true} if the system-wide SRE is used.
 	 */
 	boolean getUseSystemSREFlag(ILaunchConfiguration configuration);
 
 	/** Replies if the configuration uses the project SRE.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the project SRE is used.
+	 * @return {@code true} if the project SRE is used.
 	 */
 	boolean getUseProjectSREFlag(ILaunchConfiguration configuration);
 
@@ -179,7 +179,7 @@ public interface ILaunchConfigurationAccessor {
 	/** Replies the agent should be launched in the current Eclipse VM.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the current Eclipse VM must be used for running the agent.
+	 * @return {@code true} if the current Eclipse VM must be used for running the agent.
 	 */
 	boolean isEmbeddedSRE(ILaunchConfiguration configuration);
 
@@ -188,7 +188,7 @@ public interface ILaunchConfigurationAccessor {
 	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the assertions are enabled.
+	 * @return {@code true} if the assertions are enabled.
 	 * @since 0.5
 	 */
 	boolean isAssertionEnabledInDebugMode(ILaunchConfiguration configuration);
@@ -198,7 +198,7 @@ public interface ILaunchConfigurationAccessor {
 	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the assertions are enabled.
+	 * @return {@code true} if the assertions are enabled.
 	 * @since 0.5
 	 */
 	boolean isAssertionEnabledInRunMode(ILaunchConfiguration configuration);
@@ -207,7 +207,7 @@ public interface ILaunchConfigurationAccessor {
 	 * the console.
 	 *
 	 * @param configuration the configuration.
-	 * @return <code>true</code> if the launching parameters are printed out.
+	 * @return {@code true} if the launching parameters are printed out.
 	 * @since 0.12
 	 */
 	boolean isLaunhcingParametersPrintedOut(ILaunchConfiguration configuration);

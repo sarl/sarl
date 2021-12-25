@@ -73,7 +73,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 
 	/** Set if the grammar that are included by the base grammar must provides their keywords.
 	 *
-	 * @param enable <code>true</code> if the dependency grammar are used.
+	 * @param enable {@code true} if the dependency grammar are used.
 	 */
 	public void setDependencyGrammarInheritance(boolean enable) {
 		this.isDependencyGrammarInheritance = enable;
@@ -81,7 +81,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 
 	/** Replies if the grammar that are included by the base grammar must provides their keywords.
 	 *
-	 * @return <code>true</code> if the dependency grammar are used.
+	 * @return {@code true} if the dependency grammar are used.
 	 */
 	public boolean getDependencyGrammarInheritance() {
 		return this.isDependencyGrammarInheritance;

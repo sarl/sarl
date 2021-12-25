@@ -145,7 +145,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	/** Replies if this installation has one of its field unresolved.
 	 *
-	 * @return <code>true</code> if one field has a too old value.
+	 * @return {@code true} if one field has a too old value.
 	 */
 	protected boolean isDirty() {
 		return this.dirty;
@@ -153,7 +153,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	/** Set if this installation has one of its field unresolved.
 	 *
-	 * @param dirty <code>true</code> if one field has a too old value.
+	 * @param dirty {@code true} if one field has a too old value.
 	 */
 	protected void setDirty(boolean dirty) {
 		this.dirty = dirty;

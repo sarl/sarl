@@ -105,7 +105,7 @@ public interface InferredPrototype {
 
 	/** Replies if the prototype has a vararg.
 	 *
-	 * @return <code>true</code> if the last parameter is a vararg, <code>false</code>
+	 * @return {@code true} if the last parameter is a vararg, {@code false}
 	 *     otherwise.
 	 */
 	boolean isVarargs();

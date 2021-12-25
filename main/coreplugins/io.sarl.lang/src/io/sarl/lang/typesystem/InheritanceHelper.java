@@ -71,7 +71,7 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
@@ -84,9 +84,9 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @param onlyInterface <code>true</code> if only interface types are matching; <code>false</code> if
+	 * @param onlyInterface {@code true} if only interface types are matching; {@code false} if
 	 *     not-interface types are matching.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
@@ -103,7 +103,7 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isSubTypeOf(JvmType candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
@@ -116,9 +116,9 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @param onlyInterface <code>true</code> if only interface types are matching; <code>false</code> if
+	 * @param onlyInterface {@code true} if only interface types are matching; {@code false} if
 	 *     not-interface types are matching.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isSubTypeOf(JvmType candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
@@ -135,7 +135,7 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isSubTypeOf(LightweightTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
@@ -163,7 +163,7 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isProxyOrSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
@@ -176,9 +176,9 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @param onlyInterface <code>true</code> if only interface types are matching; <code>false</code> if
+	 * @param onlyInterface {@code true} if only interface types are matching; {@code false} if
 	 *     not-interface types are matching.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isProxyOrSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
@@ -193,7 +193,7 @@ public class InheritanceHelper {
 	 * @param candidate the type to test.
 	 * @param jvmSuperType the expected JVM super-type.
 	 * @param sarlSuperType the expected SARL super-type.
-	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 * @return {@code true} if the candidate is a sub-type of the super-type.
 	 */
 	public boolean isProxyOrSubTypeOf(LightweightTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
@@ -203,10 +203,10 @@ public class InheritanceHelper {
 		return isSubTypeOf(candidate, jvmSuperType, sarlSuperType);
 	}
 
-	/** Extract and replies the Ecore type, provided by {@link SarlPackage} for the given JvmElement.
+	/** Extract and replies the Ecore type, provided by {@link io.sarl.lang.sarl.SarlPackage} for the given JvmElement.
 	 *
 	 * @param type the JVM type to test.
-	 * @return the code of the type, see {@link SarlPackage}; or {@code 0} if the code is unknown.
+	 * @return the code of the type, see {@link io.sarl.lang.sarl.SarlPackage}; or {@code 0} if the code is unknown.
 	 * @since 0.6
 	 */
 	public int getSarlElementEcoreType(JvmGenericType type) {
@@ -220,10 +220,10 @@ public class InheritanceHelper {
 		return 0;
 	}
 
-	/** Extract and replies the Ecore type, provided by {@link SarlPackage} for the given JvmElement.
+	/** Extract and replies the Ecore type, provided by {@link io.sarl.lang.sarl.SarlPackage} for the given JvmElement.
 	 *
 	 * @param type the JVM type to test.
-	 * @return the code of the type, see {@link SarlPackage}; or {@code 0} if the code is unknown.
+	 * @return the code of the type, see {@link io.sarl.lang.sarl.SarlPackage}; or {@code 0} if the code is unknown.
 	 * @since 0.8
 	 */
 	public int getSarlElementEcoreType(LightweightTypeReference type) {

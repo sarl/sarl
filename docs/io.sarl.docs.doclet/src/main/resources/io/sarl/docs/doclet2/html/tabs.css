@@ -1,0 +1,17 @@
+button.doclet-tabs-title {
+	background-color: #708489;
+	color: white;
+	border-style: none;
+	padding: 5px 5px 5px 5px;
+	margin: 5px 0px 0 3px;
+}
+button.doclet-tabs-title:hover {
+	background-color: orange;
+}
+button.doclet-tabs-title.active {
+	background-color: #00A5CA;
+	color: white;
+}
+div.doclet-tabs-content {
+	margin: 0 0 5px 0;
+}

@@ -106,7 +106,7 @@ public class BindingElement {
 
 	/** Set the element could override a previously defined element.
 	 *
-	 * @param override <code>true</code> for overriding.
+	 * @param override {@code true} for overriding.
 	 */
 	public void setOverride(boolean override) {
 		this.overridePreviousDefinition = override;
@@ -114,7 +114,7 @@ public class BindingElement {
 
 	/** Replies if the element could override a previously defined element.
 	 *
-	 * @return <code>true</code> for overriding.
+	 * @return {@code true} for overriding.
 	 */
 	@Pure
 	public boolean isOverride() {
@@ -123,7 +123,7 @@ public class BindingElement {
 
 	/** Set the element is a provider.
 	 *
-	 * @param provider <code>true</code> if a provider.
+	 * @param provider {@code true} if a provider.
 	 */
 	public void setProvider(boolean provider) {
 		this.provider = provider;
@@ -131,7 +131,7 @@ public class BindingElement {
 
 	/** Replies if the element is a provider.
 	 *
-	 * @return <code>true</code> if it is a provider.
+	 * @return {@code true} if it is a provider.
 	 */
 	@Pure
 	public boolean isProvider() {
@@ -197,7 +197,7 @@ public class BindingElement {
 
 	/** Set as singleton.
 	 *
-	 * @param singleton <code>true</code> for singleton binding.
+	 * @param singleton {@code true} for singleton binding.
 	 */
 	public void setSingleton(boolean singleton) {
 		this.singleton = singleton;
@@ -205,7 +205,7 @@ public class BindingElement {
 
 	/** Replies if it is a singleton binding.
 	 *
-	 * @return <code>true</code> for singleton binding.
+	 * @return {@code true} for singleton binding.
 	 */
 	@Pure
 	public boolean isSingleton() {
@@ -214,7 +214,7 @@ public class BindingElement {
 
 	/** Set as eager singleton.
 	 *
-	 * @param eager <code>true</code> for eager singleton binding.
+	 * @param eager {@code true} for eager singleton binding.
 	 */
 	public void setEager(boolean eager) {
 		this.eagerSingleton = eager;
@@ -222,7 +222,7 @@ public class BindingElement {
 
 	/** Replies if it is an eager singleton binding.
 	 *
-	 * @return <code>true</code> for eager singleton binding.
+	 * @return {@code true} for eager singleton binding.
 	 */
 	@Pure
 	public boolean isEager() {
@@ -231,7 +231,7 @@ public class BindingElement {
 
 	/** Set as instane binding.
 	 *
-	 * @param instance <code>true</code> for instance binding.
+	 * @param instance {@code true} for instance binding.
 	 */
 	public void setInstance(boolean instance) {
 		this.instance = instance;
@@ -239,7 +239,7 @@ public class BindingElement {
 
 	/** Replies if it is an instance binding.
 	 *
-	 * @return <code>true</code> for instance binding.
+	 * @return {@code true} for instance binding.
 	 */
 	@Pure
 	public boolean isInstance() {

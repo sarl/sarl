@@ -39,18 +39,18 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
-import org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil;
 
 /**
  * Utilities for JVM annotations.
  *
- * <p>This class provides additional utilities than {@link XAnnotationUtil} and {@link AnnotationLookup}.
+ * <p>This class provides additional utilities than
+ * {@link org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil} and {@link AnnotationLookup}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see XAnnotationUtil for Xbase annotations
+ * @see org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil for Xbase annotations
  * @see AnnotationLookup for retreiving annotations.
  */
 @Singleton

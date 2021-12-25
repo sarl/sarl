@@ -137,7 +137,7 @@ capacity ExternalContextAccess {
 	 * @param event the event to test.
 	 * @param space the space in which the event may be.
 	 * @return <code>true</code> if the given event was emitted in the
-	 *     given space. Otherwise <code>false</code>.
+	 *     given space. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -149,7 +149,7 @@ capacity ExternalContextAccess {
 	 * @param event the event to test.
 	 * @param spaceID the identifier of the space in which the event may be.
 	 * @return <code>true</code> if the given event was emitted in the
-	 *     space with the given identifier. Otherwise <code>false</code>.
+	 *     space with the given identifier. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -161,7 +161,7 @@ capacity ExternalContextAccess {
 	 * @param event the event to test.
 	 * @param spaceID the identifier of the space in which the event may be.
 	 * @return <code>true</code> if the given event was emitted in the
-	 *     space with the given identifier. Otherwise <code>false</code>.
+	 *     space with the given identifier. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -208,7 +208,7 @@ capacity InnerContextAccess {
 	 * calling agent, and is a member of at least
 	 * one space of the inner context.
 	 *
-	 * @return <code>true</code> if the current agent has other agents as member of its internal context; otherwise <code>false</code>
+	 * @return <code>true</code> if the current agent has other agents as member of its internal context; otherwise {@code false}
 	 */
 	@Pure
 	def hasMemberAgent : boolean
@@ -241,7 +241,7 @@ capacity InnerContextAccess {
 	 *
 	 * @param space the space to test.
 	 * @return <code>true</code> if the given space is the default space of
-	 *     the inner context. Otherwise <code>false</code>.
+	 *     the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -252,7 +252,7 @@ capacity InnerContextAccess {
 	 *
 	 * @param spaceID the identifier to test.
 	 * @return <code>true</code> if the given identifier is the identifier
-	 *     of the default space of the inner context. Otherwise <code>false</code>.
+	 *     of the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -263,7 +263,7 @@ capacity InnerContextAccess {
 	 *
 	 * @param spaceID the identifier to test.
 	 * @return <code>true</code> if the given identifier is the identifier
-	 *     of the default space of the inner context. Otherwise <code>false</code>.
+	 *     of the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -274,7 +274,7 @@ capacity InnerContextAccess {
 	 *
 	 * @param event the event to test.
 	 * @return <code>true</code> if the given event was emitted
-	 *     in the default space of the inner context. Otherwise <code>false</code>.
+	 *     in the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -291,7 +291,7 @@ capacity Behaviors {
 	 *
 	 * <p>A registered behavior is not necessary running. It may wait for events.
 	 *
-	 * @return <code>true</code> if a behavior is registered; otherwise <code>false</code>.
+	 * @return <code>true</code> if a behavior is registered; otherwise {@code false}.
 	 * @since 0.5
 	 */
 	def hasRegisteredBehavior : boolean
@@ -666,7 +666,7 @@ capacity Schedules {
 	 * @param mayInterruptIfRunning <code>true</code> if the thread executing this
 	 *     task should be interrupted; otherwise, in-progress tasks are allowed
 	 *     to complete
-	 * @return <code>false</code> if the task could not be canceled,
+	 * @return {@code false} if the task could not be canceled,
 	 *     typically because it has already completed normally;
 	 *     <code>true</code> otherwise
 	 */
@@ -677,7 +677,7 @@ capacity Schedules {
 	 *
 	 * @param task the task.
 	 * @return <code>true</code> if the task was canceled with {@link #cancel(AgentTask,boolean)}
-	 *     or {@link #cancel(AgentTask)}; <code>false</code> otherwise.
+	 *     or {@link #cancel(AgentTask)}; {@code false} otherwise.
 	 * @since 0.5
 	 */
 	def isCanceled(task : AgentTask) : boolean
@@ -913,7 +913,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param space the space to test.
 	 * @return <code>true</code> if the given space is the default space of
-	 *     the default context. Otherwise <code>false</code>.
+	 *     the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -924,7 +924,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param space the space to test.
 	 * @return <code>true</code> if the given identifier is the identifier
-	 *     of the default space of the default context. Otherwise <code>false</code>.
+	 *     of the default space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -935,7 +935,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param space the space to test.
 	 * @return <code>true</code> if the given identifier is the identifier
-	 *     of the default space of the default context. Otherwise <code>false</code>.
+	 *     of the default space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -946,7 +946,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param event the event to test.
 	 * @return <code>true</code> if the given event is emitted in the default
-	 *     space of the default context. Otherwise <code>false</code>.
+	 *     space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -956,7 +956,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param context the agent context to test.
 	 * @return <code>true</code> if the given context is the default context.
-	 *     Otherwise <code>false</code>.
+	 *     Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -966,7 +966,7 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param contextID the identifier of the context.
 	 * @return <code>true</code> if the given identifier is the identifier
-	 *     of the default context. Otherwise <code>false</code>.
+	 *     of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
 	@Pure
@@ -1074,7 +1074,7 @@ capacity Logging {
 	/** Replies if the logging system is displaying the errors.
 	 *
 	 * @return <code>true</code> if the errors are logged,
-	 *         <code>false</code> if not.
+	 *         {@code false} if not.
 	 */
 	@Pure
 	def isErrorLogEnabled : boolean
@@ -1082,7 +1082,7 @@ capacity Logging {
 	/** Replies if the logging system is displaying the warnings.
 	 *
 	 * @return <code>true</code> if the warnings are logged,
-	 *         <code>false</code> if not.
+	 *         {@code false} if not.
 	 */
 	@Pure
 	def isWarningLogEnabled : boolean
@@ -1090,7 +1090,7 @@ capacity Logging {
 	/** Replies if the logging system is displaying the information messages.
 	 *
 	 * @return <code>true</code> if the information messages are logged,
-	 *         <code>false</code> if not.
+	 *         {@code false} if not.
 	 */
 	@Pure
 	def isInfoLogEnabled : boolean
@@ -1098,7 +1098,7 @@ capacity Logging {
 	/** Replies if the logging system is displaying the debugging messages.
 	 *
 	 * @return <code>true</code> if the debugging messages are logged,
-	 *         <code>false</code> if not.
+	 *         {@code false} if not.
 	 */
 	@Pure
 	def isDebugLogEnabled : boolean

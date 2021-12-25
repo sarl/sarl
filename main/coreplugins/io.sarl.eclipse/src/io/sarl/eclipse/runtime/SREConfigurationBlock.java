@@ -135,7 +135,7 @@ public class SREConfigurationBlock {
 
 	/** Change the event notification flag.
 	 *
-	 * @param notify <code>true</code> for notifying the events.
+	 * @param notify {@code true} for notifying the events.
 	 */
 	public void setNotify(boolean notify) {
 		this.notify = notify;
@@ -143,7 +143,7 @@ public class SREConfigurationBlock {
 
 	/** Replies if the events are notified.
 	 *
-	 * @return <code>true</code> if the events are notified.
+	 * @return {@code true} if the events are notified.
 	 */
 	public boolean getNotify() {
 		return this.notify;
@@ -388,7 +388,7 @@ public class SREConfigurationBlock {
 	 * SRE.
 	 *
 	 * @param sre the sre, if {@code null} reset to default.
-	 * @return <code>true</code> if the selection changed.
+	 * @return {@code true} if the selection changed.
 	 * @see #selectSpecificSRE(ISREInstall)
 	 */
 	public final boolean selectSRE(ISREInstall sre) {
@@ -405,7 +405,7 @@ public class SREConfigurationBlock {
 
 	/** Select the system-wide SRE.
 	 *
-	 * @return <code>true</code> if the selection changed.
+	 * @return {@code true} if the selection changed.
 	 */
 	public boolean selectSystemWideSRE() {
 		if (this.enableSystemWideSelector && !this.systemSREButton.getSelection()) {
@@ -417,7 +417,7 @@ public class SREConfigurationBlock {
 
 	/** Select the project SRE.
 	 *
-	 * @return <code>true</code> if the selection changed.
+	 * @return {@code true} if the selection changed.
 	 */
 	public boolean selectProjectSRE() {
 		if (!this.projectProviderFactories.isEmpty() && !this.projectSREButton.getSelection()) {
@@ -429,7 +429,7 @@ public class SREConfigurationBlock {
 
 	/** Select the specific SRE.
 	 *
-	 * @return <code>true</code> if the selection changed.
+	 * @return {@code true} if the selection changed.
 	 */
 	public boolean selectSpecificSRE() {
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
@@ -442,7 +442,7 @@ public class SREConfigurationBlock {
 	/** Select a specific SRE.
 	 *
 	 * @param sre the sre, if {@code null} reset to default.
-	 * @return <code>true</code> if the selection changed.
+	 * @return {@code true} if the selection changed.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean selectSpecificSRE(ISREInstall sre) {
@@ -510,7 +510,7 @@ public class SREConfigurationBlock {
 
 	/** Replies if the user has selected the default system-wide SRE.
 	 *
-	 * @return <code>true</code> if the user has selected the default
+	 * @return {@code true} if the user has selected the default
 	 *     system-wide SRE.
 	 * @see #getSelectedSRE()
 	 */
@@ -520,7 +520,7 @@ public class SREConfigurationBlock {
 
 	/** Replies if the user has selected the project SRE.
 	 *
-	 * @return <code>true</code> if the user has selected the project SRE.
+	 * @return {@code true} if the user has selected the project SRE.
 	 * @see #getSelectedSRE()
 	 */
 	public boolean isProjectSRE() {

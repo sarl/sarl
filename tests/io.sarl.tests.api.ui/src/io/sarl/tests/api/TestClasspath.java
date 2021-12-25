@@ -41,7 +41,7 @@ public @interface TestClasspath {
 
 	/** The test is valid for a run in Tycho.
 	 *
-	 * @return <code>true</code> if the unit test could be run in Tycho.
+	 * @return {@code true} if the unit test could be run in Tycho.
 	 */
 	String[] value() default {};
 	
@@ -51,7 +51,7 @@ public @interface TestClasspath {
 	 * <p>If the default bundles are not included, the classpath will contains only
 	 * the bundles given by {@link #value()}.
 	 *
-	 * @return <code>true</code> if the bundles are included; <code>false</code> if
+	 * @return {@code true} if the bundles are included; {@code false} if
 	 * the classpath will contains only the values given by {@link #value()}
 	 */
 	boolean includeDefaultBundles() default true;

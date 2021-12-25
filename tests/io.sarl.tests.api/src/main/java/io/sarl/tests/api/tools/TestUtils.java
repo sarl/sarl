@@ -109,7 +109,7 @@ public final class TestUtils {
 
 	/** Replies if the runtime environment is Eclipse.
 	 *
-	 * @return <code>true</code> if the runtime environment is Eclipse.
+	 * @return {@code true} if the runtime environment is Eclipse.
 	 */
 	@Pure
 	public static boolean isEclipseRuntimeEnvironment() {
@@ -197,7 +197,7 @@ public final class TestUtils {
 	 * @param v1 the first value.
 	 * @param v2 the second value.
 	 * @param isNaNEqual indicates if the NaN value is equals to itself.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	@Pure
 	public static boolean isEpsilonEquals(double v1, double v2, boolean isNaNEqual) {
@@ -224,7 +224,7 @@ public final class TestUtils {
 	 * @param v1 the first value.
 	 * @param v2 the second value.
 	 * @param precision is the number of decimal digits to test.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	@Pure
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {

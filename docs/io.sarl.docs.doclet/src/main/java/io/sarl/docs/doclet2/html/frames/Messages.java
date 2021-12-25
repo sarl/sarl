@@ -1,0 +1,62 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.docs.doclet2.html.frames;
+
+import org.eclipse.osgi.util.NLS;
+
+/** Localized Messages.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @ExcludeFromApidoc
+ * @since 0.13
+ */
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String HtmlIndexGeneratorImpl_0;
+	public static String HtmlIndexGeneratorImpl_1;
+	public static String HtmlIndexGeneratorImpl_2;
+	public static String HtmlIndexGeneratorImpl_3;
+	public static String HtmlIndexGeneratorImpl_4;
+	public static String HtmlIndexGeneratorImpl_5;
+	public static String HtmlIndexGeneratorImpl_6;
+	public static String HtmlIndexGeneratorImpl_7;
+	public static String HtmlIndexGeneratorImpl_8;
+	public static String HtmlIndexGeneratorImpl_9;
+	public static String OverviewFrameGeneratorImpl_0;
+	public static String OverviewFrameGeneratorImpl_1;
+	public static String OverviewFrameGeneratorImpl_2;
+	public static String OverviewFrameGeneratorImpl_3;
+	public static String AllTypesFrameGeneratorImpl_0;
+	public static String AllTypesFrameGeneratorImpl_1;
+	public static String AllTypesFrameGeneratorImpl_2;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
+
+	private Messages() {
+	}
+}

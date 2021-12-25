@@ -28,7 +28,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.generator.IFileSystemAccess;
-import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DisableCodeGenerationAdapter;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
@@ -37,7 +36,6 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLConfig;
-import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
 
@@ -51,10 +49,10 @@ import io.sarl.lang.util.Utils;
  * </ul>
  *
  * <p>The roles of the different generation tools are:<ul>
- * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
- * <li>{@link ILinker}: Create links among the SARL Ecore models.<li>
+ * <li>{@link io.sarl.lang.jvmmodel.SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
+ * <li>{@link org.eclipse.xtext.linking.ILinker}: Create links among the SARL Ecore models.<li>
  * <li>{@link SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
- * <li>{@link SarlCompiler}: Generate the Java code for the XExpression objects.</li>
+ * <li>{@link io.sarl.lang.compiler.SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
  * @author $Author: sgalland$

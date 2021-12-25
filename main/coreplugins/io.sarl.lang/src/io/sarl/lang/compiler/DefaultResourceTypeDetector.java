@@ -24,8 +24,6 @@ package io.sarl.lang.compiler;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import io.sarl.lang.SARLConfig;
-
 
 /** Detect the type of a folder.
  *
@@ -40,8 +38,8 @@ import io.sarl.lang.SARLConfig;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.8
- * @see SARLConfig#FOLDER_TEST_SOURCE_SARL
- * @see SARLConfig#FOLDER_TEST_SOURCE_GENERATED
+ * @see io.sarl.lang.SARLConfig#FOLDER_TEST_SOURCE_SARL
+ * @see io.sarl.lang.SARLConfig#FOLDER_TEST_SOURCE_GENERATED
  */
 @Singleton
 public class DefaultResourceTypeDetector extends AbstractResourceTypeDetector {

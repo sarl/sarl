@@ -51,7 +51,6 @@ import io.sarl.lang.annotation.PrivateAPI;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.5
- * @privateapi
  */
 @PrivateAPI
 public final class SREutils {
