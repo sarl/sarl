@@ -1739,8 +1739,8 @@ public class SARLValidator extends AbstractSARLValidator {
 						final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
 						error(MessageFormat.format(Messages.SARLValidator_45,
 								signature,
-								resolvedIdentifier,
-								inheritedIdentifier),
+								inheritedIdentifier,
+								resolvedIdentifier),
 								sourceElement,
 								sourceReturnTypeFeature,
 								INCOMPATIBLE_RETURN_TYPE,
