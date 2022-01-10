@@ -9,7 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: io.sarl.sarlspecification,
  io.sarl.util
 Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0";visibility:=reexport,
- org.eclipse.osgi;bundle-version="3.17.0",
+ org.eclipse.osgi;bundle-version="3.17.100",
  javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="5.0.1",
  org.arakhne.afc.core.util;bundle-version="18.0.0"

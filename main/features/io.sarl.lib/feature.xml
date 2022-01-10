@@ -224,13 +224,13 @@
    <requires>
       <import plugin="io.sarl.lang.core" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.13.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.17.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.util" version="18.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.api.naming" version="0.13.0" match="greaterOrEqual"/>
-      <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.17.100" match="greaterOrEqual"/>
    </requires>
 
    <plugin

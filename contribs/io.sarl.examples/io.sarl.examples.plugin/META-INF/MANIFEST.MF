@@ -11,16 +11,16 @@ Bundle-Activator: io.sarl.examples.SARLExamplePlugin
 Require-Bundle: io.sarl.eclipse;bundle-version="0.13.0",
  io.sarl.m2e;bundle-version="0.13.0",
  org.eclipse.xtext.ui;bundle-version="2.25.0",
- org.eclipse.ui;bundle-version="3.119.100",
- org.eclipse.core.runtime;bundle-version="3.23.0",
- org.eclipse.emf.common.ui;bundle-version="2.18.0",
- org.eclipse.ui.ide;bundle-version="3.18.300",
- org.eclipse.debug.ui;bundle-version="3.15.100",
- org.eclipse.core.resources;bundle-version="3.15.100",
- org.eclipse.jdt.launching;bundle-version="3.19.300",
+ org.eclipse.ui;bundle-version="3.200.0",
+ org.eclipse.core.runtime;bundle-version="3.24.0",
+ org.eclipse.emf.common.ui;bundle-version="2.19.0",
+ org.eclipse.ui.ide;bundle-version="3.18.400",
+ org.eclipse.debug.ui;bundle-version="3.15.200",
+ org.eclipse.core.resources;bundle-version="3.16.0",
+ org.eclipse.jdt.launching;bundle-version="3.19.400",
  javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="5.0.1",
- org.eclipse.jdt.core;bundle-version="3.27.0"
+ org.eclipse.jdt.core;bundle-version="3.28.0"
 Export-Package: io.sarl.examples,
  io.sarl.examples.wizard
 Import-Package: io.sarl.m2e.wizards.importproject

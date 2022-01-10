@@ -78,7 +78,8 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getFieldDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getFieldDefaultVisibilityIn(EObject container) {
-		return getFieldDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getFieldDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of a field when inside the given container.
@@ -123,7 +124,8 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getActionDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getActionDefaultVisibilityIn(EObject container) {
-		return getActionDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getActionDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of an action when inside the given container.
@@ -160,7 +162,8 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getAnnotationTypeDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(EObject container) {
-		return getAnnotationTypeDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getAnnotationTypeDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of an annotation type when inside the given container.
@@ -191,13 +194,14 @@ public interface IDefaultVisibilityProvider {
 
 	/** Replies the default visibility of a class when inside the given container.
 	 *
-	 * @param container the container.
+	 * @param container the container. If it is {@code null}, the root type is assumed.
 	 * @return the default visibility.
 	 * @since 0.6
 	 */
 	@Inline("getClassDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getClassDefaultVisibilityIn(EObject container) {
-		return getClassDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getClassDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of a class when inside the given container.
@@ -234,7 +238,8 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getEnumerationDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getEnumerationDefaultVisibilityIn(EObject container) {
-		return getEnumerationDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getEnumerationDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of an enumeration when inside the given container.
@@ -271,7 +276,8 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getInterfaceDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getInterfaceDefaultVisibilityIn(EObject container) {
-		return getInterfaceDefaultVisibilityIn(container.getClass());
+		final Class<?> type = container == null ? null : container.getClass();
+		return getInterfaceDefaultVisibilityIn(type);
 	}
 
 	/** Replies the default visibility of an interface when inside the given container.

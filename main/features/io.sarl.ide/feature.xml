@@ -228,26 +228,12 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.xtext.ui" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ui" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.common.types.ui" version="2.25.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.18.300" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.filesystem" version="1.9.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.bidi" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.variables" version="3.5.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.net" version="1.3.1100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.debug.ui" version="3.15.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.navigator" version="3.10.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.27.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.24.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.19.300" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.debug.ui" version="3.12.400" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.expressions" version="3.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.search" version="3.13.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.console" version="3.11.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.119.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.intro" version="3.6.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.intro.quicklinks" version="1.1.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.intro.universal" version="3.4.200" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="18.0.0" match="greaterOrEqual"/>
-      <import plugin="com.google.gson" version="2.8.7" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.variables" version="18.0.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.util" version="2.25.0" match="greaterOrEqual"/>
@@ -255,6 +241,9 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.emf.ecore" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.23.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.15.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.119.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.27.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.18.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.core.ui" version="1.18.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.maven.runtime" version="1.18.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.core" version="1.18.1" match="greaterOrEqual"/>
@@ -282,17 +271,31 @@ tools upon the Eclipse IDE.
       <import plugin="io.sarl.lang" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ide" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ide" version="2.25.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.ide" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.builder" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.ide" version="2.25.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.compare" version="3.8.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.forms" version="3.11.200" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.editors" version="3.14.200" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.18.400" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.9.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.bidi" version="1.4.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.ui" version="3.15.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.10.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.28.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.25.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.19.400" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug.ui" version="3.12.500" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions" version="3.8.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search" version="3.14.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.200.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.intro" version="3.6.400" match="greaterOrEqual"/>
+      <import plugin="com.google.gson" version="2.8.8" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.compare" version="3.8.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.forms" version="3.11.300" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.14.300" match="greaterOrEqual"/>
    </requires>
 
    <plugin
