@@ -285,7 +285,7 @@ public final class Utils {
 	public static void populateInheritanceContext(
 			JvmDeclaredType jvmElement,
 			JvmTypeReference extendedClass,
-			Iterable<JvmTypeReference> extendedInterfaces,
+			Iterable<? extends JvmTypeReference> extendedInterfaces,
 			Map<ActionPrototype, JvmOperation> finalOperations,
 			Map<ActionPrototype, JvmOperation> overridableOperations,
 			Map<String, JvmField> inheritedFields,
@@ -295,8 +295,9 @@ public final class Utils {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null && extendedInterfaces != null) {
 			for (final JvmTypeReference interfaceReference : extendedInterfaces) {
-				if (interfaceReference instanceof JvmGenericType) {
-					for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
+				final JvmType interfaceReferenceType = interfaceReference.getType();
+				if (interfaceReferenceType instanceof JvmGenericType) {
+					for (final JvmFeature feature : ((JvmGenericType) interfaceReferenceType).getAllFeatures()) {
 						if (!"java.lang.Object".equals(//$NON-NLS-1$
 								feature.getDeclaringType().getQualifiedName())) {
 							if (feature instanceof JvmOperation) {

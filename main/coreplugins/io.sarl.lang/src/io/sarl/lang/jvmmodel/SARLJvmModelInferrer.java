@@ -1128,6 +1128,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				SarlField.class, SarlConstructor.class, SarlAction.class,
 				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					source.getExtends(),
+					null,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -1202,6 +1214,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				SarlField.class, SarlConstructor.class, SarlAction.class,
 				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					source.getExtends(),
+					null,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -1275,6 +1299,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
 				SarlField.class, SarlConstructor.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					source.getExtends(),
+					null,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -1352,6 +1388,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				SarlField.class, SarlConstructor.class, SarlAction.class, SarlBehaviorUnit.class,
 				SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					source.getExtends(),
+					source.getImplements(),
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -1426,6 +1474,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = openContext(source, inferredJvmType,
 				Collections.singleton(SarlAction.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					null,
+					source.getExtends(),
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -1785,8 +1845,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add @Pure annotation
 			final boolean addDynamicPureAnnotationGenerator;
 			final boolean hasExplicitPureAnnotation = this.annotationFinder.findAnnotation(operation, Pure.class) != null;
-			if (context.getGeneratorConfig2().isGeneratePureAnnotation()
-					&& !hasExplicitPureAnnotation && this.typeReferences.findDeclaredType(Pure.class, source) != null) {
+			if (!hasExplicitPureAnnotation 
+					&& context.getGeneratorConfig2().isGeneratePureAnnotation()
+					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
 				addDynamicPureAnnotationGenerator = inheritedOperation == null;
 				if (addDynamicPureAnnotationGenerator) {
 					this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
