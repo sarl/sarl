@@ -227,12 +227,12 @@
       <import plugin="org.eclipse.xtext.xbase" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.25.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.15.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.ui" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.pythongenerator.generator" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.25.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.119.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.24.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.16.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.200.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

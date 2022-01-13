@@ -16,8 +16,8 @@
 
 	<modules>
 		<module>io.sarl.examples</module>
-		<!-- <module>io.sarl.pythongenerator</module>
-		<module>io.sarl.experienceindex</module> -->
+		<module>io.sarl.pythongenerator</module>
+		<module>io.sarl.experienceindex</module>
 	</modules>
 
 </project>

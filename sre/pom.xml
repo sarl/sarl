@@ -14,7 +14,7 @@
 	<name>SARL Runtime Environment Parent</name>
 
 	<modules>
-		<!--<module>io.janusproject</module>-->
+		<module>io.janusproject</module>
 	</modules>
 
 </project>
