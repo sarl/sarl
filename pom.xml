@@ -883,7 +883,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.6.2</version>
+					<!-- This version does not generate "invalid" syntax error from the Java code -->
+					<version>3.6.1</version>
 					<executions>
 						<execution>
 							<id>generated-helpmojo</id>
