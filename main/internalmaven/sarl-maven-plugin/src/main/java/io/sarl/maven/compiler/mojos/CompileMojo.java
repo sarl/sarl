@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.mojos;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -35,6 +35,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+
+import io.sarl.maven.compiler.abstractmojos.AbstractCompileMojo;
 
 /** Mojo for compiling SARL.
  *
@@ -74,7 +76,7 @@ public class CompileMojo extends AbstractCompileMojo {
 	protected void compileSARL() throws MojoExecutionException, MojoFailureException {
 		final Log log = getLog();
 		File outputDirectory = getOutput();
-		log.info(Messages.CompileMojo_9);
+		log.info(Messages.CompileMojo_0);
 		if (log.isDebugEnabled()) {
 			final StringBuilder properties = new StringBuilder();
 			buildPropertyString(properties);
@@ -85,7 +87,7 @@ public class CompileMojo extends AbstractCompileMojo {
 			final String settingsValue = readSarlEclipseSetting(getProject().getBuild().getSourceDirectory());
 			if (settingsValue != null && !settingsValue.isEmpty()) {
 				outputDirectory = new File(settingsValue);
-				getLog().info(MessageFormat.format(Messages.CompileMojo_11, outputDirectory));
+				getLog().info(MessageFormat.format(Messages.CompileMojo_1, outputDirectory));
 			}
 		}
 		final MavenProject project = getProject();

@@ -19,47 +19,34 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.utils;
 
-import javax.inject.Provider;
+import org.eclipse.osgi.util.NLS;
 
-import org.apache.maven.project.MavenProject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.resource.XtextResourceSet;
-
-/** provider of resource sets when comilig with Maven.
+/** Localized Messages.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @ExcludeFromApidoc
+ * @since 0.7
  */
-class MavenProjectResourceSetProvider implements Provider<ResourceSet> {
-
-	private final MavenProject project;
-
-	private ResourceSet resourceSet;
-
-	/** Constructor.
-	 *
-	 * @param project the compiled project.
-	 */
-	MavenProjectResourceSetProvider(MavenProject project) {
-		super();
-		assert project != null;
-		this.project = project;
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String MavenProjectAdapter_0;
+	public static String MavenHelper_0;
+	public static String MavenHelper_1;
+	public static String MavenHelper_2;
+	public static String MavenHelper_3;
+	public static String Utils_0;
+	public static String Utils_1;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-	public ResourceSet get() {
-		ResourceSet rs = this.resourceSet;
-		if (rs == null) {
-			rs = new XtextResourceSet();
-			MavenProjectAdapter.install(rs, this.project);
-			this.resourceSet = rs;
-		}
-		assert rs != null;
-		return rs;
+	private Messages() {
 	}
-
 }

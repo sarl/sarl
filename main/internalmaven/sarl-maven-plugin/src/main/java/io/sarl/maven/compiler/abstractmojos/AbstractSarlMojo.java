@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.abstractmojos;
 
 import java.io.File;
 import java.net.URL;
@@ -54,6 +54,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
 import io.sarl.lang.SARLConfig;
+import io.sarl.maven.compiler.utils.MavenHelper;
 
 /** Abstract mojo for SARL.
  *

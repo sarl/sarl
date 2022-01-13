@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.abstractmojos;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -43,6 +43,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
+import io.sarl.maven.compiler.compiler.JavaCompiler;
+import io.sarl.maven.compiler.utils.Utils;
 
 /** Abstract Mojo for compiling SARL (standard en test).
  *
@@ -330,7 +332,6 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 		compileSARL();
 	}
 
-	@SuppressWarnings("unchecked")
 	private static boolean containsVersion(ArtifactVersion version, ArtifactVersion rangeMin, ArtifactVersion rangeMax) {
 		return (version.compareTo(rangeMin) >= 0) && (version.compareTo(rangeMax) < 0);
 	}
@@ -342,12 +343,12 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 				compilerVersion.getMajorVersion() + "." //$NON-NLS-1$
 				+ (compilerVersion.getMinorVersion() + 1)
 				+ ".0"); //$NON-NLS-1$
-		getLog().info(MessageFormat.format(Messages.CompileMojo_0, compilerVersionString, maxCompilerVersion));
+		getLog().info(MessageFormat.format(Messages.AbstractCompileMojo_5, compilerVersionString, maxCompilerVersion));
 		final StringBuilder classpath = new StringBuilder();
 		final Set<String> foundVersions = findSARLLibrary(compilerVersion, maxCompilerVersion, classpath,
 				isTychoEnvironment());
 		if (foundVersions.isEmpty()) {
-			throw new MojoFailureException(MessageFormat.format(Messages.CompileMojo_1, classpath.toString()));
+			throw new MojoFailureException(MessageFormat.format(Messages.AbstractCompileMojo_6, classpath.toString()));
 		}
 		final StringBuilder versions = new StringBuilder();
 		for (final String version : foundVersions) {
@@ -357,9 +358,9 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 			versions.append(version);
 		}
 		if (foundVersions.size() > 1) {
-			getLog().info(MessageFormat.format(Messages.CompileMojo_2, versions));
+			getLog().info(MessageFormat.format(Messages.AbstractCompileMojo_7, versions));
 		} else {
-			getLog().info(MessageFormat.format(Messages.CompileMojo_3, versions));
+			getLog().info(MessageFormat.format(Messages.AbstractCompileMojo_8, versions));
 		}
 	}
 
@@ -371,7 +372,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 		final String sarlLibArtifactIdTycho = this.mavenHelper.getConfig("sarl-lib.osgiBundleId"); //$NON-NLS-1$
 		final Set<String> foundVersions = new TreeSet<>();
 		for (final Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
-			getLog().debug(MessageFormat.format(Messages.CompileMojo_4, dep.getGroupId(), dep.getArtifactId(), dep.getVersion()));
+			getLog().debug(MessageFormat.format(Messages.AbstractCompileMojo_9, dep.getGroupId(), dep.getArtifactId(), dep.getVersion()));
 			if (classpath.length() > 0) {
 				classpath.append(":"); //$NON-NLS-1$
 			}
@@ -393,10 +394,10 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 			if (gid != null && aid != null) {
 				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
 				if (!containsVersion(dependencyVersion, compilerVersion, maxCompilerVersion)) {
-					final String shortMessage = MessageFormat.format(Messages.CompileMojo_5,
+					final String shortMessage = MessageFormat.format(Messages.AbstractCompileMojo_10,
 							gid, aid, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
-					final String longMessage = MessageFormat.format(Messages.CompileMojo_6,
+					final String longMessage = MessageFormat.format(Messages.AbstractCompileMojo_11,
 							sarlLibGroupId, sarlLibArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
 					throw new MojoFailureException(this, shortMessage, longMessage);
@@ -407,9 +408,8 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 		return foundVersions;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void validateDependencyVersions() throws MojoExecutionException, MojoFailureException {
-		getLog().info(Messages.CompileMojo_7);
+		getLog().info(Messages.AbstractCompileMojo_12);
 		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
 		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
 
@@ -436,7 +436,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 					final Artifact projectArtifact = projectDependency.getValue();
 					final ArtifactVersion projectDependencyVersion = new DefaultArtifactVersion(projectArtifact.getVersion());
 					if (Utils.compareMajorMinorVersions(pluginDependencyArtifactVersion, projectDependencyVersion) != 0) {
-						final String message = MessageFormat.format(Messages.CompileMojo_8,
+						final String message = MessageFormat.format(Messages.AbstractCompileMojo_13,
 								projectArtifact.getGroupId(), projectArtifact.getArtifactId(),
 								pluginDependencyArtifactVersion.toString(), projectDependencyVersion.toString());
 						getLog().error(message);
@@ -447,7 +447,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 		}
 
 		if (hasError) {
-			throw new MojoFailureException(Messages.CompileMojo_10);
+			throw new MojoFailureException(Messages.AbstractCompileMojo_14);
 		}
 	}
 

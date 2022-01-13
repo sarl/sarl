@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.mojos;
 
 import java.text.MessageFormat;
 
@@ -29,6 +29,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+
+import io.sarl.maven.compiler.abstractmojos.AbstractSarlMojo;
 
 /** Cleaning mojo for compiling SARL.
  *

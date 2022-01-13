@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.compiler;
 
 import com.google.common.base.Strings;
 import com.google.inject.Injector;
@@ -30,6 +30,7 @@ import io.sarl.lang.compiler.batch.EcjBatchCompiler;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.JavacBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
+import io.sarl.maven.compiler.utils.MavenHelper;
 
 /**
  * Type of Java compielr to use by the SARL compiler.

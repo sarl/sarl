@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.compiler;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -47,6 +47,7 @@ import org.eclipse.xtext.util.Strings;
 import io.sarl.lang.compiler.batch.CompilerStatus;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
+import io.sarl.maven.compiler.utils.MavenHelper;
 
 /** Java batch compiler based on the Maven definition of a Java compiler.
  *
@@ -56,7 +57,7 @@ import io.sarl.lang.compiler.batch.OptimizationLevel;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-final class MavenBatchCompiler implements IJavaBatchCompiler {
+public final class MavenBatchCompiler implements IJavaBatchCompiler {
 
 	private static final String DEFAULT_COMPILER_VERSION = "3.8.1"; //$NON-NLS-1$
 
@@ -77,7 +78,7 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 	 * @param helper the Maven helper.
 	 * @param isTestContext indicates if the compiler is used for test code.
 	 */
-	MavenBatchCompiler(MavenHelper helper, boolean isTestContext) {
+	public MavenBatchCompiler(MavenHelper helper, boolean isTestContext) {
 		this.helper = helper;
 		this.isTestContext = isTestContext;
 	}

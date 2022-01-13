@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.utils;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 

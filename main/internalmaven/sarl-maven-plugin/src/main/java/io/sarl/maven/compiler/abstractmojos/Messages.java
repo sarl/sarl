@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.abstractmojos;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -35,26 +35,12 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String MavenProjectAdapter_0;
-	public static String MavenHelper_0;
-	public static String MavenHelper_1;
-	public static String MavenHelper_2;
-	public static String MavenHelper_3;
-	public static String InitializeMojo_0;
-	public static String InitializeMojo_1;
-	public static String CompileMojo_0;
-	public static String CompileMojo_1;
-	public static String CompileMojo_2;
-	public static String CompileMojo_3;
-	public static String CompileMojo_4;
-	public static String CompileMojo_5;
-	public static String CompileMojo_6;
-	public static String CompileMojo_7;
-	public static String CompileMojo_8;
-	public static String CompileMojo_9;
-	public static String CompileMojo_10;
-	public static String CompileMojo_11;
-	public static String CompileMojo_12;
+	public static String AbstractSarlMojo_0;
+	public static String AbstractSarlMojo_1;
+	public static String AbstractSarlMojo_2;
+	public static String AbstractSarlMojo_3;
+	public static String AbstractSarlMojo_4;
+	public static String AbstractSarlMojo_5;
 	public static String AbstractSarlBatchCompilerMojo_0;
 	public static String AbstractSarlBatchCompilerMojo_1;
 	public static String AbstractSarlBatchCompilerMojo_2;
@@ -69,20 +55,21 @@ public class Messages extends NLS {
 	public static String AbstractSarlBatchCompilerMojo_11;
 	public static String AbstractSarlBatchCompilerMojo_12;
 	public static String AbstractSarlBatchCompilerMojo_13;
-	public static String AbstractSarlMojo_0;
-	public static String AbstractSarlMojo_1;
-	public static String AbstractSarlMojo_2;
-	public static String AbstractSarlMojo_3;
-	public static String AbstractSarlMojo_4;
-	public static String AbstractSarlMojo_5;
-	public static String MavenBatchCompiler_0;
 	public static String AbstractCompileMojo_0;
 	public static String AbstractCompileMojo_1;
 	public static String AbstractCompileMojo_2;
 	public static String AbstractCompileMojo_3;
 	public static String AbstractCompileMojo_4;
-	public static String Utils_0;
-	public static String Utils_1;
+	public static String AbstractCompileMojo_5;
+	public static String AbstractCompileMojo_6;
+	public static String AbstractCompileMojo_7;
+	public static String AbstractCompileMojo_8;
+	public static String AbstractCompileMojo_9;
+	public static String AbstractCompileMojo_10;
+	public static String AbstractCompileMojo_11;
+	public static String AbstractCompileMojo_12;
+	public static String AbstractCompileMojo_13;
+	public static String AbstractCompileMojo_14;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

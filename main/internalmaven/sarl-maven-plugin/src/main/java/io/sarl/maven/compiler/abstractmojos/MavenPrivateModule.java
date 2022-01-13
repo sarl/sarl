@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.abstractmojos;
 
 import java.lang.ref.WeakReference;
 
@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
+import io.sarl.maven.compiler.compiler.JavaCompiler;
 
 /** Child injection module for the SARL maven plugin.
  *

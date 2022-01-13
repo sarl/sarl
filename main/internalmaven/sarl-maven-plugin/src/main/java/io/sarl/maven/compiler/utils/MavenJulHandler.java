@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.utils;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -35,7 +35,7 @@ import org.apache.maven.plugin.logging.Log;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-final class MavenJulHandler extends Handler {
+public final class MavenJulHandler extends Handler {
 
 	private final Log mavenLogger;
 
@@ -43,8 +43,18 @@ final class MavenJulHandler extends Handler {
 	 *
 	 * @param mavenLogger the maven logger to adapt.
 	 */
-	MavenJulHandler(Log mavenLogger) {
+	public MavenJulHandler(Log mavenLogger) {
 		this.mavenLogger = mavenLogger;
+	}
+
+	@Override
+	public void flush() {
+		//
+	}
+
+	@Override
+	public void close() throws SecurityException {
+		//
 	}
 
 	@Override
@@ -76,16 +86,6 @@ final class MavenJulHandler extends Handler {
 				this.mavenLogger.debug(record.getMessage());
 			}
 		}
-	}
-
-    @Override
-	public void flush() {
-		//
-	}
-
-	@Override
-	public void close() throws SecurityException {
-		//
 	}
 
 }

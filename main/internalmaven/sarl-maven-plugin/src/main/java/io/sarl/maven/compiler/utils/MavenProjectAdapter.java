@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.utils;
 
 import java.util.Iterator;
 
@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class MavenProjectAdapter extends AdapterImpl {
+public final class MavenProjectAdapter extends AdapterImpl {
 
 	private final MavenProject project;
 

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.utils;
 
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
@@ -68,6 +68,9 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
  */
 public class MavenHelper {
 
+	private static final String CONFIG_FILENAME = MavenHelper.class.getPackageName().replace('.', '/')
+			+ "/config"; //$NON-NLS-1$
+	
 	private Map<String, Dependency> pluginDependencies;
 
 	private final MavenSession session;
@@ -92,7 +95,7 @@ public class MavenHelper {
 	 * @param log the log for the caller.
 	 * @throws MojoExecutionException if cannot get the accessors.
 	 */
-	MavenHelper(MavenSession session, BuildPluginManager buildPluginManager, RepositorySystem repositorySystem,
+	public MavenHelper(MavenSession session, BuildPluginManager buildPluginManager, RepositorySystem repositorySystem,
 			ResolutionErrorHandler resolutionErrorHandler, Log log) throws MojoExecutionException {
 		this.session = session;
 		this.buildPluginManager = buildPluginManager;
@@ -153,7 +156,7 @@ public class MavenHelper {
 		ResourceBundle resource = null;
 		try {
 			resource = ResourceBundle.getBundle(
-					"io/sarl/maven/compiler/config", //$NON-NLS-1$
+					CONFIG_FILENAME,
 					java.util.Locale.getDefault(),
 					MavenHelper.class.getClassLoader());
 		} catch (MissingResourceException e) {

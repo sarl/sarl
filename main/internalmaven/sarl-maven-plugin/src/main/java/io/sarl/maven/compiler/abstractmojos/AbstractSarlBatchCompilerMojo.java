@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.maven.compiler.abstractmojos;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +63,9 @@ import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.maven.compiler.compiler.JavaCompiler;
+import io.sarl.maven.compiler.utils.MavenJulHandler;
+import io.sarl.maven.compiler.utils.MavenProjectResourceSetProvider;
 
 /** Abstract mojo that is able to use the SARL batch compiler.
  *
