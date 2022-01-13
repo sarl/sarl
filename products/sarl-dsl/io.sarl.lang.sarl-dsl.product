@@ -263,8 +263,8 @@
       <feature id="io.sarl.baseplatform.dsl" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.ui.source" installMode="root"/>
-      <feature id="org.eclipse.help.source" installMode="root"/>
       <feature id="org.eclipse.emf.databinding.source" installMode="root"/>
+      <feature id="org.eclipse.help.source" installMode="root"/>
       <feature id="org.eclipse.sdk" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
       <feature id="org.eclipse.wst.xml_core.feature" installMode="root"/>
@@ -306,7 +306,6 @@
       <feature id="org.eclipse.oomph.setup" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
-      <feature id="org.eclipse.m2e.sse.ui.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.examples" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature.source" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
@@ -331,12 +330,14 @@
       <feature id="org.eclipse.emf" installMode="root"/>
       <feature id="org.eclipse.rcp.source" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.egit.import" installMode="root"/>
       <feature id="org.eclipse.userstorage" installMode="root"/>
       <feature id="org.eclipse.emf.edit" installMode="root"/>
       <feature id="org.eclipse.xtext.runtime" installMode="root"/>
+      <feature id="org.eclipse.mylyn.commons" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.editor.source" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature.source" installMode="root"/>
       <feature id="org.eclipse.emf.databinding.edit" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature.source" installMode="root"/>
       <feature id="org.eclipse.emf.edit.source" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.lib.source" installMode="root"/>
       <feature id="org.eclipse.jdt.source" installMode="root"/>
@@ -379,7 +380,6 @@
       <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.oomph.setup.core" installMode="root"/>
-      <feature id="org.eclipse.mylyn.commons" installMode="root"/>
    </features>
 
    <configurations>

@@ -271,6 +271,7 @@
       <feature id="org.eclipse.wst.common_core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.xtend.sdk" installMode="root"/>
+      <feature id="org.eclipse.m2e.lemminx.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.userstorage" installMode="root"/>
       <feature id="org.eclipse.xsd" installMode="root"/>
@@ -280,7 +281,6 @@
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
-      <feature id="org.eclipse.m2e.sse.ui.feature" installMode="root"/>
       <feature id="org.eclipse.m2e.feature" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
