@@ -1117,111 +1117,129 @@
 				</executions>
 				<configuration>
 					<scripts>
-						<script><![CDATA[
-						    def now = session.getStartTime();
-						    //************************
-						    // Detect root directory
-						    def currentDirectory = project.basedir;
-						    def previousDirectory = null;
-					            def fileObj = new File(currentDirectory, "pom.xml");
-						    while (fileObj.isFile()) {
-						        previousDirectory = currentDirectory;
-						        currentDirectory = fileObj.getParent();
-						        currentDirectory = new File(currentDirectory).getParent();
-					                fileObj = new File(currentDirectory, "pom.xml");
-						    }
-						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
-						    	throw new Exception("Unable to detect root directory");
-						    }
-						    project.properties["mainbasedir"] = previousDirectory;
-						    log.info("set mainbasedir to: " + project.properties["mainbasedir"]);
-							//************************
-							// Bug in Jenkins/Hudson
-							// The buildId property is not correctly set since
-							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
-							if (project.properties["buildId"] == "\${maven.build.timestamp}"
-								|| project.properties["buildId"] == "\$maven.build.timestamp") {
-								project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
-								log.info("reset buildId to: " + project.properties["buildId"]);
-							}
-							//************************
-							// Compute version and snapshot tag
-							def snapshotTag = "-SNAPSHOT";
-							def version;
-							def releaseStatus;
-							def isSnapshot;
-							def endOfVersion;
-							def p2UploadToDir;
-							def projectVersion = project.properties["sarl.version"]
-							def isDevelVersion = projectVersion.endsWith(snapshotTag)
-							if (isDevelVersion) {
-								def len = projectVersion.size() - snapshotTag.size();
-								version = projectVersion.substring(0, len);
-								releaseStatus = "Draft Release";
-								isSnapshot = true;
-								endOfVersion = snapshotTag;
-								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties["buildId"]
-								project.properties["sarl.buildId"] = version + "-BETA"
-							} else {
-								version = projectVersion;
-								releaseStatus = "Stable Release";
-								isSnapshot = false;
-								endOfVersion = "";
-								p2UploadToDir = "/releases/"+version
-								project.properties["sarl.buildId"] = project.properties["buildId"]
-							}
-							log.info("set sarl.buildId to: " + project.properties["sarl.buildId"]);
-							versionFields = version.split("\\.");
-							//************************
-							// Set SARL properties
-							project.properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
-							project.properties["sarl.release_version"] = project.properties["sarl.specification.release_version"] + "." + versionFields[2];
-							if (isDevelVersion) {
-								project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"]+".qualifier";
-							} else {
-								project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"];
-							}
-							project.properties["sarl.release_version.maven"] = project.properties["sarl.release_version"]+endOfVersion;
-							project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
-							project.properties["sarl.specification.release_status"] = releaseStatus;
-							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
-							project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
-							project.properties["janus.release_version"] = "3."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
-							project.properties["janus.version2"] = "3."+project.properties["janus.version"];
+						<script>
+<![CDATA[
+log.info("Starting configuration of the project properties");
 
-							log.debug("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
-							log.debug("set sarl.release_version to: " + project.properties["sarl.release_version"]);
-							log.debug("set sarl.release_version.osgi to: " + project.properties["sarl.release_version.osgi"]);
-							log.debug("set sarl.release_version.maven to: " + project.properties["sarl.release_version.maven"]);
-							log.debug("set sarl.specification.release_date to: " + project.properties["sarl.specification.release_date"]);
-							log.debug("set sarl.specification.release_status to: " + project.properties["sarl.specification.release_status"]);
-							log.debug("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);
-							log.debug("set janus.version to: " + project.properties["janus.version"]);
-							log.debug("set janus.release_version to: " + project.properties["janus.release_version"]);
-							log.debug("set janus.version2 to: " + project.properties["janus.version2"]);
-							//************************
-							// P2 properties
-							project.properties["p2UploadToDir"] = p2UploadToDir;
-							log.debug("set p2UploadToDir to: " + project.properties["p2UploadToDir"]);
-							//************************
-							// Set Checkstyle properties
-						    def config_loc = project.properties["mainbasedir"];
-						    ["build-tools", "src", "main", "resources", "checkstyle", "sarl"].each {
-						    	config_loc = new File(config_loc, it);
-						    }
-						    project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
-						    log.debug("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
-							//************************
-							// Change the SARL Build ID
+def now = session.getStartTime();
 
-						]]></script>
+
+//************************
+// Detect root directory
+def currentDirectory = project.basedir;
+def previousDirectory = null;
+def fileObj = new File(currentDirectory, "pom.xml");
+
+while (fileObj.isFile()) {
+	previousDirectory = currentDirectory;
+	currentDirectory = fileObj.getParent();
+	currentDirectory = new File(currentDirectory).getParent();
+	fileObj = new File(currentDirectory, "pom.xml");
+}
+
+if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
+	throw new Exception("Unable to detect root directory");
+}
+
+project.properties["mainbasedir"] = previousDirectory;
+log.info("set mainbasedir to: " + project.properties["mainbasedir"]);
+
+//************************
+// Bug in Jenkins/Hudson
+// The buildId property is not correctly set since
+// "maven.build.timestamp" is skipped by Jenkins/Hudson.
+if (project.properties["buildId"] == "\${maven.build.timestamp}"
+    || project.properties["buildId"] == "\$maven.build.timestamp") {
+	project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
+	log.info("reset buildId to: " + project.properties["buildId"]);
+}
+
+//************************
+// Compute version and snapshot tag
+def snapshotTag = "-SNAPSHOT";
+def version;
+def releaseStatus;
+def isSnapshot;
+def endOfVersion;
+def p2UploadToDir;
+def projectVersion = project.properties["sarl.version"]
+def isDevelVersion = projectVersion.endsWith(snapshotTag)
+
+if (isDevelVersion) {
+	def len = projectVersion.size() - snapshotTag.size();
+	version = projectVersion.substring(0, len);
+	releaseStatus = "Draft Release";
+	isSnapshot = true;
+	endOfVersion = snapshotTag;
+	p2UploadToDir = "/snapshots/"+version+"/R"+project.properties["buildId"]
+	project.properties["sarl.buildId"] = version + "-BETA"
+} else {
+	version = projectVersion;
+	releaseStatus = "Stable Release";
+	isSnapshot = false;
+	endOfVersion = "";
+	p2UploadToDir = "/releases/"+version
+	project.properties["sarl.buildId"] = project.properties["buildId"]
+}
+
+log.info("set sarl.buildId to: " + project.properties["sarl.buildId"]);
+versionFields = version.split("\\.");
+
+//************************
+// Set SARL properties
+project.properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
+project.properties["sarl.release_version"] = project.properties["sarl.specification.release_version"] + "." + versionFields[2];
+
+if (isDevelVersion) {
+	project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"]+".qualifier";
+} else {
+	project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"];
+}
+
+project.properties["sarl.release_version.maven"] = project.properties["sarl.release_version"]+endOfVersion;
+project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+project.properties["sarl.specification.release_status"] = releaseStatus;
+project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
+project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
+project.properties["janus.release_version"] = "3."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
+project.properties["janus.version2"] = "3."+project.properties["janus.version"];
+
+log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
+log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
+log.info("set sarl.release_version.osgi to: " + project.properties["sarl.release_version.osgi"]);
+log.info("set sarl.release_version.maven to: " + project.properties["sarl.release_version.maven"]);
+log.info("set sarl.specification.release_date to: " + project.properties["sarl.specification.release_date"]);
+log.info("set sarl.specification.release_status to: " + project.properties["sarl.specification.release_status"]);
+log.info("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);
+log.info("set janus.version to: " + project.properties["janus.version"]);
+log.info("set janus.release_version to: " + project.properties["janus.release_version"]);
+log.info("set janus.version2 to: " + project.properties["janus.version2"]);
+
+//************************
+// P2 properties
+project.properties["p2UploadToDir"] = p2UploadToDir;
+log.info("set p2UploadToDir to: " + project.properties["p2UploadToDir"]);
+
+//************************
+// Set Checkstyle properties
+def config_loc = project.properties["mainbasedir"];
+["build-tools", "src", "main", "resources", "checkstyle", "sarl"].each {
+	config_loc = new File(config_loc, it);
+}
+project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
+log.info("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
+
+log.info("End of configuration of the project properties");
+]]>
+						</script>
 					</scripts>
 				</configuration>
 				<dependencies>
 					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-all-minimal</artifactId>
-						<version>1.5.8</version>
+						<groupId>org.apache.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<type>pom</type> 
+						<version>4.0.0-rc-2</version>
 					</dependency>
 				</dependencies>
 			</plugin>
