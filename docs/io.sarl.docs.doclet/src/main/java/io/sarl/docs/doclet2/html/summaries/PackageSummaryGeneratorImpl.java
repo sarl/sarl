@@ -119,7 +119,7 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateAopList(PackageElement packageElement, Element parent) {
-		final Map<String, Iterable<TypeElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<TypeElement> allTypes = getTypeRepository().getTypesInPackage(packageElement);
 		//
@@ -164,7 +164,7 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateOopList(PackageElement packageElement, Element parent) {
-		final Map<String, Iterable<TypeElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<TypeElement> allTypes = getTypeRepository().getTypesInPackage(packageElement);
 		//

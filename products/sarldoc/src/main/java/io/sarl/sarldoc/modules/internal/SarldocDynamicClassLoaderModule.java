@@ -23,9 +23,10 @@ package io.sarl.sarldoc.modules.internal;
 
 import javax.inject.Singleton;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 
 /** Module for injecting the dynamic class loader.
@@ -36,10 +37,10 @@ import org.arakhne.afc.vmutil.DynamicURLClassLoader;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-public class SarldocDynamicClassLoaderModule extends AbstractModule {
+public class SarldocDynamicClassLoaderModule implements BQModule {
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		//
 	}
 

@@ -24,10 +24,12 @@ package io.sarl.sarldoc.modules.internal;
 import static io.bootique.BQCoreModule.extend;
 
 import java.text.MessageFormat;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 
-import com.google.inject.AbstractModule;
+import javax.inject.Provider;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Key;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
@@ -47,21 +49,21 @@ import io.sarl.sarldoc.configs.SarldocConfig;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-public class SarldocApplicationModule extends AbstractModule {
+public class SarldocApplicationModule implements BQModule {
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		// Name of the application.
-		bind(String.class).annotatedWith(DefaultApplicationName.class).toInstance(
+		binder.bind(Key.get(String.class, DefaultApplicationName.class)).toInstance(
 				SystemProperties.getValue(SarldocConfig.PREFIX + ".programName", Constants.PROGRAM_NAME)); //$NON-NLS-1$
 		// Short description of the application.
-		extend(binder()).setApplicationDescription(Messages.SarldocApplicationModule_0);
+		extend(binder).setApplicationDescription(Messages.SarldocApplicationModule_0);
 		// Long description of the application.
-		bind(String.class).annotatedWith(ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).in(Singleton.class);
+		binder.bind(Key.get(String.class, ApplicationDetailedDescription.class)).toProvider(LongDescriptionProvider.class).inSingletonScope();
 		// Synopsis of the application's arguments.
-		bind(String.class).annotatedWith(ApplicationArgumentSynopsis.class).toInstance(Messages.SarldocApplicationModule_1);
+		binder.bind(Key.get(String.class, ApplicationArgumentSynopsis.class)).toInstance(Messages.SarldocApplicationModule_1);
 		// Default command
-		extend(binder()).setDefaultCommand(SarldocCommand.class);
+		extend(binder).setDefaultCommand(SarldocCommand.class);
 	}
 
 	/** Provider of the long description of the application.

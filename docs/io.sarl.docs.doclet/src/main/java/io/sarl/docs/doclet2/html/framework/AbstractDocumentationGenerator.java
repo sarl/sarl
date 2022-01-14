@@ -817,8 +817,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param contentExtractor the extractor of the text that must be used as content for an element.
 	 */
 	protected <T extends javax.lang.model.element.Element> void createDetailBox(String boxTitle,
-			String boxId, Element receiver, Iterable<T> elements,
-			Comparator<T> sorter,
+			String boxId, Element receiver,
+			Iterable<? extends T> elements,
+			Comparator<? super T> sorter,
 			Function1<T, String> keyExtractor,
 			Function1<T, Collection<? extends Node>> titleExtractor,
 			Function1<T, Collection<? extends Node>> contentExtractor) {
@@ -830,7 +831,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		final Element btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.DETAIL_BOX_TITLE);
 		btitle.appendText(boxTitle);
 		//
-		final Iterable<T> theElements;
+		final Iterable<? extends T> theElements;
 		if (sorter != null) {
 			final List<T> sortedList = new ArrayList<>();
 			for (final T element : elements) {
@@ -879,7 +880,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox1(
 			String boxTitle, String tableTitle, String tableColumn, String boxId,
-			Element receiver, Iterable<T> elements, Comparator<T> sorter,
+			Element receiver, Iterable<? extends T> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> contentExtractor) {
 		createSummaryBox1(boxTitle, tableTitle, tableColumn, boxId, receiver,
 				elements, sorter, contentExtractor, null);
@@ -900,7 +901,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox1(
 			String boxTitle, String tableTitle, String tableColumn, String boxId,
-			Element receiver, Iterable<T> elements, Comparator<T> sorter,
+			Element receiver, Iterable<? extends T> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> contentExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
 		createSummaryBox1(boxTitle, tableColumn, boxId, receiver,
@@ -921,7 +922,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox1(
 			String boxTitle, String tableColumn, String boxId,
-			Element receiver, Map<String, Iterable<T>> elements, Comparator<T> sorter,
+			Element receiver, Map<String, Iterable<? extends T>> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> contentExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
 		final Element rootBox = getHtmlFactory().createDivTag(null, CssStyles.SUMMARY_BOX);
@@ -935,7 +936,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		final HtmlTabsFactory tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
 		//
 		boolean hasElements = false;
-		for (final Entry<String, Iterable<T>> tabEntry : elements.entrySet()) {
+		for (final Entry<String, Iterable<? extends T>> tabEntry : elements.entrySet()) {
 			tabsFactory.addTab(tabEntry.getKey());
 			//
 			final Element table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
@@ -945,7 +946,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			tableColumnHeader0.appendText(tableColumn);
 			//
 			final Element tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
-			final Iterable<T> theElements;
+			final Iterable<? extends T> theElements;
 			if (sorter != null) {
 				final List<T> sortedList = new ArrayList<>();
 				for (final T element : tabEntry.getValue()) {
@@ -1007,7 +1008,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox2(
 			String boxTitle, String tableTitle, String tableTypeColumn, String tableDescriptionColumn,
-			String boxId, Element receiver, Iterable<T> elements, Comparator<T> sorter,
+			String boxId, Element receiver, Iterable<? extends T> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> typeExtractor,
 			Function1<T, Collection<? extends Node>> descriptionExtractor) {
 		createSummaryBox2(boxTitle, tableTitle, tableTypeColumn, tableDescriptionColumn,
@@ -1031,11 +1032,11 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox2(
 			String boxTitle, String tableTitle, String tableTypeColumn, String tableDescriptionColumn,
-			String boxId, Element receiver, Iterable<T> elements, Comparator<T> sorter,
+			String boxId, Element receiver, Iterable<? extends T> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> typeExtractor,
 			Function1<T, Collection<? extends Node>> descriptionExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
-		final Map<String, Iterable<T>> tabElements = Collections.singletonMap(tableTitle, elements);
+		final Map<String, Iterable<? extends T>> tabElements = Collections.singletonMap(tableTitle, elements);
 		createSummaryBox2(boxTitle, tableTypeColumn, tableDescriptionColumn, boxId, receiver,
 				tabElements, sorter, typeExtractor, descriptionExtractor, inheritedExtractor);
 	}
@@ -1056,7 +1057,8 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected <T extends javax.lang.model.element.Element> void createSummaryBox2(
 			String boxTitle, String tableTypeColumn, String tableDescriptionColumn,
-			String boxId, Element receiver, Map<String, Iterable<T>> elements, Comparator<T> sorter,
+			String boxId, Element receiver, Map<String, Iterable<? extends T>> elements,
+			Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> typeExtractor,
 			Function1<T, Collection<? extends Node>> descriptionExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
@@ -1071,7 +1073,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		final HtmlTabsFactory tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
 		//
 		boolean hasElements = false;
-		for (final Entry<String, Iterable<T>> tabEntry : elements.entrySet()) {
+		for (final Entry<String, Iterable<? extends T>> tabEntry : elements.entrySet()) {
 			tabsFactory.addTab(tabEntry.getKey());
 			//
 			final Element table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
@@ -1083,7 +1085,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			tableColumnHeader1.appendText(tableDescriptionColumn);
 			//
 			final Element tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
-			final Iterable<T> theElements;
+			final Iterable<? extends T> theElements;
 			if (sorter != null) {
 				final List<T> sortedList = new ArrayList<>();
 				for (final T element : tabEntry.getValue()) {

@@ -90,7 +90,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateAopList(Element parent) {
-		final Map<String, Iterable<TypeElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<TypeElement> allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
 		//
@@ -133,7 +133,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateOopList(Element parent) {
-		final Map<String, Iterable<TypeElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<TypeElement> allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
 		//
@@ -173,7 +173,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateFieldList(Element parent) {
-		final Map<String, Iterable<VariableElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends VariableElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<VariableElement> allDeprecatedFields = getTypeRepository().getDeprecatedFields();
 		allElements.put(Messages.DeprecatedListGeneratorImpl_17, allDeprecatedFields);
@@ -206,7 +206,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateConstructorList(Element parent) {
-		final Map<String, Iterable<ExecutableElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends ExecutableElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<ExecutableElement> allDeprecatedExecutables = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
 				it -> it.getKind() == ElementKind.CONSTRUCTOR);
@@ -241,7 +241,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateActionList(Element parent) {
-		final Map<String, Iterable<ExecutableElement>> allElements = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends ExecutableElement>> allElements = new LinkedHashMap<>();
 		//
 		final Iterable<ExecutableElement> allDeprecatedActions = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
 				it -> it.getKind() == ElementKind.METHOD);

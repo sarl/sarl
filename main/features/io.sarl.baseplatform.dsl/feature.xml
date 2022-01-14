@@ -871,7 +871,7 @@ for the SARL DSL Environment
          id="org.objectweb.asm"
          download-size="0"
          install-size="0"
-         version="9.1.0"
+         version=""
          unpack="false"/>
 
    <plugin

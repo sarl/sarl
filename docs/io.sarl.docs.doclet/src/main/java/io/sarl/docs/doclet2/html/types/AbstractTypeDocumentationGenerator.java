@@ -914,7 +914,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		final Iterable<ExecutableElement> staticActions = Iterables.filter(allActions, it -> getElementUtils().isStatic(it));
 		final Iterable<ExecutableElement> concreteActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && !getElementUtils().isAbstract(it));
 		final Iterable<ExecutableElement> abstractActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && getElementUtils().isAbstract(it));
-		final Map<String, Iterable<ExecutableElement>> actions = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends ExecutableElement>> actions = new LinkedHashMap<>();
 		// All methods
 		actions.put(Messages.AbstractTypeDocumentationGenerator_39, allActions);
 		// Static methods
@@ -1085,7 +1085,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		final Iterable<VariableElement> concreteFields = Iterables.filter(allFields, it -> !getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
 		final Iterable<VariableElement> staticValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && getElementUtils().isStatic(it));
 		final Iterable<VariableElement> concreteValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
-		final Map<String, Iterable<VariableElement>> fields = new LinkedHashMap<>();
+		final Map<String, Iterable<? extends VariableElement>> fields = new LinkedHashMap<>();
 		// All fields
 		fields.put(Messages.AbstractTypeDocumentationGenerator_28, allFields);
 		// Static fields

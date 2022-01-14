@@ -330,7 +330,6 @@
       <feature id="org.eclipse.emf" installMode="root"/>
       <feature id="org.eclipse.rcp.source" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.egit.import" installMode="root"/>
       <feature id="org.eclipse.userstorage" installMode="root"/>
       <feature id="org.eclipse.emf.edit" installMode="root"/>
       <feature id="org.eclipse.xtext.runtime" installMode="root"/>

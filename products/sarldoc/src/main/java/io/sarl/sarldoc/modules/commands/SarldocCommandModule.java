@@ -24,12 +24,14 @@ package io.sarl.sarldoc.modules.commands;
 import static io.bootique.BQCoreModule.extend;
 
 import java.util.logging.Logger;
+
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 import io.bootique.command.CommandManager;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 
 import io.sarl.lang.sarlc.configs.SarlcConfig;
@@ -47,11 +49,11 @@ import io.sarl.sarldoc.modules.internal.SarldocDynamicClassLoader;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-public class SarldocCommandModule extends AbstractModule {
+public class SarldocCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(SarldocCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(SarldocCommand.class);
 	}
 
 	/** Provide the command for running sarldoc.
