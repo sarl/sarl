@@ -35,4 +35,4 @@ then
 fi
 
 echo "Launching Eclipse-DSL for SARL Developers ${project.version}"
-exec "$CDIR/eclipse" $VMARGS "$@"
+exec "$CDIR/eclipse-sarl-dsl" $VMARGS "$@"

@@ -4,7 +4,7 @@ CDIR=`dirname $0`
 
 if [ -z "$DEVEL_SARL_DSL_LAUNCH_SCRIPT" ]
 then
-	EXEC="$CDIR/products/sarl-dsl/target/products/io.sarl.lang.sarl-dsl.product/linux/gtk/x86_64/eclipse-ubuntu.sh"
+	EXEC="$CDIR/products/sarl-dsl/target/products/io.sarl.lang.sarl-dsl.product/linux/gtk/x86_64/eclipse-sarl-dsl-ubuntu.sh"
 else
 	EXEC="$DEVEL_SARL_DSL_LAUNCH_SCRIPT"
 fi
