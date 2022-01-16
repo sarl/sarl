@@ -5,7 +5,7 @@ CDIR=`dirname $0`
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	# Linux
 	if [ -z "$DEVEL_SARL_LAUNCH_SCRIPT" ]; then
-		EXEC="$CDIR/products/updatesite/target/products/io.sarl.lang.product/linux/gtk/x86_64/eclipse-sarl-ubuntu.sh"
+		EXEC="$CDIR/products/sarl-ide-p2/target/products/io.sarl.lang.product/linux/gtk/x86_64/eclipse-sarl-ubuntu.sh"
 	else
 		EXEC="$DEVEL_SARL_LAUNCH_SCRIPT"
 	fi
@@ -17,7 +17,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         # Mac OSX
 	if [ -z "$DEVEL_SARL_LAUNCH_SCRIPT" ]; then
-		EXEC="$CDIR/products/updatesite/target/products/io.sarl.lang.product/macosx/cocoa/x86_64/Eclipse.app/Content/Eclipse/eclipse-sarl-macos.sh"
+		EXEC="$CDIR/products/sarl-ide-p2/target/products/io.sarl.lang.product/macosx/cocoa/x86_64/Eclipse.app/Content/Eclipse/eclipse-sarl-macos.sh"
 	else
 		EXEC="$DEVEL_SARL_LAUNCH_SCRIPT"
 	fi

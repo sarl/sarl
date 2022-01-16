@@ -8,9 +8,9 @@
 		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.lang.updatesite</artifactId>
+	<artifactId>io.sarl.lang.sarl-ide-p2</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<name>Update Site and SARL IDE</name>
+	<name>SARL IDE and P2 Update Site</name>
 
 	<properties>
 		<productPath.linux.64>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86_64</productPath.linux.64>

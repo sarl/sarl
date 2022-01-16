@@ -25,7 +25,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>updatesite</module>
+				<module>sarl-ide-p2</module>
 				<module>sarl-dsl</module>
 			</modules>
 		</profile>
