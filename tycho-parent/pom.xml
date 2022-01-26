@@ -313,15 +313,6 @@
 	<!-- ===================== -->
 
 	<repositories>
-		<!-- Use the different P2 repositories in place of the P2 composite repository.
-		     The list of the available P2 repositories is available at:
-		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html
-		     -->
-		<!--<repository>
-			<id>org.eclipse.modeling.tmf.xtext.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url>
-		</repository>-->
 		<!-- Eclipse and related libraries -->
 		<repository>
 			<id>org.eclipse.ide.lastest</id>
@@ -340,16 +331,8 @@
 			<layout>p2</layout>
 			<url>http://dependencies.sarl.io</url>
 		</repository>
-		<!-- For Checkstyle in Eclipse -->
-		<!-- REMOVED BECAUSE OF THE END-OF-LIFE OF BINTRAY!!!!
-		<repository>
-			<id>org.checkstyle.eclipse-cs.update</id>
-			<layout>p2</layout>
-			<url>https://dl.bintray.com/eclipse-cs/eclipse-cs/${checkstyle.full.version}/</url>
-		</repository>
-		-->
 		<!-- For pre-installing the m2e connectors -->
-		<repository>
+		<!-- <repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
 			<layout>p2</layout>
 			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
@@ -363,7 +346,7 @@
 			<id>org.maven.m2e.connectors.tycho.update.lastest</id>
 			<layout>p2</layout>
 			<url>https://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/</url>
-		</repository>
+		</repository> -->
 	</repositories>
 
 </project>

@@ -224,13 +224,14 @@
    <requires>
       <import plugin="io.sarl.lang.core" version="0.13.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.17.100" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.util" version="18.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.api.naming" version="0.13.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.17.100" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="30.1.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -279,5 +280,54 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.xtend.lib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.inject"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="aopalliance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.arakhne.afc.core.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.arakhne.afc.core.vmutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtend.lib.macro"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.xbase.lib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

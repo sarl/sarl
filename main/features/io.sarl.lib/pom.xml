@@ -20,8 +20,10 @@
 				<artifactId>tycho-source-feature-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<plugin id="com.google.guava" />
-						<plugin id="javax.inject" />
+						<plugin id="com.google.inject" />
+						<plugin id="aopalliance" />
+						<plugin id="org.arakhne.afc.core.util" />
+						<plugin id="org.arakhne.afc.core.vmutils" />
 					</excludes>
 				</configuration>
 			</plugin>

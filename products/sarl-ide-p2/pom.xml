@@ -68,10 +68,6 @@
 									<zipfileset src="${productZip.macos.64}"
 									            prefix=""
 									            excludesfile="${project.basedir}/macosexcludes.list" />
-									<zipfileset dir="${project.basedir}/target/tmp_arch/Eclipse.app/Contents/Eclipse/${productZipFolder.macos.64}"
-									            includes="launcher"
-									            fullpath="Eclipse.app/Contents/Eclipse/${productZipFolder.macos.64}/launcher"
-									            filemode="755" />
 									<zipfileset dir="${project.basedir}/target/tmp_arch/${productZipFolder.macos.64}"
 									            includes="eclipse-sarl"
 									            fullpath="${productZipFolder.macos.64}/eclipse-sarl-exe"

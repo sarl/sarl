@@ -19,7 +19,6 @@
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
 --add-modules=ALL-SYSTEM
---add-opens=javax.annotation.jsr250-api/javax.annotations=ALL-UNNAMED
 -Dosgi.dataAreaRequiresExplicitInit=true
 -Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
 -Xms256m
@@ -278,39 +277,8 @@
       <feature id="io.sarl.compiler" installMode="root"/>
       <feature id="io.sarl.ide" installMode="root"/>
       <feature id="io.sarl.examples.feature" installMode="root"/>
-      <feature id="org.eclipse.help" installMode="root"/>
-      <feature id="org.eclipse.xtext.redist" installMode="root"/>
-      <feature id="org.eclipse.jdt" installMode="root"/>
-      <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
-      <feature id="org.eclipse.emf.common" installMode="root"/>
-      <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
-      <feature id="org.eclipse.wst.xml_core.feature" installMode="root"/>
-      <feature id="org.eclipse.wst.common_core.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.xtend.sdk" installMode="root"/>
-      <feature id="org.eclipse.m2e.lemminx.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.userstorage" installMode="root"/>
-      <feature id="org.eclipse.xsd" installMode="root"/>
-      <feature id="org.eclipse.equinox.executable" installMode="root"/>
-      <feature id="org.eclipse.xtext.runtime" installMode="root"/>
-      <feature id="org.eclipse.emf.ecore" installMode="root"/>
-      <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
-      <feature id="org.eclipse.xtext.xbase" installMode="root"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
-      <feature id="org.eclipse.m2e.feature" installMode="root"/>
-      <feature id="org.eclipse.rcp" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
-      <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
-      <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
-      <feature id="org.eclipse.xtext.ui" installMode="root"/>
-      <feature id="org.eclipse.epp.mpc" installMode="root"/>
-      <feature id="org.eclipse.platform" installMode="root"/>
-      <feature id="org.eclipse.e4.rcp" installMode="root"/>
-      <feature id="org.eclipse.wst.common_ui.feature" installMode="root"/>
+      <feature id="io.sarl.experienceindex.feature" installMode="root"/>
+      <feature id="io.sarl.pythongenerator.feature" installMode="root"/>
    </features>
 
    <configurations>
@@ -323,6 +291,70 @@
    </configurations>
 
    <repositories>
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
       <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
       <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
       <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />

@@ -230,12 +230,13 @@
       <import plugin="org.eclipse.xtext.common.types" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.util" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.codegen" version="2.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.17.100" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.25.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common" version="2.23.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="5.0.1" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.io" version="2.8.0" match="greaterOrEqual"/>
-      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.core.runtime" version="3.24.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.22.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.6.0" match="compatible"/>
@@ -249,25 +250,44 @@
       <import plugin="org.eclipse.emf.ecore" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common" version="2.17.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.editors" version="3.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.13.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.109.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.builder" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types.ui" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.shared" version="2.22.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types.shared"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.search" version="3.11.100" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.lang" version="2.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem" version="1.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.debug" version="3.11.50" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ide"/>
-      <import plugin="org.eclipse.osgi" version="3.17.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.24.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" version="2.16.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.common" version="3.9.0" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="30.1.0" match="compatible"/>
+      <import plugin="io.github.classgraph" version="4.8.35" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.25.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.edit" version="2.16.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.13.102" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.13.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ltk.ui.refactoring" version="3.9.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core.manipulation" version="1.9.50" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.7.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text" version="3.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.views" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.edit.ui" version="2.17.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.forms" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.ide" version="2.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore.change" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.10.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.compare" version="3.7.101" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="org.objectweb.asm" version="9.1.0" match="equivalent"/>
    </requires>
 
    <plugin
@@ -306,14 +326,176 @@
          unpack="false"/>
 
    <plugin
-         id="com.google.inject"
+         id="org.arakhne.afc.core.references"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.arakhne.afc.core.references"
+         id="org.apache.log4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.antlr.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtend.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.smap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.classgraph"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.objectweb.asm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.lang"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types.shared"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types.shared.jdt38"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui.codemining"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.draw2d"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.xtext.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui.codetemplates.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui.codetemplates"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui.codetemplates.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.ui.shared"
          download-size="0"
          install-size="0"
          version="0.0.0"
