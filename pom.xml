@@ -94,7 +94,7 @@
 		<checkstyle.version>8.32</checkstyle.version>
 		<checkstyle.full.version>${checkstyle.version}.0</checkstyle.full.version>
 		<!-- Version of Hazelcast that is used by Maven and Tycho -->
-		<hazelcast.version>4.1.1</hazelcast.version>
+		<hazelcast.version>5.1</hazelcast.version>
 		<hazelcast.osgi.version>${hazelcast.version}</hazelcast.osgi.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
