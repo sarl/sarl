@@ -690,6 +690,20 @@
 				<artifactId>asm-analysis</artifactId>
 				<version>8.0.1</version>
 			</dependency>
+			
+			<!-- Additions to continue supporting java openjdk 1.8 compilation with tycho, March 2022-->
+			<dependency>
+				<groupId>org.eclipse.platform</groupId>
+  				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>3.12.0</version> <!-- maven equivalent of version 3.12.0.v20200504-1602 for osgi bundle -->
+			</dependency>
+			<!--
+			<dependency>
+				<groupId>io.bootique</groupId>
+  				<artifactId>bootique</artifactId>
+				<version>1.1</version> 
+			</dependency>	-->															
+			
 		</dependencies>
 	</dependencyManagement>
 

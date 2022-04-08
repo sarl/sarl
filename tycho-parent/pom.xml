@@ -165,6 +165,23 @@
 								<version>${hazelcast.osgi.version}</version>
 							</restrictTo>
 						</filter>
+						<!-- Additions to continue supporting java openjdk 1.8 compilation with tycho, March 2022-->
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.equinox.common</id>
+							<restrictTo>
+								<version>3.12.0.v20200504-1602</version>
+							</restrictTo>
+						</filter>
+						
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>io.bootique</id>
+							<restrictTo>
+								<version>1.1</version>
+							</restrictTo>
+						</filter>
+						
 					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->
