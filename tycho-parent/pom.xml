@@ -176,6 +176,14 @@
 						
 						<filter>
 							<type>eclipse-plugin</type>
+  							<id>org.eclipse.core.runtime</id>							
+							<restrictTo>
+								<version>3.18.0.v20200506-2143</version>
+							</restrictTo>
+						</filter>						
+						
+						<filter>
+							<type>eclipse-plugin</type>
 							<id>io.bootique</id>
 							<restrictTo>
 								<version>1.1</version>

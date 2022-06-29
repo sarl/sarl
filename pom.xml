@@ -697,6 +697,13 @@
   				<artifactId>org.eclipse.equinox.common</artifactId>
 				<version>3.12.0</version> <!-- maven equivalent of version 3.12.0.v20200504-1602 for osgi bundle -->
 			</dependency>
+			
+			<dependency>
+  				<groupId>org.eclipse.platform</groupId>
+  				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>3.18.0</version> <!-- maven equivalent of version 3.18.0.v20200506-2143 for osgi bundle -->
+			</dependency>
+			
 			<!--
 			<dependency>
 				<groupId>io.bootique</groupId>
