@@ -752,6 +752,7 @@
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<showDeprecation>false</showDeprecation>
 						<showWarnings>false</showWarnings>
+						<fork>true</fork>
 					</configuration>
 				</plugin>
 
