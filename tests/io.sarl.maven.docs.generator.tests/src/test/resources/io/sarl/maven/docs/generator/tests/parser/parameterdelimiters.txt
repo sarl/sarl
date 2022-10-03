@@ -1,9 +1,0 @@
-this is a fake text done for testing. this is a fake text done for testing. this is a fake text done for testing.
-
-this is a fake text done for testing. [:savedid1](this) is a fake text done for [:savedid2]{testing}. this is a fake text
-done for testing. this [:savedid3]|is| a fake text [:savedid4]$done$ for testing.
-
-[:savedid1:]
-[:savedid2:]
-[:savedid3:]
-[:savedid4:]

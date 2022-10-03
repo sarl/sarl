@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.basic.behaviorinheritance"
-               name="Agent with a behavior extending an existing behavior"
-               category="io.sarl.metamodel">
-	<mainPage>docs/README.md</mainPage>
-	<screenshot>docs/screenshot.png</screenshot>
-	<description>A simple example to illustrate the richness of behavior inheritance and corresponding overload in SARL.</description>
-</documentation>

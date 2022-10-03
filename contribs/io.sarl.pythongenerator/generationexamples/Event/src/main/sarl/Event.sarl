@@ -1,0 +1,46 @@
+import io.sarl.core.Initialize
+
+event event1 // public by default
+
+event event2 {
+	val id = 1;
+	var subid = 0;
+}
+
+event event3 {
+	val initvalue : Integer
+	var subid = 0;
+	
+	new(n: Integer) {
+		initvalue = n
+		subid++
+	}
+}
+
+event event4 extends event3 { // can only extend one event
+	var subsubid = 2;
+}
+
+final event event5 { // event that cannot be extended
+	val v = "I cannot be extended"
+}
+
+package event event6 { // event that can be accessed by types in the same package
+	val v = "I can be accessed by types in the same package"
+}
+
+agent BootAgent {
+	on Initialize {
+		var e1 = new event1
+		var e2 = new event2
+		var e3 = new event3(5)
+		var e4 = new event4(2)
+		
+		e2.subid = 4
+		println(e2.id + e2.subid)
+		
+		println(e3.initvalue + e3.subid)
+
+		println(e4.initvalue + e4.subid + e4.subsubid)
+	}
+}

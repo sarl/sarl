@@ -1,0 +1,14 @@
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+
+agent BootAgent {
+	uses Lifecycle
+	
+	on Initialize {
+		spawn(PingAgent, occurrence.parameters)
+		spawn(PongAgent, occurrence.parameters)
+		killMe
+	}
+	uses Schedules
+}

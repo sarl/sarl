@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.demos.factorial">
-	<agent class="io.sarl.demos.factorial.basic.FactorialAgent" name="Basic factorial agent" />
-	<agent class="io.sarl.demos.factorial.distributed.DistributedFactorialBootAgent" name="Distributed factorial agents" />
-</launchConfigurations>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.tutorials.pingpongspace"
-               name="Ping-Pong event exchanges inside a specific space"
-               category="io.sarl.tutorials">
-	<mainPage>http://www.sarl.io/docs/official/tutorials/PingPongSpace.html</mainPage>
-	<screenshot>screenshot.png</screenshot>
-	<description>Agents are exchanging events inside a specific space with a ping-pong interaction protocol.</description>
-</documentation>

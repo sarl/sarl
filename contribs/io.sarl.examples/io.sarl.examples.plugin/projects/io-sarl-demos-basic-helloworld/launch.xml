@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.examples.helloworld">
-	<agent class="io.sarl.demos.basic.helloworld.HelloAgent" name="Agent 'Hello world'" />
-</launchConfigurations>

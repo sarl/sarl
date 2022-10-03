@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.tutorials.pingpongspace">
-	<agent class="io.sarl.examples.pingpongspace.BootAgent" name="Ping-Pong in specific space" />
-</launchConfigurations>

@@ -1,0 +1,51 @@
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Schedules
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
+import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
+
+event PingEvent {
+	val index: int
+	new(i: int) {
+		this.index = i
+	}
+}
+
+agent PingAgent {
+	uses DefaultContextInteractions
+	uses ExternalContextAccess
+	uses Schedules
+	uses Behaviors
+
+	var spc : OpenEventSpace
+	
+	on Initialize {
+		spc = defaultContext.getOrCreateSpaceWithSpec(
+			typeof(OpenEventSpaceSpecification),
+			UUID.fromString(occurrence.parameters.get(0).toString)
+		)
+		spc.registerStrongParticipant(asEventListener())
+		
+		val tsk = task("pongwait")
+		println(defaultSpace.getNumberOfStrongParticipants())
+		tsk.every(1000) [
+			if (defaultSpace.getNumberOfStrongParticipants() > 1) {
+				var e = new PingEvent(0)
+				println("Sending intial ping event")
+				spc.emit(e)
+				tsk.cancel
+			} else {
+				println("I am alone in this space")
+			}
+		]
+	}
+	
+	on PongEvent {
+		println("Received pong event")
+		var e = new PingEvent(occurrence.index + 1)
+		spc.emit(e)[it == occurrence.source]
+	}
+}

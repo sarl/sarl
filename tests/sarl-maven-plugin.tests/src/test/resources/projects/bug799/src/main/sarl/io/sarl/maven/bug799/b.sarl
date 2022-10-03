@@ -1,7 +1,0 @@
-package io.sarl.maven.bug799
-
-skill B implements Cap {
-	def act_connectToSimulator(address : String, port : int) {
-		while(true) {}
-	}
-}

@@ -1,5 +1,0 @@
-1. MANUAL INSTALLATION
-
-Copy the sarl.lang file into one of the folders:
-* $HOME/.local/share/gtksourceview-3.0/language-specs/
-* $HOME/.local/share/gtksourceview-2.0/language-specs/

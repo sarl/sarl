@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.counter"
-               name="Two simple agents in basic interaction"
-               category="io.sarl.metamodel">
-	<mainPage>docs/README.md</mainPage>
-	<screenshot>docs/screenshot.png</screenshot>
-	<description>A first agent creates two other agents, the first one counting to 3 before dying and sending message to the second.</description>
-</documentation>

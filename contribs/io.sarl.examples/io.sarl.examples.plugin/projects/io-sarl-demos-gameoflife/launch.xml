@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.demos.gameoflife">
-	<agent class="io.sarl.demos.gameoflife.Boot" name="Game of Life" />
-</launchConfigurations>

@@ -1,5 +1,0 @@
-# Ignore the Python binary files
-*.egg-info
-build
-dist
-**/*.pyc

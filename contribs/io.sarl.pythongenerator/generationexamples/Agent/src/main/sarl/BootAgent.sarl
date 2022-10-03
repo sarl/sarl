@@ -1,0 +1,57 @@
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+
+agent BootAgent {
+	uses Lifecycle
+
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		println("The agent was started.")
+		killMe
+	}
+
+	on Destroy {
+		// Event trigger when the agent is destroyed from the system.
+		// You should put all the resource releasing statements in this block of code.
+		println("The agent was stopped.")
+	}
+}
+
+// agent with attributes and methods
+agent SecondAgent {
+	uses Lifecycle
+	
+	var myVar : int
+
+	on Initialize {
+		myVar = 10
+		printstate()
+	}
+	
+	def printstate {
+		println(myVar)
+	}
+}
+
+// agent that extends another agent (WARNING: can only extend once)
+agent SpecialAgent extends SecondAgent {
+	uses Lifecycle
+	
+	on Initialize {
+		println("inited")
+		spawn(ThirdAgent)
+	}
+}
+
+// agent with multiple initialization behaviour
+agent ThirdAgent {
+	on Initialize {
+		println("init 1")
+	}
+	
+	on Initialize {
+		println("init 2")
+	}
+}

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.demos.basic.holarchy">
-	<agent class="io.sarl.demos.basic.holarchy.HolarchyManager" name="Basic holarchy demo" />
-</launchConfigurations>

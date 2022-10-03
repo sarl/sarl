@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.gameoflife"
-               name="Coway's Game of Life (JavaFX interface)"
-               category="io.sarl.simulation.nature">
-	<mainPage>docs/README.md</mainPage>
-	<screenshot>docs/gameoflife_screenshot.png</screenshot>
-	<description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970.</description>
-</documentation>

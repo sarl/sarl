@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.tutorials.holonicauction"
-               name="Auction between holonic members"
-               category="io.sarl.tutorials">
-	<mainPage>http://www.sarl.io/docs/official/tutorials/HolonicAuction.html</mainPage>
-	<screenshot>screenshot.png</screenshot>
-	<description>The auctioneer creates biders in its inner context, and manages the auction.</description>
-</documentation>

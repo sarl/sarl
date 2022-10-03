@@ -1,0 +1,7 @@
+import io.sarl.core.Initialize
+
+agent BootAgent {
+	on Initialize {
+		println("Hello World!")
+	}
+}

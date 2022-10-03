@@ -1,0 +1,88 @@
+import io.sarl.core.Behaviors
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventListener
+import java.util.UUID
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Address
+import io.sarl.core.Initialize
+
+skill FilteringEventDispatchingBehavior implements Behaviors {
+	public val acceptedType : Class<? extends Event>
+	public val behaviorDelegate : Behaviors
+
+	new (acceptedType : Class<? extends Event>, behaviorDelegate : Behaviors) {
+		this.acceptedType = acceptedType
+		this.behaviorDelegate = behaviorDelegate
+	}
+
+	@Pure
+	override asEventListener : EventListener {
+		new FilteringEventListener(this)
+	}
+	
+	def getRegisteredBehaviors : ConcurrentCollection<Behavior> {
+		this.behaviorDelegate.getRegisteredBehaviors
+	}
+	
+	def hasRegisteredBehavior : boolean {
+		this.behaviorDelegate.hasRegisteredBehavior
+	}
+	
+	def registerBehavior(attitude : Behavior, filter : (Event)=>Boolean = null, initializationParameters : Object*) : Behavior {
+		this.behaviorDelegate.registerBehavior(attitude, filter, initializationParameters)
+	}
+	
+	def unregisterBehavior(attitude : Behavior) : Behavior {
+		this.behaviorDelegate.unregisterBehavior(attitude)
+	}
+	
+	def wake(^event : Event, scope : Scope<Address> = null) {
+		this.behaviorDelegate.wake(^event, scope)
+	}
+	
+	def wake(beh : Behavior, ^event : Event) {
+		this.behaviorDelegate.wake(beh, ^event)
+	}
+	
+	def wake(behs : Iterable<Behavior>, ^event : Event) {
+		this.behaviorDelegate.wake(behs, ^event)
+	}
+	
+}
+
+public class FilteringEventListener implements EventListener {
+	val parent : FilteringEventDispatchingBehavior
+
+	new (parent : FilteringEventDispatchingBehavior) {
+		this.parent = parent
+	}
+
+	override receiveEvent(occ : Event) {
+		if (this.parent.acceptedType.isInstance(occ)) {
+			this.parent.behaviorDelegate.asEventListener.receiveEvent(occ)
+		}
+	}
+
+	@Pure
+	override getID : UUID {
+		this.parent.ID
+	}
+}
+
+event MyEvent {
+	val index : int
+
+	new(i : int) {
+		this.index = i
+	}
+}
+
+agent FilteringEventAgent {
+	on Initialize {
+		val originalSkill = getSkill(typeof(Behaviors))
+		val newSkill = new FilteringEventDispatchingBehavior(typeof(MyEvent), originalSkill)
+		setSkill(newSkill)
+	}
+}

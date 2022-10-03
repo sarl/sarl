@@ -1,0 +1,79 @@
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Behaviors
+import io.sarl.core.Destroy
+import io.sarl.lang.core.Agent
+
+// behaviour with attributes and methods
+behavior beh1 {
+	protected var a = 4 // variable
+	protected val b = 10 // constant
+
+	uses Logging
+
+	// Defining an action without parameter nor return type
+	def myAction1 {
+		info("Hello world")
+	}
+	// Defining an action with a variadic parameter and no return type
+	def myAction2(param : int*) {
+		info("params are " + param)
+	}
+}
+
+// behaviour that extends another behavior (WARNING: can only extend one beheviour)
+behavior beh2 extends beh1 {
+	uses Logging
+	
+	def action {
+		info(a + b)
+	}
+}
+
+// behaviour with initialization handlers
+behavior beh3 {
+	uses Logging
+	
+	on Initialize {
+		info("I'm initializing my behavior")
+	}
+
+	on Destroy {
+		info("Destroying the behavior")
+	}
+}
+
+capacity c {
+	def dothing(thing: int)
+}
+
+skill s implements c {
+	def dothing(thing: int) {
+		println("hello")
+	}
+}
+
+// behaviour that assigns a skill to its associated agent
+behavior beh4 {
+	new(owner : Agent) {
+		super(owner)
+		var sk = new s
+		println("setting skill")
+		setSkill(sk)
+		println("skill set")
+	}
+	
+	on Initialize {
+		println("behaviour initialized")
+	}
+}
+
+// agent using behaviour
+agent BootAgent {
+	uses Behaviors
+	
+	on Initialize {
+		var beh = new beh4(this) // <- the parameter is the agent
+		registerBehavior(beh) // <- triggers the on Initialize event of the behaviour
+	}
+}

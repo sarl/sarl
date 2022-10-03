@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.boids.awt"
-               name="Reynolds Boids (AWT interface)"
-               category="io.sarl.simulation.nature">
-	<mainPage>docs/README.md</mainPage>
-	<screenshot>docs/boids_screenshot.png</screenshot>
-	<description>Simulation of the Reynolds' Boids based on an AWT user interface.</description>
-</documentation>

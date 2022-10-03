@@ -1,3 +1,0 @@
-io.sarl.maven.bootiqueapp.mdhelp.GenerateMarkdownHelpCommandModuleProvider
-io.sarl.maven.bootiqueapp.mdconfig.GenerateMarkdownConfigCommandModuleProvider
-io.sarl.maven.bootiqueapp.version.VersionCommandModuleProvider

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.demos.sierpinskifractals">
-	<application class="io.sarl.demos.sierpinskiFractals.SierpinskiFractals" name="Sierpinski fractals" />
-</launchConfigurations>

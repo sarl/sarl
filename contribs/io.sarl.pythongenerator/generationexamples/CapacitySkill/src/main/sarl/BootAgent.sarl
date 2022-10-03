@@ -1,0 +1,188 @@
+import io.sarl.core.Initialize
+import io.sarl.lang.core.DefaultSkill
+import java.util.logging.Logger
+
+// basic capacity with two methods to implement
+capacity Logging {
+	// Log an information message
+	def info(text : String)
+
+	// Log a debugging message
+	def debug(text : String)
+}
+
+// capacity extending another capacity
+capacity ErrorLogging extends Logging {
+	// Log a error message
+	def error(text : String)
+}
+
+// a skill implemeting a capacity
+skill ConsoleLogging implements Logging {
+	def info(text : String) {
+		System.out.println(text)
+	}
+
+	def debug(text : String) {
+		System.err.println(text)
+	}
+}
+
+skill ConsoleErrorLogging implements ErrorLogging {
+	def info(text : String) {
+		System.out.println(text)
+	}
+
+	def debug(text : String) {
+		System.err.println(text)
+	}
+	
+	def error(text : String) {
+		System.err.println(text)
+	}
+	
+}
+
+// a skill implementing a capacity with an attribute
+skill StandardJavaLogging implements Logging {
+	// A field is defined in the Skill
+	val logger = Logger.anonymousLogger
+
+	def info(text : String) {
+		logger.info(text)
+	}
+
+	def debug(text : String) {
+		logger.fine(text)
+	}
+}
+
+// a skill implementing a capacity with a constructor
+skill CustomJavaLogging implements Logging {
+	// A field is defined in the Skill
+	val logger: Logger
+
+	new (l : Logger) {
+		super() // Call the super's constructor
+		logger = l
+	}
+
+	def info(text : String) {
+		logger.info(text)
+	}
+
+	def debug(text : String) {
+		logger.fine(text)
+	}
+}
+
+// a skill implementing a capacity with an utility method (present in skill)
+skill MyLogging implements Logging {
+	def info(text : String) {
+		output(text)
+	}
+
+	def debug(text : String) {
+		output(text)
+	}
+
+	// Define an utility function
+	// that is outputting the text
+	def output(t : String) {
+		System.err.println(t)
+	}
+}
+
+capacity LogReader {
+	def open(filename : String) : int
+
+	def info(t : String)
+
+	def close(fid : int)
+}
+
+// a skill implementing multiple capacitiess
+skill MyLogging2 implements Logging, LogReader {
+	// Shared implementation for the methods
+	// defind in the two Capacities.
+	def info(text : String) {
+		System.out.println(text)
+	}
+
+	def debug(text : String) {
+		System.out.println(text)
+	}
+
+	def open(filename : String) : int {
+		return 0
+	}
+
+	def close(fid : int) {
+		
+	}
+}
+
+// a skill inheriting from another skill
+skill ExtendedLogging extends StandardJavaLogging {
+	def info(text : String) {
+		super.info("INFO: " + text)
+	}
+}
+
+// a skill implementing a capacity with install and uninstall methods to get the owner of the skill
+skill InstallSkill implements Logging {
+	
+	def info(text : String) {
+		
+	}
+	
+	def debug(text : String) {
+		
+	}
+
+	def install {
+		assert getOwner !== null
+	}
+
+	def uninstall {
+		// Do uninstallation statements
+	}
+}
+
+capacity Cap1 {
+	def action1
+}
+
+capacity Cap2 {
+	def action2
+}
+
+// a capacity extending two capacities
+capacity Cap3 extends Cap1, Cap2 {
+	def action3
+}
+
+// a capacity being assigned by default to a skill
+@DefaultSkill(typeof(MySkill))
+capacity MyCapacity {
+	def myfunction
+}
+
+skill MySkill implements MyCapacity {
+	def myfunction {
+		
+	}
+}
+
+agent BootAgent {
+	on Initialize {
+		var s = new ConsoleLogging
+		setSkill(s)
+		s.info("Hello World !")
+		
+		var se = new ConsoleErrorLogging
+		setSkill(se)
+		s.info("A message")
+		se.error("ERROR")
+	}
+}

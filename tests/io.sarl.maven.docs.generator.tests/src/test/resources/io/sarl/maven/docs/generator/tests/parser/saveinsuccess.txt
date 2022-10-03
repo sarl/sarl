@@ -1,9 +1,0 @@
-this is a fake text done for testing. this is a fake text done for testing. this is a fake text done for testing.
-
-[:Success:]
-This is a [:savedid](hidden) text.
-		[:End:]
-
-this is a fake text done for testing. this is a fake text done for testing. this is a fake text done for testing. this is a fake text done for testing.
-
-[:savedid:]
