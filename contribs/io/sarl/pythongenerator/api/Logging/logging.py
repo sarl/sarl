@@ -7,5 +7,12 @@ Created on Tue Oct  4 20:56:52 2022
 
 
 class Logging:
+
     def __init__(self):
-        pass
+        self.name = ""
+
+    def setLoggingName(self, name):
+        self.name = name
+
+    def info(self):
+        print(self.name)

@@ -11,6 +11,7 @@ Created on Tue Oct  4 20:25:06 2022
 from contribs.io.sarl.pythongenerator.api.Logging.logging import Logging
 from contribs.io.sarl.pythongenerator.api.agent.agent import Agent
 from multiprocessing import process
+from time import sleep
 
 
 class HelloAgent(Agent, object):
@@ -29,9 +30,10 @@ class HelloAgent(Agent, object):
             def apply(self, it):
                 process.terminate()
 
-        (self.getSkill(Logging).setLoggingName(u"HelloAgent") = u"HelloAgent")
-        self.getSkill(Logging).info_1(u"Hello World!")
-        self.in(2000, __Jclosure_Procedure1())
+        self.getSkill(Logging).setLoggingName(u"HelloAgent")
+        self.getSkill(Logging).info(u"Hello World!")
+        sleep(2)
+        process.terminate()
 
     def __on_Destroy__(self, occurrence):
         """
@@ -41,14 +43,14 @@ class HelloAgent(Agent, object):
 
     def __guard_io_sarl_core_Initialize__(self, occurrence):
         it = occurrence
-        __event_handles = list
-        __event_handles.add(self.__on_Initialize__)
+        __event_handles = list()
+        __event_handles.append(self.__on_Initialize__)
         return __event_handles
 
     def __guard_io_sarl_core_Destroy__(self, occurrence):
         it = occurrence
-        __event_handles_1 = list
-        __event_handles_1.add(self.__on_Destroy__)
+        __event_handles_1 = list()
+        __event_handles_1.append(self.__on_Destroy__)
         return __event_handles_1
 
     def __init__(self):

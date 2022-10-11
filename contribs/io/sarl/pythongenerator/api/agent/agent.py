@@ -5,10 +5,10 @@ Created on Tue Oct  4 20:56:52 2022
 @author: loic
 """
 
-import abstractSkillContainer
+from contribs.io.sarl.pythongenerator.api.agent.abstractSkillContainer import AbstractSkillContainer
 
 
-class Agent(abstractSkillContainer):
+class Agent(AbstractSkillContainer):
 
     def __init__(self):
         pass
