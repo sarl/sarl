@@ -9,5 +9,7 @@ import abstractSkillContainer
 
 
 class Agent(abstractSkillContainer):
+
     def __init__(self):
         pass
+
