@@ -10,4 +10,3 @@ from contribs.io.sarl.pythongenerator.vm.LoggingAgent.LoggingAgent import Loggin
 loggingAgent = LoggingAgent
 myAgentEvents = loggingAgent.__guard_io_sarl_core_Initialize__(loggingAgent,1)
 myAgentEvents[0](loggingAgent,1)
-

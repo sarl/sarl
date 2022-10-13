@@ -24,13 +24,14 @@
 
 from contribs.io.sarl.pythongenerator.api.agent.agent import Agent
 from contribs.io.sarl.pythongenerator.vm.LoggingAgent.LoggingSkill import LoggingSkill
+from contribs.io.sarl.pythongenerator.vm.LoggingAgent.Logging import Logging
 
 
 class LoggingAgent(Agent, object):
     def __on_Initialize__(self, occurrence):
         s = LoggingSkill()
-        self.setSkill(s)
-        s.info(u"Hello World !")
+        self.setSkill(s, Logging)
+        self.getSkill(Logging).info(u"Hello World !")
 
     def __guard_io_sarl_core_Initialize__(self, occurrence):
         it = occurrence
