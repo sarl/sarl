@@ -6,7 +6,7 @@ Created on Tue Oct  4 21:00:29 2022
 """
 
 
-class AbstractSkillContainer:
+class AbstractSkillContainer(object):
 
     def __init__(self):
         # Skill repository
@@ -19,10 +19,10 @@ class AbstractSkillContainer:
             return self.__skillRepository.get(capacity.__class__)
         return None
 
-    def setSkill(self, skill, **capacities):
+    def setSkill(self, skill, *capacities):
         self.__setSkill(skill, True, capacities)
 
-    def __setSkill(self, skill, ifAbsent, **capacities):
+    def __setSkill(self, skill, ifAbsent, *capacities):
         if capacities is None or len(capacities) == 0:
             pass
         else :

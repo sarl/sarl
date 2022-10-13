@@ -1,4 +1,4 @@
-from contribs.io.sarl.pythongenerator.vm.HelloWorld.helloWorld import HelloWorldAgent
+#from contribs.io.sarl.pythongenerator.vm.HelloWorld.helloWorld import HelloWorldAgent
 from contribs.io.sarl.pythongenerator.vm.LoggingAgent.LoggingAgent import LoggingAgent
 
 ### HelloWorld
