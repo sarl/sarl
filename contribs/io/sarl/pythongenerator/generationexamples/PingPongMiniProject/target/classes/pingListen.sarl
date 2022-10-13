@@ -1,0 +1,25 @@
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.lang.core.Agent
+import io.sarl.core.OpenEventSpace
+
+behavior pingListen {
+	uses pongCapacity
+
+	new (owner : Agent, spc : OpenEventSpace) {
+		super(owner)
+	}
+
+	on Initialize {
+		
+	}
+
+	on Destroy {
+		
+	}
+	
+	on PingEvent {
+		println("Received ping event")
+		replyPong(occurrence)
+	}
+}

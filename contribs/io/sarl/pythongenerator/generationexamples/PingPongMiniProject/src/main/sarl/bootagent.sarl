@@ -1,0 +1,23 @@
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.DefaultContextInteractions
+import java.util.UUID
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.OpenEventSpace
+
+agent BootAgent {
+	uses Lifecycle
+	uses DefaultContextInteractions
+	
+	on Initialize {
+		var spc: OpenEventSpace = defaultContext.createSpace(
+			typeof(OpenEventSpaceSpecification),
+			UUID.fromString(occurrence.parameters.get(0).toString)
+		)
+		
+		spawn(PingAgent, spc.spaceID.ID)
+		spawn(PongAgent, spc.spaceID.ID)
+		
+		killMe
+	}
+}

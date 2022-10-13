@@ -1,0 +1,23 @@
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.lang.core.Agent
+import io.sarl.core.OpenEventSpace
+
+behavior pongListen {
+
+	new (owner : Agent, spc : OpenEventSpace) {
+		super(owner)
+	}
+
+	on Initialize {
+		
+	}
+
+	on Destroy {
+		
+	}
+	
+	on PongEvent {
+		println("Received pong event")
+	}
+}

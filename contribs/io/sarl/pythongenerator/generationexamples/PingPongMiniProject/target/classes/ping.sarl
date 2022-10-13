@@ -1,0 +1,30 @@
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+import io.sarl.core.Behaviors
+import io.sarl.core.Destroy
+
+agent PingAgent {
+	uses DefaultContextInteractions
+	uses Behaviors
+
+	var pingBehavior : pingingBehavior
+	var pongListenBehavior : pongListen
+
+	on Initialize {
+		var spc : OpenEventSpace = defaultContext.getSpace(UUID.fromString(occurrence.parameters.get(0).toString))
+		spc.registerStrongParticipant(asEventListener())
+
+		pingBehavior = new pingingBehavior(this, spc)
+		registerBehavior(pingBehavior)
+		
+		pongListenBehavior = new pongListen(this, spc)
+		registerBehavior(pongListenBehavior)
+	}
+	
+	on Destroy {
+		unregisterBehavior(pingBehavior)
+		unregisterBehavior(pongListenBehavior)
+	}
+}

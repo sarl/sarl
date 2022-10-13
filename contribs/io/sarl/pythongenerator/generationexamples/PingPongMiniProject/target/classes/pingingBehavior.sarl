@@ -1,0 +1,70 @@
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Schedules
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Event
+
+event PingEvent {
+	val index : int
+
+	new(i : int) {
+		this.index = i
+	}
+}
+
+capacity pingCapacity {
+	def sendping()
+	
+	def replyPing(occ: Event)
+}
+
+skill pingSkill implements pingCapacity {
+	var spc : OpenEventSpace
+
+	new(pingSpace : OpenEventSpace) {
+		spc = pingSpace
+	}
+	
+	def sendping() {
+		if (spc.getNumberOfStrongParticipants() > 1) {
+			var e = new PingEvent(0)
+			println("Sending ping event")
+			spc.emit(this.ID, e)
+		} else {
+			println("I am alone in this space")
+		}
+	}
+
+	def replyPing(occ : Event) {
+		if (spc.getNumberOfStrongParticipants() > 1) {
+			var e = new PingEvent(0)
+			println("Replying with ping event")
+			spc.emit(this.ID, e)[it == occ.source]
+		} else {
+			println("I am alone in this space")
+		}
+	}
+}
+
+behavior pingingBehavior {
+	uses Schedules
+	uses pingCapacity
+
+	new (owner : Agent, spc : OpenEventSpace) {
+		super(owner)
+		var pingSk = new pingSkill(spc)
+		setSkill(pingSk, pingCapacity)
+	}
+
+	on Initialize {
+		val tsk = task("ping")
+		tsk.every(1000) [
+			sendping()
+		]
+	}
+
+	on Destroy {
+		
+	}
+}

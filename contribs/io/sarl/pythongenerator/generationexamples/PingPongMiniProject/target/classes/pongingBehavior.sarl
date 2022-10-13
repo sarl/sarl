@@ -1,0 +1,64 @@
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Event
+
+event PongEvent {
+	val index : int
+
+	new(i : int) {
+		this.index = i
+	}
+}
+
+capacity pongCapacity {
+	def sendpong()
+	
+	def replyPong(occ: Event)
+}
+
+skill pongSkill implements pongCapacity {
+	var spc: OpenEventSpace
+	
+	new(pongSpace : OpenEventSpace) {
+		spc = pongSpace
+	}
+	
+	def sendpong() {
+		if (spc.getNumberOfStrongParticipants() > 1) {
+			var e = new PongEvent(0)
+			println("Sending pong event")
+			spc.emit(this.ID, e)
+		} else {
+			println("I am alone in this space")
+		}
+	}
+	
+	def replyPong(occ: Event) {
+		if (spc.getNumberOfStrongParticipants() > 1) {
+			var e = new PongEvent(0)
+			println("Replying with pong event")
+			spc.emit(this.ID, e)[it == occ.source]
+		} else {
+			println("I am alone in this space")
+		}
+	}
+}
+
+behavior pongingBehavior {
+
+	new (owner : Agent, spc : OpenEventSpace) {
+		super(owner)
+		var pongSk = new pongSkill(spc)
+		setSkill(pongSk, pongCapacity)
+	}
+
+	on Initialize {
+		
+	}
+
+	on Destroy {
+		
+	}
+}
