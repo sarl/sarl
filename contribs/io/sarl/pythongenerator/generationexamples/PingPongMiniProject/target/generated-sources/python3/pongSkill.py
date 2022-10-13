@@ -12,7 +12,7 @@ class pongSkill(,object):
 			.println(u"Sending pong event")
 			self.spc.emit(self.getID(), e)
 		else:
-			.println(u"I am alone in this space")
+			.println(u"I am alone in this event")
 	def replyPong(self, occ : Event) -> :
 		class __Jclosure_(Address)=>boolean((Address)=>bool,object):
 			def matches(self, it):
@@ -22,6 +22,6 @@ class pongSkill(,object):
 			.println(u"Replying with pong event")
 			self.spc.emit(self.getID(), e, __Jclosure_(Address)=>boolean())
 		else:
-			.println(u"I am alone in this space")
+			.println(u"I am alone in this event")
 	def __init__(self, pongSpace : OpenEventSpace) -> :
 		(self.spc = pongSpace)
