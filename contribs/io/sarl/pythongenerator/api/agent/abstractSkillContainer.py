@@ -5,32 +5,47 @@ Created on Tue Oct  4 21:00:29 2022
 @author: loic
 """
 
+from contribs.io.sarl.pythongenerator.api.capacity.capacity import Capacity
+from contribs.io.sarl.pythongenerator.api.agent.skill import Skill
+
 
 class AbstractSkillContainer(object):
 
     def __init__(self):
         # Skill repository
-        # dictionnary of capacity => AtomicSkillReference
+        # dictionnary of capacities
         self.__skillRepository = dict()
-        pass
 
     def getSkill(self, capacity):
-        if capacity is not None:
-            return self.__skillRepository.get(capacity.__class__)
-        return None
+        assert capacity is not None and issubclass(capacity, Capacity) and not issubclass(capacity, Skill)
+        skill = self.__skillRepository.get(capacity)
+        assert skill is not None
+        return skill
 
     def setSkill(self, skill, *capacities):
-        self.__setSkill(skill, True, capacities)
-
-    def __setSkill(self, skill, ifAbsent, *capacities):
         if capacities is None or len(capacities) == 0:
-            pass
-        else :
-            for cap in capacities:
-                self.__registerSkill(skill, ifAbsent, cap)
-
-    def __registerSkill(self, skill, ifAbsent, capacity):
-        if isinstance(skill, capacity):
-            self.__skillRepository[capacity.__class__] = skill
+            for cls in type(skill).__mro__:
+                if cls != Capacity and cls != skill.__class__ and issubclass(cls, Capacity) and not issubclass(cls,
+                                                                                                               Skill):
+                    self.__registerSkill(skill, cls)
         else:
-            raise Exception("the skill must implement the given capacity " + capacity.__class__)
+            for cap in capacities:
+                assert not issubclass(cap, Skill)
+                self.__registerSkill(skill, cap)
+
+    def __registerSkill(self, skill, capacity):
+        if issubclass(capacity, Capacity):
+            if isinstance(skill, capacity):
+                self.__skillRepository[capacity] = skill
+            else:
+                raise Exception("the skill must extend the given capacity " + str(capacity))
+        else:
+            raise Exception("the capacity provided must extend the given class " + str(Capacity))
+
+    def hasSkill(self, capacity):
+        assert capacity is not None
+        return capacity in self.__skillRepository.keys()
+
+    def clearSkill(self, capacity):
+        assert capacity is not None
+        self.__skillRepository.pop(capacity, None)

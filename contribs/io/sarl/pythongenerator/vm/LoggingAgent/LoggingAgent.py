@@ -23,7 +23,6 @@
 #### GENERATES PYTHON CODE WITH NECESSARY MODIFICATION
 
 from contribs.io.sarl.pythongenerator.api.agent.agent import Agent
-from contribs.io.sarl.pythongenerator.api.agent.abstractSkillContainer import AbstractSkillContainer
 from contribs.io.sarl.pythongenerator.vm.LoggingAgent.LoggingSkill import LoggingSkill
 from contribs.io.sarl.pythongenerator.vm.LoggingAgent.Logging import Logging
 
@@ -32,8 +31,12 @@ class LoggingAgent(Agent, object):
 
     def __on_Initialize__(self, occurrence):
         s = LoggingSkill()
-        self.setSkill(self, s, Logging)
-        self.getSkill(self, Logging).info(u"Hello World !")
+        self.setSkill(s)
+        self.getSkill(Logging).info(u"Hello World INFO!")
+        self.getSkill(Logging).debug(u"Hello World DEBUG!")
+        print(self.hasSkill(Logging))
+        self.clearSkill(Logging)
+        print(self.hasSkill(Logging))
 
     def __guard_io_sarl_core_Initialize__(self, occurrence):
         it = occurrence
@@ -41,5 +44,5 @@ class LoggingAgent(Agent, object):
         __event_handles.append(self.__on_Initialize__)
         return __event_handles
 
-    def __init__(self):
-        pass
+    def __init__(self, parentID, agentID):
+        super().__init__(parentID, agentID)

@@ -7,6 +7,6 @@ from contribs.io.sarl.pythongenerator.vm.LoggingAgent.LoggingAgent import Loggin
 # eventsList[0](helloWorld,1)
 
 ### HelloWorld with the loggingSkill
-loggingAgent = LoggingAgent
-myAgentEvents = loggingAgent.__guard_io_sarl_core_Initialize__(loggingAgent,1)
-myAgentEvents[0](loggingAgent,1)
+loggingAgent = LoggingAgent(1, 2)
+myAgentEvents = loggingAgent.__guard_io_sarl_core_Initialize__(1)
+myAgentEvents[0](1)
