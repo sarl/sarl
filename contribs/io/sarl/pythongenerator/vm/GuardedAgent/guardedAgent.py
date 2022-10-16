@@ -22,7 +22,7 @@
 
 #### GENERATES PYTHON CODE WITH NECESSARY MODIFICATION
 
-from contribs.io.sarl.pythongenerator.api.agent import Agent
+from contribs.io.sarl.pythongenerator.api.agent.agent import Agent
 
 
 class GuardedAgent(Agent, object):
@@ -41,5 +41,5 @@ class GuardedAgent(Agent, object):
             __event_handles.append(self.__on_Initialize___1)
         return __event_handles
 
-    def __init__(self):
-        pass
+    def __init__(self, parentID, agentID):
+        super().__init__(parentID, agentID)

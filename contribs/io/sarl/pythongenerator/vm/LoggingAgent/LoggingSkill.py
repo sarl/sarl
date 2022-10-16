@@ -13,11 +13,16 @@
 
 
 #### GENERATES PYTHON CODE WITH NECESSARY MODIFICATION
+from contribs.io.sarl.pythongenerator.vm.LoggingAgent.Logging import Logging
+from contribs.io.sarl.pythongenerator.api.agent.skill import Skill
 
-class LoggingSkill(object):
-	def info(self, text):
-		print(text)
-	def debug(self, text):
-		print(text)
-	def __init__(self):
-		pass
+
+class LoggingSkill(Skill, Logging, object):
+    def info(self, text):
+        print(text)
+
+    def debug(self, text):
+        print(text)
+
+    def __init__(self):
+        pass
