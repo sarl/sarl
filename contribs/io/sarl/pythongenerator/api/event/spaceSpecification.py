@@ -1,14 +1,15 @@
-from contribs.io.sarl.pythongenerator.api.event.spaceID import SpaceID
+from contribs.io.sarl.pythongenerator.api.event.space import Space
 import abc
 from typing import TypeVar, Generic
 
-
-T = TypeVar('T', bound=SpaceID)
+T = TypeVar('T', bound=Space)
 
 
 class SpaceSpecification(abc.ABC, Generic[T]):
 
     @abc.abstractmethod
-    def create(self, id: SpaceID, *params) -> T:
+    def create(self, id, *params) -> T:
         # Creates a Space that respects this specification
         pass
+
+

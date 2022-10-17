@@ -1,4 +1,3 @@
-from contribs.io.sarl.pythongenerator.api.event.spaceID import SpaceID
 import abc
 import uuid
 
@@ -16,7 +15,7 @@ class Space(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def getSpaceID(self) -> SpaceID:
+    def getSpaceID(self):
         # Replies the Identification of this Interaction Space
         pass
 
