@@ -25,11 +25,27 @@ public class SecondAgent extends Agent {
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     this.myVar = 10;
-    this.printstate();
+    this.printstate(this.getstate());
+    this.printstate(this.getstate2());
+    this.printstate2(this.getstate());
   }
   
-  protected Integer printstate() {
+  @Pure
+  protected int getstate() {
+    return this.myVar;
+  }
+  
+  @Pure
+  protected int getstate2() {
+    return this.myVar;
+  }
+  
+  protected Integer printstate(final int s) {
     return InputOutput.<Integer>println(Integer.valueOf(this.myVar));
+  }
+  
+  protected void printstate2(final int s) {
+    InputOutput.<Integer>println(Integer.valueOf(this.myVar));
   }
   
   @Extension

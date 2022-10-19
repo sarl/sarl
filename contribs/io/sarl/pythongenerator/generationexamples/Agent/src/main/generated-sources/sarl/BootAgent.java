@@ -23,9 +23,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public class BootAgent extends Agent {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    InputOutput.<String>println("The agent was started.");
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(SpecialAgent.class);
+    InputOutput.<String>println("The agent was started.");
+    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1.killMe();
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
