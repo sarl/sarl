@@ -5,7 +5,7 @@ import uuid
 class Address(object):
 
     def __init__(self, spaceId: SpaceID, participantId: uuid):
-        assert spaceId is not None and participantId is not None
+        assert (spaceId is not None) and (participantId is not None)
         self.__spaceId = spaceId
         self.__participantId = participantId
 
@@ -19,6 +19,5 @@ class Address(object):
         return "Address{" + str(self.__spaceId) + ", ParticipantId : " + str(self.__participantId) + "}"
 
     def equals(self, address):
-        if self.__spaceId.equals(address.getSpaceId()) and self.__participantId == address.getParticipantId():
-            return True
-        return False
+        return (address is not None) and (self.__spaceId.equals(address.getSpaceId())) and\
+               (self.__participantId == address.getParticipantId())

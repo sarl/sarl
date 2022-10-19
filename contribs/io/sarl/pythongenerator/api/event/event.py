@@ -4,8 +4,8 @@ import uuid
 
 class Event(object):
 
-    def __init__(self):
-        self.__source = None
+    def __init__(self, source: Address = None):
+        self.__source = source
 
     def getSource(self):
         return self.__source
@@ -14,14 +14,10 @@ class Event(object):
         self.__source = source
 
     def isFromAddress(self, address: Address):
-        if self.__source is not None and self.__source.equals(address):
-            return True
-        return False
+        return (self.__source is not None) and (self.__source.equals(address))
 
     def isFromEntity(self, entityId: uuid):
-        if self.__source.getParticipantId() == entityId:
-            return True
-        return False
+        return (entityId is not None) and (self.__source is not None) and (self.__source.getParticipantId() == entityId)
 
     def __str__(self) -> str:
         return "Event{" + str(self.__source) + "}"

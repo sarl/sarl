@@ -8,7 +8,7 @@ T = TypeVar('T', bound=Space)
 class SpaceSpecification(abc.ABC, Generic[T]):
 
     @abc.abstractmethod
-    def create(self, id, *params) -> T:
+    def create(self, identifier, *params) -> T:
         # Creates a Space that respects this specification
         pass
 

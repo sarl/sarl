@@ -11,7 +11,7 @@ class Space(abc.ABC):
 
     @abc.abstractmethod
     def getNumberOfWeakParticipants(self) -> int:
-        # Replies the number of strong participants to the space
+        # Replies the number of weak participants to the space
         pass
 
     @abc.abstractmethod
@@ -19,12 +19,11 @@ class Space(abc.ABC):
         # Replies the Identification of this Interaction Space
         pass
 
-    @abc.abstractmethod
-    def isPseudoEmpty(self) -> bool:
+    def isPseudoEmptyDefault(self) -> bool:
         # Replies if the space could be considered as empty
-        pass
+        return self.getNumberOfStrongParticipants() == 0
 
     @abc.abstractmethod
-    def isPseudoEmptyUUID(self, id: uuid) -> bool:
+    def isPseudoEmpty(self, identifier: uuid) -> bool:
         # Replies if the space is empty or the given identifier is associated to the only one participant to the space
         pass
