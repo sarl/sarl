@@ -16,9 +16,9 @@ import java.util.Set;
 @SuppressWarnings("all")
 public class pongingBehavior extends Behavior {
   public pongingBehavior(final Agent owner, final OpenEventSpace spc) {
-    super(owner);
-    pongSkill pongSk = new pongSkill(spc);
-    this.<pongSkill>setSkill(pongSk, pongCapacity.class);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from Agent to Agent"
+      + "\nType mismatch: cannot convert from Class<pongCapacity> to Class<? extends Capacity>[]");
   }
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {

@@ -1,6 +1,5 @@
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
-import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -42,20 +41,6 @@ public class BootAgent extends Agent {
       this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = $getSkill(Lifecycle.class);
     }
     return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Schedules.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_SCHEDULES;
-  
-  @SyntheticMember
-  @Pure
-  private Schedules $CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
-    }
-    return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
   }
   
   @SyntheticMember

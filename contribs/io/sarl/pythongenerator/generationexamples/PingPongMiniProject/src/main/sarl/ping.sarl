@@ -15,7 +15,7 @@ agent PingAgent {
 	on Initialize {
 		var spc : OpenEventSpace = defaultContext.getSpace(UUID.fromString(occurrence.parameters.get(0).toString))
 		spc.registerStrongParticipant(asEventListener())
-
+		
 		pingBehavior = new pingingBehavior(this, spc)
 		registerBehavior(pingBehavior)
 		

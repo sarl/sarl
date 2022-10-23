@@ -50,7 +50,4 @@ public class PongEvent extends Event {
     super.toString(builder);
     builder.add("index", this.index);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = 692059479L;
 }

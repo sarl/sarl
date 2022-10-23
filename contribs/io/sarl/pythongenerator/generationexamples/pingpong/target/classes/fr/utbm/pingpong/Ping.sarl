@@ -1,0 +1,8 @@
+package fr.utbm.pingpong
+
+event Ping {
+	var value : Integer
+	new (v : Integer) {
+		value = v
+	}
+}

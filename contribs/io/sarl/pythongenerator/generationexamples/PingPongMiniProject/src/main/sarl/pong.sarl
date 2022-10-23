@@ -15,14 +15,14 @@ agent PongAgent {
 	on Initialize {
 		var spc : OpenEventSpace = defaultContext.getSpace(UUID.fromString(occurrence.parameters.get(0).toString))
 		spc.registerStrongParticipant(asEventListener())
-
+		
 		pongBehavior = new pongingBehavior(this, spc)
 		registerBehavior(pongBehavior)
 		
 		pingListenBehavior = new pingListen(this, spc)
 		registerBehavior(pingListenBehavior)
 	}
-
+	
 	on Destroy {
 		unregisterBehavior(pongBehavior)
 		unregisterBehavior(pingListenBehavior)

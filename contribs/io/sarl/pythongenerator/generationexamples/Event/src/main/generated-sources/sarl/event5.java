@@ -58,7 +58,4 @@ public final class event5 extends Event {
     super.toString(builder);
     builder.add("v", this.v);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = 588368580L;
 }

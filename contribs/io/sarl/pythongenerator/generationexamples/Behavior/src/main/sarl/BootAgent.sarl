@@ -18,6 +18,13 @@ behavior beh1 {
 	// Defining an action with a variadic parameter and no return type
 	def myAction2(param : int*) {
 		info("params are " + param)
+		info("size of params is " + param.size)
+		info("first param is " + param.get(0))
+		var s: int = 0
+		for (var i: int = 0; i < param.size; i++) {
+			s += param.get(i)
+		}
+		info("sum of params is " + s)
 	}
 }
 
@@ -72,8 +79,23 @@ behavior beh4 {
 agent BootAgent {
 	uses Behaviors
 	
+	var beh: beh4
+	var behavior1: beh1
+	
 	on Initialize {
-		var beh = new beh4(this) // <- the parameter is the agent
+		beh = new beh4(this) // <- the parameter is the agent
 		registerBehavior(beh) // <- triggers the on Initialize event of the behaviour
+		
+		behavior1 = new beh1(this)
+		registerBehavior(behavior1)
+
+		behavior1.myAction1()
+		behavior1.myAction2(1, 7, 6, 7)
+	}
+	
+	on Destroy {
+		// never forget to unregister behavior uppon destroying an agent
+		unregisterBehavior(beh)
+		unregisterBehavior(behavior1)
 	}
 }

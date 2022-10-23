@@ -41,11 +41,11 @@ public class SecondAgent extends Agent {
   }
   
   protected Integer printstate(final int s) {
-    return InputOutput.<Integer>println(Integer.valueOf(this.myVar));
+    return InputOutput.<Integer>println(Integer.valueOf(s));
   }
   
   protected void printstate2(final int s) {
-    InputOutput.<Integer>println(Integer.valueOf(this.myVar));
+    InputOutput.<Integer>println(Integer.valueOf(s));
   }
   
   @Extension

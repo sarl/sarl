@@ -9,11 +9,11 @@ behavior pingListen {
 	new (owner : Agent, spc : OpenEventSpace) {
 		super(owner)
 	}
-
+	
 	on Initialize {
 		
 	}
-
+	
 	on Destroy {
 		
 	}

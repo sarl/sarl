@@ -42,11 +42,11 @@ agent SecondAgent {
 	}
 	
 	def printstate(s: int) {
-		println(myVar)
+		println(s)
 	}
 	
 	def printstate2(s : int) : void {
-		println(myVar)
+		println(s)
 	}
 }
 

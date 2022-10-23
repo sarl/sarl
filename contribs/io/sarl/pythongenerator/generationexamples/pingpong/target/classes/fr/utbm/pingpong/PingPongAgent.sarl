@@ -1,0 +1,14 @@
+package fr.utbm.pingpong
+
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+
+agent PingPongAgent {
+	uses Lifecycle
+	on Initialize {
+		spawn(PongAgent)
+		spawn(PingAgent)
+		killMe
+	}
+	
+}

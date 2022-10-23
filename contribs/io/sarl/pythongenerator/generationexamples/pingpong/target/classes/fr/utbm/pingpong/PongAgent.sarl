@@ -1,0 +1,34 @@
+package fr.utbm.pingpong
+
+import io.sarl.core.Schedules
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+
+agent PongAgent {
+	uses Schedules
+	uses DefaultContextInteractions
+
+	var count : Integer
+
+	on Initialize {
+		println("Waiting for Ping")
+		count = 0
+	}
+
+	def sendPong {
+		if (defaultSpace.isPseudoEmpty(this.ID)) {
+			in(2000)[sendPong]
+		} else {
+			println("Send Ping")
+			emit(new Pong(count))
+			count++
+		}
+	}
+
+	on Ping {
+		println("Ping catch")
+		in(1000) [
+			sendPong
+		]
+	}
+}

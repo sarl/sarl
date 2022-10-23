@@ -63,7 +63,4 @@ public class event3 extends Event {
     builder.add("initvalue", this.initvalue);
     builder.add("subid", this.subid);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = -932473439L;
 }

@@ -6,6 +6,8 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
+import java.util.List;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -25,6 +27,19 @@ public class beh1 extends Behavior {
   public void myAction2(final int... param) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("params are " + param));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    int _size = ((List<Integer>)Conversions.doWrapArray(param)).size();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("size of params is " + Integer.valueOf(_size)));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    int _get = param[0];
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("first param is " + Integer.valueOf(_get)));
+    int s = 0;
+    for (int i = 0; (i < ((List<Integer>)Conversions.doWrapArray(param)).size()); i++) {
+      int _get_1 = param[i];
+      s = (s + _get_1);
+    }
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info(("sum of params is " + Integer.valueOf(s)));
   }
   
   @Extension

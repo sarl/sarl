@@ -19,26 +19,17 @@ public class event4 extends event3 {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    event4 other = (event4) obj;
-    if (other.subsubid != this.subsubid)
-      return false;
-    return super.equals(obj);
+    throw new Error("Unresolved compilation problems:"
+      + "\nSupertype must be of type \'io.sarl.lang.core.Event\'."
+      + "\nSupertype must be of type \'io.sarl.lang.core.Event\'.");
   }
   
   @Override
   @Pure
   @SyntheticMember
   public int hashCode() {
-    int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + Integer.hashCode(this.subsubid);
-    return result;
+    throw new Error("Unresolved compilation problems:"
+      + "\nSupertype must be of type \'io.sarl.lang.core.Event\'.");
   }
   
   /**
@@ -47,10 +38,7 @@ public class event4 extends event3 {
   @SyntheticMember
   @Pure
   protected void toString(final ToStringBuilder builder) {
-    super.toString(builder);
-    builder.add("subsubid", this.subsubid);
+    throw new Error("Unresolved compilation problems:"
+      + "\nSupertype must be of type \'io.sarl.lang.core.Event\'.");
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = -3352410635L;
 }

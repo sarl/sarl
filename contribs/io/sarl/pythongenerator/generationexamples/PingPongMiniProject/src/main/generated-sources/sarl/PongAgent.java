@@ -2,7 +2,6 @@ import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
-import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -28,25 +27,13 @@ public class PongAgent extends Agent {
   private pingListen pingListenBehavior;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    OpenEventSpace spc = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext().<OpenEventSpace>getSpace(UUID.fromString(occurrence.parameters[0].toString()));
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    spc.registerStrongParticipant(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    pongingBehavior _pongingBehavior = new pongingBehavior(this, spc);
-    this.pongBehavior = _pongingBehavior;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(this.pongBehavior);
-    pingListen _pingListen = new pingListen(this, spc);
-    this.pingListenBehavior = _pingListen;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(this.pingListenBehavior);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from pongingBehavior to Behavior");
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.unregisterBehavior(this.pongBehavior);
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.unregisterBehavior(this.pingListenBehavior);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from pongingBehavior to Behavior");
   }
   
   @Extension
