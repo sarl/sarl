@@ -102,7 +102,7 @@
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Year of the release of SARL (used in Eclipse about, license management 
 			and documentation) -->
-		<year>2021</year>
+		<year>2023</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
