@@ -1,0 +1,2 @@
+io.sarl.docs.sarldoc.modules.internal.SarldocDynamicClassLoaderModuleProvider
+io.sarl.docs.sarldoc.modules.configs.SarldocConfigModuleProvider

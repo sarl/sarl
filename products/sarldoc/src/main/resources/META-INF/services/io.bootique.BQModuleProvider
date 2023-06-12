@@ -1,4 +1,0 @@
-io.sarl.sarldoc.modules.internal.SarldocDynamicClassLoaderModuleProvider
-io.sarl.sarldoc.modules.configs.SarldocConfigModuleProvider
-io.sarl.sarldoc.modules.commands.SarldocFakeCommandModuleProvider
-io.sarl.sarldoc.modules.commands.SarldocCommandModuleProvider

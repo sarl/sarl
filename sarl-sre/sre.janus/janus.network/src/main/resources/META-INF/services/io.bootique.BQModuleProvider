@@ -1,0 +1,2 @@
+io.sarl.sre.janus.network.boot.configs.SreNetworkConfigModuleProvider
+io.sarl.sre.janus.network.boot.internal.NetworkModuleProvider

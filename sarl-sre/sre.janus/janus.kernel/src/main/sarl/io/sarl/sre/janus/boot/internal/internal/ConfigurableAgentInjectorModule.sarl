@@ -1,0 +1,89 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.boot.internal.internal
+
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfig
+import io.bootique.annotation.BQConfigProperty
+import io.bootique.di.Binder
+import io.bootique.di.BQModule
+import io.bootique.di.Injector
+import io.bootique.di.Provides
+import io.sarl.sre.janus.boot.configs.SreConfig
+import io.sarl.sre.janus.internal.AgentLevelConfigurableAgentInjector
+import io.sarl.sre.janus.internal.AgentTraitLevelConfigurableAgentInjector
+import io.sarl.sre.janus.internal.ConfigurableAgentInjector
+import io.sarl.sre.janus.internal.NopConfigurableAgentInjector
+import javax.inject.Provider
+import javax.inject.Singleton
+
+/** 
+ * Module for configuring the injector of agents and agent components.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ConfigurableAgentInjectorModule implements BQModule {
+
+	override configure(binder : Binder) {
+		//
+	}
+
+	@Provides
+	@Singleton
+	def providesConfigurableAgentInjector(sreConfig : Provider<SreConfig>, injector : Injector) : ConfigurableAgentInjector {
+		val config = sreConfig.get
+		val lf = config.services.lifecycle
+		if (lf.enableInjectableSupport) {
+			if (lf.createAgentsWithInjector) {
+				return new AgentTraitLevelConfigurableAgentInjector(injector)
+			}
+			return new AgentLevelConfigurableAgentInjector(injector)
+		}
+		return new NopConfigurableAgentInjector
+	}
+
+}
+
+/** Provider of the module for configuring the agent trait initializer.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ConfigurableAgentInjectorModuleProvider implements BQModuleProvider {
+
+	override module : BQModule {
+		return new ConfigurableAgentInjectorModule
+	}
+
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::ConfigurableAgentInjectorModuleProvider_0);
+	}
+
+}

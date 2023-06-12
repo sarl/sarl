@@ -1,0 +1,17 @@
+SARL highlighting for TextMate
+==============================
+
+A TextMate package to apply syntax highlighting for the SARL language.
+
+1. INSTALLATION
+
+1.1. Manual
+
+Copy the sarl.property-listfile into one of the following folders:
+* Sublime Text 3: $HOME/.config/sublime-text-3/Packages/User/SARL/
+
+1.2 With Sublime TextPackage Control
+
+If you have the Package Control package installed, you can install the highlighting format
+from inside Sublime Text itself. Open the Command Palette and select "Package Control: 
+Install Package", then search for "SARL".

@@ -1,0 +1,4 @@
+io.sarl.apputils.bootiqueapp.config.LogConfigModuleProvider
+io.sarl.apputils.bootiqueapp.mdhelp.GenerateMarkdownHelpCommandModuleProvider
+io.sarl.apputils.bootiqueapp.mdconfig.GenerateMarkdownConfigCommandModuleProvider
+io.sarl.apputils.bootiqueapp.version.VersionCommandModuleProvider

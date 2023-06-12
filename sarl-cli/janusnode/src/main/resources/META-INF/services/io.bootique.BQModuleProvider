@@ -1,0 +1,2 @@
+io.sarl.sre.janus.network.boot.internal.cli.JanusnodeApplicationModuleProvider
+io.sarl.sre.janus.network.boot.internal.cli.VersionCommandModuleProvider

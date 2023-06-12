@@ -64,12 +64,16 @@ Maven is the standard tool for compiling SARL.
 
 We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment.
 The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
-This step is mandatory for compiling the embedded SARL run-time environment (Janus). Indeed, it needs the current SARL tools
-to be installed for being compiled.
+This step is divided into two Maven compilation:
 
-The command line is:
+First, in the module `sarl-bom`:
 ```bash
-mvn clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
+mvn clean install
+```
+
+First, in the root module:
+```bash
+mvn clean install
 ```
 
 If you obtained a compilation error with the message: `Cannot run program "[...]/launch4j-maven-plugin-[...]-workdir-linux/bin/windres": error=2, No such file or directory`, it means that the launch4j Maven plugin cannot find a library into your operating system.
@@ -81,7 +85,7 @@ According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issu
 For setting up the development environment, you should follow the steps:
 
 * Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2021-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+** Version: `2023-03` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Install the Checkstyle CS-Eclipse plugin.
 ** Version: `8.18`.

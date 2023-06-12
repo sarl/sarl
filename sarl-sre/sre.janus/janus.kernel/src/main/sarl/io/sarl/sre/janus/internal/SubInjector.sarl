@@ -1,0 +1,122 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.internal
+
+import io.bootique.di.BQModule
+import io.bootique.di.DIRuntimeException
+import io.bootique.di.Injector
+import io.bootique.di.Key
+import io.bootique.di.spi.DefaultInjector
+import io.bootique.di.spi.InjectorPredicates
+import java.util.Collections
+import java.util.List
+import javax.inject.Provider
+
+/** 
+ * An injector that is overriding bindings in a local run-time context.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+class SubInjector extends DefaultInjector {
+
+	val injector : Injector
+
+	/** Contructs a subinjector.
+	 *
+	 * @param injector the parent injector.
+	 * @param modules the modules that are sepcific to this subinjector.
+	 */
+	new (injector : Injector, modules : BQModule*) {
+		super(Collections::emptySet, new InjectorPredicates(), modules)
+		this.injector = injector
+	}
+
+	override getInstance(type : Class<T>) : T with T throws DIRuntimeException {
+		try {
+			return super.getInstance(type)
+		} catch (ex : Throwable) {
+			return this.injector.getInstance(type)
+		}
+	}
+
+	override getInstance(key : Key<T>) : T with T throws DIRuntimeException {
+		try {
+			return super.getInstance(key)
+		} catch (ex : Throwable) {
+			return this.injector.getInstance(key)
+		}
+	}
+
+	override getProvider(type : Class<T>) : Provider<T> with T throws DIRuntimeException {
+		try {
+			return super.getProvider(type)
+		} catch (ex : Throwable) {
+			return this.injector.getProvider(type)
+		}
+	}
+
+	override getProvider(key : Key<T>) : Provider<T> with T throws DIRuntimeException {
+		try {
+			return super.getProvider(key)
+		} catch (ex : Throwable) {
+			return this.injector.getProvider(key)
+		}
+	}
+
+	override hasProvider(type : Class<?>) : boolean throws DIRuntimeException {
+		try {
+			if (super.hasProvider(type)) {
+				return true
+			}
+		} catch (ex : Throwable) {
+			//
+		}
+		return this.injector.hasProvider(type)
+	}
+
+	override hasProvider(key : Key<?>) : boolean throws DIRuntimeException {
+		try {
+			if (super.hasProvider(key)) {
+				return true
+			}
+		} catch (ex : Throwable) {
+			//
+		}
+		return this.injector.hasProvider(key)
+	}
+
+	override getKeysByType(type : Class<T>) : List<Key<T>> with T {
+		val list : List<Key<T>> = newArrayList
+		list.addAll(super.getKeysByType(type))
+		list.addAll(this.injector.getKeysByType(type))
+		return list
+	}
+
+	override shutdown : void {
+		this.injector.shutdown
+	}
+
+}
