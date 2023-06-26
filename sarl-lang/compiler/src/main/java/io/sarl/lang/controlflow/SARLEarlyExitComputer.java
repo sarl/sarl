@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 
-import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.core.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;

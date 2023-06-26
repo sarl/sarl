@@ -21,9 +21,9 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.biginteger;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toBigDecimal;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicDouble;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toBigDecimal;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

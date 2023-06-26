@@ -32,7 +32,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -71,9 +71,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_01 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.net.URL;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -132,9 +132,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_02 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")", 
@@ -210,9 +210,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_03 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")", 
@@ -279,9 +279,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_04 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.net.URL;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -344,9 +344,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_05 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.net.URL;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -417,9 +417,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_06 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")", 
@@ -492,9 +492,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_07 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", 
@@ -570,9 +570,9 @@ public class Bug996Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_08 = multilineString(
 			"package io.sarl.lang.tests.bug996;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", 

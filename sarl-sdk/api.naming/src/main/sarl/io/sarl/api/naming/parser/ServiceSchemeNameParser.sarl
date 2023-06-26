@@ -21,8 +21,8 @@
 package io.sarl.api.naming.parser
 
 import com.google.common.util.concurrent.Service
-import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.ServiceName
+import io.sarl.lang.core.SREClassLoader
 import java.net.URI
 import java.util.StringTokenizer
 

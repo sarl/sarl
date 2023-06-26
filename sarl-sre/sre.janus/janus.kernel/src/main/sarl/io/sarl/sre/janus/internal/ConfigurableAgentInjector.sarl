@@ -22,9 +22,9 @@
 package io.sarl.sre.janus.internal
 
 import io.bootique.di.Injector
-import io.sarl.lang.annotation.Injectable
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
+import io.sarl.lang.core.annotation.Injectable
 import javax.inject.Inject
 
 /** An injector of agent components that may be enable or disable according to the SRE configuration.

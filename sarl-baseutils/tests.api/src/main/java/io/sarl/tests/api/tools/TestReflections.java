@@ -36,7 +36,6 @@ import io.sarl.tests.api.TestPluginActivator;
 
 /** Utilities that are related to Java reflection.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -73,8 +72,7 @@ public class TestReflections {
 	 * 
 	 * @param receiverType the type of the container of the field, not {@code null}
 	 * @param fieldName the field's name, not {@code null}
-	 * @return the value of the field
-	 * 
+	 * @param value the value of the field
 	 * @throws NoSuchFieldException see {@link Class#getField(String)}
 	 * @throws SecurityException see {@link Class#getField(String)}
 	 * @throws IllegalAccessException see {@link Field#get(Object)}
@@ -91,7 +89,11 @@ public class TestReflections {
 	 * 
 	 * @param instance the container of the field, not {@code null}
 	 * @param fieldName the field's name, not {@code null}
-	 * @return the value of the field
+	 * @param value the value of the field
+	 * @throws NoSuchFieldException see {@link Class#getField(String)}
+	 * @throws SecurityException see {@link Class#getField(String)}
+	 * @throws IllegalAccessException see {@link Field#get(Object)}
+	 * @throws IllegalArgumentException see {@link Field#get(Object)}
 	 */
 	public static <T> void set(Object instance, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> type = instance.getClass();
@@ -115,6 +117,10 @@ public class TestReflections {
 	 * @param instance the container of the field, not {@code null}
 	 * @param fieldName the field's name, not {@code null}
 	 * @return the value of the field
+	 * @throws NoSuchFieldException see {@link Class#getField(String)}
+	 * @throws SecurityException see {@link Class#getField(String)}
+	 * @throws IllegalAccessException see {@link Field#get(Object)}
+	 * @throws IllegalArgumentException see {@link Field#get(Object)}
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T get(Object instance, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
@@ -174,6 +180,12 @@ public class TestReflections {
 		return cons.newInstance(args);
 	}
 
+	/** Replies if the givan constructor is compatible with the arguments.
+	 *
+	 * @param candidate the constructor to test.
+	 * @param args the values of the arguments.
+	 * @return {@code true} if the arguments could be passed to the constructor.
+	 */
 	protected static boolean isCompatible(Constructor<?> candidate, Object... args) {
 		if (candidate.getParameterTypes().length != args.length)
 			return false;
@@ -189,6 +201,12 @@ public class TestReflections {
 		return true;
 	}
 
+	/** Replies the Object version of the native types if application.
+	 * Otherwise, reply the type itself.
+	 *
+	 * @param primitive the input type.
+	 * @return the output type.
+	 */
 	protected static Class<?> wrapperTypeFor(Class<?> primitive) {
 		assert primitive != null;
 		if (primitive == Boolean.TYPE) return Boolean.class;
@@ -203,6 +221,13 @@ public class TestReflections {
 		throw new IllegalArgumentException(primitive+ " is not a primitive"); //$NON-NLS-1$
 	}
 
+	/** Replies the declared field in the given class or one of its super classes.
+	 *
+	 * @param clazz the class.
+	 * @param name the name of the field.
+	 * @return the field.
+	 * @throws NoSuchFieldException if the field cannot be found.
+	 */
 	protected static Field getDeclaredField(Class<?> clazz, String name) throws NoSuchFieldException {
 		Class<?> type = clazz;
 		NoSuchFieldException initialException = null;
@@ -276,6 +301,11 @@ public class TestReflections {
 	 * @param receiver the method call receiver, not {@code null}
 	 * @param methodName the method name, not {@code null}
 	 * @return the result of the method invocation. {@code null} if the method was of type void.
+	 * @throws SecurityException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws InvocationTargetException 
+	 * @throws NoSuchMethodException 
 	 */
 	public static Object invoke(Object receiver, String methodName) throws SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		assert receiver != null;
@@ -288,7 +318,7 @@ public class TestReflections {
 				if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
 						&& candidate.getParameterCount() == 0) {
 					if (compatible != null) 
-						throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
+						throw new IllegalStateException("Ambiguous methods to invoke. Both " + compatible + " and " + candidate + " would be compatible choices."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					compatible = candidate;
 				}
 			}
@@ -308,7 +338,13 @@ public class TestReflections {
 	 * 
 	 * @param receiver the method call receiver, not {@code null}
 	 * @param methodName the method name, not {@code null}
+	 * @param args the arguments.
 	 * @return the result of the method invocation. {@code null} if the method was of type void.
+	 * @throws Exception 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws InvocationTargetException 
+	 * @throws NoSuchMethodException 
 	 */
 	public static Object invoke(Object receiver, String methodName, Object... args) throws Exception, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		assert receiver != null;
@@ -322,7 +358,13 @@ public class TestReflections {
 	 * @param receiver the method call receiver, may be {@code null}
 	 * @param receiverType the type of the receiver, not {@code null}
 	 * @param methodName the method name, not {@code null}
+	 * @param args the arguments.
 	 * @return the result of the method invocation. {@code null} if the method was of type void.
+	 * @throws Exception 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws InvocationTargetException 
+	 * @throws NoSuchMethodException 
 	 * @since 0.11
 	 */
 	public static Object invoke(Object receiver, Class<?> receiverType, String methodName, Object... args) throws Exception, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -344,7 +386,7 @@ public class TestReflections {
 				if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
 						&& isValidArgs(candidate.isVarArgs(), arguments, candidate.getParameterTypes())) {
 					if (compatible != null) 
-						throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
+						throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					compatible = candidate;
 				}
 			}
@@ -363,9 +405,9 @@ public class TestReflections {
 					Array.set(varArgs, i, arguments[i + compatible.getParameterCount() - 1]);
 				}
 				newArgs[compatible.getParameterCount() - 1] = varArgs;
-				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) newArgs);
+				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), newArgs);
 			}
-			return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) arguments);
+			return compatible.invoke(compatible.getDeclaringClass().cast(receiver), arguments);
 		}
 		// not found provoke method not found exception
 		Method method = receiverType.getMethod(methodName);
@@ -383,6 +425,7 @@ public class TestReflections {
 	 * @param parameterTypes the types of the parameters.
 	 * @param arguments the arguments' values.
 	 * @return the value replied by the invoked function.
+	 * @throws Exception 
 	 * @since 0.11
 	 */
 	public static <R> R invokeFunc(Class<?> receiverType, Object receiver, Class<R> returnType,
@@ -423,12 +466,14 @@ public class TestReflections {
 	/**
 	 * Invokes the first accessible method defined on the receiver'c class with the given name and
 	 * without parameter.
-	 * 
+	 *
+	 * @param <R> the type of the return type.
 	 * @param receiverType the type of the receiver.
 	 * @param receiver the instance on which the method should be called.
 	 * @param returnType the type of the return value.
 	 * @param methodName the name of the method to invoke.
 	 * @return the value replied by the invoked function.
+	 * @throws Exception 
 	 * @since 0.11
 	 */
 	public static <R> R invokeFunc(Class<?> receiverType, Object receiver, Class<R> returnType,
@@ -475,6 +520,7 @@ public class TestReflections {
 	 * @param methodName the name of the method to invoke.
 	 * @param parameterTypes the types of the parameters.
 	 * @param arguments the arguments' values.
+	 * @throws Exception 
 	 * @since 0.11
 	 */
 	public static void invokeProc(Class<?> receiverType, Object receiver,
@@ -516,6 +562,7 @@ public class TestReflections {
 	 * @param receiverType the type of the receiver.
 	 * @param receiver the instance on which the method should be called.
 	 * @param methodName the name of the method to invoke.
+	 * @throws Exception 
 	 * @since 0.11
 	 */
 	public static void invokeProc(Class<?> receiverType, Object receiver,

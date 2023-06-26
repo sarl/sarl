@@ -34,7 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;
+import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;
 
 /**
  * @author $Author: sgalland$

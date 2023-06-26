@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -80,15 +80,15 @@ public class Bug294Test {
 		@Test
 		public void testCompiler() throws Exception {
 			final String expectedPhysicEnvironment = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -260,13 +260,13 @@ public class Bug294Test {
 					"}",
 					"");
 			final String expectedStandardPhysicEnvironment = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",

@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.skills.bic
 
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event

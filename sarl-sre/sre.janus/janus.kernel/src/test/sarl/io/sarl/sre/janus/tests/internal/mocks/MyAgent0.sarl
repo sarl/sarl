@@ -20,8 +20,8 @@
  */
 package io.sarl.sre.janus.tests.internal.mocks
 
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
 import io.sarl.lang.core.Skill
 import java.util.UUID
 

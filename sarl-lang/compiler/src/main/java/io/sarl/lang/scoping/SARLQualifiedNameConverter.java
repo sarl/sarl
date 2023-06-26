@@ -25,7 +25,7 @@ import com.google.common.base.Strings;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.XbaseQualifiedNameConverter;
 
-import io.sarl.lang.util.SarlUtils;
+import io.sarl.lang.core.util.SarlUtils;
 
 /** This class is fixing the
  * <a href="https://github.com/sarl/sarl/issues/356">issue #356</a>.

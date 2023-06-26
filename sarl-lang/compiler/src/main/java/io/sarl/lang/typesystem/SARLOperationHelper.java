@@ -131,7 +131,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	/** Constructor.
 	 */
 	public SARLOperationHelper() {
-		this.hasSideEffectsDispatcher = new PolymorphicDispatcher<Boolean>(
+		this.hasSideEffectsDispatcher = new PolymorphicDispatcher<>(
 				"_hasSideEffects", 2, 2, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override
@@ -154,7 +154,6 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @return {@code true} if the operation is not pure according to the prototype.
 	 * @since 0.10
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isPureStateForbidden(XtendFunction operation) {
 		if (operation == null
 				|| operation.isNative()) {
@@ -995,7 +994,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		return hasEffectReceiver || !isPureOperation || hasEffectArgument;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({ "checkstyle:npathcomplexity", "static-method" })
 	private boolean internalHasExternalFeatureSideEffects(XAbstractFeatureCall expression, ISideEffectContext context, JvmIdentifiableElement feature) {
 		return false;
 	}

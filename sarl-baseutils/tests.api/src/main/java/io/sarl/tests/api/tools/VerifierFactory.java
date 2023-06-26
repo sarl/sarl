@@ -41,6 +41,7 @@ public final class VerifierFactory {
 	 * @param basedir the base directory of the project.
 	 * @param outputOnConsole indicates if the standard output of the process must be on the console, or not.
 	 * @param process the maven process.
+	 * @return the verifier tool.
 	 */
 	public static Verifier build(File basedir, boolean outputOnConsole, Process process) {
 		return new AbstractForkMavenMojoTest.ProcessVerifier(basedir, outputOnConsole, process);
@@ -51,6 +52,7 @@ public final class VerifierFactory {
 	 * @param basedir the base directory of the project.
 	 * @param outputOnConsole indicates if the standard output of the process must be on the console, or not.
 	 * @param verifier the Maven verifier.
+	 * @return the verifier tool.
 	 */
 	public static Verifier build(File basedir, boolean outputOnConsole, org.apache.maven.it.Verifier verifier) {
 		return new AbstractEmbeddedMavenMojoTest.EmbeddedVerifier(basedir, outputOnConsole, verifier);

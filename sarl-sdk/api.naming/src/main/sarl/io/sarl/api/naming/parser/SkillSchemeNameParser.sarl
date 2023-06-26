@@ -20,9 +20,9 @@
  */
 package io.sarl.api.naming.parser
 
-import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.SkillName
 import io.sarl.lang.core.Capacity
+import io.sarl.lang.core.SREClassLoader
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID

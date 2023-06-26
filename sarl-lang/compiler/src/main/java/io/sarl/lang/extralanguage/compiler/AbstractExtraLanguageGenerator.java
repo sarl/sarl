@@ -129,7 +129,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	/** Construct the generator.
 	 */
 	public AbstractExtraLanguageGenerator() {
-		this.beforeDispatcher = new PolymorphicDispatcher<Void>(
+		this.beforeDispatcher = new PolymorphicDispatcher<>(
 				"_before", 2, 2, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override
@@ -143,7 +143,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		this.generateDispatcher2 = new PolymorphicDispatcher<>(
 				"_generate", 3, 3, //$NON-NLS-1$
 				Collections.singletonList(this));
-		this.afterDispatcher = new PolymorphicDispatcher<Void>(
+		this.afterDispatcher = new PolymorphicDispatcher<>(
 				"_after", 2, 2, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override

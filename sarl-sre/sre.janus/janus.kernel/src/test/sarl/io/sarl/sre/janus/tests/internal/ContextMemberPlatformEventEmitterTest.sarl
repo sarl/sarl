@@ -21,9 +21,9 @@
 
 package io.sarl.sre.janus.tests.internal
 
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.MemberJoined
+import io.sarl.api.core.MemberLeft
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace

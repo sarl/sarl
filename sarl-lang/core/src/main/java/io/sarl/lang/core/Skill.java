@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.PrivateAPI;
 
 /**
  * A possible implementation of a capacity fulfilling all the constraints of
@@ -70,6 +70,7 @@ public abstract class Skill extends AgentTrait implements IBehaviorGuardEvaluato
 	 *
 	 * @param agent the owner of this trait.
 	 */
+	@Override
 	void setOwner(Agent agent) {
 		super.setOwner(agent);
 		this.referencesFromCapacityMap.set(0);

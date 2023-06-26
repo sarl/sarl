@@ -21,10 +21,10 @@
 package io.sarl.sre.janus.services.context
 
 import com.google.common.util.concurrent.Service
-import io.sarl.core.ContextJoined
-import io.sarl.core.ContextLeft
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
+import io.sarl.api.core.ContextJoined
+import io.sarl.api.core.ContextLeft
+import io.sarl.api.core.MemberJoined
+import io.sarl.api.core.MemberLeft
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.SpaceID

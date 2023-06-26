@@ -38,9 +38,9 @@ import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 
-import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.PrivateAPI;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
-import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Validator of the feature calls.

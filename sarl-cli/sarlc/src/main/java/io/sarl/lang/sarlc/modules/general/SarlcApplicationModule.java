@@ -35,6 +35,7 @@ import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDesc
 
 import io.sarl.apputils.bootiqueapp.utils.SystemProperties;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.core.util.CliUtilities;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
@@ -42,7 +43,6 @@ import io.sarl.lang.sarlc.tools.DefaultPathDetector;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
-import io.sarl.lang.util.CliUtilities;
 
 /** Module for configuring the sarlc application information.
  *

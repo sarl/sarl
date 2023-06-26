@@ -21,7 +21,7 @@
 
 package foo;
 
-import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.PrivateAPI;
 
 /**
  * @author $Author: sgalland$

@@ -21,11 +21,11 @@
 
 package io.sarl.sre.janus.itests.runtime.internal.mocks
 
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.MemberJoined
-import io.sarl.core.Schedules
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.MemberJoined
+import io.sarl.api.core.Schedules
 import io.sarl.lang.core.AgentContext
 import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity

@@ -36,7 +36,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Set of utility classes that provide additional assertion functions.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -113,11 +112,11 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static boolean isEclipseRuntimeEnvironment() {
-		final String cmd = System.getProperty("sun.java.command", "");
+		final String cmd = System.getProperty("sun.java.command", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		// Assuming that the Maven launcher is providing an absolute path to the launcher.
 		return cmd != null
-				&& (cmd.startsWith("org.eclipse.equinox.launcher.Main")
-						|| cmd.startsWith("org.eclipse.jdt.internal.junit."));
+				&& (cmd.startsWith("org.eclipse.equinox.launcher.Main") //$NON-NLS-1$
+						|| cmd.startsWith("org.eclipse.jdt.internal.junit.")); //$NON-NLS-1$
 	}
 
 	/** Change the log level at the global level.
@@ -156,9 +155,9 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String getLineSeparator() {
-		final String nl = System.getProperty("line.separator");
+		final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
 		if (Strings.isNullOrEmpty(nl)) {
-			throw new Error("NO LINE SEPARATOR DEFINED");
+			throw new Error("NO LINE SEPARATOR DEFINED"); //$NON-NLS-1$
 			//return "\n";
 		}
 		return nl;
@@ -282,11 +281,12 @@ public final class TestUtils {
 	/** Replies the simple name of the given type name
 	 * 
 	 * @param typeName the fully qualified name of a type.
+	 * @return the simple name.
 	 */
 	@Pure
 	public static String simpleTypeName(String typeName) {
-		final int index1 = typeName.lastIndexOf("$");
-		final int index2 = typeName.lastIndexOf(".");
+		final int index1 = typeName.lastIndexOf("$"); //$NON-NLS-1$
+		final int index2 = typeName.lastIndexOf("."); //$NON-NLS-1$
 		final int index = Math.max(index1, index2);
 		if (index >= 0) {
 			return typeName.substring(index + 1);

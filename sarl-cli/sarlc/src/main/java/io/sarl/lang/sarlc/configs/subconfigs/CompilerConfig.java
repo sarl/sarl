@@ -26,9 +26,9 @@ import java.nio.charset.Charset;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 
-import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /**

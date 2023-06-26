@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to500.janus84.mocks
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
 
 /**
  * @author $Author: sgalland$

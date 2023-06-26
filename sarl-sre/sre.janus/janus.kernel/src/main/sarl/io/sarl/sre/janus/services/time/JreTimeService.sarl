@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.services.time
 
-import io.sarl.util.SmartListenerCollection
+import io.sarl.api.util.SmartListenerCollection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton

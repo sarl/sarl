@@ -930,7 +930,7 @@ public class SarlBatchCompiler {
 	public boolean isModularProject() {
 		if (isModuleSupported()) {
 			for (final File folder : getSourcePaths()) {
-				final File infoFile = new File(folder, "module-info.java");
+				final File infoFile = new File(folder, "module-info.java"); //$NON-NLS-1$
 				if (infoFile.isFile()) {
 					return true;
 				}
@@ -1444,9 +1444,9 @@ public class SarlBatchCompiler {
 		final org.apache.log4j.Logger internalLogger = org.apache.log4j.Logger.getLogger(
 				MessageFormat.format(Messages.SarlBatchCompiler_40, logger.getName()), factory);
 		final LoggerRepositoryWrapper lr = new LoggerRepositoryWrapper(LogManager.getLoggerRepository());
-		lr.registerWrapper("org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageWritable", internalLogger);
-		lr.registerWrapper("org.eclipse.xtext.xbase.resource.BatchLinkableResource", internalLogger);
-		lr.registerWrapper("org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider", internalLogger);
+		lr.registerWrapper("org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageWritable", internalLogger); //$NON-NLS-1$
+		lr.registerWrapper("org.eclipse.xtext.xbase.resource.BatchLinkableResource", internalLogger); //$NON-NLS-1$
+		lr.registerWrapper("org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider", internalLogger); //$NON-NLS-1$
 		LogManager.setRepositorySelector(() -> lr, SarlBatchCompiler.class);
 	}
 
@@ -2290,7 +2290,7 @@ public class SarlBatchCompiler {
 	 * @param skipIndexLookup indicates if the index should be used for looking up types.
 	 * @param cancelIndicator monitor for cancelling the compilation.
 	 */
-	@SuppressWarnings({ "resource", "unused", "checkstyle:npathcomplexity" })
+	@SuppressWarnings({ "unused", "checkstyle:npathcomplexity" })
 	private void installJvmTypeProvider(ResourceSet resourceSet, File temporaryClassDirectory, boolean skipIndexLookup,
 			IProgressMonitor progress) {
 		assert progress != null;
@@ -2386,7 +2386,6 @@ public class SarlBatchCompiler {
 	 * @param parentClassLoader the parent class loader.
 	 * @return the class loader for the project.
 	 */
-	@SuppressWarnings("static-method")
 	protected ClassLoader createClassLoader(Iterable<File> classPath, Iterable<File> modulePath, ClassLoader parentClassLoader) {
 		if (isModuleSupported()) {
 			return new URLClassLoader(Iterables.toArray(

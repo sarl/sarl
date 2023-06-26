@@ -22,8 +22,8 @@
 package io.sarl.sre.janus.internal.eventguard
 
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.core.util.ConcurrentCollection
+import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator

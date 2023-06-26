@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.skills.bic
 
-import io.sarl.core.Time
+import io.sarl.api.core.Time
 import io.sarl.lang.core.Skill
 import io.sarl.sre.janus.services.time.TimeService
 import java.util.concurrent.TimeUnit

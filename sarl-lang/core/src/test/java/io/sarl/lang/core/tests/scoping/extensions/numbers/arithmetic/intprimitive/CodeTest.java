@@ -21,12 +21,12 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.arithmetic.intprimitive;
 
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_divide;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_minus;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_modulo;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_multiply;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_plus;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_power;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_divide;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_minus;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_modulo;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_multiply;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_plus;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.PrimitiveIntArithmeticExtensions.operator_power;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

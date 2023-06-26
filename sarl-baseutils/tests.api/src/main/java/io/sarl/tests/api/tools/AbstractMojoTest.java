@@ -123,9 +123,8 @@ public abstract class AbstractMojoTest {
 		} catch (Exception e) {
 			if (failureIfNotAccessible) {
 				throw e;
-			} else {
-				throw new TestAbortedException(e.getLocalizedMessage(), e);
 			}
+			throw new TestAbortedException(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -149,15 +148,16 @@ public abstract class AbstractMojoTest {
 	 *
 	 * @param expected the type of the expected exception.
 	 * @param code the code to run.
+	 * @throws Exception 
 	 */
 	public static void assertException(Class<? extends Throwable> expected, Code code) throws Exception {
 		try {
 			code.run();
-			fail("Expecting exception of type " + expected.getName() + " but no exception was thrown");
+			fail("Expecting exception of type " + expected.getName() + " but no exception was thrown"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Throwable ex) {
 			final Throwable cs = getCause(ex);
 			if (!expected.isAssignableFrom(cs.getClass())) {
-				fail("Expecting exception of type " + expected.getName() + " but catch exception of type " + cs.getClass().getName(), cs);
+				fail("Expecting exception of type " + expected.getName() + " but catch exception of type " + cs.getClass().getName(), cs); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -222,9 +222,10 @@ public abstract class AbstractMojoTest {
 		recursiveDeleteOnShutdownHook(baseDir);
 
 		final File mavenCmd = findDefaultMavenBin();
-		assumeTrue(mavenCmd != null, "Maven command not found");
+		assumeTrue(mavenCmd != null, "Maven command not found"); //$NON-NLS-1$
 
-		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-e", "-ff", "clean"));
+		@SuppressWarnings("null")
+		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-e", "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (!Strings.isNullOrEmpty(goalName)) {
 			cmd.add(goalName);
 		}
@@ -247,7 +248,6 @@ public abstract class AbstractMojoTest {
 	 * @param goalName the goal to run.
 	 * @param outputOnConsole indicates if the standard output of Maven must be shown on the console.
 	 * @param expectedErrorMessage the expected error message that must appear on the error console of Maven.
-	 * @return the verifier.
 	 * @throws Exception any exception.
 	 * @since 0.13
 	 */
@@ -259,7 +259,7 @@ public abstract class AbstractMojoTest {
 	private static File findDefaultMavenBin() {
 		final File mavenHome = findDefaultMavenHome();
 		if (mavenHome != null) {
-			final File cmd = new File(new File(mavenHome, "bin"), "mvn");
+			final File cmd = new File(new File(mavenHome, "bin"), "mvn"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (cmd.exists() && cmd.canExecute()) {
 				return cmd;
 			}

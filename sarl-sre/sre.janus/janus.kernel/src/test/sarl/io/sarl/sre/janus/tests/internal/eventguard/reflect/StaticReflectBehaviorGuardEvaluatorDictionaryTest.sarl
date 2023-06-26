@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.internal.eventguard.reflect
 
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
 import io.sarl.lang.core.Event
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent0
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent1

@@ -22,10 +22,10 @@
 package io.sarl.sre.janus.tests.services.lifecycle
 
 import com.google.common.collect.Collections2
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.lifecycle.BasicSkillUninstaller
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.InnerSkill

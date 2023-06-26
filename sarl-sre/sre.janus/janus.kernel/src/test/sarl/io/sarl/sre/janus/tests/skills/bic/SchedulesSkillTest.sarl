@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.skills.bic
 
-import io.sarl.core.AgentTask
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.api.core.AgentTask
+import io.sarl.lang.core.^annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.executor.ExecutorService

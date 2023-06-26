@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.spaces
 
-import io.sarl.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpace
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 

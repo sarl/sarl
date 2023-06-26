@@ -48,7 +48,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void defaultValue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.DefaultValue",
+				"import io.sarl.lang.core.annotation.DefaultValue",
 				"agent A1 {",
 				"	def fct(@DefaultValue(\"\") a : int) {",
 				"	}",
@@ -64,7 +64,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void defaultValueSource() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.DefaultValueSource",
+				"import io.sarl.lang.core.annotation.DefaultValueSource",
 				"agent A1 {",
 				"	@DefaultValueSource",
 				"	def fct {",
@@ -81,7 +81,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void defaultValueUse() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.DefaultValueUse",
+				"import io.sarl.lang.core.annotation.DefaultValueUse",
 				"agent A1 {",
 				"	@DefaultValueUse(\"\")",
 				"	def fct {",
@@ -98,7 +98,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void firedEvent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.FiredEvent",
+				"import io.sarl.lang.core.annotation.FiredEvent",
 				"agent A1 {",
 				"	@FiredEvent",
 				"	def fct {",
@@ -115,7 +115,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void importedCapacityFeature() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature",
 				"agent A1 {",
 				"	@ImportedCapacityFeature(Object)",
 				"	var field : int",
@@ -131,7 +131,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void perceptGuardEvaluator() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator",
 				"agent A1 {",
 				"	@PerceptGuardEvaluator",
 				"	def fct {",
@@ -148,7 +148,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void sarlSourceCode() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.SarlSourceCode",
+				"import io.sarl.lang.core.annotation.SarlSourceCode",
 				"agent A1 {",
 				"	@SarlSourceCode",
 				"	def fct {",
@@ -165,7 +165,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void sarlSpecification() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification",
+				"import io.sarl.lang.core.annotation.SarlSpecification",
 				"@SarlSpecification",
 				"agent A1 {",
 				"	def fct {",
@@ -182,7 +182,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void syntheticMember() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.SyntheticMember",
+				"import io.sarl.lang.core.annotation.SyntheticMember",
 				"agent A1 {",
 				"   @SyntheticMember",
 				"	def fct {",
@@ -199,7 +199,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void earlyExit_onFunction() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.EarlyExit",
+				"import io.sarl.lang.core.annotation.EarlyExit",
 				"agent A1 {",
 				"   @EarlyExit",
 				"	def fct {",
@@ -216,7 +216,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void earlyExit_onAgent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.EarlyExit",
+				"import io.sarl.lang.core.annotation.EarlyExit",
 				"@EarlyExit",
 				"agent A1 {",
 				"	def fct {",
@@ -233,7 +233,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void earlyExit_onEvent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.EarlyExit",
+				"import io.sarl.lang.core.annotation.EarlyExit",
 				"@EarlyExit",
 				"event E1"
 				));

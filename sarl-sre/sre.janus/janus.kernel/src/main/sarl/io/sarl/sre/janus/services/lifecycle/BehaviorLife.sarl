@@ -20,8 +20,8 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.internal.Factories
 import javax.inject.Provider
 

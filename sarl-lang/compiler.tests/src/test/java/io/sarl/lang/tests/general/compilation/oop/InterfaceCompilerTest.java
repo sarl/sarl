@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -50,8 +50,8 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "interface I1 { }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
@@ -67,8 +67,8 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "interface I1 { var v = 45 }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
@@ -85,8 +85,8 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "interface I1 { val v = 45 }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
@@ -103,8 +103,8 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "interface I1 { def fct }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -122,8 +122,8 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "interface I1 { def fct(a : int) }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -141,8 +141,8 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "interface I1 { def fct(a : int*) }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -160,13 +160,13 @@ public class InterfaceCompilerTest {
 		public void method_3() throws Exception {
 			String source = "interface I1 { def fct(a : int = 6) }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -201,8 +201,8 @@ public class InterfaceCompilerTest {
 		public void method_4() throws Exception {
 			String source = "interface I1 { def fct(a : int) : float { a + 1f } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -223,13 +223,13 @@ public class InterfaceCompilerTest {
 		public void method_5() throws Exception {
 			String source = "interface I1 { def fct(a : int = 6) : float { a + 1f } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -273,9 +273,9 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { interface I1 { } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -300,9 +300,9 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "class Container { interface I1 { var v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -328,9 +328,9 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "class Container { interface I1 { val v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -356,9 +356,9 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "class Container { interface I1 { def fct } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -385,9 +385,9 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "class Container { interface I1 { def fct(a : int) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -414,9 +414,9 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "class Container { interface I1 { def fct(a : int*) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -443,13 +443,13 @@ public class InterfaceCompilerTest {
 		public void method_3() throws Exception {
 			String source = "class Container { interface I1 { def fct(a : int = 6) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -498,11 +498,11 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { interface I1 { } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -535,11 +535,11 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { interface I1 { var v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -573,11 +573,11 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { interface I1 { val v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -611,11 +611,11 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "agent Container { interface I1 { def fct } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -650,11 +650,11 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -689,11 +689,11 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int*) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"",
@@ -728,15 +728,15 @@ public class InterfaceCompilerTest {
 		public void method_3() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int = 6) } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -800,8 +800,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -829,8 +829,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -859,8 +859,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -892,8 +892,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -923,8 +923,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -948,8 +948,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -973,8 +973,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -998,8 +998,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1023,8 +1023,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1048,8 +1048,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1073,8 +1073,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1098,8 +1098,8 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

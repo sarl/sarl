@@ -34,7 +34,6 @@ import io.sarl.tests.api.ManualMocking;
 
 /** Set of additional utility related to Mockito.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -51,7 +50,7 @@ public final class TestMockito {
 	 * 
 	 * @param type the type to mock.
 	 * @return the mocked instance.
-	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
+	 * @see "http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi"
 	 */
 	public static <T> T mock(Class<T> type) {
 		if (type == null) {
@@ -70,7 +69,7 @@ public final class TestMockito {
 	 * 
 	 * @param instance the instance to spy.
 	 * @return the spied instance.
-	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
+	 * @see "http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi"
 	 */
 	public static <T> T spy(T instance) {
 		if (instance == null) {
@@ -139,8 +138,8 @@ public final class TestMockito {
 			return true;
 		}
 		for (Annotation annotation : field.getAnnotations()) {
-			if ("Nullable".equals(annotation.annotationType().getSimpleName())
-					|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) {
+			if ("Nullable".equals(annotation.annotationType().getSimpleName()) //$NON-NLS-1$
+					|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) { //$NON-NLS-1$
 				return true;
 			}
 		}

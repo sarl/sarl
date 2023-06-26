@@ -34,8 +34,8 @@ import com.sun.source.util.DocTrees;
 
 import io.sarl.docs.doclet2.html.taglets.block.ExcludeFromApidocTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.HiddenTaglet;
-import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.util.SarlUtils;
+import io.sarl.lang.core.annotation.SyntheticMember;
+import io.sarl.lang.core.util.SarlUtils;
 
 /** Check if an element should be ignored into the API doc.
  * 

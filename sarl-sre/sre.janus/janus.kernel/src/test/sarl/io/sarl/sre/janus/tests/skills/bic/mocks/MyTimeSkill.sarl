@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.tests.skills.bic.mocks
 
-import io.sarl.core.Time
+import io.sarl.api.core.Time
 import java.util.concurrent.TimeUnit
 
 /**

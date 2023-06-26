@@ -35,18 +35,19 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: skill")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class SkillSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void empty_noSuper() throws Exception {
-		String s = "skill Foo implements foo.ecore.SubCapacity { }";
+		String s = "skill Foo implements foo.ecore.SubCapacity { }"; //$NON-NLS-1$
 		this.object = skill(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_super() throws Exception {
-		String s = "skill Foo extends foo.ecore.SubSkill implements foo.ecore.SubCapacity { }";
+		String s = "skill Foo extends foo.ecore.SubSkill implements foo.ecore.SubCapacity { }"; //$NON-NLS-1$
 		this.object = skill(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

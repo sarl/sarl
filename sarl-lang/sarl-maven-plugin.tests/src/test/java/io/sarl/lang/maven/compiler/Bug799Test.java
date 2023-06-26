@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.maven.compiler.utils.MavenHelper;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.tools.AbstractEmbeddedMavenMojoTest;
@@ -65,11 +65,11 @@ public class Bug799Test extends AbstractEmbeddedMavenMojoTest {
 
 	private static final String EXPECTED_A = multilineString(
 			"package io.sarl.maven.bug799;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.Skill;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.maven.bug799.Cap;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",

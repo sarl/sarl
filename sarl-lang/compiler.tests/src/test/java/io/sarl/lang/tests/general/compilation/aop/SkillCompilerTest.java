@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -61,11 +61,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -124,11 +124,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -192,11 +192,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -260,11 +260,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -328,11 +328,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -396,11 +396,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -459,11 +459,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -500,11 +500,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -568,11 +568,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -630,10 +630,10 @@ public class SkillCompilerTest {
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -651,11 +651,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.Objects;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -739,11 +739,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -764,11 +764,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -805,11 +805,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -842,11 +842,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -884,11 +884,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -926,11 +926,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -968,11 +968,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1010,11 +1010,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1046,11 +1046,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1087,11 +1087,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1134,11 +1134,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1181,11 +1181,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1223,11 +1223,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1265,11 +1265,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1301,10 +1301,10 @@ public class SkillCompilerTest {
 		@Test
 		public void missedActionImplementation_0() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1334,10 +1334,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1367,11 +1367,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1426,10 +1426,10 @@ public class SkillCompilerTest {
 		@Test
 		public void compatibleReturnType_0() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -1447,10 +1447,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -1468,11 +1468,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1497,10 +1497,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1552,10 +1552,10 @@ public class SkillCompilerTest {
 		@Test
 		public void compatibleReturnType_1() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -1573,10 +1573,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -1594,11 +1594,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1623,10 +1623,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1678,10 +1678,10 @@ public class SkillCompilerTest {
 		@Test
 		public void compatibleReturnType_2() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -1699,11 +1699,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1747,10 +1747,10 @@ public class SkillCompilerTest {
 		@Test
 		public void compatibleReturnType_3() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1780,11 +1780,11 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1838,11 +1838,11 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1875,11 +1875,11 @@ public class SkillCompilerTest {
 					"public skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1912,11 +1912,11 @@ public class SkillCompilerTest {
 					"package skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1949,11 +1949,11 @@ public class SkillCompilerTest {
 					"abstract skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -1988,11 +1988,11 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -2027,11 +2027,11 @@ public class SkillCompilerTest {
 					"final skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
@@ -2060,10 +2060,10 @@ public class SkillCompilerTest {
 		@Test
 		public void capacityAccessors_inSkill() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -2103,10 +2103,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -2146,13 +2146,13 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -2228,10 +2228,10 @@ public class SkillCompilerTest {
 		@Test
 		public void inheritance_00() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -2262,9 +2262,9 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import CapTest1;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -2312,15 +2312,15 @@ public class SkillCompilerTest {
 		@Test
 		public void inheritance_01() throws Exception {
 			final String expectedC1 = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -2377,9 +2377,9 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import CapTest1;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -2408,13 +2408,13 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",

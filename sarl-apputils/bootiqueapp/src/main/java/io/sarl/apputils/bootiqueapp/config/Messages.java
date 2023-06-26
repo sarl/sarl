@@ -32,15 +32,18 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class Messages extends NLS {
 
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
+	@SuppressWarnings("javadoc")
 	public static String LogConfigModule_0;
+	@SuppressWarnings("javadoc")
 	public static String LogConfigModule_1;
+	@SuppressWarnings("javadoc")
 	public static String LogConfigModuleProvider_0;
 
 	private Messages() {

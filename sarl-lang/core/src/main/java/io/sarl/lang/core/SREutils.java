@@ -26,9 +26,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
-import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.PrivateAPI;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
  * SARL run-time environments (SRE).

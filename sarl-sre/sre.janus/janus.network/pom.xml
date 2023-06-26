@@ -211,6 +211,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<supportIncrementalBuild>true</supportIncrementalBuild>
 					<supportedProjectTypes>
 						<supportedProjectType>jar</supportedProjectType>
 						<supportedProjectType>bundle</supportedProjectType>

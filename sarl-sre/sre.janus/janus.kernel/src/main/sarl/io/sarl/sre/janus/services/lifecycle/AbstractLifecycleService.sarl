@@ -20,10 +20,11 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
+import io.sarl.api.util.SmartListenerCollection
+import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.sarlspecification.SarlSpecificationChecker
+import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.IssueCodes
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
@@ -34,7 +35,6 @@ import io.sarl.sre.janus.services.context.ExternalContextMemberListener
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.executor.Runnables
 import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.util.SmartListenerCollection
 import java.lang.ref.WeakReference
 import java.util.Arrays
 import java.util.UUID

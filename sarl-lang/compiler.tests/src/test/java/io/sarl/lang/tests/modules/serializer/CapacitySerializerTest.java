@@ -35,18 +35,19 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: capacity")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class CapacitySerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void empty_noSuper() throws Exception {
-		String s = "capacity Foo { }";
+		String s = "capacity Foo { }"; //$NON-NLS-1$
 		this.object = capacity(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_super() throws Exception {
-		String s = "capacity Foo extends foo.ecore.SubCapacity { }";
+		String s = "capacity Foo extends foo.ecore.SubCapacity { }"; //$NON-NLS-1$
 		this.object = capacity(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

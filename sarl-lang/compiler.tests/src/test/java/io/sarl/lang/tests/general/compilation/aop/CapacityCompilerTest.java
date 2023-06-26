@@ -27,7 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -48,10 +48,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 	public void basicCapacityCompile() throws Exception {
 		String source = "capacity C1 { }";
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -78,10 +78,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"capacity C1 { }"
 			),
 			multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -107,10 +107,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"public capacity C1 { }"
 			),
 			multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -136,10 +136,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"private capacity C1 { }"
 			),
 			multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
@@ -169,10 +169,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			);
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -203,9 +203,9 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 			);
 		final String expectedC2 = multilineString(
 				"import C1;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -250,10 +250,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.AgentTrait;",
-				"import io.sarl.lang.core.Capacity;",
+					"import io.sarl.lang.core.AgentTrait;",
+					"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 
-import io.sarl.lang.scoping.extensions.time.TimeExtensions;
+import io.sarl.lang.core.scoping.extensions.time.TimeExtensions;
 
 /**
  * @author $Author: sgalland$

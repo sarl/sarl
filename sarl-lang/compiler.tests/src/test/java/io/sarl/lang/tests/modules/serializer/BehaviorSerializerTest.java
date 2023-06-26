@@ -35,18 +35,19 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: behavior")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class BehaviorSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void empty_noSuper() throws Exception {
-		String s = "behavior Foo { }";
+		String s = "behavior Foo { }"; //$NON-NLS-1$
 		this.object = behavior(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_super() throws Exception {
-		String s = "behavior Foo extends foo.ecore.SubBehavior { }";
+		String s = "behavior Foo extends foo.ecore.SubBehavior { }"; //$NON-NLS-1$
 		this.object = behavior(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

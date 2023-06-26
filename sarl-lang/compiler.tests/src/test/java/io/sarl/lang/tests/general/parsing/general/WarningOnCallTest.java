@@ -48,7 +48,7 @@ public class WarningOnCallTest extends AbstractSarlTest {
 
 	private static final String SARL_CODE_01 = multilineString(
 			"package io.sarl.lang.tests.issueOnCallTest",
-			"import io.sarl.lang.annotation.WarningOnCall",
+			"import io.sarl.lang.core.annotation.WarningOnCall",
 			"interface XXX {",
 			"   @WarningOnCall(\"This is a message\")",
 			"   def myfct : void",
@@ -96,7 +96,7 @@ public class WarningOnCallTest extends AbstractSarlTest {
 
 	private static final String SARL_CODE_3 = multilineString(
 			"package io.sarl.lang.tests.issueOnCallTest",
-			"import io.sarl.lang.annotation.WarningOnCall",
+			"import io.sarl.lang.core.annotation.WarningOnCall",
 			"class XXX {",
 			"   @WarningOnCall(\"This is a message\")",
 			"   static def myfct : void {}",

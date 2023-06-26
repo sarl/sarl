@@ -21,9 +21,10 @@
 
 package io.sarl.sre.test.framework.^extension
 
-import io.sarl.bootstrap.SRE
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.context.SreRunContextImpl
 import java.lang.reflect.Method
 import org.junit.jupiter.api.^extension.ExtensionContext
 import org.junit.jupiter.api.^extension.InvocationInterceptor
@@ -31,10 +32,8 @@ import org.junit.jupiter.api.^extension.ParameterContext
 import org.junit.jupiter.api.^extension.ParameterResolver
 import org.junit.jupiter.api.^extension.ReflectiveInvocationContext
 
-import static io.sarl.bootstrap.SRE.*
-
+import static io.sarl.lang.core.SRE.*
 import static extension java.lang.Boolean.*
-import io.sarl.sre.test.framework.context.SreRunContextImpl
 
 /**
  * JUnit 5 extension that is running the SRE.

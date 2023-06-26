@@ -427,7 +427,6 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	@SuppressWarnings("checkstyle:anoninnerlength")
 	protected StringConcatenationClient generateAccessors(Set<String> addedKeywords, Map<String, String> getters) {
 		return new StringConcatenationClient() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("\tprivate "); //$NON-NLS-1$

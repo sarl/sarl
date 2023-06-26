@@ -100,7 +100,7 @@ public class DynamicArgumentName implements Cloneable, Serializable {
 
 	@Override
 	public String toString() {
-		return this.argument; //$NON-NLS-1$
+		return this.argument;
 	}
 
 }

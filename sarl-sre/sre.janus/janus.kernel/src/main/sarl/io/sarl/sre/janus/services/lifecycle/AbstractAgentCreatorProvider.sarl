@@ -20,11 +20,11 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DelegateDynamicSkillProvider
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.annotation.PrivateAPI
 import java.lang.reflect.Constructor
 import java.util.UUID
 

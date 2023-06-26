@@ -50,9 +50,9 @@ import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 
-import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 

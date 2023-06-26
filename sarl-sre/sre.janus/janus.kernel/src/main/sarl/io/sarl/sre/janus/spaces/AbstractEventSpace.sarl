@@ -20,13 +20,13 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.IssueCodes
 import io.sarl.sre.janus.services.logging.LoggingService
 import java.text.MessageFormat

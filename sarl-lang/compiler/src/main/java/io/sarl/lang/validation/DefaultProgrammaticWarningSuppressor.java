@@ -124,7 +124,6 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 			this.ignoredWarnings = codes;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public Severity getSeverity(String code) {
 			if (this.delegate == null || this.ignoredAll) {

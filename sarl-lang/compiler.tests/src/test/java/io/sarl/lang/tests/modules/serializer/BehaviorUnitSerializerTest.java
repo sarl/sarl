@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: on")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class BehaviorUnitSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void noGuard() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"on foo.ecore.SubEvent { println(\"hello world\") }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"on foo.ecore.SubEvent { println(\"hello world\") }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class BehaviorUnitSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void trueGuard() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"on foo.ecore.SubEvent [ true ] { println(\"hello world\") }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"on foo.ecore.SubEvent [ true ] { println(\"hello world\") }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,9 +62,9 @@ public class BehaviorUnitSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void falseGuard() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"on foo.ecore.SubEvent [ false ] { println(\"hello world\") }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"on foo.ecore.SubEvent [ false ] { println(\"hello world\") }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -71,9 +72,9 @@ public class BehaviorUnitSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void generalGuard() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"on foo.ecore.SubEvent [ occurrence.isFromMe ] { println(\"hello world\") }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"on foo.ecore.SubEvent [ occurrence.isFromMe ] { println(\"hello world\") }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

@@ -38,6 +38,8 @@ import org.eclipse.xtext.validation.Issue;
  */
 public class SarlValidationTestHelper extends ValidationTestHelper {
 
+	/** Constructor.
+	 */
 	public SarlValidationTestHelper() {
 		//
 	}

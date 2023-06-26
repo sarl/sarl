@@ -21,13 +21,13 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.comparison.longobject;
 
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_equals;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_greaterEqualsThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_greaterThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_lessEqualsThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_lessThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_notEquals;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_spaceship;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_equals;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_greaterEqualsThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_greaterThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_lessEqualsThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_lessThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_notEquals;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.LongComparisonExtensions.operator_spaceship;
 import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyNegative;
 import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
 import static io.sarl.tests.api.tools.TestAssertions.assertZero;

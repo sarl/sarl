@@ -21,8 +21,10 @@
 
 package io.sarl.sre.janus.tests.framework
 
+import io.sarl.api.util.SequenceListenerNotifier
+import io.sarl.api.util.SmartListenerCollection
 import io.sarl.lang.core.Agent
-import io.sarl.lang.util.DefaultConcurrentCollectionFactory
+import io.sarl.lang.core.util.DefaultConcurrentCollectionFactory
 import io.sarl.sre.janus.boot.SreMain
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
@@ -34,8 +36,6 @@ import io.sarl.sre.janus.services.lifecycle.AgentLife
 import io.sarl.sre.janus.services.lifecycle.AgentState
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.util.SequenceListenerNotifier
-import io.sarl.util.SmartListenerCollection
 import java.util.UUID
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock

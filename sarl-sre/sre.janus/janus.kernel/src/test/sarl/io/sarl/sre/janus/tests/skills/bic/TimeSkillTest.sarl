@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.tests.skills.bic
 
-import io.sarl.lang.scoping.extensions.time.TimeExtensions
+import io.sarl.lang.core.scoping.extensions.time.TimeExtensions
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.time.TimeService
 import io.sarl.sre.janus.skills.bic.TimeSkill

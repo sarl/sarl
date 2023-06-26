@@ -37,7 +37,6 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 
 /** Set of utility classes that provide additional assertion functions.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -69,14 +68,14 @@ public final class TestAssertions {
 		for (XtendParameter parameter : actualFormalParameters) {
 			if (expectedDefaultValues[i] == null) {
 				if (parameter instanceof SarlFormalParameter) {
-					assertNull("No default value expected", ((SarlFormalParameter) parameter).getDefaultValue());
+					assertNull("No default value expected", ((SarlFormalParameter) parameter).getDefaultValue()); //$NON-NLS-1$
 				}
 			} else {
 				assertTrue(parameter instanceof SarlFormalParameter);
 				final int ii = i;
-				assertTrue(expectedDefaultValues[i] instanceof Class, () -> "The #" + ii + " in expectedDefaultValues is not a Class");
+				assertTrue(expectedDefaultValues[i] instanceof Class, () -> "The #" + ii + " in expectedDefaultValues is not a Class"); //$NON-NLS-1$ //$NON-NLS-2$
 				Class type = (Class) expectedDefaultValues[i];
-				assertTrue(type.isInstance(((SarlFormalParameter) parameter).getDefaultValue()), () -> "Unexpected type for the default value.");
+				assertTrue(type.isInstance(((SarlFormalParameter) parameter).getDefaultValue()), () -> "Unexpected type for the default value."); //$NON-NLS-1$
 				if (XNumberLiteral.class.isAssignableFrom(type)) {
 					++i;
 					assertEquals(expectedDefaultValues[i], ((XNumberLiteral) ((SarlFormalParameter) parameter).getDefaultValue()).getValue());
@@ -86,14 +85,14 @@ public final class TestAssertions {
 				} else if (XNullLiteral.class.isAssignableFrom(type)) {
 					//
 				} else {
-					throw new RuntimeException("Unsupported type of literal for this assertion function");
+					throw new RuntimeException("Unsupported type of literal for this assertion function"); //$NON-NLS-1$
 				}
 			}
 			++i;
 		}
 		if (i < expectedDefaultValues.length) {
-			fail("Not enough default values. Expected: " + Arrays.toString(expectedDefaultValues)
-				+ "Actual: " + Iterables.toString(actualFormalParameters));
+			fail("Not enough default values. Expected: " + Arrays.toString(expectedDefaultValues) //$NON-NLS-1$
+				+ "Actual: " + Iterables.toString(actualFormalParameters)); //$NON-NLS-1$
 		}
 	}
 

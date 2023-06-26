@@ -44,6 +44,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.TimeoutException
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -52,7 +53,6 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvWriter
 import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvWriterSettings
 
 import static extension org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$

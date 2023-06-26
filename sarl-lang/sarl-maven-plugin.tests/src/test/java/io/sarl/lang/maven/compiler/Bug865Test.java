@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.maven.compiler.utils.MavenHelper;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.tools.AbstractEmbeddedMavenMojoTest;
@@ -77,11 +77,11 @@ public class Bug865Test extends AbstractEmbeddedMavenMojoTest {
 	private static final String EXPECTED_MYAGENT = multilineString(
 			"package io.sarl.maven.bug865;",
 			"import com.google.common.primitives.Booleans;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.List;",
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",

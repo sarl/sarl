@@ -164,7 +164,7 @@ public class ResourceSetGlobalCompilationContext {
 		name.append(".test"); //$NON-NLS-1$
 		name.append(idx);
 		if (!Strings.isEmpty(this.currentMethod)) {
-			name.append(".");
+			name.append("."); //$NON-NLS-1$
 			name.append(this.currentMethod);
 		}
 		return name.toString();
@@ -179,7 +179,7 @@ public class ResourceSetGlobalCompilationContext {
 	 */
 	public void compileTo(String sarlExpression, String javaExpression) throws Exception {
 		final String packageName = buildPackageName();
-		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
 		final SarlScript script = file(inputCode, isValidationRunInEachTestFunction(), true);
 		final String qualifiedName = packageName + "." + script.getXtendTypes().get(script.getXtendTypes().size() - 1).getName(); //$NON-NLS-1$
 		final String expectedJava = "package " + packageName + ";" //$NON-NLS-1$ //$NON-NLS-2$

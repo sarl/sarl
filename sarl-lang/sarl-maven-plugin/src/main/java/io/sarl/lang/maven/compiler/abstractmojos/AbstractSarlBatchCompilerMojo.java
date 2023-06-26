@@ -137,7 +137,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
 		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
 		final List<File> newClassPath = new ArrayList<>(currentClassPath.size());
-		final int currentVersion = parseInt(numPattern, System.getProperty("java.version"));
+		final int currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
 		for (final File file : currentClassPath) {
 			final String basename = file.getName();
 			final Matcher matcher = conflictPattern.matcher(basename);
@@ -169,7 +169,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
 		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
 		final List<URL> newClassPath = new ArrayList<>(currentClassPath.size());
-		final int currentVersion = parseInt(numPattern, System.getProperty("java.version"));
+		final int currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
 		for (final URL file : currentClassPath) {
 			final String basename = FileSystem.largeBasename(file);
 			final Matcher matcher = conflictPattern.matcher(basename);
@@ -200,7 +200,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	}
 
 	@Override
-	@SuppressWarnings({"resource", "unchecked"})
+	@SuppressWarnings({"unchecked"})
 	protected synchronized void prepareExecution() throws MojoExecutionException {
 		if (this.injector == null) {
 			try {
@@ -220,7 +220,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 				//
 				// Create the SARL setup and create the injector
 				final Class<?> setup = classLoader.loadClass(SARLStandaloneSetup.class.getName());
-				final Method method = setup.getDeclaredMethod("doSetup");
+				final Method method = setup.getDeclaredMethod("doSetup"); //$NON-NLS-1$
 				final Injector mainInjector = (Injector) method.invoke(null);
 				// Create the plugin's injection module
 				final Class<? extends Module> innerModuleType = (Class<? extends Module>) classLoader.loadClass(MavenPrivateModule.class.getName());
@@ -436,9 +436,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		final String baseDir = project.getBasedir().getAbsolutePath();
 		if (getLogger().isDebugEnabled()) {
 			final StringBuilder out = new StringBuilder();
-			out.append("sarlOutputPath = ");
+			out.append("sarlOutputPath = "); //$NON-NLS-1$
 			out.append(sarlOutputPath);
-			out.append("\nclassOutputPath = ");
+			out.append("\nclassOutputPath = "); //$NON-NLS-1$
 			out.append(classOutputPath);
 			getLogger().debug(out.toString());
 		}
@@ -704,6 +704,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @see #buildTestModulePath()
 	 * @see #getModulePath()
 	 */
+	@SuppressWarnings("static-method")
 	protected List<File> buildModulePath() throws MojoExecutionException {
 		final List<File> modulePathFiles = new ArrayList<>();
 		return modulePathFiles;
@@ -732,6 +733,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @see #getTestModulePath()
 	 * @see #buildModulePath()
 	 */
+	@SuppressWarnings("static-method")
 	protected List<File> buildTestModulePath() throws MojoExecutionException {
 		final List<File> modulePathFiles = new ArrayList<>();
 		return modulePathFiles;

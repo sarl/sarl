@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -62,9 +62,9 @@ public class Bug917Test extends AbstractSarlTest {
 	private static final String JAVA_CODE = multilineString(
 			"package io.sarl.lang.tests.bug917;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtend.lib.annotations.Accessors;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",

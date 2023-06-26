@@ -61,8 +61,8 @@ import io.sarl.docs.validator.ReflectExtensions;
 import io.sarl.docs.validator.ScriptExecutor;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.util.OutParameter;
 
 /** Generator of the marker language files for the modified marker language for SARL.
  *

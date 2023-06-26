@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.tests.services.lifecycle.mocks
 
-import io.sarl.core.Logging
+import io.sarl.api.core.Logging
 import io.sarl.lang.core.Skill
 import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import java.util.UUID

@@ -25,7 +25,7 @@ import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.util.ConcurrentCollection;
+import io.sarl.lang.core.util.ConcurrentCollection;
 
 /**
  * An AgentContext defines the boundary of a sub-system, and gathers a

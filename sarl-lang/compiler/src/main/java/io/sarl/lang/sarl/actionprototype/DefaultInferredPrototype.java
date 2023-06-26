@@ -100,7 +100,7 @@ public class DefaultInferredPrototype implements InferredPrototype {
 
 	@Override
 	public Iterable<ActionParameterTypes> getParameterTypeAlternatives() {
-		return new Iterable<ActionParameterTypes>() {
+		return new Iterable<>() {
 			@Override
 			public Iterator<ActionParameterTypes> iterator() {
 				return new SignatureKeyIterator(

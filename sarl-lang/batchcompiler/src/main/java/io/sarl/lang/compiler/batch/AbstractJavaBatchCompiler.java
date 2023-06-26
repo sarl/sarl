@@ -132,6 +132,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @param file the file to test.
 	 * @return {@code true} if the file is considered as a Java file.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isJavaExtension(File file) {
 		if (file != null) {
 			if (file.isDirectory()) {

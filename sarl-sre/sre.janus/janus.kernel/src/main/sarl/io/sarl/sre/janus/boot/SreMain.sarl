@@ -28,11 +28,11 @@ import io.bootique.Bootique
 import io.bootique.di.BQModule
 import io.bootique.di.Injector
 import io.sarl.apputils.bootiqueapp.config.LogConfig
-import io.sarl.bootstrap.SRE
-import io.sarl.bootstrap.SREBootstrap
-import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREBootstrap
+import io.sarl.lang.core.SREListener
 import io.sarl.sre.janus.Kernel
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
@@ -51,7 +51,7 @@ import org.arakhne.afc.bootique.variables.VariableNames
 import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import static io.sarl.bootstrap.SRE.*
+import static io.sarl.lang.core.SRE.*
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.

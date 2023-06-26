@@ -21,12 +21,12 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.arithmetic.integerobject;
 
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_divide;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_minus;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_modulo;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_multiply;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_plus;
-import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_power;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_divide;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_minus;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_modulo;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_multiply;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_plus;
+import static io.sarl.lang.core.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_power;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

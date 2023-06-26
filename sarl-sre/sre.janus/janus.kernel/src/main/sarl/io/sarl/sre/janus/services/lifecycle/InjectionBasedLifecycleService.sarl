@@ -21,9 +21,9 @@
 package io.sarl.sre.janus.services.lifecycle
 
 import io.bootique.di.Injector
+import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.janus.KernelScope
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig

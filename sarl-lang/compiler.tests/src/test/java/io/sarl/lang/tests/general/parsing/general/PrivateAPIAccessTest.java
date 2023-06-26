@@ -67,7 +67,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
 				"class Accessor {",
@@ -84,7 +84,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
 				"@PrivateAPI(isCallerOnly=true)",
@@ -119,7 +119,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
 				"class Accessor {",
@@ -136,7 +136,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_04() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
 				"@PrivateAPI(isCallerOnly=true)",
@@ -153,7 +153,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
 				"",
@@ -173,7 +173,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
 				"",
@@ -191,7 +191,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
 				"",

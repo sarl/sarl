@@ -65,7 +65,7 @@ import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Version;
 
-import io.sarl.lang.util.SarlUtils;
+import io.sarl.lang.core.util.SarlUtils;
 
 /** Should functions for the documentation facts.
  *

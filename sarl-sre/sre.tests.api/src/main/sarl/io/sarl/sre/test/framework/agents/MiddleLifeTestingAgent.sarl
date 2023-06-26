@@ -21,9 +21,9 @@
 
 package io.sarl.sre.test.framework.agents
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Schedules
 
 /**
  * Agent that does nothing and commits a suicide after few seconds.

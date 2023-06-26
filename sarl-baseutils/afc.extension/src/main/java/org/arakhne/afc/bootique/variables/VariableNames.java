@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 
 //FIXME: Move to Arakhne
+@SuppressWarnings("javadoc")
 public final class VariableNames {
 
 	/** Prefix {@code bq.} for properties.

@@ -44,9 +44,13 @@ import io.sarl.tests.api.tools.SarlValidationTestHelper;
 @InjectWith(ExtendedSARLInjectorProvider.class)
 public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjectorExtension {
 
+	/** The namespace.
+	 */
 	static final Namespace NAMESPACE = Namespace.create(AbstractResourceSetGlobalCompilationExtension.class);
 
-	static final String CONTEXT_KEY = "context";
+	/** The context key.
+	 */
+	static final String CONTEXT_KEY = "context"; //$NON-NLS-1$
 
 	@Inject
 	private ParseHelper<SarlScript> parseHelper;
@@ -65,10 +69,10 @@ public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjec
 	ResourceSetGlobalCompilationContext getOrCreateCompilationContext(ExtensionContext context) {
 		final ExtensionContext root = context.getRoot();
 		return root.getStore(NAMESPACE).getOrComputeIfAbsent(
-				ResourceSetGlobalCompilationExtension.CONTEXT_KEY,
+				AbstractResourceSetGlobalCompilationExtension.CONTEXT_KEY,
 				it -> {
 					final ResourceSetGlobalCompilationContext ctx = new ResourceSetGlobalCompilationContext(
-							context.getRequiredTestClass().getPackage().getName() + ".tests",
+							context.getRequiredTestClass().getPackage().getName() + ".tests", //$NON-NLS-1$
 							this.injector, this.parseHelper, this.validator);
 					final GlobalCompilationTestContribution anno = context.getRequiredTestClass().getAnnotation(GlobalCompilationTestContribution.class);
 					if (anno != null) {
@@ -83,9 +87,10 @@ public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjec
 	 *
 	 * @param context the extension context.
 	 */
+	@SuppressWarnings("static-method")
 	void clearCompilationContext(ExtensionContext context) {
 		final ExtensionContext root = context.getRoot();
-		root.getStore(NAMESPACE).remove(ResourceSetGlobalCompilationExtension.CONTEXT_KEY);
+		root.getStore(NAMESPACE).remove(AbstractResourceSetGlobalCompilationExtension.CONTEXT_KEY);
 	}
 
 }

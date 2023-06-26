@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks
 
-import io.sarl.core.Initialize
+import io.sarl.api.core.Initialize
 
 /** 
  * @author $Author: sgalland$

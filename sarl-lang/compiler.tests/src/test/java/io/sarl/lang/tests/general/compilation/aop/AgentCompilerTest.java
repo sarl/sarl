@@ -27,7 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -48,11 +48,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void basicAgentCompile() throws Exception {
 		String source = "agent A1 { }";
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"",
@@ -79,11 +79,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void trueGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
@@ -105,13 +105,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -189,11 +189,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void falseGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
@@ -215,11 +215,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"",
@@ -257,11 +257,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void generalGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;",
 				"",
@@ -323,13 +323,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -422,11 +422,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -487,11 +487,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -552,11 +552,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -591,11 +591,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -656,11 +656,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -721,11 +721,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -758,11 +758,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"agent A1 { }"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -792,11 +792,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"public agent A1 { }"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -826,11 +826,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"package agent A1 { }"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -860,11 +860,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"abstract agent A1 { }"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -896,11 +896,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -932,11 +932,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"final agent A1 { }"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -968,11 +968,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1033,11 +1033,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1098,11 +1098,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1163,11 +1163,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1230,11 +1230,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"",
@@ -1258,10 +1258,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA2 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"",
@@ -1301,11 +1301,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1340,11 +1340,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1379,11 +1379,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1418,11 +1418,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1457,11 +1457,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1495,11 +1495,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1534,11 +1534,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1578,11 +1578,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1622,11 +1622,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1661,11 +1661,11 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
-						"import io.sarl.lang.annotation.SarlElementType;",
-						"import io.sarl.lang.annotation.SarlSpecification;",
-						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.DynamicSkillProvider;",
+						"import io.sarl.lang.core.annotation.SarlElementType;",
+						"import io.sarl.lang.core.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.UUID;",
 						"import javax.inject.Inject;",
 						"",
@@ -1695,10 +1695,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_nativeParameter() throws Exception {
 		String source = "capacity C1 { def myfunction(v : double) } agent A1 { uses C1 def caller { myfunction(5) } }";
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1728,13 +1728,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1786,10 +1786,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_classParameter_baseName() throws Exception {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(Integer) } }";
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1819,13 +1819,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1877,10 +1877,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_classParameter_typeof() throws Exception {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(typeof(Integer)) } }";
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1910,13 +1910,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1973,10 +1973,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ "myfunction(typeof(String), #[])"
 				+ " } }";
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -2006,13 +2006,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2075,10 +2075,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ "myfunction(#[]);"
 				+ " } }";
 		final String expectedC1 = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -2108,13 +2108,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2184,13 +2184,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"	}",
 				"}");
 		final String expectedMyAgent = multilineString(
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -2295,13 +2295,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -2402,13 +2402,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -2517,13 +2517,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -2681,13 +2681,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
 				"import io.sarl.lang.core.Event;",
+				"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.Collection;",
 				"import java.util.Set;",
 				"import java.util.UUID;",
@@ -2849,13 +2849,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2914,13 +2914,13 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedMyAgent = multilineString(
 				"package foo.test;",
 				"",
-				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.AtomicSkillReference;",
 				"import io.sarl.lang.core.DynamicSkillProvider;",
+				"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",

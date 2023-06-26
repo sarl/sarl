@@ -27,6 +27,7 @@ package foo;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public final class Csts {
 
 	public static int VALUE = 5;

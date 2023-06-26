@@ -50,6 +50,7 @@ public class GenerateMarkdownConfigCommandModule implements BQModule {
 	 * @param modulesMetadata the description of the modules.
 	 * @return the command.
 	 */
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public GenerateMarkdownConfigCommand provideGenerateMarkdownHelpCommand(ModulesMetadata modulesMetadata) {

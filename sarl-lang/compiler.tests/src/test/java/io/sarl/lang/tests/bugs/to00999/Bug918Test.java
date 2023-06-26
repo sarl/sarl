@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -80,11 +80,11 @@ public class Bug918Test extends AbstractSarlTest {
 	private static final String X_JAVA_CODE = multilineString(
 			"package io.sarl.lang.tests.bug918;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -114,10 +114,10 @@ public class Bug918Test extends AbstractSarlTest {
 	private static final String Y_JAVA_CODE = multilineString(
 			"package io.sarl.lang.tests.bug918;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",

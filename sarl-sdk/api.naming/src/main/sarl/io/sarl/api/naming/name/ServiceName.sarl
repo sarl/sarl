@@ -21,9 +21,9 @@
 package io.sarl.api.naming.name
 
 import com.google.common.util.concurrent.Service
+import io.sarl.lang.core.annotation.PrivateAPI
 import java.net.URI
 import org.eclipse.xtend.lib.annotations.Accessors
-import io.sarl.lang.annotation.PrivateAPI
 
 /** 
  * This class represents a service name.

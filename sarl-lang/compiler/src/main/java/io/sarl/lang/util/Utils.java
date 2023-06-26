@@ -21,8 +21,8 @@
 
 package io.sarl.lang.util;
 
-import static io.sarl.lang.util.SarlUtils.HIDDEN_MEMBER_CHARACTER;
-import static io.sarl.lang.util.SarlUtils.isHiddenMember;
+import static io.sarl.lang.core.util.SarlUtils.HIDDEN_MEMBER_CHARACTER;
+import static io.sarl.lang.core.util.SarlUtils.isHiddenMember;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -103,8 +103,9 @@ import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XtypeFactory;
 import org.osgi.framework.Version;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.core.SARLVersion;
+import io.sarl.lang.core.annotation.EarlyExit;
+import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
@@ -1176,8 +1177,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
-	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.core.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.core.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment(String version) {
 		if (version != null && !version.isEmpty()) {
@@ -1202,8 +1203,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
-	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.core.SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see io.sarl.lang.core.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment() {
 		return isCompatibleJDKVersionWithSARLCompilationEnvironment(System.getProperty("java.specification.version")); //$NON-NLS-1$
@@ -1217,8 +1218,8 @@ public final class Utils {
 	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
 	 * @since 0.10
-	 * @see io.sarl.lang.SARLVersion#MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
-	 * @see io.sarl.lang.SARLVersion#INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 * @see io.sarl.lang.core.SARLVersion#MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 * @see io.sarl.lang.core.SARLVersion#INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
 	 */
 	public static boolean isCompatibleJDKVersionWhenInSARLProjectClasspath(String version) {
 		if (version != null && !version.isEmpty()) {
@@ -1573,7 +1574,7 @@ public final class Utils {
 
 			}
 
-			buffer.append("\n}");
+			buffer.append("\n}"); //$NON-NLS-1$
 		}
 		return buffer.toString();
 	}

@@ -21,19 +21,19 @@
 
 package io.sarl.sre.test.framework.context
 
+import io.sarl.api.core.AgentKilled
+import io.sarl.api.core.AgentSpawned
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.SpaceDestroyed
 import io.sarl.apputils.bootiqueapp.config.Level
 import io.sarl.apputils.bootiqueapp.config.LogConfig
-import io.sarl.bootstrap.SRE
-import io.sarl.bootstrap.SREBootstrap
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.SpaceDestroyed
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREBootstrap
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.exception.SreLogException
 import io.sarl.sre.test.framework.exception.SreTimeoutException
@@ -898,7 +898,7 @@ class SreRunContextImpl implements SreRunContext {
 		val results = getAllResults
 		if (!results.empty) {
 			for (r : results) {
-				if (r !== null && "io.sarl.sre.services.lifecycle.SpawnDisabledException" == r.class.name) {
+				if (r !== null && "io.sarl.sre.janus.services.lifecycle.SpawnDisabledException" == r.class.name) {
 					// Ignore this error because the boot agent may want to spawn an agent when the
 					// testing framework stops the test.
 				} else if (r instanceof Throwable) {

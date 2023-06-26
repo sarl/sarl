@@ -208,7 +208,9 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 			final int retcode = systemCompiler.run(null, stdout, stderr, arguments);
 			return retcode == 0 ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
 		} catch (IOException ex) {
-			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			if (logger != null) {
+				logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			}
 			return CompilerStatus.COMPILATION_FAILURE;
 		}
 	}
@@ -218,6 +220,7 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 	 * @return the JDK compiler.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected JavaCompiler getSystemJavaCompiler() {
 		final PrivilegedAction<JavaCompiler> action = () -> ToolProvider.getSystemJavaCompiler();
 		final JavaCompiler standardCompiler = action.run();

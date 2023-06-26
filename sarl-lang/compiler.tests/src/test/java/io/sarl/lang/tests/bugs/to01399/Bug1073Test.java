@@ -31,7 +31,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -66,9 +66,9 @@ public class Bug1073Test extends AbstractSarlTest {
 	private final String JAVA_CODE_01 = multilineString(
 			"package io.sarl.lang.tests.bug1073;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtend.lib.annotations.Accessors;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -145,9 +145,9 @@ public class Bug1073Test extends AbstractSarlTest {
 	private final String JAVA_CODE_02 = multilineString(
 			"package io.sarl.lang.tests.bug1073;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtend.lib.annotations.Accessors;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -225,9 +225,9 @@ public class Bug1073Test extends AbstractSarlTest {
 	private final String JAVA_CODE_03 = multilineString(
 			"package io.sarl.lang.tests.bug1073;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtend.lib.annotations.Accessors;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",

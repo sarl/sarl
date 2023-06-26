@@ -21,8 +21,8 @@
 
 package io.sarl.lang.core;
 
-import io.sarl.lang.annotation.SarlElementType;
-import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.core.annotation.SarlElementType;
+import io.sarl.lang.core.annotation.SarlSpecification;
 
 /**
  * Wraps an event that was posted, but which had no subscribers and thus could not be delivered.

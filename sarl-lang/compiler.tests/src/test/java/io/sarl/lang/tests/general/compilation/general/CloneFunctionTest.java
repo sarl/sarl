@@ -27,7 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -50,9 +50,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -87,9 +87,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -120,9 +120,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -162,9 +162,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -194,9 +194,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -231,9 +231,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -264,9 +264,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -306,9 +306,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -341,9 +341,9 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",

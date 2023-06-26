@@ -26,7 +26,6 @@ import org.eclipse.xtext.validation.Issue;
 
 /** Set of utility classes that provide additional assertion functions on SARL issues.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -65,17 +64,17 @@ public final class TestIssues {
 		for(Issue issue : issues) {
 			final URI uri = issue.getUriToProblem();
 			result.append(issue.getSeverity());
-			result.append(" (");
+			result.append(" ("); //$NON-NLS-1$
 			result.append(issue.getCode());
-			result.append(") '");
+			result.append(") '"); //$NON-NLS-1$
 			result.append(issue.getMessage());
-			result.append("'");
+			result.append("'"); //$NON-NLS-1$
 			if (uri != null) {
 				EObject eObject = model.eResource().getResourceSet().getEObject(uri, true);
-				result.append(" on ");
+				result.append(" on "); //$NON-NLS-1$
 				result.append(eObject.eClass().getName());
 			}
-			result.append("\n");
+			result.append("\n"); //$NON-NLS-1$
 		}
 		return result;
 	}

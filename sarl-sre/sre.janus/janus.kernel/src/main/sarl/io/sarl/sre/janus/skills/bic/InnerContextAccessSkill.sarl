@@ -20,14 +20,14 @@
  */
 package io.sarl.sre.janus.skills.bic
 
-import io.sarl.core.InnerContextAccess
+import io.sarl.api.core.InnerContextAccess
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories

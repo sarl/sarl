@@ -28,10 +28,10 @@ import javax.inject.Singleton;
 
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
-import io.sarl.lang.scoping.extensions.cast.GeneralCastImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.extensions.time.TimeExtensions;
+import io.sarl.lang.core.scoping.extensions.cast.GeneralCastImplicitlyImportedFeatures;
+import io.sarl.lang.core.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
+import io.sarl.lang.core.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
+import io.sarl.lang.core.scoping.extensions.time.TimeExtensions;
 
 
 /** Provider of the implicitly imported features in the SARL language.

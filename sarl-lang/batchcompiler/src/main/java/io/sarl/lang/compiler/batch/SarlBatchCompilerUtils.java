@@ -30,7 +30,7 @@ import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 
 /** Utility functions for the SARL batch compiler API.
  *
@@ -172,7 +172,7 @@ public final class SarlBatchCompilerUtils {
 	 */
 	@Pure
 	public static boolean isModuleFolder(File folder) {
-		final File file = new File(folder, "module-info.java"); // $NON-NLS-1$
+		final File file = new File(folder, "module-info.java"); //$NON-NLS-1$
 		return file.isFile();
 	}
 

@@ -135,20 +135,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 import org.eclipse.xtext.xtype.XComputedTypeReference;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.DefaultValueSource;
-import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.ImportedCapacityFeature;
-import io.sarl.lang.annotation.Injectable;
-import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration;
-import io.sarl.lang.annotation.PerceptGuardEvaluator;
-import io.sarl.lang.annotation.SarlElementType;
-import io.sarl.lang.annotation.SarlSourceCode;
-import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.compiler.IInlineExpressionCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
@@ -157,7 +143,22 @@ import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValueSource;
+import io.sarl.lang.core.annotation.DefaultValueUse;
+import io.sarl.lang.core.annotation.EarlyExit;
+import io.sarl.lang.core.annotation.FiredEvent;
+import io.sarl.lang.core.annotation.ImportedCapacityFeature;
+import io.sarl.lang.core.annotation.Injectable;
+import io.sarl.lang.core.annotation.NoEqualityTestFunctionsGeneration;
+import io.sarl.lang.core.annotation.PerceptGuardEvaluator;
+import io.sarl.lang.core.annotation.SarlElementType;
+import io.sarl.lang.core.annotation.SarlSourceCode;
+import io.sarl.lang.core.annotation.SarlSpecification;
+import io.sarl.lang.core.annotation.SyntheticMember;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
@@ -188,7 +189,6 @@ import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.util.JvmVisibilityComparator;
-import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Infers a JVM model from the source model.
@@ -635,7 +635,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Autowrap the provided runnable elements in order to avoid the internal exceptions
 			// to stop the JVM generation too early.
-			final List<Runnable> doLaterExceptionSafe = new AbstractList<Runnable>() {
+			final List<Runnable> doLaterExceptionSafe = new AbstractList<>() {
 				@Override
 				public void add(int index, Runnable element) {
 					doLater.add(index, wrap(element));
@@ -2050,10 +2050,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									try {
 										final JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
 												.annotationRef(id);
-										for (final JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
-											clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
+										if (clone != null) {
+											for (final JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
+												clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
+											}
+											operation2.getAnnotations().add(clone);
 										}
-										operation2.getAnnotations().add(clone);
 									} catch (IllegalArgumentException exception) {
 										// ignore
 									}
@@ -3366,7 +3368,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								this.associator.associate(defaultValue, method);
 							}
 						};
-						context.addUserObject("translateSarlFormalParameters", creationCode1);
+						context.addUserObject("translateSarlFormalParameters", creationCode1); //$NON-NLS-1$
 					}
 				}
 			}
@@ -3383,8 +3385,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inheritedOperation the reference to the inherited operation.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected void translateSarlFormalParametersForLocalHiddenDefaultValues(GenerationContext context, JvmOperation inheritedOperation) {
-		final Iterable<Runnable> on = context.consumeUserObject("translateSarlFormalParameters", Runnable.class);
+		final Iterable<Runnable> on = context.consumeUserObject("translateSarlFormalParameters", Runnable.class); //$NON-NLS-1$
 		if (inheritedOperation == null) {
 			for (final Runnable code : on) {
 				code.run();
@@ -3530,7 +3533,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		this.associator.associate(sarlElement, param);
 		result.getParameters().add(param);
 		setBody(result, new Procedures.Procedure1<ITreeAppendable>() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(ITreeAppendable it) {
 				boolean firstAttr = true;
@@ -3573,7 +3575,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			private void generateToEqualForObjectNullity(ITreeAppendable it, JvmField field) {
 				it.append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
 				it.append(" == null) {").increaseIndentation(); //$NON-NLS-1$
-				it.newLine().append("if (this.").append(field.getSimpleName()).append(" != null)").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("if (this.").append(field.getSimpleName()).append(" != null)").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine().append("return false;").decreaseIndentation().decreaseIndentation(); //$NON-NLS-1$
 				it.newLine().append("} else if (this."); //$NON-NLS-1$
 				it.append(field.getSimpleName()).append(" == null)").increaseIndentation(); //$NON-NLS-1$
@@ -3585,7 +3587,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.newLine().append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(" != null && other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(".").append(convertName).append("Value() != this.").append(field.getSimpleName()); //$NON-NLS-1$ //$NON-NLS-2$
-					it.append(".").append(convertName).append("Value())").increaseIndentation(); //$NON-NLS-1$
+					it.append(".").append(convertName).append("Value())").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				} else {
 					it.newLine().append("if (!").append(java.util.Objects.class); //$NON-NLS-1$
@@ -3596,7 +3598,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				}
 			}
 
-			@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity", "synthetic-access"})
+			@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity"})
 			private void generateToEqualForField(ITreeAppendable it, JvmField field) {
 				final TypeReferences refs = SARLJvmModelInferrer.this.typeReferences;
 				final JvmTypeReference type = field.getType();
@@ -3642,17 +3644,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					generateToEqualForObjectNullity(it, field);
 					final String conv;
 					if (refs.is(type, Byte.class)) {
-						conv = "byte";
+						conv = "byte"; //$NON-NLS-1$
 					} else if (refs.is(type, Short.class)) {
-						conv = "short";
+						conv = "short"; //$NON-NLS-1$
 					} else if (refs.is(type, Integer.class)) {
-						conv = "int";
+						conv = "int"; //$NON-NLS-1$
 					} else if (refs.is(type, Long.class)) {
-						conv = "long";
+						conv = "long"; //$NON-NLS-1$
 					} else if (refs.is(type, Character.class)) {
-						conv = "char";
+						conv = "char"; //$NON-NLS-1$
 					} else if (refs.is(type, Boolean.class)) {
-						conv = "boolean";
+						conv = "boolean"; //$NON-NLS-1$
 					} else {
 						conv = null;
 					}

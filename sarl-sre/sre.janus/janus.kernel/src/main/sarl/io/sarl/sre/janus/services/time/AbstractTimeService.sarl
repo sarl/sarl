@@ -20,8 +20,8 @@
  */
 package io.sarl.sre.janus.services.time
 
+import io.sarl.api.util.SmartListenerCollection
 import io.sarl.sre.janus.services.AbstractSreService
-import io.sarl.util.SmartListenerCollection
 
 /**
  * Time service based on the JRE standard time.

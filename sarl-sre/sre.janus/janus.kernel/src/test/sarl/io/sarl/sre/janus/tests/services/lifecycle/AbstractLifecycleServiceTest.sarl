@@ -21,19 +21,19 @@
 
 package io.sarl.sre.janus.tests.services.lifecycle
 
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.OutParameter
+import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
+import io.sarl.lang.core.util.ConcurrentCollection
+import io.sarl.lang.core.util.OutParameter
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ExternalContextMemberListener

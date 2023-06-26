@@ -56,7 +56,6 @@ import org.osgi.framework.Version;
 
 /** Set of utility classes that provide additional assertion functions.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -77,7 +76,7 @@ public final class TestAssertions {
 	 */
 	public static void assertEpsilonEquals(double expected, double actual) {
 		if (!TestUtils.isEpsilonEquals(expected, actual, true)) {
-			throw new AssertionFailedError("Values are not equal.", Double.toString(expected), Double.toString(actual));
+			throw new AssertionFailedError("Values are not equal.", Double.toString(expected), Double.toString(actual)); //$NON-NLS-1$
 		}
 	}
 
@@ -101,7 +100,7 @@ public final class TestAssertions {
 		}
 		final Throwable cause = cause0;
 		assertTrue(expected.isInstance(cause0),
-				() -> "Unexpected type of exception's cause. Expected: " + expected.getName() + ". Actual: "
+				() -> "Unexpected type of exception's cause. Expected: " + expected.getName() + ". Actual: " //$NON-NLS-1$ //$NON-NLS-2$
 						+ cause.getClass().getName());
 		return expected.cast(cause0);
 	}
@@ -112,7 +111,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNullOrEmpty(Iterable<?> actual) {
 		if (actual != null) {
-			assertFalse(actual.iterator().hasNext(), "Not null nor empty");
+			assertFalse(actual.iterator().hasNext(), "Not null nor empty"); //$NON-NLS-1$
 		}
 	}
 
@@ -122,7 +121,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNullOrEmpty(String actual) {
 		if (!Strings.isNullOrEmpty(actual)) {
-			fail("Not null nor empty. Actual value: " + actual);
+			fail("Not null nor empty. Actual value: " + actual); //$NON-NLS-1$
 		}
 	}
 
@@ -132,7 +131,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNotNullOrEmpty(String actual) {
 		if (Strings.isNullOrEmpty(actual)) {
-			fail("Null or empty.");
+			fail("Null or empty."); //$NON-NLS-1$
 		}
 	}
 
@@ -211,21 +210,21 @@ public final class TestAssertions {
 
 		if (!unexpectedElements.isEmpty()) {
 			if (!le.isEmpty()) {
-				final String emsg = message != null ? "\n" + message.get() : "";
+				final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 				throw new AssertionFailedError(
-						"Unexpected elements:\n" + unexpectedElements.toString()
-						+ "\nExpecting the following elements:\n" + le.toString() + emsg,
+						"Unexpected elements:\n" + unexpectedElements.toString() //$NON-NLS-1$
+						+ "\nExpecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 						toString(expected),
 						toString(actual));
 			}
-			final String emsg = message != null ? "\n" + message.get() : "";
+			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AssertionFailedError(
-					"Unexpected elements:\n" + unexpectedElements.toString() + emsg,
+					"Unexpected elements:\n" + unexpectedElements.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
 		} else if (!le.isEmpty()) {
-			final String emsg = message != null ? "\n" + message.get() : "";
-			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg,
+			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
 		}
@@ -265,8 +264,8 @@ public final class TestAssertions {
 		}
 
 		if (!le.isEmpty()) {
-			final String emsg = message != null ? "\n" + message.get() : "";
-			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg,
+			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
 		}
@@ -278,16 +277,16 @@ public final class TestAssertions {
 			final List<String> elements = new ArrayList<>();
 			for (final Object obj : iterable) {
 				if (obj == null) {
-					elements.add("null");
+					elements.add("null"); //$NON-NLS-1$
 				} else {
-					elements.add("<" + obj.toString() + ">");
+					elements.add("<" + obj.toString() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			final String[] tab = new String[elements.size()];
 			elements.toArray(tab);
 			Arrays.sort(tab);
 			for (final String obj : tab) {
-				buf.append(obj).append("\n");
+				buf.append(obj).append("\n"); //$NON-NLS-1$
 			}
 		}
 		return buf.toString();
@@ -322,7 +321,7 @@ public final class TestAssertions {
 		}
 
 		if (!le.isEmpty()) {
-			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
+			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" + //$NON-NLS-1$ //$NON-NLS-2$
 					Iterables.toString(actual));
 		}
 	}
@@ -353,13 +352,13 @@ public final class TestAssertions {
 			Object ac = it1.next();
 			it1.remove();
 			if (!le.remove(ac.toString())) {
-				fail("Unexpecting element: " + ac);
+				fail("Unexpecting element: " + ac); //$NON-NLS-1$
 				return;
 			}
 		}
 
 		if (!le.isEmpty()) {
-			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
+			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" + //$NON-NLS-1$ //$NON-NLS-2$
 					Iterables.toString(actual));
 		}
 	}
@@ -412,9 +411,9 @@ public final class TestAssertions {
 	public static void assertTrueProperty(String name) {
 		String v = System.getProperty(name);
 		if (Strings.isNullOrEmpty(v)) {
-			fail("The property '" + name + "' is not defined.");
+			fail("The property '" + name + "' is not defined."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		assertTrueStr(v, () -> "The property '" + name + "' is expected to be true.");
+		assertTrueStr(v, () -> "The property '" + name + "' is expected to be true."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Assert if the system property with the given name has
@@ -425,9 +424,9 @@ public final class TestAssertions {
 	public static void assertFalseProperty(String name) {
 		String v = System.getProperty(name);
 		if (Strings.isNullOrEmpty(v)) {
-			fail("The property '" + name + "' is not defined.");
+			fail("The property '" + name + "' is not defined."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		assertFalseStr(v, () -> "The property '" + name + "' is expected to be true.");
+		assertFalseStr(v, () -> "The property '" + name + "' is expected to be true."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Assert if the system property with the given name has
@@ -438,7 +437,7 @@ public final class TestAssertions {
 	public static void assertNullProperty(String name) {
 		String v = System.getProperty(name);
 		if (!Strings.isNullOrEmpty(v)) {
-			fail("The property '" + name + "' is expected to be undefined; but is has the value: " + v);
+			fail("The property '" + name + "' is expected to be undefined; but is has the value: " + v); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -454,7 +453,7 @@ public final class TestAssertions {
 		} else {
 			String v = System.getProperty(name);
 			if (Strings.isNullOrEmpty(v)) {
-				fail("The property '" + name + "' is expected to be defined." + v);
+				fail("The property '" + name + "' is expected to be defined." + v); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			assertEquals(value, v);
 		}
@@ -736,8 +735,8 @@ public final class TestAssertions {
 			++i;
 		}
 		if (i < expectedIdentifiers.length) {
-			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedIdentifiers)
-			+ "Actual: " + Iterables.toString(actualReferences));
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedIdentifiers) //$NON-NLS-1$
+			+ "Actual: " + Iterables.toString(actualReferences)); //$NON-NLS-1$
 		}
 	}
 
@@ -749,10 +748,10 @@ public final class TestAssertions {
 	 */
 	public static void assertTypeReferenceIdentifier(JvmTypeReference actualReference, String expectedIdentifier) {
 		if (actualReference == null) {
-			assertEquals("void", expectedIdentifier);
+			assertEquals("void", expectedIdentifier); //$NON-NLS-1$
 			return;
 		}
-		assertEquals(expectedIdentifier, actualReference.getIdentifier(), () -> "Unexpected type reference");
+		assertEquals(expectedIdentifier, actualReference.getIdentifier(), () -> "Unexpected type reference"); //$NON-NLS-1$
 	}
 
 	/** Assert that the given actual formal parameters have the expected names.
@@ -767,12 +766,12 @@ public final class TestAssertions {
 		for (final XtendParameter parameter : actualFormalParameters) {
 			final int ii = i;
 			assertEquals(parameter.getName(), expectedParameterNames[i],
-					() -> "Unexpected parameter: " + parameter + ". Expected: " + expectedParameterNames[ii]);
+					() -> "Unexpected parameter: " + parameter + ". Expected: " + expectedParameterNames[ii]); //$NON-NLS-1$ //$NON-NLS-2$
 			++i;
 		}
 		if (i < expectedParameterNames.length) {
-			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterNames)
-			+ "Actual: " + Iterables.toString(actualFormalParameters));
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterNames) //$NON-NLS-1$
+			+ "Actual: " + Iterables.toString(actualFormalParameters)); //$NON-NLS-1$
 		}
 	}
 
@@ -791,8 +790,8 @@ public final class TestAssertions {
 			++i;
 		}
 		if (i < expectedParameterTypes.length) {
-			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterTypes)
-			+ "Actual: " + Iterables.toString(actualFormalParameters));
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterTypes) //$NON-NLS-1$
+			+ "Actual: " + Iterables.toString(actualFormalParameters)); //$NON-NLS-1$
 		}
 	}
 
@@ -807,7 +806,7 @@ public final class TestAssertions {
 			lastParam = iterator.next();
 		}
 		if (lastParam == null || !lastParam.isVarArg()) {
-			fail("The last parameter is expected to be a variadic parameter.");
+			fail("The last parameter is expected to be a variadic parameter."); //$NON-NLS-1$
 		}
 	}
 
@@ -822,7 +821,7 @@ public final class TestAssertions {
 			lastParam = iterator.next();
 		}
 		if (lastParam != null && lastParam.isVarArg()) {
-			fail("The last parameter is expected to be not a variadic parameter.");
+			fail("The last parameter is expected to be not a variadic parameter."); //$NON-NLS-1$
 		}
 	}
 
@@ -833,12 +832,12 @@ public final class TestAssertions {
 	 * @param expectedValue the expected value.
 	 */
 	public static void assertXExpression(XExpression actualExpression, Class<? extends XExpression> expectedType, String expectedValue) {
-		assertTrue(expectedType.isInstance(actualExpression), () -> "Expecting type of expression: " + expectedType.getName());
+		assertTrue(expectedType.isInstance(actualExpression), () -> "Expecting type of expression: " + expectedType.getName()); //$NON-NLS-1$
 		if (XNumberLiteral.class.isAssignableFrom(expectedType)) {
-			assertEquals(expectedValue, ((XNumberLiteral) actualExpression).getValue(), () -> "Invalid value.");
+			assertEquals(expectedValue, ((XNumberLiteral) actualExpression).getValue(), () -> "Invalid value."); //$NON-NLS-1$
 		}
 		else if (XStringLiteral.class.isAssignableFrom(expectedType)) {
-			assertEquals(expectedValue, ((XStringLiteral) actualExpression).getValue(), () -> "Invalid value.");
+			assertEquals(expectedValue, ((XStringLiteral) actualExpression).getValue(), () -> "Invalid value."); //$NON-NLS-1$
 		}
 		else if (XNullLiteral.class.isAssignableFrom(expectedType)) {
 			//
@@ -847,8 +846,8 @@ public final class TestAssertions {
 
 	/** Assert the actual object is a not-null instance of the given type.
 	 *
-	 * @param actualExpression the expected type.
-	 * @param expectedType the instance.
+	 * @param expected the expected type.
+	 * @param actual the instance.
 	 */
 	public static void assertInstanceOf(Class<?> expected, Object actual) {
 		assertInstanceOf(expected, actual, null);
@@ -856,14 +855,14 @@ public final class TestAssertions {
 
 	/** Assert the actual object is a not-null instance of the given type.
 	 *
-	 * @param actualExpression the expected type.
-	 * @param expectedType the instance.
+	 * @param expected the expected type.
+	 * @param actual the instance.
 	 * @param message the error message.
 	 */
 	public static void assertInstanceOf(Class<?> expected, Object actual, Supplier<String> message) {
 		String m = (message == null) ? null : message.get();
 		if (Strings.isNullOrEmpty(m)) {
-			m = "Unexpected object type.";
+			m = "Unexpected object type."; //$NON-NLS-1$
 		}
 		if (actual == null) {
 			fail(m);
@@ -885,17 +884,15 @@ public final class TestAssertions {
 			return;
 		}
 		if (expected == null) {
-			fail("Version not null");
-		}
-		if (actual == null) {
-			fail("Unexpected null value");
-		}
-		if (expected.getMajor() == actual.getMajor()
+			fail("Version not null"); //$NON-NLS-1$
+		} else if (actual == null) {
+			fail("Unexpected null value"); //$NON-NLS-1$
+		} else if (expected.getMajor() == actual.getMajor()
 				&& expected.getMinor() == actual.getMinor()
 				&& expected.getMicro() == actual.getMicro()) {
 			if (!Strings.isNullOrEmpty(expected.getQualifier())) {
 				final String expectedQualifier = expected.getQualifier();
-				if ("qualifier".equals(expectedQualifier)) {
+				if ("qualifier".equals(expectedQualifier)) { //$NON-NLS-1$
 					if (!Strings.isNullOrEmpty(actual.getQualifier())) {
 						return;
 					}
@@ -906,8 +903,9 @@ public final class TestAssertions {
 			} else {
 				return;
 			}
+		} else {
+			throw new AssertionFailedError("Not same versions", expected.toString(), actual.toString()); //$NON-NLS-1$
 		}
-		throw new AssertionFailedError("Not same versions", expected.toString(), actual.toString());
 	}
 
 	/** Assert that the given issue is inside the list of issues.
@@ -934,13 +932,13 @@ public final class TestAssertions {
 				}
 			}
 		}
-		StringBuilder message = new StringBuilder("Expected ");
+		StringBuilder message = new StringBuilder("Expected "); //$NON-NLS-1$
 		message.append(severity);
-		message.append(" '");
+		message.append(" '"); //$NON-NLS-1$
 		message.append(code);
-		message.append("' on ");
+		message.append("' on "); //$NON-NLS-1$
 		message.append(objectType.getName());
-		message.append(" but got\n");
+		message.append(" but got\n"); //$NON-NLS-1$
 		TestIssues.getIssuesAsString(model, issues, message);
 		fail(message.toString());
 	}
@@ -952,12 +950,12 @@ public final class TestAssertions {
 	 * @param codes the list of the error codes to be ignored.
 	 * @since 0.7
 	 */
-	public void assertAnyError(ValidationTestHelper validationHelper, EObject source, String... codes) {
+	public static void assertAnyError(ValidationTestHelper validationHelper, EObject source, String... codes) {
 		assert validationHelper != null;
 		final List<String> codeSet = Arrays.asList(codes);
 		final List<Issue> validate = validationHelper.validate(source);
 		if (!Iterables.any(validate, input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode()))) {
-			fail("Expected an error, but got nothing");
+			fail("Expected an error, but got nothing"); //$NON-NLS-1$
 		}
 	}
 
@@ -968,13 +966,13 @@ public final class TestAssertions {
 	 * @param codes the list of the error codes to be ignored.
 	 * @since 0.7
 	 */
-	public void assertNoErrorsExcept(ValidationTestHelper validationHelper, EObject source, String... codes) {
+	public static void assertNoErrorsExcept(ValidationTestHelper validationHelper, EObject source, String... codes) {
 		assert validationHelper != null;
 		final List<String> codeSet = Arrays.asList(codes);
 		final List<Issue> validate = validationHelper.validate(source);
 		final Predicate<Issue> pred = input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode());
 		if (Iterables.any(validate, pred)) {
-			fail("Expected no error, found: " + Iterables.filter(validate, pred));
+			fail("Expected no error, found: " + Iterables.filter(validate, pred)); //$NON-NLS-1$
 		}
 	}
 
@@ -1000,7 +998,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNoMoreIssues(List<Issue> issues, EObject model) {
 		if (!issues.isEmpty()) {
-			StringBuilder message = new StringBuilder("Expecting no issue but got\n");
+			StringBuilder message = new StringBuilder("Expecting no issue but got\n"); //$NON-NLS-1$
 			TestIssues.getIssuesAsString(model, issues, message);
 			fail(message.toString());
 		}
@@ -1018,7 +1016,7 @@ public final class TestAssertions {
 			for (int j = i + 1; j < len; ++j) {
 				final Object obj2 = collection.get(j);
 				if (Objects.equal(obj1, obj2)) {
-					fail("Same objects at positions " + i + " and " + j);
+					fail("Same objects at positions " + i + " and " + j); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}
@@ -1030,11 +1028,12 @@ public final class TestAssertions {
 	 * @param expected the type of the expected exception.
 	 * @param code the code to run.
 	 * @return the exception if it is thrown.
+	 * @throws Exception 
 	 */
 	public static <T extends Throwable> T assertException(Class<T> expected, Code code) throws Exception {
 		try {
 			code.run();
-			fail("Expecting exception of type " + expected.getName());
+			fail("Expecting exception of type " + expected.getName()); //$NON-NLS-1$
 			return null;
 		} catch (AssertionFailedError innerException) {
 			// See fail above
@@ -1042,7 +1041,7 @@ public final class TestAssertions {
 		} catch (Throwable ex) {
 			final Throwable cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
-				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause);
+				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause); //$NON-NLS-1$ //$NON-NLS-2$
 				return null;
 			}
 			return expected.cast(cause);
@@ -1056,16 +1055,17 @@ public final class TestAssertions {
 	 * @param expected the type of the expected exception.
 	 * @param code the code to run.
 	 * @return the exception checker.
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> ExceptionChecker<T> whenException(Class<T> expected, Code code) throws Exception {
 		try {
 			code.run();
-			fail("Expecting exception of type " + expected.getName() + ", but no exception is known");
+			fail("Expecting exception of type " + expected.getName() + ", but no exception is known"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Throwable ex) {
 			final Throwable cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
-				fail("Expecting exception of type " + expected.getName() + ", but get " + cause.getClass().getName(), cause);
+				fail("Expecting exception of type " + expected.getName() + ", but get " + cause.getClass().getName(), cause); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				return new ExceptionChecker<>((T) cause);
 			}
@@ -1097,7 +1097,7 @@ public final class TestAssertions {
 	public static void assertEqualsExceptNewLines(String expected, String actual) {
 		assertEqualsExceptNewLines(expected, actual, () -> {
 			final String diff = TestUtils.differences(expected, actual);
-			return "Not equal. " + diff;
+			return "Not equal. " + diff; //$NON-NLS-1$
 		});
 	}
 
@@ -1164,11 +1164,12 @@ public final class TestAssertions {
 		
 		/** Run the given check code.
 		 *
+		 * @param code the value to check.
 		 * @throws Exception any exception
 		 */
 		public void verify(ExceptionCode<T> code) throws Exception {
 			assertNotNull(code);
-			code.run(exception);
+			code.run(this.exception);
 		}
 
 	}

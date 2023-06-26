@@ -23,7 +23,7 @@ package io.sarl.sre.janus.services.lifecycle
 import com.google.common.util.concurrent.Service
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.services.context.Context
 import java.util.EventListener
 import java.util.UUID

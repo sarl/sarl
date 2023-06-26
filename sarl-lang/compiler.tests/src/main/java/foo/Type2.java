@@ -23,11 +23,11 @@ package foo;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.DefaultValueSource;
-import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.annotation.SarlSourceCode;
-import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValueSource;
+import io.sarl.lang.core.annotation.DefaultValueUse;
+import io.sarl.lang.core.annotation.SarlSourceCode;
+import io.sarl.lang.core.annotation.SyntheticMember;
 
 /**
  * @author $Author: sgalland$
@@ -35,6 +35,7 @@ import io.sarl.lang.annotation.SyntheticMember;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public abstract class Type2 {
 	@DefaultValueSource
 	public abstract void fct0(@DefaultValue("foo.Type2#FCT0_0") final String param0, final int param1);

@@ -30,8 +30,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.core.annotation.SarlSpecification;
 
 
 /**

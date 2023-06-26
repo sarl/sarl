@@ -48,13 +48,18 @@ public final class SARLRuntimeModule implements BQModule {
 	 *
 	 * @since 0.13
 	 */
-	public static final String SARL_INJECTOR_NAME = "io.sarl.lang.compiler";
+	public static final String SARL_INJECTOR_NAME = "io.sarl.lang.compiler"; //$NON-NLS-1$
 
 	@Override
 	public void configure(Binder binder) {
 		//
 	}
 
+	/** Provides the SARL injector that is based on Google Guice (not on Bootique injector). 
+	 * 
+	 * @return the Google Guice injector.
+	 */
+	@SuppressWarnings("static-method")
 	@Singleton
 	@Provides
 	@Named(SARL_INJECTOR_NAME)
@@ -63,6 +68,13 @@ public final class SARLRuntimeModule implements BQModule {
 		return injector;
 	}
 
+	/** Provides the SARL compiler that could be invoked programmatically.
+	 *
+	 * @param sarlInjector the SARL injector.
+	 * @return the SARL compiler.
+	 * @see #providesSarlCompilerInjector()
+	 */
+	@SuppressWarnings("static-method")
 	@Singleton
 	@Provides
 	public SarlBatchCompiler providesSarlCompiler(@Named(SARL_INJECTOR_NAME) Provider<Injector> sarlInjector) {

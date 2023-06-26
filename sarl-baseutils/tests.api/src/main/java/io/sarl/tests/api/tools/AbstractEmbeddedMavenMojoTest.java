@@ -61,12 +61,12 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		org.apache.maven.it.Verifier verifier = new org.apache.maven.it.Verifier(baseDir.getAbsolutePath(), true);
 		verifier.setAutoclean(false);
 		verifier.setForkJvm(false);
-		for (final String arg : command.stream().filter(it -> it.startsWith("-")).toList()) {
+		for (final String arg : command.stream().filter(it -> it.startsWith("-")).toList()) { //$NON-NLS-1$
 			verifier.addCliOption(arg);
 		}
 		
 		try {
-			verifier.executeGoals(command.stream().filter(it -> !it.startsWith("-")).toList());
+			verifier.executeGoals(command.stream().filter(it -> !it.startsWith("-")).toList()); //$NON-NLS-1$
 		} catch (VerificationException ex) {
 			//
 		}
@@ -100,6 +100,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		 *
 		 * @throws Exception the command was interrupted.
 		 */
+		@Override
 		public void waitFor() throws Exception {
 			if (this.outputOnConsole) {
 				this.mavenVerifier.displayStreamBuffers();
@@ -110,6 +111,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		 *
 		 * @throws Exception if the error log cannot be read.
 		 */
+		@Override
 		public void assertErrorFreeLog() throws Exception {
 			final List<String> lines;
 			if (this.outputOnConsole) {
@@ -137,6 +139,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		 * @param expectedErrorMessage the expected error message that must appear on the error console of Maven.
 		 * @throws Exception if the error log cannot be read.
 		 */
+		@Override
 		public void assertErrorLog(String expectedErrorMessage) throws Exception {
 			this.mavenVerifier.verifyTextInLog(expectedErrorMessage);
 		}

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -119,9 +119,9 @@ public class Bug590Test extends AbstractSarlTest {
 		getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 				"package io.sarl.lang.tests.bug590;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -177,9 +177,9 @@ public class Bug590Test extends AbstractSarlTest {
 			assertEquals(multilineString(
 				"package io.sarl.lang.tests.bug590;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -222,9 +222,9 @@ public class Bug590Test extends AbstractSarlTest {
 			assertEquals(multilineString(
 					"package io.sarl.lang.tests.bug590;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.Locale;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -276,9 +276,9 @@ public class Bug590Test extends AbstractSarlTest {
 			assertEquals(multilineString(
 				"package io.sarl.lang.tests.bug590;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -321,9 +321,9 @@ public class Bug590Test extends AbstractSarlTest {
 			assertEquals(multilineString(
 					"package io.sarl.lang.tests.bug590;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.Locale;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -385,9 +385,9 @@ public class Bug590Test extends AbstractSarlTest {
 		getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 				"package io.sarl.lang.tests.bug590;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",

@@ -27,9 +27,9 @@ import io.bootique.command.CommandOutcome
 import io.bootique.config.ConfigurationFactory
 import io.bootique.di.Injector
 import io.sarl.apputils.bootiqueapp.config.LogConfig
-import io.sarl.bootstrap.SREBootstrap
-import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.SREBootstrap
+import io.sarl.lang.core.SREListener
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.Kernel
 import io.sarl.sre.janus.boot.SreMain

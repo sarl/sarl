@@ -43,12 +43,12 @@ public class LogConfig implements Comparable<LogConfig> {
 	/** 
 	 * Prefix for the configuration entries of the logger modules.
 	 */
-	public static final String PREFIX = "log";
+	public static final String PREFIX = "log"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the logging level.
 	 */
-	public static final String LEVEL = PREFIX + ".level";
+	public static final String LEVEL = PREFIX + ".level"; //$NON-NLS-1$
 
 	/** 
 	 * Default value for the property that contains the logging level.
@@ -58,11 +58,11 @@ public class LogConfig implements Comparable<LogConfig> {
 	/**
 	 * Name of the property that contains the log format.
 	 */
-	public static final String LOG_FORMAT = PREFIX + ".logFormat";
+	public static final String LOG_FORMAT = PREFIX + ".logFormat"; //$NON-NLS-1$
 
 	/** Default conversion pattern for the logger.
 	 */
-	public static final String DEFAULT_LOG_FORMAT = "%-5p %m%n";
+	public static final String DEFAULT_LOG_FORMAT = "%-5p %m%n"; //$NON-NLS-1$
 
 	private Level level; 
 

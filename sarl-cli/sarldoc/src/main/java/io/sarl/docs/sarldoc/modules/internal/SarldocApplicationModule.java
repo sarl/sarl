@@ -43,12 +43,12 @@ import io.sarl.docs.sarldoc.Constants;
 import io.sarl.docs.sarldoc.commands.SarldocCommand;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.core.util.CliUtilities;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.tools.DefaultPathDetector;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
-import io.sarl.lang.util.CliUtilities;
 
 /** Module for configuring the sarldoc application information.
  *

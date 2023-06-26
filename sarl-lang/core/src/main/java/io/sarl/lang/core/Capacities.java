@@ -25,8 +25,6 @@ import java.lang.reflect.Constructor;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.bootstrap.SREClassLoader;
-
 /** Utility functions related to the capacities.
  *
  * @author $Author: sgalland$

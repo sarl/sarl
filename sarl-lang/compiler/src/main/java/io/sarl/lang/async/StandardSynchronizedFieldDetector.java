@@ -57,9 +57,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.util.ConcurrentCollection;
-import io.sarl.lang.util.ConcurrentList;
-import io.sarl.lang.util.ConcurrentSet;
+import io.sarl.lang.core.util.ConcurrentCollection;
+import io.sarl.lang.core.util.ConcurrentList;
+import io.sarl.lang.core.util.ConcurrentSet;
 import io.sarl.lang.util.Utils;
 
 /**

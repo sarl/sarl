@@ -20,10 +20,10 @@
  */
 package io.sarl.api.naming.name
 
+import io.sarl.lang.core.annotation.PrivateAPI
 import java.net.URI
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
-import io.sarl.lang.annotation.PrivateAPI
 
 /** 
  * This class represents a context name.

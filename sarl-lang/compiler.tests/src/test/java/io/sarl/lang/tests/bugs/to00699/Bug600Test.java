@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -211,8 +211,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -254,8 +254,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -297,8 +297,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -340,8 +340,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -383,8 +383,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -426,8 +426,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -469,8 +469,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -512,8 +512,8 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"",
@@ -704,9 +704,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -755,9 +755,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -806,9 +806,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -857,9 +857,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -908,9 +908,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -959,9 +959,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1010,9 +1010,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -1061,9 +1061,9 @@ public class Bug600Test {
 			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.awt.event.MouseEvent;",
 					"import java.awt.event.MouseMotionListener;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",

@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.itests.runtime.bugs.to1000.bug872.mocks
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Schedules
 
 agent InnerAgent {
 

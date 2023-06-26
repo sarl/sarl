@@ -71,7 +71,7 @@ public class JulPatternFormatter extends Formatter {
 			source.append(scn);
 			final String smn = record.getSourceMethodName();
 			if (!Strings.isNullOrEmpty(smn)) {
-				source.append(" ");
+				source.append(" "); //$NON-NLS-1$
 				source.append(smn);
 			}
 		} else {
@@ -87,7 +87,7 @@ public class JulPatternFormatter extends Formatter {
 			}
 			throwable = sw.toString();
 		} else {
-			throwable = "";
+			throwable = ""; //$NON-NLS-1$
 		}
 		return String.format(
 				this.pattern,
@@ -103,6 +103,7 @@ public class JulPatternFormatter extends Formatter {
 	 * @param logName the log name to filter.
 	 * @return the displayable log name.
 	 */
+	@SuppressWarnings("static-method")
 	protected String filterLogName(String logName) {
 		return logName;
 	}

@@ -24,7 +24,7 @@ package io.sarl.lang.validation;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
 
-import io.sarl.lang.util.SarlUtils;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 
 /** Validator of the feature names.

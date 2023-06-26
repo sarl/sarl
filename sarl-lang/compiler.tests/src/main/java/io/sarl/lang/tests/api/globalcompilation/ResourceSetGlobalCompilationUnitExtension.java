@@ -63,11 +63,11 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 		if (isAnnotated(context.getTestMethod(), GlobalCompilationTestContribution.class)) {
 			final Method meth = context.getTestMethod().get();
 			if (isStatic(meth)) {
-				throw new IllegalStateException("The massive compilation function must not have the static modifier");
+				throw new IllegalStateException("The massive compilation function must not have the static modifier"); //$NON-NLS-1$
 			}
 			if (meth.getParameterCount() != 1
 					|| !meth.getParameters()[0].getType().isAssignableFrom(ResourceSetGlobalCompilationContext.class)) {
-				throw new IllegalStateException("Invalid parameters for the massive compilation function");
+				throw new IllegalStateException("Invalid parameters for the massive compilation function"); //$NON-NLS-1$
 			}
 			// Ensure the compilation context is alive.
 			try {

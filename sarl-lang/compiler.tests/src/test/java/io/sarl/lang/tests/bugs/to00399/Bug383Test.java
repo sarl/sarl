@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -79,15 +79,15 @@ public class Bug383Test {
 		@Test
 		public void compilation() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.DefaultValue;",
-					"import io.sarl.lang.annotation.DefaultValueSource;",
-					"import io.sarl.lang.annotation.DefaultValueUse;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSourceCode;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.DefaultValue;",
+					"import io.sarl.lang.core.annotation.DefaultValueSource;",
+					"import io.sarl.lang.core.annotation.DefaultValueUse;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSourceCode;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",

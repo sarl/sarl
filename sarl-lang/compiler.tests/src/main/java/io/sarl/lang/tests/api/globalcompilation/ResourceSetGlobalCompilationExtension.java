@@ -73,6 +73,11 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 	@Inject
 	private CompilationTestHelper compiler;
 
+	/** Create the dynamic tests suite.
+	 *
+	 * @return the dynamic tests.
+	 */
+	@SuppressWarnings("static-method")
 	@TestFactory
 	public List<DynamicTest> createDynamicTests() {
 		// FIXME Reimplement global compilation test tools
@@ -86,7 +91,7 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 			Class<?> type = context.getRequiredTestClass();
 			if (!Modifier.isStatic(type.getModifiers())) {
 				if (type.isMemberClass()) {
-					throw new IllegalStateException("Member class annoted with MassiveCompilationExtension extension must be declared with static modifier.");
+					throw new IllegalStateException("Member class annoted with MassiveCompilationExtension extension must be declared with static modifier."); //$NON-NLS-1$
 				}
 			}
 			injectMembers(this, context);
@@ -132,15 +137,15 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 							final String actual = it.getGeneratedCode(entry.getKey());
 							final String functionName = entry.getValue().getKey();
 							final String expected = entry.getValue().getValue();
-							final DynamicTest test = dynamicTest("Java compilation - " + functionName, () -> {
+							final DynamicTest test = dynamicTest("Java compilation - " + functionName, () -> { //$NON-NLS-1$
 								assertEqualsExceptNewLines(expected, actual, () -> {
 									final String diff = TestUtils.differences(expected, actual);
 									if (!Strings.isEmpty(functionName)) {
-										return functionName + ", RAW DIFF = " + diff;
+										return functionName + ", RAW DIFF = " + diff; //$NON-NLS-1$
 									}
 									final int index1 = id.lastIndexOf('.');
 									final int index0 = id.lastIndexOf('.', index1 - 1) + 1;
-									return entry.getKey().substring(index0, index1) + ", RAW DIFF = " + diff;
+									return entry.getKey().substring(index0, index1) + ", RAW DIFF = " + diff; //$NON-NLS-1$
 								});
 							});
 							dynamicTestResults.add(test);
@@ -153,7 +158,7 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 					}
 				}
 			} else {
-				throw new IllegalStateException("no massive compilation context found");
+				throw new IllegalStateException("no massive compilation context found"); //$NON-NLS-1$
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

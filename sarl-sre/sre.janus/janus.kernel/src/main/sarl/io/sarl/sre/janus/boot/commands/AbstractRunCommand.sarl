@@ -23,10 +23,10 @@ package io.sarl.sre.janus.boot.commands
 import io.bootique.cli.Cli
 import io.bootique.command.CommandWithMetadata
 import io.bootique.meta.application.CommandMetadata
-import io.sarl.bootstrap.SRE
-import io.sarl.bootstrap.SREBootstrap
-import io.sarl.bootstrap.SREClassLoader
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREBootstrap
+import io.sarl.lang.core.SREClassLoader
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import java.util.List

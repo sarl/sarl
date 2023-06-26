@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: uses")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class CapacityUsesSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void one_one() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"uses foo.ecore.SubCapacity",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class CapacityUsesSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void one_two() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"uses foo.ecore.SubCapacity, foo.ecore.SubCapacity2",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity, foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,10 +62,10 @@ public class CapacityUsesSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void two_one() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"uses foo.ecore.SubCapacity",
-				"uses foo.ecore.SubCapacity2",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -72,10 +73,10 @@ public class CapacityUsesSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void two_two() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"uses foo.ecore.SubCapacity, foo.ecore.SubCapacity2",
-				"uses foo.ecore.SubCapacity3",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity, foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"uses foo.ecore.SubCapacity3", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -47,7 +47,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void privateFunctionPrivateCaller_01() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
 				"class Accessor {",
@@ -59,10 +59,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -87,7 +87,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void privateFunctionPrivateCaller_02() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
 				"@PrivateAPI(isCallerOnly=true)",
@@ -99,10 +99,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@PrivateAPI(isCallerOnly = true)",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -127,7 +127,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void privateFunctionPrivateCaller_03() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
 				"class Accessor {",
@@ -139,10 +139,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject2;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
@@ -167,7 +167,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void privateFunctionPrivateCaller_04() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
 				"@PrivateAPI(isCallerOnly=true)",
@@ -179,10 +179,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject2;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@PrivateAPI(isCallerOnly = true)",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -207,7 +207,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void ambigousPrivateAPI_02() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
 				"",
@@ -220,10 +220,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject2;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@PrivateAPI",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -248,7 +248,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Test
 	public void ambigousPrivateAPI_03() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
 				"",
@@ -261,10 +261,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"");
 		final String expectedAccessor = multilineString(
 				"import foo.PrivateAPIObject2;",
-				"import io.sarl.lang.annotation.PrivateAPI;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.annotation.PrivateAPI;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"",
 				"@PrivateAPI(isCallerOnly = true)",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

@@ -29,7 +29,7 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 
 /**
  * Command for showing the sarlc version.
@@ -75,6 +75,7 @@ public class VersionCommand extends CommandWithMetadata {
 	 * @return the message.
 	 * @since 0.11
 	 */
+	@SuppressWarnings("static-method")
 	protected String getVersionMessage() {
 		return MessageFormat.format(Messages.VersionCommand_1,
 				SARLVersion.SARL_RELEASE_VERSION, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING,

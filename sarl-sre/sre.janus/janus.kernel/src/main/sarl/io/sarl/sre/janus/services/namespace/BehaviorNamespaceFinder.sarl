@@ -20,11 +20,11 @@
  */
 package io.sarl.sre.janus.services.namespace
 
+import io.sarl.api.core.Behaviors
 import io.sarl.api.naming.name.BehaviorName
-import io.sarl.core.Behaviors
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.services.context.ContextService
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -21,16 +21,16 @@
 
 package io.sarl.sre.janus.services.context
 
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
-import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.OutParameter
+import io.sarl.lang.core.util.ConcurrentCollection
+import io.sarl.lang.core.util.OutParameter
 import io.sarl.sre.janus.KernelScope
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.logging.LoggingService

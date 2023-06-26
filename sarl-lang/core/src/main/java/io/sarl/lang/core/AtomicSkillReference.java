@@ -23,7 +23,7 @@ package io.sarl.lang.core;
 
 import java.io.Serializable;
 
-import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.PrivateAPI;
 
 /** A reference to a skill that could be clear dynamically and that is managing the calls to the
  * {@link Skill#install()}, {@link Skill#prepareUninstallation()} and {@link Skill#uninstall()}
@@ -119,7 +119,7 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 			return oref == null;
 		}
 		if (oref == null) {
-			return ref == null;
+			return false;
 		}
 		return ref.equals(oref);
 	}

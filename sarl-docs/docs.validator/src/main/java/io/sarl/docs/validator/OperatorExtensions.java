@@ -54,9 +54,9 @@ import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XUnaryOperation;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 
+import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 
 /** Extended Functions for AST support for writing facts within the documentation.

@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to1000.bug981.mocks
 
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Schedules
 
 agent MyAgent1 {
 

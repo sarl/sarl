@@ -52,8 +52,8 @@ import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.SarlSourceCode;
+import io.sarl.lang.core.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.SarlSourceCode;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
@@ -117,6 +117,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * @return the identifier.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected String toIdentifier(LightweightTypeReference reference) {
 		if (reference.isFunctionType()) {
 			return reference.getIdentifier();
@@ -544,7 +545,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		} else {
 			b.append(Utils.createNameForHiddenDefaultValueFunction(id));
 		}
-		b.append("()");
+		b.append("()"); //$NON-NLS-1$
 		return b.toString();
 	}
 

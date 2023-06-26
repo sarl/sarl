@@ -31,7 +31,7 @@ import java.io.PrintStream;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.arakhne.afc.vmutil.OperatingSystem;
 
-import io.sarl.lang.util.CliUtilities;
+import io.sarl.lang.core.util.CliUtilities;
 
 /** Functions for shell.
  *

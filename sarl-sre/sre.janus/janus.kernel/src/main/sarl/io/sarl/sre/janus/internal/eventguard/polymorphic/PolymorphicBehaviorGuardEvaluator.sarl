@@ -21,9 +21,9 @@
 
 package io.sarl.sre.janus.internal.eventguard.polymorphic
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import java.util.Collection
 import org.eclipse.xtend.lib.annotations.Accessors

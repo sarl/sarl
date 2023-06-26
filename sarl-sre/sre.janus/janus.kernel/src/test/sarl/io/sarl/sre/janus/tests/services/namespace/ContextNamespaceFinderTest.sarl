@@ -21,7 +21,8 @@
 
 package io.sarl.sre.janus.tests.services.namespace
 
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.api.naming.name.ContextName
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextService
@@ -43,7 +44,6 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertSame
-import io.sarl.api.naming.name.ContextName
 
 /**
  * @author $Author: sgalland$

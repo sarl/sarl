@@ -34,7 +34,7 @@ import io.bootique.help.HelpOptions;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.CommandMetadata;
 
-import io.sarl.lang.util.CliUtilities;
+import io.sarl.lang.core.util.CliUtilities;
 
 /**
  * Command for displaying the help on the standard output using a Markdown format.
@@ -49,7 +49,7 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 
 	private static final String CLI_NAME = "generatemarkdownhelp"; //$NON-NLS-1$
 
-	private static final String PIPE = "&#124;";
+	private static final String PIPE = "&#124;"; //$NON-NLS-1$
 
 	private final Injector injector;
 
@@ -110,7 +110,7 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 			if (valueName == null || valueName.length() == 0) {
 				valueName = "val"; //$NON-NLS-1$
 			} else if (replacePipes) {
-				valueName = valueName.replace("|", PIPE);
+				valueName = valueName.replace("|", PIPE); //$NON-NLS-1$
 			}
 
 			final StringBuilder buffer0 = new StringBuilder();
@@ -138,7 +138,7 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 				if (option.isShortNameAllowed()) {
 					buffer0.append("<br>"); //$NON-NLS-1$
 				}
-				buffer0.append(CliUtilities.getCommandLineLongOptionPrefix()); //$NON-NLS-1$
+				buffer0.append(CliUtilities.getCommandLineLongOptionPrefix());
 				buffer0.append(option.getOption().getName());
 				switch (option.getOption().getValueCardinality()) {
 				case REQUIRED:
@@ -183,13 +183,13 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 			for (final String cell : row) {
 				if (first) {
 					first = false;
-					content.append("| "); // $NON-NLS-1$
+					content.append("| "); // $NON-NLS-1$ //$NON-NLS-1$
 				} else {
-					content.append(" | "); // $NON-NLS-1$
+					content.append(" | "); // $NON-NLS-1$ //$NON-NLS-1$
 				}
 				content.append(cell);
 			}
-			content.append(" |\n"); // $NON-NLS-1$
+			content.append(" |\n"); // $NON-NLS-1$ //$NON-NLS-1$
 		}
 		System.out.println(content.toString());
 		return CommandOutcome.succeeded();

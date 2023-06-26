@@ -21,11 +21,11 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.floatprimitive;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicLong;
-import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toBigDecimal;
-import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toBigInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicDouble;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toAtomicLong;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toBigDecimal;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.PrimitiveFloatCastExtensions.toBigInteger;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

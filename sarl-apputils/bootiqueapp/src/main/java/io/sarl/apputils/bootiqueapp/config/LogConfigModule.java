@@ -48,7 +48,7 @@ public class LogConfigModule implements BQModule {
 
 	/** Name of the command-line option.
 	 */
-	public static final String LOG_LONG_OPTION = "log";
+	public static final String LOG_LONG_OPTION = "log"; //$NON-NLS-1$
 	
 	@Override
 	public void configure(Binder binder) {
@@ -71,6 +71,7 @@ public class LogConfigModule implements BQModule {
 	 * @param injector the current injector.
 	 * @return the path configuration accessor.
 	 */
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public LogConfig provideLogConfig(ConfigurationFactory configFactory, Injector injector) {

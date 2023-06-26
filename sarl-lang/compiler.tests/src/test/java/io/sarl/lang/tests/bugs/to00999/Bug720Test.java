@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -60,10 +60,10 @@ public class Bug720Test extends AbstractSarlTest {
 	private final String EXPECTED1 = multilineString(
 			"package io.sarl.lang.tests.bug720;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;", 
-			"import io.sarl.lang.annotation.SarlSpecification;", 
 			"import io.sarl.lang.core.AgentTrait;", 
 			"import io.sarl.lang.core.Capacity;", 
+			"import io.sarl.lang.core.annotation.SarlElementType;", 
+			"import io.sarl.lang.core.annotation.SarlSpecification;", 
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
@@ -102,10 +102,10 @@ public class Bug720Test extends AbstractSarlTest {
 	private final String EXPECTED2 = multilineString(
 			"package io.sarl.lang.tests.bug720;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;", 
-			"import io.sarl.lang.annotation.SarlSpecification;", 
 			"import io.sarl.lang.core.AgentTrait;", 
 			"import io.sarl.lang.core.Capacity;", 
+			"import io.sarl.lang.core.annotation.SarlElementType;", 
+			"import io.sarl.lang.core.annotation.SarlSpecification;", 
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
@@ -144,10 +144,10 @@ public class Bug720Test extends AbstractSarlTest {
 	private final String EXPECTED3 = multilineString(
 			"package io.sarl.lang.tests.bug720;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;", 
-			"import io.sarl.lang.annotation.SarlSpecification;", 
 			"import io.sarl.lang.core.AgentTrait;", 
 			"import io.sarl.lang.core.Capacity;", 
+			"import io.sarl.lang.core.annotation.SarlElementType;", 
+			"import io.sarl.lang.core.annotation.SarlSpecification;", 
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
@@ -186,10 +186,10 @@ public class Bug720Test extends AbstractSarlTest {
 	private final String EXPECTED4 = multilineString(
 			"package io.sarl.lang.tests.bug720;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;", 
-			"import io.sarl.lang.annotation.SarlSpecification;", 
 			"import io.sarl.lang.core.AgentTrait;", 
-			"import io.sarl.lang.core.Capacity;",
+			"import io.sarl.lang.core.Capacity;", 
+			"import io.sarl.lang.core.annotation.SarlElementType;", 
+			"import io.sarl.lang.core.annotation.SarlSpecification;", 
 			"import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;",
 			"", 
 			"@FunctionalInterface", 

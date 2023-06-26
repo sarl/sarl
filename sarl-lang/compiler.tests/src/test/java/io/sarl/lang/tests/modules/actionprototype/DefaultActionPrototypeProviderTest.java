@@ -64,7 +64,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.opentest4j.AssertionFailedError;
 
-import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlFormalParameter;
@@ -311,19 +311,19 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			when(jp.getName()).thenReturn("firstarg");
 			ref = getType(getParseHelper(), "java.lang.String");
 			when(jp.getParameterType()).thenReturn(ref);
-			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
+			when(jp.getAnnotations()).thenReturn(new BasicEList<>());
 			this.jvmParameters.add(jp);
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("secondarg");
 			ref = getType(getParseHelper(), "float");
 			when(jp.getParameterType()).thenReturn(ref);
-			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
+			when(jp.getAnnotations()).thenReturn(new BasicEList<>());
 			this.jvmParameters.add(jp);
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("thirdarg");
 			ref = getType(getParseHelper(), "java.lang.Object[]");
 			when(jp.getParameterType()).thenReturn(ref);
-			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
+			when(jp.getAnnotations()).thenReturn(new BasicEList<>());
 			this.jvmParameters.add(jp);
 		}
 
@@ -537,7 +537,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createParameterTypesFromSarlModell_void() {
 			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false,
-					new BasicEList<SarlFormalParameter>());
+					new BasicEList<>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -572,7 +572,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void createParameterTypesFromJvmModel_void() {
-			ActionParameterTypes key = this.provider.createParameterTypesFromJvmModel(false, new BasicEList<JvmFormalParameter>());
+			ActionParameterTypes key = this.provider.createParameterTypesFromJvmModel(false, new BasicEList<>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -607,7 +607,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void createActionPrototype_void() {
-			ActionParameterTypes params = this.provider.createParameterTypesFromJvmModel(true, new BasicEList<JvmFormalParameter>());
+			ActionParameterTypes params = this.provider.createParameterTypesFromJvmModel(true, new BasicEList<>());
 			ActionPrototype prototype = this.provider.createActionPrototype("myfct", params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName());
@@ -1211,7 +1211,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createParameterTypesFromSarlModell_void() {
 			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false,
-					new BasicEList<SarlFormalParameter>());
+					new BasicEList<>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -1248,7 +1248,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void createParameterTypesFromJvmModel_void() {
-			ActionParameterTypes key = this.provider.createParameterTypesFromJvmModel(false, new BasicEList<JvmFormalParameter>());
+			ActionParameterTypes key = this.provider.createParameterTypesFromJvmModel(false, new BasicEList<>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -1285,7 +1285,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void createActionPrototype_void() {
-			ActionParameterTypes params = this.provider.createParameterTypesFromJvmModel(true, new BasicEList<JvmFormalParameter>());
+			ActionParameterTypes params = this.provider.createParameterTypesFromJvmModel(true, new BasicEList<>());
 			ActionPrototype prototype = this.provider.createActionPrototype("myfct", params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName());

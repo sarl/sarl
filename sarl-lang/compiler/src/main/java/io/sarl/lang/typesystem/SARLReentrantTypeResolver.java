@@ -59,7 +59,7 @@ import org.eclipse.xtext.xbase.typesystem.internal.ResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.Maps2;
 
-import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.core.annotation.ImportedCapacityFeature;
 import io.sarl.lang.util.Utils;
 
 /**

@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to1000.bug977.mocks
 
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.concurrent.atomic.AtomicInteger

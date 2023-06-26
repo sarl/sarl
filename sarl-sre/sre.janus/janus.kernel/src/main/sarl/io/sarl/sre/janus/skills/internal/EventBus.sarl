@@ -23,8 +23,8 @@ package io.sarl.sre.janus.skills.internal
 
 import com.google.common.collect.Collections2
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.ConcurrentCollection
-import io.sarl.lang.util.OutParameter
+import io.sarl.lang.core.util.ConcurrentCollection
+import io.sarl.lang.core.util.OutParameter
 import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator

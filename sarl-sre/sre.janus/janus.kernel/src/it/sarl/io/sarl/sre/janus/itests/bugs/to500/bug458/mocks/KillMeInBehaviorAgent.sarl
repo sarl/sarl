@@ -21,11 +21,11 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to500.bug458.mocks
 
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
-import io.sarl.core.Schedules
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Schedules
 
 /**
  * @author $Author: sgalland$

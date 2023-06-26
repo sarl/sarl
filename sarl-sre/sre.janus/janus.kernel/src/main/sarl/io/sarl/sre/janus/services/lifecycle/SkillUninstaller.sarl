@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
+import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.internal.ObjectComparator
 import io.sarl.sre.janus.skills.bic.SchedulesSkill
 import io.sarl.sre.janus.skills.internal.InternalEventBusSkill

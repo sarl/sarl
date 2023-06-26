@@ -21,13 +21,13 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.comparison.byteprimitive;
 
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_equals;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_greaterEqualsThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_greaterThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_lessEqualsThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_lessThan;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_notEquals;
-import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_spaceship;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_equals;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_greaterEqualsThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_greaterThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_lessEqualsThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_lessThan;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_notEquals;
+import static io.sarl.lang.core.scoping.extensions.numbers.comparison.PrimitiveByteComparisonExtensions.operator_spaceship;
 import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyNegative;
 import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
 import static io.sarl.tests.api.tools.TestAssertions.assertZero;

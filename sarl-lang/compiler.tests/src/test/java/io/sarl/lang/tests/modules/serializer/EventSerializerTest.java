@@ -35,32 +35,33 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: event")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class EventSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void empty_noBlock_noSuper() throws Exception {
-		String s = "event Foo";
+		String s = "event Foo"; //$NON-NLS-1$
 		this.object = event(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_block_noSuper() throws Exception {
-		String s = "event Foo { }";
+		String s = "event Foo { }"; //$NON-NLS-1$
 		this.object = event(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_noBlock_super() throws Exception {
-		String s = "event Foo extends foo.ecore.SubEvent";
+		String s = "event Foo extends foo.ecore.SubEvent"; //$NON-NLS-1$
 		this.object = event(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_block_super() throws Exception {
-		String s = "event Foo extends foo.ecore.SubEvent { }";
+		String s = "event Foo extends foo.ecore.SubEvent { }"; //$NON-NLS-1$
 		this.object = event(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

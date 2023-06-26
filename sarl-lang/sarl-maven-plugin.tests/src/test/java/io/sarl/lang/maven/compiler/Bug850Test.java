@@ -30,7 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.maven.compiler.utils.MavenHelper;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.tools.AbstractEmbeddedMavenMojoTest;
@@ -76,13 +76,13 @@ public class Bug850Test extends AbstractEmbeddedMavenMojoTest {
 
 	private static final String EXPECTED_AGENT1 = multilineString(
 			"package io.sarl.maven.bug850;",
-			"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
 			"import io.sarl.lang.core.Event;",
+			"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.maven.bug850.CarRequestPercept;",
 			"import java.util.Collection;",
 			"import java.util.Set;",
@@ -146,13 +146,13 @@ public class Bug850Test extends AbstractEmbeddedMavenMojoTest {
 
 	private static final String EXPECTED_AGENT2 = multilineString(
 			"package io.sarl.maven.bug850;",
-			"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
 			"import io.sarl.lang.core.Event;",
+			"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.maven.bug850.CarRequestPercept;",
 			"import io.sarl.maven.bug850.Direction;",
 			"import java.util.Collection;",
@@ -219,13 +219,13 @@ public class Bug850Test extends AbstractEmbeddedMavenMojoTest {
 
 	private static final String EXPECTED_AGENT3 = multilineString(
 			"package io.sarl.maven.bug850;",
-			"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
 			"import io.sarl.lang.core.Event;",
+			"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.maven.bug850.CarRequestPercept;",
 			"import java.util.Collection;",
 			"import java.util.Set;",
@@ -289,13 +289,13 @@ public class Bug850Test extends AbstractEmbeddedMavenMojoTest {
 
 	private static final String EXPECTED_AGENT4 = multilineString(
 			"package io.sarl.maven.bug850;",
-			"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.DynamicSkillProvider;",
 			"import io.sarl.lang.core.Event;",
+			"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.maven.bug850.CarRequestPercept;",
 			"import java.util.Collection;",
 			"import java.util.Set;",

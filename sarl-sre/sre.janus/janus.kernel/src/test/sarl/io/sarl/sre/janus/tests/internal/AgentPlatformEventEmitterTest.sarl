@@ -21,12 +21,12 @@
 
 package io.sarl.sre.janus.tests.internal
 
-import io.sarl.core.AgentKillFailure
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawnFailure
-import io.sarl.core.AgentSpawned
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.AgentKillFailure
+import io.sarl.api.core.AgentKilled
+import io.sarl.api.core.AgentSpawnFailure
+import io.sarl.api.core.AgentSpawned
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event

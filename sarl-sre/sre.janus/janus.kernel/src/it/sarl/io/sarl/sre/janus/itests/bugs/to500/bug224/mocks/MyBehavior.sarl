@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to500.bug224.mocks
 
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
 import java.util.concurrent.atomic.AtomicInteger
 
 /**

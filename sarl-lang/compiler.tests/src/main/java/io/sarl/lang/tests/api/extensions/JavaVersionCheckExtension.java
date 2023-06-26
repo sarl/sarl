@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 
 /** JUnit 5 extension that tests if the Java version used for running the tests
  * is at least the minimal Java version for compiling the SARL project.
@@ -41,20 +41,20 @@ public class JavaVersionCheckExtension implements ExecutionCondition {
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
 		// Check if the minimal version of Java is used for running the tests.
-		final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version"));
+		final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version")); //$NON-NLS-1$
 		if (cVersion == null) {
-			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests.");
+			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		if (mVersion == null || !cVersion.isAtLeast(mVersion)) {
-			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests.");
+			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		// If null the max version that is specified into the SARL configuration is not yey supported by Xtext enumeration
 		if (xVersion != null && cVersion.isAtLeast(xVersion)) {
-			return ConditionEvaluationResult.disabled("You must use JDK strictly below " + SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " for running the tests.");
+			return ConditionEvaluationResult.disabled("You must use JDK strictly below " + SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		return ConditionEvaluationResult.enabled("supported version of JDK");
+		return ConditionEvaluationResult.enabled("supported version of JDK"); //$NON-NLS-1$
 	}
 
 }

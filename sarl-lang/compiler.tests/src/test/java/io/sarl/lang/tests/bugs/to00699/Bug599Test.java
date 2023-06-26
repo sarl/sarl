@@ -29,7 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -91,8 +91,8 @@ public class Bug599Test extends AbstractSarlTest {
 		getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 				"package io.sarl.lang.tests.bug599;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"import java.awt.event.MouseEvent;",
 				"import java.awt.event.MouseMotionListener;",
 				"",
@@ -129,8 +129,8 @@ public class Bug599Test extends AbstractSarlTest {
 		getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 				"package io.sarl.lang.tests.bug599;",
 				"",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"import java.awt.event.WindowAdapter;",
 				"import java.awt.event.WindowEvent;",
 				"",

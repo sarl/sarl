@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -154,13 +154,13 @@ public class Bug381Test {
 		@Test
 		public void withSarlSyntaxWithLocalType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -204,13 +204,13 @@ public class Bug381Test {
 		@Test
 		public void withJavaSyntaxWithLocalType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -254,13 +254,13 @@ public class Bug381Test {
 		@Test
 		public void withSarlSyntaxWithJREType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -308,13 +308,13 @@ public class Bug381Test {
 		@Test
 		public void withJavaSyntaxWithJREType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -358,13 +358,13 @@ public class Bug381Test {
 		@Test
 		public void withSarlSyntaxWithoutType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -412,13 +412,13 @@ public class Bug381Test {
 		@Test
 		public void withJavaSyntaxWithoutType() throws Exception {
 			final String expected = multilineString(
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.annotation.SarlElementType;",
-					"import io.sarl.lang.annotation.SarlSpecification;",
-					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.AtomicSkillReference;",
 					"import io.sarl.lang.core.DynamicSkillProvider;",
+					"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.core.annotation.SarlElementType;",
+					"import io.sarl.lang.core.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",

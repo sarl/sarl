@@ -14,8 +14,6 @@
     <module>sarl-sre</module>
     <module>sarl-docs</module>
     <module>sarl-cli</module>
-    <module>sarl-eclipse</module>
-    <module>sarl-officialdoc</module>
   </modules>
   
   <properties>

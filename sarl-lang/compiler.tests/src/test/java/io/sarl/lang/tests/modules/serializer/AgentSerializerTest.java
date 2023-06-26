@@ -35,18 +35,19 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: agent")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class AgentSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void empty_noSuper() throws Exception {
-		String s = "agent Foo { }";
+		String s = "agent Foo { }"; //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
 
 	@Test
 	public void empty_super() throws Exception {
-		String s = "agent Foo extends foo.ecore.SubAgent { }";
+		String s = "agent Foo extends foo.ecore.SubAgent { }"; //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

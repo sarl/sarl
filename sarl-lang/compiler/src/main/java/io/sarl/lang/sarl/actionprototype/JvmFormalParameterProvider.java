@@ -30,7 +30,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XExpression;
 
-import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValue;
 
 /** An object able to provide the name and the type of a formal parameter.
 *

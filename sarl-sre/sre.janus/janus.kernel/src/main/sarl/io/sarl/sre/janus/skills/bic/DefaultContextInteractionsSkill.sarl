@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.skills.bic
 
-import io.sarl.core.DefaultContextInteractions
+import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext

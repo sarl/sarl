@@ -48,7 +48,10 @@ public class AbstractInjectorExtension implements Extension {
 	/** Create the injector and inject the given instance.
 	 *
 	 * @param instance the instance to inject
+	 * @param context the extension context. 
+	 * @throws Exception 
 	 */
+	@SuppressWarnings("static-method")
 	public void injectMembers(Object instance, ExtensionContext context) throws Exception {
 		IInjectorProvider injectorProvider = createInjectorProvider(context);
 		if (injectorProvider != null) {
@@ -74,7 +77,7 @@ public class AbstractInjectorExtension implements Extension {
 				throwUncheckedException(e);
 			}
 		}
-		throw new IllegalStateException("Expected valid @InjectWith annotation");
+		throw new IllegalStateException("Expected valid @InjectWith annotation"); //$NON-NLS-1$
 	}
 	
 }

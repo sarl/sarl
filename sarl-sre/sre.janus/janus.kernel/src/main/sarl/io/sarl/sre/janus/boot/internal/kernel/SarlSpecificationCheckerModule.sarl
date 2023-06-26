@@ -26,8 +26,8 @@ import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
-import io.sarl.sarlspecification.SarlSpecificationChecker
-import io.sarl.sarlspecification.StandardSarlSpecificationChecker
+import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
+import io.sarl.api.util.sarlspecification.StandardSarlSpecificationChecker
 import javax.inject.Singleton
 
 /** 

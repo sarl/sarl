@@ -29,10 +29,10 @@ import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides
 import io.bootique.meta.application.OptionMetadata
-import io.sarl.bootstrap.SRE
-import io.sarl.bootstrap.SREBootstrap
-import io.sarl.bootstrap.SREClassLoader
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREBootstrap
+import io.sarl.lang.core.SREClassLoader
 import io.sarl.sre.janus.boot.configs.SreConfig
 import java.lang.reflect.Type
 import java.text.MessageFormat

@@ -81,7 +81,7 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 			while (line != null) {
 				StringBuilder out;
 				PrintStream console;
-				if (line.startsWith("[ERROR]")) {
+				if (line.startsWith("[ERROR]")) { //$NON-NLS-1$
 					out = this.errorOutput;
 					console = System.err;
 				} else {
@@ -89,7 +89,7 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 					console = System.out;
 				}
 				if (out.length() > 0) {
-					out.append("\n");
+					out.append("\n"); //$NON-NLS-1$
 				}
 				out.append(line);
 				if (this.outputOnConsole) {
@@ -103,20 +103,23 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 		 *
 		 * @throws Exception the command was interrupted.
 		 */
+		@SuppressWarnings("resource")
+		@Override
 		public void waitFor() throws Exception {
 			readStream(this.process.inputReader());
 			readStream(this.process.errorReader());
-			process.waitFor(5, TimeUnit.MINUTES);
+			this.process.waitFor(5, TimeUnit.MINUTES);
 		}
 
 		/** Assert that there is no error in the Maven run.
 		 *
 		 * @throws Exception if the error log cannot be read.
 		 */
+		@Override
 		public void assertErrorFreeLog() throws Exception {
-			assertEquals(0, this.process.exitValue(), "Maven exit code is " + this.process.exitValue());
+			assertEquals(0, this.process.exitValue(), "Maven exit code is " + this.process.exitValue()); //$NON-NLS-1$
 			
-			assertEquals("", this.errorOutput.toString().trim());
+			assertEquals("", this.errorOutput.toString().trim()); //$NON-NLS-1$
 		}
 
 		/** Assert that there is error in the Maven run.
@@ -124,10 +127,11 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 		 * @param expectedErrorMessage the expected error message that must appear on the error console of Maven.
 		 * @throws Exception if the error log cannot be read.
 		 */
+		@Override
 		public void assertErrorLog(String expectedErrorMessage) throws Exception {
-			assertNotEquals(0, this.process.exitValue(), "Maven exit code is " + this.process.exitValue());
+			assertNotEquals(0, this.process.exitValue(), "Maven exit code is " + this.process.exitValue()); //$NON-NLS-1$
 			final String log = this.errorOutput.toString().trim();
-			assertTrue(log.contains(expectedErrorMessage), "Error log does not contains: " + expectedErrorMessage);
+			assertTrue(log.contains(expectedErrorMessage), "Error log does not contains: " + expectedErrorMessage); //$NON-NLS-1$
 		}
 
 	}

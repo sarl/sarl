@@ -24,8 +24,8 @@ package io.sarl.sre.janus.tests.skills.internal
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.util.OutParameter
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.lang.util.OutParameter
 import io.sarl.sre.janus.services.lifecycle.AgentState
 import io.sarl.sre.janus.skills.internal.EventBus
 import io.sarl.sre.janus.skills.internal.InternalEventBusSkill

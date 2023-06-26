@@ -20,14 +20,14 @@
  */
 package io.sarl.sre.janus.tests.services.lifecycle.mocks
 
-import io.sarl.core.InnerContextAccess
+import io.sarl.api.core.InnerContextAccess
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ConcurrentSet
+import io.sarl.lang.core.util.ConcurrentSet
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 

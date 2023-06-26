@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.internal
 
-import io.sarl.core.ParticipantJoined
-import io.sarl.core.ParticipantLeft
+import io.sarl.api.core.ParticipantJoined
+import io.sarl.api.core.ParticipantLeft
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace

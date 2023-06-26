@@ -40,7 +40,7 @@ import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
 import org.eclipse.xtext.util.JavaVersion;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 
 /** An abstract implementation of a Doclet.
  *

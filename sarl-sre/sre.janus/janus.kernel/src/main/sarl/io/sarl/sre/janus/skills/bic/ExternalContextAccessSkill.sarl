@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.skills.bic
 
-import io.sarl.core.ExternalContextAccess
+import io.sarl.api.core.ExternalContextAccess
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
@@ -29,7 +29,7 @@ import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.KernelScope
 import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector

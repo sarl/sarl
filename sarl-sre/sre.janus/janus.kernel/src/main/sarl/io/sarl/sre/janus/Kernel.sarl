@@ -21,10 +21,10 @@
 package io.sarl.sre.janus
 
 import com.google.common.util.concurrent.Service
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
-import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.annotation.PrivateAPI
+import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.internal.Factories

@@ -20,10 +20,9 @@
  */
 package io.sarl.sre.janus.skills.bic
 
-import io.sarl.core.Behaviors
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Initialize
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
@@ -31,7 +30,8 @@ import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.annotation.PrivateAPI
+import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector

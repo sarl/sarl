@@ -44,18 +44,18 @@ public class IgnorableTestExtension implements ExecutionCondition {
 
 	/** URL of the Maven central repository.
 	 */
-	public static final String MAVEN_CENTRAL_REPOSITORY_URL = "http://repo1.maven.org/maven2/io/sarl/lang/io.sarl.lang.core/0.2.0/io.sarl.lang.core-0.2.0.pom";
+	public static final String MAVEN_CENTRAL_REPOSITORY_URL = "http://repo1.maven.org/maven2/io/sarl/lang/io.sarl.lang.core/0.2.0/io.sarl.lang.core-0.2.0.pom"; //$NON-NLS-1$
 
 	/** Timeout for connecting to the Maven central server (in milliseconds).
 	 */
 	public static final int MAVEN_CENTRAL_TIMEOUT = 15000;
 
-	private boolean isIgnorable(ExtensionContext context) {
+	private static boolean isIgnorable(ExtensionContext context) {
 		if (context.getTestInstance().isPresent()) {
 			final Object instance = context.getTestInstance().get();
 			if (instance != null) {
 				try {
-					final Object r = TestReflections.invoke(instance, "isIgnorable", context);
+					final Object r = TestReflections.invoke(instance, "isIgnorable", context); //$NON-NLS-1$
 					if (r instanceof Boolean) {
 						return ((Boolean) r).booleanValue();
 					}
@@ -80,16 +80,16 @@ public class IgnorableTestExtension implements ExecutionCondition {
 		}
 		if (scope != null) {
 			if (!scope.tycho() && !scope.eclipse()) {
-				return ConditionEvaluationResult.disabled("not running on the current framework");
+				return ConditionEvaluationResult.disabled("not running on the current framework"); //$NON-NLS-1$
 			}
 			if (scope.tycho() || scope.eclipse()) {
 				boolean isEclipse = TestUtils.isEclipseRuntimeEnvironment();
 				if (scope.tycho()) {
 					if (isEclipse) {
-						return ConditionEvaluationResult.disabled("cannot run Tycho-specific test in Eclipse");
+						return ConditionEvaluationResult.disabled("cannot run Tycho-specific test in Eclipse"); //$NON-NLS-1$
 					}
 				} else if (!isEclipse) {
-					return ConditionEvaluationResult.disabled("cannot run Eclipse-specific test outside Eclipse");
+					return ConditionEvaluationResult.disabled("cannot run Eclipse-specific test outside Eclipse"); //$NON-NLS-1$
 				}
 			}
 			if (scope.needmavencentral()) {
@@ -109,16 +109,16 @@ public class IgnorableTestExtension implements ExecutionCondition {
 					canAccessNetwork = false;
 				}
 				if (!canAccessNetwork) {
-					return ConditionEvaluationResult.disabled("cannot have access to Maven central server");
+					return ConditionEvaluationResult.disabled("cannot have access to Maven central server"); //$NON-NLS-1$
 				}
 			}
 		}
 		//
 		if (isIgnorable(context)) {
-			return ConditionEvaluationResult.disabled("this test is dynamically ignored.");
+			return ConditionEvaluationResult.disabled("this test is dynamically ignored."); //$NON-NLS-1$
 		}
 		//
-		return ConditionEvaluationResult.enabled("no dynamic condition for disabling this test");
+		return ConditionEvaluationResult.enabled("no dynamic condition for disabling this test"); //$NON-NLS-1$
 	}
 
 }

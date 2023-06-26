@@ -23,8 +23,8 @@ package io.sarl.sre.janus.services.probing.probes
 import io.sarl.api.probing.IProbeListener
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.api.probing.Probe
+import io.sarl.api.util.SmartListenerCollection
 import io.sarl.sre.janus.internal.Factories
-import io.sarl.util.SmartListenerCollection
 import java.lang.ref.WeakReference
 import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean

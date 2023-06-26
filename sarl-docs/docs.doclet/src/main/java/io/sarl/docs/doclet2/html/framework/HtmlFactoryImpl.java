@@ -113,7 +113,7 @@ import io.sarl.docs.doclet2.html.taglets.inline.InheritDocTaglet;
 import io.sarl.docs.doclet2.html.taglets.inline.LinkTaglet;
 import io.sarl.docs.doclet2.html.taglets.inline.LiteralTaglet;
 import io.sarl.docs.doclet2.html.taglets.inline.ValueTaglet;
-import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValue;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Builder of HTML elements.

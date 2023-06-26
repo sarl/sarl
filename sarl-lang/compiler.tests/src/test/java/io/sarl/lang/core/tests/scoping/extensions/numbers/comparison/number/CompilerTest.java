@@ -26,7 +26,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 import io.sarl.lang.tests.api.globalcompilation.GlobalCompilationSuite;

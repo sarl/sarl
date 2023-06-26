@@ -24,13 +24,13 @@ package foo;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.DefaultValueSource;
-import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.annotation.SarlSourceCode;
-import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValueSource;
+import io.sarl.lang.core.annotation.DefaultValueUse;
+import io.sarl.lang.core.annotation.SarlSourceCode;
+import io.sarl.lang.core.annotation.SyntheticMember;
 
 /**
  * @author $Author: sgalland$
@@ -38,6 +38,7 @@ import io.sarl.lang.core.Capacity;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public interface MockCapacity2 extends Capacity {
 	@DefaultValueSource
 	Object execute(@DefaultValue("foo.MockCapacity2#EXECUTE_0") final Object task, final Procedure1<? super Agent> procedure);

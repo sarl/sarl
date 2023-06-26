@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.internal
 
-import io.sarl.core.SpaceCreated
-import io.sarl.core.SpaceDestroyed
+import io.sarl.api.core.SpaceCreated
+import io.sarl.api.core.SpaceDestroyed
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope

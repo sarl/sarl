@@ -39,7 +39,6 @@ import org.eclipse.xtext.validation.Issue;
 
 /** Set of additional utilities for created testing EObject, except those related to SARL concepts.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -81,6 +80,7 @@ public class TestEObjects {
 	 * @param string the content of the file.
 	 * @param resourceSet the set of resources in which the file is created.
 	 * @return the SARL script extracted from the file content.
+	 * @throws Exception 
 	 * @since 0.9
 	 */
 	public static <T extends XtendFile> T file(ParseHelper<T> parser, ValidationTestHelper validationHelper,
@@ -105,7 +105,7 @@ public class TestEObjects {
 					return input.getSeverity() == Severity.ERROR;
 				}
 			});
-			assertTrue(issues.isEmpty(), () -> "Resource contained errors : " + issues.toString());
+			assertTrue(issues.isEmpty(), () -> "Resource contained errors : " + issues.toString()); //$NON-NLS-1$
 		}
 		return script;
 	}
@@ -117,6 +117,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the content of the file.
 	 * @return the SARL script extracted from the file content.
+	 * @throws Exception 
 	 */
 	public static <T extends XtendFile> T file(ParseHelper<T> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		return file(parser, validationHelper, string, null);
@@ -128,6 +129,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the content of the file.
 	 * @return the SARL script extracted from the file content.
+	 * @throws Exception 
 	 */
 	public static <T extends XtendFile> T file(ParseHelper<T> parser, String string) throws Exception {
 		return file(parser, null, string);

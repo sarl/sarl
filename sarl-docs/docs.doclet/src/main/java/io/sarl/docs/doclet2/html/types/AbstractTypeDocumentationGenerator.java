@@ -73,9 +73,9 @@ import io.sarl.docs.doclet2.html.framework.Navigation;
 import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
 import io.sarl.docs.doclet2.html.taglets.inline.ValueTaglet;
-import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.ImportedCapacityFeature;
-import io.sarl.lang.annotation.PerceptGuardEvaluator;
+import io.sarl.lang.core.annotation.FiredEvent;
+import io.sarl.lang.core.annotation.ImportedCapacityFeature;
+import io.sarl.lang.core.annotation.PerceptGuardEvaluator;
 
 /** Abstract implementation of a generator for the documentation for a type.
  *

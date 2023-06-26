@@ -38,16 +38,24 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
  */
 public abstract class AbstractSerializerTest extends AbstractSarlTest {
 
+	/** The serializer.
+	 */
 	@Inject
 	protected ISerializer serializer;
 
+	/** The Ecore object to serialize.
+	 */
 	protected EObject object;
 
+	/** Assert the serialization generates the given text.
+	 * 
+	 * @param expected the expected result.
+	 */
 	protected void assertSerialize(String expected) {
 		SaveOptions.Builder builder = SaveOptions.newBuilder();
 		// No formatting
 		//builder.format();
-		String text = serializer.serialize(object, builder.getOptions());
+		String text = this.serializer.serialize(this.object, builder.getOptions());
 		assertEquals(expected, text);
 	}
 

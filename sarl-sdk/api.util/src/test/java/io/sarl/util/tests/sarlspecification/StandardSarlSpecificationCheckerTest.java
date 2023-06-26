@@ -35,10 +35,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.sarlspecification.SarlSpecificationChecker;
-import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
+import io.sarl.api.util.sarlspecification.SarlSpecificationChecker;
+import io.sarl.api.util.sarlspecification.StandardSarlSpecificationChecker;
+import io.sarl.lang.core.SARLVersion;
+import io.sarl.lang.core.annotation.SarlSpecification;
 
 /**
  * @author $Author: sgalland$

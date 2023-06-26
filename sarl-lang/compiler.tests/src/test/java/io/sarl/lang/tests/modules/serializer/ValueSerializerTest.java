@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: val")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class ValueSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void value_expr_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"val foo = 6.0f",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"val foo = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class ValueSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void value_typeExpr_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"val foo : float = 6.0f",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"val foo : float = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,9 +62,9 @@ public class ValueSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void value_expr_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"val foo = 6.0f",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"val foo = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -71,9 +72,9 @@ public class ValueSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void value_typeExpr_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"val foo : float = 6.0f",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"val foo : float = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Utilities for executing a timeout.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -191,6 +190,7 @@ public class TestTimeout {
 	
 		/** Constructor.
 		 *
+		 * @param duration the max duration of the timeout.
 		 * @param predicate the condition for stopping the timeout loop.
 		 * @since 0.11
 		 */
@@ -210,7 +210,7 @@ public class TestTimeout {
 				}
 			};
 			this.thread.setDaemon(true);
-			this.thread.setName("Test TimeOut Manager");
+			this.thread.setName("Test TimeOut Manager"); //$NON-NLS-1$
 			this.thread.start();
 		}
 

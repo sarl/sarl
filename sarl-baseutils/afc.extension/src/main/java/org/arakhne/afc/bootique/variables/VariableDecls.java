@@ -4,6 +4,7 @@ import io.bootique.BQCoreModuleExtender;
 import io.bootique.di.Binder;
 
 // FIXME: Move to Arakhne
+@SuppressWarnings("javadoc")
 public class VariableDecls {
 
 	private final BQCoreModuleExtender extender;

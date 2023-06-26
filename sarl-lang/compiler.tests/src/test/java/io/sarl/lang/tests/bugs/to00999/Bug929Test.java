@@ -28,7 +28,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -70,13 +70,13 @@ public class Bug929Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_01 = multilineString(
 			"package io.sarl.lang.tests.bug929;",
 			"",
-			"import io.sarl.lang.annotation.DefaultValue;",
-			"import io.sarl.lang.annotation.DefaultValueSource;",
-			"import io.sarl.lang.annotation.DefaultValueUse;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSourceCode;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.DefaultValue;",
+			"import io.sarl.lang.core.annotation.DefaultValueSource;",
+			"import io.sarl.lang.core.annotation.DefaultValueUse;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSourceCode;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Exceptions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -144,9 +144,9 @@ public class Bug929Test extends AbstractSarlTest {
 	private static final String JAVA_CODE_02 = multilineString(
 			"package io.sarl.lang.tests.bug929;",
 			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

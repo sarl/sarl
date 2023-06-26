@@ -68,7 +68,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 
 	private static final String CLI_ROOT_PROPERTY = CLI_NAME + ".root"; //$NON-NLS-1$
 
-	private static final String PIPE = "&#124;";
+	private static final String PIPE = "&#124;"; //$NON-NLS-1$
 
 	private final ModulesMetadata modulesMetadata;
 
@@ -167,13 +167,13 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 			for (final String cell : row) {
 				if (first) {
 					first = false;
-					content.append("| "); // $NON-NLS-1$
+					content.append("| "); // $NON-NLS-1$ //$NON-NLS-1$
 				} else {
-					content.append(" | "); // $NON-NLS-1$
+					content.append(" | "); // $NON-NLS-1$ //$NON-NLS-1$
 				}
 				content.append(cell);
 			}
-			content.append(" |\n"); // $NON-NLS-1$
+			content.append(" |\n"); // $NON-NLS-1$ //$NON-NLS-1$
 		}
 		System.out.println(content.toString());
 		return CommandOutcome.succeeded();
@@ -211,7 +211,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		private String prepareStr(String value) {
 			final String fixedValue = Strings.nullToEmpty(value);
 			if (this.replacePipes) {
-				return fixedValue.replace("|", PIPE);
+				return fixedValue.replace("|", PIPE); //$NON-NLS-1$
 			}
 			return fixedValue;
 		}
@@ -251,19 +251,20 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 
 		@SuppressWarnings("unchecked")
 		private String getTypeLabel(Class<?> type) {
+			assert type != null;
 			final Class<?> uwt = Primitives.unwrap(type);
 			if (uwt.isPrimitive()) {
 				return uwt.getSimpleName();
 			}
 			if (CharSequence.class.isAssignableFrom(uwt)) {
-				return "string";
+				return "string"; //$NON-NLS-1$
 			}
 			if (uwt.isEnum()) {
 				final Class<? extends Enum<?>> etype = (Class<? extends Enum<?>>) uwt;
 				final StringBuilder buf = new StringBuilder();
 				for (final Enum<?> cst : etype.getEnumConstants()) {
 					if (buf.length() > 0) {
-						buf.append(prepareStr(" | "));
+						buf.append(prepareStr(" | ")); //$NON-NLS-1$
 					}
 					buf.append("*\""); //$NON-NLS-1$
 					buf.append(cst.name().toLowerCase());
@@ -271,14 +272,11 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 				}
 				return buf.toString();
 			}
-			if (uwt instanceof Class) {
-				Class<?> classType = (Class<?>) type;
-				if (Map.class.isAssignableFrom(classType)) {
-					return Map.class.getSimpleName();
-				}
-				else if (Collection.class.isAssignableFrom(classType)) {
-					return Collection.class.getSimpleName();
-				}
+			if (Map.class.isAssignableFrom(type)) {
+				return Map.class.getSimpleName();
+			}
+			else if (Collection.class.isAssignableFrom(type)) {
+				return Collection.class.getSimpleName();
 			}
 			return uwt.getSimpleName();
 		}

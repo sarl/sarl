@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.internal
 
+import io.sarl.api.core.ParticipantLeft
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.core.ParticipantLeft
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.janus.itests.runtime.internal.mocks.JoinerAgent1
 import io.sarl.sre.janus.itests.runtime.internal.mocks.JoinerAgent3

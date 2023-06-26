@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: fires in action prototypes")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class EventActionSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void noPar_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noParam_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct() fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct() fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,9 +62,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void param_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -71,9 +72,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramDef_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 5) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 5) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -81,9 +82,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramVar_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int*) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int*) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -91,9 +92,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsDef_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -101,9 +102,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsVar_noReturn_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -111,9 +112,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noPar_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -121,9 +122,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noParam_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct() : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct() : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -131,9 +132,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void param_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -141,9 +142,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramDef_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -151,9 +152,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramVar_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int*) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int*) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -161,9 +162,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsDef_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -171,9 +172,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsVar_return_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -181,9 +182,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noPar_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -191,9 +192,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noParam_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct() fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct() fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -201,9 +202,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void param_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -211,9 +212,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramDef_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 5) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 5) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -221,9 +222,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramVar_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int*) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int*) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -231,9 +232,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsDef_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -241,9 +242,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsVar_noReturn_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -251,9 +252,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noPar_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -261,9 +262,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void noParam_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct() : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct() : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -271,9 +272,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void param_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -281,9 +282,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramDef_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -291,9 +292,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramVar_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int*) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int*) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -301,9 +302,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsDef_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -311,9 +312,9 @@ public class EventActionSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void paramsVar_return_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 { 1 }",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 { 1 }", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

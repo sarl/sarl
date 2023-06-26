@@ -50,16 +50,16 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.DefaultValueSource;
-import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.annotation.PrivateAPI;
-import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.core.SARLVersion;
+import io.sarl.lang.core.annotation.DefaultValue;
+import io.sarl.lang.core.annotation.DefaultValueSource;
+import io.sarl.lang.core.annotation.DefaultValueUse;
+import io.sarl.lang.core.annotation.EarlyExit;
+import io.sarl.lang.core.annotation.PrivateAPI;
+import io.sarl.lang.core.annotation.SarlSpecification;
+import io.sarl.lang.core.util.OutParameter;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.tests.api.AbstractSarlTest;
-import io.sarl.lang.util.OutParameter;
-import io.sarl.lang.util.SarlUtils;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 
@@ -317,7 +317,7 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleXtextVersion("2.28"));
 		assertFalse(Utils.isCompatibleXtextVersion("2.29"));
 		assertFalse(Utils.isCompatibleXtextVersion("2.30"));	
-		assertFalse(Utils.isCompatibleXtextVersion("2.31"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.31"));
 		assertTrue(Utils.isCompatibleXtextVersion("2.31.1"));
 		assertTrue(Utils.isCompatibleXtextVersion("2.32"));
 		assertTrue(Utils.isCompatibleXtextVersion("2.33"));

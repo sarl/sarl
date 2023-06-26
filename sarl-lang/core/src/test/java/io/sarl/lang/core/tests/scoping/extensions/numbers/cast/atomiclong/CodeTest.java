@@ -21,16 +21,16 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.atomiclong;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toAtomicDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toAtomicInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toBigDecimal;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toBigInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toByte;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toFloat;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toLong;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toShort;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toAtomicDouble;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toAtomicInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toBigDecimal;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toBigInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toByte;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toDouble;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toFloat;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toInteger;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toLong;
+import static io.sarl.lang.core.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toShort;
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

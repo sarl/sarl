@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-import io.sarl.lang.util.CliUtilities;
+import io.sarl.lang.core.util.CliUtilities;
 
 /** Tools for generating markdown from different sources.
  *

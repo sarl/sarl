@@ -21,10 +21,10 @@
 
 package io.sarl.sre.janus.network.tests.framework
 
-import io.sarl.lang.util.DefaultConcurrentCollectionFactory
+import io.sarl.api.util.SequenceListenerNotifier
+import io.sarl.api.util.SmartListenerCollection
+import io.sarl.lang.core.util.DefaultConcurrentCollectionFactory
 import io.sarl.sre.janus.internal.Factories
-import io.sarl.util.SequenceListenerNotifier
-import io.sarl.util.SmartListenerCollection
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
 

@@ -58,6 +58,11 @@ public class MavenPrivateModule implements Module {
 		//
 	}
 
+	/** Provides the Java compiler.
+	 *
+	 * @param injector the current injector.
+	 * @return the compiler.
+	 */
 	@Provides
 	@Singleton
 	public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector) {

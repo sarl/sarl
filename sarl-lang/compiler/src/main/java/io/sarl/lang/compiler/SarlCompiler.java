@@ -99,6 +99,8 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
+import io.sarl.lang.core.util.SarlUtils;
+import io.sarl.lang.core.util.SerializableProxy;
 import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -106,8 +108,6 @@ import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.ContextAwareTreeAppendable;
-import io.sarl.lang.util.SarlUtils;
-import io.sarl.lang.util.SerializableProxy;
 import io.sarl.lang.util.Utils;
 
 

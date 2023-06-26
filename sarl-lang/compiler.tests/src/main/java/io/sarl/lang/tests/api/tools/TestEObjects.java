@@ -52,7 +52,6 @@ import io.sarl.tests.api.tools.TestUtils;
 
 /** Set of additional utilities for created testing EObject, except those related to SARL concepts.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -70,6 +69,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL agent.
+	 * @throws Exception 
 	 */
 	public static SarlAgent agent(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return agent(parser, null, string);
@@ -81,6 +81,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL agent.
+	 * @throws Exception 
 	 */
 	public static SarlAgent agent(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -92,6 +93,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL capacity.
+	 * @throws Exception 
 	 */
 	public static SarlCapacity capacity(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return capacity(parser, null, string);
@@ -103,6 +105,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL capacity.
+	 * @throws Exception 
 	 */
 	public static SarlCapacity capacity(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -114,6 +117,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL event.
+	 * @throws Exception 
 	 */
 	public static SarlEvent event(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return event(parser, null, string);
@@ -125,6 +129,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL event.
+	 * @throws Exception 
 	 */
 	public static SarlEvent event(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -136,6 +141,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL skill.
+	 * @throws Exception 
 	 */
 	public static SarlSkill skill(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return skill(parser, null, string);
@@ -147,6 +153,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL skill.
+	 * @throws Exception 
 	 */
 	public static SarlSkill skill(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -158,6 +165,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL behavior.
+	 * @throws Exception 
 	 */
 	public static SarlBehavior behavior(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return behavior(parser, null, string);
@@ -169,6 +177,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL behavior.
+	 * @throws Exception 
 	 */
 	public static SarlBehavior behavior(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -180,6 +189,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL class.
+	 * @throws Exception 
 	 */
 	public static SarlClass clazz(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return clazz(parser, null, string);
@@ -191,6 +201,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL class.
+	 * @throws Exception 
 	 */
 	public static SarlClass clazz(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -202,6 +213,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL annotation.
+	 * @throws Exception 
 	 */
 	public static SarlAnnotationType annotationType(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return annotationType(parser, null, string);
@@ -213,6 +225,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL annotation.
+	 * @throws Exception 
 	 */
 	public static SarlAnnotationType annotationType(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -224,6 +237,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL interface.
+	 * @throws Exception 
 	 */
 	public static SarlInterface interfaze(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return interfaze(parser, null, string);
@@ -235,6 +249,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL interface.
+	 * @throws Exception 
 	 */
 	public static SarlInterface interfaze(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -246,6 +261,7 @@ public class TestEObjects {
 	 * @param parser the SARL parser.
 	 * @param string the file content to parse.
 	 * @return the SARL enumeration.
+	 * @throws Exception 
 	 */
 	public static SarlEnumeration enumeration(ParseHelper<SarlScript> parser, String string) throws Exception {
 		return enumeration(parser, null, string);
@@ -257,6 +273,7 @@ public class TestEObjects {
 	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
 	 * @param string the file content to parse.
 	 * @return the SARL enumeration.
+	 * @throws Exception 
 	 */
 	public static SarlEnumeration enumeration(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
 		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
@@ -269,6 +286,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL function.
+	 * @throws Exception 
 	 */
 	public static SarlAction function(ParseHelper<SarlScript> parser, String string, String... prefix) throws Exception {
 		return function(parser, null, string, prefix);
@@ -281,11 +299,12 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL function.
+	 * @throws Exception 
 	 */
 	public static SarlAction function(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}");
+				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlAction) clazz.getMembers().get(0);
 	}
 
@@ -296,6 +315,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM operation.
+	 * @throws Exception 
 	 */
 	public static JvmOperation jvmOperation(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			String string, String... prefix) throws Exception {
@@ -310,6 +330,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM operation.
+	 * @throws Exception 
 	 */
 	public static JvmOperation jvmOperation(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
@@ -324,6 +345,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL action.
+	 * @throws Exception 
 	 */
 	public static SarlAction functionSignature(ParseHelper<SarlScript> parser, String string, String... prefix) throws Exception {
 		return functionSignature(parser, null, string, prefix);
@@ -336,12 +358,13 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL action.
+	 * @throws Exception 
 	 */
 	public static SarlAction functionSignature(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
 		SarlInterface interfaze = interfaze(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "interface Foo { " + string + "}");
+				+ TestUtils.getLineSeparator() + "interface Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
 
@@ -352,6 +375,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM operation signature.
+	 * @throws Exception 
 	 */
 	public static JvmOperation jvmOperationSignature(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			String string, String... prefix) throws Exception {
@@ -366,6 +390,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM operation signature.
+	 * @throws Exception 
 	 */
 	public static JvmOperation jvmOperationSignature(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
@@ -381,6 +406,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL constructor.
+	 * @throws Exception 
 	 */
 	public static SarlConstructor constructor(ParseHelper<SarlScript> parser, String string, String... prefix) throws Exception {
 		return constructor(parser, null, string, prefix);
@@ -393,12 +419,13 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL constructor.
+	 * @throws Exception 
 	 */
 	public static SarlConstructor constructor(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}");
+				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
@@ -409,6 +436,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM constructor.
+	 * @throws Exception 
 	 */
 	public static JvmConstructor jvmConstructor(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			String string, String... prefix) throws Exception {
@@ -423,6 +451,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the JVM constructor.
+	 * @throws Exception 
 	 */
 	public static JvmConstructor jvmConstructor(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
@@ -437,6 +466,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL field.
+	 * @throws Exception 
 	 */
 	public static SarlField field(ParseHelper<SarlScript> parser, String string, String... prefix) throws Exception {
 		return field(parser, null, string, prefix);
@@ -449,12 +479,13 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL field.
+	 * @throws Exception 
 	 */
 	public static SarlField field(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}");
+				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlField) clazz.getMembers().get(0);
 	}
 
@@ -464,6 +495,7 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL behavior unit.
+	 * @throws Exception 
 	 */
 	public static SarlBehaviorUnit behaviorUnit(ParseHelper<SarlScript> parser, String string, String... prefix) throws Exception {
 		return behaviorUnit(parser, null, string, prefix);
@@ -476,12 +508,13 @@ public class TestEObjects {
 	 * @param string the file content to parse.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the SARL behavior unit.
+	 * @throws Exception 
 	 */
 	public static SarlBehaviorUnit behaviorUnit(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
 		SarlAgent agent = agent(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "agent Foo { " + string + "}");
+				+ TestUtils.getLineSeparator() + "agent Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
 
@@ -491,11 +524,12 @@ public class TestEObjects {
 	 * @param typeName the fully qualified name of the type.
 	 * @param prefix the set of lines to put before the class declaration of the function.
 	 * @return the type reference.
+	 * @throws Exception 
 	 */
 	public static JvmTypeReference getType(ParseHelper<SarlScript> parser, String typeName, String... prefix) throws Exception {
 		SarlAgent agent = agent(parser,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
-				+ TestUtils.getLineSeparator() + "agent Foo { var fooAttr : " + typeName + " }");
+				+ TestUtils.getLineSeparator() + "agent Foo { var fooAttr : " + typeName + " }"); //$NON-NLS-1$ //$NON-NLS-2$
 		return ((SarlField) agent.getMembers().get(0)).getType();
 	}
 

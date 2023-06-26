@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: requires")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class RequireCapacitySerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void one_one() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"requires foo.ecore.SubCapacity",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class RequireCapacitySerializerTest extends AbstractSerializerTest {
 	@Test
 	public void one_two() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"requires foo.ecore.SubCapacity, foo.ecore.SubCapacity2",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity, foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,10 +62,10 @@ public class RequireCapacitySerializerTest extends AbstractSerializerTest {
 	@Test
 	public void two_one() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"requires foo.ecore.SubCapacity",
-				"requires foo.ecore.SubCapacity2",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -72,10 +73,10 @@ public class RequireCapacitySerializerTest extends AbstractSerializerTest {
 	@Test
 	public void two_two() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"requires foo.ecore.SubCapacity, foo.ecore.SubCapacity2",
-				"requires foo.ecore.SubCapacity3",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity, foo.ecore.SubCapacity2", //$NON-NLS-1$
+				"requires foo.ecore.SubCapacity3", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.itests.runtime.bugs.to500.bug458.mocks
 
-import io.sarl.core.Lifecycle
+import io.sarl.api.core.Lifecycle
 
 /**
  * @author $Author: sgalland$

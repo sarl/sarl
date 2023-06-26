@@ -21,9 +21,9 @@
 
 package foo.bug799;
 
-import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.core.annotation.SarlElementType;
 
 /**
  * @author $Author: sgalland$

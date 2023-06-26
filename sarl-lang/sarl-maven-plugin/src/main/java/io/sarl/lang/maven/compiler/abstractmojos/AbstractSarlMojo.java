@@ -408,7 +408,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			final URLClassLoader ucl = (URLClassLoader) cl;
 			return Arrays.asList(ucl.getURLs());
 		}
-		final String[] paths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator));
+		final String[] paths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator)); //$NON-NLS-1$
 		final List<URL> files = new ArrayList<>(paths.length);
 		for (final String path : paths) {
 			files.add(FileSystem.convertStringToURL(path, false));

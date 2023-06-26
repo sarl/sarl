@@ -32,7 +32,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.maven.compiler.utils.MavenHelper;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.tools.AbstractEmbeddedMavenMojoTest;
@@ -82,11 +82,11 @@ public class Bug504Test extends AbstractEmbeddedMavenMojoTest {
 				"",
 				"import io.sarl.elevatorsim.SimulatorPush;",
 				"import io.sarl.elevatorsim.events.SendCarAction;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.core.annotation.SarlElementType;",
+				"import io.sarl.lang.core.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.io.IOException;",
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
 				"",

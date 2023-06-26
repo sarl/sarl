@@ -22,8 +22,8 @@
 package io.sarl.sre.janus.spaces
 
 import io.bootique.di.Injector
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.EventSpaceSpecification
 import io.sarl.lang.core.SpaceID

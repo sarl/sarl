@@ -36,14 +36,15 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: var")
 @Tag("core")
 @Tag("serialization")
+@SuppressWarnings("javadoc")
 public class VariableSerializerTest extends AbstractSerializerTest {
 
 	@Test
 	public void variable_expr_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"var foo = 6.0f",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"var foo = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -51,9 +52,9 @@ public class VariableSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void variable_type_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"var foo : float",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"var foo : float", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -61,9 +62,9 @@ public class VariableSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void variable_typeExpr_noSuper() throws Exception {
 		String s = multilineString(
-				"agent Foo {",
-				"var foo : float = 6.0f",
-				"}");
+				"agent Foo {", //$NON-NLS-1$
+				"var foo : float = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -71,9 +72,9 @@ public class VariableSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void variable_expr_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"var foo = 6.0f",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"var foo = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -81,9 +82,9 @@ public class VariableSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void variable_type_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"var foo : float",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"var foo : float", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}
@@ -91,9 +92,9 @@ public class VariableSerializerTest extends AbstractSerializerTest {
 	@Test
 	public void variable_typeExpr_super() throws Exception {
 		String s = multilineString(
-				"agent Foo extends foo.ecore.SubAgent {",
-				"var foo : float = 6.0f",
-				"}");
+				"agent Foo extends foo.ecore.SubAgent {", //$NON-NLS-1$
+				"var foo : float = 6.0f", //$NON-NLS-1$
+				"}"); //$NON-NLS-1$
 		this.object = agent(getParseHelper(), getValidationHelper(), s);
 		assertSerialize(s);
 	}

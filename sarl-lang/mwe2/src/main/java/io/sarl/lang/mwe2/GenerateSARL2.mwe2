@@ -44,35 +44,37 @@ import io.sarl.lang.mwe2.keywords.*
 import io.sarl.lang.mwe2.bugfixes.unpublished.* 
 
 
-//var overallRootPath = "../../.."
-
-// Path to the folder that contains all the Xtext project to be updated by MWE2 script
+// Path to the folder that contains all the Xtext project to be updated by MWE2 script, excluding the UI projects
 var rootPathForAllXtextProjects = ".."
+// Path to the folder that contains all the Xtext UI project to be updated by MWE2 script
+var rootPathForAllUiXtextProjects = "${rootPathForAllXtextProjects}/../sarl-eclipse"
 
-// Name of the project that contains the SARL compiler
+// Project that contains the SARL compiler
 var compilerProjectName = "compiler"
-// Name of the folder that contains the project for testing the SARL compiler
 var compilerProjectPath = "${rootPathForAllXtextProjects}/${compilerProjectName}"
 
-// Name and the folder that contains the project for testing the SARL compiler
+// Project for testing the SARL compiler
 var compilerTestProjectName = "compiler.tests"
 var compilerTestProjectPath = "${rootPathForAllXtextProjects}/${compilerTestProjectName}"
 var compilerTestProjectSrcGenPath = "${compilerTestProjectPath}/src/main/generated-sources/java"
+
+// Project for the UI that is independent of the framework, i.e., Eclipse and IntelliJ
+var genericIdeProjectName = "io.sarl.lang.ui.generic"
+var genericIdeProjectPath = "${rootPathForAllUiXtextProjects}/${genericIdeProjectName}"
+var genericIdeProjectMetaInfPath = "${genericIdeProjectPath}/META-INF"
+var genericIdeProjectSrcPath = "${genericIdeProjectPath}/src"
+var genericIdeProjectSrcGenPath = "${genericIdeProjectPath}/src-gen"
 
 
 //var projectPath = "${rootPath}/${runtimeProjectName}"
 //
 //var genericUiProjectName = "${baseName}.ui"
 //var genericUiProjectPath = "${rootPath}/${genericUiProjectName}"
-//
-//var ideProjectName = "${baseName}.ide"
-//var ideProjectPath = "${rootPath}/${ideProjectName}"
-//
-//
+
 //var testEclipseProjectName = "${testProjectName}.ui"
 //var testEclipseProjectPath = "${overallRootPath}/tests/${testEclipseProjectName}"
 
-// Paths to the folders that must contains the external syntax formatters
+// External syntax formatters
 var externalToolPath = "${rootPathForAllXtextProjects}/formatting-styles"
 var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
@@ -123,18 +125,12 @@ Workflow {
   	component = DirectoryCleaner {
 		directory = "${compilerProjectPath}/src/main/xtext-gen"
 	}
-// 	component = DirectoryCleaner {
-//		directory = "${genericUiProjectPath}/src-gen"
-//	}
-// 	component = DirectoryCleaner {
-//		directory = "${ideProjectPath}/src-gen"
-//	}
   	component = DirectoryCleaner {
 		directory = "${compilerTestProjectPath}/src/main/generated-sources/java"
 	}
-//  	component = DirectoryCleaner {
-//		directory = "${testEclipseProjectPath}/src-gen"
-//	}
+ 	component = DirectoryCleaner {
+		directory = "${genericIdeProjectSrcGenPath}"
+	}
    	component = DirectoryCleaner {
 		directory = "${prettifyToolPath}"
 	}
@@ -171,19 +167,24 @@ Workflow {
 					name = compilerProjectName
 					metaInf = compilerProjectPath
 				}
-				eclipsePlugin = auto-inject {
-					enabled = false
-//					name = genericUiProjectName
-				}
-				genericIde = auto-inject {
-					enabled = false
-//					name = ideProjectName
-				}
 				runtimeTest = auto-inject {
 					enabled = true
 					name = compilerTestProjectName
 					root = compilerTestProjectPath
 					srcGen = compilerTestProjectSrcGenPath
+				}
+				genericIde = auto-inject {
+					enabled = true
+					name = genericIdeProjectName
+					root = genericIdeProjectPath
+					src = genericIdeProjectSrcPath
+					srcGen = genericIdeProjectSrcGenPath
+					metaInf = genericIdeProjectMetaInfPath
+					overwriteSrc = false
+				}
+				eclipsePlugin = auto-inject {
+					enabled = false
+//					name = genericUiProjectName
 				}
 				eclipsePluginTest = auto-inject {
 					enabled = false

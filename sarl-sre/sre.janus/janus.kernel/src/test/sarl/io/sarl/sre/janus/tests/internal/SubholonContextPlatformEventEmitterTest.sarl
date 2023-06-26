@@ -21,9 +21,9 @@
 
 package io.sarl.sre.janus.tests.internal
 
-import io.sarl.core.ContextJoined
-import io.sarl.core.ContextLeft
-import io.sarl.core.Logging
+import io.sarl.api.core.ContextJoined
+import io.sarl.api.core.ContextLeft
+import io.sarl.api.core.Logging
 import io.sarl.lang.core.Event
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.internal.SubHolonContextEventEmitter

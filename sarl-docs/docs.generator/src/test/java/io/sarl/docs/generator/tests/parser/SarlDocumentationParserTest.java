@@ -290,8 +290,8 @@ public class SarlDocumentationParserTest {
 				assertNotNull(values);
 				assertEquals(1, values.size());
 				assertEquals("package io.sarl.docs.tests\n"
-						+ "		import io.sarl.core.Initialize\n"
-						+ "		import io.sarl.core.Logging\n"
+						+ "		import io.sarl.api.core.Initialize\n"
+						+ "		import io.sarl.api.core.Logging\n"
 						+ "		agent MyAgent {\n"
 						+ "			uses Logging\n"
 						+ "			on Initialize {\n"
@@ -365,8 +365,8 @@ public class SarlDocumentationParserTest {
 				assertNotNull(values);
 				assertEquals(2, values.size());
 				assertEquals("package io.sarl.docs.tests\n"
-						+ "		import io.sarl.core.Initialize\n"
-						+ "		import io.sarl.core.Logging\n"
+						+ "		import io.sarl.api.core.Initialize\n"
+						+ "		import io.sarl.api.core.Logging\n"
 						+ "		agent MyAgent {\n"
 						+ "			uses Logging\n"
 						+ "			on Initialize {\n"

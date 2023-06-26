@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.capacities
 
-import io.sarl.core.Schedules
+import io.sarl.api.core.AgentTask
+import io.sarl.api.core.Schedules
 import io.sarl.lang.core.Behavior
-import io.sarl.core.AgentTask
 import java.util.Collection
 import org.arakhne.afc.vmutil.json.JsonBuffer
 

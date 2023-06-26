@@ -57,7 +57,7 @@ public class BootiqueMain {
 
 	/** Default log format for a bootique app.
 	 */
-	public static final String DEFAULT_LOG_FORMAT = "%-5p %m%n";
+	public static final String DEFAULT_LOG_FORMAT = "%-5p %m%n"; //$NON-NLS-1$
 
 	/** Pattern for command-line definition.
 	 */
@@ -133,12 +133,13 @@ public class BootiqueMain {
 	}
 
 	private BQRuntime createRuntime(Bootique bootique) {
+		Bootique bootiqueInstance = bootique;
 		if (this.providers != null) {
 			for (final BQModuleProvider provider : this.providers) {
-				bootique = bootique.moduleProvider(provider);
+				bootiqueInstance = bootiqueInstance.moduleProvider(provider);
 			}
 		}
-		final BQRuntime runtime = bootique.createRuntime();
+		final BQRuntime runtime = bootiqueInstance.createRuntime();
 		return runtime;
 	}
 

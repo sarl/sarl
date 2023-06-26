@@ -67,7 +67,7 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/main/java/io/sarl/lang/SARLVersion.java</file>
+							<file>${project.basedir}/src/main/java/io/sarl/lang/core/SARLVersion.java</file>
 							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
@@ -210,6 +210,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<supportIncrementalBuild>true</supportIncrementalBuild>
 					<supportedProjectTypes>
 						<supportedProjectType>jar</supportedProjectType>
 						<supportedProjectType>bundle</supportedProjectType>
@@ -222,6 +223,7 @@
 						</manifestEntries>
 					</archive>
 					<instructions>
+						<Export-Package>*</Export-Package>
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-RequiredExecutionEnvironment>${sarl-run.min.jre.environment}</Bundle-RequiredExecutionEnvironment>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>

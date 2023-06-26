@@ -75,7 +75,7 @@ import io.sarl.docs.generator.parser.DynamicValidationContext;
 import io.sarl.docs.generator.parser.ValidationComponent;
 import io.sarl.docs.validator.DocumentationSetup;
 import io.sarl.docs.validator.ScriptExecutor;
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.util.Utils;
 
 /** Maven MOJO that is generating the documentation tests for the SARL project.

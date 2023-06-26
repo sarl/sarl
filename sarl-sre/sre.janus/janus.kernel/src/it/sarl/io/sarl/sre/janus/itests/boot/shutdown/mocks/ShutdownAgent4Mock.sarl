@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.itests.runtime.boot.shutdown.mocks
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
 
 /**
  * @author $Author: sgalland$

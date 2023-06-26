@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Space
+import io.sarl.lang.core.annotation.PrivateAPI
 import java.util.UUID
 
 /** 

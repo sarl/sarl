@@ -42,7 +42,6 @@ import org.junit.ComparisonFailure;
 
 /** Set of utilities for validating SARL code.
  *
- * @param <S> - the type of the service.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -126,7 +125,7 @@ public class TestValidator {
 
 		/** Check if the list of issues contains no error with the given code.
 		 *
-		 * @param issuecode the issue code to match.
+		 * @param code the issue code to match.
 		 * @return the validator.
 		 */
 		Validator assertNoErrors(String code);
@@ -161,6 +160,7 @@ public class TestValidator {
 		 *
 		 * @param objectType the type of object on which the issue must be attached.
 		 * @param code the issue code to match.
+		 * @param severity expected severity.
 		 * @param messageParts the parts of the message that must be found.
 		 * @return the validator.
 		 */
@@ -170,6 +170,7 @@ public class TestValidator {
 		 *
 		 * @param objectType the type of object on which the issue must not be attached.
 		 * @param code the issue code not to match.
+		 * @param severity expected severity.
 		 * @param messageParts the parts of the message that must not be found.
 		 * @return the validator.
 		 */
@@ -239,6 +240,7 @@ public class TestValidator {
 			this.issues = null;
 		}
 
+		@Override
 		public List<Issue> getIssues() {
 			if (this.issues == null) {
 				this.issues = this.testHelper.validate(this.resource);
@@ -246,32 +248,35 @@ public class TestValidator {
 			return this.issues;
 		}
 
+		@Override
 		public Validator assertNoIssues() {
 			final List<Issue> issues = getIssues();
 			if (!isEmpty(issues)) {
 				final String actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
-				throw new ComparisonFailure("Expected no issues, but got :" + actual,
-						"", actual);
+				throw new ComparisonFailure("Expected no issues, but got :" + actual, //$NON-NLS-1$
+						"", actual); //$NON-NLS-1$
 			}
 			return this;
 		}
 
+		@Override
 		public Validator assertNoErrors() {
 			final List<Issue> issues = getIssues();
 			final Iterable<Issue> fissues = filter(issues, input -> Severity.ERROR == input.getSeverity());
 			if (!isEmpty(fissues)) {
 				final String actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
-				throw new ComparisonFailure("Expected no errors, but got :" + actual,
-						"", actual);
+				throw new ComparisonFailure("Expected no errors, but got :" + actual, //$NON-NLS-1$
+						"", actual); //$NON-NLS-1$
 			}
 			return this;
 		}
 
+		@Override
 		public Validator assertNoError(String issuecode) {
 			final List<Issue> issues = getIssues();
 			final Iterable<Issue> fissues = filter(issues, input -> issuecode.equals(input.getCode()));
 			if (!isEmpty(fissues)) {
-				fail("Expected no error '" + issuecode + "' but got "
+				fail("Expected no error '" + issuecode + "' but got " //$NON-NLS-1$ //$NON-NLS-2$
 						+ this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()));
 			}
 			return this;
@@ -282,13 +287,13 @@ public class TestValidator {
 			final Iterable<Issue> fissues = this.testHelper.matchIssues(this.resource, objectType, code, -1, -1,
 					severity, issues, messageParts);
 			if (!Iterables.isEmpty(fissues)) {
-				final StringBuilder message = new StringBuilder("Expected no ")
+				final StringBuilder message = new StringBuilder("Expected no ") //$NON-NLS-1$
 					.append(severity)
-					.append(" '")
+					.append(" '") //$NON-NLS-1$
 					.append(code)
-					.append("' on ")
+					.append("' on ") //$NON-NLS-1$
 					.append(objectType.getName())
-					.append(" but got\n");
+					.append(" but got\n"); //$NON-NLS-1$
 				this.testHelper.getIssuesAsString(this.resource, issues, message);
 				assertEquals(Joiner.on('\n').join(messageParts), message.toString());
 				fail(message.toString());
@@ -296,14 +301,17 @@ public class TestValidator {
 			return this;
 		}
 
+		@Override
 		public Validator assertNoErrors(EClass objectType, String code, String... messageParts) {
 			return assertNoIssues(Severity.ERROR, objectType, code, messageParts);
 		}
 
+		@Override
 		public Validator assertNoErrors(String code) {
 			return assertNoIssues(Severity.ERROR, EcorePackage.Literals.EOBJECT, code);
 		}
 
+		@Override
 		public Validator assertNoIssues(EClass objectType) {
 			final List<Issue> issues = getIssues();
 			final Iterable<Issue> fissues = filter(issues, input -> {
@@ -314,17 +322,18 @@ public class TestValidator {
 					return false;
 				});
 			if (!isEmpty(fissues)) {
-				fail("Expected no error on instances of  '" + objectType.getName() + "' but got "
+				fail("Expected no error on instances of  '" + objectType.getName() + "' but got " //$NON-NLS-1$ //$NON-NLS-2$
 						+ this.testHelper.getIssuesAsString(this.resource, fissues, new StringBuilder()));
 			}
 			return this;
 		}
 
+		@Override
 		public Validator assertNoIssue(EClass objectType, String issuecode) {
 			final List<Issue> issues = getIssues();
 			final Iterable<Issue> fissues = filter(issues, input -> {
 					if (issuecode.equals(input.getCode())) {
-						final EObject object = resource.getEObject(input.getUriToProblem().fragment());
+						final EObject object = this.resource.getEObject(input.getUriToProblem().fragment());
 						if (objectType.isInstance(object)) {
 							return true;
 						}
@@ -332,16 +341,18 @@ public class TestValidator {
 					return false;
 				});
 			if (!isEmpty(fissues)) {
-				fail("Expected no error '" + issuecode + "' but got "
+				fail("Expected no error '" + issuecode + "' but got " //$NON-NLS-1$ //$NON-NLS-2$
 						+ this.testHelper.getIssuesAsString(this.resource, fissues, new StringBuilder()));
 			}
 			return this;
 		}
 
+		@Override
 		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
 			return assertNoIssues(severity, objectType, code, messageParts);
 		}
 
+		@Override
 		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts) {
 			return assertNoIssues(Severity.WARNING, objectType, code, messageParts);
 		}
@@ -352,13 +363,13 @@ public class TestValidator {
 			final Iterable<Issue> fissues = this.testHelper.matchIssues(this.resource, objectType, code, offset,
 					-1, severity, issues, messageParts);
 			if (isEmpty(fissues)) {
-				final StringBuilder message = new StringBuilder("Expected ")
+				final StringBuilder message = new StringBuilder("Expected ") //$NON-NLS-1$
 					.append(severity)
-					.append(" '")
+					.append(" '") //$NON-NLS-1$
 					.append(code)
-					.append("' on ")
+					.append("' on ") //$NON-NLS-1$
 					.append(objectType.getName())
-					.append(" but got\n");
+					.append(" but got\n"); //$NON-NLS-1$
 				message.append(this.testHelper.getIssuesAsString(this.resource, issues, message));
 				assertEquals(Joiner.on('\n').join(messageParts), message.toString());
 				fail(message.toString());
@@ -370,21 +381,25 @@ public class TestValidator {
 			}
 		}
 
+		@Override
 		public Validator assertError(EClass objectType, String code, String... messageParts) {
 			assertIssue(Severity.ERROR, objectType, code, -1, messageParts);
 			return this;
 		}
 
+		@Override
 		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts) {
 			assertIssue(severity, objectType, code, -1, messageParts);
 			return this;
 		}
 
+		@Override
 		public Validator assertWarning(EClass objectType, String code, String... messageParts) {
 			assertIssue(Severity.WARNING, objectType, code, -1, messageParts);
 			return this;
 		}
 
+		@Override
 		public Validator assertWarning(EClass objectType, String code, int offset, String... messageParts) {
 			assertIssue(Severity.WARNING, objectType, code, offset, messageParts);
 			return this;

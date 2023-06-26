@@ -52,9 +52,9 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.annotation.Injectable;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
+import io.sarl.lang.core.annotation.Injectable;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;

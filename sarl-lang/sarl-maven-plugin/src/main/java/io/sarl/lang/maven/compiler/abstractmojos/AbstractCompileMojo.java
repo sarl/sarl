@@ -41,8 +41,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.maven.compiler.compiler.JavaCompiler;
 import io.sarl.lang.maven.compiler.utils.Utils;
 

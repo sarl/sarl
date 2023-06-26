@@ -53,7 +53,7 @@ public class Bug1008Test extends AbstractSarlTest {
 
 	private static final String SARL_CODE_01a = multilineString(
 			"package io.sarl.lang.tests.bug1008",
-			"import io.sarl.lang.annotation.ErrorOnCall",
+			"import io.sarl.lang.core.annotation.ErrorOnCall",
 			"interface XXX {",
 			"   @ErrorOnCall(\"This is a message\")",
 			"   def myfct : void",
@@ -101,7 +101,7 @@ public class Bug1008Test extends AbstractSarlTest {
 
 	private static final String SARL_CODE_02a = multilineString(
 			"package io.sarl.lang.tests.bug1008",
-			"import io.sarl.lang.annotation.ErrorOnCall",
+			"import io.sarl.lang.core.annotation.ErrorOnCall",
 			"class XXX {",
 			"   @ErrorOnCall(\"This is a message\")",
 			"   static def myfct : void {}",

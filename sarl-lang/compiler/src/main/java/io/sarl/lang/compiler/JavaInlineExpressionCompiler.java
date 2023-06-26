@@ -100,7 +100,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public JavaInlineExpressionCompiler() {
-		this.generateDispatcher = new PolymorphicDispatcher<Boolean>(
+		this.generateDispatcher = new PolymorphicDispatcher<>(
 				"_generate", 4, 4, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override

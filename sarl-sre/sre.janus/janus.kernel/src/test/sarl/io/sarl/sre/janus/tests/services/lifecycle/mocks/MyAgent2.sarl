@@ -21,7 +21,7 @@
 
 package io.sarl.sre.janus.tests.services.lifecycle.mocks
 
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.annotation.PrivateAPI
 import java.util.UUID
 
 /**

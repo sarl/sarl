@@ -34,7 +34,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.testing.OnTheFlyJavaCompiler2;
 
 import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Override the module definition for tests only.

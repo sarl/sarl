@@ -89,12 +89,12 @@ import com.sun.source.util.SimpleDocTreeVisitor;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.annotation.PrivateAPI;
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 

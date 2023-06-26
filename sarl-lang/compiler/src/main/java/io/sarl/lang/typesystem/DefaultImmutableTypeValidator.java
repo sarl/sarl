@@ -169,6 +169,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 * @return {@code true} if the given type is always mutable; or {@code false} if
 	 *     it is not known yet that the type is mutable or not.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isAlwaysMutable(LightweightTypeReference ref) {
 		return ref.isArray() || ref.isAnonymous() || ref.isAny() || ref.isUnknown() || ref.isFunctionType();
 	}
@@ -179,6 +180,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 * @return {@code true} if the given type is always immutable; or {@code false} if
 	 *     it is not known yet that the type is immutable or not.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isAlwaysImmutable(LightweightTypeReference ref) {
 		final LightweightTypeReference pref = ref.getPrimitiveIfWrapperType();
 		return pref.isPrimitive() || pref.isPrimitiveVoid();
@@ -211,6 +213,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 *     it is not known yet that the type is immutable or not.
 	 * @see #IMMUTABLE_TYPES
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isRegisteredImmutableType(LightweightTypeReference ref) {
 		for (final Class<?> jvmType : IMMUTABLE_TYPES) {
 			if (ref.isSubtypeOf(jvmType)) {

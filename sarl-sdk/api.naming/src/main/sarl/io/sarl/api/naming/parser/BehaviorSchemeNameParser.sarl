@@ -20,9 +20,9 @@
  */
 package io.sarl.api.naming.parser
 
-import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.BehaviorName
 import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.SREClassLoader
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
