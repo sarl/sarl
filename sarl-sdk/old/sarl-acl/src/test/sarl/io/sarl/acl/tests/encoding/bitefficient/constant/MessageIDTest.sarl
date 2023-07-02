@@ -1,0 +1,118 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, MessageID 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.MessageID
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("MessageID")
+class MessageIDTest {
+
+	var constants : Set<MessageID>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(MessageID::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : MessageID) : MessageID {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0xFA as byte).assertEquals(MessageID::BITEFFICIENT.consume.binaryCode)
+		(0xFB as byte).assertEquals(MessageID::BITEFFICIENT_CODETABLE.consume.binaryCode)
+		(0xFC as byte).assertEquals(MessageID::BITEFFICIENT_NO_CODETABLE.consume.binaryCode)
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"bitefficient".assertEquals(MessageID::BITEFFICIENT.consume.toJsonString)
+		"bitefficient_codetable".assertEquals(MessageID::BITEFFICIENT_CODETABLE.consume.toJsonString)
+		"bitefficient_no_codetable".assertEquals(MessageID::BITEFFICIENT_NO_CODETABLE.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		MessageID::BITEFFICIENT.consume.assertSame(MessageID::valueOfCaseInsensitive("bitefficient"))
+		MessageID::BITEFFICIENT.assertSame(MessageID::valueOfCaseInsensitive("Bitefficient"))
+
+		MessageID::BITEFFICIENT_CODETABLE.consume.assertSame(MessageID::valueOfCaseInsensitive("bitefficient_codetable"))
+		MessageID::BITEFFICIENT_CODETABLE.assertSame(MessageID::valueOfCaseInsensitive("Bitefficient_Codetable"))
+
+		MessageID::BITEFFICIENT_NO_CODETABLE.consume.assertSame(MessageID::valueOfCaseInsensitive("bitefficient_no_codetable"))
+		MessageID::BITEFFICIENT_NO_CODETABLE.assertSame(MessageID::valueOfCaseInsensitive("Bitefficient_No_Codetable"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = MessageID::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = MessageID::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = MessageID::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		"bitefficient, bitefficient_codetable, bitefficient_no_codetable".assertEquals(MessageID::jsonLabels)
+	}
+
+}

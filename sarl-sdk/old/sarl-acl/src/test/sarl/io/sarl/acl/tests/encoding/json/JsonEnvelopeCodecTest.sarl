@@ -1,0 +1,212 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.json
+
+import com.fasterxml.jackson.databind.json.JsonMapper
+import io.sarl.acl.encoding.json.JsonEnvelopeCodec
+import io.sarl.acl.message.AclMessageEnvelope
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.StandardAclEnvelope
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Collection
+import java.util.Collections
+import java.util.Date
+import java.util.Map
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("JsonEnvelopeCodec")
+class JsonEnvelopeCodecTest {
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createJson : String {
+		"{"
+		+ "\"from\":\"ed490df2-5c35-4084-8e50-15836dad7b4f\","
+		+ "\"date\":null,"
+		+ "\"aclRepresentation\":\"sarl.acl.rep.json.std\","
+		+ "\"comments\":\"1234\","
+		+ "\"payloadLength\":0,"
+		+ "\"payloadEncoding\":null,"
+		+ "\"transportBehaviour\":{},"
+		+ "\"to\":[\"ed490df2-5c35-4084-8e50-15836dad7b4f\"],"
+		+ "\"intendedReceiver\":[]"
+		+ "}"
+	}
+
+	var codec : JsonEnvelopeCodec
+
+	@BeforeEach
+	def setUp : void {
+		this.codec = new JsonEnvelopeCodec
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+    def encode : void {
+    	var array = this.codec.encode(new SerializableEnvelope("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID, "1234"))
+    	val actual = (new JsonMapper).readValue(array, typeof(Map))
+    	val expected = (new JsonMapper).readValue(createJson.bytes, typeof(Map))
+    	expected.assertEquals(actual)
+    }
+
+	@SuppressWarnings("raw_type", "potential_inefficient_value_conversion")
+	@Test
+    def decode : void {
+    	var envelope = this.codec.decode(createJson.bytes)
+    	envelope.assertNotNull
+    	typeof(StandardAclEnvelope).assertInstanceOf(envelope)
+    	("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(envelope.from)
+    	envelope.date.assertNull
+    	AclRepresentation::JSON.fipaName.assertEquals(envelope.aclRepresentation)
+    	"1234".assertEquals(envelope.comments)
+    	0l.assertEquals(envelope.payloadLength)
+    	envelope.payloadEncoding.assertNull;
+    	Collections::emptyMap.assertEquals(envelope.transportBehaviour)
+    	#["ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID].assertEquals(envelope.to)
+    	Collections::emptyList.assertEquals(envelope.intendedReceiver)
+    }
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	@DisplayName("encode and decode")
+    def encodreDecode : void {
+    	var byteArray = this.codec.encode(new SerializableEnvelope("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID, "1234"))
+    	var envelope = this.codec.decode(byteArray)
+    	envelope.assertNotNull
+    	typeof(StandardAclEnvelope).assertInstanceOf(envelope)
+    	("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(envelope.from)
+    	envelope.date.assertNull
+    	AclRepresentation::JSON.fipaName.assertEquals(envelope.aclRepresentation)
+    	"1234".assertEquals(envelope.comments)
+    	0l.assertEquals(envelope.payloadLength)
+    	envelope.payloadEncoding.assertNull;
+    	Collections::emptyMap.assertEquals(envelope.transportBehaviour)
+    	#["ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID].assertEquals(envelope.to)
+    	Collections::emptyList.assertEquals(envelope.intendedReceiver)
+	}
+
+	@Test
+	@DisplayName("getAclRepresentation")
+	def getAclRepresentation : void {
+		AclRepresentation::JSON.assertSame(this.codec.aclRepresentation)
+	}
+
+	@SuppressWarnings("unused_private_member")
+	private static class SerializableEnvelope implements AclMessageEnvelope {
+	
+		var value0 : UUID
+	
+		var value1 : String
+
+		new {
+		}
+
+		new (v0 : UUID, v1 : String) {
+			this.value0 = v0
+			this.value1 = v1
+		}
+
+		def getTo : Collection<UUID> {
+			if (this.value0 !== null) {
+				return #[ this.value0 ]
+			}
+			return #[]
+		}
+		
+		def setTo(addresses : Collection<UUID>) {
+		}
+		
+		def getFrom : UUID {
+			this.value0
+		}
+		
+		def setFrom(address : UUID) {
+		}
+		
+		def getAclRepresentation : String {
+			AclRepresentation::JSON.fipaName
+		}
+		
+		def setAclRepresentation(aclRepresentation : String) {
+		}
+		
+		def getDate : Date {
+			null
+		}
+		
+		def setDate(date : Date) {
+		}
+		
+		def getComments : String {
+			this.value1
+		}
+		
+		def setComments(comments : String) {
+		}
+		
+		def getPayloadLength : long {
+			0l
+		}
+		
+		def setPayloadLength(payloadLength : long) {
+		}
+		
+		def getPayloadEncoding : String {
+			null
+		}
+		
+		def setPayloadEncoding(payloadEncoding : String) {
+		}
+		
+		def getIntendedReceiver : Collection<UUID> {
+			Collections::emptyList
+		}
+		
+		def setIntendedReceiver(intendedReceivers : Collection<UUID>) {
+		}
+		
+		def getTransportBehaviour : Map<Object, Object> {
+			Collections::emptyMap
+		}
+		
+		def setTransportBehaviour(transportBehaviour : Map<Object, Object>) {
+		}
+	
+	}
+
+}

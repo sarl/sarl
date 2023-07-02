@@ -1,0 +1,330 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.protocol.query
+
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.Performative
+import io.sarl.acl.protocol.ProtocolResult
+import io.sarl.acl.protocol.ProtocolState
+import java.text.MessageFormat
+import java.util.Map
+
+/**
+ * Participant side of the Query Interaction protocol.
+ *
+ * <center><img src="./doc-files/sequence.png"></center>
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $Groupid$
+ * @mavenartifactid $ArtifactId$
+ * @see <a href="http://www.fipa.org/specs/fipa00027/SC00027H.html">FIPA Query
+ *      Interaction Protocol Specification</a>
+ */
+behavior ParticipantFipaQueryProtocol extends FipaQueryProtocol {
+
+	var queryData : ProtocolResult
+
+	final override isInitiatorSide : boolean {
+		false
+	}
+
+	final override isParticipantSide : boolean {
+		true
+	}
+
+	/**
+	 * At any point in the IP, the receiver of a communication 
+	 * can inform the sender that it did not understand what was communicated.
+	 * 
+	 * The communication of a not-understood within an interaction protocol may terminate the entire IP 
+	 * and termination of the interaction may imply that any commitments made during the interaction 
+	 * are null and void.
+	 * 
+	 * @param reason the reason of the cancel.
+	 * @param reasonParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def notUnderstood(reason : Object = null, reasonParameters : Map<String, String> = null) {
+		notUnderstoodProtocol(reason, reasonParameters)
+	}
+
+	/** Replies the query.
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def getQuery : ProtocolResult {
+		val rlock = this.lock.readLock
+		rlock.lock
+		try {
+			if (this.numberOfErrors === 0) {
+				return this.queryData
+			}
+		} finally {
+			rlock.unlock
+		}
+		reportError(Messages::ParticipantFipaQueryProtocol_0)
+		return null
+	}
+
+	/** Refuse a query.
+	 * 
+	 * @param disagreementInformation any useful agreement information to provide to the initiator.
+	 * @param informationParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def refuse(disagreementInformation : Object = null, informationParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == QueryProtocolState::WAITING_IF_DECISION || st == QueryProtocolState::WAITING_REF_DECISION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == QueryProtocolState::WAITING_IF_DECISION || st == QueryProtocolState::WAITING_REF_DECISION) {
+					QueryProtocolState::QUERY_REFUSED.finish(null)
+					sendMessage(disagreementInformation, Performative::REFUSE,
+						informationParameters?.get('language'),
+						informationParameters?.get('ontology'),
+						informationParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_3, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_3, state.name))			
+		}
+	}
+
+	/** Agree a query.
+	 * 
+	 * @param agreementInformation any useful agreement information to provide to the initiator.
+	 * @param informationParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def agree(agreementInformation : Object = null, informationParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == QueryProtocolState::WAITING_IF_DECISION || st == QueryProtocolState::WAITING_REF_DECISION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == QueryProtocolState::WAITING_IF_DECISION || st == QueryProtocolState::WAITING_REF_DECISION) {
+					if (st == QueryProtocolState::WAITING_IF_DECISION) {
+						QueryProtocolState::QUERY_IF_EXECUTION.change(null)
+					} else {
+						QueryProtocolState::QUERY_REF_EXECUTION.change(null)
+					}
+					sendMessage(agreementInformation, Performative::AGREE,
+						informationParameters?.get('language'),
+						informationParameters?.get('ontology'),
+						informationParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_4, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_4, state.name))			
+		}
+	}
+
+	/** Inform-if the initiator.
+	 * 
+	 * @param answer answer to provide to the initiator.
+	 * @param answerParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def informIf(answer : Object, answerParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == QueryProtocolState::QUERY_IF_EXECUTION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == QueryProtocolState::QUERY_IF_EXECUTION) {
+					QueryProtocolState::SUCCESS.finish(null)
+					sendMessage(answer, Performative::INFORM_IF,
+						answerParameters?.get('language'),
+						answerParameters?.get('ontology'),
+						answerParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_5, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_5, state.name))			
+		}
+	}
+
+	/** Inform-Ref the initiator.
+	 * 
+	 * @param answer answer to provide to the initiator.
+	 * @param answerParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def informRef(answer : Object, answerParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == QueryProtocolState::QUERY_REF_EXECUTION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == QueryProtocolState::QUERY_REF_EXECUTION) {
+					QueryProtocolState::SUCCESS.finish(null)
+					sendMessage(answer, Performative::INFORM_REF,
+						answerParameters?.get('language'),
+						answerParameters?.get('ontology'),
+						answerParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_6, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_6, state.name))			
+		}
+	}
+
+
+	/** Notify the initiator about a failure.
+	 * 
+	 * @param reason the reason to provide to the initiator.
+	 * @param reasonParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def fail(reason : Object, reasonParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == QueryProtocolState::QUERY_IF_EXECUTION || st == QueryProtocolState::QUERY_REF_EXECUTION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == QueryProtocolState::QUERY_IF_EXECUTION || st == QueryProtocolState::QUERY_REF_EXECUTION) {
+					QueryProtocolState::FAILURE.finish(null)
+					sendMessage(reason, Performative::FAILURE,
+						reasonParameters?.get('language'),
+						reasonParameters?.get('ontology'),
+						reasonParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_7, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaQueryProtocol_7, state.name))			
+		}
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+	on AclMessage [!hasFailed] {
+		switch (occurrence.performative) {
+			case Performative::QUERY_IF: {
+				val dt = getQuery
+				val st = state
+				if (st == QueryProtocolState::NOT_STARTED && dt === null) {
+					val wlock = this.lock.writeLock
+					wlock.lock
+					try {
+						this.queryData = new ProtocolResult(occurrence.sender, Performative::QUERY_IF, occurrence.content.content)
+						this.conversationId = occurrence.conversationId
+						this.initiator = occurrence.sender
+						QueryProtocolState::WAITING_IF_DECISION.change(new QueryIfReceived(this))
+						startTimeoutNotifier
+					} finally {
+						wlock.unlock
+					}
+				} else {
+					reportError(Messages::ParticipantFipaQueryProtocol_1)
+				}
+			}
+			case Performative::QUERY_REF: {
+				val st = state
+				if (st === QueryProtocolState::NOT_STARTED) {
+					val wlock = this.lock.writeLock
+					wlock.lock
+					try {
+						this.queryData = new ProtocolResult(occurrence.sender, Performative::QUERY_REF, occurrence.content.content)
+						this.conversationId = occurrence.conversationId
+						this.initiator = occurrence.sender
+						QueryProtocolState::WAITING_REF_DECISION.change(new QueryRefReceived(this))
+						startTimeoutNotifier
+					} finally {
+						wlock.unlock
+					}
+				} else {
+					reportError(Messages::ParticipantFipaQueryProtocol_2)
+				}
+			}
+			default: {
+				reportUnpexectedPerformativeError(occurrence.performative)
+			}
+		}
+	}
+
+}

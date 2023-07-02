@@ -1,0 +1,135 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, BinaryDateTimeToken 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.BinaryDateTimeToken
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BinaryDateTimeToken")
+class BinaryDateTimeTokenTest {
+
+	var constants : Set<BinaryDateTimeToken>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(BinaryDateTimeToken::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : BinaryDateTimeToken) : BinaryDateTimeToken {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0x20 as byte).assertEquals(BinaryDateTimeToken::ABS_TIME.consume.binaryCode)
+		(0x21 as byte).assertEquals(BinaryDateTimeToken::REL_TIME_POS.consume.binaryCode)
+		(0x22 as byte).assertEquals(BinaryDateTimeToken::REL_TIME_NEG.consume.binaryCode)
+		(0x24 as byte).assertEquals(BinaryDateTimeToken::ABS_TIME_TYPE_DESIGNATOR.consume.binaryCode)
+		(0x25 as byte).assertEquals(BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.consume.binaryCode)
+		(0x26 as byte).assertEquals(BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.consume.binaryCode)
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"abs_time".assertEquals(BinaryDateTimeToken::ABS_TIME.consume.toJsonString)
+		"rel_time_pos".assertEquals(BinaryDateTimeToken::REL_TIME_POS.consume.toJsonString)
+		"rel_time_neg".assertEquals(BinaryDateTimeToken::REL_TIME_NEG.consume.toJsonString)
+		"abs_time_type_designator".assertEquals(BinaryDateTimeToken::ABS_TIME_TYPE_DESIGNATOR.consume.toJsonString)
+		"rel_time_pos_type_designator".assertEquals(BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.consume.toJsonString)
+		"rel_time_neg_type_designator".assertEquals(BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		BinaryDateTimeToken::ABS_TIME.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("abs_time"))
+		BinaryDateTimeToken::ABS_TIME.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Abs_time"))
+
+		BinaryDateTimeToken::REL_TIME_POS.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("rel_time_pos"))
+		BinaryDateTimeToken::REL_TIME_POS.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Rel_time_pos"))
+
+		BinaryDateTimeToken::REL_TIME_NEG.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("rel_time_neg"))
+		BinaryDateTimeToken::REL_TIME_NEG.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Rel_time_neg"))
+
+		BinaryDateTimeToken::ABS_TIME_TYPE_DESIGNATOR.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("abs_time_type_designator"))
+		BinaryDateTimeToken::ABS_TIME_TYPE_DESIGNATOR.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Abs_time_type_designator"))
+
+		BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("rel_time_pos_type_designator"))
+		BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Rel_time_pos_type_designator"))
+
+		BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.consume.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("rel_time_neg_type_designator"))
+		BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.assertSame(BinaryDateTimeToken::valueOfCaseInsensitive("Rel_time_neg_type_designator"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = BinaryDateTimeToken::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = BinaryDateTimeToken::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = BinaryDateTimeToken::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		("abs_time, rel_time_pos, rel_time_neg, abs_time_type_designator, "
+		+ "rel_time_pos_type_designator, rel_time_neg_type_designator").assertEquals(BinaryDateTimeToken::jsonLabels)
+	}
+
+}

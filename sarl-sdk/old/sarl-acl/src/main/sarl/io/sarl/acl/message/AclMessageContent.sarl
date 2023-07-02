@@ -1,0 +1,391 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.message
+
+import com.google.inject.ImplementedBy
+import java.io.Serializable
+import java.util.Arrays
+import java.util.Collection
+import java.util.Date
+import java.util.UUID
+import javax.inject.Provider
+
+/** 
+ * This interface describes the Content of a given ACL Message as defined by FIPA.
+ * 
+ * @see <a href="http://www.fipa.org/specs/fipa00061/SC00061G.html">FIPA ACL Message Structure Specification</a>
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+interface AclMessageContent extends Serializable {
+
+	/** 
+	 * Gets the performative of the ACL Message.
+	 *
+	 * <p>The performative denotes the type of the communicative act of the ACL message.
+	 *
+	 * @return the performative of the ACL Message.
+	 */
+	@Pure
+	def getPerformative : Performative
+	
+	/**
+	 * Sets the performative of the ACL Message.
+	 *
+	 * <p>The performative denotes the type of the communicative act of the ACL message.
+	 * 
+	 * @param performative the new performative, never {@code null}.
+	 */
+	def setPerformative(performative : Performative)
+	
+	/**
+	 * Gets the agent address of the sender of the ACL Message.
+	 *
+	 * <p>The sender denotes the identity of the sender of the message, 
+	 * that is, the agent address of the agent of the communicative act.
+	 *
+	 * @return the agent address of the sender of the ACL Message.
+	 */
+	@Pure
+	def getSender : UUID
+	
+	/**
+	 * Sets the agent address of the sender of the ACL Message.
+	 *
+	 * <p>The sender denotes the identity of the sender of the message, 
+	 * that is, the agent address of the agent of the communicative act.
+	 * 
+	 * @param address the address of the sender, never {@code null}.
+	 */
+	def setSender(address : UUID)
+	
+	/**
+	 * Gets the list of receivers of the ACL Message.
+	 *
+	 * <p>The receiver denotes the identity of the intended recipients of the message.
+	 *
+	 * @return the list of receivers of the ACL Message.
+	 */
+	@Pure
+	def getReceivers : Collection<UUID> 
+	
+	/**
+	 * Sets the list of receivers of the ACL Message.
+	 *
+	 * <p>The receiver denotes the identity of the intended recipients of the message.
+	 *
+	 * @param receivers - the list of receivers of the ACL Message.
+	 */
+	def setReceivers(receivers : Collection<UUID>)
+
+	/** 
+	 * Sets the list of receivers of the ACL Message.
+	 * 
+	 * <p>The receiver denotes the identity of the intended recipients of the message.
+	 *
+	 * @param receivers - the list of receivers of the ACL Message.
+	 */
+	def setReceivers(receiver : UUID*) {
+		setReceivers(Arrays::asList(receiver))
+	}
+
+	/** 
+	 * Gets the list of agent address to reply to.
+	 * 
+	 * <p>This parameter indicates that subsequent messages 
+	 * in this conversation thread are to be directed to the agent named in the reply-to parameter, 
+	 * instead of to the agent named in the sender parameter.
+	 *
+	 * @return the list of agent address to reply to.
+	 */
+	@Pure
+	def getReplyTo : Collection<UUID>
+	
+	/**
+	 * Sets the list of agent address to reply to.
+	 * 
+	 * <p>This parameter indicates that subsequent messages 
+	 * in this conversation thread are to be directed to the agent named in the reply-to parameter, 
+	 * instead of to the agent named in the sender parameter.
+	 *
+	 * @param replyTo - the list of agent address to reply to.
+	 */
+	def setReplyTo(replyTo : Collection<UUID>)
+
+	/** 
+	 * Sets the list of agent address to reply to.
+	 * 
+	 * <p>This parameter indicates that subsequent messages 
+	 * in this conversation thread are to be directed to the agent named in the reply-to parameter, 
+	 * instead of to the agent named in the sender parameter.
+	 *
+	 * @param replyTo - the list of agent address to reply to.
+	 */
+	def setReplyTo(replyTo : UUID*) {
+		setReplyTo(Arrays::asList(replyTo))
+	}
+
+	/** 
+	 * Gets the content of the ACL Message.
+	 * 
+	 * <p>The content denotes the content of the message; 
+	 * equivalently denotes the object of the action.
+	 * 
+	 * @return the content of the ACL Message.
+	 */
+	@Pure
+	def getContent : Object
+	
+	/**
+	 * Sets the content of the ACL Message.
+	 * 
+	 * <p>The content denotes the content of the message; 
+	 * equivalently denotes the object of the action. 
+	 * 
+	 * <p>The meaning of the content of any ACL message is intended 
+	 * to be interpreted by the receiver of the message. 
+	 * This is particularly relevant for instance when referring 
+	 * to referential expressions, 
+	 * whose interpretation might be different for the sender and the receiver.
+	 * 
+	 * @param content - the content of the ACL Message.
+	 */
+	def setContent(content : Object)
+	
+	/**
+	 * Gets the language of the content of the ACL Message.
+	 * 
+	 * <p>The language denotes the language in which the content parameter is expressed.
+	 * 
+	 * <p>This field may be omitted 
+	 * if the agent receiving the message can be assumed 
+	 * to know the language of the content expression.
+	 * 
+	 * @return the language of the content of the ACL Message.
+	 */
+	@Pure
+	def getLanguage : String
+	
+	/**
+	 * Sets the language of the content of the ACL Message.
+	 * 
+	 * <p>The language denotes the language in which the content parameter is expressed.
+	 * 
+	 * <p>This field may be omitted 
+	 * if the agent receiving the message can be assumed 
+	 * to know the language of the content expression.
+	 *
+	 * @param language - the language of the content of the ACL Message.
+	 */
+	def setLanguage(language : String)
+	
+	/**
+	 * Gets the encoding of the content of the ACL Message.
+	 * 
+	 * <p>The encoding denotes the specific encoding of the content language expression.
+	 * 
+	 * <p>If the encoding parameter is not present, 
+	 * the encoding will be specified in the message envelope 
+	 * that encloses the ACL message.
+	 * 
+	 * @return the encoding of the content of the ACL Message.
+	 */
+	@Pure
+	def getEncoding : String
+	
+	/**
+	 * Sets the encoding of the content of the ACL Message.
+	 * 
+	 * <p>The encoding denotes the specific encoding of the content language expression.
+	 * 
+	 * <p>If the encoding parameter is not present, 
+	 * the encoding will be specified in the message envelope 
+	 * that encloses the ACL message.
+	 * 
+	 * @param encoding - the encoding of the content of the ACL Message.
+	 */
+	def setEncoding(encoding : String)
+	
+	/**
+	 * Gets the ontology of the content of the ACL Message.
+	 * 
+	 * <p>The ontology denotes the ontology(s) used to give a meaning to the symbols in the content expression.
+	 * 
+	 * <p>In many situations, the ontology parameter will be commonly understood
+	 * by the agent community and so this message parameter may be omitted.
+	 * 
+	 * @return the ontology of the content of the ACL Message.
+	 */
+	@Pure
+	def getOntology : String
+	
+	/**
+	 * Sets the ontology of the content of the ACL Message.
+	 * 
+	 * <p>The ontology denotes the ontology(s) used to give a meaning to the symbols in the content expression.
+	 * 
+	 * <p>In many situations, the ontology parameter will be commonly understood
+	 * by the agent community and so this message parameter may be omitted.
+	 * 
+	 * @param ontology - the ontology of the content of the ACL Message.
+	 */
+	def setOntology(ontology : String)
+	
+	/**
+	 * Gets the protocol used to manage the ACL Message.
+	 * 
+	 * <p>The protocol denotes the interaction protocol 
+	 * that the sending agent is employing with this ACL message.
+	 * 
+	 * @return the protocol used to manage the ACL Message.
+	 * @see <a href="http://www.fipa.org/specs/fipa00061/SC00061G.html#_Toc26669714">FIPA Protocol Specification</a>
+	 */
+	@Pure
+	def getProtocol : String
+	
+	/**
+	 * Sets the protocol used to manage the ACL Message.
+	 *
+	 * <p>The protocol denotes the interaction protocol 
+	 * that the sending agent is employing with this ACL message.
+	 *
+	 * @param protocol - the protocol used to manage the ACL Message. 
+	 * @see <a href="http://www.fipa.org/specs/fipa00061/SC00061G.html#_Toc26669714">FIPA Protocol Specification</a>
+	 */
+	def setProtocol(protocol : String)
+		
+	/**
+	 * Gets the conversation Id which is associated to the ACL Message.
+	 * 
+	 * <p>The conversation Id introduces an expression (a conversation identifier) 
+	 * which is used to identify the ongoing sequence of communicative acts that together form a conversation.
+	 * 
+	 * @return the conversation Id which is associated to the ACL Message.
+	 */
+	@Pure
+	def getConversationId : UUID
+	
+	/**
+	 * Sets the conversation Id which is associated to the ACL Message.
+	 * 
+	 * <p>The conversation Id introduces an expression (a conversation identifier) 
+	 * which is used to identify the ongoing sequence of communicative acts that together form a conversation.
+	 *
+	 * @param conversationId - the conversation Id which is associated to the ACL Message.
+	 */
+	def setConversationId(conversationId : UUID)
+	
+	/**
+	 * Gets the reply-with parameter of the ACL Message.
+	 * 
+	 * <p>The reply-with parameter introduces an expression 
+	 * that will be used by the responding agent to identify this message.
+	 *
+	 * @return the reply-with parameter of the ACL Message.
+	 */
+	@Pure
+	def getReplyWith : String
+	
+	/**
+	 * Sets the reply-with parameter of the ACL Message.
+	 * 
+	 * <p>The reply-with parameter introduces an expression 
+	 * that will be used by the responding agent to identify this message.
+	 *
+	 * @param replyWith - the reply-with parameter of the ACL Message.
+	 */
+	def setReplyWith(replyWith : String)
+	
+	/**
+	 * Gets the in-reply-to parameter of the ACL Message.
+	 * 
+	 * <p>The in-reply-to parameter denotes an expression that references 
+	 * an earlier action to which this message is a reply.
+	 * 
+	 * @return the in-reply-to parameter of the ACL Message.
+	 */
+	@Pure
+	def getInReplyTo : String
+	
+	/**
+	 * Sets the in-reply-to parameter of the ACL Message.
+	 * 
+	 * <p>The in-reply-to parameter denotes an expression that references 
+	 * an earlier action to which this message is a reply.
+	 *
+	 * @param inReplyTo - the in-reply-to parameter of the ACL Message.
+	 */
+	def setInReplyTo(inReplyTo : String)
+	
+	/**
+	 * Gets the reply-by parameter of the ACL Message.
+	 * 
+	 * <p>The reply-by parameter denotes a time and/or date expression which indicates 
+	 * the latest time by which the sending agent would like to receive a reply.
+	 *
+	 * @return the reply-by parameter of the ACL Message.
+	 */
+	@Pure
+	def getReplyBy : Date
+	
+	/**
+	 * Sets the reply-by parameter of the ACL Message.
+	 *
+	 * <p>The reply-by parameter denotes a time and/or date expression which indicates 
+	 * the latest time by which the sending agent would like to receive a reply.
+	 *
+	 * @param replyBy - the reply-by parameter of the ACL Message.
+	 */
+	def setReplyBy(replyBy : Date)    
+
+}
+
+/** 
+ * Create a new message content.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@ImplementedBy(typeof(StandardAclContentFactory))
+interface AclMessageContentFactory extends Provider<AclMessageContent> {
+
+	/** 
+	 * Create a new content
+	 */
+	def newContent : AclMessageContent
+
+	@Pure
+	@SuppressWarnings("manual_inline_definition")
+	@Inline("newContent()")
+	override get : AclMessageContent {
+		newContent
+	}
+
+}

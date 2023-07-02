@@ -1,0 +1,287 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.extensions.simulation.tests.units.engine.services.lifecycle
+
+import io.sarl.sarlspecification.SarlSpecificationChecker
+import io.sarl.sre.extensions.simulation.tests.units.engine.services.lifecycle.mocks.AgentMock
+import io.sarl.sre.extensions.simulation.tests.units.engine.services.lifecycle.mocks.ServiceMock
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.lifecycle.AgentCreatorProvider
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentMatchers.*
+import static extension org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: SimulationLifecycleService test")
+@Tag("unit")
+@Tag("janus")
+@Tag("sre-unit")
+@Tag("sre-simulation")
+class SimulationLifecycleServiceTest {
+
+	@Nullable
+	var agentFactoryProvider : AgentCreatorProvider
+
+	@Nullable
+	var checker : SarlSpecificationChecker
+
+	@Nullable
+	var service : ServiceMock
+
+	@BeforeEach
+	def setUp : void {
+		this.agentFactoryProvider = typeof(AgentCreatorProvider).mock
+		this.checker = typeof(SarlSpecificationChecker).mock
+		when(this.checker.isValidSarlElement(typeof(Class).any)).thenReturn(true)
+		this.service = new ServiceMock(this.checker, this.agentFactoryProvider)
+	}
+
+	protected def addAgentMock(id : UUID) : void {
+		this.service.spawnAgent(
+			1,
+			UUID::randomUUID,
+			typeof(Context).mock,
+			id,
+			typeof(AgentMock),
+			#[])
+	}
+
+	protected def removeAgentMock(id : UUID) : void {
+		this.service.killAgent(this.service.getAgent(id), false)
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 0 agent w/o sync")
+	def getAgents_0_noSync : void {
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 1 agent w/o sync")
+	def getAgents_1_noSync : void {
+		var id0 = UUID::randomUUID
+		addAgentMock(id0)
+
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 2 agents w/o sync")
+	def getAgents_2_noSync : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 0 agent w/ sync")
+	def getAgents_0_sync : void {
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 1 agent w/ sync")
+	def getAgents_1_sync : void {
+		var id0 = UUID::randomUUID
+		addAgentMock(id0)
+		this.service.synchronizeAgentList
+
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertTrue
+		iterator.next.assertNotNull
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getAgents w/ 2 agents w/ sync")
+	def getAgents_2_sync : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+
+		var iterable = this.service.agents
+		iterable.assertNotNull
+		var iterator = iterable.iterator
+		iterator.hasNext.assertTrue
+		iterator.next.assertNotNull
+		iterator.hasNext.assertTrue
+		iterator.next.assertNotNull
+		iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 0 agent w/o sync")
+	def hasAgent_0_noSync : void {
+		this.service.hasAgent.assertFalse
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 1 agent w/o sync")
+	def hasAgent_1_noSync : void {
+		var id0 = UUID::randomUUID
+		addAgentMock(id0)
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 2 agents w/o sync")
+	def hasAgent_2_noSync : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 0 agent w/ sync")
+	def hasAgent_0_sync : void {
+		this.service.hasAgent.assertFalse
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 1 agent w/ sync")
+	def hasAgent_1_sync {
+		addAgentMock(UUID::randomUUID)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("hasAgent w/ 2 agents w/ sync")
+	def hasAgent_2_sync : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 0 agent")
+	def synchronizeAgentLists_0 : void {
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertFalse
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 1 agent")
+	def synchronizeAgentLists_1 : void {
+		var id0 = UUID::randomUUID
+		addAgentMock(id0)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 2 agents")
+	def synchronizeAgentLists_2 : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 2 agent w/ 1 remove w/o sync")
+	def synchronizeAgentLists_3 : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+		removeAgentMock(id0)
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 2 agent w/ 1 remove w/ sync")
+	def synchronizeAgentLists_4 : void {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+		removeAgentMock(id0)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertTrue
+	}
+
+	@Test
+	@DisplayName("synchronizeAgentLists w/ 2 agent w/ 2 removes")
+	def synchronizeAgentLists_5() {
+		var id0 = UUID::randomUUID
+		var id1 = UUID::randomUUID
+		addAgentMock(id0)
+		addAgentMock(id1)
+		this.service.synchronizeAgentList
+		removeAgentMock(id0)
+		this.service.synchronizeAgentList
+		removeAgentMock(id1)
+		this.service.synchronizeAgentList
+		this.service.hasAgent.assertFalse
+	}
+
+}

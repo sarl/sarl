@@ -1,0 +1,69 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.encoding
+
+/** 
+ * Abstract implementation of a message encoding service.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+abstract class AbstractAclMessageEncodingService {
+
+	/** Validate indexes in order to fit the given buffer.
+	 *
+	 * @param buffer the buffer.
+	 * @param startIndex the index of the first byte.
+	 * @param endIndex the index of the first character that should be read from the buffer.
+	 * @return the corrected indexes.
+	 */
+	static def validateIndexes(buffer : byte[], startIndex : int, endIndex : int) : Pair<Integer, Integer> {
+		if (buffer === null) {
+			return new Pair(0, 0)
+		}
+
+		var s = startIndex
+		if (s < 0) {
+			s = 0
+		}
+		if (s > buffer.length) {
+			s = buffer.length
+		}
+
+		var e = endIndex
+		if (e < 0) {
+			e = buffer.length + e + 1
+		}
+		if (e < s) {
+			e = s
+		}
+		if (e > buffer.length) {
+			e = buffer.length
+		}
+
+		return new Pair(s, e)
+	}
+
+}

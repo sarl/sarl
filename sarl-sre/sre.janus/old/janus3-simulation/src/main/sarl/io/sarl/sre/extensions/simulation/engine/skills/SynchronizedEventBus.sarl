@@ -1,0 +1,208 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.engine.skills
+
+import io.sarl.lang.core.Event
+import io.sarl.sre.extensions.simulation.engine.events.TimestampedEvent
+import io.sarl.sre.skills.internal.EventBus
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Comparator
+import java.util.List
+import java.util.logging.Logger
+import org.arakhne.afc.util.ListUtil
+
+/** 
+ * The class in a specific implementation of the event bus that is dedicated to simulation.
+ *
+ * <p>This event bus synchronizes the events in order to dispatch them when the synchronous engine
+ * of the simulator notifies for the dispatching.
+ * 
+ * @author $Author: gcich$
+ * @author $Author: sgalland$
+ * @author $Author: lknapen$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.8.0
+ */
+class SynchronizedEventBus extends EventBus {
+
+	var nextStepBuffer = <BufferedEvent>newArrayList
+
+	var currentStepBuffer : ArrayList<BufferedEvent>
+
+	var timedBuffer : ArrayList<BufferedEvent>
+
+	/** Replies a view on the buffer of timed events.
+	 *
+	 * @return the timed events.
+	 */
+	@Pure
+	def getTimedEvents : List<Event> {
+		if (this.timedBuffer === null) {
+			return Collections::emptyList
+		}
+		return this.timedBuffer.map [it.^event].unmodifiableView
+	}
+
+	/** Replies a view on the buffer of events that will be fired at the next simulation step.
+	 *
+	 * <p>The replied events were not associated to a dispatch time.
+	 * 
+	 * @return the immediately firable events.
+	 */
+	@Pure
+	def getImmediatelyFirableEvents : List<Event> {
+		if (this.currentStepBuffer === null) {
+			return Collections::emptyList
+		}
+		return this.currentStepBuffer.map[it.^event].unmodifiableView
+	}
+
+	/** Replies a view on the buffer of events that are cached for a later dispatch.
+	 * 
+	 * <p>The replied events were not associated to a dispatch time.
+	 * 
+	 * @return the not immediately firable events.
+	 */
+	@Pure
+	def getNotImmediatelyFirableEvents : List<Event> {
+		if (this.nextStepBuffer === null) {
+			return Collections::emptyList
+		}
+		return this.nextStepBuffer.map[it.^event].unmodifiableView
+	}
+
+	override asyncDispatch(^event : Event, logger : Logger) {
+		val buf = new BufferedEvent(^event, logger)
+		if (buf.time.isNaN) {
+			this.nextStepBuffer += buf
+		} else {
+			if (this.timedBuffer === null) {
+				this.timedBuffer = newArrayList
+			}
+			ListUtil::add(this.timedBuffer, EventComparator::SINGLETON, buf, true, false)
+		}
+	}
+
+	/** Synchronize the bus in order to reach the given time.
+	 * 
+	 * @param untilTime the time to which (included) all the events must be fired.
+	 */
+	def moveToTime(untilTime : double) {
+		assert this.currentStepBuffer === null
+		this.currentStepBuffer = this.nextStepBuffer
+		this.nextStepBuffer = <BufferedEvent>newArrayList
+	}
+
+	/** Fire the buffered events on the bus.
+	 *
+	 * @param untilTime the time to which (included) all the events must be fired.
+	 */
+	def fireBufferedEventsOnBus(untilTime : double) : void {
+		var buffer1 = this.currentStepBuffer
+		this.currentStepBuffer = null
+		if (buffer1 !== null && !buffer1.empty) {
+			for (^event : buffer1) {
+				immediateDispatch(^event.^event, false, ^event.logger)
+			}
+		}
+
+		if (this.timedBuffer !== null && !this.timedBuffer.empty) {
+			val iterator = this.timedBuffer.iterator
+			var index = 0
+			while (iterator.hasNext) {
+				val ^event = iterator.next
+				index++
+				val t = ^event.time
+				if (t <= untilTime) {
+					immediateDispatch(^event.^event, false, ^event.logger)
+				} else {
+					break
+				}
+			}
+			if (index >= this.timedBuffer.size) {
+				this.timedBuffer = null
+			} else {
+				this.timedBuffer = newArrayList(this.timedBuffer.subList(index, this.timedBuffer.size))
+				if (this.timedBuffer.empty) {
+					this.timedBuffer = null
+				}
+			}
+		}
+	}
+
+	/** 
+	 * Storage data structure for buffered events.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.8.0
+	 */
+	private static class EventComparator implements Comparator<BufferedEvent> {
+
+		public static val SINGLETON = new EventComparator
+
+		def compare(obj1 : BufferedEvent, obj2 : BufferedEvent) : int {
+			assert obj1 !== null
+			assert obj2 !== null
+			return Double::compare(obj2.time, obj1.time)
+		}
+
+	}
+	
+	/** 
+	 * Storage data structure for buffered events.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.8.0
+	 */
+	private static class BufferedEvent {
+
+		public val time : double
+
+		public val ^event : Event
+
+		public val logger : Logger
+		
+		new (^event : Event, logger : Logger) {
+			this.^event = ^event
+			this.logger = logger
+			if (^event instanceof TimestampedEvent) {
+				this.time = ^event.timestamp
+			} else {
+				this.time = Double::NaN
+			}
+		}
+
+		override toString : String {
+			this.^event?.class.name
+		}
+	
+	}
+
+}

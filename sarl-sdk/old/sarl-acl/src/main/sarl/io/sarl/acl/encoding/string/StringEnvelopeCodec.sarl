@@ -1,0 +1,167 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.encoding.string
+
+import io.sarl.acl.encoding.AbstractAclMessageEnvelopeEncodingService
+import io.sarl.acl.message.AclMessageEnvelope
+import io.sarl.acl.message.AclRepresentation
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+
+import static extension io.sarl.acl.encoding.string.StringAclCodecUtil.*
+
+/** 
+ * This class encodes an ACLMessageEnvelope in String or decodes
+ * an ACLMessageEnvelope encoded in String.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class StringEnvelopeCodec extends AbstractAclMessageEnvelopeEncodingService {
+
+	override getAclRepresentation : AclRepresentation {
+		AclRepresentation::STRING
+	}
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	override encode(envelope : AclMessageEnvelope) : byte[] {
+		val bstream = new ByteArrayOutputStream
+		try {
+			val stream = new PrintStream(bstream)
+			
+			stream.aclRepresentation(envelope.aclRepresentation) [
+				node(Messages::NODE_FROM) [
+					agentIdentifier(envelope.from)
+				]
+				if (envelope.to !== null) {
+					for (uuid : envelope.to) {
+						node(Messages::NODE_TO) [
+							agentIdentifier(uuid)
+						]
+					}
+				}
+				if (envelope.intendedReceiver !== null) {
+					for (uuid : envelope.intendedReceiver) {
+						node(Messages::NODE_INTENDEDRECEIVER) [
+							agentIdentifier(uuid)
+						]
+					}
+				}
+				dateNode(Messages::NODE_DATE, envelope.date)
+				node(Messages::NODE_COMMENTS, envelope.comments)
+				if (envelope.payloadLength > 0) {
+					node(Messages::NODE_PAYLOADLENGTH, envelope.payloadLength)
+				}
+				node(Messages::NODE_PAYLOADENCODING, envelope.payloadEncoding)
+				if (envelope.transportBehaviour !== null && !envelope.transportBehaviour.empty) {
+					node(Messages::NODE_TRANSPORTBEHAVIOR) [
+						groupmap(envelope.transportBehaviour)
+					]
+				}
+			]
+		} finally {
+			bstream.close
+		}
+        return bstream.toByteArray
+	}
+
+	override decode(encodedEnvelope : byte[], startIndex : int, endIndex : int) : AclMessageEnvelope {
+		val correction = encodedEnvelope.validateIndexes(startIndex, endIndex)
+		val startIdx = correction.key as int
+		val endIdx = correction.value as int
+		val envelope = this.envelopeFactory.newEnvelope
+		encodedEnvelope.ifFipaEnvelope(startIdx, endIdx) [it, representation|
+			envelope.aclRepresentation = representation.fipaName
+			forEachFipaComponent [it, type|
+				switch (type) {
+					case Messages::NODE_FROM: {
+						// ":from ( agent-identifier name .. )"
+						ifAgentIdentifier [sender|
+							envelope.from = sender
+						]
+					}
+					case Messages::NODE_TO: {
+						// ":to ( agent-identifier name .. )"
+						ifAgentIdentifier [receiver|
+							var list = envelope.to
+							if (list === null) {
+								list = newArrayList
+								envelope.to = list
+							}
+							list += receiver
+						]
+					}
+					case Messages::NODE_DATE: {
+						// ":date .."
+						ifDate [
+							envelope.date = it
+						]
+					}
+					case Messages::NODE_COMMENTS: {
+						// ":comments .."
+						ifExpression [
+							envelope.comments = it
+						]
+					}
+					case Messages::NODE_PAYLOADENCODING: {
+						// ":payload-encoding .."
+						ifExpression [
+							envelope.payloadEncoding = it
+						]
+					}
+					case Messages::NODE_PAYLOADLENGTH: {
+						// ":encoding .."
+						ifInteger [
+							envelope.payloadLength = it
+						]
+					}
+					case Messages::NODE_INTENDEDRECEIVER: {
+						// ":intended-receiver ( agent_identifier :name .. )"
+						ifAgentIdentifier [receiver|
+							var list = envelope.intendedReceiver
+							if (list === null) {
+								list = newArrayList
+								envelope.intendedReceiver = list
+							}
+							list += receiver
+						]
+					}
+					case Messages::NODE_TRANSPORTBEHAVIOR: {
+						// ":transport-behavior (map ".." ".." ".." "..")"
+						forEachGroupMapPairs [key, value|
+							var map = envelope.transportBehaviour
+							if (map === null) {
+								map = newHashMap
+								envelope.transportBehaviour = map
+							}
+							map.put(key, value)
+						]
+					}
+				}
+			]
+		]
+		return envelope
+	}
+
+}

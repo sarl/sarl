@@ -1,0 +1,118 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, BinaryWord 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.BinaryWord
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BinaryWord")
+class BinaryWordTest {
+
+	var constants : Set<BinaryWord>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(BinaryWord::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : BinaryWord) : BinaryWord {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0x10 as byte).assertEquals(BinaryWord::WORD_BEGIN.consume.binaryCode)
+		(0x00 as byte).assertEquals(BinaryWord::WORD_END.consume.binaryCode)
+		(0x11 as byte).assertEquals(BinaryWord::INDEX_BEGIN.consume.binaryCode)
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"word_begin".assertEquals(BinaryWord::WORD_BEGIN.consume.toJsonString)
+		"word_end".assertEquals(BinaryWord::WORD_END.consume.toJsonString)
+		"index_begin".assertEquals(BinaryWord::INDEX_BEGIN.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		BinaryWord::WORD_BEGIN.consume.assertSame(BinaryWord::valueOfCaseInsensitive("word_begin"))
+		BinaryWord::WORD_BEGIN.assertSame(BinaryWord::valueOfCaseInsensitive("Word_Begin"))
+
+		BinaryWord::WORD_END.consume.assertSame(BinaryWord::valueOfCaseInsensitive("word_end"))
+		BinaryWord::WORD_END.assertSame(BinaryWord::valueOfCaseInsensitive("Word_End"))
+
+		BinaryWord::INDEX_BEGIN.consume.assertSame(BinaryWord::valueOfCaseInsensitive("index_begin"))
+		BinaryWord::INDEX_BEGIN.assertSame(BinaryWord::valueOfCaseInsensitive("Index_Begin"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = BinaryWord::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = BinaryWord::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = BinaryWord::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		"word_begin, word_end, index_begin".assertEquals(BinaryWord::jsonLabels)
+	}
+
+}

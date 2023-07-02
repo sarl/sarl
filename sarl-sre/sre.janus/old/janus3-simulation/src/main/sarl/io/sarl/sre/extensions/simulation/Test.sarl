@@ -1,0 +1,34 @@
+/** 
+ * 
+ */
+package io.sarl.sre.extensions.simulation
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import org.arakhne.afc.math.geometry.d2.d.Vector2d
+
+/** 
+ * @author sgalland
+ * 
+ */
+agent Test {
+	uses Logging
+	def fct {
+		var v : Vector2d = null
+		if (v != null) {
+			info("ok")
+		}
+	}
+
+}

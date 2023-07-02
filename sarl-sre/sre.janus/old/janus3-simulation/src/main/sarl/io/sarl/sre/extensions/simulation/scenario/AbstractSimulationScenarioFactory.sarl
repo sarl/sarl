@@ -1,0 +1,305 @@
+/* 
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ * 
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ * Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.arakhne.afc.simulation.framework.base.scenario
+
+import io.sarl.lang.util.OutParameter
+import java.io.File
+import java.util.Date
+import java.util.Map
+import java.util.ResourceBundle
+import java.util.UUID
+import javafx.scene.chart.LineChart
+import javafx.scene.chart.NumberAxis
+import javafx.scene.chart.XYChart
+import org.arakhne.afc.math.stochastic.StochasticLaw
+import org.arakhne.afc.simulation.framework.base.config.AbstractConfiguration
+import org.arakhne.afc.simulation.framework.base.config.ChartConfig
+import org.arakhne.afc.simulation.framework.base.config.ProbeConfig
+import org.arakhne.afc.simulation.framework.base.config.SpawnerConfig
+import org.arakhne.afc.simulation.framework.base.fx.controls.DynamicLineChart
+import org.arakhne.afc.simulation.framework.base.fx.probes.FxProbe
+import org.arakhne.afc.simulation.framework.base.probes.DefaultProbeManager
+import org.arakhne.afc.simulation.framework.base.probes.Probe
+import org.arakhne.afc.simulation.framework.base.probes.ProbeManager
+import org.arakhne.afc.vmutil.ReflectionUtil
+
+import static extension org.arakhne.afc.util.ResourceBundles.*
+import static extension org.arakhne.afc.vmutil.FileSystem.*
+import static extension org.arakhne.afc.vmutil.ReflectionUtil.*
+
+/** 
+ * Abstract reader of Simulation scenario.
+ * 
+ * @param <S> the type of the scneario.
+ * @param <C> the type of the configuration to read.
+ * @param <R> the type of the XML reader.
+ * @param <E> the type of the environment data structure.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+abstract class AbstractSimulationScenarioFactory<S extends SimulationScenario<C, ?, ?>,
+		C extends AbstractConfiguration,
+		R extends AbstractXmlConfigurationReader<C>,
+		E>
+	implements SimulationScenarioFactory<S> {
+
+	protected val xmlReader : R
+	
+	new (xmlReader : R) {
+		assert xmlReader !== null
+		this.xmlReader = xmlReader
+	}
+
+	/** Create a line chart.
+	 * 
+	 * @param generalCfg the general configuration.
+	 * @param chartCfg the chart's configuration.
+	 * @param bundle the localization resource bundle.
+	 */
+	protected def createLineChart(generalCfg : C, chartCfg : ChartConfig,
+		bundle : ResourceBundle) : LineChart<Double, Double> {
+		var xLabel = bundle.getStringOrKey("xAxisLabelTime")
+		var xAxis = new NumberAxis
+		xAxis.label = xLabel
+		var yAxis = new NumberAxis
+		yAxis.label = chartCfg.YLabel
+		var chart : LineChart<Double, Double> = new DynamicLineChart(generalCfg.timeConfig, xAxis, yAxis)
+		chart.title = chartCfg.title
+		return chart
+	}
+
+	/** Replies the java type that corresponds to the given name for a stochastic law.
+	 *
+	 * <p>The type is determined in the following order:<ol>
+	 * <li>the {@code name} is the fully qualified name of the stochastic law.</li>
+	 * <li>the {@code name} is the simple name of the stochastic law. This name is built by
+	 * upper-casing the first letter of {@code name} and prefixing it with the package
+	 * of the {@link StochasticLaw} type. The fully qualif_ed name of the type will be
+	 * {@code org.arakhne.afc.math.stochastic.NAME}.</li>
+	 * <li>the {@code name} is the simple name of the stochastic law. This name is built by
+	 * upper-casing the first letter of {@code name}, post-fixing it with {@code StochasticLaw},
+	 * and prefixing it with the package of the {@link StochasticLaw} type. The fully
+	 * qualified name of the type will be {@code org.arakhne.afc.math.stochastic.NAMEStochasticLaw}.</li>
+	 * </ol>
+	 * 
+	 * @param name the name of the stochastic law.
+	 * @return the java type of the stochastic law, or {@code null} if the type was not found.
+	 */
+	protected def getStochasticLawType(name : String) : Class<? extends StochasticLaw> {
+		var type : Class<?> = null
+		try {
+			type = ReflectionUtil::forName(name)
+			if (type !== null && typeof(StochasticLaw).isAssignableFrom(type)) {
+				return type.asSubclass(typeof(StochasticLaw))
+			}
+		} catch (e0 : Throwable) {
+		}
+		var nn = typeof(StochasticLaw).package.name + "." + name.toFirstUpper
+		try {
+			type = ReflectionUtil::forName(nn)
+			if (type !== null && typeof(StochasticLaw).isAssignableFrom(type)) {
+				return type.asSubclass(typeof(StochasticLaw))
+			}
+		} catch (e1 : Throwable) {
+		}
+		try {
+			type = ReflectionUtil::forName(nn + "StochasticLaw")
+			if (type !== null && typeof(StochasticLaw).isAssignableFrom(type)) {
+				return type.asSubclass(typeof(StochasticLaw))
+			}
+		} catch (e2 : Throwable) {
+		}
+		return null
+	}
+
+	/** Create a law object from the given configuration.
+	 *
+	 * @param config the configuration of the law object.
+	 * @return the law object, or {@code null} if the object cannot be created.
+	 */
+	protected def createLawObject(config : SpawnerConfig) : StochasticLaw {
+		var type = config.law.getStochasticLawType
+		if (type !== null) {
+			try {
+				return type.newInstance(config.lawArguments)
+			} catch (e : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+	/** Create a law object from the given configuration.
+	 * 
+	 * @param config the configuration of the law object.
+	 * @return the law object, or {@code null} if the object cannot be created.
+	 */
+	protected def createLawObject(config : Map<String, Object>) : StochasticLaw {
+		val lawName = config.get("lawName")?.toString
+		if (!lawName.isNullOrEmpty) {
+			var type = lawName.getStochasticLawType
+			if (type !== null) {
+				try {
+					return type.newInstance(config)
+				} catch (e : Throwable) {
+					//
+				}
+			}
+		}
+		return null
+	}
+
+	/** Create the instance of the probe manager.
+	 * 
+	 * @param rootFolder the folder in which the data must be written.
+	 * @param scenarionName the name of the scenario, or {@code null} if none.
+	 * @param folderBasename the forced name for the data folder, or {@code null}.
+	 * @param startTime the time at which the simulation has started.
+	 * @return the manager.
+	 */
+	protected def createProbeManager(rootFolder : File, scenarioName : String, folderBasename : String, startTime : Date) : ProbeManager {
+		new DefaultProbeManager(rootFolder, scenarioName, folderBasename, startTime)
+	}
+
+	/** Read probes from the simulation configuration.
+	 * 
+	 * @param root the root folder.
+	 * @param configuration the simulation configuration.
+	 * @param bundle the localization resource bundle.
+	 * @param probeManager the receive of the probe manager.
+	 */
+	protected def loadCharts(root : File, configuration : C, bundle : ResourceBundle, probeManager : ProbeManager,
+		charts : Map<UUID, XYChart<Double, Double>>) {
+		for (cfg : configuration.charts) {
+			var chart : XYChart<Double, Double>
+			switch (cfg.type) {
+				case LINE: {
+					chart = createLineChart(configuration, cfg, bundle)
+				}
+			}
+			charts.put(cfg.ID, chart)
+		}
+
+		for (probe : probeManager.probes) {
+			if (probe instanceof FxProbe) {
+				var series = probe.chartSeries
+				if (series !== null) {
+					var id = probe.ID
+					var cfg = configuration.getProbe(id)
+					if (cfg !== null) {
+						for (chartId : cfg.charts) {
+							var chart = charts.get(chartId)
+							if (chart !== null) {
+								chart.data += series
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/** Read probes from the simulation configuration.
+	 *
+	 * <p>When it has to create a probe's instance, this function searchs for the constructor
+	 * in the following order where {@code P} is the type of the probe:<ol>
+	 * <li>{@code P(C, }{@link File}{@code, E, U)}</li>
+	 * <li>{@code P(C, }{@link File}{@code, E)}</li>
+	 * <li>{@code P(C, }{@link File}{@code, U)}</li>
+	 * <li>{@code P(C, }{@link File}{@code)}</li>
+	 * <li>{@code P()}</li>
+	 * </ol>
+	 * 
+	 * @param root the root folder.
+	 * @param configuration the simulation configuration.
+	 * @param environmentModel the data structure that contains the environment elements.
+	 * @param userData the argument to pass to the probes' instances.
+	 * @param probeManager the receiver of the probe manager.
+	 */
+	protected def loadProbeManager(root : File, configuration : C, environmentModel : E,
+		userData : U, probeManager : OutParameter<ProbeManager>) with U {
+		var probeFolder = configuration.probeFolder
+		if (probeFolder !== null) {
+			probeFolder = probeFolder.makeAbsolute(root)
+		} else {
+			probeFolder = root
+		}
+		val scenarioName = configuration.scenarioName
+		val manager = createProbeManager(probeFolder, scenarioName, configuration.dataFolderBasename, configuration.date)
+		for (config : configuration.probes) {
+			var type = config.type
+			var probe : Probe
+			try {
+				probe = type.newInstance(config, manager.rootFolder, environmentModel, userData)
+			} catch (ex0 : Throwable) {
+				probe = null
+			}
+			if (probe === null) {
+				try {
+					probe = type.newInstance(config, manager.rootFolder, environmentModel)
+				} catch (ex0 : Throwable) {
+					probe = null
+				}
+			}
+			if (probe === null) {
+				try {
+					probe = type.newInstance(config, manager.rootFolder, userData)
+				} catch (ex0 : Throwable) {
+					probe = null
+				}
+			}
+			if (probe === null) {
+				try {
+					probe = type.newInstance(config, manager.rootFolder)
+				} catch (ex0 : Throwable) {
+					probe = null
+				}
+			}
+			if (probe === null) {
+				try {
+					probe = type.newInstance(config)
+				} catch (ex0 : Throwable) {
+					probe = null
+				}
+			}
+			if (probe === null) {
+				probe = type.newInstance
+			}
+			if (probe !== null) {
+				probe.name = config.name
+				probe.ID = config.ID
+				probe.initProbe(config, environmentModel)
+				manager.addProbe(probe)
+			}
+		}
+		probeManager.set(manager)
+	}
+
+	/** Initialize the given probe.
+	 *
+	 * @param probe the probe to initialize.
+	 * @param config the configuration of the probe.
+	 * @param environmentModel the enviromnent model.
+	 */
+	protected abstract def initProbe(probe : Probe, config : ProbeConfig, environmentModel : E)
+
+}

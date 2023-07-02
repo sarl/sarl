@@ -1,0 +1,191 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient
+
+import io.sarl.acl.encoding.bitefficient.BitEfficientEnvelopeCodec
+import io.sarl.acl.message.AclMessageEnvelope
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Collection
+import java.util.Date
+import java.util.Map
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.acl.tests.TestUtil.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.Assert.assertArrayEquals
+import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.acl.message.AclRepresentation
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BitEfficientEnvelopeCodec")
+class BitEfficientEnvelopeCodecTest {
+
+	static val BINARY = #[-84, -19, 0, 5, 115, 114, 0, 90, 105, 111, 46, 115, 97, 114, 108, 46,
+		97, 99, 108, 46, 116, 101, 115, 116, 115, 46, 101, 110, 99, 111, 100, 105, 110, 103,
+		46, 98, 105, 116, 101, 102, 102, 105, 99, 105, 101, 110, 116, 46, 66, 105, 116, 69,
+		102, 102, 105, 99, 105, 101, 110, 116, 69, 110, 118, 101, 108, 111, 112, 101, 67, 111,
+		100, 101, 99, 84, 101, 115, 116, 36, 83, 101, 114, 105, 97, 108, 105, 122, 97, 98, 108,
+		101, 69, 110, 118, 101, 108, 111, 112, 101, -1, -1, -1, -2, 92, -111, 82, 82, 2, 0, 2,
+		73, 0, 6, 118, 97, 108, 117, 101, 49, 76, 0, 6, 118, 97, 108, 117, 101, 48, 116, 0, 18,
+		76, 106, 97, 118, 97, 47, 108, 97, 110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 120,
+		112, 0, 0, 4, -46, 116, 0, 4, 97, 98, 99, 100
+	]
+
+	var codec : BitEfficientEnvelopeCodec
+
+	@BeforeEach
+	def setUp : void {
+		this.codec = new BitEfficientEnvelopeCodec
+	}
+
+	@Test
+    def encode : void {
+    	var array = this.codec.encode(new SerializableEnvelope)
+    	BINARY.assertArrayEquals(array.toIntArray)
+    }
+
+	@Test
+    def decode : void {
+    	var envelope = this.codec.decode(BINARY.toByteArray)
+    	envelope.assertNotNull
+    	typeof(SerializableEnvelope).assertInstanceOf(envelope)
+    	val env = envelope as SerializableEnvelope
+    	"abcd".assertEquals(env.value0)
+    	1234.assertEquals(env.value1)
+    }
+
+	@Test
+	@DisplayName("encode and decode")
+    def encodreDecode : void {
+    	val expected = new SerializableEnvelope
+    	expected.value0 = "myvalue"
+    	expected.value1 = 5687
+    	val array = this.codec.encode(expected)
+    	val actual = this.codec.decode(array)
+    	actual.assertNotNull
+    	typeof(SerializableEnvelope).assertInstanceOf(actual)
+    	val env = actual as SerializableEnvelope
+    	"myvalue".assertEquals(env.value0)
+    	5687.assertEquals(env.value1)
+	}
+
+	@Test
+	@DisplayName("getAclRepresentation")
+	def getAclRepresentation : void {
+		AclRepresentation::BIT_EFFICIENT.assertSame(this.codec.aclRepresentation)
+	}
+
+	@SuppressWarnings("unused_private_member")
+	private static class SerializableEnvelope implements AclMessageEnvelope {
+	
+		public var value0 = "abcd"
+	
+		public var value1 = 1234
+
+		def getTo : Collection<UUID> {
+			throw new UnsupportedOperationException
+		}
+		
+		def setTo(addresses : Collection<UUID>) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getFrom : UUID {
+			throw new UnsupportedOperationException
+		}
+		
+		def setFrom(address : UUID) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getAclRepresentation : String {
+			throw new UnsupportedOperationException
+		}
+		
+		def setAclRepresentation(aclRepresentation : String) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getDate : Date {
+			throw new UnsupportedOperationException
+		}
+		
+		def setDate(date : Date) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getComments : String {
+			throw new UnsupportedOperationException
+		}
+		
+		def setComments(comments : String) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getPayloadLength : long {
+			throw new UnsupportedOperationException
+		}
+		
+		def setPayloadLength(payloadLength : long) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getPayloadEncoding : String {
+			throw new UnsupportedOperationException
+		}
+		
+		def setPayloadEncoding(payloadEncoding : String) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getIntendedReceiver : Collection<UUID> {
+			throw new UnsupportedOperationException
+		}
+		
+		def setIntendedReceiver(intendedReceivers : Collection<UUID>) {
+			throw new UnsupportedOperationException
+		}
+		
+		def getTransportBehaviour : Map<Object, Object> {
+			throw new UnsupportedOperationException
+		}
+		
+		def setTransportBehaviour(transportBehaviour : Map<Object, Object>) {
+			throw new UnsupportedOperationException
+		}
+	
+	}
+
+}

@@ -1,0 +1,109 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, BinaryExpression 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.BinaryExpression
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BinaryExpression")
+class BinaryExpressionTest {
+
+	var constants : Set<BinaryExpression>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(BinaryExpression::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : BinaryExpression) : BinaryExpression {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0xFF as byte).assertEquals(BinaryExpression::BIN_STRING_BEGIN.consume.binaryCode)
+	
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"bin_string_begin".assertEquals(BinaryExpression::BIN_STRING_BEGIN.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		BinaryExpression::BIN_STRING_BEGIN.consume.assertSame(BinaryExpression::valueOfCaseInsensitive("bin_string_begin"))
+		BinaryExpression::BIN_STRING_BEGIN.assertSame(BinaryExpression::valueOfCaseInsensitive("Bin_String_Begin"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = BinaryExpression::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = BinaryExpression::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = BinaryExpression::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		"bin_string_begin".assertEquals(BinaryExpression::jsonLabels)
+	}
+
+}

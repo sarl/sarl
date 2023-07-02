@@ -1,0 +1,231 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.message
+
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclMessageEnvelope
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Collection
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.mockito.ArgumentCaptor
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.Mockito.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("AclMessage")
+class AclMessageTest {
+
+	var envelope : AclMessageEnvelope
+
+	var content : AclMessageContent
+
+	var message : AclMessage
+
+	@BeforeEach
+	def setup : void {
+		this.envelope = typeof(AclMessageEnvelope).mock
+		this.content = typeof(AclMessageContent).mock
+		this.message = new AclMessage(this.envelope, this.content)
+	}
+
+	@Test
+	def getEnvelope : void {
+		this.envelope.assertSame(this.message.envelope)
+	}
+
+	@Test
+	def getContent : void {
+		this.content.assertSame(this.message.content)
+	}
+
+	@Test
+	def getPerformative : void {
+		val expected = Performative::AGREE
+		when(this.content.performative).thenReturn(expected)
+		expected.assertSame(this.message.performative)
+	}
+
+	@Test
+	def setPerformative : void {
+		val expected = Performative::AGREE
+		this.message.performative = expected
+		val arg = ArgumentCaptor::forClass(typeof(Performative))
+		this.content.verify(1.times).performative = arg.capture
+		expected.assertSame(arg.value)
+	}
+
+	@Test
+	def getSender : void {
+		val expected = UUID::randomUUID
+		when(this.content.sender).thenReturn(expected)
+		expected.assertSame(this.message.sender)
+	}
+
+	@Test
+	def setSender : void {
+		val expected = UUID::randomUUID
+		this.message.sender = expected
+		val arg = ArgumentCaptor::forClass(typeof(UUID))
+		this.content.verify(1.times).sender = arg.capture
+		expected.assertSame(arg.value)
+	}
+
+	@Test
+	def getReceivers : void {
+		val expected = <UUID>newArrayList
+		when(this.content.receivers).thenReturn(expected)
+		expected.assertSame(this.message.receivers)
+	}
+
+	@Test
+	def setReceivers : void {
+		val expected = <UUID>newArrayList
+		this.message.receivers = expected
+		val arg = ArgumentCaptor::forClass(typeof(Collection))
+		this.content.verify(1.times).receivers = arg.capture
+		expected.assertSame(arg.value)
+	}
+
+	@Test
+	def getAclRepresentation : void {
+		when(this.envelope.getAclRepresentation).thenReturn("json")
+		AclRepresentation::JSON.assertSame(this.message.aclRepresentation)
+	}
+
+	@Test
+	@DisplayName("setAclRepresentation(String)")
+	def setAclRepresentationString : void {
+		val expected = "abc"
+		this.message.aclRepresentation = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.envelope.verify(1.times).aclRepresentation = arg.capture
+		expected.assertEquals(arg.value)
+	}
+
+	@Test
+	@DisplayName("setAclRepresentation(AclRepresentation)")
+	def setAclRepresentationAclRepresentation : void {
+		val expected = AclRepresentation::JSON
+		this.message.aclRepresentation = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.envelope.verify(1.times).aclRepresentation = arg.capture
+		expected.fipaName.assertEquals(arg.value)
+	}
+
+	@Test
+	def getOntology : void {
+		val expected = "abc"
+		when(this.content.ontology).thenReturn(expected)
+		expected.assertSame(this.message.ontology)
+	}
+
+	@Test
+	def setOntology : void {
+		val expected = "abc"
+		this.message.ontology = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.content.verify(1.times).ontology = arg.capture
+		expected.assertEquals(arg.value)
+	}
+
+	@Test
+	def getEncoding : void {
+		val expected = "abc"
+		when(this.content.encoding).thenReturn(expected)
+		expected.assertSame(this.message.encoding)
+	}
+
+	@Test
+	def setEncoding : void {
+		val expected = "abc"
+		this.message.encoding = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.content.verify(1.times).encoding = arg.capture
+		expected.assertEquals(arg.value)
+	}
+
+	@Test
+	def getLanguage : void {
+		val expected = "abc"
+		when(this.content.language).thenReturn(expected)
+		expected.assertSame(this.message.language)
+	}
+
+	@Test
+	def setLanguage : void {
+		val expected = "abc"
+		this.message.language = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.content.verify(1.times).language = arg.capture
+		expected.assertEquals(arg.value)
+	}
+
+	@Test
+	def getProtocol : void {
+		val expected = "abc"
+		when(this.content.protocol).thenReturn(expected)
+		expected.assertSame(this.message.protocol)
+	}
+
+	@Test
+	def setProtocol : void {
+		val expected = "abc"
+		this.message.protocol = expected
+		val arg = ArgumentCaptor::forClass(typeof(String))
+		this.content.verify(1.times).protocol = arg.capture
+		expected.assertEquals(arg.value)
+	}
+
+	@Test
+	def getConversationId : void {
+		val expected = UUID::randomUUID
+		when(this.content.conversationId).thenReturn(expected)
+		expected.assertSame(this.message.conversationId)
+	}
+
+	@Test
+	def setConversationId : void {
+		val expected = UUID::randomUUID
+		this.message.conversationId = expected
+		val arg = ArgumentCaptor::forClass(typeof(UUID))
+		this.content.verify(1.times).conversationId = arg.capture
+		expected.assertSame(arg.value)
+	}
+
+}

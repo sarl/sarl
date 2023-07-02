@@ -1,0 +1,118 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.util
+
+/**
+ * Buffer for a string message.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+final class ByteArrayStringBuffer {
+	
+	val buffer : byte[]
+
+	var offset : int
+
+	var end : int
+
+	new (buffer : byte[]) {
+		this.buffer = buffer
+		this.offset = 0
+		this.end = buffer.length
+	}
+
+	new (buffer : byte[], start : int, end : int) {
+		this.buffer = buffer
+		this.offset = start
+		this.end = end
+	}
+
+	/** Replies if the stream is empty */
+	@Pure
+	def isEmpty : boolean {
+		this.offset >= this.end
+	}
+
+	@Pure
+	override toString : String {
+		new String(this.buffer, this.offset, this.end - this.offset)
+	}
+
+	/** Replies a char sequence view on the buffer. */
+	@Pure
+	def getView : CharSequence {
+		new ByteArrayCharSequence(this.buffer, this.offset, this.end)
+	}
+
+	/** Move the indexes of reading by the given number of chars.
+	 *
+	 * @param start index of the first char (inclusive).
+	 * @param end index (exclusive) of the last char.
+	 */
+	def update(start : int, end : int = -1) {
+		val m = ByteArrayCharSequence::charSizeInBytes
+		var s = this.offset + start * m
+		if (s < this.offset) {
+			s = this.offset
+		}
+		var e : int
+		if (end >= 0) {
+			e = this.offset + end * m
+			if (e > this.end) {
+				e = this.end
+			}
+		} else {
+			e = this.end
+		}
+		this.offset = s
+		this.end = e
+	}
+
+
+	/** Copy the message with new indexes.
+	 *
+	 * @param start index of the first char (inclusive).
+	 * @param end index (exclusive) of the last char.
+	 */
+	@Pure
+	def copy(start : int, end : int=-1) : ByteArrayStringBuffer {
+		val m = ByteArrayCharSequence::charSizeInBytes
+		var s = this.offset + start * m
+		if (s < this.offset) {
+			s = this.offset
+		}
+		var e : int
+		if (end >= 0) {
+			e = this.offset + end * m
+			if (e > this.end) {
+				e = this.end
+			}
+		} else {
+			e = this.end
+		}
+		return new ByteArrayStringBuffer(this.buffer, s, e)
+	}
+
+}

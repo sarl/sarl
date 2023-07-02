@@ -1,0 +1,256 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.NumberToken
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("NumberToken")
+class NumberTokenTest {
+
+	var constants : Set<NumberToken>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(NumberToken::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : NumberToken) : NumberToken {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		0x00.assertEquals(NumberToken::PADDING.consume.binaryCode)
+		0x01.assertEquals(NumberToken::ZERO.consume.binaryCode)
+		0x02.assertEquals(NumberToken::ONE.consume.binaryCode)
+		0x03.assertEquals(NumberToken::TWO.consume.binaryCode)
+		0x04.assertEquals(NumberToken::THREE.consume.binaryCode)
+		0x05.assertEquals(NumberToken::FOUR.consume.binaryCode)
+		0x06.assertEquals(NumberToken::FIVE.consume.binaryCode)
+		0x07.assertEquals(NumberToken::SIX.consume.binaryCode)
+		0x08.assertEquals(NumberToken::SEVEN.consume.binaryCode)
+		0x09.assertEquals(NumberToken::EIGHT.consume.binaryCode)
+		0x0A.assertEquals(NumberToken::NINE.consume.binaryCode)
+		0x0B.assertEquals(NumberToken::PLUS.consume.binaryCode)
+		0x0C.assertEquals(NumberToken::EXPONENT.consume.binaryCode)
+		0x0D.assertEquals(NumberToken::MINUS.consume.binaryCode)
+		0x0E.assertEquals(NumberToken::DOT.consume.binaryCode)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("getBinarycode(char)")
+	def getBinaryCodeChar : void {
+		0x00.assertEquals(NumberToken::getBinaryCode(NumberToken::PADDING.consume.token))
+		0x01.assertEquals(NumberToken::getBinaryCode(NumberToken::ZERO.consume.token))
+		0x02.assertEquals(NumberToken::getBinaryCode(NumberToken::ONE.consume.token))
+		0x03.assertEquals(NumberToken::getBinaryCode(NumberToken::TWO.consume.token))
+		0x04.assertEquals(NumberToken::getBinaryCode(NumberToken::THREE.consume.token))
+		0x05.assertEquals(NumberToken::getBinaryCode(NumberToken::FOUR.consume.token))
+		0x06.assertEquals(NumberToken::getBinaryCode(NumberToken::FIVE.consume.token))
+		0x07.assertEquals(NumberToken::getBinaryCode(NumberToken::SIX.consume.token))
+		0x08.assertEquals(NumberToken::getBinaryCode(NumberToken::SEVEN.consume.token))
+		0x09.assertEquals(NumberToken::getBinaryCode(NumberToken::EIGHT.consume.token))
+		0x0A.assertEquals(NumberToken::getBinaryCode(NumberToken::NINE.consume.token))
+		0x0B.assertEquals(NumberToken::getBinaryCode(NumberToken::PLUS.consume.token))
+		0x0C.assertEquals(NumberToken::getBinaryCode(NumberToken::EXPONENT.consume.token))
+		0x0D.assertEquals(NumberToken::getBinaryCode(NumberToken::MINUS.consume.token))
+		0x0E.assertEquals(NumberToken::getBinaryCode(NumberToken::DOT.consume.token))
+		assertNoMoreConstant
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	def getToken : void {
+		(0 as char).assertEquals(NumberToken::PADDING.consume.token)
+		('0' as char).assertEquals(NumberToken::ZERO.consume.token)
+		('1' as char).assertEquals(NumberToken::ONE.consume.token)
+		('2' as char).assertEquals(NumberToken::TWO.consume.token)
+		('3' as char).assertEquals(NumberToken::THREE.consume.token)
+		('4' as char).assertEquals(NumberToken::FOUR.consume.token)
+		('5' as char).assertEquals(NumberToken::FIVE.consume.token)
+		('6' as char).assertEquals(NumberToken::SIX.consume.token)
+		('7' as char).assertEquals(NumberToken::SEVEN.consume.token)
+		('8' as char).assertEquals(NumberToken::EIGHT.consume.token)
+		('9' as char).assertEquals(NumberToken::NINE.consume.token)
+		('+' as char).assertEquals(NumberToken::PLUS.consume.token)
+		('E' as char).assertEquals(NumberToken::EXPONENT.consume.token)
+		('-' as char).assertEquals(NumberToken::MINUS.consume.token)
+		('.' as char).assertEquals(NumberToken::DOT.consume.token)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("getToken(byte)")
+	def getTokenByte : void {
+		NumberToken::PADDING.consume.token.assertEquals(NumberToken::getToken(0x00 as byte))
+		NumberToken::ZERO.consume.token.assertEquals(NumberToken::getToken(0x01 as byte))
+		NumberToken::ONE.consume.token.assertEquals(NumberToken::getToken(0x02 as byte))
+		NumberToken::TWO.consume.token.assertEquals(NumberToken::getToken(0x03 as byte))
+		NumberToken::THREE.consume.token.assertEquals(NumberToken::getToken(0x04 as byte))
+		NumberToken::FOUR.consume.token.assertEquals(NumberToken::getToken(0x05 as byte))
+		NumberToken::FIVE.consume.token.assertEquals(NumberToken::getToken(0x06 as byte))
+		NumberToken::SIX.consume.token.assertEquals(NumberToken::getToken(0x07 as byte))
+		NumberToken::SEVEN.consume.token.assertEquals(NumberToken::getToken(0x08 as byte))
+		NumberToken::EIGHT.consume.token.assertEquals(NumberToken::getToken(0x09 as byte))
+		NumberToken::NINE.consume.token.assertEquals(NumberToken::getToken(0x0A as byte))
+		NumberToken::PLUS.consume.token.assertEquals(NumberToken::getToken(0x0B as byte))
+		NumberToken::EXPONENT.consume.token.assertEquals(NumberToken::getToken(0x0C as byte))
+		NumberToken::MINUS.consume.token.assertEquals(NumberToken::getToken(0x0D as byte))
+		NumberToken::DOT.consume.token.assertEquals(NumberToken::getToken(0x0E as byte))
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"padding".assertEquals(NumberToken::PADDING.consume.toJsonString)
+		"zero".assertEquals(NumberToken::ZERO.consume.toJsonString)
+		"one".assertEquals(NumberToken::ONE.consume.toJsonString)
+		"two".assertEquals(NumberToken::TWO.consume.toJsonString)
+		"three".assertEquals(NumberToken::THREE.consume.toJsonString)
+		"four".assertEquals(NumberToken::FOUR.consume.toJsonString)
+		"five".assertEquals(NumberToken::FIVE.consume.toJsonString)
+		"six".assertEquals(NumberToken::SIX.consume.toJsonString)
+		"seven".assertEquals(NumberToken::SEVEN.consume.toJsonString)
+		"eight".assertEquals(NumberToken::EIGHT.consume.toJsonString)
+		"nine".assertEquals(NumberToken::NINE.consume.toJsonString)
+		"plus".assertEquals(NumberToken::PLUS.consume.toJsonString)
+		"exponent".assertEquals(NumberToken::EXPONENT.consume.toJsonString)
+		"minus".assertEquals(NumberToken::MINUS.consume.toJsonString)
+		"dot".assertEquals(NumberToken::DOT.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		NumberToken::PADDING.consume.assertSame(NumberToken::valueOfCaseInsensitive("padding"))
+		NumberToken::PADDING.assertSame(NumberToken::valueOfCaseInsensitive("Padding"))
+
+		NumberToken::ZERO.consume.assertSame(NumberToken::valueOfCaseInsensitive("zero"))
+		NumberToken::ZERO.assertSame(NumberToken::valueOfCaseInsensitive("Zero"))
+		NumberToken::ZERO.assertSame(NumberToken::valueOfCaseInsensitive("0"))
+
+		NumberToken::ONE.consume.assertSame(NumberToken::valueOfCaseInsensitive("one"))
+		NumberToken::ONE.assertSame(NumberToken::valueOfCaseInsensitive("One"))
+		NumberToken::ONE.assertSame(NumberToken::valueOfCaseInsensitive("1"))
+
+		NumberToken::TWO.consume.assertSame(NumberToken::valueOfCaseInsensitive("two"))
+		NumberToken::TWO.assertSame(NumberToken::valueOfCaseInsensitive("Two"))
+		NumberToken::TWO.assertSame(NumberToken::valueOfCaseInsensitive("2"))
+
+		NumberToken::THREE.consume.assertSame(NumberToken::valueOfCaseInsensitive("three"))
+		NumberToken::THREE.assertSame(NumberToken::valueOfCaseInsensitive("Three"))
+		NumberToken::THREE.assertSame(NumberToken::valueOfCaseInsensitive("3"))
+
+		NumberToken::FOUR.consume.assertSame(NumberToken::valueOfCaseInsensitive("four"))
+		NumberToken::FOUR.assertSame(NumberToken::valueOfCaseInsensitive("Four"))
+		NumberToken::FOUR.assertSame(NumberToken::valueOfCaseInsensitive("4"))
+
+		NumberToken::FIVE.consume.assertSame(NumberToken::valueOfCaseInsensitive("five"))
+		NumberToken::FIVE.assertSame(NumberToken::valueOfCaseInsensitive("Five"))
+		NumberToken::FIVE.assertSame(NumberToken::valueOfCaseInsensitive("5"))
+
+		NumberToken::SIX.consume.assertSame(NumberToken::valueOfCaseInsensitive("six"))
+		NumberToken::SIX.assertSame(NumberToken::valueOfCaseInsensitive("Six"))
+		NumberToken::SIX.assertSame(NumberToken::valueOfCaseInsensitive("6"))
+
+		NumberToken::SEVEN.consume.assertSame(NumberToken::valueOfCaseInsensitive("seven"))
+		NumberToken::SEVEN.assertSame(NumberToken::valueOfCaseInsensitive("Seven"))
+		NumberToken::SEVEN.assertSame(NumberToken::valueOfCaseInsensitive("7"))
+
+		NumberToken::EIGHT.consume.assertSame(NumberToken::valueOfCaseInsensitive("eight"))
+		NumberToken::EIGHT.assertSame(NumberToken::valueOfCaseInsensitive("Eight"))
+		NumberToken::EIGHT.assertSame(NumberToken::valueOfCaseInsensitive("8"))
+
+		NumberToken::NINE.consume.assertSame(NumberToken::valueOfCaseInsensitive("nine"))
+		NumberToken::NINE.assertSame(NumberToken::valueOfCaseInsensitive("Nine"))
+		NumberToken::NINE.assertSame(NumberToken::valueOfCaseInsensitive("9"))
+
+		NumberToken::PLUS.consume.assertSame(NumberToken::valueOfCaseInsensitive("plus"))
+		NumberToken::PLUS.assertSame(NumberToken::valueOfCaseInsensitive("Plus"))
+		NumberToken::PLUS.assertSame(NumberToken::valueOfCaseInsensitive("+"))
+
+		NumberToken::EXPONENT.consume.assertSame(NumberToken::valueOfCaseInsensitive("exponent"))
+		NumberToken::EXPONENT.assertSame(NumberToken::valueOfCaseInsensitive("Exponent"))
+		NumberToken::EXPONENT.assertSame(NumberToken::valueOfCaseInsensitive("e"))
+
+		NumberToken::MINUS.consume.assertSame(NumberToken::valueOfCaseInsensitive("minus"))
+		NumberToken::MINUS.assertSame(NumberToken::valueOfCaseInsensitive("Minus"))
+		NumberToken::MINUS.assertSame(NumberToken::valueOfCaseInsensitive("-"))
+
+		NumberToken::DOT.consume.assertSame(NumberToken::valueOfCaseInsensitive("dot"))
+		NumberToken::DOT.assertSame(NumberToken::valueOfCaseInsensitive("Dot"))
+		NumberToken::DOT.assertSame(NumberToken::valueOfCaseInsensitive("."))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = NumberToken::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = NumberToken::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = NumberToken::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		("padding, zero, one, two, three, four, five, six, seven, eight, nine, "
+		+ "plus, exponent, minus, dot").assertEquals(NumberToken::jsonLabels)
+	}
+
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="io.sarl.eclipse.targetplatform" sequenceNumber="130">
+	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="https://download.eclipse.org/releases/2023-06"/>
+			<unit id="org.eclipse.egit.feature.group" version="6.6.0.202305301015-r"/>
+			<unit id="org.eclipse.emf.ecore.xcore.sdk.feature.group" version="1.25.0.v20230406-1203"/>
+			<unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="2.14.0.v20221117-1134"/>
+			<unit id="org.eclipse.emf.mwe2.runtime.sdk.feature.group" version="2.14.0.v20221117-1134"/>
+			<unit id="org.eclipse.emf.sdk.feature.group" version="2.34.0.v20230406-1334"/>
+			<unit id="org.eclipse.epp.mpc.feature.group" version="1.10.1.v20221110-1841"/>
+			<unit id="org.eclipse.jdt.feature.group" version="3.19.100.v20230605-0440"/>
+			<unit id="org.eclipse.jgit.feature.group" version="6.6.0.202305301015-r"/>
+			<unit id="org.eclipse.jgit.gpg.bc.feature.group" version="6.6.0.202305301015-r"/>
+			<unit id="org.eclipse.jgit.http.apache.feature.group" version="6.6.0.202305301015-r"/>
+			<unit id="org.eclipse.jgit.ssh.apache.feature.group" version="6.6.0.202305301015-r"/>
+			<unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.21.0.v20230517-2121"/>
+			<unit id="org.eclipse.m2e.feature.feature.group" version="2.3.0.20230523-2033"/>
+			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="2.1.2.20230523-2106"/>
+			<unit id="org.eclipse.m2e.pde.feature.feature.group" version="2.2.100.20230523-1752"/>
+			<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="2.3.0.20230523-2106"/>
+			<unit id="org.eclipse.oomph.preferences.feature.group" version="1.16.0.v20230204-0932"/>
+			<unit id="org.eclipse.oomph.projectconfig.feature.group" version="1.16.0.v20230204-0932"/>
+			<unit id="org.eclipse.oomph.setup.sdk.feature.group" version="1.27.0.v20230523-0636"/>
+			<unit id="org.eclipse.oomph.targlets.feature.group" version="1.23.0.v20230520-1536"/>
+			<unit id="org.eclipse.oomph.version.feature.group" version="1.18.0.v20230320-1346"/>
+			<unit id="org.eclipse.oomph.workingsets.feature.group" version="1.17.0.v20230416-0642"/>
+			<unit id="org.eclipse.xsd.sdk.feature.group" version="2.34.0.v20230315-1454"/>
+			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.31.0.v20230529-0659"/>
+			<unit id="org.eclipse.m2e.lemminx.feature.feature.group" version="2.0.4.20230520-0934"/>
+		</location>
+		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.lang</groupId>
+					<artifactId>compiler</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.baseutils</groupId>
+					<artifactId>afc.extension</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.sre.janus</groupId>
+					<artifactId>janus.network</artifactId>
+					<version>3.0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="direct" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.apputils</groupId>
+					<artifactId>bootiqueapp</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+	</locations>
+</target>

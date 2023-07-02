@@ -1,0 +1,10 @@
+io.sarl.sre.extensions.simulation.boot.configs.SimulationConfigModuleProvider
+io.sarl.sre.extensions.simulation.boot.configs.TimeConfigModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.internal.ListenerNotifierModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.internal.LockModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.kernel.RunnableSynchronousEngineModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.kernel.SimulationKernelModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.services.SimulatedTimeServiceModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.services.SimulationLifecycleServiceModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.services.SynchronousExecutorServiceModuleProvider
+io.sarl.sre.extensions.simulation.boot.engine.skills.SimulationEventBusModuleProvider

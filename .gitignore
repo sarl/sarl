@@ -1,6 +1,7 @@
 # SARL temporary files
 **/generated-sources/sarl
 **/*.sarlbin
+**/io.sarl.eclipse.examples/contents
 
 # Xtext templates
 **/*.xml_gen

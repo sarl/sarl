@@ -1,0 +1,395 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.util
+
+import com.fasterxml.jackson.databind.util.ISO8601Utils
+import com.google.common.base.Strings
+import io.sarl.acl.encoding.bitefficient.constant.NumberToken
+import java.text.ParsePosition
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
+import java.util.TimeZone
+
+/** Provides utilities to convert dates for ACL according to ISO8601.
+ *
+ * <p>String representation is: {@code yyyymmddThhmmssiiiZ} for UTC time and {@code yyyymmddThhmmssiii} for local time;
+ * where {@code yyyymmdd} is a date and {@code hhmmssiii} is an hour with milliseconds.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+final class Iso8601DateTimeUtil {
+
+	private new {}
+	
+	/**
+	 * Replies the token that is representing a time in ACL format of
+	 * the specified date.
+	 * 
+	 * @param date the date to transform
+	 * @return the ACL time token from {@code date}.
+	 */
+	@Pure
+	static def format(date : Date) : String {
+		if (date === null) {
+			return null
+		} 
+		return ISO8601Utils::format(date, true)
+	}
+
+	/**
+	 * Parse an ACL time token to produce a Java date.
+	 *
+	 * <p>If the token starts with {@code +} or {@code -}, then the given token expresses a relative time to
+	 * be added, resp. removed, from the base date.
+	 *
+	 * <p>If the base date is not given, the current date is used. This current date is UTC if the token ends with
+	 * {@code Z}, or local time if the token does not end with {@code Z}.
+	 * 
+	 * @param dateTimeToken is the ACL time to parse.
+	 * @param baseDate is the base date that is used in case of relative time token.
+	 * @param position is the position to start to read the token.
+	 * @return the Java representation of {@code dataTimeToken}
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Pure
+	static def parse(dateTimeToken : String, baseDate : Calendar = null, position : ParsePosition = null) : Date {
+		try {
+			var positive = false
+			var dt : int[]
+			val pos = if (position === null) new ParsePosition(0) else position
+			if (dateTimeToken.charAt(pos.index) == ('+' as char)) {
+				dt = parseRelativeDateTime(dateTimeToken, pos.index)
+				positive = true
+			} else if (dateTimeToken.charAt(pos.index) == ('-' as char)) {
+				dt = parseRelativeDateTime(dateTimeToken, pos.index)
+			} else {
+				return ISO8601Utils::parse(dateTimeToken, pos)
+			}
+			var calendar : Calendar
+			if (baseDate !== null) {
+				calendar = new GregorianCalendar(baseDate.timeZone)
+				calendar.timeInMillis = baseDate.timeInMillis
+			} else {
+				calendar = new GregorianCalendar
+			}
+			calendar.lenient = true
+			var millis = calendar.get(Calendar::MILLISECOND)
+			var seconds = calendar.get(Calendar::SECOND)
+			var minutes = calendar.get(Calendar::MINUTE)
+			var hours = calendar.get(Calendar::HOUR_OF_DAY)
+			var days = calendar.get(Calendar::DAY_OF_MONTH)
+			var months = calendar.get(Calendar::MONTH)
+			var years = calendar.get(Calendar::YEAR)
+			val dmillis = dt.get(6)
+			val dseconds = dt.get(5)
+			val dminutes = dt.get(4)
+			val dhours = dt.get(3)
+			val ddays = dt.get(2)
+			val dmonths = dt.get(1)
+			val dyears = dt.get(0)
+			if (positive) {
+				millis += dmillis
+				seconds += dseconds
+				minutes += dminutes
+				hours += dhours
+				days += ddays
+				months += dmonths
+				years += dyears
+			} else {
+				millis -= dmillis
+				seconds -= dseconds
+				minutes -= dminutes
+				hours -= dhours
+				days -= ddays
+				months -= dmonths
+				years -= dyears
+			}
+			calendar.set(years, months, days, hours, minutes, seconds)
+			calendar.set(Calendar::MILLISECOND, millis)
+			return Date::from(calendar.toInstant)
+		} catch (ex : Throwable) {
+			//
+		}
+		return null
+	}
+
+	private static def parseRelativeDateTime(date : String, position : int) : int[] {
+		var offset = position + 1
+
+		// Extract year
+		val year = parseInt(date, offset, offset + 4)
+		offset += 4
+		if (checkOffset(date, offset, '-')) {
+			offset += 1
+		}
+
+		// Extract month
+		val month = parseInt(date, offset, offset + 2)
+		offset += 2
+		if (checkOffset(date, offset, '-')) {
+			offset += 1
+		}
+
+		// Extract day
+		val day = parseInt(date, offset, offset + 2)
+		offset += 2
+
+		var hour = 0
+		var minutes = 0
+		var seconds = 0
+		var milliseconds = 0
+
+		// If the value has no time component (and no time zone), we are done
+		val hasT = checkOffset(date, offset, 'T')
+		if (hasT) {
+			// Extract hours, minutes, seconds and milliseconds
+			hour = parseInt(date, offset + 1, offset + 3)
+			offset += 3
+			if (checkOffset(date, offset, ':')) {
+				offset += 1
+			}
+
+			minutes = parseInt(date, offset, offset + 2)
+			offset += 2
+			if (checkOffset(date, offset, ':')) {
+				offset += 1
+			}
+			// second and milliseconds can be optional
+			if (date.length() > offset) {
+				var c : char = date.charAt(offset)
+				if (c != 'Z' && c != '+' && c != '-') {
+					seconds = parseInt(date, offset, offset + 2)
+					offset += 2
+					if (checkOffset(date, offset, '.')) {
+						offset += 1
+						var endOffset = indexOfNonDigit(date, offset + 1)
+						var parseEndOffset = Math::min(endOffset, offset + 3)
+						var fraction = parseInt(date, offset, parseEndOffset)
+						switch (parseEndOffset - offset) {
+							case 2: {
+								milliseconds = fraction * 10
+							}
+							case 1: {
+								milliseconds = fraction * 100
+							}
+							default: {
+								milliseconds = fraction
+							}
+						}
+						offset = endOffset
+					}
+				}
+			}
+		}
+		return #[year, month, day, hour, minutes, seconds, milliseconds]
+	}
+
+	private static def parseInt(value : String, beginIndex : int, endIndex : int) : int {
+		if (beginIndex < 0 || endIndex > value.length() || beginIndex > endIndex) {
+			throw new NumberFormatException(value)
+		}
+		// use same logic as in Integer.parseInt() but less generic we're not supporting negative values
+		var i = beginIndex
+		var result = 0
+		var digit : int
+		if (i < endIndex) {
+			digit = Character::digit(value.charAt(i), 10)
+			i++
+			if (digit < 0) {
+				throw new NumberFormatException("Invalid number: " + value.substring(beginIndex, endIndex))
+			}
+			result = -digit
+		}
+		while (i < endIndex) {
+			digit = Character::digit(value.charAt(i), 10)
+			i++
+			if (digit < 0) {
+				throw new NumberFormatException("Invalid number: " + value.substring(beginIndex, endIndex))
+			}
+			result *= 10
+			result -= digit
+		}
+		return -result
+	}
+
+	private static def checkOffset(value : String, offset : int, expected : char) : boolean {
+		return (offset < value.length) && (value.charAt(offset) === expected)
+	}
+
+	private static def indexOfNonDigit(string : String, offset : int) : int {
+		for (var i = offset; i < string.length; i++) {
+			val c = string.charAt(i)
+			if (c < '0' || c > '9') return i
+		}
+		return string.length
+	}
+
+	/** 
+	 * Encode an ISO8601 date to a binary array of bytes.
+	 *
+	 * @param date the date to convert
+	 * @return the encoded date for bit efficient, or {@code null} if the argument is invalid.
+	 */
+	@Pure
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def toByteArray(date : Date) : byte[] {
+		if (date === null) {
+			return null
+		}
+        val calendar = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+        calendar.timeInMillis = date.time
+        return toByteArray(
+        	Strings::padStart(calendar.get(Calendar::YEAR) as String, 4, '0'),
+        	Strings::padStart((calendar.get(Calendar::MONTH) + 1) as String, 2, '0'),
+        	Strings::padStart(calendar.get(Calendar::DAY_OF_MONTH) as String, 2, '0'),
+        	Strings::padStart(calendar.get(Calendar::HOUR_OF_DAY) as String, 2, '0'),
+        	Strings::padStart(calendar.get(Calendar::MINUTE) as String, 2, '0'),
+        	Strings::padStart(calendar.get(Calendar::SECOND) as String, 2, '0'),
+			Strings::padStart(calendar.get(Calendar::MILLISECOND) as String, 3, '0'))
+	}
+
+	/** 
+	 * Encode an ISO8601 date to a binary array of bytes.
+	 * 
+	 * @param year is the 4-digit year.
+	 * @param month is the 2-digit month.
+	 * @param day is the 2-digit day.
+	 * @param hour is the 2-digit hour.
+	 * @param minute is the 2-digit minute.
+	 * @param second is the 2-digit second.
+	 * @param milli is the 3-digit millisecond.
+	 * @return the encoded date for bit efficient, or {@code null} if the argument is invalid.
+	 */
+	@Pure
+	static def toByteArray(year : String, month : String, day : String, hour : String,
+			minute : String, second : String, milli : String) : byte[] {
+        var encodedDate = newByteArrayOfSize(9)
+
+        var b : int
+
+		// Year
+       	b = (NumberToken::getBinaryCode(year.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(year.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(0, b as byte)
+       	b = (NumberToken::getBinaryCode(year.charAt(2)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(year.charAt(3)).bitwiseAnd(0x0F))
+       	encodedDate.set(1, b as byte)
+
+		// Month
+       	b = (NumberToken::getBinaryCode(month.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(month.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(2, b as byte)
+
+		// Day
+       	b = (NumberToken::getBinaryCode(day.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(day.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(3, b as byte)
+
+		// Hour
+       	b = (NumberToken::getBinaryCode(hour.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(hour.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(4, b as byte)
+
+		// Minute
+       	b = (NumberToken::getBinaryCode(minute.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(minute.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(5, b as byte)
+
+		// Second
+       	b = (NumberToken::getBinaryCode(second.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(second.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(6, b as byte)
+        
+		// Millis
+       	b = (NumberToken::getBinaryCode(milli.charAt(0)) << 4)
+       	b = b.bitwiseOr(NumberToken::getBinaryCode(milli.charAt(1)).bitwiseAnd(0x0F))
+       	encodedDate.set(7, b as byte)
+       	b = (NumberToken::getBinaryCode(milli.charAt(2)) << 4)
+       	encodedDate.set(8, b as byte)
+        
+        return encodedDate
+    }
+
+	/**
+	 * Decode byte array that is encoding an ISO8601 date.
+	 * 
+	 * @param array an ISO8601 encoded date (9 bytes exactly)
+	 * @return the corresponding String
+	 */
+	@Pure
+	static def parseByteArrayAsString(array : byte[]) : String {
+		try {
+			val s = new StringBuilder
+			s.append(NumberToken::getToken(((array.get(0)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(0).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken(((array.get(1)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(1).bitwiseAnd(0x0F)) as byte))
+			s.append('-')
+			s.append(NumberToken::getToken(((array.get(2)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(2).bitwiseAnd(0x0F)) as byte))
+			s.append('-')
+			s.append(NumberToken::getToken(((array.get(3)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(3).bitwiseAnd(0x0F)) as byte))
+			s.append('T')
+			s.append(NumberToken::getToken(((array.get(4)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(4).bitwiseAnd(0x0F)) as byte))
+			s.append(':')
+			s.append(NumberToken::getToken(((array.get(5)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(5).bitwiseAnd(0x0F)) as byte))
+			s.append(":")
+			s.append(NumberToken::getToken(((array.get(6)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(6).bitwiseAnd(0x0F)) as byte))
+			s.append('.')
+			s.append(NumberToken::getToken(((array.get(7)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken((array.get(7).bitwiseAnd(0x0F)) as byte))
+			s.append(NumberToken::getToken(((array.get(8)>>4).bitwiseAnd(0x0F)) as byte))
+			s.append('Z')
+			return s.toString
+		} catch (ex : Throwable) {
+			//
+		}
+		return null
+	}
+
+	/**
+	 * Decode byte array that is encoding an ISO8601 date.
+	 * 
+	 * @param array an ISO8601 encoded date
+	 * @return the corresponding date
+	 */
+	@Pure
+	static def parseByteArrayAsDate(array : byte[]) : Date {
+		try {
+			return parse(array.parseByteArrayAsString)
+		} catch (ex : Throwable) {
+			//
+		}
+		return null
+	}
+
+}

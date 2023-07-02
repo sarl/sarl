@@ -1,0 +1,157 @@
+/* 
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ * 
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ * Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.configs
+
+import io.bootique.annotation.BQConfigProperty
+import io.sarl.lang.core.Agent
+import io.sarl.sre.extensions.simulation.agentenvironment.model.AgentBody
+import java.util.List
+import java.util.Map
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/**
+ * Configuration for creating a spawner of agents' bodies and agents.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class SpawnerConfig extends AbstractPositionConfig {
+
+	/** 
+	 * The default name for the stochastic generation law.
+	 */
+	public static val LAW_VALUE : String = null
+
+	/** 
+	 * The default type of agent to generate.
+	 */
+	public static val AGENT_TYPE_VALUE : Class<? extends Agent> = null
+
+	/** 
+	 * The default type of agent body to generate.
+	 */
+	public static val BODY_TYPE_VALUE : Class<? extends AgentBody> = null
+
+	/** 
+	 * The default budget for the spawner.
+	 */
+	public static val BUDGET_VALUE : int = Integer::MAX_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var law = LAW_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var agentType = AGENT_TYPE_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var bodyType = BODY_TYPE_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var budget = BUDGET_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	val lawArguments : Map<String, String> = newHashMap
+
+	@Accessors(PUBLIC_GETTER)
+	val bodyParameters : Map<String, Object> = newHashMap
+
+	@Accessors(PUBLIC_GETTER)
+	var agentParameters : List<Object> = newArrayList
+
+	/** Change the map that stores the stochastic law's parameters.
+	 * 
+	 * @param parameters the map of the law's parameters.
+	 */
+	@BQConfigProperty("the map of all the parameters for the stochastic law.")
+	def setLawArguments(parameters : Map<String, String>) {
+		this.lawArguments.clear
+		if (parameters !== null) {
+			this.lawArguments.putAll(parameters)
+		}
+	}
+
+	/** Change the map that stores the creation parameters for the bodies.
+	 * 
+	 * @param parameters the map of the body creation parameters.
+	 */
+	@BQConfigProperty("the map of all the parameters to pass to the created bodies.")
+	def setBodyParameters(parameters : Map<String, Object>) {
+		this.bodyParameters.clear
+		if (parameters !== null) {
+			this.bodyParameters.putAll(parameters)
+		}
+	}
+
+	/** Change the list that stores the creation parameters for the agents.
+	 * 
+	 * @param parameters the list of the agent creation parameters.
+	 */
+	@BQConfigProperty("the list of all the parameters to pass to the created agents.")
+	def setAgentParameters(parameters : List<Object>) {
+		this.agentParameters.clear
+		if (parameters !== null) {
+			this.agentParameters.addAll(parameters)
+		}
+	}
+
+	/** Change the name of the stochastic law that is used for the generation of agents.
+	 * The name must be one of the laws provided into the AFC stochastic law (without the
+	 * {@code StochasticLaw} post-fix text.
+	 * 
+	 * @param name the name of the law.
+	 */
+	@BQConfigProperty("name of the stochastic law for generating the agents.")
+	def setLaw(name : String) {
+		this.law = if (name.nullOrEmpty) null else name
+	}
+
+	/** Change the type of agents to be generated.
+	 * 
+	 * @param type the type of agents.
+	 */
+	@BQConfigProperty("fully qualified type of the agents to generate.")
+	def setAgentType(type : Class<? extends Agent>) {
+		this.agentType = type
+	}
+
+	/** Change the type of agent bodies to be generated.
+	 * 
+	 * @param type the type of agent bodies.
+	 */
+	@BQConfigProperty("fully qualified type of the agent bodies to generate.")
+	def setBodyType(type : Class<? extends AgentBody>) {
+		this.bodyType = type
+	}
+
+	/** Change the budget for the spawner.
+	 * The budget is the maximal number of agent to be generated.
+	 * If the given number is negative, then zero is considered.
+	 * 
+	 * @param budget the budget, that is a positive number.
+	 */
+	@BQConfigProperty("the maximal number of agent to be generated.")
+	def setBudget(budget : int) {
+		this.budget = if (budget < 0) 0 else budget
+	}
+
+}

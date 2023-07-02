@@ -1,0 +1,156 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.protocol.query
+
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import io.sarl.acl.protocol.query.QueryProtocolState
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("QueryProtocolState")
+class QueryProtocolStateTest {
+
+	var items = <QueryProtocolState>newArrayList
+
+	def reg(item : QueryProtocolState) : QueryProtocolState {
+		this.items.remove(item).assertTrue
+		return item
+	}
+
+	def assertConsumed : void {
+		this.items.assertContainsCollection(#[])
+	}
+
+	@BeforeEach
+	def setUp : void {
+		items.addAll(QueryProtocolState.values)
+	}
+
+	@ParameterizedTest
+	@EnumSource(typeof(QueryProtocolState))
+	def getName(id : QueryProtocolState) : void {
+		id.name().assertSame(id.getName)
+	}
+
+	@Test
+	def isBrokenProtocol : void {
+		QueryProtocolState::NOT_STARTED.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::CANCELED.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::BROKEN_PROTOCOL.reg.isBrokenProtocol.assertTrue
+		QueryProtocolState::FAILURE.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::QUERY_AGREED.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::QUERY_IF_EXECUTION.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::QUERY_REF_EXECUTION.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::QUERY_REFUSED.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::SUCCESS.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::WAITING_ANSWER.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::WAITING_IF_DECISION.reg.isBrokenProtocol.assertFalse
+		QueryProtocolState::WAITING_REF_DECISION.reg.isBrokenProtocol.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isCancelled : void {
+		QueryProtocolState::NOT_STARTED.reg.isCancelled.assertFalse
+		QueryProtocolState::CANCELED.reg.isCancelled.assertTrue
+		QueryProtocolState::BROKEN_PROTOCOL.reg.isCancelled.assertFalse
+		QueryProtocolState::FAILURE.reg.isCancelled.assertFalse
+		QueryProtocolState::QUERY_AGREED.reg.isCancelled.assertFalse
+		QueryProtocolState::QUERY_IF_EXECUTION.reg.isCancelled.assertFalse
+		QueryProtocolState::QUERY_REF_EXECUTION.reg.isCancelled.assertFalse
+		QueryProtocolState::QUERY_REFUSED.reg.isCancelled.assertFalse
+		QueryProtocolState::SUCCESS.reg.isCancelled.assertFalse
+		QueryProtocolState::WAITING_ANSWER.reg.isCancelled.assertFalse
+		QueryProtocolState::WAITING_IF_DECISION.reg.isCancelled.assertFalse
+		QueryProtocolState::WAITING_REF_DECISION.reg.isCancelled.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isErrorneous : void {
+		QueryProtocolState::NOT_STARTED.reg.isErrorneous.assertFalse
+		QueryProtocolState::CANCELED.reg.isErrorneous.assertFalse
+		QueryProtocolState::BROKEN_PROTOCOL.reg.isErrorneous.assertTrue
+		QueryProtocolState::FAILURE.reg.isErrorneous.assertTrue
+		QueryProtocolState::QUERY_AGREED.reg.isErrorneous.assertFalse
+		QueryProtocolState::QUERY_IF_EXECUTION.reg.isErrorneous.assertFalse
+		QueryProtocolState::QUERY_REF_EXECUTION.reg.isErrorneous.assertFalse
+		QueryProtocolState::QUERY_REFUSED.reg.isErrorneous.assertFalse
+		QueryProtocolState::SUCCESS.reg.isErrorneous.assertFalse
+		QueryProtocolState::WAITING_ANSWER.reg.isErrorneous.assertFalse
+		QueryProtocolState::WAITING_IF_DECISION.reg.isErrorneous.assertFalse
+		QueryProtocolState::WAITING_REF_DECISION.reg.isErrorneous.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isFinished : void {
+		QueryProtocolState::NOT_STARTED.reg.isFinished.assertFalse
+		QueryProtocolState::CANCELED.reg.isFinished.assertTrue
+		QueryProtocolState::BROKEN_PROTOCOL.reg.isFinished.assertTrue
+		QueryProtocolState::FAILURE.reg.isFinished.assertTrue
+		QueryProtocolState::QUERY_AGREED.reg.isFinished.assertFalse
+		QueryProtocolState::QUERY_IF_EXECUTION.reg.isFinished.assertFalse
+		QueryProtocolState::QUERY_REF_EXECUTION.reg.isFinished.assertFalse
+		QueryProtocolState::QUERY_REFUSED.reg.isFinished.assertTrue
+		QueryProtocolState::SUCCESS.reg.isFinished.assertTrue
+		QueryProtocolState::WAITING_ANSWER.reg.isFinished.assertFalse
+		QueryProtocolState::WAITING_IF_DECISION.reg.isFinished.assertFalse
+		QueryProtocolState::WAITING_REF_DECISION.reg.isFinished.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isStarted : void {
+		QueryProtocolState::NOT_STARTED.reg.isStarted.assertFalse
+		QueryProtocolState::CANCELED.reg.isStarted.assertTrue
+		QueryProtocolState::BROKEN_PROTOCOL.reg.isStarted.assertTrue
+		QueryProtocolState::FAILURE.reg.isStarted.assertTrue
+		QueryProtocolState::QUERY_AGREED.reg.isStarted.assertTrue
+		QueryProtocolState::QUERY_IF_EXECUTION.reg.isStarted.assertTrue
+		QueryProtocolState::QUERY_REF_EXECUTION.reg.isStarted.assertTrue
+		QueryProtocolState::QUERY_REFUSED.reg.isStarted.assertTrue
+		QueryProtocolState::SUCCESS.reg.isStarted.assertTrue
+		QueryProtocolState::WAITING_ANSWER.reg.isStarted.assertTrue
+		QueryProtocolState::WAITING_IF_DECISION.reg.isStarted.assertTrue
+		QueryProtocolState::WAITING_REF_DECISION.reg.isStarted.assertTrue
+		assertConsumed
+	}
+
+}

@@ -1,0 +1,273 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.protocol.requestwhen
+
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.Performative
+import io.sarl.acl.protocol.ProtocolResult
+import io.sarl.acl.protocol.ProtocolState
+import java.text.MessageFormat
+import java.util.Map
+
+/** 
+ * Participant side for the Request interaction protocol.
+ *
+ * <center><img src="./doc-files/sequence.png"></center>
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see <a href="http://www.fipa.org/specs/fipa00028/SC00028H.html">FIPA Request-When Interaction Protocol Specification</a>
+ */
+behavior ParticipantFipaRequestWhenProtocol extends FipaRequestWhenProtocol {
+
+	var requestData : ProtocolResult
+
+	final override isInitiatorSide : boolean {
+		false
+	}
+
+	final override isParticipantSide : boolean {
+		true
+	}
+
+	/**
+	 * At any point in the IP, the receiver of a communication 
+	 * can inform the sender that it did not understand what was communicated.
+	 * 
+	 * The communication of a not-understood within an interaction protocol may terminate the entire IP 
+	 * and termination of the interaction may imply that any commitments made during the interaction 
+	 * are null and void.
+	 * 
+	 * @param reason the reason of the cancel.
+	 * @param reasonParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def notUnderstood(reason : Object = null, reaonParameters : Map<String, String> = null) {
+		notUnderstoodProtocol(reason, reaonParameters)
+	}
+
+	/** Replies the request.
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def getRequest : ProtocolResult {
+		val rlock = this.lock.readLock
+		rlock.lock
+		try {
+			if (this.numberOfErrors === 0) {
+				return this.requestData
+			}
+		} finally {
+			rlock.unlock
+		}
+		reportError(Messages::ParticipantFipaRequestWhenProtocol_0)
+		return null
+	}
+
+	/** Refuse a request.
+	 *
+	 * @param reason the reason to refuse.
+	 * @param reasonParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def refuse(reason : Object = null, reasonParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == RequestWhenProtocolState::WAITING_PARTICIPANT_DECISION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == RequestWhenProtocolState::WAITING_PARTICIPANT_DECISION) {
+					RequestWhenProtocolState::PARTICIPANT_REFUSED.finish(null)
+					sendMessage(reason, Performative::REFUSE,
+						reasonParameters?.get('language'),
+						reasonParameters?.get('ontology'),
+						reasonParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_1, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_1, state.name))			
+		}
+	}
+
+	/** Accept a request, and start to do the associated job.
+	 * 
+	 * @param agreementInformation any useful agreement information to provide to the initiator.
+	 * @param informationParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	def agree(agreementInformation : Object = null, informationParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == RequestWhenProtocolState::WAITING_PARTICIPANT_DECISION) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == RequestWhenProtocolState::WAITING_PARTICIPANT_DECISION) {
+					RequestWhenProtocolState::PARTICIPANT_AGREED.change(null)
+					sendMessage(agreementInformation, Performative::AGREE,
+						informationParameters?.get('language'),
+						informationParameters?.get('ontology'),
+						informationParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_2, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_2, state.name))			
+		}
+	}
+
+	/** Indicates that a failure occurred during the request treatment.
+	 * 
+	 * @param reason the reason of the failure.
+	 * @param reasonParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def failure(reason : Object = null, reasonParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == RequestWhenProtocolState::PARTICIPANT_AGREED) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == RequestWhenProtocolState::PARTICIPANT_AGREED) {
+					this.requestData = null
+					RequestWhenProtocolState::PARTICIPANT_FAILURE.finish(null)
+					sendMessage(reason, Performative::FAILURE,
+						reasonParameters?.get('language'),
+						reasonParameters?.get('ontology'),
+						reasonParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_3, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_3, state.name))			
+		}
+	}
+
+	/** Indicates that a request treatment is finished.
+	 * 
+	 * @param result the result of the request.
+	 * @param resultParameters is the map that contains the {@code language} used for expressing the given content;
+	 *     the {@code ontology} associated to the given content; and the {@code encoding} of the message content.
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def done(result : Object = null, resultParameters : Map<String, String> = null) {
+		val rlock = this.lock.readLock
+		rlock.lock
+		var st : ProtocolState
+		try {
+			st = this.state
+		} finally {
+			rlock.unlock
+		}
+		if (st == RequestWhenProtocolState::PARTICIPANT_AGREED) {
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				st = this.state
+				if (st == RequestWhenProtocolState::PARTICIPANT_AGREED) {
+					this.requestData = null
+					(if (result === null) RequestWhenProtocolState::DONE_WITHOUT_RESULT
+						else RequestWhenProtocolState::DONE_WITH_RESULT).finish(null)
+					sendMessage(result, Performative::INFORM,
+						resultParameters?.get('language'),
+						resultParameters?.get('ontology'),
+						resultParameters?.get('encoding'),
+						this.initiator)
+				} else {
+					reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_4, state.name))			
+				}
+			} finally {
+				wlock.unlock
+			}
+		} else {
+			reportError(MessageFormat::format(Messages::ParticipantFipaRequestWhenProtocol_4, state.name))			
+		}
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+	on AclMessage [!hasFailed] {
+		switch (occurrence.performative) {
+			case Performative::REQUEST_WHEN: {
+				val dt = getRequest
+				val st = state
+				if (st == RequestWhenProtocolState::NOT_STARTED && dt === null) {
+					val wlock = this.lock.writeLock
+					wlock.lock
+					try {
+						this.requestData = new ProtocolResult(occurrence.sender, Performative::REQUEST_WHEN, occurrence.content.content)
+						this.conversationId = occurrence.conversationId
+						this.initiator = occurrence.sender
+						RequestWhenProtocolState::WAITING_PARTICIPANT_DECISION.change(new RequestWhenReceived(this))
+						startTimeoutNotifier
+					} finally {
+						wlock.unlock
+					}
+				} else {
+					reportError(Messages::ParticipantFipaRequestWhenProtocol_5)
+				}
+			}
+			default: {
+				occurrence.performative.reportUnpexectedPerformativeError
+			}
+		}
+	}
+
+}

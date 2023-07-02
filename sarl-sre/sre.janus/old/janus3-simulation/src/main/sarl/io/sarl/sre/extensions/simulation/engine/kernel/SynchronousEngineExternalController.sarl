@@ -1,0 +1,130 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.engine.kernel
+
+import com.google.inject.ImplementedBy
+
+/**
+ * An object that is able to influence the execution of the synchronous engine of the agent framework.
+ *
+ * <p>This controller is used by the synchronous engine in order to determine if the execution is
+ * started, stopped, paused or resumed.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+@ImplementedBy(typeof(IddleSynchronousEngineExternalController))
+interface SynchronousEngineExternalController {
+
+	/** Replies if the simulation synchronous engine is running.
+	 * The engine may be started, paused, resumed or stopped.
+	 * In each of these standard running states, the execution
+	 * status of the engine is specific:
+	 * <table><thead>
+	 * <tr><th>Standard running state</th><th>Engine execution status</th></tr>
+	 * </thead><tbody>
+	 * <tr><td>never started</td><td>{@code false}</td></tr>
+	 * <tr><td>started</td><td>{@code true}</td></tr>
+	 * <tr><td>paused</td><td>{@code false}</td></tr>
+	 * <tr><td>resumed</td><td>{@code true}</td></tr>
+	 * <tr><td>stoped</td><td>{@code false}</td></tr>
+	 * </tbody></table>
+	 *
+	 * <p><strong>Constraints on the returned value:</strong><br/>
+	 * If {@link #isStopped()} replies a value evaluated to {@code true}, then
+	 * {@code isRunning()} must replies the value {@code false}.
+	 * From a mathematical point-of-view, this contraint is:
+	 * <math xmlns="http://www.w3.org/1998/Math/MathML">
+	 * <mrow>
+	 * <mrow>
+	 * <mo form="prefix">(</mo>
+	 * <mi>isStopped</mi>
+	 * <mo>=</mo>
+	 * <mi>true</mi>
+	 * <mo form="postfix">)</mo>
+	 * </mrow>
+	 * <mo>&#x021D2;</mo>
+	 * <mrow>
+	 * <mo form="prefix">(</mo>
+	 * <mi>isRunning</mi>
+	 * <mo>=</mo>
+	 * <mi>false</mi>
+	 * <mo form="postfix">)</mo>
+	 * </mrow>
+	 * </mrow>
+	 * </math>
+	 * 
+	 * @return {@code true} if the simulation engine is running.
+	 */
+	def isRunning : boolean {
+		true
+	}
+
+	/** Replies if the simulation synchronous engine was explicitly stopped.
+	 * Usually, when a simulation was stopped, it cannot be resumed (restarted).
+	 * 
+	 * <p><strong>Constraints on the returned value:</strong><br/>
+	 * If {@link #isStopped()} replies a value evaluated to {@code true}, then
+	 * {@code isRunning()} must replies the value {@code false}.
+	 * From a mathematical point-of-view, this contraint is:
+	 * <math xmlns="http://www.w3.org/1998/Math/MathML">
+	 * <mrow>
+	 * <mrow>
+	 * <mo form="prefix">(</mo>
+	 * <mi>isStopped</mi>
+	 * <mo>=</mo>
+	 * <mi>true</mi>
+	 * <mo form="postfix">)</mo>
+	 * </mrow>
+	 * <mo>&#x021D2;</mo>
+	 * <mrow>
+	 * <mo form="prefix">(</mo>
+	 * <mi>isRunning</mi>
+	 * <mo>=</mo>
+	 * <mi>false</mi>
+	 * <mo form="postfix">)</mo>
+	 * </mrow>
+	 * </mrow>
+	 * </math>
+	 * 
+	 * @return {@code true} if the simulation engine was stopped.
+	 */
+	def isStopped : boolean {
+		false
+	}
+
+}
+
+/** 
+ * An object that is able to influence the execution of the synchronous engine of the agent framework.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+final class IddleSynchronousEngineExternalController implements SynchronousEngineExternalController {
+	//
+}

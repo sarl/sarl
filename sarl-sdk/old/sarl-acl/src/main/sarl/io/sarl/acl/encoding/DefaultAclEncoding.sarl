@@ -1,0 +1,217 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.encoding
+
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclMessageEnvelope
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.util.ByteArrayBuffer
+import io.sarl.acl.util.InjectorUtil
+import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * This class manages all the encoding/decoding repartition tasks.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+skill DefaultAclEncoding implements AclEncoding {
+
+	@Accessors
+	var contentEncodingService : AclMessageContentEncodingService
+	
+	@Accessors(PUBLIC_SETTER)
+	var envelopeEncodingService : AclMessageEnvelopeEncodingService
+
+	var factory : AclMessageServiceFactory
+
+	/** Replies the service for encoding/decoding an envelope.
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	@Pure
+	def getEnvelopeEncodingService : AclMessageEnvelopeEncodingService {
+		if (this.envelopeEncodingService === null) {
+	    	var aclRepresentationObject = AclRepresentation::^default
+			val factory = this.aclMessageServiceFactory
+			this.envelopeEncodingService = factory.newEnvelopeEncodingService(aclRepresentationObject)
+		}
+		return this.envelopeEncodingService
+	}
+
+	/** Change the service factory. */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	@Inject
+	def setAclMessageServiceFactory(factory : AclMessageServiceFactory) {
+		this.factory = factory
+	}
+
+	/** Replies the service factory. */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	@Pure
+	def getAclMessageServiceFactory : AclMessageServiceFactory {
+		if (this.factory === null) {
+			this.factory = InjectorUtil::newImplementedByInstance(typeof(AclMessageServiceFactory), typeof(DefaultAclMessageServiceFactory))
+		}
+		return this.factory
+	}
+
+	/** 
+	 * Instantiates the {@link #contentEncodingService} and the {@link #envelopeEncodingService} to use 
+	 * to decode the encode/decode the content and the envelope of a given ACL Message
+	 * according to the ACL representation defined in the envelope.
+	 * 
+	 * @param envelope
+	 * @see ACLRepresentation
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	protected def ensureEncodingServicesFor(envelope : AclMessageEnvelope) {
+    	val aclRepresentation = envelope.aclRepresentation
+    	var aclRepresentationObject = AclRepresentation::valueOfCaseInsensitive(aclRepresentation, AclRepresentation::^default)
+		if (this.contentEncodingService === null || aclRepresentationObject !== this.contentEncodingService.aclRepresentation) {
+			this.contentEncodingService = this.aclMessageServiceFactory.newContentEncodingService(aclRepresentationObject)
+		}
+		if (this.envelopeEncodingService === null || aclRepresentationObject !== this.envelopeEncodingService.aclRepresentation) {
+			this.envelopeEncodingService = this.aclMessageServiceFactory.newEnvelopeEncodingService(aclRepresentationObject)
+		}
+    }
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	@Pure
+	override encode(aMsg : AclMessage) : byte[] {
+		val env = aMsg.envelope
+		ensureEncodingServicesFor(env)
+    	return buildEncodedACLMessage(
+    		this.contentEncodingService.encode(aMsg),
+    		this.envelopeEncodingService.encode(aMsg.envelope))
+    }
+
+	/** 
+	 * Gets the payload 
+	 * for a given content encoded in an array of bytes 
+	 * and for a given envelope encoded in an array of bytes.
+	 * 
+	 * <p>To be able to easily get back the envelope and the content 
+	 * from the payload when decoding, the payload must respect 
+	 * the following representation as defined by Fipa:<ul>
+	 * <li>Overview of the returned payload : [ [Envelope Length] | [Envelope] | [Content] ]</li>
+	 * </ul>
+	 * 
+	 * <p>Where the envelope length respects the following:<ul>
+	 * <li>2 bytes are reserved for envelope size (cf: {@link #ENVELOPE_LENGTH})</li>
+	 * <li>If more space is needed, the 2 first bytes are set to zero 
+	 * and 4 bytes (BIG_ENVELOPE_LENGTH - ENVELOPE_LENGTH) are added to contain the envelope length (cf: {@link #BIG_ENVELOPE_LENGTH})</li>
+	 * </ul>
+	 * 
+	 * @param encodedContent is the ACLMessageContent encoded in an array of bytes
+	 * @param encodedEnvelope is the ACLMessageEnvelope encode in an array of bytes
+	 * @return the payload
+	 */
+	private def buildEncodedACLMessage(encodedContent : byte[], encodedEnvelope : byte[]) : byte[] {
+		val envelopeLength = encodedEnvelope.length
+		val contentLength = encodedContent.length
+		
+		val isSmallEnvelope = (envelopeLength < Short::MAX_VALUE)
+		val envelopeSizeLength = if (isSmallEnvelope) 2 else 6 // Bytes for short, or short+int
+		
+		val totalLength = envelopeLength + contentLength + envelopeSizeLength
+		val buffer = new ByteArrayBuffer(newByteArrayOfSize(totalLength), 0, 0)
+		
+		if (isSmallEnvelope) {
+			buffer.writeShort(envelopeLength as short)
+		} else {
+			buffer.writeShort(0 as short)
+			buffer.writeInt(envelopeLength)
+		}
+
+		buffer.write(encodedEnvelope)
+		buffer.write(encodedContent)	
+		
+		return buffer.rootByteArray
+	}
+
+	/** 
+	 * Gets the ACL Message from an ACL Transport Message.
+	 * 
+	 * <p><ul>
+	 * <li>The ACL Transport Message corresponds to the payload</p>
+	 * <li>The payload has been previously encoded by {@link #encode(ACLMessage, Object...)} 
+	 * as defined by FIPA : [ [Envelope Length] | [Envelope] | [Content] ]</li>
+	 * </ul>
+	 * 
+	 * <p>Workflow:<ol>
+	 * <li>Get the envelope length</li>
+	 * <li>Get back the envelope in an array bytes according to the previously recovered envelope length</li>
+	 * <li>Get back the corresponding {@link ACLMessageEnvelope}</li>
+	 * <li>Get the content length according to the global length and the envelope length</li>
+	 * <li>Get back the content in an array of bytes according to the previously recovered content length</li>
+	 * <li>Get back the corresponding {@link ACLMessageContent}</li>
+	 * <li>Create a new ACL Message from the recovered envelope and content</li>
+	 * </ol>
+	 * 
+	 * @param message the ACLTransportMessage containing the encoded ACLMessage (payload)
+	 * @return the new ACLMessage decoded and rebuilt
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
+	@Pure
+	def decode(message : byte[], startIndex : int, endIndex : int) : AclMessage {
+		val indexes = AbstractAclMessageEncodingService::validateIndexes(message, startIndex, endIndex)
+		val startIdx = indexes.key as int
+		val endIdx = indexes.value as int
+
+		val buffer = new ByteArrayBuffer(message, startIdx, Math::min(endIdx, startIdx + 6))
+		
+		// Get envelope length
+		var envelopeLength : int = buffer.readShort
+		
+		if (envelopeLength == 0) {
+			// case of big envelope
+			envelopeLength = buffer.readInt
+		}
+		val startDataIdx = buffer.offset
+		val interIdx = startDataIdx + envelopeLength
+
+		// Decode envelope
+		val envelope = getEnvelopeEncodingService.decode(message, startDataIdx, interIdx)
+
+		// Decode content
+		ensureEncodingServicesFor(envelope)
+		val content = getContentEncodingService.decode(message, interIdx, endIdx)
+	
+		return newAclMessage(envelope, content)
+    }
+
+	/** Create a message instance.
+	 *
+	 * @param envelope the envelope.
+	 * @param content the content.
+	 */
+	protected def newAclMessage(envelope : AclMessageEnvelope, content : AclMessageContent) : AclMessage {
+		new AclMessage(envelope, content)
+	}
+
+}

@@ -1,0 +1,329 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.util
+
+import io.sarl.acl.encoding.bitefficient.constant.BinaryString
+import io.sarl.acl.encoding.bitefficient.constant.BinaryWord
+import java.io.EOFException
+import java.util.Arrays
+import org.arakhne.afc.inputoutput.endian.EndianNumbers
+import java.nio.ByteOrder
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/**
+ * Buffer for a byte message.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+final class ByteArrayBuffer {
+	
+	val buffer : byte[]
+
+	var offset : int
+
+	var end : int
+	
+	@Accessors
+	var bigEndian : boolean = (ByteOrder::nativeOrder === ByteOrder::BIG_ENDIAN)
+
+	new (buffer : byte[]) {
+		this.buffer = buffer
+		this.offset = 0
+		this.end = buffer.length
+	}
+
+	new (buffer : byte[], start : int, end : int) {
+		this.buffer = buffer
+		this.offset = start
+		this.end = end
+	}
+
+	/** Replies if the stream is empty */
+	@Pure
+	def isEmpty : boolean {
+		this.offset >= this.end
+	}
+
+	/** Replies the offset in the root buffer. */
+	@Pure
+	def getOffset : int {
+		this.offset
+	}
+
+	/** Replies the end offset in the root buffer. */
+	@Pure
+	def getEndOffset : int {
+		this.end
+	}
+
+	/** Replies the length of this buffer in the byte array. */
+	@Pure
+	def getLength : int {
+		this.end - this.offset
+	}
+
+	/** Replies the byte array in which this ByteArrayBuffer is reading its byte data.
+	 */
+	@Pure
+	def getRootByteArray : byte[] {
+		this.buffer
+	}
+
+	@Pure
+	override toString : String {
+		val buf = new StringBuilder
+		for (var i = this.offset; i < this.end; i++) {
+			val v : int = this.buffer.get(i)
+			val c = v as char
+			if (v < 32 && !Character::isWhitespace(c)) {
+				buf.append("{#")
+				buf.append(Integer.toHexString(v).toUpperCase)
+				buf.append("}")
+			} else {
+				buf.append(c)
+			}
+		}
+		return buf.toString
+	}
+	
+	/** Replies the byte array that is inside this buffer. */
+	@Pure
+	def toByteArray : byte[] {
+		if (this.offset >= this. end) {
+			return newByteArrayOfSize(0)
+		}
+		return Arrays::copyOfRange(this.buffer, this.offset, this.end)
+	}
+
+	/** Replies the character at the current offset without moving this offset.
+	 *
+	 * @return the available byte.
+	 * @see #readByte()
+	 */
+	def readByteAndRollBack : byte {
+		if (this.offset < this.end) {
+			return this.buffer.get(this.offset)
+		}
+		throw new EOFException
+	}
+
+	/** Read a single byte from the current offset.
+	 * The offset is incremented by 1.
+	 *
+	 * @return the read byte.
+	 * @see #readAndRollBack()
+	 */
+	def readByte : byte {
+		if (this.offset < this.end) {
+			val b = this.buffer.get(this.offset)
+			this.offset ++
+			return b
+		}
+		throw new EOFException
+	}
+
+	/** Read a sequence of bytes from the current offset.
+	 * The offset is incremented by the given number of bytes.
+	 *
+	 * @param nbBytes is the number of bytes.
+	 * @return the byte sequence.
+	 */
+	def readBytes(nbBytes : int) : byte[] {
+		val startIdx = this.offset
+		var endIdx = startIdx + nbBytes
+		if (endIdx > this.end) {
+			throw new EOFException
+		}
+		this.offset = endIdx
+		return Arrays::copyOfRange(this.buffer, startIdx, endIdx)
+	}
+
+	/** Read a string of characters according to the FIP standards and from the current offset.
+	 * The offset is incremented based on the size of the string that is read.
+	 *
+	 * @return the read data.
+	 */
+	def readString : String {
+		val type = readByte
+		return readString0(type)
+	}
+
+	private def readString0(type : byte) : String {
+		if (type === BinaryWord::WORD_BEGIN.binaryCode || type == BinaryString::STRING_BEGIN.binaryCode) {
+			val until = if (type === BinaryWord::WORD_BEGIN.binaryCode)
+					BinaryWord::WORD_END.binaryCode
+				else
+					BinaryString::STRING_END.binaryCode
+			val bytesRead = readBytesUntil(until)
+			return new String(bytesRead)
+		}
+
+		if (type === BinaryString::LEN8_BYTE_SEQ_BEGIN.binaryCode ||
+			type === BinaryString.LEN16_BYTE_SEQ_BEGIN.binaryCode ||
+			type === BinaryString.LEN32_BYTE_SEQ_BEGIN.binaryCode) {
+			val length = readBLEHeader(type)
+			val bytesRead = readBytes(length)
+			val b = new StringBuilder
+			b.append("#")
+			b.append(length)
+			b.append("\"");
+			b.append(new String(bytesRead))
+		}
+
+		return ""
+	}
+
+	private def readBytesUntil(until : byte) : byte[] {
+		val startIdx = this.offset
+		var endIdx = startIdx
+		while ((endIdx < this.buffer.length) && (this.buffer.get(endIdx) !== until)) {
+			endIdx++
+		}
+		this.offset = endIdx + 1
+		return Arrays::copyOfRange(buffer, startIdx, endIdx)
+	}
+
+	private def readBLEHeader(type : byte) : int {
+		var length = 0
+		if (type === BinaryString::LEN8_BYTE_SEQ_BEGIN.binaryCode) {
+			length = readByte
+		} else if (type === BinaryString::LEN16_BYTE_SEQ_BEGIN.binaryCode) {
+			val b0 = readByte
+			val b1 = readByte
+			length = ((b0.bitwiseAnd(0xFF)) << 8) + (b1.bitwiseAnd(0xFF))
+		} else if (type === BinaryString::LEN32_BYTE_SEQ_BEGIN.binaryCode) {
+			val b0 = readByte
+			val b1 = readByte
+			val b2 = readByte
+			val b3 = readByte
+			length = ((b0.bitwiseAnd(0xFF)) << 24) + ((b1.bitwiseAnd(0xFF)) << 16) + ((b2.bitwiseAnd(0xFF)) << 8) +
+				(b3.bitwiseAnd(0xFF))
+		} else {
+			throw new IllegalArgumentException("Unexpected type of string of characters: 0x" + Integer::toHexString(type))
+		}
+		return length
+	}
+
+	/** Read short value depending on the {@link #isBigEndian() Endian configuration} from the current
+	 * offset. The offset is incremented by 2.
+	 *
+	 * @return the short value.
+	 * @see ByteOrder
+	 */
+	def readShort : short {
+		val b0 = readByte
+		val b1 = readByte
+		if (this.isBigEndian) {
+			return EndianNumbers::toBEShort(b0, b1)
+		}
+		return EndianNumbers::toLEShort(b0, b1)
+	}
+
+	/** Read int value depending on the {@link #isBigEndian() Endian configuration} from the current
+	 * offset. The offset is incremented by 4.
+	 *
+	 * @return the int value.
+	 * @see ByteOrder
+	 */
+	def readInt : int {
+		val b0 = readByte
+		val b1 = readByte
+		val b2 = readByte
+		val b3 = readByte
+		if (this.isBigEndian) {
+			return EndianNumbers::toBEInt(b0, b1, b2, b3)
+		}
+		return EndianNumbers::toLEInt(b0, b1, b2, b3)
+	}
+
+	/** Write a single byte at the end of the buffer.
+	 * The offset is not changed. The end offset is incremented by 1.
+	 *
+	 * @param vlaue the read byte.
+	 */
+	def writeByte(value : byte) : void {
+		if (this.end < this.buffer.length) {
+			this.buffer.set(this.end, value)
+			this.end ++
+		} else {
+			throw new EOFException
+		}
+	}
+
+	/** Write the given array of bytes at the end of the buffer.
+	 * The offset is not changed. The end offset is incremented by the length of the given array.
+	 *
+	 * @param value the bytes.
+	 */
+	def write(value : byte[]) : void {
+		if (value !== null) {
+			val len = value.length
+			if (len > 0) {
+				val endIndex = this.end + len
+				if (endIndex <= this.buffer.length) {
+					System::arraycopy(value, 0, this.buffer, this.end, len)
+					this.end += len
+				} else {
+					throw new EOFException
+				}
+			}
+		}
+	}
+
+	/** Write short value depending on the {@link #isBigEndian() Endian configuration} at the end of the buffer.
+	 * The offset is not changed. The end offset is incremented 2.
+	 *
+	 * @param value the short value.
+	 * @see ByteOrder
+	 */
+	def writeShort(value : short) : void {
+		val array = if (this.isBigEndian) {
+			EndianNumbers::parseBEShort(value)
+		} else {
+			EndianNumbers::parseLEShort(value)
+		}
+		writeByte(array.get(0))
+		writeByte(array.get(1))
+	}
+
+	/** Write int value depending on the {@link #isBigEndian() Endian configuration} at the end of the buffer.
+	 * The offset is not changed. The end offset is incremented 4.
+	 *
+	 * @param value the int value.
+	 * @see ByteOrder
+	 */
+	def writeInt(value : int) : void {
+		val array = if (this.isBigEndian) {
+			EndianNumbers::parseBEInt(value)
+		} else {
+			EndianNumbers::parseLEInt(value)
+		}
+		writeByte(array.get(0))
+		writeByte(array.get(1))
+		writeByte(array.get(2))
+		writeByte(array.get(3))
+	}
+
+}

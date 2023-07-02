@@ -1,0 +1,272 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.configs
+
+import com.google.inject.AbstractModule
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfig
+import io.bootique.annotation.BQConfigProperty
+import java.util.Collections
+import java.util.Map
+import java.util.concurrent.TimeUnit
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.sre.extensions.simulation.configs.TimeConfig.*
+import com.google.inject.Module
+import java.lang.reflect.Type
+
+/** 
+ * Configuration of the simulated time.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+@BQConfig("Configuration of the simulation's time manager")
+class TimeConfig {
+
+	/** 
+	 * Prefix for the configuration entries of the time configurations.
+	 */
+	public static val PREFIX : String = SimulationConfig::PREFIX + ".time"; // $NON-NLS-1$
+
+	/** 
+	 * Name of the property that contains the time step duration.
+	 * 
+	 * @see #TIME_STEP_VALUE
+	 */
+	public static val TIME_STEP_NAME = PREFIX + ".timeStep"
+
+	/**
+	 * The default time step.
+	 * 
+	 * @see #TIME_STEP_NAME
+	 */
+	public static val TIME_STEP_VALUE = 1.0
+
+	/** 
+	 * Name of the property that contains the first time within the simulation.
+	 * 
+	 * @see #START_TIME_VALUE
+	 */
+	public static val START_TIME_NAME = PREFIX + ".startTime"
+
+	/** 
+	 * The default start time.
+	 * 
+	 * @see #START_TIME_NAME
+	 */
+	public static val START_TIME_VALUE = 0.0
+
+	/** 
+	 * Name of the property that contains the last time before stopping the simulation.
+	 * 
+	 * @see #END_TIME_VALUE
+	 */
+	public static val END_TIME_NAME = PREFIX + ".endTime"
+
+	/** 
+	 * The default end time, i.e. that enables to never stop the simulator based on time.
+	 * 
+	 * @see #END_TIME_NAME
+	 */
+	public static val END_TIME_VALUE = Double::POSITIVE_INFINITY
+
+	/** 
+	 * Name of the property that contains the delay in milliseconds to apply to the simulation at the end
+	 * of each simulation loop's step.
+	 * 
+	 * @see #SIMULATION_LOOP_STEP_DELAY_VALUE
+	 */
+	public static val SIMULATION_LOOP_STEP_DELAY_NAME = PREFIX + ".simulationLoopDelay"
+
+	/** 
+	 * The default delay in milliseconds to apply at the end of each simulation loop's step.
+	 * 
+	 * @see #SIMULATION_LOOP_STEP_DELAY_NAME
+	 */
+	public static val SIMULATION_LOOP_STEP_DELAY_VALUE = 0l
+
+	/** 
+	 * Name of the property that contains the time unit to be used within the simulation.
+	 * 
+	 * @see #TIME_UNIT_VALUE
+	 */
+	public static val TIME_UNIT_NAME = PREFIX + ".unit"
+
+	/** 
+	 * The default time unit to be used within the simulation.
+	 * 
+	 * @see #TIME_UNIT_NAME
+	 */
+	public static val TIME_UNIT_VALUE = TimeUnit::SECONDS
+
+	/** 
+	 * Name of the property that indicates if the time progression should be displayed within the logs.
+	 * 
+	 * @see #TIME_PROGRESSION_IN_LOGS_VALUE
+	 */
+	public static val TIME_PROGRESSION_IN_LOGS_NAME = PREFIX + ".timeProgressionInLogs"
+
+	/** 
+	 * The default value indicating that the time progression should be displayed within the logs.
+	 * 
+	 * @see #TIME_PROGRESSION_IN_LOGS_NAME
+	 */
+	public static val TIME_PROGRESSION_IN_LOGS_VALUE = true
+
+
+	@Accessors(PUBLIC_GETTER)
+	var timeStep : double = TIME_STEP_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var startTime : double = START_TIME_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var endTime : double = END_TIME_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var simulationLoopDelay : long = SIMULATION_LOOP_STEP_DELAY_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var unit : TimeUnit = TIME_UNIT_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var timeProgressionInLogs : boolean = TIME_PROGRESSION_IN_LOGS_VALUE
+
+
+	/** Change the value of the first simulation time.
+	 *
+	 * @param startTime the start time.
+	 */
+	@BQConfigProperty("first time during the simulation")
+	def setStartTime(startTime : double) {
+		this.startTime = startTime
+	}
+
+	/** Change the value of the last simulation time before stopping the simulator.
+	 * 
+	 * @param endTime the end time.
+	 */
+	@BQConfigProperty("last time before stopping the simulation")
+	def setEndTime(endTime : double) {
+		this.endTime = endTime
+	}
+
+	/** 
+	 * Change the time step.
+	 * 
+	 * @param timeStep the new time step.
+	 */
+	@BQConfigProperty("duration of a simulation step")
+	def setTimeStep(timeStep : double) : void {
+		val minStep = Math::ulp(TIME_STEP_VALUE)
+		if (timeStep < minStep) {
+			this.timeStep = minStep
+		} else {
+			this.timeStep = timeStep
+		}
+	}
+
+	/** 
+	 * Change the delay in milliseconds to apply at the end of each simulation loop's step.
+	 * 
+	 * @param delay the delay in milliseconds.
+	 */
+	@BQConfigProperty("duration for delaying the simulator execution at the end of each simulation step")
+	def setSimulationLoopDelay(delay : long) : void {
+		if (delay < 0) {
+			this.simulationLoopDelay = 0l
+		} else {
+			this.simulationLoopDelay = delay
+		}
+	}
+
+	/** 
+	 * Change the time unit to be used within the simulation.
+	 * 
+	 * @param unit the new time unit.
+	 */
+	@BQConfigProperty("time unit of all the time attributes within this time manager")
+	def setUnit(unit : TimeUnit) : void {
+		if (unit === null) {
+			this.unit = TIME_UNIT_VALUE
+		} else {
+			this.unit = unit
+		}
+	}
+
+	/** 
+	 * Change the flag that enables or disables to show the time progression in the logs.
+	 * 
+	 * @param unit the new time unit.
+	 */
+	@BQConfigProperty("boolean flag that enables to show the time progression in logs")
+	def setTimeProgressionInLogs(flag : boolean) : void {
+		this.timeProgressionInLogs = flag
+	}
+
+}
+
+/** 
+ * Module for creating and configuring the time simulation configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class TimeConfigModule extends AbstractModule {
+
+	override configure : void {
+		//
+	}
+
+}
+
+/** Provider of the module for creating and configuring the time simulation configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class TimeConfigModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new TimeConfigModule
+	}
+
+	override configs : Map<String, Type> {
+		return Collections::singletonMap(PREFIX, typeof(TimeConfig))
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::TimeConfigModuleProvider_0);
+	}
+
+}

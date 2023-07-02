@@ -1,0 +1,66 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.engine.services.logging
+
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.extensions.simulation.configs.SimulationConfig
+import io.sarl.sre.services.logging.jul.JulLoggerCreator
+import io.sarl.sre.services.time.TimeService
+import java.util.logging.Formatter
+import java.util.logging.Level
+import javax.inject.Provider
+
+/** 
+ * Helper for creating a JUL logger for the simulation framework.
+ * The loggers uses a specific message with the simulation time stamp.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class SimulationJulLoggerCreator extends JulLoggerCreator {
+
+	val timeProvider : Provider<TimeService>
+
+	val simulationConfigProvider : Provider<SimulationConfig>
+
+	/** Build a logger creator.
+	 * 
+	 * @param defaultLevel the logging level for new loggers.
+	 * @param timeProvider the provider of simulation time.
+	 * @param configProvider the provider of SRE configuration.
+	 * @param simulationConfigProvider the provider of simulation configuration.
+	 */
+	new (defaultLevel : Level,
+		timeProvider : Provider<TimeService>,
+		configProvider : Provider<SreConfig>,
+		simulationConfigProvider : Provider<SimulationConfig>) {
+		super(defaultLevel, configProvider)
+		this.timeProvider = timeProvider
+		this.simulationConfigProvider = simulationConfigProvider
+	}
+	
+	protected override createPlatformFormatter : Formatter {
+		new SimulationFormatter(this.timeProvider, this.simulationConfigProvider.get.logMessageFormat)
+	}
+
+}

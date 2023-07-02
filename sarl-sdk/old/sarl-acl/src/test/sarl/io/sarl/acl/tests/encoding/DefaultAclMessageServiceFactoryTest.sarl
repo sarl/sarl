@@ -1,0 +1,116 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding
+
+import io.sarl.acl.encoding.DefaultAclMessageServiceFactory
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("DefaultAclMessageServiceFactory")
+class DefaultAclMessageServiceFactoryTest {
+
+	var factory : DefaultAclMessageServiceFactory
+
+	@BeforeEach
+	def setUp : void {
+		this.factory = new DefaultAclMessageServiceFactory
+	}
+
+	@Test
+	@DisplayName("newContentEncodingService(BIT_EFFICIENT)")
+    def newContentEncodingService_BitEfficient : void {
+    	val service = this.factory.newContentEncodingService(AclRepresentation::BIT_EFFICIENT)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newContentEncodingService(STRING)")
+	@SuppressWarnings("unused_local_variable")
+    def newContentEncodingService_String {
+    	val service = this.factory.newContentEncodingService(AclRepresentation::STRING)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newContentEncodingService(JSON)")
+	@SuppressWarnings("unused_local_variable")
+    def newContentEncodingService_Json {
+    	val service = this.factory.newContentEncodingService(AclRepresentation::JSON)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newContentEncodingService(XML)")
+	@SuppressWarnings("unused_local_variable")
+    def newContentEncodingService_Xml {
+    	val service = this.factory.newContentEncodingService(AclRepresentation::XML)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newEnvelopeEncodingService(BIT_EFFICIENT)")
+    def newEnvelopeEncodingService_BitEfficient {
+    	val service = this.factory.newEnvelopeEncodingService(AclRepresentation::BIT_EFFICIENT)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newEnvelopeEncodingService(STRING)")
+	@SuppressWarnings("unused_local_variable")
+    def newEnvelopeEncodingService_String {
+    	val service = this.factory.newEnvelopeEncodingService(AclRepresentation::STRING)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newEnvelopeEncodingService(JSON)")
+	@SuppressWarnings("unused_local_variable")
+    def newEnvelopeEncodingService_Json {
+    	val service = this.factory.newEnvelopeEncodingService(AclRepresentation::JSON)
+    	service.assertNotNull
+	}
+
+	@Test
+	@DisplayName("newEnvelopeEncodingService(XML)")
+	@SuppressWarnings("unused_local_variable")
+    def newEnvelopeEncodingService_Xml {
+    	val service = this.factory.newEnvelopeEncodingService(AclRepresentation::XML)
+    	service.assertNotNull
+	}
+
+}

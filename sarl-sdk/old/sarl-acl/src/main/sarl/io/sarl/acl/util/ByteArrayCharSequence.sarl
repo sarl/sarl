@@ -1,0 +1,89 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.util
+
+/** 
+ * A view on a byte array that behaves as a char sequence.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ByteArrayCharSequence implements CharSequence {
+
+	val buffer : byte[]
+
+	val offset : int
+
+	val end : int
+
+	static var charSize : int = -1
+
+	/** Replies the number of bytes per character. */
+	static def getCharSizeInBytes : int {
+		if (charSize <= 0) {
+	        val b = new String('A')
+	        charSize = b.bytes.length
+		}
+		return charSize
+    }
+
+	/** Constructor.
+	 *
+	 * @param buffer the byte array.
+	 * @param offset the index (inclusive) of the first byte to consider in the char sequence.
+	 * @param end the index (exclusive) of the first byte to be outside the char sequence.  
+	 */
+	new(buffer : byte[], offset : int, end : int) {
+		this.buffer = buffer
+		this.offset = if (offset < 0) 0 else {if (offset >= buffer.length) buffer.length else offset}
+		this.end = if (offset >= buffer.length) buffer.length else end
+	}
+
+	override charAt(index : int) : char {
+		val l = getCharSizeInBytes
+		val s = new String(this.buffer, this.offset + l * index, 1)
+		return s.charAt(0)
+	}
+
+	override length : int {
+		val byteLength = this.end - this.offset
+		return byteLength / charSizeInBytes
+	}
+				
+	override subSequence(start : int, end : int) : CharSequence {
+		val l = getCharSizeInBytes
+		val s = this.offset + l * start
+		var e = this.offset + l * end
+		if (e >= this.end) {
+			e = this.end
+		}
+		return new ByteArrayCharSequence(this.buffer, s, e)
+	}
+
+	override toString : String {
+		new String(this.buffer, this.offset, this.end - this.offset)
+	}
+	
+}

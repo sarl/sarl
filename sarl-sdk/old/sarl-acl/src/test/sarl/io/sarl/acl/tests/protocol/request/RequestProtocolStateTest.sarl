@@ -1,0 +1,145 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.protocol.request
+
+import io.sarl.acl.protocol.request.RequestProtocolState
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+
+import static extension org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("RequestProtocolState")
+class RequestProtocolStateTest {
+
+	var items = <RequestProtocolState>newArrayList
+
+	def reg(item : RequestProtocolState) : RequestProtocolState {
+		this.items.remove(item).assertTrue
+		return item
+	}
+
+	def assertConsumed : void {
+		this.items.empty.assertTrue
+	}
+
+	@BeforeEach
+	def setUp : void {
+		items.addAll(RequestProtocolState.values)
+	}
+
+	@ParameterizedTest
+	@EnumSource(typeof(RequestProtocolState))
+	def getName(id : RequestProtocolState) : void {
+		id.name().assertSame(id.getName)
+	}
+
+	@Test
+	def isBrokenProtocol : void {
+		RequestProtocolState::NOT_STARTED.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::CANCELED.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::BROKEN_PROTOCOL.reg.isBrokenProtocol.assertTrue
+		RequestProtocolState::WAITING_PARTICIPANT_DECISION.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::PARTICIPANT_REFUSED.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::PARTICIPANT_AGREED.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::PARTICIPANT_PROCEED.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::PARTICIPANT_FAILURE.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::DONE_WITHOUT_RESULT.reg.isBrokenProtocol.assertFalse
+		RequestProtocolState::DONE_WITH_RESULT.reg.isBrokenProtocol.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isCancelled : void {
+		RequestProtocolState::NOT_STARTED.reg.isCancelled.assertFalse
+		RequestProtocolState::CANCELED.reg.isCancelled.assertTrue
+		RequestProtocolState::BROKEN_PROTOCOL.reg.isCancelled.assertFalse
+		RequestProtocolState::WAITING_PARTICIPANT_DECISION.reg.isCancelled.assertFalse
+		RequestProtocolState::PARTICIPANT_REFUSED.reg.isCancelled.assertFalse
+		RequestProtocolState::PARTICIPANT_AGREED.reg.isCancelled.assertFalse
+		RequestProtocolState::PARTICIPANT_PROCEED.reg.isCancelled.assertFalse
+		RequestProtocolState::PARTICIPANT_FAILURE.reg.isCancelled.assertFalse
+		RequestProtocolState::DONE_WITHOUT_RESULT.reg.isCancelled.assertFalse
+		RequestProtocolState::DONE_WITH_RESULT.reg.isCancelled.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isErrorneous : void {
+		RequestProtocolState::NOT_STARTED.reg.isErrorneous.assertFalse
+		RequestProtocolState::CANCELED.reg.isErrorneous.assertFalse
+		RequestProtocolState::BROKEN_PROTOCOL.reg.isErrorneous.assertTrue
+		RequestProtocolState::WAITING_PARTICIPANT_DECISION.reg.isErrorneous.assertFalse
+		RequestProtocolState::PARTICIPANT_REFUSED.reg.isErrorneous.assertFalse
+		RequestProtocolState::PARTICIPANT_AGREED.reg.isErrorneous.assertFalse
+		RequestProtocolState::PARTICIPANT_PROCEED.reg.isErrorneous.assertFalse
+		RequestProtocolState::PARTICIPANT_FAILURE.reg.isErrorneous.assertTrue
+		RequestProtocolState::DONE_WITHOUT_RESULT.reg.isErrorneous.assertFalse
+		RequestProtocolState::DONE_WITH_RESULT.reg.isErrorneous.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isFinished : void {
+		RequestProtocolState::NOT_STARTED.reg.isFinished.assertFalse
+		RequestProtocolState::CANCELED.reg.isFinished.assertTrue
+		RequestProtocolState::BROKEN_PROTOCOL.reg.isFinished.assertTrue
+		RequestProtocolState::WAITING_PARTICIPANT_DECISION.reg.isFinished.assertFalse
+		RequestProtocolState::PARTICIPANT_REFUSED.reg.isFinished.assertTrue
+		RequestProtocolState::PARTICIPANT_AGREED.reg.isFinished.assertFalse
+		RequestProtocolState::PARTICIPANT_PROCEED.reg.isFinished.assertFalse
+		RequestProtocolState::PARTICIPANT_FAILURE.reg.isFinished.assertTrue
+		RequestProtocolState::DONE_WITHOUT_RESULT.reg.isFinished.assertTrue
+		RequestProtocolState::DONE_WITH_RESULT.reg.isFinished.assertTrue
+		assertConsumed
+	}
+
+	@Test
+	def isStarted : void {
+		RequestProtocolState::NOT_STARTED.reg.isStarted.assertFalse
+		RequestProtocolState::CANCELED.reg.isStarted.assertTrue
+		RequestProtocolState::BROKEN_PROTOCOL.reg.isStarted.assertTrue
+		RequestProtocolState::WAITING_PARTICIPANT_DECISION.reg.isStarted.assertTrue
+		RequestProtocolState::PARTICIPANT_REFUSED.reg.isStarted.assertTrue
+		RequestProtocolState::PARTICIPANT_AGREED.reg.isStarted.assertTrue
+		RequestProtocolState::PARTICIPANT_PROCEED.reg.isStarted.assertTrue
+		RequestProtocolState::PARTICIPANT_FAILURE.reg.isStarted.assertTrue
+		RequestProtocolState::DONE_WITHOUT_RESULT.reg.isStarted.assertTrue
+		RequestProtocolState::DONE_WITH_RESULT.reg.isStarted.assertTrue
+		assertConsumed
+	}
+
+}

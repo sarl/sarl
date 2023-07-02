@@ -1,0 +1,354 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient
+
+import io.sarl.acl.encoding.bitefficient.constant.AgentIdentifier
+import io.sarl.acl.encoding.bitefficient.constant.BinaryDateTimeToken
+import io.sarl.acl.encoding.bitefficient.constant.BinaryString
+import io.sarl.acl.encoding.bitefficient.constant.BinaryWord
+import io.sarl.acl.encoding.bitefficient.constant.EndOfCollection
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageParameter
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageType
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.ByteArrayBuffer
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Calendar
+import java.util.TimeZone
+import java.util.UUID
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.acl.encoding.bitefficient.BitEfficientAclCodecUtil.*
+import static extension io.sarl.acl.tests.TestUtil.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BitEfficientAclCodecUtil")
+class BitEfficientAclCodecUtilTest {
+
+	private def b(value : String) : byte {
+		value.charAt(0) as byte
+	}
+
+	@Test
+	def decodePerformative : void {
+		val buffer = new ByteArrayBuffer(#[PredefinedMessageType::getBinaryCode(Performative::AGREE)])
+		var performative = buffer.decodePerformative
+		Performative::AGREE.assertSame(performative)
+		1.assertEquals(buffer.offset)
+	}
+
+	@Test
+	def decodeAgent : void {
+		val buffer = new ByteArrayBuffer(#[
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'1'.b, '5'.b, 'b'.b, 'b'.b, '8'.b,
+			'a'.b, '9'.b, '1'.b, '-'.b, 'd'.b,
+			'5'.b, '1'.b, '2'.b, '-'.b, '4'.b,
+			'9'.b, 'e'.b, '9'.b, '-'.b, 'b'.b,
+			'e'.b, '0'.b, 'd'.b, '-'.b, 'c'.b,
+			'0'.b, 'c'.b, 'd'.b, '4'.b, '1'.b,
+			'8'.b, 'b'.b, 'e'.b, '0'.b, '2'.b,
+			'3'.b,
+			BinaryString::STRING_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode
+		])
+		var id = buffer.decodeAgent
+		id.assertNotNull
+		"15bb8a91-d512-49e9-be0d-c0cd418be023".assertEquals(id.toString)
+		40.assertEquals(buffer.offset)
+	}
+
+	@Test
+	def decodeAgents : void {
+		val buffer = new ByteArrayBuffer(#[
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'1'.b, '5'.b, 'b'.b, 'b'.b, '8'.b,
+			'a'.b, '9'.b, '1'.b, '-'.b, 'd'.b,
+			'5'.b, '1'.b, '2'.b, '-'.b, '4'.b,
+			'9'.b, 'e'.b, '9'.b, '-'.b, 'b'.b,
+			'e'.b, '0'.b, 'd'.b, '-'.b, 'c'.b,
+			'0'.b, 'c'.b, 'd'.b, '4'.b, '1'.b,
+			'8'.b, 'b'.b, 'e'.b, '0'.b, '2'.b,
+			'3'.b,
+			BinaryString::STRING_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'0'.b, '4'.b, 'a'.b, 'a'.b, '7'.b,
+			'9'.b, '8'.b, '0'.b, '-'.b, 'd'.b,
+			'5'.b, '1'.b, '2'.b, '-'.b, '4'.b,
+			'9'.b, 'e'.b, '9'.b, '-'.b, 'b'.b,
+			'e'.b, '0'.b, 'd'.b, '-'.b, 'c'.b,
+			'0'.b, 'c'.b, 'd'.b, '4'.b, '1'.b,
+			'8'.b, 'b'.b, 'e'.b, '0'.b, '2'.b,
+			'3'.b,
+			BinaryString::STRING_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			EndOfCollection::END_OF_COLLECTION.binaryCode
+		])
+		var ids = buffer.decodeAgents
+		ids.assertNotNull
+		2.assertEquals(ids.size)
+		"15bb8a91-d512-49e9-be0d-c0cd418be023".assertEquals(ids.get(0).toString)
+		"04aa7980-d512-49e9-be0d-c0cd418be023".assertEquals(ids.get(1).toString)
+		81.assertEquals(buffer.offset)
+	}
+
+	@Test
+	def decodeDate : void {
+		val dateBuffer = Iso8601DateTimeUtil::toByteArray('2021', '03', '28', '19', '10', '58', '682')
+		val b = newByteArrayOfSize(dateBuffer.length + 1)
+		b.set(0, BinaryDateTimeToken::ABS_TIME.binaryCode)
+		System::arraycopy(dateBuffer, 0, b, 1, dateBuffer.length)
+		val buffer = new ByteArrayBuffer(b)
+		var date = buffer.decodeDate
+		val cal = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal.timeInMillis = date.time
+		2021.assertEquals(cal.get(Calendar::YEAR))
+		2.assertEquals(cal.get(Calendar::MONTH))
+		28.assertEquals(cal.get(Calendar::DAY_OF_MONTH))
+		19.assertEquals(cal.get(Calendar::HOUR_OF_DAY))
+		10.assertEquals(cal.get(Calendar::MINUTE))
+		58.assertEquals(cal.get(Calendar::SECOND))
+		682.assertEquals(cal.get(Calendar::MILLISECOND))
+		10.assertEquals(buffer.offset)
+	}
+
+
+	@Test
+	def decodeDateAsString : void {
+		val dateBuffer = Iso8601DateTimeUtil::toByteArray('2021', '03', '28', '19', '10', '58', '682')
+		val b = newByteArrayOfSize(dateBuffer.length + 1)
+		b.set(0, BinaryDateTimeToken::ABS_TIME.binaryCode)
+		System::arraycopy(dateBuffer, 0, b, 1, dateBuffer.length)
+		val buffer = new ByteArrayBuffer(b)
+		var date = buffer.decodeDateAsString
+		"2021-03-28T19:10:58.682Z".assertEquals(date)
+		10.assertEquals(buffer.offset)
+	}
+
+	@Test
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	def decodeParameter : void {
+		val buffer = new ByteArrayBuffer(#[
+			BinaryString::STRING_BEGIN.binaryCode,
+			'a'.b,
+			'b'.b,
+			BinaryString::STRING_END.binaryCode
+		])
+		var param = buffer.decodeParameter
+		"ab".assertEquals(param)
+		4.assertEquals(buffer.offset)
+	}
+
+	@Test
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	def decodeUUID : void {
+		val buffer = new ByteArrayBuffer(#[
+			BinaryString::STRING_BEGIN.binaryCode,
+			'1'.b, '5'.b, 'b'.b, 'b'.b, '8'.b,
+			'a'.b, '9'.b, '1'.b, '-'.b, 'd'.b,
+			'5'.b, '1'.b, '2'.b, '-'.b, '4'.b,
+			'9'.b, 'e'.b, '9'.b, '-'.b, 'b'.b,
+			'e'.b, '0'.b, 'd'.b, '-'.b, 'c'.b,
+			'0'.b, 'c'.b, 'd'.b, '4'.b, '1'.b,
+			'8'.b, 'b'.b, 'e'.b, '0'.b, '2'.b,
+			'3'.b,
+			BinaryString::STRING_END.binaryCode
+		])
+		var id = buffer.decodeUUID
+		id.assertNotNull
+		"15bb8a91-d512-49e9-be0d-c0cd418be023".assertEquals(id.toString)
+		38.assertEquals(buffer.offset)
+	}
+
+	@Test
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	def decodeMessageContent : void {
+		val buffer = new ByteArrayBuffer(#[
+			BinaryString::STRING_BEGIN.binaryCode,
+			'a'.b,
+			'b'.b,
+			BinaryString::STRING_END.binaryCode
+		])
+		var param = buffer.decodeMessageContent
+		"ab".assertEquals(param)
+		4.assertEquals(buffer.offset)
+	}
+
+	@Test
+	def dumpPerformative : void {
+		val actual = newArrayList
+		actual.dumpPerformative(Performative::AGREE)
+		#[
+			PredefinedMessageType::getBinaryCode(Performative::AGREE)
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	def dumpAgent : void {
+		val idstr = "69242794-15d3-4c48-b12f-c3d6dff7f13b"
+		val id = idstr as UUID
+		val actual = newArrayList
+		actual.dumpAgent(id, PredefinedMessageParameter::PARAM_SENDER)
+		#[
+			PredefinedMessageParameter::PARAM_SENDER.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'6'.b, '9'.b, '2'.b, '4'.b, '2'.b, '7'.b, '9'.b, '4'.b,
+			'-'.b, '1'.b, '5'.b, 'd'.b, '3'.b, '-'.b, '4'.b, 'c'.b,
+			'4'.b, '8'.b, '-'.b, 'b'.b, '1'.b, '2'.b, 'f'.b, '-'.b,
+			'c'.b, '3'.b, 'd'.b, '6'.b, 'd'.b, 'f'.b, 'f'.b, '7'.b,
+			'f'.b, '1'.b, '3'.b, 'b'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	def dumpAgents : void {
+		val idstr0 = "69242794-15d3-4c48-b12f-c3d6dff7f13b"
+		val id0 = idstr0 as UUID
+		val idstr1 = "7db7f20c-c8e2-4b22-b3f3-255b0898a03e"
+		val id1 = idstr1 as UUID
+		val actual = newArrayList
+		actual.dumpAgents(#[id0, id1], PredefinedMessageParameter::PARAM_RECEIVER)
+		#[
+			PredefinedMessageParameter::PARAM_RECEIVER.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'6'.b, '9'.b, '2'.b, '4'.b, '2'.b, '7'.b, '9'.b, '4'.b,
+			'-'.b, '1'.b, '5'.b, 'd'.b, '3'.b, '-'.b, '4'.b, 'c'.b,
+			'4'.b, '8'.b, '-'.b, 'b'.b, '1'.b, '2'.b, 'f'.b, '-'.b,
+			'c'.b, '3'.b, 'd'.b, '6'.b, 'd'.b, 'f'.b, 'f'.b, '7'.b,
+			'f'.b, '1'.b, '3'.b, 'b'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'7'.b, 'd'.b, 'b'.b, '7'.b, 'f'.b, '2'.b, '0'.b, 'c'.b,
+			'-'.b, 'c'.b, '8'.b, 'e'.b, '2'.b, '-'.b, '4'.b, 'b'.b,
+			'2'.b, '2'.b, '-'.b, 'b'.b, '3'.b, 'f'.b, '3'.b, '-'.b,
+			'2'.b, '5'.b, '5'.b, 'b'.b, '0'.b, '8'.b, '9'.b, '8'.b,
+			'a'.b, '0'.b, '3'.b, 'e'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			EndOfCollection::END_OF_COLLECTION.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	def dumpReplyBy : void {
+		val date = Iso8601DateTimeUtil::parse("2021-03-28T21:43:47.157Z")
+		val expectedDateBytes = Iso8601DateTimeUtil::toByteArray('2021', '03', '28', '21', '43', '47', '157')
+		val actual = newArrayList
+		actual.dumpReplyBy(date)
+		(#[
+			PredefinedMessageParameter::PARAM_REPLY_BY.binaryCode,
+			BinaryDateTimeToken::ABS_TIME.binaryCode
+		]
+		+ expectedDateBytes).assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	@DisplayName("dumpParameter(word)")
+	def dumpParameter_word : void {
+		val actual = newArrayList
+		actual.dumpParameter(PredefinedMessageParameter::PARAM_LANGUAGE, "abcd")
+		#[
+			PredefinedMessageParameter::PARAM_LANGUAGE.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'a'.b, 'b'.b, 'c'.b, 'd'.b,
+			BinaryWord::WORD_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	@DisplayName("dumpParameter(sentence)")
+	def dumpParameter_sentence : void {
+		val actual = newArrayList
+		actual.dumpParameter(PredefinedMessageParameter::PARAM_LANGUAGE, "abcd efg")
+		#[
+			PredefinedMessageParameter::PARAM_LANGUAGE.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'"'.b, 'a'.b, 'b'.b, 'c'.b, 'd'.b,
+			' '.b, 'e'.b, 'f'.b, 'g'.b, '"'.b,
+			BinaryString::STRING_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	@DisplayName("dumpParameter(\"sentence\")")
+	def dumpParameter_quotesentence : void {
+		val actual = newArrayList
+		actual.dumpParameter(PredefinedMessageParameter::PARAM_LANGUAGE, "\"abcd efg\"")
+		#[
+			PredefinedMessageParameter::PARAM_LANGUAGE.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'"'.b, 'a'.b, 'b'.b, 'c'.b, 'd'.b,
+			' '.b, 'e'.b, 'f'.b, 'g'.b, '"'.b,
+			BinaryString::STRING_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	def dumpWordParameter : void {
+		val actual = newArrayList
+		actual.dumpWordParameter(PredefinedMessageParameter::PARAM_LANGUAGE, "abcd")
+		#[
+			PredefinedMessageParameter::PARAM_LANGUAGE.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'a'.b, 'b'.b, 'c'.b, 'd'.b,
+			BinaryWord::WORD_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+	@Test
+	def dumpMessageContent : void {
+		val actual = newArrayList
+		actual.dumpMessageContent("ab cd ef")
+		#[
+			PredefinedMessageParameter::PARAM_CONTENT.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'a'.b, 'b'.b, ' '.b, 'c'.b, 'd'.b,
+			' '.b, 'e'.b, 'f'.b,
+			BinaryString::STRING_END.binaryCode
+		].assertArrayEquals(actual.toByteArray)
+	}
+
+}

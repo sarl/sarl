@@ -1,0 +1,152 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding
+
+import io.sarl.acl.encoding.AclMessageContentEncodingService
+import io.sarl.acl.encoding.AclMessageEnvelopeEncodingService
+import io.sarl.acl.encoding.DefaultAclEncoding
+import io.sarl.acl.encoding.string.StringEnvelopeCodec
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.tests.api.tools.TestUtils.*
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.Mockito.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("DefaultAclEncoding")
+class DefaultAclEncodingTest {
+
+	var ^skill : DefaultAclEncoding
+
+	@BeforeEach
+	def setUp : void {
+		this.^skill = new DefaultAclEncoding()
+		this.^skill.envelopeEncodingService = new StringEnvelopeCodec
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createContent : AclMessage {
+		val msg = new AclMessage(Performative::CANCEL, "MyContent(value0=6,value1=3\"4)")
+		msg.aclRepresentation = AclRepresentation::STRING
+		msg.sender = "ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID
+		msg.receivers = #[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID, "331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ]
+		msg.ontology = "ont"
+		msg.protocol = "prot"
+		val date = Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z")
+		msg.content.replyBy = date
+		msg.conversationId = "8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID
+		//
+		val envelope = msg.envelope
+		envelope.aclRepresentation = AclRepresentation::STRING.fipaName
+		envelope.from = "ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID
+		envelope.to = #[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID, "331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ]
+		envelope.date = Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z")
+		//
+		return msg
+	}
+
+	private def createBuffer : String {
+		val header = new String(#[1 as byte, 1 as byte] as byte[])
+		return header + multilineString(
+		"(fipa.acl.rep.string.std",
+		":from (agent-identifier :name ed490df2-5c35-4084-8e50-15836dad7b4f)",
+		":to (agent-identifier :name 31dcff23-3a66-42ac-8e69-3ac7aae07bc0)",
+		":to (agent-identifier :name 331e6267-7330-4e76-88f6-1783f7160fc7)",
+		":date 2021-03-28T23:06:48.487Z",
+		")(cancel",
+		":sender (agent-identifier :name ed490df2-5c35-4084-8e50-15836dad7b4f)",
+		":receiver (set (agent-identifier :name 31dcff23-3a66-42ac-8e69-3ac7aae07bc0) (agent-identifier :name 331e6267-7330-4e76-88f6-1783f7160fc7))",
+		":reply-by 2021-03-28T23:06:48.487Z",
+		":content \"MyContent(value0=6,value1=3\\\"4)\"",
+		":ontology ont",
+		":protocol prot",
+		":conversation-id 8dd879d5-7e15-42e9-ab00-ce8b5e680dc9",
+		")")
+	}
+
+	@Test
+	@DisplayName("encode(AclMessage)")
+	def encode : void {
+		val actual = this.^skill.encode(createContent)
+		createBuffer.assertEquals(new String(actual))
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	@DisplayName("decode(byte[])")
+	def decodeByteArray : void {
+		val actual = this.^skill.decode(createBuffer.bytes)
+		Performative::CANCEL.assertSame(actual.performative)
+		("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(actual.sender)
+		#[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID,
+		"331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ].assertArrayEquals(actual.receivers)
+		"ont".assertEquals(actual.ontology)
+		"prot".assertEquals(actual.protocol)
+		("8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID).assertEquals(actual.conversationId)
+		"MyContent(value0=6,value1=3\"4)".assertEquals(actual.content.content)
+	}
+
+	@Test
+	def getContentEncodingService : void {
+		// Because the services are created when the first message is encoded/decoded
+		this.^skill.contentEncodingService.assertNull
+	}
+
+	@Test
+	def setContentEncodingService : void {
+		val expected = typeof(AclMessageContentEncodingService).mock
+		this.^skill.contentEncodingService = expected
+		expected.assertSame(this.^skill.contentEncodingService)
+	}
+
+	@Test
+	def getEnvelopeEncodingService : void {
+		this.^skill.envelopeEncodingService.assertNotNull
+	}
+
+	@Test
+	def setEnvelopeEncodingService : void {
+		val expected = typeof(AclMessageEnvelopeEncodingService).mock
+		this.^skill.envelopeEncodingService = expected
+		expected.assertSame(this.^skill.envelopeEncodingService)
+	}
+
+}

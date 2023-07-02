@@ -1,0 +1,74 @@
+/* 
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ * 
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ * Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.engine.skills
+
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.Address
+import io.sarl.sre.extensions.simulation.agentenvironment.events.AgentBodyDestructionInfluence
+import io.sarl.sre.extensions.simulation.agentenvironment.events.Influence
+import java.util.UUID
+
+/** 
+ * Abstract implementation of the skill for interacting with the physic environment.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+abstract skill AbstractPhysicEnvironment implements PhysicEnvironment {
+
+	uses DefaultContextInteractions, Behaviors
+
+	val spaceID : UUID
+	val environmentID : UUID
+	var physicSpace : OpenEventSpace
+	var myAdr : Address
+
+	new (spaceID : UUID, environmentID : UUID) {
+		this.environmentID = environmentID
+		this.spaceID = spaceID
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_reference")
+	def install {
+		do {
+			this.physicSpace = defaultContext.getSpace(this.spaceID)
+			Thread::yield
+		} while (this.physicSpace === null)
+		this.physicSpace.registerStrongParticipant(asEventListener)
+		this.myAdr = this.physicSpace.getAddress(owner.ID)
+	}
+
+	synchronized def uninstall() {
+		var ^event = new AgentBodyDestructionInfluence
+		this.physicSpace.emit(this.myAdr.UUID, ^event)[it.UUID == this.environmentID]
+		this.physicSpace = null
+	}
+
+	protected synchronized def emitInfluences(motionInfluence : Influence) {
+		if (this.physicSpace !== null && this.myAdr !== null) {
+			this.physicSpace.emit(this.myAdr.UUID, motionInfluence)[it.UUID == this.environmentID]
+		}
+	}
+	
+}

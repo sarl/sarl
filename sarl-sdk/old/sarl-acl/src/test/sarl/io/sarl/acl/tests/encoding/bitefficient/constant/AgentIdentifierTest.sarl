@@ -1,0 +1,114 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, AgentIdentifier 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.AgentIdentifier
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("AgentIdentifier")
+class AgentIdentifierTest {
+
+	var constants : Set<AgentIdentifier>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(AgentIdentifier::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : AgentIdentifier) : AgentIdentifier {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0x02 as byte).assertEquals(AgentIdentifier::AGENT_NAME_BEGIN.consume.binaryCode)
+		(0x00 as byte).assertEquals(AgentIdentifier::AGENT_NAME_END.consume.binaryCode)
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"agent_name_begin".assertEquals(AgentIdentifier::AGENT_NAME_BEGIN.consume.toJsonString)
+		"agent_name_end".assertEquals(AgentIdentifier::AGENT_NAME_END.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		AgentIdentifier::AGENT_NAME_BEGIN.consume.assertSame(AgentIdentifier::valueOfCaseInsensitive("agent_name_begin"))
+		AgentIdentifier::AGENT_NAME_BEGIN.assertSame(AgentIdentifier::valueOfCaseInsensitive("Agent_name_begin"))
+
+		AgentIdentifier::AGENT_NAME_END.consume.assertSame(AgentIdentifier::valueOfCaseInsensitive("agent_name_end"))
+		AgentIdentifier::AGENT_NAME_END.assertSame(AgentIdentifier::valueOfCaseInsensitive("Agent_name_end"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = AgentIdentifier::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = AgentIdentifier::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = AgentIdentifier::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		"agent_name_begin, agent_name_end".assertEquals(AgentIdentifier::jsonLabels)
+	}
+
+}

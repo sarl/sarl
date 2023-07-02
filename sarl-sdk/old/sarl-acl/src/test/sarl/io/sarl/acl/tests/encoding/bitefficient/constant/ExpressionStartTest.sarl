@@ -1,0 +1,171 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, ExpressionStart 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.ExpressionStart
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("ExpressionStart")
+class ExpressionStartTest {
+
+	var constants : Set<ExpressionStart>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(ExpressionStart::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : ExpressionStart) : ExpressionStart {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		(0x60 as byte).assertEquals(ExpressionStart::LEVEL_DOWN.consume.binaryCode)
+		(0x70 as byte).assertEquals(ExpressionStart::WORD_BEGIN.consume.binaryCode)
+		(0x00 as byte).assertEquals(ExpressionStart::WORD_END.consume.binaryCode)
+		(0x71 as byte).assertEquals(ExpressionStart::INDEX_WORD_CODE_BEGIN.consume.binaryCode)
+		(0x72 as byte).assertEquals(ExpressionStart::NUMBER_BEGIN.consume.binaryCode)
+		(0x73 as byte).assertEquals(ExpressionStart::HEXA_NUMBER_BEGIN.consume.binaryCode)
+		(0x74 as byte).assertEquals(ExpressionStart::STRING_BEGIN.consume.binaryCode)
+		(0x00 as byte).assertEquals(ExpressionStart::STRING_END.consume.binaryCode)
+		(0x75 as byte).assertEquals(ExpressionStart::INDEX_STRING_BEGIN.consume.binaryCode)
+		(0x76 as byte).assertEquals(ExpressionStart::LEN8_STRING_BEGIN.consume.binaryCode)
+		(0x77 as byte).assertEquals(ExpressionStart::LEN16_STRING_BEGIN.consume.binaryCode)
+		(0x78 as byte).assertEquals(ExpressionStart::LEN32_STRING_BEGIN.consume.binaryCode)
+		(0x79 as byte).assertEquals(ExpressionStart::INDEX_BYTE_STRING_BEGIN.consume.binaryCode)
+	
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"level_down".assertEquals(ExpressionStart::LEVEL_DOWN.consume.toJsonString)
+		"word_begin".assertEquals(ExpressionStart::WORD_BEGIN.consume.toJsonString)
+		"word_end".assertEquals(ExpressionStart::WORD_END.consume.toJsonString)
+		"index_word_code_begin".assertEquals(ExpressionStart::INDEX_WORD_CODE_BEGIN.consume.toJsonString)
+		"number_begin".assertEquals(ExpressionStart::NUMBER_BEGIN.consume.toJsonString)
+		"hexa_number_begin".assertEquals(ExpressionStart::HEXA_NUMBER_BEGIN.consume.toJsonString)
+		"string_begin".assertEquals(ExpressionStart::STRING_BEGIN.consume.toJsonString)
+		"string_end".assertEquals(ExpressionStart::STRING_END.consume.toJsonString)
+		"index_string_begin".assertEquals(ExpressionStart::INDEX_STRING_BEGIN.consume.toJsonString)
+		"len8_string_begin".assertEquals(ExpressionStart::LEN8_STRING_BEGIN.consume.toJsonString)
+		"len16_string_begin".assertEquals(ExpressionStart::LEN16_STRING_BEGIN.consume.toJsonString)
+		"len32_string_begin".assertEquals(ExpressionStart::LEN32_STRING_BEGIN.consume.toJsonString)
+		"index_byte_string_begin".assertEquals(ExpressionStart::INDEX_BYTE_STRING_BEGIN.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		ExpressionStart::LEVEL_DOWN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("level_down"))
+		ExpressionStart::LEVEL_DOWN.assertSame(ExpressionStart::valueOfCaseInsensitive("Level_Down"))
+
+		ExpressionStart::WORD_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("word_begin"))
+		ExpressionStart::WORD_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Word_Begin"))
+
+		ExpressionStart::WORD_END.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("word_end"))
+		ExpressionStart::WORD_END.assertSame(ExpressionStart::valueOfCaseInsensitive("Word_End"))
+
+		ExpressionStart::INDEX_WORD_CODE_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("index_word_code_begin"))
+		ExpressionStart::INDEX_WORD_CODE_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Index_Word_Code_Begin"))
+
+		ExpressionStart::NUMBER_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("number_begin"))
+		ExpressionStart::NUMBER_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Number_Begin"))
+
+		ExpressionStart::HEXA_NUMBER_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("hexa_number_begin"))
+		ExpressionStart::HEXA_NUMBER_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Hexa_Number_Begin"))
+
+		ExpressionStart::STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("string_begin"))
+		ExpressionStart::STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("String_Begin"))
+
+		ExpressionStart::STRING_END.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("string_end"))
+		ExpressionStart::STRING_END.assertSame(ExpressionStart::valueOfCaseInsensitive("String_End"))
+
+		ExpressionStart::INDEX_STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("index_string_begin"))
+		ExpressionStart::INDEX_STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Index_String_Begin"))
+
+		ExpressionStart::LEN8_STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("len8_string_begin"))
+		ExpressionStart::LEN8_STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Len8_String_Begin"))
+
+		ExpressionStart::LEN16_STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("len16_string_begin"))
+		ExpressionStart::LEN16_STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Len16_String_Begin"))
+
+		ExpressionStart::LEN32_STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("len32_string_begin"))
+		ExpressionStart::LEN32_STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Len32_String_Begin"))
+
+		ExpressionStart::INDEX_BYTE_STRING_BEGIN.consume.assertSame(ExpressionStart::valueOfCaseInsensitive("index_byte_string_begin"))
+		ExpressionStart::INDEX_BYTE_STRING_BEGIN.assertSame(ExpressionStart::valueOfCaseInsensitive("Index_Byte_String_Begin"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = ExpressionStart::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = ExpressionStart::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = ExpressionStart::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		("level_down, word_begin, word_end, index_word_code_begin, number_begin, "
+		+ "hexa_number_begin, string_begin, string_end, index_string_begin, "
+		+ "len8_string_begin, len16_string_begin, len32_string_begin, index_byte_string_begin").assertEquals(ExpressionStart::jsonLabels)
+	}
+
+}

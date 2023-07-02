@@ -1,0 +1,170 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.string
+
+import io.sarl.acl.encoding.string.StringAclCodec
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("StringAclCodec")
+class StringAclCodecTest {
+
+	var codec : StringAclCodec
+
+	@BeforeEach
+	def setUp : void {
+		this.codec = new StringAclCodec
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createMessage : AclMessage {
+		val msg = new AclMessage(Performative::CANCEL, new MyContent(6, "3\"4"))
+		msg.sender = "ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID
+		msg.receivers = #[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID, "331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ]
+		msg.ontology = "ont"
+		msg.protocol = "prot"
+		val date = Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z")
+		msg.content.replyBy = date
+		msg.conversationId = "8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID
+		return msg
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createStringComplex : String {
+		"(cancel\n"
+		+ ":sender (agent-identifier :name ed490df2-5c35-4084-8e50-15836dad7b4f)\n"
+		+ ":receiver (set (agent-identifier :name 31dcff23-3a66-42ac-8e69-3ac7aae07bc0)"
+		+ " (agent-identifier :name 331e6267-7330-4e76-88f6-1783f7160fc7))\n"
+		+ ":reply-by 2021-03-28T23:06:48.487Z\n"
+		+ ":content \""
+		+ "MyContent(value0=6,value1=3\\\"4)"
+		+ "\"\n"
+		+ ":ontology ont\n"
+		+ ":protocol (pr(ot))\n"
+		+ ":conversation-id 8dd879d5-7e15-42e9-ab00-ce8b5e680dc9\n"
+		+ ")"
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createStringSimple : String {
+		"(cancel\n"
+		+ ":sender (agent-identifier :name ed490df2-5c35-4084-8e50-15836dad7b4f)\n"
+		+ ":receiver (set (agent-identifier :name 31dcff23-3a66-42ac-8e69-3ac7aae07bc0)"
+		+ " (agent-identifier :name 331e6267-7330-4e76-88f6-1783f7160fc7))\n"
+		+ ":reply-by 2021-03-28T23:06:48.487Z\n"
+		+ ":content \""
+		+ "MyContent(value0=6,value1=3\\\"4)"
+		+ "\"\n"
+		+ ":ontology ont\n"
+		+ ":protocol prot\n"
+		+ ":conversation-id 8dd879d5-7e15-42e9-ab00-ce8b5e680dc9\n"
+		+ ")"
+	}
+
+	@Test
+	@DisplayName("encode")
+	def encode : void {
+		val actual = this.codec.encode(createMessage)
+		val actualString = new String(actual)
+		createStringSimple.assertEquals(actualString)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	@DisplayName("decode")
+	def decode : void {
+		val actual = this.codec.decode(createStringComplex.bytes)
+		Performative::CANCEL.assertSame(actual.performative)
+		("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(actual.sender)
+		#[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID,
+		"331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ].assertArrayEquals(actual.receivers)
+		"ont".assertEquals(actual.ontology)
+		"prot".assertEquals(actual.protocol)
+		Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z").assertEquals(actual.replyBy)
+		("8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID).assertEquals(actual.conversationId)
+
+		val cnt = actual.content
+		cnt.assertNotNull
+		"MyContent(value0=6,value1=3\"4)".assertEquals(cnt)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	@DisplayName("encode and decode")
+	def encodeDecode : void {
+		val byteArray = this.codec.encode(createMessage)
+		val actual = this.codec.decode(byteArray)
+		Performative::CANCEL.assertSame(actual.performative)
+		("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(actual.sender)
+		#[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID,
+		"331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ].assertArrayEquals(actual.receivers)
+		"ont".assertEquals(actual.ontology)
+		"prot".assertEquals(actual.protocol)
+		Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z").assertEquals(actual.replyBy)
+		("8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID).assertEquals(actual.conversationId)
+
+		val cnt = actual.content
+		cnt.assertNotNull
+		"MyContent(value0=6,value1=3\"4)".assertEquals(cnt)
+	}
+
+	@Test
+	@DisplayName("getAclRepresentation")
+	def getAclRepresentation : void {
+		AclRepresentation::STRING.assertSame(this.codec.aclRepresentation)
+	}
+
+	static class MyContent {
+		public var value0 : int
+		public var value1 : String
+		new {
+		}
+		new (v0 : int, v1 : String) {
+			this.value0 = v0
+			this.value1 = v1
+		}
+		override toString : String {
+			this.class.simpleName + "(value0=" + this.value0 + ",value1=" + this.value1 + ")"
+		}
+	}
+
+}

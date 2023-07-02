@@ -1,0 +1,64 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.protocol.requestwhen
+
+import io.sarl.acl.protocol.AclProtocolId
+import io.sarl.acl.protocol.OneToOneAclProtocol
+import io.sarl.acl.protocol.ProtocolState
+import io.sarl.lang.core.Agent
+
+/** 
+ * Request-When Interaction protocol.
+ *
+ * <center><img src="./doc-files/sequence.png"></center>
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see <a href="http://www.fipa.org/specs/fipa00028/SC00028H.html">FIPA Request-When Interaction Protocol Specification</a>
+ */
+abstract behavior FipaRequestWhenProtocol extends OneToOneAclProtocol {
+
+	new (owner : Agent) {
+		super(owner)
+		RequestWhenProtocolState::NOT_STARTED.change(null)
+	}
+
+	final override getAclProtocolId : AclProtocolId {
+		AclProtocolId::FIPA_REQUEST_WHEN
+	}
+
+	final override isStarted : boolean {
+		getState != RequestWhenProtocolState::NOT_STARTED
+	}
+
+	protected final override getCancelledState : ProtocolState {
+		RequestWhenProtocolState::CANCELED
+	}
+
+	protected final override getErrorState : ProtocolState {
+		RequestWhenProtocolState::BROKEN_PROTOCOL
+	}
+		
+}

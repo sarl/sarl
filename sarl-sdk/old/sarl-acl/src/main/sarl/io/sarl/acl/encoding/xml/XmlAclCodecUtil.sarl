@@ -1,0 +1,310 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.xml
+
+import com.fasterxml.jackson.databind.JsonNode
+import java.io.PrintStream
+import java.util.Map
+import org.w3c.dom.Node
+import org.w3c.dom.Element
+import java.io.IOException
+import java.util.UUID
+import java.util.Date
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import java.io.StringWriter
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
+
+/** 
+ * Utilities for the XML codec.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+final class XmlAclCodecUtil {
+
+	private new {}
+
+	/** Start a XML node and write its content.
+	 *
+	 * @param stream the stream in which the XML node must be written.
+	 * @param tagName the name of the XML node.
+	 * @param fieldValuePairs pairs of attribute name and value.
+	 * @param content the content of the node.
+	 */
+	static def node(stream : PrintStream, tagName : String,
+					fieldValuePairs : Map<String, Object> = null,
+					content : (PrintStream) => void=null) {
+		stream => [
+			print("<")
+			print(tagName)
+			if (fieldValuePairs !== null && !fieldValuePairs.empty) {
+				for (pair : fieldValuePairs.entrySet) {
+					if (pair.value !== null) {
+						val str = pair.value.toString
+						if (!str.isNullOrEmpty) {
+							print(" ")
+							print(pair.key)
+							print("=\"")
+							print(str)
+							print("\"")
+						}
+					}
+				}
+			}
+			if (content !== null) {
+				print(">")
+				content.apply(it)
+				print("</")
+				print(tagName)
+				print(">")
+			} else {
+				print("/>")
+			}
+		]
+	}
+
+	/** Start a XML node and write its content.
+	 *
+	 * @param stream the stream in which the XML node must be written.
+	 * @param tagName the name of the XML node.
+	 * @param fieldValuePairs pairs of attribute name and value.
+	 * @param content the content of the node.
+	 */
+	static def node(stream : PrintStream, tagName : String,
+					fieldValuePairs : Map<String, Object> = null,
+					content : String) {
+		stream => [
+			print("<")
+			print(tagName)
+			if (fieldValuePairs !== null && !fieldValuePairs.empty) {
+				for (pair : fieldValuePairs.entrySet) {
+					print(" ")
+					print(pair.key)
+					print("=\"")
+					print(pair.value.toString)
+					print("\"")
+				}
+			}
+			if (!content.isNullOrEmpty) {
+				print(">")
+				print(content)
+				print("</")
+				print(tagName)
+				print(">")
+			} else {
+				print("/>")
+			}
+		]
+	}
+
+	/** Replies the value of the attribute with the given name
+	 *
+	 * @param node the root node.
+	 * @param names the sequence of names to reach the attribute.
+	 * @return the attribute value or {@code null} if the attribute was nout found.
+	 */
+	static def attrValue(node : JsonNode, names : String*) : String{
+		var valueNode = node
+		val max = names.length - 1
+		for (var i = 0; i < max; i++) {
+			val name = names.get(i)
+			var child = valueNode.get(name)
+			if (child === null) {
+				return null
+			}
+			valueNode = child
+		}
+		var child = valueNode.get(names.get(names.length - 1))
+		if (child === null) {
+			return null
+		}
+		return child.asText
+	}
+
+	/** Find a node with the given name into the list of children.
+	 *
+	 * @param root the node to search inside.
+	 * @param name the name of the child node to search for.
+	 * @return the child node.
+	 */
+	static def findNode(root : Node, name : String) : Element {
+		val list = root.childNodes
+		val max = list.length
+		for (var i = 0; i < max; i++) {
+			val child = list.item(i)
+			if (child instanceof Element) {
+				if (name == child.nodeName) {
+					return child
+				}
+			}
+		}
+		throw new IOException("invalid message format")
+	}
+
+	/** Find a attribute value into the given node.
+	 *
+	 * @param node the node to search inside.
+	 * @param name the name of the attribute to search for.
+	 * @return the attribute value, or {@code null}.
+	 */
+	static def attribute(node : Node, name : String) : String {
+		if (node instanceof Element) {
+			return node.getAttribute(name)
+		}
+		return null
+	}
+
+	/** Find a attribute value of UUID type into the given node.
+	 *
+	 * @param node the node to search inside.
+	 * @return the attribute value, or {@code null}.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def identifier(node : Node) : UUID {
+		val c0 = node.findNode(Messages::NODE_AGENTIDENTIFIER)
+		val c1 = c0.findNode(Messages::NODE_NAME)
+		val str = c1.attribute(Messages::ATTR_ID)
+		if (!str.isNullOrEmpty) {
+			try {
+				return str as UUID
+			} catch (ex : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+	/** Find a attribute value of UUID type into the given node.
+	 *
+	 * @param node the node to search inside.
+	 * @param name the name of the attribute to search for.
+	 * @return the attribute value, or {@code null}.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def uuid(node : Node, name : String) : UUID {
+		val str = node.attribute(name)
+		if (!str.isNullOrEmpty) {
+			try {
+				return str as UUID
+			} catch (ex : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+	/** Find a attribute value of integer type into the given node.
+	 *
+	 * @param node the node to search inside.
+	 * @param name the name of the attribute to search for.
+	 * @return the attribute value, or {@code null}.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def integer(node : Node, name : String) : int {
+		val str = node.attribute(name)
+		if (!str.isNullOrEmpty) {
+			try {
+				return str as Integer
+			} catch (ex : Throwable) {
+				//
+			}
+		}
+		return 0
+	}
+
+	/** Find a attribute value of Date type into the given node.
+	 *
+	 * @param node the node to search inside.
+	 * @param name the name of the attribute to search for.
+	 * @return the attribute value, or {@code null}.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def date(node : Node, name : String) : Date {
+		val str = node.attribute(name)
+		if (!str.isNullOrEmpty) {
+			try {
+				return Iso8601DateTimeUtil::parse(str)
+			} catch (ex : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+	/** Replies the content of the node as text.
+	 *
+	 * @param node the node to search inside.
+	 * @return the value.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def text(node : Node) : String {
+		return node.textContent
+	}
+
+	/** Replies the content of the node as UUID.
+	 *
+	 * @param node the node to search inside.
+	 * @return the value.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def uuidInText(node : Node) : UUID {
+		val txt = node.text
+		if (!txt.isNullOrEmpty) {
+			try {
+				return txt as UUID
+			} catch (ex : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+
+	/** Convert XML node's child to string.
+	 * 
+	 * @param node the node to search inside.
+	 * @return the string representation of the node.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def toXmlChildString(node : Node) : String {
+		val sw = new StringWriter
+		try {
+			val t = TransformerFactory::newInstance.newTransformer
+			t.setOutputProperty(OutputKeys::OMIT_XML_DECLARATION, "yes")
+			t.setOutputProperty(OutputKeys::INDENT, "no")
+			val list = node.childNodes
+			val max = list.length
+			for (var i = 0; i < max; i++) {
+				t.transform(new DOMSource(list.item(i)), new StreamResult(sw))
+			}
+		} catch (ex : Throwable) {
+			//
+		}
+		return sw.toString
+	}
+
+}

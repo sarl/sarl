@@ -14,7 +14,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
 	</properties>
 
 	<dependencies>
@@ -197,46 +196,14 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>5.1.9</version>
-				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<supportIncrementalBuild>true</supportIncrementalBuild>
-					<supportedProjectTypes>
-						<supportedProjectType>jar</supportedProjectType>
-						<supportedProjectType>bundle</supportedProjectType>
-						<supportedProjectType>war</supportedProjectType>
-					</supportedProjectTypes>
-					<archive>
-						<manifestFile>${manifest.file}</manifestFile>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-					<instructions>
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-RequiredExecutionEnvironment>${sarl-run.min.jre.environment}</Bundle-RequiredExecutionEnvironment>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
 					<archive>
-						<manifestFile>${manifest.file}</manifestFile>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

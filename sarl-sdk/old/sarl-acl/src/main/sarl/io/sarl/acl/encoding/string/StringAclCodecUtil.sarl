@@ -1,0 +1,554 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.string
+
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.ByteArrayStringBuffer
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.lang.util.OutParameter
+import java.io.PrintStream
+import java.util.Date
+import java.util.Map
+import java.util.Map.Entry
+import java.util.Set
+import java.util.UUID
+import java.util.regex.Pattern
+
+import static extension com.google.common.base.Strings.*
+import static extension io.sarl.acl.util.Strings2.*
+
+/** 
+ * Utilities for the String codec.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see "http://www.fipa.org/specs/fipa00070/SC00070I.html"
+ */
+final class StringAclCodecUtil {
+
+	private new {}
+
+	/** Start a String node and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param tagName the name of the String node.
+	 * @param content the content of the node.
+	 */
+	static def node(stream : PrintStream, tagName : String,
+					content : (PrintStream) => void=null) {
+		stream => [
+			print(":")
+			print(tagName)
+			if (content !== null) {
+				print(" ")
+				content.apply(it)
+			}
+			print("\n")
+		]
+	}
+
+	/** Start a String node and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param tagName the name of the String node.
+	 * @param content the content of the node.
+	 */
+	static def node(stream : PrintStream, tagName : String,
+					content : String) {
+		if (!content.isNullOrEmpty) {
+			stream => [
+				print(":")
+				print(tagName)
+				print(" ")
+				print(content)
+				print("\n")
+			]
+		}
+	}
+
+	/** Start a String node of UUID and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param tagName the name of the String node.
+	 * @param content the content of the node.
+	 */
+	static def uuid(stream : PrintStream, tagName : String,
+					content : UUID) {
+		if (content !== null) {
+			stream => [
+				print(":")
+				print(tagName)
+				print(" ")
+				print(content.toString)
+				print("\n")
+			]
+		}
+	}
+
+	/** Start a String node and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param tagName the name of the String node.
+	 * @param content the content of the node.
+	 */
+	static def node(stream : PrintStream, tagName : String,
+					content : long) {
+		stream => [
+			print(":")
+			print(tagName)
+			print(" ")
+			print(content)
+			print("\n")
+		]
+	}
+
+	/** Start a String node for a date and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param tagName the name of the String node.
+	 * @param content the content of the node.
+	 */
+	static def dateNode(stream : PrintStream, tagName : String,
+					content : Date) {
+		stream.node(tagName, content.date)
+	}
+
+	/** Start a String node with performative and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param performative the performative to print out.
+	 * @param content the content of the node.
+	 */
+	static def performative(stream : PrintStream, performative : Performative, content : (PrintStream) => void=null) {
+		stream => [
+			print("(")
+			print(performative.fipaName)
+			print("\n")
+			if (content !== null) {
+				content.apply(it)
+			}
+			print(")")
+		]
+	}
+
+	/** Start a String node with performative and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param aclRepresentation the representation to print out.
+	 * @param content the content of the node.
+	 */
+	static def aclRepresentation(stream : PrintStream, aclRepresentation : String, content : (PrintStream) => void=null) {
+		stream => [
+			print("(")
+			print(aclRepresentation)
+			print("\n")
+			if (content !== null) {
+				content.apply(it)
+			}
+			print(")")
+		]
+	}
+
+	/** Start a String node with agent identifier and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param identifier the identifier to output
+	 */
+	static def agentIdentifier(stream : PrintStream, identifier : UUID) {
+		if (identifier !== null) {
+			stream => [
+				print("(")
+				print(Messages::NODE_AGENTIDENTIFIER)
+				print(" :")
+				print(Messages::NODE_NAME)
+				print(" ")
+				print(identifier.toString)
+				print(")")
+			]
+		}
+	}
+
+	/** Start a String node with set of values and write its content.
+	 *
+	 * @param <T> is the type of the elements in the collection.
+	 * @param stream the stream in which the String node must be written.
+	 * @param collection the elements to add into the collection
+	 * @param content the content of each element of the set.
+	 */
+	static def groupset(stream : PrintStream, collection : Iterable<T>, content : (PrintStream, T) => void=null) with T {
+		stream => [
+    		print("(set")
+			if (content !== null) {
+				for (element : collection) {
+					print(" ")
+					content.apply(it, element)
+				}
+			}
+    	  	print(")")
+		]
+	}
+
+	/** Start a String node with pair of values and write its content.
+	 *
+	 * @param <T> is the type of the elements in the collection.
+	 * @param stream the stream in which the String node must be written.
+	 * @param pairs the pair to add into the collection
+	 */
+	@SuppressWarnings("raw_type")
+	static def groupmap(stream : PrintStream, pairs : Map) {
+		stream => [
+    		print("(map")
+			if (pairs !== null && !pairs.empty) {
+				val iter = (pairs.entrySet as Set<Entry>).iterator
+				while (iter.hasNext) {
+					val entry = iter.next
+					print(" \"")
+					if (entry.key !== null) {
+						print(entry.key.toString.escape)
+					}
+					print("\" \"")
+					if (entry.value !== null) {
+						print(entry.value.toString.escape)
+					}
+					print("\"")
+				}
+			}
+    	  	print(")")
+		]
+	}
+
+	/** Start a String node with a date and write its content.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param date the date to print out.
+	 */
+	static def date(stream : PrintStream, date : Date) {
+		if (date !== null) {
+			stream.print(date.date)
+		}
+	}
+
+	/** Format a date.
+	 *
+	 * @param date the date to print out.
+	 * @return the formatted date.
+	 */
+	static def date(date : Date) : String {
+		if (date !== null) {
+			return Iso8601DateTimeUtil::format(date)
+		}
+		return ""
+	}
+
+	/** Format a data.
+	 *
+	 * @param stream the stream in which the String node must be written.
+	 * @param data the date to print out as a string.
+	 */
+	static def data(stream : PrintStream, data : Object) {
+		stream => [
+			print("\"")
+			if (data !== null) {
+				val str = data.toString.escape
+				print(str)
+			}
+			print("\"")
+		]
+	}
+
+	static val PATTERN_FIPAMESSAGE = Pattern::compile("^\\s*\\(\\s*(\\S+)\\s+", Pattern::DOTALL)
+
+	static val PATTERN_FIPAMESSAGE_END = Pattern::compile("^\\s*\\)\\s*", Pattern::DOTALL)
+
+	/** Run the code if the given byte array contains a FIPA message.
+	 *
+	 * @param stream the stream to read.
+	 * @param startOffset index of the first byte to read.
+	 * @param endOffset index of the first byte following the last readable byte.
+	 * @param callback the callback invokes if the message is a FIPA message. 
+	 */
+	static def ifFipaMessage(stream : byte[], startOffset : int, endOffset : int, callback : (ByteArrayStringBuffer, Performative) => void) {
+		val buffer = new ByteArrayStringBuffer(stream, startOffset, endOffset)
+		val matcher0 = PATTERN_FIPAMESSAGE.matcher(buffer.view)
+		if (matcher0.find) {
+			val performative = Performative::valueOfCaseInsensitive(matcher0.group(1))
+			buffer.update(matcher0.end)
+			callback.apply(buffer, performative)
+			// Check if a ')' is at the end of the buffer
+			val matcher1 = PATTERN_FIPAMESSAGE_END.matcher(buffer.view)
+			if (matcher1.find) {
+				buffer.update(matcher1.end)
+			} else {
+				throw new IllegalArgumentException
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+
+
+	/** Run the code if the given byte array contains a FIPA message.
+	 *
+	 * @param stream the stream to read.
+	 * @param startOffset index of the first byte to read.
+	 * @param endOffset index of the first byte following the last readable byte.
+	 * @param callback the callback invokes if the message is a FIPA message. 
+	 */
+	static def ifFipaEnvelope(stream : byte[], startOffset : int, endOffset : int, callback : (ByteArrayStringBuffer, AclRepresentation) => void) {
+		val buffer = new ByteArrayStringBuffer(stream, startOffset, endOffset)
+		val matcher0 = PATTERN_FIPAMESSAGE.matcher(buffer.view)
+		if (matcher0.find) {
+			val representation = AclRepresentation::valueOfCaseInsensitive(matcher0.group(1))
+			buffer.update(matcher0.end)
+			callback.apply(buffer, representation)
+			// Check if a ')' is at the end of the buffer
+			val matcher1 = PATTERN_FIPAMESSAGE_END.matcher(buffer.view)
+			if (matcher1.find) {
+				buffer.update(matcher1.end)
+			} else {
+				throw new IllegalArgumentException
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+
+	static val PATTERN_FIPAMESSAGE_NODE = Pattern::compile("^\\s*\\:(\\S+)\\s*", Pattern::DOTALL)
+
+	/** Extract the FIPA message components and run the callback on each of them.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes on each FIPA message component. 
+	 */
+	static def forEachFipaComponent(stream : ByteArrayStringBuffer, callback : (ByteArrayStringBuffer, String) => void) {
+		var doLoop : boolean
+		do {
+			doLoop = false
+			val matcher = PATTERN_FIPAMESSAGE_NODE.matcher(stream.view)
+			if (matcher.find) {
+				val type = matcher.group(1)
+				stream.update(matcher.end)
+				callback.apply(stream, type)
+				doLoop = true
+			}			
+		} while (doLoop)
+	}
+
+	static val PATTERN_FIPAMESSAGE_IDENTIFIER = Pattern::compile(
+				"^\\s*\\(\\s*"
+				+ Pattern::quote(Messages::NODE_AGENTIDENTIFIER)
+				+ "\\s*"
+				+ Pattern::quote(":" + Messages::NODE_NAME)
+				+ "\\s+([^\\s\\)]+)\\s*\\)",
+				Pattern::DOTALL)
+
+	/** Run the code if the given byte array contains a FIPA agent identifier.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the identifier as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def ifAgentIdentifier(stream : ByteArrayStringBuffer, callback : (UUID) => void) {
+		val matcher = PATTERN_FIPAMESSAGE_IDENTIFIER.matcher(stream.view)
+		if (matcher.find) {
+			val id = matcher.group(1) as UUID
+			stream.update(matcher.end)
+			callback.apply(id)
+		} else {
+			throw new IllegalArgumentException
+		}			
+	}
+
+	static val PATTERN_FIPAMESSAGE_GROUPSET_START = Pattern::compile(
+				"^\\s*\\(\\s*set\\s*", Pattern::DOTALL)
+
+	static val PATTERN_FIPAMESSAGE_GROUP_END = Pattern::compile(
+				"^\\s*\\)\\s*", Pattern::DOTALL)
+
+	/** Run the code for each element of a group set.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the identifier as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def forEachGroupSetElement(stream : ByteArrayStringBuffer, callback : (ByteArrayStringBuffer) => void) {
+		val matcher0 = PATTERN_FIPAMESSAGE_GROUPSET_START.matcher(stream.view)
+		if (matcher0.find) {
+			stream.update(matcher0.end)
+			var matcher1 = PATTERN_FIPAMESSAGE_GROUP_END.matcher(stream.view)
+			while (!stream.empty && !matcher1.find) {
+				callback.apply(stream)
+				matcher1 = PATTERN_FIPAMESSAGE_GROUP_END.matcher(stream.view)
+			}
+			if (stream.empty) {
+				throw new IllegalArgumentException
+			} else {
+				stream.update(matcher1.end)
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+
+	static val PATTERN_FIPAMESSAGE_GROUPMAP_START = Pattern::compile(
+				"^\\s*\\(\\s*map\\s*", Pattern::DOTALL)
+
+	/** Run the code for each element of a group map.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the pairs as arguments.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def forEachGroupMapPairs(stream : ByteArrayStringBuffer, callback : (String, String) => void) {
+		val matcher0 = PATTERN_FIPAMESSAGE_GROUPMAP_START.matcher(stream.view)
+		if (matcher0.find) {
+			stream.update(matcher0.end)
+			var matcher1 = PATTERN_FIPAMESSAGE_GROUP_END.matcher(stream.view)
+			while (!stream.empty && !matcher1.find) {
+				val key = new OutParameter
+				stream.ifExpression [
+					key.set(it)
+				]
+				val value = new OutParameter
+				stream.ifExpression [
+					value.set(it)
+				]
+				callback.apply(key.get, value.get)
+				matcher1 = PATTERN_FIPAMESSAGE_GROUP_END.matcher(stream.view)
+			}
+			if (stream.empty) {
+				throw new IllegalArgumentException
+			} else {
+				stream.update(matcher1.end)
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+
+	/** Run the code if the given byte array contains a FIPA date.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the date as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def ifDate(stream : ByteArrayStringBuffer, callback : (Date) => void) {
+		stream.ifExpression [
+			callback.apply(Iso8601DateTimeUtil::parse(it))
+		]
+	}
+
+	/** Run the code if the given byte array contains a integer number.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the date as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def ifInteger(stream : ByteArrayStringBuffer, callback : (long) => void) {
+		stream.ifExpression [
+			callback.apply(it as long)
+		]
+	}
+
+	/** Run the code if the given byte array contains an UUID.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the identifier as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def ifIdentifier(stream : ByteArrayStringBuffer, callback : (UUID) => void) {
+		stream.ifExpression [
+			callback.apply(it as UUID)
+		]
+	}
+
+	/** Run the code if the given byte array contains a FIPA identifier.
+	 *
+	 * @param stream the stream to read.
+	 * @param callback the callback invokes with the value as argument.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def ifExpression(stream : ByteArrayStringBuffer, callback : (String) => void) {
+		val value = stream.ifExpression0(0)
+		if (!value.isNullOrEmpty) {
+			callback.apply(value)
+		}
+	}
+
+	static val PATTERN_FIPAMESSAGE_STRING = Pattern::compile(
+				"^\\s*\"((?:(?:\\\")|[^\"])*)\"", Pattern::DOTALL)
+
+	static val PATTERN_FIPAMESSAGE_PARENTHESIS0 = Pattern::compile(
+				"^\\s*\\(\\s*", Pattern::DOTALL)
+
+	static val PATTERN_FIPAMESSAGE_PARENTHESIS1 = Pattern::compile(
+				"^\\s*(.*?)\\s*(\\)|\\()\\s*", Pattern::DOTALL)
+
+	static val PATTERN_FIPAMESSAGE_WORD = Pattern::compile(
+				"^\\s*(\\S+)", Pattern::DOTALL)
+
+	private static def ifExpression0(stream : ByteArrayStringBuffer, parlevel : int) : String {
+		val matcher0 = PATTERN_FIPAMESSAGE_STRING.matcher(stream.view)
+		if (matcher0.find) {
+			var str = matcher0.group(1)
+			stream.update(matcher0.end)
+			str =  str.unescape
+			return str
+		}
+		if (parlevel === 0) {
+			var matcher1 = PATTERN_FIPAMESSAGE_PARENTHESIS0.matcher(stream.view)
+			if (matcher1.find) {
+				stream.update(matcher1.end)
+				return ifExpression0(stream, parlevel + 1)
+			}
+		} else {
+			var matcher1 = PATTERN_FIPAMESSAGE_PARENTHESIS1.matcher(stream.view)
+			val value = new StringBuilder
+			while (matcher1.find) {
+				val prefix = matcher1.group(1)
+				val par = matcher1.group(2)
+				stream.update(matcher1.end)
+				value.append(prefix.nullToEmpty)
+				if (par == ')') {
+					return value.toString
+				}
+				val substr = ifExpression0(stream, parlevel + 1)
+				value.append(substr.nullToEmpty)
+				matcher1 = PATTERN_FIPAMESSAGE_PARENTHESIS1.matcher(stream.view)
+			}
+			throw new IllegalArgumentException
+		}
+		if (parlevel == 0) {
+			var matcher2 = PATTERN_FIPAMESSAGE_WORD.matcher(stream.view)
+			if (matcher2.find) {
+				val str = matcher2.group(1)
+				stream.update(matcher2.end)
+				return str
+			}
+		}
+		throw new IllegalArgumentException
+	}
+
+}

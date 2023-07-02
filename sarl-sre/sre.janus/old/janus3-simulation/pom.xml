@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.sarl.sre.extensions.janus3-simulation</groupId>
+	<artifactId>janus3-simulation</artifactId>
+	<version>0.12.0-SNAPSHOT</version>
+	<name>SARL Run-time Environment for Simulation</name>
+
+	<properties>
+		<sarl.version>0.12.0-SNAPSHOT</sarl.version>
+		<janus.version>3.0.12.0-SNAPSHOT</janus.version>
+		<afc.version>16.0</afc.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<compiler.level>1.8</compiler.level>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+			<version>${janus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathphysics</artifactId>
+			<version>${afc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathstochastic</artifactId>
+			<version>${afc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.sre.test.framework</artifactId>
+			<version>${sarl.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			  <groupId>org.eclipse.xtext</groupId>
+			  <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+			  <version>2.22.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>sarl-maven-plugin</artifactId>
+				<version>${sarl.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

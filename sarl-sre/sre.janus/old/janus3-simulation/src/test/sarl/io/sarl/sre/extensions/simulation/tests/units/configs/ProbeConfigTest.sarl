@@ -1,0 +1,169 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.extensions.simulation.tests.units.configs
+
+import io.sarl.api.probing.Probe
+import io.sarl.sre.extensions.simulation.configs.ProbeConfig
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.net.URI
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: TimeConfig test")
+@Tag("unit")
+@Tag("janus")
+@Tag("sre-unit")
+@Tag("sre-simulation")
+class ProbeConfigTest {
+
+	@Nullable
+	var config : ProbeConfig
+	
+	@BeforeEach
+	def setUp : void {
+		this.config = new ProbeConfig
+	}
+	
+	@Test
+	@DisplayName("getName")
+	def getName : void {
+		this.config.name.assertNull
+	}
+
+	@Test
+	@DisplayName("setName")
+	def setName : void {
+		this.config.setName = "xyz"
+		"xyz".assertEquals(this.config.name)
+	}
+
+	@Test
+	@DisplayName("getNameOrId with null name")
+	def getNameOrId_null : void {
+		val id = this.config.id
+		id.toString.assertEquals(this.config.nameOrId)
+	}
+
+	@Test
+	@DisplayName("getNameOrId with name")
+	def getNameOrId_notNull : void {
+		this.config.name = "xyz"
+		"xyz".assertEquals(this.config.nameOrId)
+	}
+
+	@Test
+	@DisplayName("getUri")
+	def getUri : void {
+		this.config.uri.assertNull
+	}
+
+	@Test
+	@DisplayName("setUri")
+	def setUri : void {
+		val input = new URI("http://sarl.io")
+		this.config.setUri = input
+		input.assertSame(this.config.uri)
+	}
+
+	@Test
+	@DisplayName("getOutputToFile")
+	def setOutputToFile : void {
+		ProbeConfig::OUTPUT_TO_FILE_VALUE.assertEquals(this.config.outputToFile)
+	}
+
+	@Test
+	@DisplayName("setOutputToFile(true)")
+	def setOutputToFile_true : void {
+		this.config.outputToFile = true
+		this.config.outputToFile.assertTrue
+	}
+
+	@Test
+	@DisplayName("setOutputToFile(false)")
+	def setOutputToFile_false : void {
+		this.config.outputToFile = false
+		this.config.outputToFile.assertFalse
+	}
+
+	@Test
+	@DisplayName("getFileBasename")
+	def getFileBasename : void {
+		this.config.fileBasename.assertNull
+	}
+
+	@Test
+	@DisplayName("setFileBasename(null)")
+	def setFileBasename_null : void {
+		this.config.fileBasename = null
+		this.config.fileBasename.assertNull
+	}
+
+	@Test
+	@DisplayName("setFileBasename(String)")
+	def setFileBasename_notNull : void {
+		val input = UUID::randomUUID.toString
+		this.config.fileBasename = input
+		input.assertEquals(this.config.fileBasename)
+	}
+
+	@Test
+	@DisplayName("getProbeType")
+	def getProbeType : void {
+		this.config.probeType.assertNull
+	}
+
+	@Test
+	@DisplayName("setProbeType(null)")
+	def setProbeType_null : void {
+		this.config.probeType = typeof(Probe)
+		this.config.fileBasename = null
+		this.config.fileBasename.assertNull
+	}
+
+	@Test
+	@DisplayName("setProbeType(Class)")
+	def setProbeType_notNull : void {
+		this.config.probeType = typeof(Probe)
+		typeof(Probe).assertEquals(this.config.probeType)
+	}
+
+}

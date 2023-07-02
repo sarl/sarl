@@ -1,0 +1,74 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.encoding.xml
+
+import org.eclipse.osgi.util.NLS
+
+/** Messages.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("all")
+final class Messages extends NLS {
+
+	private static val BUNDLE_NAME = {
+		val name = typeof(Messages).getPackage.name + ".messages"
+		// initialize resource bundle
+		NLS.initializeMessages(name, typeof(Messages))
+		name
+	}
+
+	public static var NODE_FIPAMESSAGE : String
+	public static var NODE_SENDER : String
+	public static var NODE_AGENTIDENTIFIER : String
+	public static var NODE_NAME : String
+	public static var NODE_RECEIVER : String
+	public static var NODE_REPLYTO : String
+	public static var NODE_REPLYWITH : String
+	public static var NODE_REPLYBY : String
+	public static var NODE_INREPLYTO : String
+	public static var NODE_ENCODING : String
+	public static var NODE_LANGUAGE : String
+	public static var NODE_ONTOLOGY : String
+	public static var NODE_PROTOCOL : String
+	public static var NODE_CONVERSATIONID : String
+	public static var NODE_CONTENT : String
+	public static var NODE_ENVELOPE : String
+	public static var NODE_TO : String
+	public static var NODE_INTENDEDRECEIVER : String
+	public static var NODE_TRANSPORTBEHAVIOR : String
+
+	public static var ATTR_PERFORMATIVE : String
+	public static var ATTR_ID : String
+	public static var ATTR_TIME : String
+	public static var ATTR_FROM : String
+	public static var ATTR_ACLREPRESENTATION : String
+	public static var ATTR_DATE : String
+	public static var ATTR_COMMENTS : String
+	public static var ATTR_PAYLOADLENGTH : String
+	public static var ATTR_PAYLOADENCODING : String
+
+	private new {}
+
+}

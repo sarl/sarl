@@ -28,6 +28,8 @@ import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -133,6 +135,40 @@ public class TestEObjects {
 	 */
 	public static <T extends XtendFile> T file(ParseHelper<T> parser, String string) throws Exception {
 		return file(parser, null, string);
+	}
+
+	/** Build a path.
+	 *
+	 * @param path path elements.
+	 * @return the path.
+	 * @since 0.13
+	 */
+	public static IPath path(String... path) {
+		assert(path != null && path.length > 0);
+		IPath p = new Path(path[0]);
+		for(int i=1; i<path.length; ++i) {
+			p = p.append(path[i]);
+		}
+		return p;
+	}
+
+	/** Build a path.
+	 *
+	 * @param path path elements.
+	 * @return the path.
+	 * @since 0.13
+	 */
+	public static String pathStr(String... path) {
+		return path(path).toOSString();
+	}
+
+	/** Replies the default package name where unit test files are located.
+	 * 
+	 * @return the package name.
+	 * @since 0.13
+	 */
+	public static String getDefaultTestPackage() {
+		return "io.sarl.tests"; //$NON-NLS-1$
 	}
 
 }

@@ -1,0 +1,167 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.extensions.simulation.tests.units.configs
+
+import io.bootique.config.ConfigurationFactory
+import io.sarl.sre.extensions.simulation.configs.SimulationConfig
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
+import static extension org.mockito.ArgumentMatchers.*
+import static extension org.mockito.Mockito.*
+import java.util.HashMap
+import java.util.UUID
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: SimulationConfig test")
+@Tag("unit")
+@Tag("janus")
+@Tag("sre-unit")
+@Tag("sre-simulation")
+class SimulationConfigTest {
+
+	@Nullable
+	var config : SimulationConfig
+	
+	@BeforeEach
+	def setUp : void {
+		this.config = new SimulationConfig
+	}
+	
+	@Test
+	@DisplayName("getConfiguration (static)")
+	def getConfiguration : void {
+		var factory = typeof(ConfigurationFactory).mock
+		var cfg = typeof(SimulationConfig).mock
+		when(factory.config(typeof(Class).any, anyString)).thenReturn(cfg)
+		cfg.assertSame(SimulationConfig::getConfiguration(factory))
+		var arg0 = typeof(Class).forClass
+		var arg1 = typeof(String).forClass
+		factory.verify(only).config(arg0.capture, arg1.capture)
+		typeof(SimulationConfig).assertEquals(arg0.value)
+		SimulationConfig::PREFIX.assertEquals(arg1.value)
+	}
+
+	@Test
+	@DisplayName("isAutostart")
+	def isAutostart : void {
+		this.config.isAutostart.assertTrue
+	}
+
+	@Test
+	@DisplayName("setAutostart")
+	def setAutostart : void {
+		this.config.autostart = false
+		this.config.autostart.assertFalse
+		this.config.autostart = true
+		this.config.autostart.assertTrue
+	}
+
+	@Test
+	@DisplayName("getLogMessageFormat")
+	def getLogMessageFormat : void {
+		SimulationConfig::LOG_MESSAGE_FORMAT_VALUE.assertEquals(this.config.logMessageFormat)
+	}
+
+	@Test
+	@DisplayName("setLogMessageFormat")
+	def setLogMessageFormat : void {
+		this.config.logMessageFormat = "a"
+		"a".assertEquals(this.config.logMessageFormat)
+		this.config.logMessageFormat = "b"
+		"b".assertEquals(this.config.logMessageFormat)
+	}
+
+	@Test
+	@DisplayName("getPreferences")
+	def getPreferences : void {
+		val actual = this.config.preferences
+		actual.assertNotNull
+		actual.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("setPreferences(null)")
+	def setPreferences_null : void {
+		this.config.preferences = null
+		val actual = this.config.preferences
+		actual.assertNotNull
+		actual.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("setPreferences(empty map)")
+	def setPreferences_emptyMap : void {
+		val input = new HashMap
+		this.config.preferences = input
+		val actual = this.config.preferences
+		actual.assertNotNull
+		actual.empty.assertTrue
+		input.assertNotSame(actual)
+	}
+
+	@Test
+	@DisplayName("setPreferences(map)")
+	def setPreferences_notEmptyMap : void {
+		val input = new HashMap
+		val a = UUID::randomUUID.toString
+		val b = UUID::randomUUID.toString
+		input.put(a, b)
+		this.config.preferences = input
+		val actual = this.config.preferences
+		actual.assertNotNull
+		input.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setPreferences on single entry")
+	def setPreferences_singleEntry : void {
+		val a = UUID::randomUUID.toString
+		val b = UUID::randomUUID.toString
+		this.config.preferences.put(a, b)
+		val actual = this.config.preferences
+		actual.assertNotNull
+		actual.empty.assertFalse
+		actual.containsKey(a).assertTrue
+		b.assertEquals(actual.get(a))
+	}
+
+}

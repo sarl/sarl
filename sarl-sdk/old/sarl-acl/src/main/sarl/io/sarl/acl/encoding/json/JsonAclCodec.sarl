@@ -1,0 +1,328 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.json
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.json.JsonMapper
+import io.sarl.acl.encoding.AbstractAclMessageContentEncodingService
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.Iso8601DateFormat
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import java.util.Map
+import java.util.SortedMap
+import java.util.UUID
+
+/** 
+ * This class encodes an ACLMessageContent in JSON or decodes an
+ * ACLMessageContent encoded in bytes to JSON.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class JsonAclCodec extends AbstractAclMessageContentEncodingService {
+
+	var rootMapper : JsonMapper
+
+	var contentMapper : JsonMapper
+
+	override getAclRepresentation : AclRepresentation {
+		AclRepresentation::JSON
+	}
+
+	/** Create an instance of the JSON mapper. */
+	protected def createJsonObjectMapper : JsonMapper {
+		val mapper = new JsonMapper
+		mapper.disable(SerializationFeature::INDENT_OUTPUT)
+		mapper.disable(SerializationFeature::WRITE_DATES_AS_TIMESTAMPS)
+		mapper.dateFormat = new Iso8601DateFormat
+		return mapper
+	}
+
+	/**
+	 * Return JSON serializer-deserializer for message content used to convert Map to/from JSON byte array.
+	 *
+	 * @return the mapper
+	 */
+	@Pure
+	protected def getContentJsonMapper : JsonMapper {
+		if (this.contentMapper === null) {
+			this.contentMapper = this.jsonMapper.copy
+			this.contentMapper.activateDefaultTyping(
+				this.contentMapper.polymorphicTypeValidator,
+				DefaultTyping::NON_FINAL, JsonTypeInfo.As::PROPERTY)
+		}
+		return this.contentMapper
+	}
+	
+	/**
+	 * Return JSON serializer-deserializer for root content used to convert Map to/from JSON byte array.
+	 *
+	 * @return the mapper
+	 */
+	@Pure
+	def getJsonMapper : JsonMapper {
+		if (this.rootMapper === null) {
+			this.rootMapper = createJsonObjectMapper
+		}
+		return this.rootMapper
+	}
+	
+	/**
+	 * Change the JSON serializer-desrializer for root content used to convert Map to/from JSON byte array.
+	 *
+	 * @param mapper the new mapper.
+	 */
+	def setJsonMapper(mapper : JsonMapper) {
+		this.rootMapper = mapper
+		this.contentMapper = null
+	}
+
+	/** Convert the given map representation into a byte array of a Json string . */
+	protected def serialize(m : SortedMap<String, Object>) : byte[] {
+		this.jsonMapper.writeValueAsBytes(m)
+	}
+
+	/** Convert the given map representation into a byte array of a Json string . */
+	protected def serializeContent(m : Object) : JsonNode {
+		this.contentJsonMapper.valueToTree(m)
+	}
+
+	override encode(aMsg : AclMessage) : byte[] {
+		var output = <String, Object>newTreeMap(null)
+
+		// Performative
+		output.put(Messages::KEY_PERFORMATIVE, aMsg.performative.fipaName)
+
+		// Sender
+		val sender = aMsg.sender
+		if (sender !== null) {
+			val senderInfos = <String, String>newHashMap
+			senderInfos.put(Messages::KEY_ID, sender.toString)
+			output.put(Messages::KEY_SENDER, senderInfos)
+		}
+
+		// Receivers
+		val receivers = aMsg.receivers
+		if (receivers !== null && !receivers.isEmpty) {
+			val receiversInfos = <Map<String, String>>newArrayList
+			for (receiver : receivers) {
+				val receiverInfo = <String, String>newHashMap
+				receiverInfo.put(Messages::KEY_ID, receiver.toString)
+				receiversInfos += receiverInfo
+			}
+			output.put(Messages::KEY_RECEIVERS, receiversInfos)
+		}
+
+		val aclContent = aMsg.content
+		if (aclContent !== null) {
+			// Reply-to
+			val replyTo = aclContent.replyTo
+			if (replyTo !== null && !replyTo.isEmpty) {
+				val receiversInfos = <Map<String, String>>newArrayList
+				for (receiver : replyTo) {
+					val receiverInfo = <String, String>newHashMap
+					receiverInfo.put(Messages::KEY_ID, receiver.toString)
+					receiversInfos += receiverInfo
+				}
+				output.put(Messages::KEY_REPLYTO, receiversInfos)
+			}
+
+			// Reply-by
+			val replyBy = aclContent.replyBy
+			if (replyBy !== null) {
+				output.put(Messages::KEY_REPLYBY, replyBy)
+			}
+			
+			// Reply-with
+			val replyWith = aclContent.replyWith
+			if (!replyWith.isNullOrEmpty) {
+				output.put(Messages::KEY_REPLYWITH, replyWith)
+			}
+
+			// In-reply-to
+			val inReplyTo = aclContent.inReplyTo
+			if (!inReplyTo.isNullOrEmpty) {
+				output.put(Messages::KEY_INREPLYTO, inReplyTo)
+			}
+
+			// Content
+			val content = aclContent.content
+			if (content !== null) {
+				val encodedContent = content.serializeContent
+				if (encodedContent !== null) {
+					output.put(Messages::KEY_CONTENT, encodedContent)
+				}
+			}
+		}
+
+		// Encoding
+		val encoding = aMsg.encoding
+		if (!encoding.isNullOrEmpty) {
+			output.put(Messages::KEY_ENCODING, encoding)
+		}
+
+		// Language
+		val language = aMsg.language
+		if (!language.isNullOrEmpty) {
+			output.put(Messages::KEY_LANGUAGE, language)
+		}
+
+		// Ontology
+		val ontology = aMsg.ontology
+		if (!ontology.isNullOrEmpty) {
+			output.put(Messages::KEY_ONTOLOGY, ontology)
+		}
+
+		// Protocol
+		val protocol = aMsg.protocol
+		if (!protocol.isNullOrEmpty) {
+			output.put(Messages::KEY_PROTOCOL, protocol)
+		}
+
+		// ConversationId
+		val conversationId = aMsg.conversationId
+		if (conversationId !== null) {
+			output.put(Messages::KEY_CONVERSATIONID, conversationId.toString)
+		}
+
+		return output.serialize
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	override decode(byteMsg : byte[], startIndex : int, endIndex : int) : AclMessageContent {
+		val correction = byteMsg.validateIndexes(startIndex, endIndex)
+		val startIdx = correction.key as int
+		val endIdx = correction.value as int
+		val content = this.contentFactory.newContent
+		val rm = this.jsonMapper
+		val cm = this.contentJsonMapper
+		val tree = rm.readTree(byteMsg, startIdx, endIdx)
+		val iter = tree.fields
+		while (iter.hasNext) {
+			val entry = iter.next
+			val name = entry.key
+			if (Messages::KEY_CONTENT != name) {
+				var value = rm.treeToValue(entry.value, typeof(Object))
+				if (value !== null) {
+					switch (name) {
+						case Messages::KEY_PERFORMATIVE: {
+							content.performative = Performative::valueOfCaseInsensitive(value.toString)							
+						}
+						case Messages::KEY_SENDER: {
+							val senderId = (value as Map<String, Object>).get(Messages::KEY_ID).toString
+							if (!senderId.isNullOrEmpty) {
+								content.sender = senderId as UUID
+							}
+						}
+						case Messages::KEY_RECEIVERS: {
+							val jsonReceivers = value as Iterable<Map<String, Object>>
+							val receivers = <UUID>newArrayList
+							for (jsonReceiver : jsonReceivers) {
+								val receiverInfo = jsonReceiver.get(Messages::KEY_ID).toString
+								if (!receiverInfo.isNullOrEmpty) {
+									receivers += receiverInfo as UUID
+								}
+							}
+							content.receivers = receivers
+						}
+						case Messages::KEY_REPLYTO: {
+							val jsonReceivers = value as Iterable<Map<String, Object>>
+							val receivers = <UUID>newArrayList
+							for (jsonReceiver : jsonReceivers) {
+								val receiverInfo = jsonReceiver.get(Messages::KEY_ID).toString
+								if (!receiverInfo.isNullOrEmpty) {
+									receivers += receiverInfo as UUID
+								}
+							}
+							content.replyTo = receivers
+						}
+						case Messages::KEY_REPLYBY: {
+							val date = value.toString
+							if (!date.isNullOrEmpty) {
+								content.replyBy = Iso8601DateTimeUtil::parse(date)
+							}
+						}
+						case Messages::KEY_REPLYWITH: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.replyWith = str
+							}
+						}
+						case Messages::KEY_INREPLYTO: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.inReplyTo = str
+							}
+						}
+						case Messages::KEY_ENCODING: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.encoding = str
+							}
+						}
+						case Messages::KEY_LANGUAGE: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.language = str
+							}
+						}
+						case Messages::KEY_ONTOLOGY: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.ontology = str
+							}
+						}
+						case Messages::KEY_PROTOCOL: {
+							val str = value.toString
+							if (!str.isNullOrEmpty) {
+								content.protocol = str
+							}
+						}
+						case Messages::KEY_CONVERSATIONID: {
+							val uuid = value.toString
+							if (!uuid.isNullOrEmpty) {
+								content.conversationId = uuid as UUID
+							}
+						}
+					} // switch
+				} // if value != null
+			} else {
+				val objValue = cm.treeToValue(entry.value, typeof(Object))
+				if (objValue !== null) {
+					content.content = objValue
+				}
+			}
+		}
+
+		return content
+	}
+
+}

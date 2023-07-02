@@ -59,20 +59,25 @@ var compilerTestProjectPath = "${rootPathForAllXtextProjects}/${compilerTestProj
 var compilerTestProjectSrcGenPath = "${compilerTestProjectPath}/src/main/generated-sources/java"
 
 // Project for the UI that is independent of the framework, i.e., Eclipse and IntelliJ
-var genericIdeProjectName = "io.sarl.lang.ui.generic"
-var genericIdeProjectPath = "${rootPathForAllUiXtextProjects}/${genericIdeProjectName}"
+var genericIdeProjectName = "io.sarl.lang.ide"
+var genericIdeProjectPath = "${rootPathForAllUiXtextProjects}/plugins/${genericIdeProjectName}"
 var genericIdeProjectMetaInfPath = "${genericIdeProjectPath}/META-INF"
 var genericIdeProjectSrcPath = "${genericIdeProjectPath}/src"
 var genericIdeProjectSrcGenPath = "${genericIdeProjectPath}/src-gen"
 
+// Project for the UI that is dedicated to the Eclipse framework
+var eclipseIdeProjectName = "io.sarl.lang.ui"
+var eclipseIdeProjectPath = "${rootPathForAllUiXtextProjects}/plugins/${eclipseIdeProjectName}"
+var eclipseIdeProjectMetaInfPath = "${eclipseIdeProjectPath}/META-INF"
+var eclipseIdeProjectSrcPath = "${eclipseIdeProjectPath}/src"
+var eclipseIdeProjectSrcGenPath = "${eclipseIdeProjectPath}/src-gen"
 
-//var projectPath = "${rootPath}/${runtimeProjectName}"
-//
-//var genericUiProjectName = "${baseName}.ui"
-//var genericUiProjectPath = "${rootPath}/${genericUiProjectName}"
-
-//var testEclipseProjectName = "${testProjectName}.ui"
-//var testEclipseProjectPath = "${overallRootPath}/tests/${testEclipseProjectName}"
+// Project for the UI tests
+var eclipseIdeTestProjectName = "io.sarl.eclipse.tests.api.ui"
+var eclipseIdeTestProjectPath = "${rootPathForAllUiXtextProjects}/tests/${eclipseIdeTestProjectName}"
+var eclipseIdeTestProjectMetaInfPath = "${eclipseIdeTestProjectPath}/META-INF"
+var eclipseIdeTestProjectSrcPath = "${eclipseIdeTestProjectPath}/src"
+var eclipseIdeTestProjectSrcGenPath = "${eclipseIdeTestProjectPath}/src-gen"
 
 // External syntax formatters
 var externalToolPath = "${rootPathForAllXtextProjects}/formatting-styles"
@@ -131,6 +136,12 @@ Workflow {
  	component = DirectoryCleaner {
 		directory = "${genericIdeProjectSrcGenPath}"
 	}
+ 	component = DirectoryCleaner {
+		directory = "${eclipseIdeProjectSrcGenPath}"
+	}
+ 	component = DirectoryCleaner {
+		directory = "${eclipseIdeTestProjectSrcGenPath}"
+	}
    	component = DirectoryCleaner {
 		directory = "${prettifyToolPath}"
 	}
@@ -183,12 +194,22 @@ Workflow {
 					overwriteSrc = false
 				}
 				eclipsePlugin = auto-inject {
-					enabled = false
-//					name = genericUiProjectName
+					enabled = true
+					name = eclipseIdeProjectName
+					root = eclipseIdeProjectPath
+					src = eclipseIdeProjectSrcPath
+					srcGen = eclipseIdeProjectSrcGenPath
+					metaInf = eclipseIdeProjectMetaInfPath
+					overwriteSrc = false
 				}
 				eclipsePluginTest = auto-inject {
-					enabled = false
-//					root = testEclipseProjectPath
+					enabled = true
+					name = eclipseIdeTestProjectName
+					root = eclipseIdeTestProjectPath
+					src = eclipseIdeTestProjectSrcPath
+					srcGen = eclipseIdeTestProjectSrcGenPath
+					metaInf = eclipseIdeTestProjectMetaInfPath
+					overwriteSrc = false
 				}
 			}
 			// Code configuration

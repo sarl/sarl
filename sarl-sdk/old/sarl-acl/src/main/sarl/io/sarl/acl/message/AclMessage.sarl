@@ -1,0 +1,348 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.message
+
+import io.sarl.acl.util.InjectorUtil
+import io.sarl.lang.core.Event
+import java.util.Collection
+import java.util.UUID
+import javax.inject.Inject
+
+/** 
+ * This class precises the minimal set of attributes required by an ACL Message to be sent and received.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see <a href="http://www.fipa.org/specs/fipa00061/SC00061G.html">FIPA ACL Message Structure Specification</a>
+ */
+final class AclMessage extends Event {
+
+	var envelopeObject : AclMessageEnvelope
+
+	var contentObject : AclMessageContent
+
+	var envelopeFactory : AclMessageEnvelopeFactory
+
+	var contentFactory : AclMessageContentFactory
+
+	/** 
+	 * Creates an ACL Message with the given content (any {@link Object}) and the given performative.
+	 * 
+	 * @param content 
+	 * @param performative
+	 */
+	new (performative : Performative, content : Object = null) {
+		this.content.content = content
+		this.performative = performative
+	}
+
+	/** 
+	 * Creates an ACL Message with the given {@link ACLMessageEnvelope} and the given {@link ACLMessageContent}.
+	 * 
+	 * @param envelope the envelope, never {@code null}.
+	 * @param content the content, never {@code null}.
+	 */
+	new (envelope : AclMessageEnvelope, content : AclMessageContent) {
+		this.envelopeObject = envelope
+		this.contentObject = content
+	}
+
+	/** Default creation of envelope factory.
+	 *
+	 * @return the envelope factory.
+	 */
+	@Pure
+	static def defaultCreateEnvelopeFactory : AclMessageEnvelopeFactory {
+		InjectorUtil::newImplementedByInstance(
+				typeof(AclMessageEnvelopeFactory), typeof(StandardAclEnvelopeFactory))
+	}
+
+	/** Replies the envelope factory.
+	 *
+	 * @return the envelope factory.
+	 */
+	@Pure
+	def getEnvelopeFactory : AclMessageEnvelopeFactory {
+		if (this.envelopeFactory === null) {
+			this.envelopeFactory = defaultCreateEnvelopeFactory
+		}
+		return this.envelopeFactory
+	}
+
+	/** Change the envelope factory.
+	 *
+	 * @param factory the envelope factory.
+	 */
+	@Inject
+	def setEnvelopeFactory(factory : AclMessageEnvelopeFactory) {
+		this.envelopeFactory = factory
+	}
+
+	/** Default creation of content factory.
+	 *
+	 * @return the content factory.
+	 */
+	@Pure
+	static def defaultCreateContentFactory : AclMessageContentFactory {
+		InjectorUtil::newImplementedByInstance(
+				typeof(AclMessageContentFactory), typeof(StandardAclContentFactory))
+	}
+
+	/** Replies the content factory.
+	 *
+	 * @return the content factory.
+	 */
+	@Pure
+	def getContentFactory : AclMessageContentFactory {
+		if (this.contentFactory === null) {
+			this.contentFactory = defaultCreateContentFactory
+		}
+		return this.contentFactory
+	}
+
+	/** Change the content factory.
+	 *
+	 * @param factory the content factory.
+	 */
+	@Inject
+	def setContentFactory(factory : AclMessageContentFactory) {
+		this.contentFactory = factory
+	}
+
+	/** 
+	 * Gets the envelope of the ACL Message.
+	 * 
+	 * @return the envelope
+	 */
+	@Pure
+	synchronized def getEnvelope : AclMessageEnvelope {
+		if (this.envelopeObject === null) {
+			this.envelopeObject = getEnvelopeFactory.newEnvelope
+		}
+		return this.envelopeObject
+	}
+
+	/** 
+	 * Gets the content of the ACL Message.
+	 * 
+	 * @return the content
+	 */
+	@Pure
+	synchronized def getContent : AclMessageContent {
+		if (this.contentObject === null) {
+			this.contentObject = getContentFactory.newContent
+		}
+		return this.contentObject
+	}
+
+	/** 
+	 * Gets the performative of the ACL Message.
+	 *
+	 * @return the performative of the ACL Message.
+	 */
+	@Pure
+	final def getPerformative : Performative {
+		this.content.performative
+	}
+
+	/** 
+	 * Sets the performative of the ACL Message.
+	 *
+	 * @param performative the new performative
+	 */
+	final def setPerformative(performative : Performative) {
+		this.content.performative = performative
+	}
+
+	/** 
+	 * Gets the agent address of the sender of the ACL Message.
+	 *
+	 * @return the agent address of the sender of the ACL Message.
+	 */
+	@Pure
+	final def getSender : UUID {
+		this.content.sender
+	}
+
+	/** 
+	 * Sets the agent address of the sender of the ACL Message.
+	 * 
+	 * @param address is the agent address of the agent sending the ACL Message.
+	 */
+	final def setSender(address : UUID) {
+		this.content.sender = address
+		this.envelope.from = address
+	}
+
+	/** 
+	 * Gets the list of the receivers of the ACL Message.
+	 * 
+	 * @return a collection of {@link AgentAddress}
+	 */
+	@Pure
+	final def getReceivers : Collection<UUID> {
+		this.content.receivers
+	}
+
+	/** 
+	 * Sets the list of the receivers of the ACL Message.
+	 * 
+	 * @param addresses is a collection of {@link AgentAddress}
+	 */
+	final def setReceivers(addresses : Collection<UUID>) {
+		this.content.receivers = addresses
+		this.envelope.to = addresses
+	}
+
+	/** 
+	 * Gets the ACL Representation of the ACL Message.
+	 * This information will then permit to encode and decode the corresponding content.
+	 * 
+	 * @return the ACL Representation
+	 */
+	@Pure
+	final def getAclRepresentation : AclRepresentation {
+		AclRepresentation::valueOfCaseInsensitive(this.envelope.aclRepresentation)
+	}
+
+	/** 
+	 * Sets the ACL Representation of the ACL Message. (example : fipa.acl.rep.xml.std)
+	 * 
+	 * @param aclRepresentation
+	 */
+	final def setAclRepresentation(aclRepresentation : String) {
+		this.envelope.aclRepresentation = aclRepresentation		
+	}
+
+	/** 
+	 * Sets the ACL Representation of the ACL Message. (example : fipa.acl.rep.xml.std)
+	 * 
+	 * @param aclRepresentation
+	 */
+	final def setAclRepresentation(aclRepresentation : AclRepresentation) {
+		this.envelope.aclRepresentation = aclRepresentation.fipaName
+	}
+
+	/** 
+	 * Gets the ontology of the ACL Message.
+	 *
+	 * @return the ontology of the ACL Message.
+	 */
+	@Pure
+	final def getOntology : String {
+		this.content.ontology
+	}
+
+	/** 
+	 * Sets the ontology of the ACL Message.
+	 * 
+	 * <p>In many situations, the ontology parameter 
+	 * will be commonly understood by the agent community 
+	 * and so this message parameter may be omitted.
+	 * 
+	 * @param ontology
+	 */
+	final def setOntology(ontology : String) {
+		this.content.ontology = ontology
+	}
+		
+	/** 
+	 * Gets the encoding of the ACL Message.
+	 *
+	 * @return the encoding of the ACL Message.
+	 */
+	@Pure
+	final def getEncoding : String {
+		this.content.encoding
+	}
+
+	/** 
+	 * Sets the encoding of the ACL Message.
+	 *
+	 * @param encoding
+	 */
+	final def setEncoding(encoding : String) {
+		this.content.encoding = encoding
+	}
+
+	/** 
+	 * Gets the language of the ACL Message.
+	 *
+	 * @return the language of the ACL Message.
+	 */
+	@Pure
+	final def getLanguage : String {
+		this.content.language
+	}
+
+	/** 
+	 * Sets the language of the ACL Message.
+	 * 
+	 * @param language
+	 */
+	final def setLanguage(language : String) {
+		getContent.setLanguage = language
+	}
+
+	/** 
+	 * Gets the protocol used to mangage the ACL Message.
+	 *
+	 * @return the protocol used to mangage the ACL Message. 
+	 */
+	@Pure
+	final def getProtocol : String {
+		return this.content.protocol
+	}
+
+	/** 
+	 * Sets the protocol used to manage the ACL Message.
+	 *
+	 * @param protocol
+	 */
+	final def setProtocol(protocol : String) {
+		this.content.protocol = protocol
+	}
+
+	/** 
+	 * Gets the conversation Id of the ACL Message.
+	 *
+	 * @return the conversation Id of the ACL Message.
+	 */
+	@Pure
+	final def getConversationId : UUID {
+		this.content.conversationId
+	}
+
+	/** 
+	 * Sets the conversation Id of the ACL Message.
+	 * 
+	 * @param conversationId is an {@link UUID}
+	 */
+	final def setConversationId(conversationId : UUID) {
+		this.content.conversationId = conversationId
+	}
+
+}

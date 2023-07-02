@@ -1,0 +1,321 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient.constant
+
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageType
+import io.sarl.acl.message.Performative
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("PredefinedMessageType")
+class PredefinedMessageTypeTest {
+
+	var constants : Set<PredefinedMessageType>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(PredefinedMessageType::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : PredefinedMessageType) : PredefinedMessageType {
+		this.constants.remove(in)
+		return in
+	}
+
+	private def consume(in : Performative) : Performative {
+		val iter = this.constants.iterator
+		while (iter.hasNext) {
+			val v = iter.next
+			if (v.performative === in) {
+				iter.remove
+				return in
+			}
+		}
+		return in
+	}
+
+	@Test
+	def getBinaryCode : void {
+		0x01.assertEquals(PredefinedMessageType::ACCEPT_PROPOSAL.consume.binaryCode)
+		0x02.assertEquals(PredefinedMessageType::AGREE.consume.binaryCode)
+		0x03.assertEquals(PredefinedMessageType::CANCEL.consume.binaryCode)
+		0x04.assertEquals(PredefinedMessageType::CFP.consume.binaryCode)
+		0x05.assertEquals(PredefinedMessageType::CONFIRM.consume.binaryCode)
+		0x06.assertEquals(PredefinedMessageType::DISCONFIRM.consume.binaryCode)
+		0x07.assertEquals(PredefinedMessageType::FAILURE.consume.binaryCode)
+		0x08.assertEquals(PredefinedMessageType::INFORM.consume.binaryCode)
+		0x09.assertEquals(PredefinedMessageType::INFORM_IF.consume.binaryCode)
+		0x0A.assertEquals(PredefinedMessageType::INFORM_REF.consume.binaryCode)
+		0x0B.assertEquals(PredefinedMessageType::NOT_UNDERSTOOD.consume.binaryCode)
+		0x0C.assertEquals(PredefinedMessageType::PROPAGATE.consume.binaryCode)
+		0x0D.assertEquals(PredefinedMessageType::PROPOSE.consume.binaryCode)
+		0x0E.assertEquals(PredefinedMessageType::PROXY.consume.binaryCode)
+		0x0F.assertEquals(PredefinedMessageType::QUERY_IF.consume.binaryCode)
+		0x10.assertEquals(PredefinedMessageType::QUERY_REF.consume.binaryCode)
+		0x11.assertEquals(PredefinedMessageType::REFUSE.consume.binaryCode)
+		0x12.assertEquals(PredefinedMessageType::REJECT_PROPOSAL.consume.binaryCode)
+		0x13.assertEquals(PredefinedMessageType::REQUEST.consume.binaryCode)
+		0x14.assertEquals(PredefinedMessageType::REQUEST_WHEN.consume.binaryCode)
+		0x15.assertEquals(PredefinedMessageType::REQUEST_WHENEVER.consume.binaryCode)
+		0x16.assertEquals(PredefinedMessageType::SUBSCRIBE.consume.binaryCode)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("getBinarycode(Performative)")
+	def getBinaryCodePerformative : void {
+		0x01.assertEquals(PredefinedMessageType::getBinaryCode(Performative::ACCEPT_PROPOSAL.consume))
+		0x02.assertEquals(PredefinedMessageType::getBinaryCode(Performative::AGREE.consume))
+		0x03.assertEquals(PredefinedMessageType::getBinaryCode(Performative::CANCEL.consume))
+		0x04.assertEquals(PredefinedMessageType::getBinaryCode(Performative::CFP.consume))
+		0x05.assertEquals(PredefinedMessageType::getBinaryCode(Performative::CONFIRM.consume))
+		0x06.assertEquals(PredefinedMessageType::getBinaryCode(Performative::DISCONFIRM.consume))
+		0x07.assertEquals(PredefinedMessageType::getBinaryCode(Performative::FAILURE.consume))
+		0x08.assertEquals(PredefinedMessageType::getBinaryCode(Performative::INFORM.consume))
+		0x09.assertEquals(PredefinedMessageType::getBinaryCode(Performative::INFORM_IF.consume))
+		0x0A.assertEquals(PredefinedMessageType::getBinaryCode(Performative::INFORM_REF.consume))
+		0x0B.assertEquals(PredefinedMessageType::getBinaryCode(Performative::NOT_UNDERSTOOD.consume))
+		0x0C.assertEquals(PredefinedMessageType::getBinaryCode(Performative::PROPAGATE.consume))
+		0x0D.assertEquals(PredefinedMessageType::getBinaryCode(Performative::PROPOSE.consume))
+		0x0E.assertEquals(PredefinedMessageType::getBinaryCode(Performative::PROXY.consume))
+		0x0F.assertEquals(PredefinedMessageType::getBinaryCode(Performative::QUERY_IF.consume))
+		0x10.assertEquals(PredefinedMessageType::getBinaryCode(Performative::QUERY_REF.consume))
+		0x11.assertEquals(PredefinedMessageType::getBinaryCode(Performative::REFUSE.consume))
+		0x12.assertEquals(PredefinedMessageType::getBinaryCode(Performative::REJECT_PROPOSAL.consume))
+		0x13.assertEquals(PredefinedMessageType::getBinaryCode(Performative::REQUEST.consume))
+		0x14.assertEquals(PredefinedMessageType::getBinaryCode(Performative::REQUEST_WHEN.consume))
+		0x15.assertEquals(PredefinedMessageType::getBinaryCode(Performative::REQUEST_WHENEVER.consume))
+		0x16.assertEquals(PredefinedMessageType::getBinaryCode(Performative::SUBSCRIBE.consume))
+		assertNoMoreConstant
+	}
+
+	@Test
+	def getPerformative : void {
+		Performative::ACCEPT_PROPOSAL.assertSame(PredefinedMessageType::ACCEPT_PROPOSAL.consume.performative)
+		Performative::AGREE.assertSame(PredefinedMessageType::AGREE.consume.performative)
+		Performative::CANCEL.assertSame(PredefinedMessageType::CANCEL.consume.performative)
+		Performative::CFP.assertSame(PredefinedMessageType::CFP.consume.performative)
+		Performative::CONFIRM.assertSame(PredefinedMessageType::CONFIRM.consume.performative)
+		Performative::DISCONFIRM.assertSame(PredefinedMessageType::DISCONFIRM.consume.performative)
+		Performative::FAILURE.assertSame(PredefinedMessageType::FAILURE.consume.performative)
+		Performative::INFORM.assertSame(PredefinedMessageType::INFORM.consume.performative)
+		Performative::INFORM_IF.assertSame(PredefinedMessageType::INFORM_IF.consume.performative)
+		Performative::INFORM_REF.assertSame(PredefinedMessageType::INFORM_REF.consume.performative)
+		Performative::NOT_UNDERSTOOD.assertSame(PredefinedMessageType::NOT_UNDERSTOOD.consume.performative)
+		Performative::PROPAGATE.assertSame(PredefinedMessageType::PROPAGATE.consume.performative)
+		Performative::PROPOSE.assertSame(PredefinedMessageType::PROPOSE.consume.performative)
+		Performative::PROXY.assertSame(PredefinedMessageType::PROXY.consume.performative)
+		Performative::QUERY_IF.assertSame(PredefinedMessageType::QUERY_IF.consume.performative)
+		Performative::QUERY_REF.assertSame(PredefinedMessageType::QUERY_REF.consume.performative)
+		Performative::REFUSE.assertSame(PredefinedMessageType::REFUSE.consume.performative)
+		Performative::REJECT_PROPOSAL.assertSame(PredefinedMessageType::REJECT_PROPOSAL.consume.performative)
+		Performative::REQUEST.assertSame(PredefinedMessageType::REQUEST.consume.performative)
+		Performative::REQUEST_WHEN.assertSame(PredefinedMessageType::REQUEST_WHEN.consume.performative)
+		Performative::REQUEST_WHENEVER.assertSame(PredefinedMessageType::REQUEST_WHENEVER.consume.performative)
+		Performative::SUBSCRIBE.assertSame(PredefinedMessageType::SUBSCRIBE.consume.performative)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("getPerformative(byte)")
+	def getPerformativeByte : void {
+		Performative::ACCEPT_PROPOSAL.consume.assertSame(PredefinedMessageType::getPerformative(0x01 as byte))
+		Performative::AGREE.consume.assertSame(PredefinedMessageType::getPerformative(0x02 as byte))
+		Performative::CANCEL.consume.assertSame(PredefinedMessageType::getPerformative(0x03 as byte))
+		Performative::CFP.consume.assertSame(PredefinedMessageType::getPerformative(0x04 as byte))
+		Performative::CONFIRM.consume.assertSame(PredefinedMessageType::getPerformative(0x05 as byte))
+		Performative::DISCONFIRM.consume.assertSame(PredefinedMessageType::getPerformative(0x06 as byte))
+		Performative::FAILURE.consume.assertSame(PredefinedMessageType::getPerformative(0x07 as byte))
+		Performative::INFORM.consume.assertSame(PredefinedMessageType::getPerformative(0x08 as byte))
+		Performative::INFORM_IF.consume.assertSame(PredefinedMessageType::getPerformative(0x09 as byte))
+		Performative::INFORM_REF.consume.assertSame(PredefinedMessageType::getPerformative(0x0A as byte))
+		Performative::NOT_UNDERSTOOD.consume.assertSame(PredefinedMessageType::getPerformative(0x0B as byte))
+		Performative::PROPAGATE.consume.assertSame(PredefinedMessageType::getPerformative(0x0C as byte))
+		Performative::PROPOSE.consume.assertSame(PredefinedMessageType::getPerformative(0x0D as byte))
+		Performative::PROXY.consume.assertSame(PredefinedMessageType::getPerformative(0x0E as byte))
+		Performative::QUERY_IF.consume.assertSame(PredefinedMessageType::getPerformative(0x0F as byte))
+		Performative::QUERY_REF.consume.assertSame(PredefinedMessageType::getPerformative(0x10 as byte))
+		Performative::REFUSE.consume.assertSame(PredefinedMessageType::getPerformative(0x11 as byte))
+		Performative::REJECT_PROPOSAL.consume.assertSame(PredefinedMessageType::getPerformative(0x12 as byte))
+		Performative::REQUEST.consume.assertSame(PredefinedMessageType::getPerformative(0x13 as byte))
+		Performative::REQUEST_WHEN.consume.assertSame(PredefinedMessageType::getPerformative(0x14 as byte))
+		Performative::REQUEST_WHENEVER.consume.assertSame(PredefinedMessageType::getPerformative(0x15 as byte))
+		Performative::SUBSCRIBE.consume.assertSame(PredefinedMessageType::getPerformative(0x16 as byte))
+		assertNoMoreConstant
+	}
+
+	@Test
+	def toJsonString : void {
+		"accept_proposal".assertEquals(PredefinedMessageType::ACCEPT_PROPOSAL.consume.toJsonString)
+		"agree".assertEquals(PredefinedMessageType::AGREE.consume.toJsonString)
+		"cancel".assertEquals(PredefinedMessageType::CANCEL.consume.toJsonString)
+		"cfp".assertEquals(PredefinedMessageType::CFP.consume.toJsonString)
+		"confirm".assertEquals(PredefinedMessageType::CONFIRM.consume.toJsonString)
+		"disconfirm".assertEquals(PredefinedMessageType::DISCONFIRM.consume.toJsonString)
+		"failure".assertEquals(PredefinedMessageType::FAILURE.consume.toJsonString)
+		"inform".assertEquals(PredefinedMessageType::INFORM.consume.toJsonString)
+		"inform_if".assertEquals(PredefinedMessageType::INFORM_IF.consume.toJsonString)
+		"inform_ref".assertEquals(PredefinedMessageType::INFORM_REF.consume.toJsonString)
+		"not_understood".assertEquals(PredefinedMessageType::NOT_UNDERSTOOD.consume.toJsonString)
+		"propose".assertEquals(PredefinedMessageType::PROPOSE.consume.toJsonString)
+		"query_if".assertEquals(PredefinedMessageType::QUERY_IF.consume.toJsonString)
+		"query_ref".assertEquals(PredefinedMessageType::QUERY_REF.consume.toJsonString)
+		"refuse".assertEquals(PredefinedMessageType::REFUSE.consume.toJsonString)
+		"reject_proposal".assertEquals(PredefinedMessageType::REJECT_PROPOSAL.consume.toJsonString)
+		"request".assertEquals(PredefinedMessageType::REQUEST.consume.toJsonString)
+		"request_when".assertEquals(PredefinedMessageType::REQUEST_WHEN.consume.toJsonString)
+		"request_whenever".assertEquals(PredefinedMessageType::REQUEST_WHENEVER.consume.toJsonString)
+		"subscribe".assertEquals(PredefinedMessageType::SUBSCRIBE.consume.toJsonString)
+		"proxy".assertEquals(PredefinedMessageType::PROXY.consume.toJsonString)
+		"propagate".assertEquals(PredefinedMessageType::PROPAGATE.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		PredefinedMessageType::ACCEPT_PROPOSAL.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("accept_proposal"))
+		PredefinedMessageType::ACCEPT_PROPOSAL.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Accept_Proposal"))
+		PredefinedMessageType::ACCEPT_PROPOSAL.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Accept-Proposal"))
+
+		PredefinedMessageType::AGREE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("agree"))
+		PredefinedMessageType::AGREE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Agree"))
+
+		PredefinedMessageType::CANCEL.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("cancel"))
+		PredefinedMessageType::CANCEL.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Cancel"))
+
+		PredefinedMessageType::CFP.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("cfp"))
+		PredefinedMessageType::CFP.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Cfp"))
+
+		PredefinedMessageType::CONFIRM.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("confirm"))
+		PredefinedMessageType::CONFIRM.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Confirm"))
+
+		PredefinedMessageType::DISCONFIRM.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("disconfirm"))
+		PredefinedMessageType::DISCONFIRM.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Disconfirm"))
+
+		PredefinedMessageType::FAILURE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("failure"))
+		PredefinedMessageType::FAILURE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Failure"))
+
+		PredefinedMessageType::INFORM.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("inform"))
+		PredefinedMessageType::INFORM.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Inform"))
+
+		PredefinedMessageType::INFORM_IF.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("inform_if"))
+		PredefinedMessageType::INFORM_IF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Inform_If"))
+		PredefinedMessageType::INFORM_IF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Inform-If"))
+
+		PredefinedMessageType::INFORM_REF.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("inform_ref"))
+		PredefinedMessageType::INFORM_REF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Inform_Ref"))
+		PredefinedMessageType::INFORM_REF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Inform-Ref"))
+
+		PredefinedMessageType::NOT_UNDERSTOOD.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("not_understood"))
+		PredefinedMessageType::NOT_UNDERSTOOD.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Not_Understood"))
+		PredefinedMessageType::NOT_UNDERSTOOD.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Not-Understood"))
+
+		PredefinedMessageType::PROPAGATE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("propagate"))
+		PredefinedMessageType::PROPAGATE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Propagate"))
+
+		PredefinedMessageType::PROPOSE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("propose"))
+		PredefinedMessageType::PROPOSE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Propose"))
+
+		PredefinedMessageType::PROXY.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("proxy"))
+		PredefinedMessageType::PROXY.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Proxy"))
+
+		PredefinedMessageType::QUERY_IF.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("query_if"))
+		PredefinedMessageType::QUERY_IF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Query_If"))
+		PredefinedMessageType::QUERY_IF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Query-If"))
+
+		PredefinedMessageType::QUERY_REF.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("query_ref"))
+		PredefinedMessageType::QUERY_REF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Query_Ref"))
+		PredefinedMessageType::QUERY_REF.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Query-Ref"))
+
+		PredefinedMessageType::REFUSE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("refuse"))
+		PredefinedMessageType::REFUSE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Refuse"))
+
+		PredefinedMessageType::REJECT_PROPOSAL.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("reject_proposal"))
+		PredefinedMessageType::REJECT_PROPOSAL.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Reject_Proposal"))
+		PredefinedMessageType::REJECT_PROPOSAL.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Reject-Proposal"))
+
+		PredefinedMessageType::REQUEST.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("request"))
+		PredefinedMessageType::REQUEST.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Request"))
+
+		PredefinedMessageType::REQUEST_WHEN.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("request_when"))
+		PredefinedMessageType::REQUEST_WHEN.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Request_When"))
+		PredefinedMessageType::REQUEST_WHEN.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Request-When"))
+
+		PredefinedMessageType::REQUEST_WHENEVER.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("request_whenever"))
+		PredefinedMessageType::REQUEST_WHENEVER.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Request_Whenever"))
+		PredefinedMessageType::REQUEST_WHENEVER.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Request-Whenever"))
+
+		PredefinedMessageType::SUBSCRIBE.consume.assertSame(PredefinedMessageType::valueOfCaseInsensitive("subscribe"))
+		PredefinedMessageType::SUBSCRIBE.assertSame(PredefinedMessageType::valueOfCaseInsensitive("Subscribe"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = PredefinedMessageType::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = PredefinedMessageType::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = PredefinedMessageType::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	@Test
+	def getJsonLabels : void {
+		("accept_proposal, agree, cancel, cfp, confirm, disconfirm, failure, "
+		+ "inform, inform_if, inform_ref, not_understood, propagate, propose, "
+		+ "proxy, query_if, query_ref, refuse, reject_proposal, request, "
+		+ "request_when, request_whenever, subscribe").assertEquals(PredefinedMessageType::jsonLabels)
+	}
+
+}

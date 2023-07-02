@@ -1,0 +1,75 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.manager.mocks
+
+import io.sarl.acl.manager.ConversationManager
+import io.sarl.acl.manager.StandardConversationManager
+import io.sarl.acl.protocol.AclProtocolId
+import io.sarl.acl.protocol.pingpong.InitiatorSarlPingPongProtocol
+import io.sarl.acl.protocol.pingpong.PongReceived
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
+import java.util.UUID
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("potential_field_synchronization_problem")
+agent PingAgent {
+
+	uses Lifecycle
+	uses TestingCapacity
+	uses ConversationManager
+
+	var participant : UUID
+
+	var conversation : InitiatorSarlPingPongProtocol
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))		
+		setSkill(new StandardConversationManager)
+		this.participant = UUID::randomUUID
+		typeof(PongAgent).spawnWithID(this.participant, buildAgentInitializationParameters)
+	}
+
+	on AgentSpawned [occurrence.agentID == this.participant] {
+		this.conversation = createConversationAsInitiator(AclProtocolId::SARL_PINGPONG)
+		val ex = getLastError
+		if (ex !== null) {
+			throw ex
+		}
+		this.conversation.timeoutEnable = false
+		this.conversation.ping(this.participant, "xyz")
+	}
+
+	on PongReceived {
+		addResult("PONG-RECEIVED")
+		killMeSoon
+	}
+
+}

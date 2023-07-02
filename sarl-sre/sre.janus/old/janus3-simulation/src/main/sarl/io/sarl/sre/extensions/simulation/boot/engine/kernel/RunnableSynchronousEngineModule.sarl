@@ -1,0 +1,95 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.boot.engine.kernel
+
+import com.google.inject.AbstractModule
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.sre.extensions.simulation.configs.SimulationConfig
+import io.sarl.sre.extensions.simulation.engine.kernel.RunnableSynchronousEngine
+import io.sarl.sre.extensions.simulation.engine.kernel.SynchronousEngine
+import io.sarl.sre.extensions.simulation.engine.kernel.SynchronousEngineExternalController
+import io.sarl.sre.extensions.simulation.engine.schedule.AgentScheduler
+import io.sarl.sre.extensions.simulation.engine.services.agentenvironment.AgentEnvironmentService
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.services.time.TimeService
+import javax.inject.Singleton
+
+/** 
+ * Module for the synchronous engine.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class RunnableSynchronousEngineModule extends AbstractModule {
+
+	protected override configure {
+		//
+	}
+
+	@Provides
+	@SynchronousEngine
+	@Singleton
+	def getSynchronousEngine(scheduler : AgentScheduler, timeService : TimeService,
+		simulationConfiguration : SimulationConfig, lifecycleService : LifecycleService,
+		executorService : ExecutorService, logger : LoggingService,
+		agentEnvironmentService : AgentEnvironmentService, 
+		controller : SynchronousEngineExternalController) : Runnable {
+		new RunnableSynchronousEngine(
+			scheduler,
+			timeService,
+			simulationConfiguration,
+			lifecycleService,
+			executorService,
+			logger,
+			agentEnvironmentService,
+			controller)
+	}
+
+}
+
+/** Provider of the module for the synchronous engine.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class RunnableSynchronousEngineModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new RunnableSynchronousEngineModule
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::RunnableSynchronousEngineModuleProvider_0);
+	}
+
+}

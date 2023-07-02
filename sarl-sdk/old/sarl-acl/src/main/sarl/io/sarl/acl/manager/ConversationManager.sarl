@@ -1,0 +1,203 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.manager
+
+import io.sarl.acl.protocol.AclProtocol
+import io.sarl.acl.protocol.AclProtocolChangeListener
+import io.sarl.acl.protocol.AclProtocolFinishingListener
+import io.sarl.acl.protocol.AclProtocolTimeoutListener
+import io.sarl.acl.protocol.ProtocolState
+import io.sarl.lang.core.DefaultSkill
+import java.util.UUID
+import io.sarl.acl.protocol.AclProtocolId
+
+/** 
+ * Conversation Manager for SARL agents.
+ *
+ * <p>This capacity lets the agent manage its conversations using protocols.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@DefaultSkill(typeof(StandardConversationManager))
+capacity ConversationManager {
+
+	/** 
+	 * Creates a protocol as the participant.
+	 *
+	 * <p>This function adds the protocol's behavior to the agent.
+	 *
+	 * <p>A call to this function is equivalent to:<pre>{@code 
+	 * var protocol = new Participant<protocolType>
+	 * protocol.name = name
+	 * registerBehavior(protocol)
+	 * }</pre>
+	 *
+	 * @param protocolType is the protocol type
+	 * @param conversationId is the identifier of the conversation.
+	 * @param expectedType is the expected type for the replied protocol.
+	 * @param name conversation name.
+	 * @return the protocol created or {@code null} if no protocol could be created.
+	 */
+	def createConversationAsParticipant(protocolType : AclProtocolId, conversationId : UUID, expectedType : Class<T> = null, name : String = null) : T with T extends AclProtocol
+
+	/** 
+	 * Creates a protocol as the participant.
+	 *
+	 * <p>This function adds the protocol's behavior to the agent.
+	 *
+	 * <p>A call to this function is equivalent to:<pre>{@code 
+	 * var protocol = new Participant<protocolType>
+	 * protocol.name = name
+	 * registerBehavior(protocol)
+	 * }</pre>
+	 *
+	 * @param protocolType is the protocol type.
+	 * @param conversationId is the identifier of the conversation.
+	 * @param expectedType is the expected type for the replied protocol.
+	 * @param name conversation name.
+	 * @return the protocol created or {@code null} if no protocol could be created.
+	 */
+	def createConversationAsParticipant(protocolType : String, conversationId : UUID, expectedType : Class<T> = null, name : String = null) : T with T extends AclProtocol
+
+	/** 
+	 * Creates a protocol as the initiator.
+	 * 
+	 * <p>This function adds the protocol's behavior to the agent.
+	 * 
+	 * <p>A call to this function is equivalent to:<pre>{@code 
+	 * var protocol = new Initiator<protocolType>
+	 * protocol.name = name
+	 * registerBehavior(protocol)
+	 * }</pre>
+	 *
+	 * @param protocolType the protocol type.
+	 * @param expectedType is the expected type for the replied protocol.
+	 * @param name conversation name.
+	 * @return the protocol created or {@code null} if no protocol could be created.
+	 */
+	def createConversationAsInitiator(protocolType : AclProtocolId, expectedType : Class<T> = null, name : String = null) : T with T extends AclProtocol
+
+	/**
+	 * Creates a protocol as the initiator.
+	 * 
+	 * <p>This function adds the protocol's behavior to the agent.
+	 * 
+	 * <p>A call to this function is equivalent to:<pre>{@code 
+	 * var protocol = new Initiator<protocolType>
+	 * protocol.name = name
+	 * registerBehavior(protocol)
+	 * }</pre>
+	 *
+	 * @param protocolType the protocol type.
+	 * @param expectedType is the expected type for the replied protocol.
+	 * @param name conversation name.
+	 * @return the protocol created or {@code null} if no protocol could be created.
+	 */
+	def createConversationAsInitiator(protocolType : String, expectedType : Class<T> = null, name : String = null) : T with T extends AclProtocol
+
+	/** 
+	 * Gets a protocol with the specified conversation id
+	 *
+	 * @param conversationId the identifier to search for.
+	 * @param expectedType is the expected type for the replied protocol.
+	 * @return the protocol with the specified conversationId or {@code null} if the conversation cannot be found.
+	 */
+	@Pure
+	def getConversation(conversationId : UUID, expectedType : Class<T> = null) : T with T extends AclProtocol
+	
+	/**
+	 * Delete current conversations in the given state.
+	 * 
+	 * @param state the state. If {@null}, all the conversations will be removed.
+	 */
+	def removeConversations(state : ProtocolState)
+
+	/** 
+	 * Delete current conversation with the given identifier.
+	 * 
+	 * @param conversationId the identifier of the conversation to b removed.
+	 * @return the removed conversation or {@code null} if the conversation cannot be found.
+	 */
+	def removeConversation(conversationId : UUID) : AclProtocol
+
+	/** 
+	 * Gets the list of current conversations.
+	 *
+	 * @return the list of current conversations.
+	 */
+	@Pure
+	def getConversations : Iterable<AclProtocol>
+
+	/** Add a listener on all protocol's timeouts. */
+	def addProtocolTimeoutListener(listener : AclProtocolTimeoutListener)
+
+	/** Remove a listener on all protocol's timeout. */
+	def removeProtocolTimeoutListener(listener : AclProtocolTimeoutListener)
+
+	/** Add a listener on all protocol's finishing. */
+	def addProtocolFinishingListener(listener : AclProtocolFinishingListener)
+
+	/** Remove a listener on protocol's finishing. */
+	def removeProtocolFinishingListener(listener : AclProtocolFinishingListener)
+
+	/** Add a listener on protocol's changes. */
+	def addProtocolChangeListener(listener : AclProtocolChangeListener)
+
+	/** Remove a listener on protocol's change. */
+	def removeProtocolChangeListener(listener : AclProtocolChangeListener)
+
+	/** Add a listener on conversation changes. */
+	def addConversationListener(listener : ConversationListener)
+
+	/** Remove a listener on conversation changes. */
+	def removeConversationListener(listener : ConversationListener)
+
+	/** Change the auto-creation flag for the participant side protocols. */
+	def setParticipantSideAutoCreation(enable : boolean)
+
+	/** Replies if the participant-side protocols are automatically created when an ACL message is received. */
+	def getParticipantSideAutoCreation : boolean
+
+	/** Change the auto-deletion flag for the participant side protocols. */
+	def setParticipantSideAutoDeletion(enable : boolean)
+
+	/** Replies if the participant-side protocols are automatically removed when finished. */
+	def getParticipantSideAutoDeletion : boolean
+
+	/** Change the agent event firing flag. */
+	def setEventFiringInAgentContext(enable : boolean)
+
+	/** Replies the agent event firing flag.
+	 *
+	 * @return {@code true} if events are fired into the agent inner context.
+	 */
+	def getEventFiringInAgentContext : boolean
+
+	/** Replies the last encountered error into the manager. */
+	def getLastError : Throwable
+
+}

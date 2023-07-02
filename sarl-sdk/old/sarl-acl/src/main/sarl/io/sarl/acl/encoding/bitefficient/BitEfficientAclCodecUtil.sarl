@@ -1,0 +1,398 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.bitefficient
+
+import io.sarl.acl.encoding.bitefficient.constant.AgentIdentifier
+import io.sarl.acl.encoding.bitefficient.constant.BinaryDateTimeToken
+import io.sarl.acl.encoding.bitefficient.constant.BinaryString
+import io.sarl.acl.encoding.bitefficient.constant.BinaryWord
+import io.sarl.acl.encoding.bitefficient.constant.EndOfCollection
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageParameter
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageType
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.ByteArrayBuffer
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import java.util.Date
+import java.util.List
+import java.util.UUID
+
+import static extension io.sarl.acl.util.Iso8601DateTimeUtil.*
+import static extension io.sarl.acl.util.Strings2.*
+
+/** 
+ * Helper used in bit efficient decoding. Make the BitEfficientACLCodec class simplier and easier to read.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see <a href="http://fipa.org/specs/fipa00069/SC00069G.html">FIPA ACL Message Representation in Bit Efficient Specification</a>
+ */
+final class BitEfficientAclCodecUtil {
+
+	private new {}
+
+	/** 
+	 * Read the performative-byte from the buffer.
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the corresponding Performative
+	 */
+	static def decodePerformative(buffer : ByteArrayBuffer) : Performative {
+		PredefinedMessageType::getPerformative(buffer.readByte)
+	}
+
+	/** 
+	 * Read a agent address from the buffer.
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the corresponding Agent Address
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def decodeAgent(buffer : ByteArrayBuffer) : UUID {
+		var ^agent : UUID
+		var b = buffer.readByte
+		if (b === AgentIdentifier::AGENT_NAME_BEGIN.binaryCode) {
+			var s = buffer.readString
+			if (s.isNullOrEmpty) {
+				throw new IllegalArgumentException("agent identifier cannot be empty")
+			}
+			^agent = s as UUID
+			if (^agent === null) {
+				throw new IllegalArgumentException("agent identifier is not an UUID: " + s)
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+		b = buffer.readByte
+		if (b !== AgentIdentifier::AGENT_NAME_END.binaryCode) {
+			throw new IllegalArgumentException("Expecting the byte for agent name end")
+		}
+		return ^agent
+	}
+
+	/** 
+	 * Read a collection of agent address from the buffer
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the corresponding collection of Agent addresses
+	 */
+	@Pure
+	@SuppressWarnings("unused_local_variable")
+	static def decodeAgents(buffer : ByteArrayBuffer) : List<UUID> {
+		val agents = newArrayList
+		while (buffer.readByteAndRollBack !== EndOfCollection::END_OF_COLLECTION.binaryCode) {
+			val agt = buffer.decodeAgent
+			if (agt !== null) {
+				agents += agt
+			}
+		}
+		var b = buffer.readByte
+		if (b !== EndOfCollection::END_OF_COLLECTION.binaryCode) {
+			throw new IllegalArgumentException("Expecting the byte for collection end")
+		}
+		return agents
+	}
+
+	/** 
+	 * Read a date from the buffer and replies its string representation.
+	 * 
+	 * @param buffer buffer from which bytes are read.
+	 * @return the corresponding date.
+	 */
+	static def decodeDateAsString(buffer : ByteArrayBuffer) : String {
+		val type = buffer.readByte
+		val bytesRead = buffer.readBytes(9)
+		val dt = bytesRead.parseByteArrayAsString
+		val s = new StringBuilder(dt)
+
+		if (type === BinaryDateTimeToken::ABS_TIME_TYPE_DESIGNATOR.binaryCode ||
+			type === BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.binaryCode ||
+			type === BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.binaryCode) {
+			val b = buffer.readByte
+			s.append(b as char)
+		}
+
+		if (type === BinaryDateTimeToken::REL_TIME_POS.binaryCode ||
+			type === BinaryDateTimeToken::REL_TIME_POS_TYPE_DESIGNATOR.binaryCode) {
+			s.insert(0, '+')
+		} else if (type === BinaryDateTimeToken::REL_TIME_NEG.binaryCode ||
+			type == BinaryDateTimeToken::REL_TIME_NEG_TYPE_DESIGNATOR.binaryCode) {
+			s.insert(0, '-')
+		}
+
+		return s.toString
+	}
+
+	/** 
+	 * Read a date from the buffer.
+	 * 
+	 * @param buffer buffer from which bytes are read.
+	 * @return the corresponding date.
+	 */
+	static def decodeDate(buffer : ByteArrayBuffer) : Date {
+		buffer.decodeDateAsString.parse
+	}
+
+	/** 
+	 * Read a string parameter from the buffer.
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the corresponding String parameter
+	 */
+	static def decodeParameter(buffer : ByteArrayBuffer) : String {
+		buffer.readString
+	}
+
+	/** 
+	 * Read an UUID from the buffer
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the corresponding UUID
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def decodeUUID(buffer : ByteArrayBuffer) : UUID {
+		buffer.readString as UUID
+	}
+
+	/** 
+	 * Read a content of an ACLMessage from the buffer
+	 * 
+	 * @param buffer buffer from which bytes are read
+	 * @param offset the offset to start reading. The value is updated according to the number of read bytes.
+	 * @return the string buffer content
+	 */
+	static def decodeMessageContent(buffer : ByteArrayBuffer) : String {
+		buffer.readString
+	}
+
+	private static def writeWord(buffer : List<Byte>, word : String) {
+		buffer += BinaryWord::WORD_BEGIN.binaryCode
+		if (word !== null) {
+			buffer += word.bytes
+		}
+		buffer += BinaryWord::WORD_END.binaryCode
+	}
+
+	private static def writeAgentIdentifier(buffer : List<Byte>, ^agent : UUID) {
+		assert ^agent !== null
+		buffer += AgentIdentifier::AGENT_NAME_BEGIN.binaryCode
+		buffer.writeWord(^agent.toString)
+		buffer += AgentIdentifier::AGENT_NAME_END.binaryCode
+	}
+
+	private static def writeDate(buffer : List<Byte>, date : Date) {
+		buffer += BinaryDateTimeToken::ABS_TIME.binaryCode
+		buffer += Iso8601DateTimeUtil::toByteArray(date)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private static def getBinStringId(s : String) : BinaryString {
+		if (s.charAt(0) !== ('#' as char)) { 
+			return BinaryString::STRING_BEGIN
+		}
+		if (s.length < 256)  {
+			return BinaryString::LEN8_BYTE_SEQ_BEGIN
+		}
+		if (s.length < 65536) {
+			return BinaryString::LEN16_BYTE_SEQ_BEGIN
+		}
+		return BinaryString::LEN32_BYTE_SEQ_BEGIN
+	}
+
+	private static def writeBLEHeader(buffer : List<Byte>, length : int) {
+        if (length < 256) {
+            buffer += length.bitwiseAnd(0xFF) as byte
+        } else if (length < 65536) {
+            buffer += (length >> 8).bitwiseAnd(0xFF) as byte
+            buffer += length.bitwiseAnd(0xFF) as byte
+        } else {
+        	buffer += (length >> 24).bitwiseAnd(0xFF) as byte
+            buffer += (length >> 16).bitwiseAnd(0xFF) as byte
+            buffer += (length >> 8).bitwiseAnd(0xFF) as byte
+            buffer += length.bitwiseAnd(0xFF) as byte
+        }
+    }
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private static def writeString(buffer : List<Byte>, value : String) {
+		if (value.nullOrEmpty) {
+			return;
+		}
+		
+		var isBLE = (value.charAt(0) === ('#' as char))
+		
+		var id = value.binStringId
+		buffer += id.binaryCode
+		
+		var newString : String
+		if (isBLE) {
+			newString = value.substring(value.indexOf('"') + 1)
+			buffer.writeBLEHeader(newString.length)
+		} else {
+			newString = value
+		}
+		
+		buffer += newString.bytes
+		
+		if (id === BinaryString::STRING_BEGIN) {
+			buffer += BinaryString::STRING_END.binaryCode
+		}
+	}
+
+	/** 
+	 * Add byte of the given performative.
+	 * 
+	 * @param buffer buffer in which bytes will be added.
+	 * @param performative a performative of an ACLMessage.
+	 */
+	static def dumpPerformative(buffer : List<Byte>, performative : Performative) : void {
+		buffer += PredefinedMessageType::getBinaryCode(performative)
+	}
+
+	/** 
+	 * Add bytes of the given agent. Add the message parameter (sender, receiver) and then add the agent identifier
+	 * representation that encode the information of the agent address.
+	 * 
+	 * @param buffer buffer in which bytes will be added
+	 * @param agent agent address to dump
+	 * @param agentType byte representation of the role of the agent to encode (sender = 0x02, receiver = 0x03, ...)
+	 */
+	static def dumpAgent(buffer : List<Byte>, ^agent : UUID, agentType : PredefinedMessageParameter) : void {
+		if (^agent !== null) {
+			buffer += agentType.binaryCode
+			buffer.writeAgentIdentifier(^agent)
+		}
+	}
+
+	/** 
+	 * Add bytes of the given agents. Add the message parameter (sender, receiver) and then add an agent identifier
+	 * representation that encode the information of a agent address for the given collection.
+	 * 
+	 * @param buffer buffer in which bytes will be added
+	 * @param agents list of agent addresses to dump
+	 * @param agentType byte representation of the role of the agent to encode (sender = 0x02, receiver = 0x03, ...)
+	 */
+	static def dumpAgents(buffer : List<Byte>, agents : Iterable<UUID>, agentType : PredefinedMessageParameter) : void {
+		if (agents !== null) {
+			buffer += agentType.binaryCode
+			val iter = agents.iterator
+			while (iter.hasNext) {
+				val ^agent = iter.next
+				buffer.writeAgentIdentifier(^agent)
+			}
+			buffer.add(EndOfCollection::END_OF_COLLECTION.binaryCode)
+		}
+	}
+
+	/**
+	 * Add bytes for the reply by parameter. The reply by parameter is always encoded as a date
+	 * 
+	 * @param buffer buffer in which bytes will be added
+	 * @param date the date to dump
+	 */
+	static def dumpReplyBy(buffer : List<Byte>, date : Date) : void {
+		if (date !== null) {
+			buffer += PredefinedMessageParameter::PARAM_REPLY_BY.binaryCode
+			buffer.writeDate(date)
+		}
+	}
+
+	private static def isExpression(s : String) : boolean {
+		s.charAt(0) == '('
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private static def isString(s : String) : boolean {
+		s.charAt(0) === ('"' as char) || s.charAt(0) === ('#' as char)
+	}
+
+	/** 
+	 * Add bytes for the given parameter and its type.
+	 * Deal with String and Word cases.
+	 * 
+	 * @param buffer buffer in which bytes will be added.
+	 * @param name the name of the parameter.
+	 * @param value the value to dump.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	static def dumpParameter(buffer : List<Byte>, name : PredefinedMessageParameter, value : String) : void {
+		if (value.nullOrEmpty) {
+			return
+		}
+        
+		var newString = value
+        if (value.contains(" ")) {
+            if (value.charAt(0) !== ('"' as char)) {
+            	newString = '"' + value.escape + '"'
+            }
+        }
+		
+        buffer += name.binaryCode
+        
+        if (newString.isExpression) {
+        	buffer.writeString(newString)
+        } else if (newString.isString) {
+        	buffer.writeString(newString)
+        } else {
+        	buffer.writeWord(newString)
+        }
+	}
+
+	/**
+	 * Add bytes for the given parameter wich is a simple word and will be encoded as simple word.
+	 * 
+	 * @param buffer buffer in which bytes will be added
+	 * @param name the name of the parameter.
+	 * @param word the value to dump.
+	 */
+	static def dumpWordParameter(buffer : List<Byte>, name : PredefinedMessageParameter, word : String) : void {
+		if (word !== null) {
+			buffer += name.binaryCode
+			buffer.writeWord(word)
+		}
+	}
+
+	/** 
+	 * Add bytes for the content parameter. The content is always encoded as a String.
+	 * 
+	 * @param buffer buffer in which bytes will be added
+	 * @param content content of an ACLMessage
+	 */
+	static def dumpMessageContent(buffer : List<Byte>, content : Object) : void {
+		if (content !== null) {
+			var value = content.toString
+			if (value === null) {
+				value = ""
+			}
+			buffer += PredefinedMessageParameter::PARAM_CONTENT.binaryCode
+			buffer.writeString(value)
+		}
+	}
+
+}

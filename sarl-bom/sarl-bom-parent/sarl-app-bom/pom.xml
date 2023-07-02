@@ -39,6 +39,11 @@
 				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>vmutils</artifactId>
 				<version>${afc.version}</version>
@@ -102,6 +107,41 @@
 				<groupId>io.sarl.docs</groupId>
 				<artifactId>docs.generator</artifactId>
 				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.slf4j</groupId>
+				<artifactId>slf4j-log4j</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-yaml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-xml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>net.sf.jopt-simple</groupId>
+			    <artifactId>jopt-simple</artifactId>
+			    <version>5.0.3</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

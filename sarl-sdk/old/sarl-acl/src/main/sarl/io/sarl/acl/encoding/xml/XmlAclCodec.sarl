@@ -1,0 +1,318 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.xml
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import io.sarl.acl.encoding.AbstractAclMessageContentEncodingService
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.Iso8601DateFormat
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.FilterOutputStream
+import java.io.PrintStream
+import javax.xml.parsers.DocumentBuilderFactory
+
+import static extension io.sarl.acl.encoding.xml.XmlAclCodecUtil.*
+
+/** 
+ * This class encodes an ACLMessageContent in XML or decodes an
+ * ACLMessageContent encoded in bytes to XML.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class XmlAclCodec extends AbstractAclMessageContentEncodingService {
+
+	var contentMapper : XmlMapper
+
+	override getAclRepresentation : AclRepresentation {
+		AclRepresentation::XML
+	}
+	
+	/** Create an instance of the XML mapper. */
+	protected def createXmlObjectMapper : XmlMapper {
+		val mapper = new XmlMapper
+		mapper.disable(SerializationFeature::INDENT_OUTPUT)
+		mapper.disable(SerializationFeature::WRITE_DATES_AS_TIMESTAMPS)
+		mapper.dateFormat = new Iso8601DateFormat
+		mapper.activateDefaultTyping(
+				mapper.polymorphicTypeValidator,
+				DefaultTyping::NON_FINAL, JsonTypeInfo.As::PROPERTY)
+		return mapper
+	}
+
+	/**
+	 * Return XML serializer-deserializer for message content used to convert Map to/from XML byte array.
+	 *
+	 * @return the mapper
+	 */
+	@Pure
+	protected def getContentXmlMapper : XmlMapper {
+		if (this.contentMapper === null) {
+			this.contentMapper = createXmlObjectMapper
+		}
+		return this.contentMapper
+	}
+	
+	/**
+	 * Change the XML serializer-desrializer for message content used to convert Map to/from XML byte array.
+	 *
+	 * @param mapper the new mapper.
+	 */
+	def setContentXmlMapper(mapper : XmlMapper) {
+		this.contentMapper = mapper
+	}
+
+	/** Convert the given map representation into a byte array of a Json string . */
+	protected def serializeContent(stream : PrintStream, m : Object) : void {
+		val contentStream = new FilterOutputStream(stream) {
+		    override close : void {
+		    }
+		}
+		this.contentXmlMapper.writeValue(contentStream, m)
+	}
+
+	override encode(aMsg : AclMessage) : byte[] {
+		val bstream = new ByteArrayOutputStream
+		try {
+			val stream = new PrintStream(bstream)
+			// Start & Performative, e.g. <fipa-message act="..">
+			stream.node(Messages::NODE_FIPAMESSAGE,
+					#{Messages::ATTR_PERFORMATIVE -> aMsg.performative.fipaName}) [
+
+				// Sender, e.g. <sender><agent-identifier><name id=".."/></agent-identifier></sender>
+				val sender = aMsg.sender
+				if (sender !== null) {
+					node(Messages::NODE_SENDER) [
+						node(Messages::NODE_AGENTIDENTIFIER) [
+							node(Messages::NODE_NAME, #{Messages::ATTR_ID -> sender})
+						]
+					]
+				}
+		
+				// Receivers, e.g. <receiver><agent-identifier><name id=".."/></agent-identifier></receiver>
+				val receivers = aMsg.receivers
+				if (receivers !== null && !receivers.isEmpty) {
+					for (receiver : receivers) {
+						node(Messages::NODE_RECEIVER) [
+							node(Messages::NODE_AGENTIDENTIFIER) [
+								node(Messages::NODE_NAME, #{Messages::ATTR_ID -> receiver})
+							]
+						]
+					}
+				}
+		
+				val aclContent = aMsg.content
+				if (aclContent !== null) {
+					// Reply-to, e.g. <reply-to><agent-identifier><name id=".."/></agent-identifier></reply-to>
+					val replyTo = aclContent.replyTo
+					if (replyTo !== null && !replyTo.isEmpty) {
+						for (receiver : replyTo) {
+							node(Messages::NODE_REPLYTO) [
+								node(Messages::NODE_AGENTIDENTIFIER) [
+									node(Messages::NODE_NAME, #{Messages::ATTR_ID -> receiver})
+								]
+							]
+						}
+					}
+
+					// Reply-by, e.g. <reply-by time=".."/>
+					val replyBy = aclContent.replyBy
+					if (replyBy !== null) {
+						node(Messages::NODE_REPLYBY, #{Messages::ATTR_TIME -> Iso8601DateTimeUtil::format(replyBy)})
+					}
+					
+					// Reply-with, e.g <reply-with>..</reply-with>
+					val replyWith = aclContent.replyWith
+					if (!replyWith.isNullOrEmpty) {
+						node(Messages::NODE_REPLYWITH, replyWith)
+					}
+					
+					// In-reply-with, e.g. <in-reply-to>..</in-relpy-to>
+					val inReplyTo = aclContent.inReplyTo
+					if (!inReplyTo.isNullOrEmpty) {
+						node(Messages::NODE_INREPLYTO, inReplyTo)
+					}
+		
+					// Content, e.g. <content>..</content>
+					val content = aclContent.content
+					if (content !== null) {
+						node(Messages::NODE_CONTENT) [
+							serializeContent(content)
+						]
+					}
+				}
+		
+				// Encoding, e.g. <encoding>..</encoding>
+				val encoding = aMsg.encoding
+				if (!encoding.isNullOrEmpty) {
+					node(Messages::NODE_ENCODING, encoding)
+				}
+		
+				// Language, e.g. <language>..</language>
+				val language = aMsg.language
+				if (!language.isNullOrEmpty) {
+					node(Messages::NODE_LANGUAGE, language)
+				}
+		
+				// Ontology, e.g. <ontology>..</ontology>
+				val ontology = aMsg.ontology
+				if (!ontology.isNullOrEmpty) {
+					node(Messages::NODE_ONTOLOGY, ontology)
+				}
+		
+				// Protocol, e.g. <protocol>..</protocol>
+				val protocol = aMsg.protocol
+				if (!protocol.isNullOrEmpty) {
+					node(Messages::NODE_PROTOCOL, protocol)
+				}
+		
+				// ConversationId, e.g. <conversation_id>..</conversation_id>
+				val conversationId = aMsg.conversationId
+				if (conversationId !== null) {
+					node(Messages::NODE_CONVERSATIONID, conversationId.toString)
+				}
+				
+			]
+		} finally {
+			bstream.close
+		}
+        return bstream.toByteArray
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	override decode(byteMsg : byte[], startIndex : int, endIndex : int) : AclMessageContent {
+		val correction = byteMsg.validateIndexes(startIndex, endIndex)
+		val startIdx = correction.key as int
+		val endIdx = correction.value as int
+		val content = this.contentFactory.newContent
+		val factory = DocumentBuilderFactory::newInstance
+		val builder = factory.newDocumentBuilder
+		try (var stream = new ByteArrayInputStream(byteMsg, startIdx, endIdx - startIdx )) {
+			val document = builder.parse(stream)
+			val rootNode = document.findNode(Messages::NODE_FIPAMESSAGE)
+			var performative = rootNode.attribute(Messages::ATTR_PERFORMATIVE)
+			if (!performative.isNullOrEmpty) {
+				content.performative = Performative::valueOfCaseInsensitive(performative)
+			}							
+			val rootChildren = rootNode.childNodes
+			val nbChildren = rootChildren.length
+			for (var i = 0; i < nbChildren; i++) {
+				val child = rootChildren.item(i)
+				val name = child.nodeName
+				switch (name) {
+					case Messages::NODE_SENDER: {
+						val uuid = child.identifier
+						if (uuid !== null) {
+							content.sender = uuid
+						}
+					}
+					case Messages::NODE_RECEIVER: {
+						val uuid = child.identifier
+						if (uuid !== null) {
+							var list = content.receivers
+							if (list === null) {
+								list = newArrayList
+								content.receivers = list
+							}
+							list.add(uuid)
+						}
+					}
+					case Messages::NODE_REPLYTO: {
+						val uuid = child.identifier
+						if (uuid !== null) {
+							var list = content.replyTo
+							if (list === null) {
+								list = newArrayList
+								content.replyTo = list
+							}
+							list.add(uuid)
+						}
+					}
+					case Messages::NODE_REPLYBY: {
+						val date = child.date(Messages::ATTR_TIME)
+						if (date !== null) {
+							content.replyBy = date
+						}
+					}
+					case Messages::NODE_REPLYWITH: {
+						val value = child.text
+						if (!value.isNullOrEmpty) {
+							content.replyWith = value
+						}
+					}
+					case Messages::NODE_ENCODING: {
+						val value = child.text
+						if (!value.isNullOrEmpty) {
+							content.encoding = value
+						}
+					}
+					case Messages::NODE_LANGUAGE: {
+						val value = child.text
+						if (!value.isNullOrEmpty) {
+							content.language = value
+						}
+					}
+					case Messages::NODE_ONTOLOGY: {
+						val value = child.text
+						if (!value.isNullOrEmpty) {
+							content.ontology = value
+						}
+					}
+					case Messages::NODE_PROTOCOL: {
+						val value = child.text
+						if (!value.isNullOrEmpty) {
+							content.protocol = value
+						}
+					}
+					case Messages::NODE_CONVERSATIONID: {
+						val value = child.uuidInText
+						if (value !== null) {
+							content.conversationId = value
+						}
+					}
+					case Messages::NODE_CONTENT: {
+						val xmlValue = child.toXmlChildString
+						val cm = this.contentXmlMapper
+						val objValue = cm.readValue(xmlValue.bytes, typeof(Object))
+						if (objValue !== null) {
+							content.content = objValue
+						}
+					}
+				} // switch
+			}		
+		}
+
+		return content
+	}
+
+}

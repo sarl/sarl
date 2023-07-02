@@ -1,0 +1,643 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.manager
+
+import io.sarl.acl.manager.ConversationListener
+import io.sarl.acl.manager.ProtocolTimeout
+import io.sarl.acl.manager.StandardConversationManager
+import io.sarl.acl.protocol.AbstractAclProtocolEvent
+import io.sarl.acl.protocol.AclProtocol
+import io.sarl.acl.protocol.AclProtocolChangeListener
+import io.sarl.acl.protocol.AclProtocolFactory
+import io.sarl.acl.protocol.AclProtocolFinishingListener
+import io.sarl.acl.protocol.AclProtocolId
+import io.sarl.acl.protocol.AclProtocolTimeoutListener
+import io.sarl.acl.protocol.ProtocolState
+import io.sarl.core.Behaviors
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Skill
+import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.util.DefaultConcurrentCollectionFactory
+import io.sarl.lang.util.NoConcurrencyCollectionFactory
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.util.SequenceListenerNotifier
+import io.sarl.util.SmartListenerCollection
+import java.util.Collection
+import java.util.Map
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.Mockito.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("StandardConversationManager")
+class StandardConversationManagerTest {
+
+	var ^agent : MockableAgent
+
+	var listener : ListenerMock
+
+	var ^skill : StandardConversationManager
+
+	var behaviors : BehaviorsMock
+
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@BeforeEach
+	@PrivateAPI(isCallerOnly=true)
+	def setUp : void {
+		this.^agent = new MockableAgent().spy
+		//
+		this.listener = new ListenerMock
+		//
+		this.behaviors = new BehaviorsMock
+		SREutils::setInternalSkill(this.^agent, this.behaviors, #[typeof(Behaviors)])
+		//
+		this.^skill = new StandardConversationManager(this.^agent)
+		this.^skill.collectionFactory = [new NoConcurrencyCollectionFactory]
+		this.^skill.addConversationListener(this.listener)
+		this.^skill.addProtocolChangeListener(this.listener)
+		this.^skill.addProtocolFinishingListener(this.listener)
+		this.^skill.addProtocolTimeoutListener(this.listener)
+		//
+		clearInvocations(this.^agent)
+	}
+
+	protected def assertListeners(constraints : Map<String, ? extends Iterable<? extends AclProtocol>>, ^event : Class<? extends Event> = null) : void {
+		this.listener.changedProtocols.assertContainsCollection(constraints.get("changed") ?: #[]) ["Invalid changed protocol"]
+		this.listener.finishedProtocols.assertContainsCollection(constraints.get("finished") ?: #[]) ["Invalid finished protocol"]
+		this.listener.timedoutProtocols.assertContainsCollection(constraints.get("timedout") ?: #[]) ["Invalid timed-out protocol"]
+		this.listener.addedProtocols.assertContainsCollection(constraints.get("added") ?: #[]) ["Invalid added protocol"]
+		this.listener.removedProtocols.assertContainsCollection(constraints.get("removed") ?: #[]) ["Invalid removed protocol"]
+		//
+		if (^event !== null) {
+			1.assertEquals(this.behaviors.receivedEvents.size) ["Unexpected number of fired events"]
+			val evt = this.behaviors.receivedEvents.get(0)
+			evt.assertNotNull [ "Expecting not-null event" ]
+			^event.assertInstanceOf(evt) ["Invalid event type: " + evt.class.name]
+		} else {
+			this.behaviors.receivedEvents.empty.assertTrue ["Unexpected number of fired events"]
+		}
+	}
+
+	@Test
+	def setAclProtocolFactory : void {
+		val expected = typeof(AclProtocolFactory).mock
+		this.^skill.aclProtocolFactory = expected
+		expected.assertSame(this.^skill.aclProtocolFactory)
+		assertListeners(#{})
+	}
+
+	@Test
+	def getAclProtocolFactory : void {
+		this.^skill.assertNotNull
+	}
+	
+	@Test
+	def getConversations : void {
+		val protocols = this.^skill.getConversations
+		protocols.iterator.hasNext.assertFalse
+	}
+
+	@Test
+	@DisplayName("getConversation(null)")
+	def getConversation_null : void {
+		this.^skill.getConversation(null).assertNull
+	}
+
+	@Test
+	@DisplayName("getConversation(random UUID)")
+	def getConversation_noRegistration : void {
+		this.^skill.getConversation(UUID::randomUUID).assertNull
+	}
+
+	@Test
+	@DisplayName("getConversation(registered UUID)")
+	def getConversation_registration : void {
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		//
+		val conv0 = this.^skill.getConversation(id0)
+		beh0.assertSame(conv0)
+		//
+		val conv1 = this.^skill.getConversation(id1)
+		beh1.assertSame(conv1)
+		//
+		this.^skill.getConversation(UUID::randomUUID).assertNull
+	}
+
+	@Test
+	@DisplayName("removeConversation(null)")
+	def removeConversation_null : void {
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		val removedProtocol = this.^skill.removeConversation(null)
+		//
+		removedProtocol.assertNull
+		this.^skill.getConversations.assertContainsCollection(#[beh0, beh1])
+		//
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("removeConversation(random UUID)")
+	def removeConversation_noRegistration : void {
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		val removedProtocol = this.^skill.removeConversation(UUID::randomUUID)
+		//
+		removedProtocol.assertNull
+		this.^skill.getConversations.assertContainsCollection(#[beh0, beh1])
+		//
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("removeConversation(known UUID)")
+	def removeConversation_registration : void {
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		val removedProtocol = this.^skill.removeConversation(id1)
+		//
+		removedProtocol.assertSame(beh1)
+		this.^skill.getConversations.assertContainsCollection(#[beh0])
+		//
+		assertListeners(#{'removed' -> #[beh1]})
+	}
+
+	@Test
+	@DisplayName("removeConversations(null)")
+	def removeConversations_null : void {
+		val state0 = typeof(ProtocolState).mock
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		when(beh0.state).thenReturn(state0)
+		val state1 = typeof(ProtocolState).mock
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		when(beh1.state).thenReturn(state1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		this.^skill.removeConversations(null)
+		//
+		this.^skill.getConversations.assertContainsCollection(#[])
+		//
+		assertListeners(#{'removed' -> #[beh0, beh1]})
+	}
+
+	@Test
+	@DisplayName("removeConversations(not registered)")
+	def removeConversations_noRegistration : void {
+		val state0 = typeof(ProtocolState).mock
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		when(beh0.state).thenReturn(state0)
+		val state1 = typeof(ProtocolState).mock
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		when(beh1.state).thenReturn(state1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		this.^skill.removeConversations(typeof(ProtocolState).mock)
+		//
+		this.^skill.getConversations.assertContainsCollection(#[beh0, beh1])
+		//
+		assertListeners(#{})
+	}
+	
+	@Test
+	@DisplayName("removeConversations(registered)")
+	def removeConversations_registration : void {
+		val state0 = typeof(ProtocolState).mock
+		val id0 = UUID::randomUUID
+		val beh0 = typeof(AclProtocol).mock
+		when(beh0.conversationId).thenReturn(id0)
+		when(beh0.state).thenReturn(state0)
+		val state1 = typeof(ProtocolState).mock
+		val id1 = UUID::randomUUID
+		val beh1 = typeof(AclProtocol).mock
+		when(beh1.conversationId).thenReturn(id1)
+		when(beh1.state).thenReturn(state1)
+		//
+		this.^skill.register(beh0)
+		this.^skill.register(beh1)
+		this.listener.reset
+		//
+		this.^skill.removeConversations(state1)
+		//
+		this.^skill.getConversations.assertContainsCollection(#[beh0])
+		//
+		assertListeners(#{'removed' -> #[beh1]})
+	}
+
+	@Test
+	@DisplayName("createConversationAsParticipant(null as AclProtocolId)")
+	def createConversationAsParticipantAclProtocolId_null : void {
+		val protocol = this.^skill.createConversationAsParticipant(null as AclProtocolId, UUID::randomUUID)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+	
+	@Test
+	@DisplayName("createConversationAsParticipant(AclProtocolId)")
+	def createConversationAsParticipantAclProtocolId : void {
+		val expected = typeof(AclProtocol).mock
+		when(expected.conversationId).thenReturn(UUID::randomUUID)
+		this.^skill.aclProtocolFactory = new AclProtocolFactory {
+			def newProtocolAsParticipant(owner : Agent, protocolType : AclProtocolId, cId : UUID) : AclProtocol {
+				AclProtocolId::FIPA_PROPOSE.assertSame(protocolType)
+				return expected
+			}	
+			def newProtocolAsInitiator(owner : Agent, protocolType : AclProtocolId) : AclProtocol {
+				throw new UnsupportedOperationException
+			}
+		}
+		this.listener.reset
+		val protocol = this.^skill.createConversationAsParticipant(AclProtocolId::FIPA_PROPOSE, UUID::randomUUID)
+		expected.assertSame(protocol)
+		assertListeners(#{'added' -> #[expected]})
+	}
+
+	@Test
+	@DisplayName("createConversationAsParticipant(null as String)")
+	def createConversationAsParticipantString_null : void {
+		val protocol = this.^skill.createConversationAsParticipant(null as String, UUID::randomUUID)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsParticipant(\"\")")
+	def createConversationAsParticipantString_empty : void {
+		val protocol = this.^skill.createConversationAsParticipant("", UUID::randomUUID)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsParticipant(invalid name)")
+	def createConversationAsParticipantString_invalidName : void {
+		val protocol = this.^skill.createConversationAsParticipant("xyz", UUID::randomUUID)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsParticipant(valid name)")
+	def createConversationAsParticipantString_validName : void {
+		val expected = typeof(AclProtocol).mock
+		when(expected.conversationId).thenReturn(UUID::randomUUID)
+		this.^skill.aclProtocolFactory = new AclProtocolFactory {
+			def newProtocolAsParticipant(owner : Agent, protocolType : AclProtocolId, cId : UUID) : AclProtocol {
+				AclProtocolId::FIPA_PROPOSE.assertSame(protocolType)
+				return expected
+			}	
+			def newProtocolAsInitiator(owner : Agent, protocolType : AclProtocolId) : AclProtocol {
+				throw new UnsupportedOperationException
+			}
+		}
+		this.listener.reset
+		val protocol = this.^skill.createConversationAsParticipant(AclProtocolId::FIPA_PROPOSE.name, UUID::randomUUID)
+		expected.assertSame(protocol)
+		assertListeners(#{'added' -> #[expected]})
+	}
+
+	@Test
+	@DisplayName("createConversationAsInitiator(null as AclProtocolId)")
+	def createConversationAsInitiatorAclProtocolId_null : void {
+		val protocol = this.^skill.createConversationAsInitiator(null as AclProtocolId)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsInitiator(AclProtocolId)")
+	def createConversationAsInitiatorAclProtocolId : void {
+		val expected = typeof(AclProtocol).mock
+		when(expected.conversationId).thenReturn(UUID::randomUUID)
+		this.^skill.aclProtocolFactory = new AclProtocolFactory {
+			def newProtocolAsParticipant(owner : Agent, protocolType : AclProtocolId, cId : UUID) : AclProtocol {
+				throw new UnsupportedOperationException
+			}	
+			def newProtocolAsInitiator(owner : Agent, protocolType : AclProtocolId) : AclProtocol {
+				AclProtocolId::FIPA_PROPOSE.assertSame(protocolType)
+				return expected
+			}
+		}
+		this.listener.reset
+		val protocol = this.^skill.createConversationAsInitiator(AclProtocolId::FIPA_PROPOSE)
+		expected.assertSame(protocol)
+		assertListeners(#{'added' -> #[expected]})
+	}
+	
+	@Test
+	@DisplayName("createConversationAsInitiator(null as String)")
+	def createConversationAsInitiatorString_null : void {
+		val protocol = this.^skill.createConversationAsInitiator(null as String)
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsInitiator(\"\")")
+	def createConversationAsInitiatorString_empty : void {
+		val protocol = this.^skill.createConversationAsInitiator("")
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsInitiator(invalid name)")
+	def createConversationAsInitiatorString_invalidName : void {
+		val protocol = this.^skill.createConversationAsInitiator("xyz")
+		protocol.assertNull
+		assertListeners(#{})
+	}
+
+	@Test
+	@DisplayName("createConversationAsInitiator(valid name)")
+	def createConversationAsInitiatorString_validName : void {
+		val expected = typeof(AclProtocol).mock
+		when(expected.conversationId).thenReturn(UUID::randomUUID)
+		this.^skill.aclProtocolFactory = new AclProtocolFactory {
+			def newProtocolAsParticipant(owner : Agent, protocolType : AclProtocolId, cId : UUID) : AclProtocol {
+				throw new UnsupportedOperationException
+			}	
+			def newProtocolAsInitiator(owner : Agent, protocolType : AclProtocolId) : AclProtocol {
+				AclProtocolId::FIPA_PROPOSE.assertSame(protocolType)
+				return expected
+			}
+		}
+		this.listener.reset
+		val protocol = this.^skill.createConversationAsInitiator(AclProtocolId::FIPA_PROPOSE.name)
+		expected.assertSame(protocol)
+		assertListeners(#{'added' -> #[expected]})
+	}
+
+	@Test
+	@DisplayName("when protocol changed")
+	def whenProtocolChanged : void {
+		val proto = new ProtocolMock(this.^agent)
+		this.^skill.register(proto)
+		this.listener.reset
+		//
+		proto.fireChange
+		//
+		assertListeners(
+			#{'changed' -> #[proto]},
+			typeof(FipaEventMock))
+	}
+
+	@Test
+	@DisplayName("when protocol finished with auto-removal")
+	def whenProtocolFinished_autoremoval : void {
+		val proto = new ProtocolMock(this.^agent)
+		this.^skill.register(proto)
+		this.listener.reset
+		this.^skill.participantSideAutoDeletion = true
+		//
+		proto.fireEnd
+		//
+		assertListeners(
+			#{'finished' -> #[proto], 'removed' -> #[proto]},
+			typeof(FipaEventMock))
+	}
+
+	@Test
+	@DisplayName("when protocol timeout with auto-removal")
+	def whenProtocolTimeout_autoremoval : void {
+		val proto = new ProtocolMock(this.^agent)
+		this.^skill.register(proto)
+		this.listener.reset
+		this.^skill.participantSideAutoDeletion = true
+		//
+		proto.fireTimeout
+		//
+		assertListeners(
+			#{'timedout' -> #[proto], 'removed' -> #[proto]},
+			typeof(ProtocolTimeout))
+	}
+
+	@Test
+	@DisplayName("when protocol finished without removal")
+	def whenProtocolFinished_noRemoval : void {
+		val proto = new ProtocolMock(this.^agent)
+		this.^skill.register(proto)
+		this.listener.reset
+		this.^skill.participantSideAutoDeletion = false
+		//
+		proto.fireEnd
+		//
+		assertListeners(
+			#{'finished' -> #[proto]},
+			typeof(FipaEventMock))
+	}
+
+	@Test
+	@DisplayName("when protocol timeout without removal")
+	def whenProtocolTimeout_noRemoval : void {
+		val proto = new ProtocolMock(this.^agent)
+		this.^skill.register(proto)
+		this.listener.reset
+		this.^skill.participantSideAutoDeletion = false
+		//
+		proto.fireTimeout
+		//
+		assertListeners(
+			#{'timedout' -> #[proto]},
+			typeof(ProtocolTimeout))
+	}
+
+	static class MockableAgent extends Agent {
+		new {
+			super(UUID::randomUUID, UUID::randomUUID)
+		}
+	}
+
+	static class BehaviorsMock extends Skill implements Behaviors {
+		public val receivedEvents : ConcurrentCollection<Event> = new DefaultConcurrentCollectionFactory().newCollection
+		def asEventListener : EventListener {
+			throw new UnsupportedOperationException
+		}
+		def getRegisteredBehaviors : ConcurrentCollection<Behavior> {
+			throw new UnsupportedOperationException
+		}
+		def hasRegisteredBehavior : boolean {
+			throw new UnsupportedOperationException
+		}
+		def registerBehavior(attitude : Behavior, filter : (Event)=>Boolean, initializationParameters : Object*) : Behavior {
+			throw new UnsupportedOperationException
+		}
+		def unregisterBehavior(attitude : Behavior) : Behavior {
+			throw new UnsupportedOperationException
+		}
+		def wake(^event : Event, scope : Scope<Address>) {
+			this.receivedEvents += ^event
+		}
+		def wake(^behavior : Behavior, ^event : Event) {
+			throw new UnsupportedOperationException
+		}
+		def wake(behaviors : Iterable<Behavior>, ^event : Event) {
+			throw new UnsupportedOperationException
+		}
+	}
+
+	static class ListenerMock implements ConversationListener, AclProtocolChangeListener, AclProtocolFinishingListener, AclProtocolTimeoutListener {
+		public val addedProtocols = <AclProtocol>newArrayList
+		public val removedProtocols = <AclProtocol>newArrayList
+		public val changedProtocols = <AclProtocol>newArrayList
+		public val finishedProtocols = <AclProtocol>newArrayList
+		public val timedoutProtocols = <AclProtocol>newArrayList
+		def reset {
+			this.addedProtocols.clear
+			this.removedProtocols.clear
+			this.changedProtocols.clear
+			this.finishedProtocols.clear
+			this.timedoutProtocols.clear
+		}
+		def conversationAdded(conversation : AclProtocol) {
+			this.addedProtocols += conversation
+		}
+		def conversationRemoved(conversation : AclProtocol) {
+			this.removedProtocols += conversation
+		}
+		def protocolChanged(protocol : AclProtocol, ^event : AbstractAclProtocolEvent) {
+			this.changedProtocols += protocol
+		}		
+		def protocolFinished(protocol : AclProtocol, ^event : AbstractAclProtocolEvent) {
+			this.finishedProtocols += protocol
+		}
+		def timeoutReached(protocol : AclProtocol) {
+			this.timedoutProtocols += protocol
+		}
+	}
+
+	static class FipaEventMock extends AbstractAclProtocolEvent {
+		//
+	}
+
+	static class ProtocolMock extends AclProtocol {
+		new (ag : Agent) {
+			super(ag)
+			this.concurrentCollectionFactory = [new SmartListenerCollection(new SequenceListenerNotifier)]
+			this.conversationId = UUID::randomUUID
+		}
+		def fireChange : void {
+			notifyChange(typeof(FipaEventMock).mock)
+		}
+		def fireEnd : void {
+			notifyFinished(typeof(FipaEventMock).mock)
+		}
+		def fireTimeout : void {
+			notifyTimeout
+		}
+		def getAclProtocolId : AclProtocolId {
+			return AclProtocolId::NONE
+		}
+		def isStarted : boolean {
+			true
+		}
+		def isParticipantSide : boolean {
+			true
+		}
+		def isInitiatorSide : boolean {
+			false
+		}
+		def getMaximumNumberOfParticipants : int {
+			1
+		}
+		def getParticipants : Collection<UUID> {
+			throw new UnsupportedOperationException
+		}		
+		protected def getCancelledState : ProtocolState {
+			throw new UnsupportedOperationException
+		}
+		protected def getErrorState : ProtocolState {
+			throw new UnsupportedOperationException
+		}
+	}
+
+}

@@ -1,0 +1,334 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.configs
+
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfigProperty
+import io.bootique.config.ConfigurationFactory
+import java.lang.reflect.Type
+import java.util.Collections
+import java.util.List
+import java.util.Map
+import javax.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.sre.extensions.simulation.configs.SimulationConfig.*
+
+/**
+ * Constants and utilities for all simulation factories.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class SimulationConfig extends AbstractIdentifiableConfig {
+
+	/**
+	 * Prefix for the configuration entries of the modules.
+	 */
+	public static val PREFIX = "simulation"
+
+	/** 
+	 * Name of the property that indicates if the kernel is automatically started when the kernel
+	 * is created.
+	 * 
+	 * @see #AUTOSTART_VALUE
+	 */
+	public static val AUTOSTART_NAME = PREFIX + ".autostart"
+
+	/** 
+	 * Default value of the property that indicates if the kernel is automatically started when the kernel
+	 * is created.
+	 * 
+	 * @see #AUTOSTART_NAME
+	 */
+	public static val AUTOSTART_VALUE = true
+
+	/** 
+	 * Name of the property that indicates if the kernel is run in its own thread or in the main thread.
+	 * 
+	 * @see #ASYNC_VALUE
+	 */
+	public static val ASYNC_NAME = PREFIX + ".async"
+
+	/** 
+	 * Default value of the property that indicates kernel is run in its own thread or in the main thread.
+	 * 
+	 * @see #ASYNC_NAME
+	 */
+	public static val ASYNC_VALUE = false
+
+	/** 
+	 * Name of property that contains the format of the logging messages on the simulation platform.
+	 * 
+	 * <p>The format string may contains one of the following elements:<ul>
+	 * <li><code>%1</code>: the date,</li>
+	 * <li><code>%2</code>: the name of the calling function,</li>
+	 * <li><code>%3</code>: the name of the logger,</li>
+	 * <li><code>%4</code>: the logging level,</li>
+	 * <li><code>%5</code>: the message, and</li>
+	 * <li><code>%6</code>: the throwable.</li>
+	 * <li><code>%7</code>: the simulation time.</li>
+	 * </ul>
+	 * 
+	 * @see #LOG_MESSAGE_FORMAT_VALUE
+	 */
+	public static val LOG_MESSAGE_FORMAT_NAME = PREFIX + ".logMessageFormat"
+
+	/** 
+	 * Format of the logging messages on the simulation platform.
+	 * 
+	 * <p>The format string may contains one of the following elements:<ul>
+	 * <li><code>%1</code>: the date,</li>
+	 * <li><code>%2</code>: the name of the calling function,</li>
+	 * <li><code>%3</code>: the name of the logger,</li>
+	 * <li><code>%4</code>: the logging level,</li>
+	 * <li><code>%5</code>: the message, and</li>
+	 * <li><code>%6</code>: the throwable.</li>
+	 * <li><code>%7</code>: the simulation time.</li>
+	 * </ul>
+	 * 
+	 * @see #LOG_MESSAGE_FORMAT_NAME
+	 */
+	public static val LOG_MESSAGE_FORMAT_VALUE = "[%4$s, %1$tl:%1$tM:%1$tS%1$tp, t=%7$.1f, %3$s] %5$s%6$s%n"
+
+	@Accessors(PUBLIC_GETTER)
+	var logMessageFormat = LOG_MESSAGE_FORMAT_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var autostart : boolean = AUTOSTART_VALUE
+
+	var scenarioConfig : ScenarioConfig
+
+	var timeConfig : TimeConfig
+
+	var spawnersConfig : List<SpawnerConfig>
+
+	var probesConfig : ProbesConfig
+
+	var preferences : Map<String, String>
+
+
+	/** Change the time configuration.
+	 * 
+	 * @param config the time configuration.
+	 */
+	@BQConfigProperty("The format of the log messages.")
+	def setLogMessageFormat(format : String) {
+		this.logMessageFormat = format
+	}
+
+	/** Replies the configuration for the SARL simulation environment.
+	 * 
+	 * @param configFactory the general configuration factory.
+	 * @return the configuration.
+	 */
+	static def getConfiguration(configFactory : ConfigurationFactory) : SimulationConfig {
+		assert configFactory !== null
+		var factory = configFactory.config(typeof(SimulationConfig), PREFIX)
+		return factory
+	}
+
+	/** Replies the probes' configuration.
+	 * 
+	 * @return the probes' configuration.
+	 */
+	def getProbes : ProbesConfig {
+		if (this.probesConfig === null) {
+			this.probesConfig = new ProbesConfig
+		}
+		return this.probesConfig
+	}
+
+	/** Change the probes' configuration.
+	 * 
+	 * @param config the probes' configuration.
+	 */
+	@BQConfigProperty("Configuration for the simulation probes.")
+	def setProbes(config : ProbesConfig) {
+		this.probesConfig = config
+	}
+
+	/** Replies the time configuration.
+	 * 
+	 * @return the time configuration.
+	 */
+	def getTime : TimeConfig {
+		if (this.timeConfig === null) {
+			this.timeConfig = new TimeConfig
+		}
+		return this.timeConfig
+	}
+
+	/** Change the time configuration.
+	 * 
+	 * @param config the time configuration.
+	 */
+	@BQConfigProperty("Configuration for the simulation time.")
+	def setTime(config : TimeConfig) {
+		this.timeConfig = config
+	}
+
+	/** Replies the scenario configuration.
+	 * 
+	 * @return the scenario configuration.
+	 * @since 0.12
+	 */
+	def getScenario : ScenarioConfig {
+		if (this.scenarioConfig === null) {
+			this.scenarioConfig = new ScenarioConfig
+		}
+		return this.scenarioConfig
+	}
+
+	/** Change the scenario configuration.
+	 * 
+	 * @param config the scenario configuration.
+	 * @since 0.12
+	 */
+	@BQConfigProperty("Configuration for the simulation scenario.")
+	def setScenario(config : ScenarioConfig) {
+		this.scenarioConfig = scenario
+	}
+
+	/** Replies the list of the configurations of the agent spawners.
+	 * 
+	 * @return the list of agent spawners.
+	 * @since 0.12
+	 */
+	def getSpawners : List<SpawnerConfig> {
+		if (this.spawnersConfig === null) {
+			this.spawnersConfig = newArrayList
+		}
+		return this.spawnersConfig
+	}
+
+	/** Change the list of agent spawners.
+	 * The previous list of spawners' configurations is deleted when calling this function.
+	 * 
+	 * @param spawners the new list of agent spawners.
+	 * @since 0.12
+	 */
+	@BQConfigProperty("List of the configurations of agent spawners.")
+	def setSpawners(spawners : List<SpawnerConfig>) {
+		this.spawnersConfig = spawners
+	}
+
+	/** Change the autostart flag of the kernel.
+	 * If this flag is evaluated to true, the kernel is automatically started when the kernel's instance is
+	 * created.
+	 * 
+	 * @param autostart {@code true} to start the kernel when the kernel's instance is created.
+	 */
+	@BQConfigProperty("autostart of the kernel")
+	def setAutostart(autostart : boolean) {
+		this.autostart = autostart
+	}
+
+	/** Replies the general preferences that are defined into the configuration.
+	 * 
+	 * @return the general conferences.
+	 */
+	def getPreferences : Map<String, String> {
+		if (this.preferences === null) {
+			this.preferences = newTreeMap(null)
+		}
+		return this.preferences
+	}
+
+	/** Change all the general preferences that are defined into the configuration.
+	 * The given preferences replace all the existing preferences.
+	 * 
+	 * @param preferences is the general preferences to use.
+	 */
+	@BQConfigProperty("general preferences that are specific to the simulation scenario")
+	def setPreferences(preferences : Map<String, String>) {
+		if (preferences === null || preferences.empty) {
+			this.preferences = null
+		} else {
+			this.preferences = preferences
+		}
+	}
+
+}
+
+/** 
+ * Module for creating and configuring the general simulation configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class SimulationConfigModule extends AbstractModule {
+
+	override configure : void {
+		//
+	}
+
+	/** Replies the instance of the simualtion configuration.
+	 * 
+	 * @param configFactory accessor to the bootique factory.
+	 * @param injector the current injector.
+	 * @return the path configuration accessor.
+	 */
+	@Provides
+	@Singleton
+	def provideSimulationConfig(configFactory : ConfigurationFactory, injector : Injector) : SimulationConfig {
+		val config = getConfiguration(configFactory)
+		injector.injectMembers(config)
+		return config
+	}
+
+}
+
+/** Provider of the module for creating and configuring the general simulation configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class SimulationConfigModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new SimulationConfigModule
+	}
+
+	override configs : Map<String, Type> {
+		return Collections::singletonMap(PREFIX, typeof(SimulationConfig))
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::SimulationConfigModuleProvider_0);
+	}
+
+}

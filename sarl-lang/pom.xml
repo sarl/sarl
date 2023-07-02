@@ -13,6 +13,7 @@
 		<module>mwe2</module>
 		<module>compiler</module>
 		<module>compiler.tests</module>
+		<module>pythongenerator</module>
 		<module>batchcompiler</module>
 		<module>sarl-maven-plugin</module>
 		<module>sarl-maven-plugin.tests</module>

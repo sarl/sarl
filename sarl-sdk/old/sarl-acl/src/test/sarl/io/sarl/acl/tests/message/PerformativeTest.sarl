@@ -1,0 +1,236 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.message
+
+import io.sarl.acl.message.Performative
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.HashSet
+import java.util.Set
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("Performative")
+class PerformativeTest {
+
+	var constants : Set<Performative>
+
+	@BeforeEach
+	def setup : void {
+		this.constants = new HashSet(Performative::values)
+	}
+
+	private def assertNoMoreConstant : void {
+		if (!this.constants.empty) {
+			fail("Unexpected constants: " + this.constants)
+		}
+	}
+
+	private def consume(in : Performative) : Performative {
+		this.constants.remove(in)
+		return in
+	}
+
+	@Test
+	def getDefault : void {
+		Performative::NONE.assertSame(Performative::getDefault)
+	}
+
+	@Test
+	def toJsonString : void {
+		"none".assertEquals(Performative::NONE.consume.toJsonString)
+		"accept_proposal".assertEquals(Performative::ACCEPT_PROPOSAL.consume.toJsonString)
+		"agree".assertEquals(Performative::AGREE.consume.toJsonString)
+		"cancel".assertEquals(Performative::CANCEL.consume.toJsonString)
+		"cfp".assertEquals(Performative::CFP.consume.toJsonString)
+		"confirm".assertEquals(Performative::CONFIRM.consume.toJsonString)
+		"disconfirm".assertEquals(Performative::DISCONFIRM.consume.toJsonString)
+		"failure".assertEquals(Performative::FAILURE.consume.toJsonString)
+		"inform".assertEquals(Performative::INFORM.consume.toJsonString)
+		"inform_if".assertEquals(Performative::INFORM_IF.consume.toJsonString)
+		"inform_ref".assertEquals(Performative::INFORM_REF.consume.toJsonString)
+		"not_understood".assertEquals(Performative::NOT_UNDERSTOOD.consume.toJsonString)
+		"propose".assertEquals(Performative::PROPOSE.consume.toJsonString)
+		"query_if".assertEquals(Performative::QUERY_IF.consume.toJsonString)
+		"query_ref".assertEquals(Performative::QUERY_REF.consume.toJsonString)
+		"refuse".assertEquals(Performative::REFUSE.consume.toJsonString)
+		"reject_proposal".assertEquals(Performative::REJECT_PROPOSAL.consume.toJsonString)
+		"request".assertEquals(Performative::REQUEST.consume.toJsonString)
+		"request_when".assertEquals(Performative::REQUEST_WHEN.consume.toJsonString)
+		"request_whenever".assertEquals(Performative::REQUEST_WHENEVER.consume.toJsonString)
+		"subscribe".assertEquals(Performative::SUBSCRIBE.consume.toJsonString)
+		"proxy".assertEquals(Performative::PROXY.consume.toJsonString)
+		"propagate".assertEquals(Performative::PROPAGATE.consume.toJsonString)
+		assertNoMoreConstant
+	}
+
+	@Test
+	def getFipaName : void {
+		"none".assertEquals(Performative::NONE.consume.fipaName)
+		"accept-proposal".assertEquals(Performative::ACCEPT_PROPOSAL.consume.fipaName)
+		"agree".assertEquals(Performative::AGREE.consume.fipaName)
+		"cancel".assertEquals(Performative::CANCEL.consume.fipaName)
+		"cfp".assertEquals(Performative::CFP.consume.fipaName)
+		"confirm".assertEquals(Performative::CONFIRM.consume.fipaName)
+		"disconfirm".assertEquals(Performative::DISCONFIRM.consume.fipaName)
+		"failure".assertEquals(Performative::FAILURE.consume.fipaName)
+		"inform".assertEquals(Performative::INFORM.consume.fipaName)
+		"inform-if".assertEquals(Performative::INFORM_IF.consume.fipaName)
+		"inform-ref".assertEquals(Performative::INFORM_REF.consume.fipaName)
+		"not-understood".assertEquals(Performative::NOT_UNDERSTOOD.consume.fipaName)
+		"propose".assertEquals(Performative::PROPOSE.consume.fipaName)
+		"query-if".assertEquals(Performative::QUERY_IF.consume.fipaName)
+		"query-ref".assertEquals(Performative::QUERY_REF.consume.fipaName)
+		"refuse".assertEquals(Performative::REFUSE.consume.fipaName)
+		"reject-proposal".assertEquals(Performative::REJECT_PROPOSAL.consume.fipaName)
+		"request".assertEquals(Performative::REQUEST.consume.fipaName)
+		"request-when".assertEquals(Performative::REQUEST_WHEN.consume.fipaName)
+		"request-whenever".assertEquals(Performative::REQUEST_WHENEVER.consume.fipaName)
+		"subscribe".assertEquals(Performative::SUBSCRIBE.consume.fipaName)
+		"proxy".assertEquals(Performative::PROXY.consume.fipaName)
+		"propagate".assertEquals(Performative::PROPAGATE.consume.fipaName)
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with valid argument")
+	def valueOfCaseInsensitive_validArgument : void {
+		Performative::NONE.consume.assertSame(Performative::valueOfCaseInsensitive("none"))
+		Performative::NONE.assertSame(Performative::valueOfCaseInsensitive("None"))
+
+		Performative::ACCEPT_PROPOSAL.consume.assertSame(Performative::valueOfCaseInsensitive("accept_proposal"))
+		Performative::ACCEPT_PROPOSAL.assertSame(Performative::valueOfCaseInsensitive("Accept_Proposal"))
+		Performative::ACCEPT_PROPOSAL.assertSame(Performative::valueOfCaseInsensitive("Accept-Proposal"))
+
+		Performative::AGREE.consume.assertSame(Performative::valueOfCaseInsensitive("agree"))
+		Performative::AGREE.assertSame(Performative::valueOfCaseInsensitive("Agree"))
+
+		Performative::CANCEL.consume.assertSame(Performative::valueOfCaseInsensitive("cancel"))
+		Performative::CANCEL.assertSame(Performative::valueOfCaseInsensitive("Cancel"))
+
+		Performative::CFP.consume.assertSame(Performative::valueOfCaseInsensitive("cfp"))
+		Performative::CFP.assertSame(Performative::valueOfCaseInsensitive("Cfp"))
+
+		Performative::CONFIRM.consume.assertSame(Performative::valueOfCaseInsensitive("confirm"))
+		Performative::CONFIRM.assertSame(Performative::valueOfCaseInsensitive("Confirm"))
+
+		Performative::DISCONFIRM.consume.assertSame(Performative::valueOfCaseInsensitive("disconfirm"))
+		Performative::DISCONFIRM.assertSame(Performative::valueOfCaseInsensitive("Disconfirm"))
+
+		Performative::FAILURE.consume.assertSame(Performative::valueOfCaseInsensitive("failure"))
+		Performative::FAILURE.assertSame(Performative::valueOfCaseInsensitive("Failure"))
+
+		Performative::INFORM.consume.assertSame(Performative::valueOfCaseInsensitive("inform"))
+		Performative::INFORM.assertSame(Performative::valueOfCaseInsensitive("Inform"))
+
+		Performative::INFORM_IF.consume.assertSame(Performative::valueOfCaseInsensitive("inform_if"))
+		Performative::INFORM_IF.assertSame(Performative::valueOfCaseInsensitive("Inform_If"))
+		Performative::INFORM_IF.assertSame(Performative::valueOfCaseInsensitive("Inform-If"))
+
+		Performative::INFORM_REF.consume.assertSame(Performative::valueOfCaseInsensitive("inform_ref"))
+		Performative::INFORM_REF.assertSame(Performative::valueOfCaseInsensitive("Inform_Ref"))
+		Performative::INFORM_REF.assertSame(Performative::valueOfCaseInsensitive("Inform-ref"))
+
+		Performative::NOT_UNDERSTOOD.consume.assertSame(Performative::valueOfCaseInsensitive("not_understood"))
+		Performative::NOT_UNDERSTOOD.assertSame(Performative::valueOfCaseInsensitive("Not_Understood"))
+		Performative::NOT_UNDERSTOOD.assertSame(Performative::valueOfCaseInsensitive("Not-understood"))
+
+		Performative::PROPOSE.consume.assertSame(Performative::valueOfCaseInsensitive("propose"))
+		Performative::PROPOSE.assertSame(Performative::valueOfCaseInsensitive("Propose"))
+
+		Performative::QUERY_IF.consume.assertSame(Performative::valueOfCaseInsensitive("query_if"))
+		Performative::QUERY_IF.assertSame(Performative::valueOfCaseInsensitive("Query_If"))
+		Performative::QUERY_IF.assertSame(Performative::valueOfCaseInsensitive("Query-If"))
+
+		Performative::QUERY_REF.consume.assertSame(Performative::valueOfCaseInsensitive("query_ref"))
+		Performative::QUERY_REF.assertSame(Performative::valueOfCaseInsensitive("Query_Ref"))
+		Performative::QUERY_REF.assertSame(Performative::valueOfCaseInsensitive("Query-Ref"))
+
+		Performative::REFUSE.consume.assertSame(Performative::valueOfCaseInsensitive("refuse"))
+		Performative::REFUSE.assertSame(Performative::valueOfCaseInsensitive("Refuse"))
+
+		Performative::REJECT_PROPOSAL.consume.assertSame(Performative::valueOfCaseInsensitive("reject_proposal"))
+		Performative::REJECT_PROPOSAL.assertSame(Performative::valueOfCaseInsensitive("Reject_Proposal"))
+		Performative::REJECT_PROPOSAL.assertSame(Performative::valueOfCaseInsensitive("Reject-Proposal"))
+
+		Performative::REQUEST.consume.assertSame(Performative::valueOfCaseInsensitive("request"))
+		Performative::REQUEST.assertSame(Performative::valueOfCaseInsensitive("Request"))
+
+		Performative::REQUEST_WHEN.consume.assertSame(Performative::valueOfCaseInsensitive("request_when"))
+		Performative::REQUEST_WHEN.assertSame(Performative::valueOfCaseInsensitive("Request_When"))
+		Performative::REQUEST_WHEN.assertSame(Performative::valueOfCaseInsensitive("Request-When"))
+
+		Performative::REQUEST_WHENEVER.consume.assertSame(Performative::valueOfCaseInsensitive("request_whenever"))
+		Performative::REQUEST_WHENEVER.assertSame(Performative::valueOfCaseInsensitive("Request_Whenever"))
+		Performative::REQUEST_WHENEVER.assertSame(Performative::valueOfCaseInsensitive("Request-Whenever"))
+
+		Performative::SUBSCRIBE.consume.assertSame(Performative::valueOfCaseInsensitive("subscribe"))
+		Performative::SUBSCRIBE.assertSame(Performative::valueOfCaseInsensitive("Subscribe"))
+
+		Performative::PROXY.consume.assertSame(Performative::valueOfCaseInsensitive("proxy"))
+		Performative::PROXY.assertSame(Performative::valueOfCaseInsensitive("Proxy"))
+
+		Performative::PROPAGATE.consume.assertSame(Performative::valueOfCaseInsensitive("propagate"))
+		Performative::PROPAGATE.assertSame(Performative::valueOfCaseInsensitive("Propagate"))
+
+		assertNoMoreConstant
+	}
+
+	@Test
+	@DisplayName("valueOfCaseInsensitive with invalid argument")
+	@SuppressWarnings("unused_local_variable")
+	def valueOfCaseemptyArgument_invalidArgument : void {
+		typeof(NullPointerException).assertException [
+			var x = Performative::valueOfCaseInsensitive(null)
+		]
+		typeof(NullPointerException).assertException [
+			var x = Performative::valueOfCaseInsensitive("")
+		]
+		typeof(IllegalArgumentException).assertException [
+			var x = Performative::valueOfCaseInsensitive("abc")
+		]
+	}
+
+	
+	@Test
+	def getJsonLabels : void {
+		("none, accept_proposal, agree, cancel, cfp, confirm, disconfirm, failure, "
+		+ "inform, inform_if, inform_ref, not_understood, propose, query_if, query_ref, "
+		+ "refuse, reject_proposal, request, request_when, request_whenever, subscribe, "
+		+ "proxy, propagate").assertEquals(Performative::jsonLabels)
+	}
+
+}

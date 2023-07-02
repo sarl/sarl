@@ -1,0 +1,264 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.util
+
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.acl.tests.TestUtil.*
+import static extension org.junit.Assert.assertArrayEquals
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("Iso8601DateTimeUtil")
+class Iso8601DateTimeUtilTest {
+
+	@Test
+	@DisplayName("format UTC")
+	def format_utc : void {
+		Iso8601DateTimeUtil::format(null).assertNull
+		val cal = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal.set(2021, 00, 26, 08, 42, 54)
+		cal.set(Calendar::MILLISECOND, 548)
+		val dt = Date::from(cal.toInstant)
+		"2021-01-26T08:42:54.548Z".assertEquals(Iso8601DateTimeUtil::format(dt))
+	}
+
+	@Test
+	@DisplayName("format Local-Time")
+	def format_local : void {
+		Iso8601DateTimeUtil::format(null).assertNull
+		val cal = Calendar::getInstance(TimeZone::getTimeZone("GMT+1"))
+		cal.set(2021, 00, 26, 08, 42, 54)
+		cal.set(Calendar::MILLISECOND, 548)
+		val dt = Date::from(cal.toInstant)
+		"2021-01-26T07:42:54.548Z".assertEquals(Iso8601DateTimeUtil::format(dt))
+	}
+
+	@Test
+	@DisplayName("parse(null)")
+	def parse_null : void {
+		Iso8601DateTimeUtil::parse(null).assertNull
+	}
+
+	@Test
+	@DisplayName("parse(\"\")")
+	def parse_empty : void {
+		Iso8601DateTimeUtil::parse("").assertNull
+	}
+
+	@Test
+	@DisplayName("parse(absolute millis)")
+	def parse_absolute_millis : void {
+		val dt = Iso8601DateTimeUtil::parse("2021-01-26T08:42:54.548Z")
+		val cal = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal.timeInMillis = dt.time
+		2021.assertEquals(cal.get(Calendar::YEAR))
+		0.assertEquals(cal.get(Calendar::MONTH))
+		26.assertEquals(cal.get(Calendar::DAY_OF_MONTH))
+		8.assertEquals(cal.get(Calendar::HOUR_OF_DAY))
+		42.assertEquals(cal.get(Calendar::MINUTE))
+		54.assertEquals(cal.get(Calendar::SECOND))
+		548.assertEquals(cal.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(absolute no-millis)")
+	def parse_absolute_nomillis : void {
+		val dt = Iso8601DateTimeUtil::parse("2021-01-26T08:42:54Z")
+		val cal = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal.timeInMillis = dt.time
+		2021.assertEquals(cal.get(Calendar::YEAR))
+		0.assertEquals(cal.get(Calendar::MONTH))
+		26.assertEquals(cal.get(Calendar::DAY_OF_MONTH))
+		8.assertEquals(cal.get(Calendar::HOUR_OF_DAY))
+		42.assertEquals(cal.get(Calendar::MINUTE))
+		54.assertEquals(cal.get(Calendar::SECOND))
+		0.assertEquals(cal.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(positive no-millis)")
+	def parse_positive_nomillis : void {
+		val base = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		base.set(2021, 01, 26, 22, 30, 54)
+		base.set(Calendar::MILLISECOND, 236)
+		val dt = Iso8601DateTimeUtil::parse("+0000-00-00T01:00:00Z", base)
+		val cal1 = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal1.timeInMillis = dt.time
+		2021.assertEquals(cal1.get(Calendar::YEAR))
+		1.assertEquals(cal1.get(Calendar::MONTH))
+		26.assertEquals(cal1.get(Calendar::DAY_OF_MONTH))
+		23.assertEquals(cal1.get(Calendar::HOUR_OF_DAY))
+		30.assertEquals(cal1.get(Calendar::MINUTE))
+		54.assertEquals(cal1.get(Calendar::SECOND))
+		236.assertEquals(cal1.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(positive millis)")
+	def parse_positive_millis : void {
+		val base = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		base.set(2021, 01, 26, 22, 30, 54)
+		base.set(Calendar::MILLISECOND, 236)
+		val dt = Iso8601DateTimeUtil::parse("+0000-00-00T01:00:00.002Z", base)
+		val cal1 = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal1.timeInMillis = dt.time
+		2021.assertEquals(cal1.get(Calendar::YEAR))
+		1.assertEquals(cal1.get(Calendar::MONTH))
+		26.assertEquals(cal1.get(Calendar::DAY_OF_MONTH))
+		23.assertEquals(cal1.get(Calendar::HOUR_OF_DAY))
+		30.assertEquals(cal1.get(Calendar::MINUTE))
+		54.assertEquals(cal1.get(Calendar::SECOND))
+		238.assertEquals(cal1.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(negative no-millis)")
+	def parse_negative_nomillis : void {
+		val base = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		base.set(2021, 01, 26, 22, 30, 54)
+		base.set(Calendar::MILLISECOND, 236)
+		val dt = Iso8601DateTimeUtil::parse("-0000-00-00T01:00:00Z", base)
+		val cal1 = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal1.timeInMillis = dt.time
+		2021.assertEquals(cal1.get(Calendar::YEAR))
+		1.assertEquals(cal1.get(Calendar::MONTH))
+		26.assertEquals(cal1.get(Calendar::DAY_OF_MONTH))
+		21.assertEquals(cal1.get(Calendar::HOUR_OF_DAY))
+		30.assertEquals(cal1.get(Calendar::MINUTE))
+		54.assertEquals(cal1.get(Calendar::SECOND))
+		236.assertEquals(cal1.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(negative millis)")
+	def parse_negative_millis : void {
+		val base = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		base.set(2021, 01, 26, 22, 30, 54)
+		base.set(Calendar::MILLISECOND, 236)
+		val dt = Iso8601DateTimeUtil::parse("-0000-00-00T01:00:00.002Z", base)
+		val cal1 = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal1.timeInMillis = dt.time
+		2021.assertEquals(cal1.get(Calendar::YEAR))
+		1.assertEquals(cal1.get(Calendar::MONTH))
+		26.assertEquals(cal1.get(Calendar::DAY_OF_MONTH))
+		21.assertEquals(cal1.get(Calendar::HOUR_OF_DAY))
+		30.assertEquals(cal1.get(Calendar::MINUTE))
+		54.assertEquals(cal1.get(Calendar::SECOND))
+		234.assertEquals(cal1.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parse(invalid)")
+	def parse_invalid : void {
+		Iso8601DateTimeUtil::parse("abc").assertNull
+	}
+
+	@Test
+	@DisplayName("toByteArray(null)")
+	def toByteArray_null : void {
+		Iso8601DateTimeUtil::toByteArray(null).assertNull
+	}
+
+	@Test
+	@DisplayName("toByteArray(obj)")
+	def toByteArray_obj : void {
+		val base = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		base.set(2021, 01, 26, 22, 30, 54)
+		base.set(Calendar::MILLISECOND, 236)
+		val expected = Date::from(base.toInstant)
+		val actual = Iso8601DateTimeUtil::toByteArray(expected)
+		#[49, 50, 19, 55, 51, 65, 101, 52, 112].assertArrayEquals(actual.toIntArray)
+	}
+
+	@Test
+	@DisplayName("toByteArray(y,m,d,h,m,s,ms)")
+	def toByteArrayStringStringStringStringStringStringString : void {
+		val actual = Iso8601DateTimeUtil::toByteArray('2021', '01', '26', '22', '30', '54', '236')
+		#[49, 50, 18, 55, 51, 65, 101, 52, 112].assertArrayEquals(actual.toIntArray)
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsDate(null)")
+	def parseByteArrayAsDate_null : void {
+		Iso8601DateTimeUtil::parseByteArrayAsDate(null).assertNull
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsDate(invalid length)")
+	def parseByteArrayAsDate_invalidLength : void {
+		Iso8601DateTimeUtil::parseByteArrayAsDate(#[49 as byte, 50 as byte]).assertNull
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsDate(...)")
+	def parseByteArrayAsDate : void {
+		var input = toByteArray(49, 50, 18, 55, 51, 65, 101, 52, 112)
+		var actual = Iso8601DateTimeUtil::parseByteArrayAsDate(input)
+		val cal1 = Calendar::getInstance(TimeZone::getTimeZone("GMT"))
+		cal1.timeInMillis = actual.time
+		2021.assertEquals(cal1.get(Calendar::YEAR))
+		0.assertEquals(cal1.get(Calendar::MONTH))
+		26.assertEquals(cal1.get(Calendar::DAY_OF_MONTH))
+		22.assertEquals(cal1.get(Calendar::HOUR_OF_DAY))
+		30.assertEquals(cal1.get(Calendar::MINUTE))
+		54.assertEquals(cal1.get(Calendar::SECOND))
+		236.assertEquals(cal1.get(Calendar::MILLISECOND))
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsString(null)")
+	def parseByteArrayAsString_null : void {
+		Iso8601DateTimeUtil::parseByteArrayAsString(null).assertNull
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsString(invalid length)")
+	def parseByteArrayAsString_invalidLength : void {
+		Iso8601DateTimeUtil::parseByteArrayAsString(#[49 as byte, 50 as byte]).assertNull
+	}
+
+	@Test
+	@DisplayName("parseByteArrayAsString(...)")
+	def parseByteArrayAsString : void {
+		var input = toByteArray(49, 50, 18, 55, 51, 65, 101, 52, 112)
+		var actual = Iso8601DateTimeUtil::parseByteArrayAsString(input)
+		"2021-01-26T22:30:54.236Z".assertEquals(actual)
+	}
+
+}

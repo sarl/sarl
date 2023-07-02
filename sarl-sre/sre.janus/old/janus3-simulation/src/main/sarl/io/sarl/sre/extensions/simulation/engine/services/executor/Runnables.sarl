@@ -1,0 +1,421 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.extensions.simulation.engine.services.executor
+
+import io.sarl.sre.services.executor.SreRunnable
+import java.util.concurrent.Future
+import java.util.logging.Logger
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.Delayed
+import io.sarl.sre.services.executor.SreCallable
+import java.util.concurrent.Callable
+import io.sarl.sre.services.executor.SreConsumer
+import java.util.function.Consumer
+import io.sarl.sre.services.executor.EarlyExitException
+
+/**
+ * Future that embeddes a runnable task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class FutureRunnable<T> extends SreRunnable implements Future<T> {
+
+	val value : T
+
+	var finished = false
+
+	/** Construct.
+	 *
+	 * @param runnable the task to run.
+	 * @param logger the logger to use.
+	 * @param value the returned value.
+	 */
+	new (runnable : Runnable, logger : Logger, value : T) {
+		super(runnable, logger)
+		this.value = value
+	}
+
+	def cancel(mayInterruptIfRunning : boolean) : boolean {
+		false
+	}
+	
+	def get : T {
+		this.value
+	}
+	
+	def get(timeout : long, unit : TimeUnit) : T {
+		get
+	}
+	
+	def isCancelled : boolean {
+		false
+	}
+	
+	def isDone : boolean {
+		this.finished
+	}
+
+	override internalRun {
+		try {
+			wrappedRunnable?.run
+		} finally {
+			this.finished = true
+		}
+	}
+
+}
+
+/** 
+ * Future that embeddes a scheduled runnable task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+interface SreScheduledFuture<T> extends ScheduledFuture<T> {
+	
+	/** Replies the execution time.
+	 *
+	 * @return the execution time in millis.
+	 */
+	def getTime : double
+}
+
+/** 
+ * Future that embeddes a scheduled runnable task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class ScheduledFutureRunnable<T> extends SreRunnable implements SreScheduledFuture<T> {
+
+	package var delay : long
+
+	package var time : double
+
+	package var value : T
+
+	package var reschedulingTask : (ScheduledFutureRunnable<T>)=>void
+
+	package var timeUnit : TimeUnit
+
+	package var finished = false
+
+	package var canceled = false
+
+	/** Construct.
+	 * 
+	 * @param runnable the task to run.
+	 * @param time the execution time.
+	 * @param timeUnit the time unit.
+	 * @param logger the logger to use.
+	 * @param value the returned value.
+	 * @param reschedulingTask the action to do for rescheduling the task.
+	 */
+	new (runnable : Runnable, time : double, delay : long, timeUnit : TimeUnit, logger : Logger,
+		value : T, reschedulingTask : (ScheduledFutureRunnable<T>)=>void) {
+		super(runnable, logger)
+		this.time = time
+		this.delay = delay
+		this.value = value
+		this.timeUnit = timeUnit
+		this.reschedulingTask = reschedulingTask
+	}
+
+	def cancel(mayInterruptIfRunning : boolean) : boolean {
+		if (!this.canceled && !this.finished) {
+			this.canceled = true
+			this.reschedulingTask = null
+			this.finished = true
+			return true
+		}
+		return false
+	}
+
+	def get : T {
+		this.value
+	}
+
+	def get(timeout : long, unit : TimeUnit) : T {
+		get
+	}
+
+	def isCancelled : boolean {
+		return this.canceled
+	}
+
+	def isDone : boolean {
+		this.finished
+	}
+
+	private def reschedule {
+		if (this.reschedulingTask !== null) {
+			this.reschedulingTask.apply(this)
+		} else {
+			this.finished = true
+		}
+	}
+
+	override internalRun {
+		try {
+			wrappedRunnable?.run
+			reschedule
+		} catch (exception : Throwable) {
+			if (exception instanceof EarlyExitException) {
+				reschedule
+			} else {
+				this.finished = true
+			}
+			throw exception
+		}
+	}
+	
+	def getTime : double {
+		this.time
+	}
+	
+	def getDelay(unit : TimeUnit) : long {
+		unit.convert(this.delay, this.timeUnit)
+	}
+	
+	def compareTo(o : Delayed) : int {
+		if (o === this) return 0
+        if (o instanceof ScheduledFutureRunnable<?>) {
+        	var cmp = Double::compare(time, o.time)
+        	if (cmp !== 0) {
+        		return cmp
+        	}
+		}
+		return Long::compare(TimeUnit::NANOSECONDS.delay, o.getDelay(TimeUnit::NANOSECONDS))
+	}
+
+}
+/** 
+ * Future that embeddes a scheduled callable task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class ScheduledFutureCallable<T> extends SreCallable<T> implements SreScheduledFuture<T> {
+
+	package val delay : long
+
+	package val time : double
+
+	package val timeUnit : TimeUnit
+
+	package var value : T
+
+	package var finished = false
+
+	/** Construct.
+	 * 
+	 * @param callable the task to run.
+	 * @param time the execution time.
+	 * @param timeUnit the time unit.
+	 * @param logger the logger to use.
+	 */
+	new (callable : Callable<T>, time : double, delay : long, timeUnit : TimeUnit, logger : Logger) {
+		super(callable, logger)
+		this.time = time
+		this.delay = delay
+		this.timeUnit = timeUnit
+		this.value = value
+	}
+
+	def cancel(mayInterruptIfRunning : boolean) : boolean {
+		false
+	}
+
+	def get : T {
+		this.value
+	}
+
+	def get(timeout : long, unit : TimeUnit) : T {
+		get
+	}
+
+	def isCancelled : boolean {
+		false
+	}
+
+	def isDone : boolean {
+		this.finished
+	}
+
+	override internalCall : T {
+		try {
+			this.value = wrappedCallable?.call
+		} finally {
+			this.finished = true
+		}
+	}
+
+	def getTime : double {
+		this.time
+	}
+
+	def getDelay(unit : TimeUnit) : long {
+		unit.convert(this.delay, this.timeUnit)
+	}
+
+	def compareTo(o : Delayed) : int {
+		if(o === this) return 0
+		if (o instanceof ScheduledFutureRunnable<?>) {
+			var cmp = Double::compare(time, o.time)
+			if (cmp !== 0) {
+				return cmp
+			}
+		}
+		return Long::compare(TimeUnit::NANOSECONDS.delay, o.getDelay(TimeUnit::NANOSECONDS))
+	}
+
+}
+
+/** 
+ * Future that embeddes a callable task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+class FutureCallable<T> extends SreCallable<T> implements Future<T> {
+
+	var finished = false
+
+	var value : T
+
+	/** Construct.
+	 * 
+	 * @param callable the task to run.
+	 * @param logger the logger to use.
+	 */
+	new (callable : Callable<T>, logger : Logger) {
+		super(callable, logger)
+	}
+
+	def cancel(mayInterruptIfRunning : boolean) : boolean {
+		false
+	}
+
+	def get : T {
+		this.value
+	}
+
+	def get(timeout : long, unit : TimeUnit) : T {
+		get
+	}
+
+	def isCancelled : boolean {
+		false
+	}
+
+	def isDone : boolean {
+		this.finished
+	}
+
+	override internalCall : T {
+		try {
+			this.value = wrappedCallable?.call
+		} finally {
+			this.finished = true
+		}
+		return this.value
+	}
+
+}
+
+/** 
+ * Future that embeddes a consumer task. 
+ * 
+ * @param <T> the type of the returned value.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+class FutureConsumer<T> extends SreConsumer<T> implements Future<T> {
+
+	var finished = false
+
+	val value : T
+
+	/** Construct.
+	 * 
+	 * @param consumer the task to run.
+	 * @param logger the logger to use.
+	 * @param value the value that should be returned by the future.
+	 */
+	new (consumer : Consumer<T>, logger : Logger, value : T = null) {
+		super(consumer, logger)
+		this.value = value
+	}
+
+	def cancel(mayInterruptIfRunning : boolean) : boolean {
+		false
+	}
+
+	def get : T {
+		this.value
+	}
+
+	def get(timeout : long, unit : TimeUnit) : T {
+		get
+	}
+
+	def isCancelled : boolean {
+		false
+	}
+
+	def isDone : boolean {
+		this.finished
+	}
+
+	override internalAccept(t : T) {
+		try {
+			wrappedConsumer?.accept(t)
+		} finally {
+			this.finished = true
+		}
+	}
+
+}

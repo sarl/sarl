@@ -1,0 +1,130 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.protocol.propose
+
+import io.sarl.acl.protocol.propose.ProposeProtocolState
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("ProposeProtocolState")
+class ProposeProtocolStateTest {
+
+	var items = <ProposeProtocolState>newArrayList
+
+	def reg(item : ProposeProtocolState) : ProposeProtocolState {
+		this.items.remove(item).assertTrue
+		return item
+	}
+
+	def assertConsumed : void {
+		this.items.empty.assertTrue
+	}
+
+	@BeforeEach
+	def setUp : void {
+		items.addAll(ProposeProtocolState.values)
+	}
+
+	@ParameterizedTest
+	@EnumSource(typeof(ProposeProtocolState))
+	def getName(id : ProposeProtocolState) : void {
+		id.name().assertSame(id.getName)
+	}
+
+	@Test
+	def isBrokenProtocol : void {
+		ProposeProtocolState::NOT_STARTED.reg.isBrokenProtocol.assertFalse
+		ProposeProtocolState::CANCELED.reg.isBrokenProtocol.assertFalse
+		ProposeProtocolState::BROKEN_PROTOCOL.reg.isBrokenProtocol.assertTrue
+		ProposeProtocolState::ACCEPT_PROPOSE.reg.isBrokenProtocol.assertFalse
+		ProposeProtocolState::WAITING_ANSWER.reg.isBrokenProtocol.assertFalse
+		ProposeProtocolState::BUILDING_ANSWER.reg.isBrokenProtocol.assertFalse
+		ProposeProtocolState::REJECT_PROPOSE.reg.isBrokenProtocol.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isCancelled : void {
+		ProposeProtocolState::NOT_STARTED.reg.isCancelled.assertFalse
+		ProposeProtocolState::CANCELED.reg.isCancelled.assertTrue
+		ProposeProtocolState::BROKEN_PROTOCOL.reg.isCancelled.assertFalse
+		ProposeProtocolState::ACCEPT_PROPOSE.reg.isCancelled.assertFalse
+		ProposeProtocolState::WAITING_ANSWER.reg.isCancelled.assertFalse
+		ProposeProtocolState::BUILDING_ANSWER.reg.isCancelled.assertFalse
+		ProposeProtocolState::REJECT_PROPOSE.reg.isCancelled.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isErrorneous : void {
+		ProposeProtocolState::NOT_STARTED.reg.isErrorneous.assertFalse
+		ProposeProtocolState::CANCELED.reg.isErrorneous.assertFalse
+		ProposeProtocolState::BROKEN_PROTOCOL.reg.isErrorneous.assertTrue
+		ProposeProtocolState::ACCEPT_PROPOSE.reg.isErrorneous.assertFalse
+		ProposeProtocolState::WAITING_ANSWER.reg.isErrorneous.assertFalse
+		ProposeProtocolState::BUILDING_ANSWER.reg.isErrorneous.assertFalse
+		ProposeProtocolState::REJECT_PROPOSE.reg.isErrorneous.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isFinished : void {
+		ProposeProtocolState::NOT_STARTED.reg.isFinished.assertFalse
+		ProposeProtocolState::CANCELED.reg.isFinished.assertTrue
+		ProposeProtocolState::BROKEN_PROTOCOL.reg.isFinished.assertTrue
+		ProposeProtocolState::ACCEPT_PROPOSE.reg.isFinished.assertTrue
+		ProposeProtocolState::WAITING_ANSWER.reg.isFinished.assertFalse
+		ProposeProtocolState::BUILDING_ANSWER.reg.isFinished.assertFalse
+		ProposeProtocolState::REJECT_PROPOSE.reg.isFinished.assertTrue
+		assertConsumed
+	}
+
+	@Test
+	def isStarted : void {
+		ProposeProtocolState::NOT_STARTED.reg.isStarted.assertFalse
+		ProposeProtocolState::CANCELED.reg.isStarted.assertTrue
+		ProposeProtocolState::BROKEN_PROTOCOL.reg.isStarted.assertTrue
+		ProposeProtocolState::ACCEPT_PROPOSE.reg.isStarted.assertTrue
+		ProposeProtocolState::WAITING_ANSWER.reg.isStarted.assertTrue
+		ProposeProtocolState::BUILDING_ANSWER.reg.isStarted.assertTrue
+		ProposeProtocolState::REJECT_PROPOSE.reg.isStarted.assertTrue
+		assertConsumed
+	}
+
+}

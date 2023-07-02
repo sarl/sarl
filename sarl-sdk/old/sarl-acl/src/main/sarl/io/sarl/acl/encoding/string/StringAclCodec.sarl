@@ -1,0 +1,253 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.string
+
+import io.sarl.acl.encoding.AbstractAclMessageContentEncodingService
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclRepresentation
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+
+import static extension io.sarl.acl.encoding.string.StringAclCodecUtil.*
+
+/** 
+ * This class encodes an ACLMessageContent in String or decodes an
+ * ACLMessageContent encoded in bytes to String.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see "http://www.fipa.org/specs/fipa00070/SC00070I.html"
+ */
+class StringAclCodec extends AbstractAclMessageContentEncodingService {
+
+	override getAclRepresentation : AclRepresentation {
+		AclRepresentation::STRING
+	}
+
+	override encode(aMsg : AclMessage) : byte[] {
+		val bstream = new ByteArrayOutputStream
+		try {
+			val stream = new PrintStream(bstream)
+			// Performative, e.g. "(:00)(..)"
+			stream.performative(aMsg.performative) [
+
+				// Sender, e.g. ":sender ( agent-identifier name .. )"
+				val sender = aMsg.sender
+				if (sender !== null) {
+					node(Messages::NODE_SENDER) [
+						agentIdentifier(sender)
+					]
+				}
+		
+				// Receivers, e.g. ":receiver ( set ( agent-identifier name .. ) .. )"
+				val receivers = aMsg.receivers
+				if (receivers !== null && !receivers.isEmpty) {
+					node(Messages::NODE_RECEIVER) [
+						groupset(receivers) [it,element|
+							agentIdentifier(element)
+						]
+					]
+				}
+		
+				val aclContent = aMsg.content
+				if (aclContent !== null) {
+					// Reply-to, e.g. ":reply-to .."
+					val replyTo = aclContent.replyTo
+					if (replyTo !== null && !replyTo.isEmpty) {
+						node(Messages::NODE_REPLYTO) [
+							groupset(replyTo) [it,element|
+								agentIdentifier(element)
+							]
+						]
+					}
+
+					// Reply-by, e.g. ":reply-by .."
+					val replyBy = aclContent.replyBy
+					if (replyBy !== null) {
+						node(Messages::NODE_REPLYBY, date(replyBy))
+					}
+					
+					// Reply-with, e.g ":reply-with .."
+					val replyWith = aclContent.replyWith
+					if (!replyWith.isNullOrEmpty) {
+						node(Messages::NODE_REPLYWITH, replyWith)
+					}
+					
+					// In-reply-with, e.g. ":in-reply-to .."
+					val inReplyTo = aclContent.inReplyTo
+					if (!inReplyTo.isNullOrEmpty) {
+						node(Messages::NODE_INREPLYTO, inReplyTo)
+					}
+		
+					// Content, e.g. ":content \"..\""
+					val content = aclContent.content
+					if (content !== null) {
+						node(Messages::NODE_CONTENT) [
+							data(content)
+						]
+					}
+				}
+		
+				// Encoding, e.g. ":encoding .."
+				val encoding = aMsg.encoding
+				if (!encoding.isNullOrEmpty) {
+					node(Messages::NODE_ENCODING, encoding)
+				}
+		
+				// Language, e.g. ":language .."
+				val language = aMsg.language
+				if (!language.isNullOrEmpty) {
+					node(Messages::NODE_LANGUAGE, language)
+				}
+		
+				// Ontology, e.g. ":ontology .."
+				val ontology = aMsg.ontology
+				if (!ontology.isNullOrEmpty) {
+					node(Messages::NODE_ONTOLOGY, ontology)
+				}
+		
+				// Protocol, e.g. ":protocol .."
+				val protocol = aMsg.protocol
+				if (!protocol.isNullOrEmpty) {
+					node(Messages::NODE_PROTOCOL, protocol)
+				}
+		
+				// ConversationId, e.g. ":conversation-id .."
+				val conversationId = aMsg.conversationId
+				if (conversationId !== null) {
+					node(Messages::NODE_CONVERSATIONID, conversationId.toString)
+				}
+				
+			]
+		} finally {
+			bstream.close
+		}
+        return bstream.toByteArray
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	override decode(byteMsg : byte[], startIndex : int, endIndex : int) : AclMessageContent {
+		val correction = byteMsg.validateIndexes(startIndex, endIndex)
+		val startIdx = correction.key as int
+		val endIdx = correction.value as int
+		val content = this.contentFactory.newContent
+		byteMsg.ifFipaMessage(startIdx, endIdx) [it, performative|
+			content.performative = performative
+			forEachFipaComponent [it, type|
+				switch (type) {
+					case Messages::NODE_SENDER: {
+						// Sender, e.g. ":sender ( agent-identifier name .. )"
+						ifAgentIdentifier [sender|
+							content.sender = sender
+						]
+					}
+					case Messages::NODE_RECEIVER: {
+						// Receivers, e.g. ":receiver ( set ( agent-identifier name .. ) .. )"
+						forEachGroupSetElement [
+							ifAgentIdentifier [receiver|
+								var list = content.receivers
+								if (list === null) {
+									list = newArrayList
+									content.receivers = list
+								}
+								list += receiver
+							]
+						]
+					}
+					case Messages::NODE_REPLYTO: {
+						// Receivers, e.g. ":reply-to ( set ( agent-identifier name .. ) .. )"
+						forEachGroupSetElement [
+							ifAgentIdentifier [receiver|
+								var list = content.replyTo
+								if (list === null) {
+									list = newArrayList
+									content.replyTo = list
+								}
+								list += receiver
+							]
+						]
+					}
+					case Messages::NODE_REPLYBY: {
+						// Reply-by, e.g. ":reply-by .."
+						ifDate [
+							content.replyBy = it
+						]
+					}
+					case Messages::NODE_REPLYWITH: {
+						// Reply-with, e.g ":reply-with .."
+						ifExpression [
+							content.replyWith = it
+						]
+					}
+					case Messages::NODE_INREPLYTO: {
+						// In-reply-with, e.g. ":in-reply-to .."
+						ifExpression [
+							content.inReplyTo = it
+						]
+					}
+					case Messages::NODE_ENCODING: {
+						// Encoding, e.g. ":encoding .."
+						ifExpression [
+							content.encoding = it
+						]
+					}
+					case Messages::NODE_LANGUAGE: {
+						// Language, e.g. ":language .."
+						ifExpression [
+							content.language = it
+						]
+					}
+					case Messages::NODE_ONTOLOGY: {
+						// Ontology, e.g. ":ontology .."
+						ifExpression [
+							content.ontology = it
+						]
+					}
+					case Messages::NODE_PROTOCOL: {
+						// Protocol, e.g. ":protocol .."
+						ifExpression [
+							content.protocol = it
+						]
+					}
+					case Messages::NODE_CONVERSATIONID: {
+						// ConversationId, e.g. ":conversation-id .."
+						ifIdentifier [id|
+							content.conversationId = id
+						]
+					}
+					case Messages::NODE_CONTENT: {
+						// Content, e.g. ":content \"..\""
+						ifExpression [
+							content.content = it
+						]
+					}
+				}
+			]
+		]
+		return content
+	}
+
+}

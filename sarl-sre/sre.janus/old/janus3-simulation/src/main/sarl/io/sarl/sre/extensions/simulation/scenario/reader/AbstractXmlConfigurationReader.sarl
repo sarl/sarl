@@ -1,0 +1,371 @@
+/* 
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ * 
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ * Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.arakhne.afc.simulation.framework.base.scenario
+
+import io.sarl.lang.core.Agent
+import java.io.File
+import java.net.URI
+import java.util.ResourceBundle
+import java.util.UUID
+import org.arakhne.afc.simulation.framework.base.config.AbstractConfiguration
+import org.arakhne.afc.simulation.framework.base.config.ChartConfig
+import org.arakhne.afc.simulation.framework.base.config.ChartType
+import org.arakhne.afc.simulation.framework.base.config.ProbeConfig
+import org.arakhne.afc.simulation.framework.base.config.SpawnerConfig
+import org.arakhne.afc.simulation.framework.base.environment.AgentBody
+import org.arakhne.afc.simulation.framework.base.probes.Probe
+import org.arakhne.afc.vmutil.FileSystem
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+
+import static extension org.arakhne.afc.inputoutput.xml.XMLUtil.*
+import static extension org.arakhne.afc.util.ResourceBundles.*
+import static extension org.arakhne.afc.vmutil.FileSystem.*
+
+/** 
+ * Reader of xml file that contains a configuration definition.
+ *
+ * @param <T> the type of the configuration to read.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+abstract class AbstractXmlConfigurationReader<T extends AbstractConfiguration> {
+
+	/** Definition of a configuration instance.
+	 * @return the instance.
+	 */
+	protected abstract def createConfigurationInstance : T
+
+	/** Definition of a spawners' configuration instance.
+	 * @return the instance.
+	 */
+	protected def createSpawnerConfig : SpawnerConfig {
+		new SpawnerConfig
+	}
+
+	/** Definition of a probes' configuration instance.
+	 * @return the instance.
+	 */
+	protected def createProbeConfig : ProbeConfig {
+		new ProbeConfig
+	}
+
+	/** Definition of a chart's configuration instance.
+	 * @return the instance.
+	 */
+	protected def createChartConfig : ChartConfig {
+		new ChartConfig
+	}
+
+	/** Read a simulation configuration
+	 *
+	 * @param file the file to read.
+	 * @param bundle the localization bundle to be used.
+	 * @return the configuration.
+	 */
+	final def loadXmlConfiguration(file : File, bundle : ResourceBundle) : T {
+		var xml = file.readXML
+		var config = createConfigurationInstance
+		config.loadXmlConfiguration(file, xml, bundle)
+		return config
+	}
+
+	protected def loadGeneralPreferences(config : T, file : File, xml : Document, bundle : ResourceBundle) : void {
+		for (prefs : xml.getElementsFromPath("scenario", "preferences")) {
+			val children = prefs.childNodes
+			for (var i = 0; i < children.length; i++) {
+				val child = children.item(i)
+				if (child instanceof Element) {
+					val name = child.nodeName
+					if (!name.isNullOrEmpty) {
+						val value = child.getText ?: ""
+						if (!value.isNullOrEmpty) {
+							config.generalPreferences.put(name, value)
+						}
+					}
+				}
+			}
+		}		
+	}
+
+	protected def loadScenarioAttributes(config : T, file : File, xml : Document, bundle : ResourceBundle) : void {
+		var name = xml.getAttributeValueWithDefault(null, "scenario", "name")
+		config.scenarioName = bundle.getStringOrKey(name)
+	}
+
+	protected def loadTimeConfig(config : T, file : File, xml : Document, bundle : ResourceBundle) : void {
+		val tc = config.timeConfig
+		xml.getAttributeDoubleWithDefault(null, "scenario", "time", "start") => [
+			if(it !== null) tc.start = it
+		]
+		xml.getAttributeDoubleWithDefault(null, "scenario", "time", "step") => [
+			if(it !== null) tc.step = it
+		]
+		xml.getAttributeDoubleWithDefault(null, "scenario", "time", "stop") => [
+			if(it !== null) tc.stop = it
+		]
+		xml.getAttributeIntWithDefault(null, "scenario", "time", "delay") => [
+			if(it !== null) tc.simulationDelay = it
+		]
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def getTextAsDouble(node : Element, defaultValue : double = Double::NaN) : double {
+		val txt = node.getText?.trim
+		if (!txt.nullOrEmpty) {
+			try {
+				return txt as double
+			} catch (exception : Throwable) {
+				//
+			}
+		}
+		return defaultValue
+	}
+
+	protected def loadSpawnerConfig(config : T, file : File, xml : Document, bundle : ResourceBundle) : void {
+		for (child : xml.getElementsFromPath("scenario", "spawners", "spawner")) {
+			if (child.getAttributeBooleanWithDefault(true, "enable")) {
+				var spawner = createSpawnerConfig
+				spawner.id = child.getAttributeUUID("id", "spawner")
+				spawner.x = child.getAttributeDoubleWithDefault(0.0, "x")
+				spawner.y = child.getAttributeDoubleWithDefault(0.0, "y")
+				spawner.agentType = child.getAttributeExistingClass(typeof(Agent), "agent")
+				spawner.bodyType = child.getAttributeExistingClass(typeof(AgentBody), "body")
+				spawner.budget = child.getAttributeIntWithDefault(Integer::MAX_VALUE, "budget")
+				var bodyParametersNode = child.getElementFromPath("bodyParameters")
+				if (bodyParametersNode !== null) {
+					val minSpeedChild = bodyParametersNode.getElementFromPath("minSpeed")
+					if (minSpeedChild !== null) {
+						spawner.bodyParameters.put("minSpeed", minSpeedChild.getTextAsDouble(0.0))
+					} else {
+						spawner.bodyParameters.put("minSpeed", 0.0)
+					}
+					val maxSpeedChild = bodyParametersNode.getElementFromPath("maxSpeed")
+					if (minSpeedChild !== null) {
+						val m = maxSpeedChild.getTextAsDouble
+						if (!m.isNaN) {
+							spawner.bodyParameters.put("maxSpeed", m)
+						}
+					}
+					val laneLaw = bodyParametersNode.getElementFromPath("initialLaneLaw")
+					if (laneLaw !== null) {
+						val lawElements = <String, Object>newHashMap
+						var law = laneLaw.getAttributeValue("name")
+						if (!law.isNullOrEmpty) {
+							lawElements.put("lawName", law)
+							var nodeList = laneLaw.childNodes
+							for (var i = 0; i < nodeList.length; i++) {
+								var argNode = nodeList.item(i)
+								if (argNode instanceof Element) {
+									var name = argNode.nodeName
+									if (!name.nullOrEmpty) {
+										var value = argNode.getText?.trim
+										if (!value.nullOrEmpty) {
+											lawElements.put(name, value)
+										}
+									}
+								}
+							}
+						}
+						if (!lawElements.isEmpty) {
+							spawner.bodyParameters.put("initialLaneLaw", lawElements)
+						}
+					}
+				}
+				var agentParametersNode = child.getElementFromPath("agentParameters")
+				agentParametersNode.forEachValue [
+					spawner.agentParameters += it
+				]
+				var lawNode = child.getElementFromPath("law")
+				if (lawNode !== null) {
+					var law = lawNode.getAttributeValue("name")
+					if (!law.isNullOrEmpty) {
+						spawner.law = law
+						var nodeList = lawNode.childNodes
+						for (var i = 0; i < nodeList.length; i++) {
+							var argNode = nodeList.item(i)
+							if (argNode instanceof Element) {
+								var name = argNode.nodeName
+								if (!name.nullOrEmpty) {
+									var value = argNode.getText?.trim
+									if (!value.nullOrEmpty) {
+										spawner.lawArguments.put(name, value)
+									}
+								}
+							}
+						}
+						config.spawners += spawner
+					}
+				}
+			}
+		}
+	}
+
+	/** Parse the list of value from the given node.
+	 *
+	 * @param rootNode the node to parse.
+	 * @param callback the callback on each value.
+	 * @return the {@code rootNode}.
+	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	protected static def forEachValue(rootNode : Element, extension callback : (Object)=>void) : Element {
+		if (rootNode !== null) {
+			var nodeList = rootNode.childNodes
+			for (var i = 0; i < nodeList.length; i++) {
+				var argNode = nodeList.item(i)
+				if (argNode instanceof Element) {
+					var value = argNode.getText?.trim
+					switch (argNode.nodeName) {
+						case "byte": {
+							callback.apply(value as byte)
+						}
+						case "short": {
+							callback.apply(value as short)
+						}
+						case "int": {
+							callback.apply(value as int)
+						}
+						case "long": {
+							callback.apply(value as long)
+						}
+						case "float": {
+							callback.apply(value as float)
+						}
+						case "double": {
+							callback.apply(value as double)
+						}
+						case "char": {
+							callback.apply(value.charAt(0))
+						}
+						case "string": {
+							callback.apply(value as String)
+						}
+						case "boolean": {
+							callback.apply(value as boolean)
+						}
+						case "uuid": {
+							callback.apply(UUID::fromString(value))
+						}
+						case "url": {
+							callback.apply(FileSystem::convertStringToURL(value, false))
+						}
+						case "uri": {
+							callback.apply(new URI(value))
+						}
+						case "file": {
+							callback.apply(FileSystem::convertStringToFile(value))
+						}
+					}
+				}
+			}
+		}
+		return rootNode
+	}
+
+	protected def loadProbeConfig(config : T, file : File, xml : Document, bundle : ResourceBundle) : void {
+		config.probeFolder = xml.getAttributeValueWithDefault(null, "scenario", "probes", "folder").convertStringToFile.
+			makeAbsolute(file.parentFile)
+		config.dataFolderBasename = xml.getAttributeValueWithDefault(null, "scenario", "probes", "basename")
+		for (child : xml.getElementsFromPath("scenario", "probes", "probe")) {
+			if (child.getAttributeBooleanWithDefault(true, "enable")) {
+				var probe = createProbeConfig
+				probe.type = child.getAttributeExistingClass(typeof(Probe), "type")
+				if (probe.type !== null) {
+					probe.id = child.getAttributeUUID("id", "probe")
+					probe.name = bundle.getStringOrKey(child.getAttributeValueWithDefault(null, "name"))
+					probe.x = child.getAttributeDoubleWithDefault(Double::NaN, "x")
+					probe.y = child.getAttributeDoubleWithDefault(Double::NaN, "y")
+					probe.chartsEnabled = child.getAttributeBooleanWithDefault(false, "enableCharts")
+					probe.outputToFile = child.getAttributeBooleanWithDefault(true, "outputToFile")
+					probe.fileBasename = child.getAttributeValueWithDefault(null, "fileBasename")
+					for (chartChild : child.getElementsFromPath("chartReference")) {
+						var chartId = chartChild.getAttributeUUID("id", "chart")
+						probe.addChart(chartId)
+					}
+					config.addProbe(probe)
+				}
+			}
+		}
+	}
+
+	protected def loadChartConfig(config : T, file : File, xml : Document, extension bundle : ResourceBundle) : void {
+		for (child : xml.getElementsFromPath("scenario", "charts", "chart")) {
+			if (child.getAttributeBooleanWithDefault(true, "enable")) {
+				var chart = createChartConfig
+				chart.type = child.getAttributeEnumWithDefault(typeof(ChartType), null, "type")
+				chart.id = child.getAttributeUUID("id", "chart")
+				chart.title = bundle.getStringOrKey(child.getAttributeValueWithDefault(null, "title"))
+				chart.ylabel = bundle.getStringOrKey(child.getAttributeValueWithDefault(null, "ylabel"))
+				config.charts += chart
+			}
+		}
+	}
+
+	/** Read a simulation configuration
+	 * 
+	 * @param file the file to read.
+	 * @return the configuration.
+	 */
+	protected def loadXmlConfiguration(config : T, file : File, xml : Document,
+		extension bundle : ResourceBundle) : void {
+		config.loadGeneralPreferences(file, xml, bundle)
+		config.loadScenarioAttributes(file, xml, bundle)
+		config.loadTimeConfig(file, xml, bundle)
+		config.loadSpawnerConfig(file, xml, bundle)
+		config.loadProbeConfig(file, xml, bundle)
+		config.loadChartConfig(file, xml, bundle)
+	}
+
+	protected static def getAttributeUUID(element : Element, name : String, prefix : String = null) : UUID {
+		val v = element.getAttributeValueWithDefault(null, name)
+		if (v !== null && !v.isEmpty()) {
+			try {
+				val id = UUID::fromString(v)
+				if (id !== null) {
+					return id
+				}
+			} catch (e : Exception) {
+				//
+			}
+			try {
+				val v2 = if (prefix.nullOrEmpty) v.trim else prefix + v.trim
+				val id = UUID::nameUUIDFromBytes(v2.bytes)
+				if (id !== null) {
+					return id
+				}
+			} catch (e : Exception) {
+				//
+			}
+		}
+		return UUID::randomUUID
+	}
+
+	protected def getAttributeExistingClass(element : Element, rootType : Class<TT>,
+		names : String*) : Class<? extends TT> with TT {
+		val typeName = element.getAttributeValueWithDefault(null, names)
+		if (!typeName.nullOrEmpty) {
+			val type = Class::forName(typeName)
+			return type.asSubclass(rootType)
+		}
+		return null
+	}
+}

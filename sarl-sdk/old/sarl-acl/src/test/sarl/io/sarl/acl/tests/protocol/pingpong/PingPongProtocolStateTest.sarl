@@ -1,0 +1,130 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.protocol.pingpong
+
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+
+import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.acl.protocol.pingpong.PingPongProtocolState
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("PingPongProtocolState")
+class PingPongProtocolStateTest {
+
+	var items = <PingPongProtocolState>newArrayList
+
+	def reg(item : PingPongProtocolState) : PingPongProtocolState {
+		this.items.remove(item).assertTrue
+		return item
+	}
+
+	def assertConsumed : void {
+		this.items.empty.assertTrue
+	}
+
+	@BeforeEach
+	def setUp : void {
+		items.addAll(PingPongProtocolState.values)
+	}
+
+	@ParameterizedTest
+	@EnumSource(typeof(PingPongProtocolState))
+	def getName(id : PingPongProtocolState) : void {
+		id.name().assertSame(id.getName)
+	}
+
+	@Test
+	def isBrokenProtocol : void {
+		PingPongProtocolState::NOT_STARTED.reg.isBrokenProtocol.assertFalse
+		PingPongProtocolState::CANCELED.reg.isBrokenProtocol.assertFalse
+		PingPongProtocolState::BROKEN_PROTOCOL.reg.isBrokenProtocol.assertTrue
+		PingPongProtocolState::BUILDING_ANSWER.reg.isBrokenProtocol.assertFalse
+		PingPongProtocolState::WAITING_ANSWER.reg.isBrokenProtocol.assertFalse
+		PingPongProtocolState::PONG_RECEIVED.reg.isBrokenProtocol.assertFalse
+		PingPongProtocolState::PONG_SENT.reg.isBrokenProtocol.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isCancelled : void {
+		PingPongProtocolState::NOT_STARTED.reg.isCancelled.assertFalse
+		PingPongProtocolState::CANCELED.reg.isCancelled.assertTrue
+		PingPongProtocolState::BROKEN_PROTOCOL.reg.isCancelled.assertFalse
+		PingPongProtocolState::PONG_RECEIVED.reg.isCancelled.assertFalse
+		PingPongProtocolState::WAITING_ANSWER.reg.isCancelled.assertFalse
+		PingPongProtocolState::BUILDING_ANSWER.reg.isCancelled.assertFalse
+		PingPongProtocolState::PONG_SENT.reg.isCancelled.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isErrorneous : void {
+		PingPongProtocolState::NOT_STARTED.reg.isErrorneous.assertFalse
+		PingPongProtocolState::CANCELED.reg.isErrorneous.assertFalse
+		PingPongProtocolState::BROKEN_PROTOCOL.reg.isErrorneous.assertTrue
+		PingPongProtocolState::PONG_RECEIVED.reg.isErrorneous.assertFalse
+		PingPongProtocolState::WAITING_ANSWER.reg.isErrorneous.assertFalse
+		PingPongProtocolState::BUILDING_ANSWER.reg.isErrorneous.assertFalse
+		PingPongProtocolState::PONG_SENT.reg.isErrorneous.assertFalse
+		assertConsumed
+	}
+
+	@Test
+	def isFinished : void {
+		PingPongProtocolState::NOT_STARTED.reg.isFinished.assertFalse
+		PingPongProtocolState::CANCELED.reg.isFinished.assertTrue
+		PingPongProtocolState::BROKEN_PROTOCOL.reg.isFinished.assertTrue
+		PingPongProtocolState::PONG_RECEIVED.reg.isFinished.assertTrue
+		PingPongProtocolState::WAITING_ANSWER.reg.isFinished.assertFalse
+		PingPongProtocolState::BUILDING_ANSWER.reg.isFinished.assertFalse
+		PingPongProtocolState::PONG_SENT.reg.isFinished.assertTrue
+		assertConsumed
+	}
+
+	@Test
+	def isStarted : void {
+		PingPongProtocolState::NOT_STARTED.reg.isStarted.assertFalse
+		PingPongProtocolState::CANCELED.reg.isStarted.assertTrue
+		PingPongProtocolState::BROKEN_PROTOCOL.reg.isStarted.assertTrue
+		PingPongProtocolState::PONG_RECEIVED.reg.isStarted.assertTrue
+		PingPongProtocolState::WAITING_ANSWER.reg.isStarted.assertTrue
+		PingPongProtocolState::BUILDING_ANSWER.reg.isStarted.assertTrue
+		PingPongProtocolState::PONG_SENT.reg.isStarted.assertTrue
+		assertConsumed
+	}
+
+}

@@ -1,0 +1,204 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.encoding.bitefficient
+
+import io.sarl.acl.encoding.bitefficient.BitEfficientAclCodec
+import io.sarl.acl.encoding.bitefficient.constant.AgentIdentifier
+import io.sarl.acl.encoding.bitefficient.constant.BinaryDateTimeToken
+import io.sarl.acl.encoding.bitefficient.constant.BinaryString
+import io.sarl.acl.encoding.bitefficient.constant.BinaryWord
+import io.sarl.acl.encoding.bitefficient.constant.EndOfCollection
+import io.sarl.acl.encoding.bitefficient.constant.MessageID
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageParameter
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageType
+import io.sarl.acl.encoding.bitefficient.constant.Version
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.message.Performative
+import io.sarl.acl.util.Iso8601DateTimeUtil
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.nio.ByteBuffer
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.acl.tests.TestUtil.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("BitEfficientAclCodec")
+class BitEfficientAclCodecTest {
+
+	var codec : BitEfficientAclCodec
+
+	@BeforeEach
+	def setUp : void {
+		this.codec = new BitEfficientAclCodec
+	}
+
+	private def b(value : String) : byte {
+		value.charAt(0) as byte
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	private def createMessage : AclMessage {
+		val msg = new AclMessage(Performative::CANCEL, "zoo")
+		msg.sender = "ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID
+		msg.receivers = #[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID, "331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ]
+		msg.ontology = "ont"
+		msg.protocol = "prot"
+		val date = Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z")
+		msg.content.replyBy = date
+		msg.conversationId = "8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID
+		return msg
+	}
+
+	private def createBuffer : byte[] {
+		val buffer0 : byte[] = #[
+			MessageID::BITEFFICIENT.binaryCode, Version::VERSION.binaryCode,
+			PredefinedMessageType::getBinaryCode(Performative::CANCEL),
+			// Sender
+			PredefinedMessageParameter::PARAM_SENDER.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'e'.b, 'd'.b, '4'.b, '9'.b, '0'.b, 'd'.b, 'f'.b, '2'.b, '-'.b, '5'.b,
+			'c'.b, '3'.b, '5'.b, '-'.b, '4'.b, '0'.b, '8'.b, '4'.b, '-'.b, '8'.b,
+			'e'.b, '5'.b, '0'.b, '-'.b, '1'.b, '5'.b, '8'.b, '3'.b, '6'.b, 'd'.b,
+			'a'.b, 'd'.b, '7'.b, 'b'.b, '4'.b, 'f'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			// Receivers
+			PredefinedMessageParameter::PARAM_RECEIVER.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'3'.b, '1'.b, 'd'.b, 'c'.b, 'f'.b, 'f'.b, '2'.b, '3'.b, '-'.b, '3'.b,
+			'a'.b, '6'.b, '6'.b, '-'.b, '4'.b, '2'.b, 'a'.b, 'c'.b, '-'.b, '8'.b,
+			'e'.b, '6'.b, '9'.b, '-'.b, '3'.b, 'a'.b, 'c'.b, '7'.b, 'a'.b, 'a'.b,
+			'e'.b, '0'.b, '7'.b, 'b'.b, 'c'.b, '0'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_BEGIN.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'3'.b, '3'.b, '1'.b, 'e'.b, '6'.b, '2'.b, '6'.b, '7'.b, '-'.b, '7'.b,
+			'3'.b, '3'.b, '0'.b, '-'.b, '4'.b, 'e'.b, '7'.b, '6'.b, '-'.b, '8'.b,
+			'8'.b, 'f'.b, '6'.b, '-'.b, '1'.b, '7'.b, '8'.b, '3'.b, 'f'.b, '7'.b,
+			'1'.b, '6'.b, '0'.b, 'f'.b, 'c'.b, '7'.b,
+			BinaryWord::WORD_END.binaryCode,
+			AgentIdentifier::AGENT_NAME_END.binaryCode,
+			EndOfCollection::END_OF_COLLECTION.binaryCode,
+			// Reply-by
+			PredefinedMessageParameter::PARAM_REPLY_BY.binaryCode,
+			BinaryDateTimeToken::ABS_TIME.binaryCode
+		]
+		val dateArray = Iso8601DateTimeUtil::toByteArray("2021", "03", "28", "23", "06", "48", "487")
+		val buffer1 : byte[] = #[
+			// Ontology
+			PredefinedMessageParameter::PARAM_ONTOLOGY.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'o'.b, 'n'.b, 't'.b,
+			BinaryWord::WORD_END.binaryCode,
+			// Protocol
+			PredefinedMessageParameter::PARAM_PROTOCOL.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'p'.b, 'r'.b, 'o'.b, 't'.b,
+			BinaryWord::WORD_END.binaryCode,
+			// Conversation ID
+			PredefinedMessageParameter::PARAM_CONVERSATION_ID.binaryCode,
+			BinaryWord::WORD_BEGIN.binaryCode,
+			'8'.b, 'd'.b, 'd'.b, '8'.b, '7'.b, '9'.b, 'd'.b, '5'.b, '-'.b, '7'.b,
+			'e'.b, '1'.b, '5'.b, '-'.b, '4'.b, '2'.b, 'e'.b, '9'.b, '-'.b, 'a'.b,
+			'b'.b, '0'.b, '0'.b, '-'.b, 'c'.b, 'e'.b, '8'.b, 'b'.b, '5'.b, 'e'.b,
+			'6'.b, '8'.b, '0'.b, 'd'.b, 'c'.b, '9'.b,
+			BinaryWord::WORD_END.binaryCode,
+			// Content
+			PredefinedMessageParameter::PARAM_CONTENT.binaryCode,
+			BinaryString::STRING_BEGIN.binaryCode,
+			'z'.b, 'o'.b, 'o'.b,
+			BinaryString::STRING_END.binaryCode,
+			// End
+			EndOfCollection::END_OF_COLLECTION.binaryCode
+		]
+		val out = ByteBuffer::allocate(buffer0.length + dateArray.length + buffer1.length)
+		out.put(buffer0)
+		out.put(dateArray)
+		out.put(buffer1)
+		return out.array
+	}
+
+	@Test
+	def encode : void {
+		val actual = this.codec.encode(createMessage)
+		createBuffer.assertArrayEquals(actual.toByteArray)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	def decode : void {
+		val actual = this.codec.decode(createBuffer)
+		Performative::CANCEL.assertSame(actual.performative)
+		"zoo".assertEquals(actual.content)
+		("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(actual.sender)
+		#[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID,
+		"331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ].assertArrayEquals(actual.receivers)
+		"ont".assertEquals(actual.ontology)
+		"prot".assertEquals(actual.protocol)
+		Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z").assertEquals(actual.replyBy)
+		("8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID).assertEquals(actual.conversationId)
+	}
+
+	@SuppressWarnings("potential_inefficient_value_conversion")
+	@Test
+	@DisplayName("encode and decode")
+	def encodeDecode : void {
+		val source = createMessage
+		val buffer = this.codec.encode(source)
+		var content = this.codec.decode(buffer)
+		source.content.assertNotSame(content)
+		Performative::CANCEL.assertSame(content.performative)
+		"zoo".assertEquals(content.content)
+		("ed490df2-5c35-4084-8e50-15836dad7b4f" as UUID).assertEquals(content.sender)
+		#[ "31dcff23-3a66-42ac-8e69-3ac7aae07bc0" as UUID,
+		"331e6267-7330-4e76-88f6-1783f7160fc7" as UUID ].assertArrayEquals(content.receivers)
+		"ont".assertEquals(content.ontology)
+		"prot".assertEquals(content.protocol)
+		Iso8601DateTimeUtil::parse("2021-03-28T23:06:48.487Z").assertEquals(content.replyBy)
+		("8dd879d5-7e15-42e9-ab00-ce8b5e680dc9" as UUID).assertEquals(content.conversationId)
+	}
+
+	@Test
+	@DisplayName("getAclRepresentation")
+	def getAclRepresentation : void {
+		AclRepresentation::BIT_EFFICIENT.assertSame(this.codec.aclRepresentation)
+	}
+
+}

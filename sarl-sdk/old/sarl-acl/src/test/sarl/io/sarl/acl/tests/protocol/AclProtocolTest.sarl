@@ -1,0 +1,120 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.protocol
+
+import io.sarl.acl.protocol.AclProtocol
+import io.sarl.acl.protocol.AclProtocolId
+import io.sarl.acl.protocol.ProtocolState
+import io.sarl.lang.core.Agent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Collection
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("AclProtocol")
+class AclProtocolTest {
+
+	var initiator : UUID
+
+	var ^agent : MockableAgent
+
+	var protocol : MockableFipaProtocol
+
+	@BeforeEach
+	def setUp : void {
+		this.initiator = UUID::randomUUID
+		this.^agent = new MockableAgent
+		this.protocol = new MockableFipaProtocol(this.^agent, this.initiator)
+	}
+
+	@Test
+	@DisplayName("hasFailed - no error")
+	def hasFailed_noError : void {
+		this.protocol.hasFailed.assertFalse
+	}
+
+	@Test
+	@DisplayName("hasFailed - 1 error")
+	def hasFailed_oneError : void {
+		this.protocol.numberOfErrors = 1
+		this.protocol.hasFailed.assertTrue
+	}
+
+	@Test
+	@DisplayName("hasFailed - many errors")
+	def hasFailed_manyErrors : void {
+		this.protocol.numberOfErrors = 5
+		this.protocol.hasFailed.assertTrue
+	}
+
+	static class MockableAgent extends Agent {
+		new {
+			super(UUID::randomUUID, UUID::randomUUID)
+		}
+	}
+
+	static class MockableFipaProtocol extends AclProtocol {
+		override setNumberOfErrors(numberOfErrors : int) {
+			super.setNumberOfErrors(numberOfErrors)
+		}
+		def getAclProtocolId : AclProtocolId {
+			throw new UnsupportedOperationException
+		}
+		def isInitiatorSide : boolean {
+			throw new UnsupportedOperationException
+		}
+		def isParticipantSide : boolean {
+			throw new UnsupportedOperationException
+		}
+		def getMaximumNumberOfParticipants : int {
+			throw new UnsupportedOperationException
+		}
+		def getParticipants : Collection<UUID> {
+			throw new UnsupportedOperationException
+		}
+		protected def getCancelledState : ProtocolState {
+			throw new UnsupportedOperationException
+		}
+		protected def getErrorState : ProtocolState {
+			throw new UnsupportedOperationException
+		}
+		def isStarted : boolean {
+			throw new UnsupportedOperationException
+		}
+	}
+
+}

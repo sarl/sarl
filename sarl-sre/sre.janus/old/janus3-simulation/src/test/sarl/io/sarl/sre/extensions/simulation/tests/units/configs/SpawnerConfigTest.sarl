@@ -1,0 +1,257 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2021 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.extensions.simulation.tests.units.configs
+
+import io.sarl.lang.core.Agent
+import io.sarl.sre.extensions.simulation.configs.SpawnerConfig
+import io.sarl.sre.extensions.simulation.tests.units.configs.mocks.MyAgent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.extensions.simulation.tests.units.configs.mocks.MyBody
+import io.sarl.sre.extensions.simulation.agentenvironment.model.AgentBody
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: SpawnerConfig test")
+@Tag("unit")
+@Tag("janus")
+@Tag("sre-unit")
+@Tag("sre-simulation")
+class SpawnerConfigTest {
+
+	@Nullable
+	var config : SpawnerConfig
+	
+	@BeforeEach
+	def setUp : void {
+		this.config = new SpawnerConfig
+	}
+
+	@Test
+	@DisplayName("getLaw")
+	def getLaw : void {
+		this.config.law.assertNull
+	}
+
+	@Test
+	@DisplayName("setLaw(null)")
+	def setLaw_null : void {
+		this.config.law = null
+		this.config.law.assertNull
+		this.config.law = UUID::randomUUID.toString
+		this.config.law.assertNotNull
+		this.config.law = null
+		this.config.law.assertNull
+	}
+
+	@Test
+	@DisplayName("setLaw(String)")
+	def setLaw_String : void {
+		val input = UUID::randomUUID.toString
+		this.config.law = input
+		input.assertEquals(this.config.law)
+	}
+
+	@Test
+	@DisplayName("getAgentType")
+	def getAgentType : void {
+		this.config.agentType.assertNull
+	}
+
+	@Test
+	@DisplayName("setAgentType(null)")
+	def setAgentType_null : void {
+		this.config.agentType = typeof(Agent)
+		this.config.agentType = null
+		this.config.agentType.assertNull
+	}
+
+	@Test
+	@DisplayName("setAgentType(Agent)")
+	def setAgentType_Agent : void {
+		this.config.agentType = typeof(Agent)
+		typeof(Agent).assertEquals(this.config.agentType)
+	}
+
+	@Test
+	@DisplayName("setAgentType(MyAgent)")
+	def setAgentType_MyAgent : void {
+		this.config.agentType = typeof(MyAgent)
+		typeof(MyAgent).assertEquals(this.config.agentType)
+	}
+
+	@Test
+	@DisplayName("getBodyType")
+	def getBodyType : void {
+		this.config.bodyType.assertNull
+	}
+
+	@Test
+	@DisplayName("setBodyType(null)")
+	def setBodyType_null : void {
+		this.config.bodyType = typeof(AgentBody)
+		this.config.bodyType = null
+		this.config.bodyType.assertNull
+	}
+
+	@Test
+	@DisplayName("setAgentType(Agent)")
+	def setBodyType_AgentBody : void {
+		this.config.bodyType = typeof(AgentBody)
+		typeof(AgentBody).assertEquals(this.config.bodyType)
+	}
+
+	@Test
+	@DisplayName("setBodyType(MyBody)")
+	def setBodyType_MyBody : void {
+		this.config.bodyType = typeof(MyBody)
+		typeof(MyBody).assertEquals(this.config.bodyType)
+	}
+
+	@Test
+	@DisplayName("getBudget")
+	def getBudget : void {
+		Integer::MAX_VALUE.assertEquals(this.config.budget)
+	}
+
+	@Test
+	@DisplayName("setBudget(negative)")
+	def setBudget_negative : void {
+		this.config.budget = -1
+		0.assertEquals(this.config.budget)
+	}
+
+	@Test
+	@DisplayName("setBudget(0)")
+	def setBudget_zero : void {
+		this.config.budget = 0
+		0.assertEquals(this.config.budget)
+	}
+
+	@Test
+	@DisplayName("setBudget(positive)")
+	def setBudget_positive : void {
+		this.config.budget = 1234
+		1234.assertEquals(this.config.budget)
+	}
+
+	@Test
+	@DisplayName("getLawArguments")
+	def getLawArguments : void {
+		val actual0 = this.config.lawArguments
+		actual0.assertNotNull
+		val actual1 = this.config.lawArguments
+		actual0.assertSame(actual1)
+	}
+
+	@Test
+	@DisplayName("setLawArguments(null)")
+	def setLawArguments_null : void {
+		this.config.lawArguments = null
+		this.config.lawArguments.assertNotNull
+		this.config.lawArguments.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("setLawArguments(Map)")
+	def setLawArguments_map : void {
+		val input = newHashMap
+		input.put("a", "b")
+		this.config.lawArguments = input
+		this.config.lawArguments.assertNotNull
+		input.assertSame(this.config.lawArguments)
+	}
+
+	@Test
+	@DisplayName("getBodyParameters")
+	def getBodyParameters : void {
+		val actual0 = this.config.bodyParameters
+		actual0.assertNotNull
+		val actual1 = this.config.bodyParameters
+		actual0.assertSame(actual1)
+	}
+
+	@Test
+	@DisplayName("setBodyParameters(null)")
+	def setBodyParameters_null : void {
+		this.config.bodyParameters = null
+		this.config.bodyParameters.assertNotNull
+		this.config.bodyParameters.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("setBodyParameters(Map)")
+	def setBodyParameters_map : void {
+		val input = newHashMap
+		input.put("a", "b")
+		this.config.bodyParameters = input
+		this.config.bodyParameters.assertNotNull
+		input.assertSame(this.config.bodyParameters)
+	}
+
+	@Test
+	@DisplayName("getAgentParameters")
+	def getAgentParameters : void {
+		val actual0 = this.config.agentParameters
+		actual0.assertNotNull
+		val actual1 = this.config.agentParameters
+		actual0.assertSame(actual1)
+	}
+
+	@Test
+	@DisplayName("setAgentParameters(null)")
+	def setAgentParameters_null : void {
+		this.config.agentParameters = null
+		this.config.agentParameters.assertNotNull
+		this.config.agentParameters.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("setAgentParameters(List)")
+	def setAgentParameters_list : void {
+		val input = newArrayList
+		input.add("a")
+		this.config.agentParameters = input
+		this.config.agentParameters.assertNotNull
+		input.assertSame(this.config.agentParameters)
+	}
+
+}

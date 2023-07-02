@@ -1,0 +1,159 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.acl.encoding.bitefficient
+
+import io.sarl.acl.encoding.AbstractAclMessageContentEncodingService
+import io.sarl.acl.encoding.bitefficient.constant.EndOfMessage
+import io.sarl.acl.encoding.bitefficient.constant.MessageID
+import io.sarl.acl.encoding.bitefficient.constant.PredefinedMessageParameter
+import io.sarl.acl.encoding.bitefficient.constant.Version
+import io.sarl.acl.message.AclMessage
+import io.sarl.acl.message.AclMessageContent
+import io.sarl.acl.message.AclRepresentation
+import io.sarl.acl.util.ByteArrayBuffer
+
+import static extension io.sarl.acl.encoding.bitefficient.BitEfficientAclCodecUtil.*
+
+/** 
+ * This class encodes an ACLMessageContent in bit efficient or decodes an ACLMessageContent encoded in bytes from bit efficient.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ * @see <a href="http://fipa.org/specs/fipa00069/SC00069G.html">FIPA ACL Message Representation in Bit Efficient Specification</a>
+ */
+class BitEfficientAclCodec extends AbstractAclMessageContentEncodingService {
+
+	override getAclRepresentation : AclRepresentation {
+		AclRepresentation::BIT_EFFICIENT
+	}
+
+	@SuppressWarnings("unused_local_variable")
+	override decode(buffer : byte[], startIndex : int, endIndex : int) : AclMessageContent {
+		val correction = buffer.validateIndexes(startIndex, endIndex)
+		val startIdx = correction.key as int
+		val endIdx = correction.value as int
+
+		var content = this.contentFactory.newContent
+
+		val readingBuffer = new ByteArrayBuffer(buffer, startIdx, endIdx)
+
+		// Type of Id - not used, See MessageID enumeration
+		var messageType = readingBuffer.readByte
+
+		// Version - not used
+		var version = readingBuffer.readByte
+
+		var performative = readingBuffer.decodePerformative
+		content.performative = performative
+
+		var b : byte
+
+		while ((b = readingBuffer.readByte) !== EndOfMessage::END_OF_MESSAGE.binaryCode) {
+			switch (b) {
+				case PredefinedMessageParameter::PARAM_SENDER.binaryCode: {
+					content.sender = readingBuffer.decodeAgent
+				}
+				case PredefinedMessageParameter::PARAM_RECEIVER.binaryCode: {
+					content.receivers = readingBuffer.decodeAgents
+				}
+				case PredefinedMessageParameter::PARAM_REPLY_TO.binaryCode: {
+					content.replyTo = readingBuffer.decodeAgents
+				}
+				case PredefinedMessageParameter::PARAM_IN_REPLY_TO.binaryCode: {
+					content.inReplyTo = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_REPLY_WITH.binaryCode: {
+					content.replyWith = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_REPLY_BY.binaryCode: {
+					content.replyBy = readingBuffer.decodeDate
+				}
+				case PredefinedMessageParameter::PARAM_LANGUAGE.binaryCode: {
+					content.language = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_ENCODING.binaryCode: {
+					content.encoding = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_ONTOLOGY.binaryCode: {
+					content.ontology = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_PROTOCOL.binaryCode: {
+					content.protocol = readingBuffer.decodeParameter
+				}
+				case PredefinedMessageParameter::PARAM_CONVERSATION_ID.binaryCode: {
+					content.conversationId = readingBuffer.decodeUUID
+				}
+				case PredefinedMessageParameter::PARAM_CONTENT.binaryCode: {
+					content.content = readingBuffer.decodeMessageContent
+				}
+				default: {
+					throw new IllegalArgumentException("invalid field type: 0x" + Integer::toHexString(b))
+				}
+			}
+		}
+
+		return content
+	}
+
+	def encode(msg : AclMessage) : byte[] {
+		var buffer = <Byte>newArrayList
+
+		buffer += MessageID::BITEFFICIENT.binaryCode // we don't use code table for now
+		buffer += Version::VERSION.binaryCode // 0x10
+
+		// add the corresponding byte of the performative
+		// we don't deal with user defined performative as done in jade
+		buffer.dumpPerformative(msg.performative)
+
+		buffer.dumpAgent(msg.sender, PredefinedMessageParameter::PARAM_SENDER)
+
+		buffer.dumpAgents(msg.receivers, PredefinedMessageParameter::PARAM_RECEIVER)
+
+		buffer.dumpAgents(msg.content.replyTo, PredefinedMessageParameter::PARAM_REPLY_TO)
+
+		buffer.dumpReplyBy(msg.content.replyBy)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_REPLY_WITH, msg.content.replyWith)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_IN_REPLY_TO, msg.content.inReplyTo)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_LANGUAGE, msg.content.language)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_ENCODING, msg.content.encoding)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_ONTOLOGY, msg.content.ontology)
+
+		buffer.dumpWordParameter(PredefinedMessageParameter::PARAM_PROTOCOL, msg.content.protocol)
+
+		buffer.dumpParameter(PredefinedMessageParameter::PARAM_CONVERSATION_ID, msg.content.conversationId.toString)
+
+		buffer.dumpMessageContent(msg.content.content)
+
+		buffer.add(EndOfMessage::END_OF_MESSAGE.binaryCode)
+
+		return buffer
+	}
+
+}

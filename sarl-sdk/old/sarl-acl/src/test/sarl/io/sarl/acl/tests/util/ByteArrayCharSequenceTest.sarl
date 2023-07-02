@@ -1,0 +1,125 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.tests.util
+
+import io.sarl.acl.util.ByteArrayCharSequence
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
+
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@Tag("acl")
+@Tag("unit")
+@DisplayName("ByteArrayCharSequence")
+@SuppressWarnings("potential_inefficient_value_conversion")
+class ByteArrayCharSequenceTest {
+
+	var buffer : byte[]
+	
+	var charSequence : ByteArrayCharSequence
+
+	@BeforeEach
+	def setUp : void {
+		this.buffer = "abcde".bytes
+		this.charSequence = new ByteArrayCharSequence(this.buffer, 0, this.buffer.length)
+	}
+
+	@Test
+	@DisplayName("charAt")
+	def charAt : void {
+		typeof(IndexOutOfBoundsException).assertException [
+			this.charSequence.charAt(-1)
+		]
+		('a' as char).assertEquals(this.charSequence.charAt(0))
+		('b' as char).assertEquals(this.charSequence.charAt(1))
+		('c' as char).assertEquals(this.charSequence.charAt(2))
+		('d' as char).assertEquals(this.charSequence.charAt(3))
+		('e' as char).assertEquals(this.charSequence.charAt(4))
+		typeof(IndexOutOfBoundsException).assertException [
+			this.charSequence.charAt(5)
+		]
+	}
+
+	@Test
+	@DisplayName("length")
+	def length : void {
+		5.assertEquals(this.charSequence.length)
+	}
+
+	@Test
+	@DisplayName("subSequence")
+	def subSequence : void {
+		"".assertEquals(this.charSequence.subSequence(0, 0).toString)
+		//
+		"a".assertEquals(this.charSequence.subSequence(0, 1).toString)
+		"ab".assertEquals(this.charSequence.subSequence(0, 2).toString)
+		"abc".assertEquals(this.charSequence.subSequence(0, 3).toString)
+		"abcd".assertEquals(this.charSequence.subSequence(0, 4).toString)
+		"abcde".assertEquals(this.charSequence.subSequence(0, 5).toString)
+		//
+		"b".assertEquals(this.charSequence.subSequence(1, 2).toString)
+		"bc".assertEquals(this.charSequence.subSequence(1, 3).toString)
+		"bcd".assertEquals(this.charSequence.subSequence(1, 4).toString)
+		"bcde".assertEquals(this.charSequence.subSequence(1, 5).toString)
+		//
+		"c".assertEquals(this.charSequence.subSequence(2, 3).toString)
+		"cd".assertEquals(this.charSequence.subSequence(2, 4).toString)
+		"cde".assertEquals(this.charSequence.subSequence(2, 5).toString)
+		//
+		"d".assertEquals(this.charSequence.subSequence(3, 4).toString)
+		"de".assertEquals(this.charSequence.subSequence(3, 5).toString)
+		//
+		"e".assertEquals(this.charSequence.subSequence(4, 5).toString)
+	}
+
+	@Test
+	@DisplayName("subSequence of subsequence")
+	def subSequenceSubSequence : void {
+		val s = this.charSequence.subSequence(1,4)
+		//		
+		"".assertEquals(s.subSequence(0, 0).toString)
+		//
+		"b".assertEquals(s.subSequence(0, 1).toString)
+		"bc".assertEquals(s.subSequence(0, 2).toString)
+		"bcd".assertEquals(s.subSequence(0, 3).toString)
+		"bcd".assertEquals(s.subSequence(0, 4).toString)
+	}
+
+	@Test
+	@DisplayName("toString")
+	def testToString : void {
+		"abcde".assertEquals(this.charSequence.toString)
+	}
+
+}

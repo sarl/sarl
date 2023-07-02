@@ -1,0 +1,67 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2021 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.acl.protocol
+
+import io.sarl.acl.message.Performative
+import io.sarl.acl.protocol.request.FipaRequestProtocol
+import java.util.UUID
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * This class is used to simplify ACL Messages when working with protocols.
+ * 
+ * <p>For example, if you're calling getRequest() from {@link FipaRequestProtocol} 
+ * you won't get back the whole corresponding ACL Message but only a summarize of it : 
+ * the performative and the content.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class ProtocolResult {
+
+	@Accessors
+	var performative : Performative
+
+	@Accessors
+	var content : Object
+
+	@Accessors
+	var author : UUID
+	
+	/**
+	 * Creates a new ProtocoleResult.
+	 *
+	 * @param author the identifier of the author of the message. 
+	 * @param performative the performative of the message.
+	 * @param content the content of the message.
+	 */
+	new (author : UUID = null, performative : Performative = null, content : Object = null) {
+		this.author = author;
+		this.performative = performative;
+		this.content = content;
+	}
+
+}
