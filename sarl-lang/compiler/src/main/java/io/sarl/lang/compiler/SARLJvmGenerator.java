@@ -21,6 +21,9 @@
 
 package io.sarl.lang.compiler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.compiler.XtendGenerator;
@@ -32,6 +35,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DisableCodeGenerationAdapter;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -151,6 +155,42 @@ public class SARLJvmGenerator extends XtendGenerator {
 			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
 			fsa.generateFile(fn, outputConfigurationName, content);
 		}
+	}
+
+	@Override
+	protected ImportManager createImportManager(JvmDeclaredType type) {
+		return new NoDefaultPackageImportManager(type);
+	}
+
+	/** Import manager that is skipping the imports for types in default package.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.13
+	 */
+	public static class NoDefaultPackageImportManager extends ImportManager {
+
+		private static final String PACKAGE_SEPARATOR = "."; //$NON-NLS-1$
+
+		/** Constructor.
+		 *
+		 * @param type the type for which the import manager is created.
+		 */
+		public NoDefaultPackageImportManager(JvmDeclaredType type) {
+			super(true, type);
+		}
+
+		@Override
+		public List<String> getImports() {
+			return super.getImports().stream().filter(it -> isPackaged(it)).collect(Collectors.toList());
+		}
+
+		private static boolean isPackaged(String name) {
+			return name.contains(PACKAGE_SEPARATOR);
+		}
+
 	}
 
 }

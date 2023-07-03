@@ -2261,7 +2261,6 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import CapTest1;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.annotation.SarlElementType;",
 					"import io.sarl.lang.core.annotation.SarlSpecification;",
@@ -2376,7 +2375,6 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import CapTest1;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.annotation.SarlElementType;",
 					"import io.sarl.lang.core.annotation.SarlSpecification;",

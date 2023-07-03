@@ -202,7 +202,6 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				""
 			);
 		final String expectedC2 = multilineString(
-				"import C1;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.annotation.SarlElementType;",
 				"import io.sarl.lang.core.annotation.SarlSpecification;",
