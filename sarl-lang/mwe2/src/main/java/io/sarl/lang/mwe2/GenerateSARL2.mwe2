@@ -679,222 +679,222 @@ Workflow {
     				to = "io.sarl.lang.interpreter.SarlExpressionInterpreter"
     			}
 
-//    			ui = {
-//    				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
-//    				to = "io.sarl.lang.ui.extralanguage.ExtensionPointExtraLanguageContributions"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
-//    				to = "io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.generator.IShouldGenerate"
-//    				to = "org.eclipse.xtext.generator.IShouldGenerate$Always"
-//    				override = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities"
-//    				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities"
-//    				override = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.jface.viewers.ILabelDecorator"
-//    				annotatedWithName = "DiagnosticDecorator"
-//    				to = "io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator"
-//    				singleton = true
-//    			}
-//    			ui = {
-//    				bind = "io.sarl.lang.ui.labeling.IQualifiedNameImageProvider"
-//    				to = "io.sarl.lang.ui.labeling.SARLLabelProvider"
-//    				singleton = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock"
-//    				to = "io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.ui.views.contentoutline.IContentOutlinePage"
-//    				to = "io.sarl.lang.ui.outline.SARLOutlinePage"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
-//    				annotatedWithName = "SARLFieldOutlineFilter"
-//    				to = "io.sarl.lang.ui.outline.SARLFieldOutlineFilter"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
-//    				annotatedWithName = "SARLOperationOutlineFilter"
-//    				to = "io.sarl.lang.ui.outline.SARLOperationOutlineFilter"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
-//    				annotatedWithName = "SARLBehaviorUnitOutlineFilter"
-//    				to = "io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
-//    				annotatedWithName = "RefactoringPreferences"
-//    				to = "io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer"
-//    				functionName = "configureIPreferenceStoreInitializer"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
-//    				annotatedWithName = "smartCaretPreferenceInitializer"
-//    				to = "io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
-//    				annotatedWithName = "SarlBuilderPreferences"
-//    				to = "io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess$Initializer"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator"
-//    				to = "io.sarl.lang.ui.highlighting.SARLHighlightingCalculator"
-//    				functionName = "bindIdeSemanticHighlightingCalculator"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration"
-//    				to = "io.sarl.lang.ui.highlighting.SARLHighlightingConfiguration"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.tasks.ITaskTagProvider"
-//    				to = "io.sarl.lang.ui.tasks.SarlTaskTagProvider"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.tasks.ITaskFinder"
-//    				to = "io.sarl.lang.ui.tasks.SarlTaskFinder"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter$IComparator"
-//    				to = "io.sarl.lang.ui.outline.SARLOutlineNodeComparator"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator"
-//    				to = "io.sarl.lang.ui.validation.SARLUIValidator"
-//    				singleton = true
-//    				eager = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory"
-//    				to = "io.sarl.lang.ui.contentassist.SARLContentAssistFactory"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider"
-//    				to = "io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.templates.XtextTemplateContextType"
-//    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
-//    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy$Provider"
-//    				to = "io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider"
-//    				override = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.IImageHelper"
-//    				to = "org.eclipse.xtext.ui.PluginImageHelper"
-//    				override = true
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
-//    				to = "org.eclipse.xtext.ui.PluginImageHelper"
-//    				override = true
-//    				functionName = "bindIImageDescriptorHelper"
-//    			}
-//    			ui = {
-//    				bind = "io.sarl.lang.compiler.IGeneratorConfigProvider2"
-//    				to = "io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock"
-//    				to = "io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock"
-//    				override = true
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.model.IResourceForEditorInputFactory"
-//    				to = "org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.hover.XtendHoverSerializer"
-//    				to = "io.sarl.lang.ui.hover.SARLHoverSerializer"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.xbase.ui.hover.XbaseDeclarativeHoverSignatureProvider"
-//    				to = "io.sarl.lang.ui.hover.SARLHoverSignatureProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider"
-//    				to = "io.sarl.lang.ui.hover.SARLHoverProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.xbase.ui.hover.HoverUiStrings"
-//    				to = "io.sarl.lang.ui.hover.SARLHoverUIStrings"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.xbase.validation.UIStrings"
-//    				to = "io.sarl.lang.ui.validation.SARLUIStrings"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.jface.viewers.ILabelProvider"
-//    				annotatedWith = "org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider"
-//    				to = "io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider"
-//    				functionName = "configureHyperlinkLabelProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory"
-//    				to = "io.sarl.lang.ui.codebuilder.SarlCodeBuilderFactory"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder"
-//    				to = "io.sarl.lang.ui.codebuilder.SarlMethodBuilder"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.codebuilder.XtendConstructorBuilder"
-//    				to = "io.sarl.lang.ui.codebuilder.SarlConstructorBuilder"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder"
-//    				to = "io.sarl.lang.ui.codebuilder.SarlParameterBuilder"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder"
-//    				to = "io.sarl.lang.ui.codebuilder.SarlFieldBuilder"
-//   				}
-//    			ui = {
-//    				bind = "io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter$TypeConverterRuleReader"
-//    				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedTypeConverterRuleReader"
-//   				}
-//    			ui = {
-//    				bind = "io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
-//    				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedFeatureNameConverterRuleReader"
-//   				}
-//    			ui = {
-//    				bind = "io.sarl.lang.compiler.IResourceTypeDetector"
-//    				to = "io.sarl.lang.ui.compiler.EclipseResourceTypeDetector"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
-//    				to = "io.sarl.lang.ui.editor.SARLNatureAddingEditorCallback"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
-//    				annotatedWithName = "IXtextEditorCallBack"
-//    				to = "io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater"
-//    				functionName = "configureXtextEditorErrorTickUpdater"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider"
-//    				to = "io.sarl.lang.ui.macro.SarlJdtProcessorInstanceForJvmTypeProvider"
-//   				}
-//    			ui = {
-//    				bind = "io.sarl.lang.ui.editor.IDocumentAutoFormatter"
-//    				to = "io.sarl.lang.ui.editor.DocumentAutoFormatter"
-//    			}
+    			ui = {
+    				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
+    				to = "io.sarl.lang.ui.extralanguage.ExtensionPointExtraLanguageContributions"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
+    				to = "io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.generator.IShouldGenerate"
+    				to = "org.eclipse.xtext.generator.IShouldGenerate$Always"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities"
+    				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.jface.viewers.ILabelDecorator"
+    				annotatedWithName = "DiagnosticDecorator"
+    				to = "io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator"
+    				singleton = true
+    			}
+    			ui = {
+    				bind = "io.sarl.lang.ui.labeling.IQualifiedNameImageProvider"
+    				to = "io.sarl.lang.ui.labeling.SARLLabelProvider"
+    				singleton = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock"
+    				to = "io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock"
+    			}
+    			ui = {
+    				bind = "org.eclipse.ui.views.contentoutline.IContentOutlinePage"
+    				to = "io.sarl.lang.ui.outline.SARLOutlinePage"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
+    				annotatedWithName = "SARLFieldOutlineFilter"
+    				to = "io.sarl.lang.ui.outline.SARLFieldOutlineFilter"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
+    				annotatedWithName = "SARLOperationOutlineFilter"
+    				to = "io.sarl.lang.ui.outline.SARLOperationOutlineFilter"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
+    				annotatedWithName = "SARLBehaviorUnitOutlineFilter"
+    				to = "io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
+    				annotatedWithName = "RefactoringPreferences"
+    				to = "io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer"
+    				functionName = "configureIPreferenceStoreInitializer"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
+    				annotatedWithName = "smartCaretPreferenceInitializer"
+    				to = "io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
+    				annotatedWithName = "SarlBuilderPreferences"
+    				to = "io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess$Initializer"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator"
+    				to = "io.sarl.lang.ui.highlighting.SARLHighlightingCalculator"
+    				functionName = "bindIdeSemanticHighlightingCalculator"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration"
+    				to = "io.sarl.lang.ui.highlighting.SARLHighlightingConfiguration"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.tasks.ITaskTagProvider"
+    				to = "io.sarl.lang.ui.tasks.SarlTaskTagProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.tasks.ITaskFinder"
+    				to = "io.sarl.lang.ui.tasks.SarlTaskFinder"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter$IComparator"
+    				to = "io.sarl.lang.ui.outline.SARLOutlineNodeComparator"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator"
+    				to = "io.sarl.lang.ui.validation.SARLUIValidator"
+    				singleton = true
+    				eager = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory"
+    				to = "io.sarl.lang.ui.contentassist.SARLContentAssistFactory"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.templates.XtextTemplateContextType"
+    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy$Provider"
+    				to = "io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper"
+    				to = "org.eclipse.xtext.ui.PluginImageHelper"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
+    				to = "org.eclipse.xtext.ui.PluginImageHelper"
+    				override = true
+    				functionName = "bindIImageDescriptorHelper"
+    			}
+    			ui = {
+    				bind = "io.sarl.lang.compiler.IGeneratorConfigProvider2"
+    				to = "io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock"
+    				to = "io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock"
+    				override = true
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.model.IResourceForEditorInputFactory"
+    				to = "org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.hover.XtendHoverSerializer"
+    				to = "io.sarl.lang.ui.hover.SARLHoverSerializer"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.ui.hover.XbaseDeclarativeHoverSignatureProvider"
+    				to = "io.sarl.lang.ui.hover.SARLHoverSignatureProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider"
+    				to = "io.sarl.lang.ui.hover.SARLHoverProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.ui.hover.HoverUiStrings"
+    				to = "io.sarl.lang.ui.hover.SARLHoverUIStrings"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.validation.UIStrings"
+    				to = "io.sarl.lang.ui.validation.SARLUIStrings"
+   				}
+    			ui = {
+    				bind = "org.eclipse.jface.viewers.ILabelProvider"
+    				annotatedWith = "org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider"
+    				to = "io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider"
+    				functionName = "configureHyperlinkLabelProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory"
+    				to = "io.sarl.lang.ui.codebuilder.SarlCodeBuilderFactory"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlMethodBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendConstructorBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlConstructorBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlParameterBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlFieldBuilder"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter$TypeConverterRuleReader"
+    				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedTypeConverterRuleReader"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
+    				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedFeatureNameConverterRuleReader"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.compiler.IResourceTypeDetector"
+    				to = "io.sarl.lang.ui.compiler.EclipseResourceTypeDetector"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
+    				to = "io.sarl.lang.ui.editor.SARLNatureAddingEditorCallback"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
+    				annotatedWithName = "IXtextEditorCallBack"
+    				to = "io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater"
+    				functionName = "configureXtextEditorErrorTickUpdater"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider"
+    				to = "io.sarl.lang.ui.macro.SarlJdtProcessorInstanceForJvmTypeProvider"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.ui.editor.IDocumentAutoFormatter"
+    				to = "io.sarl.lang.ui.editor.DocumentAutoFormatter"
+    			}
     		}
 
     		// Xtend-extension bindings
@@ -1040,100 +1040,100 @@ Workflow {
     				to = "org.eclipse.xtend.core.macro.JavaIOFileSystemSupport"
     			}
 
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider"
-//    				to = "org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.generator.AbstractFileSystemAccess2"
-//    				to = "io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
-//    				to = "org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher$CamelCase"
-//    				to = "org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider"
-//    				to = "org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewer$Factory"
-//    				to = "io.sarl.lang.ui.editor.SARLSourceViewer$Factory"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration"
-//    				to = "org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.XtextEditor"
-//    				to = "io.sarl.lang.ui.editor.SARLStandardEditor"
-//    				override = true
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.actions.IActionContributor"
-//    				annotatedWithName = "OverrideIndicatorRulerAction"
-//    				to = "org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.jface.text.source.IAnnotationHover"
-//    				to = "org.eclipse.xtend.ide.hover.XtendAnnotationHover"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider"
-//    				to = "org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider"
-//    				singleton = true
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper"
-//    				to = "org.eclipse.xtend.ide.hyperlinking.XtendHyperlinkHelper"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.occurrences.IOccurrenceComputer"
-//    				to = "org.eclipse.xtend.ide.editor.OccurrenceComputer"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy"
-//    				to = "org.eclipse.xtend.ide.refactoring.XtendRenameStrategy"
-//    				override = true
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry"
-//    				to = "org.eclipse.xtend.ide.builder.UIResourceChangeRegistry"
-// 				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-//    				to = "org.eclipse.xtend.ide.XtendResourceUiServiceProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.toggleComments.ISingleLineCommentHelper"
-//    				to = "org.eclipse.xtend.ide.editor.SingleLineCommentHelper"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.generator.trace.ITraceForStorageProvider"
-//    				to = "org.eclipse.xtext.ui.generator.trace.TraceForStorageProvider"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
-//    				annotatedWithName = "OverrideIndicatorModelListener"
-//    				to = "org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtend.lib.macro.file.MutableFileSystemSupport"
-//    				to = "org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl"
-//    			}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.toggleComments.ToggleSLCommentAction$Factory"
-//    				to = "org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction$Factory"
-//   				}
-//    			ui = {
-//    				bind = "org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper"
-//    				to = "org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper"
-//    				override = true
-//   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider"
+    				to = "org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.generator.AbstractFileSystemAccess2"
+    				to = "io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
+    				to = "org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher$CamelCase"
+    				to = "org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider"
+    				to = "org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewer$Factory"
+    				to = "io.sarl.lang.ui.editor.SARLSourceViewer$Factory"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration"
+    				to = "org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.XtextEditor"
+    				to = "io.sarl.lang.ui.editor.SARLStandardEditor"
+    				override = true
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.actions.IActionContributor"
+    				annotatedWithName = "OverrideIndicatorRulerAction"
+    				to = "org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction"
+   				}
+    			ui = {
+    				bind = "org.eclipse.jface.text.source.IAnnotationHover"
+    				to = "org.eclipse.xtend.ide.hover.XtendAnnotationHover"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider"
+    				to = "org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider"
+    				singleton = true
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper"
+    				to = "org.eclipse.xtend.ide.hyperlinking.XtendHyperlinkHelper"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.occurrences.IOccurrenceComputer"
+    				to = "org.eclipse.xtend.ide.editor.OccurrenceComputer"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy"
+    				to = "org.eclipse.xtend.ide.refactoring.XtendRenameStrategy"
+    				override = true
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry"
+    				to = "org.eclipse.xtend.ide.builder.UIResourceChangeRegistry"
+ 				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+    				to = "org.eclipse.xtend.ide.XtendResourceUiServiceProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.toggleComments.ISingleLineCommentHelper"
+    				to = "org.eclipse.xtend.ide.editor.SingleLineCommentHelper"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.generator.trace.ITraceForStorageProvider"
+    				to = "org.eclipse.xtext.ui.generator.trace.TraceForStorageProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
+    				annotatedWithName = "OverrideIndicatorModelListener"
+    				to = "org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.lib.macro.file.MutableFileSystemSupport"
+    				to = "org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.toggleComments.ToggleSLCommentAction$Factory"
+    				to = "org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction$Factory"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper"
+    				to = "org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper"
+    				override = true
+   				}
     		}
 
 	    	// Injection recommender for recommending missed injections in the SARL module

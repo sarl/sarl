@@ -8,14 +8,14 @@ registering and unregistering sub-behaviors.
 This capacity is closely related to the `[:innercontextaccess](InnerContextAccess)` for enabling a
 high-level abstraction for holonic multi-agent system development.
 
-[:Fact:]{typeof(io.sarl.core.[:innercontextaccess!])}
+[:Fact:]{typeof(io.sarl.api.core.[:innercontextaccess!])}
 
 The definition of a behavior is not detailed in this reference document.
 Please read the [Behavior Reference](../Behavior.md) for details.
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:behaviors!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:behaviors!]).shouldHaveMethods(
 	"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, org.eclipse.xtext.xbase.lib.Functions$Function1, java.lang.Object[]) : io.sarl.lang.core.Behavior",
 	"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, java.lang.Object[]) : io.sarl.lang.core.Behavior",
 	"[:unregisterbehavior](unregisterBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
@@ -25,7 +25,7 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 	"wake(java.lang.Iterable, io.sarl.lang.core.Event)",
 	"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 	"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.lang.util.ConcurrentCollection")
+	"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.lang.core.util.ConcurrentCollection")
 }
 
 
@@ -52,7 +52,7 @@ An example of call to the registration function is:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	behavior MyBehavior {
 		new () {
@@ -75,7 +75,7 @@ According to the SARL syntax reference, the example could be also written as:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	behavior MyBehavior {
 		new () {
@@ -116,7 +116,7 @@ agent itself.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	behavior MyBehavior {
 		new () {
@@ -167,7 +167,7 @@ An example of call to the registration function is:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	behavior MyBehavior {
 		new () {
@@ -191,7 +191,7 @@ According to the SARL syntax reference, the example could be also written as:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	behavior MyBehavior {
 		new () {
@@ -250,7 +250,7 @@ all the sub-agents (sub-holons) that were created inside the current agent.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Event
 	import io.sarl.lang.core.Scope
 	import io.sarl.lang.core.Address
@@ -337,7 +337,7 @@ for listening events related to all the contexts (default, external, and inner).
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.EventListener
 	event MyEvent
 	agent A {
@@ -359,7 +359,7 @@ Two functions are provided for accessing to the collection of the registered beh
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.lang.core.Behavior
-	import io.sarl.lang.util.ConcurrentCollection
+	import io.sarl.lang.core.util.ConcurrentCollection
 	interface Tmp {
 	[:On]
 		def [:hasregisteredbehavior!] : boolean
@@ -375,10 +375,10 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Behaviors
 	import io.sarl.lang.core.Behavior
 	import io.sarl.lang.core.EventListener
-	import io.sarl.lang.util.ConcurrentCollection
+	import io.sarl.lang.core.util.ConcurrentCollection
 	agent A {
 		uses Behaviors
 		def myaction {

@@ -93,17 +93,17 @@ The [:emitfct:] functions permits fire of an event in the space.
 
 Event spaces that are allowing the agents to be register and unregister are "open event spaces":
 
-[:ShowType:](io.sarl.core.OpenEventSpace)
-[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerstrongfct](registerStrongParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
-[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerweakfct](registerWeakParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
-[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
+[:ShowType:](io.sarl.api.core.OpenEventSpace)
+[:Fact:]{typeof(io.sarl.api.core.OpenEventSpace).shouldHaveMethod("[:registerstrongfct](registerStrongParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.api.core.OpenEventSpace).shouldHaveMethod("[:registerweakfct](registerWeakParticipant)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.api.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
 
 The functions [:registerstrongfct:], [:registerweakfct:] and [:unregisterfct:] permit an agent to be involved or not.
 The functions [:registerstrongfct:] and [:registerweakfct:] fires the event `ParticipantJoined`.
 And, the function [:unregisterfct:] fires the event `ParticipantLeft`.
 
-[:Fact:]{typeof(io.sarl.core.ParticipantJoined)}
-[:Fact:]{typeof(io.sarl.core.ParticipantLeft)}
+[:Fact:]{typeof(io.sarl.api.core.ParticipantJoined)}
+[:Fact:]{typeof(io.sarl.api.core.ParticipantLeft)}
 
 
 ##	Defining a Space
@@ -147,7 +147,7 @@ The [:eventlistener:] type is the event listening mechanism associated to the ag
 the `Behaviors` built-in capacity (see the corresponding
 [built-in capacity reference](./bic/Behaviors.md) for details).
 
-[:Fact:]{typeof(io.sarl.core.Behaviors)}
+[:Fact:]{typeof(io.sarl.api.core.Behaviors)}
 
 
 ### Basic Implementation
@@ -278,7 +278,7 @@ The following example illustrates the first method of marking of an object field
     import io.sarl.lang.core.SpaceID
     import io.sarl.lang.core.SpaceSpecification
     import io.sarl.lang.core.Space
-    import io.sarl.core.OpenEventSpace
+    import io.sarl.api.core.OpenEventSpace
     import java.util.concurrent.ConcurrentSkipListSet
     import javax.inject.Inject
     import com.google.inject.name.Named
@@ -316,7 +316,7 @@ The following example illustrates the second method of marking of an object fiel
     import io.sarl.lang.core.SpaceID
     import io.sarl.lang.core.SpaceSpecification
     import io.sarl.lang.core.Space
-    import io.sarl.core.OpenEventSpace
+    import io.sarl.api.core.OpenEventSpace
     import java.util.concurrent.ConcurrentSkipListSet
     import javax.inject.Inject
     interface MySpace extends Space {
@@ -335,7 +335,7 @@ The following example illustrates the second method of marking of an object fiel
     class MySpaceSpecification implements SpaceSpecification<MySpace> {
 
         @Inject
-        @io.sarl.util.[:defaultspaceannotation](DefaultSpace)
+        @io.sarl.api.util.[:defaultspaceannotation](DefaultSpace)
         var defaultSpace : OpenEventSpace
 
         def create(id : SpaceID, params : Object*) : MySpace {

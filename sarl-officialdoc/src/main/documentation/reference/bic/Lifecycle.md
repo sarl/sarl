@@ -7,7 +7,7 @@ the inner context, as well as the `killMe` action to stop the execution of an ag
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:lifecyclecap!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:lifecyclecap!]).shouldHaveMethods(
 	"[:fctkillme](killMe)(java.lang.Object)",
 	"[:fctkillme](killMe)",
 	"[:fctspawn](spawn)(java.lang.Class, java.lang.Object[])",
@@ -49,14 +49,14 @@ This action fires two events in case of success, and one event in case of failur
 * [:destroyevent:] is fired in case of success inside the killed agent agent.
 * [:agentkillfailureevent:] is fired in case of failure into the default space of the inner context of the agent; This event contains the cause of the failure.
 
-[:Fact:]{typeof(io.sarl.core.[:agentkilledevent]$AgentKilled$)}
-[:Fact:]{typeof(io.sarl.core.[:destroyevent]$Destroy$)}
-[:Fact:]{typeof(io.sarl.core.[:agentkillfailureevent]$AgentKillFailure$)}
+[:Fact:]{typeof(io.sarl.api.core.[:agentkilledevent]$AgentKilled$)}
+[:Fact:]{typeof(io.sarl.api.core.[:destroyevent]$Destroy$)}
+[:Fact:]{typeof(io.sarl.api.core.[:agentkillfailureevent]$AgentKillFailure$)}
 
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	[:On]
 	agent A {
 		uses [:lifecyclecap!]
@@ -96,20 +96,20 @@ The first [:fctspawn:] function above is spawning a single agent.
 The second [:fctspawn:] function is spawning the given number of agents.
 The [:parameters:] are passed to the spawned agent inside the [:initializeevent:] event: the [:parameters:] field.
 
-[:Fact:]{typeof(io.sarl.core.Initialize).shouldHaveField("parameters : java.lang.Object[]")}
+[:Fact:]{typeof(io.sarl.api.core.Initialize).shouldHaveField("parameters : java.lang.Object[]")}
 
 This action fires two events:
 
 * [:agentspawned:] in the default space of the default context. The source of the event is this spawner.
 * [:initializeevent:] in spawned agent.
 
-[:Fact:]{typeof(io.sarl.core.[:agentspawned]$AgentSpawned$)}
-[:Fact:]{typeof(io.sarl.core.[:initializeevent]$Initialize$)}
+[:Fact:]{typeof(io.sarl.api.core.[:agentspawned]$AgentSpawned$)}
+[:Fact:]{typeof(io.sarl.api.core.[:initializeevent]$Initialize$)}
 
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	import io.sarl.lang.core.Agent
 	[:On]
 	agent A {
@@ -160,7 +160,7 @@ This action fires two events:
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	import io.sarl.lang.core.AgentContext
 	import io.sarl.lang.core.Agent
 	import java.util.UUID
@@ -220,7 +220,7 @@ This action fires two events:
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	import io.sarl.lang.core.AgentContext
 	import io.sarl.lang.core.Agent
 	[:On]
@@ -274,7 +274,7 @@ This action fires two events:
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	import io.sarl.lang.core.AgentContext
 	import io.sarl.lang.core.Agent
 	import java.util.UUID

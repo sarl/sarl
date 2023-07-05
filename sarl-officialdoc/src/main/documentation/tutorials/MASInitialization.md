@@ -21,9 +21,9 @@ It also logs the message [:msg1:] when the agent is initialized.
 
 [:Success:]
 	package io.sarl.docs.tutorials.masinitialization
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	[:On]
 	event [:myeventname](MyEvent)
 
@@ -44,8 +44,8 @@ For starting the system, we could define a booting agent that starts 100 agents 
 
 [:Success:]
 	package io.sarl.docs.tutorials.masinitialization
-	import io.sarl.core.Initialize
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Lifecycle
 	event MyEvent
 	agent MyAgent {}
 	[:On]agent BootAgent {
@@ -90,8 +90,8 @@ Consequently, the agent's code may be redefined as follow:
 
 [:Success:]
 	package io.sarl.docs.tutorials.masinitialization
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Logging
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Logging
 	event MyEvent
 	[:On]
 	event [:startappevent](StartApplication)
@@ -116,10 +116,10 @@ The booting agent becomes:
 
 [:Success:]
 	package io.sarl.docs.tutorials.masinitialization
-	import io.sarl.core.Initialize
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.AgentSpawned
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.AgentSpawned
+	import io.sarl.api.core.DefaultContextInteractions
 	import java.util.concurrent.atomic.AtomicInteger
 	event StartApplication
 	agent MyAgent {}

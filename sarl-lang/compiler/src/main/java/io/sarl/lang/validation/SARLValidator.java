@@ -31,6 +31,7 @@ import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_EVENT__EXTENDS;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_FORMAL_PARAMETER__DEFAULT_VALUE;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_SKILL__EXTENDS;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_SKILL__IMPLEMENTS;
+import static io.sarl.lang.validation.IssueCodes.AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
@@ -203,6 +204,7 @@ import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
@@ -1208,6 +1210,44 @@ public class SARLValidator extends AbstractSARLValidator {
 							expression.getConcreteSyntaxFeatureName()),
 					expression,
 					DISCOURAGED_REFERENCE);
+		}
+	}
+
+
+	/** Check if the call to an unary minus operator may be ambiguous interpretation for the SARL
+	 * developper.
+	 * 
+	 * <p>Let the SARL expression {@code -125.abs} that is invoking the function
+	 * {@code Math.abs} with extension method notation. According to the precedence
+	 * of the the SARL operator, this expression is interpreted as
+	 * {@code -abs(125)} and not {@code abs(-125)}. Indeed the minus sign is an operator
+	 * and not considered as a part of the number literal itself.
+	 * 
+	 * <p>To avoid invalid interpretation of the expression by the SARL developper, a
+	 * warning is generated.
+	 *
+	 * @param expression the expression.
+	 * @since 0.13
+	 */
+	@Check(CheckType.FAST)
+	public void checkAmbiguousInterpretationMinusUnaryOperator(XUnaryOperation expression) {
+		if (!isIgnored(AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER)
+				&& this.grammarAccess.getHyphenMinusKeyword().equals(expression.getConcreteSyntaxFeatureName())
+				&& (expression.getOperand() instanceof XFeatureCall
+					|| expression.getOperand() instanceof XMemberFeatureCall)) {
+			final XAbstractFeatureCall fc = (XAbstractFeatureCall) expression.getOperand();
+			if (fc.isExtension()
+				&& fc.getActualArguments() != null
+				&& fc.getActualArguments().size() > 0
+				&& fc.getActualArguments().get(0) instanceof XNumberLiteral) {
+				addIssue(
+						MessageFormat.format(Messages.SARLValidator_106,
+								Utils.getSarlCodeFor(expression),
+								fc.getFeature().getSimpleName(),
+								((XNumberLiteral) fc.getActualArguments().get(0)).getValue()),
+						expression,
+						AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER);
+			}
 		}
 	}
 

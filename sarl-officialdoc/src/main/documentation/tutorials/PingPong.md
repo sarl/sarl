@@ -137,7 +137,7 @@ they were defined as actions in the agent.
 The [:intercap:] capacity provides the function `emit(Event)` for
 emitting an event in the default space of the default context.
 [:Fact:]{typeof(io.sarl.lang.core.Event)}
-[:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
+[:Fact:]{typeof(io.sarl.api.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
 
 The [:pongevent:] event must be built with an index value as argument. This argument
 is the index stored in the [:pingevent:] event. For accessing the occurrence of the
@@ -147,7 +147,7 @@ stored in the received [:pingevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -181,7 +181,7 @@ for sending an event with a specific scope.
 [:Fact:]{typeof(io.sarl.lang.core.Event)}
 [:Fact:]{typeof(io.sarl.lang.core.Scope)}
 [:Fact:]{typeof(io.sarl.lang.core.Address)}
-[:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
+[:Fact:]{typeof(io.sarl.api.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
 
 If you have to scope to a single address or a single identifier, you should use the lambda expression notation,
 as illustrated in the following code. In this code, the scope permits to restrict to the initial sender
@@ -189,7 +189,7 @@ of the [:pingevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -260,7 +260,7 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -293,8 +293,8 @@ receiving the [:initevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -343,9 +343,9 @@ one agent belonging to the default space. If not, the agent is sending the initi
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Initialize
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Schedules
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -398,13 +398,13 @@ for launching an agent of the given type.
 When the boot agent has launched the two expected agents,
 it is killing itself. This is done with the [:killmefct:]
 function, which is provided by the [:lifecyclecap:] capacity too.
-[:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("spawn(java.lang.Class, java.lang.Object[])")}
-[:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("killMe")}
+[:Fact:]{typeof(io.sarl.api.core.Lifecycle).shouldHaveMethod("spawn(java.lang.Class, java.lang.Object[])")}
+[:Fact:]{typeof(io.sarl.api.core.Lifecycle).shouldHaveMethod("killMe")}
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpong
-	import io.sarl.core.Initialize
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Lifecycle
 	agent PongAgent { }
 	agent PingAgent { }
 	[:On]agent [:bootagent](BootAgent) {

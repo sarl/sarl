@@ -262,6 +262,15 @@ public final class IssueCodes {
 	public static final String POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL =
 			ISSUE_CODE_PREFIX + "potential_memory_sharing_outside_agent_control"; //$NON-NLS-1$
 
+	/**
+	 * An expression may be badly interpreted by the SARL developper. The message for this issue
+	 * should provide details
+	 *
+	 * @since 0.13
+	 */
+	public static final String AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER =
+			ISSUE_CODE_PREFIX + "ambiguous_interpretation_by_developper"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

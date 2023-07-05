@@ -257,7 +257,7 @@ It is almost easy to provide your Bootique module provider to the Bootique frame
 Indeed a Bootique module provider is assimilated to a Java service, and could be declared according to this Java standard.
 
 There is two methods for declared a Java service: one for Java 8 or higher, and one for Java 11 or higher.
-[:Fact:](io.sarl.lang.SARLVersion::MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH == "17")
+[:Fact:](io.sarl.lang.core.SARLVersion::MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH == "17")
 
 **For Java 8 or higher:** You must create a file into the folder `META-INF/services` with the name `io.bootique.BQModuleProvider` (that is the fully
 qualified name of the Bootique module provider class). Each line of this file contains the fully qualified name of an implementation of

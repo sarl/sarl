@@ -9,10 +9,10 @@ top-right context in the figure above.
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:externalcontextaccess!]).shouldHaveMethods(
 	"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:getuniversecontext](getUniverseContext) : io.sarl.lang.core.AgentContext",
-	"[:getallcontexts](getAllContexts) : io.sarl.lang.util.ConcurrentCollection",
+	"[:getallcontexts](getAllContexts) : io.sarl.lang.core.util.ConcurrentCollection",
 	"[:join](join)(java.util.UUID, java.util.UUID) : io.sarl.lang.core.AgentContext",
 	"[:leave](leave)(java.util.UUID) : boolean",
 	"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
@@ -46,7 +46,7 @@ may use its `[:getParentID](getParentID)` for accessing the context in which it 
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import io.sarl.lang.core.AgentContext
 	import java.util.UUID
 	[:On]
@@ -87,7 +87,7 @@ The following function enables an agent to retrieve all the contexts in which it
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import io.sarl.lang.core.AgentContext
-	import io.sarl.lang.util.ConcurrentCollection
+	import io.sarl.lang.core.util.ConcurrentCollection
 	interface Tmp {
 	[:On]
 		def [:getallcontexts!] : ConcurrentCollection<AgentContext>
@@ -100,9 +100,9 @@ The default context is included in the replied collection.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import io.sarl.lang.core.AgentContext
-	import io.sarl.lang.util.ConcurrentCollection
+	import io.sarl.lang.core.util.ConcurrentCollection
 	[:On]
 	agent A {
 		uses ExternalContextAccess
@@ -148,13 +148,13 @@ This action fires two events:
 * `ContextJoined` in the inner context's default space.
 * `MemberJoined` in the parent context's default space.
 
-[:Fact:]{typeof(io.sarl.core.ContextJoined)}
-[:Fact:]{typeof(io.sarl.core.MemberJoined)}
+[:Fact:]{typeof(io.sarl.api.core.ContextJoined)}
+[:Fact:]{typeof(io.sarl.api.core.MemberJoined)}
 
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import java.util.UUID
 	[:On]
 	agent A {
@@ -191,13 +191,13 @@ This action fires two events:
 * `ContextLeft` in the inner context's default space.
 * `MemberLeft` in the parent context's default space.
 
-[:Fact:]{typeof(io.sarl.core.ContextLeft)}
-[:Fact:]{typeof(io.sarl.core.ContextLeft)}
+[:Fact:]{typeof(io.sarl.api.core.ContextLeft)}
+[:Fact:]{typeof(io.sarl.api.core.ContextLeft)}
 
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import java.util.UUID
 	[:On]
 	agent A {
@@ -231,7 +231,7 @@ the container).
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import io.sarl.lang.core.Space
 	import io.sarl.lang.core.Event
 	event AnEvent
@@ -263,7 +263,7 @@ The first parameter is used for setting the event's source when it was not alrea
 The [:externalcontextaccess:] provides the [:emit:] function for helping to fire events into an event space:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import io.sarl.lang.core.AgentContext
 	import io.sarl.lang.core.EventSpace
 	import java.util.UUID
@@ -288,7 +288,7 @@ A call to the [:emit:] function takes two parameters:
 This function call is equivalent to:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.ExternalContextAccess
+	import io.sarl.api.core.ExternalContextAccess
 	import io.sarl.lang.core.AgentContext
 	import io.sarl.lang.core.EventSpace
 	import java.util.UUID

@@ -11,7 +11,7 @@ For instance, the [:emit:] action is a shortcut for:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Event
 	agent A {
 		uses DefaultContextInteractions
@@ -29,7 +29,7 @@ Therefore, it is actually created on top of the other built-in capacities.
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:defaultcontextinteractions!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:defaultcontextinteractions!]).shouldHaveMethods(
 	"[:getdefaultcontext](getDefaultContext) : io.sarl.lang.core.AgentContext",
 	"[:getdefaultspace](getDefaultSpace) : io.sarl.lang.core.EventSpace",
 	"[:getdefaultaddress](getDefaultAddress) : io.sarl.lang.core.Address",
@@ -111,7 +111,7 @@ event) in the default space of the default context.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Event
 	event MyEvent
 	[:On]
@@ -129,7 +129,7 @@ The call to [:emit:] is equivalent to:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Event
 	agent A {
 		uses DefaultContextInteractions
@@ -184,7 +184,7 @@ The following example is equivalent to the feature call of [:emit:] without the 
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event MyEvent
 	agent A {
 		uses DefaultContextInteractions
@@ -204,7 +204,7 @@ not the other agents.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Address
 	event MyEvent
 	agent A {
@@ -226,7 +226,7 @@ In the following example,
 [:Success:]
 	package io.sarl.docs.reference.bic
 	import java.util.UUID
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Address
 	event MyEvent
 	agent A {
@@ -250,7 +250,7 @@ example becomes:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	import io.sarl.lang.core.Event
 	import java.util.UUID
 	event MyEvent
@@ -353,7 +353,7 @@ was emitted in the default space.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event AnEvent
 	agent MyAgent {
 		uses DefaultContextInteractions

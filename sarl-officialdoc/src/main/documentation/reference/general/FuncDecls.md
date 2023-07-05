@@ -208,7 +208,7 @@ In the following example, two variadic functions are defined:
 [:Success:]
 	package io.sarl.docs.reference.gsr
 	import java.util.Collection
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	agent A {
 		uses Logging
 		[:On]
@@ -270,7 +270,7 @@ skipped argument.
 [:Success:]
 	package io.sarl.docs.reference.gsr
 	import java.util.Collection
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	agent A {
 		uses Logging
 		[:On]
@@ -332,7 +332,7 @@ except that the variadic parameter cannot have a default value.
 [:Success:]
 	package io.sarl.docs.reference.gsr
 	import java.util.Collection
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	agent A {
 		uses Logging
 		[:On]

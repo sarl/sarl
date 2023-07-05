@@ -29,9 +29,9 @@ Let the following code:
 
 [:Success:]
 	package io.sarl.docs.tutorials.parallelexecution
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	agent PongAgent { }
 	agent PingAgent { }
 	event MyEvent
@@ -81,10 +81,10 @@ Let the following code:
 
 [:Success:]
 	package io.sarl.docs.tutorials.parallelexecution
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Logging
-	import io.sarl.core.AgentSpawned
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.AgentSpawned
+	import io.sarl.api.core.Initialize
 	agent PongAgent { }
 	agent PingAgent { }
 	event MyEvent
@@ -138,11 +138,11 @@ Let the following code:
 
 [:Success:]
 	package io.sarl.docs.tutorials.parallelexecution
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Logging
-	import io.sarl.core.AgentKilled
-	import io.sarl.core.Initialize
-	import io.sarl.core.Destroy
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.AgentKilled
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Destroy
 	agent PongAgent { }
 	agent PingAgent { }
 	event MyEvent

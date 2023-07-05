@@ -493,9 +493,9 @@ These two functions have an optional last argument that is the scoping expressio
     package io.sarl.docs.faq.syntax
     import io.sarl.lang.core.Address
     import io.sarl.lang.core.Event
-    import io.sarl.core.DefaultContextInteractions
-    import io.sarl.core.ExternalContextAccess
-    import io.sarl.core.Behaviors
+    import io.sarl.api.core.DefaultContextInteractions
+    import io.sarl.api.core.ExternalContextAccess
+    import io.sarl.api.core.Behaviors
     abstract agent X {
    		uses [:defaultcontextinteractioncap](DefaultContextInteractions)
    		uses [:externalcontextaccesscap](ExternalContextAccess)
@@ -519,7 +519,7 @@ The following code provides the call to the [:emitfct:] for sending the event on
     package io.sarl.docs.faq.syntax
     import java.util.UUID
     import io.sarl.lang.core.Event
-    import io.sarl.core.DefaultContextInteractions
+    import io.sarl.api.core.DefaultContextInteractions
     event [:myeventtype](MyEvent)
     agent X {
    		uses DefaultContextInteractions

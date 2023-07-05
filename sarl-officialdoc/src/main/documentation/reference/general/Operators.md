@@ -328,6 +328,7 @@ in ascending precedence, i.e. from the lower priority to the higher priority.
 | **                                                  | left to right   |
 | !, - (unary), + (unrary)                            | right to left   |
 | ++, --                                              | not associative |
+| feature, literal, closure, structure expressions    | not associative |
 
 
 [:Fact:]{
@@ -365,6 +366,28 @@ unary postfix operators always associate left-to-right.
 Note that the associativity is meaningful for member access operators, even though they are grouped with
 unary postfix operators: `a.b++` is parsed `(a.b)++` and not `a.(b++)`.
 Operator precedence is unaffected by operator overloading.
+
+Another example of operator precedence could be related to the [extension method](./Extension.md) and the
+expression [:exampleextensionmethod:].
+This expression means that the function [:exampleextensionmethod3:] is invoked with the value that is
+mentioned before the dot character as first argument.
+According to the precedence table above, this expression must be interpreted as [:exampleextensionmethod2:].
+Indeed, the feature call to the function [:exampleextensionmethod3:] has a higher precedence than the minus
+unary operator.
+
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import static extension java.lang.Math.abs;
+	class X {
+		def myfct : double {
+			[:exampleextensionmethod](-125.[:exampleextensionmethod3]$abs$)
+		}
+		def myfct2 : double {
+			[:exampleextensionmethod2](-abs(125))
+		}
+	}
+[:End:]
+
 
 
 ## Operator Overloading

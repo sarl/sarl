@@ -73,8 +73,8 @@ It is possible to give arguments to the launched agent.
 Indeed, all the arguments given as program arguments
 are put in the [:parameters:] attribute of the [:initevent:] event.
 This event is fired when the launched agent is started.
-[:Fact:]{io.sarl.core.[:initevent](Initialize)}
-[:Fact:]{typeof(io.sarl.core.Initialize).shouldHaveField("[:parameters](parameters)")}
+[:Fact:]{io.sarl.api.core.[:initevent](Initialize)}
+[:Fact:]{typeof(io.sarl.api.core.Initialize).shouldHaveField("[:parameters](parameters)")}
 
 The following example gives the values `FirstArgument` and
 `SecondArgument` to the launched agent:
@@ -158,8 +158,8 @@ It is possible to give arguments to the launched agent.
 Indeed, all the arguments given as program arguments
 are put in the [:parameters:] attribute of the [:initevent:] event.
 This event is fired when the launched agent is started.
-[:Fact:](io.sarl.core.Initialize)
-[:Fact:]{typeof(io.sarl.core.Initialize).shouldHaveField("[:parameters](parameters)")}
+[:Fact:](io.sarl.api.core.Initialize)
+[:Fact:]{typeof(io.sarl.api.core.Initialize).shouldHaveField("[:parameters](parameters)")}
 
 The following example gives the values `FirstParam` and
 `SecondParam` to the launched agent:
@@ -176,8 +176,8 @@ by the following example:
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.runsarlagent
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	[:On]agent MyAgent {
 		uses Logging
 		on Initialize {

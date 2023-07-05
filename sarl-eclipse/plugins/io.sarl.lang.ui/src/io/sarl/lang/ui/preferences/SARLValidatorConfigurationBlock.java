@@ -104,6 +104,12 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 				Messages.SARLValidatorConfigurationBlock_6);
 		builder.addComboBox(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
 				Messages.SARLValidatorConfigurationBlock_18);
+		builder.addComboBox(IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION,
+				Messages.SARLValidatorConfigurationBlock_20);
+		builder.addComboBox(IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL,
+				Messages.SARLValidatorConfigurationBlock_21);
+		builder.addComboBox(IssueCodes.AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER,
+				Messages.SARLValidatorConfigurationBlock_22);
 	}
 
 	@Override

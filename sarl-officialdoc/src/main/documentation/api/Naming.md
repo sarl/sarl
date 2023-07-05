@@ -210,7 +210,7 @@ To use this service, you have to get it from the SRE, as illustrated below:
 
 [:Success:]
 	package io.sarl.docs.namespace
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import io.sarl.api.naming.namespace.NamespaceService
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -323,7 +323,7 @@ Let the agent implementation below:
 [:Success:]
 	package io.sarl.docs.namespace
 	import java.lang.reflect.Field
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
 	import io.sarl.api.naming.namespace.FieldAccessRight
 	skill AccessRightSkill implements FieldAccessValidationCapacity {
@@ -349,7 +349,7 @@ We equip the agent with the [:accessskill:] skill that implements the [:accessca
 [:Success:]
 	package io.sarl.docs.namespace
 	import java.lang.reflect.Field
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
 	import io.sarl.api.naming.namespace.FieldAccessRight
 	[:On]

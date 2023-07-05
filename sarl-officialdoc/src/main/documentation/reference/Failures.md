@@ -24,7 +24,7 @@ Each time an agent needs to be notified about a fault (into its agent tasks for 
 There is plenty of causes for a validation error or a failure. Since the [:failuretype:] event type is general, it is possible to refine its meaning by extending it with an event sub-type, e.g.:
 
 [:Success:]
-	import [:failurefulltype]$io.sarl.core.[:failuretype](Failure)$
+	import [:failurefulltype]$io.sarl.api.core.[:failuretype](Failure)$
 	[:On]
 	event MyAgentPersonalFailure extends Failure
 [:End:]
@@ -40,7 +40,7 @@ It is still possible for you to define your own failure events. You only need to
 For example, the following code define the [:myfailureevent:] event:
 
 [:Success:]
-	import io.sarl.core.Failure
+	import io.sarl.api.core.Failure
 	[:On]
 	event [:myfailureevent](MyFailure) extends Failure
 [:End:]
@@ -51,8 +51,8 @@ Usually, a failure event is fired into the internal context of the agent, using 
 by the [:behaviorcapacity:] capacity. For example:
 
 [:Success:]
-	import io.sarl.core.Failure
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Failure
+	import io.sarl.api.core.Behaviors
 	[:On]
 	event MyFailure extends Failure {
 		var mydata : String
@@ -78,7 +78,7 @@ An agent may be destroyed due to an internal fault. However, according to the SA
 In order to be killed, an agent has to invoke the [:killmefct:] function from the [:lifecyclecapacity:] built-in capacity, as illustrated below:
 
 [:Success:]
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	event MyEvent
 	[:On]
 	agent MyAgent {
@@ -94,7 +94,7 @@ The call to the [:killmefct:] function causes the firing of an [:agentkilledeven
 In the case the agent would like to stop its life on a failure, the [:killmefct:] accepts an object as argument that is describing the cause of the termination of the agent:
 
 [:Success:]
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	event MyEvent
 	[:On]
 	agent MyAgent {
@@ -110,8 +110,8 @@ The type of the data that describes the killing reason is application-dependent 
 The reason of the killing of an agent may be retrieved from the [:agentkilledevent:] event:
 
 [:Success:]
-	import io.sarl.core.AgentKilled
-	import io.sarl.core.Logging
+	import io.sarl.api.core.AgentKilled
+	import io.sarl.api.core.Logging
 	[:On]
 	agent MyOtherAgent {
 		uses Logging
@@ -148,8 +148,8 @@ The function [:emittoparent:], defined into the [:defaultcontextinteraction:] bu
 In the following code, the agent `B` forwards automatically the failure events to its parent agent `A`.
 
 [:Success:]
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Failure
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Failure
 	[:On]
 	agent AgentB {
 		uses [:defaultcontextinteraction](DefaultContextInteractions)
@@ -168,8 +168,8 @@ You must use the standard API for emitting the events into [spaces](./Space.md) 
 In the following code, the agent `A` forwards automatically the failure events to its child agents, including `B` and `C`.
 
 [:Success:]
-	import io.sarl.core.Behaviors
-	import io.sarl.core.Failure
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.Failure
 	[:On]
 	agent AgentA {
 		uses [:innercontextcap](Behaviors)
@@ -196,11 +196,11 @@ In addition to the field [:causefield:], the [:taskfailuretype:] event contains 
 The following code shows an example of the submission of a failing parallel task, and the catching of this failure with a [:taskfailuretype:] event handler.
 
 [:Success:]
-	import [:taskfailurefulltype]$io.sarl.core.[:taskfailuretype](TaskFailure)$
-	import io.sarl.core.Initialize
-	import io.sarl.core.Logging
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import [:taskfailurefulltype]$io.sarl.api.core.[:taskfailuretype](TaskFailure)$
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	class MyError extends Exception {}
 	[:On]
 	agent MyAgent {
@@ -231,9 +231,9 @@ The following code shows up an event handler that outputs an error message when 
 agent spawn action has failed.
 
 [:Success:]
-	import io.sarl.core.AgentSpawnFailure
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Logging
+	import io.sarl.api.core.AgentSpawnFailure
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Logging
 	agent MyOtherAgent {}
 	[:On]
 	agent MyAgent {
@@ -268,9 +268,9 @@ The following code shows up an event handler that outputs an error message when 
 agent killing action has failed.
 
 [:Success:]
-	import io.sarl.core.AgentKillFailure
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Logging
+	import io.sarl.api.core.AgentKillFailure
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Logging
 	[:On]
 	agent MyAgent {
 		uses Lifecycle, Logging

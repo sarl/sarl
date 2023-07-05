@@ -60,7 +60,7 @@ the SARL Run-time Environment (SRE).
 [:Success:]
     package io.sarl.docs.faq.deprecation
     import io.sarl.lang.core.EventListener
-    import io.sarl.core.OpenEventSpace
+    import io.sarl.api.core.OpenEventSpace
     agent X {
         def weak(listener : EventListener, s : OpenEventSpace) : void {
             s.registerWeakParticipant(listener)
@@ -137,7 +137,7 @@ the SARL Run-time Environment (SRE).
 [:Success:]
     package io.sarl.docs.faq.deprecation
     import java.util.UUID
-    import io.sarl.core.DefaultContextInteractions
+    import io.sarl.api.core.DefaultContextInteractions
     event [:myeventname](MyEvent)
     agent X {
         uses DefaultContextInteractions
@@ -160,8 +160,8 @@ the SARL Run-time Environment (SRE).
 [:Success:]
     package io.sarl.docs.faq.deprecation
     import java.util.UUID
-    import io.sarl.core.DefaultContextInteractions
-    import io.sarl.core.Lifecycle
+    import io.sarl.api.core.DefaultContextInteractions
+    import io.sarl.api.core.Lifecycle
     agent [:myagentname](MyAgent) { }
     agent X {
         uses [:dcicapacity](DefaultContextInteractions), Lifecycle
@@ -179,8 +179,8 @@ the SARL Run-time Environment (SRE).
 [:Success:]
     package io.sarl.docs.faq.deprecation
     import java.util.UUID
-    import io.sarl.core.DefaultContextInteractions
-    import io.sarl.core.Lifecycle
+    import io.sarl.api.core.DefaultContextInteractions
+    import io.sarl.api.core.Lifecycle
     agent [:myagentname](MyAgent) { }
     agent X {
         uses Lifecycle
@@ -203,7 +203,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.core.OpenEventSpace
+    import io.sarl.api.core.OpenEventSpace
     import io.sarl.lang.core.EventListener
     agent X {
         def fct0(sp : OpenEventSpace, listener : EventListener) {
@@ -234,7 +234,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.core.[:lifecyclecapacity](Lifecycle)
+    import io.sarl.api.core.[:lifecyclecapacity](Lifecycle)
     agent MyAgent {}
     agent X {
     	uses Lifecycle
@@ -251,7 +251,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.core.[:loggingcapacity](Logging)
+    import io.sarl.api.core.[:loggingcapacity](Logging)
     agent X {
     	uses Logging
         def fct {
@@ -267,7 +267,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.sarlspecification.[:checkername](SarlSpecificationChecker)
+    import io.sarl.api.util.sarlspecification.[:checkername](SarlSpecificationChecker)
     import org.osgi.framework.Version
     agent X {
         def fct(s : SarlSpecificationChecker, t : Class<?>) : [:versiontypename](Version) {
@@ -323,7 +323,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.bootstrap.SRE
+    import io.sarl.lang.core.SRE
     agent X {
         def fct {
 			SRE::getBootstrap.setVerboseLevel(1)
@@ -342,7 +342,7 @@ Boot.startJanus(typeof(MyAgent))
 	utility class as follows:
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.bootstrap.SRE
+    import io.sarl.lang.core.SRE
     agent MyAgent { }
     agent X {
         def fct {

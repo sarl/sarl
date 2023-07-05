@@ -331,7 +331,7 @@ In this case, no equality test function is generated within the marked type and 
 
 [:Success:]
 	[:On]
-	import [:noeqtestannonfqn](io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration)
+	import [:noeqtestannonfqn](io.sarl.lang.core.annotation.NoEqualityTestFunctionsGeneration)
 	[:noeqtestannon](@NoEqualityTestFunctionsGeneration)
 	class MyClass {
 	  var field1 : int
@@ -347,7 +347,7 @@ is not included within the equality test within the `equals()` function, and the
 by the `hashCode()` function does not include the hash code of the [:noeqtestfield2:] field.
 
 [:Success:]
-	import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration
+	import io.sarl.lang.core.annotation.NoEqualityTestFunctionsGeneration
 	[:On]
 	class MyClass {
 	  var field1 : int

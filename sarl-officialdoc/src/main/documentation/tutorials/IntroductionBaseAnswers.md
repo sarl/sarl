@@ -7,7 +7,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent Solution {
 		on Initialize {
 			println("Twinkle, twinkle, little star,\n\tHow I wonder what you are!\n\t\tUp above the world so high,\n\t\tLike a diamond in the sky.\n\tTwinkle, twinkle, little star,\ntHow I wonder what you are")
@@ -20,7 +20,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.util.Date
 	agent Solution {
 		on Initialize {
@@ -35,7 +35,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var r = occurrence.parameters.get(0) as Double
@@ -51,7 +51,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var firstname = occurrence.parameters.get(0) as String
@@ -66,7 +66,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var numberListString = occurrence.parameters.get(0) as String
@@ -82,7 +82,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var filename = occurrence.parameters.get(0) as String
@@ -99,7 +99,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var color_list = #["Red", "Green", "White", "Black"]
@@ -114,7 +114,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var n = occurrence.parameters.get(0) as Integer
@@ -129,7 +129,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.util.GregorianCalendar
 	agent A {
 		on Initialize {
@@ -146,7 +146,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.time.LocalDate
 	import java.time.temporal.ChronoUnit
 	agent A {
@@ -173,7 +173,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var volume = 4/3 * Math::PI * 6**3;
@@ -187,7 +187,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number = occurrence.parameters.get(0) as Integer
@@ -205,7 +205,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import static java.lang.Math.*
 	agent A {
 		on Initialize {
@@ -221,7 +221,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number0 = occurrence.parameters.get(0) as Integer
@@ -242,7 +242,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var str = occurrence.parameters.get(0) as String
@@ -259,7 +259,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var str = occurrence.parameters.get(0) as String
@@ -278,7 +278,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var n = occurrence.parameters.get(0) as Integer
@@ -296,7 +296,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var n = 0
@@ -319,7 +319,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var n = 0
@@ -342,7 +342,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		val vowels = newArrayList('a', 'e', 'i', 'o', 'u', 'y')
 		
@@ -363,7 +363,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		val group = newArrayList(1, 5, 8, 3)
 		
@@ -379,7 +379,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var list = <String>newArrayList
@@ -397,7 +397,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		var numbers : int[] = #[    
 		    386, 462, 47, 418, 907, 344, 236, 375, 823, 566, 597, 978, 328, 615, 953, 345, 
@@ -420,7 +420,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		var color_list_1 = newHashSet(#["White", "Black", "Red"])
 		var color_list_2 = newHashSet(#["Red", "Green"])
@@ -439,7 +439,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var base = occurrence.parameters.get(0) as Double
@@ -455,7 +455,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number1 = occurrence.parameters.get(0) as Double
@@ -483,7 +483,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import static java.lang.Math.*
 	agent A {
 		on Initialize {
@@ -515,7 +515,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number1 = occurrence.parameters.get(0) as Integer
@@ -535,7 +535,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number1 = occurrence.parameters.get(0) as Integer
@@ -554,7 +554,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number1 = occurrence.parameters.get(0) as Integer
@@ -573,7 +573,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var number1 = occurrence.parameters.get(0)
@@ -597,7 +597,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var x = occurrence.parameters.get(0) as Double
@@ -616,7 +616,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var x1 = occurrence.parameters.get(0) as Double
@@ -637,7 +637,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.io.File
 	agent A {
 		on Initialize {
@@ -654,7 +654,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var value = occurrence.parameters.get(0) as String
@@ -674,7 +674,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.io.File
 	agent A {
 		on Initialize {
@@ -692,7 +692,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var value = occurrence.parameters.get(0) as String
@@ -707,8 +707,8 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Logging
 	agent A {
 		uses Logging
 		on Initialize {
@@ -723,7 +723,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var variableName = occurrence.parameters.get(0) as String
@@ -737,7 +737,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			println(System::getProperty("user.name"))
@@ -750,7 +750,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var n = occurrence.parameters.get(0) as Integer
@@ -768,7 +768,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var height = occurrence.parameters.get(0) as Double
@@ -783,7 +783,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var side1 = occurrence.parameters.get(0) as Double
@@ -799,7 +799,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import static java.util.concurrent.TimeUnit.*
 	agent A {
 		on Initialize {
@@ -818,7 +818,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.io.File
 	agent A {
 		on Initialize {
@@ -835,7 +835,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var seconds = occurrence.parameters.get(0) as Integer
@@ -858,7 +858,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var weight = occurrence.parameters.get(0) as Double
@@ -874,7 +874,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var kilopascals = occurrence.parameters.get(0) as Double
@@ -893,7 +893,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var value = occurrence.parameters.get(0) as String
@@ -913,7 +913,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import static java.lang.Math.*
 	agent A {
 		on Initialize {
@@ -933,7 +933,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var all = ""
@@ -950,7 +950,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.util.stream.Collectors
 	import static extension java.util.Arrays.*
 	agent A {
@@ -977,7 +977,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import static extension java.util.Arrays.*
 	agent A {
 		on Initialize {
@@ -1003,7 +1003,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var c = occurrence.parameters.get(0) as Character
@@ -1019,7 +1019,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	import java.io.File
 	agent A {
 		on Initialize {
@@ -1035,7 +1035,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var var1 = occurrence.parameters.get(0)
@@ -1054,7 +1054,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var value = occurrence.parameters.get(0) as String
@@ -1076,7 +1076,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			var value1 = occurrence.parameters.get(0) as String
@@ -1094,7 +1094,7 @@
 [:Success:]
 	package io.sarl.docs.tutorials.baseexercises
 	[:On]
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	agent A {
 		on Initialize {
 			println("Min integer = " + Integer::MIN_VALUE)

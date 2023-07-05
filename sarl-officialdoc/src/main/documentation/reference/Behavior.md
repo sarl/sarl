@@ -61,7 +61,7 @@ The example below illustrates the creation of type actions.
 
 [:Success:]
 	package io.sarl.docs.reference.br
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	behavior [:behaviortype1!] {
 		uses Logging
@@ -94,7 +94,7 @@ A second behavior [:behaviortype2!] is defined as the extension of the first beh
 
 [:Success:]
 	package io.sarl.docs.reference.br
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	behavior [:behaviortype1!] {
 		protected var [:attrfield](attr) : String
@@ -119,9 +119,9 @@ the events in the behavior.
 
 [:Success:]
 	package io.sarl.docs.reference.br
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Behaviors
 	behavior [:behaviortype1!] { }
 	[:On]
 	agent MyAgent {
@@ -295,14 +295,14 @@ When a behavior is ready to be executed by the runtime environment, usually when
 is registered in its owning agent, it receives the [:initializeevent:] event.
 This event is defined as:
 
-[:ShowType:](io.sarl.core.[:initializeevent]{Initialize})
+[:ShowType:](io.sarl.api.core.[:initializeevent]{Initialize})
 
 It contains the list of the parameters given that are never set for behaviors.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	[:On]
 	behavior MyBehavior {
 		uses Logging
@@ -323,8 +323,8 @@ no parameter. The second event handler is executed when the event has at least o
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	[:On]
 	behavior MyBehavior {
 		uses Logging
@@ -362,8 +362,8 @@ It is allowed to declare multiple initialization handlers into a single behavior
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
     [:On]
     behavior Beh1 {
     	uses Logging
@@ -392,8 +392,8 @@ are run when the type of the behavior (here [:beh2name:]) is declared within a i
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
     behavior Beh1 {
     }
     [:On]
@@ -420,15 +420,15 @@ two are defined into [:beh2name:]. This mechanism is generalized to all the even
 
 The counterpart of [:initializeevent:] is the event [:destroyevent:]. This event is defined as:
 
-[:ShowType:](io.sarl.core.Destroy)
+[:ShowType:](io.sarl.api.core.Destroy)
 
 
 Example:
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Destroy
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Destroy
 	[:On]
 	behavior MyBehavior {
 		uses Logging
@@ -449,8 +449,8 @@ when there is no resource.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Destroy
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Destroy
 	[:On]
 	behavior MyBehavior {
 		uses Logging
@@ -476,7 +476,7 @@ As for all the event handlers, it could be guarded by a predicate.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	event SomethingChanged
 	[:On]
 	behavior MyBehavior {
@@ -497,7 +497,7 @@ In the following example, the two handlers for the [:eventtype2:] event are exec
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	event [:eventtype2!]
 	[:On]
 	behavior MyBehavior {
@@ -527,9 +527,9 @@ In the following example, the agent execute its proactive behavior every second.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Schedules
 	[:On]
 	behavior MyBehavior {
 		uses [:schedulescap](Schedules), Logging
@@ -560,7 +560,7 @@ In the rest of this section, it is assumed that the following capacity and skill
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	capacity Cap {
 		def action
@@ -582,7 +582,7 @@ It is possible for a behavior to assign a skill to its agent.
 
 [:Success:]
 	package io.sarl.docs.reference.br
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:importkw](import) io.sarl.lang.core.Agent
 	capacity Cap {
 		def action
@@ -607,7 +607,7 @@ is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfAbsent)(S
 
 [:Success:]
 	package io.sarl.docs.reference.br
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	import io.sarl.lang.core.Agent
 	capacity Cap {
 		def action

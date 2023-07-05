@@ -10,7 +10,7 @@ it may be the operating system time, or a simulator time.
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:timecap](Time)).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:timecap](Time)).shouldHaveMethods(
 	"[:fctgettime](getTime)(java.util.concurrent.TimeUnit) : double",
 	"getTime : double",
 	"[:fctgetostimefactor](getOSTimeFactor) : double",
@@ -42,8 +42,8 @@ the values will be expressed in seconds.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Time
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Time
+	import io.sarl.api.core.Logging
 	import java.util.concurrent.TimeUnit
 	[:On]
 	agent A {
@@ -78,7 +78,7 @@ In order to map the time replied by the [:fctgettime:] function and the operatin
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Time
+	import io.sarl.api.core.Time
 	agent Tmp {
 		uses Time
 		def action {
@@ -113,7 +113,7 @@ For converting a time, you have access to two functions:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Time
+	import io.sarl.api.core.Time
 	agent Tmp {
 		uses Time
 		def action {
@@ -139,7 +139,7 @@ For converting a duration, you have access to two functions:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Time
+	import io.sarl.api.core.Time
 	agent Tmp {
 		uses Time
 		def action {

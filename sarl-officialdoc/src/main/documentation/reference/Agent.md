@@ -178,7 +178,7 @@ The example below illustrates the creation of two actions in the agent.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent MyAgent {
 		uses Logging
@@ -213,7 +213,7 @@ A second agent [:agenttype2:] is defined as the extension of the first agent. It
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent [:agenttype1!] {
 		protected var [:attrfield](attr) : String
@@ -394,7 +394,7 @@ variable as the keywords `this` and `it`.
 When an agent is ready to be executed by the runtime environment, it receives the [:initializeevent:] event.
 This event is defined as:
 
-[:ShowType:](io.sarl.core.[:initializeevent]{Initialize})
+[:ShowType:](io.sarl.api.core.[:initializeevent]{Initialize})
 
 
 It contains the list of the parameters given to the spawning function (as specified in the 
@@ -403,8 +403,8 @@ It contains the list of the parameters given to the spawning function (as specif
 [:Success:]
 	package io.sarl.docs.reference.ar
 	import java.util.UUID
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	agent TestInitializeContent {
 		on Initialize {
 			var spawnerID : UUID = occurrence.spawner
@@ -434,8 +434,8 @@ no parameter. The second event handler is executed when the event has at least o
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	[:On]
 	agent MyAgent {
 		uses Logging
@@ -472,9 +472,9 @@ As such, its execution is more "synchronous" than other on-behavior rules. In pa
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
-    import io.sarl.core.Lifecycle
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
+    import io.sarl.api.core.Lifecycle
     [:On]
     agent Agent1 {
         uses Logging, Lifecycle
@@ -532,8 +532,8 @@ It is allowed to declare multiple initialization handlers into a single agent ty
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
     [:On]
     agent Agent3 {
     	uses Logging
@@ -564,8 +564,8 @@ are run when the type of the agent (here [:agent4name:]) is declared within a in
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
     agent Agent3 {
     }
     [:On]
@@ -591,15 +591,15 @@ two are defined into [:agent4name:]. This mechanism is generalized to all the ev
 
 The counterpart of [:initializeevent:] is the event [:destroyevent:]. This event is defined as:
 
-[:ShowType:](io.sarl.core.Destroy)
+[:ShowType:](io.sarl.api.core.Destroy)
 
 
 Example:
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Destroy
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Destroy
 	[:On]
 	agent MyAgent {
 		uses Logging
@@ -620,8 +620,8 @@ is executed when there is no resource.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Destroy
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Destroy
 	[:On]
 	agent MyAgent {
 		uses Logging
@@ -648,7 +648,7 @@ As for all the event handlers, it could be guarded by a predicate.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	event SomethingChanged
 	[:On]
 	agent MyAgent {
@@ -670,7 +670,7 @@ In the following example, the two handlers for the [:eventtype1:] event are exec
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	event SomethingChanged
 	[:On]
 	agent MyAgent {
@@ -699,9 +699,9 @@ In the following example, the agent execute its proactive behavior every second.
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Schedules
 	[:On]
 	agent MyAgent {
 		uses [:schedulescap](Schedules), Logging
@@ -730,7 +730,7 @@ In the rest of this section, it is assumed that the following capacity and skill
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	capacity Cap {
 		def action
@@ -758,8 +758,8 @@ When the function [:setskillfct:] is returning, the agent becomes able to use th
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	capacity Cap {
 		def action
 	}
@@ -785,8 +785,8 @@ is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfAbsent)(S
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	capacity Cap {
 		def action
 	}
@@ -830,8 +830,8 @@ For invoking a function implemented by a skill, the two following steps must be 
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	capacity Cap {
 		def action
 	}
@@ -864,7 +864,7 @@ The built-in capacities are accessible in the same way as the other capacities, 
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Lifecycle
 	event SomeEvent
 	[:On]
 	agent MyAgent {
@@ -893,8 +893,8 @@ with the name [:action1:] is invoked. This action is defined in the [:capcap:] c
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	[:importkw](import) io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	[:importkw](import) io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	capacity [:capcap!] {
 		def action
 	}
@@ -928,8 +928,8 @@ Example:
 
 [:Success:]
 	package io.sarl.docs.reference.ar
-	[:importkw](import) io.sarl.core.Logging
-	import io.sarl.core.Lifecycle
+	[:importkw](import) io.sarl.api.core.Logging
+	import io.sarl.api.core.Lifecycle
 	event SomeEvent
 	[:On]
 	agent MyAgent {

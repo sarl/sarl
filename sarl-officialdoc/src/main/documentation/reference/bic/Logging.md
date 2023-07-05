@@ -6,7 +6,7 @@ The built-in capacity `[:loggingcap]{Logging}` provides tools for printing messa
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:loggingcap!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:loggingcap!]).shouldHaveMethods(
 	"[:fcterror](error)(java.lang.Object, java.lang.Throwable, java.lang.Object[])",
 	"[:fcterror!](java.lang.Object, java.lang.Object[])",
 	"[:fcterror!](java.util.function.Supplier)",
@@ -51,7 +51,7 @@ The [:exceptionparam:] parameter may be given for printing an exception that is 
 Examples:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -69,7 +69,7 @@ You could also give a text supplier, in the form of a lambda expression, to thes
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -101,7 +101,7 @@ The message is built from the parsing of the message in which parameter constant
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -116,7 +116,7 @@ You could also give a text supplier, in the form of a lambda expression, to the 
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -147,7 +147,7 @@ The message is built from the parsing of the message in which parameter constant
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -162,7 +162,7 @@ You could also give a text supplier, in the form of a lambda expression, to the 
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -207,7 +207,7 @@ For changing the current logging level, the following function is provided:
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -239,7 +239,7 @@ The following functions permits testing if a specific logging level is enabled:
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]
@@ -272,7 +272,7 @@ The following function gives the opportunity to change this name.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Logging
 	[:On]
 	agent A {
 		uses [:loggingcap!]

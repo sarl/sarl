@@ -118,7 +118,7 @@ To use the probe service, you have to get it from the SRE, as illustrated below:
 
 [:Success:]
 	package io.sarl.docs.namespace
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -137,7 +137,7 @@ The example loops for displaying the observed value (of course it is not the mos
 
 [:Success:]
 	package io.sarl.docs.namespace
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -156,7 +156,7 @@ value (of course it is not the most efficient usage of a probe).
 
 [:Success:]
 	package io.sarl.docs.namespace
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
 		static def main(arguments : String*) {

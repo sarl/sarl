@@ -2383,6 +2383,13 @@
 		"cause": "This warning message is generated when you declared a field with the `static` modifier into an agent or on of its components. Basically, a static field is defined outside an instance of agent or component. In other words, the static field could be used for sharing data between the components of the agents, and between the agents themselves. This method of data sharing is breaking the agent autonomy principle. It should be used only for sharing constant data between the agents",
 		"solution": "Remove the `static` modifier",
 		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.ambiguous_interpretation_by_developper",
+		"message": "Potential ambiguous notation for **expression**. The minus unary operator is applied on the result of the call to function **name** and not on the argument value **value**.",
+		"cause": "This warning message is generated for any expression of the form `-value.name`. In this case, the expression could be interpreted in the wrong way. For example, `-125.abs` is interpreted as `-(125.abs)` by SARL, i.e., `-abs(125)`. It is not interpreted as `abs(-125)`. If you would pass `-125` to the function, you must use parentheses, i.e. `(-125).abs`",
+		"solution": "Put parentheses around the minus unary operator and the value, i.e., `(-value).name`",
+		"level": "c/warning"
 	}
 ]
 

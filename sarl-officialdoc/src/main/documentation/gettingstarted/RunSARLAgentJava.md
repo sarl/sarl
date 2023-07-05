@@ -29,7 +29,7 @@ In the following Java code, the [:sre:] utility type is used for retrieving the 
  
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	class MyProgram {
 	
 		static def main(arguments : String*) {
@@ -56,7 +56,7 @@ It is the role of the SARL run-time environment to create this instance for you,
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent](MyAgent) {
 	}
 	class MyProgram {
@@ -101,7 +101,7 @@ to launch.
 
 The second parameter of the [:startjanus:] function is the list of parameters to
 pass with the [:initevent:] event to the launched agent.
-[:Fact:]{io.sarl.core.[:initevent](Initialize)}
+[:Fact:]{io.sarl.api.core.[:initevent](Initialize)}
 
 
 > **_Very Important Note:_** The Janus platform enables to launch a single agent at start-up.

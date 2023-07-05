@@ -40,7 +40,7 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.eclipse</groupId>
-				<artifactId>sarl.eclipse</artifactId>
+				<artifactId>io.sarl.eclipse</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>

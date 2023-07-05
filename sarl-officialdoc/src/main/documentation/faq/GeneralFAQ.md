@@ -342,8 +342,8 @@ be handled, say by a coordinator, to know the agent is now alive! For example:
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.AgentSpawned
-    import io.sarl.core.Logging
+    import io.sarl.api.core.AgentSpawned
+    import io.sarl.api.core.Logging
     import java.util.Map
     agent X {
         uses Logging
@@ -379,9 +379,9 @@ As such, its execution is more "synchronous" than other on-behavior rules. In pa
 
 [:Success:]
     package io.sarl.docs.faq.general
-    import io.sarl.core.Initialize
-    import io.sarl.core.Logging
-    import io.sarl.core.Lifecycle
+    import io.sarl.api.core.Initialize
+    import io.sarl.api.core.Logging
+    import io.sarl.api.core.Lifecycle
     [:On]
     agent Agent1 {
         uses Logging, Lifecycle

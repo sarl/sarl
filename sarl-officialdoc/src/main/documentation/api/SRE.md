@@ -19,7 +19,7 @@ application classpath.
 
 The SARL API defines the SRE bootstrap as:
 
-[:ShowType:]([:bootstrap]$io.sarl.bootstrap.SREBootstrap$)
+[:ShowType:]([:bootstrap]$io.sarl.lang.core.SREBootstrap$)
 
 
 A run-time environment, such as [Janus](http://www.janusproject.io) must provide an implementation of this bootstrap interface.
@@ -42,7 +42,7 @@ In the following SARL code (it may be Java or Groovy code), the [:sre:] utility 
  
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	class MyProgram {
 		[:On]
 		static def main(arguments : String*) {
@@ -60,7 +60,7 @@ It is the role of the SRE to create this instance for you, with the proper initi
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent](MyAgent) {}
 	class MyProgram {
 		[:On]
@@ -94,7 +94,7 @@ For starting the SRE without agent, you have to invoke [:startWithoutAgentFct:]:
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	class MyProgram {
 		static def main(arguments : String*) {
 			[:On]
@@ -116,7 +116,7 @@ Both of them are launching an agent of a given type. For example, the following 
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -134,7 +134,7 @@ In the following example, [:numberofagents!] agents are launched into the SRE.
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -154,7 +154,7 @@ precision floating point number [:param2:].
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -174,7 +174,7 @@ are retrieved:
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	[:On]
 	agent [:myagent!] {
 
@@ -193,7 +193,7 @@ This function enables to pass initialization arguments to the launched agent.
  
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import java.util.UUID
 	agent [:myagent!] {}
 	class MyProgram {
@@ -217,7 +217,7 @@ Two functions are provided to determine if the SRE is running or not:
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	class MyProgram {
 		static def main(arguments : String*) {
 			var bootstrap = SRE::getBootstrap
@@ -240,7 +240,7 @@ the SRE is stopping. The following code shows you the start and stop of the SRE.
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -260,7 +260,7 @@ In the following example, we are waiting 15 seconds for stopping the SRE.
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -293,7 +293,7 @@ The following functions are provided on the SRE bootstrap to change the SRE conf
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import java.util.UUID
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -318,7 +318,7 @@ it means that the SRE was not launched.
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import java.util.logging.Logger
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -337,7 +337,7 @@ You could control in a generic way the verbose level of the kernel logger by cal
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	import java.util.logging.Logger
 	class MyProgram {
 		static def main(arguments : String*) {
@@ -388,7 +388,7 @@ Assuming that the SRE is implementing this service, you could get the service's 
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
+	import io.sarl.lang.core.SRE
 	interface [:myservice](MyService) {
 		def use() : void
 	}
@@ -423,7 +423,7 @@ The SARL API assumes an implementation of the observer design pattern that follo
 
 According to these general principles, the listener for the SRE events is defined as:
 
-[:ShowType:](io.sarl.bootstrap.SREListener)
+[:ShowType:](io.sarl.lang.core.SREListener)
 
 
 Both declared functions takes the SRE bootstrap as parameter.
@@ -435,9 +435,9 @@ First an implementation of listener is written. Basically, this implementation o
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
-	import io.sarl.bootstrap.SREBootstrap
-	import io.sarl.bootstrap.SREListener
+	import io.sarl.lang.core.SRE
+	import io.sarl.lang.core.SREBootstrap
+	import io.sarl.lang.core.SREListener
 	[:On]
 	class MyListener implements SREListener {
 		override sreStarted(bs : SREBootstrap) {
@@ -454,9 +454,9 @@ Then, you could register the listener on the SRE as illustrated below:
 
 [:Success:]
 	package io.sarl.docs.bootstrap
-	import io.sarl.bootstrap.SRE
-	import io.sarl.bootstrap.SREBootstrap
-	import io.sarl.bootstrap.SREListener
+	import io.sarl.lang.core.SRE
+	import io.sarl.lang.core.SREBootstrap
+	import io.sarl.lang.core.SREListener
 	class MyListener implements SREListener {
 		override sreStarted(bs : SREBootstrap) {}
 		override sreStopped(bs : SREBootstrap) {}

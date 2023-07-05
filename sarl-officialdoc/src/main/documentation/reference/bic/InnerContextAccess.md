@@ -9,12 +9,12 @@ bottom context in the figure above.
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:innercontextaccess!]).shouldHaveMethods(
+[:Fact:]{typeof(io.sarl.api.core.[:innercontextaccess!]).shouldHaveMethods(
 	"[:getinnercontext](getInnerContext) : io.sarl.lang.core.AgentContext",
 	"[:getinnerdefaultspace](getInnerDefaultSpace) : io.sarl.lang.core.EventSpace",
 	"[:hasmemberagent](hasMemberAgent) : boolean",
 	"[:getmemberagentcount](getMemberAgentCount) : int",
-	"[:getmemberagents](getMemberAgents) : io.sarl.lang.util.ConcurrentSet",
+	"[:getmemberagents](getMemberAgents) : io.sarl.lang.core.util.ConcurrentSet",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.SpaceID) : boolean",
 	"[:isinnerdefaultspace](isInnerDefaultSpace)(java.util.UUID) : boolean",
@@ -40,7 +40,7 @@ For retrieving the inner context of an agent, this built-in capacity provides th
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.InnerContextAccess
+	import io.sarl.api.core.InnerContextAccess
 	import io.sarl.lang.core.AgentContext
 	[:On]
 	agent A {
@@ -71,7 +71,7 @@ For retrieving the default space of the inner context, this built-in capacity pr
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.InnerContextAccess
+	import io.sarl.api.core.InnerContextAccess
 	import io.sarl.lang.core.EventSpace
 	[:On]
 	agent A {
@@ -116,7 +116,7 @@ The second function replies the number of agents that are members of the inner c
 The third function replies all the member agents in the inner context:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.lang.util.ConcurrentSet
+	import io.sarl.lang.core.util.ConcurrentSet
 	import java.util.UUID
 	interface Tmp {
 	[:On]
@@ -129,8 +129,8 @@ The third function replies all the member agents in the inner context:
 Examples:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.lang.util.ConcurrentSet
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.lang.core.util.ConcurrentSet
 	import java.util.UUID
 	[:On]
 	agent A {
@@ -170,7 +170,7 @@ of type [:eventtype1:] was emitted in the default space of the inner context.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.InnerContextAccess
+	import io.sarl.api.core.InnerContextAccess
 	import io.sarl.lang.core.Space
 	event AnEvent
 	agent A {

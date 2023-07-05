@@ -6,23 +6,23 @@ The built-in capacity `[:schedules](Schedules)` enables the agent to schedule ta
 
 <!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
       documented --> 
-[:Fact:]{typeof(io.sarl.core.[:schedules!]).shouldHaveMethods(
-	"[:task](task)(java.lang.String) : io.sarl.core.[:agenttask](AgentTask)",
-	"[:setname](setName)(io.sarl.core.AgentTask, java.lang.String)",
-	"[:execute](execute)(org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"execute(io.sarl.core.AgentTask, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"[:in](in)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"in(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"[:every](every)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"every(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"[:atfixeddelay](atFixedDelay)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"atFixedDelay(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"[:at](at)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"at(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
-	"[:cancel](cancel)(io.sarl.core.AgentTask, boolean) : boolean",
-	"cancel(io.sarl.core.AgentTask) : boolean",
-	"[:iscanceled](isCanceled)(io.sarl.core.AgentTask) : boolean",
-	"[:getactivetasks](getActiveTasks) : io.sarl.lang.util.ConcurrentSet")
+[:Fact:]{typeof(io.sarl.api.core.[:schedules!]).shouldHaveMethods(
+	"[:task](task)(java.lang.String) : io.sarl.api.core.[:agenttask](AgentTask)",
+	"[:setname](setName)(io.sarl.api.core.AgentTask, java.lang.String)",
+	"[:execute](execute)(org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"execute(io.sarl.api.core.AgentTask, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"[:in](in)(io.sarl.api.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"in(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"[:every](every)(io.sarl.api.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"every(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"[:atfixeddelay](atFixedDelay)(io.sarl.api.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"atFixedDelay(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"[:at](at)(io.sarl.api.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"at(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.api.core.AgentTask",
+	"[:cancel](cancel)(io.sarl.api.core.AgentTask, boolean) : boolean",
+	"cancel(io.sarl.api.core.AgentTask) : boolean",
+	"[:iscanceled](isCanceled)(io.sarl.api.core.AgentTask) : boolean",
+	"[:getactivetasks](getActiveTasks) : io.sarl.lang.core.util.ConcurrentSet")
 }
 
 ## Creating Named Tasks
@@ -31,7 +31,7 @@ A named task may be created with:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	interface Tmp {
 	[:On]
 		def [:task!](name : String) : AgentTask
@@ -45,8 +45,8 @@ The replied task may be used for future execution, or controlling the execution.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	[:On]
 	agent A {
 		uses Schedules
@@ -66,7 +66,7 @@ Example:
 A task has a name that serves as its identifier. You could change the task name by calling the following function:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	interface Tmp {
 	[:On]
 		def [:setname!](task : AgentTask, name : String)
@@ -78,9 +78,9 @@ A task has a name that serves as its identifier. You could change the task name 
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Initialize
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	[:On]
 	agent A {
 		uses Schedules
@@ -105,7 +105,7 @@ Example:
 For running a task once time, the following function is provided:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -127,9 +127,9 @@ the task given as parameter.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	[:On]
 	agent A {
@@ -156,7 +156,7 @@ Example:
 For running a task in a given delay, the following function is provided:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -179,9 +179,9 @@ is the same as the task given as parameter.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	[:On]
 	agent A {
@@ -209,7 +209,7 @@ Example:
 For running a task at a specific time, the following function is provided:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -233,9 +233,9 @@ is the same as the task given as parameter.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Logging
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	[:On]
 	agent A {
@@ -263,7 +263,7 @@ Example:
 For running a periodic task with a fixed starting rate, the following function is provided:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -289,7 +289,7 @@ For example, consider the following code:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Schedules
 	import static java.lang.Thread.*
 	agent A {
 		uses Schedules
@@ -322,7 +322,7 @@ For running a periodic task with a fixed duration between the runs, the followin
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -349,7 +349,7 @@ For example, the following code may be illustrated by the table below.
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Schedules
 	import static java.lang.Thread.*
 	agent A {
 		uses Schedules
@@ -378,7 +378,7 @@ provides the following functions for managing the execution cancellation of an a
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	interface Tmp {
 	[:On]
 		def [:cancel!](task : AgentTask, [:mayinterrupt](mayInterruptIfRunning) : boolean = true) : boolean
@@ -399,8 +399,8 @@ The [:iscanceled:] function enables to test if a task was canceled or not.
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.AgentTask
 	[:On]
 	agent A {
 		uses Schedules
@@ -436,7 +436,7 @@ the functions for assosiating a condition, named the guard, to the task:
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -447,8 +447,8 @@ the functions for assosiating a condition, named the guard, to the task:
 [:End:]
 
 
-[:Fact:]{typeof(io.sarl.core.AgentTask).shouldHaveMethod("[:getguard](getGuard) : org.eclipse.xtext.xbase.lib.Functions$Function1")}
-[:Fact:]{typeof(io.sarl.core.AgentTask).shouldHaveMethod("[:setguard](setGuard)(org.eclipse.xtext.xbase.lib.Functions$Function1)")}
+[:Fact:]{typeof(io.sarl.api.core.AgentTask).shouldHaveMethod("[:getguard](getGuard) : org.eclipse.xtext.xbase.lib.Functions$Function1")}
+[:Fact:]{typeof(io.sarl.api.core.AgentTask).shouldHaveMethod("[:setguard](setGuard)(org.eclipse.xtext.xbase.lib.Functions$Function1)")}
 
 
 The first function replies the guard associated to the task, or `null` if
@@ -458,7 +458,7 @@ Additionaly, the [:agenttask:] type provides utility functions for easier guard 
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.AgentTask
+	import io.sarl.api.core.AgentTask
 	import io.sarl.lang.core.Agent
 	interface Tmp {
 	[:On]
@@ -469,8 +469,8 @@ Additionaly, the [:agenttask:] type provides utility functions for easier guard 
 [:End:]
 
 
-[:Fact:]{typeof(io.sarl.core.AgentTask).shouldHaveMethod("[:iftrue!](org.eclipse.xtext.xbase.lib.Functions$Function1) : io.sarl.core.AgentTask")}
-[:Fact:]{typeof(io.sarl.core.AgentTask).shouldHaveMethod("[:unless!](org.eclipse.xtext.xbase.lib.Functions$Function1) : io.sarl.core.AgentTask")}
+[:Fact:]{typeof(io.sarl.api.core.AgentTask).shouldHaveMethod("[:iftrue!](org.eclipse.xtext.xbase.lib.Functions$Function1) : io.sarl.api.core.AgentTask")}
+[:Fact:]{typeof(io.sarl.api.core.AgentTask).shouldHaveMethod("[:unless!](org.eclipse.xtext.xbase.lib.Functions$Function1) : io.sarl.api.core.AgentTask")}
 
 
 The [:iftrue:] function is equivalent to [:setguard:], except that it is replying the current agent task.
@@ -484,7 +484,7 @@ the current task.
 Consider the following code:
 [:Success:]
  	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Schedules
 	agent A {
 		uses Schedules
 		def doSomething { }
@@ -504,7 +504,7 @@ The best practice for setting the task guards is to create a task, set the guard
 
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.Schedules
 	agent A {
 		uses Schedules
 		def doSomething { }
@@ -545,8 +545,8 @@ The replied collection is unmodifiable and contains the names of the active task
 Example:
 [:Success:]
 	package io.sarl.docs.reference.bic
-	import io.sarl.core.Schedules
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.Logging
 	agent A {
 		uses Schedules, Logging
 		def myaction {

@@ -51,7 +51,7 @@ To define this event handler, we must use the [:onkw:] keyword, and provide the 
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.^agent
-	[:On]import io.sarl.core.[:logging](Logging)
+	[:On]import io.sarl.api.core.[:logging](Logging)
 	[:Off][:eventdecl]$[:eventkw](event) [:myevent](MyEvent)$
 	[:On]agent MyAgent {
 		uses Logging
@@ -77,9 +77,9 @@ a [:destroy:] Event. The purpose of this event is to release any system resource
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.^agent
-	[:On]import io.sarl.core.Logging
-	import io.sarl.core.Initialize
-	import io.sarl.core.Destroy
+	[:On]import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Destroy
 	agent MyAgent {
 		uses Logging
 
@@ -104,9 +104,9 @@ In the case of an Initialize events you can access the arguments for the agent s
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.^agent
-	[:On]import io.sarl.core.Logging
-	import io.sarl.core.Initialize
-	import io.sarl.core.Destroy
+	[:On]import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Destroy
 	agent MyAgent {
 		uses Logging
 
@@ -141,7 +141,7 @@ Below, we define an agent that is using this capacity.
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.^agent
-	[:On]import io.sarl.core.DefaultContextInteractions
+	[:On]import io.sarl.api.core.DefaultContextInteractions
 	agent MyAgent {
 		uses [:dci](DefaultContextInteractions)
 	}
@@ -157,7 +157,7 @@ call [:emit:].
 
 [:Success:]
 	package io.sarl.docs.gettingstarted.^agent
-	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.api.core.DefaultContextInteractions
 	event MyEvent
 	[:On]agent MyAgent {
 		uses DefaultContextInteractions

@@ -135,7 +135,7 @@ The bidder selects the maximum price between 100 and 1000 randomly.
 [:Success:]
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Initialize
 	[:On]agent Bidder {
 		val random = new Random
 		var [:maxprice](maxPrice) : float
@@ -167,9 +167,9 @@ price, then the bidder is sending its bid in a [:bidevent:] event.
 [:Success:]
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
-	import io.sarl.core.Initialize
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Logging
 	event Price {
 		val price : float
 		new(price : float) {
@@ -231,9 +231,9 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 [:Success:]
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
-	import io.sarl.core.Initialize
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Logging
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Logging
 	event Price {
 		val price : float
 		new(price : float) {
@@ -306,8 +306,8 @@ innerContext.defaultSpace.emit(new Price(50))
 [:Success:]
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
-	import io.sarl.core.Behaviors
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.Initialize
 	import io.sarl.lang.core.Address
 	event Price {
 		val price : float
@@ -343,10 +343,10 @@ which provides the [:getinner:s] function. Below, we create the three bidders.
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
 	import io.sarl.lang.core.Address
-	import io.sarl.core.Behaviors
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
 		new(price : float) {
@@ -386,10 +386,10 @@ price, the source of the [:bidevent:] event becomes the new potential winner.
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
 	import io.sarl.lang.core.Address
-	import io.sarl.core.Behaviors
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
 		new(price : float) {
@@ -448,12 +448,12 @@ we use the [:infct:] function provided by the capacity.
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
 	import io.sarl.lang.core.Address
-	import io.sarl.core.Behaviors
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Schedules
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
 		new(price : float) {
@@ -528,12 +528,12 @@ executed in parallel by different threads.
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
 	import io.sarl.lang.core.Address
-	import io.sarl.core.Behaviors
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Schedules
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
 		new(price : float) {
@@ -631,9 +631,9 @@ This function is provided by the [:lifecyclecap:] capacity.
 [:Success:]
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
-	import io.sarl.core.Initialize
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Lifecycle
 	event Price {
 		val price : float
 		new(price : float) {
@@ -692,12 +692,12 @@ to stop its execution.
 	package io.sarl.docs.tutorials.holonicauction
 	import java.util.Random
 	import io.sarl.lang.core.Address
-	import io.sarl.core.Behaviors
-	import io.sarl.core.InnerContextAccess
-	import io.sarl.core.Lifecycle
-	import io.sarl.core.Schedules
-	import io.sarl.core.Logging
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.Behaviors
+	import io.sarl.api.core.InnerContextAccess
+	import io.sarl.api.core.Lifecycle
+	import io.sarl.api.core.Schedules
+	import io.sarl.api.core.Logging
+	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
 		new(price : float) {

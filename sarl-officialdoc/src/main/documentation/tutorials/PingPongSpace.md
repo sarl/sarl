@@ -109,16 +109,16 @@ After retrieving the instance of the space, it is mandatory to register the agen
 receiving the events. The spaces of type `OpenEventSpaceSpecification` provides
 the [:registerfct:] function. It takes the event listener of the agent (provided by
 the [:behaviorscap:] capacity).
-[:Fact:]{typeof(io.sarl.core.OpenEventSpaceSpecification)}
+[:Fact:]{typeof(io.sarl.api.core.OpenEventSpaceSpecification)}
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Initialize
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
 	[:On]agent PongAgent {
 		
 		uses DefaultContextInteractions, [:behaviorscap](Behaviors)
@@ -145,12 +145,12 @@ receiving a [:pingevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -190,10 +190,10 @@ they were defined as actions in the agent.
 
 The [:intercap:] capacity provides the function `emit(Event)` for
 sending an event in the default space of the default context.
-[:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event)")}
+[:Fact:]{typeof(io.sarl.api.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event)")}
 The [:extercap:] capacity provides the function `emit(EventSpace, Event)` for
 sending an event in the given space.
-[:Fact:]{typeof(io.sarl.core.ExternalContextAccess).shouldHaveMethod("emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)")}
+[:Fact:]{typeof(io.sarl.api.core.ExternalContextAccess).shouldHaveMethod("emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)")}
 This latest function is used for sending the events.
 
 The [:pingevent:] event must be built with an index value as argument. This argument
@@ -204,13 +204,13 @@ stored in the received [:pingevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.ExternalContextAccess
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.ExternalContextAccess
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -256,20 +256,20 @@ for sending an event with a specific scope.
 [:Fact:]{typeof(io.sarl.lang.core.Event)}
 [:Fact:]{typeof(io.sarl.lang.core.Scope)}
 [:Fact:]{typeof(io.sarl.lang.core.Address)}
-[:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
+[:Fact:]{typeof(io.sarl.api.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
 
 In the following code, we select the receiver of an event based on its address within the space.
 It permits to restrict to the initial sender of the [:pingevent:] event: [:scopingcode:]
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.ExternalContextAccess
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.ExternalContextAccess
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -314,12 +314,12 @@ The initial definition of the ping agent is:
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Initialize
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
 	[:On]agent [:pingagent](PingAgent) {
 		
 		uses DefaultContextInteractions, Behaviors
@@ -343,12 +343,12 @@ defined in the agent.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Pong {
 		val index : int
 		new (i : int) {
@@ -386,13 +386,13 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.ExternalContextAccess
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.ExternalContextAccess
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -436,13 +436,13 @@ receiving the [:initevent:] event.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.ExternalContextAccess
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.ExternalContextAccess
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -501,14 +501,14 @@ one agent belonging to the default space. If not, the agent is sending the initi
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.DefaultContextInteractions
-	import io.sarl.core.ExternalContextAccess
-	import io.sarl.core.Behaviors
+	import io.sarl.api.core.DefaultContextInteractions
+	import io.sarl.api.core.ExternalContextAccess
+	import io.sarl.api.core.Behaviors
 	import java.util.UUID
-	import io.sarl.core.OpenEventSpace
-	import io.sarl.core.OpenEventSpaceSpecification
-	import io.sarl.core.Initialize
-	import io.sarl.core.Schedules
+	import io.sarl.api.core.OpenEventSpace
+	import io.sarl.api.core.OpenEventSpaceSpecification
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Schedules
 	event Ping {
 		val index : int
 		new (i : int) {
@@ -573,8 +573,8 @@ by the [:lifecyclecap:] capacity too.
 
 [:Success:]
 	package io.sarl.docs.tutorials.pingpongspace
-	import io.sarl.core.Initialize
-	import io.sarl.core.Lifecycle
+	import io.sarl.api.core.Initialize
+	import io.sarl.api.core.Lifecycle
 	agent PongAgent { }
 	agent PingAgent { }
 	[:On]agent [:bootagent](BootAgent) {
