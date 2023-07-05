@@ -10,34 +10,7 @@
 	
 	<artifactId>io.sarl.eclipse.pythongenerator</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>SARL Experience Index</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>compiler</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>pythongenerator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.eclipse</groupId>
-			<artifactId>io.sarl.lang.ui</artifactId>
-		</dependency>
-	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.sarl.bom</groupId>
-				<artifactId>sarl-eclipse-bom</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<name>Python Generator Integration</name>
 
 	<build>
 		<plugins>

@@ -61,12 +61,93 @@
 				</dependency>
 			</dependencies>
 		</location>
-		<location includeDependencyDepth="direct" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>io.sarl.apputils</groupId>
 					<artifactId>bootiqueapp</artifactId>
 					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.sdk</groupId>
+					<artifactId>api.experienceindex</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.lang</groupId>
+					<artifactId>pythongenerator</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.lang</groupId>
+					<artifactId>compiler.tests</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.baseutils</groupId>
+					<artifactId>tests.api</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+			<exclude>javax.inject:javax.inject:1</exclude>
+		</location>
+		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>org.junit.jupiter</groupId>
+					<artifactId>junit-jupiter-engine</artifactId>
+					<version>5.10.0-M1</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>org.junit.platform</groupId>
+					<artifactId>junit-platform-launcher</artifactId>
+					<version>1.10.0-M1</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>org.mockito</groupId>
+					<artifactId>mockito-core</artifactId>
+					<version>5.3.1</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>org.objenesis</groupId>
+					<artifactId>objenesis</artifactId>
+					<version>3.3</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
