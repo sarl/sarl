@@ -15,7 +15,7 @@ Considering the variety of existing approaches and meta-models in the field of a
 
 However, we provide a first set of tools to support its execution based on the recent version 3.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
 
-image:http://www.sarl.io/images/compilation-process.png[align="center"]
+image:http://www.sarl.io/docs/official/compilation/compilation_process.png[align="center"]
 
 
 image:https://img.shields.io/badge/Documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
