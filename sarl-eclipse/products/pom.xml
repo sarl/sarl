@@ -7,15 +7,13 @@
 		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sarl-eclipse-tests</artifactId>
+	<artifactId>sarl-eclipse-products</artifactId>
 	<packaging>pom</packaging>
-	<name>Eclipse Plugin Tests</name>
-	<description>Tests of the Eclipse Plugins</description>
+	<name>SARL Eclipse Products</name>
+	<description>Eclipse Products</description>
 
 	<modules>
-		<module>io.sarl.eclipse.tests.api.ui</module>
-		<module>io.sarl.eclipse.examples.tests</module>
-<!--		<module>io.sarl.eclipse.m2e.tests</module> -->
+		<module>io.sarl.eclipse.products.ide</module>
 	</modules>
 
 	<properties>

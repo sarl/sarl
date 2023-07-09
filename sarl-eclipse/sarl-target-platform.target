@@ -5,31 +5,24 @@
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.eclipse.org/releases/2023-06"/>
-			<unit id="org.eclipse.egit.feature.group" version="6.6.0.202305301015-r"/>
-			<unit id="org.eclipse.emf.ecore.xcore.sdk.feature.group" version="1.25.0.v20230406-1203"/>
-			<unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="2.14.0.v20221117-1134"/>
-			<unit id="org.eclipse.emf.mwe2.runtime.sdk.feature.group" version="2.14.0.v20221117-1134"/>
-			<unit id="org.eclipse.emf.sdk.feature.group" version="2.34.0.v20230406-1334"/>
-			<unit id="org.eclipse.epp.mpc.feature.group" version="1.10.1.v20221110-1841"/>
+			<unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="3.9.0.202210162353"/>
 			<unit id="org.eclipse.jdt.feature.group" version="3.19.100.v20230605-0440"/>
 			<unit id="org.eclipse.jgit.feature.group" version="6.6.0.202305301015-r"/>
 			<unit id="org.eclipse.jgit.gpg.bc.feature.group" version="6.6.0.202305301015-r"/>
 			<unit id="org.eclipse.jgit.http.apache.feature.group" version="6.6.0.202305301015-r"/>
 			<unit id="org.eclipse.jgit.ssh.apache.feature.group" version="6.6.0.202305301015-r"/>
-			<unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.21.0.v20230517-2121"/>
+			<unit id="org.eclipse.jgit.ssh.jsch.feature.group" version="6.6.0.202305301015-r"/>
 			<unit id="org.eclipse.m2e.feature.feature.group" version="2.3.0.20230523-2033"/>
-			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="2.1.2.20230523-2106"/>
-			<unit id="org.eclipse.m2e.pde.feature.feature.group" version="2.2.100.20230523-1752"/>
-			<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="2.3.0.20230523-2106"/>
 			<unit id="org.eclipse.oomph.preferences.feature.group" version="1.16.0.v20230204-0932"/>
-			<unit id="org.eclipse.oomph.projectconfig.feature.group" version="1.16.0.v20230204-0932"/>
-			<unit id="org.eclipse.oomph.setup.sdk.feature.group" version="1.27.0.v20230523-0636"/>
 			<unit id="org.eclipse.oomph.targlets.feature.group" version="1.23.0.v20230520-1536"/>
 			<unit id="org.eclipse.oomph.version.feature.group" version="1.18.0.v20230320-1346"/>
 			<unit id="org.eclipse.oomph.workingsets.feature.group" version="1.17.0.v20230416-0642"/>
-			<unit id="org.eclipse.xsd.sdk.feature.group" version="2.34.0.v20230315-1454"/>
 			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.31.0.v20230529-0659"/>
-			<unit id="org.eclipse.m2e.lemminx.feature.feature.group" version="2.0.4.20230520-0934"/>
+			<unit id="org.eclipse.platform.feature.group" version="4.28.0.v20230605-0440"/>
+			<unit id="org.eclipse.platform.ide" version="4.28.0.I20230605-0440"/>
+			<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.14.0.v20230523-2142"/>
+			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.2100.v20230415-0944"/>
+			<unit id="org.eclipse.equinox.sdk.feature.group" version="3.23.800.v20230523-2142"/>
 		</location>
 		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
@@ -112,7 +105,7 @@
 			</dependencies>
 			<exclude>javax.inject:javax.inject:1</exclude>
 		</location>
-		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>org.junit.jupiter</groupId>
@@ -122,7 +115,7 @@
 				</dependency>
 			</dependencies>
 		</location>
-		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>org.junit.platform</groupId>
@@ -132,7 +125,7 @@
 				</dependency>
 			</dependencies>
 		</location>
-		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>org.mockito</groupId>
@@ -142,12 +135,42 @@
 				</dependency>
 			</dependencies>
 		</location>
-		<location includeDependencyDepth="infinite" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>org.objenesis</groupId>
 					<artifactId>objenesis</artifactId>
 					<version>3.3</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.lang</groupId>
+					<artifactId>batchcompiler</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.baseutils</groupId>
+					<artifactId>tests.api</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<dependencies>
+				<dependency>
+					<groupId>io.sarl.sdk</groupId>
+					<artifactId>sdk</artifactId>
+					<version>0.13.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>

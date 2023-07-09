@@ -1,0 +1,202 @@
+#!/usr/bin/env perl
+# This script detects the installed JVM and force the use of it in the eclipse-sarl.ini file.
+# After setting up the configuration, the script restores the original Eclipse launcher
+
+use strict;
+use File::Basename;
+use File::Copy;
+
+my $CDIR = dirname("$0");
+
+my $APP_NAME = "Finder";
+my $SARL_APP_NAME = "Eclipse.app";
+my $DEFAULT_JVM_VERSION = '8';
+my $JVM_ROOT = "/Library/Java/JavaVirtualMachines";
+my $JVM_BIN_PATH = "Contents/Home/bin";
+my $JVM_JAVACBIN_PATH = "$JVM_BIN_PATH/javac";
+my $JVM_JAVABIN_PATH = "$JVM_BIN_PATH/java";
+
+#my $DEFAULT_INI_FILE = "$CDIR/$SARL_APP_NAME/Contents/Eclipse/eclipse-sarl.ini";
+my $DEFAULT_INI_FILE = "$CDIR/../Eclipse/eclipse-sarl.ini";
+
+my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$DEFAULT_INI_FILE";
+
+sub show_dialog($;$) {
+	system("osascript -e 'tell application \"$APP_NAME\" to display dialog \"$_[0]\"' buttons {\"OK\"} with icon caution");
+	if (!$_[1]) {
+		die("$_[0]\n");
+	}
+}
+
+sub findJdks(;$) {
+	my $root = shift || '';
+	if (!$root) {
+		$root = $JVM_ROOT;
+	}
+	local *DIR;
+	opendir(*DIR, "$root") or show_dialog("Problem when configuring the SARL environment; $root: $!");
+	my %jdks = ();
+	while (my $file = readdir(*DIR)) {
+		if ($file =~ /^jdk([0-9._]+)\.([^.]+)/ ) {
+			my $version = "$1";
+			my $vendor = "$2";
+			if ($version =~ /^1\.([0-9]+)/) {
+				$version = "$1";
+			} elsif ($version =~ /^([0-9]+)/) {
+				$version = "$1";
+			}
+			my $dir = "$root/$file";
+			my $bin = "$dir/$JVM_JAVACBIN_PATH";
+			if (-x "$bin") {
+				$jdks{"$version"}{"$vendor"} = "$dir";
+			}
+		}
+	}
+	close(*DIR);
+	return %jdks;
+}
+
+sub buildJdkKeys(\%) {
+	my $jdkref = shift;
+	my %jdks = %{$jdkref};
+	my %keys = ();
+	foreach my $version (keys %jdks) {
+		my @k = keys %{$jdks{$version}};
+		if (@k > 1) {
+			foreach my $vendor (keys %{$jdks{$version}}) {
+				$keys{"$version-$vendor"} = $jdks{$version}{$vendor};
+			}
+		} else {
+			my $vendor = $k[0];
+			my $jdkdir = $jdks{$version}{$vendor};
+			$keys{"$version"} = $jdkdir;
+		}
+	}
+	return %keys;
+}
+
+sub printUsage(@) {
+	my @list = sort {
+		my $cmp = $a <=> $b;
+		if ($cmp == 0) {
+			$cmp = $a cmp $b;
+		}
+		return $cmp;
+	} @_;
+	my $msg = "usage: $0 [";
+	my $first = 1;
+	foreach my $k (@list) {
+		if ($first) {
+			$first = 0;
+		} else {
+			$msg .= " | ";
+		}
+		$msg .= "$k";
+	}
+	$msg .= "]";
+	show_dialog($msg);
+}
+
+sub printUsage2($@) {
+	my $content = shift || '';
+	if ($content =~ /-vm[\n\r]+([^\n\r]+)[\n\r]+/s) {
+		my $jvm = "$1";
+		show_dialog("SARL configurator has detected the following JVM into the SARL IDE: $jvm");
+	} elsif ($content =~ /-vm[\n\r]+([^\n\r]+)$/s) {
+		my $jvm = "$1";
+		show_dialog("SARL configurator has detected the following JVM into the SARL IDE: $jvm");
+	}
+	printUsage(@_);
+}
+
+sub checkIniFile(@) {
+	unless (-r "$INIFILE") {
+		show_dialog("SARL configurator encountered a problem: $INIFILE: Cannot read");
+		printUsage(@_);
+	}
+}
+
+sub readIniFile() {
+	local *FID;
+	open(*FID, "< $INIFILE") or show_dialog("$INIFILE: $!");
+	my $content = '';
+	while (my $line = <FID>) {
+		$content .= "$line";
+	}
+	close(*FID);
+	return "$content";
+}
+
+sub selectJvm(\%) {
+	my $jdkref = shift;
+	my %jdks = %{$jdkref};
+	my $sversion = $ARGV[0] || $DEFAULT_JVM_VERSION;
+	my $jvm = '';
+	if ($sversion) {
+		foreach my $k (keys %jdks) {
+			if ($sversion eq $k) {
+				return $jdks{$k};
+			}
+		}
+	}
+	return $jvm;
+}
+
+sub updateIniContent(@) {
+	my $jvm = shift || show_dialog("SARL configurator encountered a problem: no JVM provided");
+	# Check the JVM path
+	my $jvmfolder = "$jvm";
+	if (-x "$jvm/$JVM_JAVABIN_PATH") {
+		$jvmfolder = "$jvm/$JVM_BIN_PATH";
+	}
+	my $content = shift || show_dialog("SARL configurator encountered a problem: no content");
+	if ($content =~ /^-vm$/m) {
+		$content =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$jvmfolder\n/s;
+	} else {
+		$content =~ s/^-vmargs/-vm\n$jvmfolder\n-vmargs/m;
+	}
+	return $content;
+}
+
+sub writeIniFile($) {
+	my $content = $_[0] or show_dialog("SARL configurator encountered a problem: not enough argument");
+	unless (-w "$INIFILE") {
+		show_dialog("SARL configurator encountered a problem: $INIFILE: Cannot write");
+		usage();
+	}
+	open(*FID, "> $INIFILE") or show_dialog("SARL configurator encountered a problem: $INIFILE: $!");
+	print FID ($content);
+	close(*FID);
+}
+
+my %jdks =  findJdks();
+my %jdkkeys = buildJdkKeys(%jdks);
+checkIniFile(keys %jdkkeys);
+my $content = readIniFile();
+
+my $jvm = selectJvm(%jdkkeys);
+
+my $njvm = 8;
+while (!$jvm && $njvm <= 14) {
+	$njvm = $njvm + 1;
+	$ARGV[0] = "$njvm";
+	$jvm = selectJvm(%jdkkeys);
+}
+
+if (!$jvm) {
+	printUsage2("$content", keys %jdkkeys);
+}
+
+$content = updateIniContent("$jvm", $content);
+
+writeIniFile("$content"); 
+
+# Notify the user about the change
+show_dialog("Your SARL Development Environment is now configured for using the JVM installed at:\n$jvm\n\nPlease restart the SARL Development Environment.", 1);
+
+# Replace the temprary Perl launcher by the original Eclipse launcher
+move("$CDIR/eclipse-sarl", "$CDIR/eclipse-sarl-perl-init");
+move("$CDIR/eclipse-sarl-exe", "$CDIR/eclipse-sarl");
+
+exit(0);
+
