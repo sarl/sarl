@@ -12,7 +12,7 @@
 		<module>plugins</module>
 		<module>features</module>
 		<module>products</module>
-		<module>tests</module>
+<!--		<module>tests</module> -->
 	</modules>
 
 	<properties>

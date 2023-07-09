@@ -1,0 +1,287 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.goap.plan
+
+import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.goap.^agent.IGoapUnit
+
+/** 
+ * Superclass for all actions an agent can perform.
+ * 
+ * @author $Author: sgalland$
+ * @author $Author: ph$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+abstract class GoapAction {
+
+	protected val target : Object
+
+	val preconditions = <GoapState>newHashSet
+
+	val effects = <GoapState>newHashSet
+
+	/** Constructs an action.
+	 *
+	 * @param target the target of the action.
+	 */
+	new (target : Object) {
+		this.target = target
+	}
+
+	/** 
+	 * Checks if the current action of the GoapAction Queue is finished. Gets
+	 * called until it returns true.
+	 * 
+	 * @param goapUnit
+	 * the unit the action is checked for.
+	 * @return true or false depending on the success of the action. Returning
+	 * true causes the swap to the next action in the Queue.
+	 */
+	protected abstract def isDone(goapUnit : IGoapUnit) : boolean
+
+	/** 
+	 * Gets called when the action is going to be executed by the Unit.
+	 * 
+	 * @param goapUnit
+	 * the GoapUnit that is trying to execute the action.
+	 * @return true or false depending if the action was successful.
+	 */
+	protected abstract def performAction(goapUnit : IGoapUnit) : boolean
+
+	/**
+	 * This function will be called for each GoapAction in the generation of
+	 * each Graph to determine the cost for each node in the graph. The two
+	 * functions called in this function have to be implemented by the Subclass
+	 * to get the sum of both costs. Differentiating between the base cost and
+	 * the cost relative to the target gives a proper representation of the work
+	 * the unit has to do i.e. if it has to travel a large distance to reach its
+	 * target.
+	 *
+	 * @param goapUnit
+	 *            the unit whose action cost is being calculated.
+	 * @return the calculated action cost.
+	 */
+	def generateCost(goapUnit : IGoapUnit) : float {
+			generateBaseCost(goapUnit) + generateCostRelativeToTarget(goapUnit)
+		}
+
+	/** 
+	 * Defines the base cost of the action.
+	 * 
+	 * @param goapUnit
+	 * the unit the action is being executed from.
+	 * @return the base cost of the action which is added to the cost relative
+	 * to the target.
+	 */
+	protected abstract def generateBaseCost(goapUnit : IGoapUnit) : float 
+
+	/** 
+	 * Defines the relative cost of the action.
+	 * 
+	 * @param goapUnit
+	 * the unit the action is being executed from.
+	 * @return the relative cost of the action in relation to the current
+	 * target, which is added to the base cost.
+	 */
+	protected abstract def generateCostRelativeToTarget(goapUnit : IGoapUnit) : float
+
+	/** 
+	 * Gets called to determine if the preconditions of an action are met. If
+	 * they are not, the action will not be taken in consideration for the
+	 * generation of the action graph.
+	 * 
+	 * @param goapUnit
+	 * the unit the action is being executed from.
+	 * @return true or false depending if the action can be taken in the first
+	 * place.
+	 */
+	protected abstract def checkProceduralPrecondition(goapUnit : IGoapUnit) : boolean
+	
+	/** 
+	 * Defines if the unit needs to be in a certain range in relation to the
+	 * target to execute the action.
+	 * 
+	 * @param goapUnit
+	 * the unit the action is being executed from.
+	 * @return true or false depending if the action requires the unit to be in
+	 * a certain range near the target.
+	 */
+	protected abstract def requiresInRange(goapUnit : IGoapUnit) : boolean
+
+	/** 
+	 * Function to determine if the unit is in a certain range. Only gets called
+	 * if the action requires to be in range relative to the target.
+	 * 
+	 * @see #requiresInRange(IGoapUnit goapUnit)
+	 * 
+	 * @param goapUnit
+	 * the unit the action is being executed from.
+	 * @return true or false depending if the unit is in range to execute the
+	 * action.
+	 */
+	protected abstract def isInRange(goapUnit : IGoapUnit) : boolean
+	
+	/** 
+	 * Function used to reset an action. Gets called once the Action finishes
+	 * or, if the GoapUnit class was used, when the Stack on the FSM gets
+	 * reseted.
+	 */
+	protected abstract def reset
+
+	/** 
+	 * Overloaded function for convenience.
+	 * 
+	 * @param importance
+	 * the importance of the precondition being added.
+	 * @param effect
+	 * the effect of the precondition being added.
+	 * @param value
+	 * the value of the precondition being added.
+	 * @see #addPrecondition(GoapState precondition)
+	 */
+	protected def addPrecondition(importance : int, effect : String, value : Boolean) {
+		addPrecondition(new GoapState(importance, effect, value))
+	}
+
+	/** 
+	 * Add a precondition, which is not already in the HashSet.
+	 * 
+	 * @param precondition
+	 * which is going to be added to the action.
+	 */
+	protected def addPrecondition(precondition : GoapState) {
+		var alreadyInList = false
+		for (goapState : this.preconditions) {
+			if (goapState == precondition) {
+				alreadyInList = true
+			}
+		}
+		if (!alreadyInList) {
+			this.preconditions += precondition
+		}
+	}
+
+	/** 
+	 * Overloaded function for convenience.
+	 * 
+	 * @param precondition
+	 * the precondition that is being removed.
+	 * @see #removePrecondition(String preconditionEffect)
+	 * @return true or false depending if the precondition was removed
+	 * successfully.
+	 */
+	protected def removePrecondition(precondition : GoapState) : boolean {
+		removePrecondition(precondition.effect)
+	}
+
+	/** 
+	 * Remove a precondition from the HashSet.
+	 * 
+	 * @param preconditionEffect
+	 * the effect which is going to be removed.
+	 * @return true or false depending if the precondition was removed.
+	 */
+	protected def removePrecondition(preconditionEffect : String) : boolean {
+		var stateToBeRemoved : GoapState = null
+		for (goapState : this.effects) {
+			if (goapState.effect == preconditionEffect) {
+				stateToBeRemoved = goapState
+			}
+		}
+		if (stateToBeRemoved !== null) {
+			this.preconditions.remove(stateToBeRemoved)
+			return true
+		}
+		return false;
+	}
+
+	/** 
+	 * Overloaded function for convenience.
+	 * 
+	 * @param importance
+	 * the importance of the effect being added.
+	 * @param effect
+	 * the effect of the effect being added.
+	 * @param value
+	 * the value of the effect being added.
+	 * @see #addEffect(GoapState effect)
+	 */
+	protected def addEffect(importance : int, effect : String, value : Boolean) {
+		addEffect(new GoapState(importance, effect, value))
+	}
+
+	/** 
+	 * Add a effect, which is not already in the HashSet
+	 * 
+	 * @param effect
+	 * the effect which is going to be added to the action.
+	 */
+	protected def addEffect(effect : GoapState) {
+		var alreadyInList = false
+		for (goapState : this.effects) {
+			if (goapState == effect) {
+				alreadyInList = true
+			}
+		}
+		if (!alreadyInList) {
+			this.effects += effect
+		}
+	}
+
+	/** 
+	 * Overloaded function for convenience.
+	 * 
+	 * @param effect
+	 * the effect that is being removed.
+	 * @see #removeEffect(String effectEffect)
+	 * @return true or false depending if the effect was removed successfully.
+	 * 
+	 */
+	protected def removeEffect(effect : GoapState) : boolean {
+		return removeEffect(effect.effect)
+	}
+
+	/** 
+	 * Remove a effect from the HashSet.
+	 * 
+	 * @param effectEffect
+	 * the effect which is going to be removed.
+	 * @return true or false depending if the effect was removed.
+	 */
+	protected def removeEffect(effectEffect : String) : boolean {
+		var stateToBeRemoved : GoapState = null
+		for (goapState : this.effects) {
+			if (goapState.effect == effectEffect) {
+				stateToBeRemoved = goapState
+			}
+		}
+		if (stateToBeRemoved !== null) {
+			this.effects.remove(stateToBeRemoved)
+			return true
+		}
+		return false
+	}
+
+}
