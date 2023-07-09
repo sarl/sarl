@@ -1,20 +1,35 @@
 #!/usr/bin/env bash
 
+# Force the script to fail if any command is failing
+set -e
+
 CDIR=`pwd`
 
 # Build BOMs
 cd "$CDIR/sarl-bom"
-mvn clean install
+mvn clean install "$@"
 
 # Build SARL core modules
-cd "$CDIR"
-mvn clean install
+cd "$CDIR/sarl-baseutils"
+mvn clean install "$@"
+cd "$CDIR/sarl-lang"
+mvn clean install "$@"
+cd "$CDIR/sarl-sdk"
+mvn clean install "$@"
+cd "$CDIR/sarl-apputils"
+mvn clean install "$@"
+cd "$CDIR/sarl-sre"
+mvn clean install "$@"
+cd "$CDIR/sarl-docs"
+mvn clean install "$@"
+cd "$CDIR/sarl-cli"
+mvn clean install "$@"
 
 # Build Eclipse tools
 cd "$CDIR/sarl-eclipse"
-mvn clean install
+mvn clean install "$@"
 
 # Build SARL Official Documentation
 cd "$CDIR/sarl-officialdoc"
-mvn clean install
+mvn clean install "$@"
 
