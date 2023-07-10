@@ -58,29 +58,48 @@ git clone https://github.com/<your_github_login>/sarl
 
 We recommend to use the git tool on command-line until you're becoming expert with the git tools that is embedded in Eclipse.
 
-=== 2.2. First Compilation the SARL Source Code
+=== 2.2. Structure of the SARL project
+
+SARL project is divided into independent modules:
+
+* `sarl-bom`: Contains the Maven Bills-of-Material, that permits to share the dependency configuration among all the SARL modules.
+* `sarl-base-utils`: Several modules that are independent of SARL toolchain but used by this latter.
+* `sarl-lang`: The definition of the SARL language and grammar, its compiler (Java batch version and Maven version).
+* `sarl-sdk`: Set of libraries that compose the Standard Development Kit (SDK). The default SDK does not include all the libraries but only the key ones.
+* `sarl-apputils`: Several generic modules for building command-line tools, mostly based on the Bootique library.
+* `sarl-sre`: Definition of the SARL Runtime Environment (SRE), i.e., Janus platform.
+* `sarl-docs`: Modules for generating the API document and the official document for SARL.
+* `sarl-cli`: Command-line tools, e.g., `sarlc`, `sarldoc`, or `janus`.
+* `sarl-eclipse`: The Eclipse environment for SARL.
+* `sarl-officialdoc`: the official document of SARL, in Markdown format.
+
+=== 2.3. First Compilation the SARL Source Code
 
 Maven is the standard tool for compiling SARL.
 
-We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment.
+We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment. Indeed, several code and resource files are updated by Maven with the correct configuration values.
+
 The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
-This step is divided into two Maven compilation:
 
-First, in the module `sarl-bom`:
+==== a) Linux or MacOS Operating Systems
+
+In a command-line shell, run the Bash script:
+
+```bash
+build-all.sh
+```
+
+==== b) Windows Operating System
+
+Go into each module that are mentionned in section 2.2 (in the order provided in this section) and launch the maven command:
+
 ```bash
 mvn clean install
 ```
 
-First, in the root module:
-```bash
-mvn clean install
-```
-
-If you obtained a compilation error with the message: `Cannot run program "[...]/launch4j-maven-plugin-[...]-workdir-linux/bin/windres": error=2, No such file or directory`, it means that the launch4j Maven plugin cannot find a library into your operating system.
-According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issues/4[Issue 4 of launch4j-maven-plugin], you should install the following libraries: `zlib`, `ncurses`, `bzip2`.
 
 
-=== 2.3. Installing the Eclipse Development Environment
+=== 2.4. Installing the Eclipse Development Environment
 
 For setting up the development environment, you should follow the steps:
 

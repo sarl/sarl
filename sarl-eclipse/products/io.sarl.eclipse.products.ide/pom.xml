@@ -13,8 +13,8 @@
 	<name>SARL IDE and P2 Site</name>
 
 	<properties>
-		<productPath.linux.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide.product/linux/gtk/x86_64</productPath.linux.64>
-		<productPath.win.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide.product/win32/win32/x86_64</productPath.win.64>
+		<productPath.linux.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide/linux/gtk/x86_64</productPath.linux.64>
+		<productPath.win.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide/win32/win32/x86_64</productPath.win.64>
 		<productZip.macos.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide.product-macosx.cocoa.x86_64.zip</productZip.macos.64>
 		<productZipFolder.macos.64>Eclipse.app/Contents/MacOS</productZipFolder.macos.64>
 	</properties>
@@ -50,6 +50,136 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-director-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- install the product using the p2 director -->
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- create zip file with the installed product -->
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>copy-linux64-root-files</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${productPath.linux.64}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/rootfiles/linux</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<id>copy-sarlc-and-janus</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>sarlc</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>sarldoc</artifactId>
+									<version>${sarl.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>sarldoc</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>janus</artifactId>
+									<version>${janus.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>janus</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>janusnode</artifactId>
+									<version>${janus.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>janusnode</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>sarlc.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>sarldoc</artifactId>
+									<version>${sarl.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>sarldoc.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>janus</artifactId>
+									<version>${janus.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>janus.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl.cli</groupId>
+									<artifactId>janusnode</artifactId>
+									<version>${janus.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>janusnode.exe</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 <!--
@@ -88,72 +218,6 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-					</execution>
-				</executions>
-			</plugin>
--->
-
-<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>copy-linux64-root-files</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${productPath.linux.64}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/rootfiles/linux</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-							<overwrite>true</overwrite>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
--->
-
-<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.6.0</version>
-				<executions>
-					<execution>
-						<id>copy-sarlc-and-janus</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>io.sarl.cli</groupId>
-									<artifactId>sarlc</artifactId>
-									<version>${sarl.version}</version>
-									<type>sh</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.linux.64}</outputDirectory>
-									<destFileName>sarlc</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>io.sarl.cli</groupId>
-									<artifactId>sarlc</artifactId>
-									<version>${sarl.version}</version>
-									<type>exe</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.win.64}</outputDirectory>
-									<destFileName>sarlc.exe</destFileName>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
