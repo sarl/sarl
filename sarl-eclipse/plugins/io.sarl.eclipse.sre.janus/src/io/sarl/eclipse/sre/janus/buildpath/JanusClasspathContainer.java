@@ -33,10 +33,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.osgi.framework.Bundle;
 
 import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
-import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
+import io.sarl.lang.ide.buildpath.SARLBundleBuildPath;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -84,7 +84,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 		final Set<String> libs = new HashSet<>();
 
-		for (final String lib : SARLClasspathContainer.SARL_DEPENDENCY_BUNDLE_NAMES) {
+		for (final String lib : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
 			libs.add(lib);
 		}
 

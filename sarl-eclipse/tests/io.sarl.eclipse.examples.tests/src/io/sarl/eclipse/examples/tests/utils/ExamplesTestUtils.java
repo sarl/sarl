@@ -24,6 +24,7 @@ package io.sarl.eclipse.examples.tests.utils;
 import static io.sarl.eclipse.examples.wizard.XmlUtils.readXmlAttribute;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.abort;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,6 +63,7 @@ import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.core.SARLVersion;
+import io.sarl.tests.api.tools.TestUtils;
 
 /** Utilities for the example's tests.
  *
@@ -83,7 +85,12 @@ public final class ExamplesTestUtils {
 
 	/** Relative path to the examples.
 	 */
-	public static final File DEFAULT_RELATIVE_PATH = FileSystem.convertStringToFile("file:../io.sarl.examples.plugin"); //$NON-NLS-1$
+	private static final String DEFAULT_RELATIVE_PATH_BASE = "../../plugins/io.sarl.eclipse.examples"; //$NON-NLS-1$
+
+	/** Relative path to the examples.
+	 */
+	public static final File DEFAULT_RELATIVE_PATH = FileSystem.convertURLToFile(
+			FileSystem.convertStringToURL("file:" + DEFAULT_RELATIVE_PATH_BASE, false)); //$NON-NLS-1$
 
 	/** Name of the folder that contains the examples.
 	 */
@@ -685,6 +692,29 @@ public final class ExamplesTestUtils {
 			}
 		}
 		return classNames;
+	}
+
+	/** Install the files of the example in order to be compiled.
+	 * 
+	 * @param example is the description of the example.
+	 * @param projectRoot is the directory in which the files must be installed.
+	 * @param skipIfInvalidPom is {@code true} to avoid to check the pom file.
+	 * @return the list of the installed files.
+	 * @throws Exception if an error occurs during the installation.
+	 */
+	public static List<File> installFiles(ExampleDescription example, File projectRoot, boolean skipIfInvalidPom) throws Exception {
+		// The behavior is different in Eclipse Junit and Maven surefire.
+		final List<File> installedFiles;
+		if (TestUtils.isEclipseRuntimeEnvironment()) {
+			if (skipIfInvalidPom && isMavenProject(example.sourceFolder)) {
+				abort("Pom file is not valid because Maven has not yet applied the macro replacements into the file"); //$NON-NLS-1$
+			}
+			installedFiles = copySourceFiles(projectRoot, example.sourceFolder);
+		} else {
+			installedFiles = unpackFiles(projectRoot, example.archive);
+		}
+		preparePomFileForTest(projectRoot);
+		return installedFiles;
 	}
 
 }

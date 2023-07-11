@@ -16,8 +16,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>sdk</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
 		<dependency>
@@ -40,13 +40,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>io.sarl.maven</groupId>
+				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>

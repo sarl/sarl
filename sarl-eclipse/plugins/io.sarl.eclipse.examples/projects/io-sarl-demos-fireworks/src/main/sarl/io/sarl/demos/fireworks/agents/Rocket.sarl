@@ -21,23 +21,23 @@
 
 package io.sarl.demos.fireworks.agents
 
-import io.sarl.core.AgentTask
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.Schedules
+import io.sarl.api.core.AgentTask
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Logging
+import io.sarl.api.core.MemberJoined
+import io.sarl.api.core.MemberLeft
+import io.sarl.api.core.Schedules
+import io.sarl.api.javafx.AppExit
 import io.sarl.demos.fireworks.Configuration
 import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.Explode
 import io.sarl.demos.fireworks.events.FireReady
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.UpdateRocketPosition
-import io.sarl.javafx.AppExit
 import java.util.Random
 import java.util.UUID
 import java.util.Vector

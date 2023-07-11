@@ -27,6 +27,7 @@ import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.compileMave
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.createProject;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.dynamicTests;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.getSourceGenPath;
+import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.installFiles;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.isMavenProject;
 import static io.sarl.eclipse.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.eclipse.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
@@ -48,8 +49,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.w3c.dom.Document;
 
-import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
-
 /** Class for testing the examples.
  *
  * @author $Author: sgalland$
@@ -59,11 +58,22 @@ import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
  */
 @DisabledOnOs(OS.WINDOWS)
 @SuppressWarnings("all")
-@DisplayName("Example launch configurations")
+@DisplayName("Example launching definition")
 @Tag("examples")
-public class ExampleLaunchConfigurationTest extends AbstractExampleTest {
+public class ExampleLaunchConfigurationTest {
 
 	/** Replies the dynamics tests for examples' launch configurations.
+	 *
+	 * <p>The example folder could contain a file {@code launch.xml} for the definition of the
+	 * example's launching in Eclipse IDE.
+	 * Verify if the qualified name of the agent that is specified in the file corresponds
+	 * to a valid agent in the example's code.
+	 * The qualified name of the agent is given by:
+	 * <pre><code>
+	 * &lt;launchConfigurations&gt;
+	 *   &lt;agent class="AGENT_QUALIFIED_NAME" /&gt;
+	 * &lt;/launchConfigurations&gt;
+	 * </code></pre>
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the example descriptions.

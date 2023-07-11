@@ -33,17 +33,20 @@ import org.junit.jupiter.api.TestFactory;
 
 /** Class for testing the examples.
  *
+ * <p>Generate the example archive and check the archive's path.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@DisplayName("Example archive tests")
+@DisplayName("Example archive generation")
 @Tag("examples")
 public class ExampleArchiveTest {
 
-	/** Replies the dynamics tests for the examples' paths.
+	/** Replies the dynamics tests for the examples' paths. Verify if the patch to the example archive is computed
+	 * and not {@code null}. 
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the example descriptions.

@@ -48,7 +48,7 @@ public class SARLExamplePlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin.
 	 */
-	public static final String PLUGIN_ID = "io.sarl.examples.plugin"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "io.sarl.eclipse.examples"; //$NON-NLS-1$
 
 	private static SARLExamplePlugin instance;
 

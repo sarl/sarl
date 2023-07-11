@@ -86,17 +86,9 @@ import io.sarl.lang.core.SARLVersion;
  */
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
-	private static final int MIN_JDK_VERSION = 9;
+	private static final int MIN_JDK_VERSION = 17;
 
-	private static final String USER_JAVA_VERSION_KEY = "@USER_JAVA_VERSION@"; //$NON-NLS-1$
-
-	private static final String START_JDK11_KEY = "<!-- @IF JDK11"; //$NON-NLS-1$
-
-	private static final String START_JDK11_COMMENT = "<!-- @IF JDK11 -->"; //$NON-NLS-1$
-
-	private static final String END_JDK11_KEY = "@ENDIF JDK11 -->"; //$NON-NLS-1$
-
-	private static final String END_JDK11_COMMENT = "<!-- @ENDIF JDK11 -->"; //$NON-NLS-1$
+		private static final String USER_JAVA_VERSION_KEY = "@USER_JAVA_VERSION@"; //$NON-NLS-1$
 
 	private ConfigurationPage configurationPage;
 
@@ -277,20 +269,12 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	}
 
 	private static void updatePomContent(IFile pomFile, String jdkCompliance) {
-		JavaVersion jversion = JavaVersion.fromQualifier(jdkCompliance);
-		if (jversion != null && !jversion.isAtLeast(JavaVersion.JAVA9)) {
-			jversion = null;
-		}
 		// Read the pom
 		final StringBuilder content = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(pomFile.getContents()))) {
 			String line = reader.readLine();
 			while (line != null) {
 				line = line.replaceAll(Pattern.quote(USER_JAVA_VERSION_KEY), jdkCompliance);
-				if (jversion != null) {
-					line = line.replaceAll(Pattern.quote(START_JDK11_KEY), START_JDK11_COMMENT);
-					line = line.replaceAll(Pattern.quote(END_JDK11_KEY), END_JDK11_COMMENT);
-				}
 				content.append(line).append("\n"); //$NON-NLS-1$
 				line = reader.readLine();
 			}

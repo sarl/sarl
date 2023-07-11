@@ -14,6 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sarl.library.bundles>wrapped.io.sarl.sdk.sdk, wrapped.io.sarl.sdk.api.core, wrapped.io.sarl.sdk.api.util, wrapped.io.sarl.lang.core, org.eclipse.xtend.lib</sarl.library.bundles>
 	</properties>
 
 	<build>
@@ -59,6 +60,27 @@
 								<replacement>
 									<token>^(Bundle-Vendor: *)(.*)$</token>
 									<value>$1${sarl.vendor}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-sarl-classpath-container</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/lang/ide/buildpath/sarl-bundles.properties</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+								<regexFlag>DOTALL</regexFlag>
+							</regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(SARL_BUNDLES *= *)(.*?)([ \t\n\r\f\\]*)$</token>
+									<value>$1${sarl.library.bundles}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

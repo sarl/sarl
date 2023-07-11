@@ -21,15 +21,15 @@
 
 package io.sarl.demos.sierpinskiFractals.agents
 
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Lifecycle
 import io.sarl.demos.sierpinskiFractals.events.Multiply
 import io.sarl.demos.sierpinskiFractals.events.Refresh
 import io.sarl.demos.sierpinskiFractals.objects.Positions
 import io.sarl.demos.sierpinskiFractals.objects.Square
 import io.sarl.demos.sierpinskiFractals.objects.Triangle
 import io.sarl.demos.sierpinskiFractals.objects.Vector2D
-import io.sarl.core.ExternalContextAccess
 
 /**
  * Abstract implementation of a fractal agent

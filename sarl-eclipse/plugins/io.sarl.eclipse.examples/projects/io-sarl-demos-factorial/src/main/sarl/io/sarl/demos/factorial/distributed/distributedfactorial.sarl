@@ -21,12 +21,12 @@
 
 package io.sarl.demos.factorial.distributed
 
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
-import io.sarl.core.Schedules
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Schedules
 
 /**
  * @author $Author: ngaud$

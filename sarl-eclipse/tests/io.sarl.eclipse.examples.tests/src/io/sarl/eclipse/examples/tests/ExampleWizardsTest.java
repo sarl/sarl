@@ -24,6 +24,7 @@ package io.sarl.eclipse.examples.tests;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.DEFAULT_RELATIVE_PATH;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.createProject;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.dynamicTests;
+import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.installFiles;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.readWizardClassesFromXml;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.readXmlNode;
 import static io.sarl.eclipse.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
@@ -47,7 +48,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory;
-import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
 
 /** Class for testing the examples.
  *
@@ -57,11 +57,30 @@ import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@DisplayName("Example wizards")
+@DisplayName("Example wizard definitions")
 @Tag("examples")
-public class ExampleWizardsTest extends AbstractExampleTest {
+public class ExampleWizardsTest {
 
 	/** Replies the dynamics tests for example wizard injection.
+	 *
+	 * <p>The example wizard enables to import the example into the Eclipse IDE.
+	 * First, the example folder must contain the file {@code launch.xml} for the definition of the
+	 * example's launching in Eclipse IDE. This file must contain the identifier of the example:
+	 * <pre><code>
+	 * &lt;launchConfigurations id="IDENTIFIER"&gt;
+	 * &lt;/launchConfigurations&gt;
+	 * </code></pre>
+	 *
+	 * <p>Second, in the file {@code plugin.xml} in the project {@code ../../plugins/io.sarl.eclipse.examples}, the
+	 * definition of the wizard must be written:
+	 * <pre><code>
+	 * &lt;extension point="org.eclipse.ui.newWizards"&gt;
+	 *   &lt;wizard id="ID"
+ *      class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:QUALIFIED_NAME_OF_WIZARD" ...&gt;
+	 *      ...
+	 *   &lt;/wizard&gt;
+	 * &lt;/extension&gt;
+	 * </code></pre>
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the plugin's description.

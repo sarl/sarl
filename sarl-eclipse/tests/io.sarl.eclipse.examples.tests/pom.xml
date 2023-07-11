@@ -15,6 +15,7 @@
 
 	<properties>
 		<mvn.command>mvn</mvn.command>
+		<pathToExamplesProject>../../plugins/io.sarl.eclipse.examples</pathToExamplesProject>
 	</properties>
 
 	<build>
@@ -78,6 +79,10 @@
 								<replacement>
 									<token>(CURRENT_JAVA_VERSION *= *")([^"]+)(";)</token>
 									<value>$1${sarl-dsl.min.jdk.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(DEFAULT_RELATIVE_PATH_BASE *= *")([^"]+)(";)</token>
+									<value>$1${pathToExamplesProject}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

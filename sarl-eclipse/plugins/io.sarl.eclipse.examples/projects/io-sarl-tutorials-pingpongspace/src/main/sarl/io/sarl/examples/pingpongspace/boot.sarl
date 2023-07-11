@@ -20,8 +20,8 @@
  */
 package io.sarl.examples.pingpongspace
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
 import java.util.UUID
 
 /** 

@@ -168,6 +168,8 @@ public abstract class AbstractDoclet implements Doclet {
 		final JavaVersion version = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 		if (version != null) {
 			switch (version) {
+			case JAVA17:
+				return SourceVersion.RELEASE_17;
 			case JAVA11:
 				return SourceVersion.RELEASE_11;
 			case JAVA10:

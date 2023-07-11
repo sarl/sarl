@@ -20,13 +20,13 @@
  */
 package io.sarl.demos.boids
 
-import io.sarl.bootstrap.SRE
-import io.sarl.bootstrap.SREBootstrap
+import io.sarl.api.core.OpenEventSpace
 import io.sarl.demos.boids.gui.EnvironmentGui
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
-import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREBootstrap
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

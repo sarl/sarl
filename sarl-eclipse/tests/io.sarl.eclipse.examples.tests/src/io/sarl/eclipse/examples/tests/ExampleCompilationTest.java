@@ -26,6 +26,7 @@ import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.compileFile
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.compileMaven;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.createProject;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.dynamicTests;
+import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.installFiles;
 import static io.sarl.eclipse.examples.tests.utils.ExamplesTestUtils.isMavenProject;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,9 +42,9 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
-
 /** Class for testing the examples.
+ *
+ * <p>Verify if the code of the examples could be compiled by the SARL compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -52,11 +53,14 @@ import io.sarl.eclipse.examples.tests.utils.AbstractExampleTest;
  */
 @DisabledOnOs(OS.WINDOWS)
 @SuppressWarnings("all")
-@DisplayName("Example compilation")
+@DisplayName("Example code validation")
 @Tag("examples")
-public class ExampleCompilationTest extends AbstractExampleTest {
+public class ExampleCompilationTest {
 
 	/** Replies the dynamics tests for compiling the examples.
+	 *
+	 * <p>These tests are launching the SARL batch compiler on each examples' code.
+	 * The example may be based Maven or not.
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the example descriptions.

@@ -33,6 +33,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import io.sarl.lang.ide.buildpath.SARLBundleBuildPath;
+
 /** Wizard page that permits to add the SARL libraries into a project.
  *
  * @author $Author: sgalland$
@@ -61,7 +63,7 @@ public class SARLContainerWizardPage extends NewElementWizardPage implements ICl
 		composite.setLayout(new FillLayout());
 		final Label label = new Label(composite, SWT.NONE);
 		final StringBuilder text = new StringBuilder();
-		for (final String entry : SARLClasspathContainer.SARL_DEPENDENCY_BUNDLE_NAMES) {
+		for (final String entry : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
 			text.append(entry);
 			text.append("\n"); //$NON-NLS-1$
 		}

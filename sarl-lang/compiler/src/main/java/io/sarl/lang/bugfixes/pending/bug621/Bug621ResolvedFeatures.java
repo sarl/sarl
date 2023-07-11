@@ -70,7 +70,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 @SuppressWarnings("all")
 public class Bug621ResolvedFeatures extends ResolvedFeatures {
 
-	private JavaVersion targetVersion = JavaVersion.JAVA5;
+	private JavaVersion targetVersion = JavaVersion.JAVA17;
 	
 	public Bug621ResolvedFeatures(LightweightTypeReference type, OverrideTester overrideTester, JavaVersion targetVersion) {
 		super(type, overrideTester, targetVersion);

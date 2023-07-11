@@ -26,7 +26,7 @@ import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.CreateArea
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.SetupSettings
-import io.sarl.javafx.FxViewerController
+import io.sarl.api.javafx.FxViewerController
 import java.util.UUID
 import javafx.animation.PauseTransition
 import javafx.fxml.FXML

@@ -1,6 +1,6 @@
 package io.sarl.template.javafx.ui
 
-import io.sarl.javafx.FxApplication
+import io.sarl.api.javafx.FxApplication
 import java.util.ResourceBundle
 import javafx.fxml.FXMLLoader
 import javafx.fxml.JavaFXBuilderFactory

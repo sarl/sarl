@@ -1,10 +1,10 @@
 package io.sarl.template.javafx.agents
 
-import io.sarl.core.Behaviors
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.javafx.FXBehavior
-import io.sarl.javafx.FxViewerController
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Initialize
+import io.sarl.api.javafx.FXBehavior
+import io.sarl.api.javafx.FxViewerController
 import io.sarl.template.javafx.ui.Refresh
 
 /*

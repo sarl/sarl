@@ -101,26 +101,42 @@ mvn clean install
 
 === 2.4. Installing the Eclipse Development Environment
 
-For setting up the development environment, you should follow the steps:
+Two different types of contributions could be associated to the SARL project:
 
-* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2023-03` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
-* Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
-* Install the Checkstyle CS-Eclipse plugin.
-** Version: `8.18`.
-* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
+* Contributions to the SARL tool chain (compiler, SDK, etc), excluding Eclipse-based tools; and
+* Contributions to the Ecipse tools: they are the plugins inside Eclipse and the Eclipse IDE.
+
+==== a) Contributions to the Eclipse tools of SARL
+
+For setting up the development environment for contributing to the Eclipse-based tools, you should follow the steps:
+
+* Download the *Eclipse IDE for RCP and RAP Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the tools for developping Eclipse plugins and applications.
+** Version: `2023-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+* Launch the *Eclipse IDE for RCP and RAP Developers*, and configure it (look&feel, etc.)
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
 ** Select the folder in which you have cloned the SARL project (see Section 2.1);
 ** Click on `Finish`.
 * Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
-** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
+** Open the target platform file `sarl-target-platform.target` in the project `sarl-eclipse`;
 ** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
 ** Click on `Set as Target Platform` or `Reload Target Platform` at the upper right corner of the file editor.
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
-* The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-=== 2.4. Compilation of SARL before Contributing
+==== b) Contributions to the SARL tools excluding Eclipse
+
+For setting up the development environment for contributing to the SARL tools, you should follow the steps:
+
+* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* all the tools for compiling a language grammar.
+** Version: `2023-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+* Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
+* Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** Select the folder in which you have cloned the SARL project (see Section 2.1);
+** Click on `Finish`.
+* Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
+* Clean and compile the project: `Menu Project > Clean`. 
+
+=== 2.4. Compilation of SARL before Submitting your Contribution
 
 Prior to any sending of your contribution (see Section 2.5), you must ensure that your local copy of SARL compiles without error.
 

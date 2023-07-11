@@ -1,6 +1,6 @@
 package io.sarl.template.javafx.ui;
 
-import io.sarl.javafx.FxViewerController
+import io.sarl.api.javafx.FxViewerController
 import io.sarl.template.javafx.agents.MyAgent
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean

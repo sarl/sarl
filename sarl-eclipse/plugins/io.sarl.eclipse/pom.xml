@@ -14,7 +14,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sarl.library.bundles>io.sarl.lang.core, io.sarl.sdk.api.core, io.sarl.sdk.api.util, org.eclipse.xtend.lib</sarl.library.bundles>
 	</properties>
 
 	<build>
@@ -160,27 +159,6 @@
 								<replacement>
 									<token>%targetjreenvironment%</token>
 									<value>${sarl-run.min.jre.environment}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
-					<execution>
-						<id>generate-sarl-classpath-container</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/io/sarl/eclipse/buildpath/sarl-bundles.properties</file>
-							<regexFlags>
-								<regexFlag>MULTILINE</regexFlag>
-								<regexFlag>DOTALL</regexFlag>
-							</regexFlags>
-							<replacements>
-								<replacement>
-									<token>^(SARL_BUNDLES *= *)(.*?)([ \t\n\r\f\\]*)$</token>
-									<value>$1${sarl.library.bundles}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

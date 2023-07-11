@@ -4,10 +4,14 @@ Bundle-Name: io.sarl.lang.ide
 Bundle-SymbolicName: io.sarl.lang.ide;singleton:=true
 Bundle-Version: 0.13.0.qualifier
 Export-Package: io.sarl.lang.ide,
- io.sarl.lang.ide,
+ io.sarl.lang.ide.buildpath,
  io.sarl.lang.ide.contentassist.antlr,
  io.sarl.lang.ide.contentassist.antlr.internal
-Require-Bundle: wrapped.io.sarl.lang.compiler;bundle-version="0.13.0",
+Require-Bundle: wrapped.io.sarl.sdk.sdk;bundle-version="0.13.0",
+ wrapped.io.sarl.sdk.api.core;bundle-version="0.13.0",
+ wrapped.io.sarl.sdk.api.util;bundle-version="0.13.0",
+ wrapped.io.sarl.lang.core;bundle-version="0.13.0",
+ wrapped.io.sarl.lang.compiler;bundle-version="0.13.0",
  org.eclipse.xtext.util;bundle-version="2.31.0",
  org.eclipse.xtext;bundle-version="2.31.0",
  org.eclipse.xtext.ide;bundle-version="2.31.0",
@@ -15,8 +19,8 @@ Require-Bundle: wrapped.io.sarl.lang.compiler;bundle-version="0.13.0",
  org.eclipse.xtext.common.types.ui;bundle-version="2.31.0",
  org.eclipse.xtext.xbase.ide;bundle-version="2.31.0",
  com.google.inject;bundle-version="5.0.1",
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.eclipse.osgi;bundle-version="3.18.400"
 Bundle-Vendor: SARL.io
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: io.sarl.lang.ide

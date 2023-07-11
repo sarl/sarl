@@ -21,9 +21,9 @@
 
 package io.sarl.demos.gameoflife.game
 
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Logging
 import java.util.List
 import java.util.Map
 import java.util.Random

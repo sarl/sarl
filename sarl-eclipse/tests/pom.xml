@@ -15,7 +15,6 @@
 	<modules>
 		<module>io.sarl.eclipse.tests.api.ui</module>
 		<module>io.sarl.eclipse.examples.tests</module>
-<!--		<module>io.sarl.eclipse.m2e.tests</module> -->
 	</modules>
 
 	<properties>

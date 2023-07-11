@@ -21,11 +21,11 @@
 
 package io.sarl.eclipse.buildpath;
 
+import static io.sarl.lang.ide.buildpath.SARLBundleBuildPath.getSarlDependencyBundleNames;
+
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.arakhne.afc.vmutil.Resources;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -46,29 +46,6 @@ import io.sarl.eclipse.util.BundleUtil;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer {
-
-	/** Names of the property file that contains the names of the libraries
-	 * that are required to compile the SARL code and the generated Java code.
-	 */
-	public static final String SARL_DEPENDENCY_BUNDLE_NAMES_RESOURCE_FILE;
-
-	/** Names of the direct referenced libraries that are required to compile the SARL
-	 * code and the generated Java code.
-	 */
-	public static final String[] SARL_DEPENDENCY_BUNDLE_NAMES;
-
-	static {
-		SARL_DEPENDENCY_BUNDLE_NAMES_RESOURCE_FILE = Resources.translateResourceName(
-				Resources.NAME_SEPARATOR
-				+ SARLClasspathContainer.class.getPackage().getName().replace(".", Resources.NAME_SEPARATOR) //$NON-NLS-1$
-				+ Resources.NAME_SEPARATOR + "sarl-bundles"); //$NON-NLS-1$
-		final ResourceBundle bundle = ResourceBundle.getBundle(SARL_DEPENDENCY_BUNDLE_NAMES_RESOURCE_FILE);
-		final String[] libs = bundle.getString("SARL_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*"); //$NON-NLS-1$ //$NON-NLS-2$
-		for (int i = 0; i < libs.length; ++i) {
-			libs[i] = libs[i].trim();
-		}
-		SARL_DEPENDENCY_BUNDLE_NAMES = libs;
-	}
 
 	/** Constructor.
 	 * @param containerPath the path of the container, e.g. the project.
@@ -94,7 +71,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	protected void updateBundleList(Set<String> entries) {
-		for (final String rootBundleName : SARL_DEPENDENCY_BUNDLE_NAMES) {
+		for (final String rootBundleName : getSarlDependencyBundleNames()) {
 			final Bundle bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
 				for (final String symbolicName : BundleUtil.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
@@ -109,7 +86,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
-		for (final String rootBundleName : SARL_DEPENDENCY_BUNDLE_NAMES) {
+		for (final String rootBundleName : getSarlDependencyBundleNames()) {
 			final Bundle bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
 				for (final IClasspathEntry entry : BundleUtil.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {

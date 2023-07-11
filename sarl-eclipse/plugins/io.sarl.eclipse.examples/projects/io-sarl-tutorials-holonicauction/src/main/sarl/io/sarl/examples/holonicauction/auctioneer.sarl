@@ -21,13 +21,13 @@
 
 package io.sarl.examples.holonicauction
 
-import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Schedules
 import io.sarl.lang.core.Address
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
 
 /**
  * @author $Author: sgalland$

@@ -15,22 +15,20 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>sdk</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.javafx</artifactId>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>api.javafx</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
-		<!-- @IF JDK11
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
 			<version>${openjfx.version}</version>
 		</dependency>
-		@ENDIF JDK11 -->
 	</dependencies>
 
 	<build>
@@ -46,13 +44,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>io.sarl.maven</groupId>
+				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${target.jdk.version}</source>
-					<target>${target.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>

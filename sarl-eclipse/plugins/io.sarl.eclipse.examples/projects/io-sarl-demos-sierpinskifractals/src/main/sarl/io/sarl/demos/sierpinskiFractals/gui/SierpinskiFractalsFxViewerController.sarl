@@ -21,13 +21,13 @@
 
 package io.sarl.demos.sierpinskiFractals.gui;
 
+import io.sarl.api.javafx.FxViewerController
 import io.sarl.demos.sierpinskiFractals.agents.RootFractal
 import io.sarl.demos.sierpinskiFractals.events.Multiply
 import io.sarl.demos.sierpinskiFractals.events.Refresh
 import io.sarl.demos.sierpinskiFractals.objects.Positions
 import io.sarl.demos.sierpinskiFractals.objects.Square
 import io.sarl.demos.sierpinskiFractals.objects.Vector2D
-import io.sarl.javafx.FxViewerController
 import java.util.concurrent.atomic.AtomicBoolean
 import javafx.animation.PauseTransition
 import javafx.fxml.FXML

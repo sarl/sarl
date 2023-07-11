@@ -21,8 +21,8 @@
 
 package io.sarl.examples.pingpong
 
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Logging
 
 /**
  * @author $Author: sgalland$
