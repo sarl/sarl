@@ -400,7 +400,7 @@
             label="%keyword.sarl.runtime"/>
     </extension>
     <extension
-          id="io_sarl_lang_product"
+          id="io_sarl_eclipse_products_ide"
           point="org.eclipse.core.runtime.products">
        <product
              application="org.eclipse.ui.ide.workbench"
@@ -556,7 +556,7 @@
          point="org.eclipse.ui.intro">
       <introProductBinding
             introId="org.eclipse.ui.intro.universal"
-            productId="io.sarl.eclipse.io_sarl_lang_product">
+            productId="io.sarl.eclipse.io_sarl_eclipse_products_ide">
       </introProductBinding>
    </extension>
    <extension
@@ -575,7 +575,7 @@
             id="io.sarl.eclipse.splash">
       </splashHandler>
       <splashHandlerProductBinding
-            productId="io.sarl.eclipse.io_sarl_lang_product"
+            productId="io.sarl.eclipse.io_sarl_eclipse_products_ide"
             splashId="io.sarl.eclipse.splash">
       </splashHandlerProductBinding>
    </extension>

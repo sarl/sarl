@@ -24,7 +24,7 @@
 			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.2100.v20230415-0944"/>
 			<unit id="org.eclipse.equinox.sdk.feature.group" version="3.23.800.v20230523-2142"/>
 		</location>
-		<location includeDependencyDepth="direct" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 			<dependencies>
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
