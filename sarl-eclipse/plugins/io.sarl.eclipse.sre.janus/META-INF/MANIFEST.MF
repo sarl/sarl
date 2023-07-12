@@ -13,7 +13,7 @@ Export-Package: io.sarl.eclipse.sre.janus,
  io.sarl.eclipse.sre.janus.network,
  io.sarl.eclipse.sre.janus.sre
 Require-Bundle: io.sarl.lang.ide;bundle-version="0.13.0",
- wrapped.io.sarl.lang.core;bundle-version="0.13.0",
+ io.sarl.lang.core;bundle-version="0.13.0",
  wrapped.io.sarl.baseutils.afc.extension;bundle-version="0.13.0",
  wrapped.io.sarl.sre.janus.janus.kernel;bundle-version="3.0.13",
  wrapped.io.sarl.sre.janus.janus.network;bundle-version="3.0.13",

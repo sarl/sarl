@@ -247,7 +247,7 @@
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.lang.pythongenerator"
+         id="io.sarl.lang.pythongenerator"
          download-size="0"
          install-size="0"
          version="0.0.0"
