@@ -20,6 +20,14 @@
 		<dependency>
 		    <groupId>org.eclipse.xtext</groupId>
 		    <artifactId>org.eclipse.xtext.builder.standalone</artifactId>
+		    <exclusions>
+				<!-- This JSR implementation is not a valid Jar file (see Tycho target platform error).
+				     io.sarl.lang:core provides a valid JSR implementation -->
+				<exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 		    <groupId>org.eclipse.xtend</groupId>

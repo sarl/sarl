@@ -54,9 +54,9 @@
 		<version>${junit.mockito.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>javax.inject</groupId>
-		<artifactId>javax.inject</artifactId>
-		<version>1</version>
+	    <groupId>org.apache.geronimo.specs</groupId>
+	    <artifactId>geronimo-atinject_1.0_spec</artifactId>
+	    <version>1.2</version>
 	</dependency>
 	<dependency>
 		<groupId>org.eclipse.xtend</groupId>
