@@ -8,8 +8,8 @@ Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: io.sarl.eclipse.examples.SARLExamplePlugin
-Require-Bundle: wrapped.io.sarl.lang.core;bundle-version="0.13.0",
- wrapped.io.sarl.lang.compiler;bundle-version="0.13.0",
+Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
+ io.sarl.lang.compiler;bundle-version="0.13.0",
  io.sarl.eclipse;bundle-version="0.13.0",
  io.sarl.eclipse.m2e;bundle-version="0.13.0",
  io.sarl.lang.ui;bundle-version="0.13.0",

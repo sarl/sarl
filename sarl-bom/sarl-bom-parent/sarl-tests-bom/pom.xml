@@ -80,6 +80,16 @@
 	</dependency>
 	<dependency>
 		<groupId>io.sarl.lang</groupId>
+		<artifactId>batchcompiler</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>io.sarl.eclipse.examples</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.sarl.lang</groupId>
 		<artifactId>compiler.tests</artifactId>
 		<version>${sarl.version}</version>
 	</dependency>
