@@ -70,6 +70,10 @@ public class Messages extends NLS {
 	public static String AbstractCompileMojo_12;
 	public static String AbstractCompileMojo_13;
 	public static String AbstractCompileMojo_14;
+	public static String AbstractCompileMojo_15;
+	public static String AbstractCompileMojo_16;
+	public static String AbstractCompileMojo_17;
+	public static String AbstractCompileMojo_18;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

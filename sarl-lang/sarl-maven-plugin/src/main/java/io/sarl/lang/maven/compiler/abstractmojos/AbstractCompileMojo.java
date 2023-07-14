@@ -22,6 +22,7 @@
 package io.sarl.lang.maven.compiler.abstractmojos;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.jar.JarFile;
 
 import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
@@ -40,9 +42,11 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.arakhne.afc.vmutil.FileSystem;
 
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.core.SARLVersion;
+import io.sarl.lang.core.SREBootstrap;
 import io.sarl.lang.maven.compiler.compiler.JavaCompiler;
 import io.sarl.lang.maven.compiler.utils.Utils;
 
@@ -57,6 +61,12 @@ import io.sarl.lang.maven.compiler.utils.Utils;
 public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo {
 
 	private static final String STUB_FOLDER = "sarl-temp"; //$NON-NLS-1$
+
+	private static final String METAINF_FOLDER_NAME = "META-INF"; //$NON-NLS-1$
+	
+	private static final String METAINF_SERVICE_FOLDER_NAME = "services"; //$NON-NLS-1$
+
+	private static final String JAR_SEPARATOR = "/"; //$NON-NLS-1$
 
 	/** Version of the Java specification used for the source files.
 	 */
@@ -151,6 +161,18 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	 */
 	@Parameter(defaultValue = "false")
 	private boolean fixClasspathJdtJse;
+
+	/** Indicates if the the plugin verify if SRE is in the Maven dependencies.
+	 * @since 0.13
+	 */
+	@Parameter(defaultValue = "true")
+	private boolean verifySREInDependencies;
+
+	/** If the SRE on the classpath is verified, this parameter indicates if SRE missing generates an error or not.
+	 * @since 0.13
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean failWhenMissedSRE;
 
 	@Override
 	protected boolean isTychoEnvironment() {
@@ -409,13 +431,17 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	}
 
 	private void validateDependencyVersions() throws MojoExecutionException, MojoFailureException {
+		final Map<String, Artifact> projectDependencyTree = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
+		validateSarlSdk(projectDependencyTree);
+		validateSreOnClasspath(projectDependencyTree);
+	}
+
+	private void validateSarlSdk(Map<String, Artifact> projectDependencyTree) throws MojoExecutionException, MojoFailureException {
 		getLogger().info(Messages.AbstractCompileMojo_12);
 		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
 		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
 
 		boolean hasError = false;
-
-		final Map<String, Artifact> projectDependencyTree = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
 		final String sdkArtifactKey = ArtifactUtils.versionlessKey(sarlSdkGroupId, sarlSdkArtifactId);
 		final Artifact sdkArtifact = projectDependencyTree.get(sdkArtifactKey);
 		if (sdkArtifact != null) {
@@ -448,6 +474,37 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 
 		if (hasError) {
 			throw new MojoFailureException(Messages.AbstractCompileMojo_14);
+		}
+	}
+
+	private void validateSreOnClasspath(Map<String, Artifact> projectDependencyTree) {
+		if (this.verifySREInDependencies) {
+			getLogger().info(Messages.AbstractCompileMojo_15);
+			for (final Artifact artifact : projectDependencyTree.values()) {
+				final File file = artifact.getFile();
+				boolean found = false;
+				if (file != null) {
+					if (file.isDirectory()) {
+						final File sreServiceFile = FileSystem.join(file, METAINF_FOLDER_NAME, METAINF_SERVICE_FOLDER_NAME, SREBootstrap.class.getName());
+						found = sreServiceFile.exists();
+					} else {
+						try (final JarFile jarFile = new JarFile(file)) {
+							found = jarFile.getEntry(METAINF_FOLDER_NAME + JAR_SEPARATOR + METAINF_SERVICE_FOLDER_NAME + JAR_SEPARATOR + SREBootstrap.class.getName()) != null;
+						} catch (IOException ex) {
+							// Ignore this error. Assume the given file is not a valid SRE implementation
+						}
+					}
+				}
+				if (found) {
+					// The SRE service file was found in the project
+					getLogger().info(MessageFormat.format(Messages.AbstractCompileMojo_17, artifact.getId()));
+					return;
+				}
+			}
+			// No SRE implementation was found
+			getLogger().warn(Messages.AbstractCompileMojo_18);
+		} else if (getLogger().isDebugEnabled()) {
+			getLogger().debug(Messages.AbstractCompileMojo_16);
 		}
 	}
 
