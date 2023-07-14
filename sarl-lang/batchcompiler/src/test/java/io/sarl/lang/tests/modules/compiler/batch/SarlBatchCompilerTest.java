@@ -60,7 +60,7 @@ public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 		compiler.setJavaCompilerVerbose(false);
 		compiler.setGenerateInlineAnnotation(false);
 		compiler.setReportInternalProblemsAsIssues(true);
-		compiler.addIssueMessageListener((issue, uri, message) -> {
+		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
 			issues.add(issue);
 		});
 		return compiler.compile();

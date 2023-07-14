@@ -101,6 +101,12 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	@Parameter(readonly = true, defaultValue = "${basedir}/.settings/io.sarl.lang.SARL.prefs")
 	private String propertiesFileLocation;
 
+	/** Indicates if all the SARL warnings are considered as errors.
+	 * @since 0.13
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean warningsAsErrors;
+
 	private List<File> bufferedClassPath;
 
 	private List<File> bufferedTestClassPath;
@@ -125,7 +131,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 
 	/** Fix the classpath because the JDT libraries that are included by tycho
 	 * automatically add "javaXapi.jar" on the classpath. Sometimes, the
-	 * included jar files contains API for newer JSE, that causes incompatible
+	 * included jar files contains API for newer JRE, that causes incompatible
 	 * class format.
 	 *
 	 * @param currentClassPath is the classpath to fix.
@@ -454,6 +460,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setLogger(logger);
 		
 		compiler.setJavaPostCompilationEnable(compilerType != JavaCompiler.NONE);
+		compiler.setReportWarningsAsErrors(this.warningsAsErrors);
 		compiler.setOptimizationLevel(getOptimization());
 		compiler.setClassOutputPath(classOutputPath);
 		compiler.setJavaSourceVersion(getSourceVersion());
@@ -496,8 +503,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					issue.getColumn(), issue.getMessage());
 		});
 		final String[] errorMessage = new String[] {null};
-		compiler.addIssueMessageListener((issue, uri, message) -> {
-			if ((issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) && (Strings.isEmpty(errorMessage[0]))) {
+		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
+			boolean isError = severity == Severity.ERROR || issue.isSyntaxError();
+			if (isError && Strings.isEmpty(errorMessage[0])) {
 				errorMessage[0] = message;
 			}
 		});

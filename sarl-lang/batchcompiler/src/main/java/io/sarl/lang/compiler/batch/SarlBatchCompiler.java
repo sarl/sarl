@@ -251,6 +251,8 @@ public class SarlBatchCompiler {
 
 	private boolean reportInternalProblemsAsIssues;
 
+	private boolean reportWarningsAsErrors;
+
 	private OptimizationLevel optimizationLevel;
 
 	/** Constructor the batch compiler.
@@ -321,6 +323,28 @@ public class SarlBatchCompiler {
 	 */
 	public boolean getReportInternalProblemsAsIssues() {
 		return this.reportInternalProblemsAsIssues;
+	}
+
+	/** Change the flag that permits to report the warning issues detected by the SARL compiler as errors to the user
+	 * of the batch compiler.
+	 *
+	 * @param reportAsErrors {@code true} if the warnings are reported as errors.
+	 * @since 0.13
+	 * @see #addIssueMessageListener(IssueMessageListener)
+	 */
+	public void setReportWarningsAsErrors(boolean reportAsErrors) {
+		this.reportWarningsAsErrors = reportAsErrors;
+	}
+
+	/** Replies the flag that permits to report the warning issues detected by the SARL compiler as errors to the user
+	 * of the batch compiler.
+	 *
+	 * @return {@code true} if the warnings are reported as errors.
+	 * @since 0.13
+	 * @see #addIssueMessageListener(IssueMessageListener)
+	 */
+	public boolean getReportWarningsAsErrors() {
+		return this.reportWarningsAsErrors;
 	}
 
 	/** Change the extra languages' generators that should be enabled.
@@ -433,14 +457,15 @@ public class SarlBatchCompiler {
 
 	/** Replies the message for the given issue.
 	 *
+	 * @param concreteSeverity the severity that was considered by the batch compiler. It may be stronger alert level that those in the {@code issue}.
 	 * @param issue the issue.
 	 * @param uri URI to the problem.
 	 * @param message the formatted message.
 	 * @since 0.6
 	 */
-	private void notifiesIssueMessageListeners(Issue issue, org.eclipse.emf.common.util.URI uri, String message) {
+	private void notifiesIssueMessageListeners(Severity concreteSeverity, Issue issue, org.eclipse.emf.common.util.URI uri, String message) {
 		for (final IssueMessageListener listener : this.messageListeners) {
-			listener.onIssue(issue, uri, message);
+			listener.onIssue(concreteSeverity, issue, uri, message);
 		}
 	}
 
@@ -1485,22 +1510,33 @@ public class SarlBatchCompiler {
 		boolean hasError = false;
 		for (final Issue issue : issues) {
 			final String issueMessage = createIssueMessage(issue);
+			final Severity concreteSeverity;
 			switch (issue.getSeverity()) {
 			case ERROR:
 				hasError = true;
+				concreteSeverity = Severity.ERROR;
 				getLogger().severe(issueMessage);
 				break;
 			case WARNING:
-				getLogger().warning(issueMessage);
+				if (getReportWarningsAsErrors()) {
+					hasError = true;
+					concreteSeverity = Severity.ERROR;
+					getLogger().severe(issueMessage);
+				} else {
+					concreteSeverity = Severity.WARNING;
+					getLogger().warning(issueMessage);
+				}
 				break;
 			case INFO:
+				concreteSeverity = Severity.INFO;
 				getLogger().info(issueMessage);
 				break;
 			case IGNORE:
 			default:
+				concreteSeverity = Severity.IGNORE;
 				break;
 			}
-			notifiesIssueMessageListeners(issue, issue.getUriToProblem(), issueMessage);
+			notifiesIssueMessageListeners(concreteSeverity, issue, issue.getUriToProblem(), issueMessage);
 		}
 		return hasError;
 	}
@@ -1519,7 +1555,9 @@ public class SarlBatchCompiler {
 			issue.setMessage(message);
 			issue.setUriToProblem(uri);
 			issue.setSeverity(Severity.WARNING);
-			notifiesIssueMessageListeners(issue, uri, message);
+			notifiesIssueMessageListeners(
+					getReportWarningsAsErrors() ? Severity.ERROR : Severity.WARNING,
+					issue, uri, message);
 		}
 	}
 
@@ -1538,7 +1576,9 @@ public class SarlBatchCompiler {
 			issue.setMessage(message);
 			issue.setUriToProblem(uri);
 			issue.setSeverity(Severity.WARNING);
-			notifiesIssueMessageListeners(issue, uri, message);
+			notifiesIssueMessageListeners(
+					getReportWarningsAsErrors() ? Severity.ERROR : Severity.WARNING,
+					issue, uri, message);
 		}
 	}
 
@@ -1557,7 +1597,7 @@ public class SarlBatchCompiler {
 			issue.setMessage(message);
 			issue.setUriToProblem(uri);
 			issue.setSeverity(Severity.ERROR);
-			notifiesIssueMessageListeners(issue, uri, message);
+			notifiesIssueMessageListeners(Severity.ERROR, issue, uri, message);
 		}
 	}
 
@@ -1593,7 +1633,7 @@ public class SarlBatchCompiler {
 			issue.setMessage(msg);
 			issue.setUriToProblem(uri);
 			issue.setSeverity(Severity.ERROR);
-			notifiesIssueMessageListeners(issue, uri, message);
+			notifiesIssueMessageListeners(Severity.ERROR, issue, uri, message);
 		}
 	}
 
@@ -2464,11 +2504,12 @@ public class SarlBatchCompiler {
 
 		/** Replies the message for the given issue.
 		 *
+		 * @param severity the severity that was considered by the batch compiler. It may be stronger alert level that those in the {@code issue}.
 		 * @param issue the issue.
 		 * @param uri URI to the problem.
 		 * @param message the formatted message.
 		 */
-		void onIssue(Issue issue, org.eclipse.emf.common.util.URI uri, String message);
+		void onIssue(Severity severity, Issue issue, org.eclipse.emf.common.util.URI uri, String message);
 
 	}
 

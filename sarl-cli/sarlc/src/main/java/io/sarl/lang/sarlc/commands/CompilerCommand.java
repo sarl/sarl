@@ -127,11 +127,11 @@ public class CompilerCommand extends CommandWithMetadata {
 		final OutParameter<String> firstErrorMessage = new OutParameter<>();
 		final AtomicInteger nbErrors = new AtomicInteger(0);
 		final AtomicInteger nbWarnings = new AtomicInteger(0);
-		comp.addIssueMessageListener((issue, uri, message) -> {
+		comp.addIssueMessageListener((severity, issue, uri, message) -> {
 			if (firstErrorMessage.get() == null) {
 				firstErrorMessage.set(message);
 			}
-			if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
+			if (issue.isSyntaxError() || severity == Severity.ERROR) {
 				nbErrors.incrementAndGet();
 			} else if (issue.getSeverity() == Severity.WARNING) {
 				nbWarnings.incrementAndGet();
