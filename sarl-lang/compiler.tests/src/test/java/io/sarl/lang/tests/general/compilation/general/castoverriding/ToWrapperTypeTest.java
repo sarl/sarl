@@ -70,14 +70,11 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 		SarlScript mas = file(getParseHelper(), NO_OPERATOR_SARL);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
-			.assertError(
-				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to double")
+			.assertNoErrors()
 			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-			.assertNoWarnings(
+			.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
@@ -130,7 +127,7 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 			.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
-				"'doubleValue'");
+				"'toDouble'");
 	}
 
 	@GlobalCompilationTestContribution
@@ -155,14 +152,11 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 		SarlScript mas = file(getParseHelper(), TYPE_SARL_01);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
-			.assertError(
-				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to double")
+			.assertNoErrors()
 			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-			.assertNoWarnings(
+			.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
@@ -242,14 +236,11 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 		SarlScript mas = file(getParseHelper(), TYPE_SARL_03);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
-			.assertError(
-				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to Double")
+			.assertNoErrors()
 			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-			.assertNoWarnings(
+			.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}

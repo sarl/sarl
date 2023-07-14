@@ -49,7 +49,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/1092"
+ * @see "https://github.com/sarl/sarl/issues/1099"
  */
 @DisplayName("Bug #1099")
 @SuppressWarnings("all")

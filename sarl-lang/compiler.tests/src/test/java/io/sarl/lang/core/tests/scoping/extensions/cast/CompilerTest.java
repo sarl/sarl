@@ -298,7 +298,7 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
-				"'byteValue'");
+				"'toByte'");
 	}
 
 	@GlobalCompilationTestContribution

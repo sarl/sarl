@@ -1037,14 +1037,11 @@ public class CompilerTest extends AbstractSarlTest {
 	@Test
 	public void as_UUID_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_UUID_OBJECT_SARL))
-		.assertError(
-				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"AtomicLong to UUID")
+		.assertNoErrors()
 		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-		.assertNoWarnings(
+		.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}

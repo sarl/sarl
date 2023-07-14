@@ -69,10 +69,13 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	public void parseNoOperator() throws Exception {
 		SarlScript mas = file(getParseHelper(), NO_OPERATOR_SARL);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
-		val.assertError(
+		val.assertNoErrors()
+			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to double");
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
 	private static final String TYPE_SARL_00 = multilineString(
@@ -147,10 +150,14 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	public void parseLocal01() throws Exception {
 		SarlScript mas = file(getParseHelper(), TYPE_SARL_01);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
-		val.assertError(
+		val.assertNoErrors()
+			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to double");
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+
 	}
 
 	private static final String TYPE_SARL_02 = multilineString(
@@ -198,7 +205,7 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-			.assertWarning(
+			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"'toDouble'");
@@ -225,10 +232,13 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	public void parseLocal03() throws Exception {
 		SarlScript mas = file(getParseHelper(), TYPE_SARL_03);
 		Validator val = validate(getValidationHelper(), getInjector(), mas);
-		val.assertError(
+		val.assertNoErrors()
+			.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"Cannot cast from A1 to double");
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
 }
