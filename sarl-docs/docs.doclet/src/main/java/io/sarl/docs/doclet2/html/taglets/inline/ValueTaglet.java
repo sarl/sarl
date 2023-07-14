@@ -50,7 +50,7 @@ public class ValueTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "value";
+	public static final String TAGLET_NAME = "value"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
@@ -63,6 +63,7 @@ public class ValueTaglet extends AbstractSarlTaglet {
 	 * @param base the base CSS provided to the {@code @value} tag.
 	 * @return the value's CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getCssStyle(CssStyles base) {
 		return CssStyles.TAG_VALUE_COMMENT;
 	}
@@ -116,6 +117,7 @@ public class ValueTaglet extends AbstractSarlTaglet {
 	 * @param value the value to format.
 	 * @return the string representation of the value.
 	 */
+	@SuppressWarnings("static-method")
 	protected String formatValue(Object value) {
 		return defaultFormatValue(value);
 	}
@@ -132,7 +134,7 @@ public class ValueTaglet extends AbstractSarlTaglet {
 	 */
 	public static String defaultFormatValue(Object value) {
 		if (value instanceof CharSequence) {
-			return "\"" + Strings.convertToJavaString(value.toString()) + "\"";
+			return "\"" + Strings.convertToJavaString(value.toString()) + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return value.toString();
 	}

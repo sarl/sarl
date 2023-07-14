@@ -42,6 +42,8 @@ import io.sarl.docs.doclet2.html.framework.DocletOptions;
  */
 public class TreeSummaryGeneratorImpl extends AbstractTreeSummaryGenerator implements TreeSummaryGenerator {
 
+	/** Constructor.
+	 */
 	public TreeSummaryGeneratorImpl() {
 		super(Messages.TreeSummaryGeneratorImpl_1);
 	}

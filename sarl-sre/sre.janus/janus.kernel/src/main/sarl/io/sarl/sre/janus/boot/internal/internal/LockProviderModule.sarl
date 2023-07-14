@@ -22,15 +22,12 @@ package io.sarl.sre.janus.boot.internal.internal
 
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
-import javax.inject.Singleton
 
 /** 
  * Module for configuring the providers of locks.

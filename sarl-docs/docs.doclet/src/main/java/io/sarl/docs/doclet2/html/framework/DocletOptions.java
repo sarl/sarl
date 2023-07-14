@@ -43,19 +43,19 @@ public class DocletOptions {
 
 	/** User tag that is used to ignore elements.
 	 */
-	public static final String EXCLUDEFROMAPIDOC_TAG = "excludefromapidoc";
+	public static final String EXCLUDEFROMAPIDOC_TAG = "excludefromapidoc"; //$NON-NLS-1$
 	
 	/** User tag that is used to specify the Maven group id.
 	 */
-	public static final String MAVENGROUPID_TAG = "mavengroupid";
+	public static final String MAVENGROUPID_TAG = "mavengroupid"; //$NON-NLS-1$
 
 	/** User tag that is used to specify the Maven artifact id.
 	 */
-	public static final String MAVENARTIFACTID_TAG = "mavenartifactid";
+	public static final String MAVENARTIFACTID_TAG = "mavenartifactid"; //$NON-NLS-1$
 
 	/** User tag that is used to specify a private API element.
 	 */
-	public static final String PRIVATEAPI_TAG = "privateapi";
+	public static final String PRIVATEAPI_TAG = "privateapi"; //$NON-NLS-1$
 
 	private Path outputDirectory;
 
@@ -94,7 +94,7 @@ public class DocletOptions {
 	 */
 	public Path getOutputDirectory() {
 		if (this.outputDirectory == null) {
-			return Path.of("").toAbsolutePath();
+			return Path.of("").toAbsolutePath(); //$NON-NLS-1$
 		}
 		return this.outputDirectory;
 	}
@@ -214,13 +214,13 @@ public class DocletOptions {
 		final StringBuilder pat = new StringBuilder();
 		for (final String groupPattern : groupPatterns) {
 			if (pat.length() > 0) {
-				pat.append("|");
+				pat.append("|"); //$NON-NLS-1$
 			}
-			final String p0 = "(?:" + groupPattern.replaceAll(Pattern.quote("."), "\\\\.").replaceAll(Pattern.quote("*"), ".*") + ")";
+			final String p0 = "(?:" + groupPattern.replaceAll(Pattern.quote("."), "\\\\.").replaceAll(Pattern.quote("*"), ".*") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			pat.append(p0);
 		}
-		pat.insert(0, "^(?:");
-		pat.append(")$");
+		pat.insert(0, "^(?:"); //$NON-NLS-1$
+		pat.append(")$"); //$NON-NLS-1$
 		final Pattern regex = Pattern.compile(pat.toString());
 		this.groups.add(Pair.of(heading, regex));
 	}

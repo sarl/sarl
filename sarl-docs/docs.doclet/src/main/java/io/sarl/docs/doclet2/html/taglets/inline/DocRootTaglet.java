@@ -43,7 +43,7 @@ public class DocRootTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "docroot";
+	public static final String TAGLET_NAME = "docroot"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */

@@ -126,7 +126,8 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 
 	/** Generate the HTML header.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
+	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag) {
 		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
@@ -143,7 +144,8 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 
 	/** Generate the body of the documentation.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
+	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag) {
 		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);

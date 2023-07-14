@@ -93,9 +93,9 @@ import io.sarl.docs.doclet2.html.types.TypeDocumentationGeneratorSelector;
  */
 public class SarlHtmlDoclet extends AbstractDoclet {
 
-	private static final String CSS_FOLDER_NAME = "css";
+	private static final String CSS_FOLDER_NAME = "css"; //$NON-NLS-1$
 	
-	private static final String JS_FOLDER_NAME = "js";
+	private static final String JS_FOLDER_NAME = "js"; //$NON-NLS-1$
 
 	private ElementFilter elementFilter;
 	
@@ -142,7 +142,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	private Set<Provider<? extends Taglet>> registeredTaglets;
 
 	private final Set<Option> options = Set.of(
-			new Option("-copyright", Messages.SarlHtmlDoclet_19, Messages.SarlHtmlDoclet_20) {
+			new Option("-copyright", Messages.SarlHtmlDoclet_19, Messages.SarlHtmlDoclet_20) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					if (arguments.size() >= 1) {
@@ -152,21 +152,21 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return false;
 				}
 			},
-			new Option("-directory -d", Messages.SarlHtmlDoclet_0, Messages.SarlHtmlDoclet_1) {
+			new Option("-directory -d", Messages.SarlHtmlDoclet_0, Messages.SarlHtmlDoclet_1) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					SarlHtmlDoclet.this.cliOptions.setOutputDirectory(new File(arguments.get(0)).toPath());
 					return true;				
 				}
 			},
-			new Option("-fake", Messages.SarlHtmlDoclet_3) {
+			new Option("-fake", Messages.SarlHtmlDoclet_3) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					SarlHtmlDoclet.this.cliOptions.setFakeOutput(true);
 					return true;				
 				}
 			},
-			new Option("-group", MessageFormat.format(Messages.SarlHtmlDoclet_24, "-group"), Messages.SarlHtmlDoclet_25, 2) {
+			new Option("-group", MessageFormat.format(Messages.SarlHtmlDoclet_24, "-group"), Messages.SarlHtmlDoclet_25, 2) { //$NON-NLS-1$ //$NON-NLS-2$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					if (arguments.size() >= 2) {
@@ -174,14 +174,13 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 						if (!Strings.isEmpty(heading)) {
 							final String patterns = arguments.get(1);
 							if (!Strings.isEmpty(patterns)) {
-								final String[] groupPatterns = patterns.split(Pattern.quote(":"));
+								final String[] groupPatterns = patterns.split(Pattern.quote(":")); //$NON-NLS-1$
 								if (groupPatterns != null && groupPatterns.length > 0) {
 									SarlHtmlDoclet.this.cliOptions.addGroup(heading, groupPatterns);
 									return true;
-								} else {
-									getReporter().print(javax.tools.Diagnostic.Kind.ERROR,
-											MessageFormat.format(Messages.SarlHtmlDoclet_28, heading, patterns));
 								}
+								getReporter().print(javax.tools.Diagnostic.Kind.ERROR,
+										MessageFormat.format(Messages.SarlHtmlDoclet_28, heading, patterns));
 							} else {
 								getReporter().print(javax.tools.Diagnostic.Kind.ERROR,
 										MessageFormat.format(Messages.SarlHtmlDoclet_27, heading));
@@ -193,14 +192,14 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return false;
 				}
 			},
-			new Option("-htmlcomments", Messages.SarlHtmlDoclet_18) {
+			new Option("-htmlcomments", Messages.SarlHtmlDoclet_18) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					SarlHtmlDoclet.this.cliOptions.setHtmlCommentsEnabled(true);
 					return true;				
 				}
 			},
-			new Option("-link", Messages.SarlHtmlDoclet_5, Messages.SarlHtmlDoclet_6) {
+			new Option("-link", Messages.SarlHtmlDoclet_5, Messages.SarlHtmlDoclet_6) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					try {
@@ -212,7 +211,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return true;				
 				}
 			},
-			new Option("-tag", Messages.SarlHtmlDoclet_8, Messages.SarlHtmlDoclet_9) {
+			new Option("-tag", Messages.SarlHtmlDoclet_8, Messages.SarlHtmlDoclet_9) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					final String tagName = arguments.get(0);
@@ -222,7 +221,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return true;				
 				}
 			},
-			new Option("-taglet", Messages.SarlHtmlDoclet_13, Messages.SarlHtmlDoclet_14) {
+			new Option("-taglet", Messages.SarlHtmlDoclet_13, Messages.SarlHtmlDoclet_14) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					final String classname = arguments.get(0);
@@ -249,7 +248,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return true;				
 				}
 			},
-			new Option("-title", Messages.SarlHtmlDoclet_22, Messages.SarlHtmlDoclet_23) {
+			new Option("-title", Messages.SarlHtmlDoclet_22, Messages.SarlHtmlDoclet_23) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					final StringBuilder b = new StringBuilder();
@@ -258,7 +257,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 						if (first) {
 							first = false;
 						} else {
-							b.append(" ");
+							b.append(" "); //$NON-NLS-1$
 						}
 						b.append(s);
 					}
@@ -266,7 +265,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return true;				
 				}
 			},
-			new Option("-offline", Messages.SarlHtmlDoclet_12) {
+			new Option("-offline", Messages.SarlHtmlDoclet_12) { //$NON-NLS-1$
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					SarlHtmlDoclet.this.cliOptions.setOffline(true);
@@ -497,7 +496,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 
 	/** Change the taglet factory.
 	 *
-	 * @param sarlTagletFactory the factory
+	 * @param factory the factory
 	 */
 	@Inject
 	public void setSarlTagletFactory(SarlTagletFactory factory) {
@@ -593,7 +592,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 
 	/** Replies the element filter.
 	 *
-	 * @param filter the element filter.
+	 * @return the element filter.
 	 */
 	public ElementFilter getElementFilter() {
 		return this.elementFilter;
@@ -847,6 +846,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @param resourceCallback the callback invoqued each time a resource is found.
 	 * @throws Exception if some error occurs during the search of the resource.
 	 */
+	@SuppressWarnings("static-method")
 	protected void findLocalResource(String basename, Consumer<URL> resourceCallback) throws Exception {
 		assert resourceCallback != null;
 		final URL url = Resources.getResource(SarlHtmlDoclet.class, basename);
@@ -1008,7 +1008,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 		 * @param parameterCount the number of parameters.
 		 */
 		public Option(String name, String description, String parameter, int parameterCount) {
-			this.names = name.trim().split("\\s+");
+			this.names = name.trim().split("\\s+"); //$NON-NLS-1$
 			this.description = description;
 			this.parameter = parameter;
 			this.parameterCount = parameterCount;

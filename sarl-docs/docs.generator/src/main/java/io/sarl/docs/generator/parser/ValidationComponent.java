@@ -188,14 +188,14 @@ public class ValidationComponent implements JsonableObject {
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("sourceFile", getSourceFile());
-		buffer.add("linenoInSourceFile", getLinenoInSourceFile());
-		buffer.add("endLinenoInSourceFile", getEndLinenoInSourceFile());
-		buffer.add("offsetInSourceFile", getOffsetInSourceFile());
-		buffer.add("lengthInSourceFile", getLengthInSourceFile());
-		buffer.add("compilable", isCompilable());
-		buffer.add("executable", isExecutable());
-		buffer.add("code", getCode());
+		buffer.add("sourceFile", getSourceFile()); //$NON-NLS-1$
+		buffer.add("linenoInSourceFile", getLinenoInSourceFile()); //$NON-NLS-1$
+		buffer.add("endLinenoInSourceFile", getEndLinenoInSourceFile()); //$NON-NLS-1$
+		buffer.add("offsetInSourceFile", getOffsetInSourceFile()); //$NON-NLS-1$
+		buffer.add("lengthInSourceFile", getLengthInSourceFile()); //$NON-NLS-1$
+		buffer.add("compilable", isCompilable()); //$NON-NLS-1$
+		buffer.add("executable", isExecutable()); //$NON-NLS-1$
+		buffer.add("code", getCode()); //$NON-NLS-1$
 	}
 
 	@Override

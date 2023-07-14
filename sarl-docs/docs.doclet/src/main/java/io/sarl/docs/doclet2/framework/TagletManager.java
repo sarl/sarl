@@ -70,6 +70,6 @@ public interface TagletManager {
 	 * @param environment the generation environment.
 	 * @param doclet the generaion doclet.
 	 */
-	void init(DocletEnvironment env, Doclet doclet);
+	void init(DocletEnvironment environment, Doclet doclet);
 
 }

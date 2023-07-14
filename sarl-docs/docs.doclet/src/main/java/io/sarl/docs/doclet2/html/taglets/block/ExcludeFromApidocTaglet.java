@@ -35,7 +35,7 @@ public class ExcludeFromApidocTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static String TAG_NAME = "ExcludeFromApidoc";
+	public static String TAG_NAME = "ExcludeFromApidoc"; //$NON-NLS-1$
 	
 	/** Constructor.
 	 */

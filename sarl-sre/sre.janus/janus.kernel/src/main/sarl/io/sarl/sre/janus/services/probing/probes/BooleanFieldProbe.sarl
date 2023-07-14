@@ -59,6 +59,7 @@ class BooleanFieldProbe extends AbstractFieldProbe<Boolean> {
 		|| (newValue !== null && oldValue !== null && newValue.booleanValue === oldValue.booleanValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Boolean {
 		switch (concreteType) {
 			case typeof(boolean),
@@ -78,6 +79,7 @@ class BooleanFieldProbe extends AbstractFieldProbe<Boolean> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Boolean, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(boolean): {

@@ -58,7 +58,7 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "inheritDoc";
+	public static final String TAGLET_NAME = "inheritDoc"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
@@ -131,7 +131,7 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 				return isSameBlockTag(sourceDocumentation, it);
 			});
 			if (inheritedDoc != null) {
-				return appendCommentText(parent, Collections.singletonList(inheritedDoc), element, " ", false, null, referenceExtractor.getContext());
+				return appendCommentText(parent, Collections.singletonList(inheritedDoc), element, " ", false, null, referenceExtractor.getContext()); //$NON-NLS-1$
 			}
 		}
 		return false;
@@ -150,7 +150,7 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 		final SarlDocletEnvironment env = referenceExtractor.getContext().getEnvironment();
 		final List<? extends DocTree> documentation = referenceExtractor.getContext().getDocUtils().getInheritedDocumentation(element, env);
 		if (!documentation.isEmpty()) {
-			return appendCommentText(parent, documentation, element, " ", false, null, referenceExtractor.getContext());
+			return appendCommentText(parent, documentation, element, " ", false, null, referenceExtractor.getContext()); //$NON-NLS-1$
 		}
 		return false;
 	}

@@ -51,6 +51,8 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator implements OverviewFrameGenerator {
 
+	/** Constructor.
+	 */
 	public OverviewFrameGeneratorImpl() {
 		//
 	}

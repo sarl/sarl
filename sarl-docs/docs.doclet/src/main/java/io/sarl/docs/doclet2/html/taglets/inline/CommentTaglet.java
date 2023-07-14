@@ -44,14 +44,14 @@ public class CommentTaglet extends AbstractSarlTaglet {
 	/** Constructor.
 	 */
 	public CommentTaglet() {
-		super("comment", true);
+		super("comment", true); //$NON-NLS-1$
 	}
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
 		if (referenceExtractor.getContext().getCliOptions().isHtmlCommentsEnabled()) {
 			final org.jsoup.nodes.Element commentTag0 = getHtmlFactory().createSpanTag(null, null);
-			if (appendCommentText(commentTag0, tags, element, " ", false, null, referenceExtractor.getContext())) {
+			if (appendCommentText(commentTag0, tags, element, " ", false, null, referenceExtractor.getContext())) { //$NON-NLS-1$
 				getHtmlFactory().createHtmlComment(parent, commentTag0.html());
 				return true;
 			}

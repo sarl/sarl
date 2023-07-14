@@ -79,6 +79,8 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		return a.toString().compareTo(b.toString());
 	};
 
+	/** Constructor.
+	 */
 	public IndexGeneratorImpl() {
 		//
 	}
@@ -117,7 +119,8 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 
 	/** Generate the HTML header.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
+	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag) {
 		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
@@ -134,7 +137,8 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 
 	/** Generate the body of the documentation.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
+	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag) {
 		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);
@@ -171,6 +175,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		getNavigation().generateNavigationBars((TypeElement) null, this);
 	}
 
+	@SuppressWarnings("static-method")
 	private void addEntry(Map<String, SortedSet<javax.lang.model.element.Element>> index, javax.lang.model.element.Element element) {
 		final String name = element.getSimpleName().toString();
 		final String letter = Character.valueOf(name.charAt(0)).toString().toUpperCase();
@@ -254,7 +259,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		}
 		parent.appendChildren(link);
 		getHtmlFactory().createUnsecableSpace(parent);
-		parent.appendText("-");
+		parent.appendText("-"); //$NON-NLS-1$
 		getHtmlFactory().createUnsecableSpace(parent);
 		final List<Node> description = new ArrayList<>();
 		createFirstSentence(element, description, false, false);

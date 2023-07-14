@@ -67,7 +67,7 @@ public interface HtmlFactory {
 	 * @return the document type.
 	 */
 	default DocumentType createHtmlDocumentType(String publicId, String systemId) {
-		return createDocumentType("HTML", publicId, systemId);
+		return createDocumentType("HTML", publicId, systemId); //$NON-NLS-1$
 	}
 
 	/** Replies the name of the anchor for the given member variable.
@@ -662,7 +662,7 @@ public interface HtmlFactory {
 	 *
 	 * @param indent the number of extra spaces to indent the annotations.
 	 * @param descList a list of annotation mirrors.
-	 * @param linkBreak if true, add new line between each member value.
+	 * @param lineBreak if true, add new line between each member value.
 	 * @param style the CSS style.
 	 * @param valueStyle the CSS substyle for the values.
 	 * @param context the creation context.
@@ -973,7 +973,7 @@ public interface HtmlFactory {
 
 		/** Remove all the elements at the top of the memory when they have the given key.
 		 *
-		 * @param element the element.
+		 * @param key the key of the element to remove.
 		 */
 		void removeUntil(String key);
 

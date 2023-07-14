@@ -59,6 +59,7 @@ class BigIntegerFieldProbe extends AbstractFieldProbe<BigInteger> {
 		|| (newValue !== null && oldValue !== null && newValue.equals(oldValue))
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : BigInteger {
 		if (concreteType == typeof(BigInteger)) {
 			return value as BigInteger
@@ -66,6 +67,7 @@ class BigIntegerFieldProbe extends AbstractFieldProbe<BigInteger> {
 		return null
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : BigInteger, concreteType : Class<?>, currentValue : Object) : Object {
 		if (newValue === null) {
 			return BigInteger::ZERO

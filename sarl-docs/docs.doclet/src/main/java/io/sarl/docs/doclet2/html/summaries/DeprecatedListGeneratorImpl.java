@@ -55,6 +55,8 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implements DeprecatedListGenerator {
 
+	/** Constructor.
+	 */
 	public DeprecatedListGeneratorImpl() {
 		super(Messages.DeprecatedListGeneratorImpl_1);
 	}
@@ -189,7 +191,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 				getElementUtils().getVariableElementComparator(),
 				element -> {
 					final List<Node> nodes = new ArrayList<>();
-					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString();
+					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
 					nodes.addAll(getHtmlFactory().createVariableLink(element, label, null, this));
 					return nodes;
 				},
@@ -218,7 +220,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 				getElementUtils().getVariableElementComparator(),
 				element -> {
 					final List<Node> nodes = new ArrayList<>();
-					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + constructorName;
+					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + constructorName; //$NON-NLS-1$
 					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, label, this);
 					final List<Node> elementLink = getHtmlFactory().createExecutableLink(element, constructorPrototype, null, this);
 					if (elementLink != null) {
@@ -261,7 +263,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
 					final List<Node> nodes = new ArrayList<>();
-					final String methodName = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString();
+					final String methodName = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
 					final List<Node> methodPrototype = getHtmlFactory().getExecutablePrototype(element, methodName, this);
 					final List<? extends Node> elementLink = getHtmlFactory().createExecutableLink(element, methodPrototype, null, this);
 					if (elementLink != null) {

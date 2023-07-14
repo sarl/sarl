@@ -2672,7 +2672,7 @@ public class SarlDocumentationParser {
 						if (first) {
 							first = false;
 						} else {
-							it.append(", ");
+							it.append(", "); //$NON-NLS-1$
 						}
 						it.append(genType.getName());
 					}

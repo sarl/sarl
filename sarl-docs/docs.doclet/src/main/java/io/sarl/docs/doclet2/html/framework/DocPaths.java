@@ -33,66 +33,66 @@ public interface DocPaths {
 
 	/** Basename for the summary pages.
 	 */
-	String SUMMARY_HTML = "summary.html";
+	String SUMMARY_HTML = "summary.html"; //$NON-NLS-1$
 
 	/** Basename for the package summary pages.
 	 */
-	String PACKAGE_SUMMARY_HTML = "package-summary.html";
+	String PACKAGE_SUMMARY_HTML = "package-summary.html"; //$NON-NLS-1$
 
 	/** Basename for the default package summary pages.
 	 */
-	String DEFAULT_PACKAGE_SUMMARY_HTML = "default-package-summary.html";
+	String DEFAULT_PACKAGE_SUMMARY_HTML = "default-package-summary.html"; //$NON-NLS-1$
 
 	/** Basename for the index of all types.
 	 */
-	String ALL_TYPE_HTML = "all-types.html";
+	String ALL_TYPE_HTML = "all-types.html"; //$NON-NLS-1$
 
 	/** Basename for the global index.
 	 */
-	String INDEX_HTML = "index-all.html";
+	String INDEX_HTML = "index-all.html"; //$NON-NLS-1$
 
 	/** Basename for the HTML index file.
 	 */
-	String HTML_INDEX_HTML = "index.html";
+	String HTML_INDEX_HTML = "index.html"; //$NON-NLS-1$
 
 	/** Basename for the raw package list.
 	 */
-	String RAW_PACKAGE_LIST = "package-list";
+	String RAW_PACKAGE_LIST = "package-list"; //$NON-NLS-1$
 
 	/** Basename for the raw module list.
 	 */
-	String RAW_MODULE_LIST = "module-list";
+	String RAW_MODULE_LIST = "module-list"; //$NON-NLS-1$
 
 	/** Basename for the deprecated index.
 	 */
-	String DEPRECATED_INDEX_HTML = "deprecated-list.html";
+	String DEPRECATED_INDEX_HTML = "deprecated-list.html"; //$NON-NLS-1$
 
 	/** Basename for the package tree.
 	 */
-	String PACKAGE_TREE_HTML = "package-tree.html";
+	String PACKAGE_TREE_HTML = "package-tree.html"; //$NON-NLS-1$
 	
 	/** Basename for the general tree.
 	 */
-	String TREE_HTML = "overview-tree.html";
+	String TREE_HTML = "overview-tree.html"; //$NON-NLS-1$
 
 	/** Basename for the overview tree.
 	 */
-	String OVERVIEW_TREE_HTML = "overview-tree.html";
+	String OVERVIEW_TREE_HTML = "overview-tree.html"; //$NON-NLS-1$
 
 	/** Basename for the use folder name.
 	 */
-	String USE_FOLDER = "class-use";
+	String USE_FOLDER = "class-use"; //$NON-NLS-1$
 	
 	/** Basename for the overview index.
 	 */
-	String OVERVIEW_SUMMARY_HTML = "overview-summary.html";
+	String OVERVIEW_SUMMARY_HTML = "overview-summary.html"; //$NON-NLS-1$
 
 	/** Basename for the overview frame.
 	 */
-	String OVERVIEW_FRAME_HTML = "overview-frame.html";
+	String OVERVIEW_FRAME_HTML = "overview-frame.html"; //$NON-NLS-1$
 
 	/** Basename for the overview frame.
 	 */
-	String ALL_TYPES_FRAME_HTML = "alltypes-frame.html";
+	String ALL_TYPES_FRAME_HTML = "alltypes-frame.html"; //$NON-NLS-1$
 
 }

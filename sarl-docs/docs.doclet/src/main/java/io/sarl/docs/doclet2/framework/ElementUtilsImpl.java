@@ -112,7 +112,7 @@ public class ElementUtilsImpl implements ElementUtils {
 	 */
 	public static final String DEFAULT_ELEMENT_NAME = "<Unnamed>"; //$NON-NLS-1$
 
-	private static final String SPACE = " "; //$NON-NLS-1
+	private static final String SPACE = " "; //$NON-NLS-1$
 
 	private static final Pattern MEMBER_NAME_PATTERN = Pattern.compile("(.+?)(?:\\((.*)\\))?"); //$NON-NLS-1$
 
@@ -412,6 +412,7 @@ public class ElementUtilsImpl implements ElementUtils {
 				}
 			}
 			if (useQualifiedNames) {
+				assert findQualifiedNames != null;
 				useQualifiedNames = false;
 				final Set<String> qualifiedNames = findQualifiedNames.buildCandidateList(sig);
 				if (qualifiedNames != null) {
@@ -429,6 +430,11 @@ public class ElementUtilsImpl implements ElementUtils {
 		return getSymbol(Object.class.getName());
 	}
 
+	/** Replies if the given type is annotated.
+	 *
+	 * @param e the mirror.
+	 * @return {@code true} if the mirror is annotated.
+	 */
 	public static boolean isAnnotated(TypeMirror e) {
 		return !e.getAnnotationMirrors().isEmpty();
 	}
@@ -545,8 +551,8 @@ public class ElementUtilsImpl implements ElementUtils {
 		TypeElement superClass = asTypeElement(superType, environment.getTypeUtils());
 		// skip "hidden" classes
 		while (superClass != null
-				&& (!environment.isIncluded(superClass))
-				|| (!isPublic(superClass) && !isLinkable(superClass, environment))) {
+				&& ((!environment.isIncluded(superClass))
+				|| (!isPublic(superClass) && !isLinkable(superClass, environment)))) {
 			TypeMirror supersuperType = superClass.getSuperclass();
 			TypeElement supersuperClass = asTypeElement(supersuperType, environment.getTypeUtils());
 			if (supersuperClass == null
@@ -613,6 +619,7 @@ public class ElementUtilsImpl implements ElementUtils {
 	 * the SARL compiler.
 	 * 
 	 * @param element the element to test.
+	 * @return the visibility modifier.
 	 */
 	protected Modifier getDefaultVisibilityFor(Element element) {
 		JvmVisibility jvmVisibility = JvmVisibility.PUBLIC;
@@ -698,7 +705,7 @@ public class ElementUtilsImpl implements ElementUtils {
 					if (defaultVisibility == null || defaultVisibility != PRIVATE) {
 						this.stringRepresentation.append(getSARLGrammarKeywordAccess().getPrivateKeyword()).append(SPACE);
 					}
-				} else if (defaultVisibility == null || defaultVisibility != null) {
+				} else if (defaultVisibility == null) {
 					this.stringRepresentation.append(getSARLGrammarKeywordAccess().getPackageKeyword()).append(SPACE);
 				}
 			}
@@ -708,12 +715,10 @@ public class ElementUtilsImpl implements ElementUtils {
 				if (trailingSpace) {
 					if (this.stringRepresentation.lastIndexOf(SPACE) == this.stringRepresentation.length() - 1) {
 						return this.stringRepresentation.toString();
-					} else {
-						return this.stringRepresentation.append(SPACE).toString();
 					}
-				} else {
-					return this.stringRepresentation.toString().trim();
+					return this.stringRepresentation.append(SPACE).toString();
 				}
+				return this.stringRepresentation.toString().trim();
 			}
 
 			@Override
@@ -749,7 +754,7 @@ public class ElementUtilsImpl implements ElementUtils {
 		}.visit(element, modifierList);
 	}
 
-	private void removeModifiersToIgnore(SortedSet<Modifier> modifierList) {
+	private static void removeModifiersToIgnore(SortedSet<Modifier> modifierList) {
 		modifierList.remove(Modifier.NATIVE);
 		modifierList.remove(Modifier.STRICTFP);
 		modifierList.remove(Modifier.SYNCHRONIZED);
@@ -776,7 +781,7 @@ public class ElementUtilsImpl implements ElementUtils {
 					if (defaultVisibility == null || defaultVisibility != PRIVATE) {
 						this.stringRepresentation.append(getSARLGrammarKeywordAccess().getPrivateKeyword()).append(SPACE);
 					}
-				} else if (defaultVisibility == null || defaultVisibility != null) {
+				} else if (defaultVisibility == null) {
 					this.stringRepresentation.append(getSARLGrammarKeywordAccess().getPackageKeyword()).append(SPACE);
 				}
 			}
@@ -826,12 +831,10 @@ public class ElementUtilsImpl implements ElementUtils {
 				if (trailingSpace) {
 					if (this.stringRepresentation.lastIndexOf(SPACE) == this.stringRepresentation.length() - 1) {
 						return this.stringRepresentation.toString();
-					} else {
-						return this.stringRepresentation.append(SPACE).toString();
 					}
-				} else {
-					return this.stringRepresentation.toString().trim();
+					return this.stringRepresentation.append(SPACE).toString();
 				}
+				return this.stringRepresentation.toString().trim();
 			}
 
 			private String getSarlSpecificInterfaceKeyword(TypeElement type) {
@@ -932,7 +935,7 @@ public class ElementUtilsImpl implements ElementUtils {
 				if (outer) {
 					final String outerName = visit(e.getEnclosingElement());
 					if (!Strings.isEmpty(outerName)) {
-						return outerName + "." + e.getSimpleName().toString();
+						return outerName + "." + e.getSimpleName().toString(); //$NON-NLS-1$
 					}
 				}
 				return e.getSimpleName().toString();
@@ -984,12 +987,12 @@ public class ElementUtilsImpl implements ElementUtils {
 
 			@Override
 			public String visitNull(NullType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
 			public String visitArray(ArrayType t, Void p) {
-				return visit(t.getComponentType()) + "[]";
+				return visit(t.getComponentType()) + "[]"; //$NON-NLS-1$
 			}
 
 			@Override
@@ -999,7 +1002,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 			@Override
 			public String visitError(ErrorType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
@@ -1017,27 +1020,27 @@ public class ElementUtilsImpl implements ElementUtils {
 
 			@Override
 			public String visitWildcard(WildcardType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
 			public String visitExecutable(ExecutableType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
 			public String visitNoType(NoType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
 			public String visitIntersection(IntersectionType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
 			public String visitUnion(UnionType t, Void p) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		}.visit(type);
 	}
@@ -1083,7 +1086,7 @@ public class ElementUtilsImpl implements ElementUtils {
 				basename.append(")"); //$NON-NLS-1$
 				final String outerId = visit(e.getEnclosingElement());
 				if (!Strings.isEmpty(outerId)) {
-					return outerId + "." + basename.toString();
+					return outerId + "." + basename.toString(); //$NON-NLS-1$
 				}
 				return basename.toString();
 			}
@@ -1093,7 +1096,7 @@ public class ElementUtilsImpl implements ElementUtils {
 				final String basename = e.getSimpleName().toString();
 				final String outerId = visit(e.getEnclosingElement());
 				if (!Strings.isEmpty(outerId)) {
-					return outerId + "." + basename;
+					return outerId + "." + basename; //$NON-NLS-1$
 				}
 				return basename;
 			}
@@ -1128,7 +1131,7 @@ public class ElementUtilsImpl implements ElementUtils {
 				if (enclosing != null) {
 					return enclosing.getSimpleName().toString() + "." + e.getSimpleName().toString(); //$NON-NLS-1$
 				}
-				return e.getSimpleName().toString(); //$NON-NLS-1$
+				return e.getSimpleName().toString();
 			}
 		}.visit(e);
 	}
@@ -1195,10 +1198,10 @@ public class ElementUtilsImpl implements ElementUtils {
 	@Override
 	public String getDimension(TypeMirror type) {
 		return new SimpleTypeVisitor9<String, Void>() {
-			final StringBuilder dimension = new StringBuilder("");
+			final StringBuilder dimension = new StringBuilder(""); //$NON-NLS-1$
 			@Override
 			public String visitArray(ArrayType t, Void p) {
-				this.dimension.append("[]");
+				this.dimension.append("[]"); //$NON-NLS-1$
 				return visit(t.getComponentType());
 			}
 
@@ -1230,7 +1233,7 @@ public class ElementUtilsImpl implements ElementUtils {
 			if (pairs != null) {
 				for (Entry<? extends ExecutableElement, ? extends AnnotationValue> elementEntry : pairs.entrySet()) {
 					if (elementEntry.getKey() != null && elementEntry.getValue() != null) {
-						if (elementEntry.getKey().getSimpleName().contentEquals("forRemoval")) {
+						if (elementEntry.getKey().getSimpleName().contentEquals("forRemoval")) { //$NON-NLS-1$
 							final AnnotationValue value = elementEntry.getValue();
 							if (value != null) {
 								return Boolean.parseBoolean(value.toString());
@@ -1251,7 +1254,7 @@ public class ElementUtilsImpl implements ElementUtils {
 			if (pairs != null) {
 				for (Entry<? extends ExecutableElement, ? extends AnnotationValue> elementEntry : pairs.entrySet()) {
 					if (elementEntry.getKey() != null && elementEntry.getValue() != null) {
-						if (elementEntry.getKey().getSimpleName().contentEquals("since")) {
+						if (elementEntry.getKey().getSimpleName().contentEquals("since")) { //$NON-NLS-1$
 							final AnnotationValue value = elementEntry.getValue();
 							if (value != null) {
 								final Object rvalue = value.getValue();
@@ -1376,7 +1379,7 @@ public class ElementUtilsImpl implements ElementUtils {
 			if (Strings.equal(qn, PrivateAPI.class.getName())) {
 				final Map<? extends ExecutableElement, ? extends AnnotationValue> pairs = annotation.getElementValues();
 				for (ExecutableElement valueElement : pairs.keySet()) {
-					if (valueElement.getSimpleName().contentEquals("isCallerOnly")) {
+					if (valueElement.getSimpleName().contentEquals("isCallerOnly")) { //$NON-NLS-1$
 						return ! Boolean.parseBoolean((pairs.get(element)).toString());
 					}
 				}
@@ -1495,7 +1498,7 @@ public class ElementUtilsImpl implements ElementUtils {
 					sname = matcher.group(1);
 					final String p = matcher.group(2);
 					if (!Strings.isEmpty(p)) {
-						params = p.split("\\s*,\\s*");
+						params = p.split("\\s*,\\s*"); //$NON-NLS-1$
 					} else {
 						params = null;
 					}
@@ -1503,6 +1506,7 @@ public class ElementUtilsImpl implements ElementUtils {
 					sname = componentName;
 					params = null;
 				}
+				assert sname != null;
 				if (sname.equals(element.getSimpleName().toString())) {
 					// It is a constructor reference.
 					for (final Element member : element.getEnclosedElements()) {
@@ -1557,20 +1561,20 @@ public class ElementUtilsImpl implements ElementUtils {
 		return null;
 	}
 
-	private boolean isSameTypename(String qualifiedName, String name) {
+	private static boolean isSameTypename(String qualifiedName, String name) {
 		final String n0;
-		if (qualifiedName.endsWith("...")) {
-			n0 = qualifiedName.replaceFirst("\\.\\.\\.$", "[]");
+		if (qualifiedName.endsWith("...")) { //$NON-NLS-1$
+			n0 = qualifiedName.replaceFirst("\\.\\.\\.$", "[]"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			n0 = qualifiedName;
 		}
 		final String n1;
-		if (name.endsWith("...")) {
-			n1 = name.replaceFirst("\\.\\.\\.$", "[]");
+		if (name.endsWith("...")) { //$NON-NLS-1$
+			n1 = name.replaceFirst("\\.\\.\\.$", "[]"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			n1 = name;
 		}
-		if (Strings.equal(n0, n1) || n0.endsWith("." + n1)) {
+		if (Strings.equal(n0, n1) || n0.endsWith("." + n1)) { //$NON-NLS-1$
 			return true;
 		}
 		return false;
@@ -1593,42 +1597,42 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public <T extends ExecutableElement> Comparator<? super T> getExecutableElementComparator() {
-		return (Comparator<? super T>) this.executableComparator;
+		return this.executableComparator;
 	}
 
 	@Override
 	public <T extends ModuleElement> Comparator<? super T> getModuleElementComparator() {
-		return (Comparator<? super T>) this.moduleElementComparator;
+		return this.moduleElementComparator;
 	}
 
 	@Override
 	public <T extends PackageElement> Comparator<? super T> getPackageElementComparator() {
-		return (Comparator<? super T>) this.packageElementComparator;
+		return this.packageElementComparator;
 	}
 
 	@Override
 	public <T extends TypeElement> Comparator<? super T> getTypeElementComparator() {
-		return (Comparator<? super T>) this.typeElementComparator;
+		return this.typeElementComparator;
 	}
 
 	@Override
 	public <T extends TypeElement> Comparator<? super T> getTypeElementBasenameComparator() {
-		return (Comparator<? super T>) this.typeElementBasenameComparator;
+		return this.typeElementBasenameComparator;
 	}
 
 	@Override
 	public <T extends TypeMirror> Comparator<? super T> getTypeMirrorComparator() {
-		return (Comparator<? super T>) this.typeMirrorComparator;
+		return this.typeMirrorComparator;
 	}
 
 	@Override
 	public <T extends VariableElement> Comparator<? super T> getVariableElementComparator() {
-		return (Comparator<? super T>) this.variableComparator;
+		return this.variableComparator;
 	}
 
 	@Override
 	public boolean isEventHandlerContainer(TypeElement element) {
-		if (element.getKind() == ElementKind.CLASS && element != null) {
+		if (element != null && element.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = element.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getAgentType())
@@ -1641,7 +1645,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isCapacityUser(TypeElement element) {
-		if (element.getKind() == ElementKind.CLASS && element != null) {
+		if (element != null && element.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = element.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getAgentType())
@@ -1654,7 +1658,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isSarlAgent(TypeElement type) {
-		if (type.getKind() == ElementKind.CLASS && type != null) {
+		if (type != null && type.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = type.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getAgentType());
@@ -1665,7 +1669,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isSarlBehavior(TypeElement type) {
-		if (type.getKind() == ElementKind.CLASS && type != null) {
+		if (type != null && type.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = type.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getBehaviorType());
@@ -1676,7 +1680,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isSarlCapacity(TypeElement type) {
-		if (type.getKind() == ElementKind.INTERFACE && type != null) {
+		if (type != null && type.getKind() == ElementKind.INTERFACE) {
 			final TypeMirror tm = type.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getCapacityType());
@@ -1687,7 +1691,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isSarlSkill(TypeElement type) {
-		if (type.getKind() == ElementKind.CLASS && type != null) {
+		if (type != null && type.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = type.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getSkillType());
@@ -1698,7 +1702,7 @@ public class ElementUtilsImpl implements ElementUtils {
 
 	@Override
 	public boolean isSarlEvent(TypeElement type) {
-		if (type.getKind() == ElementKind.CLASS && type != null) {
+		if (type != null && type.getKind() == ElementKind.CLASS) {
 			final TypeMirror tm = type.asType();
 			if (tm != null) {
 				return this.typeUtils.isAssignable(tm, getEventType());

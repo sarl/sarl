@@ -43,8 +43,10 @@ public class SeeTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "see";
+	public static final String TAGLET_NAME = "see"; //$NON-NLS-1$
 
+	/** Constructor.
+	 */
 	public SeeTaglet() {
 		super(TAGLET_NAME.toLowerCase(), false, Location.values());
 	}
@@ -54,6 +56,7 @@ public class SeeTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_SEE_COMMENT;
 	}

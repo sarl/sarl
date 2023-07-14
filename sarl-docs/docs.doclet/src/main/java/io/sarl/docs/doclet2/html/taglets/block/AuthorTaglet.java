@@ -43,7 +43,7 @@ public class AuthorTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "author";
+	public static final String TAGLET_NAME = "author"; //$NON-NLS-1$
 	
 	/** Constructor.
 	 */
@@ -56,6 +56,7 @@ public class AuthorTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_AUTHOR_COMMENT;
 	}

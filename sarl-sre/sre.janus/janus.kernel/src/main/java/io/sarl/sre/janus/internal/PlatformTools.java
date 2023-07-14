@@ -19,16 +19,29 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet2.framework;
+package io.sarl.sre.janus.internal;
 
-/** Repository of documentations.
+import org.eclipse.xtext.xbase.lib.Inline;
+
+/**
+ * Describe the states of an agent.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.13
  */
-public interface DocumentationRepository {
-	//
+public final class PlatformTools {
+
+	private PlatformTools() {
+		//
+	}
+	
+	/** Ask to the multi-thread engine to give the token to another thread if possible.
+	 */
+	@Inline(value = "$1.yield()", imported = Thread.class)
+	public static void yield() {
+		Thread.yield();
+	}
+
 }

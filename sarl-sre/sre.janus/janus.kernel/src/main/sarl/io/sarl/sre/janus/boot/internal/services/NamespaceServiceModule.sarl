@@ -23,8 +23,6 @@ package io.sarl.sre.janus.boot.internal.services
 import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder
 import io.bootique.di.BQModule
 import io.bootique.di.Provides
@@ -59,6 +57,7 @@ class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
 	 * @param validator the validator to the field access.
 	 */
 	@Inject
+	@SuppressWarnings("raw_type")
 	new (parser : INameParser, @NamespaceFinders finders : Set<INamespaceFinder>, validator : IFieldAccessValidator) {
 		setNameParser(parser)
 		setNamespaceFinders(finders)

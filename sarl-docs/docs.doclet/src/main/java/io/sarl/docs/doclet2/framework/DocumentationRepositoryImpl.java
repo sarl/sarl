@@ -30,5 +30,5 @@ package io.sarl.docs.doclet2.framework;
  * @since 0.13
  */
 public class DocumentationRepositoryImpl implements DocumentationRepository {
-	
+	//
 }

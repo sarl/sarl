@@ -58,6 +58,7 @@ class ByteFieldProbe extends AbstractFieldProbe<Byte> {
 		|| (newValue !== null && oldValue !== null && newValue.byteValue === oldValue.byteValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Byte {
 		switch (concreteType) {
 			case typeof(byte),
@@ -70,6 +71,7 @@ class ByteFieldProbe extends AbstractFieldProbe<Byte> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Byte, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(byte): {

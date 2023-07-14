@@ -62,17 +62,17 @@ public final class DocletTester {
 				"-d", "/home/sgalland/tmp/gen-site", //$NON-NLS-1$ //$NON-NLS-2$
 				//"-fake",
 				//"-offline",
-				"-copyright", "ABC",
-				"-group", "Standard Development Kit and Other Utilities", "io.sarl.core*:io.sarl.util*:io.sarl.api*:io.sarl.maven.bootiqueapp*:io.sarl.maven.compiler*:io.sarl.javafx*",
-				"-group", "SARL Language", "io.sarl.lang*",
-				"-group", "Generic Tools for SARL Run-time Environments", "io.sarl.bootstrap*:io.sarl.sarlspecification",
-				"-group", "Janus Run-time Environment", "io.sarl.sre*",
-				"-group", "API Documentation Generator", "io.sarl.maven.docs*",
-				"-title", "The title",
+				"-copyright", "ABC", //$NON-NLS-1$ //$NON-NLS-2$
+				"-group", "Standard Development Kit and Other Utilities", "io.sarl.core*:io.sarl.util*:io.sarl.api*:io.sarl.maven.bootiqueapp*:io.sarl.maven.compiler*:io.sarl.javafx*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-group", "SARL Language", "io.sarl.lang*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-group", "Generic Tools for SARL Run-time Environments", "io.sarl.bootstrap*:io.sarl.sarlspecification", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-group", "Janus Run-time Environment", "io.sarl.sre*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-group", "API Documentation Generator", "io.sarl.maven.docs*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-title", "The title", //$NON-NLS-1$ //$NON-NLS-2$
 				//"-help",
 			};
 			final Class<?> type = Class.forName("jdk.javadoc.internal.tool.Main");  //$NON-NLS-1$
-			final Method method = type.getDeclaredMethod("execute", String[].class);
+			final Method method = type.getDeclaredMethod("execute", String[].class); //$NON-NLS-1$
 			method.setAccessible(true);
 			method.invoke(null, (Object) params);
 		} catch (Throwable ex) {

@@ -51,6 +51,7 @@ agent MemberJoinedAgent1 {
 
 	var ^space : OpenEventSpace
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		this.number = occurrence.parameters.get(1) as Integer

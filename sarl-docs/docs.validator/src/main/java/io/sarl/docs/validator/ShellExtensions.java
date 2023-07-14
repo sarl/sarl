@@ -84,7 +84,7 @@ public final class ShellExtensions {
 		final String cmd = buffer.toString();
 		File file = new File(cmd);
 		if (!file.isAbsolute()) {
-			file = new File(System.getProperty("SARL_DOC_CURRENT_FOLDER") + File.separator + file.getPath()).getCanonicalFile();
+			file = new File(System.getProperty("SARL_DOC_CURRENT_FOLDER") + File.separator + file.getPath()).getCanonicalFile(); //$NON-NLS-1$
 		}
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.toString());
@@ -139,7 +139,7 @@ public final class ShellExtensions {
 		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 			String line = reader.readLine();
 			while (line  != null) {
-				output.append(line + "\n");
+				output.append(line + "\n"); //$NON-NLS-1$
 				line = reader.readLine();
 			}
 			process.waitFor();

@@ -58,6 +58,7 @@ class FloatFieldProbe extends AbstractFieldProbe<Float> {
 		|| (newValue !== null && oldValue !== null && newValue.floatValue === oldValue.floatValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Float {
 		switch (concreteType) {
 			case typeof(float),
@@ -70,6 +71,7 @@ class FloatFieldProbe extends AbstractFieldProbe<Float> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Float, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(float): {

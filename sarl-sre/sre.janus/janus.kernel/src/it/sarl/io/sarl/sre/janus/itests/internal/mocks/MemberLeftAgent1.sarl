@@ -50,6 +50,7 @@ agent MemberLeftAgent1 {
 
 	val number = new AtomicInteger
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		this.number.set(occurrence.parameters.get(1) as Integer)

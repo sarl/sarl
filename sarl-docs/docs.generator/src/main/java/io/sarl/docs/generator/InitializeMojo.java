@@ -81,15 +81,15 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	 * @throws MojoExecutionException error when running the mojo.
 	 */
 	protected void registerShellCommands() throws MojoExecutionException {
-		getLog().debug("Shell commands = " + this.shellCommands);
+		getLog().debug("Shell commands = " + this.shellCommands); //$NON-NLS-1$
 		if (this.shellCommands != null) {
 			final ShellCommandProvider provider = this.injector.getInstance(ShellCommandProvider.class);
 			if (provider == null) {
-				throw new MojoExecutionException("No shell command provider defined in the mojo source code");
+				throw new MojoExecutionException("No shell command provider defined in the mojo source code"); //$NON-NLS-1$
 			}
 			for (final ShellCommand command : this.shellCommands) {
 				if (!registerShellCommand(command, provider)) {
-					throw new MojoExecutionException("Artifact not found: " + command.toString());
+					throw new MojoExecutionException("Artifact not found: " + command.toString()); //$NON-NLS-1$
 				}
 			}
 			ShellExtensions.shellCommandProvider = provider;
@@ -97,23 +97,23 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	}
 
 	private boolean registerShellCommand(ShellCommand command, ShellCommandProvider provider) throws MojoExecutionException {
-		getLog().debug("Register shell command: " + command);
+		getLog().debug("Register shell command: " + command); //$NON-NLS-1$
 		final Dependency dep = findDependency(command.getGroupId(), command.getArtifactId(), command.getType());
-		getLog().debug("Associated dependency: " + dep);
+		getLog().debug("Associated dependency: " + dep); //$NON-NLS-1$
 		if (dep != null) {
 			final Set<Artifact> artifacts = resolve(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), dep.getType());
 			for (final Artifact artifact : artifacts) {
 				if (Strings.equal(command.getGroupId(), artifact.getGroupId())
 						&& Strings.equal(command.getArtifactId(), artifact.getArtifactId())
 						&& Strings.equal(command.getType(), artifact.getType())) {
-					getLog().debug("Artifact candidate: " + artifact);
+					getLog().debug("Artifact candidate: " + artifact); //$NON-NLS-1$
 					final File artifactFile = artifact.getFile();
-					getLog().debug("Artifact file: " + artifactFile);
+					getLog().debug("Artifact file: " + artifactFile); //$NON-NLS-1$
 					if (artifactFile != null) {
-						getLog().info("Register shell command '" + command.getName() + "': " + artifactFile);
+						getLog().info("Register shell command '" + command.getName() + "': " + artifactFile); //$NON-NLS-1$ //$NON-NLS-2$
 						provider.register(command.getName(), artifactFile);
 						if (!artifactFile.canExecute()) {
-							getLog().info("Force execution flag for: " + artifactFile);
+							getLog().info("Force execution flag for: " + artifactFile); //$NON-NLS-1$
 							artifactFile.setExecutable(true);
 						}
 						return true;
@@ -273,9 +273,9 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 		@Override
 		public String toString() {
 			final StringBuilder str = new StringBuilder();
-			str.append(getGroupId()).append(":");
-			str.append(getArtifactId()).append(":");
-			str.append(getType()).append(":");
+			str.append(getGroupId()).append(":"); //$NON-NLS-1$
+			str.append(getArtifactId()).append(":"); //$NON-NLS-1$
+			str.append(getType()).append(":"); //$NON-NLS-1$
 			str.append(getName());
 			return str.toString();
 		}

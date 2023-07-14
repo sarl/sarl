@@ -81,6 +81,7 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 	 * @param tagName the tag name.
 	 * @return {@code true} if the element must be hidden.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isExcluded(String tagName) {
 		return ExcludeFromApidocTaglet.TAG_NAME.equalsIgnoreCase(tagName) || HiddenTaglet.TAG_NAME.equalsIgnoreCase(tagName);
 	}

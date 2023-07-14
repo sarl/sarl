@@ -237,30 +237,30 @@ public class SarlJavadocModule extends AbstractModule {
 		bindSingleton(RawPackageListGenerator.class, RawPackageListGeneratorImpl.class);
 		//
 		bindTaglets(
-			"author", AuthorTaglet.class,
-			"code", CodeTaglet.class,
-			"comment", CommentTaglet.class,
-			"deprecated", DeprecatedTaglet.class,
-			"docroot", DocRootTaglet.class,
-			"exception", ExceptionTaglet.class,
-			"excludefromapidoc", ExcludeFromApidocTaglet.class,
-			"generated", GeneratedTaglet.class,
-			"hidden", HiddenTaglet.class,
-			"inheritdoc", InheritDocTaglet.class,
-			"link", LinkTaglet.class,
-			"linkplain", LinkTaglet.class,
-			"literal", LiteralTaglet.class,
-			"mavenartifactid", MavenArtifactIdTaglet.class,
-			"mavengroupid", MavenGroupIdTaglet.class,
-			"param", ParamTaglet.class,
-			"provides", ProvidesTaglet.class,
-			"return", ReturnTaglet.class,
-			"see", SeeTaglet.class,
-			"since", SinceTaglet.class,
-			"throws", ThrowsTaglet.class,
-			"uses", UsesTaglet.class,
-			"value", ValueTaglet.class,
-			"version", VersionTaglet.class);
+			"author", AuthorTaglet.class, //$NON-NLS-1$
+			"code", CodeTaglet.class, //$NON-NLS-1$
+			"comment", CommentTaglet.class, //$NON-NLS-1$
+			"deprecated", DeprecatedTaglet.class, //$NON-NLS-1$
+			"docroot", DocRootTaglet.class, //$NON-NLS-1$
+			"exception", ExceptionTaglet.class, //$NON-NLS-1$
+			"excludefromapidoc", ExcludeFromApidocTaglet.class, //$NON-NLS-1$
+			"generated", GeneratedTaglet.class, //$NON-NLS-1$
+			"hidden", HiddenTaglet.class, //$NON-NLS-1$
+			"inheritdoc", InheritDocTaglet.class, //$NON-NLS-1$
+			"link", LinkTaglet.class, //$NON-NLS-1$
+			"linkplain", LinkTaglet.class, //$NON-NLS-1$
+			"literal", LiteralTaglet.class, //$NON-NLS-1$
+			"mavenartifactid", MavenArtifactIdTaglet.class, //$NON-NLS-1$
+			"mavengroupid", MavenGroupIdTaglet.class, //$NON-NLS-1$
+			"param", ParamTaglet.class, //$NON-NLS-1$
+			"provides", ProvidesTaglet.class, //$NON-NLS-1$
+			"return", ReturnTaglet.class, //$NON-NLS-1$
+			"see", SeeTaglet.class, //$NON-NLS-1$
+			"since", SinceTaglet.class, //$NON-NLS-1$
+			"throws", ThrowsTaglet.class, //$NON-NLS-1$
+			"uses", UsesTaglet.class, //$NON-NLS-1$
+			"value", ValueTaglet.class, //$NON-NLS-1$
+			"version", VersionTaglet.class); //$NON-NLS-1$
 	}
 
 	/** Replies the HTML doclet.
@@ -281,6 +281,7 @@ public class SarlJavadocModule extends AbstractModule {
 	 * @param injector the injector.
 	 * @return the environment.
 	 */
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public SarlDocletEnvironment providesEnvironment(Injector injector) {
@@ -295,6 +296,7 @@ public class SarlJavadocModule extends AbstractModule {
 	 * @param environment the provider of the generation environment.
 	 * @return the excluder.
 	 */
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public ApidocExcluder providesApidocExcluder(Injector injector, Provider<SarlDocletEnvironment> environment) {
@@ -332,8 +334,10 @@ public class SarlJavadocModule extends AbstractModule {
 			final Class<? extends Taglet> type = (Class<? extends Taglet>) pairs[i + 1];
 			typeSet.add(createProvider(type));
 		}
-		final TypeLiteral<Set<Provider<? extends Taglet>>> typeLiteral = new TypeLiteral<>() {};
-		final Key<Set<Provider<? extends Taglet>>> collectionKey = Key.get(typeLiteral, Names.named("registered-taglets"));
+		final TypeLiteral<Set<Provider<? extends Taglet>>> typeLiteral = new TypeLiteral<>() {
+			//
+		};
+		final Key<Set<Provider<? extends Taglet>>> collectionKey = Key.get(typeLiteral, Names.named("registered-taglets")); //$NON-NLS-1$
 		binder().bind(collectionKey).toInstance(typeSet);
 	}
 

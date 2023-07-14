@@ -44,6 +44,7 @@ agent SendingAgent {
 
 	uses TestingCapacity
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		val parentID = agentInitializationParameters.get(1) as UUID

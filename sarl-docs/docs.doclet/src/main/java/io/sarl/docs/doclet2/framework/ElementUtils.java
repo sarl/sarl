@@ -103,7 +103,7 @@ public interface ElementUtils {
 
 	/** Replies the first visible super type.
 	 *
-	 * @param typeElmement is the type element.
+	 * @param typeElement is the type element.
 	 * @param assumeObject indicates if the {@code Object} type is assumed as root.
 	 * @param environment the generation environment.
 	 * @return the super type.
@@ -173,7 +173,7 @@ public interface ElementUtils {
 	 * @param environment the generation environment.
 	 * @return the set of implemented interfaces.
 	 */
-	SortedSet<? extends TypeMirror> getAllInterfaces(TypeElement typeElemenent, SarlDocletEnvironment environment);
+	SortedSet<? extends TypeMirror> getAllInterfaces(TypeElement typeElement, SarlDocletEnvironment environment);
 
 	/**
 	 * Replies the name of the given element. This function supports unnnamed element. 
@@ -228,7 +228,7 @@ public interface ElementUtils {
 	 *    providing a {@code getQualifiedName()} function).
 	 * @return the fully qualified name.
 	 */
-	String getFullyQualifiedName(Element e, final boolean outer);
+	String getFullyQualifiedName(Element element, final boolean outer);
 
 	/** Replies the internal identifier of the given element without the fully qualified name of the enclosing element.
 	 *
@@ -236,7 +236,7 @@ public interface ElementUtils {
 	 * @return the identifier.
 	 * @see #getFullIdentifier(Element)
 	 */
-	String getLocalIdentifier(Element e);
+	String getLocalIdentifier(Element element);
 
 	/** Replies the internal identifier of the given element with the fully qualified name of the enclosing element.
 	 *
@@ -245,7 +245,7 @@ public interface ElementUtils {
 	 * @see #getLocalIdentifier(Element)
 	 * @see #getFullIdentifier(TypeMirror)
 	 */
-	String getFullIdentifier(Element e);
+	String getFullIdentifier(Element element);
 
 	/** Replies the internal identifier of the given type with the fully qualified name of the enclosing element.
 	 *
@@ -261,7 +261,7 @@ public interface ElementUtils {
 	 * @param element the element to analyze
 	 * @return the inner type qualified name.
 	 */
-	String getInnerTypeQualifiedName(Element e);
+	String getInnerTypeQualifiedName(Element element);
 
 	/** Replies if the given element is synthetized.
 	 *

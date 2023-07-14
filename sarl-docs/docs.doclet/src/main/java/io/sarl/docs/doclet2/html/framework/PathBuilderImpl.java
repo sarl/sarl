@@ -63,12 +63,13 @@ public class PathBuilderImpl implements PathBuilder {
 	 * @param basename the basename.
 	 * @return the path.
 	 */
+	@SuppressWarnings("static-method")
 	protected Path createModulePath(ModuleElement module, String basename) {
 		final String name;
 		if (module.isUnnamed()) {
-			name = "unnamed-module-" + basename;
+			name = "unnamed-module-" + basename; //$NON-NLS-1$
 		} else {
-			name = module.getQualifiedName() + "-" + basename;
+			name = module.getQualifiedName() + "-" + basename; //$NON-NLS-1$
 		}
 		return Path.of(name);
 	}
@@ -87,8 +88,9 @@ public class PathBuilderImpl implements PathBuilder {
 	 * @param basename the basename. If {@code null}, consider {@link DocPaths#PACKAGE_SUMMARY_HTML}.
 	 * @return the path.
 	 */
+	@SuppressWarnings("static-method")
 	protected Path createPackagePath(PackageElement pkg, String basename) {
-		final String[] elements = pkg.getQualifiedName().toString().split(Pattern.quote("."));
+		final String[] elements = pkg.getQualifiedName().toString().split(Pattern.quote(".")); //$NON-NLS-1$
 		Path pt = null;
 		for (int i = 0 ; i < elements.length; ++i) {
 			final String elt = elements[i];
@@ -129,8 +131,9 @@ public class PathBuilderImpl implements PathBuilder {
 	 * @param basename the basename.
 	 * @return the path.
 	 */
+	@SuppressWarnings("static-method")
 	protected Path createTypePath(TypeElement type, String basename) {
-		String[] elements = type.getQualifiedName().toString().split(Pattern.quote("."));
+		String[] elements = type.getQualifiedName().toString().split(Pattern.quote(".")); //$NON-NLS-1$
 		Path pt = null;
 		for (int i = 0 ; i < elements.length - 1; ++i) {
 			final String elt = elements[i];
@@ -145,12 +148,12 @@ public class PathBuilderImpl implements PathBuilder {
 			if (basename != null) {
 				pt = Path.of(basename);
 			} else {
-				pt = Path.of(elements[elements.length - 1] + ".html");
+				pt = Path.of(elements[elements.length - 1] + ".html"); //$NON-NLS-1$
 			}
 		} else if (basename != null) {
 			pt = pt.resolve(basename);
 		} else {
-			pt = pt.resolve(elements[elements.length - 1] + ".html");
+			pt = pt.resolve(elements[elements.length - 1] + ".html"); //$NON-NLS-1$
 		}
 		return pt;
 	}

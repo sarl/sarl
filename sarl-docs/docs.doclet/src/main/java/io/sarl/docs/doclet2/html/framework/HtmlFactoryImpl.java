@@ -294,7 +294,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		if (docType != null) {
 			doc.insertChildren(0, docType);
 		} else {
-			doc.insertChildren(0, new DocumentType("html", "", ""));
+			doc.insertChildren(0, new DocumentType("html", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		//
 		Element htmlTag = getHtmlAccessor().getChildNode(doc, HTML_TAG);
@@ -626,9 +626,10 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	 * @param child the node to add into the parent node.
 	 * @see #appendChildren(Element, Iterable)
 	 */
+	@SuppressWarnings("static-method")
 	protected void appendChildren(Element parent, Node child) {
-		assert parent != null : "parent argument must not be null";
-		assert child != null : "child argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
+		assert child != null : "child argument must not be null"; //$NON-NLS-1$
 		if (HtmlTags.isPseudoTag(child.nodeName()) && child instanceof Element) {
 			for (final Node chld : child.childNodes()) {
 				parent.appendChild(chld.clone());
@@ -646,10 +647,10 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	 * @see #appendChildren(Element, Node)
 	 */
 	protected void appendChildren(Element parent, Iterable<? extends Node> children) {
-		assert parent != null : "parent argument must not be null";
-		assert children != null : "children argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
+		assert children != null : "children argument must not be null"; //$NON-NLS-1$
 		for (final Node child : children) {
-			if (children != null) {
+			if (child != null) {
 				appendChildren(parent, child);
 			}
 		}
@@ -894,7 +895,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		}
 	}
 
-	private boolean isVoidType(TypeMirror type) {
+	private static boolean isVoidType(TypeMirror type) {
 		return type == null || type.getKind() == TypeKind.VOID || type.getKind() == TypeKind.NULL;
 	}
 	
@@ -993,9 +994,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		final String parameters = toFlatParameterList(element.getParameters());
 		final StringBuilder buf = new StringBuilder();
 		buf.append(simpleName);
-		buf.append("(");
+		buf.append("("); //$NON-NLS-1$
 		buf.append(parameters);
-		buf.append(")");
+		buf.append(")"); //$NON-NLS-1$
 		return buf.toString();
 	}
 
@@ -1005,9 +1006,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		final String parameters = toFlatParameterList(element.getParameters());
 		final StringBuilder buf = new StringBuilder();
 		buf.append(simpleName);
-		buf.append("(");
+		buf.append("("); //$NON-NLS-1$
 		buf.append(parameters);
-		buf.append(")");
+		buf.append(")"); //$NON-NLS-1$
 		return buf.toString();
 	}
 
@@ -1015,7 +1016,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		final StringBuilder buf = new StringBuilder();
 		for (final VariableElement parameter : parameters) {
 			if (buf.length() > 0) {
-				buf.append(",");
+				buf.append(","); //$NON-NLS-1$
 			}
 			buf.append(parameter.asType().toString());
 		}
@@ -1074,7 +1075,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	@Override
 	public Element createTypeInheritanceTree(Element parent, TypeMirror type, CssStyles listStyle, CssStyles elementStyle, HtmlFactoryContext context) {
-		assert parent != null : "parent argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		final LinkedList<TypeMirror> sequence = new LinkedList<>();
 		sequence.add(type);
 		TypeMirror sup = type;
@@ -1168,14 +1169,14 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		// Output the values
 		if (!annotationValues.isEmpty()) {
 			final Element valueElement = createSpanTag(annotation, valueStyle);
-			valueElement.appendText("(");
+			valueElement.appendText("("); //$NON-NLS-1$
 			boolean first = true;
 			final boolean multipleValues = annotationValues.size() > 1;
 			for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> valuePair : annotationValues.entrySet()) {
 				if (first) {
 					first = false;
 				} else {
-					valueElement.appendText(",");
+					valueElement.appendText(","); //$NON-NLS-1$
 					if (lineBreak) {
 						appendChildren(valueElement, createNewLineTag());
 						int spaces = annotationElement.getSimpleName().length() + 2;
@@ -1185,10 +1186,10 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 					}
 				}
 				final String simpleName = valuePair.getKey().getSimpleName().toString();
-				if (multipleValues || !"value".equals(simpleName)) { // Omit "value=" where unnecessary
+				if (multipleValues || !"value".equals(simpleName)) { // Omit "value=" where unnecessary //$NON-NLS-1$
 					// TODO: Link to the element pointed by valuePair.getKey()
 					valueElement.appendText(simpleName);
-					valueElement.appendText("=");
+					valueElement.appendText("="); //$NON-NLS-1$
 				}
 				List<AnnotationValue> annotationTypeValues = new ArrayList<>();
 				new SimpleAnnotationValueVisitor9<Void, AnnotationValue>() {
@@ -1206,22 +1207,22 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 				final boolean multipleTypeValues = annotationTypeValues.size() > 1;
 				if (multipleTypeValues) {
-					valueElement.appendText("{");
+					valueElement.appendText("{"); //$NON-NLS-1$
 				}
 				boolean first0 = true;
 				for (final AnnotationValue av : annotationTypeValues) {
 					if (first0) {
 						first0 = false;
 					} else {
-						valueElement.appendText(",");
+						valueElement.appendText(","); //$NON-NLS-1$
 					}
 					annotationValueToContent(valueElement, av, valueStyle, context);
 				}
 				if (multipleTypeValues) {
-					valueElement.appendText("}");
+					valueElement.appendText("}"); //$NON-NLS-1$
 				}
 			}
-			valueElement.appendText(")");
+			valueElement.appendText(")"); //$NON-NLS-1$
 		}
 	}
 
@@ -1288,7 +1289,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	@Override
 	public CommentTextMemory createCommentTextMemory(Element parent, javax.lang.model.element.Element element, HtmlFactoryContext context) {
-		assert parent != null : "parent argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		return new CommentTextMemoryImpl(parent, element, context);
 	}
 	
@@ -1300,9 +1301,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		return memory.hasDocumentationText();
 	}
 
-	private String normalizeNewlines(String text) {
+	private static String normalizeNewlines(String text) {
 		if (Strings.isNullOrEmpty(text)) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		final StringBuilder sb = new StringBuilder();
 		final int textLength = text.length();
@@ -1322,6 +1323,8 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				if (i + 1 < textLength && text.charAt(i + 1) == '\n')
 					i++;
 				pos = i + 1;
+				break;
+			default:
 				break;
 			}
 		}
@@ -1575,7 +1578,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (this.titleStyle != null) {
 				titleBox.addClass(this.titleStyle.getCssClassname());
 			}
-			titleBox.attr(ONCLICK_ATTR, "openTabElement(this,'" + id + "', '" + this.tabButtonClassname + "', '" + this.tabContentClassname + "')");
+			titleBox.attr(ONCLICK_ATTR, "openTabElement(this,'" + id + "', '" + this.tabButtonClassname + "', '" + this.tabContentClassname + "')"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			titleBox.addClass(this.tabButtonClassname);
 			if (isFirst) {
 				titleBox.addClass(ACTIVE_ATTR_VALUE);
@@ -1700,15 +1703,15 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		@Override
 		public String toString() {
 			if (this.typeElement != null) {
-				return this.name + ": " + this.typeElement.toString();
+				return this.name + ": " + this.typeElement.toString(); //$NON-NLS-1$
 			}
 			if (this.variableElement != null) {
-				return this.name + ": " + this.variableElement.toString();
+				return this.name + ": " + this.variableElement.toString(); //$NON-NLS-1$
 			}
 			if (this.executableElement != null) {
-				return this.name + ": " + this.executableElement.toString();
+				return this.name + ": " + this.executableElement.toString(); //$NON-NLS-1$
 			}
-			return this.name + ": " + this.node.toString();
+			return this.name + ": " + this.node.toString(); //$NON-NLS-1$
 		}
 
 	}
@@ -1884,7 +1887,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 					} else {
 						innerLabel = stackElement.node.toString().trim();
 					}
-					if (innerLabel.startsWith("\"")) {
+					if (innerLabel.startsWith("\"")) { //$NON-NLS-1$
 						// The node contains an URL
 						int index = innerLabel.lastIndexOf('"');
 						if (index >=2) {
@@ -1901,7 +1904,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 								}
 							}
 						}
-					} else if (innerLabel.startsWith("<")) {
+					} else if (innerLabel.startsWith("<")) { //$NON-NLS-1$
 						// The node contains an hyperref tag
 						final List<Node> list = new ArrayList<>();
 						list.add(new TextNode(innerLabel));
@@ -1925,7 +1928,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				return list; 
 			}
 			final List<Node> list = new ArrayList<>();
-			list.add(new TextNode(""));
+			list.add(new TextNode("")); //$NON-NLS-1$
 			return list; 
 		}
 
@@ -1975,7 +1978,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 		@Override
 		public Void visitDocComment(DocCommentTree node, Void p) {
-			return errorAction("<!-- -->", node);
+			return errorAction("<!-- -->", node); //$NON-NLS-1$
 		}
 
 		@Override
@@ -1996,14 +1999,14 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			final String name = node.getName().toString();
 			final Element top = this.memory.getTop();
 			if (node.getValueKind() == ValueKind.EMPTY) {
-				top.attr(name, "");
+				top.attr(name, ""); //$NON-NLS-1$
 			} else {
 				final Element valueElement = new Element(HtmlTags.HIDDEN_PSEUDO_TAG);
 				this.memory.pushElement(HtmlTags.HIDDEN_PSEUDO_TAG, valueElement);
 				groupAccept(node.getValue());
 				this.memory.removeTo(valueElement);
 				if (valueElement.childNodeSize() == 0) {
-					top.attr(name, "");
+					top.attr(name, ""); //$NON-NLS-1$
 				} else {
 					top.attr(name, valueElement.text());
 				}
@@ -2131,8 +2134,8 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			// The javadoc parser keeps the HTML comment tags in the text.
 			// They should be removed.
 			String text = node.getBody();
-			text = text.replaceFirst("^\\s*" + Pattern.quote("<!--") + "\\s*", "");
-			text = text.replaceFirst("\\s*" + Pattern.quote("-->") + "\\s*$", "");
+			text = text.replaceFirst("^\\s*" + Pattern.quote("<!--") + "\\s*", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			text = text.replaceFirst("\\s*" + Pattern.quote("-->") + "\\s*$", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			//
 			final Comment cmt = new Comment(text);
 			this.memory.changeDocumentationText();
@@ -2470,7 +2473,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 							}
 						} else if (stackElement.executableElement != null) {
 							final ExecutableElement executable = stackElement.executableElement;
-							final String basename = element.getKind() == ElementKind.CONSTRUCTOR ? getSARLGrammarKeywordAccess().getNewKeyword() : element.getSimpleName().toString();
+							final String basename = this.element.getKind() == ElementKind.CONSTRUCTOR ? getSARLGrammarKeywordAccess().getNewKeyword() : this.element.getSimpleName().toString();
 							final List<Node> label = getExecutablePrototype(executable, basename, this.context);
 							final Collection<? extends Node> list = createExecutableLink(executable, label, null, this.context);
 							if (!list.isEmpty()) {

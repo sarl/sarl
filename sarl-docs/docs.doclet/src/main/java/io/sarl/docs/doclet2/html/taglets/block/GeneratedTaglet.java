@@ -44,8 +44,10 @@ public class GeneratedTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "generated";
+	public static final String TAGLET_NAME = "generated"; //$NON-NLS-1$
 
+	/** Constructor.
+	 */
 	public GeneratedTaglet() {
 		super(TAGLET_NAME.toLowerCase(), false, Location.values());
 	}
@@ -55,6 +57,7 @@ public class GeneratedTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_GENERATED_COMMENT;
 	}
@@ -70,8 +73,8 @@ public class GeneratedTaglet extends AbstractSarlTaglet {
 			if (first) {
 				first = false;
 			} else {
-				if (!parent.html().toString().endsWith(".")) {
-					parent.appendText(".");
+				if (!parent.html().toString().endsWith(".")) { //$NON-NLS-1$
+					parent.appendText("."); //$NON-NLS-1$
 				}
 				getHtmlFactory().createSecableSpace(parent);
 			}

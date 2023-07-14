@@ -52,12 +52,6 @@ public interface HtmlFactoryContext extends ExternalLinkManagerContext {
 	 */
 	Path getPathToRoot();
 
-	/** Replies the CLI options.
-	 *
-	 * @return the options.
-	 */
-	DocletOptions getCliOptions();
-
 	/** Replies the manager of taglets.
 	 *
 	 * @return the manager of taglets
@@ -72,7 +66,7 @@ public interface HtmlFactoryContext extends ExternalLinkManagerContext {
 
 	/** Replies the finder of fully qualified names for types.
 	 *
-	 * @pazram element the current element.
+	 * @param element the current element.
 	 * @return the fully qualified name finder.
 	 */
 	QualifiedNameSetBuilder getQualifiedNameSetBuilder(Element element); 

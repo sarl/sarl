@@ -252,18 +252,18 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		final String displayName = toClassDisplayName(relativeInputFile, basicTestName, generalTestName);
 		
-		it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
-		it.append("@").append(Tag.class).append("(\"documentation\")").newLine();
-		it.append("@").append(Tag.class).append("(\"doc\")").newLine();
-		it.append("public class ").append(generalTestName).append(" extends ")
-			.append(BASE_PACKAGE).append(".AbstractBaseTest").append(" {").increaseIndentation().newLine();
+		it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		it.append("@").append(Tag.class).append("(\"documentation\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("@").append(Tag.class).append("(\"doc\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("public class ").append(generalTestName).append(" extends ") //$NON-NLS-1$ //$NON-NLS-2$
+			.append(BASE_PACKAGE).append(".AbstractBaseTest").append(" {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		generateTestsForSuccessCode(it, importManager, relativeInputFile, successCompilationComponents);
 		generateTestsForFailureCode(it, importManager, relativeInputFile, failureCompilationComponents);
 		generateTestsForFacts(it, importManager, relativeInputFile, factualComponents);
 		generateDynamicTests(it, importManager, relativeInputFile, specificComponents);
 
-		it.decreaseIndentation().newLine().append("}").newLine();
+		it.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
 
 		final File packagePath = relativeInputFile.getParentFile();
 		final String packageName = toPackageName("docs", packagePath); //$NON-NLS-1$
@@ -293,18 +293,18 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					null);
 			final ITreeAppendable it = parent.trace(location);
 			//
-			it.append("@").append(Test.class).newLine();
-			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
-			it.append("@").append(Tag.class).append("(\"success\")").newLine();
-			it.append("@").append(Tag.class).append("(\"success_").append(Integer.toString(i)).append("\")").newLine();
-			it.append("public void ").append(actionName).append("() throws ")
-				.append(Exception.class).append(" {").increaseIndentation().newLine();
-			it.append(List.class).append("<String> issues = getScriptExecutor().compile(")
-				.append(str(component.getLinenoInSourceFile())).append(", \"")
-				.append(str(component.getCode())).append("\");").newLine();
-			it.append("assertNoIssue(").append(str(component.getLinenoInSourceFile()))
-				.append(", issues);").decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
+			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("@").append(Tag.class).append("(\"success\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("@").append(Tag.class).append("(\"success_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
+				.append(str(component.getLinenoInSourceFile())).append(", \"") //$NON-NLS-1$
+				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
+			it.append("assertNoIssue(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append(", issues);").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}").newLine(); //$NON-NLS-1$
 			//
 			++i;
 		}
@@ -331,18 +331,18 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					null);
 			final ITreeAppendable it = parent.trace(location);
 			//
-			it.append("@").append(Test.class).newLine();
-			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
-			it.append("@").append(Tag.class).append("(\"failure\")").newLine();
-			it.append("@").append(Tag.class).append("(\"failure_").append(Integer.toString(i)).append("\")").newLine();
-			it.append("public void ").append(actionName).append("() throws ")
-				.append(Exception.class).append(" {").increaseIndentation().newLine();
-			it.append(List.class).append("<String> issues = getScriptExecutor().compile(")
-				.append(str(component.getLinenoInSourceFile())).append(", \"")
-				.append(str(component.getCode())).append("\");").newLine();
-			it.append("assertIssues(").append(str(component.getLinenoInSourceFile()))
-				.append(", issues);").decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
+			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("@").append(Tag.class).append("(\"failure\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("@").append(Tag.class).append("(\"failure_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
+				.append(str(component.getLinenoInSourceFile())).append(", \"") //$NON-NLS-1$
+				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
+			it.append("assertIssues(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append(", issues);").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}").newLine(); //$NON-NLS-1$
 			//
 			++i;
 		}
@@ -369,38 +369,38 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					null);
 			final ITreeAppendable it = parent.trace(location);
 			//
-			it.append("@").append(Test.class).newLine();
-			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
-			it.append("@").append(Tag.class).append("(\"fact\")").newLine();
-			it.append("@").append(Tag.class).append("(\"fact_").append(Integer.toString(i)).append("\")").newLine();
-			it.append("public void ").append(actionName).append("() throws ")
-				.append(Exception.class).append(" {").increaseIndentation().newLine();
-			it.append("final String expected = ").append(Utils.class).append(".dump(")
-				.append(Boolean.class).append(".TRUE, false) + \"\\nOR\\nObject {\\n}\\n\";").newLine();
-			it.append("Object result;").newLine();
-			it.append("try {").increaseIndentation().newLine();
-			it.append("result = getScriptExecutor().execute(").append(str(component.getLinenoInSourceFile()))
-				.append(", \"").append(str(component.getCode())).append("\");").decreaseIndentation().newLine();
-			it.append("} catch (").append(Throwable.class).append(" exception) {").increaseIndentation().newLine();
-			it.append("throw new ").append(AssertionFailedError.class)
-				.append("(exception.getLocalizedMessage() + \" [line: ")
-				.append(str(component.getLinenoInSourceFile())).append("]\", expected, ")
-				.append(Throwables.class).append(".getStackTraceAsString(exception));").decreaseIndentation().newLine();
-			it.append("}").newLine();
-			it.append("if (result instanceof ").append(Boolean.class).append(") {").increaseIndentation().newLine();
-			it.append("boolean boolResult = ((").append(Boolean.class).append(") result).booleanValue();").newLine();
-			it.append("if (!boolResult) {").increaseIndentation().newLine();
-			it.append("throw new ").append(AssertionFailedError.class)
-				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile()))
-				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine();
-			it.append("}").decreaseIndentation().newLine();
-			it.append("} else if (result == null || result instanceof ").append(Exception.class)
-				.append(") {").increaseIndentation().newLine();
-			it.append("throw new ").append(AssertionFailedError.class)
-				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile()))
-				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine();
-			it.append("}").decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
+			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("@").append(Tag.class).append("(\"fact\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("@").append(Tag.class).append("(\"fact_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("final String expected = ").append(Utils.class).append(".dump(") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Boolean.class).append(".TRUE, false) + \"\\nOR\\nObject {\\n}\\n\";").newLine(); //$NON-NLS-1$
+			it.append("Object result;").newLine(); //$NON-NLS-1$
+			it.append("try {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("result = getScriptExecutor().execute(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append(", \"").append(str(component.getCode())).append("\");").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("} catch (").append(Throwable.class).append(" exception) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
+				.append("(exception.getLocalizedMessage() + \" [line: ") //$NON-NLS-1$
+				.append(str(component.getLinenoInSourceFile())).append("]\", expected, ") //$NON-NLS-1$
+				.append(Throwables.class).append(".getStackTraceAsString(exception));").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}").newLine(); //$NON-NLS-1$
+			it.append("if (result instanceof ").append(Boolean.class).append(") {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("boolean boolResult = ((").append(Boolean.class).append(") result).booleanValue();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("if (!boolResult) {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
+				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("} else if (result == null || result instanceof ").append(Exception.class) //$NON-NLS-1$
+				.append(") {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
+				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}").newLine(); //$NON-NLS-1$
 			//
 			++i;
 		}
@@ -412,7 +412,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		for (final DynamicValidationComponent component : specificComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_4,
 					inputFile.getName(), component.functionName() + i));
-			final String actionName = toActionName("dyn_" + component.functionName(), component, i);
+			final String actionName = toActionName("dyn_" + component.functionName(), component, i); //$NON-NLS-1$
 			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_10, i, component);
 			final ILocationData location = new LocationData(
 					// Offset
@@ -427,15 +427,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					null);
 			final ITreeAppendable it = parent.trace(location);
 			//
-			it.append("@").append(Test.class).newLine();
-			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
-			it.append("@").append(Tag.class).append("(\"other\")").newLine();
-			it.append("@").append(Tag.class).append("(\"other_").append(Integer.toString(i)).append("\")").newLine();
-			it.append("public void ").append(actionName).append("() throws ")
-				.append(Exception.class).append(" {").increaseIndentation().newLine();
+			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
+			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("@").append(Tag.class).append("(\"other\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("@").append(Tag.class).append("(\"other_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
 			component.generateValidationCode(it);
 			it.decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("}").newLine(); //$NON-NLS-1$
 			//
 			++i;
 		}
@@ -457,22 +457,22 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:npathcomplexity", "deprecation"})
 	private void generateAbstractTest(File outputFolder) throws IOException {
-		getLog().debug(Messages.GenerateTestsMojo_5); //$NON-NLS-1$
+		getLog().debug(Messages.GenerateTestsMojo_5);
 		final ImportManager importManager = new ImportManager();
 		final ITreeAppendable it = new FakeTreeAppendable(importManager);
 
-		it.append("@").append(SuppressWarnings.class).append("(\"all\")").newLine();
-		it.append("public class AbstractBaseTest {").increaseIndentation().newLine();
-		it.append("protected static String STR_SUCCESS = \"success\";").newLine();
-		it.append("protected static String STR_FAILURE = \"failure\";").newLine();
-		it.append("protected static String STR_FACT = \"fact\";").newLine();
-		it.append("private static ").append(Injector.class).append(" injector = ")
-			.append(DocumentationSetup.class).append(".doSetup();").newLine();
-		it.append("private ").append(ScriptExecutor.class).append(" scriptExecutor;").newLine();
+		it.append("@").append(SuppressWarnings.class).append("(\"all\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("public class AbstractBaseTest {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("protected static String STR_SUCCESS = \"success\";").newLine(); //$NON-NLS-1$
+		it.append("protected static String STR_FAILURE = \"failure\";").newLine(); //$NON-NLS-1$
+		it.append("protected static String STR_FACT = \"fact\";").newLine(); //$NON-NLS-1$
+		it.append("private static ").append(Injector.class).append(" injector = ") //$NON-NLS-1$ //$NON-NLS-2$
+			.append(DocumentationSetup.class).append(".doSetup();").newLine(); //$NON-NLS-1$
+		it.append("private ").append(ScriptExecutor.class).append(" scriptExecutor;").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		it.append("protected ").append(ScriptExecutor.class).append(" getScriptExecutor() {").increaseIndentation().newLine();
-		it.append("if (this.scriptExecutor == null) {").increaseIndentation().newLine();
-		it.append("this.scriptExecutor = this.injector.getInstance(").append(ScriptExecutor.class).append(".class);").newLine();
+		it.append("protected ").append(ScriptExecutor.class).append(" getScriptExecutor() {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("if (this.scriptExecutor == null) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("this.scriptExecutor = this.injector.getInstance(").append(ScriptExecutor.class).append(".class);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final StringBuilder cp = new StringBuilder();
 		for (final File cpElement : getClassPath()) {
@@ -481,7 +481,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			}
 			cp.append(cpElement.getAbsolutePath());
 		}
-		it.append("scriptExecutor.setClassPath(\"").append(str(cp)).append("\");").newLine();
+		it.append("scriptExecutor.setClassPath(\"").append(str(cp)).append("\");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final StringBuilder mp = new StringBuilder();
 		for (final File mpElement : getModulePath()) {
@@ -490,7 +490,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			}
 			mp.append(mpElement.getAbsolutePath());
 		}
-		it.append("scriptExecutor.setModulePath(\"").append(str(mp)).append("\");").newLine();
+		it.append("scriptExecutor.setModulePath(\"").append(str(mp)).append("\");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final String bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {
@@ -516,163 +516,163 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		if (version == null) {
 			throw new IllegalStateException("unknown Java version"); //$NON-NLS-1$
 		}
-		it.append("scriptExecutor.setJavaSourceVersion(\"").append(version.getQualifier()).append("\");").newLine();
+		it.append("scriptExecutor.setJavaSourceVersion(\"").append(version.getQualifier()).append("\");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		it.append("scriptExecutor.setTempFolder(new ").append(File.class).append("(\"")
-		.append(str(this.tempDirectory.getAbsolutePath())).append("\"));")
+		it.append("scriptExecutor.setTempFolder(new ").append(File.class).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$
+		.append(str(this.tempDirectory.getAbsolutePath())).append("\"));") //$NON-NLS-1$
 		.decreaseIndentation().newLine();
 
-		it.append("}").newLine();
-		it.append("return this.scriptExecutor;").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("return this.scriptExecutor;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public void assertNoIssue(int lineno, ").append(List.class).append("<String> issues) {")
+		it.append("public void assertNoIssue(int lineno, ").append(List.class).append("<String> issues) {") //$NON-NLS-1$ //$NON-NLS-2$
 		.increaseIndentation().newLine();
-		it.append("if (issues != null && !issues.isEmpty()) {").increaseIndentation().newLine();
-		it.append(StringBuilder.class).append(" msg = new ").append(StringBuilder.class).append("();").newLine();
-		it.append("for (String message : issues) {").increaseIndentation().newLine();
-		it.append("msg.append(message).append(\"\\n\");").decreaseIndentation().newLine();
-		it.append("}").newLine();
-		it.append("throw new ").append(AssertionFailedError.class)
-		.append("(\"Expecting no issue but find one [line:\" + lineno + \"]\\n\" + msg, \"\", msg.toString());")
+		it.append("if (issues != null && !issues.isEmpty()) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append(StringBuilder.class).append(" msg = new ").append(StringBuilder.class).append("();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("for (String message : issues) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("msg.append(message).append(\"\\n\");").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
+		.append("(\"Expecting no issue but find one [line:\" + lineno + \"]\\n\" + msg, \"\", msg.toString());") //$NON-NLS-1$
 		.decreaseIndentation().newLine();
-		it.append("}").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public void assertIssues(int lineno, ").append(List.class).append("<String> issues) {")
+		it.append("public void assertIssues(int lineno, ").append(List.class).append("<String> issues) {") //$NON-NLS-1$ //$NON-NLS-2$
 		.increaseIndentation().newLine();
-		it.append("if (issues == null || issues.isEmpty()) {").increaseIndentation().newLine();
-		it.append(Assertions.class).append(".fail(\"Expecting issues but did not find one [line:\" + lineno + \"]\");")
+		it.append("if (issues == null || issues.isEmpty()) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append(Assertions.class).append(".fail(\"Expecting issues but did not find one [line:\" + lineno + \"]\");") //$NON-NLS-1$
 		.decreaseIndentation().newLine();
-		it.append("}").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public String computeHeaderIdWithSectionNumber(String header) {").increaseIndentation().newLine();
-		it.append("String id = header.replaceAll(\"[^a-zA-Z0-9]+\", \"-\");").newLine();
-		it.append("id = id.toLowerCase();").newLine();
-		it.append("id = id.replaceFirst(\"^[^a-zA-Z0-9]+\", \"\");").newLine();
-		it.append("id = id.replaceFirst(\"[^a-zA-Z0-9]+$\", \"\");").newLine();
-		it.append("if (").append(Strings.class).append(".isEmpty(id)) {").increaseIndentation().newLine();
-		it.append("return \"section\";").decreaseIndentation().newLine();
-		it.append("}").newLine();
-		it.append("return id;").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("public String computeHeaderIdWithSectionNumber(String header) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("String id = header.replaceAll(\"[^a-zA-Z0-9]+\", \"-\");").newLine(); //$NON-NLS-1$
+		it.append("id = id.toLowerCase();").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"^[^a-zA-Z0-9]+\", \"\");").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"[^a-zA-Z0-9]+$\", \"\");").newLine(); //$NON-NLS-1$
+		it.append("if (").append(Strings.class).append(".isEmpty(id)) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("return \"section\";").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("return id;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public String computeHeaderIdWithoutSectionNumber(String header) {").increaseIndentation().newLine();
-		it.append("String id = computeHeaderIdWithSectionNumber(header);").newLine();
-		it.append("id = id.replaceFirst(\"^[0-9.\\\\-]+\", \"\");").newLine();
-		it.append("return id;").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("public String computeHeaderIdWithoutSectionNumber(String header) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("String id = computeHeaderIdWithSectionNumber(header);").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"^[0-9.\\\\-]+\", \"\");").newLine(); //$NON-NLS-1$
+		it.append("return id;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public static String getHttpCodeExplanation(int code) {").increaseIndentation().newLine();
-		it.append("switch (code) {").increaseIndentation().newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_METHOD: return \"Method Not Allowed\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CREATED: return \"Created\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_ACCEPTED: return \"Accepted\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_AUTHORITATIVE: return \"Non-Authoritative Information\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NO_CONTENT: return \"No Content\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_RESET: return \"Reset Content\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PARTIAL: return \"Partial Content\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MULT_CHOICE: return \"Multiple Choices\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MOVED_PERM: return \"Moved Permanently\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MOVED_TEMP: return \"Temporary Redirect\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_SEE_OTHER: return \"See Other\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_MODIFIED: return \"Not Modified\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_USE_PROXY: return \"Use Proxy\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_REQUEST: return \"Bad Request\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNAUTHORIZED: return \"Unauthorized\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PAYMENT_REQUIRED: return \"Payment Required\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_FORBIDDEN: return \"Forbidden\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_FOUND: return \"Not Found\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_ACCEPTABLE: return \"Not Acceptable\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PROXY_AUTH: return \"Proxy Authentication Required\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CLIENT_TIMEOUT: return \"Request Time-Out\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CONFLICT: return \"Conflict\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_GONE: return \"Gone\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_LENGTH_REQUIRED: return \"Length Required\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PRECON_FAILED: return \"Precondition Failed\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_ENTITY_TOO_LARGE: return \"Request Entity Too Large\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_REQ_TOO_LONG: return \"Request-URI Too Large\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNSUPPORTED_TYPE: return \"Unsupported Media Type\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_INTERNAL_ERROR: return \"Internal Server Error\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_IMPLEMENTED: return \"Not Implemented\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_GATEWAY: return \"Bad Gateway\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNAVAILABLE: return \"Service Unavailable\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_GATEWAY_TIMEOUT: return \"Gateway Timeout\";").newLine();
-		it.append("case ").append(HttpURLConnection.class).append(".HTTP_VERSION: return \"HTTP Version Not Supported\";").newLine();
-		it.append("default: return null;").decreaseIndentation().newLine();
-		it.append("}").decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("public static String getHttpCodeExplanation(int code) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("switch (code) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_METHOD: return \"Method Not Allowed\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CREATED: return \"Created\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_ACCEPTED: return \"Accepted\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_AUTHORITATIVE: return \"Non-Authoritative Information\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NO_CONTENT: return \"No Content\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_RESET: return \"Reset Content\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PARTIAL: return \"Partial Content\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MULT_CHOICE: return \"Multiple Choices\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MOVED_PERM: return \"Moved Permanently\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_MOVED_TEMP: return \"Temporary Redirect\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_SEE_OTHER: return \"See Other\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_MODIFIED: return \"Not Modified\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_USE_PROXY: return \"Use Proxy\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_REQUEST: return \"Bad Request\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNAUTHORIZED: return \"Unauthorized\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PAYMENT_REQUIRED: return \"Payment Required\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_FORBIDDEN: return \"Forbidden\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_FOUND: return \"Not Found\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_ACCEPTABLE: return \"Not Acceptable\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PROXY_AUTH: return \"Proxy Authentication Required\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CLIENT_TIMEOUT: return \"Request Time-Out\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_CONFLICT: return \"Conflict\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_GONE: return \"Gone\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_LENGTH_REQUIRED: return \"Length Required\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_PRECON_FAILED: return \"Precondition Failed\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_ENTITY_TOO_LARGE: return \"Request Entity Too Large\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_REQ_TOO_LONG: return \"Request-URI Too Large\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNSUPPORTED_TYPE: return \"Unsupported Media Type\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_INTERNAL_ERROR: return \"Internal Server Error\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_NOT_IMPLEMENTED: return \"Not Implemented\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_BAD_GATEWAY: return \"Bad Gateway\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_UNAVAILABLE: return \"Service Unavailable\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_GATEWAY_TIMEOUT: return \"Gateway Timeout\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("case ").append(HttpURLConnection.class).append(".HTTP_VERSION: return \"HTTP Version Not Supported\";").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("default: return null;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public static boolean isAcceptableHttpCode(int code) {").increaseIndentation().newLine();
-		it.append("return code == ").append(HttpURLConnection.class)
-		.append(".HTTP_OK || code == ").append(HttpURLConnection.class).append(".HTTP_MOVED_TEMP;")
+		it.append("public static boolean isAcceptableHttpCode(int code) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("return code == ").append(HttpURLConnection.class) //$NON-NLS-1$
+		.append(".HTTP_OK || code == ").append(HttpURLConnection.class).append(".HTTP_MOVED_TEMP;") //$NON-NLS-1$ //$NON-NLS-2$
 		.decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("}").newLine(); //$NON-NLS-1$
 
-		it.append("public static void assertURLAccessibility(int lineno, ").append(URL.class)
-		.append(" url) throws ").append(Exception.class).append(" {").increaseIndentation().newLine();
-		it.append("int code;").newLine();
-		it.append(HttpURLConnection.class).append(".setFollowRedirects(false);").newLine();
-		it.append(URLConnection.class).append(" connection = url.openConnection();").newLine();
-		it.append(Assumptions.class).append(".assumeTrue(connection instanceof ")
-		.append(HttpURLConnection.class).append(", \"Not an UTL with http[s] protocol\");").newLine();
-		it.append(HttpURLConnection.class).append(" httpConnection = (").append(HttpURLConnection.class)
-		.append(") connection;").newLine();
-		it.append("try {").increaseIndentation().newLine();
-		it.append("httpConnection.setInstanceFollowRedirects(false);").newLine();
-		it.append("httpConnection.setConnectTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine();
-		it.append("httpConnection.setReadTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine();
-		it.append("httpConnection.setAllowUserInteraction(false);").newLine();
-		it.append("httpConnection.setRequestMethod(\"HEAD\");").newLine();
-		it.append("httpConnection.connect();").newLine();
-		it.append("code = httpConnection.getResponseCode();").decreaseIndentation().newLine();
-		it.append("} catch (").append(IOException.class).append(" exception) {").increaseIndentation().newLine();
-		it.append(Throwable.class).append(" rootCause = ").append(Throwables.class).append(".getRootCause(exception);").newLine();
+		it.append("public static void assertURLAccessibility(int lineno, ").append(URL.class) //$NON-NLS-1$
+		.append(" url) throws ").append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("int code;").newLine(); //$NON-NLS-1$
+		it.append(HttpURLConnection.class).append(".setFollowRedirects(false);").newLine(); //$NON-NLS-1$
+		it.append(URLConnection.class).append(" connection = url.openConnection();").newLine(); //$NON-NLS-1$
+		it.append(Assumptions.class).append(".assumeTrue(connection instanceof ") //$NON-NLS-1$
+		.append(HttpURLConnection.class).append(", \"Not an UTL with http[s] protocol\");").newLine(); //$NON-NLS-1$
+		it.append(HttpURLConnection.class).append(" httpConnection = (").append(HttpURLConnection.class) //$NON-NLS-1$
+		.append(") connection;").newLine(); //$NON-NLS-1$
+		it.append("try {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("httpConnection.setInstanceFollowRedirects(false);").newLine(); //$NON-NLS-1$
+		it.append("httpConnection.setConnectTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("httpConnection.setReadTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("httpConnection.setAllowUserInteraction(false);").newLine(); //$NON-NLS-1$
+		it.append("httpConnection.setRequestMethod(\"HEAD\");").newLine(); //$NON-NLS-1$
+		it.append("httpConnection.connect();").newLine(); //$NON-NLS-1$
+		it.append("code = httpConnection.getResponseCode();").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("} catch (").append(IOException.class).append(" exception) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append(Throwable.class).append(" rootCause = ").append(Throwables.class).append(".getRootCause(exception);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 		if (this.ignoreRemoteLinkTimeOut) {
-			it.append("if (rootCause instanceof ").append(SocketTimeoutException.class).append(") {").increaseIndentation().newLine();
-			it.append("throw new ").append(TestAbortedException.class)
-			.append("(\"Connection time-out at line \" + lineno + \" when connecting to: \" + url.toExternalForm());")
+			it.append("if (rootCause instanceof ").append(SocketTimeoutException.class).append(") {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("throw new ").append(TestAbortedException.class) //$NON-NLS-1$
+			.append("(\"Connection time-out at line \" + lineno + \" when connecting to: \" + url.toExternalForm());") //$NON-NLS-1$
 			.decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("}").newLine(); //$NON-NLS-1$
 		}
-		it.append("throw new ").append(RuntimeException.class)
-		.append("(\"Error at line \" + lineno + \" when connecting to: \" + url.toExternalForm(), rootCause);")
+		it.append("throw new ").append(RuntimeException.class) //$NON-NLS-1$
+		.append("(\"Error at line \" + lineno + \" when connecting to: \" + url.toExternalForm(), rootCause);") //$NON-NLS-1$
 		.decreaseIndentation().newLine();
-		it.append("} finally {").increaseIndentation().newLine();
-		it.append("httpConnection.disconnect();").decreaseIndentation().newLine();
-		it.append("}").newLine();
-		it.append("if (isAcceptableHttpCode(code)) {").increaseIndentation().newLine();
-		it.append("return;").decreaseIndentation().newLine();
-		it.append("}").newLine();
-		it.append("String explanation = getHttpCodeExplanation(code);").newLine();
-		it.append("String codeMsg = !").append(Strings.class).append(".isEmpty(explanation) ? code + \"\\\"\" + explanation + \"\\\"\" : Integer.toString(code);")
+		it.append("} finally {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("httpConnection.disconnect();").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("if (isAcceptableHttpCode(code)) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("return;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("String explanation = getHttpCodeExplanation(code);").newLine(); //$NON-NLS-1$
+		it.append("String codeMsg = !").append(Strings.class).append(".isEmpty(explanation) ? code + \"\\\"\" + explanation + \"\\\"\" : Integer.toString(code);") //$NON-NLS-1$ //$NON-NLS-2$
 		.newLine();
-		it.append(Assertions.class).append(".fail(\"Invalid response code \" + codeMsg + \" at line \" + lineno + \" when connecting to: \" + url.toExternalForm());")
+		it.append(Assertions.class).append(".fail(\"Invalid response code \" + codeMsg + \" at line \" + lineno + \" when connecting to: \" + url.toExternalForm());") //$NON-NLS-1$
 		.decreaseIndentation().newLine();
-		it.append("}").newLine();
+		it.append("}").newLine(); //$NON-NLS-1$
 
 		if (!this.session.isOffline() && !this.session.getRequest().getProxies().isEmpty()) {
 
-			it.append("private static boolean proxyNameMatches(String pattern, String name) {").increaseIndentation().newLine();
-			it.append(Pattern.class).append(" pat = ").append(Pattern.class)
-			.append(".compile(pattern, ").append(Pattern.class).append(".CASE_INSENSITIVE);").newLine();
-			it.append(Matcher.class).append(" mat = pat.matcher(name);").newLine();
-			it.append("return mat.matches();").decreaseIndentation().newLine();
-			it.append("}").newLine();
+			it.append("private static boolean proxyNameMatches(String pattern, String name) {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append(Pattern.class).append(" pat = ").append(Pattern.class) //$NON-NLS-1$
+			.append(".compile(pattern, ").append(Pattern.class).append(".CASE_INSENSITIVE);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append(Matcher.class).append(" mat = pat.matcher(name);").newLine(); //$NON-NLS-1$
+			it.append("return mat.matches();").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}").newLine(); //$NON-NLS-1$
 
-			it.append("static {").increaseIndentation().newLine();
-			it.append("final ").append(ProxySelector.class).append(" defaultSelector = ")
-			.append(ProxySelector.class).append(".getDefault();").newLine();
-			it.append(ProxySelector.class).append(" newSelector = new ")
-			.append(ProxySelector.class).append("() {").increaseIndentation().newLine();
-			it.append("public ").append(List.class).append("<").append(Proxy.class)
-			.append("> select(").append(java.net.URI.class).append(" uri) {").increaseIndentation().newLine();
-			it.append(List.class).append("<").append(Proxy.class).append("> proxies = new ")
-			.append(ArrayList.class).append("(defaultSelector.select(uri));").newLine();
+			it.append("static {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("final ").append(ProxySelector.class).append(" defaultSelector = ") //$NON-NLS-1$ //$NON-NLS-2$
+			.append(ProxySelector.class).append(".getDefault();").newLine(); //$NON-NLS-1$
+			it.append(ProxySelector.class).append(" newSelector = new ") //$NON-NLS-1$
+			.append(ProxySelector.class).append("() {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("public ").append(List.class).append("<").append(Proxy.class) //$NON-NLS-1$ //$NON-NLS-2$
+			.append("> select(").append(java.net.URI.class).append(" uri) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append(List.class).append("<").append(Proxy.class).append("> proxies = new ") //$NON-NLS-1$ //$NON-NLS-2$
+			.append(ArrayList.class).append("(defaultSelector.select(uri));").newLine(); //$NON-NLS-1$
 
 			for (final org.apache.maven.settings.Proxy proxy : this.session.getRequest().getProxies()) {
-				it.append("if (\"").append(str(proxy.getProtocol())).append("\".equals(uri.getScheme())) {").increaseIndentation().newLine();
+				it.append("if (\"").append(str(proxy.getProtocol())).append("\".equals(uri.getScheme())) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
 				final String nonProxyHosts = proxy.getNonProxyHosts();
 				boolean hasProxy = false;
@@ -698,10 +698,10 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					}
 				}
 
-				it.append("proxies.add(new ").append(Proxy.class).append("(")
-				.append(Type.class).append(".HTTP, new ").append(InetSocketAddress.class)
-				.append("(\"").append(str(proxy.getHost())).append("\", ")
-				.append(str(proxy.getPort())).append(")));");
+				it.append("proxies.add(new ").append(Proxy.class).append("(") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Type.class).append(".HTTP, new ").append(InetSocketAddress.class) //$NON-NLS-1$
+				.append("(\"").append(str(proxy.getHost())).append("\", ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(str(proxy.getPort())).append(")));"); //$NON-NLS-1$
 
 				if (hasProxy) {
 					it.decreaseIndentation().newLine();
@@ -712,20 +712,20 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 				it.append("}"); //$NON-NLS-1$
 			}
 
-			it.newLine().append("return ").append(Collections.class).append(".unmodifiableList(proxies);")
+			it.newLine().append("return ").append(Collections.class).append(".unmodifiableList(proxies);") //$NON-NLS-1$ //$NON-NLS-2$
 			.decreaseIndentation().newLine();
-			it.append("}").newLine();
-			it.append("public void connectFailed(").append(java.net.URI.class).append(" uri, ")
-			.append(SocketAddress.class).append(" sa, ").append(IOException.class).append(" ioe) {")
+			it.append("}").newLine(); //$NON-NLS-1$
+			it.append("public void connectFailed(").append(java.net.URI.class).append(" uri, ") //$NON-NLS-1$ //$NON-NLS-2$
+			.append(SocketAddress.class).append(" sa, ").append(IOException.class).append(" ioe) {") //$NON-NLS-1$ //$NON-NLS-2$
 			.increaseIndentation().newLine();
-			it.append("throw new ").append(RuntimeException.class).append("(ioe);").decreaseIndentation().newLine();
-			it.append("}").decreaseIndentation().newLine();
-			it.append("};").newLine();
-			it.append(ProxySelector.class).append(".setDefault(newSelector);").decreaseIndentation().newLine();
-			it.append("}");
+			it.append("throw new ").append(RuntimeException.class).append("(ioe);").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("};").newLine(); //$NON-NLS-1$
+			it.append(ProxySelector.class).append(".setDefault(newSelector);").decreaseIndentation().newLine(); //$NON-NLS-1$
+			it.append("}"); //$NON-NLS-1$
 		}
 
-		it.decreaseIndentation().newLine().append("}").newLine();
+		it.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
 
 		write(outputFolder,
 				BASE_PACKAGE, "AbstractBaseTest", //$NON-NLS-1$
@@ -784,13 +784,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	}
 
 	private static String toTestName(File inputFile) {
-		return Strings.toFirstUpper(FileSystem.shortBasename(inputFile).replaceAll("[^a-zA-Z0-9]+", "")); //$NON-NLS-1$
+		return Strings.toFirstUpper(FileSystem.shortBasename(inputFile).replaceAll("[^a-zA-Z0-9]+", "")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static String toActionName(String name, ValidationComponent component, int index) {
 		final StringBuilder fullName = new StringBuilder();
 		fullName.append(name).append("_").append(index).append("_"); //$NON-NLS-1$ //$NON-NLS-2$
-		fullName.append(component.getLinenoInSourceFile()).append("_to_");
+		fullName.append(component.getLinenoInSourceFile()).append("_to_"); //$NON-NLS-1$
 		fullName.append(component.getEndLinenoInSourceFile());
 		return fullName.toString();
 	}

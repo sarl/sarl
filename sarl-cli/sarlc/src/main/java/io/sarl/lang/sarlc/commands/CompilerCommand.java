@@ -248,6 +248,7 @@ public class CompilerCommand extends CommandWithMetadata {
 			this.builder.setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK).setInitialMax(totalWorkUnits);
 		}
 
+		@SuppressWarnings("resource")
 		@Override
 		public void done() {
 			ensureBar();
@@ -255,6 +256,7 @@ public class CompilerCommand extends CommandWithMetadata {
 			this.bar.close();
 		}
 
+		@SuppressWarnings("resource")
 		@Override
 		public void internalWorked(double workUnits) {
 			ensureBar();
@@ -283,6 +285,7 @@ public class CompilerCommand extends CommandWithMetadata {
 			//
 		}
 
+		@SuppressWarnings("resource")
 		@Override
 		public void worked(int workUnits) {
 			ensureBar();

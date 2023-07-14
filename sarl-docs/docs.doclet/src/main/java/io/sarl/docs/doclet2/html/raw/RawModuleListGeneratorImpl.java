@@ -46,13 +46,15 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class RawModuleListGeneratorImpl extends AbstractDocumentationGenerator implements RawModuleListGenerator {
 
+	/** Constructor.
+	 */
 	public RawModuleListGeneratorImpl() {
 		//
 	}
 
 	@Override
 	protected String getDocumentTitleFor(String elementName) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class RawModuleListGeneratorImpl extends AbstractDocumentationGenerator i
 			final String qn = moduleElement.getQualifiedName().toString();
 			if (!Strings.isNullOrEmpty(qn)) {
 				content.append(qn);
-				content.append("\n"); //$NON-NLS-0$
+				content.append("\n"); //$NON-NLS-1$
 			}
 		}
 		//

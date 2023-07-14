@@ -72,7 +72,7 @@ public abstract class AbstractDoclet implements Doclet {
 		if (parent == null) {
 			this.parent = null;
 		} else {
-			this.parent = new WeakReference<Doclet>(parent);
+			this.parent = new WeakReference<>(parent);
 		}
 	}
 
@@ -164,6 +164,7 @@ public abstract class AbstractDoclet implements Doclet {
 	 *
 	 * @return the source version.
 	 */
+	@SuppressWarnings("static-method")
 	protected SourceVersion determineSourceVersion() {
 		final JavaVersion version = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 		if (version != null) {

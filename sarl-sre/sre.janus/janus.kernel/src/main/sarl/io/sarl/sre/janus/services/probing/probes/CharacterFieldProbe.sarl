@@ -58,6 +58,7 @@ class CharacterFieldProbe extends AbstractFieldProbe<Character> {
 		|| (newValue !== null && oldValue !== null && newValue.charValue === oldValue.charValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Character {
 		try {
 			switch (concreteType) {
@@ -72,6 +73,7 @@ class CharacterFieldProbe extends AbstractFieldProbe<Character> {
 		return null
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Character, concreteType : Class<?>, currentValue : Object) : Object {
 		if (concreteType == typeof(char) && newValue === null) {
 			return 0 as char

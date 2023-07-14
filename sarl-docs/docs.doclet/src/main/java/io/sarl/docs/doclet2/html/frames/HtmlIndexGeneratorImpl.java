@@ -52,64 +52,66 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 
 	/** Name of the main frame for package content.
 	 */
-	public static final String MAIN_PACKAGE_FRAME_NAME = "packageFrame";
+	public static final String MAIN_PACKAGE_FRAME_NAME = "packageFrame"; //$NON-NLS-1$
 	
 	/** Name of the main frame for type content.
 	 */
-	public static final String MAIN_TYPE_FRAME_NAME = "typeFrame";
+	public static final String MAIN_TYPE_FRAME_NAME = "typeFrame"; //$NON-NLS-1$
 
-	private static final String SCRIPT_0 = "    tmpTargetPage = \"\" + window.location.search;\n"
-			+ "    if (tmpTargetPage != \"\" && tmpTargetPage != \"undefined\")\n"
-			+ "        tmpTargetPage = tmpTargetPage.substring(1);\n"
-			+ "    if (tmpTargetPage.indexOf(\":\") != -1 || (tmpTargetPage != \"\" && !validURL(tmpTargetPage)))\n"
-			+ "        tmpTargetPage = \"undefined\";\n"
-			+ "    targetPage = tmpTargetPage;\n"
-			+ "    function validURL(url) {\n"
-			+ "        try {\n"
-			+ "            url = decodeURIComponent(url);\n"
-			+ "        }\n"
-			+ "        catch (error) {\n"
-			+ "            return false;\n"
-			+ "        }\n"
-			+ "        var pos = url.indexOf(\".html\");\n"
-			+ "        if (pos == -1 || pos != url.length - 5)\n"
-			+ "            return false;\n"
-			+ "        var allowNumber = false;\n"
-			+ "        var allowSep = false;\n"
-			+ "        var seenDot = false;\n"
-			+ "        for (var i = 0; i < url.length - 5; i++) {\n"
-			+ "            var ch = url.charAt(i);\n"
-			+ "            if ('a' <= ch && ch <= 'z' ||\n"
-			+ "                    'A' <= ch && ch <= 'Z' ||\n"
-			+ "                    ch == '$' ||\n"
-			+ "                    ch == '_' ||\n"
-			+ "                    ch.charCodeAt(0) > 127) {\n"
-			+ "                allowNumber = true;\n"
-			+ "                allowSep = true;\n"
-			+ "            } else if ('0' <= ch && ch <= '9'\n"
-			+ "                    || ch == '-') {\n"
-			+ "                if (!allowNumber)\n"
-			+ "                     return false;\n"
-			+ "            } else if (ch == '/' || ch == '.') {\n"
-			+ "                if (!allowSep)\n"
-			+ "                    return false;\n"
-			+ "                allowNumber = false;\n"
-			+ "                allowSep = false;\n"
-			+ "                if (ch == '.')\n"
-			+ "                     seenDot = true;\n"
-			+ "                if (ch == '/' && seenDot)\n"
-			+ "                     return false;\n"
-			+ "            } else {\n"
-			+ "                return false;\n"
-			+ "            }\n"
-			+ "        }\n"
-			+ "        return true;\n"
-			+ "    }\n"
-			+ "    function loadFrames() {\n"
-			+ "        if (targetPage != \"\" && targetPage != \"undefined\")\n"
-			+ "             top.classFrame.location = top.targetPage;\n"
-			+ "    }";
+	private static final String SCRIPT_0 = "    tmpTargetPage = \"\" + window.location.search;\n" //$NON-NLS-1$
+			+ "    if (tmpTargetPage != \"\" && tmpTargetPage != \"undefined\")\n" //$NON-NLS-1$
+			+ "        tmpTargetPage = tmpTargetPage.substring(1);\n" //$NON-NLS-1$
+			+ "    if (tmpTargetPage.indexOf(\":\") != -1 || (tmpTargetPage != \"\" && !validURL(tmpTargetPage)))\n" //$NON-NLS-1$
+			+ "        tmpTargetPage = \"undefined\";\n" //$NON-NLS-1$
+			+ "    targetPage = tmpTargetPage;\n" //$NON-NLS-1$
+			+ "    function validURL(url) {\n" //$NON-NLS-1$
+			+ "        try {\n" //$NON-NLS-1$
+			+ "            url = decodeURIComponent(url);\n" //$NON-NLS-1$
+			+ "        }\n" //$NON-NLS-1$
+			+ "        catch (error) {\n" //$NON-NLS-1$
+			+ "            return false;\n" //$NON-NLS-1$
+			+ "        }\n" //$NON-NLS-1$
+			+ "        var pos = url.indexOf(\".html\");\n" //$NON-NLS-1$
+			+ "        if (pos == -1 || pos != url.length - 5)\n" //$NON-NLS-1$
+			+ "            return false;\n" //$NON-NLS-1$
+			+ "        var allowNumber = false;\n" //$NON-NLS-1$
+			+ "        var allowSep = false;\n" //$NON-NLS-1$
+			+ "        var seenDot = false;\n" //$NON-NLS-1$
+			+ "        for (var i = 0; i < url.length - 5; i++) {\n" //$NON-NLS-1$
+			+ "            var ch = url.charAt(i);\n" //$NON-NLS-1$
+			+ "            if ('a' <= ch && ch <= 'z' ||\n" //$NON-NLS-1$
+			+ "                    'A' <= ch && ch <= 'Z' ||\n" //$NON-NLS-1$
+			+ "                    ch == '$' ||\n" //$NON-NLS-1$
+			+ "                    ch == '_' ||\n" //$NON-NLS-1$
+			+ "                    ch.charCodeAt(0) > 127) {\n" //$NON-NLS-1$
+			+ "                allowNumber = true;\n" //$NON-NLS-1$
+			+ "                allowSep = true;\n" //$NON-NLS-1$
+			+ "            } else if ('0' <= ch && ch <= '9'\n" //$NON-NLS-1$
+			+ "                    || ch == '-') {\n" //$NON-NLS-1$
+			+ "                if (!allowNumber)\n" //$NON-NLS-1$
+			+ "                     return false;\n" //$NON-NLS-1$
+			+ "            } else if (ch == '/' || ch == '.') {\n" //$NON-NLS-1$
+			+ "                if (!allowSep)\n" //$NON-NLS-1$
+			+ "                    return false;\n" //$NON-NLS-1$
+			+ "                allowNumber = false;\n" //$NON-NLS-1$
+			+ "                allowSep = false;\n" //$NON-NLS-1$
+			+ "                if (ch == '.')\n" //$NON-NLS-1$
+			+ "                     seenDot = true;\n" //$NON-NLS-1$
+			+ "                if (ch == '/' && seenDot)\n" //$NON-NLS-1$
+			+ "                     return false;\n" //$NON-NLS-1$
+			+ "            } else {\n" //$NON-NLS-1$
+			+ "                return false;\n" //$NON-NLS-1$
+			+ "            }\n" //$NON-NLS-1$
+			+ "        }\n" //$NON-NLS-1$
+			+ "        return true;\n" //$NON-NLS-1$
+			+ "    }\n" //$NON-NLS-1$
+			+ "    function loadFrames() {\n" //$NON-NLS-1$
+			+ "        if (targetPage != \"\" && targetPage != \"undefined\")\n" //$NON-NLS-1$
+			+ "             top.classFrame.location = top.targetPage;\n" //$NON-NLS-1$
+			+ "    }"; //$NON-NLS-1$
 	
+	/** Constructor.
+	 */
 	public HtmlIndexGeneratorImpl() {
 		//
 	}
@@ -133,9 +135,9 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final DocumentType docType = getHtmlFactory().createDocumentType(
-				"html",
-				"-//W3C//DTD XHTML 1.0 Frameset//EN",
-				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd");
+				"html", //$NON-NLS-1$
+				"-//W3C//DTD XHTML 1.0 Frameset//EN", //$NON-NLS-1$
+				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"); //$NON-NLS-1$
 		final Document document = getHtmlFactory().createDocument(docType, this);
 		final String title = getDocumentTitleFor(null);
 		setLastTitle(title);
@@ -157,7 +159,7 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 	protected void generateContentHead(Element content) {
 		final Element head = getHtmlFactory().createHeadTag(content);
 		getHtmlFactory().createTitleTag(head, getDocumentationTitle());
-		final Element script = getHtmlFactory().createScriptTag(head, "text/javascript");
+		final Element script = getHtmlFactory().createScriptTag(head, "text/javascript"); //$NON-NLS-1$
 		script.append(SCRIPT_0);
 	}
 
@@ -170,19 +172,19 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 		bodyTag.remove();
 		//
 		final Element docFrame = getHtmlFactory().createFramesetTag(content);
-		docFrame.attr(COLS_ATTR, "20%,80%");
+		docFrame.attr(COLS_ATTR, "20%,80%"); //$NON-NLS-1$
 		docFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_2);
-		docFrame.attr(ONLOAD_ATTR, "top.loadFrames()");
+		docFrame.attr(ONLOAD_ATTR, "top.loadFrames()"); //$NON-NLS-1$
 		//
 		final Element leftFrames = getHtmlFactory().createFramesetTag(docFrame);
-		leftFrames.attr(ROWS_ATTR, "30%,70%");
+		leftFrames.attr(ROWS_ATTR, "30%,70%"); //$NON-NLS-1$
 		leftFrames.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_3);
-		leftFrames.attr(ONLOAD_ATTR, "top.loadFrames()");
+		leftFrames.attr(ONLOAD_ATTR, "top.loadFrames()"); //$NON-NLS-1$
 		//
 		final Element leftOverviewFrame = getHtmlFactory().createFrameTag(leftFrames);
 		Path path = getPathToRoot().resolve(getPathBuilder().overviewFrame());
 		leftOverviewFrame.attr(SRC_ATTR, getHtmlFactory().path2UrlPath(path));
-		leftOverviewFrame.attr(NAME_ATTR, "packageListFrame");
+		leftOverviewFrame.attr(NAME_ATTR, "packageListFrame"); //$NON-NLS-1$
 		leftOverviewFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_7);
 		//
 		final Element allClassFrame = getHtmlFactory().createFrameTag(leftFrames);

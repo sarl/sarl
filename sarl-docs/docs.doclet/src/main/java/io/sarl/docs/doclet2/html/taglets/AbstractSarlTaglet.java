@@ -115,7 +115,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	
 	@Override
 	public String toString(List<? extends DocTree> tags, Element element) {
-		final org.jsoup.nodes.Element elt = new org.jsoup.nodes.Element(HtmlTags.pseudoTag("empty"));
+		final org.jsoup.nodes.Element elt = new org.jsoup.nodes.Element(HtmlTags.pseudoTag("empty")); //$NON-NLS-1$
 		if (appendNode(elt, tags, element, null, null, null)) {
 			return elt.html();
 		}
@@ -211,10 +211,10 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 * @see #appendChildren(Element, Node)
 	 */
 	protected void appendChildren(org.jsoup.nodes.Element parent, Iterable<? extends Node> children) {
-		assert parent != null : "parent argument must not be null";
-		assert children != null : "children argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
+		assert children != null : "children argument must not be null"; //$NON-NLS-1$
 		for (final Node child : children) {
-			if (children != null) {
+			if (child != null) {
 				appendChildren(parent, child);
 			}
 		}
@@ -227,9 +227,10 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 * @param child the node to add into the parent node.
 	 * @see #appendChildren(Element, Iterable)
 	 */
+	@SuppressWarnings("static-method")
 	protected void appendChildren(org.jsoup.nodes.Element parent, Node child) {
-		assert parent != null : "parent argument must not be null";
-		assert child != null : "child argument must not be null";
+		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
+		assert child != null : "child argument must not be null"; //$NON-NLS-1$
 		if (HtmlTags.isPseudoTag(child.nodeName()) && child instanceof Element) {
 			for (final Node chld : child.childNodes()) {
 				parent.appendChild(chld.clone());
@@ -241,7 +242,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-    	throw new RuntimeException("Unexpected use of the taglet " + getClass().getSimpleName());
+    	throw new RuntimeException("Unexpected use of the taglet " + getClass().getSimpleName()); //$NON-NLS-1$
 	}
 
 }

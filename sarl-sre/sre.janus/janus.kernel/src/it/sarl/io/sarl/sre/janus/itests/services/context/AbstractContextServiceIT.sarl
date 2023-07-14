@@ -34,7 +34,6 @@ import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
 
 /**
@@ -65,6 +64,7 @@ abstract class AbstractContextServiceIT {
 	}
 
 	@Test
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	def getContext(extension rc : SreRunContext) : void {
 		typeof(GetContextTestAgent).runSre
 		var results = getResults

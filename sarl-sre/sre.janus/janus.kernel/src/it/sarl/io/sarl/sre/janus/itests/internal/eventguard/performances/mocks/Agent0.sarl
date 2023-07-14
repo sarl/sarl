@@ -40,6 +40,7 @@ agent Agent0 {
 	val max = new AtomicInteger(0)
 	val startTime = new AtomicLong
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	on Initialize {
 		this.max.set(occurrence.parameters.get(1) as Integer)
 		setSkill(new TestingSkill(occurrence))

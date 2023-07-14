@@ -45,6 +45,8 @@ import io.sarl.docs.doclet2.html.framework.DocletOptions;
  */
 public class AllTypeSummaryGeneratorImpl extends AbstractSummaryGenerator implements AllTypeSummaryGenerator {
 
+	/** Constructor.
+	 */
 	public AllTypeSummaryGeneratorImpl() {
 		super(Messages.AllTypeSummaryGeneratorImpl_1);
 	}

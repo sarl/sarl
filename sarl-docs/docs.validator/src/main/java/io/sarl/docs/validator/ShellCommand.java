@@ -25,6 +25,8 @@ import java.io.File;
 
 /** Description of a shell command that is provided by a Maven artifact.
  *
+ * @param name the name of the shell command.
+ * @param executable the file to execute. 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

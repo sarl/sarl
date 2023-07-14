@@ -100,6 +100,13 @@ public class CompilerCommandModule implements BQModule {
 		return config;
 	}
 
+	/** Replies the instance of the root logger.
+	 *
+	 * @param configFactory the CLI configuration.
+	 * @param config the progress bar configuration.
+	 * @return the root logger.
+	 */
+	@SuppressWarnings("static-method")
 	@Singleton
 	@Provides
 	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {

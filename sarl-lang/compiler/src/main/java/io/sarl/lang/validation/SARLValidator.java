@@ -582,7 +582,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		int i = 0;
 		for (final JvmTypeReference event : action.getFiredEvents()) {
 			if (!this.earlyExitComputer.isEarlyExitEvent(event)) {
-				warning(MessageFormat.format(
+				info(MessageFormat.format(
 						Messages.SARLValidator_95,
 						event.getSimpleName()),
 						action,

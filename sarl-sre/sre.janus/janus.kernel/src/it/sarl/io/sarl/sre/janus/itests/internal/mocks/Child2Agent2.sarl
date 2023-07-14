@@ -42,6 +42,7 @@ agent Child2Agent2 {
 
 	uses TestingCapacity
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		val newContext = getAgentInitializationParameters.get(1) as AgentContext

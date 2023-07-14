@@ -125,13 +125,13 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	 * @param typeElement sub-interface to be mapped.
 	 * @returns boolean true if class added, false if class already processed.
 	 */
+	@SuppressWarnings("static-method")
 	private boolean add(Map<TypeElement, SortedSet<TypeElement>> map, TypeElement superclass, TypeElement typeElement) {
 		final SortedSet<TypeElement> sset = map.computeIfAbsent(superclass, s ->  new TreeSet<>((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString())));
 		if (sset.contains(typeElement)) {
 			return false;
-		} else {
-			sset.add(typeElement);
 		}
+		sset.add(typeElement);
 		return true;
 	}
 
@@ -141,7 +141,7 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	 * @param typeElement for which sub class mapping is to be generated.
 	 * @param bases the collection of base types to update.
 	 * @param updateImplementingClasses indicates if the mapping of implementing classes must be updated.
-	 * @param configuration the current configuration of the doclet.
+	 * @param environment the current configuration of the doclet.
 	 */
 	protected void processType(TypeElement typeElement, Set<TypeElement> bases,
 			boolean updateImplementingClasses, SarlDocletEnvironment environment) {
@@ -150,9 +150,8 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 			final TypeElement superElement = getElementUtils().asTypeElement(superClass, environment.getTypeUtils());
 			if (!add(this.subTypes, superElement, typeElement)) {
 				return;
-			} else {
-				processType(superElement, bases, updateImplementingClasses, environment);
 			}
+			processType(superElement, bases, updateImplementingClasses, environment);
 		} else {
 			bases.add(typeElement);
 		}
@@ -213,7 +212,7 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 		final List<Element> collection = new ArrayList<>();
 		if (typeElement != null && selector != null) {
 			final Deque<TypeElement> candidates = new LinkedList<>();
-			final Set<String> memberDone = includeDuplicates ? null : new TreeSet<>();
+			final Set<String> memberDone = new TreeSet<>();
 			//
 			if (!includeDuplicates && considerTypeElementMembers) {
 				for (final Element member : typeElement.getEnclosedElements()) {
@@ -247,7 +246,7 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 		final List<Element> collection = new ArrayList<>();
 		if (typeElement != null && selector != null) {
 			final Deque<TypeElement> candidates = new LinkedList<>();
-			final Set<String> memberDone = includeDuplicates ? null : new TreeSet<>();
+			final Set<String> memberDone = new TreeSet<>();
 			//
 			for (final Element member : typeElement.getEnclosedElements()) {
 				final String qn = getElementUtils().getLocalIdentifier(member);

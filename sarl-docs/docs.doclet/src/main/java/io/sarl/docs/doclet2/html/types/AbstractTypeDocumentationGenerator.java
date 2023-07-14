@@ -89,59 +89,59 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 
 	/** Id for the event handler details' box.
 	 */
-	public static final String ID_EVENT_HANDLER_DETAILS = "event.handlers.details.box"; //$NON-NLS-A$
+	public static final String ID_EVENT_HANDLER_DETAILS = "event.handlers.details.box"; //$NON-NLS-1$
 
 	/** Id for the action details' box.
 	 */
-	public static final String ID_ACTION_DETAILS = "action.details.box"; //$NON-NLS-A$
+	public static final String ID_ACTION_DETAILS = "action.details.box"; //$NON-NLS-1$
 
 	/** Id for the constructor details' box.
 	 */
-	public static final String ID_CONSTRUCTOR_DETAILS = "constructors.details.box"; //$NON-NLS-A$
+	public static final String ID_CONSTRUCTOR_DETAILS = "constructors.details.box"; //$NON-NLS-1$
 
 	/** Id for the field details' box.
 	 */
-	public static final String ID_FIELD_DETAILS = "fields.details.box"; //$NON-NLS-A$
+	public static final String ID_FIELD_DETAILS = "fields.details.box"; //$NON-NLS-1$
 
 	/** Id for the property details' box.
 	 */
-	public static final String ID_PROPERTY_DETAILS = "properties.details.box"; //$NON-NLS-A$
+	public static final String ID_PROPERTY_DETAILS = "properties.details.box"; //$NON-NLS-1$
 
 	/** Id for the enumeration constant details' box.
 	 */
-	public static final String ID_ENUM_CONSTANT_DETAILS = "enumeration.constants.details.box"; //$NON-NLS-A$
+	public static final String ID_ENUM_CONSTANT_DETAILS = "enumeration.constants.details.box"; //$NON-NLS-1$
 
 	/** Id for the capacity use summary' box.
 	 */
-	public static final String ID_CAPACITY_USE_SUMMARY = "capacity.uses.summary.box"; //$NON-NLS-A$
+	public static final String ID_CAPACITY_USE_SUMMARY = "capacity.uses.summary.box"; //$NON-NLS-1$
 
 	/** Id for the property summary' box.
 	 */
-	public static final String ID_PROPERTY_SUMMARY = "properties.summary.box"; //$NON-NLS-A$
+	public static final String ID_PROPERTY_SUMMARY = "properties.summary.box"; //$NON-NLS-1$
 
 	/** Id for the field summary' box.
 	 */
-	public static final String ID_FIELD_SUMMARY = "fields.summary.box"; //$NON-NLS-A$
+	public static final String ID_FIELD_SUMMARY = "fields.summary.box"; //$NON-NLS-1$
 
 	/** Id for the field summary' box.
 	 */
-	public static final String ID_ENUM_CONSTANT_SUMMARY = "enumeration.constants.summary.box"; //$NON-NLS-A$
+	public static final String ID_ENUM_CONSTANT_SUMMARY = "enumeration.constants.summary.box"; //$NON-NLS-1$
 
 	/** Id for the nested class summary' box.
 	 */
-	public static final String ID_NESTED_CLASS_SUMMARY = "nested.classes.summary.box"; //$NON-NLS-A$
+	public static final String ID_NESTED_CLASS_SUMMARY = "nested.classes.summary.box"; //$NON-NLS-1$
 
 	/** Id for the constructor summary' box.
 	 */
-	public static final String ID_CONSTRUCTOR_SUMMARY = "constructors.summary.box"; //$NON-NLS-A$
+	public static final String ID_CONSTRUCTOR_SUMMARY = "constructors.summary.box"; //$NON-NLS-1$
 
 	/** Id for the action summary' box.
 	 */
-	public static final String ID_ACTION_SUMMARY = "actions.summary.box"; //$NON-NLS-A$
+	public static final String ID_ACTION_SUMMARY = "actions.summary.box"; //$NON-NLS-1$
 
 	/** Id for the event handler summary' box.
 	 */
-	public static final String ID_EVENT_HANDLER_SUMMARY = "event.handlers.summary.box"; //$NON-NLS-A$
+	public static final String ID_EVENT_HANDLER_SUMMARY = "event.handlers.summary.box"; //$NON-NLS-1$
 
 	@Override
 	protected void initNavigation(Navigation navigation) {
@@ -188,9 +188,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					msg = ex.getClass().getName();
 				}
 				printWriter.print(msg);
-				printWriter.print(" (");
+				printWriter.print(" ("); //$NON-NLS-1$
 				printWriter.print(type.getQualifiedName().toString());
-				printWriter.println(")");
+				printWriter.println(")"); //$NON-NLS-1$
 				ex.printStackTrace(printWriter);
 			}
 			rep.print(Kind.ERROR, writer.toString());
@@ -202,6 +202,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param type is the type for which the documentation must be generated.
 	 * @param environment the generation environment.
 	 * @param htmlTag the root HTML tag.
+	 * @throws Exception if the documentation cannot be generated.
 	 */
 	protected void generateTypeDocumentation(TypeElement type, SarlDocletEnvironment environment, Element htmlTag) throws Exception {
 		final List<? extends Node> linkContent = getHtmlFactory().createModuleLink(
@@ -215,8 +216,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 
 	/** Generate the HTML header.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
 	 * @param typeElement the type element.
+	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag, TypeElement typeElement) {
 		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
@@ -233,8 +235,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 
 	/** Generate the body of the documentation.
 	 *
-	 * @param bodyTag the container.
+	 * @param htmlTag the container.
 	 * @param typeElement the type element.
+	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag, TypeElement typeElement) {
 		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);
@@ -662,7 +665,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			final String name = setterName2property(element.getSimpleName().toString());
 			assert name != null;
 			declaredSetters.add(name);
-		};
+		}
 		//
 		createDetailBox(Messages.AbstractTypeDocumentationGenerator_50, ID_PROPERTY_DETAILS, parent, properties,
 				getElementUtils().getExecutableElementComparator(),
@@ -886,7 +889,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 							//
 						}
 						nodes.putIfAbsent(eventTypeElement.getSimpleName().toString(), elementLink);
-					};
+					}
 					final List<Node> list = new ArrayList<>();
 					boolean first = true;
 					for (List<? extends Node> entity : nodes.values()) {
@@ -968,7 +971,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						final String methodName = element.getSimpleName().toString();
 						final List<Node> methodPrototype = getHtmlFactory().getExecutablePrototype(ee, methodName, this);
 						nodes.putIfAbsent(methodPrototype.toString(), getHtmlFactory().createExecutableLink(ee, methodPrototype, null, this));
-					};
+					}
 					final List<Node> list = new ArrayList<>();
 					for (List<? extends Node> entity : nodes.values()) {
 						list.addAll(entity);
@@ -1138,7 +1141,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					})) {
 						final String name = element.getSimpleName().toString();
 						nodes.putIfAbsent(name, getHtmlFactory().createVariableLink((VariableElement) element, name, null, this));
-					};
+					}
 					final List<Node> list = new ArrayList<>();
 					for (List<? extends Node> entity : nodes.values()) {
 						list.addAll(entity);
@@ -1212,7 +1215,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					})) {
 						final String name = getterName2property(element.getSimpleName().toString());
 						nodes.putIfAbsent(name, getHtmlFactory().createExecutableLink((ExecutableElement) element, name, null, this));
-					};
+					}
 					final List<Node> list = new ArrayList<>();
 					for (List<? extends Node> entity : nodes.values()) {
 						list.addAll(entity);
@@ -1366,7 +1369,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					first = false;
 				} else {
 					typeNameElement.appendText(getSARLGrammarKeywordAccess().getCommaKeyword());
-					typeNameElement.appendText(" ");
+					typeNameElement.appendText(" "); //$NON-NLS-1$
 				}
 				typeNameElement.appendText(parameter.toString());
 			}
@@ -1379,7 +1382,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			if (superclass != null && superclass.getKind() != TypeKind.NONE) {
 				preTag.appendChild(getHtmlFactory().createNewLineTag());
 				preTag.appendText(getSARLGrammarKeywordAccess().getExtendsKeyword());
-				preTag.appendText(" ");
+				preTag.appendText(" "); //$NON-NLS-1$
 				preTag.appendChildren(getHtmlFactory().createTypeLink(superclass, true, CssStyles.TYPE_SIGNATURE, this));
 			}
 		}
@@ -1402,7 +1405,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					} else {
 						preTag.appendText(getSARLGrammarKeywordAccess().getCommaKeyword());
 					}
-					preTag.appendText(" ");
+					preTag.appendText(" "); //$NON-NLS-1$
 					preTag.appendChildren(getHtmlFactory().createTypeLink(type, true, CssStyles.TYPE_SIGNATURE, this));
 				}
 			}
@@ -1565,7 +1568,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 
 	/** Generate the message that is related to the private API.
 	 *
-	 * @param bodyTag the container.
+	 * @param parent the container.
 	 * @param typeElement the type element.
 	 */
 	protected void generatePrivateApiMessage(Element parent, TypeElement typeElement) {
@@ -1601,7 +1604,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			final StringBuilder params = new StringBuilder();
 			for (final TypeParameterElement parameter : typeElement.getTypeParameters()) {
 				if (params.length() > 0) {
-					params.append(", ");
+					params.append(", "); //$NON-NLS-1$
 				}
 				params.append(parameter.getSimpleName().toString());
 			}

@@ -53,7 +53,7 @@ public class CodeTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "code";
+	public static final String TAGLET_NAME = "code"; //$NON-NLS-1$
 	
 	/** Constructor.
 	 */
@@ -66,6 +66,7 @@ public class CodeTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_CODE_COMMENT;
 	}

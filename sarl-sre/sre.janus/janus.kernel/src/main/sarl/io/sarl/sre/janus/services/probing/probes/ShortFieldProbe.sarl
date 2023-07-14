@@ -58,6 +58,7 @@ class ShortFieldProbe extends AbstractFieldProbe<Short> {
 		|| (newValue !== null && oldValue !== null && newValue.shortValue === oldValue.shortValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Short {
 		switch (concreteType) {
 			case typeof(short),
@@ -70,6 +71,7 @@ class ShortFieldProbe extends AbstractFieldProbe<Short> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Short, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(short): {

@@ -273,10 +273,10 @@ public final class ReflectExtensions {
 					boolean first = true;
 					for (final TypeVariable<Method> typeVariable : method.getTypeParameters()) {
 						if (first) {
-							line.append(" with ");
+							line.append(" with "); //$NON-NLS-1$
 							first = false;
 						} else {
-							line.append(", ");
+							line.append(", "); //$NON-NLS-1$
 						}
 						line.append(typeVariable.getTypeName());
 					}
@@ -391,11 +391,11 @@ public final class ReflectExtensions {
 						formattedName = field.getName();
 					}
 					if (Modifier.isFinal(field.getModifiers())) {
-						line.append("val ");
+						line.append("val "); //$NON-NLS-1$
 					} else {
-						line.append("var ");
+						line.append("var "); //$NON-NLS-1$
 					}
-					line.append(formattedName); //$NON-NLS-1$
+					line.append(formattedName);
 					if (field.getGenericType() != null && !Objects.equals(field.getGenericType(), Void.class)
 							&& !Objects.equals(field.getGenericType(), void.class)) {
 						line.append(" : "); //$NON-NLS-1$
@@ -634,9 +634,9 @@ public final class ReflectExtensions {
 		return result;
 	}
 
-	/** Run a method on the given instance.
+	/** Run a static method on the given type.
 	 *
-	 * @param instance is the object instance.
+	 * @param type is the type.
 	 * @param methodName the name of the method.
 	 * @return the configuration.
 	 * @throws SecurityException if the method cannot be accessed.

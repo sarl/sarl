@@ -97,7 +97,6 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
              <extensions>true</extensions>
              <configuration>
                 <source>${jdk.version}</source>
-                <target>${jdk.version}</target>
                 <encoding>${project.build.sourceEncoding}</encoding>
              </configuration>
           </plugin>
@@ -171,7 +170,6 @@ You could search on the [Maven Central Repository](http://search.maven.org/) for
              <extensions>true</extensions>
              <configuration>
                 <source>${jdk.version}</source>
-                <target>${jdk.version}</target>
                 <encoding>[:project.encoding!]</encoding>
              </configuration>
           </plugin>
@@ -219,7 +217,6 @@ you have to use another Maven dependency: [:janusnetworkplugin:].
              <extensions>true</extensions>
              <configuration>
                 <source>${jdk.version}</source>
-                <target>${jdk.version}</target>
                 <encoding>[:project.encoding!]</encoding>
              </configuration>
           </plugin>

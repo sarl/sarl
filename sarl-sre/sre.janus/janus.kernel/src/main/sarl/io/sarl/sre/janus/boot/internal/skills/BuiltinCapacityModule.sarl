@@ -22,13 +22,10 @@ package io.sarl.sre.janus.boot.internal.skills
 
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import io.sarl.sre.janus.skills.SreDynamicSkillProvider
 import io.sarl.lang.core.DynamicSkillProvider
-import javax.inject.Singleton
 
 /** 
  * Module for configuring the built-in capacities.

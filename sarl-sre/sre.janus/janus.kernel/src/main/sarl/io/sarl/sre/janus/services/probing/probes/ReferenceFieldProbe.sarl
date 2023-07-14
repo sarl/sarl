@@ -43,6 +43,7 @@ class ReferenceFieldProbe<T> extends AbstractFieldProbe<T> {
 		Objects::equals(newValue, oldValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : T {
 		var pt = this.type
 		if (concreteType == typeof(AtomicReference)) {
@@ -65,6 +66,7 @@ class ReferenceFieldProbe<T> extends AbstractFieldProbe<T> {
 		return null
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : T, concreteType : Class<?>, currentValue : Object) : Object {
 		if (concreteType == typeof(AtomicReference)) {
 				val ab = currentValue as AtomicReference<T>

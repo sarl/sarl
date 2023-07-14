@@ -41,7 +41,7 @@ public interface SarlDocletEnvironment extends DocletEnvironment {
 
 	/** Replies the parent environment.
 	 *
-	 * @param parent the parent instance.
+	 * @return the parent instance.
 	 */
 	DocletEnvironment getParent();
 

@@ -123,21 +123,21 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Name of the property that contains the pattern for information notes.
 	 * @since 0.12
 	 */
-	public static final String INFO_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.infonote";
+	public static final String INFO_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.infonote"; //$NON-NLS-1$
 
 	/** Name of the property that contains the pattern for warning notes.
 	 * @since 0.12
 	 */
-	public static final String WARNING_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.warningnote";
+	public static final String WARNING_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.warningnote"; //$NON-NLS-1$
 
 	/** Name of the property that contains the pattern for danger notes.
 	 * @since 0.12
 	 */
-	public static final String DANGER_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.dangernote";
+	public static final String DANGER_NOTE_PATTERN_PROPERTY = "io.sarl.maven.docs.generator.dangernote"; //$NON-NLS-1$
 
-	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN1 = "^\\>[ \t\n\r]*\\*\\*\\_(.*?):?\\_\\*\\*(.*)$";
+	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN1 = "^\\>[ \t\n\r]*\\*\\*\\_(.*?):?\\_\\*\\*(.*)$"; //$NON-NLS-1$
 
-	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN2 = "^\\>(.*)$";
+	private static final String MARKDOWN_INFORMATION_NOTE_PATTERN2 = "^\\>(.*)$"; //$NON-NLS-1$
 
 	private static final String SECTION_PATTERN_AUTONUMBERING =
 			"^([#]+)\\s*([0-9]+(?:\\.[0-9]+)*\\.?)?\\s*(.*?)\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?\\s*$"; //$NON-NLS-1$
@@ -188,10 +188,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	private boolean kramdown;
 
 	static {
-		for (final String label : Messages.WARNING.split(",")) {
+		for (final String label : Messages.WARNING.split(",")) { //$NON-NLS-1$
 			WARNING_LABELS.add(label.trim().toLowerCase());
 		}
-		for (final String label : Messages.DANGER.split(",")) {
+		for (final String label : Messages.DANGER.split(",")) { //$NON-NLS-1$
 			DANGER_LABELS.add(label.trim().toLowerCase());
 		}
 	}
@@ -624,7 +624,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final StringBuilder result = new StringBuilder();
 		String currentName = null;
 		StringBuilder currentNote = null;
-		for (final String line : text.split("\r*\n\r*")) {
+		for (final String line : text.split("\r*\n\r*")) { //$NON-NLS-1$
 			String newLine = null;
 			if (currentName == null) {
 				final Matcher matcher = startPattern.matcher(line);
@@ -632,7 +632,6 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					currentName = matcher.group(1).trim();
 					currentNote = new StringBuilder(matcher.group(2).trim());
 				} else {
-					currentName = null;
 					currentNote = null;
 					newLine = line;
 				}
@@ -640,7 +639,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				final Matcher matcher = continuePattern.matcher(line);
 				if (matcher.matches()) {
 					assert currentNote != null;
-					currentNote.append(" ").append(matcher.group(1).trim());
+					currentNote.append(" ").append(matcher.group(1).trim()); //$NON-NLS-1$
 				} else {
 					updateBuffer(result, currentName, currentNote, info, warning, danger);
 					currentName = null;
@@ -660,29 +659,29 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			switch (type) {
 			case 0:
 				if (!Strings.isEmpty(info)) {
-					String res = info.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
-					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					String res = info.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
-					updateBuffer(result, "> **_" + name + ":_** " + note);
+					updateBuffer(result, "> **_" + name + ":_** " + note); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				break;
 			case 1:
 				if (!Strings.isEmpty(warning)) {
-					String res = warning.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
-					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					String res = warning.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
-					updateBuffer(result, "> **_" + name + ":_** " + note);
+					updateBuffer(result, "> **_" + name + ":_** " + note); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				break;
 			case 2:
 				if (!Strings.isEmpty(danger)) {
-					String res = danger.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name));
-					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString()));
+					String res = danger.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
-					updateBuffer(result, "> **_" + name + ":_** " + note);
+					updateBuffer(result, "> **_" + name + ":_** " + note); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				break;
 			default:
@@ -693,7 +692,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private static void updateBuffer(StringBuilder result, String line) {
 		if (line != null) {
-			result.append(line).append("\n");
+			result.append(line).append("\n"); //$NON-NLS-1$
 		}
 	}
 
@@ -713,7 +712,6 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param text the content to parse.
 	 * @return the referencables objects
 	 */
-	@SuppressWarnings("static-method")
 	protected ReferenceContext extractReferencableElements(String text) {
 		final ReferenceContext context = new ReferenceContext();
 
@@ -1145,7 +1143,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the identifier.
 	 * @since 0.12
 	 */
-	private String computeHeaderIdForText(String header) {
+	private static String computeHeaderIdForText(String header) {
 		String id = header.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.toLowerCase();
 		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$

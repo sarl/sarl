@@ -90,6 +90,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 * @param type the type to test.
 	 * @return {@code true} if the type is visible.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isVisible(TypeElement type) {
 		return true;
 	}
@@ -194,6 +195,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of agents.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateAgentHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -207,6 +209,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of behaviors.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateBehaviorHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -220,6 +223,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of capacities.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateCapacityHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -233,6 +237,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of skills.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateSkillHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -246,6 +251,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of events.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateEventHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -259,6 +265,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of classes.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateClassHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
@@ -272,6 +279,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	/** Generate the hierarchy of interfaces.
 	 *
 	 * @param parent the container.
+	 * @param hierarchy the description of the hierarchy.
 	 */
 	protected void generateInterfaceHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {

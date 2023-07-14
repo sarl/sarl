@@ -50,7 +50,7 @@ public class ParamTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "param";
+	public static final String TAGLET_NAME = "param"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
@@ -63,6 +63,7 @@ public class ParamTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_PARAM_COMMENT;
 	}

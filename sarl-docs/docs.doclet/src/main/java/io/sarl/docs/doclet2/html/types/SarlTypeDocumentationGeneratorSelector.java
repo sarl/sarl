@@ -253,6 +253,7 @@ public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentation
 	 * @return {@code true} if {@code t1} is a subtype of {@code t2} and {@code t1} is not the same
 	 *     as {@code t2}.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isSubtypeStrict(SarlDocletEnvironment environment, TypeMirror t1, TypeMirror t2) {
 		final Types types = environment.getTypeUtils();
 		return types.isSubtype(t1, t2) && !types.isSameType(t1, t2);

@@ -53,7 +53,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.mockito.Mockito.*
 
-import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*

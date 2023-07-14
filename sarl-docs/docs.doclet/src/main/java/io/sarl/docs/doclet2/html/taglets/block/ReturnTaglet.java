@@ -46,8 +46,10 @@ public class ReturnTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "return";
+	public static final String TAGLET_NAME = "return"; //$NON-NLS-1$
 
+	/** Constructor.
+	 */
 	public ReturnTaglet() {
 		super(TAGLET_NAME.toLowerCase(), false, Location.METHOD);
 	}
@@ -57,6 +59,7 @@ public class ReturnTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_RETURN_COMMENT;
 	}
@@ -75,7 +78,6 @@ public class ReturnTaglet extends AbstractSarlTaglet {
 			if (changed) {
 				parent.appendChild(getHtmlFactory().createNewLineTag());
 			}
-			;
 			final boolean hasDescription = appendCommentTextWithSpace(parent, returnEntry.getDescription(),
 					element, rstyle, context.getContext());
 			if (!hasDescription) {

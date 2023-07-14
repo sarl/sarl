@@ -375,13 +375,13 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			msg.append(rootEx.getClass().getName());
 			msg.append(" - "); //$NON-NLS-1$
 		}
-		msg.append(rootEx.getLocalizedMessage());
 		if (rootEx != null) {
+			msg.append(rootEx.getLocalizedMessage());
 			try (StringWriter swriter = new StringWriter()) {
 				try (PrintWriter writer = new PrintWriter(swriter)) {
 					rootEx.printStackTrace(writer);
 				}
-				msg.append("\n"); // $NON-NLS-1$
+				msg.append("\n"); //$NON-NLS-1$
 				msg.append(swriter.toString());
 			} catch (IOException exception2) {
 				throw new Error(exception2);
@@ -604,6 +604,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws IOException on failure.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected List<File> getModulePath() throws IOException {
 		final List<File> files = new ArrayList<>();
 		return files;
@@ -674,6 +675,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		return ""; //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("resource")
 	private static String scanBootclasspath(String javaHome, String[] includes, String[] excludes) {
 		final File javaHomeFile = FileSystem.convertStringToFile(javaHome);
 		final Path javaHomePath = javaHomeFile.toPath();
@@ -683,7 +685,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         if (includes != null && includes.length > 0) {
         	includeMatchers = new PathMatcher[includes.length];
         	for (int i = 0; i < includes.length; ++i) {
-        		includeMatchers[i] = fs.getPathMatcher("glob:" + includes[i]);
+        		includeMatchers[i] = fs.getPathMatcher("glob:" + includes[i]); //$NON-NLS-1$
         	}
         } else {
         	includeMatchers = null;
@@ -693,7 +695,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         if (excludes != null && excludes.length > 0) {
         	excludeMatchers = new PathMatcher[excludes.length];
         	for (int i = 0; i < excludes.length; ++i) {
-        		excludeMatchers[i] = fs.getPathMatcher("glob:" + excludes[i]);
+        		excludeMatchers[i] = fs.getPathMatcher("glob:" + excludes[i]); //$NON-NLS-1$
         	}
         } else {
         	excludeMatchers = null;
@@ -711,7 +713,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         		}
         	}
         	if (included) {
-            	if (excludeMatchers != null) {
+            	if (includeMatchers != null) {
 	            	for (int i = 0; i < includeMatchers.length && !included; ++i) {
 	        			final PathMatcher matcher = includeMatchers[i];
 	        			if (matcher.matches(entry.getFileName())) {
@@ -800,7 +802,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @since 0.13
 	 */
 	protected Artifact createArtifact(String groupId, String artifactId, String version, String type) {
-		return this.repositorySystem.createArtifact(groupId, artifactId, version, type); //$NON-NLS-1$
+		return this.repositorySystem.createArtifact(groupId, artifactId, version, type);
 	}
 
 }

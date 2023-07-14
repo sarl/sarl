@@ -35,7 +35,7 @@ public class HiddenTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static String TAG_NAME = "Hidden";
+	public static String TAG_NAME = "Hidden"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */

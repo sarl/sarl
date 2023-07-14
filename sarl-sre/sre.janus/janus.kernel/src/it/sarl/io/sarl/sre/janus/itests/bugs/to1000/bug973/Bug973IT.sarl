@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension io.sarl.tests.api.tools.TestAssertions.assertInstanceOf
 import static extension org.junit.jupiter.api.Assertions.*
 
 /** Tests for issue #973: Skill uninstall is invoked too much times.

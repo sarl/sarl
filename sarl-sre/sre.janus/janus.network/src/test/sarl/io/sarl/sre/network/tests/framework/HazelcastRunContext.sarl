@@ -83,7 +83,7 @@ class HazelcastRunContextImpl extends SreRunContextImpl implements HazelcastRunC
 		var found = false
 		while (urls.hasNext) {
 			val url = urls.next
-			System.out.println(url)
+			//System.out.println(url)
 			if (url.toString.endsWith(BOOTIQUE_RESOURCE)) {
 				found = true
 			}

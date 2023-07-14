@@ -59,6 +59,7 @@ class LongFieldProbe extends AbstractFieldProbe<Long> {
 		|| (newValue !== null && oldValue !== null && newValue.longValue === oldValue.longValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Long {
 		switch (concreteType) {
 			case typeof(long),
@@ -78,6 +79,7 @@ class LongFieldProbe extends AbstractFieldProbe<Long> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Long, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(long): {

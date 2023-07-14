@@ -46,13 +46,15 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class RawPackageListGeneratorImpl extends AbstractDocumentationGenerator implements RawPackageListGenerator {
 
+	/** Constructor.
+	 */
 	public RawPackageListGeneratorImpl() {
 		//
 	}
 
 	@Override
 	protected String getDocumentTitleFor(String elementName) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class RawPackageListGeneratorImpl extends AbstractDocumentationGenerator 
 			final String qn = packageElement.getQualifiedName().toString();
 			if (!Strings.isNullOrEmpty(qn)) {
 				content.append(qn);
-				content.append("\n"); //$NON-NLS-0$
+				content.append("\n"); //$NON-NLS-1$
 			}
 		}
 		//

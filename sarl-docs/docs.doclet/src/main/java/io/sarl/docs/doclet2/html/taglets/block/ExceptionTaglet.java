@@ -33,8 +33,11 @@ public class ExceptionTaglet extends ThrowsTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "exception";
+	@SuppressWarnings("hiding")
+	public static final String TAGLET_NAME = "exception"; //$NON-NLS-1$
 
+	/** Constructor.
+	 */
 	public ExceptionTaglet() {
 		super(TAGLET_NAME.toLowerCase());
 	}

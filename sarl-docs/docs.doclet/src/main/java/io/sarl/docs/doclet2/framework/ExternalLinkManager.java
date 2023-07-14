@@ -55,7 +55,7 @@ public interface ExternalLinkManager {
 	 *
 	 * @param uri the URI to be added.
 	 */
-	void addExternalLink(URI url);
+	void addExternalLink(URI uri);
 
 	/** Add an external link.
 	 *

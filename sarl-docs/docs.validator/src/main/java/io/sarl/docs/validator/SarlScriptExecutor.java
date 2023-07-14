@@ -171,8 +171,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		nopLogger.setLevel(Level.OFF);
 		compiler.setLogger(nopLogger);
 		if (issues != null) {
-			compiler.addIssueMessageListener((issue, uri, message) -> {
-				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
+			compiler.addIssueMessageListener((severity, issue, uri, message) -> {
+				if (issue.isSyntaxError() || severity == Severity.ERROR) {
 					final Integer line = issue.getLineNumber();
 					final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
 					issues.add(MessageFormat.format(Messages.SarlScriptExecutor_1, message, issueLine));

@@ -60,6 +60,7 @@ class BigDecimalFieldProbe extends AbstractFieldProbe<BigDecimal> {
 		|| (newValue !== null && oldValue !== null && newValue.equals(oldValue))
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : BigDecimal {
 		if (concreteType == typeof(BigDecimal)) {
 			return value as BigDecimal
@@ -67,6 +68,7 @@ class BigDecimalFieldProbe extends AbstractFieldProbe<BigDecimal> {
 		return null
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : BigDecimal, concreteType : Class<?>, currentValue : Object) : Object {
 		if (newValue === null) {
 			return BigDecimal::ZERO

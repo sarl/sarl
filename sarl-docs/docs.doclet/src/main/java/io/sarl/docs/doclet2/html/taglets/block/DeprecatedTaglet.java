@@ -49,8 +49,10 @@ public class DeprecatedTaglet extends AbstractSarlTaglet {
 
 	/** Name of the tag.
 	 */
-	public static final String TAGLET_NAME = "deprecated";
+	public static final String TAGLET_NAME = "deprecated"; //$NON-NLS-1$
 
+	/** Constructor.
+	 */
 	public DeprecatedTaglet() {
 		super(TAGLET_NAME.toLowerCase(), false, Location.values());
 	}
@@ -60,6 +62,7 @@ public class DeprecatedTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_DEPRECATED_COMMENT;
 	}
@@ -88,8 +91,8 @@ public class DeprecatedTaglet extends AbstractSarlTaglet {
 		boolean changed = false;
 		for (final DocTree tr : tags) {
 			if (changed) {
-				if (!parent.html().toString().endsWith(".")) {
-					parent.appendText(".");
+				if (!parent.html().toString().endsWith(".")) { //$NON-NLS-1$
+					parent.appendText("."); //$NON-NLS-1$
 				}
 				getHtmlFactory().createSecableSpace(parent);
 			}

@@ -90,13 +90,13 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  */
 public abstract class AbstractDocumentationGenerator implements HtmlFactoryContext {
 
-	private static final String PROPERTY_GETTER_PREFIX = "get";
+	private static final String PROPERTY_GETTER_PREFIX = "get"; //$NON-NLS-1$
 
-	private static final String PROPERTY_SETTER_PREFIX = "set";
+	private static final String PROPERTY_SETTER_PREFIX = "set"; //$NON-NLS-1$
 
-	private static final Pattern PROPERTY_GETTER_PATTERN = Pattern.compile("^" + PROPERTY_GETTER_PREFIX + "([A-Z][A-Za-z0-9_]*)$");
+	private static final Pattern PROPERTY_GETTER_PATTERN = Pattern.compile("^" + PROPERTY_GETTER_PREFIX + "([A-Z][A-Za-z0-9_]*)$"); //$NON-NLS-1$ //$NON-NLS-2$
 
-	private static final Pattern PROPERTY_SETTER_PATTERN = Pattern.compile("^" + PROPERTY_SETTER_PREFIX + "([A-Z][A-Za-z0-9_]*)$");
+	private static final Pattern PROPERTY_SETTER_PATTERN = Pattern.compile("^" + PROPERTY_SETTER_PREFIX + "([A-Z][A-Za-z0-9_]*)$"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	private Reporter reporter;
 
@@ -218,10 +218,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		this.tagletManager = manager;
 	}
 
-	/** Replies the taglet manager.
-	 *
-	 * @return the manager.
-	 */
+	@Override
 	public TagletManager getTagletManager() {
 		return this.tagletManager;
 	}
@@ -286,10 +283,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		this.docUtils = utils;
 	}
 
-	/** Replies the doc utilities.
-	 *
-	 * @return the utilities.
-	 */
+	@Override
 	public DocUtils getDocUtils() {
 		return this.docUtils;
 	}
@@ -390,17 +384,14 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		return this.pathToRoot;
 	}
 
-	/** Replies the doclet's CLI options.
-	 *
-	 * @return the options.
-	 */
+	@Override
 	public DocletOptions getCliOptions() {
 		return this.cliOptions;
 	}
 
 	/** Change the doclet's CLI options.
 	 *
-	 * @param options the doclet's CLI options.
+	 * @param cliOptions the doclet's CLI options.
 	 */
 	protected void setCliOptions(DocletOptions cliOptions) {
 		this.cliOptions = cliOptions;
@@ -435,10 +426,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		this.lastTitle = title;
 	}
 
-	/** Replies the reporter.
-	 *
-	 * @return the reporter.
-	 */
+	@Override
 	public Reporter getReporter() {
 		return this.reporter;
 	}
@@ -463,8 +451,8 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @see #getPathToRoot()
 	 */
 	protected void computePaths(String element, boolean isTypeName) {
-		final String[] elements = isTypeName ? element.split("[$.]") : new String[] {element};
-		final StringBuilder baseUri = new StringBuilder("file:");
+		final String[] elements = isTypeName ? element.split("[$.]") : new String[] {element}; //$NON-NLS-1$
+		final StringBuilder baseUri = new StringBuilder("file:"); //$NON-NLS-1$
 		Path relativePath = null;
 		Path pathToRoot = null;
 		for (int i = 0; i < elements.length - 1; ++i) {
@@ -476,17 +464,17 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			} else {
 				relativePath = relativePath.resolve(currentPath);
 			}
-			final Path currentParent = Path.of("..");
+			final Path currentParent = Path.of(".."); //$NON-NLS-1$
 			if (pathToRoot == null) {
 				pathToRoot = currentParent;
 			} else {
 				pathToRoot = pathToRoot.resolve(currentParent);
 			}
 		}
-		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot;
+		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot; //$NON-NLS-1$
 		String basename = elements[elements.length - 1];
-		if (!basename.endsWith(".html")) {
-			basename += ".html";
+		if (!basename.endsWith(".html")) { //$NON-NLS-1$
+			basename += ".html"; //$NON-NLS-1$
 		}
 		if (relativePath == null) {
 			this.relativePath = Path.of(basename);
@@ -508,7 +496,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected void computePaths(Path element, boolean addHtmlExtension) {
 		final int n = element.getNameCount();
-		final StringBuilder baseUri = new StringBuilder("file:");
+		final StringBuilder baseUri = new StringBuilder("file:"); //$NON-NLS-1$
 		Path relativePath = null;
 		Path pathToRoot = null;
 		for (int i = 0; i < n - 1; ++i) {
@@ -520,17 +508,17 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			} else {
 				relativePath = relativePath.resolve(currentPath);
 			}
-			final Path currentParent = Path.of("..");
+			final Path currentParent = Path.of(".."); //$NON-NLS-1$
 			if (pathToRoot == null) {
 				pathToRoot = currentParent;
 			} else {
 				pathToRoot = pathToRoot.resolve(currentParent);
 			}
 		}
-		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot;
+		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot; //$NON-NLS-1$
 		String basename = element.getFileName().toString();
-		if (addHtmlExtension && !basename.endsWith(".html")) {
-			basename += ".html";
+		if (addHtmlExtension && !basename.endsWith(".html")) { //$NON-NLS-1$
+			basename += ".html"; //$NON-NLS-1$
 		}
 		if (relativePath == null) {
 			this.relativePath = Path.of(basename);
@@ -568,7 +556,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	/** Write the raw text document into the given filename.
 	 *
 	 * @param filename the sequence of elements.
-	 * @param textDocument the document to write.
+	 * @param htmlDocument the document to write.
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected static void writeDocument(Path filename, String htmlDocument) throws Exception {
@@ -695,6 +683,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param importedPackages the list of imported packages.
 	 * @return the type's search path builder.
 	 */
+	@SuppressWarnings("static-method")
 	protected QualifiedNameSetBuilder buildCallbackForTypeFinding(PackageElement currentPackage, Set<String> importedPackages) {
 		return new StandardQualifiedNameSetBuilder(currentPackage, importedPackages);
 	}
@@ -704,6 +693,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param name the name to check.
 	 * @return {@code true} if the given name if valid for a getter function.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isPropertyGetterName(String name) {
 		if (!Strings.isEmpty(name)) {
 			final Matcher matcher = PROPERTY_GETTER_PATTERN.matcher(name);
@@ -719,6 +709,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param name the name to check.
 	 * @return {@code true} if the given name if valid for a setter function.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isPropertySetterName(String name) {
 		if (!Strings.isEmpty(name)) {
 			final Matcher matcher = PROPERTY_SETTER_PATTERN.matcher(name);
@@ -734,6 +725,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param getterName the name of the getter function.
 	 * @return the name of the property, or {@code null} if it is not a getter function name for a property.
 	 */
+	@SuppressWarnings("static-method")
 	protected String getterName2property(String getterName) {
 		if (!Strings.isEmpty(getterName)) {
 			final Matcher matcher = PROPERTY_GETTER_PATTERN.matcher(getterName);
@@ -752,6 +744,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param setterName the name of the setter function.
 	 * @return the name of the property, or {@code null} if it is not a setter function name for a property.
 	 */
+	@SuppressWarnings("static-method")
 	protected String setterName2property(String setterName) {
 		if (!Strings.isEmpty(setterName)) {
 			final Matcher matcher = PROPERTY_SETTER_PATTERN.matcher(setterName);
@@ -770,6 +763,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param name the name of the property.
 	 * @return the name of the getter function.
 	 */
+	@SuppressWarnings("static-method")
 	protected String property2getterName(String name) {
 		if (!Strings.isEmpty(name)) {
 			return PROPERTY_GETTER_PREFIX + Strings.toFirstUpper(name);
@@ -783,6 +777,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param name the name of the property.
 	 * @return the name of the setter function.
 	 */
+	@SuppressWarnings("static-method")
 	protected String property2setterName(String name) {
 		if (!Strings.isEmpty(name)) {
 			return PROPERTY_SETTER_PREFIX + Strings.toFirstUpper(name);
@@ -1129,7 +1124,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 					if (first) {
 						first = false;
 					} else {
-						inheritedDiv.appendText(", ");
+						inheritedDiv.appendText(", "); //$NON-NLS-1$
 					}
 					inheritedDiv.appendChild(node);
 				}
@@ -1159,8 +1154,8 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param nodes the receiving array for the created nodes.
 	 * @param addTitle indicates if the prefix title must be added.
 	 */
-	protected void createShortDeprecationMessage(javax.lang.model.element.Element element_, List<Node> nodes, boolean addTitle) {
-		final javax.lang.model.element.Element deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(element_);
+	protected void createShortDeprecationMessage(javax.lang.model.element.Element element, List<Node> nodes, boolean addTitle) {
+		final javax.lang.model.element.Element deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(element);
 		if (deprecatedElement != null) {
 			final Element deprecatedDiv = getHtmlFactory().createDivTag(null, CssStyles.DEPRECATION_INFO);
 			final boolean isForRemoval = getElementUtils().isDeprecatedForRemoval(deprecatedElement);
@@ -1413,13 +1408,15 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			// Add the current type
 			add(type);
 			// Scan the type and its content
+			javax.lang.model.element.Element elt;
 			if (type != null) {
 				scan(type, null);
+				elt =  type.getEnclosingElement();
 			} else {
 				scan(element, null);
+				elt = null;
 			}
 			// Add the enclosing types
-			javax.lang.model.element.Element elt = type.getEnclosingElement();
 			while (elt != null) {
 				if (elt instanceof TypeElement) {
 					final TypeElement te = (TypeElement) elt;

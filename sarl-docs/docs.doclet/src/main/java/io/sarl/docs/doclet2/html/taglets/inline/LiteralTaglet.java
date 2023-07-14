@@ -44,7 +44,7 @@ public class LiteralTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "literal";
+	public static final String TAGLET_NAME = "literal"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
@@ -57,6 +57,7 @@ public class LiteralTaglet extends AbstractSarlTaglet {
 	 * @param original the original CSS style.
 	 * @return the CSS style.
 	 */
+	@SuppressWarnings("static-method")
 	protected CssStyles getTextCssStyle(CssStyles original) {
 		return CssStyles.TAG_LITERAL_COMMENT;
 	}

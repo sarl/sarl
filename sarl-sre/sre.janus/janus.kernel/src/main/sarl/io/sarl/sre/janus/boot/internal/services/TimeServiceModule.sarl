@@ -23,15 +23,10 @@ package io.sarl.sre.janus.boot.internal.services
 import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import io.sarl.sre.janus.services.time.JreTimeService
 import io.sarl.sre.janus.services.time.TimeService
-import javax.inject.Singleton
-
-import static extension com.google.inject.multibindings.Multibinder.*
 
 /** 
  * Module for the time services that are based on the operating system time.

@@ -57,6 +57,8 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator implements OverviewSummaryGenerator {
 
+	/** Constructor.
+	 */
 	public OverviewSummaryGeneratorImpl() {
 		super(Messages.OverviewSummaryGeneratorImpl_1);
 	}

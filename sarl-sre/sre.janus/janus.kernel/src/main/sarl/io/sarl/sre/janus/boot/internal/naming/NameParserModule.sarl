@@ -22,8 +22,6 @@ package io.sarl.sre.janus.boot.internal.naming
 
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import io.sarl.api.naming.parser.UriBasedNameParser
@@ -31,7 +29,6 @@ import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
 import java.util.Set
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /** 
  * Injectable implementation of the name parser.
@@ -45,6 +42,7 @@ import javax.inject.Singleton
 class InjectedNameParser extends UriBasedNameParser {
 
 	@Inject
+	@SuppressWarnings("raw_type")
 	new (@SchemeNameParsers parsers : Set<ISchemeNameParser>) {
 		super(parsers)
 	}	

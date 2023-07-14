@@ -213,23 +213,23 @@ public final class OperatorExtensions {
 		Iterator<List<String>> iterator = operators.iterator();
 		for (final List<String> actualGroup : precedenceGroups) {
 			if (!iterator.hasNext()) {
-				error(logger, Messages.OperatorExtensions_2, operators, precedenceGroups); //$NON-NLS-1$
+				error(logger, Messages.OperatorExtensions_2, operators, precedenceGroups);
 				return false;
 			}
 			final List<String> originalExpectedGroup = iterator.next();
 			final List<String> expectedGroup = new ArrayList<>(originalExpectedGroup);
 			if (expectedGroup.size() != actualGroup.size()) {
-				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
 				return false;
 			}
 			for (final String actualOp : actualGroup) {
 				if (!expectedGroup.remove(actualOp)) {
-					error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+					error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
 					return false;
 				}
 			}
 			if (!expectedGroup.isEmpty()) {
-				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
 				return false;
 			}
 		}

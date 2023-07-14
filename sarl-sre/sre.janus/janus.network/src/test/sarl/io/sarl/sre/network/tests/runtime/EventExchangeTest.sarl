@@ -24,20 +24,14 @@ package io.sarl.sre.janus.network.tests.runtime
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.network.tests.framework.HazelcastRunExtension
 import io.sarl.sre.janus.network.tests.framework.MultiHazelcastRunContext
-import io.sarl.sre.janus.network.tests.runtime.mocks.EmitterAgent
-import io.sarl.sre.janus.network.tests.runtime.mocks.ReceiverAgent
-import io.sarl.sre.test.framework.context.LogTrackingMode
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
-import java.util.UUID
-import java.util.logging.Level
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.test.framework.Constants.*
-import static org.junit.jupiter.api.Assertions.*
+import static org.junit.jupiter.api.Assertions.assertNotNull
 
 /**
  * @author $Author: sgalland$
@@ -59,6 +53,7 @@ class EventExchangeTest {
 	@Test
 	def test(rc : MultiHazelcastRunContext) : void {
 		val rc0 = rc.firstHazelcastInstance
+		assertNotNull(rc0)
 		//rc0.commandLineArguments = #["-C"]
 		//rc0.runCommandLineBehavior(Level::FINE, LogTrackingMode::STANDARD_LOGGER_BEHAVIOR)
 		/*TODO: val kernel0 = rc0.setupTheSreKernel(null, LogTrackingMode::STANDARD_LOGGER_BEHAVIOR)

@@ -22,8 +22,6 @@ package io.sarl.sre.janus.boot.internal.services
 
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder
 import io.bootique.di.BQModule
 import io.sarl.api.naming.namespace.INamespaceFinder
@@ -37,8 +35,6 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import javax.inject.Qualifier
 
-import static extension com.google.inject.multibindings.Multibinder.*
-
 /**
  * Module for the namespace finders.
  * 
@@ -50,6 +46,7 @@ import static extension com.google.inject.multibindings.Multibinder.*
  */
 class NamespaceFinderModule implements BQModule {
 
+	@SuppressWarnings("raw_type")
 	override configure(binder : Binder) {
 		binder.bindSet(typeof(INamespaceFinder), typeof(NamespaceFinders)) => [
 			it.add(typeof(ServiceNamespaceFinder))

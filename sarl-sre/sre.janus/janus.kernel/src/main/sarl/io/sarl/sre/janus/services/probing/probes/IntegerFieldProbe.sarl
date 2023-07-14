@@ -59,6 +59,7 @@ class IntegerFieldProbe extends AbstractFieldProbe<Integer> {
 		|| (newValue !== null && oldValue !== null && newValue.intValue === oldValue.intValue)
 	}
 
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override toT(value : Object, concreteType : Class<?>) : Integer {
 		switch (concreteType) {
 			case typeof(int),
@@ -78,6 +79,7 @@ class IntegerFieldProbe extends AbstractFieldProbe<Integer> {
 		}
 	}
 	
+	@SuppressWarnings("io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion")
 	protected override prepareFieldWriting(newValue : Integer, concreteType : Class<?>, currentValue : Object) : Object {
 		switch (concreteType) {
 			case typeof(int): {

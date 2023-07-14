@@ -54,7 +54,7 @@ import io.sarl.docs.doclet2.framework.TypeRepository;
  */
 public class NavigationImpl implements Navigation {
 
-	private final static ResourceBundle BUNDLE = ResourceBundle.getBundle(NavigationImpl.class.getPackageName() + ".messages2");
+	private final static ResourceBundle BUNDLE = ResourceBundle.getBundle(NavigationImpl.class.getPackageName() + ".messages2"); //$NON-NLS-1$
 	
 	private List<? extends Node> moduleLink = Collections.emptyList();
 
@@ -367,7 +367,7 @@ public class NavigationImpl implements Navigation {
 				summaryNavItem.appendChildren(link);
 				if (anchorIterator.hasNext()) {
 					getHtmlFactory().createUnsecableSpace(summaryNavItem);
-					summaryNavItem.appendText("|");
+					summaryNavItem.appendText("|"); //$NON-NLS-1$
 				}
 			}
 		}
@@ -384,7 +384,7 @@ public class NavigationImpl implements Navigation {
 				detailsNavItem.appendChildren(link);
 				if (anchorIterator.hasNext()) {
 					getHtmlFactory().createUnsecableSpace(detailsNavItem);
-					detailsNavItem.appendText("|");
+					detailsNavItem.appendText("|"); //$NON-NLS-1$
 				}
 			}
 		}
@@ -395,6 +395,7 @@ public class NavigationImpl implements Navigation {
 	 * @param anchorId the box's anchor identifier.
 	 * @return the box name.
 	 */
+	@SuppressWarnings("static-method")
 	protected String mapBoxAnchorIdToName(String anchorId) {
 		try {
 			final String value = BUNDLE.getString(anchorId);

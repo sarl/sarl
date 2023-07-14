@@ -57,11 +57,11 @@ import com.google.common.base.Strings;
  */
 public class ExternalLinkManagerImpl implements ExternalLinkManager {
 
-	private static final String MODULE_PREFIX = "module:";
+	private static final String MODULE_PREFIX = "module:"; //$NON-NLS-1$
 
-	private static final String PACKAGE_LIST_NAME = "package-list";
+	private static final String PACKAGE_LIST_NAME = "package-list"; //$NON-NLS-1$
 
-	private static final String ELEMENT_LIST_NAME = "element-list";
+	private static final String ELEMENT_LIST_NAME = "element-list"; //$NON-NLS-1$
 
 	private ElementUtils elementUtils;
 
@@ -122,8 +122,8 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 			while (elementName != null) {
 				if (!elementName.isBlank()) {
 					if (elementName.startsWith(MODULE_PREFIX)) {
-						moduleName = elementName.replace(MODULE_PREFIX, "");
-						final URI fixedPath = path.resolve("/");
+						moduleName = elementName.replace(MODULE_PREFIX, ""); //$NON-NLS-1$
+						final URI fixedPath = path.resolve("/"); //$NON-NLS-1$
 						final Item item = new Item(moduleName, fixedPath);
 						this.externalModules.put(moduleName, item);
 					} else {
@@ -179,6 +179,7 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 	}
 
 	//TODO: The following should be replaced by a new method such as Elements.isAutomaticModule
+	@SuppressWarnings("static-method")
 	private boolean isAutomaticModule(ModuleElement moduleElement) {
 		if (moduleElement == null) {
 			return false;
@@ -242,14 +243,14 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 		final URI fullUri;
 		if (element instanceof TypeElement) {
 			final TypeElement typeElement = (TypeElement) element;
-			fullUri = item.path.resolve(typeElement.getSimpleName() + ".html");
+			fullUri = item.path.resolve(typeElement.getSimpleName() + ".html"); //$NON-NLS-1$
 		} else {
 			fullUri = item.path;
 		}
 		if (fullUri != null && !Strings.isNullOrEmpty(anchorName)) {
 			try {
 				final String anchorName0 = URLEncoder.encode(anchorName, Charset.defaultCharset().displayName());
-				final String completedUri = fullUri.toString() + "#" + anchorName0;
+				final String completedUri = fullUri.toString() + "#" + anchorName0; //$NON-NLS-1$
 				return URI.create(completedUri);
 			} catch (UnsupportedEncodingException ex) {
 				throw new RuntimeException(ex);

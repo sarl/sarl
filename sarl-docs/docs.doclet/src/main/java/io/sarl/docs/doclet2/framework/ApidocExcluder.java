@@ -35,14 +35,14 @@ public interface ApidocExcluder {
 
 	/** Replies if the given documented element should be excluded from the documentation.
 	 *
-	 * @param doc the element.
+	 * @param element the element.
 	 * @return {@code true} if the element should be excluded.
 	 */
 	boolean isExcluded(Element element);
 
 	/** Replies if the given documented element should be translated to a tag.
 	 *
-	 * @param doc the element.
+	 * @param element the element.
 	 * @return {@code true} if the element should be translated.
 	 */
 	boolean isTranslatableToTag(Element element);

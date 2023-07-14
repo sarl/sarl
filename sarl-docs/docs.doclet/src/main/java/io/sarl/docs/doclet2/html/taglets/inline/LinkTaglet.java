@@ -51,7 +51,7 @@ public class LinkTaglet extends AbstractSarlTaglet {
 
 	/** Name of the taglet.
 	 */
-	public static final String TAGLET_NAME = "link";
+	public static final String TAGLET_NAME = "link"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
@@ -66,7 +66,7 @@ public class LinkTaglet extends AbstractSarlTaglet {
 		} else {
 			sig = referenceTree.getSignature();
 		}
-		final int idx = sig.indexOf("#");
+		final int idx = sig.indexOf("#"); //$NON-NLS-1$
 		if (idx >= 0 && idx < (sig.length() - 1)) {
 			return sig.substring(idx + 1);
 		}

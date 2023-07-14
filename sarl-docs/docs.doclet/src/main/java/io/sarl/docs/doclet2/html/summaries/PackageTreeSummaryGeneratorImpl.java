@@ -49,6 +49,8 @@ public class PackageTreeSummaryGeneratorImpl extends AbstractTreeSummaryGenerato
 	
 	private SortedSet<TypeElement> packageTypes;
 
+	/** Constructor.
+	 */
 	public PackageTreeSummaryGeneratorImpl() {
 		super(Messages.PackageTreeSummaryGeneratorImpl_1);
 	}
@@ -69,6 +71,7 @@ public class PackageTreeSummaryGeneratorImpl extends AbstractTreeSummaryGenerato
 				cssStylesheets, jsScripts, environment, cliOptions, reporter);
 	}
 
+	@Override
 	protected boolean isVisible(TypeElement type) {
 		final TypeMirror tm = type.asType();
 		for (final TypeElement type0 : this.packageTypes) {

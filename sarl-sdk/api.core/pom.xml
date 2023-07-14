@@ -102,6 +102,7 @@
 				<configuration>
 					<source>${sarl-dsl.min.jdk.version}</source>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<warningsAsErrors>true</warningsAsErrors>
 					<generateInlines>true</generateInlines>
 					<generateStorageFiles>true</generateStorageFiles>
 					<generateTraceFiles>true</generateTraceFiles>

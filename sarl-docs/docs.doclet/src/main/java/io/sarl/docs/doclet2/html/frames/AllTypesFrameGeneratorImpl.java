@@ -53,6 +53,8 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
  */
 public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator implements AllTypesFrameGenerator {
 
+	/** Constructor.
+	 */
 	public AllTypesFrameGeneratorImpl() {
 		//
 	}

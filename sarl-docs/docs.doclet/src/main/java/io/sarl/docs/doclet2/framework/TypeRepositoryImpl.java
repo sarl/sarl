@@ -133,6 +133,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 				if (this.deprecatedTypes.add((TypeElement) element)) {
 					deprecate(element.getEnclosedElements());
 				}
+				break;
 			default:
 				// Ignore the element
 			}
@@ -145,6 +146,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 				switch (element.getKind()) {
 				case FIELD:
 					this.deprecatedFields.add((VariableElement) element);
+					break;
 				case METHOD:
 				case CONSTRUCTOR:
 					this.deprecatedExecutables.add((ExecutableElement) element);

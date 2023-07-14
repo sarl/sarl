@@ -28,6 +28,7 @@ import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.internal.Factories
+import io.sarl.sre.janus.internal.PlatformTools
 import io.sarl.sre.janus.services.IServiceManager
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.lifecycle.ContextReference
@@ -37,8 +38,6 @@ import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.spaces.SpaceWithParticipants
 import java.lang.Thread.UncaughtExceptionHandler
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
 import java.lang.ref.WeakReference
 import java.util.UUID
 import java.util.concurrent.Executors
@@ -48,7 +47,6 @@ import java.util.logging.LogRecord
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Qualifier
 import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -293,11 +291,11 @@ class Kernel {
 		if (timeout > 0) {
 			val endTime = System::currentTimeMillis + timeout
 			while (!agentIds.empty && System::currentTimeMillis <= endTime) {
-				Thread::yield
+				PlatformTools::yield
 			}
 		} else if (timeout != 0) {
 			while (!agentIds.empty) {
-				Thread::yield
+				PlatformTools::yield
 			}
 		}
 

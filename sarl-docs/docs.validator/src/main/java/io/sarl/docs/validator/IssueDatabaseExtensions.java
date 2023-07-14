@@ -87,6 +87,7 @@ public final class IssueDatabaseExtensions {
 	 * @param filename the file to read.
 	 * @return the description of the issues.
 	 */
+	@SuppressWarnings("resource")
 	@Pure
 	public static List<IssueDescription> readIssueDescriptions(File filename) {
 		final List<IssueDescription> props = new ArrayList<>();
@@ -104,19 +105,19 @@ public final class IssueDatabaseExtensions {
 				while (reader.hasNext()) {
 					final String name = reader.nextName();
 					switch (Strings.emptyIfNull(name)) {
-					case "code":
+					case "code": //$NON-NLS-1$
 						code = reader.nextString();
 						break;
-					case "message":
+					case "message": //$NON-NLS-1$
 						message = reader.nextString();
 						break;
-					case "cause":
+					case "cause": //$NON-NLS-1$
 						cause = reader.nextString();
 						break;
-					case "solution":
+					case "solution": //$NON-NLS-1$
 						solution = reader.nextString();
 						break;
-					case "level":
+					case "level": //$NON-NLS-1$
 						levelStr = reader.nextString();
 						break;
 					default:
@@ -231,11 +232,11 @@ public final class IssueDatabaseExtensions {
 	
 				// Column "Code"
 				final StringBuilder code = new StringBuilder();
-				code.append("[");
+				code.append("["); //$NON-NLS-1$
 				code.append(description.getShortDisplayCode());
-				code.append("](: \"");
+				code.append("](: \""); //$NON-NLS-1$
 				code.append(description.getLongDisplayCode());
-				code.append("\")");
+				code.append("\")"); //$NON-NLS-1$
 				columns.add(code.toString());
 
 				
@@ -255,7 +256,7 @@ public final class IssueDatabaseExtensions {
 		String ncode = nextIssue == null ? null : nextIssue.getCode();
 		if (Strings.equal(pcode, ccode) || Strings.equal(ccode, ncode)) {
 			// Long numbering
-			final char c = (char) ((int) 'a' + (minor - 1));
+			final char c = (char) ('a' + (minor - 1));
 			return major + Character.toString(c);
 		}
 		// Short numbering
@@ -288,11 +289,11 @@ public final class IssueDatabaseExtensions {
 	}
 
 	private static String head(String value) {
-		return "**" + value + "** ";
+		return "**" + value + "** "; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static String nl() {
-		return "\n";
+		return "\n"; //$NON-NLS-1$
 	}
 
 	/** Validate the fact that all the issue codes within the given argument are found into
@@ -305,7 +306,7 @@ public final class IssueDatabaseExtensions {
 	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
 		final Set<String> definedCodes = buildSarlIssueCodeList();
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13, definedCodes.size()));
-		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) {
+		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) { //$NON-NLS-1$
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_14);
 		}
 		return descriptions;
@@ -343,7 +344,7 @@ public final class IssueDatabaseExtensions {
 	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
 		final Set<String> definedCodes = buildIssueCodeList(issueListList);
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17, definedCodes.size()));
-		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) {
+		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) { //$NON-NLS-1$
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_18);
 		}
 		return descriptions;
@@ -380,7 +381,7 @@ public final class IssueDatabaseExtensions {
 					&& Modifier.isPublic(field.getModifiers())) {
 				try {
 					final String value = (String) field.get(null);
-					if (!Strings.isEmpty(value) && !value.endsWith(".")) {
+					if (!Strings.isEmpty(value) && !value.endsWith(".")) { //$NON-NLS-1$
 						codes.add(value);
 					}
 				} catch (Exception e) {
@@ -438,9 +439,9 @@ public final class IssueDatabaseExtensions {
 		 */
 		IssueDescription(final String code) {
 			final int lastIndex = code.lastIndexOf('.');
-			this.rawCode = code.replaceAll(Pattern.quote("&dot;"), ".");
+			this.rawCode = code.replaceAll(Pattern.quote("&dot;"), "."); //$NON-NLS-1$ //$NON-NLS-2$
 			if (lastIndex >= 0 && lastIndex < code.length() - 1) {
-				this.shortDisplayCode = code.substring(lastIndex + 1).replaceAll(Pattern.quote("&dot;"), ".");
+				this.shortDisplayCode = code.substring(lastIndex + 1).replaceAll(Pattern.quote("&dot;"), "."); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				this.shortDisplayCode = code;
 			}
@@ -456,12 +457,12 @@ public final class IssueDatabaseExtensions {
 
 		@Override
 		public void toJson(JsonBuffer buf) {
-			buf.add("rawCode", this.rawCode);
-			buf.add("displayCode", this.shortDisplayCode);
-			buf.add("message", this.message);
-			buf.add("cause", this.cause);
-			buf.add("solving", this.solution);
-			buf.add("level", this.level.toJson(this.delegate, this.defaultLevel.toJson(null, null)));
+			buf.add("rawCode", this.rawCode); //$NON-NLS-1$
+			buf.add("displayCode", this.shortDisplayCode); //$NON-NLS-1$
+			buf.add("message", this.message); //$NON-NLS-1$
+			buf.add("cause", this.cause); //$NON-NLS-1$
+			buf.add("solving", this.solution); //$NON-NLS-1$
+			buf.add("level", this.level.toJson(this.delegate, this.defaultLevel.toJson(null, null))); //$NON-NLS-1$
 		}
 
 		/** Replies the raw code.
@@ -523,7 +524,7 @@ public final class IssueDatabaseExtensions {
 		ERROR {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
-				return "error";
+				return "error"; //$NON-NLS-1$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -543,7 +544,7 @@ public final class IssueDatabaseExtensions {
 		WARNING {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
-				return "warning";
+				return "warning"; //$NON-NLS-1$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -563,7 +564,7 @@ public final class IssueDatabaseExtensions {
 		INFO {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
-				return "info";
+				return "info"; //$NON-NLS-1$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -583,7 +584,7 @@ public final class IssueDatabaseExtensions {
 		IGNORE {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
-				return "ignore";
+				return "ignore"; //$NON-NLS-1$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -603,7 +604,7 @@ public final class IssueDatabaseExtensions {
 		CONFIGURABLE {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
-				return "c/" + defaultLevel.toLowerCase();
+				return "c/" + defaultLevel.toLowerCase(); //$NON-NLS-1$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -619,7 +620,7 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public IssueLevel getDefaultLevel(String json) {
 				try {
-					if (json.startsWith("c/")) {
+					if (json.startsWith("c/")) { //$NON-NLS-1$
 						return fromJson(json.substring(2));
 					}
 				} catch (Throwable e) {
@@ -636,7 +637,7 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public String toJson(String delegate, String defaultLevel) {
 				assert delegate != null;
-				return "d/" + delegate + "/" + defaultLevel.toLowerCase();
+				return "d/" + delegate + "/" + defaultLevel.toLowerCase(); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
@@ -648,7 +649,7 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public String getDelegate(String json) {
 				try {
-					if (json.startsWith("d/")) {
+					if (json.startsWith("d/")) { //$NON-NLS-1$
 						final int idx = json.indexOf('/', 2);
 						if (idx > 2) {
 							return json.substring(2, idx);
@@ -662,7 +663,7 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public IssueLevel getDefaultLevel(String json) {
 				try {
-					if (json.startsWith("d/")) {
+					if (json.startsWith("d/")) { //$NON-NLS-1$
 						final int idx = json.indexOf('/', 2);
 						if (idx >= 2 && idx < json.length() - 1) {
 							return fromJson(json.substring(idx + 1));
@@ -690,10 +691,10 @@ public final class IssueDatabaseExtensions {
 		 */
 		public static IssueLevel fromJson(String label) {
 			try {
-				if (label.startsWith("c/")) {
+				if (label.startsWith("c/")) { //$NON-NLS-1$
 					return CONFIGURABLE;
 				}
-				if (label.startsWith("d/")) {
+				if (label.startsWith("d/")) { //$NON-NLS-1$
 					return DELEGATE;
 				}
 				return valueOf(label.toUpperCase());

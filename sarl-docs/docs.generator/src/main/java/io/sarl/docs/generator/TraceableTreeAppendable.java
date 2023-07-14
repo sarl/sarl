@@ -175,7 +175,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 	@Override
 	public AbstractTraceRegion getTraceRegion() {
 		if (this.location == null) {
-			throw new IllegalStateException("appendable was used without tracing");
+			throw new IllegalStateException("appendable was used without tracing"); //$NON-NLS-1$
 		}
 		return new AppendableBasedTraceRegion(this);
 	}
@@ -189,6 +189,10 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 		}
 	}
 
+	/** Replies the trace regions for the children.
+	 *
+	 * @return the trace regions.
+	 */
 	public List<AbstractTraceRegion> getTraceRegions() {
 		final List<AbstractTraceRegion> regions = new ArrayList<>();
 		getTraceRegions(regions);
@@ -267,6 +271,9 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 		private final ILocationData location;
 
+		/** Constructor.
+		 * @param delegate the appendable to delegate to.
+		 */
 		public AppendableBasedTraceRegion(TraceableTreeAppendable delegate) {
 			super(null);
 			this.location = delegate.location;

@@ -22,8 +22,6 @@ package io.sarl.sre.janus.boot.internal.naming
 
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
-import io.bootique.annotation.BQConfig
-import io.bootique.annotation.BQConfigProperty
 import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import io.sarl.api.naming.parser.AgentSchemeNameParser
@@ -50,6 +48,7 @@ import io.sarl.api.naming.parser.ArtifactSchemeNameParser
  */
 class SchemeNameParserModule implements BQModule {
 
+	@SuppressWarnings("raw_type")
 	override configure(binder : Binder) {
 		binder.bindSet(typeof(ISchemeNameParser), typeof(SchemeNameParsers)) => [
 			it.add(typeof(ServiceSchemeNameParser))

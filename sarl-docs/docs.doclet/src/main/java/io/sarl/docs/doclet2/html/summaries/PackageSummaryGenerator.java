@@ -43,7 +43,7 @@ public interface PackageSummaryGenerator {
 
 	/** Generate the summary.
 	 *
-	 * @param packageElement the module to generate a documentation for.
+	 * @param moduleElement the module to generate a documentation for.
 	 * @param cssStylesheets the list of available CSS style sheets.
 	 * @param jsScripts the list of available Javascript scripts.
 	 * @param environment the generation environment.
