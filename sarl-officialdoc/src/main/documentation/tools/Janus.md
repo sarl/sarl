@@ -8,11 +8,22 @@
 
 For launching the Janus platform from a command-line shell, you could use the [:name:] tool.
 
-> **_Caution:_** The [:name:] does not provide a support for exchaning events over a computer
+> **_Caution:_** The [:name:] does not provide a support for exchanging events over a computer
 > network. If you would like to have benefit of this feature, you should use one of the following
 > methods:
 > 1. Add a library on the classpath that includes the networking feature to the SRE; or
 > 2. Use the version of the SRE that includes the standard network feature: [janusnode](./Janusnode.md).
+
+## Note on the application classpath
+
+The Janus command-line tool adds automatically the Jar files of Janus on the application classpath.
+It means that you don't need to add any SRE, including Janus, in the dependencies of your project if you plan to use the Janus command line tool.
+
+For other methods for launching a SARL application, please refer to one of:
+
+* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
 
 
 ## Usage

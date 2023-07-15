@@ -18,6 +18,17 @@ The [:name:] is explained on this page.
 
 [:Include:](./hazelcast.inc)
 
+## Note on the application classpath
+
+The `janusnode` command-line tool adds automatically the Jar files of Janus on the application classpath.
+It means that you don't need to add any SRE, including Janus, in the dependencies of your project if you plan to use the Janus command line tool.
+
+For other methods for launching a SARL application, please refer to one of:
+
+* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+
 ## Usage
 
 The [:name:] tool takes arguments:

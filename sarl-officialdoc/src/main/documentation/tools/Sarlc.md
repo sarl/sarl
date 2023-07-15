@@ -7,6 +7,17 @@
 A command-line compiler is a tool that could be invoked from the command-line shell in order to compiler a language source file.
 [:name:] is the command-line compiler for the SARL language.
 
+## Note on the application classpath
+
+The [:name!] tool does not deal with the run-time classpath of the application.
+It means that it does not check if a SARL runtime environment is installed and used in your application.
+
+For launching a SARL application, please refer to one of:
+
+* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+
 ## Usage
 
 The [:name:] tool takes arguments:

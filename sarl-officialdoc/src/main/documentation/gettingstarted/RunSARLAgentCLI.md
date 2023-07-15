@@ -13,7 +13,6 @@ Three methods could be used for launching an agent with Janus:
 * [Using Maven execution plugin](#use-maven-execution-plugin).
 
 
-
 ## Use the Janus command-line tool
 
 The SARL project provides a [command-line tool for launching agents](../tools/Janus.md) on the Janus runtime environment.
@@ -44,12 +43,15 @@ The janus command-line tool provides options that will enable you to tune the la
 One of the command-line options that is usually mandatory is the [:janusjaroption](--jar) option, which enables you to specify the jar files that contains your application:
 
 ```text
-[:januscmd!] [:janusjaroption!] path/to/myapp.jar [:janusagent!]
+[:januscmd!] [:janusjaroption!] path/to/[:jarfile!] [:janusagent!]
 ```
 
 
 If the [:januscmd:] script indicates to you an error "agent not found", most of the time it is because your application's jar file is not on the class path.
 The [:janusjaroption!] option becomes mandatory for specifying the jar file.
+
+
+> **_Very Important Note:_** The Janus command-line tool adds automatically the Jar files of the SRE (i.e., Janus) on the application classpath. It means that you don't need to add any SRE, including Janus, in the dependencies of your project if you plan to use the Janus command line tool.
 
 
 ## Use the standard java method
@@ -62,15 +64,17 @@ boot class in a Java Virtual Machine.
 The typical command line is:
 
 ```text
-java [:cpcli](-cp) [:jarfile](app.jar) [:fullbootclass]{io.sarl.sre.boot.[:bootclass](Boot)}
+java [:cpcli](-cp) [:jarfile](app.jar) [:fullbootclass]{io.sarl.sre.janus.boot.[:bootclass](Boot)}
 ```
 [:Fact:](io.sarl.sre.janus.boot.Boot)
 
 
 The option [:cpcli:] specifies the Jar file that contains
-the compiled classes. The given [:jarfile:] file is a Jar file that is containing the Janus
+the compiled classes. The given [:jarfile:] file is a Jar file that must contain the Janus
 platform, the SARL libraries, and the application classes.
 The last argument is the fully qualified name of the booting class of Janus: [:fullbootclass:]
+
+> **_Very Important Note:_** With this method, you must add the SRE, e.g., Janus, on the classpath (or in the dependencies) of your project.
 
 
 ###  Specify the Agent to Launch
@@ -79,7 +83,7 @@ The example given in the previous section causes an error. Indeed, it is mandato
 specify the fully qualified name of the agent to launch:
 
 ```text
-java -cp app.jar [:fullbootclass!] myapp.MyAgent
+java -cp [:jarfile!] [:fullbootclass!] myapp.MyAgent
 ```
 
 
@@ -90,14 +94,14 @@ java -cp app.jar [:fullbootclass!] myapp.MyAgent
 > * launch an agent that is spawning the other agents.
 
 
-### What is app.jar?
+### What is [:jarfile!]?
 
 In the previous section, we assume that all the application binary files are
 contained into the [:jarfile:] file.
 
-### app.jar by hand
+### Splitting [:jarfile!] in separated jar files by hand
 
-You may replace the [:jarfile:] in the previous command lines by the classpath
+You may replace the [:jarfile!] in the previous command lines by the classpath
 that is containing all the jar files required for running your application, including
 the Janus jar file(s):
 
@@ -105,11 +109,11 @@ the Janus jar file(s):
 java -cp /path/to/myapplication.jar:/path/to/[:janusjarfile](io.janusproject.kernel-<version>-with-dependencies.jar) [:fullbootclass!] myapp.MyAgent
 ```
 
-The [:janusjarfile:] file may be dowloaded from the [Janus website](http://www.janusproject.io/)
+The [:janusjarfile:] file must be dowloaded from the [Janus website](http://www.janusproject.io/)
 
-### Creating app.jar with maven-assembly-plugin
+### Creating [:jarfile!] with maven-assembly-plugin
 
-You may also create the [:jarfile:] file with Maven by using the assembly plugin for creating a jar file with all the dependencies inside.
+You may also create the [:jarfile!] file with Maven by using the assembly plugin for creating a jar file with all the dependencies inside.
 To do so, you have to update the `pom.xml` file of your project and to define the assembly specification.
 
 The content of the `pom.xml` must include the assembly plugin definition:
@@ -177,7 +181,7 @@ The Janus platform provides a collection of command line options.
 For obtaining the list of these options, you should type:
 
 ```text
-java -cp app.jar [:fullbootclass!] --help
+java -cp [:jarfile!] [:fullbootclass!] --help
 ```
 
 
@@ -204,6 +208,9 @@ The option [:mavencliexec:] specifies the Java executable.
 The option [:mavencliargs:] contains the command line arguments to pass to Java.
 The first argument is the classpath of the project. You must not change `%classpath` because it will be dynamically
 replaced by the Maven plugin. 
+
+> **_Very Important Note:_** With this method, you must add the SRE, e.g., Janus, on the classpath (or in the dependencies) of your project.
+
 
 
 ### Specify the Agent to Launch

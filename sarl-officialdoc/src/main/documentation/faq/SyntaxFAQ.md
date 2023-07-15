@@ -355,7 +355,7 @@ There exist more advanced implementations of `Pair`, for example from Apache. Se
 
 SARL itself have compact syntax do deal with `Pair`, by using `a -> b` to create a `Pair` object `(a,b)`. There are also compact ways of manipulating Collection and Maps.
 
-Check SARL documentation on that [here](../reference/general/Operators.html#collection-operators).
+Check SARL documentation on that [here](../reference/general/Operators.md#collection-operators).
 
 
 
@@ -475,7 +475,7 @@ If this analysis does not work, the programmer can mark a method as pure using `
 [:End:]
 
 
-Details on the [documentation page for function definition](../reference/general/FuncDecls.html#purity-of-the-functions).
+Details on the [documentation page for function definition](../reference/general/FuncDecls.md#purity-of-the-functions).
 
 
 

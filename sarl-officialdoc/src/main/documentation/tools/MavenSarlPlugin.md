@@ -15,6 +15,19 @@ targets for performing certain well-defined tasks such as compilation of code an
 In order to compile SARL code within a Maven-based project, a compilation plug-in is provided, named
 [:pluginname:].
  
+## Note on the application classpath
+
+The [:pluginname!] plugin does not deal with the run-time classpath of the application.
+It is a tool that is compiling the SARL code to the target language, e.g. Java.
+It means that it does not enforce if a SARL runtime environment is installed and used in your application.
+
+For launching a SARL application, please refer to one of:
+
+* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+
+
 ## Usage
 
 Open the file `pom.xml` of your project, and edit it for obtaining a content similar to the
@@ -44,7 +57,6 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
              <extensions>true</extensions>
              <configuration>
                 <source>${jdk.version}</source>
-                <target>${jdk.version}</target>
                 <encoding>${project.build.sourceEncoding}</encoding>
              </configuration>
           </plugin>
@@ -54,7 +66,6 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
 			<version>[:maven.compiler.version!]</version>
 			<configuration>
 				<source>${jdk.version}</source>
-				<target>${jdk.version}</target>
 				<encoding>${project.build.sourceEncoding}</encoding>
 			</configuration>
 		  </plugin>

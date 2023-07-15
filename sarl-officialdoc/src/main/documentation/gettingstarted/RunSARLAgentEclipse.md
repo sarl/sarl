@@ -18,11 +18,11 @@ The SARL launch configuration is recommended.
 For launching the SARL agents on the runtime environment inside the SARL Eclipse IDE, you must
 define a *Run Configuration*.
 
-> **_Very Important Note:_** If your project is Maven-based, you could not use this method for launching your
-> application. You must use the [Java launch configuration](#create-a-java-launch-configuration).
+
+> **_Very Important Note:_** The SARL launch configuration adds automatically the Jar files of the SRE (e.g., Janus) on the application classpath. It means that you don't need to add any SRE, including Janus, in the dependencies of your project if you plan to use this launching method.
 
 
-### Create a Java application configuration
+### Create a configuration
 
 Open the run configuration dialog box by selecting **Run > Run Configurations**, and create a new SARL
 application. You obtain a page similar to:
@@ -32,6 +32,8 @@ application. You obtain a page similar to:
 
 
 Change the *name* of the run configuration, and select the *project*, which is containing your agent.
+
+
 
 ### Specify the agent to execute
 
@@ -97,7 +99,10 @@ This section is dedicated to the definition of a launcher for Java application (
 launching configuration in the Eclipse community).
 
 
-### Create a Java application configuration
+> **_Very Important Note:_** The Janus application configuration **does not add automatically** the Jar files of the SRE (e.g., Janus) on the application classpath. It means that you **must add** an SRE, e.g. Janus, in the dependencies of your project if you plan to use this launching method.
+
+
+### Create a configuration
 
 Open the run configuration dialog box by selecting **Run > Run Configurations**, and create a new Java
 Application. You obtain a page similar to:
@@ -130,10 +135,12 @@ Then, you are able to select the library for the Janus runtime environment.
 ### Specify the SRE Boot agent
 
 You can go back to the *Main* tab, and enter the *Main class*.
-The main class **must always be** `io.sarl.sre.boot.Boot`.
+The main class **must always be** `io.sarl.sre.janus.boot.Boot`.
 
 
 ![Janus Boot Class](./EclipseRunConfiguration_1_3.png)
+
+[:Fact:](io.sarl.sre.janus.boot.Boot)
 
 
 ### Specify the agent to execute
