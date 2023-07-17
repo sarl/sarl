@@ -29,6 +29,10 @@
 			<groupId>me.tongfei</groupId>
 			<artifactId>progressbar</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>sdk</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -50,13 +54,6 @@
 			<dependency>
 				<groupId>io.sarl.bom</groupId>
 				<artifactId>sarl-app-bom</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl.bom</groupId>
-				<artifactId>sarl-tests-bom</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

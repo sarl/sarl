@@ -491,8 +491,8 @@ public final class ExamplesTestUtils {
 		final Logger nopLogger = Logger.getAnonymousLogger();
 		nopLogger.setLevel(Level.OFF);
 		compiler.setLogger(nopLogger);
-		compiler.addIssueMessageListener((issue, uri, message) -> {
-			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
+		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
+			if (issue.isSyntaxError() || severity.compareTo(Severity.ERROR) >= 0) {
 				final Integer line = issue.getLineNumber();
 				final int issueLine = (line == null ? 0 : line.intValue());
 				issues.add(message + " (line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$

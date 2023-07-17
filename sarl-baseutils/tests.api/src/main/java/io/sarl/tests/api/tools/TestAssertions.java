@@ -51,6 +51,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
+import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.opentest4j.AssertionFailedError;
 import org.osgi.framework.Version;
 
@@ -360,6 +361,23 @@ public final class TestAssertions {
 		if (!le.isEmpty()) {
 			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" + //$NON-NLS-1$ //$NON-NLS-2$
 					Iterables.toString(actual));
+		}
+	}
+
+	/** Test if the actual string contains all the expected substring.
+	 *
+	 * @param actual the actual value of the string.
+	 * @param expected the expected substring.
+	 * @since 0.13
+	 */
+	public static void assertContains(String expected, String actual) {
+		assertNotNull(actual, "The value is null and cannot contain a substring"); //$NON-NLS-1$
+		if (!actual.contains(expected)) {
+			AssertionFailureBuilder.assertionFailure()
+				.expected(expected)
+				.actual(actual)
+				.message("Value does not contain the substring: " + expected) //$NON-NLS-1$
+				.buildAndThrow();
 		}
 	}
 

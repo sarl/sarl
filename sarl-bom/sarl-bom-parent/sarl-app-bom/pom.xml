@@ -74,6 +74,11 @@
 				<version>${janus.version}</version>
 			</dependency>      
 			<dependency>
+				<groupId>io.sarl.sdk</groupId>
+				<artifactId>sdk</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl.apputils</groupId>
 				<artifactId>bootiqueapp</artifactId>
 				<version>${sarl.version}</version>
@@ -106,6 +111,11 @@
 			<dependency>
 				<groupId>io.sarl.docs</groupId>
 				<artifactId>docs.generator</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.docs</groupId>
+				<artifactId>docs.doclet</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>

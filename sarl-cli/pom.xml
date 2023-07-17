@@ -13,6 +13,7 @@
 		<module>sarldoc</module>
 		<module>janus</module>
 		<module>janusnode</module>
+		<module>sarl-cli-tests</module>
 	</modules>
 
 	<properties>

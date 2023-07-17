@@ -1,12 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.sarl.sdk</groupId>
-	<artifactId>sdk</artifactId>
+	<groupId>io.sarl.cli</groupId>
+	<artifactId>sarl-cli-tests</artifactId>
 	<version>0.13.0-SNAPSHOT</version>
-	<name>Full SDK for SARL Applications</name>
-	<description>Provides all necessary dependencies to develop a MAS using SARL</description>
+	<name>Tests for CLI tools</name>
+	<description>Tests the SARL CLI tools</description>
 	<packaging>jar</packaging>
+
+	<inceptionYear>${sarl.inception.year}</inceptionYear>
+	
+	<organization>
+		<name>${sarl.vendor}</name>
+	</organization>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,20 +20,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.sarl.sdk</groupId>
-			<artifactId>api.util</artifactId>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarlc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl.sdk</groupId>
-			<artifactId>api.core</artifactId>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarldoc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl.sdk</groupId>
-			<artifactId>api.naming</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.sdk</groupId>
-			<artifactId>api.probing</artifactId>
+			<groupId>io.sarl.baseutils</groupId>
+			<artifactId>tests.api</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -35,7 +37,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>io.sarl.bom</groupId>
-				<artifactId>sarl-sdk-bom</artifactId>
+				<artifactId>sarl-tests-bom</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -45,64 +47,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.13.0-SNAPSHOT</version>
-				<!-- Maven extension mechanism seems not working because the plugin is defined in the same project.
-				     The different goals must be explicitly provided. -->
-				<executions>
-					<execution>
-						<id>sarl-compiler-init</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>initialize</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>sarl-compiler-compile</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>sarl-compiler-clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<source>${sarl-dsl.min.jdk.version}</source>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<warningsAsErrors>true</warningsAsErrors>
-					<generateInlines>true</generateInlines>
-					<generateStorageFiles>true</generateStorageFiles>
-					<generateTraceFiles>true</generateTraceFiles>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.4.0</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src/main/sarl</source>
-								<source>src/main/generated-sources/sarl</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -133,15 +77,16 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-				</configuration>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -168,6 +113,40 @@
 						<version>${project.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-resource</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/it/resources</directory>
+									<targetPath>target/test-classes</targetPath>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

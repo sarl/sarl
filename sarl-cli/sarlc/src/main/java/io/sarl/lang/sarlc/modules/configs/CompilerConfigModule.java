@@ -22,7 +22,6 @@
 package io.sarl.lang.sarlc.modules.configs;
 
 import static io.bootique.BQCoreModule.extend;
-import static io.sarl.apputils.bootiqueapp.batchcompiler.lang.SARLRuntimeModule.SARL_INJECTOR_NAME;
 import static io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig.COMPRESS_INLINE_EXPRESSIONS_NAME;
 import static io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig.FILE_ENCODING_NAME;
 import static io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig.GENERATE_CLONE_NAME;
@@ -39,21 +38,13 @@ import static io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig.OUTPUT_TRACES
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import com.google.inject.Injector;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
-import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 
 import io.sarl.lang.compiler.GeneratorConfig2;
-import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.core.SARLVersion;
-import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 
 /** Module for creating and configuring the sarlc compiler.
@@ -193,23 +184,6 @@ public class CompilerConfigModule implements BQModule {
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
 				.build())
 			.mapConfigPath(GENERATESERIALS_OPTION, GENERATE_SERIAL_IDS_NAME);
-	}
-
-	/** Provide a Java batch compiler based on the Bootique configuration.
-	 *
-	 * @param config the bootique configuration.
-	 * @param guiceInjector the injector used for the SARL compiler.
-	 * @return the batch compiler.
-	 * @since 0.8
-	 */
-	@SuppressWarnings("static-method")
-	@Provides
-	@Singleton
-	public IJavaBatchCompiler providesJavaBatchCompiler(Provider<SarlcConfig> config, @Named(SARL_INJECTOR_NAME) Injector guiceInjector) {
-		final SarlcConfig cfg = config.get();
-		final IJavaBatchCompiler compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
-		guiceInjector.injectMembers(compiler);
-		return compiler;
 	}
 
 }

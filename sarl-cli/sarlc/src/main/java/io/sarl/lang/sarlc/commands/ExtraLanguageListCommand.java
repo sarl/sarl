@@ -29,6 +29,7 @@ import javax.inject.Provider;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
+import io.bootique.di.BQInject;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
 
@@ -63,6 +64,7 @@ public class ExtraLanguageListCommand extends CommandWithMetadata {
 	 * @param bootLogger the logger.
 	 * @param contributions the provider of the extra-language contributions.
 	 */
+	@BQInject
 	public ExtraLanguageListCommand(BootLogger bootLogger, Provider<IExtraLanguageContributions> contributions) {
 		super(CommandMetadata
 				.builder(ExtraLanguageListCommand.class)

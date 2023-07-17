@@ -113,6 +113,26 @@
 		<artifactId>guava</artifactId>
 		<version>${guava.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>io.sarl.cli</groupId>
+		<artifactId>sarlc</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.sarl.cli</groupId>
+		<artifactId>sarldoc</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.sarl.cli</groupId>
+		<artifactId>janus</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.sarl.cli</groupId>
+		<artifactId>janusnode</artifactId>
+		<version>${sarl.version}</version>
+	</dependency>
     </dependencies>
   </dependencyManagement>
  

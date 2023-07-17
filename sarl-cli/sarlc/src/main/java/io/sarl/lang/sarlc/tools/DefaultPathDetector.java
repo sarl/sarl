@@ -91,7 +91,6 @@ public class DefaultPathDetector implements PathDetector {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void resolve(List<String>  args) throws IOException {
 		if (this.sarlOutputPath == null || this.tempPath == null || this.classOutputPath == null) {
 			final Iterable<File> cliFiles = Iterables.transform(
@@ -141,6 +140,7 @@ public class DefaultPathDetector implements PathDetector {
 		final Path path1 = toFile(SARLConfig.FOLDER_SOURCE_SARL).toPath();
 		final Path path2 = toFile(SARLConfig.FOLDER_SOURCE_JAVA).toPath();
 		final Path path3 = toFile(SARLConfig.FOLDER_TEST_SOURCE_SARL).toPath();
+		final Path path4 = toFile(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL).toPath();
 		final Path path = filename.toPath();
 		Path toRemove = null;
 		if (path.endsWith(path1)) {
@@ -149,6 +149,8 @@ public class DefaultPathDetector implements PathDetector {
 			toRemove = path2;
 		} else if (path.endsWith(path3)) {
 			toRemove = path3;
+		} else if (path.endsWith(path4)) {
+			toRemove = path4;
 		}
 		if (toRemove != null) {
 			final int nb = toRemove.getNameCount();
@@ -185,7 +187,6 @@ public class DefaultPathDetector implements PathDetector {
 		return new File("").getAbsoluteFile(); //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static File determineCommonRoot(Iterable<File> files) {
 		LinkedList<String> longuestPrefix = null;
 

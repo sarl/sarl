@@ -31,6 +31,7 @@ import com.google.common.base.Strings;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
+import io.bootique.di.BQInject;
 import io.bootique.meta.application.CommandMetadata;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
@@ -68,16 +69,6 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	private final Provider<ProgressBarConfig> progressConfig;
 
-	/** Constructor with all the fields set to {@code null}.
-	 * A command created with this constructor cannot be run. But is could be used for obtaining the
-	 * command options.
-	 *
-	 * @since 0.12
-	 */
-	public CompilerCommand() {
-		this(null, null, null, null);
-	}
-
 	/** Constructor.
 	 *
 	 * @param compiler the SARL batch compiler.
@@ -85,6 +76,7 @@ public class CompilerCommand extends CommandWithMetadata {
 	 * @param pathDetector the detector of path.
 	 * @param progressConfig the configuration of the progress bar.
 	 */
+	@BQInject
 	public CompilerCommand(Provider<SarlBatchCompiler> compiler, Provider<SarlcConfig> configuration,
 			Provider<PathDetector> pathDetector, Provider<ProgressBarConfig> progressConfig) {
 		super(CommandMetadata
@@ -97,7 +89,6 @@ public class CompilerCommand extends CommandWithMetadata {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public CommandOutcome run(Cli cli) {
 		if (cli.standaloneArguments().isEmpty()) {
 			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, Messages.CompilerCommand_1);

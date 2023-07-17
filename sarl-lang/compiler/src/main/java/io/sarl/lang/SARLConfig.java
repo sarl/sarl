@@ -53,9 +53,19 @@ public final class SARLConfig {
 	 */
 	public static final String FOLDER_MAVEN_TEST_PREFIX = "src/test"; //$NON-NLS-1$
 
-	/** Path of the Java source files.
+	/** Path of the test Java source files.
 	 */
 	public static final String FOLDER_TEST_SOURCE_SARL = FOLDER_MAVEN_TEST_PREFIX + "/sarl"; //$NON-NLS-1$
+
+	/** Path of the integration test source files within a Maven project.
+	 * @since 0.13
+	 */
+	public static final String FOLDER_MAVEN_INTEGRATION_TEST_PREFIX = "src/it"; //$NON-NLS-1$
+
+	/** Path of the integration test's Java source files.
+	 * @since 0.13
+	 */
+	public static final String FOLDER_INTEGRATION_TEST_SOURCE_SARL = FOLDER_MAVEN_INTEGRATION_TEST_PREFIX + "/sarl"; //$NON-NLS-1$
 
 	/** Path of the SARL source files.
 	 */

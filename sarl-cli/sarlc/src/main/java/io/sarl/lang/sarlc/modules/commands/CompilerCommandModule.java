@@ -22,12 +22,13 @@
 package io.sarl.lang.sarlc.modules.commands;
 
 import static io.bootique.BQCoreModule.extend;
-import static io.sarl.apputils.bootiqueapp.batchcompiler.lang.SARLRuntimeModule.SARL_INJECTOR_NAME;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
@@ -58,31 +59,31 @@ public class CompilerCommandModule implements BQModule {
 	public void configure(Binder binder) {
 		final String trueFalseValues = MessageFormat.format(Messages.CompilerCommandModule_1, Boolean.TRUE.toString(), Boolean.FALSE.toString());
 		extend(binder)
-			.addOption(OptionMetadata.builder(
+		.addOption(OptionMetadata.builder(
 				CompilerCommand.PROGRESS_OPTION_NAME, MessageFormat.format(Messages.CompilerCommandModule_0, Boolean.TRUE))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.TRUE.toString())
 				.build())
-			.mapConfigPath(CompilerCommand.PROGRESS_OPTION_NAME, ProgressBarConfig.ENABLE);
-
+		.mapConfigPath(CompilerCommand.PROGRESS_OPTION_NAME, ProgressBarConfig.ENABLE);
 		extend(binder).addCommand(CompilerCommand.class);
 	}
 
 	/** Provide the command for running the compiler.
 	 *
+	 * @param sarlCompiler the provider of a SARL batch compiler.
 	 * @param configuration the provider of the general sarlc configuration.
-	 * @param pathDetector the provider of the path detector that is used by sarlc tool.
 	 * @param commandConfig the provider of the sarlc progress bar configuration.
-	 * @param guiceInjector injector that is used by the SARL compiler and that is different from the Bootique one.
+	 * @param pathDetector the provider of the path detector that is used by sarlc tool.
 	 * @return the command.
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public CompilerCommand provideSarlcCompilerCommand(Provider<SarlcConfig> configuration, Provider<PathDetector> pathDetector,
+	public CompilerCommand provideSarlcCompilerCommand(
+			Provider<SarlBatchCompiler> sarlCompiler,
+			Provider<SarlcConfig> configuration,
 			Provider<ProgressBarConfig> commandConfig,
-			@Named(SARL_INJECTOR_NAME) com.google.inject.Injector guiceInjector) {
-		final com.google.inject.Provider<SarlBatchCompiler> compiler = guiceInjector.getProvider(SarlBatchCompiler.class);
-		return new CompilerCommand(() -> compiler.get(), configuration, pathDetector, commandConfig);
+			Provider<PathDetector> pathDetector) {
+		return new CompilerCommand(sarlCompiler, configuration, pathDetector, commandConfig);
 	}
 
 	/** Replies the instance of the compiler command configuration.
@@ -106,18 +107,23 @@ public class CompilerCommandModule implements BQModule {
 	 * @param config the progress bar configuration.
 	 * @return the root logger.
 	 */
-	@SuppressWarnings("static-method")
 	@Singleton
 	@Provides
 	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
-		final Logger root = Logger.getAnonymousLogger();
-		if (root != null) {
-			ProgressBarConfig cfg = config.get();
-			if (cfg.getEnable()) {
-				root.setLevel(cfg.getLevel().toJul());
+		final Class<?> type = getClass();
+		try (final InputStream stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
+			LogManager.getLogManager().readConfiguration(stream);
+			final Logger root = Logger.getAnonymousLogger();
+			if (root != null) {
+				ProgressBarConfig cfg = config.get();
+				if (cfg.getEnable()) {
+					root.setLevel(cfg.getLevel().toJul());
+				}
 			}
+			return root;
+		} catch (IOException ex) {
+			throw new Error(ex);
 		}
-		return root;
 	}
 
 }

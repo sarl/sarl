@@ -490,7 +490,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		}
 		compiler.setExtraLanguageGenerators(builder.toString());
 
-		compiler.setIssueMessageFormatter((issue, uriToProblem) -> {
+		compiler.setIssueMessageFormatter((severity, issue, uriToProblem) -> {
 			final String filename;
 			if (uriToProblem != null) {
 				filename = uriToProblem.toFileString();

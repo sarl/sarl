@@ -20,6 +20,10 @@
  */
 package io.sarl.tests.api.tools;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -154,7 +158,7 @@ public class TestReflections {
 	 * @throws NoSuchMethodException 
 	 */
 	public static <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final Object[] arguments = args == null ? new Object[]{null} : args;
 		Constructor<?> compatible = null;
 		for (Constructor<?> candidate : type.getDeclaredConstructors()) {
@@ -350,7 +354,7 @@ public class TestReflections {
 		assert receiver != null;
 		return invoke(receiver, receiver.getClass(), methodName, args);
 	}
-	
+
 	/**
 	 * Invokes the first accessible method defined on the receiver'c class with the given name and
 	 * a parameter list compatible to the given arguments.
@@ -633,6 +637,77 @@ public class TestReflections {
 			}
 		}
 		return true;
+	}
+
+	/** Run a command-line program with a call to the {@code main} Java function.
+	 *
+	 * @param className the name of the class to launch. This class must contain the {@code main} function.
+	 * @param data the data to pass to the program as the content of the standard input stream. It may be {@code null}.
+	 * @param arguments the command-line arguments to pass to program.
+	 * @return the standard output stream.
+	 * @throws Exception if there is some issue when running the program.
+	 * @see #runRun(String, String, String...)
+	 * @see #runInternal(String, String, String, String...)
+	 * @since 0.13
+	 */
+	public static String runMain(String className, String data, String... arguments) throws Exception {
+		return runInternal("main", className, data, arguments); //$NON-NLS-1$
+	}
+
+	/** Run a command-line program with a call to the {@code run} Java function that has the same
+	 * prototype as the {@code main} standard Java. The {@code run} function is assumed to never
+	 * invoked the {@link System#exit(int)} function.
+	 *
+	 * @param className the name of the class to launch. This class must contain the {@code main} function.
+	 * @param data the data to pass to the program as the content of the standard input stream. It may be {@code null}.
+	 * @param arguments the command-line arguments to pass to program.
+	 * @return the standard output stream.
+	 * @throws Exception if there is some issue when running the program.
+	 * @see #runMain(String, String, String...)
+	 * @see #runInternal(String, String, String, String...)
+	 * @since 0.13
+	 */
+	public static String runRun(String className, String data, String... arguments) throws Exception {
+		return runInternal("run", className, data, arguments); //$NON-NLS-1$
+	}
+
+	/** Run a command-line program with a call to the Java function with the given name that has the same
+	 * prototype as the {@code main} standard Java.
+	 *
+	 * @param functionName the name of the static function to be invoked.
+	 * @param className the name of the class to launch. This class must contain the {@code main} function.
+	 * @param data the data to pass to the program as the content of the standard input stream. It may be {@code null}.
+	 * @param arguments the command-line arguments to pass to program.
+	 * @return the standard output stream.
+	 * @throws Exception if there is some issue when running the program.
+	 * @see #runMain(String, String, String...)
+	 * @see #runRun(String, String, String...)
+     * @since 0.13
+	 */
+	public static String runInternal(String functionName, String className, String data, String... arguments) throws Exception {
+		try (final ByteArrayOutputStream stdout = new ByteArrayOutputStream()) {
+			final byte[] inputBytes = data == null ? new byte[0] : data.getBytes("UTF-8"); //$NON-NLS-1$
+			try (final InputStream input = new ByteArrayInputStream(inputBytes)) {
+				final PrintStream console = System.out;
+				final PrintStream errConsole = System.err;
+				final InputStream old = System.in;
+				try {
+					System.setOut(new PrintStream(stdout));
+					System.setErr(new PrintStream(stdout));
+					System.setIn(input);
+
+					final Class<?> cls = Class.forName(className);
+					final Method meth = cls.getDeclaredMethod(functionName, String[].class);
+					meth.invoke(null, (Object) arguments);
+				} finally {
+					System.setOut(console);
+					System.setErr(errConsole);
+					System.setIn(old);
+				}
+			}
+			stdout.flush();
+			return stdout.toString("UTF-8"); //$NON-NLS-1$
+		}
 	}
 
 }

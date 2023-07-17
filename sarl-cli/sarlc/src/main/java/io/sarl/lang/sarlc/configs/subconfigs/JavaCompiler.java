@@ -149,7 +149,8 @@ public enum JavaCompiler {
 	 */
 	@Pure
 	public static JavaCompiler getDefault() {
-		final JavaCompiler jc = fromImplementationType(SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType());
+		final Class<? extends IJavaBatchCompiler> compilerType = SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType();
+		final JavaCompiler jc = fromImplementationType(compilerType);
 		if (jc != null) {
 			return jc;
 		}

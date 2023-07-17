@@ -206,7 +206,7 @@ public class ExtraLanguageFeatureNameConverter {
 				return null;
 			}
 		}
-		return new ConversionResult(simpleName);
+		return new ConversionResult(simpleName, null);
 	}
 
 	private static void loopReceiver(LinkedList<String> sourceFeature, Object obj) {
@@ -295,35 +295,15 @@ public class ExtraLanguageFeatureNameConverter {
 
 	/** Describes the result of a replacement.
 	 *
+	 * @param text the text.
+	 * @param conversion is the description of the conversion.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.6
 	 */
-	public static class ConversionResult {
-
-		private final String text;
-
-		private final Object[] conversion;
-
-		/** Constructor for feature renaming.
-		 *
-		 * @param text the text.
-		 */
-		protected ConversionResult(String text) {
-			this.text = text;
-			this.conversion = null;
-		}
-
-		/** Constructor for complex conversion.
-		 *
-		 * @param conversion is the description of the conversion.
-		 */
-		protected ConversionResult(Object[] conversion) {
-			this.text = null;
-			this.conversion = conversion;
-		}
+	public static record ConversionResult(String text, Object[] conversion) {
 
 		/** Replies if the replacement result is a simple feature renaming.
 		 *
@@ -667,9 +647,9 @@ public class ExtraLanguageFeatureNameConverter {
 						}
 					}
 				}
-				return new ConversionResult(content.toArray());
+				return new ConversionResult(null, content.toArray());
 			}
-			return new ConversionResult(this.staticParts.get(this.staticParts.size() - 1));
+			return new ConversionResult(this.staticParts.get(this.staticParts.size() - 1), null);
 		}
 
 		/** Replies the raw text for this replacement.

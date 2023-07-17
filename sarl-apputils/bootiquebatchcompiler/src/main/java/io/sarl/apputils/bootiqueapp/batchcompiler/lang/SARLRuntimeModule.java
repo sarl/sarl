@@ -31,7 +31,7 @@ import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 
 import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 
 /** Empty module that is defined for enabling automatic loading of modules
  * from command-line tools when their CLI options should be computed.
@@ -68,7 +68,7 @@ public final class SARLRuntimeModule implements BQModule {
 		return injector;
 	}
 
-	/** Provides the SARL compiler that could be invoked programmatically.
+	/** Provides the extra-language contributions to the SARL compiler.
 	 *
 	 * @param sarlInjector the SARL injector.
 	 * @return the SARL compiler.
@@ -77,9 +77,9 @@ public final class SARLRuntimeModule implements BQModule {
 	@SuppressWarnings("static-method")
 	@Singleton
 	@Provides
-	public SarlBatchCompiler providesSarlCompiler(@Named(SARL_INJECTOR_NAME) Provider<Injector> sarlInjector) {
-		final SarlBatchCompiler compiler = sarlInjector.get().getInstance(SarlBatchCompiler.class);
-		return compiler;
+	public IExtraLanguageContributions providesExtraLanguageContributions(@Named(SARL_INJECTOR_NAME) Provider<Injector> sarlInjector) {
+		final IExtraLanguageContributions contribs = sarlInjector.get().getInstance(IExtraLanguageContributions.class);
+		return contribs;
 	}
-
+	
 }

@@ -40,8 +40,8 @@ import org.eclipse.xtext.util.Strings;
 
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
+import io.sarl.lang.compiler.batch.IssueMessageFormatter;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
@@ -73,28 +73,51 @@ public class SarlBatchCompilerModule implements BQModule {
 	@Provides
 	@Singleton
 	public IssueMessageFormatter provideIssueMessageFormatter() {
-		return (issue, uriToProblem) -> {
-			// Use the default formatter.
+		return (severity, issue, uriToProblem) -> {
+			// Use the default formatter
 			return null;
 		};
+	}
+
+	/** Provide a Java batch compiler based on the Bootique configuration.
+	 *
+	 * @param config the bootique configuration.
+	 * @param guiceInjector the injector used for the SARL compiler.
+	 * @return the batch compiler.
+	 * @since 0.8
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	public IJavaBatchCompiler providesJavaBatchCompiler(
+			Provider<SarlcConfig> config,
+			@Named(SARL_INJECTOR_NAME) Injector guiceInjector) {
+		final SarlcConfig cfg = config.get();
+		final IJavaBatchCompiler compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
+		guiceInjector.injectMembers(compiler);
+		return compiler;
 	}
 
 	/** Replies the SARL batch compiler.
 	 *
 	 * @param config the configuration for the paths.
 	 * @param defaultClasspath the SARL boot class path that must be used by default.
-	 * @param logger the logger.
 	 * @param guiceInjector the current injector for the SARL compiler.
+	 * @param logger the logger.
+	 * @param formatterProvider the provider of message formatter.
+	 * @param javaCompilerProvider the provider of the Java compiler.
 	 * @return the SARL batch compiler
 	 */
-	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
 			Provider<SarlcConfig> config,
 			Provider<SARLClasspathProvider> defaultClasspath,
 			@Named(SARL_INJECTOR_NAME) Injector guiceInjector, 
-			Provider<Logger> logger) {
+			Provider<Logger> logger,
+			Provider<IssueMessageFormatter> formatterProvider,
+			Provider<IJavaBatchCompiler> javaCompilerProvider) {
 		final SarlcConfig cfg = config.get();
 		final CompilerConfig compilerConfig = cfg.getCompiler();
 		final ValidatorConfig validatorConfig = cfg.getValidator();
@@ -115,10 +138,6 @@ public class SarlBatchCompilerModule implements BQModule {
 		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cfg, jversion, logger.get());
 		compiler.setModulePath(fullModulePath.toFileList());
 
-		final com.google.inject.Provider<IJavaBatchCompiler> javaCompilerProvider = guiceInjector.getProvider(IJavaBatchCompiler.class);
-		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
-		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);
-		compiler.setJavaCompiler(javaCompilerProvider.get());
 		compiler.setOptimizationLevel(cfg.getCompiler().getOptimizationLevelObject());
 		compiler.setWriteTraceFiles(compilerConfig.getOutputTraceFiles());
 		compiler.setWriteStorageFiles(compilerConfig.getOutputTraceFiles());
@@ -141,8 +160,12 @@ public class SarlBatchCompilerModule implements BQModule {
 			compiler.setWarningSeverity(entry.getKey(), entry.getValue());
 		}
 
-		final com.google.inject.Provider<IssueMessageFormatter> issueMessageFormater = guiceInjector.getProvider(IssueMessageFormatter.class);
-		compiler.setIssueMessageFormatter(issueMessageFormater.get());
+		final IssueMessageFormatter issueMessageFormatter = formatterProvider.get();
+		compiler.setIssueMessageFormatter(issueMessageFormatter);
+
+		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
+		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);
+		compiler.setJavaCompiler(javaCompilerProvider.get());
 
 		return compiler;
 	}
