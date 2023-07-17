@@ -302,7 +302,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @param cause the cause of the message log.
 	 */
-	@SuppressWarnings({"static-method", "checkstyle:regexp"})
+	@SuppressWarnings("static-method")
 	public void logDebugMessage(Throwable cause) {
 		Debug.printStackTrace(cause);
 	}
@@ -313,7 +313,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param message the debug message to log
 	 * @param cause the cause of the message log.
 	 */
-	@SuppressWarnings({"static-method", "checkstyle:regexp"})
+	@SuppressWarnings("static-method")
 	public void logDebugMessage(String message, Throwable cause) {
 		Debug.println(message);
 		if (cause != null) {

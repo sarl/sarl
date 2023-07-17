@@ -543,7 +543,6 @@ public final class TimeExtensions {
 	 * @return the amount of time in the target unit.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static double convertFromTo(double time, TimeUnit source, TimeUnit target) {
 		assert source != null;
 		assert target != null;

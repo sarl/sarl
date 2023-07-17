@@ -121,7 +121,6 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 public final class Utils {
 
 	/** Name of a static initializer.
@@ -278,11 +277,6 @@ public final class Utils {
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 * @see org.eclipse.xtext.xbase.typesystem.override.OverrideHelper
 	 */
-	@SuppressWarnings({
-		"checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity",
-		"checkstyle:nestedifdepth",
-		"checkstyle:parameternumber"})
 	public static void populateInheritanceContext(
 			JvmDeclaredType jvmElement,
 			JvmTypeReference extendedClass,
@@ -589,7 +583,6 @@ public final class Utils {
 	 * @param allowSynonyms - indicates if the synonyms are allowed.
 	 * @return the state of the cast.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity"})
 	public static boolean canCast(
 			LightweightTypeReference fromType, LightweightTypeReference toType,
 			boolean enablePrimitiveWidening, boolean enableVoidMatchingNull,
@@ -831,7 +824,6 @@ public final class Utils {
 	 *     If {@code null}, the qualified names of the types with be put in the signature.
 	 * @return the string representation of the signature.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String getActionSignatureString(SarlAction signature, ISerializer serializer,
 			SARLGrammarKeywordAccess grammarAccess, ImportManager importManager) {
 		// Try the serializer
@@ -959,11 +951,6 @@ public final class Utils {
 	 * @return the serial version UID.
 	 * @see "http://docs.oracle.com/javase/8/docs/platform/serialization/spec/class.html#a4100"
 	 */
-	@SuppressWarnings({
-		"checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity",
-		"checkstyle:magicnumber",
-		"checkstyle:booleanexpressioncomplexity"})
 	public static long computeSerialVersionUID(JvmGenericType jvm) {
 		final StringBuilder serialVersionUIDBuffer = new StringBuilder();
 
@@ -1287,7 +1274,6 @@ public final class Utils {
 	 * @return the version, or {@code null} if the SARL library cannot be found or
 	 *     is too old.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static SarlLibraryErrorCode getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context,
 			OutParameter<String> version) {
 		if (checkSarlVersionClass) {
@@ -1519,7 +1505,6 @@ public final class Utils {
 	 * @return the string representation of the object.
 	 * @since 0.6
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static String dump(Object object, boolean includeStaticField) {
 		if (object == null) {
 			return new String();

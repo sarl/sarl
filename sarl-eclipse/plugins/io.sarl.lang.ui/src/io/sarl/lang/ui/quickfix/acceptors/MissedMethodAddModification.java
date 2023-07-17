@@ -86,7 +86,6 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public final class MissedMethodAddModification extends SARLSemanticModification {
 
 	private static final String GENERATED_NAME = "Generated"; //$NON-NLS-1$

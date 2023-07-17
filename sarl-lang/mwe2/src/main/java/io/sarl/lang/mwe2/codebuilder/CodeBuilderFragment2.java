@@ -113,7 +113,6 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void generate() {
 		LOG.info("Generating the code builder for " + getLanguageName()); //$NON-NLS-1$
 

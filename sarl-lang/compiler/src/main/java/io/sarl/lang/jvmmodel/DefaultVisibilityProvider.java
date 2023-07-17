@@ -79,7 +79,6 @@ public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public JvmVisibility getDefaultJvmVisibility(EObject container, EClass element) {
 		EObject realObject = container;
 		if (realObject instanceof JvmIdentifiableElement) {

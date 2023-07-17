@@ -35,7 +35,6 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class FeatureNameConversionTable extends AbstractConversionTable {
 
 	private static final String FEATURE_NAME_CONVERTER_COLUMN_WIDTH_ID = ".featureNameConverterSection.columnWidth"; //$NON-NLS-1$

@@ -128,7 +128,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity", "static-method"})
+	@SuppressWarnings("static-method")
 	protected void removeSourceFolder(IPath path, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 
@@ -165,7 +165,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
 	protected void addSourceFolders(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath,
@@ -457,7 +456,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void configure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
 		final IMavenProjectFacade facade = request.mavenProjectFacade();

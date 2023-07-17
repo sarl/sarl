@@ -41,7 +41,6 @@ import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public final class PyInitializers {
 
 	private static final String FEATURE_NAME_PATTERN = "^.*\\.([a-zA-Z_$*]+)(?:\\(.*?\\))?$"; //$NON-NLS-1$

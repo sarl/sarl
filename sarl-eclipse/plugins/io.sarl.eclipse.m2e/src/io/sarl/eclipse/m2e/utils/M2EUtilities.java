@@ -129,7 +129,6 @@ public final class M2EUtilities {
 	 * @return the previous version.
 	 * @since 0.10
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public static String getPreviousOsgiVersion(String vers) {
 		return getPreviousOsgiVersion(vers).toString();
 	}
@@ -140,7 +139,6 @@ public final class M2EUtilities {
 	 * @return the previous version.
 	 * @since 0.10
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public static Version getPreviousOsgiVersion(Version vers) {
 		int major = vers.getMajor();
 		int minor = vers.getMinor();

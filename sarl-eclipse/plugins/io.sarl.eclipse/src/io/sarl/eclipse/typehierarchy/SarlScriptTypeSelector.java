@@ -40,7 +40,6 @@ import io.sarl.eclipse.util.AbstractSarlScriptInteractiveSelector;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 class SarlScriptTypeSelector extends AbstractSarlScriptInteractiveSelector<XtendTypeDeclaration, Object> {
 
 	@Inject

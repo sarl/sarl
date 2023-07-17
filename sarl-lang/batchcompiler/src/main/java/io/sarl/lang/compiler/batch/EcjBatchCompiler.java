@@ -54,8 +54,6 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:parameternumber" })
 	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries_,
 			Iterable<File> modulePathEntries,

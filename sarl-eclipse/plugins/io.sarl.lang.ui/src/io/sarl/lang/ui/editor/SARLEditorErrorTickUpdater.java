@@ -110,7 +110,6 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void modelChanged(IAnnotationModel model) {
 		super.modelChanged(model);
 		//FIXME: for helping to resolve #661

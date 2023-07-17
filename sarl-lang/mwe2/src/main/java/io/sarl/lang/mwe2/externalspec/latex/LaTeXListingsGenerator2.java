@@ -260,7 +260,6 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

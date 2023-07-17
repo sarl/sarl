@@ -97,7 +97,6 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class PyGenerator extends AbstractExtraLanguageGenerator {
 
 	/** Header for a Python file.
@@ -331,7 +330,6 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param memberGenerator the generator of members.
 	 * @return {@code true} if the type declaration was generated.
 	 */
-	@SuppressWarnings({ "checkstyle:parameternumber" })
 	protected boolean generateTypeDeclaration(
 			String fullyQualifiedName,
 			String name, boolean isAbstract,
@@ -501,7 +499,6 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param it the target for the generated content.
 	 * @param context the context.
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	protected void generateExecutable(String name, XtendExecutable executable, boolean appendSelf, boolean isAbstract,
 			JvmTypeReference returnType, String comment, PyAppendable it, IExtraLanguageGeneratorContext context) {
 		it.append("def ").append(name); //$NON-NLS-1$

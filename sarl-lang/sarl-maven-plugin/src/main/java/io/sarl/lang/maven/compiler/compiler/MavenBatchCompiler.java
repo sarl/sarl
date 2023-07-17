@@ -89,7 +89,6 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:parameternumber"})
 	public CompilerStatus compile(File classDirectory,
 			Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,

@@ -73,7 +73,6 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	private static final Pattern KEYWORD_PATTERN = Pattern.compile("^[a-zA-Z]{2,}$"); //$NON-NLS-1$
 
-	@SuppressWarnings("checkstyle:linelength")
 	private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("^[!#%&()*/+,\\-:;<=>?@\\[\\\\\\]^{|}~.%]+$"); //$NON-NLS-1$
 
 	private static final Pattern MODIFIER_RULE_PATTERN = Pattern.compile("^[a-zA-Z]+Modifier$"); //$NON-NLS-1$
@@ -325,7 +324,6 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param excludedKeywords the set of given excluded keywords.
 	 * @param ignored the set of ignored tokens that is filled by this function.
 	 */
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	private static void exploreGrammar(Grammar grammar, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation,
 			Set<String> literals, Set<String> excludedKeywords, Set<String> ignored) {
@@ -360,7 +358,6 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public final void generate() {
 		final Grammar grammar = getGrammar();
 		if (grammar == null) {
@@ -498,7 +495,6 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param typeDeclarationKeywords the keywords that are marked as type declaration keywords.
 	 *     They are also in {@code keywords}.
 	 */
-	@SuppressWarnings("checkstyle:parameternumber")
 	protected abstract void generate(T appendable,
 			Set<String> literals, Set<String> expressionKeywords, Set<String> modifiers, Set<String> primitiveTypes,
 			Set<String> punctuation, Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords);

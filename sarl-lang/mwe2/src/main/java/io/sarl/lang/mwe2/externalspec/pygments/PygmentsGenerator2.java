@@ -74,7 +74,6 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		return "Pygments"; //$NON-NLS-1$
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Override
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

@@ -195,7 +195,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 		return nam;
 	}
 
-	@SuppressWarnings({ "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity" })
 	@Override
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
@@ -425,7 +424,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFromXML(Element element) throws IOException {
 		final IPath path = parsePath(
 				element.getAttribute(SREXmlPreferenceConstants.XML_LIBRARY_PATH), null, null);

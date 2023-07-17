@@ -754,7 +754,6 @@ public final class BundleUtil {
 		 * 		boolean specifying if we are at the first recursive call, in this case we use the {@link #directDependencies}
 		 *      collections to filter the dependencies that are really useful.
 		 */
-		@SuppressWarnings({"checkstyle:nestedifdepth"})
 		private void extractAllBundleDependencies(Bundle bundle, boolean firstCall) {
 			final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 			final List<BundleWire> bundleWires = bundleWiring.getRequiredWires(null);
@@ -807,7 +806,6 @@ public final class BundleUtil {
 		 * @param bundleInstallURL the URL where the specified bundle is stored
 		 * @return the Path to the output folder used to store .class file if any (if we are in an eclipse project (debug mode))
 		 */
-		@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;

@@ -56,7 +56,6 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	 *
 	 * @return the style.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public TextStyle capacityMethodInvocation() {
 		final TextStyle textStyle = extensionMethodInvocation().copy();
 		textStyle.setStyle(SWT.ITALIC);
@@ -67,7 +66,6 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	 *
 	 * @return the style.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public TextStyle asynchronousMethodInvocation() {
 		final TextStyle textStyle = extensionMethodInvocation().copy();
 		textStyle.setStyle(SWT.BOLD);

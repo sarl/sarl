@@ -120,7 +120,6 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage {
 
 	/** filename extension for the Java code.

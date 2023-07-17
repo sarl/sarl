@@ -314,7 +314,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
 			OutParameter<IFolder[]> sourcePaths,
 			OutParameter<IFolder[]> testSourcePaths,
@@ -483,7 +482,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static List<CPListElement> buildClassPathEntries(IJavaProject project,
 			IFolder[] sourcePaths, IFolder[] testSourcePaths,
 			IFolder[] generationPaths, IFolder[] testGenerationPaths,
@@ -649,7 +647,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 * @param nestedProjects whether to look for nested projects.
 	 * @param monitor The monitor to report to.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void collectProjectFoldersFromDirectory(Collection<File> folders, File directory,
 			Set<String> directoriesVisited, boolean nestedProjects, IProgressMonitor monitor) {
 		if (monitor.isCanceled()) {

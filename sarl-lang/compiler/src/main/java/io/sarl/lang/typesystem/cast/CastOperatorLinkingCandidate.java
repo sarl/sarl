@@ -100,7 +100,6 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		return Objects.equal(first.getIdentifier(), second.getIdentifier());
 	}
 
-	@SuppressWarnings("checkstyle:magicnumber")
 	private static int computeCompliance(LightweightTypeReference target, LightweightTypeReference current) {
 		if (isSame(target, current)) {
 			return 0;
@@ -122,7 +121,6 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		return 2;
 	}
 
-	@SuppressWarnings("checkstyle:magicnumber")
 	private static int getNumberPrecision(LightweightTypeReference type) {
 		switch (type.getPrimitiveIfWrapperType().getSimpleName()) {
 		case "byte": //$NON-NLS-1$
@@ -145,7 +143,6 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:returncount"})
 	private CandidateCompareResult compareTo(CastOperatorLinkingCandidate right) {
 		// FIXME: Override super#compareTo() when super's CandidateCompareResult is visible.
 		boolean invalid = false;

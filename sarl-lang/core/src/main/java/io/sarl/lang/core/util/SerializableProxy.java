@@ -117,7 +117,6 @@ public class SerializableProxy implements Serializable {
 		return true;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static Class<?> wrapperTypeFor(Class<?> primitive) throws ObjectStreamException {
         if (primitive == Boolean.TYPE) {
         	return Boolean.class;

@@ -91,7 +91,6 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity"})
 public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator implements IRootGenerator {
 
 	private static final String FILENAME_SEPARATOR = "/"; //$NON-NLS-1$

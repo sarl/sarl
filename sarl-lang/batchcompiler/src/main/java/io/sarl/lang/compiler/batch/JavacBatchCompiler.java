@@ -59,9 +59,8 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		return "Javac"; //$NON-NLS-1$
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
-	@SuppressWarnings({ "checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity", "resource" })
 	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,

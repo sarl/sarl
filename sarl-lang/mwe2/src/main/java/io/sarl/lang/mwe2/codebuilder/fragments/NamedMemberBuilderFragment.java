@@ -55,7 +55,6 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	private Map<String, MemberDescription> members;
 
 	@Override
-	@SuppressWarnings("checkstyle:all")
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.members == null) {
 			this.members = new HashMap<>();
@@ -78,16 +77,16 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 											it.newElementDescription(classifier.getName(), memberContainer,
 													classifier, commonSuperType);
 									final List<String> modifiers = getCodeBuilderConfig().getModifiers()
-											.get(elementDescription.getElementType().getSimpleName());
+											.get(elementDescription.elementType().getSimpleName());
 									memberDescription = new MemberDescription(
 											elementDescription,
 											containerDescription,
 											topElements.contains(elementDescription),
-											elementDescription.isAnnotationInfo(),
+											elementDescription.annotationInfo(),
 											modifiers);
 									NamedMemberBuilderFragment.this.members.put(memberName, memberDescription);
 								}
-								final String containerName = memberDescription.getContainerDescription().getElementType().getSimpleName();
+								final String containerName = memberDescription.getContainerDescription().elementType().getSimpleName();
 								boolean isNoBody = getCodeBuilderConfig().getNoActionBodyTypes()
 										.contains(containerName);
 								Set<String> containers;
@@ -135,7 +134,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 		for (final String modifier : modifiers) {
 			final String createFunctionName = "create" //$NON-NLS-1$
 					+ Strings.toFirstUpper(modifier)
-					+ Strings.toFirstUpper(description.getElementDescription().getName());
+					+ Strings.toFirstUpper(description.getElementDescription().name());
 
 			String container = null;
 			if (!description.getStandardContainers().isEmpty()) {
@@ -146,15 +145,15 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 
 			final String createContainerFunctionName = "add" //$NON-NLS-1$
 					+ Strings.toFirstUpper(container);
-			final TypeReference containerBuilder = description.getContainerDescription().getBuilderInterfaceType();
+			final TypeReference containerBuilder = description.getContainerDescription().builderInterfaceType();
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create the factory for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-							+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
+							+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param name the name of the " //$NON-NLS-1$
-							+ description.getElementDescription().getName());
+							+ description.getElementDescription().name());
 					it.newLine();
 					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -168,7 +167,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(Pure.class);
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(description.getElementDescription().getBuilderInterfaceType());
+					it.append(description.getElementDescription().builderInterfaceType());
 					it.append(" "); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(String name, "); //$NON-NLS-1$
@@ -183,10 +182,10 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\t/** Create the factory for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-							+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
+							+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param name the name of the " //$NON-NLS-1$
-							+ description.getElementDescription().getName());
+							+ description.getElementDescription().name());
 					it.newLine();
 					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -200,7 +199,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(Pure.class);
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(description.getElementDescription().getBuilderInterfaceType());
+					it.append(description.getElementDescription().builderInterfaceType());
 					it.append(" "); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(String name, "); //$NON-NLS-1$
@@ -219,7 +218,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.newLine();
 					it.append("\t\treturn containerBuilder.add"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(modifier));
-					it.append(Strings.toFirstUpper(description.getElementDescription().getName()));
+					it.append(Strings.toFirstUpper(description.getElementDescription().name()));
 					it.append("(name);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -230,17 +229,17 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			if (enableAppenders) {
 				final String buildFunctionName = "build" //$NON-NLS-1$
 						+ Strings.toFirstUpper(modifier)
-						+ Strings.toFirstUpper(description.getElementDescription().getName());
+						+ Strings.toFirstUpper(description.getElementDescription().name());
 				final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
-						description.getElementDescription().getName());
+						description.getElementDescription().name());
 				this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 					@Override
 					protected void appendTo(TargetStringConcatenation it) {
 						it.append("\t/** Create the appender for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-								+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
+								+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param name the name of the " //$NON-NLS-1$
-								+ description.getElementDescription().getName());
+								+ description.getElementDescription().name());
 						it.newLine();
 						it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 						it.newLine();
@@ -277,10 +276,10 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 						it.newLineIfNotEmpty();
 						it.newLine();
 						it.append("\t/** Create the appender for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-								+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
+								+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param name the name of the " //$NON-NLS-1$
-								+ description.getElementDescription().getName());
+								+ description.getElementDescription().name());
 						it.newLine();
 						it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 						it.newLine();

@@ -186,7 +186,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the status.
 	 * @throws Exception when error.
 	 */
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity", "static-method"})
+	@SuppressWarnings("static-method")
 	protected IStatus submit(Charset charset, String title, String body, String login, String password,
 			IProgressMonitor progress) throws Exception {
 		final SubMonitor subMonitor = SubMonitor.convert(progress, 10);

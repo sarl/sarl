@@ -93,7 +93,6 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		});
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber"})
 	@Override
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

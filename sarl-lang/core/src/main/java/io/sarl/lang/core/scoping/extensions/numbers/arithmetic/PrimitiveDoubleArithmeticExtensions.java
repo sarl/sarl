@@ -33,7 +33,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 0.7
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
-@SuppressWarnings("checkstyle:methodcount")
 public final class PrimitiveDoubleArithmeticExtensions {
 
 	private PrimitiveDoubleArithmeticExtensions() {

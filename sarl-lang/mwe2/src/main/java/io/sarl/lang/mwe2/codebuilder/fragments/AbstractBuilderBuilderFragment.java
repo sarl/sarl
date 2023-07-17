@@ -72,7 +72,6 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 
 	/** Generate the abstract builder.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected void generateAbstractBuilder() {
 		final TypeReference abstractBuilder = getAbstractBuilderImpl();
 		final TypeReference expressionBuilder = getExpressionBuilderImpl();

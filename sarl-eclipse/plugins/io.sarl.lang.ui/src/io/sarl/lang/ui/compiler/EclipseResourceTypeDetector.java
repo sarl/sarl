@@ -69,7 +69,6 @@ public class EclipseResourceTypeDetector extends AbstractResourceTypeDetector {
 	 *     if the resource is not a test resource. {@code null} if the detector cannot determine
 	 *     the type of the resource.
 	 */
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected static Boolean isJavaOrMavenTestResource(Resource resource) {
 		final URI uri = resource.getURI();
 		if (uri.isPlatformResource()) {

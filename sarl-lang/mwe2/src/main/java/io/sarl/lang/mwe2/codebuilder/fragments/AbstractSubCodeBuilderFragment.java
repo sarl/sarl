@@ -69,7 +69,6 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:methodcount")
 public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGeneratingFragment {
 
 	@Inject
@@ -707,9 +706,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	protected void bindElementDescription(BindingFactory factory, CodeElementExtractor.ElementDescription... descriptions) {
 		for (final CodeElementExtractor.ElementDescription description : descriptions) {
 			bindTypeReferences(factory,
-					description.getBuilderInterfaceType(),
-					description.getBuilderImplementationType(),
-					description.getBuilderCustomImplementationType());
+					description.builderInterfaceType(),
+					description.builderImplementationType(),
+					description.builderCustomImplementationType());
 		}
 	}
 
@@ -742,7 +741,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the rule that is defining the members.
 	 */
 	protected AbstractRule getMemberRule(CodeElementExtractor.ElementDescription description) {
-		for (final Assignment assignment : GrammarUtil.containedAssignments(description.getGrammarComponent())) {
+		for (final Assignment assignment : GrammarUtil.containedAssignments(description.grammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
 				if (assignment.getTerminal() instanceof RuleCall) {
 					return ((RuleCall) assignment.getTerminal()).getRule();

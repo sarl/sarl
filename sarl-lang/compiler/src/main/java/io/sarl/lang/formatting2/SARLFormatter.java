@@ -87,7 +87,6 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavenartifactid $ArtifactId$
  * @see FormatterFacade
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLFormatter extends XtendFormatter {
 
 	/** Name to use for injected comments.
@@ -303,7 +302,6 @@ public class SARLFormatter extends XtendFormatter {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void _format(XtendFunction function, IFormattableDocument document) {
 		formatAnnotations(function, document, XbaseFormatterPreferenceKeys.newLineAfterMethodAnnotations);
 		formatModifiers(function, document);
@@ -602,7 +600,6 @@ public class SARLFormatter extends XtendFormatter {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected ISemanticRegion formatBody(XtendTypeDeclaration type, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
 

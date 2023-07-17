@@ -90,7 +90,6 @@ public class SarlMoveElementHandler extends AbstractHandler {
 		this.moveDispatcher = PolymorphicDispatcher.createForSingleTarget("_move", 2, 2, this); //$NON-NLS-1$
 	}
 
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private static String getTypeName(XtendMember element) {
 		if (element instanceof SarlBehaviorUnit) {
 			return "a SARL behavior unit"; //$NON-NLS-1$

@@ -44,7 +44,6 @@ import org.eclipse.xtext.xtext.generator.util.BooleanGeneratorOption;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:methodcount")
 public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Default name of the assignment in the grammar that is used for representing a type extension.

@@ -148,7 +148,6 @@ public final class ReflectMethod<RT, T> {
 		return true;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static Class<?> wrapperTypeFor(Class<?> primitive) {
 		assert primitive != null;
 		if (primitive == Boolean.TYPE) {

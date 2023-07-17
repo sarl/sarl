@@ -766,7 +766,6 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param references the references into the document.
 	 * @return the result of the transformation.
 	 */
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected String transformHtmlLinks(String content, ReferenceContext references) {
 		if (!isPureHtmlReferenceTransformation()) {
 			return content;
@@ -966,7 +965,6 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param content the content with outline tag.
 	 * @return the content with expended outline.
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	protected String updateOutline(String content) {
 		final Pattern sectionPattern = Pattern.compile(
 				isAutoSectionNumbering() ? SECTION_PATTERN_AUTONUMBERING : SECTION_PATTERN_NO_AUTONUMBERING,

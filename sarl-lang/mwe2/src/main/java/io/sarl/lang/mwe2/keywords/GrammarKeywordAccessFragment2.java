@@ -424,7 +424,6 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @param getters filled by this function with the getters' names.
 	 * @return the content.
 	 */
-	@SuppressWarnings("checkstyle:anoninnerlength")
 	protected StringConcatenationClient generateAccessors(Set<String> addedKeywords, Map<String, String> getters) {
 		return new StringConcatenationClient() {
 			@Override

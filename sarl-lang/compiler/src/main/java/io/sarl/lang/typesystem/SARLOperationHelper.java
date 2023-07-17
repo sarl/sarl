@@ -108,7 +108,6 @@ import io.sarl.lang.util.Utils;
  * @since 0.6
  */
 @Singleton
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLOperationHelper implements IOperationHelper {
 
 	@Inject
@@ -552,7 +551,6 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @param context the list of context expressions.
 	 * @return {@code true} if the expression has side effects.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected Boolean _hasSideEffects(XBasicForLoopExpression expression, ISideEffectContext context) {
 		context.open();
 		try {
@@ -910,7 +908,6 @@ public class SARLOperationHelper implements IOperationHelper {
 		return compboundOperatorName != null;
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
 	private boolean internalHasFeatureCallSideEffects(XAbstractFeatureCall expression, ISideEffectContext context) {
 		if (expression.eIsProxy()) {
 			return false;
@@ -945,7 +942,6 @@ public class SARLOperationHelper implements IOperationHelper {
 		return false;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private boolean internalHasOperationSideEffects(XAbstractFeatureCall originalExpression,
 			JvmOperation operation, ISideEffectContext context) {
 		// Test if the receiver has side effects
@@ -994,8 +990,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		return hasEffectReceiver || !isPureOperation || hasEffectArgument;
 	}
 
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "static-method" })
-	private boolean internalHasExternalFeatureSideEffects(XAbstractFeatureCall expression, ISideEffectContext context, JvmIdentifiableElement feature) {
+	private static boolean internalHasExternalFeatureSideEffects(XAbstractFeatureCall expression, ISideEffectContext context, JvmIdentifiableElement feature) {
 		return false;
 	}
 
@@ -1252,7 +1247,6 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		@Override
 		public void mergeBranchVariableAssignments(List<Map<String, List<XExpression>>> buffers) {
-			@SuppressWarnings("checkstyle:all")
 			class Data {
 				public int occurrences;
 				public final List<XExpression> expressions = new ArrayList<>();

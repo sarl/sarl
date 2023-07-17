@@ -301,7 +301,6 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation"
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 @ComposedChecks(validators = {ExtraLanguageValidatorSupport.class})
 public class SARLValidator extends AbstractSARLValidator {
 
@@ -615,7 +614,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.NORMAL)
 	@Override
-	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	public void checkClassPath(XtendFile sarlScript) {
 		final TypeReferences typeReferences = getServices().getTypeReferences();
 
@@ -1018,7 +1016,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param feature the syntactic feature related to the supertypes.
 	 * @param defaultSignatures the signatures of the default constructors for the given container.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void checkSuperConstructor(
 			XtendTypeDeclaration container,
 			EStructuralFeature feature,
@@ -1436,7 +1433,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param param the formal parameter to check.
 	 */
 	@Check
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkDefaultValueRedefinition(SarlFormalParameter param) {
 		final XExpression defaultValue = param.getDefaultValue();
 		if (defaultValue != null) {
@@ -1730,7 +1726,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void doCheckFunctionOverrides(EObject sourceElement, IResolvedOperation resolved,
 			List<IResolvedOperation> allInherited) {
 		boolean overrideProblems = false;
@@ -2037,7 +2032,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * {@code false} if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
 	protected int checkSuperTypes(
 			XtendTypeDeclaration element,
 			EReference feature,
@@ -2416,7 +2410,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	@Override
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public void checkAbstract(XtendFunction function) {
 		final XtendTypeDeclaration declarator = function.getDeclaringType();
 		if (function.getExpression() == null || function.isAbstract()) {
@@ -2534,7 +2527,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
 	private static String parseIssueOnCallAnnotation(List<JvmAnnotationValue> values) {
 		final StringBuilder message = new StringBuilder();
 		for (final JvmAnnotationValue value : values) {
@@ -2557,7 +2549,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @since 0.12
 	 */
 	@Check(CheckType.FAST)
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkProgrammaticIssueMessage(XAbstractFeatureCall expression) {
 		if (expression != null && expression.getFeature() != null) {
 			final JvmIdentifiableElement feature = expression.getFeature();
@@ -2677,7 +2668,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		return false;
 	}
 
-	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private void checkUnmodifiableFeatureAccess(boolean enableWarning, EObject readOnlyExpression, String keywordName) {
 		final OutParameter<EObject> container = new OutParameter<>();
 		final OutParameter<EObject> directContainerChild = new OutParameter<>();
@@ -3026,7 +3016,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @since 0.7
 	 */
 	@Check
-	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public void checkUnsynchronizedField(XtendField field) {
 		if (doCheckValidMemberName(field) && !isIgnored(POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
 			/*if (this.synchronizedFieldDetector.isSynchronizedField(field)) {
@@ -3175,7 +3164,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param capacity the associated capacity to check.
 	 */
 	@Check
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkDefaultSkillAnnotation(SarlCapacity capacity) {
 		final String annotationId = DefaultSkill.class.getName();
 		final XAnnotation annotation = IterableExtensions.findFirst(capacity.getAnnotations(), it -> {
@@ -3408,7 +3396,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	@Override
 	@Check
 	public void checkCasts(XCastedExpression cast) {
@@ -3511,7 +3498,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected void validateInferredType(JvmTypeReference inferredType, XtendMember member, String messagePrefix, EAttribute location) {
 		if (inferredType != null) {
 			final TreeIterator<EObject> iterator = EcoreUtil2.eAll(inferredType);

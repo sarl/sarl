@@ -144,7 +144,6 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.4
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SarlCompiler extends XtendCompiler {
 
 	private static final String INLINE_VARIABLE_PREFIX = "$"; //$NON-NLS-1$
@@ -185,7 +184,6 @@ public class SarlCompiler extends XtendCompiler {
 	@Inject
 	private ReflectExtensions reflect;
 
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static String getAnnotationStringValue(JvmAnnotationValue value) {
 		if (value instanceof JvmAnnotationAnnotationValue) {
 			return ((JvmAnnotationAnnotationValue) value).getValues().get(0).getAnnotation().getIdentifier();
@@ -249,7 +247,6 @@ public class SarlCompiler extends XtendCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
 		// Overridden for fixing the @Inline behavior
 		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
@@ -365,7 +362,6 @@ public class SarlCompiler extends XtendCompiler {
 	 * @param context the context for finding types.
 	 * @param appendable the receiver.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	private void appendInlineFeatureCallForCastedExpression(
 			JvmAnnotationReference inlineAnnotation,
 			JvmIdentifiableElement calledFeature,
@@ -709,8 +705,6 @@ public class SarlCompiler extends XtendCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth",
-		"checkstyle:cyclomaticcomplexity"})
 	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
 		final XExpression target = expr.getTarget();
 		final LightweightTypeReference fromType = toLightweight(getType(target), expr);
@@ -959,7 +953,6 @@ public class SarlCompiler extends XtendCompiler {
 		return super.compile(expr, parentAppendable, expectedReturnType, declaredExceptions);
 	}
 
-	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private List<XAbstractFeatureCall> getReferencedExternalCalls(XExpression expression,
 			List<JvmFormalParameter> exclusion, boolean enableExpressionNaming, ITreeAppendable appendable) {
 		// This function is implemented in order to generate static inner class when the closure
@@ -1087,7 +1080,6 @@ public class SarlCompiler extends XtendCompiler {
 		super.prepareExpression(arg, appendable);
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private ITreeAppendable toSerializableAnonymousClassProxyDefinition(XClosure closure, ITreeAppendable appendable,
 			LightweightTypeReference type, JvmOperation operation) {
 		// This function is implemented in order to generate static inner class when the closure
@@ -1206,7 +1198,6 @@ public class SarlCompiler extends XtendCompiler {
 		return toSerializableAnonymousClass(closure, appendable, type, operation);
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private ITreeAppendable toSerializableAnonymousClass(XClosure closure, ITreeAppendable appendable,
 			LightweightTypeReference type, JvmOperation operation) {
 		// This function is implemented in order to generate static inner class when the closure

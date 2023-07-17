@@ -99,7 +99,6 @@ import io.sarl.lang.util.Utils;
  * @since 0.8
  * @see "https://blogs.itemis.com/en/code-mining-support-in-xtext"
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Inject
@@ -191,7 +190,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @param action the action to mine.
 	 * @param acceptor the code mining acceptor.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void _codemining(XtendFunction action, IAcceptor<? super ICodeMining> acceptor) {
 		if (this.codeminingPreferences.isCodeminingActionReturnTypeEnabled()) {
 			// inline annotation only for methods with no return type
@@ -364,7 +362,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	/** Add an annotation when the var/val declaration's type is implicit and inferred by the SARL compiler.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	private <T extends EObject> void createImplicitVarValType(T element,
 			IAcceptor<? super ICodeMining> acceptor,
 			Class<T> elementType,

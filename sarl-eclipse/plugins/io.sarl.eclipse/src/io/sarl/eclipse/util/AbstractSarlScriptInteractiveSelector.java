@@ -76,7 +76,6 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, JT> {
 
 	/** Mapping from storage resource to URI.
@@ -169,7 +168,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * @throws InvocationTargetException on failure when retrieving an element.
 	 * @throws InterruptedException if the search is cancelled.
 	 */
-	@SuppressWarnings({"unchecked", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
+	@SuppressWarnings("unchecked")
 	private List<ElementDescription> findElements(Object[] selection, IProgressService progress)
 			throws InvocationTargetException, InterruptedException {
 		final List<ElementDescription> descs = new ArrayList<>();
@@ -357,17 +356,14 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 
 		/** Project name.
 		 */
-		@SuppressWarnings("checkstyle:visibilitymodifier")
 		public final String projectName;
 
 		/** Element fully qualified name.
 		 */
-		@SuppressWarnings("checkstyle:visibilitymodifier")
 		public final String elementName;
 
 		/** Element fully qualified name.
 		 */
-		@SuppressWarnings("checkstyle:visibilitymodifier")
 		public final Object element;
 
 		/** Constructor.

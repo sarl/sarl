@@ -89,7 +89,6 @@ import io.sarl.lang.ui.validation.SARLUIStrings;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider"
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 @Singleton
 public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedNameImageProvider {
 
@@ -567,7 +566,6 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		return convertToImage(getImageDescriptorForQualifiedName(qualifiedName, context, jvmTypeProvider));
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	@Override
 	public ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, Notifier context,
 			IJvmTypeProvider typeProvider) {

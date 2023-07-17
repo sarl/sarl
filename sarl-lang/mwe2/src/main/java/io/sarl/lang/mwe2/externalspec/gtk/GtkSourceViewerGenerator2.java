@@ -62,7 +62,6 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		setBasenameTemplate(BASENAME_PATTERN);
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
 	protected void generate(IXmlStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

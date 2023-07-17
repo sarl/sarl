@@ -113,7 +113,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param defaultCPProvider the provider of default classpath.
 	 * @throws CoreException if is it impossible to scan the project.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public SarlClassPathDetector(IProject project, SarlDefaultClassPathProvider defaultCPProvider,
 			IProgressMonitor monitor) throws CoreException {
 		this.defaultCPProvider = defaultCPProvider;
@@ -219,7 +218,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @throws CoreException in case of any failure.
 	 * @throws OperationCanceledException a runtime exception
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	protected void detectClasspath() throws CoreException {
 		try {
 			this.monitor.beginTask(NewWizardMessages.ClassPathDetector_operation_description, 4);
@@ -316,7 +314,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @return the detected output folder.
 	 * @throws CoreException in case of any failure.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected IPath detectOutputFolder() throws CoreException {
 		final Set<IPath> classFolders = new HashSet<>();
 
@@ -416,7 +413,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param folderPath the folder patth.
 	 * @param relPath the sub path.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	protected static void addToMap(Map<IPath, List<IPath>> map, IPath folderPath, IPath relPath) {
 		List<IPath> list = map.get(folderPath);
 		if (list == null) {

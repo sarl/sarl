@@ -427,7 +427,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @throws MojoExecutionException if error.
 	 * @throws MojoFailureException if failure.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	protected void compile(List<File> classPath, List<File> modulePath, List<File> sourcePaths, File sarlOutputPath,
 			File classOutputPath) throws MojoExecutionException, MojoFailureException {
 		final SarlBatchCompiler compiler = getBatchCompiler();

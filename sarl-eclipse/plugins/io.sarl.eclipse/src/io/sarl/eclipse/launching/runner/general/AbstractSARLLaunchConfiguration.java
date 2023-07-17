@@ -305,7 +305,6 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	 * @since 0.12
 	 */
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public String[][] getClasspathAndModulepath(ILaunchConfiguration configuration) throws CoreException {
 		synchronized (this) {
 			final String[] classpathEntries = this.bufferedClasspath == null ? null : this.bufferedClasspath.get();
@@ -454,7 +453,6 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	 * {@inheritDoc}
 	 */
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public String[][] getBootpathExt(ILaunchConfiguration configuration)
 			throws CoreException {
 		final String[][] bootpathInfo = new String[3][];
@@ -572,7 +570,6 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	 * {@inheritDoc}
 	 */
 	@Override
-	@SuppressWarnings("checkstyle:variabledeclarationusagedistance")
 	public final String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
 		// The following line get the standard arguments
 		final String standardProgramArguments = super.getProgramArguments(configuration);

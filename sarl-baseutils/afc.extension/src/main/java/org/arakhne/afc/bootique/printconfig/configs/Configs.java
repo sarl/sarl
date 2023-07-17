@@ -77,7 +77,6 @@ public final class Configs {
 	 * @param config the configuration.
 	 * @param injector the injector to be used for creating the configuration objects.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static void defineConfig(Map<String, Object> content, ConfigMetadataNode config, Injector injector) {
 		assert content != null;
 		assert config != null;

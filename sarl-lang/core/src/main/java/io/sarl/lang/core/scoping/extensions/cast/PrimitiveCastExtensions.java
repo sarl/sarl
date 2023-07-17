@@ -977,7 +977,6 @@ public final class PrimitiveCastExtensions {
 	 * @see #intValue(CharSequence)
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public static BigInteger toBigInteger(CharSequence value) {
 		try {
 			boolean negative = false;

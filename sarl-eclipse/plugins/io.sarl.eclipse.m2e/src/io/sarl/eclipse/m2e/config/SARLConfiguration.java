@@ -54,7 +54,6 @@ public class SARLConfiguration {
 	 *
 	 * @param config the configured values.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFrom(SARLConfiguration config) {
 		if (this.input == null) {
 			this.input = config.getInput();

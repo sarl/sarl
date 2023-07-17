@@ -136,8 +136,6 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 		return SARL_CAPACITY_USES.isSuperTypeOf(type);
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:returncount",
-			"checkstyle:cyclomaticcomplexity"})
 	@Override
 	public int getCategory(IOutlineNode node) {
 		if (node instanceof EStructuralFeatureNode) {

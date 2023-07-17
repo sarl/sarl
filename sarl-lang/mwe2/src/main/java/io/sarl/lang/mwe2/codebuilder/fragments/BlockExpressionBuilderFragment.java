@@ -208,7 +208,6 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final TypeReference adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
 		return new StringConcatenationClient() {
@@ -736,15 +735,15 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(" script = createScript(getFooPackageName(), resource);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
-				it.append(blockContext.getContainerDescription().getBuilderInterfaceType());
+				it.append(blockContext.getContainerDescription().builderInterfaceType());
 				it.append(" topElement = script.add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(blockContext.getContainerDescription().getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(blockContext.getContainerDescription().elementType().getSimpleName()));
 				it.append("(getFooTypeName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
-				it.append(blockContext.getMemberDescription().getBuilderInterfaceType());
+				it.append(blockContext.getMemberDescription().builderInterfaceType());
 				it.append(" memberElement = topElement.add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(blockContext.getMemberDescription().getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(blockContext.getMemberDescription().elementType().getSimpleName()));
 				it.append("(getFooMemberName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn memberElement.get"); //$NON-NLS-1$
@@ -848,7 +847,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureMemberDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
-		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.getName());
+		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
 		if (modifiers != null && !modifiers.isEmpty()) {
 			return modifiers.get(0);
 		}
@@ -862,7 +861,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	protected BlockExpressionContextDescription getBlockExpressionContextDescription() {
 		for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
-			if (!getCodeBuilderConfig().getNoActionBodyTypes().contains(containerDescription.getName())) {
+			if (!getCodeBuilderConfig().getNoActionBodyTypes().contains(containerDescription.name())) {
 				final AbstractRule rule = getMemberRule(containerDescription);
 				if (rule != null) {
 					final BlockExpressionContextDescription description =
@@ -880,7 +879,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 										return new BlockExpressionContextDescription(
 												containerDescription,
 												memberDescription,
-												ensureContainerKeyword(containerDescription.getGrammarComponent()),
+												ensureContainerKeyword(containerDescription.grammarComponent()),
 												keyword,
 												expressionAssignment);
 									}

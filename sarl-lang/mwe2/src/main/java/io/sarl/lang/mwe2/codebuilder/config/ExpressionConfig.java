@@ -34,7 +34,6 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:methodcount")
 public class ExpressionConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Default regular expression that is matching an expression in the grammar.

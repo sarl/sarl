@@ -493,7 +493,6 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		 *
 		 * @return the file or {@code null} if the file cannot be found.
 		 */
-		@SuppressWarnings("checkstyle:nestedifdepth")
 		public IFile findProjectFile() {
 			if (this.projectFile == null) {
 				final IProject prj = this.project.get();

@@ -207,7 +207,6 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final ExpressionContextDescription expressionContext = getExpressionContextDescription();
 		return new StringConcatenationClient() {
@@ -544,17 +543,17 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(") resource.getContents().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t"); //$NON-NLS-1$
-					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(expressionContext.getContainerDescription().elementType());
 					it.append(" topElement = ("); //$NON-NLS-1$
-					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(expressionContext.getContainerDescription().elementType());
 					it.append(") script."); //$NON-NLS-1$
 					it.append(getLanguageScriptMemberGetter());
 					it.append("().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t"); //$NON-NLS-1$
-					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(expressionContext.getMemberDescription().elementType());
 					it.append(" member = ("); //$NON-NLS-1$
-					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(expressionContext.getMemberDescription().elementType());
 					it.append(") topElement.get"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()));
 					it.append("().get(0);"); //$NON-NLS-1$
@@ -657,17 +656,17 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(") resource.getContents().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(expressionContext.getContainerDescription().elementType());
 					it.append(" topElement = ("); //$NON-NLS-1$
-					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(expressionContext.getContainerDescription().elementType());
 					it.append(") script."); //$NON-NLS-1$
 					it.append(getLanguageScriptMemberGetter());
 					it.append("().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(expressionContext.getMemberDescription().elementType());
 					it.append(" member = ("); //$NON-NLS-1$
-					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(expressionContext.getMemberDescription().elementType());
 					it.append(") topElement.get"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()));
 					it.append("().get(0);"); //$NON-NLS-1$
@@ -1168,7 +1167,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureFieldDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
-		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.getName());
+		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
 		if (modifiers != null && !modifiers.isEmpty()) {
 			return modifiers.get(0);
 		}
@@ -1198,7 +1197,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 							return new ExpressionContextDescription(
 									containerDescription,
 									memberDescription,
-									ensureContainerKeyword(containerDescription.getGrammarComponent()),
+									ensureContainerKeyword(containerDescription.grammarComponent()),
 									ensureFieldDeclarationKeyword(memberDescription),
 									expressionAssignment);
 						}
@@ -1270,15 +1269,15 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" script = createScript(getFooPackageName(), resource);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
-				it.append(expressionContext.getContainerDescription().getBuilderInterfaceType());
+				it.append(expressionContext.getContainerDescription().builderInterfaceType());
 				it.append(" topElement = script.add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(expressionContext.getContainerDescription().getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(expressionContext.getContainerDescription().elementType().getSimpleName()));
 				it.append("(getFooTypeName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
-				it.append(expressionContext.getMemberDescription().getBuilderInterfaceType());
+				it.append(expressionContext.getMemberDescription().builderInterfaceType());
 				it.append(" memberElement = topElement.add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(expressionContext.getMemberDescription().getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(expressionContext.getMemberDescription().elementType().getSimpleName()));
 				it.append("(getFooMemberName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn memberElement.get"); //$NON-NLS-1$

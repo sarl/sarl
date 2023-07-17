@@ -75,7 +75,6 @@ import io.sarl.lang.core.util.SarlUtils;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:methodname"})
 public final class ShouldExtensions {
 
 	private static final int HEX_RADIX = 16;
@@ -277,7 +276,6 @@ public final class ShouldExtensions {
 	 * @param significantOrder indicates if the order of the elements is significant.
 	 * @return the validation status
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static boolean shouldIterate(Iterator<?> actual, Object expected, boolean significantOrder) {
 		Object obj;
 		final Iterator<?> it;
@@ -497,7 +495,6 @@ public final class ShouldExtensions {
 	 * @param expected the name of the expected type.
 	 * @return the validation status
 	 */
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static boolean shouldBeLiteral(XExpression actual, Object expected) {
 		if (actual instanceof XNumberLiteral) {
 			return shouldBe((XNumberLiteral) actual, expected);
@@ -583,7 +580,7 @@ public final class ShouldExtensions {
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the method.
 	 */
-	@SuppressWarnings({"rawtypes", "checkstyle:npathcomplexity"})
+	@SuppressWarnings("rawtypes")
 	protected static Method shouldHaveMethod(Class<?> type, String name, boolean deprecated) {
 		final Pattern pattern = Pattern.compile(
 				"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$

@@ -89,7 +89,6 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 	 * @param fragment the element.
 	 * @return the descriptor.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	private ImageDescriptor getPackageFragmentIcon(IPackageFragment fragment) {
 		boolean containsJavaElements = false;
 		try {

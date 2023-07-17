@@ -123,15 +123,15 @@ final class SarlExperienceIndex {
 
 	static val NS = 1000f * 1000f * 1000f
 
-	private strictfp static def secs(s : float) {
+	private static def secs(s : float) {
 		s * NS
 	}
 
-	private strictfp static def megaBytes(m : float) : float {
+	private static def megaBytes(m : float) : float {
 		m * 1024 * 1024
 	}
 
-	private strictfp static def wrap(v : float) : String {
+	private static def wrap(v : float) : String {
  		if (Float::isNaN(v)) {
  			Messages::SarlExperienceIndex_0
 		} else {
@@ -139,7 +139,7 @@ final class SarlExperienceIndex {
 		}
 	}
 
-	private strictfp static def clamp(v : float, min : float, max : float) : float {
+	private static def clamp(v : float, min : float, max : float) : float {
 		if (v < min) {
 			return min
 		}
@@ -149,14 +149,14 @@ final class SarlExperienceIndex {
 		return v
 	}
 
-	private strictfp static def normalize(value : float) : float {
+	private static def normalize(value : float) : float {
 		if (Float::isNaN(value)) {
 			return Float.NaN
 		}
 		Math::round(value * 10f) / 10f
 	}
 
-	private strictfp static def normalize(scores : float*) : void {
+	private static def normalize(scores : float*) : void {
 		for (var i = 0; i < scores.length; i++) {
 			var s = scores.get(i)
 			if (!Float::isNaN(s)) {
@@ -173,7 +173,7 @@ final class SarlExperienceIndex {
 		}
 	}
 
-	private strictfp static def avg(scores : float*) : float {
+	private static def avg(scores : float*) : float {
 		var n = 0
 		var score = 0f
 		for (subscore : scores) {
@@ -191,7 +191,7 @@ final class SarlExperienceIndex {
 		return score
 	}
 
-	private strictfp static def garbage : void {
+	private static def garbage : void {
 		val r = Runtime::runtime
 		for (var i = 0; i < 6; i++) {
 			r.gc
@@ -299,7 +299,7 @@ final class SarlExperienceIndex {
 	 * @throws Exception in case of error.
 	 */
 	@SuppressWarnings("discouraged_reference")
-	strictfp static def main(args : String*) : void {
+	static def main(args : String*) : void {
 		println(MessageFormat::format(Messages::SarlExperienceIndex_1, VERSION))
 		val SEI = janusExperienceIndex
 		println(MessageFormat::format(Messages::SarlExperienceIndex_2, SEI.baseScore.wrap))
@@ -324,7 +324,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the global SEI.
 	 */
-	strictfp static def baseScore(canceller : SeiCanceler = null) : float {
+	static def baseScore(canceller : SeiCanceler = null) : float {
 		var clr = canceller.wrap
 		var score = SEI_SINGLETON.baseScore
 		if (!clr.canceled && Float::isNaN(score)) {
@@ -353,7 +353,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the CPU score.
 	 */
-	strictfp static def cpuScore(canceller : SeiCanceler = null) : float {
+	static def cpuScore(canceller : SeiCanceler = null) : float {
 		val clr = canceller.wrap
 		var score = SEI_SINGLETON.cpuScore
 		if (!clr.canceled && Float::isNaN(score)) {
@@ -370,7 +370,7 @@ final class SarlExperienceIndex {
 		return score
 	}
 
-	private strictfp static def computeMultiProcessorScore(canceller : SeiCanceler) : float {
+	private static def computeMultiProcessorScore(canceller : SeiCanceler) : float {
 		try {
 			var r = Runtime::runtime
 			var n = r.availableProcessors
@@ -381,7 +381,7 @@ final class SarlExperienceIndex {
 	}
 
 	@SuppressWarnings("unused_local_variable")
-	private strictfp static def computeArithmeticScore(canceller : SeiCanceler) : float {
+	private static def computeArithmeticScore(canceller : SeiCanceler) : float {
 		try {
 			var s = System::nanoTime
 			for (var i = 0; i < 100000000; i++) {
@@ -403,7 +403,7 @@ final class SarlExperienceIndex {
 		}
 	}
 
-	private strictfp static def computeEncryptionScore(canceller : SeiCanceler) : float {
+	private static def computeEncryptionScore(canceller : SeiCanceler) : float {
 		try {
 			var rnd = new Random
 			var t = new StringBuilder
@@ -470,7 +470,7 @@ final class SarlExperienceIndex {
 		}
 	}
 	
-	private strictfp static def md5(str : String) : String {
+	private static def md5(str : String) : String {
 		if (str === null) return ""
         var uniqueKey = str.bytes
         var hash : byte[] = null
@@ -495,7 +495,7 @@ final class SarlExperienceIndex {
         hashString.toString
 	}
 
-	private strictfp static def computeCompressionScore(canceller : SeiCanceler) : float {
+	private static def computeCompressionScore(canceller : SeiCanceler) : float {
 		try {
 			var rnd = new Random
 			var t = new StringBuilder
@@ -541,7 +541,7 @@ final class SarlExperienceIndex {
 	 * @return the Memory score.
 	 */
 	@SuppressWarnings("unused_local_variable")
-	strictfp static def memoryScore(canceller : SeiCanceler = null) : float {
+	static def memoryScore(canceller : SeiCanceler = null) : float {
 		val clr = canceller.wrap
 		var score = SEI_SINGLETON.memoryScore
 		if (!clr.canceled && Float::isNaN(score)) {
@@ -584,7 +584,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the disk score.
 	 */
-	strictfp static def diskScore(canceller : SeiCanceler = null) : float {
+	static def diskScore(canceller : SeiCanceler = null) : float {
 		val clr = canceller.wrap
 		var score = SEI_SINGLETON.diskScore
 		if (!clr.canceled && Float::isNaN(score)) {

@@ -39,7 +39,6 @@ import io.sarl.lang.SARLStandaloneSetup;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:methodname"})
 public class DocumentationSetup extends SARLStandaloneSetup {
 
 	private static Injector globalInjector;

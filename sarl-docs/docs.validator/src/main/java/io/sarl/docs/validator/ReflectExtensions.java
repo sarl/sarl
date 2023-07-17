@@ -418,7 +418,6 @@ public final class ReflectExtensions {
 	 * @param otype the type to parse.
 	 * @param isVarArg indicates if the type is used within a variadic parameter.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static void toType(StringBuilder it, Type otype, boolean isVarArg) {
 		final Type type;
 		if (otype instanceof Class<?>) {

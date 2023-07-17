@@ -98,7 +98,6 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 	/** Constructor.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public JavaInlineExpressionCompiler() {
 		this.generateDispatcher = new PolymorphicDispatcher<>(
 				"_generate", 4, 4, //$NON-NLS-1$
@@ -172,7 +171,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 		final JvmAnnotationReference annotationReference = annotationTypesBuilder.annotationRef(
 				Inline.class);
 
-		final AnnotationInformation annotationInfo = new AnnotationInformation(annotationReference);
+		final AnnotationInformation annotationInfo = AnnotationInformation.build(annotationReference);
 
 		// Value
 		final JvmStringAnnotationValue annotationValue = this.services.getTypesFactory()
@@ -494,21 +493,16 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.4
 	 */
-	@SuppressWarnings("checkstyle:visibilitymodifier")
-	private static class AnnotationInformation {
-
-		public final JvmOperation valueOperation;
-
-		public final JvmOperation importedOperation;
-
-		public final JvmOperation constantExpressionOperation;
-
-		public final JvmOperation statementExpressionOperation;
+	private static record AnnotationInformation(JvmOperation valueOperation,
+			JvmOperation importedOperation,
+			JvmOperation constantExpressionOperation,
+			JvmOperation statementExpressionOperation) {
 
 		/** Construct.
 		 * @param annotationReference annotation reference.
+		 * @return the information record.
 		 */
-		AnnotationInformation(JvmAnnotationReference annotationReference) {
+		static AnnotationInformation build(JvmAnnotationReference annotationReference) {
 			JvmOperation value = null;
 			JvmOperation imported = null;
 			JvmOperation constant = null;
@@ -532,10 +526,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			assert imported != null;
 			assert constant != null;
 			assert statement != null;
-			this.valueOperation = value;
-			this.importedOperation = imported;
-			this.constantExpressionOperation = constant;
-			this.statementExpressionOperation = statement;
+			return new AnnotationInformation(value, imported, constant, statement);
 		}
 
 	}
@@ -549,7 +540,6 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.4
 	 */
-	@SuppressWarnings("checkstyle:visibilitymodifier")
 	protected static class InlineAnnotationTreeAppendable extends FakeTreeAppendable {
 
 		private boolean isConstant;

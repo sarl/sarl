@@ -254,7 +254,6 @@ public class SarldocConfig {
 	 *
 	 * @return the path of the Javadoc tool.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static String findJavadocExecutable() {
 		final String javadocCommand;
 		if (OperatingSystem.getCurrentOS() == OperatingSystem.WIN) {
@@ -324,7 +323,6 @@ public class SarldocConfig {
 	 * @return the path of the "tools.jar" file, never {@code null}.
 	 * @throws FileNotFoundException if the "tools.jar" was not found.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static File findToolsJar() throws FileNotFoundException {
 		final String libFolder;
 		final String toolsJar;

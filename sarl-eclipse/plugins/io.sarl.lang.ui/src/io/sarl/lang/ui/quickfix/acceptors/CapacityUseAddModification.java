@@ -102,7 +102,6 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 		}
 	}
 
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	private static void findCandidateTypes(SARLQuickfixProvider provider, XtendTypeDeclaration sarlContainer,
 			JvmIdentifiableElement jvmContainer, String methodSimpleName,
 			IAcceptor<JvmGenericType> acceptor) throws JavaModelException, CoreException {
@@ -155,7 +154,6 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 	 * @param owner the owner of the missed feature.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	public static void accept(SARLQuickfixProvider provider, Issue issue, EObject owner, IssueResolutionAcceptor acceptor) {
 		if (owner instanceof XAbstractFeatureCall) {
 			final XAbstractFeatureCall call = (XAbstractFeatureCall) owner;

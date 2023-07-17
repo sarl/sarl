@@ -155,7 +155,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 	protected void generateTypeParameterAppender() {
 		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getTypeParameter();
 		final String accessor = "get" //$NON-NLS-1$
-				+ Strings.toFirstUpper(parameter.getElementType().getSimpleName()) + "()"; //$NON-NLS-1$
+				+ Strings.toFirstUpper(parameter.elementType().getSimpleName()) + "()"; //$NON-NLS-1$
 		final TypeReference builderInterface = getTypeParameterBuilderInterface();
 		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("TypeParameter"); //$NON-NLS-1$
 		final StringConcatenationClient content = new StringConcatenationClient() {
@@ -194,7 +194,6 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getTypeParameter();
 		return new StringConcatenationClient() {
@@ -207,7 +206,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(parameter.getElementType());
+					it.append(parameter.elementType());
 					it.append(" parameter;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
@@ -310,7 +309,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 						it.append("\t\tthis.context = context;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tthis.parameter = this.jvmTypesFactory.create"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tthis.parameter.set"); //$NON-NLS-1$
@@ -361,9 +360,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append(parameter.getElementType());
+				it.append(parameter.elementType());
 				it.append(" get"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 				it.append("()"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -372,7 +371,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLine();
 					if (forAppender) {
 						it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 					} else {
 						it.append("\t\treturn this.parameter;"); //$NON-NLS-1$
@@ -401,7 +400,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+					it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 					it.append("().eResource();"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -425,7 +424,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					} else {
 						it.append(EmfFormatter.class);
 						it.append(".objToStr(get"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("());"); //$NON-NLS-1$
 					}
 					it.newLine();
@@ -482,7 +481,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 						it.append("\t\tconstraint.setTypeReference(newTypeRef(this.context, type));"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tget"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("().getConstraints().add(constraint);"); //$NON-NLS-1$
 					}
 					it.newLine();
@@ -518,7 +517,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 						it.append("\t\tconstraint.setTypeReference(newTypeRef(this.context, type));"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tget"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("().getConstraints().add(constraint);"); //$NON-NLS-1$
 					}
 					it.newLine();

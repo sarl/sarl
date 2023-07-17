@@ -81,7 +81,6 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:all")
 	public void generate() {
 		super.generate();
 		final TypeReference factory = getBuilderFactoryImpl();
@@ -564,7 +563,6 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:all")
 	public void generateJavaStubs() {
 		super.generateJavaStubs();
 		final TypeReference stub = getBuilderFactoryImplCustom();

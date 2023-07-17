@@ -455,7 +455,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 	}*/
 
-	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:npathcomplexity", "deprecation"})
+	@SuppressWarnings("deprecation")
 	private void generateAbstractTest(File outputFolder) throws IOException {
 		getLog().debug(Messages.GenerateTestsMojo_5);
 		final ImportManager importManager = new ImportManager();

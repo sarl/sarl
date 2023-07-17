@@ -44,7 +44,6 @@ public final class DocletTester {
 	 * @param args arguments.
 	 * @throws RuntimeException a runtime exception.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	public static void main(String[] args) {
 		try {
 			//System.setProperty("http.proxyHost", "proxy.utbm.fr"); //$NON-NLS-1$ //$NON-NLS-2$

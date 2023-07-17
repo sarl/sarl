@@ -67,7 +67,6 @@ public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 		return result;
 	}
 
-	@SuppressWarnings("checkstyle:all")
 	@Override
 	protected void computeFeatureCallHighlighting(XAbstractFeatureCall featureCall, IHighlightedPositionAcceptor acceptor) {
 		super.computeFeatureCallHighlighting(featureCall, acceptor);

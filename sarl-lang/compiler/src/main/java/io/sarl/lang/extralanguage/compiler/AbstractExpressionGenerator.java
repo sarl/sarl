@@ -600,7 +600,6 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			output.add(feature.getSimpleName());
 		}
 
-		@SuppressWarnings("checkstyle:npathcomplexity")
 		private void featureCalltoJavaExpression(XAbstractFeatureCall call, Function0<? extends XExpression> beginOfBlock) {
 			final List<Object> leftOperand = new ArrayList<>();
 			if (needMultiAssignment(call)) {

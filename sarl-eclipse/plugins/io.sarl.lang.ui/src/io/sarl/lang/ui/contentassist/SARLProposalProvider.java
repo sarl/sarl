@@ -99,7 +99,6 @@ import io.sarl.lang.ui.labeling.SARLImages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Inject

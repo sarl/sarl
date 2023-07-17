@@ -142,7 +142,6 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	@SuppressWarnings("checkstyle:visibilitymodifier")
 	private static class RegionFormattingRequest {
 
 		public final IXtextDocument document;

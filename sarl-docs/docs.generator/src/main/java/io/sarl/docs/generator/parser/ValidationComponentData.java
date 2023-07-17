@@ -36,7 +36,6 @@ import org.eclipse.xtend.lib.annotations.Data;
  * @since 0.11
  */
 @Data
-@SuppressWarnings("checkstyle:visibilitymodifier")
 public class ValidationComponentData implements JsonableObject {
 
 	/** Source file. */

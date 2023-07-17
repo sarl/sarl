@@ -55,7 +55,6 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 
 	private String characterLiteral = "^'[a-zA-Z_$][\\w$]*(?!['$\\w])"; //$NON-NLS-1$
 
-	@SuppressWarnings("checkstyle:linelength")
 	private String numberLiteral = "^(?:(?:0(?:[0-7]+|X[0-9A-F]+))L?|(?:(?:0|[1-9][0-9]*)(?:(?:\\.[0-9]+)?(?:E[+\\-]?[0-9]+)?F?|L?))|\\\\.[0-9]+(?:E[+\\-]?[0-9]+)?F?)"; //$NON-NLS-1$
 
 	private String typePattern = "^[$_]*[A-Z][_$A-Z0-9]*[a-z][\\w$]*"; //$NON-NLS-1$
@@ -155,7 +154,6 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

@@ -162,7 +162,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		}
 		// Treat the constructors
 		if (constructorCallback != null
-			&& !getCodeBuilderConfig().getConstructorFreeTypes().contains(element.getName())) {
+			&& !getCodeBuilderConfig().getConstructorFreeTypes().contains(element.name())) {
 			final T retVal = visitConstructors(grammarContainer, grammarContainer, constructorCallback);
 			if (retVal != null) {
 				return retVal;

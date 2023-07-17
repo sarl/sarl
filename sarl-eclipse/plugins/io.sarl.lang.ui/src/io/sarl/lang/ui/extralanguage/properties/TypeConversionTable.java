@@ -35,7 +35,6 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class TypeConversionTable extends AbstractConversionTable {
 
 	private static final String TYPE_CONVERTER_COLUMN_WIDTH_ID = ".typeConverterSection.columnWidth"; //$NON-NLS-1$

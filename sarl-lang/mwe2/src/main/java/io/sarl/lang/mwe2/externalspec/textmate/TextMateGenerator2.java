@@ -170,7 +170,6 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	protected void generate(ITmStyleAppendable appendable, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {

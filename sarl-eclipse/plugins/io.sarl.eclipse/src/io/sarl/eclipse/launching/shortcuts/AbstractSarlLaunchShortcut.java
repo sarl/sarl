@@ -78,7 +78,6 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 		extends AbstractSarlScriptInteractiveSelector<ET, JT> implements ILaunchShortcut2 {
 
@@ -132,7 +131,6 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 */
 	protected abstract Class<JT> getValidJavaType();
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	private IResource findResource(Object[] elements) {
 		try {
 			for (final Object element : elements) {

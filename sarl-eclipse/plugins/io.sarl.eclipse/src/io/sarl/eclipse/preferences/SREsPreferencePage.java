@@ -97,8 +97,6 @@ import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling",
-		"checkstyle:methodcount"})
 public class SREsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, ISelectionProvider {
 
 	/**
@@ -537,7 +535,6 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 *
 	 * @param sres the SREs to remove.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void removeSREs(ISREInstall... sres) {
 		final ISREInstall defaultSRE = getDefaultSRE();
 		final String defaultId = defaultSRE == null ? null : defaultSRE.getId();

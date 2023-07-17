@@ -163,7 +163,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	protected void generateFormalParameterAppender() {
 		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
 		final String accessor = "get" //$NON-NLS-1$
-				+ Strings.toFirstUpper(parameter.getElementType().getSimpleName()) + "()"; //$NON-NLS-1$
+				+ Strings.toFirstUpper(parameter.elementType().getSimpleName()) + "()"; //$NON-NLS-1$
 		final TypeReference builderInterface = getFormalParameterBuilderInterface();
 		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
 		final StringConcatenationClient content = new StringConcatenationClient() {
@@ -202,11 +202,10 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @param forAppender {@code true} if the code must be generated for an appender.
 	 * @return the code.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
 		final FormalParameterDescription exparameter = new FormalParameterDescription(parameter,
-				findAssignmentFromFeatureName(parameter.getGrammarComponent(),
+				findAssignmentFromFeatureName(parameter.grammarComponent(),
 						getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
 		return new StringConcatenationClient() {
 			@Override
@@ -228,7 +227,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(parameter.getElementType());
+					it.append(parameter.elementType());
 					it.append(" parameter;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
@@ -362,9 +361,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("\t\tthis.context = context;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.parameter = "); //$NON-NLS-1$
-						it.append(getXFactoryFor(parameter.getElementType()));
+						it.append(getXFactoryFor(parameter.elementType()));
 						it.append(".eINSTANCE.create"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.parameter.set"); //$NON-NLS-1$
@@ -399,9 +398,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append(parameter.getElementType());
+				it.append(parameter.elementType());
 				it.append(" get"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+				it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 				it.append("()"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -410,7 +409,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					if (forAppender) {
 						it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 					} else {
 						it.append("\t\treturn this.parameter;"); //$NON-NLS-1$
@@ -468,9 +467,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("\t\t\t// Get the derived object"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tfinal "); //$NON-NLS-1$
-						it.append(parameter.getElementType());
+						it.append(parameter.elementType());
 						it.append(" jvmParam = getAssociatedElement("); //$NON-NLS-1$
-						it.append(parameter.getElementType());
+						it.append(parameter.elementType());
 						it.append(".class, param, resource);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\t// Set the proxy URI"); //$NON-NLS-1$
@@ -511,7 +510,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+					it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 					it.append("().eResource();"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -645,7 +644,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 							it.append(" it) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t\t\t\tget"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
+							it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
 							it.append("().set"); //$NON-NLS-1$
 							it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
 							it.append("(it);"); //$NON-NLS-1$
@@ -739,7 +738,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 
 		@Override
 		public String toString() {
-			return this.element.getName();
+			return this.element.name();
 		}
 
 		/** Replies the element description embedded in this top element description.

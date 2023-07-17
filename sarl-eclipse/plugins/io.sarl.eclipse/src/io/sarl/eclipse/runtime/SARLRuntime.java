@@ -96,7 +96,6 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * @mavenartifactid $ArtifactId$
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling"})
 public final class SARLRuntime {
 
 	/**
@@ -277,7 +276,6 @@ public final class SARLRuntime {
 	 *        reported and that the operation cannot be canceled.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
 		final SubMonitor mon = SubMonitor.convert(monitor,
 				io.sarl.eclipse.runtime.Messages.SARLRuntime_0,
@@ -636,7 +634,6 @@ public final class SARLRuntime {
 	 * This method loads installed SREs based an existing user preference
 	 * or old SRE configurations file.
 	 */
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	private static String initializePersistedSREs() {
 		//		// FOR DEBUG
 		//		try {
@@ -727,8 +724,6 @@ public final class SARLRuntime {
 	 *
 	 * @since 3.2
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:variabledeclarationusagedistance",
-			"checkstyle:npathcomplexity"})
 	private static void initializeSREs() {
 		ISREInstall[] newSREs = new ISREInstall[0];
 		boolean savePrefs = false;
@@ -834,7 +829,6 @@ public final class SARLRuntime {
 	 *
 	 * @throws CoreException if a problem occurs during the reset.
 	 */
-	@SuppressWarnings("checkstyle:variabledeclarationusagedistance")
 	public static void reset() throws CoreException {
 		LOCK.lock();
 		try {

@@ -88,7 +88,8 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 		final TypeReference customImplementationType = getElementBuilderImplCustom(name);
 		final TypeReference appenderType = getElementAppenderImpl(name);
 		final boolean isAnnotationInfo = findAction(grammarComponent, getAnnotationInfoFieldName()) != null;
-		return new ElementDescription(name, grammarComponent,
+		return new ElementDescription(
+				Strings.toFirstUpper(name), grammarComponent,
 				newTypeReference(elementType), commonType,
 				interfaceType, implementationType, customImplementationType, appenderType,
 				isAnnotationInfo);

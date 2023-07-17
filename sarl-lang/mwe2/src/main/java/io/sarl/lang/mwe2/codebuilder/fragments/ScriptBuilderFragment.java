@@ -123,7 +123,6 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 	/** Generate the contributions for the BuildFactory.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected void generateBuilderFactoryContributions() {
 		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
@@ -451,10 +450,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender indicates if the generated code is for appenders.
 	 * @return the top element.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateTopElement(CodeElementExtractor.ElementDescription description,
 			boolean forInterface, boolean forAppender) {
-		final String topElementName = Strings.toFirstUpper(description.getName());
+		final String topElementName = Strings.toFirstUpper(description.name());
 		final TypeReference builderType = getCodeElementExtractor().getElementBuilderInterface(topElementName);
 		return new StringConcatenationClient() {
 			@Override
@@ -656,7 +654,6 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender indicates if the generated code is for appender.
 	 * @return the fields and methods.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface, boolean forAppender) {
 		TypeReference scriptInterface = getCodeElementExtractor().getLanguageScriptInterface();
 		return new StringConcatenationClient() {

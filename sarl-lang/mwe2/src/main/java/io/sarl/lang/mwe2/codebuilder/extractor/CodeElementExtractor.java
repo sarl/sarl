@@ -21,13 +21,11 @@
 
 package io.sarl.lang.mwe2.codebuilder.extractor;
 
-import com.google.common.base.Objects;
 import com.google.inject.ImplementedBy;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions.Function4;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
@@ -289,57 +287,25 @@ public interface CodeElementExtractor {
 
 	/** Description of an element.
 	 *
+	 * @param name the name of the element.
+	 * @param grammarComponent the grammar component of the element.
+	 * @param elementType the type for the element.
+	 * @param commonSuperType the common type to all the elements in the same category.
+	 * @param builderInterfaceType the type for the interface that corresponds to this element builder.
+	 * @param builderImplementationType the type for the class that corresponds to this element builder.
+	 * @param builderCustomImplementationType the type for the class that corresponds to this element builder.
+	 * @param appenderType the type for the class that corresponds to this element appender.
+	 * @param annotationInfo indicates if the annotationInfo field is declared for the element.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class ElementDescription {
-
-		private final EObject grammarComponent;
-
-		private final String name;
-
-		private final TypeReference builderInterfaceType;
-
-		private final TypeReference builderImplementationType;
-
-		private final TypeReference builderCustomImplementationType;
-
-		private final TypeReference appenderType;
-
-		private final TypeReference elementType;
-
-		private final TypeReference commonSuperType;
-
-		private final boolean isAnnotationInfo;
-
-		/** Construct a description.
-		 *
-		 * @param name the name of the element.
-		 * @param grammarComponent the grammar component of the element.
-		 * @param elementType the type for the element.
-		 * @param commonSuperType the common type to all the elements in the same category.
-		 * @param builderInterfaceType the type for the interface that corresponds to this element builder.
-		 * @param builderImplementationType the type for the class that corresponds to this element builder.
-		 * @param builderCustomImplementationType the type for the class that corresponds to this element builder.
-		 * @param appenderType the type for the class that corresponds to this element appender.
-		 * @param annotationInfo indicates if the annotationInfo field is declared for the element.
-		 */
-		ElementDescription(String name, EObject grammarComponent,
-				TypeReference elementType, TypeReference commonSuperType, TypeReference builderInterfaceType,
-				TypeReference builderImplementationType, TypeReference builderCustomImplementationType,
-				TypeReference appenderType, boolean annotationInfo) {
-			this.name = Strings.toFirstUpper(name);
-			this.grammarComponent = grammarComponent;
-			this.elementType = elementType;
-			this.commonSuperType = commonSuperType;
-			this.builderInterfaceType = builderInterfaceType;
-			this.builderImplementationType = builderImplementationType;
-			this.builderCustomImplementationType = builderCustomImplementationType;
-			this.appenderType = appenderType;
-			this.isAnnotationInfo = annotationInfo;
-		}
+	record ElementDescription(
+			String name, EObject grammarComponent,
+			TypeReference elementType, TypeReference commonSuperType, TypeReference builderInterfaceType,
+			TypeReference builderImplementationType, TypeReference builderCustomImplementationType,
+			TypeReference appenderType, boolean annotationInfo) {
 
 		@Override
 		public boolean equals(Object obj) {
@@ -351,95 +317,17 @@ public interface CodeElementExtractor {
 			}
 			if (ElementDescription.class.equals(obj.getClass())) {
 				final ElementDescription desc = (ElementDescription) obj;
-				return getElementType().equals(desc.getElementType())
-					&& getName().equals(desc.getName())
-					&& getBuilderInterfaceType().equals(desc.getBuilderInterfaceType())
-					&& getBuilderImplementationType().equals(desc.getBuilderImplementationType());
+				return elementType().equals(desc.elementType())
+					&& name().equals(desc.name())
+					&& builderInterfaceType().equals(desc.builderInterfaceType())
+					&& builderImplementationType().equals(desc.builderImplementationType());
 			}
 			return false;
 		}
 
 		@Override
-		public int hashCode() {
-			return Objects.hashCode(getName(), getElementType(), getBuilderInterfaceType(),
-					getBuilderImplementationType());
-		}
-
-		@Override
 		public String toString() {
-			return getElementType().toString();
-		}
-
-		/** Replies the type of the element.
-		 *
-		 * @return the type of the element.
-		 */
-		public TypeReference getElementType() {
-			return this.elementType;
-		}
-
-		/** Replies the common super type to all the elements in the same category.
-		 *
-		 * @return the common super type of the element.
-		 */
-		public TypeReference getCommonSuperType() {
-			return this.commonSuperType;
-		}
-
-		/** Replies the interface type for the element builder.
-		 *
-		 * @return the interface type.
-		 */
-		public TypeReference getBuilderInterfaceType() {
-			return this.builderInterfaceType;
-		}
-
-		/** Replies the type for the element appender.
-		 *
-		 * @return the interface type.
-		 */
-		public TypeReference getAppenderType() {
-			return this.appenderType;
-		}
-
-		/** Replies the implementation type for the element builder.
-		 *
-		 * @return the implementation type.
-		 */
-		public TypeReference getBuilderImplementationType() {
-			return this.builderImplementationType;
-		}
-
-		/** Replies the custom implementation type for the element builder.
-		 *
-		 * @return the custom implementation type.
-		 */
-		public TypeReference getBuilderCustomImplementationType() {
-			return this.builderCustomImplementationType;
-		}
-
-		/** Replies the grammar component that is associated to the element.
-		 *
-		 * @return the grammar component
-		 */
-		public EObject getGrammarComponent() {
-			return this.grammarComponent;
-		}
-
-		/** Replies the name of the element.
-		 *
-		 * @return the name.
-		 */
-		public String getName() {
-			return this.name;
-		}
-
-		/** Replies if the annotationInfo field is declared for the element.
-		 *
-		 * @return {@code true} if the annotationInfo is declared.
-		 */
-		public boolean isAnnotationInfo() {
-			return this.isAnnotationInfo;
+			return elementType().toString();
 		}
 
 	}

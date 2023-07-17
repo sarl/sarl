@@ -96,7 +96,6 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class PyExpressionGenerator extends AbstractExpressionGenerator {
 
 	@Inject
@@ -437,7 +436,6 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @param context the context.
 	 * @return the operation.
 	 */
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected XExpression _generate(XBinaryOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
 		final String operator = getOperatorSymbol(operation);
@@ -820,7 +818,6 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @param context the context.
 	 * @return the statement.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity" })
 	protected XExpression _generate(XSwitchExpression switchStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
 		final String varName;
 		if (switchStatement.getDeclaredParam() != null) {
@@ -992,8 +989,6 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @param type the type.
 	 * @return the default value.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity",
-		"checkstyle:booleanexpressioncomplexity", "checkstyle:npathcomplexity"})
 	public static String toDefaultValue(JvmTypeReference type) {
 		final String id = type.getIdentifier();
 		if (!"void".equals(id)) { //$NON-NLS-1$

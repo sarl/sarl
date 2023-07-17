@@ -33,7 +33,6 @@ import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:methodname"})
 public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImportedFeatures {
 
 	/** Construct the provider.

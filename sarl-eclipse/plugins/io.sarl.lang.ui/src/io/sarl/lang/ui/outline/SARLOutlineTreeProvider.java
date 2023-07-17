@@ -85,7 +85,6 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline"
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProvider {
 
 	@Inject
@@ -155,7 +154,6 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		createTypeDeclarationNode(parentNode, modelElement);
 	}
 
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	private void createTypeDeclarationNode(IOutlineNode parentNode, XtendTypeDeclaration modelElement) {
 		//
 		// The text region is set to the model element, not to the model element's name as in the
@@ -246,7 +244,6 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		return false;
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	private void createAutomaticAccessors(EStructuralFeatureNode elementNode, SarlField field) {
 		final JvmField jvmField = this.associations.getJvmField(field);
 		if (jvmField != null) {

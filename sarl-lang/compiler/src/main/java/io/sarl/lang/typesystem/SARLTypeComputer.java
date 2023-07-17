@@ -115,7 +115,6 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @param candidate the candidate.
 	 * @return {@code true} if ambiguity could be removed.
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	protected boolean isIgnorableCallToFeature(ILinkingCandidate candidate) {
 		final JvmIdentifiableElement feature = candidate.getFeature();
 		//
@@ -201,7 +200,6 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @param cast the expression.
 	 * @param state the state of the type resolver.
 	 */
-	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected void _computeTypes(SarlCastedExpression cast, ITypeComputationState state) {
 		if (state instanceof AbstractTypeComputationState) {
 			final JvmTypeReference type = cast.getType();

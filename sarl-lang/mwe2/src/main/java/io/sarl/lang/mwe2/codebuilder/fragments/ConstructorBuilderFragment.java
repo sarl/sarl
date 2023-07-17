@@ -62,7 +62,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 							final CodeElementExtractor.ElementDescription memberDescription = it.newElementDescription(
 									classifier.getName(), memberContainer, classifier, commonSuperType);
 							return new MemberDescription(memberDescription, containerDescription, false,
-									memberDescription.isAnnotationInfo(), null);
+									memberDescription.annotationInfo(), null);
 						},
 						null, null);
 					if (this.constructor != null) {
@@ -88,10 +88,10 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	protected void generateBuilderFactoryContributions() {
 		// Get a container
 		final String createFunctionName = "create" //$NON-NLS-1$
-				+ Strings.toFirstUpper(this.constructor.getElementDescription().getName());
+				+ Strings.toFirstUpper(this.constructor.getElementDescription().name());
 		final String createContainerFunctionName = "add" //$NON-NLS-1$
-				+ Strings.toFirstUpper(this.constructor.getContainerDescription().getName());
-		final TypeReference containerBuilder = this.constructor.getContainerDescription().getBuilderInterfaceType();
+				+ Strings.toFirstUpper(this.constructor.getContainerDescription().name());
+		final TypeReference containerBuilder = this.constructor.getContainerDescription().builderInterfaceType();
 		// Generate the contribution.
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
@@ -110,7 +110,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append(Pure.class);
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getBuilderInterfaceType());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().builderInterfaceType());
 				it.append(" "); //$NON-NLS-1$
 				it.append(createFunctionName);
 				it.append("("); //$NON-NLS-1$
@@ -138,7 +138,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append(Pure.class);
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getBuilderInterfaceType());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().builderInterfaceType());
 				it.append(" "); //$NON-NLS-1$
 				it.append(createFunctionName);
 				it.append("("); //$NON-NLS-1$
@@ -156,7 +156,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append("(getFooTypeName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn containerBuilder.add"); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getName());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().name());
 				it.append("();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
@@ -166,9 +166,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
 			final String buildFunctionName = "build" //$NON-NLS-1$
-					+ Strings.toFirstUpper(this.constructor.getElementDescription().getName());
+					+ Strings.toFirstUpper(this.constructor.getElementDescription().name());
 			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
-					this.constructor.getElementDescription().getName());
+					this.constructor.getElementDescription().name());
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {

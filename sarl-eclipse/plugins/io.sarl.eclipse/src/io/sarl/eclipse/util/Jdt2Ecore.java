@@ -95,7 +95,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-@SuppressWarnings({"static-method", "checkstyle:classfanoutcomplexity"})
+@SuppressWarnings("static-method")
 public class Jdt2Ecore {
 
 	private static final String GENERATED_NAME = "Generated"; //$NON-NLS-1$
@@ -203,8 +203,6 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @see #toTypeFinder(IJavaProject)
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:nestedifdepth", "checkstyle:parameternumber"})
 	public IStatus populateInheritanceContext(
 			TypeFinder typeFinder,
 			Map<ActionPrototype, IMethod> finalOperations,

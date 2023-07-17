@@ -130,8 +130,6 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount",
-	"checkstyle:classdataabstractioncoupling"})
 public class SarlBatchCompiler {
 
 	private static final String BINCLASS_FOLDER_PREFIX = "classes"; //$NON-NLS-1$
@@ -1292,8 +1290,6 @@ public class SarlBatchCompiler {
 	 * @return success status.
 	 * @since 0.8
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:returncount", "checkstyle:magicnumber"})
 	public boolean compile(IProgressMonitor progress) {
 		final IProgressMonitor monitor = progress == null ? new NullProgressMonitor() : progress;
 		try {
@@ -1477,14 +1473,15 @@ public class SarlBatchCompiler {
 
 	/** Create a message for the issue.
 	 *
+	 * @param severity the severity that is considered by the compiler. It may be stronger than the one specified in the issue.
 	 * @param issue the issue.
 	 * @return the message.
 	 */
-	protected String createIssueMessage(Issue issue) {
+	protected String createIssueMessage(Severity severity, Issue issue) {
 		final IssueMessageFormatter formatter = getIssueMessageFormatter();
 		final org.eclipse.emf.common.util.URI uriToProblem = issue.getUriToProblem();
 		if (formatter != null) {
-			final String message = formatter.format(issue, uriToProblem);
+			final String message = formatter.format(severity, issue, uriToProblem);
 			if (message != null) {
 				return message;
 			}
@@ -1492,12 +1489,12 @@ public class SarlBatchCompiler {
 		if (uriToProblem != null) {
 			final org.eclipse.emf.common.util.URI resourceUri = uriToProblem.trimFragment();
 			return MessageFormat.format(Messages.SarlBatchCompiler_4,
-					issue.getSeverity(), resourceUri.lastSegment(),
+					severity, resourceUri.lastSegment(),
 					resourceUri.isFile() ? resourceUri.toFileString() : "", //$NON-NLS-1$
 							issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
 		}
 		return MessageFormat.format(Messages.SarlBatchCompiler_5,
-				issue.getSeverity(), issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
+				severity, issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
 	}
 
 	/** Output the given issues that result from the compilation of the SARL code.
@@ -1509,31 +1506,36 @@ public class SarlBatchCompiler {
 	protected boolean reportCompilationIssues(Iterable<Issue> issues) {
 		boolean hasError = false;
 		for (final Issue issue : issues) {
-			final String issueMessage = createIssueMessage(issue);
 			final Severity concreteSeverity;
+			final String issueMessage;
 			switch (issue.getSeverity()) {
 			case ERROR:
 				hasError = true;
 				concreteSeverity = Severity.ERROR;
+				issueMessage = createIssueMessage(concreteSeverity, issue);
 				getLogger().severe(issueMessage);
 				break;
 			case WARNING:
 				if (getReportWarningsAsErrors()) {
 					hasError = true;
 					concreteSeverity = Severity.ERROR;
+					issueMessage = createIssueMessage(concreteSeverity, issue);
 					getLogger().severe(issueMessage);
 				} else {
 					concreteSeverity = Severity.WARNING;
+					issueMessage = createIssueMessage(concreteSeverity, issue);
 					getLogger().warning(issueMessage);
 				}
 				break;
 			case INFO:
 				concreteSeverity = Severity.INFO;
+				issueMessage = createIssueMessage(concreteSeverity, issue);
 				getLogger().info(issueMessage);
 				break;
 			case IGNORE:
 			default:
 				concreteSeverity = Severity.IGNORE;
+				issueMessage = createIssueMessage(concreteSeverity, issue);
 				break;
 			}
 			notifiesIssueMessageListeners(concreteSeverity, issue, issue.getUriToProblem(), issueMessage);
@@ -1557,7 +1559,7 @@ public class SarlBatchCompiler {
 			issue.setSeverity(Severity.WARNING);
 			notifiesIssueMessageListeners(
 					getReportWarningsAsErrors() ? Severity.ERROR : Severity.WARNING,
-					issue, uri, message);
+							issue, uri, message);
 		}
 	}
 
@@ -1578,7 +1580,7 @@ public class SarlBatchCompiler {
 			issue.setSeverity(Severity.WARNING);
 			notifiesIssueMessageListeners(
 					getReportWarningsAsErrors() ? Severity.ERROR : Severity.WARNING,
-					issue, uri, message);
+							issue, uri, message);
 		}
 	}
 
@@ -1725,7 +1727,6 @@ public class SarlBatchCompiler {
 	 * @param progress monitor of the progress of the compilation.
 	 * @return the list of the issues.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected List<Issue> validate(ResourceSet resourceSet, Collection<Resource> validResources, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_38);
@@ -1916,10 +1917,10 @@ public class SarlBatchCompiler {
 				encoding,
 				isJavaCompilerVerbose(),
 				enableOptimization ? getOptimizationLevel() : null,
-				outWriter,
-				errWriter,
-				getLogger(),
-				progress);
+						outWriter,
+						errWriter,
+						getLogger(),
+						progress);
 	}
 
 	private PrintWriter getDebugCompilerOutputWriter() {
@@ -2150,7 +2151,6 @@ public class SarlBatchCompiler {
 		return elements;
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private File determineCommonRoot(Iterable<File> files, IProgressMonitor progress) {
 		assert progress != null;
 
@@ -2217,7 +2217,6 @@ public class SarlBatchCompiler {
 		return prefix;
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:returncount"})
 	private boolean configureWorkspace(ResourceSet resourceSet, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_57);
@@ -2330,7 +2329,7 @@ public class SarlBatchCompiler {
 	 * @param skipIndexLookup indicates if the index should be used for looking up types.
 	 * @param cancelIndicator monitor for cancelling the compilation.
 	 */
-	@SuppressWarnings({ "unused", "checkstyle:npathcomplexity" })
+	@SuppressWarnings("unused")
 	private void installJvmTypeProvider(ResourceSet resourceSet, File temporaryClassDirectory, boolean skipIndexLookup,
 			IProgressMonitor progress) {
 		assert progress != null;
@@ -2418,7 +2417,7 @@ public class SarlBatchCompiler {
 			}
 		});
 	}
-	
+
 	/** Create the project class loader.
 	 *
 	 * @param classPath the project class path.
@@ -2470,128 +2469,6 @@ public class SarlBatchCompiler {
 		if (severity != null) {
 			this.issueSeverityProvider.setAllSeverities(severity);
 		}
-	}
-
-	/** Formatter for the issue messages.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	@FunctionalInterface
-	public interface IssueMessageFormatter {
-
-		/** Format the message for the given issue.
-		 *
-		 * @param issue the issue.
-		 * @param uri URI to the problem.
-		 * @return the message; or {@code null} for using the default formatter.
-		 */
-		String format(Issue issue, org.eclipse.emf.common.util.URI uri);
-
-	}
-
-	/** Listener for the issue messages.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	@FunctionalInterface
-	public interface IssueMessageListener {
-
-		/** Replies the message for the given issue.
-		 *
-		 * @param severity the severity that was considered by the batch compiler. It may be stronger alert level that those in the {@code issue}.
-		 * @param issue the issue.
-		 * @param uri URI to the problem.
-		 * @param message the formatted message.
-		 */
-		void onIssue(Severity severity, Issue issue, org.eclipse.emf.common.util.URI uri, String message);
-
-	}
-
-	/** Comparator of issues.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class DefaultIssueComparator implements Comparator<Issue> {
-
-		private static int compareSafe(Integer n1, Integer n2) {
-			if (n1 == null) {
-				return n2 == null ? 0 : -1;
-			}
-			if (n2 == null) {
-				return 1;
-			}
-			return Integer.compare(n1.intValue(), n2.intValue());
-		}
-
-		private static int compareSafe(Severity s1, Severity s2) {
-			if (s1 == null) {
-				return s2 == null ? 0 : -1;
-			}
-			if (s2 == null) {
-				return 1;
-			}
-			return s1.compareTo(s2);
-		}
-
-		private static int compareSafe(String s1, String s2) {
-			if (s1 == null) {
-				return s2 == null ? 0 : -1;
-			}
-			if (s2 == null) {
-				return 1;
-			}
-			return s1.compareTo(s2);
-		}
-
-		@Override
-		@SuppressWarnings("checkstyle:npathcomplexity")
-		public int compare(Issue issue1, Issue issue2) {
-			if (issue1 == issue2) {
-				return 0;
-			}
-			if (issue1 == null) {
-				return -1;
-			}
-			if (issue2 == null) {
-				return 1;
-			}
-			final org.eclipse.emf.common.util.URI u1 = issue1.getUriToProblem();
-			final org.eclipse.emf.common.util.URI u2 = issue2.getUriToProblem();
-			int cmp = 0;
-			if (u1 != u2 && u1 != null && u2 != null) {
-				cmp = u1.toFileString().compareTo(u2.toFileString());
-			}
-			if (cmp != 0) {
-				return cmp;
-			}
-			cmp = compareSafe(issue1.getLineNumber(), issue2.getLineNumber());
-			if (cmp != 0) {
-				return cmp;
-			}
-			cmp = compareSafe(issue1.getColumn(), issue2.getColumn());
-			if (cmp != 0) {
-				return cmp;
-			}
-			cmp = compareSafe(issue1.getSeverity(), issue2.getSeverity());
-			if (cmp != 0) {
-				return cmp;
-			}
-			cmp = compareSafe(issue1.getMessage(), issue2.getMessage());
-			if (cmp != 0) {
-				return cmp;
-			}
-			return Integer.compare(System.identityHashCode(issue1), System.identityHashCode(issue2));
-		}
-
 	}
 
 	private static class LoggerRepositoryWrapper implements LoggerRepository {

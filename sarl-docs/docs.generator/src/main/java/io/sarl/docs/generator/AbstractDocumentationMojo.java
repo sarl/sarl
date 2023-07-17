@@ -211,7 +211,6 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	protected abstract String getSkippingMessage();
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public final void execute() throws MojoExecutionException  {
 		final String skipMessage = getSkippingMessage();
 		if (!Strings.isEmpty(skipMessage)) {
@@ -334,7 +333,6 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @param exception the error.
 	 * @return the error message.
 	 */
-	@SuppressWarnings("checkstyle:all")
 	protected String formatErrorMessage(File inputFile, Throwable exception) {
 		File filename;
 		int lineno = 0;
@@ -415,7 +413,6 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if the parser cannot be created.
 	 * @throws IOException if a classpath entry cannot be found.
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity" })
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final JavaVersion javaVersion = SarlBatchCompilerUtils.parseJavaVersion(this.source);
 

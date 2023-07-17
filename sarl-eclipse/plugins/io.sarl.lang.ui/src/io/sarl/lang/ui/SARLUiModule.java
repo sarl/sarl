@@ -44,7 +44,6 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"static-method", "javadoc", "checkstyle:javadocmethod"})
 public class SARLUiModule extends AbstractSARLUiModule {
 
 	/** Provider of {@link UIConfigurableIssueSeveritiesProvider}.
@@ -77,6 +76,10 @@ public class SARLUiModule extends AbstractSARLUiModule {
 
 	}
 
+	/** Constructor.
+	 *
+	 * @param plugin the Eclipse plugin.
+	 */
 	public SARLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
@@ -96,6 +99,11 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 	}
 
+	/** Configure the debug mode.
+	 * 
+	 * @param binder the binder.
+	 */
+	@SuppressWarnings("static-method")
 	public void configureDebugMode(Binder binder) {
 		if (Boolean.getBoolean("io.sarl.lang.debug") //$NON-NLS-1$
 				|| Boolean.getBoolean("org.eclipse.xtext.xtend.debug")) { //$NON-NLS-1$

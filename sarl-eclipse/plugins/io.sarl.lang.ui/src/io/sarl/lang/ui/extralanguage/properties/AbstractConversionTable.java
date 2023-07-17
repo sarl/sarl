@@ -79,7 +79,6 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:classdataabstractioncoupling", "checkstyle:classfanoutcomplexity"})
 public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 	/** Propery name for the source column.

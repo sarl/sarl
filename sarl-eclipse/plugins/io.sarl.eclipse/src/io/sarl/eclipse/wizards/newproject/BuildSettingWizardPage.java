@@ -87,7 +87,6 @@ import io.sarl.lang.core.util.OutParameter;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static final String FILENAME_PROJECT = ".project"; //$NON-NLS-1$
@@ -229,7 +228,6 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		return theLocation;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private IStatus updateProject(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 7);
 		IStatus result = StatusInfo.OK_STATUS;

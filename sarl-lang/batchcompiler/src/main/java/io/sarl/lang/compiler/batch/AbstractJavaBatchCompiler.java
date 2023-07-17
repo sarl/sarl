@@ -148,8 +148,6 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:parameternumber" })
 	public final CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
@@ -184,7 +182,6 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status; Never {@code null}.
 	 */
-	@SuppressWarnings("checkstyle:parameternumber")
 	protected abstract CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,

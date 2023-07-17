@@ -44,7 +44,6 @@ import io.sarl.lang.typesystem.IPureOperationNameValidator;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@SuppressWarnings({"checkstyle:methodname"})
 public final class FactExtensions {
 
 	private static IPureOperationNameValidator nameValidator;

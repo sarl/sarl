@@ -58,7 +58,6 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 		return "GNU source-highlight"; //$NON-NLS-1$
 	}
 
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,

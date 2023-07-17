@@ -30,7 +30,6 @@ package io.sarl.lang.core.util;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 public final class SarlUtils {
 
 	/** Character for hidden features.

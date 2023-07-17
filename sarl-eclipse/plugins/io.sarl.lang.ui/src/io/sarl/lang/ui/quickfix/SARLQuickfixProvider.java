@@ -110,7 +110,7 @@ import io.sarl.lang.validation.SyntaxIssueCodes;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
-@SuppressWarnings({"static-method", "checkstyle:methodcount", "checkstyle:classfanoutcomplexity"})
+@SuppressWarnings("static-method")
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject

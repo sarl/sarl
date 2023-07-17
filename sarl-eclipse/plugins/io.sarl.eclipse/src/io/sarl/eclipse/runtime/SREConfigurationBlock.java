@@ -440,7 +440,6 @@ public class SREConfigurationBlock {
 	 * @param sre the sre, if {@code null} reset to default.
 	 * @return {@code true} if the selection changed.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean selectSpecificSRE(ISREInstall sre) {
 		ISREInstall theSRE = sre;
 		if (theSRE == null) {
@@ -736,7 +735,6 @@ public class SREConfigurationBlock {
 			}
 		}
 
-		@SuppressWarnings({"checkstyle:variabledeclarationusagedistance"})
 		@Override
 		public void sreAdded(ISREInstall sre) {
 			if (sre.getValidity().isOK()) {

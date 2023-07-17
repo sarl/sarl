@@ -89,7 +89,6 @@ import io.sarl.lang.core.util.CliUtilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab implements ISreChangeListener {
 
 	private volatile SoftReference<Image> image;
@@ -133,7 +132,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public void sreChanged(ISREInstall sre) {
 		final Map<String, String> options = sre == null ? Collections.emptyMap() : sre.getAvailableCommandLineOptions();
 		assert options != null;
