@@ -37,6 +37,7 @@ import org.jsoup.nodes.Node;
 
 import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.html.framework.CssStyles;
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlFactory;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContext;
@@ -57,6 +58,8 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 
 	private ElementUtils elementUtils;
 	
+	private DocletOptions docletOptions;
+
 	private final String name;
 
 	private final boolean inline;
@@ -94,6 +97,23 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 */
 	public HtmlFactory getHtmlFactory() {
 		return this.htmlFactory;
+	}
+
+	/** Change the doclet options.
+	 *
+	 * @param options the doclet options.
+	 */
+	@Inject
+	public void setDocletOptions(DocletOptions options) {
+		this.docletOptions = options;
+	}
+
+	/** Replies the doclet options.
+	 *
+	 * @return the doclet options.
+	 */
+	public DocletOptions getDocletOptions() {
+		return this.docletOptions;
 	}
 
 	/** Change the SARL utilities for elements.

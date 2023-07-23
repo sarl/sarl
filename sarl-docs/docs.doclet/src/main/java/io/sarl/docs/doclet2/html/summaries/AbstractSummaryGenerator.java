@@ -108,7 +108,7 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	}
 
 	private void generate() throws Exception {
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final Document document = getHtmlFactory().createDocument(this);
 		final String title = getDocumentTitleFor(null);
@@ -118,7 +118,7 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 		generateHtmlHeader(htmlTag);
 		generateHtmlBody(htmlTag);
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.AbstractSummaryGenerator_0, outputPath.toString()));
 			writeDocument(outputPath, document);
 		}

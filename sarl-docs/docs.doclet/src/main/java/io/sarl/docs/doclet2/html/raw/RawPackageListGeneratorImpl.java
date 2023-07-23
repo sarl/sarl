@@ -68,7 +68,7 @@ public class RawPackageListGeneratorImpl extends AbstractDocumentationGenerator 
 		getReporter().print(Kind.NOTE, Messages.RawPackageListGeneratorImpl_0);
 		computePaths(getPathBuilder().rawPackageList(), false);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final StringBuilder content = new StringBuilder();
 		for (final PackageElement packageElement : getTypeRepository().getPackages()) {
@@ -79,7 +79,7 @@ public class RawPackageListGeneratorImpl extends AbstractDocumentationGenerator 
 			}
 		}
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.RawPackageListGeneratorImpl_1, outputPath.toString()));
 			writeDocument(outputPath, content.toString());
 		}

@@ -73,7 +73,7 @@ public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.OverviewFrameGeneratorImpl_0);
 		computePaths(getPathBuilder().overviewFrame(), true);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final Document document = getHtmlFactory().createDocument(this);
 		final String title = getDocumentTitleFor(null);
@@ -83,7 +83,7 @@ public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.OverviewFrameGeneratorImpl_3, outputPath.toString()));
 			writeDocument(outputPath, document);
 		}

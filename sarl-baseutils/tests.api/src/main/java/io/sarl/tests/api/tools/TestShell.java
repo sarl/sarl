@@ -116,7 +116,7 @@ public class TestShell {
 		if (f1 != null) {
 			return f1;
 		}
-		throw new FileNotFoundException();
+		throw new FileNotFoundException("No executable jar found for artifact '" + artifact + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static File findExecutableJar(File root, Pattern filename) {

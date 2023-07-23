@@ -44,6 +44,11 @@ public class Messages extends NLS {
 	public static String SarldocCommand_7;
 	public static String SarldocCommand_8;
 	public static String SarldocCommand_9;
+	public static String SarldocCommand_10;
+	public static String SarldocCommand_11;
+	public static String SarldocCommand_12;
+	public static String SarldocCommand_13;
+	public static String SarldocCommand_14;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

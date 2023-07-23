@@ -68,7 +68,7 @@ public class RawModuleListGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.RawModuleListGeneratorImpl_0);
 		computePaths(getPathBuilder().rawModuleList(), false);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final StringBuilder content = new StringBuilder();
 		for (final ModuleElement moduleElement : getTypeRepository().getModules()) {
@@ -79,7 +79,7 @@ public class RawModuleListGeneratorImpl extends AbstractDocumentationGenerator i
 			}
 		}
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.RawModuleListGeneratorImpl_1, outputPath.toString()));
 			writeDocument(outputPath, content.toString());
 		}

@@ -49,7 +49,7 @@ public class CommentTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		if (referenceExtractor.getContext().getCliOptions().isHtmlCommentsEnabled()) {
+		if (referenceExtractor.getContext().getDocletOptions().isHtmlCommentsEnabled()) {
 			final org.jsoup.nodes.Element commentTag0 = getHtmlFactory().createSpanTag(null, null);
 			if (appendCommentText(commentTag0, tags, element, " ", false, null, referenceExtractor.getContext())) { //$NON-NLS-1$
 				getHtmlFactory().createHtmlComment(parent, commentTag0.html());

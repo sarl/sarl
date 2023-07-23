@@ -77,10 +77,22 @@ public interface PathDetector {
 	 */
 	File getTempDirectory();
 
-	/** Resolve the paths.
+	/** Replies if the path detector has resolved the paths.
+	 * If the paths are not resolved, the function {@link #resolve(List)} could be invoked
+	 * to resolve them.
+	 *
+	 * @return {@code true} if the detector has resolved paths; otherwise {@code false}.
+	 * @since 0.13
+	 * @see #resolve(List)
+	 */
+	boolean isResolved();
+	
+	/** Resolve the paths. This function does nothing is the paths are already resolved, as
+	 * returned by the function {@link #isResolved()}.
 	 *
 	 * @param args the command line arguments to consider.
 	 * @throws IOException if one path cannot be canonized.
+	 * @see #isResolved()
 	 */
 	void resolve(List<String> args) throws IOException;
 

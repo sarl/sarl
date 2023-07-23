@@ -23,6 +23,8 @@ package io.sarl.docs.doclet2.framework;
 
 import jdk.javadoc.doclet.DocletEnvironment;
 
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
+
 /** Environment for the SARL doclet.
  *
  * @author $Author: sgalland$
@@ -56,5 +58,17 @@ public interface SarlDocletEnvironment extends DocletEnvironment {
 	 * @return the excluder.
 	 */
 	ApidocExcluder getApidocExcluder();
+
+	/** Change the accessor to the doclet options.
+	 *
+	 * @param options the accessor.
+	 */
+	void setDocletOptions(DocletOptions options);
+
+	/** Replies the accessor to the doclet options.
+	 *
+	 * @return the accessor.
+	 */
+	DocletOptions getDocletOptions();
 
 }

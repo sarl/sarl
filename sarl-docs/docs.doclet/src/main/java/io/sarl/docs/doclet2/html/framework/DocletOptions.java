@@ -22,11 +22,8 @@
 package io.sarl.docs.doclet2.html.framework;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Pair;
@@ -39,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pair;
  * @mavenartifactid $ArtifactId$
  * @since 0.13
  */
-public class DocletOptions {
+public interface DocletOptions {
 
 	/** User tag that is used to ignore elements.
 	 */
@@ -57,180 +54,151 @@ public class DocletOptions {
 	 */
 	public static final String PRIVATEAPI_TAG = "privateapi"; //$NON-NLS-1$
 
-	private Path outputDirectory;
-
-	private boolean fake;
-
-	private boolean offline;
-
-	private boolean enableHtmlComments;
-
-	private Set<String> additionalTags = new TreeSet<>();
-
-	private String copyrightText;
-
-	private String title;
-
-	private final List<Pair<String, Pattern>> groups = new ArrayList<>();
-
-	/** Constructor.
-	 */
-	public DocletOptions() {
-		addDefaultUserTags();
-	}
-
-	/** Invoked to add the default user tags.
-	 */
-	protected void addDefaultUserTags() {
-		addUserTag(EXCLUDEFROMAPIDOC_TAG);
-		addUserTag(MAVENGROUPID_TAG);
-		addUserTag(MAVENARTIFACTID_TAG);
-		addUserTag(PRIVATEAPI_TAG);
-	}
-	
 	/** Replies the output directory.
 	 *
 	 * @return the output directory.
 	 */
-	public Path getOutputDirectory() {
-		if (this.outputDirectory == null) {
-			return Path.of("").toAbsolutePath(); //$NON-NLS-1$
-		}
-		return this.outputDirectory;
-	}
+	Path getOutputDirectory();
 	
 	/** Change the output directory.
 	 *
 	 * @param output the output directory.
 	 */
-	public void setOutputDirectory(Path output) {
-		this.outputDirectory = output;
-	}
+	void setOutputDirectory(Path output);
 
 	/** Replies if outputs are fake.
 	 *
 	 * @return {@code true} if outputs are fake.
 	 */
-	public boolean isFakeOutput() {
-		return this.fake;
-	}
+	boolean isFakeOutput();
 	
 	/** Set if the outputs are fake.
 	 *
 	 * @param fake the fake flag.
 	 */
-	public void setFakeOutput(boolean fake) {
-		this.fake = fake;
-	}
+	void setFakeOutput(boolean fake);
 
 	/** Add a user tag from the CLI configuration. The user tags will be recognized by the doclet and no error will be generated when
 	 * they are used.
 	 *
 	 * @param tagName the name of the tag (without @).
 	 */
-	public void addUserTag(String tagName) {
-		this.additionalTags.add(tagName.toLowerCase().trim());
-	}
+	void addUserTag(String tagName);
 
 	/** Replies the user tags from the CLI configuration. The user tags will be recognized by the doclet and no error will be generated when
 	 * they are used.
 	 *
 	 * @return the names of the tags (without @).
 	 */
-	public Set<String> getUserTags() {
-		return Collections.unmodifiableSet(this.additionalTags);
-	}
+	Set<String> getUserTags();
 
 	/** Change the offline status of the doclet.
 	 *
 	 * @param offline is {@code true} to force the doclet to be offline.
 	 */
-	public void setOffline(boolean offline) {
-		this.offline = offline;
-	}
+	void setOffline(boolean offline);
 
 	/** Replies if the doclet is offline or not.
 	 *
 	 * @return {@code true} to force the doclet to be offline.
 	 */
-	public boolean isOffline() {
-		return this.offline;
-	}
+	boolean isOffline();
 
 	/** Change the flag that indicates if the {@code @comment} tags are translated to HTML comments or to HTML blocks that are hidden.
 	 *
 	 * @param enable is {@code true} to convert {@code @comment} to HTML comment.
 	 */
-	public void setHtmlCommentsEnabled(boolean enable) {
-		this.enableHtmlComments = enable;
-	}
+	void setHtmlCommentsEnabled(boolean enable);
 
 	/** Replies if the {@code @comment} tags are translated to HTML comments or to HTML blocks that are hidden.
 	 *
 	 * @return {@code true} to convert {@code @comment} to HTML comment.
 	 */
-	public boolean isHtmlCommentsEnabled() {
-		return this.enableHtmlComments;
-	}
+	boolean isHtmlCommentsEnabled();
+
+	/** Change the flag that indicates if the deprecated features are translated to HTML elements.
+	 *
+	 * @param enable is {@code true} to convert deprecated to HTML elements.
+	 */
+	void setDeprecatedFeaturesEnabled(boolean enable);
+
+	/** Replies if the deprecated features are translated to HTML elements.
+	 *
+	 * @return {@code true} to convert deprecated to HTML elements.
+	 */
+	boolean isDeprecatedFeaturesEnabled();
+
+	/** Change the flag that indicates if the {@code @since} tags are translated to HTML elements.
+	 *
+	 * @param enable is {@code true} to convert {@code @since} tags to HTML elements.
+	 */
+	void setSinceTagsEnabled(boolean enable);
+
+	/** Replies if the {@code @since} tags are translated to HTML elements.
+	 *
+	 * @return {@code true} to convert {@code @since} tags to HTML elements.
+	 */
+	boolean isSinceTagsEnabled();
+
+	/** Change the flag that indicates if the {@code @version} tags are translated to HTML elements.
+	 *
+	 * @param enable is {@code true} to convert {@code @version} tags to HTML elements.
+	 */
+	void setVersionTagsEnabled(boolean enable);
+
+	/** Replies if the {@code @version} tags are translated to HTML elements.
+	 *
+	 * @return {@code true} to convert {@code @version} tags to HTML elements.
+	 */
+	boolean isVersionTagsEnabled();
+
+	/** Change the flag that indicates if the {@code @author} tags are translated to HTML elements.
+	 *
+	 * @param enable is {@code true} to convert {@code @author} tags to HTML elements.
+	 */
+	void setAuthorTagsEnabled(boolean enable);
+
+	/** Replies if the {@code @author} tags are translated to HTML elements.
+	 *
+	 * @return {@code true} to convert {@code @author} tags to HTML elements.
+	 */
+	boolean isAuthorTagsEnabled();
 
 	/** Change the copyright text.
 	 *
 	 * @param text the text.
 	 */
-	public void setCopyrightText(String text) {
-		this.copyrightText = text;
-	}
+	void setCopyrightText(String text);
 
 	/** Replies the copyright text.
 	 *
 	 * @return the text.
 	 */
-	public String getCopyrightText() {
-		return this.copyrightText;
-	}
+	String getCopyrightText();
 
 	/** Change the title.
 	 *
 	 * @param text the text.
 	 */
-	public void setTitle(String text) {
-		this.title = text;
-	}
+	void setTitle(String text);
 
 	/** Replies the title.
 	 *
 	 * @return the text.
 	 */
-	public String getTitle() {
-		return this.title;
-	}
+	String getTitle();
 
 	/** Add a group of package that is used on the overview page.
 	 *
 	 * @param heading the title of the group.
 	 * @param groupPatterns the package patterns.
 	 */
-	public void addGroup(String heading, String... groupPatterns) {
-		final StringBuilder pat = new StringBuilder();
-		for (final String groupPattern : groupPatterns) {
-			if (pat.length() > 0) {
-				pat.append("|"); //$NON-NLS-1$
-			}
-			final String p0 = "(?:" + groupPattern.replaceAll(Pattern.quote("."), "\\\\.").replaceAll(Pattern.quote("*"), ".*") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			pat.append(p0);
-		}
-		pat.insert(0, "^(?:"); //$NON-NLS-1$
-		pat.append(")$"); //$NON-NLS-1$
-		final Pattern regex = Pattern.compile(pat.toString());
-		this.groups.add(Pair.of(heading, regex));
-	}
+	void addGroup(String heading, String... groupPatterns);
 
 	/** Replies all the groups of packages.
 	 *
 	 * @return the groups of packages.
 	 */
-	public List<Pair<String, Pattern>> getGroups() {
-		return Collections.unmodifiableList(this.groups);
-	}
+	List<Pair<String, Pattern>> getGroups();
 
 }

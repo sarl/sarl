@@ -75,7 +75,7 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.AllTypesFrameGeneratorImpl_0);
 		computePaths(getPathBuilder().allTypesFrame(), true);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final Document document = getHtmlFactory().createDocument(this);
 		final String title = getDocumentTitleFor(null);
@@ -85,7 +85,7 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.AllTypesFrameGeneratorImpl_1, outputPath.toString()));
 			writeDocument(outputPath, document);
 		}

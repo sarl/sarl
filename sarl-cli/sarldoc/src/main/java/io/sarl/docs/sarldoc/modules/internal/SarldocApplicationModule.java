@@ -23,7 +23,10 @@ package io.sarl.docs.sarldoc.modules.internal;
 
 import static io.bootique.BQCoreModule.extend;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.inject.Provider;
@@ -42,10 +45,11 @@ import io.sarl.apputils.bootiqueapp.utils.SystemProperties;
 import io.sarl.docs.sarldoc.Constants;
 import io.sarl.docs.sarldoc.commands.SarldocCommand;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
+import io.sarl.docs.sarldoc.tools.DefaultDocumentationPathDetector;
+import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.util.CliUtilities;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
-import io.sarl.lang.sarlc.tools.DefaultPathDetector;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
@@ -62,7 +66,8 @@ public class SarldocApplicationModule implements BQModule {
 
 	@Override
 	public void configure(Binder binder) {
-		binder.bind(PathDetector.class).to(DefaultPathDetector.class).inSingletonScope();
+		binder.bind(PathDetector.class).to(DefaultDocumentationPathDetector.class).inSingletonScope();
+		binder.bind(DocumentationPathDetector.class).to(DefaultDocumentationPathDetector.class).inSingletonScope();
 		binder.bind(SARLClasspathProvider.class).to(SarlEmbededSdkClasspathProvider.class).inSingletonScope();
 
 		// Name of the application.
@@ -76,6 +81,31 @@ public class SarldocApplicationModule implements BQModule {
 		binder.bind(Key.get(String.class, ApplicationArgumentSynopsis.class)).toInstance(Messages.SarldocApplicationModule_1);
 		// Default command
 		extend(binder).setDefaultCommand(SarldocCommand.class);
+	}
+
+	/** Provides the root looger for the sarldoc tool.
+	 *
+	 * @param configFactory the configuration factory.
+	 * @param config the provider of progress bar configuration.
+	 * @return the root logger.
+	 */
+	@Singleton
+	@Provides
+	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
+		final Class<?> type = getClass();
+		try (final InputStream stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
+			LogManager.getLogManager().readConfiguration(stream);
+			final Logger root = Logger.getAnonymousLogger();
+			if (root != null) {
+				ProgressBarConfig cfg = config.get();
+				if (cfg.getEnable()) {
+					root.setLevel(cfg.getLevel().toJul());
+				}
+			}
+			return root;
+		} catch (IOException ex) {
+			throw new Error(ex);
+		}
 	}
 
 	/** Provider of the long description of the application.
@@ -102,19 +132,6 @@ public class SarldocApplicationModule implements BQModule {
 					docOutputDirectory, docOutputDirectoryOption);
 		}
 
-	}
-
-	@Singleton
-	@Provides
-	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
-		final Logger root = Logger.getAnonymousLogger();
-		if (root != null) {
-			ProgressBarConfig cfg = config.get();
-			if (cfg.getEnable()) {
-				root.setLevel(cfg.getLevel().toJul());
-			}
-		}
-		return root;
 	}
 
 }

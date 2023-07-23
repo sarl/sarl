@@ -19,32 +19,39 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.sarldoc;
+package io.sarl.docs.sarldoc.tools;
 
-/** Constants for sarlc.
+import java.io.File;
+
+import io.sarl.lang.sarlc.tools.PathDetector;
+
+/**
+ * Detect the base paths when they are missed.
+ * The paths are: <ul>
+ * <li>the documentation output path,</li>
+ * <li>the SARL output path,</li>
+ * <li>the Java class output path, and</li>
+ * <li>the working path.</li>
+ * </ul>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.13
  */
-public final class Constants {
+public interface DocumentationPathDetector extends PathDetector {
 
-	/** Default name of the sarldoc program.
+	/** Change the documentatio output path.
+	 *
+	 * @param path the path.
 	 */
-	public static final String PROGRAM_NAME = "sarldoc"; //$NON-NLS-1$
+	void setDocumentationOutputPath(File path);
 
-	/** Name of the option for defining the output directory for HTML documentation, without the {@code -} and the {@code /} prefixes.
+	/** Replies the documentation output path.
+	 *
+	 * @return the path.
 	 */
-	public static final String DOCUMENTATION_OUTPUT_DIRECTORY_OPTION = "docdirectory"; //$NON-NLS-1$
-
-	/** Path of the output folder for documentations.
-	 */
-	public static final String FOLDER_DOCUMENTATION = "target/sarl-api-docs"; //$NON-NLS-1$
-
-	private Constants() {
-		//
-	}
+	File getDocumentationOutputPath();
 
 }

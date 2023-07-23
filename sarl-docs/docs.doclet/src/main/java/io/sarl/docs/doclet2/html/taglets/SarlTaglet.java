@@ -30,6 +30,7 @@ import com.sun.source.doctree.DocTree;
 import jdk.javadoc.doclet.Taglet;
 
 import io.sarl.docs.doclet2.html.framework.CssStyles;
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 
 /** Manager of taglets.
@@ -42,7 +43,7 @@ import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
  */
 public interface SarlTaglet extends Taglet {
 
-    /** Replies the label of the tag. By default, the label is the value replied by
+	/** Replies the label of the tag. By default, the label is the value replied by
 	 * {@link #getName()} for which the first letters are upper cased.
 	 *
 	 * @return the label of the tag.
@@ -73,6 +74,15 @@ public interface SarlTaglet extends Taglet {
 	 */
 	static String buildBlockLabel(String name) {
 		return MessageFormat.format(Messages.SarlTaglet_0, org.eclipse.xtext.util.Strings.toFirstUpper(name));
+	}
+
+	/** Replies if the taglet is active according to the given options for the doclet.
+	 *
+	 * @param docletOptions the doclet options.
+	 * @return {@code true} if the taglet is active.
+	 */
+	default boolean isActiveTaglet(DocletOptions docletOptions) {
+		return true;
 	}
 
 }

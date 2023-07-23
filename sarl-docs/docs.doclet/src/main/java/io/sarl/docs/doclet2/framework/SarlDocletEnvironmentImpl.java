@@ -36,6 +36,8 @@ import com.google.common.collect.Sets;
 import com.sun.source.util.DocTrees;
 import jdk.javadoc.doclet.DocletEnvironment;
 
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
+
 /** Environment for the SARL doclet.
  *
  * @author $Author: sgalland$
@@ -47,6 +49,8 @@ import jdk.javadoc.doclet.DocletEnvironment;
 public class SarlDocletEnvironmentImpl implements SarlDocletEnvironment {
 
 	private ApidocExcluder excluder;
+
+	private DocletOptions docletOptions;
 
 	private DocletEnvironment parent;
 
@@ -72,10 +76,22 @@ public class SarlDocletEnvironmentImpl implements SarlDocletEnvironment {
 	}
 
 	@Override
+	@Inject
+	public void setDocletOptions(DocletOptions options) {
+		this.docletOptions = options;
+	}
+
+	@Override
+	public DocletOptions getDocletOptions() {
+		return this.docletOptions;
+	}
+
+	@Override
 	public Set<? extends Element> getSpecifiedElements() {
-		return Sets.filter(getParent().getSpecifiedElements(), it -> {
-			return ! getApidocExcluder().isExcluded(it);
-		});
+		return Sets.filter(getParent().getSpecifiedElements(),
+				it -> !getApidocExcluder().isExcluded(it)
+					&& (getDocletOptions().isDeprecatedFeaturesEnabled()
+						|| !getElementUtils().isDeprecated(it)));
 	}
 
 	@Override
@@ -105,12 +121,18 @@ public class SarlDocletEnvironmentImpl implements SarlDocletEnvironment {
 		if (getApidocExcluder().isExcluded(e)) {
 			return false;
 		}
+		if (!getDocletOptions().isDeprecatedFeaturesEnabled() && getElementUtils().isDeprecated(e)) {
+			return false;
+		}
 		return getParent().isIncluded(e);
 	}
 
 	@Override
 	public boolean isSelected(Element e) {
 		if (getApidocExcluder().isExcluded(e)) {
+			return false;
+		}
+		if (!getDocletOptions().isDeprecatedFeaturesEnabled() && getElementUtils().isDeprecated(e)) {
 			return false;
 		}
 		return getParent().isSelected(e);

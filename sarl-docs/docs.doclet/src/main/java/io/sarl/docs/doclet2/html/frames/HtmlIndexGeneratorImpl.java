@@ -132,7 +132,7 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 		getReporter().print(Kind.NOTE, Messages.HtmlIndexGeneratorImpl_0);
 		computePaths(getPathBuilder().htmlIndexFile(), true);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final DocumentType docType = getHtmlFactory().createDocumentType(
 				"html", //$NON-NLS-1$
@@ -146,7 +146,7 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.HtmlIndexGeneratorImpl_1, outputPath.toString()));
 			writeDocument(outputPath, document);
 		}

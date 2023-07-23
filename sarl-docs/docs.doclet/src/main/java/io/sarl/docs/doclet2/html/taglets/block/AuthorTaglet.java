@@ -28,6 +28,7 @@ import javax.lang.model.element.Element;
 import com.sun.source.doctree.DocTree;
 
 import io.sarl.docs.doclet2.html.framework.CssStyles;
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
 
@@ -64,6 +65,11 @@ public class AuthorTaglet extends AbstractSarlTaglet {
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
     	return appendCommentTextWithComa(parent, tags, element, getTextCssStyle(style), referenceExtractor.getContext());
+	}
+
+	@Override
+	public boolean isActiveTaglet(DocletOptions docletOptions) {
+		return docletOptions.isAuthorTagsEnabled();
 	}
 
 }

@@ -233,7 +233,7 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 
 	@Override
 	public URI getExternalLink(Element element, String anchorName, ExternalLinkManagerContext context) {
-		if (context.getCliOptions().isOffline()) {
+		if (context.getDocletOptions().isOffline()) {
 			return null;
 		}
 		final Item item = getCachedItem(element, context);

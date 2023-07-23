@@ -104,7 +104,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	private SarlDocletEnvironment environment;
 
-	private DocletOptions cliOptions;
+	private DocletOptions docletOptions;
 
 	private String baseUri;
 
@@ -155,7 +155,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		setJsScripts(jsScripts);
 		setReporter(reporter);
 		setEnvironment(environment);
-		setCliOptions(cliOptions);
+		setDocletOptions(cliOptions);
 	}
 
 	/** Change the sorter of the block tags.
@@ -385,16 +385,16 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	}
 
 	@Override
-	public DocletOptions getCliOptions() {
-		return this.cliOptions;
+	public DocletOptions getDocletOptions() {
+		return this.docletOptions;
 	}
 
 	/** Change the doclet's CLI options.
 	 *
 	 * @param cliOptions the doclet's CLI options.
 	 */
-	protected void setCliOptions(DocletOptions cliOptions) {
-		this.cliOptions = cliOptions;
+	protected void setDocletOptions(DocletOptions cliOptions) {
+		this.docletOptions = cliOptions;
 	}
 
 	@Override
@@ -632,9 +632,11 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 				final Element ddTag = getHtmlFactory().createDdTag(parent, style);
 				if (taglet instanceof SarlTaglet) {
 					final SarlTaglet staglet = (SarlTaglet) taglet;
-					dtTag.appendText(staglet.getTagBlockLabel());
-					final TagContentExtractor extractor = new TagContentExtractor();
-					staglet.appendNode(ddTag, tagTrees, documentedElement, null, style, extractor);
+					if (staglet.isActiveTaglet(getDocletOptions())) {
+						dtTag.appendText(staglet.getTagBlockLabel());
+						final TagContentExtractor extractor = new TagContentExtractor();
+						staglet.appendNode(ddTag, tagTrees, documentedElement, null, style, extractor);
+					}
 				} else {
 					dtTag.appendText(SarlTaglet.buildBlockLabel(taglet.getName()));
 					boolean changed = false;
@@ -790,7 +792,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param parent the container.
 	 */
 	protected void createCopyrightBox(Element parent) {
-		final String copyrightText = getCliOptions().getCopyrightText();
+		final String copyrightText = getDocletOptions().getCopyrightText();
 		if (!Strings.isEmpty(copyrightText)) {
 			final Element copyrightDiv = getHtmlFactory().createDivTag(parent, CssStyles.COPYRIGHT_BOX);
 			copyrightDiv.append(Messages.AbstractDocumentationGenerator_1);
@@ -1141,7 +1143,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @return the documentation title.
 	 */
 	protected String getDocumentationTitle() {
-		final String cli = getCliOptions().getTitle();
+		final String cli = getDocletOptions().getTitle();
 		if (!Strings.isEmpty(cli)) {
 			return cli;
 		}

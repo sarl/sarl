@@ -22,7 +22,6 @@
 package io.sarl.docs.sarldoc.commands;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.text.MessageFormat;
@@ -36,8 +35,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.google.common.base.Strings;
@@ -46,21 +47,19 @@ import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
-import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.mwe.PathTraverser;
 import org.eclipse.xtext.util.JavaVersion;
 
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
-import io.sarl.docs.sarldoc.Constants;
+import io.sarl.docs.doclet2.Doclet;
+import io.sarl.docs.doclet2.html.SarlHtmlDocletOptions;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.configs.Tag;
+import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.lang.sarlc.tools.ClassPathUtils;
-import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 
 /**
  * Abstract command for launching sarldoc that is sharing all the code
@@ -108,23 +107,11 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 	private static final String LOCALE_FLAG = "-locale"; //$NON-NLS-1$
 
-	private static final String DOCENCODING_FLAG = "-docencoding"; //$NON-NLS-1$
-
 	private static final String ENCODING_FLAG = "-encoding"; //$NON-NLS-1$
 
 	private static final String SOURCE_FLAG = "-source"; //$NON-NLS-1$
 
 	private static final String DOCTITLE_FLAG = "-doctitle"; //$NON-NLS-1$
-
-	private static final String NODEPRECATED_FLAG = "-nodeprecated"; //$NON-NLS-1$
-
-	private static final String NODEPRECATEDLIST_FLAG = "-nodeprecatedlist"; //$NON-NLS-1$
-
-	private static final String NOSINCE_FLAG = "-nosince"; //$NON-NLS-1$
-
-	private static final String AUTHOR_FLAG = "-author"; //$NON-NLS-1$
-
-	private static final String VERSION_FLAG = "-version"; //$NON-NLS-1$
 
 	private static final String PUBLIC_FLAG = "-public"; //$NON-NLS-1$
 
@@ -134,37 +121,18 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 	private static final String PRIVATE_FLAG = "-private"; //$NON-NLS-1$
 
-	private static final String SOURCEPATH_FLAG = "-sourcepath"; //$NON-NLS-1$
-
-	private static final String CLASSPATH_FLAG = "-classpath"; //$NON-NLS-1$
-
-	private static final String MODULEPATH_FLAG = "-modulepath"; //$NON-NLS-1$
-
-	private static final String SMALLD_FLAG = "-d"; //$NON-NLS-1$
-
-	private static final String DOCLET_FLAG = "-doclet"; //$NON-NLS-1$
-
-	private static final String DOCLETPATH_FLAG = "-docletpath"; //$NON-NLS-1$
-
 	private static final String TAG_FLAG = "-tag"; //$NON-NLS-1$
-
-	private static final String TOOLS_JAR_INTERNAL_CLASS = "com.sun.tools.doclets.internal.toolkit.AbstractDoclet"; //$NON-NLS-1$
 
 	private final Provider<SarldocConfig> config;
 
 	private final Provider<SarlcConfig> sarlcConfig;
 
-	private final Provider<SARLClasspathProvider> defaultClasspath;
-
-	private final Provider<PathDetector> pathDetector;
+	private final Provider<DocumentationPathDetector> pathDetector;
 
 	private final Provider<Logger> logger;
 
-	private final DynamicURLClassLoader sarldocClassLoader;
-
 	/** Constructor.
 	 *
-	 * @param sarldocClassLoader the dynamic class loader that could be used by sarldoc.
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
 	 * @param sarlcConfig the sarlc configuration provider.
@@ -172,17 +140,16 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	 * @param pathDetector the detector of paths.
 	 * @param name the name of the commande, or {@code null} if none.
 	 */
-	public AbstractSarldocCommand(DynamicURLClassLoader sarldocClassLoader, Provider<Logger> logger,
+	@Inject
+	public AbstractSarldocCommand(Provider<Logger> logger,
 			Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,
-			Provider<SARLClasspathProvider> defaultClasspath, Provider<PathDetector> pathDetector, String name) {
+			Provider<DocumentationPathDetector> pathDetector, String name) {
 		super(addName(name, CommandMetadata
 				.builder(AbstractSarldocCommand.class)
 				.description(Messages.SarldocCommand_0)));
-		this.sarldocClassLoader = sarldocClassLoader;
 		this.logger = logger;
 		this.config = config;
 		this.sarlcConfig = sarlcConfig;
-		this.defaultClasspath = defaultClasspath;
 		this.pathDetector = pathDetector;
 	}
 
@@ -217,6 +184,10 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 				} else {
 					logger.info(Messages.SarldocCommand_4);
 				}
+			} else if (outcome.getException() != null) {
+				logger.log(Level.SEVERE, outcome.getMessage(), outcome.getException());
+			} else {
+				logger.log(Level.SEVERE, outcome.getMessage());
 			}
 		}
 		return outcome;
@@ -278,7 +249,6 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		return ifNotEmpty(Integer.toString(value));
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static void forceProxyDefinition(SarldocConfig config, Logger logger) {
 		final Map<String, URI> activeProxies = new HashMap<>();
 
@@ -370,57 +340,49 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	private static void addCmd(List<String> cmd, String option, String value) {
+		if (!Strings.isNullOrEmpty(value)) {
+			cmd.add(option);
+			cmd.add(value);
+		}
+	}
+
 	private CommandOutcome runJavadoc(Cli cli, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
 			AtomicInteger errorCount, AtomicInteger warningCount) throws IllegalArgumentException {
 		logger.info(Messages.SarldocCommand_2);
-		final String javadocExecutable = docconfig.getJavadocExecutable();
 		final List<String> cmd = new ArrayList<>();
 
 		// Locale
-		cmd.add(LOCALE_FLAG);
-		cmd.add(docconfig.getLocale());
+		addCmd(cmd, LOCALE_FLAG, docconfig.getLocale());
 
 		// Encoding
 		final String encoding = docconfig.getEncoding();
-		cmd.add(DOCENCODING_FLAG);
-		cmd.add(encoding);
-		cmd.add(ENCODING_FLAG);
-		cmd.add(encoding);
-
-		// Javadoc Options
-		for (final String option : docconfig.getJavadocOption()) {
-			cmd.add(option);
-		}
+		addCmd(cmd, ENCODING_FLAG, encoding);
 
 		// Java version
 		final JavaVersion javaVersion = SarlBatchCompilerUtils.parseJavaVersion(cconfig.getCompiler().getJavaVersion());
-		cmd.add(SOURCE_FLAG);
-		cmd.add(javaVersion.getQualifier());
+		addCmd(cmd, SOURCE_FLAG, javaVersion.getQualifier());
 
 		// Documentation title
 		final String title = docconfig.getTitle();
-		if (!Strings.isNullOrEmpty(title)) {
-			cmd.add(DOCTITLE_FLAG);
-			cmd.add(title);
-		}
+		addCmd(cmd, DOCTITLE_FLAG, title);
+		addCmd(cmd, SarlHtmlDocletOptions.TITLE_OPTION, title);
 
 		// Special tags
 		if (!docconfig.getEnableDeprecatedTag()) {
-			cmd.add(NODEPRECATED_FLAG);
-			cmd.add(NODEPRECATEDLIST_FLAG);
+			cmd.add(SarlHtmlDocletOptions.NODEPRECATED_OPTION);
 		}
 
 		if (!docconfig.getEnableSinceTag()) {
-			cmd.add(NOSINCE_FLAG);
+			cmd.add(SarlHtmlDocletOptions.NOSINCE_OPTION);
 		}
 
 		if (docconfig.getEnableVersionTag()) {
-			cmd.add(VERSION_FLAG);
+			cmd.add(SarlHtmlDocletOptions.VERSION_OPTION);
 		}
 
 		if (docconfig.getEnableAuthorTag()) {
-			cmd.add(AUTHOR_FLAG);
+			//cmd.add(SarlHtmlDocletOptions.AUTHOR_OPTION);
 		}
 
 		// Visibility of the elements
@@ -441,16 +403,45 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 			throw new IllegalStateException();
 		}
 
-		// Path detection
-		final PathDetector paths = this.pathDetector.get();
-		paths.setSarlOutputPath(cconfig.getOutputPath());
-		paths.setClassOutputPath(cconfig.getClassOutputPath());
-		paths.setTempDirectory(cconfig.getTempDirectory());
-		try {
-			paths.resolve(cli.standaloneArguments());
-		} catch (IOException exception) {
-			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
+		// Add custom tags
+		for (final Tag tag : docconfig.getCustomTags()) {
+			addCmd(cmd, TAG_FLAG, tag.toString());
 		}
+
+		// Doclet
+		String docletName = docconfig.getDoclet();
+		final Class<?> docletType;
+		if (Strings.isNullOrEmpty(docletName)) {
+			docletType = Doclet.class;
+		} else {
+			try {
+				docletType = getClass().getClassLoader().loadClass(docletName);
+			} catch (ClassNotFoundException exception) {
+				return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
+			}
+		}
+
+		// Javadoc Options
+		for (final String option : docconfig.getJavadocOption()) {
+			cmd.add(option);
+		}
+
+		// Path detection
+		final DocumentationPathDetector paths = this.pathDetector.get();
+		if (!paths.isResolved()) {
+			paths.setSarlOutputPath(cconfig.getOutputPath());
+			paths.setClassOutputPath(cconfig.getClassOutputPath());
+			paths.setTempDirectory(cconfig.getTempDirectory());
+			paths.setDocumentationOutputPath(docconfig.getDocumentationOutputDirectory());
+			try {
+				paths.resolve(cli.standaloneArguments());
+			} catch (IOException exception) {
+				return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
+			}
+		}
+
+		// Add the flags for the doclet output folder
+		addCmd(cmd, SarlHtmlDocletOptions.LONG_DIRECTORY_OPTION, paths.getDocumentationOutputPath().getAbsolutePath());
 
 		// Source folder
 		final SystemPath sourcePath = new SystemPath();
@@ -460,105 +451,42 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		if (paths.getSarlOutputPath() != null) {
 			sourcePath.add(paths.getSarlOutputPath());
 		}
-		cmd.add(SOURCEPATH_FLAG);
-		cmd.add(sourcePath.toString());
-
-		// Class path
-		final SARLClasspathProvider classpathProvider = this.defaultClasspath.get();
-		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cconfig, javaVersion, logger);
-		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cconfig, javaVersion, logger);
-
-		File toolsjar = null;
-
-		try {
-			if (this.sarldocClassLoader.loadClass(TOOLS_JAR_INTERNAL_CLASS) == null) {
-				throw new ClassNotFoundException();
-			}
-		} catch (ClassNotFoundException | NoClassDefFoundError error) {
-			// The internal class of "tools.jar" cannot be loaded.
-			// It is usually due to the fact that "tools.jar" is missed from the class path.
-			// This error should occurs when running sarldoc with the jar file with all dependencies.
-			// Indeed, "tools.jar" is marked as a system dependency (because it is part of the JDK),
-			// it is not included into the jar file of sarldoc itself.
-			try {
-				toolsjar = SarldocConfig.findToolsJar();
-				fullClassPath.add(toolsjar);
-				this.sarldocClassLoader.addURL(FileSystem.convertFileToURL(toolsjar));
-			} catch (FileNotFoundException exception) {
-				return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception.getMessage());
-			}
-			// Try again
-			try {
-				if (this.sarldocClassLoader.loadClass(TOOLS_JAR_INTERNAL_CLASS) == null) {
-					return CommandOutcome.failed(BootiqueMain.ERROR_CODE,
-							io.sarl.docs.sarldoc.configs.Messages.SarldocConfig_3);
-				}
-			} catch (ClassNotFoundException | NoClassDefFoundError error1) {
-				return CommandOutcome.failed(BootiqueMain.ERROR_CODE,
-						io.sarl.docs.sarldoc.configs.Messages.SarldocConfig_3);
-			}
-		}
-
-		cmd.add(CLASSPATH_FLAG);
-		cmd.add(fullClassPath.toString());
-
-		if (SarlBatchCompilerUtils.isModuleSupported(javaVersion)) {
-			cmd.add(MODULEPATH_FLAG);
-			cmd.add(fullModulePath.toString());
-		}
-
-		// Output folder
-		cmd.add(SMALLD_FLAG);
-		cmd.add(docconfig.getDocumentationOutputDirectory().getAbsolutePath());
-
-		// Doclet
-		cmd.add(DOCLET_FLAG);
-		String docletName = docconfig.getDoclet();
-		if (Strings.isNullOrEmpty(docletName)) {
-			docletName = Constants.DEFAULT_DOCLET;
-		}
-		cmd.add(docletName);
-
-		// Doclet path
-		final SystemPath docletPath = new SystemPath();
-		docletPath.addEntries(fullClassPath);
-		docletPath.addEntries(docconfig.getDocletPath());
-		if (!docletPath.isEmpty()) {
-			cmd.add(DOCLETPATH_FLAG);
-			cmd.add(docletPath.toString());
-		}
-
-		// Add custom tags
-		for (final Tag tag : docconfig.getCustomTags()) {
-			cmd.add(TAG_FLAG);
-			cmd.add(tag.toString());
-		}
 
 		// Add source files
-		final Collection<String> files = getSourceFiles(sourcePath, docconfig);
-		for (final String sourceFile : files) {
-			cmd.add(sourceFile);
-		}
-
+		final Collection<File> files = getSourceFiles(sourcePath, docconfig);
+		
 		// Execute the Javadoc
-		return runJavadoc(this.sarldocClassLoader, javadocExecutable, cmd, docconfig, cconfig, logger, errorCount, warningCount);
+		return runJavadoc(
+				files,
+				paths,
+				docletType,
+				cmd,
+				docconfig,
+				logger,
+				errorCount, warningCount);
 	}
 
 	/** Run the Javadoc binary based on the provided arguments.
 	 *
-	 * @param classLoader the class loader to be used for launching the javadoc tool.
-	 * @param javadocExecutable the executable for javadoc.
-	 * @param cmd is the full description of the javadoc command-line instruction.
+	 * @param sourceFiles the list of the Java source folders or files.
+	 * @param paths the definition of the paths for the documentation tool.
+	 * @param docletClass the type of the doclet to be used.
+	 * @param javadocOptions the list of the options to pass to the Javadoc tool.
 	 * @param docconfig the configuration of the sarldoc tool.
-	 * @param cconfig the configuration of the sarlc tool.
 	 * @param logger the logger to be used for ontifiy the user.
 	 * @param errorCount the number of errors found into the project.
 	 * @param warningCount the number of warnings found into the project.
 	 * @return the result of the execution.
 	 */
-	protected abstract CommandOutcome runJavadoc(DynamicURLClassLoader classLoader, String javadocExecutable,
-			List<String> cmd, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
-			AtomicInteger errorCount, AtomicInteger warningCount);
+	protected abstract CommandOutcome runJavadoc(
+			Collection<File> sourceFiles,
+			DocumentationPathDetector paths,
+			Class<?> docletClass,
+			List<String> javadocOptions,
+			SarldocConfig docconfig,
+			Logger logger,
+			AtomicInteger errorCount,
+			AtomicInteger warningCount);
 
 	private static boolean isExcludedPackage(File file, SarldocConfig config) {
 		if (file == null) {
@@ -584,8 +512,8 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		return !excl.contains(name.toString());
 	}
 
-	private static Collection<String> getSourceFiles(SystemPath sourcePaths, SarldocConfig config) {
-		final Set<String> allFiles = new TreeSet<>();
+	private static Collection<File> getSourceFiles(SystemPath sourcePaths, SarldocConfig config) {
+		final Set<File> allFiles = new TreeSet<>();
 		final PathTraverser pathTraverser = new PathTraverser();
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
 			sourcePaths.toFilenameList(),
@@ -596,7 +524,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 			final File root = FileSystem.convertStringToFile(entry.getKey());
 			try {
 				if (!isExcludedPackage(FileSystem.makeRelative(file, root), config)) {
-					allFiles.add(filename);
+					allFiles.add(file);
 				}
 			} catch (Throwable exception) {
 				// Silent exception

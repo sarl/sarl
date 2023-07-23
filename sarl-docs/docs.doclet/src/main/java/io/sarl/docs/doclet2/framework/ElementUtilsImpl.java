@@ -1226,6 +1226,12 @@ public class ElementUtilsImpl implements ElementUtils {
 	}
 
 	@Override
+	public boolean isDeprecated(Element element) {
+		final AnnotationMirror annotation = getDeprecatedAnnotation(element);
+		return annotation != null;
+	}
+
+	@Override
 	public boolean isDeprecatedForRemoval(Element element) {
 		final AnnotationMirror annotation = getDeprecatedAnnotation(element);
 		if (annotation != null) {

@@ -21,31 +21,37 @@
 
 package io.sarl.docs.sarldoc.commands;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javax.inject.Provider;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticListener;
+import javax.tools.DocumentationTool;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 import com.google.common.base.Strings;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.ManagedCommand;
-import org.arakhne.afc.vmutil.DynamicURLClassLoader;
+import io.bootique.di.BQInject;
 import org.arakhne.afc.vmutil.FileSystem;
 
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
+import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 
 /**
  * Command for launching sarldoc.
@@ -58,38 +64,22 @@ import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
  */
 public class SarldocCommand extends AbstractSarldocCommand {
 
-	private static final String JAVADOC_NOTE_PREFIX = "Note:";  //$NON-NLS-1$
-
-	private static final String MAIN_CLASS = "com.sun.tools.javadoc.Main";  //$NON-NLS-1$
-
-	private static final String STANDARD_DOCLET = "com.sun.tools.doclets.standard.Standard"; //$NON-NLS-1$
-
 	private final Provider<CommandManager> commandManagerProvider;
-
-	/** Constructor with all the fields set to {@code null}.
-	 * A command created with this constructor cannot be run. But is could be used for obtaining the
-	 * command options.
-	 *
-	 * @since 0.12
-	 */
-	public SarldocCommand() {
-		this(null, null, null, null, null, null, null);
-	}
 
 	/** Constructor.
 	 *
-	 * @param sarldocClassLoader the dynamic class loader that could be used by sarldoc.
 	 * @param commandManager the provider of the manager of the commands.
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
 	 * @param sarlcConfig the sarlc configuration provider.
-	 * @param defaultClasspath the provider of default classpaths.
 	 * @param pathDetector the detector of paths.
 	 */
-	public SarldocCommand(DynamicURLClassLoader sarldocClassLoader, Provider<CommandManager> commandManager,
-			Provider<Logger> logger, Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,
-			Provider<SARLClasspathProvider> defaultClasspath, Provider<PathDetector> pathDetector) {
-		super(sarldocClassLoader, logger, config, sarlcConfig, defaultClasspath, pathDetector, null);
+	@BQInject
+	public SarldocCommand(
+			Provider<CommandManager> commandManager, Provider<Logger> logger,
+			Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,
+			Provider<DocumentationPathDetector> pathDetector) {
+		super(logger, config, sarlcConfig, pathDetector, null);
 		this.commandManagerProvider = commandManager;
 	}
 
@@ -107,57 +97,108 @@ public class SarldocCommand extends AbstractSarldocCommand {
 		return outcome;
 	}
 
+	/** Format the diagnostic message.
+	 *
+	 * @param diagnostic the diagnostic object.
+	 * @return the message.
+	 * @since 0.13
+	 */
+	protected static String formatDiagnosticMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
+		final String code = diagnostic.getCode();
+		final JavaFileObject source = diagnostic.getSource();
+		final long line = diagnostic.getLineNumber();
+		final long column = diagnostic.getColumnNumber();
+
+		String diagMessage = diagnostic.getMessage(null);
+		if (Strings.isNullOrEmpty(diagMessage)) {
+			diagMessage = MessageFormat.format(Messages.SarldocCommand_10, code);
+		}
+
+		final String sourceName;
+		if (source != null) {
+			sourceName = source.getName();
+		} else {
+			sourceName = null;
+		}
+
+		//		if (Strings.isNullOrEmpty(code)) {
+		//			if (Strings.isNullOrEmpty(sourceName)) {
+		//				return MessageFormat.format(Messages.SarldocCommand_11, diagMessage);
+		//			}
+		//			return MessageFormat.format(Messages.SarldocCommand_12, diagMessage, sourceName, line, column);
+		//		}
+		//		if (Strings.isNullOrEmpty(sourceName)) {
+		//			return MessageFormat.format(Messages.SarldocCommand_13, diagMessage, code);
+		//		}
+		//		return MessageFormat.format(Messages.SarldocCommand_14, diagMessage, code, sourceName, line, column);
+		if (Strings.isNullOrEmpty(sourceName)) {
+			return MessageFormat.format(Messages.SarldocCommand_11, diagMessage);
+		}
+		return MessageFormat.format(Messages.SarldocCommand_12, diagMessage, sourceName, line, column);
+	}
+
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
-	protected CommandOutcome runJavadoc(DynamicURLClassLoader classLoader, String javadocExecutable,
-			List<String> cmd, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
-			AtomicInteger errorCount, AtomicInteger warningCount) {
+	@SuppressWarnings("resource")
+	protected CommandOutcome runJavadoc(
+			Collection<File> sourceFiles,
+			DocumentationPathDetector paths,
+			Class<?> docletClass,
+			List<String> javadocOptions,
+			SarldocConfig docconfig,
+			Logger logger,
+			AtomicInteger errorCount,
+			AtomicInteger warningCount) {
 		// Execute the Javadoc
 		try {
-			// Find main class
-			final Class<?> mainClass = classLoader.loadClass(MAIN_CLASS);
-			final Method mainMethod = mainClass.getMethod("execute", //$NON-NLS-1$
-					String.class,
-					PrintWriter.class,
-					PrintWriter.class,
-					PrintWriter.class,
-					String.class,
-					ClassLoader.class,
-					String[].class);
+			final File outFolder = paths.getDocumentationOutputPath().getAbsoluteFile();
+			logger.info(MessageFormat.format(Messages.SarldocCommand_5, outFolder.getAbsolutePath()));
+			FileSystem.delete(outFolder);
+			outFolder.mkdirs();
 
-			// Delete target directory
-			logger.info(MessageFormat.format(Messages.SarldocCommand_5, docconfig.getDocumentationOutputDirectory().getAbsolutePath()));
-			FileSystem.delete(docconfig.getDocumentationOutputDirectory().getAbsoluteFile());
-
-			final String[] cliArgs = new String[cmd.size()];
-			cmd.toArray(cliArgs);
-
-			// Run Javadoc
-			try (PrintWriter errWriter = new PrintWriter(new ErrorWriter(logger, errorCount))) {
-				try (PrintWriter warnWriter = new PrintWriter(new WarningWriter(logger, warningCount))) {
-					try (PrintWriter infoWriter = new PrintWriter(new InformationWriter(logger, warningCount))) {
-						final Object[] args = new Object[7];
-						args[0] = javadocExecutable;
-						args[1] = errWriter;
-						args[2] = warnWriter;
-						args[3] = infoWriter;
-						args[4] = STANDARD_DOCLET;
-						args[5] = classLoader;
-						args[6] = cliArgs;
-						final Integer code = (Integer) mainMethod.invoke(null, args);
-						if (code.intValue() == 0) {
-							return CommandOutcome.succeeded();
-						}
-						return CommandOutcome.failed(BootiqueMain.ERROR_CODE, EMPTY_STRING);
-					}
+			final DiagnosticListener<? super JavaFileObject> diagnosticListener = (diagnostic) -> {
+				switch (diagnostic.getKind()) {
+				case ERROR:
+					errorCount.incrementAndGet();
+					logger.severe(formatDiagnosticMessage(diagnostic));
+					break;
+				case MANDATORY_WARNING:
+				case WARNING:
+					warningCount.incrementAndGet();
+					logger.warning(formatDiagnosticMessage(diagnostic));
+					break;
+				case NOTE:
+					logger.info(formatDiagnosticMessage(diagnostic));
+					break;
+				case OTHER:
+					logger.config(formatDiagnosticMessage(diagnostic));
+					break;
+				default:
+					// Nothing to be logged
+					break;
 				}
+			};
+
+			final DocumentationTool docTool = ToolProvider.getSystemDocumentationTool();
+			final StandardJavaFileManager fileManager = docTool.getStandardFileManager(diagnosticListener, null, null);
+
+			final Iterable<? extends JavaFileObject> javaFiles = fileManager.getJavaFileObjectsFromFiles(sourceFiles);
+
+			fileManager.setLocation(DocumentationTool.Location.DOCUMENTATION_OUTPUT, Arrays.asList(outFolder));
+
+			final DocumentationTool.DocumentationTask docTask = docTool.getTask(
+					new ErrorWriter(logger, errorCount),
+					fileManager, diagnosticListener, docletClass, javadocOptions, javaFiles);
+			final boolean result = docTask.call();
+			if (result) {
+				return CommandOutcome.succeeded();
 			}
+			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, EMPTY_STRING);
 		} catch (Throwable exception) {
 			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
 		}
 	}
 
-	/** Print writer that is able to output message with the logger.
+	/** Print writer that is able to output message with the logger as severe messages.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -165,7 +206,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.10
 	 */
-	private abstract static class LogWriter extends Writer {
+	private static class ErrorWriter extends Writer {
 
 		/** Logger.
 		 */
@@ -175,20 +216,14 @@ public class SarldocCommand extends AbstractSarldocCommand {
 		 */
 		protected final AtomicInteger errorCount;
 
-		/** Number of errors.
-		 */
-		protected final AtomicInteger warningCount;
-
 		/** Constructor.
 		 *
 		 * @param logger the logger.
 		 * @param errorCount the counter of errors.
-		 * @param warningCount the counter of warnings.
 		 */
-		LogWriter(Logger logger, AtomicInteger errorCount, AtomicInteger warningCount) {
+		ErrorWriter(Logger logger, AtomicInteger errorCount) {
 			this.logger = logger;
 			this.errorCount = errorCount;
-			this.warningCount = warningCount;
 		}
 
 		@Override
@@ -210,88 +245,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 			}
 		}
 
-		protected abstract void log(String message);
-
-	}
-
-	/** Print writer that is able to output information with the logger.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.10
-	 */
-	private static class InformationWriter extends LogWriter {
-
-		/** Constructor.
+		/** Log the message.
 		 *
-		 * @param logger the logger.
-		 * @param warningCount the counter of warnings.
+		 * @param message the error message.
 		 */
-		InformationWriter(Logger logger, AtomicInteger warningCount) {
-			super(logger, null, warningCount);
-		}
-
-		@Override
-		protected void log(String message) {
-			if (message.startsWith(JAVADOC_NOTE_PREFIX)) {
-				this.logger.warning(message.substring(JAVADOC_NOTE_PREFIX.length()).trim());
-				this.warningCount.incrementAndGet();
-			} else {
-				this.logger.info(message);
-			}
-		}
-
-	}
-
-	/** Print writer that is able to output warning message with the logger.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.10
-	 */
-	private static class WarningWriter extends LogWriter {
-
-		/** Constructor.
-		 *
-		 * @param logger the logger.
-		 * @param warningCount the counter of warnings.
-		 */
-		WarningWriter(Logger logger, AtomicInteger warningCount) {
-			super(logger, null, warningCount);
-		}
-
-		@Override
-		protected void log(String message) {
-			this.logger.warning(message);
-			this.warningCount.incrementAndGet();
-		}
-
-	}
-
-	/** Print writer that is able to output error message with the logger.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.10
-	 */
-	private static class ErrorWriter extends LogWriter {
-
-		/** Constructor.
-		 *
-		 * @param logger the logger.
-		 * @param errorCount the counter of errors.
-		 */
-		ErrorWriter(Logger logger, AtomicInteger errorCount) {
-			super(logger, errorCount, null);
-		}
-
-		@Override
 		protected void log(String message) {
 			this.logger.severe(message);
 			this.errorCount.incrementAndGet();

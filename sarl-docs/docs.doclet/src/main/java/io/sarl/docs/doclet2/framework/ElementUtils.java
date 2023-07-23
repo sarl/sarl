@@ -291,8 +291,18 @@ public interface ElementUtils {
 	 *
 	 * @param element the element to analyze.
 	 * @return {@code true} if the element is deprecated for removal.
+	 * @see #isDeprecated(Element)
 	 */
 	boolean isDeprecatedForRemoval(Element element);
+
+	/**
+	 * Replies if the given element is deprecated.
+	 *
+	 * @param element the element to analyze.
+	 * @return {@code true} if the element is deprecated.
+	 * @see #isDeprecatedForRemoval(Element)
+	 */
+	boolean isDeprecated(Element element);
 
 	/**
 	 * Replies "since" message of the deprecated annotation.

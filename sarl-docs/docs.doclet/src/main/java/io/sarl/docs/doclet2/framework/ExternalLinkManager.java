@@ -175,7 +175,7 @@ public interface ExternalLinkManager {
 		 *
 		 * @return the options.
 		 */
-		DocletOptions getCliOptions();
+		DocletOptions getDocletOptions();
 
 		/** Replies the issue reporter.
 		 *

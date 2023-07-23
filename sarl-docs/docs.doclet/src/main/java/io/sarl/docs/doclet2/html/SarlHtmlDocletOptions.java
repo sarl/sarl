@@ -83,4 +83,20 @@ public final class SarlHtmlDocletOptions {
 	 */
 	public static final String OFFLINE_OPTION = "-offline"; //$NON-NLS-1$
 
+	/** Option {@code -nodeprecated}.
+	 */
+	public static final String NODEPRECATED_OPTION = "-nodeprecated"; //$NON-NLS-1$
+
+	/** Option {@code -nosince}.
+	 */
+	public static final String NOSINCE_OPTION = "-nosince"; //$NON-NLS-1$
+
+	/** Option {@code -version}.
+	 */
+	public static final String VERSION_OPTION = "-version"; //$NON-NLS-1$
+
+	/** Option {@code -author}.
+	 */
+	public static final String AUTHOR_OPTION = "-author"; //$NON-NLS-1$
+
 }

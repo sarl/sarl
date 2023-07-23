@@ -21,21 +21,22 @@
 
 package io.sarl.docs.sarldoc.commands;
 
-import java.util.Arrays;
+import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+
 import javax.inject.Provider;
 
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
-import org.arakhne.afc.vmutil.DynamicURLClassLoader;
+import io.bootique.di.BQInject;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
+import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 
 /**
  * Fake command for launching sarldoc.
@@ -50,16 +51,6 @@ public class SarldocFakeCommand extends AbstractSarldocCommand {
 
 	private static final String CLI_NAME = "fake"; //$NON-NLS-1$
 
-	/** Constructor with all the fields set to {@code null}.
-	 * A command created with this constructor cannot be run. But is could be used for obtaining the
-	 * command options.
-	 *
-	 * @since 0.12
-	 */
-	public SarldocFakeCommand() {
-		this(null, null, null, null, null, null);
-	}
-
 	/** Constructor.
 	 *
 	 * @param sarldocClassLoader the dynamic class loader that could be used by sarldoc.
@@ -69,10 +60,11 @@ public class SarldocFakeCommand extends AbstractSarldocCommand {
 	 * @param defaultClasspath the provider of default classpaths.
 	 * @param pathDetector the detector of paths.
 	 */
-	public SarldocFakeCommand(DynamicURLClassLoader sarldocClassLoader, Provider<Logger> logger,
-			Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,
-			Provider<SARLClasspathProvider> defaultClasspath, Provider<PathDetector> pathDetector) {
-		super(sarldocClassLoader, logger, config, sarlcConfig, defaultClasspath, pathDetector, CLI_NAME);
+	@BQInject
+	public SarldocFakeCommand(
+			Provider<Logger> logger, Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,
+			Provider<DocumentationPathDetector> pathDetector) {
+		super(logger, config, sarlcConfig, pathDetector, CLI_NAME);
 	}
 
 	@Override
@@ -81,17 +73,23 @@ public class SarldocFakeCommand extends AbstractSarldocCommand {
 	}
 
 	@Override
-	protected CommandOutcome runJavadoc(DynamicURLClassLoader classLoader, String javadocExecutable,
-			List<String> cmd, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
-			AtomicInteger notUsed1, AtomicInteger notUsed2) {
+	protected CommandOutcome runJavadoc(
+			Collection<File> sourceFiles,
+			DocumentationPathDetector paths,
+			Class<?> docletClass,
+			List<String> javadocOptions,
+			SarldocConfig docconfig,
+			Logger logger,
+			AtomicInteger errorCount,
+			AtomicInteger warningCount) {
 		final JsonBuffer buffer = new JsonBuffer();
-		buffer.add("javadoc.executable", javadocExecutable); //$NON-NLS-1$
-		buffer.add("javadoc.command", cmd); //$NON-NLS-1$
-		buffer.add("class.path", Arrays.asList(classLoader.getURLs())); //$NON-NLS-1$
 		buffer.add("documentation.output", docconfig.getDocumentationOutputDirectory()); //$NON-NLS-1$
-		buffer.add("java.output", cconfig.getOutputPath()); //$NON-NLS-1$
-		buffer.add("class.output", cconfig.getClassOutputPath()); //$NON-NLS-1$
-		buffer.add("temp.directory", cconfig.getTempDirectory()); //$NON-NLS-1$
+		buffer.add("source.files", sourceFiles); //$NON-NLS-1$
+		buffer.add("javadoc.options", javadocOptions); //$NON-NLS-1$
+		buffer.add("doclet.type", docletClass.getName()); //$NON-NLS-1$
+		buffer.add("paths.class.output", paths.getClassOutputPath()); //$NON-NLS-1$
+		buffer.add("paths.sarl.output", paths.getSarlOutputPath()); //$NON-NLS-1$
+		buffer.add("paths.temp", paths.getTempDirectory()); //$NON-NLS-1$
 		logger.info(buffer.toString());
 		return CommandOutcome.succeeded();
 	}

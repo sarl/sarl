@@ -68,6 +68,8 @@ import io.sarl.docs.doclet2.html.frames.OverviewFrameGenerator;
 import io.sarl.docs.doclet2.html.frames.OverviewFrameGeneratorImpl;
 import io.sarl.docs.doclet2.html.framework.BlockTagSorter;
 import io.sarl.docs.doclet2.html.framework.BlockTagSorterImpl;
+import io.sarl.docs.doclet2.html.framework.DefaultDocletOptions;
+import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlAccessor;
 import io.sarl.docs.doclet2.html.framework.HtmlAccessorImpl;
 import io.sarl.docs.doclet2.html.framework.HtmlFactory;
@@ -196,6 +198,7 @@ public class SarlJavadocModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bindSingleton(DocletOptions.class, DefaultDocletOptions.class);
 		bindSingleton(ElementFilter.class, StandardElementFilter.class);
 		bindSingleton(TypeDocumentationGeneratorSelector.class, SarlTypeDocumentationGeneratorSelector.class);
 		bindSingleton(PathBuilder.class, PathBuilderImpl.class);

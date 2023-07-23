@@ -70,7 +70,6 @@ public class SarldocIT {
 
 	@Test
 	@DisplayName("Run assembly")
-	@Disabled
 	public void runCompilerInProcess() throws Exception {
 		final File tmpDir = FileSystem.createTempDirectory("sarldoctest", null);
 		FileSystem.deleteOnExit(tmpDir);
@@ -84,20 +83,15 @@ public class SarldocIT {
 		final String[] arguments = TestShell.mergeJarArguments(java.getAbsolutePath(), cmd.getAbsolutePath(), srcDir.getAbsolutePath());
 		final String stdout = TestShell.run(arguments);
 
-		assertContains("Starting API documentation generation", stdout);
+		assertContains("Success of documentation generation", stdout);
 
-		final File javaFile = FileSystem.join(tmpDir,
-				"src", "main", "generated-sources", "sarl",
-				"io", "sarl", "lang", "sarlc", "itests", "MyAgent.java");
-		assertTrue(javaFile.exists(), "No generated Java file: " + javaFile.getPath());
-		final byte[] javaRawContent = Files.readAllBytes(javaFile.toPath());
-		final String javaContent = new String(javaRawContent, "UTF-8");
-		assertContains("public class MyAgent extends Agent", javaContent);
-		
-		final File classFile = FileSystem.join(tmpDir,
-				"target", "classes",
-				"io", "sarl", "lang", "sarlc", "itests", "MyAgent.class");
-		assertTrue(classFile.exists(), "No generated Class file: " + classFile.getPath());
+		final File htmlFile = FileSystem.join(tmpDir,
+				"target", "sarl-api-docs",
+				"io", "sarl", "lang", "sarldoc", "itests", "MyAgent.html");
+		assertTrue(htmlFile.exists(), "No generated HTML file: " + htmlFile.getPath());
+		final byte[] htmlRawContent = Files.readAllBytes(htmlFile.toPath());
+		final String htmlContent = new String(htmlRawContent, "UTF-8");
+		assertContains("agent <span class=\"doclet-typesignature-typename\">MyAgent</span>", htmlContent);
 	}
 
 	@Test
@@ -114,7 +108,15 @@ public class SarldocIT {
 
 		final String stdout = TestReflections.runRun(Main.class.getName(), null, srcDir.getAbsolutePath());
 
-		assertContains("xStarting API documentation generation", stdout);
+		assertContains("Success of documentation generation", stdout);
+
+		final File htmlFile = FileSystem.join(tmpDir,
+				"target", "sarl-api-docs",
+				"io", "sarl", "lang", "sarldoc", "itests", "MyAgent.html");
+		assertTrue(htmlFile.exists(), "No generated HTML file: " + htmlFile.getPath());
+		final byte[] htmlRawContent = Files.readAllBytes(htmlFile.toPath());
+		final String htmlContent = new String(htmlRawContent, "UTF-8");
+		assertContains("agent <span class=\"doclet-typesignature-typename\">MyAgent</span>", htmlContent);
 	}
 
 }

@@ -101,7 +101,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		getReporter().print(Kind.NOTE, Messages.IndexGeneratorImpl_0);
 		computePaths(getPathBuilder().index(), true);
 		//
-		final Path outputPath = getCliOptions().getOutputDirectory().resolve(getRelativePath());
+		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
 		final Document document = getHtmlFactory().createDocument(this);
 		final String title = getDocumentTitleFor(null);
@@ -111,7 +111,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		generateHtmlHeader(htmlTag);
 		generateHtmlBody(htmlTag);
 		//
-		if (!getCliOptions().isFakeOutput()) {
+		if (!getDocletOptions().isFakeOutput()) {
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.IndexGeneratorImpl_2, outputPath.toString()));
 			writeDocument(outputPath, document);
 		}

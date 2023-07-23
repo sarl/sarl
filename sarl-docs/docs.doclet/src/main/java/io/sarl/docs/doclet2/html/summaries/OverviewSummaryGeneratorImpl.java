@@ -150,7 +150,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	protected Collection<PackageElement> generateGroups(Element parent, Collection<PackageElement> packages) {
 		final SortedSet<PackageElement> remainingPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
 		remainingPackages.addAll(packages);
-		for (final Pair<String, Pattern> entry : getCliOptions().getGroups()) {
+		for (final Pair<String, Pattern> entry : getDocletOptions().getGroups()) {
 			final SortedSet<PackageElement> selectedPackages = selectPackages(remainingPackages, entry.getValue());
 			if (!selectedPackages.isEmpty()) {
 				createSummaryBox1(entry.getKey(),

@@ -91,52 +91,90 @@ public class DefaultPathDetector implements PathDetector {
 	}
 
 	@Override
-	public void resolve(List<String>  args) throws IOException {
-		if (this.sarlOutputPath == null || this.tempPath == null || this.classOutputPath == null) {
-			final Iterable<File> cliFiles = Iterables.transform(
-				args,
-				it -> toFile(it));
-			File root = determineCommonRoot(Iterables.concat(
-					cliFiles,
-					Collections.singleton(this.sarlOutputPath),
-					Collections.singleton(this.tempPath),
-					Collections.singleton(this.classOutputPath)));
-			if (root != null) {
-				root = normalize(root);
-				if (this.sarlOutputPath == null) {
-					this.sarlOutputPath = toFile(root, SARLConfig.FOLDER_SOURCE_GENERATED);
-				}
-				if (this.tempPath == null) {
-					this.tempPath = toFile(root, SARLConfig.FOLDER_TMP);
-				}
-				if (this.classOutputPath == null) {
-					this.classOutputPath = toFile(root, SARLConfig.FOLDER_BIN);
-				}
-			}
-		}
+	public boolean isResolved() {
+		return this.sarlOutputPath != null && this.tempPath != null && this.classOutputPath != null;
+	}
 
+	/** Build the list of all the paths to be resolved.
+	 *
+	 * @param userFiles the list of files to be provided by hand from additional arguments.
+	 * @return full list of the files.
+	 * @since 0.13
+	 */
+	protected Iterable<File> buildResolvablePaths(Iterable<File> userFiles) {
+		return Iterables.concat(
+				userFiles,
+				Collections.singleton(this.sarlOutputPath),
+				Collections.singleton(this.tempPath),
+				Collections.singleton(this.classOutputPath));
+	}
+
+	/** Normalize the paths with the given root file if the paths are not yet normalized.
+	 *
+	 * @param rootFile the common parent path.
+	 * @since 0.13
+	 */
+	protected void normalizePaths(File rootFile) {
+		if (this.sarlOutputPath == null) {
+			this.sarlOutputPath = toFile(rootFile, SARLConfig.FOLDER_SOURCE_GENERATED);
+		}
+		if (this.tempPath == null) {
+			this.tempPath = toFile(rootFile, SARLConfig.FOLDER_TMP);
+		}
+		if (this.classOutputPath == null) {
+			this.classOutputPath = toFile(rootFile, SARLConfig.FOLDER_BIN);
+		}
+	}
+
+	/** Make absolute the paths if the paths are not yet absolute.
+	 *
+	 * @since 0.13
+	 * @throws IOException if the current folder cannot be determined.
+	 */
+	protected void makeAbsolutePaths() throws IOException {
 		if (this.sarlOutputPath == null) {
 			this.sarlOutputPath = toFile(cwd(), SARLConfig.FOLDER_SOURCE_GENERATED).getCanonicalFile();
 		}
-		if (this.tempPath == null) {
-			this.tempPath = toFile(cwd(), SARLConfig.FOLDER_TMP).getCanonicalFile();
-		}
-		if (this.classOutputPath == null) {
-			this.classOutputPath = toFile(cwd(), SARLConfig.FOLDER_BIN).getCanonicalFile();
-		}
-
 		if (this.sarlOutputPath != null && !this.sarlOutputPath.isAbsolute()) {
 			this.sarlOutputPath = FileSystem.join(cwd(), this.sarlOutputPath).getCanonicalFile();
 		}
+
+		if (this.tempPath == null) {
+			this.tempPath = toFile(cwd(), SARLConfig.FOLDER_TMP).getCanonicalFile();
+		}
 		if (this.tempPath != null && !this.tempPath.isAbsolute()) {
 			this.tempPath = FileSystem.join(cwd(), this.tempPath).getCanonicalFile();
+		}
+
+		if (this.classOutputPath == null) {
+			this.classOutputPath = toFile(cwd(), SARLConfig.FOLDER_BIN).getCanonicalFile();
 		}
 		if (this.classOutputPath != null && !this.classOutputPath.isAbsolute()) {
 			this.classOutputPath = FileSystem.join(cwd(), this.classOutputPath).getCanonicalFile();
 		}
 	}
 
-	private static File normalize(File filename) {
+	@Override
+	public void resolve(List<String>  args) throws IOException {
+		if (!isResolved()) {
+			final Iterable<File> cliFiles = Iterables.transform(args, it -> toFile(it));
+			File root = determineCommonRoot(buildResolvablePaths(cliFiles));
+			if (root != null) {
+				root = normalize(root);
+				normalizePaths(root);
+			}
+		}
+		makeAbsolutePaths();
+	}
+
+	/** Normalize the name of a parent root. This function removes from the filename the standard folder names:
+	 * {@code src/main/sarl}, {@code src/main/java}, {@code src/test/sarl}, {@code src/it/sarl}.
+	 *
+	 * @param filename the filename to normalize
+	 * @return the normalized filename.
+	 * @since 0.13
+	 */
+	protected static File normalize(File filename) {
 		final Path path1 = toFile(SARLConfig.FOLDER_SOURCE_SARL).toPath();
 		final Path path2 = toFile(SARLConfig.FOLDER_SOURCE_JAVA).toPath();
 		final Path path3 = toFile(SARLConfig.FOLDER_TEST_SOURCE_SARL).toPath();
@@ -163,7 +201,13 @@ public class DefaultPathDetector implements PathDetector {
 		return filename;
 	}
 
-	private static File toFile(String filename) {
+	/** Convert a filename to its equivalent File object.
+	 *
+	 * @param filename the filename to convert.
+	 * @return the file object.
+	 * @since 0.13
+	 */
+	protected static File toFile(String filename) {
 		File result = null;
 		for (final String element : filename.split("\\/")) { //$NON-NLS-1$
 			if (result == null) {
@@ -175,7 +219,14 @@ public class DefaultPathDetector implements PathDetector {
 		return result;
 	}
 
-	private static File toFile(File root, String filename) {
+	/** Merge the given root folder and filename to obtain a fill path.
+	 * 
+	 * @param root the root folder.
+	 * @param filename the filename to merge to the root.
+	 * @return the merged file.
+	 * @since 0.13
+	 */
+	protected static File toFile(File root, String filename) {
 		File result = root;
 		for (final String element : filename.split("\\/")) { //$NON-NLS-1$
 			result = new File(result, element);
@@ -183,11 +234,22 @@ public class DefaultPathDetector implements PathDetector {
 		return result;
 	}
 
-	private static File cwd() {
+	/** Replies the current directory of the application.
+	 *
+	 * @return the current directory.
+	 * @since 0.13
+	 */
+	protected static File cwd() {
 		return new File("").getAbsoluteFile(); //$NON-NLS-1$
 	}
 
-	private static File determineCommonRoot(Iterable<File> files) {
+	/** Replies the common parent file for the given files.
+	 *
+	 * @param files the files to analyze.
+	 * @return the common parent file, or {@code null} if there is no common parent file.
+	 * @since 0.13
+	 */
+	protected static File determineCommonRoot(Iterable<File> files) {
 		LinkedList<String> longuestPrefix = null;
 
 		for (final File file : files) {

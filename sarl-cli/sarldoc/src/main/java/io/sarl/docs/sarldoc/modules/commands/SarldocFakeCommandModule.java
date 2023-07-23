@@ -31,14 +31,11 @@ import javax.inject.Singleton;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
-import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 
 import io.sarl.docs.sarldoc.commands.SarldocFakeCommand;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
-import io.sarl.docs.sarldoc.modules.internal.SarldocDynamicClassLoader;
+import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 
 /** Module for the sarldoc fake command.
  *
@@ -57,10 +54,8 @@ public class SarldocFakeCommandModule implements BQModule {
 
 	/** Provide the command for running sarldoc.
 	 *
-	 * @param sarldocClassLoader the class loader of sarldoc.
 	 * @param dconfig the provider of sarldoc configuration.
 	 * @param cconfig the provider of sarlc configuration.
-	 * @param defaultBootClasspath the provider of the default boot class path.
 	 * @param pathDetector the provider of path detector.
 	 * @param loggerProvider the provider of JUL logger.
 	 * @return the command.
@@ -69,10 +64,10 @@ public class SarldocFakeCommandModule implements BQModule {
 	@Provides
 	@Singleton
 	public SarldocFakeCommand provideSarldocCommand(
-			@SarldocDynamicClassLoader DynamicURLClassLoader sarldocClassLoader, Provider<SarldocConfig> dconfig,
-			Provider<SarlcConfig> cconfig, Provider<SARLClasspathProvider> defaultBootClasspath,
-			Provider<PathDetector> pathDetector, Provider<Logger> loggerProvider) {
-		return new SarldocFakeCommand(sarldocClassLoader, loggerProvider, dconfig, cconfig, defaultBootClasspath, pathDetector);
+			Provider<SarldocConfig> dconfig,
+			Provider<SarlcConfig> cconfig,
+			Provider<DocumentationPathDetector> pathDetector, Provider<Logger> loggerProvider) {
+		return new SarldocFakeCommand(loggerProvider, dconfig, cconfig, pathDetector);
 	}
 
 }
