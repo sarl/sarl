@@ -62,8 +62,7 @@ public final class SREClassLoader {
 			// Ignore this exception
 		}
 		try {
-			return Class.forName(classname, true,
-					Thread.currentThread().getContextClassLoader());
+			return Class.forName(classname, true, getPreferredSREClassloader());
 		} catch (Exception exception) {
 			// Ignore this exception
 		}
@@ -97,6 +96,40 @@ public final class SREClassLoader {
 			throw new ClassNotFoundException(classname);
 		}
 		return type;
+	}
+
+	/** Replies the class loader that should be preferred for loading classes in the SRE.
+	 *
+	 * @return the preferred class loader; never {@code null}.
+	 * @since 0.13
+	 */
+	public static ClassLoader getPreferredSREClassloader() {
+		return Thread.currentThread().getContextClassLoader();
+	}
+
+	/** Replies the class loader that should be preferred for loading classes in the SRE.
+	 *
+	 * @param <T> the expected type of the class loader.
+	 * @param type the expected type of the class loader.
+	 * @return the preferred class loader; or {@code null} if the class loader is not of the specified type.
+	 * @since 0.13
+	 */
+	public static <T extends ClassLoader> T getPreferredSREClassloader(Class<T> type) {
+		final ClassLoader cl = getPreferredSREClassloader();
+		if (type.isInstance(cl)) {
+			return type.cast(cl);
+		}
+		return null;
+	}
+
+	/** Change the class loader that should be preferred for loading classes in the SRE.
+	 *
+	 * @param classLoader the preferred class loader; never {@code null}.
+	 * @since 0.13
+	 */
+	public static void setPreferredSREClassloader(ClassLoader classLoader) {
+		assert classLoader != null;
+		Thread.currentThread().setContextClassLoader(classLoader);
 	}
 
 }

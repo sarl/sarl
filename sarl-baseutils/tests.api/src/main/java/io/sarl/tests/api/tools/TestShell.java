@@ -67,6 +67,18 @@ public class TestShell {
 		return out.toString();
 	}
 
+	/** Run a command-line program with a operating system call but without overriding the input and output streams.
+	 *
+	 * @param script the name of the script to launch.
+	 * @param arguments the command-line arguments to pass to program.
+	 * @throws Exception if there is some issue when running the program.
+	 */
+	public static void runWithoutStreamOverriding(String... arguments) throws Exception {
+		final ProcessBuilder builder = new ProcessBuilder(arguments);
+		final Process proc = builder.start();
+		proc.waitFor(30, TimeUnit.SECONDS);
+	}
+
 	/** Replies the merging of the given arguments.
 	 *
 	 * @param javaCmd the Java command.

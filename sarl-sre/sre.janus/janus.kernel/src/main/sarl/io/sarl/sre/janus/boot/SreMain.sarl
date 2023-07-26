@@ -31,7 +31,6 @@ import io.sarl.apputils.bootiqueapp.config.LogConfig
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.SRE
-import io.sarl.lang.core.SREBootstrap
 import io.sarl.lang.core.SREListener
 import io.sarl.sre.janus.Kernel
 import io.sarl.sre.janus.boot.configs.SreConfig
@@ -62,7 +61,7 @@ import static io.sarl.lang.core.SRE.*
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-class SreMain implements SREBootstrap {
+class SreMain implements RunnableSREBootstrap {
 
 	static val BACKGROUND_SHUTDOWN_TIMEOUT = 20000
 
@@ -84,6 +83,16 @@ class SreMain implements SREBootstrap {
 	@Accessors(PUBLIC_SETTER)
 	var commandLineArguments : String[]
 
+	@Accessors(PUBLIC_SETTER)
+	var bootiqueRuntimeFactory : BQRuntimeFactory
+
+	override getBootiqueRuntimeFactory : BQRuntimeFactory {
+		if (this.bootiqueRuntimeFactory === null) {
+			this.bootiqueRuntimeFactory = new StandardBQRuntimeFactory
+		}
+		return this.bootiqueRuntimeFactory
+	}
+
 	private def addToCommandLineArguments(args : String[]) : String[] {
 		if (args !== null && args.length > 0) {
 			if (this.commandLineArguments !== null && this.commandLineArguments.length > 0) {
@@ -99,20 +108,11 @@ class SreMain implements SREBootstrap {
 		return #[]
 	}
 
-	/** Replies the reference to the kernel.
-	 *
-	 * @return the reference to the kernel.
-	 */
-	def getKernel : Kernel {
+	override getKernel : Kernel {
 		return this.kernel.get
 	}
 
-	/** Set the Bootique runtime instance.
-	 *
-	 * @param runtime the new Bootique runtime.
-	 * @return {@code true} if the runtime has been changed.
-	 */
-	def setRuntime(runtime : BQRuntime) : boolean {
+	override setRuntime(runtime : BQRuntime) : boolean {
 		if (this.runtime !== runtime) {
 			this.runtime = runtime
 			return true
@@ -204,26 +204,10 @@ class SreMain implements SREBootstrap {
 		return null
 	}
 
-	/** Create the SRE runtime.
-	 * 
-	 * @param bootique the instance of the bootique accessor, or {@code null} if none is provided.
-	 * @param module specify the type of the injection module to be used by the bootique accessor.
-	 * @param args the command line arguments to put into the bootique accessor. This argument is used only if {@code bootique}
-	 *      is evaluated to {@code null}.
-	 * @return the runtime.
-	 */
-	protected def createRuntime(bootique : Bootique, module : Class<? extends BQModule>, args : String*) : BQRuntime {
-		var bt = bootique ?: Bootique::app(args)
-		if (module !== null) {
-			bt = bt.module(module)
-		}
-		return bt.autoLoadModules.createRuntime
-	}
-
 	private def ensureBootiqueRuntimeInstance(bootique : Bootique, module : Class<? extends BQModule>, args : String*) : BQRuntime {
 		var r = this.runtime
 		if (r === null) {
-			this.runtime = createRuntime(bootique, module, args)
+			this.runtime = getBootiqueRuntimeFactory().createRuntime(bootique, module, args)
 			r = this.runtime
 		}
 		return this.runtime
@@ -253,14 +237,7 @@ class SreMain implements SREBootstrap {
 		return tab
 	}
 
-	/** Run the SRE.
-	 *
-	 * <p>This function runs the SRE and exits with the return code.
-	 *
-	 * @param args the command line arguments.
-	 * @return the exit code.
-	 */
-	def runSRE(args : String*) : int {
+	override runSRE(args : String*) : int {
 		val fargs = args.filterCommandLineArguments
 		var runtime = ensureBootiqueRuntimeInstance(null, null, fargs)
 		try {
@@ -330,19 +307,7 @@ class SreMain implements SREBootstrap {
 		return k
 	}
 
-	/** Start the agent framework without agent.
-	 * 
-	 * @param asCommandLineApp indicates if the application should be started as a commend-line application.
-	 *     If {@code true}, the SRE is started and run directly. Then, the "start agent" functions becomes
-	 *     unusable because the SRE has started everything as it is called from the shell command line.
-	 *     If {@code false}, the SRE is started in is normal way and all the functions are available according
-	 *     to their own specifications.
-	 *     If it not recommended to invoke this function with this argument evaluated to {@code true}.
-	 * @param bootique the Bootique instance to set up the framework. If it is {@code null},
-	 * the default Bootique instance is created.
-	 * @param module the injection module to use. If it is {@code null}, the default module is used.
-	 */
-	def startWithoutAgent(asCommandLineApp : boolean, bootique : Bootique = null, module : Class<? extends BQModule> = null) : AgentContext {
+	override startWithoutAgent(asCommandLineApp : boolean, bootique : Bootique, module : Class<? extends BQModule>) : AgentContext {
 		val ctx = ensureKernelInstance(asCommandLineApp, bootique, module)
 		return ctx?.rootContext
 	}
@@ -364,9 +329,7 @@ class SreMain implements SREBootstrap {
 		kernel.spawn(nbAgents, agentCls, params)
 	}
 
-	/** Start the boot agent if it is specified in the boot configuration.
-	 */
-	def startBootAgent {
+	override startBootAgent {
 		var config = this.runtime.getInstance(typeof(SreConfig)).boot
 		var bootAgent = config.loadBootAgent
 		assert bootAgent !== null

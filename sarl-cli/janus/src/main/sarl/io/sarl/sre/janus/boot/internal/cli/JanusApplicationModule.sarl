@@ -73,8 +73,9 @@ class JanusApplicationModule implements BQModule {
 	private static class LongDescriptionProvider implements Provider<String> {
 
 		override get : String {
+			val implementationSarlVersion = SARLVersion::SPECIFICATION_RELEASE_VERSION_STRING
 			val implementationJavaVersion = SARLVersion::MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
-			return MessageFormat::format(Messages.JanusApplicationModule_2, implementationJavaVersion)
+			return MessageFormat::format(Messages.JanusApplicationModule_2, implementationSarlVersion, implementationJavaVersion)
 		}
 
 	}

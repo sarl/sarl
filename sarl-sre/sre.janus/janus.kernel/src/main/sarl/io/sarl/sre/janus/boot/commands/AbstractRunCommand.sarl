@@ -29,8 +29,14 @@ import io.sarl.lang.core.SREBootstrap
 import io.sarl.lang.core.SREClassLoader
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
+import java.io.File
+import java.net.URL
 import java.util.List
+import java.util.regex.Pattern
 import javax.inject.Provider
+import org.arakhne.afc.vmutil.DynamicURLClassLoader
+import org.arakhne.afc.vmutil.FileSystem
+import org.arakhne.afc.vmutil.URISchemeType
 
 /** 
  * Abstract command for running the SRE without agent at boot time.
@@ -120,6 +126,32 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 		return boot
 	}
 
+	private def addClasspathToClassLoader(classpath : String) {
+		if (!classpath.isNullOrEmpty) {
+			val paths = classpath.split(Pattern.quote(File.pathSeparator))
+			if (paths !== null && paths.length > 0) {
+				val typeClassLoader = SREClassLoader::getPreferredSREClassloader(typeof(DynamicURLClassLoader))
+				if (typeClassLoader !== null) {
+					for (cpUrl : paths) {
+						// The url of the classpath item must have a very specific format.
+						// Indeed, the class loader assumes that if the URL ends with "/",
+						// the class path item is a local folder. If this ending character
+						// is missed, the class loader assumes that the item is a JAR file
+						var url = FileSystem::convertStringToURL(cpUrl, false)
+						if (URISchemeType::FILE.isURL(url)) {
+							val file = FileSystem::convertURLToFile(url)
+							if (file.isDirectory) {
+								url = new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath() + "/")
+							}
+						}
+						//
+						typeClassLoader.addURL(url)
+					}
+				}
+			}
+		}
+	}
+
 	/** Replies the SRE bootstrap.
 	 * 
 	 * @return the SRE bootstrap. 
@@ -128,12 +160,12 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 		var s : SREBootstrap = this.sre
 
 		if (s === null) {
-
 			s = this.sre
 			if (s === null) {
 				this.sre = SRE::bootstrap
 				s = this.sre
 				val config = this.configuration.get
+				addClasspathToClassLoader(config.classpath)
 				switch (config.boot.rootContextBootType) {
 					case BOOT_AGENT_NAME: {
 						this.sre.setBootAgentTypeContextUUID

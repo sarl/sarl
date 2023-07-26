@@ -45,7 +45,9 @@ import org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated Should be removed when the AFC modules have been moved to the main stream of AFC.
  */
+@Deprecated
 public class FusionModule implements BQModule {
 
 	private final SynopsisHelpGeneratorModule module0 = new SynopsisHelpGeneratorModule();

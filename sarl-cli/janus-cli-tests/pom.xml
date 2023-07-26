@@ -2,10 +2,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.sarl.cli</groupId>
-	<artifactId>sarl-cli-tests</artifactId>
+	<artifactId>janus-cli-tests</artifactId>
 	<version>0.13.0-SNAPSHOT</version>
-	<name>Tests for SARL CLI tools</name>
-	<description>Tests the SARL CLI tools</description>
+	<name>Tests for Janus CLI tools</name>
+	<description>Tests the Janus CLI tools</description>
 	<packaging>jar</packaging>
 
 	<inceptionYear>${sarl.inception.year}</inceptionYear>
@@ -21,11 +21,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.cli</groupId>
-			<artifactId>sarlc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.cli</groupId>
-			<artifactId>sarldoc</artifactId>
+			<artifactId>janus</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.baseutils</groupId>

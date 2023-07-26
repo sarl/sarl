@@ -126,13 +126,18 @@
 	<dependency>
 		<groupId>io.sarl.cli</groupId>
 		<artifactId>janus</artifactId>
-		<version>${sarl.version}</version>
+		<version>${janus.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>io.sarl.cli</groupId>
 		<artifactId>janusnode</artifactId>
-		<version>${sarl.version}</version>
+		<version>${janus.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>io.sarl.sre.janus</groupId>
+		<artifactId>janus.kernel</artifactId>
+		<version>${janus.version}</version>
+	</dependency>      
     </dependencies>
   </dependencyManagement>
  

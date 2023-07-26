@@ -684,30 +684,39 @@ public class TestReflections {
 	 * @see #runRun(String, String, String...)
      * @since 0.13
 	 */
+	@SuppressWarnings("resource")
 	public static String runInternal(String functionName, String className, String data, String... arguments) throws Exception {
+		String result = null;
 		try (final ByteArrayOutputStream stdout = new ByteArrayOutputStream()) {
-			final byte[] inputBytes = data == null ? new byte[0] : data.getBytes("UTF-8"); //$NON-NLS-1$
-			try (final InputStream input = new ByteArrayInputStream(inputBytes)) {
-				final PrintStream console = System.out;
-				final PrintStream errConsole = System.err;
-				final InputStream old = System.in;
-				try {
-					System.setOut(new PrintStream(stdout));
-					System.setErr(new PrintStream(stdout));
-					System.setIn(input);
-
-					final Class<?> cls = Class.forName(className);
-					final Method meth = cls.getDeclaredMethod(functionName, String[].class);
-					meth.invoke(null, (Object) arguments);
-				} finally {
-					System.setOut(console);
-					System.setErr(errConsole);
-					System.setIn(old);
+			try (final ByteArrayOutputStream stderr = new ByteArrayOutputStream()) {
+				final byte[] inputBytes = data == null ? new byte[0] : data.getBytes("UTF-8"); //$NON-NLS-1$
+				try (final InputStream input = new ByteArrayInputStream(inputBytes)) {
+					final PrintStream console = System.out;
+					final PrintStream errConsole = System.err;
+					final InputStream old = System.in;
+					final PrintStream ps0 = new PrintStream(stdout);
+					final PrintStream ps1 = new PrintStream(stderr);
+					try {
+						System.setOut(ps0);
+						System.setErr(ps1);
+						System.setIn(input);
+						final Class<?> cls = Class.forName(className);
+						final Method meth = cls.getDeclaredMethod(functionName, String[].class);
+						meth.invoke(null, (Object) arguments);
+					} finally {
+						ps0.flush();
+						ps0.close();
+						ps1.flush();
+						ps1.close();
+						result = stdout.toString("UTF-8") + stderr.toString("UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+						System.setOut(console);
+						System.setErr(errConsole);
+						System.setIn(old);
+					}
 				}
 			}
-			stdout.flush();
-			return stdout.toString("UTF-8"); //$NON-NLS-1$
 		}
+		return result;
 	}
 
 }

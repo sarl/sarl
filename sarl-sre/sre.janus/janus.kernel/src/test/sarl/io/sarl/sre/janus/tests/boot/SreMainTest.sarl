@@ -128,7 +128,7 @@ class SreMainTest {
 	var configurationFactory : ConfigurationFactory
 
 	@Nullable
-	var bootConfig : BootConfig
+	var sreConfig : SreConfig
 
 	@Nullable
 	var injector : Injector
@@ -136,20 +136,18 @@ class SreMainTest {
 	@Nullable
 	var loggingService : LoggingService
 
-	private def createConfiguration(bootAgent : Class<?>, sreConfig : SreConfig = null) {
-		this.bootConfig = new BootConfig
-		this.bootConfig.bootAgent = bootAgent.name
-		this.bootConfig.agentStartArgs = #["a"]
-		this.bootConfig.commandLineArgs = #[typeof(ShortLifeTestingAgent).name, "a"]
-		this.bootConfig = this.bootConfig.spy
-		when(this.configurationFactory.config(typeof(Class).any, typeof(String).any)).thenReturn(this.bootConfig)
-		if (sreConfig !== null) {
-			when(sreConfig.getBoot).thenReturn(this.bootConfig)
-		}
+	private def createConfiguration(bootAgent : Class<?>) {
+		var bootConfig = this.sreConfig.boot
+		bootConfig.bootAgent = bootAgent.name
+		bootConfig.agentStartArgs = #["a"]
+		bootConfig.commandLineArgs = #[typeof(ShortLifeTestingAgent).name, "a"]
+		bootConfig = bootConfig.spy
+		when(this.configurationFactory.config(typeof(Class).any, typeof(String).any)).thenReturn(bootConfig)
 	}
 	
 	private def createBootiqueMock(instances : (Class<?>) => Object = null) {
 		this.loggingService = typeof(LoggingService).mock
+		this.sreConfig = new SreConfig().spy
 		this.configurationFactory = typeof(ConfigurationFactory).mock
 		this.rootContext = typeof(AgentContext).mock
 		this.kernel = typeof(Kernel).mock
@@ -171,6 +169,9 @@ class SreMainTest {
 			if (typeof(ConfigurationFactory) == type) {
 				return this.configurationFactory
 			}
+			if (typeof(SreConfig) == type) {
+				return this.sreConfig
+			}
 			throw new IllegalStateException(type.name)
 		]
 		this.runtime = typeof(BQRuntime).mock
@@ -189,7 +190,10 @@ class SreMainTest {
 				return this.configurationFactory
 			}
 			if (typeof(BootConfig) == type) {
-				return this.bootConfig
+				return this.sreConfig.boot
+			}
+			if (typeof(SreConfig) == type) {
+				return this.sreConfig
 			}
 			if (typeof(Injector) == type) {
 				return this.injector
@@ -350,13 +354,8 @@ class SreMainTest {
 	@Test
 	def startBootAgent_start1 : void {
 		typeof(InvalidAgentNameException).assertException [
-			var configInstance = new SreConfig().spy
-			createBootiqueMock [
-				if (it == typeof(SreConfig)) {
-					return configInstance
-				}
-			]
-			typeof(String).createConfiguration(configInstance)
+			createBootiqueMock
+			typeof(String).createConfiguration
 			this.bootstrap.startWithoutAgent(false, this.bootique)
 			this.bootstrap.startBootAgent
 		]
@@ -365,13 +364,8 @@ class SreMainTest {
 	
 	@Test
 	def startBootAgent_start2 {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
-		]
-		typeof(ShortLifeTestingAgent).createConfiguration(configInstance)
+		createBootiqueMock
+		typeof(ShortLifeTestingAgent).createConfiguration
 		this.bootstrap.startWithoutAgent(false, this.bootique)
 		this.bootstrap.startBootAgent
 		var arg0 = typeof(Class).forClass
@@ -429,13 +423,8 @@ class SreMainTest {
 
 	@Test
 	def runSREObjectArray_start0 : void {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
-		]
-		typeof(ShortLifeTestingAgent).createConfiguration(configInstance)
+		createBootiqueMock
+		typeof(ShortLifeTestingAgent).createConfiguration
 
 		var retcode = this.bootstrap.runSRE("--version")
 
@@ -447,13 +436,8 @@ class SreMainTest {
 
 	@Test
 	def runSREObjectArray_start1 : void {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
-		]
-		typeof(ShortLifeTestingAgent).createConfiguration(configInstance)
+		createBootiqueMock
+		typeof(ShortLifeTestingAgent).createConfiguration
 		
 		var outcome = typeof(CommandOutcome).mock
 		when(outcome.exitCode).thenReturn(1234)
@@ -469,13 +453,8 @@ class SreMainTest {
 
 	@Test
 	def runSREObjectArray_start2 : void {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
-		]
-		typeof(ShortLifeTestingAgent).createConfiguration(configInstance)
+		createBootiqueMock
+		typeof(ShortLifeTestingAgent).createConfiguration
 
 		var outcome = typeof(CommandOutcome).mock
 		when(outcome.exitCode).thenReturn(0)

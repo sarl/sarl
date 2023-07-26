@@ -1,0 +1,70 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.boot
+
+import io.bootique.BQRuntime
+import io.bootique.Bootique
+import io.bootique.di.BQModule
+
+/** Factory for a Bootique runtime.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+interface BQRuntimeFactory {
+
+	/** Create the SRE runtime.
+	 * 
+	 * @param bootique the instance of the bootique accessor, or {@code null} if none is provided.
+	 * @param module specify the type of the injection module to be used by the bootique accessor.
+	 * @param args the command line arguments to put into the bootique accessor. This argument is used only if {@code bootique}
+	 *      is evaluated to {@code null}.
+	 * @return the runtime.
+	 */
+	def createRuntime(bootique : Bootique, module : Class<? extends BQModule>, args : String*) : BQRuntime
+	
+}
+
+/** Standard factory for a Bootique runtime.
+ * This factory create the bootique instance with the given modules if they are provided. It also
+ * enables the automatic loading of the modules.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+class StandardBQRuntimeFactory implements BQRuntimeFactory {
+
+	override createRuntime(bootique : Bootique, module : Class<? extends BQModule>, args : String*) : BQRuntime {
+		var bt = bootique ?: Bootique::app(args)
+		if (module !== null) {
+			bt = bt.module(module)
+		}
+		return bt.autoLoadModules.createRuntime
+	}
+	
+}

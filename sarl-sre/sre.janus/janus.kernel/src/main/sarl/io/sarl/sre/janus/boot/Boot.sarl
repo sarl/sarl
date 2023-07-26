@@ -45,8 +45,9 @@ class Boot {
 	 * 
 	 * @return the main launcher.
 	 */
-	static def createMainObject : SreMain {
-		new SreMain
+	static def createMainObject : RunnableSREBootstrap {
+		var factory = new DynamicClassLoaderRunnableSREBootstrapFactory
+		factory.createSreBootstrap
 	}
 
 	/** Main program.
@@ -54,8 +55,17 @@ class Boot {
 	 * @param args the command line arguments.
 	 */
 	@SuppressWarnings("discouraged_reference")
-	static def main(args : String*) : void {
-		createMainObject.runSRE(args)		
+	static def main(args : String[]) : void {
+		run(args)
+	}
+
+	/** Main program.
+	 *
+	 * @param args the command line arguments.
+	 * @return the exit code.
+	 */
+	static def run(args : String*) : int {
+		return createMainObject.runSRE(args)
 	}
 
 }

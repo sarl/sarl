@@ -381,6 +381,25 @@ public final class TestAssertions {
 		}
 	}
 
+	/** Test if the actual string contains all the expected substring.
+	 *
+	 * @param actual the actual value of the string.
+	 * @param expected the expected substring.
+	 * @since 0.13
+	 */
+	public static void assertMultiContains(String actual, String... expected) {
+		assertNotNull(actual, "The value is null and cannot contain a substring"); //$NON-NLS-1$
+		for (final String exp : expected) {
+			if (!actual.contains(exp)) {
+				AssertionFailureBuilder.assertionFailure()
+					.expected(exp)
+					.actual(actual)
+					.message("Value does not contain the substring: " + exp) //$NON-NLS-1$
+					.buildAndThrow();
+			}
+		}
+	}
+
 	/** Assert if the value is the string representation of
 	 * the boolean value {@code true}.
 	 *

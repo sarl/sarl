@@ -14,6 +14,7 @@
 		<module>janus</module>
 		<module>janusnode</module>
 		<module>sarl-cli-tests</module>
+		<module>janus-cli-tests</module>
 	</modules>
 
 	<properties>
