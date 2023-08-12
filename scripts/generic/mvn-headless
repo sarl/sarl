@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z "$MAVEN_CMD" ]
+then
+	MAVEN_CMD="mvn"
+fi
+
+if which xvfb-run >/dev/null 2>/dev/null
+then
+  echo "Running maven with xvfb"
+  exec xvfb-run "$MAVEN_CMD" "$@"
+else
+  echo "Running maven without xvfb"
+  exec "$MAVEN_CMD" "$@"
+fi
+
