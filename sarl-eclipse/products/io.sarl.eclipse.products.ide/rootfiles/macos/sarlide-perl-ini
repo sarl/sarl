@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# This script detects the installed JVM and force the use of it in the eclipse-sarl.ini file.
+# This script detects the installed JVM and force the use of it in the sarlide.ini file.
 # After setting up the configuration, the script restores the original Eclipse launcher
 
 use strict;
@@ -16,8 +16,8 @@ my $JVM_BIN_PATH = "Contents/Home/bin";
 my $JVM_JAVACBIN_PATH = "$JVM_BIN_PATH/javac";
 my $JVM_JAVABIN_PATH = "$JVM_BIN_PATH/java";
 
-#my $DEFAULT_INI_FILE = "$CDIR/$SARL_APP_NAME/Contents/Eclipse/eclipse-sarl.ini";
-my $DEFAULT_INI_FILE = "$CDIR/../Eclipse/eclipse-sarl.ini";
+#my $DEFAULT_INI_FILE = "$CDIR/$SARL_APP_NAME/Contents/Eclipse/sarlide.ini";
+my $DEFAULT_INI_FILE = "$CDIR/../Eclipse/sarlide.ini";
 
 my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$DEFAULT_INI_FILE";
 
@@ -196,7 +196,7 @@ show_dialog("Your SARL Development Environment is now configured for using the J
 
 # Replace the temprary Perl launcher by the original Eclipse launcher
 move("$CDIR/eclipse-sarl", "$CDIR/eclipse-sarl-perl-init");
-move("$CDIR/eclipse-sarl-exe", "$CDIR/eclipse-sarl");
+move("$CDIR/eclipse-sarl-exe", "$CDIR/sarlide");
 
 exit(0);
 

@@ -4,7 +4,7 @@ use strict;
 use File::Basename;
 
 my $CDIR = dirname("$0");
-my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$CDIR/eclipse-sarl.ini";
+my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$CDIR/sarlide.ini";
 
 my $JVM_ROOT = "/usr/lib/jvm";
 my $JVM_BIN_PATH = "bin";

@@ -44,7 +44,7 @@
       startupProgressRect="5,280,442,15"
       startupMessageRect="7,252,330,20"
       startupForegroundColor="F3F3F3" />
-   <launcher name="eclipse-sarl">
+   <launcher name="sarlide">
       <linux icon="/icons/sarl.xpm"/>
       <macosx icon="/icons/sarl.icns"/>
       <win useIco="true">
