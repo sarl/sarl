@@ -109,7 +109,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central (maven-core) -->
-		<maven.api.version>3.6.3</maven.api.version>
+		<maven.api.version>3.8.1</maven.api.version>
 		<!-- Version of the Maven Java compiler (maven-compiler-plugin). -->
 		<mavencompiler.version>3.8.1</mavencompiler.version>
 		<!-- String to put after the copyright sign -->
