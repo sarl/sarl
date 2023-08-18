@@ -80,7 +80,7 @@
 		<afc.version>16.0</afc.version>
 		<afc.osgi.version>${afc.version}.0</afc.osgi.version>
 		<!-- Version of the Guava API -->
-		<guava.version>28.0-jre</guava.version>
+		<guava.version>32.0.0-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
