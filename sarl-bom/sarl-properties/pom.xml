@@ -147,6 +147,13 @@ log.info("set xtext.version.javadoc to: " + properties["xtext.version.javadoc"])
 
 log.info("End of configuration of the project properties");
 
+//************************
+// Set Guice properties
+def guiceVersionParts = properties["guice.version"].tokenize(".");
+def guiceMinVersion = guiceVersionParts[0].toInteger();
+properties["guice.min.version"] = Integer.toString(guiceMinVersion);
+properties["guice.max.version"] = Integer.toString(guiceMinVersion + 1);
+
 //********************************
 // Save the property file
 
