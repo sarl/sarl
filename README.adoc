@@ -152,21 +152,33 @@ CAUTION: Do not forget to set the `extensions` flag to `true`.
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
 
-* link:./formatting-styles/textmate/sarl.tmLanguage[Atom] (TextMate language definition)
-* link:./formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
-* link:./formatting-styles/prettify/lang-sarl.js[Google Prettify]
-* link:./formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[Atom] (TextMate language definition)
+* link:./sarl-lang/formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
+* link:./sarl-lang/formatting-styles/prettify/lang-sarl.js[Google Prettify]
+* link:./sarl-lang/formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
 * LaTeX:
-** LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
-** link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
-* link:./formatting-styles/pygments/sarlexer/sarl.py[Pygments]
-* link:./formatting-styles/textmate/sarl.tmLanguage[Sublime Text] (TextMate language definition)
-* link:./formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./formatting-styles/textmate/sarl.plist[plist definition]) 
-* link:./formatting-styles/vim/sarl.vim[Vim] 
+** LaTeX listing: link:./sarl-lang/formatting-styles/latex/sarl-listing.sty[monochrom], link:./sarl-lang/formatting-styles/latex/sarl-colorized-listing.sty[color]
+** link:./sarl-lang/formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
+* link:./sarl-lang/formatting-styles/pygments/sarlexer/sarl.py[Pygments]
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[Sublime Text] (TextMate language definition)
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./sarl-lang/formatting-styles/textmate/sarl.plist[plist definition]) 
+* link:./sarl-lang/formatting-styles/vim/sarl.vim[Vim] 
 
-== 3. P2 Repository
+== 3. Independent Sub-Projects
 
-A P2 repository is set up and accesible at the address: `http://updates.sarl.io`.
+The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. These sub-projects are:
+
+* link:./sarl-bom[sarl-bom]: Provide the Build-of-Material, i.e., a shared list of Maven dependency, for all the SARL sub-projects;
+* link:./sarl-baseutils[sarl-baseutils]: Set of Maven artifacts that are independent of SARL but needed to build the SARL artifacts;
+* link:./sarl-lang[sarl-lang]: Provides the language definition, the associated compiler (including the Maven plugin) and code formatting styles for different text editors;
+* link:./sarl-sdk[sarl-sdk]: Set of Maven artifacts that constitute the SDK for all the SARL developers;
+* link:./sarl-apputils[sarl-apputils]: Shared projects for building applications that are using a SARL compiler;
+* link:./sarl-sdk[sarl-sre]: SARL runtime environment (or SARL virtual machine);
+* link:./sarl-docs[sarl-docs]: Tools and Doclet for the generation of the documentation, including the API documentation pages;
+* link:./sarl-cli[sarl-cli]: Set of command-line tools (sarlc, sarldoc, janus...);
+* link:./sarl-eclipse[sarl-eclipse]: Eclipse-based editor for SARL;
+* link:./sarl-officialdoc[sarl-officialdoc]: Markdown files of the official documentation of SARL.
+
 
 == 4. Issues
 
