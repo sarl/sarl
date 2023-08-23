@@ -303,6 +303,30 @@
 		</developer>
 	</developers>
 
+	<contributors>
+		<contributor>
+			<name>Antoine Bartuccio</name>
+			<url>https://github.com/klmp200</url>
+			<roles>
+				<role>Examples of fireworks and Sierpinski fractal</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Greg Bowering</name>
+			<url>https://github.com/gb96</url>
+			<roles>
+				<role>Localization support of fireworks example</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Mohamed Ezzat</name>
+			<url>https://github.com/m-ezzat</url>
+			<roles>
+				<role>Cleaning and optimization of source code</role>
+			</roles>
+		</contributor>
+	</contributors>
+
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>

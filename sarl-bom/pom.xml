@@ -16,4 +16,20 @@
 	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+	<developers>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/stephane_galland</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 </project>

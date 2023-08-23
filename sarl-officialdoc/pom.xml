@@ -274,6 +274,19 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>sebastian.rodriguez@rmit.edu.au</email>
+			<url>http://www.sebastianrodriguez.com.ar/</url>
+			<organization>Royal Melbourne Institute of Technology</organization>
+			<organizationUrl>http://www.rmit.edu.au/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<contributors>
