@@ -103,6 +103,7 @@ For setting up the development environment for contributing to the SARL tools, y
 ** Version: `2023-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** CAUTION: We do not recommend to import `sarl-bom` in Eclipse because of its specific static in the compilation process.
 ** Select the folder in which you have cloned the SARL project (see Section 2.2);
 ** Click on `Finish`.
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
@@ -116,6 +117,7 @@ For setting up the development environment for contributing to the Eclipse-based
 ** Version: `2023-06` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
 * Launch the *Eclipse IDE for RCP and RAP Developers*, and configure it (look&feel, etc.)
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** CAUTION: We do not recommend to import `sarl-bom` in Eclipse because of its specific static in the compilation process.
 ** Select the folder in which you have cloned the SARL project (see Section 2.2);
 ** Click on `Finish`.
 * Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
