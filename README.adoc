@@ -18,18 +18,18 @@ However, we provide a first set of tools to support its execution based on the r
 image:http://www.sarl.io/docs/official/compilation/compilation_process.png[align="center"]
 
 
-image:https://img.shields.io/badge/Documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
-image:https://img.shields.io/badge/Documentation-Reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/official/index.html]
+image:https://img.shields.io/badge/documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
+image:https://img.shields.io/badge/documentation-reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/official/index.html]
 image:https://badges.gitter.im/sarl/Lobby.svg[link=https://gitter.im/sarl/Lobby]
 
 
-image:https://img.shields.io/badge/Requires-Java%208-yellowgreen.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/badge/Interoperable%20with-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/maven-central/v/io.sarl.maven/io.sarl.maven.sdk.svg?label=Available%20on%20Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
-image:https://img.shields.io/badge/Build%20with-Maven-blue.svg?style=flat-square[link=http://maven.apache.org]
+image:https://img.shields.io/badge/requires-Java%2017-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/badge/interoperable%20with-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/maven-central/v/io.sarl.sdk/sdk.svg?label=available%20on%20Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
+image:https://img.shields.io/badge/build%20with-Maven-blue.svg?style=flat-square[link=http://maven.apache.org]
 
 
-image:https://img.shields.io/badge/Based%20on-Xtext-orange.svg?style=flat-square[link=https://eclipse.org/Xtext]
+image:https://img.shields.io/badge/based%20on-Xtext-orange.svg?style=flat-square[link=https://eclipse.org/Xtext]
 
 
 
@@ -53,7 +53,7 @@ toc::[]
 
 == 1. Requirements
 
-* Java Development Toolkit (JDK) between 17.
+* Java Development Toolkit (JDK) 17 or higher.
 
 == 2. Using SARL
 
