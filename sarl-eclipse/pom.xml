@@ -200,13 +200,13 @@
 						</environment>
 					</environments>
 					<filters>
-						<filter>
+						<!-- <filter>
 							<type>eclipse-plugin</type>
 							<id>com.google.guava</id>
 							<restrictTo>
-								<version>${guava.osgi.version}</version>
+								<version>30.1.0</version>
 							</restrictTo>
-						</filter>
+						</filter> -->
 					</filters>
 				</configuration>
 			</plugin>
