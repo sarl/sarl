@@ -34,6 +34,7 @@
 import java.nio.file.Paths
 import java.util.jar.Manifest
 import java.io.FileInputStream
+import java.util.regex.Pattern
 
 sourceManifest = Paths.get(project.basedir.absolutePath, "META-INF", "MANIFEST.MF").toFile()						
 manifest = new Manifest(new FileInputStream(sourceManifest))
@@ -41,15 +42,25 @@ list = manifest.mainAttributes.getValue("Require-Bundle")
 janusBundle = ''
 janusDeps = new ArrayList()
 networkDeps = new ArrayList()
-for (String dep : list.split("[ \\n\\r]*,[ \\n\\r]*")) {
-	depName = dep.split("[ \\n\\r]*;[ \\n\\r]*")[0]
-	if (depName.contains("janus.kernel")) {
-		janusBundle = depName
-		janusDeps.add(depName)
-	} else if (depName.contains("janus.network")) {
-		networkDeps.add(depName)
+def versionPattern = ~/^\s*(?<depName>.+?)(?:\s*;\s*[^=]+\s*=\s*".*?")?(?:\s*,\s*(?<endofs>.*))?$/
+def versionMatcher = list =~ versionPattern
+while (versionMatcher != null && versionMatcher.find()) {
+	String depName = versionMatcher.group('depName')
+	list = versionMatcher.group('endofs')
+	if (depName) {
+		if (depName.contains("janus.kernel")) {
+			janusBundle = depName
+			janusDeps.add(depName)
+		} else if (depName.contains("janus.network")) {
+			networkDeps.add(depName)
+		} else {
+			janusDeps.add(depName)
+		}
+	}
+	if (list) {
+		versionMatcher = list =~ versionPattern
 	} else {
-		janusDeps.add(depName)
+		versionMatcher = null
 	}
 }
 
