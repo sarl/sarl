@@ -5,6 +5,9 @@ set -e
 
 CDIR=`pwd`
 
+# Show tools versions
+mvn --version
+
 # Build BOMs
 cd "$CDIR/sarl-bom"
 mvn clean install "$@"

@@ -178,6 +178,8 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<target>
+						<!-- The "project.basedir" below corresponds to the pathon one of the submodules of
+						     this artefiact. It does not corresponds to the current Maven artefact -->
 						<file>${project.basedir}/../../sarl-target-platform.target</file>
 					</target>
 					<environments>
@@ -197,6 +199,15 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+					<filters>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>com.google.guava</id>
+							<restrictTo>
+								<version>${guava.osgi.version}</version>
+							</restrictTo>
+						</filter>
+					</filters>
 				</configuration>
 			</plugin>
 			<plugin>
