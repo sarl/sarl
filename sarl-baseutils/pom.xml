@@ -9,6 +9,7 @@
 	<description>General base utilities</description>
 
 	<modules>
+		<module>javax.inject</module>
 		<module>tests.api</module>
 		<module>afc.extension</module>
 	</modules>

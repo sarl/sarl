@@ -15,8 +15,8 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>org.apache.geronimo.specs</groupId>
-		    <artifactId>geronimo-atinject_1.0_spec</artifactId>
+		    <groupId>io.sarl.baseutils</groupId>
+		    <artifactId>javax.inject</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>

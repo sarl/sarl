@@ -929,13 +929,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.geronimo.specs.geronimo-atinject_1.0_spec"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.osgi.service.cm"
          download-size="0"
          install-size="0"

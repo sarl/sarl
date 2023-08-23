@@ -14,11 +14,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-			    <groupId>org.apache.geronimo.specs</groupId>
-			    <artifactId>geronimo-atinject_1.0_spec</artifactId>
-			    <version>1.2</version>
-			</dependency>
-			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 				<version>${xtext.version}</version>
@@ -27,6 +22,11 @@
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>org.eclipse.xtend.lib</artifactId>
 				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.sarl.baseutils</groupId>
+			    <artifactId>javax.inject</artifactId>
+			    <version>1</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
