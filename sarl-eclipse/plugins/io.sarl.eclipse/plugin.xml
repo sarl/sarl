@@ -477,8 +477,6 @@
 
 	<extension point="org.eclipse.ui.perspectives">
    		<perspective id="io.sarl.eclipse.perspective.devel"
-		             editorOnboardingImage="icons/onboarding_jperspective.png"
-                     editorOnboardingText="%perspective.editorOnboardingText"
    		             name="%perspective.name"
                      class="io.sarl.eclipse.perspectives.SARLPerspectiveFactory"
    		             icon="icons/sarl_16.png" />
@@ -488,6 +486,21 @@
    		             icon="icons/debug_16.png" />
     </extension>
  
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+   		<perspectiveExtension targetID="io.sarl.eclipse.perspective.devel"
+		                      editorOnboardingImage="icons/onboarding_devel_perspective.png"
+                              editorOnboardingText="%perspective.editorOnboardingText" />
+   		<perspectiveExtension targetID="io.sarl.eclipse.perspective.debug"
+		                      editorOnboardingImage="icons/onboarding_debug_perspective.png"
+                              editorOnboardingText="%debug.perspective.editorOnboardingText">
+			<editorOnboardingCommand id="org.eclipse.ui.window.quickAccess" />
+			<editorOnboardingCommand id="org.eclipse.debug.ui.commands.StepInto" />
+			<editorOnboardingCommand id="org.eclipse.debug.ui.commands.StepOver" />
+ 			<editorOnboardingCommand id="org.eclipse.debug.ui.commands.StepReturn" />
+			<editorOnboardingCommand id="org.eclipse.debug.ui.commands.Resume" />
+		</perspectiveExtension>
+    </extension>
+
   <!-- Extensions -->
 
    <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
