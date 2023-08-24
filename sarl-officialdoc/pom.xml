@@ -337,6 +337,11 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
 		</license>
+		<license>
+			<name>Creative Commons CC-BY-SA-4.0</name>
+			<url>https://creativecommons.org/licenses/by-sa/4.0/deed.en</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
 
 	<repositories>
