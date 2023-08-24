@@ -232,4 +232,18 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="io.sarl.eclipse.experienceindex"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.io.sarl.sdk.api.experienceindex"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
