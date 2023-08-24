@@ -164,7 +164,7 @@ Style specifications are provided for:
 * link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./sarl-lang/formatting-styles/textmate/sarl.plist[plist definition]) 
 * link:./sarl-lang/formatting-styles/vim/sarl.vim[Vim] 
 
-== 3. Independent Sub-Projects
+== 3. Separated Sub-Projects
 
 The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. These sub-projects are:
 
@@ -204,8 +204,8 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 * image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.ciad-lab.fr/nicolas_gaud/[Nicolas GAUD], founder, original and active author.
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
 * image:https://avatars.githubusercontent.com/alexandrelombard[width="50px",link=https://github.com/alexandrelombard] link:http://www.ciad-lab.fr/alexandre_lombard/[Alexandre LOMBARD], active author.
-* image:https://avatars.githubusercontent.com/pinam45[width="50px",link=https://github.com/pinam45] Maxime PINARD, game of life example.
 * image:https://avatars.githubusercontent.com/RyuzakiKK[width="50px",link=https://github.com/RyuzakiKK] Ludovico de NITTIS, documentation contributor.
+* image:https://avatars.githubusercontent.com/pinam45[width="50px",link=https://github.com/pinam45] Maxime PINARD, game of life example.
 * image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, maven configuration.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://www.sebastianrodriguez.com.ar[Sebastian RODRIGUEZ], founder, original and active author.
 * image:https://avatars.githubusercontent.com/ssardina[width="50px",link=https://github.com/ssardina] Sebastian SARDINA, documentation contributor.
