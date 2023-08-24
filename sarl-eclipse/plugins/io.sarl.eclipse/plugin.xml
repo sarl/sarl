@@ -579,6 +579,15 @@
             content="intro/SARL-Intro.xml">
       </configExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.intro.quicklinks">
+         <command
+          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"
+            description="%wizard.description.newSarlProject.long"
+            label="%wizard.description.newSarlProject.short"
+            icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
+         </command>
+   </extension>
 
   <!-- Splash -->
  	<extension
