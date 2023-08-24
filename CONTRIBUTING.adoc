@@ -127,7 +127,14 @@ For setting up the development environment for contributing to the Eclipse-based
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-=== 2.4. Compilation of SARL before Submitting your Contribution
+=== 2.5. Creating the launch configuration within Eclipse 
+
+To create the initial version of the launch configuration, open the product overview and click in the top right corner on the "Launch an eclipse application" Button. This will automatically create a first launch configuration.
+
+Then,the "Run Configuration" to manage the detail of your launch config, switch to the "Plug-ins" tab, and check the "Include required Features and Plug-ins automatically while launching" checkbox, and run it.
+
+
+=== 2.6. Compilation of SARL before Submitting your Contribution
 
 Prior to any sending of your contribution (see Section 2.5), you must ensure that your local copy of SARL compiles without error.
 
@@ -140,7 +147,7 @@ mvn clean install
 
 This command line will launch the compilation, checkstyle and unit tests. It must be successfull.
 
-=== 2.5. Sending the Contribution
+=== 2.7. Sending the Contribution
 
 For sending your contribution to the SARL master repository, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
 
