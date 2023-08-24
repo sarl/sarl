@@ -4,7 +4,7 @@
    <extension
          point="io.sarl.eclipse.sreInstallations">
       <sreInstallation
-            class="io.sarl.sre.eclipse.sre.JanusSREInstall">
+            class="io.sarl.eclipse.sre.janus.sre.JanusSREInstall">
       </sreInstallation>
    </extension>
 
