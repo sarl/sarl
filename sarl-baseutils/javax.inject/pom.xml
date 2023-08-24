@@ -57,33 +57,25 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>5.1.9</version>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>6.4.0</version>
 				<extensions>true</extensions>
 				<executions>
 					<execution>
 						<id>bundle-manifest</id>
 						<phase>process-classes</phase>
 						<goals>
-							<goal>manifest</goal>
+							<goal>bnd-process</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<supportIncrementalBuild>true</supportIncrementalBuild>
-					<supportedProjectTypes>
-						<supportedProjectType>jar</supportedProjectType>
-						<supportedProjectType>bundle</supportedProjectType>
-						<supportedProjectType>war</supportedProjectType>
-					</supportedProjectTypes>
-					<archive>
-						<manifestFile>${manifest.file}</manifestFile>
-					</archive>
-					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-					</instructions>
+					<bnd>
+						Bundle-SymbolicName: ${project.artifactId};singleton:=true
+						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
+						Export-Package: javax.inject.*
+					</bnd>
 				</configuration>
 			</plugin>
 			<plugin>
