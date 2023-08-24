@@ -16,7 +16,7 @@
 	</modules>
 
 	<properties>
-		<tycho.version>3.0.5</tycho.version>
+		<tycho.version>4.0.2</tycho.version>
 		
 		<tycho.scmUrl>${sarl.scm.url}</tycho.scmUrl>
 		
@@ -178,8 +178,8 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<target>
-						<!-- The "project.basedir" below corresponds to the pathon one of the submodules of
-						     this artefiact. It does not corresponds to the current Maven artefact -->
+						<!-- The "project.basedir" below corresponds to the path from one of the submodules of
+						     this artefact. It does not corresponds to the current Maven artefact -->
 						<file>${project.basedir}/../../sarl-target-platform.target</file>
 					</target>
 					<environments>
@@ -199,15 +199,6 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
-					<filters>
-						<!-- <filter>
-							<type>eclipse-plugin</type>
-							<id>com.google.guava</id>
-							<restrictTo>
-								<version>30.1.0</version>
-							</restrictTo>
-						</filter> -->
-					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->
 					<dependency-resolution>

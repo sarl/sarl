@@ -15,5 +15,5 @@ Require-Bundle: wrapped.io.sarl.sdk.api.experienceindex;bundle-version="0.13.0",
  org.eclipse.core.runtime;bundle-version="3.27.0",
  org.eclipse.jface;bundle-version="3.30.0",
  org.eclipse.ui;bundle-version="3.203.100",
- com.google.inject;bundle-version="[5.0.1,5.1.0)"
+ com.google.inject;bundle-version="5.0.1"
 Bundle-Activator: io.sarl.eclipse.experienceindex.SarlExperienceIndexPlugin

@@ -200,12 +200,10 @@
 		<plugin id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml.source"/>
 		<plugin id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml"/>
 		<plugin id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml.source"/>
-		<plugin id="com.google.gson" version="2.10.1.v20230109-0753"/>
 		<plugin id="com.google.gson" version="2.10.1"/>
+		<plugin id="com.google.gson" version="2.10.1.v20230109-0753"/>
 		<plugin id="com.google.gson.source"/>
 		<plugin id="com.google.inject" version="5.0.1.v20221112-0806"/>
-		<plugin id="com.google.inject" version="5.1.0"/>
-		<plugin id="com.google.inject.source" version="5.1.0"/>
 		<plugin id="com.googlecode.javaewah.JavaEWAH"/>
 		<plugin id="com.hazelcast"/>
 		<plugin id="com.hazelcast.source"/>
@@ -224,8 +222,8 @@
 		<plugin id="io.github.classgraph.classgraph.source" version="4.8.149"/>
 		<plugin id="io.sarl.lang.compiler"/>
 		<plugin id="io.sarl.lang.compiler.source"/>
-		<plugin id="io.sarl.lang.core" version="0.13.0.SNAPSHOT"/>
-		<plugin id="io.sarl.lang.core.source" version="0.13.0.SNAPSHOT"/>
+		<plugin id="io.sarl.lang.core" version="0.13.0.202308241108"/>
+		<plugin id="io.sarl.lang.core.source" version="0.13.0.202308241108"/>
 		<plugin id="io.sarl.lang.pythongenerator"/>
 		<plugin id="io.sarl.lang.pythongenerator.source"/>
 		<plugin id="jakarta.servlet-api"/>
@@ -235,36 +233,36 @@
 		<plugin id="javax.annotation-api.source"/>
 		<plugin id="javax.el-api"/>
 		<plugin id="javax.el-api.source"/>
-		<plugin id="javax.inject"/>
+		<plugin id="javax.inject" version="1.0.0.v20220405-0441"/>
 		<plugin id="javax.servlet.jsp-api"/>
 		<plugin id="javax.servlet.jsp-api.source"/>
 		<plugin id="javax.xml"/>
 		<plugin id="junit-jupiter-api" version="5.9.3"/>
 		<plugin id="junit-jupiter-api" version="5.10.0.M1"/>
-		<plugin id="junit-jupiter-api.source" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-api.source" version="5.9.3"/>
+		<plugin id="junit-jupiter-api.source" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-engine" version="5.9.3"/>
 		<plugin id="junit-jupiter-engine" version="5.10.0.M1"/>
-		<plugin id="junit-jupiter-engine.source" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-engine.source" version="5.9.3"/>
+		<plugin id="junit-jupiter-engine.source" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-migrationsupport"/>
 		<plugin id="junit-jupiter-migrationsupport.source"/>
-		<plugin id="junit-jupiter-params" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-params" version="5.9.3"/>
-		<plugin id="junit-jupiter-params.source" version="5.9.3"/>
+		<plugin id="junit-jupiter-params" version="5.10.0.M1"/>
 		<plugin id="junit-jupiter-params.source" version="5.10.0.M1"/>
+		<plugin id="junit-jupiter-params.source" version="5.9.3"/>
 		<plugin id="junit-platform-commons" version="1.10.0.M1"/>
 		<plugin id="junit-platform-commons" version="1.9.3"/>
-		<plugin id="junit-platform-commons.source" version="1.10.0.M1"/>
 		<plugin id="junit-platform-commons.source" version="1.9.3"/>
+		<plugin id="junit-platform-commons.source" version="1.10.0.M1"/>
 		<plugin id="junit-platform-engine" version="1.9.3"/>
 		<plugin id="junit-platform-engine" version="1.10.0.M1"/>
 		<plugin id="junit-platform-engine.source" version="1.10.0.M1"/>
 		<plugin id="junit-platform-engine.source" version="1.9.3"/>
-		<plugin id="junit-platform-launcher" version="1.9.3"/>
 		<plugin id="junit-platform-launcher" version="1.10.0.M1"/>
-		<plugin id="junit-platform-launcher.source" version="1.10.0.M1"/>
+		<plugin id="junit-platform-launcher" version="1.9.3"/>
 		<plugin id="junit-platform-launcher.source" version="1.9.3"/>
+		<plugin id="junit-platform-launcher.source" version="1.10.0.M1"/>
 		<plugin id="junit-platform-runner"/>
 		<plugin id="junit-platform-runner.source"/>
 		<plugin id="junit-platform-suite-api"/>
@@ -481,8 +479,8 @@
 		<plugin id="org.eclipse.emf.codegen.ecore"/>
 		<plugin id="org.eclipse.emf.codegen.ecore.source"/>
 		<plugin id="org.eclipse.emf.codegen.source"/>
-		<plugin id="org.eclipse.emf.common" version="2.24.0.v20220123-0838"/>
 		<plugin id="org.eclipse.emf.common" version="2.28.0.v20230315-1321"/>
+		<plugin id="org.eclipse.emf.common" version="2.24.0.v20220123-0838"/>
 		<plugin id="org.eclipse.emf.common.source" version="2.24.0.v20220123-0838"/>
 		<plugin id="org.eclipse.emf.common.source" version="2.28.0.v20230315-1321"/>
 		<plugin id="org.eclipse.emf.common.ui"/>
@@ -491,8 +489,8 @@
 		<plugin id="org.eclipse.emf.ecore" version="2.34.0.v20230406-1203"/>
 		<plugin id="org.eclipse.emf.ecore.change" version="2.15.0.v20230211-1150"/>
 		<plugin id="org.eclipse.emf.ecore.change" version="2.14.0.v20190528-0725"/>
-		<plugin id="org.eclipse.emf.ecore.change.source" version="2.14.0.v20190528-0725"/>
 		<plugin id="org.eclipse.emf.ecore.change.source" version="2.15.0.v20230211-1150"/>
+		<plugin id="org.eclipse.emf.ecore.change.source" version="2.14.0.v20190528-0725"/>
 		<plugin id="org.eclipse.emf.ecore.edit"/>
 		<plugin id="org.eclipse.emf.ecore.edit.source"/>
 		<plugin id="org.eclipse.emf.ecore.editor"/>
@@ -501,8 +499,8 @@
 		<plugin id="org.eclipse.emf.ecore.source" version="2.26.0.v20220123-0838"/>
 		<plugin id="org.eclipse.emf.ecore.xmi" version="2.18.0.v20230211-1150"/>
 		<plugin id="org.eclipse.emf.ecore.xmi" version="2.16.0.v20190528-0725"/>
-		<plugin id="org.eclipse.emf.ecore.xmi.source" version="2.18.0.v20230211-1150"/>
 		<plugin id="org.eclipse.emf.ecore.xmi.source" version="2.16.0.v20190528-0725"/>
+		<plugin id="org.eclipse.emf.ecore.xmi.source" version="2.18.0.v20230211-1150"/>
 		<plugin id="org.eclipse.emf.edit"/>
 		<plugin id="org.eclipse.emf.edit.source"/>
 		<plugin id="org.eclipse.emf.edit.ui"/>
@@ -533,8 +531,8 @@
 		<plugin id="org.eclipse.equinox.cm.source"/>
 		<plugin id="org.eclipse.equinox.common" version="3.16.200.v20220817-1601"/>
 		<plugin id="org.eclipse.equinox.common" version="3.18.0.v20230523-2142"/>
-		<plugin id="org.eclipse.equinox.common.source" version="3.18.0.v20230523-2142"/>
 		<plugin id="org.eclipse.equinox.common.source" version="3.16.200.v20220817-1601"/>
+		<plugin id="org.eclipse.equinox.common.source" version="3.18.0.v20230523-2142"/>
 		<plugin id="org.eclipse.equinox.concurrent"/>
 		<plugin id="org.eclipse.equinox.concurrent.source"/>
 		<plugin id="org.eclipse.equinox.console"/>
@@ -688,16 +686,16 @@
 		<plugin id="org.eclipse.jdt.compiler.apt.source" version="1.4.200.v20220802-0458"/>
 		<plugin id="org.eclipse.jdt.compiler.tool" version="1.3.200.v20220802-0458"/>
 		<plugin id="org.eclipse.jdt.compiler.tool.source" version="1.3.200.v20220802-0458"/>
-		<plugin id="org.eclipse.jdt.core" version="3.31.0.v20220831-1439"/>
 		<plugin id="org.eclipse.jdt.core" version="3.34.0.v20230512-1803"/>
+		<plugin id="org.eclipse.jdt.core" version="3.31.0.v20220831-1439"/>
 		<plugin id="org.eclipse.jdt.core.compiler.batch"/>
 		<plugin id="org.eclipse.jdt.core.compiler.batch.source"/>
 		<plugin id="org.eclipse.jdt.core.formatterapp"/>
 		<plugin id="org.eclipse.jdt.core.formatterapp.source"/>
 		<plugin id="org.eclipse.jdt.core.manipulation"/>
 		<plugin id="org.eclipse.jdt.core.manipulation.source"/>
-		<plugin id="org.eclipse.jdt.core.source" version="3.34.0.v20230512-1803"/>
 		<plugin id="org.eclipse.jdt.core.source" version="3.31.0.v20220831-1439"/>
+		<plugin id="org.eclipse.jdt.core.source" version="3.34.0.v20230512-1803"/>
 		<plugin id="org.eclipse.jdt.debug"/>
 		<plugin id="org.eclipse.jdt.debug.source"/>
 		<plugin id="org.eclipse.jdt.debug.ui"/>
@@ -849,16 +847,16 @@
 		<plugin id="org.eclipse.oomph.workingsets"/>
 		<plugin id="org.eclipse.oomph.workingsets.edit"/>
 		<plugin id="org.eclipse.oomph.workingsets.editor"/>
-		<plugin id="org.eclipse.osgi" version="3.18.100.v20220817-1601"/>
 		<plugin id="org.eclipse.osgi" version="3.18.400.v20230509-2241"/>
+		<plugin id="org.eclipse.osgi" version="3.18.100.v20220817-1601"/>
 		<plugin id="org.eclipse.osgi" version="3.18.300.v20230220-1352"/>
 		<plugin id="org.eclipse.osgi.compatibility.state"/>
 		<plugin id="org.eclipse.osgi.compatibility.state.source"/>
 		<plugin id="org.eclipse.osgi.services"/>
 		<plugin id="org.eclipse.osgi.services.source"/>
-		<plugin id="org.eclipse.osgi.source" version="3.18.100.v20220817-1601"/>
 		<plugin id="org.eclipse.osgi.source" version="3.18.400.v20230509-2241"/>
 		<plugin id="org.eclipse.osgi.source" version="3.18.300.v20230220-1352"/>
+		<plugin id="org.eclipse.osgi.source" version="3.18.100.v20220817-1601"/>
 		<plugin id="org.eclipse.osgi.util"/>
 		<plugin id="org.eclipse.osgi.util.source"/>
 		<plugin id="org.eclipse.pde.build"/>
@@ -1072,8 +1070,8 @@
 		<plugin id="org.eclipse.xtext.xbase.ide.source"/>
 		<plugin id="org.eclipse.xtext.xbase.junit"/>
 		<plugin id="org.eclipse.xtext.xbase.junit.source"/>
-		<plugin id="org.eclipse.xtext.xbase.lib" version="2.31.0.v20230529-0659"/>
 		<plugin id="org.eclipse.xtext.xbase.lib" version="2.20.0.v20191202-0907"/>
+		<plugin id="org.eclipse.xtext.xbase.lib" version="2.31.0.v20230529-0659"/>
 		<plugin id="org.eclipse.xtext.xbase.lib.source" version="2.20.0.v20191202-0907"/>
 		<plugin id="org.eclipse.xtext.xbase.lib.source" version="2.31.0.v20230529-0659"/>
 		<plugin id="org.eclipse.xtext.xbase.source" version="2.31.0.v20230529-0659"/>

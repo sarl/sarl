@@ -223,6 +223,7 @@
 
    <requires>
       <import feature="org.eclipse.xtext.sdk" version="2.31.0.v20230529-0659"/>
+      <import feature="io.sarl.eclipse.features.baseplatform" version="0.13.0.qualifier"/>
    </requires>
 
    <plugin
