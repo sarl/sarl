@@ -32,6 +32,17 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>alombard</id>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>http://www.sarl.io/alexandre_lombard</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 </project>

@@ -289,6 +289,17 @@
 			</roles>
 		</developer>
 		<developer>
+			<id>alombard</id>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>http://www.sarl.io/alexandre_lombard</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
 			<id>srodriguez</id>
 			<name>Sebastian Rodriguez</name>
 			<email>sebastian.rodriguez@rmit.edu.au</email>
@@ -312,6 +323,13 @@
 			</roles>
 		</contributor>
 		<contributor>
+			<name>J&eacute;r&ocirc;me Boulmier</name>
+			<url>https://github.com/Lomadriel</url>
+			<roles>
+				<role>Example of Game of Life</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Greg Bowering</name>
 			<url>https://github.com/gb96</url>
 			<roles>
@@ -323,6 +341,13 @@
 			<url>https://github.com/m-ezzat</url>
 			<roles>
 				<role>Cleaning and optimization of source code</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Maxime Pinard</name>
+			<url>https://github.com/pinam45</url>
+			<roles>
+				<role>Example of Game of Life</role>
 			</roles>
 		</contributor>
 	</contributors>
