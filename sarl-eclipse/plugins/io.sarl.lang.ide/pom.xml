@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sarl.library.bundles>wrapped.io.sarl.sdk.sdk, wrapped.io.sarl.sdk.api.core, wrapped.io.sarl.sdk.api.util, wrapped.io.sarl.lang.core, org.eclipse.xtend.lib</sarl.library.bundles>
+		<sarl.library.bundles>io.sarl.lang.core, wrapped.io.sarl.sdk.sdk, wrapped.io.sarl.sdk.api.core, wrapped.io.sarl.sdk.api.util, org.eclipse.xtend.lib</sarl.library.bundles>
 	</properties>
 
 	<build>

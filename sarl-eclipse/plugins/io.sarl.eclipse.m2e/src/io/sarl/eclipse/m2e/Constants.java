@@ -41,23 +41,23 @@ public final class Constants {
 
 	/** Name of the standard SARL artifact ID.
 	 */
-	public static final String SARL_ARTIFACT_ID = "io.sarl.lang.core"; //$NON-NLS-1$
+	public static final String SARL_ARTIFACT_ID = "core"; //$NON-NLS-1$
 
 	/** Name of the standard SARL Maven plugin's group ID.
 	 */
-	public static final String SARL_PLUGIN_GROUP_ID = "io.sarl.maven"; //$NON-NLS-1$
+	public static final String SARL_PLUGIN_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
 
 	/** Name of the standard SARL Maven plugin's artifact ID.
 	 */
-	public static final String SARL_PLUGIN_ARTIFACT_ID = "sarl-maven-plugin"; //$NON-NLS-1$
+	public static final String SARL_PLUGIN_ARTIFACT_ID = "io.sarl.sdk"; //$NON-NLS-1$
 
 	/** Name of the standard SARL SDK's group ID.
 	 */
-	public static final String SARL_MAVENLIB_GROUP_ID = "io.sarl.maven"; //$NON-NLS-1$
+	public static final String SARL_MAVENLIB_GROUP_ID = "io.sarl.sdk"; //$NON-NLS-1$
 
 	/** Name of the standard SARL SDK's artifact ID.
 	 */
-	public static final String SARL_MAVENLIB_ARTIFACT_ID = "io.sarl.maven.sdk"; //$NON-NLS-1$
+	public static final String SARL_MAVENLIB_ARTIFACT_ID = "sdk"; //$NON-NLS-1$
 
 	private Constants() {
 		//

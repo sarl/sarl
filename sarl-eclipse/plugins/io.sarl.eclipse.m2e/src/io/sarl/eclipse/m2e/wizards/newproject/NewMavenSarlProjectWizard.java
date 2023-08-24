@@ -50,6 +50,8 @@ import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizard;
 
 import io.sarl.lang.core.SARLVersion;
 
+import static io.sarl.eclipse.m2e.Constants.*;
+
 /**
  * Wizard for creating a maven-based SARL project.
  *
@@ -67,13 +69,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 	private static final String ENCODING_PROPERTY = "project.build.sourceEncoding"; //$NON-NLS-1$
 
-	private static final String GROUP_ID = "io.sarl.maven"; //$NON-NLS-1$
-
-	private static final String SDK_ARTIFACT_ID = "io.sarl.maven.sdk"; //$NON-NLS-1$
-
 	private static final String VERSION = "${sarl.version}"; //$NON-NLS-1$
-
-	private static final String PLUGIN_ARTIFACT_ID = "sarl-maven-plugin"; //$NON-NLS-1$
 
 	private static final String CONFIGURATION_SOURCE_NAME = "source"; //$NON-NLS-1$
 
@@ -102,8 +98,8 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 		model.addProperty(ENCODING_PROPERTY, Charset.defaultCharset().displayName());
 
 		final Dependency dep = new Dependency();
-		dep.setGroupId(GROUP_ID);
-		dep.setArtifactId(SDK_ARTIFACT_ID);
+		dep.setGroupId(SARL_MAVENLIB_GROUP_ID);
+		dep.setArtifactId(SARL_MAVENLIB_ARTIFACT_ID);
 		dep.setVersion(VERSION);
 		model.addDependency(dep);
 
@@ -139,14 +135,14 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 		//We need to force the re-generation of the plugin map as it may be stale
 		build.flushPluginMap();
-		Plugin sarlPlugin = build.getPluginsAsMap().get(GROUP_ID + ":" + PLUGIN_ARTIFACT_ID); //$NON-NLS-1$
+		Plugin sarlPlugin = build.getPluginsAsMap().get(SARL_PLUGIN_GROUP_ID + ":" + SARL_PLUGIN_ARTIFACT_ID); //$NON-NLS-1$
 		if (sarlPlugin == null) {
-			sarlPlugin = build.getPluginsAsMap().get(PLUGIN_ARTIFACT_ID);
+			sarlPlugin = build.getPluginsAsMap().get(SARL_PLUGIN_ARTIFACT_ID);
 		}
 		if (sarlPlugin == null) {
 			sarlPlugin = new Plugin();
-			sarlPlugin.setGroupId(GROUP_ID);
-			sarlPlugin.setArtifactId(PLUGIN_ARTIFACT_ID);
+			sarlPlugin.setGroupId(SARL_PLUGIN_GROUP_ID);
+			sarlPlugin.setArtifactId(SARL_PLUGIN_ARTIFACT_ID);
 			sarlPlugin.setVersion(VERSION);
 			// Do not turn on the "extensions" feature because it cause an invalid initialization of
 			// the Maven nature of the project.
@@ -181,7 +177,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				final Model model = NewMavenSarlProjectWizard.this.lastModel;
 				if (model != null) {
-					final Plugin plugin = Iterables.find(model.getBuild().getPlugins(), it -> PLUGIN_ARTIFACT_ID.equals(it.getArtifactId()));
+					final Plugin plugin = Iterables.find(model.getBuild().getPlugins(), it -> SARL_PLUGIN_ARTIFACT_ID.equals(it.getArtifactId()));
 					plugin.setExtensions(true);
 					final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 					final IWorkspaceRoot root = workspace.getRoot();

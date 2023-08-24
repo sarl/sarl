@@ -15,8 +15,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>sdk</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
 	</dependencies>
@@ -30,18 +30,25 @@
 				<configuration>
 					<source>${target.jdk.version}</source>
 					<target>${target.jdk.version}</target>
+					<testSource>${target.jdk.version}</testSource>
+					<testTarget>${target.jdk.version}</testTarget>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>io.sarl.maven</groupId>
+				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${target.jdk.version}</source>
-					<target>${target.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<warningsAsErrors>false</warningsAsErrors>
+					<generateInlines>true</generateInlines>
+					<generateStorageFiles>true</generateStorageFiles>
+					<generateTraceFiles>true</generateTraceFiles>
 				</configuration>
 			</plugin>
 		</plugins>

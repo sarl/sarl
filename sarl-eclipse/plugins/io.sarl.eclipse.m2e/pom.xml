@@ -55,6 +55,48 @@
 							</replacements>
 						</configuration>
 					</execution>
+					<execution>
+						<id>prepare-constants-class</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/m2e/Constants.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(SARL_LANG_BUNDLE_NAME *= *")([^"]+)(";)</token>
+									<value>$1${sarl.corelib.osgiBundle}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_GROUP_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.corelib.groupId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_ARTIFACT_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.corelib.artifactId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_PLUGIN_GROUP_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.mvncompiler.groupId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_PLUGIN_ARTIFACT_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.mvncompiler.artifactId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_PLUGIN_ARTIFACT_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.sdk.groupId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_MAVENLIB_ARTIFACT_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.sdk.artifactId}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
