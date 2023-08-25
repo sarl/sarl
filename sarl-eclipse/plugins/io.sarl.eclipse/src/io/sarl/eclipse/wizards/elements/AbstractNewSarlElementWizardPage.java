@@ -132,63 +132,63 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Name of the SARL Initialize event.
 	 */
-	protected static final String INITIALIZE_EVENT_NAME = "io.sarl.core.Initialize"; //$NON-NLS-1$
+	protected static final String INITIALIZE_EVENT_NAME = "io.sarl.api.core.Initialize"; //$NON-NLS-1$
 
 	/** Name of the SARL Destroy event.
 	 */
-	protected static final String DESTROY_EVENT_NAME = "io.sarl.core.Destroy"; //$NON-NLS-1$
+	protected static final String DESTROY_EVENT_NAME = "io.sarl.api.core.Destroy"; //$NON-NLS-1$
 
 	/** Name of the SARL ContextJoined event.
 	 */
-	protected static final String CONTEXTJOINED_EVENT_NAME = "io.sarl.core.ContextJoined"; //$NON-NLS-1$
+	protected static final String CONTEXTJOINED_EVENT_NAME = "io.sarl.api.core.ContextJoined"; //$NON-NLS-1$
 
 	/** Name of the SARL ContextLeft event.
 	 */
-	protected static final String CONTEXTLEFT_EVENT_NAME = "io.sarl.core.ContextLeft"; //$NON-NLS-1$
+	protected static final String CONTEXTLEFT_EVENT_NAME = "io.sarl.api.core.ContextLeft"; //$NON-NLS-1$
 
 	/** Name of the SARL MemberJoined event.
 	 */
-	protected static final String MEMBERJOINED_EVENT_NAME = "io.sarl.core.MemberJoined"; //$NON-NLS-1$
+	protected static final String MEMBERJOINED_EVENT_NAME = "io.sarl.api.core.MemberJoined"; //$NON-NLS-1$
 
 	/** Name of the SARL MemberLeft event.
 	 */
-	protected static final String MEMBERLEFT_EVENT_NAME = "io.sarl.core.MemberLeft"; //$NON-NLS-1$
+	protected static final String MEMBERLEFT_EVENT_NAME = "io.sarl.api.core.MemberLeft"; //$NON-NLS-1$
 
 	/** Name of the SARL SpaceCreated event.
 	 *
 	 * @since 0.10
 	 */
-	protected static final String SPACECREATED_EVENT_NAME = "io.sarl.core.SpaceCreated"; //$NON-NLS-1$
+	protected static final String SPACECREATED_EVENT_NAME = "io.sarl.api.core.SpaceCreated"; //$NON-NLS-1$
 
 	/** Name of the SARL SpaceDestroyed event.
 	 *
 	 * @since 0.10
 	 */
-	protected static final String SPACEDESTROYED_EVENT_NAME = "io.sarl.core.SpaceDestroyed"; //$NON-NLS-1$
+	protected static final String SPACEDESTROYED_EVENT_NAME = "io.sarl.api.core.SpaceDestroyed"; //$NON-NLS-1$
 
 	/** Name of the SARL ParticipantJoined event.
 	 *
 	 * @since 0.10
 	 */
-	protected static final String PARTICIPANTJOINED_EVENT_NAME = "io.sarl.core.ParticipantJoined"; //$NON-NLS-1$
+	protected static final String PARTICIPANTJOINED_EVENT_NAME = "io.sarl.api.core.ParticipantJoined"; //$NON-NLS-1$
 
 	/** Name of the SARL ParticipantLeft event.
 	 *
 	 * @since 0.10
 	 */
-	protected static final String PARTICIPANTLEFT_EVENT_NAME = "io.sarl.core.ParticipantLeft"; //$NON-NLS-1$
+	protected static final String PARTICIPANTLEFT_EVENT_NAME = "io.sarl.api.core.ParticipantLeft"; //$NON-NLS-1$
 
 	/** Name of the SARL AgentSpawned event.
 	 */
-	protected static final String AGENTSPAWNED_EVENT_NAME = "io.sarl.core.AgentSpawned"; //$NON-NLS-1$
+	protected static final String AGENTSPAWNED_EVENT_NAME = "io.sarl.api.core.AgentSpawned"; //$NON-NLS-1$
 
 	/** Name of the SARL AgentKilled event.
 	 */
-	protected static final String AGENTKILLED_EVENT_NAME = "io.sarl.core.AgentKilled"; //$NON-NLS-1$
+	protected static final String AGENTKILLED_EVENT_NAME = "io.sarl.api.core.AgentKilled"; //$NON-NLS-1$
 
 	/** Name of the SARL Logging capacity.
 	 */
-	protected static final String LOGGING_CAPACITY_NAME = "io.sarl.core.Logging"; //$NON-NLS-1$
+	protected static final String LOGGING_CAPACITY_NAME = "io.sarl.api.core.Logging"; //$NON-NLS-1$
 
 	/** Name of the SARL skill install function.
 	 */

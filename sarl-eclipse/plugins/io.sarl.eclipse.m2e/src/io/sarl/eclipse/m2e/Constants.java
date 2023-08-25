@@ -31,6 +31,10 @@ package io.sarl.eclipse.m2e;
  */
 public final class Constants {
 
+	/** Identifier of the plugin.
+	 */
+	public static final String PLUGIN_ID = "io.sarl.eclipse.m2e"; //$NON-NLS-1$
+
 	/** Name of the standard SARL bundle.
 	 */
 	public static final String SARL_LANG_BUNDLE_NAME = "io.sarl.lang.core"; //$NON-NLS-1$

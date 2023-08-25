@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.m2e;
 
+import static io.sarl.eclipse.m2e.Constants.PLUGIN_ID;
+
 import java.text.MessageFormat;
 
 import com.google.common.base.Strings;
@@ -39,10 +41,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
-
-	/** Identifier of the plugin.
-	 */
-	public static final String PLUGIN_ID = "io.sarl.m2e"; //$NON-NLS-1$
 
 	private static SARLMavenEclipsePlugin instance;
 

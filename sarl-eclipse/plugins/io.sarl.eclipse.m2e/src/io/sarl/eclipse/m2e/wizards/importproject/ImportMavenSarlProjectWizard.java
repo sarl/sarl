@@ -45,6 +45,7 @@ import org.eclipse.m2e.core.ui.internal.wizards.MavenImportWizard;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenImportWizardPage;
 import org.eclipse.ui.IWorkingSet;
 
+import io.sarl.eclipse.m2e.Constants;
 import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
 
 /**
@@ -127,7 +128,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 							}
 							if (status == null) {
 								status = new MultiStatus(
-										SARLMavenEclipsePlugin.PLUGIN_ID,
+										Constants.PLUGIN_ID,
 										IStatus.ERROR,
 										exception.getLocalizedMessage(),
 										exception);

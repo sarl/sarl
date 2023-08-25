@@ -67,6 +67,10 @@
 							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
+									<token>(PLUGIN_ID *= *")([^"]+)(";)</token>
+									<value>$1${project.artifactId}$3</value>
+								</replacement>
+								<replacement>
 									<token>(SARL_LANG_BUNDLE_NAME *= *")([^"]+)(";)</token>
 									<value>$1${sarl.corelib.osgiBundle}$3</value>
 								</replacement>
