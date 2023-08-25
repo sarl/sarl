@@ -156,6 +156,7 @@ public enum Level {
 	}
 
 	/** Replies the string representation of all the labels.
+	 * The labels are those returned by {@link #toJsonString()}.
 	 *
 	 * @return all the labels.
 	 */
@@ -165,7 +166,7 @@ public enum Level {
 			if (labels.length() > 0) {
 				labels.append(", "); //$NON-NLS-1$
 			}
-			labels.append(level.name());
+			labels.append(level.toJsonString());
 		}
 		return labels.toString();
 	}
