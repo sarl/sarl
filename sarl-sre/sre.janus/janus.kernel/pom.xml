@@ -14,9 +14,14 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -30,8 +35,9 @@
 			<artifactId>bootiqueapp</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>inputoutput</artifactId>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>compiler.tests</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
@@ -52,24 +58,6 @@
 				<artifactId>replacer</artifactId>
 				<version>1.5.3</version>
 				<executions>
-					<execution>
-						<id>prepare-osgi-aboutbox</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/main/resources/OSGI-INF/l10n/bundle.properties</file>
-							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
-							<replacements>
-								<replacement>
-									<token>^(Bundle-Vendor *= *)(.*)$</token>
-									<value>$1${sarl.vendor}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
 					<execution>
 						<id>prepare-javaversion-class</id>
 						<phase>process-sources</phase>
@@ -224,14 +212,35 @@
 				</executions>
             </plugin>
 			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>6.4.0</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<bnd>
+						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
+						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
+						Bundle-Vendor: ${sarl.vendor}
+						Export-Package: io.sarl.sre.janus.*
+					</bnd>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
 					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
+						<manifestFile>${manifest.file}</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

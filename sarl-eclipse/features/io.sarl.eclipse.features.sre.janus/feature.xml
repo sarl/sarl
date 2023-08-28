@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="io.sarl.eclipse.features.sre"
-      label="SRE for Eclipse"
+      id="io.sarl.eclipse.features.sre.janus"
+      label="Janus SRE for Eclipse"
       version="0.13.0.qualifier"
       plugin="io.sarl.eclipse">
 
@@ -223,6 +223,7 @@
 
    <requires>
       <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.13.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.baseplatform" version="0.13.0.qualifier"/>
    </requires>
 
    <plugin
@@ -233,14 +234,21 @@
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sre.janus.janus.kernel"
+         id="io.sarl.sre.janus.janus.kernel"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sre.janus.janus.network"
+         id="io.sarl.sre.janus.janus.network"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.hazelcast"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -8,9 +8,9 @@
 		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.eclipse.features.sre</artifactId>
+	<artifactId>io.sarl.eclipse.features.sre.janus</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>SRE Feature</name>
-	<description>Contains the SRE for being used in SARL Eclipse</description>
+	<name>Janus SRE Feature</name>
+	<description>Contains the Janus SRE for being used in SARL Eclipse</description>
 
 </project>

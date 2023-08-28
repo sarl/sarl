@@ -227,21 +227,21 @@
    </requires>
 
    <plugin
-         id="wrapped.io.sarl.apputils.bootiqueapp"
+         id="io.sarl.apputils.bootiqueapp"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.baseutils.afc.extension"
+         id="io.sarl.baseutils.afc.extension"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.lang.batchcompiler"
+         id="io.sarl.lang.batchcompiler"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -262,35 +262,35 @@
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sdk.api.core"
+         id="io.sarl.sdk.api.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sdk.api.naming"
+         id="io.sarl.sdk.api.naming"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sdk.api.probing"
+         id="io.sarl.sdk.api.probing"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sdk.api.util"
+         id="io.sarl.sdk.api.util"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="wrapped.io.sarl.sdk.sdk"
+         id="io.sarl.sdk.sdk"
          download-size="0"
          install-size="0"
          version="0.0.0"

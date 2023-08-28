@@ -10,6 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
 	</properties>
 
 	<dependencies>
@@ -82,14 +83,35 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>6.4.0</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<bnd>
+						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
+						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
+						Bundle-Vendor: ${sarl.vendor}
+						Export-Package: io.sarl.apputils.bootiqueapp.*
+					</bnd>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
 					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
+						<manifestFile>${manifest.file}</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

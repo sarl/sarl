@@ -12,6 +12,10 @@
 	<packaging>eclipse-plugin</packaging>
 	<name>Python Generator Integration</name>
 
+	<properties>
+		<sarl.pythongeneration.eclipse.bundle>io.sarl.eclipse.pythongenerator</sarl.pythongeneration.eclipse.bundle>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -51,6 +55,24 @@
 								<replacement>
 									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
 									<value>$1${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-java-plugin-names</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/pythongenerator/PyGeneratorUiPlugin.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(PLUGIN_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.pythongeneration.eclipse.bundle}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

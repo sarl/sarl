@@ -74,8 +74,6 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 	private static final String BUNDLES_PROPERTY_NAME = "JANUS_BUNDLES"; //$NON-NLS-1$
 
-	private static final String JAVADOC_URL = "http://www.sarl.io/docs/api/"; //$NON-NLS-1$
-
 	static {
 		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = SLASH
 				+ JanusClasspathContainer.class.getPackage().getName().replace(POINT, SLASH)
@@ -125,9 +123,10 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
 		final Bundle bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
-		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
-				new JanusBundleJavadocURLMappings(),
-				JANUS_DEPENDENCY_BUNDLE_NAMES);
+//		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
+//				new SARLBundleJavadocURLMappings(),
+//				JANUS_DEPENDENCY_BUNDLE_NAMES);
+		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle, new SARLBundleJavadocURLMappings());
 		return resolvedBundles;
 	}
 
@@ -148,27 +147,6 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	@Override
 	public String getDescription() {
 		return Messages.JanusClasspathContainer_0;
-	}
-
-	/** Define a mapping from bundles to URLs.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class JanusBundleJavadocURLMappings extends SARLBundleJavadocURLMappings {
-
-		private static final String JANUS_PREFIX = "io.janusproject."; //$NON-NLS-1$
-
-		@Override
-		public String getURLForBundle(Bundle bundle) {
-			if (bundle.getSymbolicName().startsWith(JANUS_PREFIX)) {
-				return JAVADOC_URL;
-			}
-			return super.getURLForBundle(bundle);
-		}
-
 	}
 
 }

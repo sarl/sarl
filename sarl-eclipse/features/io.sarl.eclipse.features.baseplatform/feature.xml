@@ -227,7 +227,6 @@
       <import feature="org.eclipse.m2e.feature" version="2.3.0.20230523-2033"/>
       <import feature="org.eclipse.xtext.redist" version="2.31.0.v20230529-0659"/>
       <import feature="org.eclipse.xtext.runtime" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.sdk" version="2.31.0.v20230529-0659"/>
       <import feature="org.eclipse.xtext.ui" version="2.31.0.v20230529-0659"/>
       <import feature="org.eclipse.xtext.xbase" version="2.31.0.v20230529-0659"/>
       <import feature="org.eclipse.xtext.xbase.lib" version="2.31.0.v20230529-0659"/>
@@ -1049,6 +1048,91 @@
 
    <plugin
          id="slf4j.simple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.log.stream"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-annotations"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-databind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.io.bootique.bootique"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.io.bootique.di.bootique-di"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.jopt-simple.jopt-simple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="stax2-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.arakhne.afc.core.util"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -26,7 +26,7 @@ import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.SimpleFormatter
 import java.util.logging.StreamHandler
-import org.arakhne.afc.inputoutput.stream.WriterOutputStream
+import org.apache.commons.io.output.WriterOutputStream
 
 /** A console handler that supports to be link to the standard output or the standard error output.
  * 
@@ -52,7 +52,7 @@ class JulOutputStreamConsoleHandler extends StreamHandler {
 	@SuppressWarnings("discouraged_reference")
 	private static def ensureOut(out : PrintStream) : PrintStream {
 		if (out === null) {
-			new PrintStream(new WriterOutputStream(System.console.writer))
+			new PrintStream(WriterOutputStream.builder.setWriter(System.console.writer).get)
 		} else {
 			out
 		}

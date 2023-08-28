@@ -10,6 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
 	</properties>
 
 	<dependencies>
@@ -45,31 +46,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>1.5.3</version>
-				<executions>
-					<execution>
-						<id>prepare-osgi-aboutbox</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/main/resources/OSGI-INF/l10n/bundle.properties</file>
-							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
-							<replacements>
-								<replacement>
-									<token>^(Bundle-Vendor *= *)(.*)$</token>
-									<value>$1${sarl.vendor}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
@@ -157,14 +133,35 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>6.4.0</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<bnd>
+						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
+						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
+						Bundle-Vendor: ${sarl.vendor}
+						Export-Package: io.sarl.api.core.*
+					</bnd>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
 					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
+						<manifestFile>${manifest.file}</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

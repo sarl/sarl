@@ -15,7 +15,7 @@
 	<modules>
 		<module>io.sarl.eclipse.features.baseplatform</module>
 		<module>io.sarl.eclipse.features.sarlcompiler</module>
-		<module>io.sarl.eclipse.features.sre</module>
+		<module>io.sarl.eclipse.features.sre.janus</module>
 		<module>io.sarl.eclipse.features.contribs</module>
 	</modules>
 

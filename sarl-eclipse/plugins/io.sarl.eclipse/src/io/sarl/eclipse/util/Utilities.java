@@ -320,9 +320,12 @@ public final class Utilities {
 
 		private static final String SARL_PREFIX = "io.sarl."; //$NON-NLS-1$
 
+		private static final String WRAPPED_SARL_PREFIX = "wrapped.io.sarl."; //$NON-NLS-1$
+
 		@Override
 		public String getURLForBundle(Bundle bundle) {
-			if (bundle.getSymbolicName().startsWith(SARL_PREFIX)) {
+			final String name = bundle.getSymbolicName();
+			if (name.startsWith(SARL_PREFIX) || name.startsWith(WRAPPED_SARL_PREFIX)) {
 				return SARLConfig.JAVADOC_URL;
 			}
 			return null;

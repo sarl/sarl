@@ -42,7 +42,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin.
 	 */
-	public static final String PLUGIN_ID = "io.sarl.pythongenerator.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "io.sarl.eclipse.pythongenerator"; //$NON-NLS-1$
 
 	private static PyGeneratorUiPlugin instance;
 
