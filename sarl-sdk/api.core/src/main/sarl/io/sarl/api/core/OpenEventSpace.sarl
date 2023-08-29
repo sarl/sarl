@@ -60,7 +60,7 @@ interface OpenEventSpace extends EventSpace {
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@WarningOnCall("Prefer calling registerStrongParticipant() or registerWeakParticipant()")
-	@Deprecated(forRemoval = true, since = "0.12")
+	@Deprecated
 	def register(participant : EventListener, weakParticipant : boolean = false) : Address fires ParticipantJoined {
 		if (weakParticipant) {
 			participant.registerWeakParticipant
