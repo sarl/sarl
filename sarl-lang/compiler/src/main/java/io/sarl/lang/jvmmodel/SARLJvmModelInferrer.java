@@ -580,7 +580,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final Iterator<GenerationContext> iterator = this.bufferedContexes.iterator();
 			while (selectedContext == null && iterator.hasNext()) {
 				final GenerationContext candidate = iterator.next();
-				if (Objects.equal(candidate.getTypeIdentifier(), context.getTypeIdentifier())) {
+				if (!candidate.isRelease() && Objects.equal(candidate.getTypeIdentifier(), context.getTypeIdentifier())) {
 					runPostElements = candidate.getParentContext() == null;
 					selectedContext = candidate;
 				}

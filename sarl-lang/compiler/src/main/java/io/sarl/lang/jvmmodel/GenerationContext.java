@@ -528,10 +528,19 @@ abstract class GenerationContext {
 		}
 		return this.actionPrototypeContext;
 	}
+	
+	/** Replies if this context is released.
+	 *
+	 * @return {@code true} if the context was released, otherwise {@code false}.
+	 * @since 0.13
+	 */
+	public synchronized boolean isRelease() {
+		return this.target == null || this.contextObject == null;
+	}
 
 	/** Release any allocated resource.
 	 */
-	public void release() {
+	public synchronized void release() {
 		if (this.actionPrototypeContext != null) {
 			this.actionPrototypeContext.release();
 			this.actionPrototypeContext = null;
