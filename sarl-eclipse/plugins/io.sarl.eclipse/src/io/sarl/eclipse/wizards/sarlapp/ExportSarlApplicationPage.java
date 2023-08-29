@@ -155,13 +155,12 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 
-		final boolean isModularConfig = JavaRuntime.isModularConfiguration(configuration);
 		final List<IPath> userEntries = new ArrayList<>(entries.length);
 		for (int i = 0; i < entries.length; i++) {
 			final int classPathProperty = entries[i].getClasspathProperty();
-			if ((!isModularConfig && classPathProperty == IRuntimeClasspathEntry.USER_CLASSES)
-					|| (isModularConfig && (classPathProperty == IRuntimeClasspathEntry.CLASS_PATH
-					|| classPathProperty == IRuntimeClasspathEntry.MODULE_PATH))) {
+			if (classPathProperty == IRuntimeClasspathEntry.USER_CLASSES
+					|| classPathProperty == IRuntimeClasspathEntry.CLASS_PATH
+					|| classPathProperty == IRuntimeClasspathEntry.MODULE_PATH) {
 
 				final String location = entries[i].getLocation();
 				if (location != null) {

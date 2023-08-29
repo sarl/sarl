@@ -103,7 +103,7 @@ import org.eclipse.ui.PlatformUI;
  *
  * <p>This page is copied and adapted from {@link FatJarPackageWizardPage}.
  *
- * <p>TODO: The code of JDt should be changed for applying the updates within this file.
+ * <p>TODO: The code of JDT should be changed for applying the updates within this file.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -631,6 +631,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	// TODO: Remove static modifier from JDT
 	// TODO: Replace "private" by "protected" within JDT
+	// TODO: In modular projects, the user classes are also exported
 	protected IPath[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
 		IRuntimeClasspathEntry[] entries= JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
 		entries= JavaRuntime.resolveRuntimeClasspath(entries, configuration);
@@ -640,7 +641,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		for (int i= 0; i < entries.length; i++) {
 			int classPathProperty= entries[i].getClasspathProperty();
 			if ((!isModularConfig && classPathProperty == IRuntimeClasspathEntry.USER_CLASSES)
-					|| (isModularConfig && (classPathProperty == IRuntimeClasspathEntry.CLASS_PATH || classPathProperty == IRuntimeClasspathEntry.MODULE_PATH))) {
+					|| (isModularConfig && (classPathProperty == IRuntimeClasspathEntry.USER_CLASSES || classPathProperty == IRuntimeClasspathEntry.CLASS_PATH || classPathProperty == IRuntimeClasspathEntry.MODULE_PATH))) {
 
 				String location= entries[i].getLocation();
 				if (location != null) {
