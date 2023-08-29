@@ -96,7 +96,7 @@ public final class ReflectExtensions {
 	 * @param formatter the default name formatter.
 	 * @deprecated since 0.12, see {@link #setDefaultMethodNameFormatter(Function)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	public static void setDefaultNameFormatter(Function<Method, String> formatter) {
 		defaultMethodNameFormatter = formatter;
 	}
@@ -116,7 +116,7 @@ public final class ReflectExtensions {
 	 * @deprecated since 0.12, see {@link #getDefaultMethodNameFormatter()}
 	 */
 	@Pure
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	public static Function<Method, String> getDefaultNameFormatter() {
 		return getDefaultMethodNameFormatter();
 	}

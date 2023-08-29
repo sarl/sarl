@@ -64,8 +64,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	}
 
 	@Override
-	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre,
-			String standardProgramArguments) throws CoreException {
+	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre, String standardProgramArguments) throws CoreException {
 		// Retrieve the classname of the boot agent.
 		final String bootAgent = getAgentName(configuration);
 

@@ -904,7 +904,7 @@ capacity DefaultContextInteractions {
 	 * @since 0.4
 	 * @deprecated since 0.11, see {@link #emit(Event,Scope)} 
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.11")
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@SarlAsynchronousExecution
 	def willReceive(receiver : UUID, ^event : Event)
@@ -984,7 +984,7 @@ capacity DefaultContextInteractions {
 	 * @fires AgentSpawnFailure if the cannot be spawn.
 	 * @deprecated See the {@link Lifecycle} capacity.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.7")
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@SarlAsynchronousExecution
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned, AgentSpawnFailure
@@ -1010,7 +1010,7 @@ capacity Logging {
 	 * @param message the elements to display.
 	 * @deprecated Use {@link #info(Object,Object...)}.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.7")
 	def println(message : Object)
 	
 	/** Print the given message at error logging level.

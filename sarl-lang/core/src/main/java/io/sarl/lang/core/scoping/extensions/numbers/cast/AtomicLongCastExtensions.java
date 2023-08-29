@@ -75,7 +75,7 @@ public final class AtomicLongCastExtensions {
 	 */
 	@Pure
 	@Inline(value = "$1.intValue()")
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.11")
 	public static int toInt(AtomicLong number) {
 		return number.intValue();
 	}
@@ -121,7 +121,7 @@ public final class AtomicLongCastExtensions {
 	 */
 	@Pure
 	@Inline(value = "$2.valueOf($1.longValue())", imported = Long.class)
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.11")
 	public static Long toLongInteger(AtomicLong number) {
 		return Long.valueOf(number.longValue());
 	}

@@ -143,7 +143,7 @@ public interface IActionPrototypeProvider {
 	 * @param container the element for which the prototype store must be reset.
 	 * @deprecated since 0.10, see {@link #createContext()}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default void clear(JvmIdentifiableElement container) {
 		// Do nothing
 	}
@@ -152,7 +152,7 @@ public interface IActionPrototypeProvider {
 	 *
 	 * @deprecated since 0.10, see {@link #createContext()}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default void clear() {
 		// Do nothing.
 	}
@@ -175,7 +175,7 @@ public interface IActionPrototypeProvider {
 	 * @return the signature, never {@code null}.
 	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default Iterable<InferredPrototype> getPrototypes(QualifiedActionName id) {
 		final IActionPrototypeContext ctx = createContext();
 		try {
@@ -203,7 +203,7 @@ public interface IActionPrototypeProvider {
 	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName, ActionParameterTypes)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID) {
 		final IActionPrototypeContext ctx = createContext();
 		try {
@@ -238,7 +238,7 @@ public interface IActionPrototypeProvider {
 	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #createPrototypeFromSarlModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs,
 			List<? extends XtendParameter> parameters) {
 		final IActionPrototypeContext ctx = createContext();
@@ -274,7 +274,7 @@ public interface IActionPrototypeProvider {
 	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #createPrototypeFromJvmModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id, boolean isVarargs, List<JvmFormalParameter> parameters) {
 		final IActionPrototypeContext ctx = createContext();
 		try {

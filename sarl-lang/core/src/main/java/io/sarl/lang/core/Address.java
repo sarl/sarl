@@ -85,7 +85,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * @return the participant identifier associated to this address.
 	 * @deprecated since 0.12, see {@link #getID()}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	@Pure
 	@Inline("getID()")
 	public UUID getUUID() {
@@ -201,7 +201,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * @deprecated since 0.7, see {@link #getSpaceID()} for replacement.
 	 */
 	@Pure
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.7")
 	public SpaceID getSpaceId() {
 		return getSpaceID();
 	}

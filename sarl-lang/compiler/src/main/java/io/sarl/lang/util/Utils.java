@@ -1256,7 +1256,7 @@ public final class Utils {
 	 *     is too old.
 	 * @deprecated see {@link #getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	public static String getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context) {
 		final OutParameter<String> version = new OutParameter<>();
 		final SarlLibraryErrorCode code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);

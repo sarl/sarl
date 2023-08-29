@@ -44,7 +44,7 @@ interface SarlSpecificationChecker {
 	 *     if the given type has no marker related to the SARL specification version.
 	 * @deprecated since 0.10, see #getSarlSpecificationVersionObject(Class)
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	def getSarlSpecificationVersion(type : Class<?>) : float {
 		throw new UnsupportedOperationException
 	}

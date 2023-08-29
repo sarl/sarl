@@ -40,7 +40,7 @@ import io.sarl.lang.core.annotation.SarlSpecification;
  * @mavenartifactid $ArtifactId$
  * @deprecated no more used since 0.5.
  */
-@Deprecated
+@Deprecated(forRemoval = true, since = "0.5")
 @SuppressWarnings("all")
 @SarlSpecification("0.4")
 @SarlElementType(15)

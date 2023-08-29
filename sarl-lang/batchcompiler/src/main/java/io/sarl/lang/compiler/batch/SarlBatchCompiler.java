@@ -850,7 +850,7 @@ public class SarlBatchCompiler {
 	 * @deprecated since 0.10, see {@link #getCleaningPolicy()}.
 	 */
 	@Pure
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	@Inline(value = "getCleaningPolicy() != $1.NO_CLEANING", imported = {CleaningPolicy.class})
 	public boolean isDeleteTempDirectory() {
 		return getCleaningPolicy() != CleaningPolicy.NO_CLEANING;
@@ -861,7 +861,7 @@ public class SarlBatchCompiler {
 	 * @param delete {@code true} if the temp folder is deleted.
 	 * @deprecated since 0.10, see {@link #setCleaningPolicy(CleaningPolicy)}.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.10")
 	@Inline(value = "setCleaningPolicy(($1) ? $2.INTERNAL_CLEANING : $2.NO_CLEANING)", imported = {CleaningPolicy.class})
 	public void setDeleteTempDirectory(boolean delete) {
 		setCleaningPolicy(delete ? CleaningPolicy.INTERNAL_CLEANING : CleaningPolicy.NO_CLEANING);

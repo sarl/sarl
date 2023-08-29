@@ -640,7 +640,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws IOException in case of error.
 	 * @deprecated since 0.12, will be remove definitively when Jaa 8 is no more supported.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	protected String getBootClassPath() throws IOException {
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.session); //$NON-NLS-1$
 		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {

@@ -60,7 +60,7 @@ public class DelegateTreeAppendable implements ITreeAppendable {
 	 * @deprecated imports are handled by external components.
 	 */
 	@Override
-	@Deprecated
+	@Deprecated(forRemoval = false)
 	public List<String> getImports() {
 		return this.delegate.getImports();
 	}

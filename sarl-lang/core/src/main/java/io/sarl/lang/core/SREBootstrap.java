@@ -148,7 +148,7 @@ public interface SREBootstrap {
 	 * @since 0.7
 	 * @deprecated since 0.12, no direct replacement
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	default void setOffline(boolean isOffline) {
 		throw new UnsupportedOperationException();
 	}

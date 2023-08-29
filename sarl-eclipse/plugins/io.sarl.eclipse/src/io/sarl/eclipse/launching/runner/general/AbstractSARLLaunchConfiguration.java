@@ -76,7 +76,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 
 	private SoftReference<IRuntimeClasspathEntry[]> resolvedClasspath;
 
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	private SoftReference<String[]> bufferedClasspath8;
 
 	private SoftReference<String[]> bufferedClasspath;
@@ -245,7 +245,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	 * @deprecated since 0.12, use {@link #getClasspathAndModulepath(ILaunchConfiguration)}.
 	 */
 	@Override
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "0.12")
 	public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
 		synchronized (this) {
 			final String[] classpathEntries = this.bufferedClasspath8 == null ? null : this.bufferedClasspath8.get();

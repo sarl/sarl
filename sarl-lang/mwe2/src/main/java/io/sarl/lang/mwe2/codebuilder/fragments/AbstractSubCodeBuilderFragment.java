@@ -614,7 +614,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the fully qualified name for the given classifier.
 	 * @deprecated see {@link CodeElementExtractor#newTypeReference(EClassifier)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	protected TypeReference newTypeReference(EClassifier classifier) {
 		return getCodeElementExtractor().newTypeReference(classifier);
 	}

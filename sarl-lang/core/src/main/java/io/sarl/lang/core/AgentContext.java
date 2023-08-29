@@ -120,7 +120,7 @@ public interface AgentContext {
 	 * @see #getSpace(UUID)
 	 * @deprecated see {@link #getOrCreateSpaceWithSpec(Class, UUID, Object...)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	default <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
 		return getOrCreateSpaceWithSpec(spec, spaceUUID, creationParams);
@@ -180,7 +180,7 @@ public interface AgentContext {
 	 * @see #getSpace(UUID)
 	 * @deprecated see {@link #getOrCreateSpaceWithID(Class, UUID, Object...)}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	default <S extends Space> S getOrCreateSpaceWithID(UUID spaceUUID, Class<? extends SpaceSpecification<S>> spec,
 			Object... creationParams) {
 		return getOrCreateSpaceWithID(spec, spaceUUID, creationParams);
