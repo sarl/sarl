@@ -661,27 +661,29 @@ public final class BundleUtil {
 					// Default value of the output folder for our project but will be
 					// overload later in we find a .classpath precising the output
 					// folder
-					IPath outputFolder = Path.fromPortableString(bundleSourcePath.toPortableString().concat(
-							DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
-
-					URL janusBundleURL = null;
+					IPath outputFolder = bundleSourcePath;
+					if (!bundlePath.equals(bundleSourcePath)) {
+						outputFolder = Path.fromPortableString(bundleSourcePath.toPortableString().concat(DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
+					}
+					URL bundleURL = null;
 					try {
-						janusBundleURL = new URL("file://" + bundleSourcePath.toPortableString()); //$NON-NLS-1$
+						bundleURL = new URL("file://" + bundleSourcePath.toPortableString()); //$NON-NLS-1$
 					} catch (MalformedURLException e) {
 						return null;
 					}
-					final IPath classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, this.bundle, janusBundleURL);
+					final IPath classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, this.bundle, bundleURL);
 					if (classpathOutputFolder != null) {
 						outputFolder = classpathOutputFolder;
 					}
 					this.binaryBundlePath = outputFolder;
 				} else {
 					this.binaryBundlePath = bundlePath;
-					final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, bundlePath, null);
-					final List<BundleDependency> cpEntries = new ArrayList<>();
-					updateBundleClassPath(this.bundle, cpEntry, cpEntries);
-					setBundleDependencies(this.bundle, cpEntries, true);
 				}
+				final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
+				final List<BundleDependency> cpEntries = new ArrayList<>();
+				updateBundleClassPath(this.bundle, cpEntry, cpEntries);
+				setBundleDependencies(this.bundle, cpEntries, true);
+
 				extractAllBundleDependencies(this.bundle, true);
 				dependencies = getBundleDependencies(this.bundle);
 			}
@@ -1081,8 +1083,11 @@ public final class BundleUtil {
 				}
 				final BundleDependency cur = this.current;
 				final DependencyDefinition deps = getBundleDependencies(cur.getBundle());
-				if (deps != null && deps.getDependencies() != null) {
-					this.iterators.add(deps.getDependencies().iterator());
+				if (deps != null) {
+					final List<BundleDependency> depsdeps = deps.getDependencies();
+					if (depsdeps != null) {
+						this.iterators.add(depsdeps.iterator());
+					}
 				}
 				this.repliedBundles.add(cur.getBundle().getSymbolicName());
 				searchForNextElement();

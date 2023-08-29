@@ -35,7 +35,6 @@ import org.osgi.framework.Bundle;
 import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
-import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
 import io.sarl.lang.ide.buildpath.SARLBundleBuildPath;
 
 /** Classpath container dedicated to the Janus platform.
@@ -124,9 +123,8 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	public static IBundleDependencies getJanusPlatformClasspath() {
 		final Bundle bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
 //		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
-//				new SARLBundleJavadocURLMappings(),
 //				JANUS_DEPENDENCY_BUNDLE_NAMES);
-		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle, new SARLBundleJavadocURLMappings());
+		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
 		return resolvedBundles;
 	}
 

@@ -1239,22 +1239,26 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param elementTypeName the name of the element type.
 	 * @param behaviorUnitAdder the adder of behavior unit.
 	 * @param usesAdder the adder of uses statement.
-	 * @return {@code true} if the units are added; {@code false} otherwise.
+	 * @throws JavaModelException if the SARL SDK cannot be found on the classpath.
 	 * @since 0.5
 	 */
-	protected boolean createStandardSARLEventTemplates(String elementTypeName,
+	protected void createStandardSARLEventTemplates(String elementTypeName,
 			Function1<? super String, ? extends ISarlBehaviorUnitBuilder> behaviorUnitAdder,
-			Procedure1<? super String> usesAdder) {
-		if (!isCreateStandardEventHandlers()) {
-			return false;
-		}
-		Object type;
-		try {
-			type = getTypeFinder().findType(INITIALIZE_EVENT_NAME);
-		} catch (JavaModelException e) {
-			type = null;
-		}
-		if (type != null) {
+			Procedure1<? super String> usesAdder) throws JavaModelException {
+		if (isCreateStandardEventHandlers()) {
+			Object type;
+			try {
+				type = getTypeFinder().findType(INITIALIZE_EVENT_NAME);
+			} catch (JavaModelException e) {
+				type = null;
+			}
+			if (type == null) {
+				// SARL SDK is not on classpath
+				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+						MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_4, INITIALIZE_EVENT_NAME));
+				throw new JavaModelException(new CoreException(status));
+			}
+
 			// SARL Libraries are on the classpath
 
 			usesAdder.apply(LOGGING_CAPACITY_NAME);
@@ -1265,7 +1269,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					Messages.AbstractNewSarlElementWizardPage_9,
 					elementTypeName));
 			IExpressionBuilder expr = block.addExpression();
-			createInfoCall(expr, "The " + elementTypeName + " was started.");  //$NON-NLS-1$ //$NON-NLS-2$
+			createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_26, elementTypeName));
 
 			unit = behaviorUnitAdder.apply(DESTROY_EVENT_NAME);
 			block = unit.getExpression();
@@ -1273,7 +1277,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					Messages.AbstractNewSarlElementWizardPage_10,
 					elementTypeName));
 			expr = block.addExpression();
-			createInfoCall(expr, "The " + elementTypeName + " was stopped.");  //$NON-NLS-1$ //$NON-NLS-2$
+			createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_27, elementTypeName));
 
 			unit = behaviorUnitAdder.apply(AGENTSPAWNED_EVENT_NAME);
 			block = unit.getExpression();
@@ -1340,10 +1344,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			block.setInnerDocumentation(MessageFormat.format(
 					Messages.AbstractNewSarlElementWizardPage_24,
 					elementTypeName));
-
-			return true;
 		}
-		return false;
 	}
 
 	/** Create the default standard lifecycle function templates.
@@ -1369,7 +1370,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_19,
 				elementTypeName));
 		IExpressionBuilder expr = block.addExpression();
-		createInfoCall(expr, "Installing the " + elementTypeName);  //$NON-NLS-1$
+		createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_28, elementTypeName));
 
 		action = actionAdder.apply(PREPARE_UNINSTALL_SKILL_NAME);
 		block = action.getExpression();
@@ -1377,7 +1378,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_25,
 				elementTypeName));
 		expr = block.addExpression();
-		createInfoCall(expr, "Preparing the uninstallation of the " + elementTypeName);  //$NON-NLS-1$
+		createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_29, elementTypeName));
 
 		action = actionAdder.apply(UNINSTALL_SKILL_NAME);
 		block = action.getExpression();
@@ -1385,7 +1386,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_20,
 				elementTypeName));
 		expr = block.addExpression();
-		createInfoCall(expr, "Uninstalling the " + elementTypeName);  //$NON-NLS-1$
+		createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_30, elementTypeName));
 
 		return true;
 	}

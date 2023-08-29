@@ -53,7 +53,12 @@ public class Messages extends NLS {
 	public static String AbstractNewSarlElementWizardPage_23;
 	public static String AbstractNewSarlElementWizardPage_24;
 	public static String AbstractNewSarlElementWizardPage_25;
+	public static String AbstractNewSarlElementWizardPage_26;
+	public static String AbstractNewSarlElementWizardPage_27;
+	public static String AbstractNewSarlElementWizardPage_28;
+	public static String AbstractNewSarlElementWizardPage_29;
 	public static String AbstractNewSarlElementWizardPage_3;
+	public static String AbstractNewSarlElementWizardPage_30;
 	public static String AbstractNewSarlElementWizardPage_4;
 	public static String AbstractNewSarlElementWizardPage_5;
 	public static String AbstractNewSarlElementWizardPage_6;
@@ -67,7 +72,7 @@ public class Messages extends NLS {
 	public static String NewTypeWizardPage_InterfacesDialog_interface_title;
 	public static String NewTypeWizardPage_InterfacesDialog_message;
 	public static String NewTypeWizardPage_SuperClassDialog_message;
-	public static String NewTypeWizardPage_SuperClassDialog_title;
+	public static String NewTypeWizardPage_SuperClassDialog_title;	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

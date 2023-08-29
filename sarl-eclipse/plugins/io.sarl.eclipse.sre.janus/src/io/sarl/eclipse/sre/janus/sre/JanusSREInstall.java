@@ -57,11 +57,6 @@ import io.sarl.sre.janus.boot.configs.subconfigs.RootContextType;
 public class JanusSREInstall extends AbstractSREInstall {
 
 	/**
-	 * The unique identifier of this SRE.
-	 */
-	public static final String JANUS_SRE_ID = "io.janusproject.plugin.sre"; //$NON-NLS-1$
-
-	/**
 	 * The path where this SRE plugin jar is effectively installed.
 	 */
 	private final IPath janusSREInstallPath;
@@ -75,7 +70,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 	 * Creates the a JANUS SRE install.
 	 */
 	public JanusSREInstall() {
-		super(JANUS_SRE_ID);
+		super(JanusClasspathContainer.JANUS_MAIN_BUNDLE_ID);
 		final IBundleDependencies dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
 		//
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
