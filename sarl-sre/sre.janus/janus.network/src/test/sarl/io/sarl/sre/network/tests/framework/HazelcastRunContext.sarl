@@ -66,7 +66,7 @@ interface HazelcastRunContext extends SreRunContext {
  */
 class HazelcastRunContextImpl extends SreRunContextImpl implements HazelcastRunContext {
 
-	static val BOOTIQUE_RESOURCE = "io.janusproject.network/target/classes/META-INF/services/io.bootique.BQModuleProvider"
+	static val BOOTIQUE_RESOURCE = "janus.network/target/classes/META-INF/services/io.bootique.BQModuleProvider"
 
 	@Accessors(PUBLIC_GETTER)
 	var hazelcastInstance : HazelcastInstance
