@@ -106,7 +106,7 @@ that is containing all the jar files required for running your application, incl
 the Janus jar file(s):
 
 ```text
-java -cp /path/to/myapplication.jar:/path/to/[:janusjarfile](io.janusproject.kernel-<version>-with-dependencies.jar) [:fullbootclass!] myapp.MyAgent
+java -cp /path/to/myapplication.jar:/path/to/[:janusjarfile](janus.kernel-<version>-with-dependencies.jar) [:fullbootclass!] myapp.MyAgent
 ```
 
 The [:janusjarfile:] file must be dowloaded from the [Janus website](http://www.janusproject.io/)

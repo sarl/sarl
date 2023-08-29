@@ -246,7 +246,7 @@ same local network.
 ### Where are the sources for Janus?
 
 The sources for Janus are available inside the SARL project repository on
-[Github](https://github.com/sarl/sarl/tree/master/sre/io.janusproject/).
+[Github](https://github.com/sarl/sarl/tree/master/sarl-sre/janus/).
 
 
 ### How can I find the current issues?

@@ -226,8 +226,8 @@ you have to use another Maven dependency: [:janusnetworkplugin:].
     <dependencies>
        ...
        <dependency>
-          <groupId>io.janusproject</groupId>
-          <artifactId>[:janusnetworkplugin](io.janusproject.kernel.network)</artifactId>
+          <groupId>io.sarl.sre.janus</groupId>
+          <artifactId>[:janusnetworkplugin](janus.network)</artifactId>
           <version>${janus.version}</version>
        </dependency>
        ...
