@@ -202,7 +202,7 @@ abstract class GenerationContext {
 	 * @return the identifier of the context's type.
 	 */
 	public String getTypeIdentifier() {
-		return this.target.getIdentifier();
+		return this.target == null ? null : this.target.getIdentifier();
 	}
 
 	/** Replies the associated type.
