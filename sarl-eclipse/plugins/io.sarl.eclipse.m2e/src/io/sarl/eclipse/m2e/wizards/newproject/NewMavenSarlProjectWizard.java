@@ -54,6 +54,7 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizard;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardArtifactPage;
+import org.eclipse.swt.widgets.Composite;
 
 import io.sarl.lang.core.SARLVersion;
 
@@ -167,6 +168,17 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 		this.lastModel = model;
 
 		return model;
+	}
+	
+	@Override
+	public void createPageControls(Composite pageContainer) {
+		super.createPageControls(pageContainer);
+		// Force the "Create simple project" checkbox to be checked
+		this.simpleProject.setSelection(true);
+		this.archetypePage.setUsed(false);
+		this.parametersPage.setUsed(false);
+		this.artifactPage.setUsed(true);
+		getContainer().updateButtons();
 	}
 
 	@Override
