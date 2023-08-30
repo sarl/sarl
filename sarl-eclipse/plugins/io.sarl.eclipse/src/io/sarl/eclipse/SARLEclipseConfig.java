@@ -53,17 +53,17 @@ public final class SARLEclipseConfig {
 	/**
 	 * ID of this nature.
 	 */
-	public static final String NATURE_ID = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$
+	public static final String NATURE_ID = SARLEclipsePlugin.PLUGIN_ID + ".SARLProjectNature"; //$NON-NLS-1$
 
 	/**
 	 * ID of the SARL perspective.
 	 */
-	public static final String ID_SARL_PERSPECTIVE = "io.sarl.eclipse.perspective.devel"; //$NON-NLS-1$
+	public static final String ID_SARL_PERSPECTIVE = SARLEclipsePlugin.PLUGIN_ID + ".perspective.devel"; //$NON-NLS-1$
 
 	/**
 	 * ID of the SARL perspective.
 	 */
-	public static final String ID_SARL_DEBUG_PERSPECTIVE = "io.sarl.eclipse.perspective.debug"; //$NON-NLS-1$
+	public static final String ID_SARL_DEBUG_PERSPECTIVE = SARLEclipsePlugin.PLUGIN_ID + ".perspective.debug"; //$NON-NLS-1$
 
 	/**
 	 * The value is the identifier of the class path container for

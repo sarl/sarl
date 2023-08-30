@@ -21,8 +21,12 @@
 
 package io.sarl.sre.janus.network
 
+import javax.annotation.processing.Generated
+
 /** 
  * Describes the version of the network extension for the SRE platform.
+ *
+ * <p>The constants in this file are automatically updated by the Maven compilation process. DO NOT CHANGE THEM MANUALLY.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -36,12 +40,14 @@ final class SreNetworkVersion {
 	 *
 	 * @since 0.13
 	 */
+	@Generated(value = "maven")
 	public static val MAVEN_GROUP_ID = "io.sarl.sre.janus"
 
 	/** The artifact id of the Maven module that contains the network extension.
 	 *
 	 * @since 0.13
 	 */
+	@Generated(value = "maven")
 	public static val MAVEN_ARTIFACT_ID = "janus.network"
 
 }

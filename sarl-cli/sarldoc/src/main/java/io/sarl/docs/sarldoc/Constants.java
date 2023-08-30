@@ -21,6 +21,8 @@
 
 package io.sarl.docs.sarldoc;
 
+import javax.annotation.processing.Generated;
+
 /** Constants for sarlc.
  *
  * @author $Author: sgalland$
@@ -32,7 +34,10 @@ package io.sarl.docs.sarldoc;
 public final class Constants {
 
 	/** Default name of the sarldoc program.
+	 *
+	 * <p>This constant is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
 	 */
+	@Generated(value = "maven")
 	public static final String PROGRAM_NAME = "sarldoc"; //$NON-NLS-1$
 
 	/** Name of the option for defining the output directory for HTML documentation, without the {@code -} and the {@code /} prefixes.

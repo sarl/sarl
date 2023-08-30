@@ -21,9 +21,12 @@
 
 package io.sarl.lang.core;
 
+import javax.annotation.processing.Generated;
 
 /**
  * Describes the specification of the SARL language.
+ *
+ * <p>The constants in this file are automatically updated by the Maven compilation process. DO NOT CHANGE THEM MANUALLY.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -39,6 +42,7 @@ public final class SARLVersion {
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
 	 */
+	@Generated(value = "maven")
 	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.13"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library, e.g. {@code 0.13.0}.
@@ -48,6 +52,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
+	@Generated(value = "maven")
 	public static final String SARL_RELEASE_VERSION = "0.13.0"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library, e.g. {@code 0.13.0.qualifier}.
@@ -57,6 +62,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
+	@Generated(value = "maven")
 	public static final String SARL_RELEASE_VERSION_OSGI = "0.13.0.qualifier"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library, e.g. {@code 0.13.0-SNAPSHOT}.
@@ -66,6 +72,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
+	@Generated(value = "maven")
 	public static final String SARL_RELEASE_VERSION_MAVEN = "0.13.0-SNAPSHOT"; //$NON-NLS-1$
 
 	/** The status of the SARL specification, e.g. {@code Draft Release}.
@@ -73,40 +80,47 @@ public final class SARLVersion {
 	 * <p>Usually, this status is also displayed in the
 	 * <a href="http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html">reference documentation of SARL</a>.
 	 */
+	@Generated(value = "maven")
 	public static final String RELEASE_STATUS = "Draft Release"; //$NON-NLS-1$
 
 	/** Flag that indicates if the current SARL library is a stable release.
 	 *
 	 * <p>A stable release is collection of libraries that will be not more compiled and generated.
 	 */
+	@Generated(value = "maven")
 	public static final boolean IS_STABLE = false;
 
 	/** The minimal Xtext version to use SARL features, e.g. {@code 2.31.0}.
 	 */
+	@Generated(value = "maven")
 	public static final String MINIMAL_XTEXT_VERSION = "2.31.0"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used for running the SARL compilation tools (IDE, or sarlc), e.g. {@code 17}.
 	 *
 	 * @since 0.10
 	 */
+	@Generated(value = "maven")
 	public static final String MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "17"; //$NON-NLS-1$
 
 	/** The first incompatible version of the JDK that must NOT be used for running the SARL compilation tools (IDE, or sarlc), e.g. {@code 18}.
 	 *
 	 * @since 0.10
 	 */
+	@Generated(value = "maven")
 	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "18"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used on the classpath of SARL projects, e.g. {@code 17}.
 	 *
 	 * @since 0.10
 	 */
+	@Generated(value = "maven")
 	public static final String MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "17"; //$NON-NLS-1$
 
 	/** The first incompatible version of the JDK that must NOT be used on the classpath of SARL projects, e.g. {@code 18}.
 	 *
 	 * @since 0.10
 	 */
+	@Generated(value = "maven")
 	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "18"; //$NON-NLS-1$
 
 	private SARLVersion() {

@@ -154,7 +154,7 @@
 							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
-									<token>(int +MIN_JDK_VERSION *= *)(.*)(;)</token>
+									<token>(int +MIN_JDK_VERSION *= *)([^;]+)(;)</token>
 									<value>$1${sarl-dsl.min.jdk.version}$3</value>
 								</replacement>
 							</replacements>

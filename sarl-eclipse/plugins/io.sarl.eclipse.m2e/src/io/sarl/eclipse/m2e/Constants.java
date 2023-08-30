@@ -21,7 +21,11 @@
 
 package io.sarl.eclipse.m2e;
 
+import javax.annotation.processing.Generated;
+
 /** General constants.
+ *
+ * <p>The constants in this file are automatically updated by the Maven compilation process. DO NOT CHANGE THEM MANUALLY.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,35 +37,44 @@ public final class Constants {
 
 	/** Identifier of the plugin.
 	 */
+	@Generated("maven")
 	public static final String PLUGIN_ID = "io.sarl.eclipse.m2e"; //$NON-NLS-1$
 
-	/** Name of the standard SARL bundle.
+	/** Name of the bundle containing the SARL metamodel (io.sarl.lang:core).
 	 */
+	@Generated("maven")
 	public static final String SARL_LANG_BUNDLE_NAME = "io.sarl.lang.core"; //$NON-NLS-1$
 
-	/** Name of the standard SARL group ID.
+	/** Group ID for the artifact containing the SARL metamodel (io.sarl.lang:core).
 	 */
+	@Generated("maven")
 	public static final String SARL_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
 
-	/** Name of the standard SARL artifact ID.
+	/** Artifact ID for the artifact containing the SARL metamodel (io.sarl.lang:core).
 	 */
+	@Generated("maven")
 	public static final String SARL_ARTIFACT_ID = "core"; //$NON-NLS-1$
 
-	/** Name of the standard SARL Maven plugin's group ID.
+	/** Group ID of the artifact containing the SARL SDK (io.sarl.sdk:sdk).
 	 */
-	public static final String SARL_PLUGIN_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
-
-	/** Name of the standard SARL Maven plugin's artifact ID.
-	 */
-	public static final String SARL_PLUGIN_ARTIFACT_ID = "io.sarl.sdk"; //$NON-NLS-1$
-
-	/** Name of the standard SARL SDK's group ID.
-	 */
+	@Generated("maven")
 	public static final String SARL_MAVENLIB_GROUP_ID = "io.sarl.sdk"; //$NON-NLS-1$
 
-	/** Name of the standard SARL SDK's artifact ID.
+	/** Artifact ID of the artifact containing the SARL SDK (io.sarl.sdk:sdk).
 	 */
+	@Generated("maven")
 	public static final String SARL_MAVENLIB_ARTIFACT_ID = "sdk"; //$NON-NLS-1$
+
+	/** Group ID of the Maven plugin for compiling SARL code (io.sarl.lang:sarl-maven-compiler).
+	 */
+	@Generated("maven")
+	public static final String SARL_PLUGIN_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
+
+	/** Artifact ID of the Maven plugin for compiling SARL code (io.sarl.lang:sarl-maven-compiler).
+	 */
+	@Generated("maven")
+	public static final String SARL_PLUGIN_ARTIFACT_ID = "sarl-maven-plugin"; //$NON-NLS-1$
+
 
 	private Constants() {
 		//

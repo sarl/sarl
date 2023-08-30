@@ -101,7 +101,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 
 	@Override
 	public String getId() {
-		return "io.sarl.eclipse.debug.ui.sarlRuntimeEnvironmentTab"; //$NON-NLS-1$
+		return SARLEclipsePlugin.PLUGIN_ID + ".debug.ui.sarlRuntimeEnvironmentTab"; //$NON-NLS-1$
 	}
 
 	private static List<ProjectSREProviderFactory> getProviderFromExtension() {

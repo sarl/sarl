@@ -83,6 +83,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
@@ -102,7 +103,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * ID for the page.
 	 */
-	public static final String ID = "io.sarl.eclipse.preferences.SREsPreferencePage"; //$NON-NLS-1$
+	public static final String ID = SARLEclipsePlugin.PLUGIN_ID + ".preferences.SREsPreferencePage"; //$NON-NLS-1$
 
 	private static final int WRAP_WIDTH = 300;
 

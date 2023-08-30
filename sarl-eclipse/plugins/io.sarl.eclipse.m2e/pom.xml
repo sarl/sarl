@@ -83,20 +83,20 @@
 									<value>$1${sarl.corelib.artifactId}$3</value>
 								</replacement>
 								<replacement>
+									<token>(SARL_MAVENLIB_GROUP_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.sdk.groupId}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_MAVENLIB_ARTIFACT_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.sdk.artifactId}$3</value>
+								</replacement>
+								<replacement>
 									<token>(SARL_PLUGIN_GROUP_ID *= *")([^"]+)(";)</token>
 									<value>$1${sarl.mvncompiler.groupId}$3</value>
 								</replacement>
 								<replacement>
 									<token>(SARL_PLUGIN_ARTIFACT_ID *= *")([^"]+)(";)</token>
 									<value>$1${sarl.mvncompiler.artifactId}$3</value>
-								</replacement>
-								<replacement>
-									<token>(SARL_PLUGIN_ARTIFACT_ID *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.groupId}$3</value>
-								</replacement>
-								<replacement>
-									<token>(SARL_MAVENLIB_ARTIFACT_ID *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.artifactId}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

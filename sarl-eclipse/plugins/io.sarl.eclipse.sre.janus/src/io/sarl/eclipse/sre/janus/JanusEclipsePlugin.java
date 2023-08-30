@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.sre.janus;
 
+import javax.annotation.processing.Generated;
+
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,7 +33,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The eclipse plugin providing the JANUS platform as default SRE.
+ *
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -39,7 +43,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin for Eclipse integration of Janus.
+	 *
+	 * <p>This constant is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
 	 */
+	@Generated(value = "maven")
 	public static final String PLUGIN_ID = "io.sarl.eclipse.sre.janus"; //$NON-NLS-1$
 
 	private static JanusEclipsePlugin instance;

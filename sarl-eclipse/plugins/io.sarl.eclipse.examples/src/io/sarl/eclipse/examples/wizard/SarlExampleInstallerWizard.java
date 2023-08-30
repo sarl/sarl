@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.processing.Generated;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IFile;
@@ -86,9 +87,10 @@ import io.sarl.lang.core.SARLVersion;
  */
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
+	@Generated("maven")
 	private static final int MIN_JDK_VERSION = 17;
 
-		private static final String USER_JAVA_VERSION_KEY = "@USER_JAVA_VERSION@"; //$NON-NLS-1$
+	private static final String USER_JAVA_VERSION_KEY = "@USER_JAVA_VERSION@"; //$NON-NLS-1$
 
 	private ConfigurationPage configurationPage;
 

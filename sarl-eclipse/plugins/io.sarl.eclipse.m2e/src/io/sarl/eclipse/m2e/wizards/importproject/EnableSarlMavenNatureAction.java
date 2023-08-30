@@ -45,6 +45,7 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import io.sarl.eclipse.m2e.Constants;
 import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 
@@ -61,7 +62,7 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 
 	/** Identifier of the action.
 	 */
-	public static final String ID = "io.sarl.m2e.enableSarlMavenNatureAction"; //$NON-NLS-1$
+	public static final String ID = Constants.PLUGIN_ID + ".enableSarlMavenNatureAction"; //$NON-NLS-1$
 
 	private static final String FILENAME_CLASSPATH = ".classpath"; //$NON-NLS-1$
 

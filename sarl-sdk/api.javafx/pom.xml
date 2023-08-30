@@ -54,31 +54,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>1.5.3</version>
-				<executions>
-					<execution>
-						<id>prepare-osgi-aboutbox</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/main/resources/OSGI-INF/l10n/bundle.properties</file>
-							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
-							<replacements>
-								<replacement>
-									<token>^(Bundle-Vendor *= *)(.*)$</token>
-									<value>$1${sarl.vendor}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>

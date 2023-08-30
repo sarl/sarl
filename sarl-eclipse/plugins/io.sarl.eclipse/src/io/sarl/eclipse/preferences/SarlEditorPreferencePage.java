@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
 import io.sarl.lang.ui.editor.SARLSourceViewerPreferenceAccess;
 
@@ -54,7 +55,7 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	/**
 	 * ID for the page.
 	 */
-	public static final String ID = "io.sarl.eclipse.preferences.SarlEditorPreferencePage"; //$NON-NLS-1$
+	public static final String ID = SARLEclipsePlugin.PLUGIN_ID + ".preferences.SarlEditorPreferencePage"; //$NON-NLS-1$
 
 	@Inject
 	private SARLSourceViewerPreferenceAccess sourceViewerPreferences;

@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 
@@ -80,7 +81,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	@Override
 	public String getId() {
-		return "io.sarl.eclipse.debug.ui.sarlArgumentsTab"; //$NON-NLS-1$
+		return SARLEclipsePlugin.PLUGIN_ID + ".debug.ui.sarlArgumentsTab"; //$NON-NLS-1$
 	}
 
 	@Override

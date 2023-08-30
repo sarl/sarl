@@ -39,6 +39,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
+
 /**
  * The ViewPart for the Package Explorer into the SARL environment.
  *
@@ -73,7 +75,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 * @see org.eclipse.ui.IWorkbenchPage#findView(java.lang.String)
 	 * @see org.eclipse.ui.IWorkbenchPage#showView(java.lang.String)
 	 */
-	public static final String ID_PACKAGES = "io.sarl.eclipse.explorer.PackageExplorer"; //$NON-NLS-1$
+	public static final String ID_PACKAGES = SARLEclipsePlugin.PLUGIN_ID + ".explorer.PackageExplorer"; //$NON-NLS-1$
 
 	private static final String CONTEXT_ID = ID_PACKAGES;
 

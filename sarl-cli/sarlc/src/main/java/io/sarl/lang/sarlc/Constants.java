@@ -21,6 +21,8 @@
 
 package io.sarl.lang.sarlc;
 
+import javax.annotation.processing.Generated;
+
 /** Constants for sarlc.
  *
  * @author $Author: sgalland$
@@ -32,7 +34,10 @@ package io.sarl.lang.sarlc;
 public final class Constants {
 
 	/** Default name of the sarlc program.
+	 *
+	 * <p>This constant is automatically updated by the Maven compilation processs. DO NOT CHANGE IT MANUALLY.
 	 */
+	@Generated(value = "maven")
 	public static final String PROGRAM_NAME = "sarlc"; //$NON-NLS-1$
 
 	/** Name of the option for defining the output directory from SARL to Java, without the {@code -} and the {@code /} prefixes.

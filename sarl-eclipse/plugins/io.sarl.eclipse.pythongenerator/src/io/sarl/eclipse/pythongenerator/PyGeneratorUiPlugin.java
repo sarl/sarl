@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.pythongenerator;
 
+import javax.annotation.processing.Generated;
+
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -41,7 +43,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin.
+	 *
+	 * <p>This constant is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
 	 */
+	@Generated("maven")
 	public static final String PLUGIN_ID = "io.sarl.eclipse.pythongenerator"; //$NON-NLS-1$
 
 	private static PyGeneratorUiPlugin instance;

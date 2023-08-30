@@ -31,6 +31,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.IProgressConstants;
 
 import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.explorer.SARLPackageExplorerPart;
 
 /**
@@ -102,18 +103,18 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 
 		// new actions - Java project creation wizard
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlProject"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlScript"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlAgent"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlBehavior"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlCapacity"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEvent"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlSkill"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlProject"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlScript"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlAgent"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlBehavior"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlCapacity"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlEvent"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlSkill"); //$NON-NLS-1$
 
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlClass"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlInterface"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEnumeration"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlAnnotation"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlClass"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlInterface"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlEnumeration"); //$NON-NLS-1$
+		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlAnnotation"); //$NON-NLS-1$
 
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
 

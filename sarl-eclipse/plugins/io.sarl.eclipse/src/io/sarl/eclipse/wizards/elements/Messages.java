@@ -23,6 +23,8 @@ package io.sarl.eclipse.wizards.elements;
 
 import org.eclipse.osgi.util.NLS;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
+
 /** Messages.
  *
  * @author $Author: sgalland$
@@ -33,7 +35,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.elements.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = SARLEclipsePlugin.PLUGIN_ID + ".wizards.elements.messages"; //$NON-NLS-1$
 	public static String AbstractNewSarlElementWizardPage_0;
 	public static String AbstractNewSarlElementWizardPage_1;
 	public static String AbstractNewSarlElementWizardPage_10;

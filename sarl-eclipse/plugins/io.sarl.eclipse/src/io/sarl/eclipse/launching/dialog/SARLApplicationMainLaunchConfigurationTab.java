@@ -100,7 +100,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	@Override
 	public String getId() {
-		return "io.sarl.eclipse.debug.ui.sarlApplicationMainTab"; //$NON-NLS-1$
+		return SARLEclipsePlugin.PLUGIN_ID + ".debug.ui.sarlApplicationMainTab"; //$NON-NLS-1$
 	}
 
 	@Override

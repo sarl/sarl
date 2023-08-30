@@ -47,15 +47,15 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	/** Identifier of the property page.
 	 */
-	public static final String PROPERTY_PAGE_ID = "io.sarl.eclipse.properties.SRE"; //$NON-NLS-1$
+	public static final String PROPERTY_PAGE_ID = SARLEclipsePlugin.PLUGIN_ID + ".properties.SRE"; //$NON-NLS-1$
 
 	/** Identifier of the preference page.
 	 */
-	public static final String PREFERENCE_PAGE_ID = "io.sarl.eclipse.preferences.SREsPreferencePage"; //$NON-NLS-1$
+	public static final String PREFERENCE_PAGE_ID = SARLEclipsePlugin.PLUGIN_ID + ".preferences.SREsPreferencePage"; //$NON-NLS-1$
 
 	/** Identifier of the context of the properties managed by this page.
 	 */
-	public static final String PROPERTY_QUALIFIER = "io.sarl.eclipse.launch.SRE"; //$NON-NLS-1$
+	public static final String PROPERTY_QUALIFIER = SARLEclipsePlugin.PLUGIN_ID + ".launch.SRE"; //$NON-NLS-1$
 
 	/** Name of the property that contains the SRE install id.
 	 */

@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.processing.Generated;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import org.apache.maven.artifact.Artifact;
@@ -51,6 +53,8 @@ import io.sarl.lang.maven.compiler.utils.MavenHelper;
 
 /** Java batch compiler based on the Maven definition of a Java compiler.
  *
+ * <p>The constants in this file are automatically updated by the Maven compilation process. DO NOT CHANGE THEM MANUALLY.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -59,6 +63,10 @@ import io.sarl.lang.maven.compiler.utils.MavenHelper;
  */
 public final class MavenBatchCompiler implements IJavaBatchCompiler {
 
+	/**
+	 * It is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
+	 */
+	@Generated(value = "maven")
 	private static final String DEFAULT_COMPILER_VERSION = "3.11.0"; //$NON-NLS-1$
 
 	private static final String MAVEN_COMPILER_PLUGIN_GROUPID = "org.apache.maven.plugins"; //$NON-NLS-1$

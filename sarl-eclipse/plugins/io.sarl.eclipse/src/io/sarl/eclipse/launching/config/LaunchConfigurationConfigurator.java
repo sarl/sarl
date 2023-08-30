@@ -153,12 +153,12 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	/** Identifier of the type of launch configuration dedicated to SARL agents
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
-	public static final String SARL_AGENT_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.AgentLaunchConfigType"; //$NON-NLS-1$
+	public static final String SARL_AGENT_LAUNCH_CONFIG_TYPE = SARLEclipsePlugin.PLUGIN_ID + ".debug.AgentLaunchConfigType"; //$NON-NLS-1$
 
 	/** Identifier of the type of launch configuration dedicated to SARL applications
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
-	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
+	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = SARLEclipsePlugin.PLUGIN_ID + ".debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
 
 	private static final boolean DEFAULT_USE_SYSTEM_SRE = true;
 

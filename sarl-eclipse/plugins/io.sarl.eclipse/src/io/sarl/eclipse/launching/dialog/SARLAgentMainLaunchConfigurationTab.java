@@ -210,7 +210,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	@Override
 	public String getId() {
-		return "io.sarl.eclipse.debug.ui.sarlMainTab"; //$NON-NLS-1$
+		return SARLEclipsePlugin.PLUGIN_ID + ".debug.ui.sarlMainTab"; //$NON-NLS-1$
 	}
 
 	@Override
