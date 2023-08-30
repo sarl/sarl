@@ -20,38 +20,37 @@
 
 	<extension point="org.eclipse.ui.newWizards">
 		  <wizard
-		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.m2e.wizards.newproject.NewMavenSarlProjectWizard"
-		        icon="icons/new_m2_sarl_project.png"
-		        id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject.1"
-		        name="%wizard.name.newSarlMavenProject"
-		        finalPerspective="io.sarl.eclipse.perspective.devel"
-		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
-		        project="true">
+          category="io.sarl.eclipse.category.wizards"
+          class="io.sarl.eclipse.m2e.wizards.newproject.NewMavenSarlProjectWizard"
+          finalPerspective="io.sarl.eclipse.perspective.devel"
+          icon="icons/new_m2_sarl_project.png"
+          id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject"
+          name="%wizard.name.newSarlMavenProject"
+          preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
+          project="true">
 				<description>%wizard.description.newSarlMavenProject.short</description>
 		  </wizard>
 		  <wizard
-		        category="org.eclipse.m2e"
-		        class="io.sarl.eclipse.m2e.wizards.newproject.NewMavenSarlProjectWizard"
-		        icon="icons/new_m2_sarl_project.png"
-		        id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject.2"
-		        name="%wizard.name.newSarlMavenProject"
-		        finalPerspective="io.sarl.eclipse.perspective.devel"
-		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
-		        project="true">
+          category="org.eclipse.m2e"
+          class="io.sarl.eclipse.m2e.wizards.newproject.NewMavenSarlProjectWizard"
+          finalPerspective="io.sarl.eclipse.perspective.devel"
+          icon="icons/new_m2_sarl_project.png"
+          id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject.inm2e"
+          name="%wizard.name.newSarlMavenProject"
+          project="true">
 				<description>%wizard.description.newSarlMavenProject.short</description>
 		  </wizard>
 	</extension>
 	
 	<extension point="org.eclipse.ui.importWizards">
-     <wizard id="io.sarl.eclipse.m2e.wizard.importSarlMavenProject.1"
+     <wizard id="io.sarl.eclipse.m2e.wizard.importSarlMavenProject"
              class="io.sarl.eclipse.m2e.wizards.importproject.ImportMavenSarlProjectWizard"
              icon="icons/import_m2_sarl_project.png"
              category="io.sarl.eclipse.category.wizards"
              name="%wizard.name.importSarlMavenProject">
         <description>%wizard.description.importwSarlMavenProject.short</description>
      </wizard>
-     <wizard id="io.sarl.eclipse.m2e.wizard.importSarlMavenProject.2"
+     <wizard id="io.sarl.eclipse.m2e.wizard.importSarlMavenProject.inm2e"
              class="io.sarl.eclipse.m2e.wizards.importproject.ImportMavenSarlProjectWizard"
              icon="icons/import_m2_sarl_project.png"
              category="org.eclipse.m2e"
@@ -63,22 +62,26 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
+            targetID="io.sarl.eclipse.perspective.devel">
+         <newWizardShortcut id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject"/>
+      </perspectiveExtension>
+      <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <newWizardShortcut id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject.1"/>
+         <newWizardShortcut id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject"/>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
-         <newWizardShortcut id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject.1"/>
+         <newWizardShortcut id="io.sarl.eclipse.m2e.wizard.newSarlMavenProject"/>
       </perspectiveExtension>
    </extension>
 
    <extension
          point="org.eclipse.ui.intro.quicklinks">
          <command
-          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.m2e.wizard.newSarlMavenProject.1)"
-            description="%wizard.description.newSarlMavenProject.short"
-            label="%wizard.name.newSarlMavenProject"
-            icon="icons/new_m2_sarl_project.png">
+          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.m2e.wizard.newSarlMavenProject)"
+            description="%wizard.description.newSarlMavenProject.long"
+            label="%wizard.description.newSarlMavenProject.short"
+            icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
          </command>
    </extension>
 
@@ -103,4 +106,5 @@
 	  </objectContribution>
    </extension> 
 
+	 
 </plugin>

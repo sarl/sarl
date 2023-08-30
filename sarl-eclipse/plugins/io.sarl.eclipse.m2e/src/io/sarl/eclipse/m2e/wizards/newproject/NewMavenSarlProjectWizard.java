@@ -21,6 +21,11 @@
 
 package io.sarl.eclipse.m2e.wizards.newproject;
 
+import static io.sarl.eclipse.m2e.Constants.SARL_MAVENLIB_ARTIFACT_ID;
+import static io.sarl.eclipse.m2e.Constants.SARL_MAVENLIB_GROUP_ID;
+import static io.sarl.eclipse.m2e.Constants.SARL_PLUGIN_ARTIFACT_ID;
+import static io.sarl.eclipse.m2e.Constants.SARL_PLUGIN_GROUP_ID;
+
 import java.nio.charset.Charset;
 
 import com.google.common.collect.Iterables;
@@ -43,14 +48,14 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizard;
+import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardArtifactPage;
 
 import io.sarl.lang.core.SARLVersion;
-
-import static io.sarl.eclipse.m2e.Constants.*;
 
 /**
  * Wizard for creating a maven-based SARL project.
@@ -151,9 +156,6 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 			final Xpp3Dom sourceDom = new Xpp3Dom(CONFIGURATION_SOURCE_NAME);
 			sourceDom.setValue(CONFIGURATION_LEVEL_VALUE);
 			configuration.addChild(sourceDom);
-			final Xpp3Dom targetDom = new Xpp3Dom(CONFIGURATION_TARGET_NAME);
-			targetDom.setValue(CONFIGURATION_LEVEL_VALUE);
-			configuration.addChild(targetDom);
 			final Xpp3Dom encodingDom = new Xpp3Dom(CONFIGURATION_ENCODING_NAME);
 			encodingDom.setValue(CONFIGURATION_ENCODING_VALUE);
 			configuration.addChild(encodingDom);
@@ -166,6 +168,21 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 		return model;
 	}
+
+	@Override
+	public void addPage(IWizardPage page) {
+		// Override the creation of the artifact page.
+		// The override cannot be done in the addPages() function because of the complexity of the code.
+		// When the function addPages() call the addPage() function for the artifact page, the artifact page is replaced.
+		IWizardPage addablePage = page;
+		if (page == this.artifactPage) {
+			final MavenProjectWizardArtifactPage newArtifactPage = new MavenSarlProjectWizardArtifactPage(this.importConfiguration);
+			this.artifactPage = newArtifactPage;
+			addablePage = newArtifactPage;
+		}
+		super.addPage(addablePage);
+	}
+
 
 	@Override
 	public boolean performFinish() {
