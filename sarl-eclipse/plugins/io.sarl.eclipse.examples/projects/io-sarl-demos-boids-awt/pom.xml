@@ -24,6 +24,13 @@
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>mathgeom</artifactId>
 			<version>${afc.version}</version>
+			<exclusions>
+				<!-- This exclusion is for ensuring that the Xtext libs are provided by the SARL SDK -->
+				<exclusion>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
