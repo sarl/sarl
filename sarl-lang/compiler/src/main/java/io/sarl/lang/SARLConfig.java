@@ -86,6 +86,12 @@ public final class SARLConfig {
 	 */
 	public static final String FOLDER_RESOURCES = "src/main/resources"; //$NON-NLS-1$
 
+	/** Path of the test resource files.
+	 *
+	 * @since 0.13
+	 */
+	public static final String FOLDER_TEST_RESOURCES = "src/test/resources"; //$NON-NLS-1$
+
 	/** Path of the binary files.
 	 */
 	public static final String FOLDER_BIN = "target/classes"; //$NON-NLS-1$

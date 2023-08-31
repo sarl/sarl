@@ -22,6 +22,7 @@
 package io.sarl.eclipse.m2e.config;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -48,6 +49,7 @@ import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.MavenJdtPlugin;
 import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
 
 import io.sarl.eclipse.SARLEclipseConfig;
@@ -460,36 +462,94 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IProgressMonitor monitor) throws CoreException {
 		final IMavenProjectFacade facade = request.mavenProjectFacade();
 
-		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
-		// Special case of tycho plugins, for which the {@link #configureRawClasspath}
-		// and {@link #configureClasspath} were not invoked.
-		// ----------------------------------------------------------------------------------
-		final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
-
 		final SubMonitor subMonitor;
-		subMonitor = SubMonitor.convert(monitor, 3);
+		subMonitor = SubMonitor.convert(monitor, 5);
+		try {
+			final IProject project = request.mavenProjectFacade().getProject();
 
-		final IProject project = request.mavenProjectFacade().getProject();
-
-		final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
-		subMonitor.worked(1);
-		forceMavenCompilerConfiguration(facade, config);
-		subMonitor.worked(1);
-
-		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
-		if (isEclipsePlugin) {
-			// In the case of Eclipse bundle, the face to the Java project must be created by hand.
-			final IJavaProject javaProject = JavaCore.create(project);
-			final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
-			configureSarlProject(facade, config, classpath, false, subMonitor.newChild(1));
+			final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
 			subMonitor.worked(1);
-		}
-		// ----------------------------------------------------------------------------------
+			forceMavenCompilerConfiguration(facade, config);
+			subMonitor.worked(1);
 
-		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				project,
-				subMonitor.newChild(1));
-		subMonitor.worked(1);
+			io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
+					project,
+					subMonitor.newChild(1));
+			subMonitor.worked(1);
+
+			final IJavaProject javaProject = JavaCore.create(project);
+			if (javaProject != null) {
+				final IClasspathDescriptor classpath = getMutableClasspath(javaProject);
+				
+				// Change the project configuration for SARL
+				removeSarlLibraries(classpath);
+				configureSarlProject(facade, config, classpath, true, subMonitor.newChild(1));
+				
+				// Save the new classpath of the project
+				final MavenProject mavenProject = request.mavenProject();
+				final IPath outputPath = makeFullPath(facade, new File(mavenProject.getBuild().getOutputDirectory()));
+				final IClasspathEntry[] classpathEntries = classpath.getEntries();
+				sortClasspathEntries(classpathEntries);
+				javaProject.setRawClasspath(classpathEntries, outputPath, subMonitor.newChild(1));
+				MavenJdtPlugin.getDefault().getBuildpathManager().updateClasspath(project, subMonitor.newChild(1));
+			}
+			subMonitor.worked(3);
+		} finally {
+			subMonitor.done();
+		}
+	}
+
+	private static int getFolderOrder(String name) {
+		if (name.endsWith(SARLConfig.FOLDER_SOURCE_SARL) || name.endsWith(SARLConfig.FOLDER_TEST_SOURCE_SARL) || name.endsWith(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL)) {
+			return 0;
+		}
+		if (name.endsWith(SARLConfig.FOLDER_RESOURCES) || name.endsWith(SARLConfig.FOLDER_TEST_RESOURCES)) {
+			return 2;
+		}
+		if (name.endsWith(SARLConfig.FOLDER_SOURCE_GENERATED) || name.endsWith(SARLConfig.FOLDER_TEST_SOURCE_GENERATED)) {
+			return 3;
+		}
+		return 1;
+	}
+	
+	private static void sortClasspathEntries(IClasspathEntry[] entries) {
+		Arrays.sort(entries, (a, b) -> {
+			final String na = a.getPath().toPortableString();
+			final String nb = b.getPath().toPortableString();
+			final int nameCmp = na.compareTo(nb);
+			if (nameCmp == 0) {
+				return 0;
+			}
+			final int ta = a.getEntryKind();
+			final int tb = b.getEntryKind();
+			if (ta == tb) {
+				if (ta == IClasspathEntry.CPE_SOURCE) {
+					final int testCmp = Boolean.compare(a.isTest(), b.isTest());
+					if (testCmp != 0) {
+						return testCmp;
+					}
+					final int orderCmp = Integer.compare(getFolderOrder(na), getFolderOrder(nb));
+					if (orderCmp != 0) {
+						return orderCmp;
+					}
+				}
+				return nameCmp;
+			}
+			return ta - tb;
+		});
+	}
+
+	private static IClasspathDescriptor getMutableClasspath(IJavaProject project) throws CoreException {
+		final IClasspathDescriptor classpath = new ClasspathDescriptor(true);
+		// Mark all the existing classpath entries in order to be not ignored when the getEntries() function is invoked.
+		// It is preserving all the entities in the replied classspath.
+		final IPath pfp = project.getProject().getFullPath();
+		for (final IClasspathEntry cpe : project.getRawClasspath()) {
+			if (!pfp.equals(cpe.getPath())) {
+				classpath.addEntry(cpe);
+			}
+		}
+		return classpath;
 	}
 
 	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
@@ -505,8 +565,12 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public void unconfigure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
 		final IJavaProject javaProject = JavaCore.create(request.mavenProjectFacade().getProject());
-		final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
-		addSarlLibraries(classpath);
+		if (javaProject != null) {
+			final IClasspathDescriptor classpath = getMutableClasspath(javaProject);
+			addSarlLibraries(classpath);
+			javaProject.setRawClasspath(classpath.getEntries(), null);
+			MavenJdtPlugin.getDefault().getBuildpathManager().updateClasspath(request.mavenProjectFacade().getProject(), null);
+		}
 	}
 
 	@Override
