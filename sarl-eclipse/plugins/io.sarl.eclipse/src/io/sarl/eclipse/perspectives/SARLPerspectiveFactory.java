@@ -55,12 +55,12 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
 		final String editorArea = layout.getEditorArea();
 
-		final IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, //$NON-NLS-1$
+		final IFolderLayout projectManagementFolder = layout.createFolder("left", IPageLayout.LEFT, //$NON-NLS-1$
 				LEFT_PANEL_RATIO, editorArea);
-		//folder.addView(JavaUI.ID_PACKAGES);
-		folder.addView(SARLPackageExplorerPart.ID_PACKAGES);
-		folder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
-		folder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
+		projectManagementFolder.addView(SARLPackageExplorerPart.ID_PACKAGES);
+		projectManagementFolder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
+		projectManagementFolder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
+		projectManagementFolder.addPlaceholder(JavaUI.ID_PACKAGES);
 
 		final IFolderLayout outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, //$NON-NLS-1$
 				BOTTOM_PANEL_RATIO, editorArea);
@@ -82,11 +82,11 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addActionSet(JavaUI.ID_ELEMENT_CREATION_ACTION_SET);
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
-		// views - java
-		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
+		// views - sarl
+		layout.addShowViewShortcut(SARLPackageExplorerPart.ID_PACKAGES);
 		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);
 		layout.addShowViewShortcut(JavaUI.ID_SOURCE_VIEW);
-
+		layout.addShowViewShortcut(JavaUI.ID_JAVADOC_VIEW);
 
 		// views - search
 		layout.addShowViewShortcut(NewSearchUI.SEARCH_VIEW_ID);
@@ -116,7 +116,7 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlEnumeration"); //$NON-NLS-1$
 		layout.addNewWizardShortcut(SARLEclipsePlugin.PLUGIN_ID + ".wizard.newSarlAnnotation"); //$NON-NLS-1$
 
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
+		//layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
 
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard");	 //$NON-NLS-1$
