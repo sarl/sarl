@@ -587,7 +587,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 		if (selectedContext == null) {
-			throw new IllegalStateException("Not same contexts when closing"); //$NON-NLS-1$
+			this.log.warning("Not same contexts when closing"); //$NON-NLS-1$
+			return;
 		}
 		if (runPostElements) {
 			for (final Runnable handler : selectedContext.getPostFinalizationElements()) {

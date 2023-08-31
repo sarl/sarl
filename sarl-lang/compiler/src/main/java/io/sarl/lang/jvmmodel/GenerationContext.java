@@ -133,7 +133,7 @@ abstract class GenerationContext {
 
 	/** The context object.
 	 */
-	private EObject contextObject;
+	private final EObject contextObject;
 
 	/** The provider of generation configuration.
 	 */
@@ -170,6 +170,7 @@ abstract class GenerationContext {
 	 * @param target the target type for which the context is opened.
 	 */
 	GenerationContext(EObject owner, JvmDeclaredType target) {
+		assert owner != null;
 		this.target = target;
 		this.contextObject = owner;
 	}
@@ -546,7 +547,6 @@ abstract class GenerationContext {
 			this.actionPrototypeContext = null;
 		}
 		this.target = null;
-		this.contextObject = null;
 		this.generatorConfig = null;
 		this.generatorConfig2 = null;
 		this.finalOperations.clear();
