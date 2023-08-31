@@ -98,9 +98,17 @@
 	     <visibility>
 	       <and>
 	         <objectState name="open" value="true"/>
-	         <not>
-	           <objectState name="nature" value="io.sarl.eclipse.natures.SARLProjectNature"/>
-	         </not>
+	         <or>
+		         <not>
+		           <objectState name="nature" value="io.sarl.eclipse.SARLProjectNature"/>
+		         </not>
+		         <not>
+		           <objectState name="nature" value="org.eclipse.m2e.core.maven2Nature"/>
+		         </not>
+		         <not>
+		           <objectState name="nature" value="org.eclipse.jdt.core.javanature"/>
+		         </not>
+		     </or>
 	       </and>
 	     </visibility>
 	  </objectContribution>

@@ -146,7 +146,7 @@
         point="org.eclipse.ui.ide.projectNatureImages">
      <image
            icon="icons/sarl_project_nature_overlay.png"
-           id="io.sarl.eclipse.natures.SARLProjectNatureImage"
+           id="io.sarl.eclipse.SARLProjectNatureImage"
            natureId="io.sarl.eclipse.SARLProjectNature">
      </image>
   </extension>
