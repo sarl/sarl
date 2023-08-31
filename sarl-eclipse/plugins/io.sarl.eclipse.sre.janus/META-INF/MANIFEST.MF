@@ -11,7 +11,8 @@ Bundle-Vendor: SARL.io
 Export-Package: io.sarl.eclipse.sre.janus,
  io.sarl.eclipse.sre.janus.buildpath,
  io.sarl.eclipse.sre.janus.network,
- io.sarl.eclipse.sre.janus.sre
+ io.sarl.eclipse.sre.janus.sre,
+ io.sarl.eclipse.sre.janus.ui
 Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
  io.sarl.lang.ide;bundle-version="0.13.0",
  io.sarl.eclipse;bundle-version="0.13.0",

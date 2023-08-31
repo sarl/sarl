@@ -28,6 +28,7 @@ import java.util.Map;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -59,7 +60,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 	/**
 	 * The path where this SRE plugin jar is effectively installed.
 	 */
-	private final IPath janusSREInstallPath;
+	private IPath janusSREInstallPath;
 
 	/**
 	 * The path of this installation of the Janus plugin.
@@ -80,6 +81,13 @@ public class JanusSREInstall extends AbstractSREInstall {
 		setBootstrap(SREBootstrap.class.getName());
 		//
 		setClassPathEntries(dependencies.getTransitiveRuntimeClasspathEntries(true));
+	}
+
+	@Override
+	public JanusSREInstall clone() {
+		final JanusSREInstall clone = (JanusSREInstall) super.clone();
+		clone.janusSREInstallPath = this.janusSREInstallPath == null ? null : Path.fromPortableString(clone.janusSREInstallPath.toPortableString());
+		return clone;
 	}
 
 	@Override

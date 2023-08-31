@@ -7,6 +7,13 @@
             class="io.sarl.eclipse.sre.janus.sre.JanusSREInstall">
       </sreInstallation>
    </extension>
+   <extension
+         point="io.sarl.eclipse.sreInstallPages">
+      <sreInstallPage
+            class="io.sarl.eclipse.sre.janus.ui.JanusSREPage"
+            sreInstallType="io.sarl.eclipse.sre.janus.sre.JanusSREInstall">
+      </sreInstallPage>
+   </extension>
 
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
