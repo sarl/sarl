@@ -60,7 +60,6 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		projectManagementFolder.addView(SARLPackageExplorerPart.ID_PACKAGES);
 		projectManagementFolder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		projectManagementFolder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
-		projectManagementFolder.addPlaceholder(JavaUI.ID_PACKAGES);
 
 		final IFolderLayout outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, //$NON-NLS-1$
 				BOTTOM_PANEL_RATIO, editorArea);
@@ -72,6 +71,7 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		outputfolder.addPlaceholder(NewSearchUI.SEARCH_VIEW_ID);
 		outputfolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		outputfolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
+		outputfolder.addPlaceholder(JavaUI.ID_PACKAGES);
 
 		final IFolderLayout outlineFolder = layout.createFolder("right", IPageLayout.RIGHT, //$NON-NLS-1$
 				RIGHT_PANEL_RATIO, editorArea);
