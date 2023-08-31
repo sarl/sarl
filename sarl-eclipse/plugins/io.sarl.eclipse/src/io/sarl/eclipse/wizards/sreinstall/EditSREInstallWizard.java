@@ -23,6 +23,7 @@ package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
@@ -52,14 +53,22 @@ public class EditSREInstallWizard extends SREInstallWizard {
 
 	@Override
 	public void addPages() {
-		this.editPage = getPage(getOriginalSRE());
-		this.editPage.initialize(getOriginalSRE());
-		addPage(this.editPage);
+		try {
+			final ISREInstall original = getOriginalSRE();
+			this.editPage = getPage(original);
+			this.editPage.initialize(original);
+			addPage(this.editPage);
+		} catch (Throwable ex) {
+			this.editPage = null;
+			SARLEclipsePlugin.getDefault().openError(getShell(),
+					getWindowTitle(),
+					ex.getLocalizedMessage(), null, ex);
+		}
 	}
 
 	@Override
 	public boolean performFinish() {
-		if (this.editPage.performFinish()) {
+		if (this.editPage == null || this.editPage.performFinish()) {
 			return super.performFinish();
 		}
 		return false;
@@ -67,7 +76,7 @@ public class EditSREInstallWizard extends SREInstallWizard {
 
 	@Override
 	public boolean performCancel() {
-		if (this.editPage.performCancel()) {
+		if (this.editPage == null || this.editPage.performCancel()) {
 			return super.performCancel();
 		}
 		return false;

@@ -199,7 +199,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public void initialize(ISREInstall sre) {
 		if (!(sre instanceof ManifestBasedSREInstall)) {
-			throw new SREException("Illegal SRE type: expecting StandardSREInstall."); //$NON-NLS-1$
+			throw new SREException("Illegal SRE type: expecting ManifestBasedSREInstall."); //$NON-NLS-1$
 		}
 		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
 		this.originalSRE = (ManifestBasedSREInstall) sre;

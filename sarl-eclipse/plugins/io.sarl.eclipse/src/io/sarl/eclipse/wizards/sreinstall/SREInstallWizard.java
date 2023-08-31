@@ -140,11 +140,12 @@ public abstract class SREInstallWizard extends Wizard {
 
 	private static boolean isInstance(String classname, ISREInstall sre) {
 		if (!Strings.isNullOrEmpty(classname)) {
-			try {
-				final Class<?> type = Class.forName(classname);
-				return type.isInstance(sre);
-			} catch (Throwable e) {
-				SARLEclipsePlugin.getDefault().log(e);
+			Class<?> type = sre.getClass();
+			while (type != null && !Object.class.equals(type)) {
+				if (classname.equals(type.getName())) {
+					return true;
+				}
+				type = type.getSuperclass();
 			}
 		}
 		return false;
