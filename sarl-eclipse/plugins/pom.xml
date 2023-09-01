@@ -22,6 +22,7 @@
 		<module>io.sarl.eclipse.experienceindex</module>
 		<module>io.sarl.eclipse.pythongenerator</module>
 		<module>io.sarl.eclipse.ideapp</module>
+		<module>io.sarl.eclipse.devapp</module>
 	</modules>
 
 	<properties>

@@ -14,6 +14,7 @@
 
 	<modules>
 		<module>io.sarl.eclipse.products.ide</module>
+		<module>io.sarl.eclipse.products.dev</module>
 	</modules>
 
 	<properties>

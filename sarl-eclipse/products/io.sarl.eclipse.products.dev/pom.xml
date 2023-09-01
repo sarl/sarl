@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>sarl-eclipse-products</artifactId>
+		<version>0.13.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.eclipse.products.dev</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<name>SARL IDE for SARL Contributors</name>
+
+	<properties>
+		<productPath.linux.64>${project.basedir}/target/products/io.sarl.eclipse.products.dev/linux/gtk/x86_64</productPath.linux.64>
+		<productPath.win.64>${project.basedir}/target/products/io.sarl.eclipse.products.dev/win32/win32/x86_64</productPath.win.64>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-eclipse-product-description</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/io.sarl.eclipse.products.dev.product</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(org\.eclipse\.jdt\.internal\.debug\.ui\.launcher\.StandardVMType\/)(.+?)(&lt;)</token>
+									<value>$1${sarl-run.min.jre.environment}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- install the product using the p2 director -->
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- create zip file with the installed product -->
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>copy-linux64-root-files</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${productPath.linux.64}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/rootfiles/linux</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

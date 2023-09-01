@@ -18,6 +18,7 @@
 		<module>io.sarl.eclipse.features.sre.janus</module>
 		<module>io.sarl.eclipse.features.contribs</module>
 		<module>io.sarl.eclipse.features.ideapp</module>
+		<module>io.sarl.eclipse.features.devapp</module>
 	</modules>
 
 	<properties>
