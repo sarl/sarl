@@ -21,6 +21,7 @@
 		<module>io.sarl.eclipse.examples</module>
 		<module>io.sarl.eclipse.experienceindex</module>
 		<module>io.sarl.eclipse.pythongenerator</module>
+		<module>io.sarl.eclipse.ideapp</module>
 	</modules>
 
 	<properties>

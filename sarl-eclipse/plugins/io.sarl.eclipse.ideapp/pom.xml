@@ -7,8 +7,8 @@
 		<version>0.13.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.eclipse</artifactId>
-	<name>SARL Eclipse IDE Tools</name>
+	<artifactId>io.sarl.eclipse.ideapp</artifactId>
+	<name>SARL Eclipse IDE</name>
 	<description>Eclipse components for SARL</description>
 	<packaging>eclipse-plugin</packaging>
 
@@ -94,27 +94,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>prepare-pom-template</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/io/sarl/eclipse/wizards/newproject/pom_template.xml</file>
-							<regexFlags>
-								<regexFlag>MULTILINE</regexFlag>
-								<regexFlag>DOTALL</regexFlag>
-							</regexFlags>
-							<replacements>
-								<replacement>
-									<token>^(.*&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;.*?&lt;version&gt;)(.*?)(&lt;/version&gt;.*)$</token>
-									<value>$1${maven.compiler.version}$3</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
-					<execution>
 						<id>prepare-osgi-nls</id>
 						<phase>prepare-package</phase>
 						<goals>
@@ -159,72 +138,6 @@
 								<replacement>
 									<token>%targetjreenvironment%</token>
 									<value>${sarl-run.min.jre.environment}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-					</execution>
-					<execution>
-						<id>prepare-creationwizard-constants</id>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/io/sarl/eclipse/wizards/elements/AbstractNewSarlElementWizardPage.java</file>
-							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
-							<replacements>
-								<replacement>
-									<token>(INITIALIZE_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.initialize}$3</value>
-								</replacement>
-								<replacement>
-									<token>(DESTROY_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.destroy}$3</value>
-								</replacement>
-								<replacement>
-									<token>(CONTEXTJOINED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.contextjoined}$3</value>
-								</replacement>
-								<replacement>
-									<token>(CONTEXTLEFT_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.contextleft}$3</value>
-								</replacement>
-								<replacement>
-									<token>(MEMBERJOINED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.memberjoined}$3</value>
-								</replacement>
-								<replacement>
-									<token>(MEMBERLEFT_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.memberleft}$3</value>
-								</replacement>
-								<replacement>
-									<token>(SPACECREATED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.spacecreated}$3</value>
-								</replacement>
-								<replacement>
-									<token>(SPACEDESTROYED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.spacedestroyed}$3</value>
-								</replacement>
-								<replacement>
-									<token>(PARTICIPANTJOINED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.participantjoined}$3</value>
-								</replacement>
-								<replacement>
-									<token>(PARTICIPANTLEFT_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.participantleft}$3</value>
-								</replacement>
-								<replacement>
-									<token>(AGENTSPAWNED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.agentspawned}$3</value>
-								</replacement>
-								<replacement>
-									<token>(AGENTKILLED_EVENT_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.event.agentkilled}$3</value>
-								</replacement>
-								<replacement>
-									<token>(LOGGING_CAPACITY_NAME *= *")([^"]+)(";)</token>
-									<value>$1${sarl.sdk.capacity.logging}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>

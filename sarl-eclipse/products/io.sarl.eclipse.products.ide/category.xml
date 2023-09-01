@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="io.sarl.eclipse.features.sarlcompiler" version="0.13.0.qualifier">
-      <category name="io.sarl"/>
-   </feature>
-   <feature id="io.sarl.eclipse.features.sre.janus" version="0.13.0.qualifier">
-      <category name="io.sarl"/>
-   </feature>
-   <feature id="io.sarl.eclipse.features.contribs" version="0.13.0.qualifier">
-      <category name="io.sarl"/>
-   </feature>
-   <feature id="io.sarl.eclipse.features.sarlcompiler.source" version="0.13.0.qualifier">
-      <category name="io.sarl.sources"/>
-   </feature>
-   <feature id="io.sarl.eclipse.features.sre.janus.source" version="0.13.0.qualifier">
-      <category name="io.sarl.sources"/>
-   </feature>
-   <feature id="io.sarl.eclipse.features.baseplatform">
-      <category name="io.sarl"/>
-   </feature>
    <category-def name="io.sarl" label="SARL Language">
       <description>
          SARL is a general-purpose agent-oriented language. 
@@ -29,4 +11,29 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
          Bundle sources for the SARL agent programming language, and the related tools.
       </description>
    </category-def>
+
+   <feature id="io.sarl.eclipse.features.sarlcompiler" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.sarlcompiler.source" version="0.13.0.qualifier">
+      <category name="io.sarl.sources"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.sre.janus" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.sre.janus.source" version="0.13.0.qualifier">
+      <category name="io.sarl.sources"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.contribs" version="0.13.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.contribs.source" version="0.13.0.qualifier">
+      <category name="io.sarl.sources"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.baseplatform">
+      <category name="io.sarl"/>
+   </feature>
+   <feature id="io.sarl.eclipse.features.ideapp">
+      <category name="io.sarl"/>
+   </feature>
 </site>

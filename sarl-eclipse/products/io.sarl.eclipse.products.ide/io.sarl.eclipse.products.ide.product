@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.eclipse.products.ide" id="io.sarl.eclipse.io_sarl_eclipse_products_ide" application="org.eclipse.ui.ide.workbench" version="0.13.0.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="false">
+<product name="%product.name" uid="io.sarl.eclipse.products.ide" id="io.sarl.eclipse.ideapp.io_sarl_eclipse_products_ide" application="org.eclipse.ui.ide.workbench" version="0.13.0.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="false">
 
    <aboutInfo>
-      <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
+      <image path="/io.sarl.eclipse.ideapp/icons/eclipse-about-banner.png"/>
       <text>
          %about.general.text
       </text>
@@ -37,10 +37,10 @@
       </vmArgsWin>
    </launcherArgs>
 
-   <windowImages i16="/io.sarl.eclipse/icons/sarl_16.png" i32="/io.sarl.eclipse/icons/sarl_32.png" i48="/io.sarl.eclipse/icons/sarl_48.png" i64="/io.sarl.eclipse/icons/sarl_64.png" i128="/io.sarl.eclipse/icons/sarl_128.png" i256="/io.sarl.eclipse/icons/sarl_256.png"/>
+   <windowImages i16="/io.sarl.eclipse.ideapp/icons/sarl_16.png" i32="/io.sarl.eclipse.ideapp/icons/sarl_32.png" i48="/io.sarl.eclipse.ideapp/icons/sarl_48.png" i64="/io.sarl.eclipse.ideapp/icons/sarl_64.png" i128="/io.sarl.eclipse.ideapp/icons/sarl_128.png" i256="/io.sarl.eclipse.ideapp/icons/sarl_256.png"/>
 
    <splash
-      location="io.sarl.eclipse"
+      location="io.sarl.eclipse.ideapp"
       startupProgressRect="5,280,442,15"
       startupMessageRect="7,252,330,20"
       startupForegroundColor="F3F3F3" />
@@ -269,11 +269,15 @@
          </text>
    </license>
 
+   <plugins>
+   </plugins>
+
    <features>
       <feature id="io.sarl.eclipse.features.baseplatform" installMode="root"/>
       <feature id="io.sarl.eclipse.features.contribs" installMode="root"/>
       <feature id="io.sarl.eclipse.features.sarlcompiler" installMode="root"/>
       <feature id="io.sarl.eclipse.features.sre.janus" installMode="root"/>
+      <feature id="io.sarl.eclipse.features.ideapp" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.language.sdk" installMode="root"/>
@@ -323,7 +327,7 @@
    </configurations>
 
    <preferencesInfo>
-      <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
+      <targetfile overwrite="false" path="/io.sarl.eclipse.ideapp/plugin_customization.ini"/>
    </preferencesInfo>
 
    <cssInfo>
