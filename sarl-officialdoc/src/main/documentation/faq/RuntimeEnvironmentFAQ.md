@@ -82,6 +82,8 @@ Three methods are available for launching one or more agents in the Janus platfo
 * [From the command line](../gettingstarted/RunSARLAgentCLI.md).
 * [Inside the Eclipse IDE](../gettingstarted/RunSARLAgentEclipse.md).
 * [From a Java program](../gettingstarted/RunSARLAgentJava.md).
+* [By creating a runnable application file](../tutorials/CreateRunnableJar.md).
+
 
 
 ### In the Eclipse SARL product, what is the difference between the launch configurations "SARL Agent" and "SARL Application"?
@@ -175,6 +177,20 @@ For solving this issue, you could launch your Eclipse with the command line opti
 `-Dfile.encoding=UTF-8`, which is forcing the Eclipse product to consider the
 file as encoded with the UTF-8 charset.
 Note that this option is defined into the Eclipse SARL product since version 0.4.
+
+
+### How to create a runnable?
+
+Both "Java Application" and "SARL Application" are launch configurations for starting 
+a Java application, i.e. invoking the `main()` function for starting up.
+
+The difference between them is that the "SARL Application" launch configuration is 
+automatically adding in the application classpath the SARL Run-time Environment that
+is configured into your Eclipse SARL project.
+The "Java Application" does not.
+
+Consequently, if you need to run agents and if you start your application with a "Java 
+Application" launch configuration, you must add manually the SRE libraries in the classpath.
 
 
 ## Runtime Behavior of Janus

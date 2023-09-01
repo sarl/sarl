@@ -72,6 +72,7 @@ java [:cpcli](-cp) [:jarfile](app.jar) [:fullbootclass]{io.sarl.sre.janus.boot.[
 The option [:cpcli:] specifies the Jar file that contains
 the compiled classes. The given [:jarfile:] file is a Jar file that must contain the Janus
 platform, the SARL libraries, and the application classes.
+The creation of this [:jarfile:] file is explained in this [tutorial](../tutorials/CreateRunnableJar.md).
 The last argument is the fully qualified name of the booting class of Janus: [:fullbootclass:]
 
 > **_Very Important Note:_** With this method, you must add the SRE, e.g., Janus, on the classpath (or in the dependencies) of your project.

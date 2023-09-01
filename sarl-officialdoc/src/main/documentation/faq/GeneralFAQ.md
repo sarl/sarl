@@ -212,25 +212,25 @@ Nevertheless, the three most reported causes of avoidance of the SARL Eclipse la
 
 To solve this problem:
 * Install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default;
-* Force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file as follows.
+* Force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `sarlide.ini` file as follows.
 
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
-The editing of the `eclipse-sarl.ini` could be done by following the steps:
+The editing of the `sarlide.ini` could be done by following the steps:
 
-1. Locate the folder in which your JVM (not the standard Mac JRE) is installed, e.g. `/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin`. The previous folder must contains the tools `javac` and `java`.
+1. Locate the folder in which your JVM (not the standard Mac JRE) is installed, e.g. `/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin`. The previous folder must contains the tools `javac` and `java`.
 2. Open the folder in which the SARL `Eclipse.app` was copied
 3. Right-click on `Eclipse.app` and select `Show Package Contents`
 4. Move to `Contents/Eclipse`
-5. Open `eclipse-sarl.ini` with a text editor
+5. Open `sarlide.ini` with a text editor
 6. Add the following lines into the file or update the lines if they exist (there is a line break that must be inside the file content):
 ```
 -vm
-/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin
+/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin
 ```
 7. Save and start the SARL IDE.
 
-An complete example of the eclipse-sarl.ini file is:
+An complete example of the `sarlide.ini` file is:
 
 ```
 -startup
@@ -238,7 +238,7 @@ An complete example of the eclipse-sarl.ini file is:
 --launcher.library
 ../Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.1100.v20190907-0426
 -vm
-/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin
+/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin
 -vmargs
 -Xms256m
 -Xmx1g
@@ -278,7 +278,7 @@ You must run the SARL product with a valid version of the JDK.
 Two ways are available for solving this issue:
 
 1. install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
-2. force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw[.exe]` or `java[.exe]` of at least the JDK [:sarl-run.min.jdk.version!].
+2. force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `sarlide.ini` file into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw[.exe]` or `java[.exe]` of at least the JDK [:sarl-run.min.jdk.version!].
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 

@@ -47,6 +47,7 @@
 
 ### SARL Run-time Environment
 
+* [Creating a runnable application file with embedded SRE](./tutorials/CreateRunnableJar.md).
 * [Creating an extension for the Janus SRE](./tutorials/SreExtension.md)
 
 ## Best Practices with SARL
