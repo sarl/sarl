@@ -15,8 +15,6 @@
 	<properties>
 		<productPath.linux.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide/linux/gtk/x86_64</productPath.linux.64>
 		<productPath.win.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide/win32/win32/x86_64</productPath.win.64>
-		<productZip.macos.64>${project.basedir}/target/products/io.sarl.eclipse.products.ide-macosx.cocoa.x86_64.tar.gz</productZip.macos.64>
-		<productZipFolder.macos.64>Eclipse.app/Contents/MacOS</productZipFolder.macos.64>
 	</properties>
 
 	<build>

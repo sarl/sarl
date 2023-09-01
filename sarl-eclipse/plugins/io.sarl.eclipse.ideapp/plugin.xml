@@ -17,7 +17,7 @@
           </property>
           <property
                 name="aboutImage"
-                value="icons/eclipse-about-banner.png">
+                value="platform:/plugin/io.sarl.eclipse/icons/eclipse-about-banner.png">
           </property>
           <property
                 name="appName"
