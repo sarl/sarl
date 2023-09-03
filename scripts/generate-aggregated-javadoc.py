@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -10,6 +10,7 @@ def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
@@ -24,7 +25,10 @@ if is_exe(binary):
 		shutil.rmtree(os.path.join('.', 'target', 'site'))
 	except:
 		pass
-	cmd = [ binary,
+	cmd = [ binary ]
+	if args.pom:
+		cmd = cmd + [ "--pom", args.pom ]
+	cmd = cmd + [
 		#"--module", "./main/coreplugins/io.sarl.lang.core",
 		#"--module", "./main/apiplugins/io.sarl.core",
 		#"--module", "./main/apiplugins/io.sarl.util",
@@ -37,8 +41,7 @@ if is_exe(binary):
 		"-Dmaven.test.skip=true",
 		"-Dcheckstyle.skip=true",
 		"-DpublicSarlApiModuleSet=true",
-		#"-DperformRelease=true",
-		#"-Dsarl.compile.skip=true",
+		"-P!public-sarl-api-module-set-aggregateddoc",
 		"-Dsarl.jvminferrer.skip=true",
 		"-Dsarl.clean.skip=true",
 		]

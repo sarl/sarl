@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -38,14 +38,17 @@ def filterArgs(args):
 	return r
 
 ##############################
+## pomfile: the path to the root pom file (Unix format)
 ## sourcePaths: the source paths (Unix format)
 ## args: the command line arguments
-def generateDocumentation(sourcePaths, args):
+def generateDocumentation(pomfile, sourcePaths, args):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
 
 	cmd = maven_cmd
+	if pomfile:
+		cmd = cmd + " -f " + pomfile
 	for arg in args:
 		cmd = cmd + " " + arg
 	if sourcePaths:
@@ -61,6 +64,7 @@ def generateDocumentation(sourcePaths, args):
 ##############################
 ##
 parser = argparse.ArgumentParser(description="Generate the aggregated JavaDoc")
+parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument("--module", help="specify the module to be documented", action="append")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
@@ -70,7 +74,7 @@ retcode = 255
 
 doc_path = buildJavaDocPath(args.module)
 
-retcode = generateDocumentation(doc_path, rargs)
+retcode = generateDocumentation(args.pom, doc_path, rargs)
 
 sys.exit(retcode)
 

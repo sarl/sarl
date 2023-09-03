@@ -42,6 +42,17 @@
 				<module>compiler</module>
 				<module>pythongenerator</module>
 				<module>batchcompiler</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>public-sarl-api-module-set-aggregateddoc</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
 				<module>sarl-maven-plugin</module>
 			</modules>
 		</profile>

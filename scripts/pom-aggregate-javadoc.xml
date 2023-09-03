@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.sarl.tmp</groupId>
+	<artifactId>sarl-aggregated-javadoc-root</artifactId>
+	<version>0.13.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>API Documentation for SARL</name>
+	
+	<modules>
+		<module>sarl-lang</module>
+		<module>sarl-sdk</module>
+		<module>sarl-apputils</module>
+		<module>sarl-sre</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.5.0</version>
+					<configuration>
+						<docencoding>UTF-8</docencoding>
+						<encoding>UTF-8</encoding>
+						<charset>UTF-8</charset>
+						<show>protected</show>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<docfilessubdirs>true</docfilessubdirs>
+						<excludePackageNames></excludePackageNames>
+						<nohelp>true</nohelp>
+						<notree>true</notree>
+						<tags>
+							<tag>
+								<name>mavengroupid</name>
+								<placement>pt</placement>
+								<head>Maven Group Id:</head>
+							</tag>
+							<tag>
+								<name>mavenartifactid</name>
+								<placement>pt</placement>
+								<head>Maven Artifact Id:</head>
+							</tag>
+							<tag>
+								<name>ExcludeFromApidoc</name>
+								<placement>X</placement>
+							</tag>
+							<tag>
+								<name>optionalparam</name>
+								<placement>a</placement>
+								<head>Optional Parameter:</head>
+							</tag>
+							<tag>
+								<name>privateapi</name>
+								<placement>a</placement>
+								<head>Private API</head>
+							</tag>
+							<tag>
+								<name>fires</name>
+								<placement>a</placement>
+								<head>Fires: </head>
+							</tag>
+							<tag>
+								<name>generated</name>
+								<placement>a</placement>
+								<head>Generated</head>
+							</tag>
+							<tag>
+								<name>model</name>
+								<placement>a</placement>
+								<head>Model</head>
+							</tag>
+							<tag>
+								<name>ordered</name>
+								<placement>a</placement>
+								<head>Ordered</head>
+							</tag>
+						</tags>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
+
