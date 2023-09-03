@@ -103,14 +103,14 @@ class ExecutorsConfig {
 	/** 
 	 * Name of the property for the numbers of seconds that the kernel is waiting for thread terminations before timeout.
 	 * 
-	 * @see #KERNEL_THREAD_TIMEOUT_VALUE
+	 * @see #THREAD_TIMEOUT_VALUE
 	 */
 	public static val THREAD_TIMEOUT_NAME = PREFIX + ".threadTimeout"
 
 	/** 
 	 * Indicates the numbers of seconds that the kernel is waiting for thread terminations before timeout.
 	 * 
-	 * @see #KERNEL_THREAD_TIMEOUT_NAME
+	 * @see #THREAD_TIMEOUT_NAME
 	 */
 	public static val THREAD_TIMEOUT_VALUE = 30
 
@@ -165,9 +165,9 @@ class ExecutorsConfig {
 	 * @param maxThreads the max number.
 	 */
 	@BQConfigProperty("Maximum number of threads that could be used by the executor service")
-	def setMaxThreads(iMaxThreads : int) : void {
+	def setMaxThreads(maxThreads : int) : void {
 		if (maxThreads > 0) {
-			this.maxThreads = iMaxThreads;
+			this.maxThreads = maxThreads;
 		} else {
 			this.maxThreads = 1
 		}
@@ -175,7 +175,7 @@ class ExecutorsConfig {
 
 	/** Replies the maximum number of threads that could be used by the executor service.
 	 * 
-	 * @param the max number.
+	 * @return  the max number.
 	 */
 	def getMaxThreads : int {
 		if (this.maxThreads >0) {
@@ -197,9 +197,9 @@ class ExecutorsConfig {
 	 * @param minThreads the min number.
 	 */
 	@BQConfigProperty("Minimum number of threads that could be used by the executor service")
-	def setMinThreads(iMinThreads : int) {
+	def setMinThreads(minThreads : int) {
 		if (minThreads > 0) {
-			this.minThreads = iMinThreads;
+			this.minThreads = minThreads;
 		} else {
 			this.minThreads = 1
 		}
@@ -234,7 +234,7 @@ class ExecutorsConfig {
 	/** 
 	 * Change the verbosity level of the internal errors.
 	 * 
-	 * @return the verbose level.
+	 * @param level the verbose level.
 	 */
 	@BQConfigProperty("Verbosity level for the internal errors within the executor service.")
 	def setInternalErrorVerboseLevel(level : Level) {
@@ -256,7 +256,7 @@ class ExecutorsConfig {
 	/** 
 	 * Change the verbosity level of the internal errors.
 	 * 
-	 * @return the verbose level.
+	 * @param purge indicates if the executor service is purging the thread pools periodically.
 	 * @since 0.11
 	 */
 	@BQConfigProperty("Indicates if the executor service is purging the thread pools periodically.")

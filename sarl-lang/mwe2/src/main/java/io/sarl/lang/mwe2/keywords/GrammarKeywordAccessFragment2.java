@@ -386,7 +386,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				.replaceFirst("[0-9_]+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/** Protect the keywword for Java comments.
+	/** Protect the keyword for Java comments.
 	 *
 	 * @param keyword the keyword to protect.
 	 * @return the protected keyword.
@@ -402,7 +402,9 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		if ("//".equals(keyword)) { //$NON-NLS-1$
 			return "/ /"; //$NON-NLS-1$
 		}
-		return keyword;
+		return keyword
+				.replace("{", "&#123;") //$NON-NLS-1$ //$NON-NLS-2$
+				.replace("}", "&#125;"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Returns all grammars from the hierarchy that are used from rules of this grammar.

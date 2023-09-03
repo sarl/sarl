@@ -56,7 +56,6 @@ abstract class AbstractSreEventSpaceSpecification {
 	/** Constructor.
 	 * 
 	 * @param injector the injector to use for creating the space.
-	 * @param lockProvider the provider of synchronization locks.
 	 * @param defaultSpace the default space.
 	 * @param spaceParticipantListenerFactory the factory of listeners on space participant events.
 	 * @param logger the logging service. 

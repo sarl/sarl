@@ -88,7 +88,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * extension point with the name {@link SARLEclipseConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
  * As well, this class provides SRE install change notification.
  *
- * <p>This class was inspired from <code>JavaRuntime</code>.
+ * <p>This class was inspired from {@code JavaRuntime}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -246,7 +246,7 @@ public final class SARLRuntime {
 	}
 
 	/**
-	 * Return the default SRE set with <code>setDefaultSRE()</code>.
+	 * Return the default SRE set with {@code setDefaultSRE()}.
 	 *
 	 * @return	Returns the default SRE. May return {@code null} when no default
 	 *     SRE was set or when the default SRE has been disposed.

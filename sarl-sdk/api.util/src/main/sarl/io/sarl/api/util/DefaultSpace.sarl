@@ -32,7 +32,7 @@ import javax.inject.Qualifier
  * received the default space instance of a SARL context.
  *
  * <p>This annotation has the contract to be associated to: i) a formal parameter or an object field
- * of type {@link OpenEventspace} and to the {@code @Inject} annotation, and ii) to be used only
+ * of type {@code OpenEventspace} and to the {@code @Inject} annotation, and ii) to be used only
  * inside a subtype of {@code Space}.
  *
  * <p>When a formal parameter or a field is in a subtype of {@code Space} and it is injectable and

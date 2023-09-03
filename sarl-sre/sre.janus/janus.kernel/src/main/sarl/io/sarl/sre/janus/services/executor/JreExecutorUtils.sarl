@@ -46,7 +46,7 @@ final class JreExecutorUtils {
 	 * @param executorService the service to use.
 	 * @param tasks the tasks to run.
 	 * @param interceptExceptions indicates if the exceptions in the tasks are thrown into a combined exception.
-	 * @param a callback for wrapping the tasks. The first argument of the lambda indicates if the errors should be catched and
+	 * @param wrapper a callback for wrapping the tasks. The first argument of the lambda indicates if the errors should be catched and
 	 *     the second argument is the task to run.
 	 */
 	static def executeInThreadsAndWait(executorService : java.util.concurrent.ExecutorService, tasks : Collection<Runnable>, interceptExceptions : boolean,

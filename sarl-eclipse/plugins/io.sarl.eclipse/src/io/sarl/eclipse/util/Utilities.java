@@ -98,7 +98,7 @@ public final class Utilities {
 	 * @param maxVersion the maximal version in the range (exclusive); could be {@code null}.
 	 * @return a negative number if the version in lower than the minVersion.
 	 *     A positive number if the version is greater than or equal to the maxVersion.
-	 *     <code>0</code> if the version is between minVersion and maxVersion.
+	 *     {@code 0} if the version is between minVersion and maxVersion.
 	 */
 	public static int compareVersionToRange(Version version, Version minVersion, Version maxVersion) {
 		assert minVersion == null || maxVersion == null || minVersion.compareTo(maxVersion) < 0;
@@ -139,7 +139,7 @@ public final class Utilities {
 	 * @param object2 the second object.
 	 * @return Negative number if a lower than b.
 	 *     Positive number if a greater than b.
-	 * <code>0</code> if a is equal to b.
+	 * {@code 0} if a is equal to b.
 	 */
 	public static <T> int compareTo(Comparable<T> object1, T object2) {
 		if (object1 == object2) {

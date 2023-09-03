@@ -85,11 +85,11 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	protected abstract <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill);
 
 	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 * Set the skill for the {@link Capacity} {@code capacity}.
 	 *
 	 * @param <S> - type of the skill.
 	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementation of <code>capacity</code>.
+	 * @param skill implementation of {@code capacity}.
 	 * @return the skill that was set.
 	 * @see #setSkillIfAbsent(Skill, Class...)
 	 */
@@ -97,10 +97,10 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	protected abstract <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities);
 
 	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code> if the mapping is not yet set.
+	 * Set the skill for the {@link Capacity} {@code capacity} if the mapping is not yet set.
 	 *
 	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementation of <code>capacity</code>.
+	 * @param skill implementation of {@code capacity}.
 	 * @see #setSkill(Skill, Class...)
 	 * @since 0.11
 	 */
@@ -118,7 +118,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
 	/**
 	 * Checks if this agent has a Skill that implements the {@link Capacity}
-	 * <code>capacity</code>.
+	 * {@code capacity}.
 	 *
 	 * @param capacity capacity to check
 	 * @return {@code true} if it has a skill associate to this capacity,
@@ -140,9 +140,9 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	/** Replies if the given identifier corresponds to the identifier
 	 * of this agent.
 	 *
-	 * <p>This function is equivalent to:<pre><code>
+	 * <p>This function is equivalent to:<pre>{@code 
 	 * id.equals( agent.getID() )
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param uID the identifier to test.
 	 * @return {@code true} if the given identifier is the one of this agent,

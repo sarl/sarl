@@ -82,7 +82,7 @@ public interface TypeHierarchy {
 	 * @param environment the generation environment.
 	 * @param selector the selector of the inherited members.
 	 * @return the list of inherited members.
-	 * @see #getDeclaredElements(TypeElement, boolean, boolean, SarlDocletEnvironment, Predicate)
+	 * @see #getDeclaredElements(TypeElement, boolean, boolean, boolean, SarlDocletEnvironment, Predicate)
 	 */
 	Collection<? extends Element> getInheritedElements(TypeElement typeElement, boolean includeInterfaces,
 			boolean includedElementsOnly, boolean includeDuplicates, boolean considerTypeElementMembers,
@@ -95,7 +95,7 @@ public interface TypeHierarchy {
 	 * @param environment the generation environment.
 	 * @param selector the selector of the inherited members.
 	 * @return the list of inherited members.
-	 * @see #getDeclaredElements(TypeElement, boolean, boolean, SarlDocletEnvironment, Predicate)
+	 * @see #getDeclaredElements(TypeElement, boolean, SarlDocletEnvironment, Predicate)
 	 */
 	default Collection<? extends Element> getInheritedElements(TypeElement typeElement, boolean includeInterfaces,
 			SarlDocletEnvironment environment, Predicate<Element> selector) {
@@ -112,7 +112,7 @@ public interface TypeHierarchy {
 	 * @param environment the generation environment.
 	 * @param selector the selector of the inherited members.
 	 * @return the list of inherited members.
-	 * @see #getInheritedElements(TypeElement, boolean, boolean, SarlDocletEnvironment, Predicate)
+	 * @see #getInheritedElements(TypeElement, boolean, boolean, boolean, boolean, SarlDocletEnvironment, Predicate)
 	 */
 	Collection<? extends Element> getDeclaredElements(TypeElement typeElement, boolean includeInterfaces, 
 			boolean includedElementsOnly, boolean includeDuplicates, SarlDocletEnvironment environment, Predicate<Element> selector);

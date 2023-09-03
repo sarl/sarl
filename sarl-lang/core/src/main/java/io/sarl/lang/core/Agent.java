@@ -54,7 +54,7 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	private volatile Procedure2<Agent, Skill> skillCallback;
 
 	/**
-	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
+	 * Creates a new agent with a parent {@code parentID} without initializing the built-in capacities.
 	 *
 	 * @param parentID the agent's spawner.
 	 * @param agentID the identifier of the agent, or
@@ -68,7 +68,7 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	}
 
 	/**
-	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
+	 * Creates a new agent with a parent {@code parentID} without initializing the built-in capacities.
 	 *
 	 * @param parentID the agent's spawner.
 	 * @param agentID the identifier of the agent, or

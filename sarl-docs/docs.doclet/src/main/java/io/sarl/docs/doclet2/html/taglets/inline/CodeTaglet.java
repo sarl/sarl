@@ -37,7 +37,7 @@ import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
  * nested doc tags, and is rendered in a font suitable for code.
  *
  * <p>
- * The tag {@code {@code ...}} is equivalent to {@code <code>{@literal ...}</code>}.
+ * The tag {@code {@code ...}} is equivalent to {@code {@code {@literal ...}}}.
  * For example, the text:
  * <blockquote>The type {@code {@code List<P>}}</blockquote>
  * displays as:

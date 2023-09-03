@@ -251,7 +251,6 @@ public class MavenHelper {
 	 *
 	 * @param logger the logger.
 	 * @return the group id, never {@code null}.
-	 * @throws MojoExecutionException if the current plugin cannot be determined.
 	 * @since 0.13
 	 */
 	public static String getSarlMavenPluginGroupId(Logger logger) {
@@ -321,7 +320,6 @@ public class MavenHelper {
 	 *
 	 * @param logger the logger.
 	 * @return the group id, never {@code null}.
-	 * @throws MojoExecutionException if the current plugin cannot be determined.
 	 * @since 0.13
 	 */
 	public static String getSarlSdkGroupId(Logger logger) {

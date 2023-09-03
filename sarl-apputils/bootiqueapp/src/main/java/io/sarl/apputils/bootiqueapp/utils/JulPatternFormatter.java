@@ -32,12 +32,12 @@ import com.google.common.base.Strings;
 /** JUL formatter based on pattern.
  *
  * <p>The format string may contains one of the following elements:<ul>
- * <li><code>%1</code>: the date,</li>
- * <li><code>%2</code>: the name of the calling function,</li>
- * <li><code>%3</code>: the name of the logger,</li>
- * <li><code>%4</code>: the logging level,</li>
- * <li><code>%5</code>: the message, and</li>
- * <li><code>%6</code>: the throwable.</li>
+ * <li>{@code %1}: the date,</li>
+ * <li>{@code %2}: the name of the calling function,</li>
+ * <li>{@code %3}: the name of the logger,</li>
+ * <li>{@code %4}: the logging level,</li>
+ * <li>{@code %5}: the message, and</li>
+ * <li>{@code %6}: the throwable.</li>
  * </ul>
  * 
  * @author $Author: sgalland$

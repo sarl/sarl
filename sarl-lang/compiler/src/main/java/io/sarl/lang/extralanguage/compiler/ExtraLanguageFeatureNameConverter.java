@@ -393,13 +393,13 @@ public class ExtraLanguageFeatureNameConverter {
 		/** Constructor.
 		 *
 		 * <p>The general format of the textual representation is:
-		 * <pre><code>
+		 * <pre>{@code 
 		 * [path/]featureIdentifier
-		 * </code></pre>
-		 * The <code>featureIdentifier</code> is the identifier of the feature.
-		 * The <code>path</code> is a sequence of type identifiers or field names.
+		 * }</pre>
+		 * The {@code featureIdentifier} is the identifier of the feature.
+		 * The {@code path} is a sequence of type identifiers or field names.
 		 *
-		 * <p>The special character <code>*</code> may be used for specifying "anything".
+		 * <p>The special character {@code *} may be used for specifying "anything".
 		 *
 		 * @param specification the textual representation of the pattern.
 		 */
@@ -539,9 +539,9 @@ public class ExtraLanguageFeatureNameConverter {
 		/** Constructor.
 		 *
 		 * <p>The general format of the textual representation may contains:<ul>
-		 * <li><code>$0</code> for the receiver.</li>
-		 * <li><code>$n</code> for the n-th argument.</li>
-		 * <li><code>$*</code> all the arguments.</li>
+		 * <li>{@code $0} for the receiver.</li>
+		 * <li>{@code $n} for the n-th argument.</li>
+		 * <li>{@code $*} all the arguments.</li>
 		 * </ul>
 		 *
 		 * @param specification the textual representation of the pattern.

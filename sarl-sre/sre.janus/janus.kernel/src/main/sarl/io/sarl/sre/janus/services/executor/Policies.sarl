@@ -44,7 +44,7 @@ import javax.inject.Singleton
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see {@link ThreadPoolExecutor.CallerRunsPolicy} 
+ * @see ThreadPoolExecutor.CallerRunsPolicy 
  */
 @Singleton
 abstract class AbstractThreadExecutorPolicy implements RejectedExecutionHandler, UncaughtExceptionHandler {
@@ -57,7 +57,7 @@ abstract class AbstractThreadExecutorPolicy implements RejectedExecutionHandler,
 	 * @param runnable the runnable task to be executed
 	 * @param executor the executor attempting to give the shut down status
 	 * @return {@code true} if the task is run. {@code false} if the task was not run.
-	 * @see {@link ThreadPoolExecutor.CallerRunsPolicy} 
+	 * @see ThreadPoolExecutor.CallerRunsPolicy 
 	 */
     protected static def runRejectedTask(runnable : Runnable, executor : ThreadPoolExecutor) : boolean {
 		// Runs the task directly in the calling thread of the {@code execute} method,
@@ -101,7 +101,7 @@ abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecuto
 	 *
 	 * @param exception the error.
 	 * @param taskId the identifier of the task.
-	 * @param taslName the name of the task.
+	 * @param taskName the name of the task.
 	 */
 	protected final def log(exception : Throwable, taskId : String, taskName : String) {
 		assert exception !== null
@@ -163,7 +163,7 @@ abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecuto
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see {@link ThreadPoolExecutor.CallerRunsPolicy}
+ * @see ThreadPoolExecutor.CallerRunsPolicy
  */
 @Singleton
 class VerboseThreadExecutorPolicy extends AbstractLoggingThreadExecutorPolicy {

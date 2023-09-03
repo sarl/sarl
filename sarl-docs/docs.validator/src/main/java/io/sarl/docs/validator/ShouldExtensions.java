@@ -156,7 +156,7 @@ public final class ShouldExtensions {
 	/** Ensure that the given string is a valid Maven version number.
 	 *
 	 * @param actual the string to test.
-	 * @param allowSnapshot indicates if the <code>-SNAPSHOT</code> postfix
+	 * @param allowSnapshot indicates if the {@code -SNAPSHOT} postfix
 	 *     is considered as valid.
 	 * @return the validation status.
 	 */
@@ -544,7 +544,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param name the name and prototype, e.g. {@code fct(java.lang.String):int}.
 	 * @return the method.
 	 */
 	public static Method shouldHaveDeprecatedMethod(Class<?> type, String name) {
@@ -560,7 +560,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param name the name and prototype, e.g. {@code fct(java.lang.String):int}.
 	 * @return the method.
 	 */
 	public static Method shouldHaveMethod(Class<?> type, String name) {
@@ -576,7 +576,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param name the name and prototype, e.g. {@code fct(java.lang.String):int}.
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the method.
 	 */
@@ -672,7 +672,7 @@ public final class ShouldExtensions {
 	 * The methods with hidden names according to SARL are not considered.
 	 *
 	 * @param type the type to check.
-	 * @param prototypes the prototypes, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param prototypes the prototypes, e.g. {@code fct(java.lang.String):int}.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveMethods(Class<?> type, String... prototypes) {
@@ -689,7 +689,7 @@ public final class ShouldExtensions {
 	 *
 	 * @param type the type to check.
 	 * @param considerHiddenNames indicates if the methods with hidden names are considered.
-	 * @param prototypes the prototypes, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param prototypes the prototypes, e.g. {@code fct(java.lang.String):int}.
 	 * @return the validation status.
 	 * @since 0.12
 	 */
@@ -737,7 +737,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>x:int</code>.
+	 * @param name the name and prototype, e.g. {@code x:int}.
 	 * @return the field.
 	 */
 	public static Field shouldHaveDeprecatedField(Class<?> type, String name) {
@@ -751,7 +751,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>x:int</code>.
+	 * @param name the name and prototype, e.g. {@code x:int}.
 	 * @return the field.
 	 */
 	public static Field shouldHaveField(Class<?> type, String name) {
@@ -765,7 +765,7 @@ public final class ShouldExtensions {
 	 * </ul>
 	 *
 	 * @param type the type to check.
-	 * @param name the name and prototype, e.g. <code>x:int</code>.
+	 * @param name the name and prototype, e.g. {@code x:int}.
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the field.
 	 */

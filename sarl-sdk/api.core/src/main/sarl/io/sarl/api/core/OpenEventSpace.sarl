@@ -56,7 +56,7 @@ interface OpenEventSpace extends EventSpace {
 	 * @return the entity's address in this space
 	 * @fires ParticipantJoined in its enclosing Context default space.
 	 * @deprecated since 0.12, see {@link #registerStrongParticipant(EventListener)} and
-	 *     {@link #registerStrongParticipant(EventListener).
+	 *     {@link #registerStrongParticipant(EventListener)}.
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@WarningOnCall("Prefer calling registerStrongParticipant() or registerWeakParticipant()")

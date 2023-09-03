@@ -3029,7 +3029,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
-	/** Create the functions that are related to the <code>toString</code> function.
+	/** Create the functions that are related to the {@code toString} function.
 	 *
 	 * @param context the current generation context.
 	 * @param source the source object.
@@ -3251,6 +3251,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Remove the type parameters from the given type.
 	 *
 	 * <p><table>
+	 * <caption>Criteria for removal</caption>
 	 * <thead><tr><th>Referenced type</th><th>Input</th><th>Replied referenced type</th><th>Output</th></tr></thead>
 	 * <tbody>
 	 * <tr><td>Type with generic type parameter</td><td>{@code T<G>}</td><td>the type itself</td><td>{@code T}</td></tr>
@@ -3495,7 +3496,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param sarlElement the SARL element for which the "equals function must be generated.
 	 * @param declaredType the declating type.
 	 * @param jvmFields the fields declared in the container.
-	 * @param generatePureAnnotation indicates if the <code>@Pure</code> annotation should be generated.
+	 * @param generatePureAnnotation indicates if the {@code @Pure} annotation should be generated.
 	 * @return the "equals" function.
 	 */
 	private JvmOperation toEqualsMethod(
@@ -3795,7 +3796,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return this.typeBuilder.cloneWithProxies(type);
 	}
 
-	/** Copy and clean the given documentation by removing any unnecessary <code>@param</code>.
+	/** Copy and clean the given documentation by removing any unnecessary {@code @param}.
 	 *
 	 * @param sourceOperation the source for the documentation.
 	 * @param targetOperation the target for the documentation.
@@ -3818,7 +3819,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return true;
 	}
 
-	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	/** Copy and clean the given documentation by removing any unecessary {@code @param}.
 	 *
 	 * @param sourceOperation the source for the documentation.
 	 * @param targetOperation the target for the documentation.
@@ -3841,7 +3842,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return true;
 	}
 
-	/** Copy and clean the given documentation by removing any unnecessary <code>@param</code>.
+	/** Copy and clean the given documentation by removing any unnecessary {@code @param}.
 	 *
 	 * @param sourceParameters the parameters of the source.
 	 * @param targetParameters the parameters of the target.

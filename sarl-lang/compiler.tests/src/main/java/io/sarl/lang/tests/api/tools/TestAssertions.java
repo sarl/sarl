@@ -53,7 +53,7 @@ public final class TestAssertions {
 	 *
 	 * The order of the parameters and the expected types is significant.
 	 *
-	 * The parameter <code>expectedDefaultValues</code> is a sequence of pairs, where
+	 * The parameter {@code expectedDefaultValues} is a sequence of pairs, where
 	 * the first element is the type of the default value and the second element is
 	 * the representation of the default value.
 	 * If the first element of the pair is null (meaning no default value), then

@@ -74,7 +74,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "($1).longValue()")
@@ -85,7 +85,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -96,7 +96,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -107,7 +107,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -118,7 +118,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -129,7 +129,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -140,7 +140,7 @@ public final class TimeExtensions {
 	/** Convert milliseconds to milliseconds.
 	 *
 	 * @param milis number of milliseconds to convert.
-	 * @return the number of milliseconds in <code>milis</code>.
+	 * @return the number of milliseconds in {@code milis}.
 	 */
 	@Pure
 	@Inline(value = "(long) ($1)")
@@ -228,7 +228,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
@@ -239,7 +239,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
@@ -250,7 +250,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
@@ -261,7 +261,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
@@ -272,7 +272,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
@@ -283,7 +283,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
@@ -294,7 +294,7 @@ public final class TimeExtensions {
 	/** Convert minutes to milliseconds.
 	 *
 	 * @param mins number of minutes to convert.
-	 * @return the number of milliseconds in <code>mins</code>
+	 * @return the number of milliseconds in {@code mins}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
@@ -305,7 +305,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
@@ -316,7 +316,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
@@ -327,7 +327,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
@@ -338,7 +338,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
@@ -349,7 +349,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
@@ -360,7 +360,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
@@ -371,7 +371,7 @@ public final class TimeExtensions {
 	/** Convert hours to milliseconds.
 	 *
 	 * @param hours number of hours to convert.
-	 * @return the number of milliseconds in <code>hours</code>
+	 * @return the number of milliseconds in {@code hours}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
@@ -382,7 +382,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
@@ -393,7 +393,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
@@ -404,7 +404,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
@@ -415,7 +415,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
@@ -426,7 +426,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
@@ -437,7 +437,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
@@ -448,7 +448,7 @@ public final class TimeExtensions {
 	/** Convert days to milliseconds.
 	 *
 	 * @param days number of days to convert.
-	 * @return the number of days in <code>days</code>
+	 * @return the number of days in {@code days}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
@@ -459,7 +459,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})
@@ -470,7 +470,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
@@ -481,7 +481,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
@@ -492,7 +492,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
@@ -503,7 +503,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
@@ -514,7 +514,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})
@@ -525,7 +525,7 @@ public final class TimeExtensions {
 	/** Convert weeks to milliseconds.
 	 *
 	 * @param weeks number of weeks to convert.
-	 * @return the number of milliseconds in <code>weeks</code>
+	 * @return the number of milliseconds in {@code weeks}
 	 */
 	@Pure
 	@Inline(value = "(long) (($1) * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})

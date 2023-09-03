@@ -361,7 +361,6 @@ class SreNetworkConfig {
 	 * 
 	 * @param name the new cluster name.
 	 * @see #getClusterName()
-	 * @see #getClusterName(SreConfig)
 	 */
 	@BQConfigProperty("Name of the Hazelcast cluster. By default, this name is based on the identifier of the agent root context.")
 	def setClusterName(name : String) {
@@ -381,7 +380,7 @@ class SreNetworkConfig {
 	/** 
 	 * Set the method for cluster joining.
 	 * 
-	 * @param method the join method.
+	 * @param type the type of join method.
 	 */
 	@BQConfigProperty("Specify the method for joining the Hazelcast cluster over the computer network")
 	def setJoinMethod(type : JoinMethod) {

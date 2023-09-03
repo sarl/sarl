@@ -110,8 +110,8 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 		this.builder.setDocumentation(doc);
 	}
 
-	/** Change the guard.
-	 * @param value the value of the guard. It may be {@code null}.
+	/** Replies the guard.
+	 * @return the value of the guard. It may be {@code null}.
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {

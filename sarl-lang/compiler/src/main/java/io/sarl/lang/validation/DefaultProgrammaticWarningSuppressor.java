@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 
-/** Suppress warnings programmatically with <code>@SuppressWarnings</code>.
+/** Suppress warnings programmatically with {@code @SuppressWarnings}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -102,7 +102,7 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 		return code;
 	}
 
-	/** The severity provider that supports <code>@SuppressWarnings</code>.
+	/** The severity provider that supports {@code @SuppressWarnings}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

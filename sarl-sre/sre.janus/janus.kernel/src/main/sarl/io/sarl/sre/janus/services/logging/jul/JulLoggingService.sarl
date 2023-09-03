@@ -37,11 +37,11 @@ import javax.inject.Singleton
  * resource property.</li>
  * </ul>
  * 
- * <p>If a <code>Throwable</code> is passed as parameter, the text of the exception is retrieved.
+ * <p>If a {@code Throwable} is passed as parameter, the text of the exception is retrieved.
  * 
- * <p>If a <code>Callable</code> is passed as parameter, the object is automatically called.
+ * <p>If a {@code Callable} is passed as parameter, the object is automatically called.
  * 
- * <p>If a <code>LogParam</code> is passed as parameter, the <code>toString</code> function will be invoked.
+ * <p>If a {@code LogParam} is passed as parameter, the {@code toString} function will be invoked.
  * 
  * <p>For all the other objects, the {@link #toString()} function is invoked.
  * 

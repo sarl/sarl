@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 /** Annotation for marking a function or an event that causes an early exit
  * in the calling function.
  *
- * <p>For example, the <code>return</code> keyword is a function that
+ * <p>For example, the {@code return} keyword is a function that
  * causes an early exit.
  *
  * @author $Author: sgalland$

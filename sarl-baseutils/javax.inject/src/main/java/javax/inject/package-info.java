@@ -21,8 +21,8 @@
  * locators (e.g., JNDI).&nbsp;This process, known as <i>dependency
  * injection</i>, is beneficial to most nontrivial applications.
  *
- * <p>Many types depend on other types. For example, a <tt>Stopwatch</tt> might
- * depend on a <tt>TimeSource</tt>. The types on which a type depends are
+ * <p>Many types depend on other types. For example, a {@code Stopwatch} might
+ * depend on a {@code TimeSource}. The types on which a type depends are
  * known as its <i>dependencies</i>. The process of finding an instance of a
  * dependency to use at run time is known as <i>resolving</i> the dependency.
  * If no such instance can be found, the dependency is said to be
@@ -100,7 +100,7 @@
  *
  * <p>The injector further passes dependencies to other dependencies until it
  * constructs the entire object graph. For example, suppose the programmer
- * asked an injector to create a <tt>StopwatchWidget</tt> instance:
+ * asked an injector to create a {@code StopwatchWidget} instance:
  *
  * <pre>   /** GUI for a Stopwatch &#42;/
  *   class StopwatchWidget {
@@ -110,9 +110,9 @@
  *
  * <p>The injector might:
  * <ol>
- *   <li>Find a <tt>TimeSource</tt>
- *   <li>Construct a <tt>Stopwatch</tt> with the <tt>TimeSource</tt>
- *   <li>Construct a <tt>StopwatchWidget</tt> with the <tt>Stopwatch</tt>
+ *   <li>Find a {@code TimeSource}
+ *   <li>Construct a {@code Stopwatch} with the {@code TimeSource}
+ *   <li>Construct a {@code StopwatchWidget} with the {@code Stopwatch}
  * </ol>
  *
  * <p>This leaves the programmer's code clean, flexible, and relatively free

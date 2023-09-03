@@ -65,7 +65,6 @@ interface ExecutorService extends Service {
 	 * @param logger the logger to use for errors.
 	 * @param task the task to submit.
 	 * @return a Future representing the pending execution task.
-	 * @see #execute(Runnable) if you don't want a future.
 	 */
 	def executeAsap(logger : Logger = null, task : Runnable) : Future<?> 
 
@@ -248,7 +247,7 @@ interface ExecutorService extends Service {
 	 * a single thread.
 	 * 
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * for(i in [ 1 .. (nbExecutions/runGroupSize) ])
 	 * do
 	 * execute({
@@ -257,7 +256,7 @@ interface ExecutorService extends Service {
 	 * }
 	 * })
 	 * done
-	 * </code></pre>
+	 * }</pre>
 	 * 
 	 * <p>Caution: if a {@code task} is failing, the exception will be output on the logger. This function never fails.
 	 * 
@@ -271,7 +270,6 @@ interface ExecutorService extends Service {
 	 * @param nbExecutions the number of times the task must be run, usually greater than 1.
 	 * @param runGroupSize the number of tasks to be run by a single thread.
 	 * @return the number of successful runs.
-	 * @throws InterruptedException when the function cannot wait for task termination.
 	 * @since 0.5
 	 */
 	def executeBlockingTask(logger : Logger = null, nbExecutions : int, runGroupSize : int,
@@ -286,7 +284,7 @@ interface ExecutorService extends Service {
 	 * a single thread.
 	 * 
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * for(i in [ 1 .. (nbExecutions/runGroupSize) ])
 	 * do
 	 * execute({
@@ -295,7 +293,7 @@ interface ExecutorService extends Service {
 	 * }
 	 * })
 	 * done
-	 * </code></pre>
+	 * }</pre>
 	 * 
 	 * <p>Caution: if a {@code task} is failing, the exception will be output on the logger. This function never fails.
 	 * 

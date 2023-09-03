@@ -2028,8 +2028,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param feature the syntactic feature related to the supertypes.
 	 * @param superTypes the current super types.
 	 * @param expectedType the expected root type.
-	 * @param onlySubTypes if {@code true} only the subtype of the <code>expectedType</code> are valid;
-	 * {@code false} if the <code>expectedType</code> is allowed.
+	 * @param onlySubTypes if {@code true} only the subtype of the {@code expectedType} are valid;
+	 * {@code false} if the {@code expectedType} is allowed.
 	 * @return the count of supertypes.
 	 */
 	protected int checkSuperTypes(
@@ -2209,8 +2209,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param implementedTypes the current super types.
 	 * @param expectedType the expected root type.
 	 * @param mandatoryNumberOfTypes the minimal number of implemented types.
-	 * @param onlySubTypes if {@code true} only the subtype of the <code>expectedType</code> are valid;
-	 * {@code false} if the <code>expectedType</code> is allowed.
+	 * @param onlySubTypes if {@code true} only the subtype of the {@code expectedType} are valid;
+	 * {@code false} if the {@code expectedType} is allowed.
 	 * @return the count of supertypes.
 	 */
 	protected boolean checkImplementedTypes(

@@ -644,7 +644,7 @@ public final class JavaClasspathParser {
     }
 
     /**
-     * Returns the kind of a <code>PackageFragmentRoot</code> from its <code>String</code> form.
+     * Returns the kind of a {@code PackageFragmentRoot} from its {@code String} form.
      *
      * @param kindStr
      *            - string to test

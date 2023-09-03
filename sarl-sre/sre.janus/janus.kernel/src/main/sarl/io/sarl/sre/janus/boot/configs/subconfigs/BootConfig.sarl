@@ -108,7 +108,7 @@ class BootConfig {
 	/** Default value of the property that contains the name of the SRE
 	 * main program from the external point of view.
 	 * 
-	 * @see #PROGRAM_NAME
+	 * @see #PROGRAM_NAME_NAME
 	 */
 	public static val PROGRAM_NAME_VALUE = "SARL Run-time Environment"
 
@@ -460,7 +460,7 @@ class BootConfigModule implements BQModule {
 
 	/** Replies the type's name of the agent to boot.
 	 * 
-	 * @param configFactory accessor to the bootique factory.
+	 * @param config accessor to the bootique factory.
 	 * @return the name of the agent to boot.
 	 */
 	@Provides
@@ -495,7 +495,7 @@ class BootConfigModule implements BQModule {
 	/** 
 	 * Construct an identifier for the root default space.
 	 * 
-	 * @param configFactory accessor to the bootique factory.
+	 * @param config accessor to the bootique factory.
 	 * @return the space ID
 	 */
 	@Provides

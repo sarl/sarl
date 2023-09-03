@@ -133,19 +133,19 @@ public final class SARLEclipseConfig {
 
 	/**
 	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
-	 * (value <code>"sreInstallPage"</code>).
+	 * (value {@code "sreInstallPage"}).
 	 */
 	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "sreInstallPages"; //$NON-NLS-1$
 
 	/**
 	 * Name of the extension points for SRE installation
-	 * (value <code>"sreInstallations"</code>).
+	 * (value {@code "sreInstallations"}).
 	 */
 	public static final String EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT = "sreInstallations"; //$NON-NLS-1$
 
 	/**
 	 * Name of the extension points for the factory of project SRE provider.
-	 * (value <code>"projectSREProviderFactory"</code>).
+	 * (value {@code "projectSREProviderFactory"}).
 	 */
 	public static final String EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY = "projectSREProviderFactory"; //$NON-NLS-1$
 
@@ -156,7 +156,7 @@ public final class SARLEclipseConfig {
 
 	/**
 	 * Name of the extension points for the factory of launch configuration panels.
-	 * (value <code>"sarlLaunchConfigurationPanels"</code>).
+	 * (value {@code "sarlLaunchConfigurationPanels"}).
 	 */
 	public static final String EXTENSION_POINT_LAUNCH_CONFIGURATION_PANEL_FACTORY = "sarlLaunchConfigurationPanels"; //$NON-NLS-1$
 

@@ -66,21 +66,21 @@ public class ExampleWizardsTest {
 	 * <p>The example wizard enables to import the example into the Eclipse IDE.
 	 * First, the example folder must contain the file {@code launch.xml} for the definition of the
 	 * example's launching in Eclipse IDE. This file must contain the identifier of the example:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * &lt;launchConfigurations id="IDENTIFIER"&gt;
 	 * &lt;/launchConfigurations&gt;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * <p>Second, in the file {@code plugin.xml} in the project {@code ../../plugins/io.sarl.eclipse.examples}, the
 	 * definition of the wizard must be written:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * &lt;extension point="org.eclipse.ui.newWizards"&gt;
 	 *   &lt;wizard id="ID"
  *      class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:QUALIFIED_NAME_OF_WIZARD" ...&gt;
 	 *      ...
 	 *   &lt;/wizard&gt;
 	 * &lt;/extension&gt;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the plugin's description.

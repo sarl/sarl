@@ -187,7 +187,6 @@ final class AgentLife {
 	 * @param startingAgent is the reference to the starting agent.
 	 * @param skillUninstaller the skill uninstaller.
 	 * @param logger the logger to use for reporting initialization errors when the agent's logger is unavailable
-	 * @param startError the exception that avoid to start the agent.
 	 * @param spawningAgent the identifier of the agent which has spawn this starting agent. This agent could be outside the spawningContext.
 	 *      If {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param spawningContext the context in which the agent is spawned.
@@ -288,7 +287,6 @@ final class AgentLife {
 	/** Set up the agent in order to be attached properly to its default context.
 	 * 
 	 * @param spawningContext the context in which the agent is spawn.
-	 * @param eventBus the event bus of the agent.
 	 * @since 0.12
 	 */
 	protected def attachAgentToDefaultContext(spawningContext : Context) : void {
@@ -632,7 +630,7 @@ final class AgentLife {
 	/** Replies the external contexts in which the agent is located.
 	 * The default context is not part of the replied collection.
 	 * 
-	 * @see {@link #getEnclosingContexts()}
+	 * @see #getEnclosingContexts()
 	 */
 	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
 		var result = new ConcurrentLinkedDeque
@@ -677,7 +675,7 @@ final class AgentLife {
 	/** Replies all the contexts in which the agent is located, including the default context and
 	 * the external contexts.
 	 * 
-	 * @see {@link #getExternalContexts()}
+	 * @see #getExternalContexts()
 	 */
 	def getEnclosingContexts : ConcurrentLinkedDeque<ContextReference> {
 		val rlock = this.lock.readLock
@@ -713,7 +711,7 @@ final class AgentLife {
 
 	/** Replies the external context with the given identifier.
 	 * 
-	 * @param identifer the identifier of the context.
+	 * @param identifier the identifier of the context.
 	 * @return the context, or {@code null} 
 	 */
 	def getExternalContext(identifier : UUID) : ContextReference {

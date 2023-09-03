@@ -29,12 +29,11 @@ import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
  * <!-- begin-user-doc -->
  * Custom implementation of the XtendInterface grammar element for SARL.
  * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
+ *
+ * <p>The following features are implemented:
  * <ul>
  *   <li>{@link #getDefaultVisibility() <em>Default visibility of fields in SARL elements</em>}</li>
  * </ul>
- * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

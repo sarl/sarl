@@ -39,8 +39,7 @@ interface SarlSpecificationChecker {
 	/** Replies the supported SARL specification version of the given type.
 	 *
 	 * @param type the type from which the SARL specification version should be extracted.
-	 * @return The SARL specification version. The version is a floating-point number, as for
-	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION}. The value {@link Float#NaN} is replied
+	 * @return The SARL specification version. The version is a floating-point number. The value {@link Float#NaN} is replied
 	 *     if the given type has no marker related to the SARL specification version.
 	 * @deprecated since 0.10, see #getSarlSpecificationVersionObject(Class)
 	 */
@@ -52,8 +51,7 @@ interface SarlSpecificationChecker {
 	/** Replies the supported SARL specification version of the given type.
 	 *
 	 * @param type the type from which the SARL specification version should be extracted.
-	 * @return The SARL specification version. The version is a {@code Version}, as for
-	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION_STRING}. The value {@code null} is replied
+	 * @return The SARL specification version. The version is a {@code Version}. The value {@code null} is replied
 	 *     if the given type has no marker related to the SARL specification version.
 	 * @since 0.10
 	 */
@@ -90,7 +88,7 @@ interface SarlSpecificationChecker {
 	/** Replies if the given type is a SARL element that is following the specification of the current SARL version.
 	 *
 	 * @param type the type to test.
-	 * @return <code>true</code> if the given type follows the specification of the current version.
+	 * @return {@code true} if the given type follows the specification of the current version.
 	 */
 	def isValidSarlElement(type : Class<?>) : boolean {
 		// TODO: Unless we have reach the version 1.0, all the versions are incompatible.

@@ -82,9 +82,9 @@ class Context extends AgentTrait implements AgentContext {
 	 * @param id identifier of the context.
 	 * @param defaultSpaceID identifier of the default space in the context.
 	 * @param owner is the owner of the context. If {@code null}, it is the root context.
-	 * @param factories the provider of factories.
 	 * @param spaceRepositoryProvider the provider of space repository
-	 * @param logger the logging service.
+	 * @param factories the provider of factories.
+	 * @param loggingService the logging service.
 	 * @param listenerFactory the factory of space listeners.
 	 */
 	new (id : UUID, defaultSpaceID : UUID, owner : Agent, spaceRepositoryProvider : Provider<SpaceRepository>,
@@ -339,7 +339,6 @@ class DefaultContextFactory implements ContextFactory {
 	/** Constructor with injected parameters.
 	 * 
 	 * @param spaceRepositoryProvider the provider of space repository.
-	 * @param lockProvider the provider of synchronization locks.
 	 * @param logger the logging service.
 	 * @param listenerFactory the factory of space listeners.
 	 * @param factories the provider of factories tool.

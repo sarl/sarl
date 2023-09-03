@@ -117,7 +117,7 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 	/** 
 	 * Replies the JRE service for scheduled tasks.
 	 * 
-	 * @param the JRE service.
+	 * @return the JRE service.
 	 */
 	def getScheduledExecutorService : ScheduledExecutorService {
 		this.jreSchedules
@@ -166,7 +166,7 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 	/** 
 	 * Replies the configuration.
 	 * 
-	 * @param the configuration.
+	 * @return the configuration.
 	 */
 	def getConfiguration : ExecutorsConfig {
 		this.configuration

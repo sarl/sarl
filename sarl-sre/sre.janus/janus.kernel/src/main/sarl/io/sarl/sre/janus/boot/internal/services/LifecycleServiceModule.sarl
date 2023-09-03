@@ -55,7 +55,7 @@ class LifecycleServiceModule implements BQModule {
 	/** 
 	 * Construct the lifecycle service.
 	 * 
-	 * @param lifecycleConfig accessor to the lifecycle bootique configuration.
+	 * @param config accessor to the lifecycle bootique configuration.
 	 * @param injector the current injector
 	 * @return the handler.
 	 * @since 0.11

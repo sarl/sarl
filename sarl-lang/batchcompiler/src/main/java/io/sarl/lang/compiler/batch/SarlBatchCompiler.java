@@ -869,7 +869,7 @@ public class SarlBatchCompiler {
 
 	/** Change the file encoding.
 	 *
-	 * @param encoding the encoding, usually <code>UTF-8</code>.
+	 * @param encoding the encoding, usually {@code UTF-8}.
 	 */
 	public void setFileEncoding(String encoding) {
 		this.encoding = encoding;
@@ -979,7 +979,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig().setGenerateExpressions(generateExpressions);
 	}
 
-	/** Replies the <code>@SuppressWarnings</code> is generated.
+	/** Replies the {@code @SuppressWarnings} is generated.
 	 *
 	 * @return {@code true} if the compiler generates the warning supression annotations.
 	 */
@@ -988,7 +988,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig().isGenerateSyntheticSuppressWarnings();
 	}
 
-	/** Set if the <code>@SuppressWarnings</code> is generated.
+	/** Set if the {@code @SuppressWarnings} is generated.
 	 *
 	 * @param generateAnnotations {@code true} if the compiler generates the warning supression annotations.
 	 */
@@ -996,7 +996,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig().setGenerateSyntheticSuppressWarnings(generateAnnotations);
 	}
 
-	/** Replies the <code>@Generated</code> is generated.
+	/** Replies the {@code @Generated} is generated.
 	 *
 	 * @return {@code true} if the compiler generates the generated annotations.
 	 */
@@ -1005,7 +1005,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig().isGenerateGeneratedAnnotation();
 	}
 
-	/** Set if the <code>@Generated</code> is generated.
+	/** Set if the {@code @Generated} is generated.
 	 *
 	 * @param generateAnnotations {@code true} if the compiler generates the generated annotations.
 	 */
@@ -1013,7 +1013,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig().setGenerateGeneratedAnnotation(generateAnnotations);
 	}
 
-	/** Replies if the generation date is included in the <code>@Generated</code> annotations.
+	/** Replies if the generation date is included in the {@code @Generated} annotations.
 	 *
 	 * @return {@code true} if the generation date is added.
 	 */
@@ -1022,7 +1022,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig().isIncludeDateInGeneratedAnnotation();
 	}
 
-	/** Set if the generation date is included in the <code>@Generated</code> annotations.
+	/** Set if the generation date is included in the {@code @Generated} annotations.
 	 *
 	 * @param includeDateInGeneratedAnnotation {@code true} if the generation date is added.
 	 */
@@ -1030,7 +1030,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig().setIncludeDateInGeneratedAnnotation(includeDateInGeneratedAnnotation);
 	}
 
-	/** Replies the comment in the <code>@Generated</code> annnotations.
+	/** Replies the comment in the {@code @Generated} annnotations.
 	 *
 	 * @return the comment.
 	 */
@@ -1039,7 +1039,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig().getGeneratedAnnotationComment();
 	}
 
-	/** Set the comment in the <code>@Generated</code> annnotations.
+	/** Set the comment in the {@code @Generated} annnotations.
 	 *
 	 * @param comment the comment.
 	 */
@@ -1047,7 +1047,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig().setGeneratedAnnotationComment(comment);
 	}
 
-	/** Replies if the <code>@Inline</code> shall be generated.
+	/** Replies if the {@code @Inline} shall be generated.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -1056,7 +1056,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig2().isGenerateInlineAnnotation();
 	}
 
-	/** Set if the <code>@Inline</code> shall be generated.
+	/** Set if the {@code @Inline} shall be generated.
 	 *
 	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
@@ -1064,7 +1064,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig2().setGenerateInlineAnnotation(generateInlineAnnotation);
 	}
 
-	/** Replies if constant expression interpreter shall be called for generated <code>@Inline</code>.
+	/** Replies if constant expression interpreter shall be called for generated {@code @Inline}.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -1073,7 +1073,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig2().isUseExpressionInterpreterForInlineAnnotation();
 	}
 
-	/** Set if the constant expression interpreter shall be called for generated <code>@Inline</code>.
+	/** Set if the constant expression interpreter shall be called for generated {@code @Inline}.
 	 *
 	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
@@ -1081,7 +1081,7 @@ public class SarlBatchCompiler {
 		getGeneratorConfig2().setUseExpressionInterpreterForInlineAnnotation(generateInlineAnnotation);
 	}
 
-	/** Replies if the <code>@Pure</code> shall be generated.
+	/** Replies if the {@code @Pure} shall be generated.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -1090,7 +1090,7 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig2().isGeneratePureAnnotation();
 	}
 
-	/** Set if the <code>@Pure</code> shall be generated.
+	/** Set if the {@code @Pure} shall be generated.
 	 *
 	 * @param generatePureAnnotation {@code true} if annotation shall be generated.
 	 */

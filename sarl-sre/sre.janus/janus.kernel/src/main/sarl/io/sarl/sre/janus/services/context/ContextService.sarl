@@ -125,8 +125,8 @@ interface ExternalContextMemberListener extends EventListener {
 	 * 
 	 * @param leftContext the context that will be left
 	 * @param defaultSpaceId the identifier of the default space inside {@code leftContext}.
-	 * @param leftAgentID the identifier of the agent that has left the context.
-	 * @param leftAgentType the name of the agent type that has left the context.
+	 * @param leftMemberID the identifier of the agent that has left the context.
+	 * @param agentType the name of the agent type that has left the context.
 	 */
 	def memberLeft(leftContext : AgentContext, defaultSpaceId : SpaceID, leftMemberID : UUID,
 		agentType : String)
@@ -175,8 +175,7 @@ interface InternalContextMembershipListenerFactory {
 
 	/** Create a listener associated to the given agent.
 	 *
-	 * @param agent the agent to link to the provided listener.
-	 * @param lockProvider a provider of synchronization locks.
+	 * @param owner the agent to link to the provided listener.
 	 * @return a listener.
 	 */	
 	def create(owner : Agent) : InternalContextMembershipListener

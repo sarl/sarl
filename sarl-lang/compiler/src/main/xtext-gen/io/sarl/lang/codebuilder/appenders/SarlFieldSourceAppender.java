@@ -116,8 +116,8 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 		this.builder.setType(type);
 	}
 
-	/** Change the initialValue.
-	 * @param value the value of the initialValue. It may be {@code null}.
+	/** Replies the initialValue.
+	 * @return the value of the initialValue. It may be {@code null}.
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {

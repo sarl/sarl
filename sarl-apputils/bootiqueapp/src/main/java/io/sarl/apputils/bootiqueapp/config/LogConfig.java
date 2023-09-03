@@ -81,7 +81,6 @@ public class LogConfig implements Comparable<LogConfig> {
 	/** Replies the level.
 	 *
 	 * @return the level.
-	 * @see #getJulLevel()
 	 */
 	public Level getLevel() {
 		if (this.level == null) {

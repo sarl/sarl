@@ -46,7 +46,7 @@ class SkillSchemeNameParser extends AbstractSchemeNameParser<SkillName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link SkillName.SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link SkillName#SCHEME}.
 	 */
 	new (scheme : String = SkillName::SCHEME) {
 		super(scheme)

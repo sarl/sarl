@@ -248,7 +248,7 @@ public class SarldocConfig {
 
 	/**
 	 * Get the path of the Javadoc tool executable depending the user entry or try to find it depending the OS
-	 * or the <code>java.home</code> system property or the <code>JAVA_HOME</code> environment variable.
+	 * or the {@code java.home} system property or the {@code JAVA_HOME} environment variable.
 	 *
 	 * <p>This function is copied from the {@code maven-javadoc-plugin}.
 	 *
@@ -318,7 +318,7 @@ public class SarldocConfig {
 
 	/**
 	 * Get the path of the "tools.jar" file depending the user entry or try to find it depending the OS
-	 * or the <code>java.home</code> system property or the <code>JAVA_HOME</code> environment variable.
+	 * or the {@code java.home} system property or the {@code JAVA_HOME} environment variable.
 	 *
 	 * @return the path of the "tools.jar" file, never {@code null}.
 	 * @throws FileNotFoundException if the "tools.jar" was not found.

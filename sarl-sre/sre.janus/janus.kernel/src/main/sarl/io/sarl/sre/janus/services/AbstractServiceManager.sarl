@@ -65,7 +65,7 @@ abstract class AbstractServiceManager implements IServiceManager {
 		awaitStopped
 	}
 
-	/** Pre-stop all the services that are implemented {@link
+	/** Pre-stop all the services.
 	 */
 	protected def preStop(logger : Logger) : void {
 		logger.fine(Messages::AbstractServiceManager_1)

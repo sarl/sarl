@@ -66,21 +66,21 @@ import io.sarl.eclipse.util.Utilities;
  * <p>The standard SRE install assumes:
  * <ul>
  * <li>The SRE is based on a single JAR file.</li>
- * <li>The main class of the SRE is defined in the Manifest field <code>"Main-Class"</code>.</li>
- * <li>The Manifest contains a section named <code>"SARL-Runtime-Environment"</code>. This section contains the following entries:
+ * <li>The main class of the SRE is defined in the Manifest field {@code "Main-Class"}.</li>
+ * <li>The Manifest contains a section named {@code "SARL-Runtime-Environment"}. This section contains the following entries:
  * <ul>
- * <li>The version number of the SARL specifications that are supported by the SRE is defined in the Manifest field <code>"SARL-Spec-Version"</code>.
+ * <li>The version number of the SARL specifications that are supported by the SRE is defined in the Manifest field {@code "SARL-Spec-Version"}.
  * </li>
- * <li>The name of the SRE may be given by the field <code>"Name"</code>.</li>
- * <li>The VM arguments of the SRE may be given by the field <code>"VM-Arguments"</code>.</li>
- * <li>The program arguments of the SRE may be given by the field <code>"Program-Arguments"</code>.</li>
- * <li>The command line option for avoiding the logo is given by the field <code>"CLI-Hide-Logo"</code>.</li>
- * <li>The command line option for displaying the logo is given by the field <code>"CLI-Show-Logo"</code>.</li>
- * <li>The command line option for displaying the information messages is given by the field<code>"CLI-Show-Info"</code>.</li>
- * <li>The command line option for hiding the information messages is given by the field<code>"CLI-Hide-Info"</code>.</li>
- * <li>The command line option for using the default root context id is given by the field<code>"CLI-Default-Context-ID"</code>.</li>
- * <li>The command line option for using the random root context id is given by the field<code>"CLI-Random-Context-ID"</code>.</li>
- * <li>The command line option for using the agent-type-based root context id is given by the field<code>"CLI-BootAgent-Context-ID"</code>.</li>
+ * <li>The name of the SRE may be given by the field {@code "Name"}.</li>
+ * <li>The VM arguments of the SRE may be given by the field {@code "VM-Arguments"}.</li>
+ * <li>The program arguments of the SRE may be given by the field {@code "Program-Arguments"}.</li>
+ * <li>The command line option for avoiding the logo is given by the field {@code "CLI-Hide-Logo"}.</li>
+ * <li>The command line option for displaying the logo is given by the field {@code "CLI-Show-Logo"}.</li>
+ * <li>The command line option for displaying the information messages is given by the field{@code "CLI-Show-Info"}.</li>
+ * <li>The command line option for hiding the information messages is given by the field{@code "CLI-Hide-Info"}.</li>
+ * <li>The command line option for using the default root context id is given by the field{@code "CLI-Default-Context-ID"}.</li>
+ * <li>The command line option for using the random root context id is given by the field{@code "CLI-Random-Context-ID"}.</li>
+ * <li>The command line option for using the agent-type-based root context id is given by the field{@code "CLI-BootAgent-Context-ID"}.</li>
  * </ul>
  * </li>
  * </ul>

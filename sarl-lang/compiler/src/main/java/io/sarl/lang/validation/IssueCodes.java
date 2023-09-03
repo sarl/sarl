@@ -46,12 +46,12 @@ public final class IssueCodes {
 	/**
 	 * It is discouraged to have a true/false constant as conditions in guards, if...
 	 *
-	 * <p>The following code causes a warning:<pre><code>
+	 * <p>The following code causes a warning:<pre>{@code 
 	 * event E1
 	 * agent A1 {
 	 *    on E1 [true] { }
 	 * }
-	 * </code></pre>
+	 * }</pre>
 	 */
 	public static final String DISCOURAGED_BOOLEAN_EXPRESSION =
 			ISSUE_CODE_PREFIX + "discouraged_boolean_expression"; //$NON-NLS-1$

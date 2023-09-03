@@ -66,10 +66,10 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 	 *
 	 * @param p1 the first parameter to compare.
 	 * @param p2 the second parameter to compare.
-	 * @return A negative value if <code>p1</code> is
-	 *     lower than <code>p2</code>, a positive value if
-	 *     <code>p1</code> is greater than <code>p2</code>,
-	 *     otherwise <code>0</code>.
+	 * @return A negative value if {@code p1} is
+	 *     lower than {@code p2}, a positive value if
+	 *     {@code p1} is greater than {@code p2},
+	 *     otherwise {@code 0}.
 	 */
 	public static int compare(XtendParameter p1, XtendParameter p2) {
 		if (p1 != p2) {

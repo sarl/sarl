@@ -64,7 +64,6 @@ class RunWithoutAgentCommand extends AbstractRunCommand {
 	/** Constructor.
 	 *
 	 * @param configuration the configuration of the tool.
-	 * @param lock the lock to use for synchronizing.
 	 */
 	@Inject
 	new (configuration : Provider<SreConfig>) {

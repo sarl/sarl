@@ -37,8 +37,6 @@ import java.util.Iterator
  */
 final class Collections3 {
 
-
-
 	/** Replies a serializable collection.
 	 * If the wrapped collection is serializable, it is replied itself without wrapping.
 	 * If the wrapped collection is not serializable, it is wrapped into a collection

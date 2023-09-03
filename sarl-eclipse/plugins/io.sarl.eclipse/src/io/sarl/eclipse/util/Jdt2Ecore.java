@@ -87,7 +87,7 @@ import io.sarl.lang.util.Utils;
 
 /** Utilities for creating Ecore SARL elements from the JDT model.
  *
- * <p>This class extends the {@link SarlUtils} from the <code>io.sarl.lang</code> project.
+ * <p>This class extends the {@link SarlUtils} from the {@code io.sarl.lang} project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -124,7 +124,7 @@ public class Jdt2Ecore {
 
 	/** Replies if the given type name is valid for a super-type.
 	 *
-	 * <p>The type name is valid if it is not empty and not the <code>Object</code> classname.
+	 * <p>The type name is valid if it is not empty and not the {@code Object} classname.
 	 *
 	 * @param typeName the name of the type to test.
 	 * @return {@code true} if the given type name is valid.

@@ -49,7 +49,6 @@ public interface TypeRepository {
 
 	/** Replies all the registered types.
 	 *
-	 * @param moduleName the module.
 	 * @return the types in the module.
 	 */
 	SortedSet<TypeElement> getTypes();

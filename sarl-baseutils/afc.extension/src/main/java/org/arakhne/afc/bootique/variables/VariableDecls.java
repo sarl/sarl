@@ -3,8 +3,9 @@ package org.arakhne.afc.bootique.variables;
 import io.bootique.BQCoreModuleExtender;
 import io.bootique.di.Binder;
 
+/** Tool for declaring variables in the Bootique configuration.
+ */
 // FIXME: Move to Arakhne
-@SuppressWarnings("javadoc")
 public class VariableDecls {
 
 	private final BQCoreModuleExtender extender;

@@ -47,7 +47,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	/** Add a collection inside this multicollection.
 	 *
 	 * @param collection the collection to add.
-	 * @return <code>true</code> if the multi-collection has changed,
+	 * @return {@code true} if the multi-collection has changed,
 	 *      otherwise {@code false}.
 	 */
 	def addCollection(collection : ConcurrentLinkedDeque<? extends E>) : boolean {
@@ -61,7 +61,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	/** Remove a collection from this multicollection.
 	 *
 	 * @param collection the collection to remove.
-	 * @return <code>true</code> if the multi-collection has changed,
+	 * @return {@code true} if the multi-collection has changed,
 	 *      otherwise {@code false}.
 	 */
 	def removeCollection(collection : ConcurrentLinkedDeque<? extends E>) : boolean {
@@ -73,7 +73,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #addCollection(Collection)}.
+	 * This function is not supported, see {@link #addCollection(ConcurrentLinkedDeque)}.
 	 */
 	override add(value : E) : boolean {
 		throw new UnsupportedOperationException
@@ -102,7 +102,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #removeCollection(Collection)}.
+	 * This function is not supported, see {@link #removeCollection(ConcurrentLinkedDeque)}.
 	 * @param collection a collection
 	 * @return nothing but exception
 	 */
@@ -111,7 +111,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #removeCollection(Collection)}.
+	 * This function is not supported, see {@link #removeCollection(ConcurrentLinkedDeque)}.
 	 * @param collection a collection
 	 * @return nothing but exception
 	 */
@@ -120,7 +120,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #removeCollection(Collection)}.
+	 * This function is not supported, see {@link #removeCollection(ConcurrentLinkedDeque)}.
 	 * @param collection a collection
 	 * @return nothing but exception
 	 */
@@ -129,7 +129,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #removeCollection(Collection)}.
+	 * This function is not supported, see {@link #removeCollection(ConcurrentLinkedDeque)}.
 	 * @param obj an object
 	 * @return nothing but exception
 	 */
@@ -138,7 +138,7 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	}
 
 	/**
-	 * This function is not supported, see {@link #removeCollection(Collection)}.
+	 * This function is not supported, see {@link #removeCollection(ConcurrentLinkedDeque)}.
 	 * @param collection - a collection
 	 * @return nothing but exception
 	 */

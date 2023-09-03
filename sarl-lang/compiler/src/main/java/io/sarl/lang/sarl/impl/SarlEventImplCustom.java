@@ -27,12 +27,11 @@ import org.eclipse.xtext.util.Strings;
  * <!-- begin-user-doc -->
  * Custom implementation of the SarlEvent grammar element for SARL.
  * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
+ *
+ * <p>The following features are implemented:
  * <ul>
  *   <li>{@link #isAbstract() <em>Replies if the "abstract" modifier is associated to the element</em>}</li>
  * </ul>
- * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

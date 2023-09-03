@@ -123,8 +123,8 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 		this.sarlField.setType(newTypeRef(this.container, type));
 	}
 
-	/** Change the initialValue.
-	 * @param value the value of the initialValue. It may be {@code null}.
+	/** Replies the initialValue.
+	 * @return the value of the initialValue. It may be {@code null}.
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {

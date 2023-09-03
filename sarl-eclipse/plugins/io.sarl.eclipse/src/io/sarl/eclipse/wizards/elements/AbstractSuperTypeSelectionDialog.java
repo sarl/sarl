@@ -231,7 +231,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 		if (selection.size() == 0 && getSuperTypeCount(this.typeWizardPage) > this.oldContent.size()) {
 			// overrides updateStatus() from handleSelected() if
 			// list of super interfaces was modified
-			// the <code>super.handleSelected(selection)</code> has to be
+			// the {@code super.handleSelected(selection)} has to be
 			// called, because superclass implementation of this class updates
 			// state of the table.
 

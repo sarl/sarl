@@ -52,7 +52,7 @@ class LoggingServiceModule implements BQModule {
 	/** 
 	 * Replies the verbose level.
 	 * 
-	 * @param loggerCreator the creator of loggers.
+	 * @param loggingCreator the creator of loggers.
 	 * @param injector the injector of the members.
 	 * @return the verbose level.
 	 */

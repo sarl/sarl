@@ -44,8 +44,8 @@ import io.sarl.tests.api.tools.SarlValidationTestHelper;
  *
  * This class provides assertion functions, clear any property
  * related to Sarl, and reset the attributes of the unit test that
- * are marked <code>@Mock</code>, <code>@InjectMocks</code> or
- * <code>@Nullable</code>.
+ * are marked {@code @Mock}, {@code @InjectMocks} or
+ * {@code @Nullable}.
  *
  * @param <S> - the type of the service.
  * @author $Author: sgalland$

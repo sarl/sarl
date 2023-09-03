@@ -183,7 +183,7 @@ public interface ISREInstall extends Cloneable {
 	 *
 	 * <p>The replied map describes the CLI options to use in specific use cases.
 	 * The keys are defined in the {@link SREConstants SRE constants}, where
-	 * the key names are started by <code>MANIFEST_CLI_</code>.
+	 * the key names are started by {@code MANIFEST_CLI_}.
 	 *
 	 * @return the program arguments to pass to the SRE (not the Java virtual machine).
 	 * @see #getJVMArguments()
@@ -206,7 +206,7 @@ public interface ISREInstall extends Cloneable {
 	 */
 	String getJVMArguments();
 
-	/** Replies the <code>Map</code> that contains String name/value pairs that
+	/** Replies the {@code Map} that contains String name/value pairs that
 	 * represent VM-specific attributes for this SRE.
 	 *
 	 * @return the VM-specific attributes.
@@ -287,7 +287,7 @@ public interface ISREInstall extends Cloneable {
 	 */
 	void setBootstrap(String bootstrap);
 
-	/** Change the <code>Map</code> that contains String name/value pairs that
+	/** Change the {@code Map} that contains String name/value pairs that
 	 * represent VM-specific attributes for this SRE.
 	 *
 	 * @param attributes the VM-specific attributes.

@@ -61,7 +61,6 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	 * 
 	 * @param configuration the configuration of the tool.
 	 * @param commandBuilder the builder of the command.
-	 * @param lock the lock to use for synchronizing.
 	 */
 	new (configuration : Provider<SreConfig>, commandBuilder : CommandMetadata.Builder) {
 		super(commandBuilder)

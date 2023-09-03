@@ -42,7 +42,7 @@ import io.sarl.lang.typesystem.InheritanceHelper;
  * A base implementation of the semantic highlighting calculation.
  *
  * <p>Uses syntax highlighting from {@link XtendHighlightingCalculator} and
- * adds SARL specific keywords, e.g. <code>occurrence</code>.
+ * adds SARL specific keywords, e.g. {@code occurrence}.
  *
  * <p>This calculator also highlight with a specific color the calls to the capacity methods.
  *

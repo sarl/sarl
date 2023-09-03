@@ -80,6 +80,7 @@ import javax.crypto.spec.SecretKeySpec
  * the amount of memory in the system constrains the score value.
  * The amount of memory limits are:
  * <table>
+ * <caption>Memory Scores</caption>
  * <thead>
  * <tr><th>Amount of memory</th><th>Highest possible score</th></tr>
  * </thead>
@@ -296,7 +297,6 @@ final class SarlExperienceIndex {
 	/** Run the SEI from the command-line.
 	 *
 	 * @param args no used.
-	 * @throws Exception in case of error.
 	 */
 	@SuppressWarnings("discouraged_reference")
 	static def main(args : String*) : void {

@@ -108,12 +108,12 @@ public final class OperatorExtensions {
 	/** Generate a table that contains the description of the operator precedences.
 	 *
 	 * @param operators the list of operators. Each operator description should contain one of:<ul>
-	 *     <li><code>$v</code>, a variable;</li>
-	 *     <li><code>$i</code>, an integer value with unknown associativity;</li>
-	 *     <li><code>$L</code>, an integer value with left-to-right associativity;</li>
-	 *     <li><code>$R</code>, an integer value with right-to-left associativity;</li>
-	 *     <li><code>$o</code>, an object;</li>
-	 *     <li><code>$t</code>, a class.</li>
+	 *     <li>{@code $v}, a variable;</li>
+	 *     <li>{@code $i}, an integer value with unknown associativity;</li>
+	 *     <li>{@code $L}, an integer value with left-to-right associativity;</li>
+	 *     <li>{@code $R}, an integer value with right-to-left associativity;</li>
+	 *     <li>{@code $o}, an object;</li>
+	 *     <li>{@code $t}, a class.</li>
 	 *     </ul>
 	 * @return the Markdown table.
 	 * @throws Exception if the code cannot be parsed.
@@ -182,12 +182,12 @@ public final class OperatorExtensions {
 	/** Validate the order of the operators according to the operator precedence.
 	 *
 	 * @param operators the list of operators. Each operator description should contain one of:<ul>
-	 *     <li><code>$v</code>, a variable;</li>
-	 *     <li><code>$i</code>, an integer value with unknown associativity;</li>
-	 *     <li><code>$L</code>, an integer value with left-to-right associativity;</li>
-	 *     <li><code>$R</code>, an integer value with right-to-left associativity;</li>
-	 *     <li><code>$o</code>, an object;</li>
-	 *     <li><code>$t</code>, a class.</li>
+	 *     <li>{@code $v}, a variable;</li>
+	 *     <li>{@code $i}, an integer value with unknown associativity;</li>
+	 *     <li>{@code $L}, an integer value with left-to-right associativity;</li>
+	 *     <li>{@code $R}, an integer value with right-to-left associativity;</li>
+	 *     <li>{@code $o}, an object;</li>
+	 *     <li>{@code $t}, a class.</li>
 	 *     </ul>
 	 * @return validation status.
 	 */

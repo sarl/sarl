@@ -89,7 +89,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/**"); //$NON-NLS-1$
-				it.append(" * Creates {@link ICodeBuilder}s to insert SARL code snippets."); //$NON-NLS-1$
+				it.append(" * Creates {@code ICodeBuilder} to insert SARL code snippets."); //$NON-NLS-1$
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -373,7 +373,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @param originalInjector the original injector."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param modules the overriding modules."); //$NON-NLS-1$
+				it.append("\t * @param module the overriding module."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the new injector."); //$NON-NLS-1$
 				it.newLine();

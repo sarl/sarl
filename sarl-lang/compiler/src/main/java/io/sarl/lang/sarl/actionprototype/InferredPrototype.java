@@ -36,16 +36,16 @@ import java.util.Map;
  *     the <strong>inferred parameter types</strong>.</li>
  * </ol>
  *
- * <p>Example: <pre><code>
+ * <p>Example: <pre>{@code 
  * def myfct(a : int, b : float = 0, c : char, d : int = 0)
- * </code></pre>
+ * }</pre>
  * The parameter types are:<ol>
- * <li>Original parameter types: <code>int,float,char,int</code></li>
+ * <li>Original parameter types: {@code int,float,char,int}</li>
  * <li>Inferred parameter types: <ul>
- * 		<li><code>int,float,char,int</code></li>
- * 		<li><code>int,char,int</code></li>
- * 		<li><code>int,float,char</code></li>
- * 		<li><code>int,char</code></li>
+ * 		<li>{@code int,float,char,int}</li>
+ * 		<li>{@code int,char,int}</li>
+ * 		<li>{@code int,float,char}</li>
+ * 		<li>{@code int,char}</li>
  * 		</ul></li>
  * </ol>
  *

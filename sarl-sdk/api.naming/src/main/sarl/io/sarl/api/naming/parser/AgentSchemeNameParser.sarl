@@ -44,7 +44,7 @@ class AgentSchemeNameParser extends AbstractSchemeNameParser<AgentName> {
 
 	/** Constructor.
 	 *
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link AgentName::SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link AgentName#SCHEME}.
 	 */
 	new (scheme : String = AgentName::SCHEME) {
 		super(scheme)

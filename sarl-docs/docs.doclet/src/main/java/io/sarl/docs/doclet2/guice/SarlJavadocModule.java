@@ -311,7 +311,6 @@ public class SarlJavadocModule extends AbstractModule {
 	/** Replies the SARL taglet factory.
 	 *
 	 * @param injector the injector.
-	 * @param environment the provider of the generation environment.
 	 * @return the excluder.
 	 */
 	@Provides

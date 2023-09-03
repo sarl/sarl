@@ -42,7 +42,7 @@ class SpaceSchemeNameParser extends AbstractSchemeNameParser<SpaceName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link SpaceName.SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link SpaceName#SCHEME}.
 	 */
 	new (scheme : String = SpaceName::SCHEME) {
 		super(scheme)

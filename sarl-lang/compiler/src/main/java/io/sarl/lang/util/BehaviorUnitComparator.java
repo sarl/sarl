@@ -61,10 +61,10 @@ public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit>, Ser
 	 *
 	 * @param e1 the first expression to compare.
 	 * @param e2 the second expression to compare.
-	 * @return A negative value if <code>e1</code> is
-	 *     lower than <code>e2</code>, a positive value if
-	 *     <code>e1</code> is greater than <code>e2</code>,
-	 *     otherwise <code>0</code>.
+	 * @return A negative value if {@code e1} is
+	 *     lower than {@code e2}, a positive value if
+	 *     {@code e1} is greater than {@code e2},
+	 *     otherwise {@code 0}.
 	 */
 	public static int compare(XExpression e1, XExpression e2) {
 		if (e1 == e2) {

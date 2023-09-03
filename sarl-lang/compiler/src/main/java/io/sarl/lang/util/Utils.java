@@ -579,7 +579,7 @@ public final class Utils {
 	 * @param fromType - source type
 	 * @param toType - target type
 	 * @param enablePrimitiveWidening - indicates if the widening of the primitive types is allowed.
-	 * @param enableVoidMatchingNull - indicates if the {@code null} is matching <code>void</code>.
+	 * @param enableVoidMatchingNull - indicates if the {@code null} is matching {@code void}.
 	 * @param allowSynonyms - indicates if the synonyms are allowed.
 	 * @return the state of the cast.
 	 */
@@ -728,10 +728,10 @@ public final class Utils {
 	 *
 	 * @param v1 - first version to compare.
 	 * @param v2 - second version to compare.
-	 * @return Negative integer of <code>v1</code> is lower than <code>v2</code>;
-	 *     positive integer of <code>v1</code> is greater than <code>v2</code>;
+	 * @return Negative integer of {@code v1} is lower than {@code v2};
+	 *     positive integer of {@code v1} is greater than {@code v2};
 	 *     {@code 0} if they are strictly equal.
-	 * @Deprecated see {@link #compareMajorMinorVersions(String, String)}
+	 * @deprecated see {@link #compareMajorMinorVersions(String, String)}
 	 */
 	@Deprecated(since = "0.13", forRemoval = true)
 	public static int compareVersions(String v1, String v2) {
@@ -749,10 +749,9 @@ public final class Utils {
 	 *
 	 * @param v1 - first version to compare.
 	 * @param v2 - second version to compare.
-	 * @return Negative integer of <code>v1</code> is lower than <code>v2</code>;
-	 *     positive integer of <code>v1</code> is greater than <code>v2</code>;
+	 * @return Negative integer of {@code v1} is lower than {@code v2};
+	 *     positive integer of {@code v1} is greater than {@code v2};
 	 *     {@code 0} if they are strictly equal.
-	 * @Deprecated see
 	 * @since 0.13
 	 */
 	public static int compareMajorMinorVersions(String v1, String v2) {
@@ -1483,7 +1482,7 @@ public final class Utils {
 		/** SARL version value not found.
 		 */
 		NO_SARL_VERSION_VALUE,
-		/** The byte code (the class) of {@link io.sarl.lang.SARLVersion} does not contains the expected field.
+		/** The byte code (the class) of {@link io.sarl.lang.core.SARLVersion} does not contains the expected field.
 		 */
 		INVALID_SARL_VERSION_BYTECODE,
 	}
@@ -1694,7 +1693,7 @@ public final class Utils {
 	 * type parameters arguments that are declared within the given type.
 	 *
 	 * <p>For example, consider the following code:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * interface X&lt;T&gt; {
 	 *   def a(p1 : T, p2 : U) with U
 	 * }
@@ -1703,12 +1702,12 @@ public final class Utils {
 	 * class Z&lt;TT&gt; implements X&lt;TT&gt;, Y&lt;TT&gt; {
 	 *   def a(p1 : TT, p2 : W) with W { }
 	 * }
-	 * </code></pre>
+	 * }</pre>
 	 * The mapping is:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * X.T =&gt; TT
 	 * Y.T =&gt; TT
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param type the type to analyze.
 	 * @param mapping the map to fill with the mapping.

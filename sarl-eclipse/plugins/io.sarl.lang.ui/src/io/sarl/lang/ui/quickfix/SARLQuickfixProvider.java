@@ -568,7 +568,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param document the document to parse.
 	 * @param startOffset the offset in the text at which the pattern must be recognized.
 	 * @param pattern the regular expression pattern.
-	 * @return the offset (greater or equal to the startOffset), or <code>-1</code> if the pattern
+	 * @return the offset (greater or equal to the startOffset), or {@code -1} if the pattern
 	 *     cannot be recognized.
 	 */
 	public int getOffsetForPattern(IXtextDocument document, int startOffset, String pattern) {

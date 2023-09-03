@@ -5,8 +5,9 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 
+/** Tool for declaring variables in the Bootique configuration.
+ */
 //FIXME: Move to Arakhne
-@SuppressWarnings("javadoc")
 public final class VariableNames {
 
 	/** Prefix {@code bq.} for properties.

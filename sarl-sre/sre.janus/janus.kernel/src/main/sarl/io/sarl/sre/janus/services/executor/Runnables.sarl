@@ -27,7 +27,6 @@ import java.util.logging.Logger
 /** 
  * Utilities for runnables and callables.
  * 
- * @param <T> the type of the result.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

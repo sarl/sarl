@@ -1325,7 +1325,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 								it.append("\t\t\t\t&& !"); //$NON-NLS-1$
 								it.append(new TypeReference(defaultType));
-								it.append(".class.name().equals(superType)"); //$NON-NLS-1$
+								it.append(".class.getName().equals(superType)"); //$NON-NLS-1$
 							}
 							it.append(") {"); //$NON-NLS-1$
 							it.newLine();

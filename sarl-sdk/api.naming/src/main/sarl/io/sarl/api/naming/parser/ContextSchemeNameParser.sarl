@@ -42,8 +42,8 @@ class ContextSchemeNameParser extends AbstractSchemeNameParser<ContextName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is
-	 *     {@link io.sarl.api.naming.name.ContextName.SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is
+	 *     {@link io.sarl.api.naming.name.ContextName#SCHEME}.
 	 */
 	new (scheme : String = ContextName::SCHEME) {
 		super(scheme)

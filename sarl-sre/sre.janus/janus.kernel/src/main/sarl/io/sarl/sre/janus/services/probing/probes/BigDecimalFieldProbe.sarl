@@ -48,7 +48,6 @@ class BigDecimalFieldProbe extends AbstractFieldProbe<BigDecimal> {
 	 * @param name the name of the probe
 	 * @param uri the UI of the field.
 	 * @param field the accessor to the probed field.
-	 * @param listenerCollectionProvider the provider of listener collections. 
 	 * @param factories the provider of factories tool.
 	 */
 	new (manager : IProbeReleaseListener, name : String, uri : URI, field : FieldAccess, factories : Provider<Factories>) {

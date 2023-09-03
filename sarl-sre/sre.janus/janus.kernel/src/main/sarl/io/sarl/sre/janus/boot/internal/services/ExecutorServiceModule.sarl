@@ -112,7 +112,7 @@ class ExecutorServiceModule implements BQModule {
 	/**
 	 * Construct a handler for exceptions that are not catched.
 	 * 
-	 * @param loggingConfig the bootique configuration for log4j.
+	 * @param loggerCreator the creator of logger..
 	 * @param configuration the general configuration.
 	 * @param injector the current injector.
 	 * @return the handler.

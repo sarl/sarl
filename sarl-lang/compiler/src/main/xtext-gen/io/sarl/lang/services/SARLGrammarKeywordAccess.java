@@ -418,7 +418,7 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getXThrowExpressionAccess().getThrowKeyword_1().getValue();
 	}
 
-	/** Keyword: {@code {}.
+	/** Keyword: {@code &#123;}.
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getLeftCurlyBracketKeyword() {
@@ -439,7 +439,7 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getOpOtherAccess().getFullStopFullStopLessThanSignKeyword_1().getValue();
 	}
 
-	/** Keyword: {@code }}.
+	/** Keyword: {@code &#125;}.
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getRightCurlyBracketKeyword() {

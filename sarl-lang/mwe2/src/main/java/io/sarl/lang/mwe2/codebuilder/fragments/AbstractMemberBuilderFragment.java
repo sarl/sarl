@@ -804,7 +804,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.newLine();
 							it.append("\t\t\t\t&& !"); //$NON-NLS-1$
 							it.append(Objects.class);
-							it.append(".equals(Void.class.name(), type)) {"); //$NON-NLS-1$
+							it.append(".equals(Void.class.getName(), type)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
@@ -829,9 +829,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLine();
 				}
 				for (String expressionName : expressions) {
-					it.append("\t/** Change the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("\t/** Replies the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @param value the value of the "); //$NON-NLS-1$
+					it.append("\t * @return the value of the "); //$NON-NLS-1$
 					it.append(expressionName);
 					it.append(". It may be {@code null}."); //$NON-NLS-1$
 					it.newLine();

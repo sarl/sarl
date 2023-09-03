@@ -69,7 +69,7 @@ interface LoggingService extends Service {
 	/** 
 	 * Replies the logger used by a specific module of the kernel.
 	 * 
-	 * @param name the name of the sub-logger.
+	 * @param moduleName the name of the sub-logger.
 	 * @return the logger.
 	 * @since 0.12
 	 * @see #getKernelLogger()

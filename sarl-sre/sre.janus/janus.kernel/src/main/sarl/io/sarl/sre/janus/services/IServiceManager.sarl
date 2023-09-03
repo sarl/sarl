@@ -62,7 +62,7 @@ interface IServiceManager {
 	/** 
 	 * Start the services associated to the service manager.
 	 * 
-	 * <p>This starting function supports the {@link DependentService prioritized services}.
+	 * <p>This starting function supports the prioritized services.
 	 * 
 	 * @param logger the logger to use for any information message.
 	 */
@@ -71,7 +71,7 @@ interface IServiceManager {
 	/** 
 	 * Stop the services associated to the service manager.
 	 * 
-	 * <p>This stopping function supports the {@link DependentService prioritized services}.
+	 * <p>This stopping function supports the prioritized services.
 	 *
 	 * @param logger the logger to use for any information message.
 	 */

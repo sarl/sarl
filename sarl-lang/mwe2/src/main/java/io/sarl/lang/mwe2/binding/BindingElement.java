@@ -176,7 +176,7 @@ public class BindingElement {
 		return this.annotatedWith;
 	}
 
-	/** Set the <code>@</code><code>Named</code> property.
+	/** Set the {@code @}{@code Named} property.
 	 *
 	 * @param name the name.
 	 */
@@ -186,7 +186,7 @@ public class BindingElement {
 		}
 	}
 
-	/** Replies the <code>@</code><code>Named</code> property..
+	/** Replies the {@code @}{@code Named} property..
 	 *
 	 * @return the name.
 	 */

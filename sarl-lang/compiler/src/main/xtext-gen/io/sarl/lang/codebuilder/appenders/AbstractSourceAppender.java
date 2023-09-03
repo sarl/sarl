@@ -93,9 +93,8 @@ public abstract class AbstractSourceAppender {
 	public abstract void build(ISourceAppender appender) throws IOException;
 
 	/** Build the source code and put it into the given appender.
-	 * @param the object to serialize
+	 * @param object the object to serialize
 	 * @param appender the object that permits to create the source code.
-	 * @param context the context for type resolution.
 	 */
 	protected void build(EObject object, ISourceAppender appender) throws IOException {
 		final IJvmTypeProvider provider = getTypeResolutionContext();

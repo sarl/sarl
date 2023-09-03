@@ -136,7 +136,6 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
 	 * @param sarlcConfig the sarlc configuration provider.
-	 * @param defaultClasspath the provider of default classpaths.
 	 * @param pathDetector the detector of paths.
 	 * @param name the name of the commande, or {@code null} if none.
 	 */

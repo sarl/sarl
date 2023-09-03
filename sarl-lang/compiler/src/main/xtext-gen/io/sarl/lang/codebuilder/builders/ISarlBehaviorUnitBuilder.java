@@ -82,8 +82,8 @@ public interface ISarlBehaviorUnitBuilder {
 	 */
 	void setDocumentation(String doc);
 
-	/** Change the guard.
-	 * @param value the value of the guard. It may be {@code null}.
+	/** Replies the guard.
+	 * @return the value of the guard. It may be {@code null}.
 	 */
 	@Pure
 	IExpressionBuilder getGuard();

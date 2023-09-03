@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface EventSpace extends Space {
 
 	/**
-	 * Returns the address of the agent identified by <code>id</code>.
+	 * Returns the address of the agent identified by {@code id}.
 	 *
 	 * @param id the agent's id.
 	 * @return the agent's address in this space.

@@ -87,8 +87,8 @@ public interface ISarlFieldBuilder {
 	 */
 	void setType(String type);
 
-	/** Change the initialValue.
-	 * @param value the value of the initialValue. It may be {@code null}.
+	/** Replies the initialValue.
+	 * @return the value of the initialValue. It may be {@code null}.
 	 */
 	@Pure
 	IExpressionBuilder getInitialValue();

@@ -47,7 +47,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	private DynamicSkillProvider skillProvider;
 
 	/**
-	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
+	 * Creates a new agent with a parent {@code parentID} without initializing the built-in capacities.
 	 *
 	 * @param skillProvider provides the skills dynamically on demand.
 	 * @since 0.6

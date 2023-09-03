@@ -104,11 +104,12 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param lifecycleListener the listener at the platform scale on life cycle events.
 	 * @param externalContextListener the listener at the platform scale on context membership events.
 	 * @param factories the provider of factories tool.
+	 * @param agentLevelInjector injector that is used only for injecting a specific agent.
 	 * @param skillProvider the system-wide provider of agent skills.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
+	 * @param loggingService the logging service.
 	 * @param lifecycleConfig the configuration of the lifecycle service.
-	 * @param logger the logging service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		lifecycleListener : Provider<LifecycleServiceListener>,
@@ -174,7 +175,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	/** Notify the listeners outside the parent context.
 	 * 
-	 * @param agents the destroyed agent.
+	 * @param agent the destroyed agent.
 	 * @param outerContexts the contexts in which the agent w destroyed.
 	 * @param terminationCause is the cause of the termination of the agent.
 	 *     If it is {@code null}, the agent does not provide a cause for its termination.
@@ -265,9 +266,6 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param spawningAgent the agent which is spawning, if {@code null}, the root agent (Janus kernel) is assumed.
 	 * @param parent the parent entity that is creating the agents.
 	 * @param agentClazz the type of the agents to spawn.
-	 * @param callback function that is invoked when an identifier of spawned agent is known. The number of times this callback
-	 * is invoked depends on the service's implementation. But, the contract is that is must be called at least one time when
-	 * one or more agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @param agentIds is the lambda that must be used to compute the UUID of an agent. This lambda should be thread-safe.
 	 */
@@ -411,7 +409,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * 
 	 * @param context the agent context to test.
 	 * @return {@code true} if the given context is the root context, and it is empty.
-	 * @Otherwise {@code false}.
+	 *     Otherwise {@code false}.
 	 */
 	protected def isEmptyRootContext(context : Context) {
 		context !== null && context.rootContext && context.defaultSpace.isPseudoEmpty

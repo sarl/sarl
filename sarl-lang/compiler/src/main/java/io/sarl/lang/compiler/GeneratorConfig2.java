@@ -79,17 +79,17 @@ public class GeneratorConfig2 {
 	public static final boolean DEFAULT_GENERATE_CLONE_FUNCTION = true;
 
 	/**
-	 * Whether <code>@Inline</code> shall be generated.
+	 * Whether {@code @Inline} shall be generated.
 	 */
 	private boolean generateInlineAnnotation = DEFAULT_GENERATE_INLINE_ANNOTATION;
 
 	/**
-	 * Whether constant expression interpreter shall be called for generated <code>@Inline</code>.
+	 * Whether constant expression interpreter shall be called for generated {@code @Inline}.
 	 */
 	private boolean useExpressionInterpreterForInlineAnnotation = DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION;
 
 	/**
-	 * Whether <code>@Pure</code> shall be generated.
+	 * Whether {@code @Pure} shall be generated.
 	 * @since 0.8
 	 */
 	private boolean generatePureAnnotation = DEFAULT_GENERATE_PURE_ANNOTATION;
@@ -124,7 +124,7 @@ public class GeneratorConfig2 {
 	 */
 	private String generatedTestSourceCodeFolder = SARLConfig.FOLDER_TEST_SOURCE_GENERATED;
 
-	/** Replies if the <code>@Inline</code> shall be generated.
+	/** Replies if the {@code @Inline} shall be generated.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -133,7 +133,7 @@ public class GeneratorConfig2 {
 		return this.generateInlineAnnotation;
 	}
 
-	/** Set if the <code>@Inline</code> shall be generated.
+	/** Set if the {@code @Inline} shall be generated.
 	 *
 	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
@@ -141,7 +141,7 @@ public class GeneratorConfig2 {
 		this.generateInlineAnnotation = generateInlineAnnotation;
 	}
 
-	/** Replies if constant expression interpreter shall be called for generated <code>@Inline</code>.
+	/** Replies if constant expression interpreter shall be called for generated {@code @Inline}.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -150,7 +150,7 @@ public class GeneratorConfig2 {
 		return this.useExpressionInterpreterForInlineAnnotation;
 	}
 
-	/** Set if the constant expression interpreter shall be called for generated <code>@Inline</code>.
+	/** Set if the constant expression interpreter shall be called for generated {@code @Inline}.
 	 *
 	 * @param generateInlineAnnotation {@code true} if annotation shall be generated.
 	 */
@@ -158,7 +158,7 @@ public class GeneratorConfig2 {
 		this.useExpressionInterpreterForInlineAnnotation = generateInlineAnnotation;
 	}
 
-	/** Replies if the <code>@Pure</code> shall be generated.
+	/** Replies if the {@code @Pure} shall be generated.
 	 *
 	 * @return {@code true} if annotation shall be generated.
 	 */
@@ -167,7 +167,7 @@ public class GeneratorConfig2 {
 		return this.generatePureAnnotation;
 	}
 
-	/** Set if the <code>@Pure</code> shall be generated.
+	/** Set if the {@code @Pure} shall be generated.
 	 *
 	 * @param generatePureAnnotation {@code true} if annotation shall be generated.
 	 */

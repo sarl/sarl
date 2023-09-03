@@ -29,16 +29,16 @@ import java.util.UUID
  * Initialization event.
  * The source of this event is the agent itself.
  *
- * <h4>For an Agent</h4>
+ * <h2>For an Agent</h2>
  * This event is received by the agent's native behavior when the agent is spawned.
  *
- * <h4>For a Behavior</h4>
+ * <h2>For a Behavior</h2>
  * Each Behavior instance within the agent receives this event when it is registered for the first time.
  *
- * <h4>For a Skill</h4>
+ * <h2>For a Skill</h2>
  * No skill receives this event.
  *
- * <h4>For Agent Members</h4>
+ * <h2>For Agent Members</h2>
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.
  *
  * @author $Author: srodriguez$
@@ -91,24 +91,24 @@ final event Initialize {
  * Notifies the destruction of an element.
  * The source of this event is the agent itself.
  * This event is marked as an early exit event. It means that any action that is firing this
- * event is supposed to never return, e.g. the <code>killMe</code> action.
+ * event is supposed to never return, e.g. the {@code killMe} action.
  *
- * <h4>For an Agent</h4>
+ * <h2>For an Agent</h2>
  * This event is received by the agent's native behavior when the agent is destroyed, usually after
  * a call to {@code killMe}.
  * All the agent behaviors of the agent are unregistered prior to the firing of this events.
  * All the agent tasks are canceled prior to the firing of this events.
  * Agent skills are uninstalled after the {@code Destroy} event handler is ran.
  *
- * <h4>For a Behavior</h4>
+ * <h2>For a Behavior</h2>
  * Each Behavior instance within the agent receives this event when it is unregistered for the last time.
  *
- * <h4>For a Skill</h4>
+ * <h2>For a Skill</h2>
  * No skill receives this event, except if you have registered the skill as an event listener on the
  * agent internal event bus. In the last case, the skill will receive the {@code Destroy} event because
  * is will be uninstalled after its firing.
  *
- * <h4>For Agent Members</h4>
+ * <h2>For Agent Members</h2>
  * The member agents do not receive this event from the parent agent because the parent agent cannot be
  * destroyed if it has agent members.
  *
@@ -136,7 +136,6 @@ final event Destroy
 final event AgentSpawned {
 
 	/** Identifier of the spawned agent.
-	 * It is the first identifier in {@link #agentIdentifiers}.
 	 */
 	val agentID : UUID
 
@@ -282,7 +281,6 @@ final event MemberJoined {
 	/** Construct the event.
 	 *
 	 * @param source the address of the emitter.
-	 * @param contextID the identifier of the context.
 	 * @param agentID the identifier of the agent.
 	 * @param agentType fully qualified name of the type of the agent.
 	 */

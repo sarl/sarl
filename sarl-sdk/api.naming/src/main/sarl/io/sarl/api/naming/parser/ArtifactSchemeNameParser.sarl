@@ -42,7 +42,7 @@ class ArtifactSchemeNameParser extends AbstractSchemeNameParser<ArtifactName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link ArtifactName::SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link ArtifactName#SCHEME}.
 	 */
 	new (scheme : String = ArtifactName::SCHEME) {
 		super(scheme)

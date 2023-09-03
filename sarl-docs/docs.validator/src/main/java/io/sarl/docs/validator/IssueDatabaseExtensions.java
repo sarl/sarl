@@ -184,7 +184,6 @@ public final class IssueDatabaseExtensions {
 	 * </ul>
 	 *
 	 * @param descriptions the list of issue descriptions to render.
-	 * @param sort indicates if the table rows should be sorted on simples codes.
 	 * @return the table content.
 	 */
 	@Pure

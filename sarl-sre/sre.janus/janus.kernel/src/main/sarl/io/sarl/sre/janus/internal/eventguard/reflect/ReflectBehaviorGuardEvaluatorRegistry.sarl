@@ -128,7 +128,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 
 	/** Build the list of the event handlers for a direct access to a listener.
 	 *
-	 * @param listener is the listener to explore.
+	 * @param listenerType is the listener to explore.
 	 * @return the list oh guard evaluators.
 	 */
 	protected def buildDirectAccessGuardEvaluators(listenerType : Class<?>) : ConcurrentMap<Class<? extends Event>, ConcurrentSet<Method>> {

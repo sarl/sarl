@@ -69,11 +69,11 @@ public class ExampleLaunchConfigurationTest {
 	 * Verify if the qualified name of the agent that is specified in the file corresponds
 	 * to a valid agent in the example's code.
 	 * The qualified name of the agent is given by:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * &lt;launchConfigurations&gt;
 	 *   &lt;agent class="AGENT_QUALIFIED_NAME" /&gt;
 	 * &lt;/launchConfigurations&gt;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the dynamic tests.
 	 * @throws Exception in case of error for recovering the example descriptions.

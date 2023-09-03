@@ -819,7 +819,7 @@ public interface HtmlFactory {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.13
-	 * @see HtmlFActory
+	 * @see HtmlFactory
 	 */
 	public interface HtmlTabsFactory {
 

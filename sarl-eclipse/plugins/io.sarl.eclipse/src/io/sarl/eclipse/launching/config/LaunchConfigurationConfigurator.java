@@ -151,12 +151,12 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_LOG_OPTION_VALUE = SARLEclipsePlugin.PLUGIN_ID + ".LOG_OPTION_VALUE"; //$NON-NLS-1$
 
 	/** Identifier of the type of launch configuration dedicated to SARL agents
-	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
+	 * (value {@code io.sarl.eclipse.debug.LaunchConfigType}).
 	 */
 	public static final String SARL_AGENT_LAUNCH_CONFIG_TYPE = SARLEclipsePlugin.PLUGIN_ID + ".debug.AgentLaunchConfigType"; //$NON-NLS-1$
 
 	/** Identifier of the type of launch configuration dedicated to SARL applications
-	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
+	 * (value {@code io.sarl.eclipse.debug.LaunchConfigType}).
 	 */
 	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = SARLEclipsePlugin.PLUGIN_ID + ".debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
 

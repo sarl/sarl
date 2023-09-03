@@ -173,7 +173,7 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	 * <p>This function is not thread-safe.
 	 * 
 	 * @param contextID the identifier of the context.
-	 * @param defaultSpaceId the identifier of the default space in the context.
+	 * @param defaultSpaceID the identifier of the default space in the context.
 	 * @param owner is the owner of the context. If {@code null}, the context is the root context
 	 */
 	protected abstract def newContextInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context

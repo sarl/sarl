@@ -283,7 +283,6 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 
 	/** Constructors.
 	 *
-	 * @param owner the owner of this emitter.
 	 * @param logger the logger to use.
 	 */
 	new (logger : Logger) {

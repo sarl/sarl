@@ -63,12 +63,12 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	/**
 	 * The view part id of the Packages view
-	 * (value <code>"io.sarl.eclipse.explorer.PackageExplorer"</code>).
+	 * (value {@code "io.sarl.eclipse.explorer.PackageExplorer"}).
 	 * <p>
 	 * When this id is used to access
-	 * a view part with <code>IWorkbenchPage.findView</code> or
-	 * <code>showView</code>, the returned <code>IViewPart</code>
-	 * can be safely cast to an <code>IPackagesViewPart</code>.
+	 * a view part with {@code IWorkbenchPage.findView} or
+	 * {@code showView}, the returned {@code IViewPart}
+	 * can be safely cast to an {@code IPackagesViewPart}.
 	 * </p>
 	 *
 	 * @see IPackagesViewPart

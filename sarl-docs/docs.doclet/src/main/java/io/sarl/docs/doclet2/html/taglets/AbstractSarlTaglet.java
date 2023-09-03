@@ -228,7 +228,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 *
 	 * @param parent the receiver.
 	 * @param children the nodes to add into the parent node.
-	 * @see #appendChildren(Element, Node)
+	 * @see #appendChildren(org.jsoup.nodes.Element, Node)
 	 */
 	protected void appendChildren(org.jsoup.nodes.Element parent, Iterable<? extends Node> children) {
 		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
@@ -245,7 +245,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 *
 	 * @param parent the receiver.
 	 * @param child the node to add into the parent node.
-	 * @see #appendChildren(Element, Iterable)
+	 * @see #appendChildren(org.jsoup.nodes.Element, Iterable)
 	 */
 	@SuppressWarnings("static-method")
 	protected void appendChildren(org.jsoup.nodes.Element parent, Node child) {

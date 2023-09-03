@@ -356,15 +356,15 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * <p>The format must be compatible with {@link MessageFormat}.
 	 *
 	 * <p>If section auto-numbering is on,
-	 * the first parameter <code>{0}</code> equals to the prefix,
-	 * the second parameter <code>{1}</code> equals to the string representation of the section number,
-	 * the third parameter <code>{2}</code> equals to the title text, and the fourth parameter
-	 * <code>{3}</code> is the reference id of the section.
+	 * the first parameter {@code {0}} equals to the prefix,
+	 * the second parameter {@code {1}} equals to the string representation of the section number,
+	 * the third parameter {@code {2}} equals to the title text, and the fourth parameter
+	 * {@code {3}} is the reference id of the section.
 	 *
 	 * <p>If section auto-numbering is off,
-	 * the first parameter <code>{0}</code> equals to the prefix,
-	 * the second parameter <code>{1}</code> equals to the title text, and the third parameter
-	 * <code>{2}</code> is the reference id of the section.
+	 * the first parameter {@code {0}} equals to the prefix,
+	 * the second parameter {@code {1}} equals to the title text, and the third parameter
+	 * {@code {2}} is the reference id of the section.
 	 *
 	 * @param formatWithoutNumbers the format for the outline entries without section numbers.
 	 * @param formatWithNumbers the format for the outline entries with section numbers.
@@ -383,15 +383,15 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * <p>The format must be compatible with {@link MessageFormat}.
 	 *
 	 * <p>If section auto-numbering is on,
-	 * the first parameter <code>{0}</code> equals to the prefix,
-	 * the second parameter <code>{1}</code> equals to the string representation of the section number,
-	 * the third parameter <code>{2}</code> equals to the title text, and the fourth parameter
-	 * <code>{3}</code> is the reference id of the section.
+	 * the first parameter {@code {0}} equals to the prefix,
+	 * the second parameter {@code {1}} equals to the string representation of the section number,
+	 * the third parameter {@code {2}} equals to the title text, and the fourth parameter
+	 * {@code {3}} is the reference id of the section.
 	 *
 	 * <p>If section auto-numbering is off,
-	 * the first parameter <code>{0}</code> equals to the prefix,
-	 * the second parameter <code>{1}</code> equals to the title text, and the third parameter
-	 * <code>{2}</code> is the reference id of the section.
+	 * the first parameter {@code {0}} equals to the prefix,
+	 * the second parameter {@code {1}} equals to the title text, and the third parameter
+	 * {@code {2}} is the reference id of the section.
 	 *
 	 * @return the format.
 	 */
@@ -402,10 +402,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Change the format to be applied to the section titles.
 	 *
 	 * <p>The format must be compatible with {@link MessageFormat}, with
-	 * the first parameter <code>{0}</code> equals to the Markdown prefix,
-	 * the second parameter <code>{1}</code> equals to the string representation of the section number,
-	 * the third parameter <code>{2}</code> equals to the title text, and the fourth parameter
-	 * <code>{3}</code> is the identifier of the section.
+	 * the first parameter {@code {0}} equals to the Markdown prefix,
+	 * the second parameter {@code {1}} equals to the string representation of the section number,
+	 * the third parameter {@code {2}} equals to the title text, and the fourth parameter
+	 * {@code {3}} is the identifier of the section.
 	 *
 	 * @param format the format.
 	 */
@@ -418,10 +418,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Replies the format to be applied to the section titles.
 	 *
 	 * <p>The format must be compatible with {@link MessageFormat}, with
-	 * the first parameter <code>{0}</code> equals to the string representation of the section number,
-	 * the second parameter <code>{1}</code> equals to the string representation of the section number,
-	 * the third parameter <code>{2}</code> equals to the title text, and the fourth parameter
-	 * <code>{3}</code> is the identifier of the section.
+	 * the first parameter {@code {0}} equals to the string representation of the section number,
+	 * the second parameter {@code {1}} equals to the string representation of the section number,
+	 * the third parameter {@code {2}} equals to the title text, and the fourth parameter
+	 * {@code {3}} is the identifier of the section.
 	 *
 	 * @return the format.
 	 */
@@ -432,8 +432,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Change the format to be applied to the section numbers.
 	 *
 	 * <p>The format must be compatible with {@link MessageFormat}, with
-	 * the first parameter <code>{0}</code> equals to the first part of the full section number, and
-	 * the second parameter <code>{1}</code> equals to a single section number.
+	 * the first parameter {@code {0}} equals to the first part of the full section number, and
+	 * the second parameter {@code {1}} equals to a single section number.
 	 *
 	 * @param format the format.
 	 */
@@ -446,8 +446,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Replies the format to be applied to the section numbers.
 	 *
 	 * <p>The format must be compatible with {@link MessageFormat}, with
-	 * the first parameter <code>{0}</code> equals to the first part of the full section number, and
-	 * the second parameter <code>{1}</code> equals to a single section number.
+	 * the first parameter {@code {0}} equals to the first part of the full section number, and
+	 * the second parameter {@code {1}} equals to a single section number.
 	 *
 	 * @return the format.
 	 */

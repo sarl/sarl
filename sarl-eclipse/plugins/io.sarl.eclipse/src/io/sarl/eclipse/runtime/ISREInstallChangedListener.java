@@ -31,7 +31,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * A SRE install changed listener is notified when
  * the workspace default SRE install changes, or when an attribute of
  * a specific SRE install changes.
- * Listeners register with <code>SARLRuntime</code>.
+ * Listeners register with {@code SARLRuntime}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

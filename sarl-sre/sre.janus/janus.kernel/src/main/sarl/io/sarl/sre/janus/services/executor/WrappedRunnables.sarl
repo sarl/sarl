@@ -123,7 +123,6 @@ abstract class SreExecutable {
 	/** Invoked when the task is finished whatever it is successful or failing.
 	 * The default implementation does nothing.
 	 * 
-	 * @param error the error.
 	 * @since 0.11
 	 */
 	protected def onFinished {

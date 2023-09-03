@@ -67,7 +67,7 @@ class EventBus {
 	/** 
 	 * Instantiates a dispatcher.
 	 * 
-	 * @param taskScheduler a provider of scheduler for the agent tasks that may be invoked on demand.
+	 * @param taskSchedulerProvider a provider of scheduler for the agent tasks that may be invoked on demand.
 	 * @param dispatcher the event dispatcher.
 	 * @param factories the provider of factories tool.
 	 */
@@ -106,8 +106,7 @@ class EventBus {
 	 * 
 	 * @param <T> the type of the listeners.
 	 * @param type the type of the listeners.
-	 * @param collection the collection of listeners that is filled by this function.
-	 * @return the number of listeners added to the collection.
+	 * @return the collection of listeners that is filled by this function.
 	 * @since 0.6.0
 	 */
 	def getRegisteredEventListeners(type : Class<T>) : ConcurrentCollection<T> with T {
@@ -134,7 +133,6 @@ class EventBus {
 	 * 
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be unregistered.
 	 * @param callback function which is invoked just before the object is unregistered.
-	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
 	def unregister(object : Object, callback : (Object)=>void) {
 		this.behaviorGuardEvaluatorRegistry.unregister(object, callback)
@@ -147,7 +145,6 @@ class EventBus {
 	 * @param callback function which is invoked just before the object is unregistered.
 	 *     The callback functions replies {@code true} if it should be called on the next removed object.
 	 *     If it replies {@code false}, it will be not called anymore.
-	 * @throws IllegalArgumentException if the object was not previously registered.
 	 * @since 0.7
 	 */
 	def unregister(type : Class<?>, callback : (Object)=>boolean) {
@@ -160,7 +157,6 @@ class EventBus {
 	 * @param callback function which is invoked just before the object is unregistered.
 	 *     The callback functions replies {@code true} if it should be called on the next removed object.
 	 *     If it replies {@code false}, it will be not called anymore.
-	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
 	def unregisterAll(callback : (Object)=>boolean) {
 		this.behaviorGuardEvaluatorRegistry.unregisterAll(callback)
@@ -310,7 +306,6 @@ class EventBus {
 	 * @param behaviorGuardEvaluators the list of class containing a {@code PerceptGuardEvaluator} method.
 	 * @param logger the logger to be used.
 	 * @return the collection of couple associating a object and its collection of behavior methods that must be executed.
-	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
 	@SuppressWarnings("potential_inefficient_value_conversion")
 	protected def evaluateGuards(^event : Event,
@@ -347,9 +342,6 @@ class EventBus {
 	 * @param thrownExceptions indicates if the exceptions in the event handlers should be thrown from this function,
 	 * or logged out to the agent's log.
 	 * @param logger the logger to use for notifying the errors.
-	 * @throws InterruptedException - something interrupt the waiting of the event handler terminations.
-	 * @throws ExecutionException - when the event handlers cannot be called; or when one of the event handler has failed during
-	 * its run.
 	 */
 	protected def executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute : Collection<Runnable>,
 		thrownExceptions : boolean, logger : Logger) {

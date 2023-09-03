@@ -53,11 +53,9 @@ public class SarldocFakeCommand extends AbstractSarldocCommand {
 
 	/** Constructor.
 	 *
-	 * @param sarldocClassLoader the dynamic class loader that could be used by sarldoc.
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
 	 * @param sarlcConfig the sarlc configuration provider.
-	 * @param defaultClasspath the provider of default classpaths.
 	 * @param pathDetector the detector of paths.
 	 */
 	@BQInject

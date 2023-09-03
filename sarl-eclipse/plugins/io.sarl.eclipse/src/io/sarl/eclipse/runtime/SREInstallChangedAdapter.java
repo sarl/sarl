@@ -24,7 +24,7 @@ package io.sarl.eclipse.runtime;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 
 /**
- * Default implementation of <code>ISREInstallChangedAdapter</code>.
+ * Default implementation of {@code ISREInstallChangedAdapter}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

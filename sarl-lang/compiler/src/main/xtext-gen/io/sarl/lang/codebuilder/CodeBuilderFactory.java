@@ -81,7 +81,7 @@ import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** * Creates {@link ICodeBuilder}s to insert SARL code snippets. */
+/** * Creates {@code ICodeBuilder} to insert SARL code snippets. */
 @SuppressWarnings("all")
 public class CodeBuilderFactory {
 
@@ -198,7 +198,7 @@ public class CodeBuilderFactory {
 	/** Create an injector that override the given injectors with the modules.
 	 *
 	 * @param originalInjector the original injector.
-	 * @param modules the overriding modules.
+	 * @param module the overriding module.
 	 * @return the new injector.
 	 */
 	public static Injector createOverridingInjector(Injector originalInjector, com.google.inject.Module module) {

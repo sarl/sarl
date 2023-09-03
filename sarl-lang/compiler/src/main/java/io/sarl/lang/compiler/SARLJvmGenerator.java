@@ -46,7 +46,7 @@ import io.sarl.lang.util.Utils;
 /** SARL-specific generator.
  *
  * <p>This generator:<ul>
- * <li>forces the JvmOperation to be annotated with <code>@Pure</code>
+ * <li>forces the JvmOperation to be annotated with {@code @Pure}
  * dynamically.</li>
  * <li>Generate static initialization block from a static constructor;</li>
  * <li>Generate the files into the standard output folder or the unit test output folder.</li>

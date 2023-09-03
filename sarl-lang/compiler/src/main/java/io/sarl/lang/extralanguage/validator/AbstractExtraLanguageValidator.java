@@ -309,7 +309,7 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Replies the message format to be used for building an alert message.
 	 *
 	 * <p>The replied format must be compatible with {@link java.text.MessageFormat#format(Object)} with the
-	 * first argument <code>{0}</code> equals to the text of the alert message.
+	 * first argument {@code {0}} equals to the text of the alert message.
 	 *
 	 * @return the alert message format.
 	 */

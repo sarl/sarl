@@ -56,7 +56,9 @@ class ProbeServiceModule implements BQModule {
 	 *
 	 * @param sreConfig the SRE configuration.
 	 * @param injector the injector to use for initializing the new instance.
-	 * @param listenerCollectionProvider the provider of listener collections. 
+	 * @param service the executor service of the framework.
+	 * @param namespaceService the namespace service of the framework.
+	 * @param nameParser the parser of entity names.
 	 * @param factories the provider of the factories tool.
 	 * @return the created service.
 	 */

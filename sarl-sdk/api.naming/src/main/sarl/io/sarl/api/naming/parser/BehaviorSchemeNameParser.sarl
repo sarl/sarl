@@ -46,7 +46,7 @@ class BehaviorSchemeNameParser extends AbstractSchemeNameParser<BehaviorName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link BehaviorName::SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link BehaviorName#SCHEME}.
 	 */
 	new (scheme : String = BehaviorName::SCHEME) {
 		super(scheme)

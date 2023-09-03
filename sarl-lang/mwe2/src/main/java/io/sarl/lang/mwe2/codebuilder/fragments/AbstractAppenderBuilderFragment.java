@@ -240,11 +240,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t/** Build the source code and put it into the given appender."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param the object to serialize"); //$NON-NLS-1$
+				it.append("\t * @param object the object to serialize"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param appender the object that permits to create the source code."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

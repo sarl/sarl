@@ -45,18 +45,18 @@ public class SARLBuilderPreferenceAccess {
 	public static final String PREF_GENERATED_TEST_SOURCE_FOLDER = "io.sarl.builder.generatedTestSourceFolder"; //$NON-NLS-1$
 
 	/**
-	 * Preference identifier for generating <code>@Inline</code>.
+	 * Preference identifier for generating {@code @Inline}.
 	 */
 	public static final String PREF_GENERATE_INLINE = "io.sarl.builder.generateInlineAnnotation"; //$NON-NLS-1$
 
 	/**
-	 * Preference identifier for using the expression interpreter when generating <code>@Inline</code>.
+	 * Preference identifier for using the expression interpreter when generating {@code @Inline}.
 	 */
 	public static final String PREF_USE_EXPRESSION_INTERPRETER =
 			"io.sarl.builder.useExpressionInterpreterForInlineAnnotation"; //$NON-NLS-1$
 
 	/**
-	 * Preference identifier for generating <code>@Pure</code>.
+	 * Preference identifier for generating {@code @Pure}.
 	 */
 	public static final String PREF_GENERATE_PURE = "io.sarl.builder.generatePureAnnotation"; //$NON-NLS-1$
 

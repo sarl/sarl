@@ -83,7 +83,7 @@ final class StaticReflectBehaviorGuardEvaluatorDictionary {
 
 	/** Replies the declared methods for the guard evaluation into the given type.
 	 *
-	 * @param type the type to explore.
+	 * @param listenerType the type to explore.
 	 * @return the declared methods for guard evaluation.
 	 */
 	@Pure

@@ -154,7 +154,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	/** Unregister the listener from the event bus.
 	 * 
-	 * @param listener the listener to unregister.
+	 * @param listenerType the listener to unregister.
 	 * @param callback function which is invoked just before the object is unregistered.
 	 *     The callback functions replies {@code true} if it should be called on the next removed object.
 	 *     If it replies {@code false}, it will be not called anymore.

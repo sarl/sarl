@@ -43,7 +43,7 @@ class ServiceSchemeNameParser extends AbstractSchemeNameParser<ServiceName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link ServiceName::SCHEME}.
+	 * @optionalparam scheme the name scheme that is supported by this parser. By default it is {@link ServiceName#SCHEME}.
 	 */
 	new (scheme : String = ServiceName::SCHEME) {
 		super(scheme)

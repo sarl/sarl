@@ -351,7 +351,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * This function reads the list of the dependencies in the configuration
 	 * resource file with {@link MavenHelper#getConfig(String)}.
 	 * The key given to {@link MavenHelper#getConfig(String)} is
-	 * <code>&lt;configurationKeyPrefix&gt;.dependencies</code>.
+	 * {@code &lt;configurationKeyPrefix&gt;.dependencies}.
 	 *
 	 * @param configurationKeyPrefix the string that is the prefix in the configuration file.
 	 * @return the list of the dependencies.

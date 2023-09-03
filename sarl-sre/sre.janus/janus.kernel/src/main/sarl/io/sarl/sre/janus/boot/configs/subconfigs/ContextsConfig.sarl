@@ -68,16 +68,16 @@ class ContextsConfig {
 	 * The default delay in milliseconds before running the space destruction callback.
 	 * This callback tries to destroy the instance of space if it is empty.
 	 * 
-	 * @see #START_TIMEOUT_NAME
+	 * @see #SPACE_DESTRUCTION_CALLBACK_DELAY_NAME
 	 */
 	public static val SPACE_DESTRUCTION_CALLBACK_DELAY_VALUE = 60.seconds
 
 	@Accessors(PUBLIC_GETTER)
 	var spaceDestructionCallbackDelay = SPACE_DESTRUCTION_CALLBACK_DELAY_VALUE
 
-	/** Change the flag that enables to select the type of probe manager
+	/** Change the delay in milliseconds that is applied before testing if a space should be destroyed because it is empty.
 	 * 
-	 * @param doAsync is {@code true} if the asynchronous update is prefered.
+	 * @param delay the delay in millsesonds.
 	 */
 	@BQConfigProperty("Delay in milliseconds that is applied before testing if a space should be destroyed because it is empty.")
 	def setSpaceDestructionCallbackDelay(delay : long) {

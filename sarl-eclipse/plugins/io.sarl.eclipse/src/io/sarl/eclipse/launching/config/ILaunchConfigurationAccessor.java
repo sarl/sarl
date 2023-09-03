@@ -185,7 +185,7 @@ public interface ILaunchConfigurationAccessor {
 
 	/** Replies if the assertions are automatically enabled in debug mode.
 	 *
-	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 * <p>When assertions are enabled, the {@code -ea} command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
 	 * @return {@code true} if the assertions are enabled.
@@ -195,7 +195,7 @@ public interface ILaunchConfigurationAccessor {
 
 	/** Replies if the assertions are automatically enabled in run mode.
 	 *
-	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 * <p>When assertions are enabled, the {@code -ea} command line option will be given to the virtual machine.
 	 *
 	 * @param configuration the configuration.
 	 * @return {@code true} if the assertions are enabled.

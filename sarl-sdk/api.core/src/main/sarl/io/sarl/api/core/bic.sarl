@@ -136,7 +136,7 @@ capacity ExternalContextAccess {
 	 *
 	 * @param event the event to test.
 	 * @param space the space in which the event may be.
-	 * @return <code>true</code> if the given event was emitted in the
+	 * @return {@code true} if the given event was emitted in the
 	 *     given space. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -148,7 +148,7 @@ capacity ExternalContextAccess {
 	 *
 	 * @param event the event to test.
 	 * @param spaceID the identifier of the space in which the event may be.
-	 * @return <code>true</code> if the given event was emitted in the
+	 * @return {@code true} if the given event was emitted in the
 	 *     space with the given identifier. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -160,7 +160,7 @@ capacity ExternalContextAccess {
 	 *
 	 * @param event the event to test.
 	 * @param spaceID the identifier of the space in which the event may be.
-	 * @return <code>true</code> if the given event was emitted in the
+	 * @return {@code true} if the given event was emitted in the
 	 *     space with the given identifier. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -169,7 +169,7 @@ capacity ExternalContextAccess {
 
 	/**
 	 * Emits a given event with the provided scope in the given space.
-	 * Equivalent to <code>space.emit(getID,event,scope)</code>
+	 * Equivalent to {@code space.emit(getID,event,scope)}
 	 *
 	 * @param space the space in which the event should be fired.
 	 * @param event the event to emit.
@@ -208,7 +208,7 @@ capacity InnerContextAccess {
 	 * calling agent, and is a member of at least
 	 * one space of the inner context.
 	 *
-	 * @return <code>true</code> if the current agent has other agents as member of its internal context; otherwise {@code false}
+	 * @return {@code true} if the current agent has other agents as member of its internal context; otherwise {@code false}
 	 */
 	@Pure
 	def hasMemberAgent : boolean
@@ -240,7 +240,7 @@ capacity InnerContextAccess {
 	/** Replies if the given space is the default space of the inner context.
 	 *
 	 * @param space the space to test.
-	 * @return <code>true</code> if the given space is the default space of
+	 * @return {@code true} if the given space is the default space of
 	 *     the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -251,7 +251,7 @@ capacity InnerContextAccess {
 	 * default space of the inner context.
 	 *
 	 * @param spaceID the identifier to test.
-	 * @return <code>true</code> if the given identifier is the identifier
+	 * @return {@code true} if the given identifier is the identifier
 	 *     of the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -262,7 +262,7 @@ capacity InnerContextAccess {
 	 * default space of the inner context.
 	 *
 	 * @param spaceID the identifier to test.
-	 * @return <code>true</code> if the given identifier is the identifier
+	 * @return {@code true} if the given identifier is the identifier
 	 *     of the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -273,7 +273,7 @@ capacity InnerContextAccess {
 	 * of the inner context.
 	 *
 	 * @param event the event to test.
-	 * @return <code>true</code> if the given event was emitted
+	 * @return {@code true} if the given event was emitted
 	 *     in the default space of the inner context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -287,11 +287,11 @@ capacity InnerContextAccess {
  */
 capacity Behaviors {
 
-	/** Replies <code>true</code> if at least a behavior is registered.
+	/** Replies {@code true} if at least a behavior is registered.
 	 *
 	 * <p>A registered behavior is not necessary running. It may wait for events.
 	 *
-	 * @return <code>true</code> if a behavior is registered; otherwise {@code false}.
+	 * @return {@code true} if a behavior is registered; otherwise {@code false}.
 	 * @since 0.5
 	 */
 	def hasRegisteredBehavior : boolean
@@ -599,7 +599,7 @@ capacity Schedules {
 	/**
 	 * Schedule a given task to be executed after the specified delay.
 	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name {@code it} by default.
 	 *
 	 * <p>The given delay is expressed in milliseconds according to the time scale of the SRE.
 	 * It means that the given number of milliseconds may be not real milliseconds, depending
@@ -656,19 +656,19 @@ capacity Schedules {
 	 * Attempts to cancel execution of this task.  This attempt will
 	 * fail if the task has already completed, has already been canceled,
 	 * or could not be canceled for some other reason. If successful,
-	 * and this task has not started when <code>cancel</code> is called,
+	 * and this task has not started when {@code cancel} is called,
 	 * this task should never run.  If the task has already started,
-	 * then the <code>mayInterruptIfRunning</code> parameter determines
+	 * then the {@code mayInterruptIfRunning} parameter determines
 	 * whether the thread executing this task should be interrupted in
 	 * an attempt to stop the task.
 	 *
 	 * @param task the task to cancel.
-	 * @param mayInterruptIfRunning <code>true</code> if the thread executing this
+	 * @param mayInterruptIfRunning {@code true} if the thread executing this
 	 *     task should be interrupted; otherwise, in-progress tasks are allowed
 	 *     to complete
 	 * @return {@code false} if the task could not be canceled,
 	 *     typically because it has already completed normally;
-	 *     <code>true</code> otherwise
+	 *     {@code true} otherwise
 	 */
 	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean
 
@@ -676,7 +676,7 @@ capacity Schedules {
 	 * Replies if the given task was canceled.
 	 *
 	 * @param task the task.
-	 * @return <code>true</code> if the task was canceled with {@link #cancel(AgentTask,boolean)}
+	 * @return {@code true} if the task was canceled with {@link #cancel(AgentTask,boolean)}
 	 *     or {@link #cancel(AgentTask)}; {@code false} otherwise.
 	 * @since 0.5
 	 */
@@ -689,11 +689,11 @@ capacity Schedules {
 	 * multiple task's instances will be run in parallel, in opposite to the
 	 * {@code atFixedDelay()} function.
 	 * For example, consider the following code:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * every(500) [ sleep(2000) ]
-	 * </code></pre>
+	 * }</pre>
 	 * At a given time, 4 instances (A, B, C, D) of the task may be run in parallel:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500
 	 *   |    |      |      |      |      |      |      |      |      |
 	 *   [-A-----------------------]
@@ -702,11 +702,11 @@ capacity Schedules {
 	 *                      [-D-------------------------]
 	 *                             [-E-------------------------]
 	 *                                    [-F-------------------------]
-	 * </code></pre>
+	 * }</pre>
 	 * For executing a task with a fixed delay between the runs, and not at a fixed rate,
 	 * you should use the {@code atFixedDelay()} function.
 	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name {@code it} by default.
 	 *
 	 * <p>The given period is expressed in milliseconds according to the time scale of the SRE.
 	 * It means that the given number of milliseconds may be not real milliseconds, depending
@@ -735,22 +735,22 @@ capacity Schedules {
 	 * no multiple task's instance are run in parallel, in opposite to the
 	 * {@code every()} function.
 	 * For example, consider the following code:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * atFixedDelay(500) [ sleep(2000) ]
-	 * </code></pre>
+	 * }</pre>
 	 * At a given time, 3 instances (A, B, C) of the task are run in sequence, and
 	 * each run is separated by 500 milliseconds:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500   5000
 	 *   |    |      |      |      |      |      |      |      |      |      |
 	 *   [-A-----------------------]
 	 *                                    [-B-------------------------]
 	 *                                                                       [-C-------------------------]
-	 * </code></pre>
+	 * }</pre>
 	 * For executing a task with a fixed rate, and not with a fixed delay between the task runs,
 	 * you should use the {@code every()} function.
 	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name {@code it} by default.
 	 *
 	 * <p>The given delay is expressed in milliseconds according to the time scale of the SRE.
 	 * It means that the given number of milliseconds may be not real milliseconds, depending
@@ -780,7 +780,7 @@ capacity Schedules {
 	 * <p>This function is the easy to use version and efficient implementation of the code
 	 * {@code in(0) [statements]}.
 	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name {@code it} by default.
 	 *
 	 * <p>This function is supposed to execute the given procedure, even if the agent is not alive.
 	 *
@@ -796,7 +796,7 @@ capacity Schedules {
 	 *
 	 * <p>If the given time is passed, according to {@link Time} then the task is not executed.
 	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name {@code it} by default.
 	 *
 	 * <p>The given time is expressed in milliseconds according to the time scale of the SRE.
 	 * It means that the given number of milliseconds may be not real milliseconds, depending
@@ -840,7 +840,7 @@ capacity DefaultContextInteractions {
 	
 	/**
 	 * Returns the Default Space of the Default Context.
-	 * Equivalent to <code>defaultContext.defaultSpace</code>.
+	 * Equivalent to {@code defaultContext.defaultSpace}.
 	 *
 	 * @return the default event space.
 	 */
@@ -849,7 +849,7 @@ capacity DefaultContextInteractions {
 	
 	/**
 	 * Return the Address of the agent in the Default Space of the Default Context.
-	 * Equivalent to <code>defaultContext.defaultSpace.getAddress(this.ID)</code>
+	 * Equivalent to {@code defaultContext.defaultSpace.getAddress(this.ID)}
 	 *
 	 * @return the address of the agent in the default space.
 	 */
@@ -858,10 +858,10 @@ capacity DefaultContextInteractions {
 
 	/**
 	 * Emits a given event with the provided scope in the DefaultSpace of the DefaultContext.
-	 * Equivalent to <code>defaultContext.defaultSpace.emit(e,scope)</code>
+	 * Equivalent to {@code defaultContext.defaultSpace.emit(e,scope)}
 	 *
 	 * @param event the event to emit.
-	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
+	 * @optionalparam scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@SarlAsynchronousExecution
@@ -889,7 +889,6 @@ capacity DefaultContextInteractions {
 	 * Emits or forward the given event to the parent agent into the default context of the calling agent.
 	 *
 	 * @param event the event to emit.
-	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 * @since 0.12
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
@@ -912,7 +911,7 @@ capacity DefaultContextInteractions {
 	/** Replies if the given space is the default space of the default context.
 	 *
 	 * @param space the space to test.
-	 * @return <code>true</code> if the given space is the default space of
+	 * @return {@code true} if the given space is the default space of
 	 *     the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -923,7 +922,7 @@ capacity DefaultContextInteractions {
 	 * the default context.
 	 *
 	 * @param space the space to test.
-	 * @return <code>true</code> if the given identifier is the identifier
+	 * @return {@code true} if the given identifier is the identifier
 	 *     of the default space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -934,7 +933,7 @@ capacity DefaultContextInteractions {
 	 * the default context.
 	 *
 	 * @param space the space to test.
-	 * @return <code>true</code> if the given identifier is the identifier
+	 * @return {@code true} if the given identifier is the identifier
 	 *     of the default space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -945,7 +944,7 @@ capacity DefaultContextInteractions {
 	 * the default context.
 	 *
 	 * @param event the event to test.
-	 * @return <code>true</code> if the given event is emitted in the default
+	 * @return {@code true} if the given event is emitted in the default
 	 *     space of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -955,7 +954,7 @@ capacity DefaultContextInteractions {
 	/** Replies if the given context is the default context.
 	 *
 	 * @param context the agent context to test.
-	 * @return <code>true</code> if the given context is the default context.
+	 * @return {@code true} if the given context is the default context.
 	 *     Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -965,7 +964,7 @@ capacity DefaultContextInteractions {
 	/** Replies if the given identifier is the identifier of the default context.
 	 *
 	 * @param contextID the identifier of the context.
-	 * @return <code>true</code> if the given identifier is the identifier
+	 * @return {@code true} if the given identifier is the identifier
 	 *     of the default context. Otherwise {@code false}.
 	 * @since 0.2
 	 */
@@ -1005,7 +1004,7 @@ capacity Logging {
 	/** Print the given message at information logging level.
 	 * <p>
 	 * <strong>This function is deprecated.</strong> Please use
-	 * {@link #info(Object,Object...)} in place of <code>println</code>.
+	 * {@link #info(Object,Object...)} in place of {@code println}.
 	 *
 	 * @param message the elements to display.
 	 * @deprecated Use {@link #info(Object,Object...)}.
@@ -1073,7 +1072,7 @@ capacity Logging {
 
 	/** Replies if the logging system is displaying the errors.
 	 *
-	 * @return <code>true</code> if the errors are logged,
+	 * @return {@code true} if the errors are logged,
 	 *         {@code false} if not.
 	 */
 	@Pure
@@ -1081,7 +1080,7 @@ capacity Logging {
 
 	/** Replies if the logging system is displaying the warnings.
 	 *
-	 * @return <code>true</code> if the warnings are logged,
+	 * @return {@code true} if the warnings are logged,
 	 *         {@code false} if not.
 	 */
 	@Pure
@@ -1089,7 +1088,7 @@ capacity Logging {
 
 	/** Replies if the logging system is displaying the information messages.
 	 *
-	 * @return <code>true</code> if the information messages are logged,
+	 * @return {@code true} if the information messages are logged,
 	 *         {@code false} if not.
 	 */
 	@Pure
@@ -1097,7 +1096,7 @@ capacity Logging {
 
 	/** Replies if the logging system is displaying the debugging messages.
 	 *
-	 * @return <code>true</code> if the debugging messages are logged,
+	 * @return {@code true} if the debugging messages are logged,
 	 *         {@code false} if not.
 	 */
 	@Pure
@@ -1105,18 +1104,18 @@ capacity Logging {
 
 	/** Replies the logging level.
 	 *
-	 * @return <code>0</code> for no logging, <code>1</code> for error,
-	 *         <code>2</code> for warning, <code>3</code> for info,
-	 *         <code>5</code> for debug.
+	 * @return {@code 0} for no logging, {@code 1} for error,
+	 *         {@code 2} for warning, {@code 3} for info,
+	 *         {@code 5} for debug.
 	 */
 	@Pure
 	def getLogLevel : int
 
 	/** Set the logging level.
 	 *
-	 * @param level <code>0</code> or lower for no logging, <code>1</code> for error,
-	 *         <code>2</code> for warning, <code>3</code> for info,
-	 *         <code>4</code> or higher for debug.
+	 * @param level {@code 0} or lower for no logging, {@code 1} for error,
+	 *         {@code 2} for warning, {@code 3} for info,
+	 *         {@code 4} or higher for debug.
 	 */
 	def setLogLevel(level : int)
 

@@ -94,7 +94,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * <p>This method waits until the window is closed by the end user, and then it returns the window's return code;
 	 * otherwise, this method returns immediately. A window's return codes are
 	 * window-specific, although two standard return codes are predefined:
-	 * <code>OK</code> and <code>CANCEL</code>.
+	 * {@code OK} and {@code CANCEL}.
 	 * </p>
 	 *
 	 * @param parentShell the parent shell.

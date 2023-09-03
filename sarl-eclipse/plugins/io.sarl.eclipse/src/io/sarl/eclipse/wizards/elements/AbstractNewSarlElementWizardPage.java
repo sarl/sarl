@@ -415,7 +415,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
-	 * <li><code>{0}</code>: the name of the type.</li>
+	 * <li>{@code {0}}: the name of the type.</li>
 	 * </ul>
 	 *
 	 * @return the error message.
@@ -426,7 +426,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
-	 * <li><code>{0}</code>: the name of the selected type.</li>
+	 * <li>{@code {0}}: the name of the selected type.</li>
 	 * </ul>
 	 *
 	 * @return the error message.
@@ -441,7 +441,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
-	 * <li><code>{0}</code>: the name of the selected type.</li>
+	 * <li>{@code {0}}: the name of the selected type.</li>
 	 * </ul>
 	 *
 	 * @return the error message.
@@ -456,7 +456,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
-	 * <li><code>{0}</code>: the name of the missed type.</li>
+	 * <li>{@code {0}}: the name of the missed type.</li>
 	 * </ul>
 	 *
 	 * @return the error message.

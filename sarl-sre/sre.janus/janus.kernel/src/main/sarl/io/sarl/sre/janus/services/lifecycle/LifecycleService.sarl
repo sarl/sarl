@@ -66,9 +66,6 @@ interface LifecycleService extends Service {
 	 * @param agentId the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
 	 * @param agentClazz the type of the agents to spawn.
-	 * @param callback function that is invoked when an identifier of spawned agent is known. The number of times this callback
-	 * is invoked depends on the service's implementation. But, the contract is that is must be called at least one time when
-	 * one or more agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,

@@ -308,7 +308,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		return this.generateUnitTests.get();
 	}
 
-	/** Enable or disable the generation of the <code>ISourceAppendable}</code> API.
+	/** Enable or disable the generation of the {@code ISourceAppendable}} API.
 	 *
 	 * @param enable {@code true} for enabling, {@code false} for disabling.
 	 */
@@ -316,7 +316,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		this.enableISourceAppendable.set(enable);
 	}
 
-	/** Replies if the generation of the <code>ISourceAppendable}</code> API is enable.
+	/** Replies if the generation of the {@code ISourceAppendable}} API is enable.
 	 *
 	 * @return {@code true} for enabling, {@code false} for disabling.
 	 */

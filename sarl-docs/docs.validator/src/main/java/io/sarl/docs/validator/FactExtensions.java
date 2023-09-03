@@ -157,7 +157,6 @@ public final class FactExtensions {
 	 * @param parameters the type of the arguments.
 	 * @return {@code true} if the function is pure.
 	 * @throws SecurityException if the function declaration cannot be accessed.
-	 * @throws NoSuchMethodException if the function cannot be found.
 	 * @since 0.12
 	 */
 	public static boolean isPureFunctionPrototype(Class<?> type, String name, Class<?>... parameters) {

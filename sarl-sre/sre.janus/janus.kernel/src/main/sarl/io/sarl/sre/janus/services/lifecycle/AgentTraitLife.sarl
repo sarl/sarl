@@ -57,7 +57,6 @@ abstract class AgentTraitLife {
 	 *
 	 * @param associatedContainer the associated container of this living object.
 	 * @param factories the provider of factories tool.
-	 * @param injector the injector to be used for treating {@code @Injectable} annotations.
 	 */
 	new (associatedContainer : AgentTrait, factories : Provider<Factories>) {
 		this.factories = factories

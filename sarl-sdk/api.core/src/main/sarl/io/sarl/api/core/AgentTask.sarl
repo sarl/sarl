@@ -124,7 +124,7 @@ class AgentTask extends SRESpecificDataContainer {
 	/** Change the guard of this that with the negation of the given predicate.
 	 *
 	 * @param predicate the code of the function that is the predicate to test.
-	 * @return <code>this</code>.
+	 * @return {@code this}.
 	 * @see #setGuard
 	 */
 	def unless(predicate : (Agent) => boolean) : AgentTask {
@@ -139,7 +139,7 @@ class AgentTask extends SRESpecificDataContainer {
 	/** Change the guard to the given predicate.
 	 *
 	 * @param predicate the code of the function that is the predicate to test.
-	 * @return <code>this</code>.
+	 * @return {@code this}.
 	 * @see #setGuard
 	 */
 	def ifTrue(predicate : (Agent) => boolean) : AgentTask {

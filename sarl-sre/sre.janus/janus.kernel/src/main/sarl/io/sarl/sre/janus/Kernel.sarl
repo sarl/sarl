@@ -141,7 +141,7 @@ class Kernel {
 	 * 
 	 * <p>The kernel is running if at least one agent is alive.
 	 * 
-	 * @return <code>true</code> if the kernel is running; {@code false} otherwise.
+	 * @return {@code true} if the kernel is running; {@code false} otherwise.
 	 */
 	def isRunning : boolean {
 		this.isRunning.get
@@ -164,7 +164,6 @@ class Kernel {
 	 * 
 	 * @param agent the type of the agent to spawn.
 	 * @param arguments the list of the parameters to pass to the agent initialization function.
-	 * @return the identifier of the agent, never {@code null}.
 	 */
 	def spawn(^agent : Class<? extends Agent>, arguments : Object*) {
 		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, arguments)

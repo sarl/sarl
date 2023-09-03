@@ -147,29 +147,29 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * negative integer, zero, or a positive integer as this object is less
 	 * than, equal to, or greater than the specified object.
 	 *
-	 * <p>The implementor must ensure <code>sgn(x.compareTo(y)) ==
-	 * -sgn(y.compareTo(x))</code> for all <code>x</code> and <code>y</code>. (This
-	 * implies that <code>x.compareTo(y)</code> must throw an exception iff
-	 * <code>y.compareTo(x)</code> throws an exception.)
+	 * <p>The implementor must ensure {@code sgn(x.compareTo(y)) ==
+	 * -sgn(y.compareTo(x))} for all {@code x} and {@code y}. (This
+	 * implies that {@code x.compareTo(y)} must throw an exception iff
+	 * {@code y.compareTo(x)} throws an exception.)
 	 *
 	 * <p>The implementor must also ensure that the relation is transitive:
-	 * <code>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</code> implies
-	 * <code>x.compareTo(z)&gt;0</code>.
+	 * {@code (x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)} implies
+	 * {@code x.compareTo(z)&gt;0}.
 	 *
-	 * <p>Finally, the implementor must ensure that <code>x.compareTo(y)==0</code>
-	 * implies that <code>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</code>, for all
-	 * <code>z</code>.
+	 * <p>Finally, the implementor must ensure that {@code x.compareTo(y)==0}
+	 * implies that {@code sgn(x.compareTo(z)) == sgn(y.compareTo(z))}, for all
+	 * {@code z}.
 	 *
 	 * <p>It is strongly recommended, but <i>not</i> strictly required that
-	 * <code>(x.compareTo(y)==0) == (x.equals(y))</code>. Generally speaking, any
-	 * class that implements the <code>Comparable</code> interface and violates this
+	 * {@code (x.compareTo(y)==0) == (x.equals(y))}. Generally speaking, any
+	 * class that implements the {@code Comparable} interface and violates this
 	 * condition should clearly indicate this fact. The recommended language is
 	 * "Note: this class has a natural ordering that is inconsistent with
 	 * equals."
 	 *
-	 * <p>In the foregoing description, the notation <code>sgn(</code><i>expression</i>
-	 * <code>)</code> designates the mathematical <i>signum</i> function, which is
-	 * defined to return one of <code>-1</code>, <code>0</code>, or <code>1</code> according
+	 * <p>In the foregoing description, the notation {@code sgn(}<i>expression</i>
+	 * {@code )} designates the mathematical <i>signum</i> function, which is
+	 * defined to return one of {@code -1}, {@code 0}, or {@code 1} according
 	 * to whether the value of <i>expression</i> is negative, zero or positive.
 	 *
 	 * @param address is the address to be compared.

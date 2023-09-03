@@ -109,7 +109,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @param executor the asynchronous execution service.
 	 * @param logger the logging service.
 	 * @param config the configuration.
-	 * @param specificiationFactory the factory of space spacification.
+	 * @param specificationFactory the factory of space specification.
 	 * @param factories the provider of factories tool.
 	 */
 	@Inject
@@ -463,7 +463,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 *
 	 * <p>This function is thread-safe.
 	 *
-	 * @param id is the identifier of the space.
+	 * @param space is the identifier of the space.
 	 * @since 0.12
 	 */
 	def removeSpaceIfEmpty(^space : Space) : void {

@@ -97,8 +97,8 @@ public class SectionNumber {
 	/** Format the section numbers.
 	 *
 	 * @param format the format. It must be compatible with {@link MessageFormat}, with
-	 *     the first parameter <code>{0}</code> equals to the first part of the full section number, and
-	 *     the second parameter <code>{1}</code> equals to a single section number.
+	 *     the first parameter {@code {0}} equals to the first part of the full section number, and
+	 *     the second parameter {@code {1}} equals to a single section number.
 	 * @return the formatted section number.
 	 */
 	public String toString(String format) {

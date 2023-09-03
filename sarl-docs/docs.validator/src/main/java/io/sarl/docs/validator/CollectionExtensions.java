@@ -45,6 +45,7 @@ public final class CollectionExtensions {
 	/** Sort an array according to their natural order.
 	 * The objects within the given array must implement the {@link Comparable} interface.
 	 *
+	 * @param <T> the type of the elements in the array.
 	 * @param array the array to sort.
 	 * @return the sorted array (a copy of the {@code array}).
 	 * @throws Exception if the array cannot be sorted.

@@ -36,23 +36,23 @@ import static java.lang.annotation.ElementType.FIELD;
  * zero or more dependencies as arguments. {@code @Inject} can apply to at most
  * one constructor per class.
  *
- * <p><tt><blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
+ * <blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
  *       <i>ConstructorModifiers<sub>opt</sub></i>
  *       <i>SimpleTypeName</i>(<i>FormalParameterList<sub>opt</sub></i>)
  *       <i>Throws<sub>opt</sub></i>
- *       <i>ConstructorBody</i></blockquote></tt>
+ *       <i>ConstructorBody</i></blockquote>
  *
  * <p>{@code @Inject} is optional for public, no-argument constructors when no
  * other constructors are present. This enables injectors to invoke default
  * constructors.
  *
- * <p><tt><blockquote style="padding-left: 2em; text-indent: -2em;">
+ * <blockquote style="padding-left: 2em; text-indent: -2em;">
  *       {@literal @}Inject<sub><i>opt</i></sub>
  *       <i>Annotations<sub>opt</sub></i>
  *       public
  *       <i>SimpleTypeName</i>()
  *       <i>Throws<sub>opt</sub></i>
- *       <i>ConstructorBody</i></blockquote></tt>
+ *       <i>ConstructorBody</i></blockquote>
  *
  * <p>Injectable fields:
  * <ul>
@@ -60,10 +60,10 @@ import static java.lang.annotation.ElementType.FIELD;
  *   <li>are not final.
  *   <li>may have any otherwise valid name.</li></ul>
  *
- * <p><tt><blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
+ * <blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
  *       <i>FieldModifiers<sub>opt</sub></i>
  *       <i>Type</i>
- *       <i>VariableDeclarators</i>;</blockquote></tt>
+ *       <i>VariableDeclarators</i>;</blockquote>
  *
  * <p>Injectable methods:
  * <ul>
@@ -74,12 +74,12 @@ import static java.lang.annotation.ElementType.FIELD;
  *   <li>may have any otherwise valid name.</li>
  *   <li>accept zero or more dependencies as arguments.</li></ul>
  *
- * <p><tt><blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
+ * <blockquote style="padding-left: 2em; text-indent: -2em;">@Inject
  *       <i>MethodModifiers<sub>opt</sub></i>
  *       <i>ResultType</i>
  *       <i>Identifier</i>(<i>FormalParameterList<sub>opt</sub></i>)
  *       <i>Throws<sub>opt</sub></i>
- *       <i>MethodBody</i></blockquote></tt>
+ *       <i>MethodBody</i></blockquote>
  *
  * <p>The injector ignores the result of an injected method, but
  * non-{@code void} return types are allowed to support use of the method in
@@ -107,11 +107,11 @@ import static java.lang.annotation.ElementType.FIELD;
  *
  * <p>Injection of members annotated with {@code @Inject} is required. While an
  * injectable member may use any accessibility modifier (including
- * <tt>private</tt>), platform or injector limitations (like security
+ * {@code private}), platform or injector limitations (like security
  * restrictions or lack of reflection support) might preclude injection
  * of non-public members.
  *
- * <h3>Qualifiers</h3>
+ * <h2>Qualifiers</h2>
  *
  * <p>A {@linkplain Qualifier qualifier} may annotate an injectable field
  * or parameter and, combined with the type, identify the implementation to
@@ -131,7 +131,7 @@ import static java.lang.annotation.ElementType.FIELD;
  * parameters do not automatically inherit qualifiers from the overridden
  * method's parameters.
  *
- * <h3>Injectable Values</h3>
+ * <h2>Injectable Values</h2>
  *
  * <p>For a given type T and optional qualifier, an injector must be able to
  * inject a user-specified class that:
@@ -145,7 +145,7 @@ import static java.lang.annotation.ElementType.FIELD;
  * implementation of T. Beyond that, which values are injected depend upon the
  * injector implementation and its configuration.
  *
- * <h3>Circular Dependencies</h3>
+ * <h2>Circular Dependencies</h2>
  *
  * <p>Detecting and resolving circular dependencies is left as an exercise for
  * the injector implementation. Circular dependencies between two constructors
