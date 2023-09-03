@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -12,6 +12,7 @@ import glob
 def ask_pass():
 	pass_phrase = subprocess.check_output(['ssh-askpass', 'Please enter your passphrase for signing the files:'])
 	if pass_phrase:
+		pass_phrase = pass_phrase.decode()
 		pass_phrase = pass_phrase.strip()
 		if pass_phrase:
 			return pass_phrase

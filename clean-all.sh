@@ -5,6 +5,8 @@ set -e
 
 CDIR=`pwd`
 
+rm -rf "$CDIR/target"
+
 # Build BOMs
 cd "$CDIR/sarl-bom"
 mvn clean "$@"
