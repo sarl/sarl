@@ -8,15 +8,63 @@
 	<name>SARL Language</name>
 	<description>General base utilities</description>
 
-	<modules>
-		<module>javax.inject</module>
-		<module>tests.api</module>
-		<module>afc.extension</module>
-	</modules>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>javax.inject</module>
+				<module>afc.extension</module>
+				<module>tests.api</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>public-sarl-api-module-set</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>javax.inject</module>
+				<module>afc.extension</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>

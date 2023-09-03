@@ -227,7 +227,10 @@
 				<executions>
 					<execution>
 						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
+						<!-- MJAVADOC-770: Javadoc cannot handler un-named modules properly.
+						     A workaround is to force Javadoc to be run before Bnd.
+						     https://issues.apache.org/jira/projects/MJAVADOC/issues/MJAVADOC-770 -->
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>bnd-process</goal>
 						</goals>
@@ -285,6 +288,96 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.5.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<!-- MJAVADOC-770: Javadoc cannot handler un-named modules properly.
+								     A workaround is to force Javadoc to be run before Bnd.
+								     https://issues.apache.org/jira/projects/MJAVADOC/issues/MJAVADOC-770 -->
+								<phase>process-classes</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<docencoding>${project.build.sourceEncoding}</docencoding>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<charset>${project.build.sourceEncoding}</charset>
+							<show>protected</show>
+							<detectJavaApiLink>true</detectJavaApiLink>
+							<docfilessubdirs>true</docfilessubdirs>
+							<excludePackageNames></excludePackageNames>
+							<nohelp>true</nohelp>
+							<notree>true</notree>
+							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
+							<tags>
+								<tag>
+									<name>mavengroupid</name>
+									<placement>pt</placement>
+									<head>Maven Group Id:</head>
+								</tag>
+								<tag>
+									<name>mavenartifactid</name>
+									<placement>pt</placement>
+									<head>Maven Artifact Id:</head>
+								</tag>
+								<tag>
+									<name>ExcludeFromApidoc</name>
+									<placement>X</placement>
+								</tag>
+								<tag>
+									<name>generated</name>
+									<placement>a</placement>
+									<head>Generated</head>
+								</tag>
+								<tag>
+									<name>model</name>
+									<placement>a</placement>
+									<head>Model</head>
+								</tag>
+								<tag>
+									<name>ordered</name>
+									<placement>a</placement>
+									<head>Ordered</head>
+								</tag>
+							</tags>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>
