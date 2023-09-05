@@ -112,19 +112,21 @@ public interface HtmlFactory {
 
 	/** Create the HTML document with the &lt;html/&gt; tag.
 	 *
+	 * @param charset the charset to be used.
 	 * @param docType the document type (!DOCTYPE tag).
 	 * @param context the creation context.
 	 * @return the document.
 	 */
-	Document createDocument(DocumentType docType, HtmlFactoryContext context);
+	Document createDocument(DocumentType docType, String charset, HtmlFactoryContext context);
 
 	/** Create the HTML document with the &lt;html/&gt; tag.
 	 *
+	 * @param charset the charset to be used.
 	 * @param context the creation context.
 	 * @return the document.
 	 */
-	default Document createDocument(HtmlFactoryContext context) {
-		return createDocument(null, context);
+	default Document createDocument(String charset, HtmlFactoryContext context) {
+		return createDocument(null, charset, context);
 	}
 
 	/** Create the &lt;head/&gt; HTML tag into the given parent.

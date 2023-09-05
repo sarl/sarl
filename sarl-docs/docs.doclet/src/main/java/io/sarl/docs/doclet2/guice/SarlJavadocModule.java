@@ -140,6 +140,8 @@ import io.sarl.docs.doclet2.html.types.oop.EnumerationDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.EnumerationDocumentationGeneratorImpl;
 import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGeneratorImpl;
+import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGenerator;
+import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGeneratorImpl;
 
 /** Guice module for SARL Java Doclet.
  *
@@ -220,6 +222,7 @@ public class SarlJavadocModule extends AbstractModule {
 		bindSingleton(CapacityDocumentationGenerator.class, CapacityDocumentationGeneratorImpl.class);
 		//
 		bindSingleton(ClassDocumentationGenerator.class, ClassDocumentationGeneratorImpl.class);
+		bindSingleton(RecordDocumentationGenerator.class, RecordDocumentationGeneratorImpl.class);
 		bindSingleton(InterfaceDocumentationGenerator.class, InterfaceDocumentationGeneratorImpl.class);
 		bindSingleton(EnumerationDocumentationGenerator.class, EnumerationDocumentationGeneratorImpl.class);
 		bindSingleton(AnnotationDocumentationGenerator.class, AnnotationDocumentationGeneratorImpl.class);

@@ -39,6 +39,7 @@ import io.sarl.docs.doclet2.html.types.oop.AnnotationDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.ClassDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.EnumerationDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGenerator;
+import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGenerator;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -56,6 +57,8 @@ import io.sarl.lang.core.Skill;
 public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentationGeneratorSelector {
 
 	private Provider<ClassDocumentationGenerator> classGeneratorProvider;
+
+	private Provider<RecordDocumentationGenerator> recordGeneratorProvider;
 
 	private Provider<InterfaceDocumentationGenerator> interfaceGeneratorProvider;
 
@@ -107,6 +110,23 @@ public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentation
 	 */
 	public Provider<ClassDocumentationGenerator> getClassGeneratorProvider() {
 		return this.classGeneratorProvider;
+	}
+
+	/** Change the provider for a record generator.
+	 * 
+	 * @param provider is the provider.
+	 */
+	@Inject
+	public void setRecordGeneratorProvider(Provider<RecordDocumentationGenerator> provider) {
+		this.recordGeneratorProvider = provider;
+	}
+
+	/** Replies the provider for a record generator.
+	 * 
+	 * @return the provider.
+	 */
+	public Provider<RecordDocumentationGenerator> getRecordGeneratorProvider() {
+		return this.recordGeneratorProvider;
 	}
 
 	/** Change the provider for an interface generator.
@@ -294,6 +314,8 @@ public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentation
 					return this.enumerationGeneratorProvider.get();
 				case ANNOTATION_TYPE:
 					return this.annotationGeneratorProvider.get();
+				case RECORD:
+					return this.recordGeneratorProvider.get();
 				case LOCAL_VARIABLE:
 				case METHOD:
 				case MODULE:
@@ -308,6 +330,9 @@ public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentation
 				case EXCEPTION_PARAMETER:
 				case FIELD:
 				case INSTANCE_INIT:
+				case BINDING_VARIABLE:
+				case RECORD_COMPONENT:
+					break;
 				default:
 					break;
 				}

@@ -39,10 +39,8 @@
 						<charset>UTF-8</charset>
 						<show>protected</show>
 						<detectJavaApiLink>true</detectJavaApiLink>
-						<docfilessubdirs>true</docfilessubdirs>
 						<excludePackageNames></excludePackageNames>
-						<nohelp>true</nohelp>
-						<notree>true</notree>
+						<use>false</use>
 						<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
 						<tags>
 							<tag>

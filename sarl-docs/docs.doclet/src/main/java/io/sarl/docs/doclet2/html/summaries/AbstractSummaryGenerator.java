@@ -110,7 +110,7 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	private void generate() throws Exception {
 		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(this);
+		final Document document = getHtmlFactory().createDocument(getDocletOptions().getCharset(), this);
 		final String title = getDocumentTitleFor(null);
 		setLastTitle(title);
 		final Element htmlTag = getHtmlAccessor().getRootElement(document);

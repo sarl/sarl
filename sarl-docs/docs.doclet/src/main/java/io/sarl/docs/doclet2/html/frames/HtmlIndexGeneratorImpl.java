@@ -138,7 +138,7 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 				"html", //$NON-NLS-1$
 				"-//W3C//DTD XHTML 1.0 Frameset//EN", //$NON-NLS-1$
 				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"); //$NON-NLS-1$
-		final Document document = getHtmlFactory().createDocument(docType, this);
+		final Document document = getHtmlFactory().createDocument(docType, cliOptions.getCharset(), this);
 		final String title = getDocumentTitleFor(null);
 		setLastTitle(title);
 		final Element htmlTag = getHtmlAccessor().getRootElement(document);

@@ -201,4 +201,16 @@ public interface DocletOptions {
 	 */
 	List<Pair<String, Pattern>> getGroups();
 
+	/** Change the charset of the generated documentation.
+	 *
+	 * @param name the name of the charset.
+	 */
+	void setCharset(String name);
+
+	/** Replies the charset of the generated documentation.
+	 *
+	 * @return the charset.
+	 */
+	String getCharset();
+
 }

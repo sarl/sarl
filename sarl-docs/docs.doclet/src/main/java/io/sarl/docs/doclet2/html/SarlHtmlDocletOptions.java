@@ -39,7 +39,7 @@ public final class SarlHtmlDocletOptions {
 	 */
 	public static final String COPYRIGHT_OPTION = "-copyright"; //$NON-NLS-1$
 
-	/** Option {@code -bottom}.
+	/** Option {@code -bottom}. Synonym of {@code -copyright}.
 	 */
 	public static final String BOTTOM_OPTION = "-bottom"; //$NON-NLS-1$
 
@@ -83,6 +83,14 @@ public final class SarlHtmlDocletOptions {
 	 */
 	public static final String TITLE_OPTION = "-title"; //$NON-NLS-1$
 
+	/** Option {@code -doctitle}.
+	 */
+	public static final String DOCTITLE_OPTION = "-doctitle"; //$NON-NLS-1$
+
+	/** Option {@code -windowtitle}.
+	 */
+	public static final String WINDOWTITLE_OPTION = "-windowtitle"; //$NON-NLS-1$
+
 	/** Option {@code -offline}.
 	 */
 	public static final String OFFLINE_OPTION = "-offline"; //$NON-NLS-1$
@@ -102,5 +110,14 @@ public final class SarlHtmlDocletOptions {
 	/** Option {@code -author}.
 	 */
 	public static final String AUTHOR_OPTION = "-author"; //$NON-NLS-1$
+
+	/** Option {@code -charset}.
+	 */
+	public static final String CHARSET_OPTION = "-charset"; //$NON-NLS-1$
+
+
+	/** Option {@code -docencoding}.
+	 */
+	public static final String DOCENCODING_OPTION = "-docencoding"; //$NON-NLS-1$
 
 }

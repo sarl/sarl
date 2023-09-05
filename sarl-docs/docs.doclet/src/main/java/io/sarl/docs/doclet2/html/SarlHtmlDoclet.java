@@ -23,8 +23,11 @@ package io.sarl.docs.doclet2.html;
 
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.AUTHOR_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.BOTTOM_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.CHARSET_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.COPYRIGHT_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.DIRECTORY_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.DOCENCODING_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.DOCTITLE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.FAKE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.GROUP_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.HTMLCOMMENTS_OPTION;
@@ -36,6 +39,7 @@ import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TAGLET_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TAG_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TITLE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.VERSION_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.WINDOWTITLE_OPTION;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -165,11 +169,21 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 					return true;				
 				}
 			},
-			new Option(BOTTOM_OPTION, Messages.SarlHtmlDoclet_19, Messages.SarlHtmlDoclet_20) {
+			new Option(BOTTOM_OPTION, Messages.SarlHtmlDoclet_33, Messages.SarlHtmlDoclet_20) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					if (arguments.size() >= 1) {
 						getDocletOptions().setCopyrightText(arguments.get(0));
+						return true;
+					}
+					return false;
+				}
+			},
+			new Option(CHARSET_OPTION, Messages.SarlHtmlDoclet_34, Messages.SarlHtmlDoclet_35) {
+				@Override
+				public boolean process(String option, List<String> arguments) {
+					if (arguments.size() >= 1) {
+						getDocletOptions().setCharset(arguments.get(0));
 						return true;
 					}
 					return false;
@@ -189,6 +203,33 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					getDocletOptions().setOutputDirectory(new File(arguments.get(0)).toPath());
+					return true;				
+				}
+			},
+			new Option(DOCENCODING_OPTION, Messages.SarlHtmlDoclet_36, Messages.SarlHtmlDoclet_35) {
+				@Override
+				public boolean process(String option, List<String> arguments) {
+					if (arguments.size() >= 1) {
+						getDocletOptions().setCharset(arguments.get(0));
+						return true;
+					}
+					return false;
+				}
+			},
+			new Option(DOCTITLE_OPTION, Messages.SarlHtmlDoclet_37, Messages.SarlHtmlDoclet_23) {
+				@Override
+				public boolean process(String option, List<String> arguments) {
+					final StringBuilder b = new StringBuilder();
+					boolean first = true;
+					for (final String s : arguments) {
+						if (first) {
+							first = false;
+						} else {
+							b.append(" "); //$NON-NLS-1$
+						}
+						b.append(s);
+					}
+					getDocletOptions().setTitle(b.toString());
 					return true;				
 				}
 			},
@@ -323,6 +364,23 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					getDocletOptions().setVersionTagsEnabled(true);
+					return true;				
+				}
+			},
+			new Option(WINDOWTITLE_OPTION, Messages.SarlHtmlDoclet_37, Messages.SarlHtmlDoclet_23) {
+				@Override
+				public boolean process(String option, List<String> arguments) {
+					final StringBuilder b = new StringBuilder();
+					boolean first = true;
+					for (final String s : arguments) {
+						if (first) {
+							first = false;
+						} else {
+							b.append(" "); //$NON-NLS-1$
+						}
+						b.append(s);
+					}
+					getDocletOptions().setTitle(b.toString());
 					return true;				
 				}
 			});

@@ -68,6 +68,11 @@ public class Messages extends NLS {
 	public static String SarlHtmlDoclet_30;
 	public static String SarlHtmlDoclet_31;
 	public static String SarlHtmlDoclet_32;
+	public static String SarlHtmlDoclet_33;
+	public static String SarlHtmlDoclet_34;
+	public static String SarlHtmlDoclet_35;
+	public static String SarlHtmlDoclet_36;
+	public static String SarlHtmlDoclet_37;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

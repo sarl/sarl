@@ -21,6 +21,7 @@
 
 package io.sarl.docs.doclet2.html.framework;
 
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 /** Options provided on the CLI to the doclet.
@@ -80,6 +82,8 @@ public class DefaultDocletOptions implements DocletOptions {
 	private String title;
 
 	private final List<Pair<String, Pattern>> groups = new ArrayList<>();
+
+	private String charset;
 
 	/** Constructor.
 	 */
@@ -228,6 +232,19 @@ public class DefaultDocletOptions implements DocletOptions {
 	@Override
 	public List<Pair<String, Pattern>> getGroups() {
 		return Collections.unmodifiableList(this.groups);
+	}
+
+	@Override
+	public void setCharset(String name) {
+		this.charset = name;
+	}
+
+	@Override
+	public String getCharset() {
+		if (Strings.isNullOrEmpty(this.charset)) {
+			return Charset.defaultCharset().name();
+		}
+		return this.charset;
 	}
 
 }

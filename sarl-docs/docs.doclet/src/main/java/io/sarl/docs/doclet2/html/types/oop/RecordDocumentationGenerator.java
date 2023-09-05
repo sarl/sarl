@@ -21,30 +21,16 @@
 
 package io.sarl.docs.doclet2.html.types.oop;
 
-import org.eclipse.osgi.util.NLS;
+import io.sarl.docs.doclet2.html.types.TypeDocumentationGenerator;
 
-/** Localized Messages.
+/** Generate the documentation for a record.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
  * @since 0.13
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
-	public static String InterfaceDocumentationGeneratorImpl_0;
-	public static String EnumerationDocumentationGeneratorImpl_0;
-	public static String ClassDocumentationGeneratorImpl_0;
-	public static String AnnotationDocumentationGeneratorImpl_0;
-	public static String RecordDocumentationGeneratorImpl_0;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
-
-	private Messages() {
-	}
+public interface RecordDocumentationGenerator extends TypeDocumentationGenerator {
+	//
 }

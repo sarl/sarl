@@ -288,7 +288,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	}
 
 	@Override
-	public Document createDocument(DocumentType docType, HtmlFactoryContext context) {
+	public Document createDocument(DocumentType docType, String charset, HtmlFactoryContext context) {
 		Document doc = Document.createShell(context.getBaseUri());
 		//
 		if (docType != null) {
@@ -312,7 +312,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		if (metaTag == null) {
 			metaTag = headTag.appendElement(META_TAG);
 		}
-		metaTag.attr(CHARSET_ATTR, Charset.defaultCharset().name());
+		metaTag.attr(CHARSET_ATTR, Strings.isNullOrEmpty(charset) ? Charset.defaultCharset().name() : charset);
 		return doc;
 	}
 

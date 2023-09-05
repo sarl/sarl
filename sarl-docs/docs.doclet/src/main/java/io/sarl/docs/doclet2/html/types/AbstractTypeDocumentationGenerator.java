@@ -162,7 +162,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			computePaths(type.getQualifiedName().toString(), true);
 			final Path outputPath = cliOptions.getOutputDirectory().resolve(getRelativePath());
 			//
-			final Document document = getHtmlFactory().createDocument(this);
+			final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
 			final String title = getDocumentTitleFor(type.getSimpleName().toString());
 			setLastTitle(title);
 			final Element htmlTag = getHtmlAccessor().getRootElement(document);

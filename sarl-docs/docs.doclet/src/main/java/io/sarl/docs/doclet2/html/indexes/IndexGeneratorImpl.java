@@ -103,7 +103,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		//
 		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(this);
+		final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
 		final String title = getDocumentTitleFor(null);
 		setLastTitle(title);
 		final Element htmlTag = getHtmlAccessor().getRootElement(document);
