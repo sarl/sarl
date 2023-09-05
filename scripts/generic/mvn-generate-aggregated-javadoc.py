@@ -38,15 +38,18 @@ def filterArgs(args):
 	return r
 
 ##############################
+## offline: boolean flag that indicates if the generator must be run off-line or not
 ## pomfile: the path to the root pom file (Unix format)
 ## sourcePaths: the source paths (Unix format)
 ## args: the command line arguments
-def generateDocumentation(pomfile, sourcePaths, args):
+def generateDocumentation(offline, pomfile, sourcePaths, args):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
 
 	cmd = maven_cmd
+	if offline:
+		cmd = cmd + " -o "
 	if pomfile:
 		cmd = cmd + " -f " + pomfile
 	for arg in args:
@@ -64,6 +67,7 @@ def generateDocumentation(pomfile, sourcePaths, args):
 ##############################
 ##
 parser = argparse.ArgumentParser(description="Generate the aggregated JavaDoc")
+parser.add_argument("--offline", help="run the generator off-line", action="store_true")
 parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument("--module", help="specify the module to be documented", action="append")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
@@ -74,7 +78,7 @@ retcode = 255
 
 doc_path = buildJavaDocPath(args.module)
 
-retcode = generateDocumentation(args.pom, doc_path, rargs)
+retcode = generateDocumentation(args.offline, args.pom, doc_path, rargs)
 
 sys.exit(retcode)
 

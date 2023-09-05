@@ -103,6 +103,26 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				 <version>3.6.0</version>
+				<executions>
+					<execution>
+						<id>full-dependency-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>full-dependencies.xml</descriptor>
+							</descriptors>
+							<attach>true</attach>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -157,8 +177,7 @@
 							<excludePackageNames></excludePackageNames>
 							<nohelp>true</nohelp>
 							<notree>true</notree>
-							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.
-							</bottom>
+							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
 							<tags>
 								<tag>
 									<name>mavengroupid</name>

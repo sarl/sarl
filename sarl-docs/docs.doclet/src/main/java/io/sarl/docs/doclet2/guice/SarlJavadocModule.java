@@ -21,7 +21,6 @@
 
 package io.sarl.docs.doclet2.guice;
 
-import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -152,14 +151,14 @@ import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGeneratorImpl;
  */
 public class SarlJavadocModule extends AbstractModule {
 
-	private final WeakReference<Doclet> doclet;
+	private final Doclet doclet;
 
 	/** Constructor.
 	 *
 	 * @param parent the parent doclet.
 	 */
 	public SarlJavadocModule(Doclet parent) {
-		this.doclet = new WeakReference<>(parent);
+		this.doclet = parent;
 	}
 
 	/** Utility function for binding singleton.
@@ -274,7 +273,7 @@ public class SarlJavadocModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public Doclet providesDoclet(Injector injector) {
-		final SarlHtmlDoclet doclet = new SarlHtmlDoclet(this.doclet.get());
+		final SarlHtmlDoclet doclet = new SarlHtmlDoclet(this.doclet);
 		injector.injectMembers(doclet);
 		return doclet;
 	}

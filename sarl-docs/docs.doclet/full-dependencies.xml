@@ -1,0 +1,31 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0 http://maven.apache.org/xsd/assembly-2.2.0.xsd">
+	<id>full-dependencies</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/</outputDirectory>
+			<useProjectArtifact>true</useProjectArtifact>
+			<unpack>true</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+	<containerDescriptorHandlers>
+		<!-- Merge service description's files in a proper way -->
+		<containerDescriptorHandler>
+			<handlerName>metaInf-services</handlerName>
+		</containerDescriptorHandler>
+		<!-- Merge plugin description's files in a proper way -->
+		<containerDescriptorHandler>
+			<handlerName>file-aggregator</handlerName>
+			<configuration>
+				<filePattern>plugin.properties</filePattern>
+				<outputPath>plugin.properties</outputPath>
+			</configuration>
+		</containerDescriptorHandler>
+	</containerDescriptorHandlers>
+</assembly>

@@ -21,7 +21,9 @@
 
 package io.sarl.docs.doclet2.html;
 
-import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.*;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.AUTHOR_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.BOTTOM_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.COPYRIGHT_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.DIRECTORY_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.FAKE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.GROUP_OPTION;
@@ -33,6 +35,7 @@ import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.OFFLINE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TAGLET_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TAG_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TITLE_OPTION;
+import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.VERSION_OPTION;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -160,6 +163,16 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				public boolean process(String option, List<String> arguments) {
 					getDocletOptions().setAuthorTagsEnabled(true);
 					return true;				
+				}
+			},
+			new Option(BOTTOM_OPTION, Messages.SarlHtmlDoclet_19, Messages.SarlHtmlDoclet_20) {
+				@Override
+				public boolean process(String option, List<String> arguments) {
+					if (arguments.size() >= 1) {
+						getDocletOptions().setCopyrightText(arguments.get(0));
+						return true;
+					}
+					return false;
 				}
 			},
 			new Option(COPYRIGHT_OPTION, Messages.SarlHtmlDoclet_19, Messages.SarlHtmlDoclet_20) {

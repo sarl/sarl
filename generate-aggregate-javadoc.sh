@@ -9,6 +9,6 @@ rm -rf "$CDIR/target/site"
 
 cp "$CDIR/scripts/pom-aggregate-javadoc.xml" "$CDIR/pom_javadoc.xml"
 
-"$CDIR/scripts/generate-aggregated-javadoc.py" --pom "$CDIR/pom_javadoc.xml"
+"$CDIR/scripts/generate-aggregated-javadoc.py" --pom "$CDIR/pom_javadoc.xml" "$@"
 
 rm "$CDIR/pom_javadoc.xml"

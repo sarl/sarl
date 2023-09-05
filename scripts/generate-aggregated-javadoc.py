@@ -10,6 +10,7 @@ def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--offline", help="run the generator off-line", action="store_true")
 parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
@@ -26,6 +27,8 @@ if is_exe(binary):
 	except:
 		pass
 	cmd = [ binary ]
+	if args.offline:
+		cmd = cmd + [ "--offline" ]
 	if args.pom:
 		cmd = cmd + [ "--pom", args.pom ]
 	cmd = cmd + [

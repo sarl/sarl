@@ -62,7 +62,7 @@ public class Doclet implements jdk.javadoc.doclet.Doclet {
 	 *
 	 * @return the injector.
 	 */
-	protected Injector getInjector() {
+	protected synchronized Injector getInjector() {
 		if (this.injector == null) {
 			this.mainInjector = SARLStandaloneSetup.doSetup();
 			this.injector = this.mainInjector.createChildInjector(Arrays.asList(new SarlJavadocModule(this)));
@@ -74,7 +74,7 @@ public class Doclet implements jdk.javadoc.doclet.Doclet {
 	 *
 	 * @return the injected doclet.
 	 */
-	protected jdk.javadoc.doclet.Doclet getInjectedDoclet() {
+	protected synchronized jdk.javadoc.doclet.Doclet getInjectedDoclet() {
 		if (this.doclet == null) {
 			this.doclet = getInjector().getInstance(jdk.javadoc.doclet.Doclet.class);
 		}

@@ -216,8 +216,7 @@
 							<excludePackageNames></excludePackageNames>
 							<nohelp>true</nohelp>
 							<notree>true</notree>
-							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.
-							</bottom>
+							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
 							<tags>
 								<tag>
 									<name>mavengroupid</name>

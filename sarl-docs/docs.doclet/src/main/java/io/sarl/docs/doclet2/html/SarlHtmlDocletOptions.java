@@ -39,6 +39,10 @@ public final class SarlHtmlDocletOptions {
 	 */
 	public static final String COPYRIGHT_OPTION = "-copyright"; //$NON-NLS-1$
 
+	/** Option {@code -bottom}.
+	 */
+	public static final String BOTTOM_OPTION = "-bottom"; //$NON-NLS-1$
+
 	/** Option {@code -directory}.
 	 */
 	public static final String LONG_DIRECTORY_OPTION = "-directory"; //$NON-NLS-1$
