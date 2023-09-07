@@ -17,6 +17,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *------- FORKED SOURCE CODE:
+ *
+ * THIS CODE IS FORKED FROM JDK.JAVADOC INTERNAL PACKAGE AND ADAPTED TO THE SARL PURPOSE.
+ * THE FORK WAS NECESSARY BECAUSE IT IS IMPOSSIBLE TO SUBCLASS THE TYPES FOR THE.
+ * STANDARD HTML DOCLET THAT IS PROVIDED BY JDK.JAVADOC MODULE.
+ *
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package io.sarl.docs.doclet2.html.framework;
@@ -771,21 +800,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, label, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			appendChildren(tag, label);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(element)) {
+		} else if (context.getEnvironment().isIncluded(element)) {
 			final Path typePath = getPathBuilder().typeIndex(element);
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchor, label, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString()));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString());
+		final Element tag = new Element(SPAN_TAG);
+		appendChildren(tag, label);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -795,21 +824,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, linkLabel, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			appendChildren(tag, rawLabel);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(element)) {
+		} else if (context.getEnvironment().isIncluded(element)) {
 			final Path typePath = getPathBuilder().typeIndex(element);
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchor, linkLabel, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString()));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString());
+		final Element tag = new Element(SPAN_TAG);
+		appendChildren(tag, rawLabel);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -819,21 +848,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, linkLabel, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			tag.appendText(rawLabel);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(element)) {
+		} else if (context.getEnvironment().isIncluded(element)) {
 			final Path typePath = getPathBuilder().typeIndex(element);
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchor, linkLabel, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString()));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, element.getQualifiedName().toString());
+		final Element tag = new Element(SPAN_TAG);
+		tag.appendText(rawLabel);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -946,21 +975,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, label, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			tag.appendChildren(label);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(variable)) {
+		} else if (context.getEnvironment().isIncluded(variable)) {
 			final Path typePath = getPathBuilder().typeIndex((TypeElement) variable.getEnclosingElement());
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchorName, label, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(variable, true)));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(variable, true));
+		final Element tag = new Element(SPAN_TAG);
+		tag.appendChildren(label);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -971,21 +1000,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, label, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			tag.appendText(label);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(variable)) {
+		} else if (context.getEnvironment().isIncluded(variable)) {
 			final Path typePath = getPathBuilder().typeIndex((TypeElement) variable.getEnclosingElement());
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchorName, label, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(variable, true)));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(variable, true));
+		final Element tag = new Element(SPAN_TAG);
+		tag.appendText(label);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -1031,21 +1060,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, label, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			tag.appendChildren(label);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(executable)) {
+		} else if (context.getEnvironment().isIncluded(executable)) {
 			final Path typePath = getPathBuilder().typeIndex((TypeElement) executable.getEnclosingElement());
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchorName, label, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(executable, true)));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(executable, true));
+		final Element tag = new Element(SPAN_TAG);
+		tag.appendChildren(label);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -1056,21 +1085,21 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			if (externalLink != null) {
 				return createLink(externalLink, label, style);
 			}
-			final Element tag = new Element(SPAN_TAG);
-			tag.appendText(label);
-			if (style != null) {
-				tag.addClass(style.getCssClassname());
-			}
-			final List<Node> list = new ArrayList<>();
-			list.add(tag);
-			return list; 
-		}
-		if (context.getEnvironment().isIncluded(executable)) {
+		} else if (context.getEnvironment().isIncluded(executable)) {
 			final Path typePath = getPathBuilder().typeIndex((TypeElement) executable.getEnclosingElement());
 			final Path linkTypePath = context.getPathToRoot().resolve(typePath);
 			return createLink(linkTypePath, anchorName, label, style);
+		} else {
+			context.getReporter().print(Kind.MANDATORY_WARNING, MessageFormat.format(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(executable, true)));
 		}
-		throw new InvalidLinkException(Messages.HtmlFactoryImpl_12, getElementUtils().getFullyQualifiedName(executable, true));
+		final Element tag = new Element(SPAN_TAG);
+		tag.appendText(label);
+		if (style != null) {
+			tag.addClass(style.getCssClassname());
+		}
+		final List<Node> list = new ArrayList<>();
+		list.add(tag);
+		return list; 
 	}
 
 	@Override
@@ -1712,29 +1741,6 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				return this.name + ": " + this.executableElement.toString(); //$NON-NLS-1$
 			}
 			return this.name + ": " + this.node.toString(); //$NON-NLS-1$
-		}
-
-	}
-
-	/** Malformed HTML text.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.13
-	 */
-	public static class InvalidLinkException extends RuntimeException {
-
-		private static final long serialVersionUID = -8363502825243065010L;
-
-		/** Constructor.
-		 *
-		 * @param message the explanation of the error
-		 * @param element the name of the element for which the link is invalid.
-		 */
-		public InvalidLinkException(String message, String element) {
-			super(MessageFormat.format(message, element));
 		}
 
 	}

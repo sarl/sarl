@@ -493,7 +493,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.4
 	 */
-	private static record AnnotationInformation(JvmOperation valueOperation,
+	public static record AnnotationInformation(JvmOperation valueOperation,
 			JvmOperation importedOperation,
 			JvmOperation constantExpressionOperation,
 			JvmOperation statementExpressionOperation) {

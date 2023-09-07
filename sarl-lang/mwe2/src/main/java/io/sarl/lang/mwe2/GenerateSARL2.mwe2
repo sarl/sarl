@@ -870,7 +870,7 @@ Workflow {
     				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedTypeConverterRuleReader"
    				}
     			ui = {
-    				bind = "io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
+    				bind = "io.sarl.lang.extralanguage.compiler.FeatureNameConverterRuleReader"
     				to = "io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedFeatureNameConverterRuleReader"
    				}
     			ui = {

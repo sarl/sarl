@@ -58,8 +58,8 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 
+import io.sarl.lang.extralanguage.compiler.ConversionType;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter.ConversionType;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;

@@ -273,7 +273,7 @@ class Context extends AgentTrait implements AgentContext {
 
 	/** Add listener on the space repository changes.
 	 * 
-	 * @param listener
+	 * @param listener the listener to be added.
 	 */
 	def addSpaceRepositoryListener(listener : SpaceRepositoryListener) {
 		ensureRepository.addSpaceRepositoryListener(listener)
@@ -281,7 +281,7 @@ class Context extends AgentTrait implements AgentContext {
 
 	/** Remove listener on the space repository changes.
 	 * 
-	 * @param listener
+	 * @param listener the listener to be removed.
 	 */
 	def removeSpaceRepositoryListener(listener : SpaceRepositoryListener) {
 		var instance : SpaceRepository

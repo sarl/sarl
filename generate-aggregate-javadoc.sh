@@ -5,7 +5,12 @@ set -e
 
 CDIR=`pwd`
 
-rm -rf "$CDIR/target/site"
+. "$CDIR/build-all.sh" -Dmaven.test.skip=true
+
+for targetdir in `find "$CDIR" -name "target" -type d`
+do
+	rm -rf "$targetdir"
+done
 
 cp "$CDIR/scripts/pom-aggregate-javadoc.xml" "$CDIR/pom_javadoc.xml"
 

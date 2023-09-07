@@ -62,8 +62,6 @@ import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
-import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter.ConversionResult;
-
 /** Abstract Generator of XExpression.
  *
  * @author $Author: sgalland$

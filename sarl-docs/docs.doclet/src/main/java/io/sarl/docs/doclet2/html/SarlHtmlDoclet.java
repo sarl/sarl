@@ -17,6 +17,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *------- FORKED SOURCE CODE:
+ *
+ * THIS CODE IS FORKED FROM JDK.JAVADOC INTERNAL PACKAGE AND ADAPTED TO THE SARL PURPOSE.
+ * THE FORK WAS NECESSARY BECAUSE IT IS IMPOSSIBLE TO SUBCLASS THE TYPES FOR THE.
+ * STANDARD HTML DOCLET THAT IS PROVIDED BY JDK.JAVADOC MODULE.
+ *
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package io.sarl.docs.doclet2.html;
@@ -41,6 +70,7 @@ import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TITLE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.VERSION_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.WINDOWTITLE_OPTION;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -70,6 +100,7 @@ import javax.tools.Diagnostic.Kind;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.Resources;
+import com.google.inject.MembersInjector;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.Reporter;
 import jdk.javadoc.doclet.Taglet;
@@ -77,6 +108,9 @@ import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.docs.doclet2.framework.AbstractDoclet;
+import io.sarl.docs.doclet2.framework.CustomTag;
+import io.sarl.docs.doclet2.framework.CustomTagLocation;
+import io.sarl.docs.doclet2.framework.CustomTagParser;
 import io.sarl.docs.doclet2.framework.ElementFilter;
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
 import io.sarl.docs.doclet2.framework.SarlTagletFactory;
@@ -97,6 +131,7 @@ import io.sarl.docs.doclet2.html.summaries.OverviewSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.PackageSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.PackageTreeSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.TreeSummaryGenerator;
+import io.sarl.docs.doclet2.html.taglets.block.CustomTaglet;
 import io.sarl.docs.doclet2.html.types.TypeDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.TypeDocumentationGeneratorSelector;
 
@@ -154,6 +189,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	private DocletOptions docletOptions;
 
 	private SarlTagletFactory sarlTagletFactory;
+
+	private MembersInjector<CustomTaglet> customTagletInjector;
 
 	private Map<URL, Path> cssResources = null;
 	
@@ -320,7 +357,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 								final Class<? extends Taglet> tagletTypeType = tagletType.asSubclass(Taglet.class);
 								final Taglet taglet = SarlHtmlDoclet.this.getSarlTagletFactory().newTaglet(tagletTypeType);
 								if (taglet != null) {
-									SarlHtmlDoclet.this.getTagletManager().addTaglet(taglet);
+									SarlHtmlDoclet.this.getTagletManager().addTaglet(taglet, false);
 								} else {
 									getReporter().print(javax.tools.Diagnostic.Kind.ERROR, MessageFormat.format(Messages.SarlHtmlDoclet_17, classname));
 								}
@@ -622,6 +659,23 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	public SarlTagletFactory getSarlTagletFactory() {
 		return this.sarlTagletFactory;
 	}
+	
+	/** Change the injector for custom taglets.
+	 *
+	 * @param injector the member injector for custom taglets.
+	 */
+	@Inject
+	public void setCustomTagletInjector(MembersInjector<CustomTaglet> injector) {
+		this.customTagletInjector = injector;
+	}
+	
+	/** Replies the injector for custom taglets.
+	 *
+	 * @return the member injector for custom taglets.
+	 */
+	public MembersInjector<CustomTaglet> getCustomTagletInjector() {
+		return this.customTagletInjector;
+	}
 
 	/** Constructor.
 	 *
@@ -764,7 +818,21 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	protected void registerTagletsToTagletManager() {
 		for (final Provider<? extends Taglet> tagletProvider : getRegisteredTaglets()) {
 			final Taglet taglet = tagletProvider.get();
-			getTagletManager().addTaglet(taglet);
+			getTagletManager().addTaglet(taglet, false);
+		}
+	}
+
+	/** Register the custom tags in the task manager.
+	 */
+	protected void registerCustomTagsToTagletManager() {
+		final CustomTagParser parser = getCustomTagParser();
+		for (final String userTag : getDocletOptions().getUserTags()) {
+			final CustomTag ctag = parser.parse(userTag, CustomTagLocation.EVERYWHERE, null);
+			if (ctag != null) {
+				final CustomTaglet ctaglet = new CustomTaglet(ctag);
+				getCustomTagletInjector().injectMembers(ctaglet);
+				getTagletManager().addTaglet(ctaglet, false);
+			}
 		}
 	}
 
@@ -772,6 +840,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	public void init(Locale locale, Reporter reporter) {
 		super.init(locale, reporter);
 		registerTagletsToTagletManager();
+		registerCustomTagsToTagletManager();
 	}
  
 	@Override
@@ -1056,6 +1125,20 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				getReporter().print(Kind.ERROR, MessageFormat.format(Messages.SarlHtmlDoclet_11, source.toString(), ex.getLocalizedMessage()));
 			}
 		}
+		// TODO: Fixing issue in maven-javadoc-plugin
+		final Path optionsPath = getDocletOptions().getOutputDirectory().resolve("options"); //$NON-NLS-1$
+		if (!java.nio.file.Files.exists(optionsPath)) {
+			if (!java.nio.file.Files.exists(optionsPath.getParent())) {
+				java.nio.file.Files.createDirectories(optionsPath.getParent());
+			}
+			try (BufferedWriter writer = java.nio.file.Files.newBufferedWriter(optionsPath)) {
+				//
+			}
+		}
+		// TODO: Fixing issue in maven-javadoc-plugin
+		final Path packagelistPath = getDocletOptions().getOutputDirectory().resolve("package-list"); //$NON-NLS-1$
+		final Path packagesPath = getDocletOptions().getOutputDirectory().resolve("packages"); //$NON-NLS-1$
+		java.nio.file.Files.copy(packagelistPath, packagesPath);
 	}
 
 	/** Build the global type hierarchy.

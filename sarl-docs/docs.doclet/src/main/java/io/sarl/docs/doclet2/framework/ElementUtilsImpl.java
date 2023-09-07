@@ -17,6 +17,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *------- FORKED SOURCE CODE:
+ *
+ * THIS CODE IS FORKED FROM JDK.JAVADOC INTERNAL PACKAGE AND ADAPTED TO THE SARL PURPOSE.
+ * THE FORK WAS NECESSARY BECAUSE IT IS IMPOSSIBLE TO SUBCLASS THE TYPES FOR THE.
+ * STANDARD HTML DOCLET THAT IS PROVIDED BY JDK.JAVADOC MODULE.
+ *
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package io.sarl.docs.doclet2.framework;
@@ -54,6 +83,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
@@ -746,6 +776,13 @@ public class ElementUtilsImpl implements ElementUtils {
 			}
 
 			@Override
+			public String visitTypeAsRecord(TypeElement elt, SortedSet<Modifier> param) {
+				addVisibilityModifier(param);
+				//TODO: Record is not part of the SARL syntax yet
+				return finalString("record"); //$NON-NLS-1$
+			}
+
+			@Override
 			protected String defaultAction(Element elt, SortedSet<Modifier> param) {
 				addVisibilityModifier(param);
 				return this.stringRepresentation.toString().trim();
@@ -904,6 +941,17 @@ public class ElementUtilsImpl implements ElementUtils {
 			}
 
 			@Override
+			public String visitTypeAsRecord(TypeElement elt, SortedSet<Modifier> param) {
+				addModifiersInStandardOrder(param, elt.getKind());
+				final String sarlKw = getSarlSpecificClassKeyword(elt);
+				if (!Strings.isEmpty(sarlKw)) {
+					return addTypeModifier(sarlKw);
+				}
+				//TODO: Record is not part of the SARL syntax yet
+				return addTypeModifier("record"); //$NON-NLS-1$
+			}
+
+			@Override
 			protected String defaultAction(Element elt, SortedSet<Modifier> param) {
 				addModifiersInStandardOrder(param, elt.getKind());
 				return this.stringRepresentation.toString().trim();
@@ -970,6 +1018,11 @@ public class ElementUtilsImpl implements ElementUtils {
 				return basename.toString();
 			}
 
+			@Override
+			public String visitRecordComponent(RecordComponentElement elt, Void param) {
+				return e.getSimpleName().toString();
+			}
+			
 			@Override
 			protected String defaultAction(Element e, Void p) {
 				return e.getSimpleName().toString();
@@ -1384,9 +1437,12 @@ public class ElementUtilsImpl implements ElementUtils {
 			final String qn = getFullyQualifiedName(annotationType.asElement(), true);
 			if (Strings.equal(qn, PrivateAPI.class.getName())) {
 				final Map<? extends ExecutableElement, ? extends AnnotationValue> pairs = annotation.getElementValues();
-				for (ExecutableElement valueElement : pairs.keySet()) {
-					if (valueElement.getSimpleName().contentEquals("isCallerOnly")) { //$NON-NLS-1$
-						return ! Boolean.parseBoolean((pairs.get(element)).toString());
+				for (Entry<? extends ExecutableElement, ? extends AnnotationValue> valueEntry : pairs.entrySet()) {
+					if (valueEntry.getKey() != null && valueEntry.getKey().getSimpleName().contentEquals("isCallerOnly")) { //$NON-NLS-1$
+						final AnnotationValue pvalue = valueEntry.getValue();
+						if (pvalue != null) {
+							return ! Boolean.parseBoolean(pvalue.toString());
+						}
 					}
 				}
 				return true;

@@ -17,6 +17,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *------- FORKED SOURCE CODE:
+ *
+ * THIS CODE IS FORKED FROM JDK.JAVADOC INTERNAL PACKAGE AND ADAPTED TO THE SARL PURPOSE.
+ * THE FORK WAS NECESSARY BECAUSE IT IS IMPOSSIBLE TO SUBCLASS THE TYPES FOR THE.
+ * STANDARD HTML DOCLET THAT IS PROVIDED BY JDK.JAVADOC MODULE.
+ *
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package io.sarl.docs.doclet2.html.framework;
@@ -230,6 +259,10 @@ public enum CssStyles {
 
 	TAG_GENERATED_COMMENT("tags", "generated", "comment"),
 
+	TAG_ORDERED_COMMENT("tags", "ordered", "comment"),
+
+	TAG_PRIVATEAPI_COMMENT("tags", "privateapi", "comment"),
+
 	TAG_RETURN_COMMENT("tags", "return", "comment"),
 
 	TAG_SEE_COMMENT("tags", "see", "comment"),
@@ -237,6 +270,8 @@ public enum CssStyles {
 	TAG_SINCE_COMMENT("tags", "since", "comment"),
 
 	TAG_THROWS_COMMENT("tags", "throws", "comment"),
+
+	TAG_FIRES_COMMENT("tags", "fires", "comment"),
 
 	/** See {@code inline.css}.
 	 */
@@ -254,6 +289,10 @@ public enum CssStyles {
 
 	TAG_PARAM_COMMENT("tags", "param", "comment"),
 
+	TAG_OPTIONALPARAM_COMMENT("tags", "optionalparam", "comment"),
+
+	TAG_MODEL_COMMENT("tags", "model", "comment"),
+
 	TAG_LITERAL_COMMENT("tags", "literal", "comment"),
 
 	TAG_LINK_COMMENT("tags", "link", "comment"),
@@ -269,6 +308,8 @@ public enum CssStyles {
 	TAG_INDEX_COMMENT("tags", "index", "comment"),
 
 	TAG_VERSION_COMMENT("tags", "version", "comment"),
+
+	TAG_CUSTOMTAG_COMMENT("tags", "customtag", "comment"),
 
 	/** See {@code inline.css}.
 	 */

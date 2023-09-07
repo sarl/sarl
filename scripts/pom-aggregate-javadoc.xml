@@ -25,6 +25,7 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.5.0</version>
 					<configuration>
+						<useStandardDocletOptions>false</useStandardDocletOptions>
 						<doclet>io.sarl.docs.doclet2.Doclet</doclet>
 						<docletArtifacts>
 							<docletArtifact>
@@ -41,65 +42,19 @@
 						<detectJavaApiLink>true</detectJavaApiLink>
 						<excludePackageNames></excludePackageNames>
 						<use>false</use>
-						<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
-						<tags>
-							<tag>
-								<name>mavengroupid</name>
-								<placement>pt</placement>
-								<head>Maven Group Id:</head>
-							</tag>
-							<tag>
-								<name>mavenartifactid</name>
-								<placement>pt</placement>
-								<head>Maven Artifact Id:</head>
-							</tag>
-							<tag>
-								<name>ExcludeFromApidoc</name>
-								<placement>X</placement>
-							</tag>
-							<tag>
-								<name>optionalparam</name>
-								<placement>a</placement>
-								<head>Optional Parameter:</head>
-							</tag>
-							<tag>
-								<name>privateapi</name>
-								<placement>a</placement>
-								<head>Private API</head>
-							</tag>
-							<tag>
-								<name>fires</name>
-								<placement>a</placement>
-								<head>Fires: </head>
-							</tag>
-							<tag>
-								<name>generated</name>
-								<placement>a</placement>
-								<head>Generated</head>
-							</tag>
-							<tag>
-								<name>model</name>
-								<placement>a</placement>
-								<head>Model</head>
-							</tag>
-							<tag>
-								<name>ordered</name>
-								<placement>a</placement>
-								<head>Ordered</head>
-							</tag>
-						</tags>
+						<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.year} ${sarl.copyrighters}.</bottom>
 						<groups>
 							<group>
 								<title>SARL Standard Development Kit</title>
-								<packages>io.sarl.lang.core*:io.sar.sdk*</packages>
-							</group>
-							<group>
-								<title>SARL Compiler</title>
-								<packages>io.sarl.lang*</packages>
+								<packages>io.sarl.lang.core*:io.sarl.api*</packages>
 							</group>
 							<group>
 								<title>SARL Runtime Environment (SRE)</title>
 								<packages>io.sarl.sre*</packages>
+							</group>
+							<group>
+								<title>SARL Compiler</title>
+								<packages>io.sarl.lang*</packages>
 							</group>
 							<group>
 								<title>Tools for building SARL-based applications</title>

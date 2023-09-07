@@ -701,7 +701,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 *
 	 * <p>This function is thread-safe.
 	 * 
-	 * @param listener
+	 * @param listener the listener to be added.
 	 */
 	def addSpaceRepositoryListener(listener : SpaceRepositoryListener) {
 		this.listeners.add(typeof(SpaceRepositoryListener), listener)
@@ -711,7 +711,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 *
 	 * <p>This function is thread-safe.
 	 * 
-	 * @param listener
+	 * @param listener the listener to be removed.
 	 */
 	def removeSpaceRepositoryListener(listener : SpaceRepositoryListener) {
 		this.listeners.remove(typeof(SpaceRepositoryListener), listener)

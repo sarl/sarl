@@ -38,6 +38,8 @@ import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.Taglet;
 
 import io.sarl.docs.doclet2.framework.ApidocExcluder;
+import io.sarl.docs.doclet2.framework.CustomTagParser;
+import io.sarl.docs.doclet2.framework.CustomTagParserImpl;
 import io.sarl.docs.doclet2.framework.DefaultApidocExcluder;
 import io.sarl.docs.doclet2.framework.DocUtils;
 import io.sarl.docs.doclet2.framework.DocUtilsImpl;
@@ -101,11 +103,16 @@ import io.sarl.docs.doclet2.html.taglets.block.AuthorTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.DeprecatedTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ExceptionTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ExcludeFromApidocTaglet;
+import io.sarl.docs.doclet2.html.taglets.block.FiresTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.GeneratedTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.HiddenTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.MavenArtifactIdTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.MavenGroupIdTaglet;
+import io.sarl.docs.doclet2.html.taglets.block.ModelTaglet;
+import io.sarl.docs.doclet2.html.taglets.block.OptionalParamTaglet;
+import io.sarl.docs.doclet2.html.taglets.block.OrderedTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ParamTaglet;
+import io.sarl.docs.doclet2.html.taglets.block.PrivateApiTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ProvidesTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ReturnTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.SeeTaglet;
@@ -212,6 +219,7 @@ public class SarlJavadocModule extends AbstractModule {
 		bindSingleton(TypeHierarchy.class, TypeHierarchyImpl.class);
 		bindSingleton(TypeRepository.class, TypeRepositoryImpl.class);
 		bindSingleton(TagletManager.class, TagletManagerImpl.class);
+		bindSingleton(CustomTagParser.class, CustomTagParserImpl.class);
 		bindSingleton(DocumentationRepository.class, DocumentationRepositoryImpl.class);
 		bindSingleton(BlockTagSorter.class, BlockTagSorterImpl.class);
 		//
@@ -249,6 +257,7 @@ public class SarlJavadocModule extends AbstractModule {
 			"docroot", DocRootTaglet.class, //$NON-NLS-1$
 			"exception", ExceptionTaglet.class, //$NON-NLS-1$
 			"excludefromapidoc", ExcludeFromApidocTaglet.class, //$NON-NLS-1$
+			"fires", FiresTaglet.class, //$NON-NLS-1$
 			"generated", GeneratedTaglet.class, //$NON-NLS-1$
 			"hidden", HiddenTaglet.class, //$NON-NLS-1$
 			"inheritdoc", InheritDocTaglet.class, //$NON-NLS-1$
@@ -257,7 +266,11 @@ public class SarlJavadocModule extends AbstractModule {
 			"literal", LiteralTaglet.class, //$NON-NLS-1$
 			"mavenartifactid", MavenArtifactIdTaglet.class, //$NON-NLS-1$
 			"mavengroupid", MavenGroupIdTaglet.class, //$NON-NLS-1$
+			"model", ModelTaglet.class, //$NON-NLS-1$
+			"optionalparam", OptionalParamTaglet.class, //$NON-NLS-1$
+			"ordered", OrderedTaglet.class, //$NON-NLS-1$
 			"param", ParamTaglet.class, //$NON-NLS-1$
+			"privateapi", PrivateApiTaglet.class, //$NON-NLS-1$
 			"provides", ProvidesTaglet.class, //$NON-NLS-1$
 			"return", ReturnTaglet.class, //$NON-NLS-1$
 			"see", SeeTaglet.class, //$NON-NLS-1$
