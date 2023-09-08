@@ -26,7 +26,7 @@ import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceSpecification
-import io.sarl.lang.util.ConcurrentCollection
+import io.sarl.lang.core.util.ConcurrentCollection
 import java.util.UUID
 
 /** Mock of an agent context.
