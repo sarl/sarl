@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -106,6 +105,20 @@ public final class BundleUtil {
 		//
 	}
 
+	/** Create an instance of a set of bundle dependencies.
+	 *
+	 * @return the set.
+	 * @since 0.13
+	 */
+	protected static Set<BundleDependency> createBundleDependencySet() {
+		return new TreeSet<>(new Comparator<BundleDependency>() {
+			@Override
+			public int compare(BundleDependency o1, BundleDependency o2) {
+				return o1.getBundle().getSymbolicName().compareTo(o2.getBundle().getSymbolicName());
+			}
+		});
+	}
+	
 	/** Replies the source location for the given bundle.
 	 *
 	 * <p>The source location is usually the root folder where the source code of the bundle is located.
@@ -235,13 +248,34 @@ public final class BundleUtil {
 	/** Replies the dependencies for the given bundle.
 	 *
 	 * @param bundle the bundle.
+	 * @return the bundle dependencies.
+	 */
+	public static IBundleDependencies resolveBundleDependencies(Bundle bundle) {
+		return resolveBundleDependencies(bundle, (BundleURLMappings) null);
+	}
+
+	/** Replies the dependencies for the given bundle.
+	 *
+	 * @param bundle the bundle.
+	 * @param javadocURLs the mapping from bundles to the corresponding Javadoc URLs.
+	 * @return the bundle dependencies.
+	 */
+	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, BundleURLMappings javadocURLs) {
+		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
+		return new BundleDependencies(bundle, null, null, docMapping);
+	}
+
+	/** Replies the dependencies for the given bundle.
+	 *
+	 * @param bundle the bundle.
 	 * @param directDependencies the list of the bundle symbolic names that are the direct dependencies of the bundle to
 	 *      be considered. If the given bundle has other dependencies in its Manifest, they will be ignored if they
 	 *      are not in this parameter.
 	 * @return the bundle dependencies.
+	 * @since 0.13
 	 */
-	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, String... directDependencies) {
-		return resolveBundleDependencies(bundle, (BundleURLMappings) null, directDependencies);
+	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, String... directDependencies) {
+		return resolveBundleDependenciesWithFilter(bundle, (BundleURLMappings) null, directDependencies);
 	}
 
 	/** Replies the dependencies for the given bundle.
@@ -252,11 +286,39 @@ public final class BundleUtil {
 	 *      be considered. If the given bundle has other dependencies in its Manifest, they will be ignored if they
 	 *      are not in this parameter.
 	 * @return the bundle dependencies.
+	 * @since 0.13
 	 */
-	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, BundleURLMappings javadocURLs, String... directDependencies) {
+	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, BundleURLMappings javadocURLs, String... directDependencies) {
 		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
 		final Collection<String> deps = directDependencies == null || directDependencies.length == 0 ? null : Arrays.asList(directDependencies);
-		return new BundleDependencies(bundle, deps, docMapping);
+		return new BundleDependencies(bundle, deps, null, docMapping);
+	}
+
+	/** Replies the dependencies for the given bundle.
+	 *
+	 * @param bundle the bundle.
+	 * @param extraDependencies the list of the bundle symbolic names that are in the dependencies of the bundle to
+	 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
+	 * @return the bundle dependencies.
+	 * @since 0.13
+	 */
+	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, String... extraDependencies) {
+		return resolveBundleDependenciesWithExtras(bundle, (BundleURLMappings) null, extraDependencies);
+	}
+
+	/** Replies the dependencies for the given bundle.
+	 *
+	 * @param bundle the bundle.
+	 * @param javadocURLs the mapping from bundles to the corresponding Javadoc URLs.
+	 * @param extraDependencies the list of the bundle symbolic names that are in the dependencies of the bundle to
+	 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
+	 * @return the bundle dependencies.
+	 * @since 0.13
+	 */
+	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, BundleURLMappings javadocURLs, String... extraDependencies) {
+		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
+		final Collection<String> deps = extraDependencies == null || extraDependencies.length == 0 ? null : Arrays.asList(extraDependencies);
+		return new BundleDependencies(bundle, null, deps, docMapping);
 	}
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
@@ -385,7 +447,7 @@ public final class BundleUtil {
 		 *
 		 * @return the bundle dependencies, or {@code null} if the dependencies cannot be computed.
 		 */
-		List<BundleDependency> getDirectDependencies();
+		Set<BundleDependency> getDirectDependencies();
 
 		/** Replies the symbolic names of the bundle dependencies (transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
@@ -434,11 +496,11 @@ public final class BundleUtil {
 
 		private Version version;
 
-		private final List<BundleDependency> dependencies = new ArrayList<>();
+		private final Set<BundleDependency> dependencies = createBundleDependencySet();
 
 		private final Set<String> dependencyIds = new TreeSet<>();
 
-		DependencyDefinition(Version version, List<BundleDependency> dependencies) {
+		DependencyDefinition(Version version, Collection<BundleDependency> dependencies) {
 			this.version = version;
 			addDependencies(dependencies);
 		}
@@ -457,7 +519,7 @@ public final class BundleUtil {
 		 *
 		 * @param dependencies the dependencies.
 		 */
-		public void addDependencies(List<BundleDependency> dependencies) {
+		public void addDependencies(Collection<BundleDependency> dependencies) {
 			for (final BundleDependency dependency : dependencies) {
 				if (this.dependencyIds.add(dependency.getBundle().getSymbolicName())) {
 					this.dependencies.add(dependency);
@@ -477,8 +539,8 @@ public final class BundleUtil {
 		 *
 		 * @return the dependencies.
 		 */
-		public List<BundleDependency> getDependencies() {
-			return Collections.unmodifiableList(this.dependencies);
+		public Set<BundleDependency> getDependencies() {
+			return Collections.unmodifiableSet(this.dependencies);
 		}
 
 		@Override
@@ -506,6 +568,8 @@ public final class BundleUtil {
 
 		private final Collection<String> directDependencies;
 
+		private final Collection<String> extraDependencies;
+
 		private final BundleURLMappings javadocURLs;
 
 		private IPath binaryBundlePath;
@@ -518,12 +582,15 @@ public final class BundleUtil {
 		 * @param directDependencies the list of the bundle symbolic names that are the direct dependencies of the bundle to
 		 *      be considered. If the given bundle has other dependencies in its Manifest, they will be ignored if they
 		 *      are not in this parameter.
+		 * @param extraDependencies the list of the bundle symbolic names that are in the dependencies of the bundle to
+		 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
 		 * @param javadocURLs the mapping from bundles to the corresponding Javadoc URLs.
 		 */
-		BundleDependencies(Bundle bundle, Collection<String> directDependencies, BundleURLMappings javadocURLs) {
+		BundleDependencies(Bundle bundle, Collection<String> directDependencies, Collection<String> extraDependencies, BundleURLMappings javadocURLs) {
 			assert bundle != null;
 			this.bundle = bundle;
 			this.directDependencies = directDependencies;
+			this.extraDependencies = extraDependencies;
 			this.javadocURLs = javadocURLs;
 		}
 
@@ -546,7 +613,7 @@ public final class BundleUtil {
 			}
 		}
 
-		private void setBundleDependencies(Bundle bundle, List<BundleDependency> cpEntries, boolean overwrite) {
+		private void setBundleDependencies(Bundle bundle, Set<BundleDependency> cpEntries, boolean overwrite) {
 			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
 			synchronized (repository) {
 				if (overwrite || !repository.containsKey(bundle)) {
@@ -588,7 +655,7 @@ public final class BundleUtil {
 		}
 
 		private void toDependencyTree(StringBuilder builder, String indent1, String indent2, Bundle current,
-				boolean isFragment, List<BundleDependency> dependencies) {
+				boolean isFragment, Collection<BundleDependency> dependencies) {
 			builder.append(indent1);
 			builder.append(current.getSymbolicName());
 			if (isFragment) {
@@ -679,11 +746,24 @@ public final class BundleUtil {
 				} else {
 					this.binaryBundlePath = bundlePath;
 				}
-				final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
-				final List<BundleDependency> cpEntries = new ArrayList<>();
-				updateBundleClassPath(this.bundle, cpEntry, cpEntries);
-				setBundleDependencies(this.bundle, cpEntries, true);
 
+				final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
+
+				final Set<BundleDependency> cpEntries = createBundleDependencySet();
+	
+				updateBundleClassPath(this.bundle, cpEntry, cpEntries);
+				
+				if (this.extraDependencies != null) {
+					for (final String extraBundleName : this.extraDependencies) {
+						final Bundle extraBundle = Platform.getBundle(extraBundleName);
+						if (extraBundle != null) {
+							updateBundleClassPath(extraBundle, cpEntry, cpEntries);
+						}
+					}
+				}
+				
+				setBundleDependencies(this.bundle, cpEntries, true);
+			
 				extractAllBundleDependencies(this.bundle, true);
 				dependencies = getBundleDependencies(this.bundle);
 			}
@@ -705,12 +785,12 @@ public final class BundleUtil {
 		}
 
 		@Override
-		public List<BundleDependency> getDirectDependencies() {
+		public Set<BundleDependency> getDirectDependencies() {
 			final DependencyDefinition dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
 			}
-			return Collections.unmodifiableList(dependencies.getDependencies());
+			return Collections.unmodifiableSet(dependencies.getDependencies());
 		}
 
 		@Override
@@ -731,7 +811,7 @@ public final class BundleUtil {
 		 * @param entries the list of entries to add to.
 		 * @return the main added dependency.
 		 */
-		private static BundleDependency updateBundleClassPath(Bundle bundle, IClasspathEntry entry, Collection<BundleDependency> entries) {
+		private static BundleDependency updateBundleClassPath(Bundle bundle, IClasspathEntry entry, Set<BundleDependency> entries) {
 			assert bundle != null;
 			assert entry != null;
 			final BundleDependency rootDep = new BundleDependency(bundle, entry, false);
@@ -784,7 +864,7 @@ public final class BundleUtil {
 
 						if (dependencyInstallationPath.contains(JAR_EXTENSION) || u.getProtocol().equals(JAR_EXTENSION)) {
 							final IClasspathEntry cpEntry = Utilities.newLibraryEntry(dependency, null, this.javadocURLs);
-							final List<BundleDependency> cpEntries = new ArrayList<>();
+							final Set<BundleDependency> cpEntries = createBundleDependencySet();
 							final BundleDependency dep = updateBundleClassPath(dependency, cpEntry, cpEntries);
 							setBundleDependencies(dependency, cpEntries, false);
 							addToBundleDependencies(bundle, dep);
@@ -792,7 +872,6 @@ public final class BundleUtil {
 							// Management of a project having a .classpath to get the classapth
 							readDotClasspathAndReferencestoClasspath(bundle, dependency, u);
 						}
-
 						extractAllBundleDependencies(dependency, false);
 					}
 				}
@@ -811,7 +890,7 @@ public final class BundleUtil {
 		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;
-			final List<BundleDependency> cpEntries = new ArrayList<>();
+			final Set<BundleDependency> cpEntries = createBundleDependencySet();
 			final Enumeration<String> entries = bundle.getEntryPaths(ROOT_NAME);
 			String entry = null;
 			while (entries.hasMoreElements()) {
@@ -908,6 +987,9 @@ public final class BundleUtil {
 				if (parent != null && mainDependency != null) {
 					addToBundleDependencies(parent, mainDependency);
 				}
+			} else if (parent != null) {
+				mainDependency = new BundleDependency(bundle, Utilities.newOutputClasspathEntry(bundle, null, null), false);
+				addToBundleDependencies(parent, mainDependency);
 			}
 
 			return outputLocation;
@@ -1084,7 +1166,7 @@ public final class BundleUtil {
 				final BundleDependency cur = this.current;
 				final DependencyDefinition deps = getBundleDependencies(cur.getBundle());
 				if (deps != null) {
-					final List<BundleDependency> depsdeps = deps.getDependencies();
+					final Set<BundleDependency> depsdeps = deps.getDependencies();
 					if (depsdeps != null) {
 						this.iterators.add(depsdeps.iterator());
 					}

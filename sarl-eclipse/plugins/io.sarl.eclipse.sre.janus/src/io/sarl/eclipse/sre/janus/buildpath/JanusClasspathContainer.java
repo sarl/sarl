@@ -81,6 +81,8 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 		final Set<String> libs = new HashSet<>();
 
+		
+		
 		for (final String lib : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
 			libs.add(lib);
 		}
@@ -122,8 +124,6 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
 		final Bundle bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
-//		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
-//				JANUS_DEPENDENCY_BUNDLE_NAMES);
 		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
 		return resolvedBundles;
 	}

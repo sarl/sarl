@@ -584,10 +584,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode) throws CoreException {
 		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
-			if (!supportsModularProjectAndLauncher(configuration)) {
-				return new EmbeddedNotModularVMRunner();
-			}
-			throw new IllegalStateException();
+			//if (!supportsModularProjectAndLauncher(configuration)) {
+			return new EmbeddedNotModularVMRunner();
 		}
 		return super.getVMRunner(configuration, mode);
 	}
