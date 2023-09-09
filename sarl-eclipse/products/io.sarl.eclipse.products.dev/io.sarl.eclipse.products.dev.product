@@ -314,14 +314,6 @@
       <feature id="org.eclipse.xtext.docs" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
       <feature id="org.eclipse.equinox.core.feature" installMode="root"/>
-      <feature id="org.eclipse.equinox.server.core.source" installMode="root"/>
-      <feature id="org.eclipse.equinox.server.jetty" installMode="root"/>
-      <feature id="org.eclipse.equinox.server.jetty.source" installMode="root"/>
-      <feature id="org.eclipse.equinox.compendium.sdk" installMode="root"/>
-      <feature id="org.eclipse.equinox.core.feature.source" installMode="root"/>
-      <feature id="org.eclipse.equinox.server.core" installMode="root"/>
-      <feature id="org.eclipse.equinox.sdk" installMode="root"/>
-      <feature id="org.eclipse.equinox.core.sdk" installMode="root"/>
    </features>
 
    <configurations>
