@@ -10,7 +10,7 @@ if [ -n "$JAVA_HOME" ]; then
 fi
 
 if ( which $JAVA 2>&1 > /dev/null ); then
-  exec $JAVA -Djanus.programName="$PROGRAMNAME" -cp "$MYSELF" "{cliRunnerMainClass}" "$@"
+  exec $JAVA -Djanus.programName="$PROGRAMNAME" -cp "$MYSELF:" "{cliRunnerMainClass}" "$@"
 else
   echo "Cannot find Java, please set your JAVA_HOME"
 fi

@@ -23,6 +23,7 @@ package org.arakhne.afc.bootique.printconfig.commands;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import javax.inject.Provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import com.google.common.base.Strings;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -40,7 +42,6 @@ import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.module.ModulesMetadata;
 import joptsimple.OptionSpec;
-
 import org.arakhne.afc.bootique.printconfig.configs.Configs;
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -64,6 +65,18 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	private static final String XML_OPTION = "xml"; //$NON-NLS-1$
 
 	private static final String XML_ROOT_NAME = "configuration"; //$NON-NLS-1$
+
+	private static final String JVM_KEY = "jvm"; //$NON-NLS-1$
+
+	private static final String JAVA_CLASSPATH_KEY = "java.class.path"; //$NON-NLS-1$
+
+	private static final String JAVA_MODULEPATH_KEY = "jdk.module.path"; //$NON-NLS-1$
+
+	private static final String JAVA_UPGRADEPATH_KEY = "jdk.module.upgrade.path"; //$NON-NLS-1$
+
+	private static final String JAVA_MODULEMAIN_KEY = "jdk.module.main"; //$NON-NLS-1$
+
+	private static final String JAVA_MODULEMAINCLASS_KEY = "jdk.module.main.class"; //$NON-NLS-1$
 
 	private static final int ERROR_CODE = 255;
 
@@ -100,6 +113,7 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	@Override
 	public CommandOutcome run(Cli cli) {
 		final Map<String, Object> values = new TreeMap<>();
+		extractJvmValues(values);
 		extractConfigValues(values, Configs.extractConfigs(this.modulesMetadata.get()));
 		// Search for the last format option
 		final List<OptionSpec<?>> options = cli.detectedOptions();
@@ -129,9 +143,46 @@ public class PrintConfigCommand extends CommandWithMetadata {
 		return CommandOutcome.succeeded();
 	}
 
-	/** Extract the definition from the given configurations.
+	/** Extract the definitions from JVM properties.
+	 * 
+	 * @param yaml the structure to fill out.
+	 */
+	@SuppressWarnings("static-method")
+	protected void extractJvmValues(Map<String, Object> yaml) {
+		final Map<String, Object> jvmValues = new TreeMap<>();
+		try {
+			Configs.defineScalar(jvmValues, JAVA_CLASSPATH_KEY, Strings.nullToEmpty(System.getProperty(JAVA_CLASSPATH_KEY)));
+		} catch (Exception ex) {
+			// Be silent
+		}
+		try {
+			Configs.defineScalar(jvmValues, JAVA_MODULEPATH_KEY, Strings.nullToEmpty(System.getProperty(JAVA_MODULEPATH_KEY)));
+		} catch (Exception ex) {
+			// Be silent
+		}
+		try {
+			Configs.defineScalar(jvmValues, JAVA_UPGRADEPATH_KEY, Strings.nullToEmpty(System.getProperty(JAVA_UPGRADEPATH_KEY)));
+		} catch (Exception ex) {
+			// Be silent
+		}
+		try {
+			Configs.defineScalar(jvmValues, JAVA_MODULEMAIN_KEY, Strings.nullToEmpty(System.getProperty(JAVA_MODULEMAIN_KEY)));
+		} catch (Exception ex) {
+			// Be silent
+		}
+		try {
+			Configs.defineScalar(jvmValues, JAVA_MODULEMAINCLASS_KEY, Strings.nullToEmpty(System.getProperty(JAVA_MODULEMAINCLASS_KEY)));
+		} catch (Exception ex) {
+			// Be silent
+		}
+		if (!jvmValues.isEmpty()) {
+			yaml.put(JVM_KEY, jvmValues);
+		}
+	}
+
+	/** Extract the definitions from the given configurations.
 	 *
-	 * @param yaml the to fill out.
+	 * @param yaml the structure to fill out.
 	 * @param configs the configurations.
 	 */
 	protected void extractConfigValues(Map<String, Object> yaml, List<ConfigMetadataNode> configs) {

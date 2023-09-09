@@ -31,7 +31,7 @@ then
       SARLDOC_CLASSPATH="${MYSELF}"
     fi
   fi
-  exec $JAVA -Dsarldoc.programName="$PROGRAMNAME" -cp "${SARLDOC_CLASSPATH}" "{cliToolMainClass}" "$@"
+  exec $JAVA -Dsarldoc.programName="$PROGRAMNAME" -cp "${SARLDOC_CLASSPATH}:" "{cliToolMainClass}" "$@"
 else
   echo "Cannot find Java, please set your JAVA_HOME" >&2
 fi
