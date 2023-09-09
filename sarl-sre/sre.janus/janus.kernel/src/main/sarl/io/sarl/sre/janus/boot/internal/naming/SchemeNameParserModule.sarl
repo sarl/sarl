@@ -20,11 +20,12 @@
  */
 package io.sarl.sre.janus.boot.internal.naming
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.sarl.api.naming.parser.AgentSchemeNameParser
+import io.sarl.api.naming.parser.ArtifactSchemeNameParser
 import io.sarl.api.naming.parser.BehaviorSchemeNameParser
 import io.sarl.api.naming.parser.ContextSchemeNameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
@@ -34,8 +35,6 @@ import io.sarl.api.naming.parser.SpaceSchemeNameParser
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import javax.inject.Qualifier
-
-import io.sarl.api.naming.parser.ArtifactSchemeNameParser
 
 /**
  * Module for the scheme name parsers.

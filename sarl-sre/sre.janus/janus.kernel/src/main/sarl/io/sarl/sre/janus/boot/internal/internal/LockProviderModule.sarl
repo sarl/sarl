@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.boot.internal.internal
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantLock

@@ -20,12 +20,12 @@
  */
 package io.sarl.sre.janus.boot.internal.skills
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
-import io.sarl.sre.janus.skills.SreDynamicSkillProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.sre.janus.skills.SreDynamicSkillProvider
 
 /** 
  * Module for configuring the built-in capacities.

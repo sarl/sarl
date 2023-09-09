@@ -21,10 +21,10 @@
 package io.sarl.sre.janus.boot.internal.services
 
 import com.google.common.util.concurrent.Service
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.sarl.sre.janus.services.context.ContextFactory
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.context.DefaultContextFactory
@@ -33,7 +33,6 @@ import io.sarl.sre.janus.services.context.MemoryBasedContextService
 import io.sarl.sre.janus.services.context.SpaceRepository
 import io.sarl.sre.janus.spaces.EventTransportService
 import io.sarl.sre.janus.spaces.LocalEventTransportService
-
 
 /** 
  * Module for the context services.

@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.bugs.to1500.bug1047
+package io.sarl.sre.janus.itests.bugs.to1500.bug1047
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.bugs.to1500.bug1047.mocks.BootAgent0
+import io.sarl.sre.janus.itests.bugs.to1500.bug1047.mocks.BootAgent0
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

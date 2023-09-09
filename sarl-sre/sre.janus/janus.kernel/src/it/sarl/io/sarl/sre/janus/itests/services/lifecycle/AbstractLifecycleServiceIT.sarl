@@ -19,20 +19,20 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.lifecycle
+package io.sarl.sre.janus.itests.services.lifecycle
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.DestroyKillTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.EventHanlderKillTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.InitializeKillTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.InitializeSpawnKillTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.KernelStopAgent0
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.KernelStopAgent1
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.NoChildInnerContextIsKillableTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.NoChildNoInnerContextIsKillableTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.OneAgentSpawnTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.TaskKillTestAgent
-import io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks.ThreeAgentsSpawnTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.DestroyKillTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.EventHanlderKillTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.InitializeKillTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.InitializeSpawnKillTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.KernelStopAgent0
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.KernelStopAgent1
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.NoChildInnerContextIsKillableTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.NoChildNoInnerContextIsKillableTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.OneAgentSpawnTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.TaskKillTestAgent
+import io.sarl.sre.janus.itests.services.lifecycle.mocks.ThreeAgentsSpawnTestAgent
 import io.sarl.sre.test.framework.agents.InfiniteLifeTestingAgent
 import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
 import io.sarl.sre.test.framework.context.SreRunContext

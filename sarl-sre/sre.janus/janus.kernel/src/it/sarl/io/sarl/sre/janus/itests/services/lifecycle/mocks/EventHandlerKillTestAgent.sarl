@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.lifecycle.mocks
+package io.sarl.sre.janus.itests.services.lifecycle.mocks
 
 import io.sarl.api.core.Behaviors
 import io.sarl.api.core.Initialize

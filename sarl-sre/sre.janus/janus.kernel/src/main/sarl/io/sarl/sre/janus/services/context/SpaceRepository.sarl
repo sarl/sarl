@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.services.context
 
-import io.bootique.di.Binder
 import io.bootique.di.BQModule
-import io.bootique.di.Key
+import io.bootique.di.Binder
 import io.bootique.di.Injector
+import io.bootique.di.Key
 import io.sarl.api.core.OpenEventSpace
 import io.sarl.api.core.OpenEventSpaceSpecification
 import io.sarl.api.util.DefaultSpace

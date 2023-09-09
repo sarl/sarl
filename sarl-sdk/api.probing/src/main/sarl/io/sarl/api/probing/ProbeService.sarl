@@ -21,9 +21,9 @@
 package io.sarl.api.probing
 
 import com.google.common.util.concurrent.Service
+import io.sarl.api.naming.name.SarlName
 import java.net.URI
 import java.util.Collection
-import io.sarl.api.naming.name.SarlName
 
 /** 
  * This service provides probing mechanisms.

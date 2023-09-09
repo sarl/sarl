@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.bugs.to500.bug224.mocks
+package io.sarl.sre.janus.itests.bugs.to500.bug224.mocks
 
 import io.sarl.api.core.Behaviors
 import io.sarl.api.core.Destroy

@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.namespace
+package io.sarl.sre.janus.itests.services.namespace
 
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.services.namespace.mocks.ChangeField
-import io.sarl.sre.janus.itests.runtime.services.namespace.mocks.NamespaceTestAgent
-import io.sarl.sre.janus.itests.runtime.services.namespace.mocks.StopTest
+import io.sarl.sre.janus.itests.services.namespace.mocks.ChangeField
+import io.sarl.sre.janus.itests.services.namespace.mocks.NamespaceTestAgent
+import io.sarl.sre.janus.itests.services.namespace.mocks.StopTest
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

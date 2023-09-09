@@ -19,16 +19,16 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.probing
+package io.sarl.sre.janus.itests.services.probing
 
 import io.sarl.api.probing.Probe
 import io.sarl.api.probing.ProbeService
 import io.sarl.lang.core.Agent
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.boot.configs.subconfigs.ServicesConfig
-import io.sarl.sre.janus.itests.runtime.services.probing.mocks.ChangeFieldForProbe
-import io.sarl.sre.janus.itests.runtime.services.probing.mocks.ProbedAgent
-import io.sarl.sre.janus.itests.runtime.services.probing.mocks.ProbedObservableAgent
+import io.sarl.sre.janus.itests.services.probing.mocks.ChangeFieldForProbe
+import io.sarl.sre.janus.itests.services.probing.mocks.ProbedAgent
+import io.sarl.sre.janus.itests.services.probing.mocks.ProbedObservableAgent
 import io.sarl.sre.janus.services.probing.service.AsynchronousProbeService
 import io.sarl.sre.test.framework.context.BooleanWait
 import io.sarl.sre.test.framework.context.SreRunContext

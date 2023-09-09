@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.namespace.mocks
+package io.sarl.sre.janus.itests.services.namespace.mocks
 
 /**
  * @author $Author: sgalland$

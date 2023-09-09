@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal.eventguard.polymorphic.mocks
+package io.sarl.sre.janus.itests.internal.eventguard.polymorphic.mocks
 
 event Event0

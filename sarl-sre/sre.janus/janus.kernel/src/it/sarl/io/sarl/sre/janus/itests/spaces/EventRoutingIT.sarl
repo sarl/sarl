@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.spaces
+package io.sarl.sre.janus.itests.spaces
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.lang.core.Address
-import io.sarl.sre.janus.itests.runtime.spaces.mocks.SourceAgent
-import io.sarl.sre.janus.itests.runtime.spaces.mocks.SourceAgent2
-import io.sarl.sre.janus.itests.runtime.spaces.mocks.TargetAgent
+import io.sarl.sre.janus.itests.spaces.mocks.SourceAgent
+import io.sarl.sre.janus.itests.spaces.mocks.SourceAgent2
+import io.sarl.sre.janus.itests.spaces.mocks.TargetAgent
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

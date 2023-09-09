@@ -20,12 +20,12 @@
  */
 package io.sarl.sre.janus.boot.internal.kernel
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
-import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
-import io.sarl.api.util.sarlspecification.StandardSarlSpecificationChecker
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.sarl.api.util.SarlSpecificationChecker
+import io.sarl.api.util.StandardSarlSpecificationChecker
 
 /** 
  * Module for configuring the SARL specification checker.

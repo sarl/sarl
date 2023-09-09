@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.context;
+package io.sarl.sre.janus.itests.services.context;
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

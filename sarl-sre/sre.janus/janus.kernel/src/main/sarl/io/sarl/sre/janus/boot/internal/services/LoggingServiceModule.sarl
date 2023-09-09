@@ -23,8 +23,8 @@ package io.sarl.sre.janus.boot.internal.services
 import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder
 import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.di.Injector
 import io.bootique.di.Provides
 import io.sarl.sre.janus.services.logging.LoggingService

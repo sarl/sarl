@@ -21,9 +21,9 @@
 package io.sarl.api.naming.namespace
 
 import java.lang.annotation.ElementType
-import java.lang.annotation.Target
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target
 
 /** 
  * Annotation that is used for marking SARL elements as an observable object.

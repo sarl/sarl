@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal.inject.mocks
+package io.sarl.sre.janus.itests.internal.inject.mocks
 
 import io.sarl.api.core.Initialize
 import io.sarl.sre.test.framework.skills.TestingSkill

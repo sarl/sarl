@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.boot.internal.internal
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.sarl.lang.core.util.ConcurrentCollectionFactory
 import io.sarl.lang.core.util.DefaultConcurrentCollectionFactory
 

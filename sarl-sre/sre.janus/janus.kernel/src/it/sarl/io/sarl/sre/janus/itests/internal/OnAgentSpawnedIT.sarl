@@ -19,14 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal
+package io.sarl.sre.janus.itests.internal
 
 import io.sarl.api.core.AgentSpawned
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.internal.mocks.DifferedKillAgent
-import io.sarl.sre.janus.itests.runtime.internal.mocks.MySpawnedAgent0
-import io.sarl.sre.janus.itests.runtime.internal.mocks.MyWaiterAgent0
+import io.sarl.sre.janus.itests.internal.mocks.DifferedKillAgent
+import io.sarl.sre.janus.itests.internal.mocks.MySpawnedAgent0
+import io.sarl.sre.janus.itests.internal.mocks.MyWaiterAgent0
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension

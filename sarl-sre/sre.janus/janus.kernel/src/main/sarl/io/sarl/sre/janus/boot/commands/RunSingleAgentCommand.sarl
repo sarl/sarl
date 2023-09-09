@@ -21,12 +21,12 @@
 
 package io.sarl.sre.janus.boot.commands
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.cli.Cli;
+import io.bootique.cli.Cli
 import io.bootique.command.CommandOutcome
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.meta.application.CommandMetadata
 import io.sarl.sre.janus.IssueCodes
 import io.sarl.sre.janus.boot.configs.SreConfig

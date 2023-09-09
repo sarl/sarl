@@ -22,8 +22,8 @@ package io.sarl.sre.janus.services.probing.probes
 
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.probing.IProbeReleaseListener
-import java.net.URI
 import io.sarl.sre.janus.internal.Factories
+import java.net.URI
 import javax.inject.Provider
 
 /** 

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal.eventguard.reflect.mocks
+package io.sarl.sre.janus.itests.internal.eventguard.reflect.mocks
 
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.Initialize

@@ -28,10 +28,10 @@ import io.sarl.lang.core.Event
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.internal.SubHolonContextEventEmitter
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.janus.tests.internal.mocks.BehSkill
 import io.sarl.sre.janus.tests.internal.mocks.LogSkill
 import io.sarl.sre.janus.tests.internal.mocks.MyAgent0
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.util.UUID

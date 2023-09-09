@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.context
+package io.sarl.sre.janus.itests.services.context
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.lang.core.AgentContext
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetContextTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetRootContextTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetContextTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetRootContextTestAgent
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

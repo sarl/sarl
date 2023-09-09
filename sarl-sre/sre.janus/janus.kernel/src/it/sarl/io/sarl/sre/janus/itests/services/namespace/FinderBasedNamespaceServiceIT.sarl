@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.namespace
+package io.sarl.sre.janus.itests.services.namespace
 
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.sre.test.framework.context.SreRunContext

@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.skills.bic
+package io.sarl.sre.janus.itests.skills.bic
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.skills.bic.mocks.BehaviorWakeUpAgent
-import io.sarl.sre.janus.itests.runtime.skills.bic.mocks.BehaviorsWakeUpAgent
+import io.sarl.sre.janus.itests.skills.bic.mocks.BehaviorWakeUpAgent
+import io.sarl.sre.janus.itests.skills.bic.mocks.BehaviorsWakeUpAgent
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

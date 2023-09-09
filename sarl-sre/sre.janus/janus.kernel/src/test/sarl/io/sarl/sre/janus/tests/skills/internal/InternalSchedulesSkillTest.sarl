@@ -27,10 +27,10 @@ import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.skills.bic.FailureListenerFactory
 import io.sarl.sre.janus.skills.bic.SchedulesSkill
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.sre.janus.tests.skills.internal.mocks.MyAgent
 import io.sarl.sre.janus.tests.skills.internal.mocks.MyLoggingSkill
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.util.Collection

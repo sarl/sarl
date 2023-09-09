@@ -20,12 +20,12 @@
  */
 package io.sarl.sre.janus.boot.configs.subconfigs
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.meta.application.OptionMetadata
 import io.sarl.sre.janus.boot.configs.SreConfig
 import java.lang.reflect.Type
@@ -36,6 +36,7 @@ import org.arakhne.afc.bootique.variables.VariableDecls
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.sre.janus.boot.configs.subconfigs.ServicesConfig.*
+
 import static extension io.bootique.BQCoreModule.extend
 
 /**

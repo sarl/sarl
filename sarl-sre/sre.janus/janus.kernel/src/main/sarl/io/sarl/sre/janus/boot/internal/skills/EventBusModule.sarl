@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.boot.internal.skills
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.internal.Factories

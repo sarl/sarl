@@ -20,13 +20,13 @@
  */
 package io.sarl.sre.janus.boot.internal.naming
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
-import io.sarl.api.naming.parser.UriBasedNameParser
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
+import io.sarl.api.naming.parser.UriBasedNameParser
 import java.util.Set
 import javax.inject.Inject
 

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.lifecycle
+package io.sarl.sre.janus.itests.services.lifecycle
 
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig
 import org.arakhne.afc.bootique.variables.VariableNames

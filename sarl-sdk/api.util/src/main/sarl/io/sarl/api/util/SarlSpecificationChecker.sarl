@@ -19,12 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.api.util.sarlspecification
+package io.sarl.api.util
 
-import org.osgi.framework.Version
-
-import io.sarl.lang.core.^annotation.SarlSpecification
 import io.sarl.lang.core.SARLVersion
+import io.sarl.lang.core.annotation.SarlSpecification
+import org.osgi.framework.Version
 
 /** Check if a given agent class follows a specific version of the SARL specifications.
  *

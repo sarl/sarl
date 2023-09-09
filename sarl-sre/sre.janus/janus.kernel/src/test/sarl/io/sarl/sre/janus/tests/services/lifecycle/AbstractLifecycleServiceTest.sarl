@@ -25,12 +25,12 @@ import io.sarl.api.core.Destroy
 import io.sarl.api.core.Initialize
 import io.sarl.api.core.OpenEventSpace
 import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.util.SarlSpecificationChecker
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.SpaceID
-import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.OutParameter
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension

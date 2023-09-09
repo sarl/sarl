@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.skills.bic.mocks
+package io.sarl.sre.janus.itests.skills.bic.mocks
 
 import io.sarl.lang.core.Agent
 import io.sarl.sre.test.framework.events.Bye

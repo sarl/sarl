@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.bugs.to500.bug66.mocks
+package io.sarl.sre.janus.itests.bugs.to500.bug66.mocks
 
 import io.sarl.api.core.OpenEventSpace
 import io.sarl.lang.core.SpaceID

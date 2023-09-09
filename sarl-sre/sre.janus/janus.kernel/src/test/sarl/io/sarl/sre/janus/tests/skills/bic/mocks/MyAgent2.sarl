@@ -21,12 +21,12 @@
 
 package io.sarl.sre.janus.tests.skills.bic.mocks
 
-import java.util.UUID
-import io.sarl.lang.core.Agent
 import io.sarl.api.core.Logging
-import io.sarl.sre.janus.skills.bic.LoggingSkill
+import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SREutils
-import io.sarl.lang.core.^annotation.PrivateAPI
+import io.sarl.lang.core.annotation.PrivateAPI
+import io.sarl.sre.janus.skills.bic.LoggingSkill
+import java.util.UUID
 
 /**
  * @author $Author: sgalland$

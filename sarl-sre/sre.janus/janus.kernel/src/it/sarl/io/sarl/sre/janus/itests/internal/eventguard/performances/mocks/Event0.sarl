@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal.eventguard.performances.mocks
+package io.sarl.sre.janus.itests.internal.eventguard.performances.mocks
 
 event Event0

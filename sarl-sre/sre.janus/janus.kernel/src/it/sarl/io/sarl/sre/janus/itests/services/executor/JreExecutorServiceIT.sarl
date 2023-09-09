@@ -18,10 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.itests.runtime.services.executor;
+package io.sarl.sre.janus.itests.services.executor;
 
 import io.sarl.lang.core.^annotation.PrivateAPI
-import io.sarl.sre.janus.itests.runtime.services.executor.mocks.CancelTaskAgent2
+import io.sarl.sre.janus.itests.services.executor.mocks.CancelTaskAgent2
 import io.sarl.sre.janus.boot.configs.subconfigs.ExecutorsConfig
 import io.sarl.sre.janus.services.executor.JreExecutorService
 import io.sarl.sre.janus.services.lifecycle.LifecycleService

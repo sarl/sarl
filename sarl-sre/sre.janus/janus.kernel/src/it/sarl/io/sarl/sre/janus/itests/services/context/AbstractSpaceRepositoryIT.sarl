@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.context
+package io.sarl.sre.janus.itests.services.context
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.CreateSpaceTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetOrCreateSpaceWithIDTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetOrCreateSpaceWithSpecTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetSpaceTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetSpacesClassTestAgent
-import io.sarl.sre.janus.itests.runtime.services.context.mocks.GetSpacesTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.CreateSpaceTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetOrCreateSpaceWithIDTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetOrCreateSpaceWithSpecTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetSpaceTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetSpacesClassTestAgent
+import io.sarl.sre.janus.itests.services.context.mocks.GetSpacesTestAgent
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

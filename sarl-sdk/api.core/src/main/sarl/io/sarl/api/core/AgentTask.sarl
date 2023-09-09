@@ -23,7 +23,7 @@ package io.sarl.api.core
 
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SRESpecificDataContainer
-import io.sarl.lang.core.^annotation.PrivateAPI
+import io.sarl.lang.core.annotation.PrivateAPI
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.

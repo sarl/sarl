@@ -20,8 +20,8 @@
  */
 package io.sarl.sre.janus.services.logging.jul
 
-import java.util.regex.Pattern
 import io.sarl.apputils.bootiqueapp.utils.JulPatternFormatter
+import java.util.regex.Pattern
 
 /** SRE-specific JUL formatter based on pattern.
  *

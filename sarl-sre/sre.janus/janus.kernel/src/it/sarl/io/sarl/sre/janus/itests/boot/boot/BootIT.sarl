@@ -19,13 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.boot.boot
+package io.sarl.sre.janus.itests.boot.boot
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.RootContextType
-import io.sarl.sre.janus.itests.runtime.boot.boot.mocks.BootAgent0
-import io.sarl.sre.janus.itests.runtime.boot.boot.mocks.BootAgent1
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
@@ -40,6 +38,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.janus.itests.boot.boot.mocks.BootAgent0
+import io.sarl.sre.janus.itests.boot.boot.mocks.BootAgent1
 
 /**
  * @author $Author: sgalland$

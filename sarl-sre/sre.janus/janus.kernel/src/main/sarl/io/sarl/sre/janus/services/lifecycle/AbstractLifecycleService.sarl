@@ -20,8 +20,8 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
+import io.sarl.api.util.SarlSpecificationChecker
 import io.sarl.api.util.SmartListenerCollection
-import io.sarl.api.util.sarlspecification.SarlSpecificationChecker
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.util.ConcurrentCollection
@@ -50,6 +50,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 
 import static java.text.MessageFormat.*
+
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 
 /** 

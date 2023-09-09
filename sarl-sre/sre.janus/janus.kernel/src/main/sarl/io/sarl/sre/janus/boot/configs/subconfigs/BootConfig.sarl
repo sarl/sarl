@@ -21,12 +21,12 @@
 
 package io.sarl.sre.janus.boot.configs.subconfigs
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.bootique.meta.application.OptionMetadata
 import io.sarl.lang.core.Agent

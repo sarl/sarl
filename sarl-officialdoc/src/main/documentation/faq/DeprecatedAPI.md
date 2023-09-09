@@ -267,7 +267,7 @@ the SARL Run-time Environment (SRE).
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.api.util.sarlspecification.[:checkername](SarlSpecificationChecker)
+    import io.sarl.api.util.[:checkername](SarlSpecificationChecker)
     import org.osgi.framework.Version
     agent X {
         def fct(s : SarlSpecificationChecker, t : Class<?>) : [:versiontypename](Version) {

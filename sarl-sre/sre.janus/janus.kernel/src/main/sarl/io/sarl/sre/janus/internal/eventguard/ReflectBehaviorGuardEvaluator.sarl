@@ -23,7 +23,6 @@ package io.sarl.sre.janus.internal.eventguard
 
 import com.google.common.base.Strings
 import io.sarl.sre.janus.IssueCodes
-import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.text.MessageFormat

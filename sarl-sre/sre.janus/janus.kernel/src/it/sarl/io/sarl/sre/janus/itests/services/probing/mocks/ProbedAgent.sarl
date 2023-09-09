@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.services.probing.mocks
+package io.sarl.sre.janus.itests.services.probing.mocks
 
 import io.sarl.api.core.Lifecycle
 import java.util.concurrent.atomic.AtomicInteger

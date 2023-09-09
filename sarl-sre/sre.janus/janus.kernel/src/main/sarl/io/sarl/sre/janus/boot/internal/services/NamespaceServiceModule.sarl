@@ -23,8 +23,8 @@ package io.sarl.sre.janus.boot.internal.services
 import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder
 import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.sarl.api.naming.namespace.AnnotationFieldAccessValidator
 import io.sarl.api.naming.namespace.CapacityFieldAccessValidator

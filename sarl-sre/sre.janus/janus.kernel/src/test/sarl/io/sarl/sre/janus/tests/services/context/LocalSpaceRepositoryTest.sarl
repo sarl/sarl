@@ -24,8 +24,8 @@ package io.sarl.sre.janus.tests.services.context
 import io.bootique.di.Injector
 import io.sarl.sre.janus.services.context.LocalSpaceRepository
 import io.sarl.sre.janus.services.context.SpaceRepository.SpaceDescription
-import io.sarl.sre.janus.tests.framework.services.context.AbstractSpaceRepositoryTest
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
+import io.sarl.sre.janus.tests.framework.services.context.AbstractSpaceRepositoryTest
 import java.util.TreeMap
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName

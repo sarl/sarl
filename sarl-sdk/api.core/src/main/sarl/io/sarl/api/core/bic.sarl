@@ -30,7 +30,7 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.core.^annotation.SarlAsynchronousExecution
+import io.sarl.lang.core.annotation.SarlAsynchronousExecution
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.ConcurrentSet
 import java.text.MessageFormat

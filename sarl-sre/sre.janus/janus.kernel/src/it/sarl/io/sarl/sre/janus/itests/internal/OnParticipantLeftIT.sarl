@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.internal
+package io.sarl.sre.janus.itests.internal
 
 import io.sarl.api.core.ParticipantLeft
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.lang.core.SpaceID
-import io.sarl.sre.janus.itests.runtime.internal.mocks.JoinerAgent1
-import io.sarl.sre.janus.itests.runtime.internal.mocks.JoinerAgent3
-import io.sarl.sre.janus.itests.runtime.internal.mocks.SpyAgent1
-import io.sarl.sre.janus.itests.runtime.internal.mocks.SpyAgent3
+import io.sarl.sre.janus.itests.internal.mocks.JoinerAgent1
+import io.sarl.sre.janus.itests.internal.mocks.JoinerAgent3
+import io.sarl.sre.janus.itests.internal.mocks.SpyAgent1
+import io.sarl.sre.janus.itests.internal.mocks.SpyAgent3
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension

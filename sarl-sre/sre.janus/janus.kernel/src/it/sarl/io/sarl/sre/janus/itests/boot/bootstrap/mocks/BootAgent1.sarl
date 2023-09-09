@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.itests.runtime.boot.bootstrap.mocks
+package io.sarl.sre.janus.itests.boot.bootstrap.mocks
 
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.Initialize

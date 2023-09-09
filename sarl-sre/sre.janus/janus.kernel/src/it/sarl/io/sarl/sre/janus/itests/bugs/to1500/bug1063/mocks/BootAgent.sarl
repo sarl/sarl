@@ -19,7 +19,7 @@
  * limitations under the License.
  */
  
-package io.sarl.sre.janus.itests.runtime.bugs.to1500.bug1063.mocks
+package io.sarl.sre.janus.itests.bugs.to1500.bug1063.mocks
 
 import io.sarl.api.core.AgentKilled
 import io.sarl.api.core.AgentSpawned

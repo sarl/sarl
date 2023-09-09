@@ -21,8 +21,8 @@
 package io.sarl.sre.janus.services.lifecycle
 
 import io.sarl.lang.core.Agent
-import java.text.MessageFormat
 import io.sarl.sre.janus.IssueCodes
+import java.text.MessageFormat
 
 /** 
  * This exception is thrown when an agent cannot be spawned.

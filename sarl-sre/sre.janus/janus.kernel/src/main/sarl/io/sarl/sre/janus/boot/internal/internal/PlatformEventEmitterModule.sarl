@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.boot.internal.internal
 
-import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.sarl.sre.janus.KernelScope
 import io.sarl.sre.janus.internal.AgentEventEmitter
@@ -43,7 +43,6 @@ import io.sarl.sre.janus.skills.bic.FailureListenerFactory
 import io.sarl.sre.janus.spaces.SpaceParticipantListenerFactory
 import javax.inject.Provider
 import javax.inject.Singleton
-
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.

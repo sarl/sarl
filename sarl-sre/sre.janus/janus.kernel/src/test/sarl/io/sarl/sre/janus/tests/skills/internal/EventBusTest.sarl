@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.skills.internal
+package io.sarl.sre.janus.tests.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension

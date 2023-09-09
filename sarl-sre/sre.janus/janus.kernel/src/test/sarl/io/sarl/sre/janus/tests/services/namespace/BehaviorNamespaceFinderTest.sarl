@@ -21,9 +21,9 @@
 
 package io.sarl.sre.janus.tests.services.namespace
 
-import io.sarl.api.naming.name.BehaviorName
 import io.sarl.api.core.Behaviors
 import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.naming.name.BehaviorName
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Behavior
