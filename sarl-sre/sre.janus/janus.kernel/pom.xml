@@ -40,11 +40,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>compiler.tests</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.sarl.sre</groupId>
 			<artifactId>sre.tests.api</artifactId>
 			<scope>test</scope>
@@ -162,9 +157,8 @@
 						<configuration>
 							<sources>
 								<source>src/test/sarl</source>
-								<source>src/test/generated-sources/sarl</source>
 								<source>src/it/sarl</source>
-								<source>src/it/generated-sources/sarl</source>
+								<source>src/test/generated-sources/sarl</source>
 							</sources>
 						</configuration>
 					</execution>

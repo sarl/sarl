@@ -139,6 +139,12 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	@Parameter(defaultValue = SARLConfig.FOLDER_TEST_SOURCE_SARL)
 	private File testInput;
 
+	/** The directory in which the integration test SARL code files are located.
+	 * @since 0.13
+	 */
+	@Parameter(defaultValue = SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL)
+	private File integrationTestInput;
+
 	/** Skip the execution of the mojo.
 	 * @since 0.11
 	 */
@@ -274,6 +280,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		return makeAbsolute((this.testInput == null) ? unix2os(SARLConfig.FOLDER_TEST_SOURCE_SARL) : this.testInput);
 	}
 
+	/** Replies the integration test input folder.
+	 *
+	 * @return the integration test input folder.
+	 * @since 0.13
+	 */
+	protected File getIntegrationTestInput() {
+		return makeAbsolute((this.integrationTestInput == null) ? unix2os(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL) : this.integrationTestInput);
+	}
+
 	/** Replies the test output folder.
 	 *
 	 * @return the test output folder.
@@ -393,6 +408,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		buffer.append("input = ").append(this.input).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("output = ").append(this.output).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("testInput = ").append(this.testInput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("integrationTestInput = ").append(this.integrationTestInput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("testOutput = ").append(this.testOutput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 

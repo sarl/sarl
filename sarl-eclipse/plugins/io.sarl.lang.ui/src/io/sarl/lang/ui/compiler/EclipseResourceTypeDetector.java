@@ -52,6 +52,7 @@ import io.sarl.lang.compiler.AbstractResourceTypeDetector;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  * @see SARLConfig#FOLDER_TEST_SOURCE_SARL
+ * @see SARLConfig#FOLDER_INTEGRATION_TEST_SOURCE_SARL
  * @see SARLConfig#FOLDER_TEST_SOURCE_GENERATED
  */
 @Singleton
@@ -92,7 +93,9 @@ public class EclipseResourceTypeDetector extends AbstractResourceTypeDetector {
 						} else {
 							name = rootPath.toString();
 						}
-						if (name != null && name.startsWith(SARLConfig.FOLDER_MAVEN_TEST_PREFIX)) {
+						if (name != null
+								&& (name.startsWith(SARLConfig.FOLDER_MAVEN_TEST_PREFIX)
+									|| name.startsWith(SARLConfig.FOLDER_MAVEN_INTEGRATION_TEST_PREFIX))) {
 							return Boolean.TRUE;
 						}
 					}

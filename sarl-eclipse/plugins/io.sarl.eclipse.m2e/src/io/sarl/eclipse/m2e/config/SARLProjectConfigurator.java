@@ -176,7 +176,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 8);
 		final String encoding = config.getEncoding();
 
 		//
@@ -230,6 +230,28 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			// Add the source entry
 			descriptor = classpath.addSourceEntry(
 					testInputPath,
+					facade.getTestOutputLocation(),
+					false);
+			descriptor.setPomDerived(true);
+			descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
+			subMonitor.worked(1);
+		} else {
+			subMonitor.worked(2);
+		}
+
+		if (addTestFolders) {
+			// Test input folder, e.g. "src/it/sarl"
+			final IPath integrationTestInputPath = makeFullPath(facade, config.getIntegrationTestInput());
+			removeSourceFolder(integrationTestInputPath, classpath, subMonitor.newChild(1));
+			final IFolder integrationTestInputFolder = ensureFolderExists(facade, integrationTestInputPath, false, subMonitor);
+			if (encoding != null && integrationTestInputFolder != null && integrationTestInputFolder.exists()) {
+				integrationTestInputFolder.setDefaultCharset(encoding, monitor);
+			}
+			// Remove any previous definition of the source entry
+			classpath.touchEntry(integrationTestInputPath);
+			// Add the source entry
+			descriptor = classpath.addSourceEntry(
+					integrationTestInputPath,
 					facade.getTestOutputLocation(),
 					false);
 			descriptor.setPomDerived(true);
@@ -340,6 +362,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				new File(SARLConfig.FOLDER_BIN));
 		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_SARL));
+		final File integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor, //$NON-NLS-1$
+				new File(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL));
 		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_GENERATED));
 		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor, //$NON-NLS-1$
@@ -349,6 +373,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		config.setOutput(output);
 		config.setBinOutput(binOutput);
 		config.setTestInput(testInput);
+		config.setIntegrationTestInput(integrationTestInput);
 		config.setTestOutput(testOutput);
 		config.setTestBinOutput(testBinOutput);
 
@@ -374,6 +399,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		final File output = getParameterValue(project, "output", File.class, mojo, monitor); //$NON-NLS-1$
 		final File binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor); //$NON-NLS-1$
 		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor); //$NON-NLS-1$
+		final File integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor); //$NON-NLS-1$
 		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor); //$NON-NLS-1$
 		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor); //$NON-NLS-1$
 
@@ -381,6 +407,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		config.setOutput(output);
 		config.setBinOutput(binOutput);
 		config.setTestInput(testInput);
+		config.setIntegrationTestInput(integrationTestInput);
 		config.setTestOutput(testOutput);
 		config.setTestBinOutput(testBinOutput);
 

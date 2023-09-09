@@ -55,7 +55,7 @@ public class CompileMojo extends AbstractCompileMojo {
 	}
 
 	private boolean isValidSourceDirectory(File file, File outputDirectory) {
-		return !file.equals(outputDirectory) && !file.equals(getTestInput());
+		return !file.equals(outputDirectory) && !file.equals(getTestInput()) && !file.equals(getIntegrationTestInput());
 	}
 
 	private static List<String> getSourceRoots(MavenProject project) {

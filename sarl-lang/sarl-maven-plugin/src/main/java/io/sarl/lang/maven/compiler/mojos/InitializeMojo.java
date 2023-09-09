@@ -54,7 +54,7 @@ public class InitializeMojo extends AbstractSarlMojo {
 				getLogger().info(MessageFormat.format(Messages.InitializeMojo_0, absPath));
 				project.addCompileSourceRoot(absPath);
 			}
-			for (final File f : new File[] {getTestInput(), getTestOutput()}) {
+			for (final File f : new File[] {getTestInput(), getIntegrationTestInput(), getTestOutput()}) {
 				final String absPath = f.getAbsolutePath();
 				getLogger().info(MessageFormat.format(Messages.InitializeMojo_1, absPath));
 				project.addTestCompileSourceRoot(absPath);

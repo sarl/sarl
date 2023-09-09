@@ -40,6 +40,8 @@ public class SARLConfiguration {
 
 	private File testInput;
 
+	private File integrationTestInput;
+
 	private File testOutput;
 
 	private File testBinOutput;
@@ -66,6 +68,9 @@ public class SARLConfiguration {
 		}
 		if (this.testInput == null) {
 			this.testInput = config.getTestInput();
+		}
+		if (this.integrationTestInput == null) {
+			this.integrationTestInput = config.getIntegrationTestInput();
 		}
 		if (this.testOutput == null) {
 			this.testOutput = config.getTestOutput();
@@ -148,6 +153,24 @@ public class SARLConfiguration {
 	 */
 	public void setTestInput(File testInput) {
 		this.testInput = testInput;
+	}
+
+	/** Replies the input file for integration tests.
+	 *
+	 * @return the integrationTestInput
+	 * @since 0.13
+	 */
+	public File getIntegrationTestInput() {
+		return this.integrationTestInput;
+	}
+
+	/** Set the input file for integration tests.
+	 *
+	 * @param integrationTestInput the integrationTestInput to set
+	 * @since 0.13
+	 */
+	public void setIntegrationTestInput(File integrationTestInput) {
+		this.integrationTestInput = integrationTestInput;
 	}
 
 	/** Replies the output file for tests.
@@ -237,6 +260,7 @@ public class SARLConfiguration {
 		return "input = " + this.input //$NON-NLS-1$
 			+ "\noutput = " + this.output //$NON-NLS-1$
 			+ "\ntestInput = " + this.testInput //$NON-NLS-1$
+			+ "\nintegrationTestInput = " + this.integrationTestInput //$NON-NLS-1$
 			+ "\ntestOutput = " + this.testOutput //$NON-NLS-1$
 			+ "\ninputCompliance = " + this.inputCompliance //$NON-NLS-1$
 			+ "\noutputCompliance = " + this.outputCompliance //$NON-NLS-1$
