@@ -24,7 +24,7 @@ Add in the `plugin.xml` file:
 			name="%io_sarl_demos_myexample_Name"
 			class="io.sarl.examples.SARLExampleExecutableExtensionFactory:io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%io_sarl_demos_myexample_Description</description>
 		</wizard>
@@ -35,14 +35,14 @@ Add in the `plugin.xml` file:
 			name="%io_sarl_demos_myexample_Name"
 			class="io.sarl.examples.SARLExampleExecutableExtensionFactory:io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%io_sarl_demos_myexample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.examples.myexample" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.examples.myexample" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-myexample" contentURI="contents/io-sarl-demos-myexample.zip" description="%io_sarl_demos_myexample_Description"/>
 			<fileToOpen location="path/to/the/file/to/open"/>
 		</example>

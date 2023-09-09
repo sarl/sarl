@@ -71,7 +71,7 @@
 			name="%HelloworldExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%HelloworldExample_Description</description>
 		</wizard>
@@ -82,14 +82,14 @@
 			name="%HelloworldExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%HelloworldExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.eclipse.examples.helloworld" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.eclipse.examples.helloworld" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-helloworld" contentURI="contents/io-sarl-demos-basic-helloworld.zip" description="%HelloworldExample_Description"/>
 			<fileToOpen location="io/sarl/demos/basic/helloworld/helloworld.sarl"/>
 		</example>
@@ -102,7 +102,7 @@
 			name="%BehaviorsExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%BehaviorsExample_Description</description>
 		</wizard>
@@ -113,14 +113,14 @@
 			name="%BehaviorsExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%BehaviorsExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.eclipse.examples.behaviors" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.eclipse.examples.behaviors" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-behaviors" contentURI="contents/io-sarl-demos-basic-behaviors.zip" description="%BehaviorsExample_Description"/>
 			<fileToOpen location="io/sarl/demos/basic/behaviors/behaviors.sarl"/>
 		</example>
@@ -133,7 +133,7 @@
 			name="%BehaviorsInheritanceExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%BehaviorsInheritanceExample_Description</description>
 		</wizard>
@@ -144,14 +144,14 @@
 			name="%BehaviorsInheritanceExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%BehaviorsInheritanceExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.demos.basic.behaviorinheritance" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.demos.basic.behaviorinheritance" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-behaviorinheritance" contentURI="contents/io-sarl-demos-basic-behaviorinheritance.zip" description="%BehaviorsInheritanceExample_Description"/>
 			<fileToOpen location="io/sarl/demos/basic/inheritance/inheritance.sarl"/>
 		</example>
@@ -164,7 +164,7 @@
 			name="%CountdownExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%CountdownExample_Description</description>
 		</wizard>
@@ -175,14 +175,14 @@
 			name="%CountdownExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%CountdownExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.demos.basic.countdown" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.demos.basic.countdown" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-countdown" contentURI="contents/io-sarl-demos-basic-countdown.zip" description="%CountdownExample_Description"/>
 			<fileToOpen location="io/sarl/demos/basic/countdown/countdown.sarl"/>
 		</example>
@@ -195,7 +195,7 @@
 			name="%HolarchyExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%HolarchyExample_Description</description>
 		</wizard>
@@ -206,14 +206,14 @@
 			name="%HolarchyExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%HolarchyExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.demos.basic.holarchy" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.demos.basic.holarchy" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-holarchy" contentURI="contents/io-sarl-demos-basic-holarchy.zip" description="%HolarchyExample_Description"/>
 			<fileToOpen location="io/sarl/demos/basic/holarchy/holarchy.sarl"/>
 		</example>
@@ -226,7 +226,7 @@
 			name="%CounterExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%CounterExample_Description</description>
 		</wizard>
@@ -237,14 +237,14 @@
 			name="%CounterExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%CounterExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.demos.counter" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.demos.counter" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-counter" contentURI="contents/io-sarl-demos-counter.zip" description="%CounterExample_Description"/>
 			<fileToOpen location="io/sarl/demos/counter/counteragent.sarl"/>
 		</example>
@@ -257,7 +257,7 @@
 			name="%FactorialExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%FactorialExample_Description</description>
 		</wizard>
@@ -268,14 +268,14 @@
 			name="%FactorialExample_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.NoUIExamples"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%FactorialExample_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.demos.factorial" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.demos.factorial" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-factorial" contentURI="contents/io-sarl-demos-factorial.zip" description="%FactorialExample_Description"/>
 			<fileToOpen location="io/sarl/demos/factorial/basic/basicfactorial.sarl"/>
 		</example>
@@ -288,7 +288,7 @@
         name="%io_sarl_tutorials_holonicauction_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_holonicauction_Description</description>
     </wizard>
@@ -299,14 +299,14 @@
         name="%io_sarl_tutorials_holonicauction_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_holonicauction_Description</description>
     </wizard>
 </extension>
 
 <extension point="org.eclipse.emf.common.ui.examples">
-    <example wizardID="io.sarl.tutorials.holonicauction" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+    <example wizardID="io.sarl.tutorials.holonicauction" pageImage="/icons/genproject.gif">
         <projectDescriptor name="io-sarl-tutorials-holonicauction" contentURI="contents/io-sarl-tutorials-holonicauction.zip" description="%io_sarl_tutorials_holonicauction_Description"/>
         <fileToOpen location="io/sarl/examples/holonicauction/auctioneer.sarl"/>
     </example>
@@ -319,7 +319,7 @@
         name="%io_sarl_tutorials_pingpong_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_pingpong_Description</description>
     </wizard>
@@ -330,14 +330,14 @@
         name="%io_sarl_tutorials_pingpong_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_pingpong_Description</description>
     </wizard>
 </extension>
 
 <extension point="org.eclipse.emf.common.ui.examples">
-    <example wizardID="io.sarl.tutorials.pingpong" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+    <example wizardID="io.sarl.tutorials.pingpong" pageImage="/icons/genproject.gif">
         <projectDescriptor name="io-sarl-tutorials-pingpong" contentURI="contents/io-sarl-tutorials-pingpong.zip" description="%io_sarl_tutorials_pingpong_Description"/>
         <fileToOpen location="io/sarl/examples/pingpong/boot.sarl"/>
     </example>
@@ -350,7 +350,7 @@
         name="%io_sarl_tutorials_pingpongspace_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_pingpongspace_Description</description>
     </wizard>
@@ -361,14 +361,14 @@
         name="%io_sarl_tutorials_pingpongspace_Name"
         class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
-        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        icon="/icons/genproject.gif"
         project="true">
         <description>%io_sarl_tutorials_pingpongspace_Description</description>
     </wizard>
 </extension>
 
 <extension point="org.eclipse.emf.common.ui.examples">
-    <example wizardID="io.sarl.tutorials.pingpongspace" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+    <example wizardID="io.sarl.tutorials.pingpongspace" pageImage="/icons/genproject.gif">
         <projectDescriptor name="io-sarl-tutorials-pingpongspace" contentURI="contents/io-sarl-tutorials-pingpongspace.zip" description="%io_sarl_tutorials_pingpongspace_Description"/>
         <fileToOpen location="io/sarl/examples/pingpongspace/boot.sarl"/>
     </example>
@@ -502,7 +502,7 @@
 			name="%io_sarl_templates_javafx_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Templates"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%io_sarl_templates_javafx_Description</description>
 		</wizard>
@@ -513,14 +513,14 @@
 			name="%io_sarl_templates_javafx_Name"
 			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Templates"
-			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			icon="/icons/genproject.gif"
 			project="true">
 			<description>%io_sarl_templates_javafx_Description</description>
 		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
-		<example wizardID="io.sarl.templates.javafx" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+		<example wizardID="io.sarl.templates.javafx" pageImage="/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-templates-javafx" contentURI="contents/io-sarl-templates-javafx.zip" description="%io_sarl_templates_javafx_Description"/>
 			<fileToOpen location="io/sarl/template/javafx/MyAppLauncher.sarl"/>
 		</example>
