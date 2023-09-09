@@ -21,6 +21,10 @@
 
 package io.sarl.lang.macro;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.macro.ActiveAnnotationContextProvider;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
@@ -44,27 +48,34 @@ import io.sarl.lang.sarl.SarlSkill;
  */
 public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContextProvider {
 
+	@Inject
+	private Logger log;
+	
 	@Override
 	protected void searchAnnotatedElements(final EObject element, final IAcceptor<Pair<JvmAnnotationType, XAnnotation>> acceptor) {
-		if (element instanceof SarlAgent) {
-			final SarlAgent elt = (SarlAgent) element;
-			registerMacroAnnotations(elt, acceptor);
-			elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
-			return;
+		try {
+			if (element instanceof SarlAgent) {
+				final SarlAgent elt = (SarlAgent) element;
+				registerMacroAnnotations(elt, acceptor);
+				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
+				return;
+			}
+			if (element instanceof SarlBehavior) {
+				final SarlBehavior elt = (SarlBehavior) element;
+				registerMacroAnnotations(elt, acceptor);
+				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
+				return;
+			}
+			if (element instanceof SarlSkill) {
+				final SarlSkill elt = (SarlSkill) element;
+				registerMacroAnnotations(elt, acceptor);
+				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
+				return;
+			}
+			super.searchAnnotatedElements(element, acceptor);
+		} catch (Throwable ex) {
+			this.log.log(Level.FINER, ex.getLocalizedMessage(), ex);
 		}
-		if (element instanceof SarlBehavior) {
-			final SarlBehavior elt = (SarlBehavior) element;
-			registerMacroAnnotations(elt, acceptor);
-			elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
-			return;
-		}
-		if (element instanceof SarlSkill) {
-			final SarlSkill elt = (SarlSkill) element;
-			registerMacroAnnotations(elt, acceptor);
-			elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
-			return;
-		}
-		super.searchAnnotatedElements(element, acceptor);
 	}
 
 }
