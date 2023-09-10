@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
-import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.di.BQModule
@@ -35,6 +34,7 @@ import io.sarl.sre.janus.services.lifecycle.SkillUninstaller
 import io.sarl.sre.janus.services.lifecycle.StandardLifecycleService
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.arakhne.afc.services.IService
 
 /** 
  * Module for the lifecycle services.
@@ -49,7 +49,7 @@ class LifecycleServiceModule implements BQModule {
 	override configure(extension binder : Binder) {
 		typeof(SkillUninstaller).bind.to(typeof(BasicSkillUninstaller)).inSingletonScope
 
-		binder.bindSet(typeof(Service), typeof(SreServices)).add(typeof(LifecycleService))
+		binder.bindSet(typeof(IService), typeof(SreServices)).add(typeof(LifecycleService))
 	}
 
 	/** 

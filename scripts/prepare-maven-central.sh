@@ -26,6 +26,8 @@ function run_prepare {
 	fi
 }
 
+cd "$CDIR"
+
 OUTDIR="$CDIR/target/maven-central-bundles"
 rm -rf "$OUTDIR"
 mkdir -p "$OUTDIR"

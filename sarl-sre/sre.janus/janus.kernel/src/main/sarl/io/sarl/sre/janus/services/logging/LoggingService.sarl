@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.services.logging
 
-import com.google.common.util.concurrent.Service
 import java.util.logging.Level
 import java.util.logging.Logger
+import org.arakhne.afc.services.IService
 
 /** 
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
@@ -33,7 +33,7 @@ import java.util.logging.Logger
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface LoggingService extends Service {
+interface LoggingService extends IService {
 
 	/** 
 	 * Create a logger for an agent.

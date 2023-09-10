@@ -20,13 +20,13 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
-import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.di.BQModule
 import io.bootique.di.Binder
 import io.sarl.sre.janus.services.infrastructure.BasicInfrastructureService
 import io.sarl.sre.janus.services.infrastructure.InfrastructureService
+import org.arakhne.afc.services.IService
 
 /** 
  * Module for the infrastructure services.
@@ -41,7 +41,7 @@ class InfrastructureServiceModule implements BQModule {
 	override configure(extension binder : Binder) {
 		typeof(InfrastructureService).bind.to(typeof(BasicInfrastructureService)).inSingletonScope
 
-		binder.bindSet(typeof(Service), typeof(SreServices)).add(typeof(InfrastructureService))
+		binder.bindSet(typeof(IService), typeof(SreServices)).add(typeof(InfrastructureService))
 	}
 
 }

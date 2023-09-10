@@ -18,14 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services
 
-import com.google.common.util.concurrent.Service
+package org.arakhne.afc.services;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /** 
- * This service could be pre-released before it is stop.
- * It means that the service could release any resource before the
- * full stopping process is run.
+ * Abstract implementation of a typical SRE service. 
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,11 +32,30 @@ import com.google.common.util.concurrent.Service
  * @mavenartifactid $ArtifactId$
  * @since 0.7.0
  */
-interface PreReleasableService extends Service {
+public abstract class AbstractService implements IService {
 
-	/** 
-	 * Invoked when the service should release resources prior to the shutdown process.
-	 */
-	def onPreStop
+	private final AtomicReference<ServiceState> state = new AtomicReference<>(ServiceState.NEW);
+	
+	@Override
+	public ServiceState getState() {
+		return this.state.get();
+	}
+
+	@Override
+	public void setState(ServiceState state) {
+		if (state != null) {
+			this.state.set(state);
+		}
+	}
+	
+	@Override
+	public void onStart() {
+		//
+	}
+	
+	@Override
+	public void onStop() {
+		//
+	}
 
 }

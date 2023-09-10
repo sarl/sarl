@@ -29,7 +29,6 @@ import io.sarl.sre.janus.IssueCodes
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
-import io.sarl.sre.janus.services.AbstractSreService
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ExternalContextMemberListener
 import io.sarl.sre.janus.services.executor.ExecutorService
@@ -52,6 +51,9 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0
 import static java.text.MessageFormat.*
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
+import org.arakhne.afc.services.IService
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.ServiceState
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -62,7 +64,7 @@ import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-abstract class AbstractLifecycleService extends AbstractSreService implements LifecycleService {
+abstract class AbstractLifecycleService extends AbstractService implements LifecycleService {
 
 	val globalListeners : SmartListenerCollection<?>
 
@@ -134,6 +136,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.dynamicSkillProviders.set(0, skillProvider)
 	}
 
+	override getReferenceType : Class<? extends IService> {
+		typeof(LifecycleService)
+	}
+
 	override getSpawnEnable : boolean {
 		spawnEnable.get
 	}
@@ -150,11 +156,11 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.logger
 	}
 
-	protected def onStart {
+	override onStart {
 		this.platformLifecycleEventEmitter.addLifecycleServiceListener
 	}
 
-	protected def onStop {
+	override onStop {
 		this.platformLifecycleEventEmitter.removeLifecycleServiceListener
 	}
 
@@ -255,7 +261,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @return {@code true} if the service can spawn an agent.
 	 */
 	def canSpawnAgent : boolean {
-		isRunning && getSpawnEnable
+		state == ServiceState::RUNNING && getSpawnEnable
 	}
 
 	/** 

@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
-import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.di.BQModule
@@ -38,6 +37,7 @@ import io.sarl.api.naming.parser.INameParser
 import java.util.Set
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.arakhne.afc.services.IService
 
 /** 
  * Injectable implementation of the name space service.
@@ -79,7 +79,7 @@ class NamespaceServiceModule implements BQModule {
 
 	override configure(extension binder : Binder) {
 		typeof(NamespaceService).bind.to(typeof(InjectedFinderBasedNamespaceService)).inSingletonScope
-		binder.bindSet(typeof(Service), typeof(SreServices)).add(typeof(NamespaceService))
+		binder.bindSet(typeof(IService), typeof(SreServices)).add(typeof(NamespaceService))
 	}
 
 	@Provides

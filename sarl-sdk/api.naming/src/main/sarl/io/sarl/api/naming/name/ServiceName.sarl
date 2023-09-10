@@ -20,10 +20,10 @@
  */
 package io.sarl.api.naming.name
 
-import com.google.common.util.concurrent.Service
 import io.sarl.lang.core.annotation.PrivateAPI
 import java.net.URI
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.arakhne.afc.services.IService
 
 /** 
  * This class represents a service name.
@@ -44,7 +44,7 @@ class ServiceName extends SarlName {
 	public static val SCHEME = "service"
 
 	@Accessors
-	val serviceType : Class<? extends Service>
+	val serviceType : Class<? extends IService>
 
 	/** Constructor.
 	 *
@@ -52,7 +52,7 @@ class ServiceName extends SarlName {
 	 * @param service the type of service.
 	 */
 	@PrivateAPI
-	new (uri : URI, service : Class<? extends Service>) {
+	new (uri : URI, service : Class<? extends IService>) {
 		super(uri)
 		this.serviceType = service
 	}

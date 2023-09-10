@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.services.context
 
-import com.google.common.util.concurrent.Service
 import io.sarl.api.core.ContextJoined
 import io.sarl.api.core.ContextLeft
 import io.sarl.api.core.MemberJoined
@@ -31,6 +30,7 @@ import io.sarl.lang.core.SpaceID
 import java.util.Collection
 import java.util.EventListener
 import java.util.UUID
+import org.arakhne.afc.services.IService
 
 /** 
  * This service enables to store the contexts and to manage the spaces in the SRE platform.
@@ -41,7 +41,7 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface ContextService extends Service {
+interface ContextService extends IService {
 
 	/**
 	 * Replies the root context.

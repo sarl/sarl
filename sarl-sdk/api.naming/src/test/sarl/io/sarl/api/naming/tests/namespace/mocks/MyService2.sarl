@@ -21,11 +21,9 @@
 
 package io.sarl.api.naming.tests.namespace.mocks
 
-import com.google.common.util.concurrent.Service
-import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 import io.sarl.api.naming.namespace.Observable
+import org.arakhne.afc.services.IService
+import org.arakhne.afc.services.ServiceState
 
 /** Mock of a service.
  *
@@ -34,49 +32,29 @@ import io.sarl.api.naming.namespace.Observable
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MyService2 implements Service {
+class MyService2 implements IService {
 
 	@SuppressWarnings("unused_private_member")
 	@Observable(writable = true)
 	val myfield : int = 34
 	
-	def addListener(listener : Listener, executor : Executor) {
+	def getReferenceType : Class<? extends IService> {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def awaitRunning {
+	def getState : ServiceState {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def awaitRunning(timeout : long, unit : TimeUnit) throws TimeoutException {
+	def onStart {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def awaitTerminated {
+	def onStop {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def awaitTerminated(timeout : long, unit : TimeUnit) throws TimeoutException {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def failureCause : Throwable {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def isRunning : boolean {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def startAsync : Service {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def state : State {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def stopAsync : Service {
+	def setState(state : ServiceState) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	

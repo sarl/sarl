@@ -20,12 +20,13 @@
  */
 package io.sarl.sre.janus.services.logging
 
-import io.sarl.sre.janus.services.AbstractSreService
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 import javax.inject.Singleton
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 
 /** 
  * This class provides an implementation of the {@link LoggingService} that outputs nothing.
@@ -38,9 +39,13 @@ import javax.inject.Singleton
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-class QuietLoggingService extends AbstractSreService implements LoggingService {
+class QuietLoggingService extends AbstractService implements LoggingService {
 
 	var loggerInstance : Logger
+
+	override getReferenceType : Class<? extends IService> {
+		typeof(LoggingService)
+	}
 
 	private def ensureLogger : Logger {
 		if (this.loggerInstance === null) {

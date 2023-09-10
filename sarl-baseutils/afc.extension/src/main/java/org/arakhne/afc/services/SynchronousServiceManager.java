@@ -19,33 +19,39 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.services
+package org.arakhne.afc.services;
 
-import org.eclipse.osgi.util.NLS
-
-/** Messages.
+/** 
+ * Implementation of a service manager for the SRE platform that runs the services synchronously.
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.13
  */
-final class Messages extends NLS {
-
-	static val BUNDLE_NAME = typeof(Messages).getPackage.name + ".messages"
+public class SynchronousServiceManager extends AbstractServiceManager {
 	
-	static new {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
+	/** Constructor.
+	 *
+	 * @param services the services to be managed by this manager.
+	 */
+	public SynchronousServiceManager(Iterable<? extends IService> services) {
+		super(services);
 	}
 
-	public static var AbstractServiceManager_0 : String
-	public static var AbstractServiceManager_1 : String
-
-	public static var GoogleServiceManager_0 : String
-
+	@Override
+	protected void internalStartAllServices() {
+		for (final IService service : getServicesByState(ServiceState.NEW)) {
+			startService(service);
+		}
+	}
 	
-	private new {
+	@Override
+	protected void internalStopAllServices() {
+		for (final IService service : getServicesByState(ServiceState.RUNNING)) {
+			stopService(service);
+		}
 	}
 
 }

@@ -18,26 +18,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services.infrastructure
 
-import org.arakhne.afc.services.IService
+package org.arakhne.afc.services;
 
 /** 
- * This class supports the management of the infrastructure as a service for the SRE platform.
- * 
- * <p><strong>All the other services must depends on this service</strong>.
- * 
- * <p>The tasks that are done by this service are low-level and must not depend on other services.
- * 
- * <p>This service is used for released any resource that is shared by several other services.
- * For example, Hazelcast instance may be
- * release by a specific implementation of this service.
+ * State of a service in a SRE implementation. 
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface InfrastructureService extends IService {
-	//
+public enum ServiceState {
+
+	/** Service is waiting for starting.
+	 */
+	NEW,
+
+	/** Service is currently starting.
+	 */
+	STARTING,
+
+	/** Service is running.
+	 */
+	RUNNING,
+
+	/** Service is currently stopping.
+	 */
+	STOPPING,
+
+	/** Service is stopped.
+	 */
+	STOPPED;
+
 }

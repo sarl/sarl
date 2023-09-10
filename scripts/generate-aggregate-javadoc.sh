@@ -5,6 +5,8 @@ set -e
 
 CDIR=`pwd`
 
+cd "$CDIR"
+
 . "$CDIR/build-all.sh" -Dmaven.test.skip=true
 
 for targetdir in `find "$CDIR" -name "target" -type d`

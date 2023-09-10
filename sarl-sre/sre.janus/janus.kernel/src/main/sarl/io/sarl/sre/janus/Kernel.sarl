@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus
 
-import com.google.common.util.concurrent.Service
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.annotation.PrivateAPI
@@ -29,7 +28,6 @@ import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.PlatformTools
-import io.sarl.sre.janus.services.IServiceManager
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.lifecycle.ContextReference
 import io.sarl.sre.janus.services.lifecycle.KernelAgentLifecycleListener
@@ -49,6 +47,8 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.arakhne.afc.services.IServiceManager
+import org.arakhne.afc.services.IService
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -198,7 +198,7 @@ class Kernel {
 	 * @param type type of the type to reply.
 	 * @return the service, or {@code null}.
 	 */
-	def getService(type : Class<S>) : S with S extends Service {
+	def getService(type : Class<S>) : S with S extends IService {
 		this.serviceManager.getService(type)
 	}
 

@@ -19,30 +19,42 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.tests.services
+package org.arakhne.afc.services;
 
-import com.google.common.util.concurrent.Service
-import io.sarl.sre.janus.boot.configs.SreConfig
-import io.sarl.sre.janus.services.GoogleServiceManager
-import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Tag
-
-/**
+/** 
+ * Service in a SRE implementation. 
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@DisplayName("unit: GoogleServiceManager test")
-@Tag("unit")
-@Tag("janus")
-@Tag("sre-unit")
-class GoogleServiceManagerTest extends AbstractServiceManagerTest<GoogleServiceManager> {
+public interface IService {
 
-	override newServiceManagerInstance(loggerCreator : JulLoggerCreator, services : Iterable<? extends Service>,
-			config : SreConfig) : GoogleServiceManager {
-		new GoogleServiceManager(services, config)
-	}
+	/** Replies the state of the service.
+	 *
+	 * @return the state of the service.
+	 */
+	ServiceState getState();
+
+	/** Change the state of the service.
+	 *
+	 * @param state the new state of the service.
+	 */
+	void setState(ServiceState state);
+
+	/** Replies the type that must be used as implemented reference for this service.
+	 *
+	 * @return the implemented service type.
+	 */
+	Class<? extends IService> getReferenceType();
+
+	/** Invoked for starting the service.
+	 */
+	void onStart();
+
+	/** Invoked for stopping the service.
+	 */
+	void onStop();
 
 }

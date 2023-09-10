@@ -18,26 +18,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services.infrastructure
 
-import org.arakhne.afc.services.IService
+package org.arakhne.afc.services;
 
 /** 
- * This class supports the management of the infrastructure as a service for the SRE platform.
- * 
- * <p><strong>All the other services must depends on this service</strong>.
- * 
- * <p>The tasks that are done by this service are low-level and must not depend on other services.
- * 
- * <p>This service is used for released any resource that is shared by several other services.
- * For example, Hazelcast instance may be
- * release by a specific implementation of this service.
+ * This service could be pre-released before it is stop.
+ * It means that the service could release any resource before the
+ * full stopping process is run.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface InfrastructureService extends IService {
-	//
+public interface IPreReleasableService extends IService {
+
+	/** 
+	 * Invoked when the service should release resources prior to the shutdown process.
+	 */
+	void onPreStop();
+
 }

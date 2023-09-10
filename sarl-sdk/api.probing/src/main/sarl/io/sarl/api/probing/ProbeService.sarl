@@ -20,10 +20,10 @@
  */
 package io.sarl.api.probing
 
-import com.google.common.util.concurrent.Service
 import io.sarl.api.naming.name.SarlName
 import java.net.URI
 import java.util.Collection
+import org.arakhne.afc.services.IService
 
 /** 
  * This service provides probing mechanisms.
@@ -34,7 +34,7 @@ import java.util.Collection
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-interface ProbeService extends Service {
+interface ProbeService extends IService {
 
 	/** Create a probe.
 	 *

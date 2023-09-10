@@ -20,9 +20,10 @@
  */
 package io.sarl.api.naming.namespace
 
-import com.google.common.util.concurrent.AbstractService
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.parser.INameParser
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 
 /** 
  * Abstract implementation of a service that manages name spaces into the SRE.
@@ -39,38 +40,8 @@ abstract class AbstractNamespaceService extends AbstractService implements Names
 	
 	var fieldAccessValidator : IFieldAccessValidator
 
-	protected final override doStart {
-		try {
-			onStart
-			notifyStarted
-		} catch (exception : Throwable) {
-			notifyFailed(exception)
-		}
-	}
-
-	/** Do something when starting the service.
-	 * 
-	 * <p>This function is called from {@link #doStart()}
-	 */
-	protected def onStart {
-		//
-	}
-
-	protected final override doStop {
-		try {
-			onStop
-			notifyStopped
-		} catch (exception : Throwable) {
-			notifyFailed(exception)
-		}
-	}
-
-	/** Do something when stopping the service.
-	 * 
-	 * <p>This function is called from {@link #doStop()}
-	 */
-	protected def onStop {
-		//
+	override getReferenceType : Class<? extends IService> {
+		typeof(NamespaceService)
 	}
 
 	@Pure

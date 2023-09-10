@@ -20,11 +20,11 @@
  */
 package io.sarl.sre.janus.services.namespace
 
-import com.google.common.util.concurrent.Service
 import io.bootique.di.Injector
 import io.sarl.api.naming.name.ServiceName
 import io.sarl.api.naming.namespace.INamespaceFinder
 import javax.inject.Inject
+import org.arakhne.afc.services.IService
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
@@ -36,7 +36,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-class ServiceNamespaceFinder implements INamespaceFinder<ServiceName, Service> {
+class ServiceNamespaceFinder implements INamespaceFinder<ServiceName, IService> {
 
 	@Accessors(PROTECTED_GETTER)
 	val injector : Injector
@@ -54,7 +54,7 @@ class ServiceNamespaceFinder implements INamespaceFinder<ServiceName, Service> {
 		ServiceName::SCHEME
 	}
 
-	override find(name : ServiceName) : Service {
+	override find(name : ServiceName) : IService {
 		if (name === null) {
 			return null
 		}

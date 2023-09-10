@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
-import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.di.BQModule
@@ -45,6 +44,7 @@ import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.arakhne.afc.services.IService
 
 /** 
  * Module for the execution services.
@@ -59,7 +59,7 @@ class ExecutorServiceModule implements BQModule {
 	override configure(extension binder : Binder) {
 		typeof(io.sarl.sre.janus.services.executor.ExecutorService).bind.to(typeof(JreExecutorService)).inSingletonScope
 
-		binder.bindSet(typeof(Service), typeof(SreServices)).add(
+		binder.bindSet(typeof(IService), typeof(SreServices)).add(
 			typeof(io.sarl.sre.janus.services.executor.ExecutorService))
 	}
 
@@ -179,9 +179,10 @@ class ExecutorServiceModule implements BQModule {
 			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler.get;
 		}
 		if (executor instanceof ScheduledThreadPoolExecutor) {
+			executor.rejectedExecutionHandler = rejectedExecutionHandler.get;
 			executor.removeOnCancelPolicy = true
-			//executor.continueExistingPeriodicTasksAfterShutdownPolicy = false
-			//executor.executeExistingDelayedTasksAfterShutdownPolicy = false
+			executor.continueExistingPeriodicTasksAfterShutdownPolicy = false
+			executor.executeExistingDelayedTasksAfterShutdownPolicy = false
 		}
 		return executor
 	}

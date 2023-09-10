@@ -21,10 +21,6 @@
 
 package io.sarl.lang.macro;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.macro.ActiveAnnotationContextProvider;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
@@ -48,8 +44,8 @@ import io.sarl.lang.sarl.SarlSkill;
  */
 public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContextProvider {
 
-	@Inject
-	private Logger log;
+	//@Inject
+	//private Logger log;
 	
 	@Override
 	protected void searchAnnotatedElements(final EObject element, final IAcceptor<Pair<JvmAnnotationType, XAnnotation>> acceptor) {
@@ -74,7 +70,7 @@ public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContext
 			}
 			super.searchAnnotatedElements(element, acceptor);
 		} catch (Throwable ex) {
-			this.log.log(Level.FINER, ex.getLocalizedMessage(), ex);
+			//this.log.log(Level.FINER, ex.getLocalizedMessage(), ex);
 		}
 	}
 

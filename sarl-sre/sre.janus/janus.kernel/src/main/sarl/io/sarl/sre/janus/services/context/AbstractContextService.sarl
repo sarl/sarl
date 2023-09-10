@@ -22,7 +22,6 @@ package io.sarl.sre.janus.services.context
 
 import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.internal.Factories
-import io.sarl.sre.janus.services.AbstractSreService
 import io.sarl.sre.janus.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.Map
@@ -31,6 +30,8 @@ import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
@@ -46,7 +47,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-abstract class AbstractContextService extends AbstractSreService implements ContextService {
+abstract class AbstractContextService extends AbstractService implements ContextService {
 
 	@Accessors(PUBLIC_GETTER)
 	val rootContext : Context
@@ -67,6 +68,10 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 		this.rootContext = rootContext
 		this.logger = createLogger(logger)
 		this.lock = factories.get.newReadWriteLock
+	}
+
+	override getReferenceType : Class<? extends IService> {
+		typeof(ContextService)
 	}
 
 	/** Create the instance of the logger for this service.

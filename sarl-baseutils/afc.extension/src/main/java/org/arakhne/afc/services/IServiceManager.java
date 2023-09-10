@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services
 
-import com.google.common.collect.Multimap
-import com.google.common.util.concurrent.Service
-import java.util.logging.Logger
+package org.arakhne.afc.services;
+
+import java.util.logging.Logger;
+
+import com.google.common.collect.Multimap;
 
 /**
  * Manager of services for the SRE platform.
@@ -32,33 +33,23 @@ import java.util.logging.Logger
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface IServiceManager {
+public interface IServiceManager {
 
 	/** 
 	 * Replies the services by state.
 	 * 
 	 * @return the services.
 	 */
-	def getServicesByState : Multimap<Service.State, Service>
-	
+	Multimap<ServiceState, IService> getServicesByState();
+
 	/**
 	 * Replies the service of the given type.
 	 * 
 	 * @param type the type of the service to search for.
 	 * @return the service
 	 */
-	def getService(type : Class<T>) : T with T extends Service
-	
-	/** 
-	 * Wait for all the services are started.
-	 */
-	def awaitHealthy
+	<T extends IService> T getService(Class<T> type);
 
-	/**
-	 * Wait for all the services are stopped.
-	 */
-	def awaitStopped
-	
 	/** 
 	 * Start the services associated to the service manager.
 	 * 
@@ -66,7 +57,7 @@ interface IServiceManager {
 	 * 
 	 * @param logger the logger to use for any information message.
 	 */
-	def startServices(logger : Logger)
+	void startServices(Logger logger);
 
 	/** 
 	 * Stop the services associated to the service manager.
@@ -75,6 +66,6 @@ interface IServiceManager {
 	 *
 	 * @param logger the logger to use for any information message.
 	 */
-	def stopServices(logger : Logger)
+	void stopServices(Logger logger);
 
 }

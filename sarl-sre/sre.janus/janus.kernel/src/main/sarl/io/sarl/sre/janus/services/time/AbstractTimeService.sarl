@@ -21,7 +21,8 @@
 package io.sarl.sre.janus.services.time
 
 import io.sarl.api.util.SmartListenerCollection
-import io.sarl.sre.janus.services.AbstractSreService
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 
 /**
  * Time service based on the JRE standard time.
@@ -30,9 +31,9 @@ import io.sarl.sre.janus.services.AbstractSreService
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10.0
+ * @since 0.10
  */
-abstract class AbstractTimeService extends AbstractSreService implements TimeService {
+abstract class AbstractTimeService extends AbstractService implements TimeService {
 
 	val listeners : SmartListenerCollection<TimeListener>
 
@@ -44,7 +45,11 @@ abstract class AbstractTimeService extends AbstractSreService implements TimeSer
 		assert listeners !== null
 		this.listeners = listeners
 	}
-	
+
+	override getReferenceType : Class<? extends IService> {
+		typeof(TimeService)
+	}
+
 	def getOSCurrentTime : long {
 		System::currentTimeMillis	
 	}

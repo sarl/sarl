@@ -20,11 +20,11 @@
  */
 package io.sarl.api.naming.parser
 
-import com.google.common.util.concurrent.Service
 import io.sarl.api.naming.name.ServiceName
 import io.sarl.lang.core.SREClassLoader
 import java.net.URI
 import java.util.StringTokenizer
+import org.arakhne.afc.services.IService
 
 /** 
  * Parser of service names that is accepting URI-based syntax.
@@ -59,7 +59,7 @@ class ServiceSchemeNameParser extends AbstractSchemeNameParser<ServiceName> {
 		val tokenizer = new StringTokenizer(name.path, "/")
 		if (tokenizer.hasMoreTokens) {
 			val token = tokenizer.nextToken
-			return new ServiceName(name, SREClassLoader::loadClass(token, this.class.classLoader) as Class<? extends Service>)
+			return new ServiceName(name, SREClassLoader::loadClass(token, this.class.classLoader) as Class<? extends IService>)
 		}
 		return null
 	}

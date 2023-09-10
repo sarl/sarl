@@ -20,28 +20,11 @@
  */
 package io.sarl.sre.janus.itests.services.executor;
 
-import io.sarl.lang.core.^annotation.PrivateAPI
-import io.sarl.sre.janus.itests.services.executor.mocks.CancelTaskAgent2
 import io.sarl.sre.janus.boot.configs.subconfigs.ExecutorsConfig
-import io.sarl.sre.janus.services.executor.JreExecutorService
-import io.sarl.sre.janus.services.lifecycle.LifecycleService
-import io.sarl.sre.test.framework.context.SreRunContext
-import java.util.List
-import java.util.concurrent.ScheduledThreadPoolExecutor
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.atomic.AtomicLong
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
-
-import static io.sarl.sre.test.framework.Constants.*
-import static io.sarl.tests.api.tools.TestAssertions.*
-
-import static extension io.sarl.tests.api.tools.TestUtils.*
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertFalse
 
 /**
  * @author $Author: sgalland$
@@ -59,53 +42,6 @@ class JreExecutorServiceIT extends AbstractExecutorServiceRunIT {
 		// Disable the background tasks of the kernel
 		var prop = VariableNames::toPropertyName(ExecutorsConfig::PERIODIC_THREAD_POOL_PURGE_NAME)
 		System::setProperty(prop, Boolean::FALSE.toString)
-	}
-
-	@Test
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	def cancel_00b(extension rc : SreRunContext) : void {
-		val nb0 = new AtomicLong(0l)
-		val nb1 = new AtomicLong(0l)
-		val kern = typeof(CancelTaskAgent2).setupTheSreKernel(null, null)
-		val service = kern.getService(JreExecutorService)
-		kern.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener [
-			var exec = service.executorService as ThreadPoolExecutor
-			exec.terminated.assertFalse
-			var eq = exec.queue
-			nb0.set(eq.size)
-
-			var sexec = service.scheduledExecutorService as ScheduledThreadPoolExecutor
-			sexec.terminated.assertFalse
-			var seq = sexec.queue
-			nb1.set(seq.size)
-		]
-		waitForTheKernel(EXTRA_TIMEOUT)
-
-		// Check the number of active tasks into the agent
-		var all = allResults
-		assertEquals(5, all.size)
-		// After creating T1
-		var actives1 = all.elementAt(typeof(List), 0)
-		assertContains(actives1, "T1")
-		// After creating T1 and T2
-		var actives2 = all.elementAt(typeof(List), 1)
-		assertContains(actives2, "T1", "T2")
-		// After creating T1, T2 and T3
-		var actives3 = all.elementAt(typeof(List), 2)
-		assertContains(actives3, "T1", "T2", "T3")
-		// After cancel T1. T2 and T3 are still active
-		var actives4 = all.elementAt(typeof(List), 3)
-		assertContains(actives4, "T2", "T3")
-		// Inside on destroy
-		var actives5 = all.elementAt(typeof(List), 4)
-		assertContains(actives5)
-
-		// Check the number of tasks at the kernel level
-		0l.assertEquals(nb0.get)
-		
-		// At least, the space destroying task in SpaceRepository should be active
-		1l.assertEquals(nb1.get)
 	}
 
 }

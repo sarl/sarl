@@ -121,7 +121,7 @@ class AsynchronousProbeService extends AbstractProbeService {
 		this.synchronizationStarted.set(false)
 	}
 
-	protected override onStop {
+	override onStop {
 		stopSyncThread
 		super.onStop
 	}

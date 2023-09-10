@@ -20,13 +20,13 @@
  */
 package io.sarl.sre.janus.services.lifecycle
 
-import com.google.common.util.concurrent.Service
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.services.context.Context
 import java.util.EventListener
 import java.util.UUID
+import org.arakhne.afc.services.IService
 
 /** 
  * This service provides the tools to manage the life-cycle of the agents.
@@ -37,7 +37,7 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface LifecycleService extends Service {
+interface LifecycleService extends IService {
 
 	/** 
 	 * Enable or disable the spawning of agents.

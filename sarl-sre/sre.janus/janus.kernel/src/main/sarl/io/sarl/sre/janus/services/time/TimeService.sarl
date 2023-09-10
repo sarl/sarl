@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.services.time
 
-import com.google.common.util.concurrent.Service
 import java.util.EventListener
 import java.util.concurrent.TimeUnit
+import org.arakhne.afc.services.IService
 
 /**
  * This class enables to have access to the time manager of the platform.
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
  * @mavenartifactid $ArtifactId$
  * @since 0.6.0
  */
-interface TimeService extends Service {
+interface TimeService extends IService {
 
 	/** Replies the current time.
 	 * 

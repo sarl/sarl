@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.services.probing.probes
 
-import com.google.common.util.concurrent.Service
 import io.sarl.api.naming.name.AgentName
 import io.sarl.api.naming.name.ArtifactName
 import io.sarl.api.naming.name.BehaviorName
@@ -38,6 +37,8 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
+import org.arakhne.afc.services.IService
+import org.arakhne.afc.services.ServiceState
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
@@ -336,7 +337,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 				return [true]
 			}
 			case ServiceName::SCHEME: {
-				return [(it as Service).isRunning]
+				return [(it as IService).state === ServiceState::RUNNING]
 			}
 			case ArtifactName::SCHEME: {
 				return [true]

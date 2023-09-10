@@ -20,12 +20,13 @@
  */
 package io.sarl.sre.janus.services.logging.jul
 
-import io.sarl.sre.janus.services.AbstractSreService
 import io.sarl.sre.janus.services.logging.LoggingService
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 
 /** 
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
@@ -53,7 +54,7 @@ import javax.inject.Singleton
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-class JulLoggingService extends AbstractSreService implements LoggingService {
+class JulLoggingService extends AbstractService implements LoggingService {
 
 	var platformLoggerInstance : Logger
 
@@ -68,6 +69,10 @@ class JulLoggingService extends AbstractSreService implements LoggingService {
 	@Inject
 	new (loggerCreator : JulLoggerCreator) {
 		this.loggerCreator = loggerCreator
+	}
+
+	override getReferenceType : Class<? extends IService> {
+		typeof(LoggingService)
 	}
 
 	override getPlatformLogger : Logger {

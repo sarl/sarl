@@ -116,7 +116,7 @@
 						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
 						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
 						Bundle-Vendor: ${sarl.vendor}
-						Export-Package: org.arakhne.afc.bootique.*
+						Export-Package: org.arakhne.afc.bootique.*,org.arakhne.afc.services.*
 					</bnd>
 				</configuration>
 			</plugin>

@@ -20,8 +20,9 @@
  */
 package io.sarl.sre.janus.services.infrastructure
 
-import io.sarl.sre.janus.services.AbstractSreService
 import javax.inject.Singleton
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
 
 /** 
  * This class supports the management of the SRE infrastructure inside a closed environment.
@@ -34,6 +35,10 @@ import javax.inject.Singleton
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-class BasicInfrastructureService extends AbstractSreService implements InfrastructureService {
-	//
+class BasicInfrastructureService extends AbstractService implements InfrastructureService {
+
+	override getReferenceType : Class<? extends IService> {
+		typeof(InfrastructureService)
+	}
+
 }

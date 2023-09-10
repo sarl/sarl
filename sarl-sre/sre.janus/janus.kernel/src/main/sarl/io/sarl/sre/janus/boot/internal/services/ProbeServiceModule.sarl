@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
-import com.google.common.util.concurrent.Service
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
 import io.bootique.di.BQModule
@@ -37,6 +36,7 @@ import io.sarl.sre.janus.services.probing.service.AsynchronousProbeService
 import io.sarl.sre.janus.services.probing.service.SynchronousProbeService
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.arakhne.afc.services.IService
 
 /** 
  * Module for the probing services.
@@ -49,7 +49,7 @@ import javax.inject.Singleton
 class ProbeServiceModule implements BQModule {
 
 	override configure(binder : Binder) {
-		binder.bindSet(typeof(Service), typeof(SreServices)).add(typeof(ProbeService))
+		binder.bindSet(typeof(IService), typeof(SreServices)).add(typeof(ProbeService))
 	}
 
 	/** Create an instance of the probe service.

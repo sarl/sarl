@@ -22,7 +22,6 @@
 package io.sarl.sre.janus.boot
 
 import com.google.common.base.Throwables
-import com.google.common.util.concurrent.Service
 import io.bootique.BQRuntime
 import io.bootique.Bootique
 import io.bootique.di.BQModule
@@ -51,6 +50,7 @@ import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.lang.core.SRE.*
+import org.arakhne.afc.services.IService
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -381,10 +381,10 @@ class SreMain implements RunnableSREBootstrap {
 	}
 
 	override getService(serviceType : Class<T>) : T with T {
-		if (typeof(Service).isAssignableFrom(serviceType)) {
+		if (typeof(IService).isAssignableFrom(serviceType)) {
 			var kern = getKernel
 			if (kern !== null) {
-				var castedServiceType = serviceType.asSubclass(typeof(Service))
+				var castedServiceType = serviceType.asSubclass(typeof(IService))
 				var serv = kern.getService(castedServiceType)
 				return serviceType.cast(serv)
 			}
