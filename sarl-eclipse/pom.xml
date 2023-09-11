@@ -27,6 +27,13 @@
 	</properties>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
 		<pluginManagement>
 			<plugins>
         			<plugin>
@@ -333,7 +340,7 @@
 			</roles>
 		</contributor>
 		<contributor>
-			<name>J&eacute;r&ocirc;me Boulmier</name>
+			<name>J&amp;eacute;r&amp;ocirc;me Boulmier</name>
 			<url>https://github.com/Lomadriel</url>
 			<roles>
 				<role>Example of Game of Life</role>

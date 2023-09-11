@@ -46,7 +46,7 @@ Test the generation of the Javadoc for the public API (the real generation will 
 
 === 2.1) Change the version numbers
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--releaseversion`.
 
 ==== 2.1.1) Remove snapshot markers
 
@@ -67,7 +67,7 @@ Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using 
 
 === 2.2) Update the Javadoc Tags
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--author`, `--maven`.
 
 In the `.sarl` and `.java` files:
 
@@ -75,6 +75,15 @@ In the `.sarl` and `.java` files:
 * Replace `$GroupId$` by the group name of the current Maven module.
 * Replace `$ArtifactId$` by the artifact name of the current Maven module.
 * Replace `$Author$` by the hyperlink of the contributor with the identifier `ID`.
+
+=== 2.3) Update the Copyright texts in the file headers
+
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following option: `--copyrights`.
+
+In the `.sarl` and `.java` files:
+
+* Replace `Copyright (C) <DATES> SARL.io, the Original Authors and Main Authors` by the current SARL text.
+* Replace `Copyright (C) <DATES> the original authors or authors` by the current SARL text.
 
 === 2.3) Comment any reference to the Snapshot Maven repository
 
@@ -127,11 +136,17 @@ Generate the Javadoc for the public API (the real generation will be done by the
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-=== 2.11) Release on the SARL servers.
+=== 2.11) Changelog Generation
+
+Generate the changelog that contains the list of all the changes in the released version:
+
+     $> ./scripts/prepare-release.sh --changes
+
+=== 2.12) Release on the SARL servers.
 
 For uploading the release files onto the SARL server, you could use the provided script:
 
-     $> ./scripts/mvn-release-sarl.py
+     $> ./scripts/release.sh
 
 This script needs to have environment variables for defining the SARL server addresses, and the access login.
 
@@ -139,6 +154,7 @@ This script needs to have environment variables for defining the SARL server add
      export UPDATESSARLIO_URL=dav:https://YYY
      export MAVENSARLIO_USER=ZZZ
 
+These variables may be defined in the user configuration file `$HOME/.sarlrc`, that is automatically loaded by the release script.
 
 == 3) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
@@ -154,44 +170,45 @@ Create and upload the debian packages.
 
 Copy the product, md5 and sha1 files within the Google Drive of SARL.
 
-=== 3.4) Changelog
-
-Create the "Changes" page for the website, and add a link to the "Changes" page of the previous website inside.
-In this way, it will be possible to following the change history from the ealier to older changes.
-
-=== 3.5) Synchronize with other projects
+=== 3.4) Synchronize with other projects
 
 Synchronize the link:https://github.com/sarl/awesome-sarl[Awesome SARL project] with the "Community" page of the website.
 
-=== 3.6) News
+=== 3.5) News
 
 Add a "News" in the SARL website.
 
-=== 3.7) Update the SARL website
+=== 3.8) Update the SARL website
+
+==== 3.8.1) Change properties
+
+Edit the file `_config.yml` with the correct properties.
+
+==== 3.8.2) Build the website
 
      $> cd path/to/sarl-site
      $> rake build_full
      $> rake transfer
 
-=== 3.8) Commit and push the website Gits.
+=== 3.9) Commit and push the website Gits.
 
-=== 3.9) Clean issues
+=== 3.10) Clean issues
 
 Move all the remaining issues on Github to the following version.
 
-=== 3.10) Close milestones
+=== 3.11) Close milestones
 
 Close the released milestone on Github.
 
-=== 3.11) Release Notes
+=== 3.12) Release Notes
 
 Add release notes on Github (from the Changes page on the website), attached to the release tag.
 
-=== 3.12) Wikipedia Review
+=== 3.13) Wikipedia Review
 
 Review the text on Wikipedia: https://en.wikipedia.org/wiki/SARL_language
 
-=== 3.13) Announcements
+=== 3.14) Announcements
 
 Announce the new version of SARL on:
 
@@ -207,7 +224,7 @@ Announce the new version of SARL on:
 
 === 4.1) Revert versions
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
 
 Revert step 2.1; and change the following:
 

@@ -3,6 +3,7 @@
 import argparse
 import re
 import os
+import subprocess
 import sys
 from xml.etree import ElementTree
 from datetime import datetime
@@ -110,13 +111,19 @@ def buildEclipseFileList():
 	return fileList
 
 #########################
-##
-def buildReadmeFileList():
+## enableParent: indicates if the files in the parent folder must be updated also
+def buildReadmeFileList(enableParent):
 	candidates = [
 		'README',
 		'CONTRIBUTING',
-		os.path.join('dev-tools', 'README'),
+		'RELEASE_README'
 		]
+	if enableParent:
+		candidates = candidates + [
+			os.path.join('..', 'README'),
+			os.path.join('..', 'CONTRIBUTING'),
+			os.path.join('..', 'RELEASE_README')
+			]
 	extensions = [ '', '.txt', '.md', '.adoc' ]
 	fileList = []
 	for candidate in candidates:
@@ -129,7 +136,8 @@ def buildReadmeFileList():
 #########################
 ## source: text to replace in the regex
 ## contributors: the hash map of contributors
-def doAuthorReplacement(source, contributors):
+## filename: the name of the file to be updated.
+def doAuthorReplacement(source, contributors, filename):
 	cid = source.group(1)
 	if cid and cid in contributors:
 		name = contributors[cid]['name']
@@ -142,7 +150,7 @@ def doAuthorReplacement(source, contributors):
 				url = "email:" + url
 		if url:
 			return "<a href=\"" + url + "\">" + name + "</a>"
-	raise Exception("Unable to find the contributor for: " + str(source.group()))
+	raise Exception("In " + str(filename) + ", unable to find the contributor for: " + str(source.group()) + "\nKnown contributors are: " + str(contributors))
 
 #########################
 ## filename: the filename to update
@@ -152,7 +160,7 @@ def replaceAuthors(filename, contributors):
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
-		line2 = re.sub("\$Author[ \t]*\:[ \t]*([^$]+)\$", lambda x : doAuthorReplacement(x, contributors), line)
+		line2 = re.sub("\$Author[ \t]*\:[ \t]*([^$]+)\$", lambda x : doAuthorReplacement(x, contributors, filename), line)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
@@ -219,27 +227,31 @@ def replaceMaven(filename, generation_date, exclusions):
 ## this_year: the current year
 def doCopyrightReplacement0(source, this_year):
 	prefix = source.group(1)
-	return prefix + str(this_year) + " "
+	return prefix + str(this_year) + " SARL.io, the Original Authors and Main Authors"
 
 #########################
 ## source: text to replace
 ## this_year: the current year
 def doCopyrightReplacement1(source, this_year):
 	prefix = source.group(1)
-	return prefix + "-" + str(this_year) + " "
+	return prefix + "-" + str(this_year) + " SARL.io, the Original Authors and Main Authors"
 
 #########################
-##
+## filename: the name of the file to be updated
 def replaceCopyrights(filename):
 	this_year = str(datetime.now().strftime("%Y"))
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
+	names = [ "SARL.io, the Original Authors and Main Authors",
+		  "the original authors or authors"
+		]
 	for line in data:
-		line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+-)[0-9]+ ",
-			lambda x : doCopyrightReplacement0(x, this_year), line)
-		line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+) ",
-			lambda x : doCopyrightReplacement1(x, this_year), line2)
+		for name in names:
+			line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+-)[0-9]+ " + name,
+				lambda x : doCopyrightReplacement0(x, this_year), line)
+			line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+) " + name,
+				lambda x : doCopyrightReplacement1(x, this_year), line2)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
@@ -332,7 +344,8 @@ def moveToDevelVersionInEclipse(current_devel_version, next_devel_version, filen
 		myfile.write("".join(data2))
 
 #########################
-##
+## filename: the filename to be updated
+## filenames: the list of filenames that should be marked as updated
 def show_update_file_msg(filename, filenames):
 	if filename not in filenames:
 		filenames.append(filename)
@@ -345,7 +358,7 @@ def buildCurrentStableVersion(current_version, previous_stable):
 	if previous_stable:
 		return previous_stable
 	elements = current_version.split(".")
-	if elements[1] <= 0:
+	if int(elements[1]) <= 0:
 		return str(int(elements[0]) - 1) + ".0.0"
 	return str(elements[0]) + "." + str(int(elements[1]) - 1) + ".0"
 
@@ -367,22 +380,32 @@ def buildNextDevelVersion(current_version, next_devel):
 	return str(elements[0]) + "." + str(int(elements[1]) + 1) + ".0"
 
 #########################
+## current_stable_version: the version of the current stable release
+## generate_md: indicates if markdown format must be used for the output
+def generateChanges(current_stable_version, generate_md):
+	gitoutput = subprocess.check_output(['git-changes', '-p', '-x', '-s', str(current_stable_version)])
+	print(gitoutput)
+
+#########################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument('pom', help="path to the root Maven pom file")
 parser.add_argument('--test', help="test cli configuration", action="store_true")
 group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument('--changes', help="Generate the changelog", action="store_true")
 group.add_argument('--author', help="replace $Author: id$", action="store_true")
 group.add_argument('--maven', help="replace $GroupId$ and $ArtifactId$", action="store_true")
 group.add_argument('--copyrights', help="replace the copyright strings", action="store_true")
 group.add_argument('--releaseversion', help="move to the next release version", action="store_true")
 group.add_argument('--develversion', help="move to the next devel version", action="store_true")
+parser.add_argument('--noparentreadme', help="Disable the update of the README files in the parent folder of the given POM file", action="store_true")
 parser.add_argument('--currentstable', help="current stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextstable', help="next stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextdevel', help="next development version number without -SNAPSHOT and .qualifier", type=str)
 args = parser.parse_args()
 
-mvn_root = readXMLRootNode(args.pom)
+mvn_root = readXMLRootNode(str(args.pom))
+
 if mvn_root is not None:
 	generation_date = str(datetime.now().strftime("%Y%m%d-%H%M%S"))
 
@@ -401,66 +424,71 @@ if mvn_root is not None:
 	print("> Current stable version: " + current_stable_version)
 	print("> Current devel version: " + mvn_version_number)
 	print("> Next stable version: " + next_stable_version)
-	print("> Next Devel version: " + mvn_next_devel_version)
-	if args.author:
+	print("> Next devel version: " + mvn_next_devel_version)
+	if args.changes:
+		print("> Action: generate the changelog")
+	elif args.author:
 		print("> Action: update Maven author tags")
 	elif args.maven:
 		print("> Action: update Maven general tags")
 	elif args.copyrights:
 		print("> Action: update the copyright text")
 	elif args.releaseversion:
-		print("> Action: move to the release version")
+		print("> Action: move to the release version " + next_stable_version)
 	elif args.develversion:
-		print("> Action: move to the development version")
+		print("> Action: move to the development version " + next_devel_version)
 	else:
 		print("> Action: unknow")
 
 	if args.test:
 		sys.exit(0)
 
-	# README
-	files = buildReadmeFileList()
-	for filename in files:
-		if args.releaseversion:
-			show_update_file_msg(filename, changed_filenames)
-			moveToReleaseVersionInReadme(current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version, filename)
-		
-	# Java and SARL files
-	files = buildCodeFileList()
-	exclusions = []
-	for filename in files:
-		if args.author:
-			show_update_file_msg(filename, changed_filenames)
-			replaceAuthors(filename, contributors)
-		if args.maven:
-			show_update_file_msg(filename, changed_filenames)
-			replaceMaven(filename, generation_date, exclusions)
-		if args.copyrights:
-			show_update_file_msg(filename, changed_filenames)
-			replaceCopyrights(filename)
+	if args.changes:
+		generateChanges(current_stable_version, args.md)
+	else:
+		# README
+		files = buildReadmeFileList(not args.noparentreadme)
+		for filename in files:
+			if args.releaseversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInReadme(current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version, filename)
+			
+		# Java and SARL files
+		files = buildCodeFileList()
+		exclusions = []
+		for filename in files:
+			if args.author:
+				show_update_file_msg(filename, changed_filenames)
+				replaceAuthors(filename, contributors)
+			if args.maven:
+				show_update_file_msg(filename, changed_filenames)
+				replaceMaven(filename, generation_date, exclusions)
+			if args.copyrights:
+				show_update_file_msg(filename, changed_filenames)
+				replaceCopyrights(filename)
 
-	# Maven pom.xml
-	files = buildMavenFileList()
-	for filename in files:
-		if args.releaseversion:
-			show_update_file_msg(filename, changed_filenames)
-			moveToReleaseVersionInMaven(mvn_version_number, next_stable_version, filename)
-		if args.develversion:
-			show_update_file_msg(filename, changed_filenames)
-			moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
+		# Maven pom.xml
+		files = buildMavenFileList()
+		for filename in files:
+			if args.releaseversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInMaven(mvn_version_number, next_stable_version, filename)
+			if args.develversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
 
-	# Eclipse plugins and features
-	files = buildEclipseFileList()
-	for filename in files:
-		if args.copyrights:
-			show_update_file_msg(filename, changed_filenames)
-			replaceCopyrights(filename)
-		if args.releaseversion:
-			show_update_file_msg(filename, changed_filenames)
-			moveToReleaseVersionInEclipse(eclipse_version_number, next_stable_version, filename)
-		if args.develversion:
-			show_update_file_msg(filename, changed_filenames)
-			moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
+		# Eclipse plugins and features
+		files = buildEclipseFileList()
+		for filename in files:
+			if args.copyrights:
+				show_update_file_msg(filename, changed_filenames)
+				replaceCopyrights(filename)
+			if args.releaseversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInEclipse(eclipse_version_number, next_stable_version, filename)
+			if args.develversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
 
 	sys.exit(0)
 

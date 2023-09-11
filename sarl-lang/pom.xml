@@ -11,6 +11,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+	</build>
 
 	<profiles>
 		<profile>
@@ -109,6 +119,17 @@
 			<roles>
 				<role>Co-founder</role>
 				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>alombard</id>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>http://www.sarl.io/alexandre_lombard</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
 				<role>Developer</role>
 			</roles>
 		</developer>

@@ -91,4 +91,49 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<!-- This profile is used to upload the P2 repo -->
+		<profile>
+			<id>uploadP2Repo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<properties>
+				<!-- Properties relative to the distant host where to upload the repo -->
+				<p2UploadFolder>${UPDATESSARLIO_URL}</p2UploadFolder>
+				<!-- Relative path to the repo being uploaded -->
+				<p2RepoPath>${project.build.directory}/repository/</p2RepoPath>
+			</properties>
+
+			<build>
+				<plugins>
+					<!-- Upload the repo to the server -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>wagon-maven-plugin</artifactId>
+						<version>2.0.2</version>
+						<executions>
+							<execution>
+								<id>upload-repo</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<serverId>io.sarl.updates.upload</serverId>
+									<fromDir>${p2RepoPath}</fromDir>
+									<includes>**</includes>
+									<toDir>${p2UploadToDir}</toDir>
+									<url>${p2UploadFolder}</url>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 </project>
