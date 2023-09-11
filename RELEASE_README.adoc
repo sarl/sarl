@@ -34,40 +34,40 @@ If a manual test is failing, fix the problem, and go to step 1.2.
 
 Test the generation of the  bundles for Maven Central:
 
-     $> ./prepare-maven-central.sh
+     $> ./scripts/prepare-maven-central.sh
 
 === 1.7) Javadoc Generation
 
 Test the generation of the Javadoc for the public API (the real generation will be done by the script of the website):
 
-     $> ./generate-aggregate-javadoc.sh
+     $> ./scripts/generate-aggregate-javadoc.sh
 
 == 2) PHASE 2: RELEASE VERSION
 
-=== 2.1) Remove snapshot markers
+=== 2.1) Change the version numbers
+
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
+
+==== 2.1.1) Remove snapshot markers
 
 Remove all the occurrences of `-SNAPSHOT` in all the poms.
 
 CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
-
-=== 2.2) Update the versions in the Eclipse configurations
+==== 2.1.2) Update the versions in the Eclipse configurations
 
 * Remove `.qualifier` in the `MANIFEST.MF` files (in `Bundle-Version`).
 * Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
 * Remove `.qualifier` in the `*.product` files (in root tag and feature tag).
 * Remove `.qualifier` in the `category.xml` files (in feature tags, url and version).
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
-
-=== 2.3) Update General and Contributor Readme Files
+=== 2.1.3) Update General and Contributor Readme Files
 
 Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using the new version numbers.
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
+=== 2.2) Update the Javadoc Tags
 
-=== 2.4) Update the Javadoc Tags
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
 
 In the `.sarl` and `.java` files:
 
@@ -76,13 +76,11 @@ In the `.sarl` and `.java` files:
 * Replace `$ArtifactId$` by the artifact name of the current Maven module.
 * Replace `$Author$` by the hyperlink of the contributor with the identifier `ID`.
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
-
-=== 2.5) Comment any reference to the Snapshot Maven repository
+=== 2.3) Comment any reference to the Snapshot Maven repository
 
 Into the root `pom.xml` files, comment any reference to a snapshot maven repository.
 
-=== 2.6) Update the graphical resources
+=== 2.4) Update the graphical resources
 
 * **Splash screens**
 ** Update the picture into the eclipse plugins:
@@ -96,40 +94,40 @@ Into the root `pom.xml` files, comment any reference to a snapshot maven reposit
 ** Update the picture into the eclipse plugins:
 *** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration		
 
-=== 2.7) Compiling locally without error
+=== 2.5) Compiling locally without error
 
      $> rm -rf $HOME/.m2/repository
-     $> mvn clean install
+     $> ./build-all.sh
 
-=== 2.8) Check auto-generated files
+=== 2.6) Check auto-generated files
 
 Check if the `about.mappings` files and the `SARLVersion.java` file are containing the correct version numbers.
 
-=== 2.9) Maven Central Bundles
+=== 2.7) Maven Central Bundles
 
 Prepare the bundles for Maven Central:
 
-     $> ./prepare-maven-central.sh
+     $> ./scripts/prepare-maven-central.sh
 
 Copy the bundles inside a safe folder for the Phase 3.
 
-=== 2.10) Javadoc Generation
+=== 2.8) Javadoc Generation
 
 Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
 
-     $> ./generate-aggregate-javadoc.sh
+     $> ./scripts/generate-aggregate-javadoc.sh
 
-=== 2.11) Commit and push to Github
+=== 2.9) Commit and push to Github
 
      $> git commit
      $> git push --all
 
-=== 2.12) Tag the Git with the version number
+=== 2.10) Tag the Git with the version number
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-=== 2.13) Release on the SARL servers.
+=== 2.11) Release on the SARL servers.
 
 For uploading the release files onto the SARL server, you could use the provided script:
 
@@ -209,7 +207,9 @@ Announce the new version of SARL on:
 
 === 4.1) Revert versions
 
-Revert steps 2.1 to 2.5; and change the following:
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
+
+Revert step 2.1; and change the following:
 
 * Version ranges in the `Required-Bundles` of `MANIFEST.MF`.
 * Versions in the requirements of `feature.xml` (in root tag and in the "sarl" and "janus"" plugins references).
@@ -217,13 +217,7 @@ Revert steps 2.1 to 2.5; and change the following:
 * Versions in the `category.xml` (in feature tags, url and version).
 * Uncomment the Snapshot Maven repository.
 
-NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
-
-=== 4.2) Upgrade versions
-
-Change the version numbers into the archive files stored in the `io.sarl.tests.testdata` project.
-
-=== 4.3) Change the UI resources.
+=== 4.2) Change the UI resources.
 
 * **Splash screens**
 *** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
@@ -237,12 +231,12 @@ Change the version numbers into the archive files stored in the `io.sarl.tests.t
 *** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration
 *** If the author of the background is different than for the splash screen, add the author's name into the properties as explained above
 
-=== 4.4) Compiling locally without error.
+=== 4.3) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
-     $> mvn clean install
+     $> ./build-all.sh
 
-=== 4.5) Commit and push to Github:
+=== 4.4) Commit and push to Github:
 
      $> git commit
      $> git push --all
