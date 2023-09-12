@@ -212,11 +212,11 @@ Nevertheless, the three most reported causes of avoidance of the SARL Eclipse la
 
 To solve this problem:
 * Install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default;
-* Force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `sarlide.ini` file as follows.
+* Force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `sarlide.ini` and `Info.plist` files as follows.
 
 [:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
-The editing of the `sarlide.ini` could be done by following the steps:
+The editing of the `sarlide.ini` file could be done by following the steps:
 
 1. Locate the folder in which your JVM (not the standard Mac JRE) is installed, e.g. `/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin`. The previous folder must contains the tools `javac` and `java`.
 2. Open the folder in which the SARL `Eclipse.app` was copied
@@ -228,7 +228,7 @@ The editing of the `sarlide.ini` could be done by following the steps:
 -vm
 /Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin
 ```
-7. Save and start the SARL IDE.
+7. Save.
 
 An complete example of the `sarlide.ini` file is:
 
@@ -244,6 +244,65 @@ An complete example of the `sarlide.ini` file is:
 -Xmx1g
 -XstartOnFirstThread
 -Dorg.eclipse.swt.internal.carbon.smallFonts
+```
+
+
+The editing of the `Info.plist` file could be done by following the steps:
+
+1. Locate the folder in which your JVM (not the standard Mac JRE) is installed, e.g. `/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin`. The previous folder must contains the tools `javac` and `java`.
+2. Open the folder in which the SARL `Eclipse.app` was copied
+3. Right-click on `Eclipse.app` and select `Show Package Contents`
+4. Move to `Contents/Eclipse/Eclipse.app/Contents`
+5. Open `Info.plist` with a text editor
+6. Add the following lines into the file or update the lines if they exist:
+```
+<array>
+   <string>-vm</string>
+   <string>/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin/java</string>
+</array>
+```
+7. Save and start the SARL IDE.
+
+An complete example of the `Info.plist` file is:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleExecutable</key>
+		<string>eclipse</string>
+		<key>CFBundleGetInfoString</key>
+		<string>Eclipse 4.16 for Mac OS X, Copyright IBM Corp. and others 2002, 2020. All rights reserved.</string>
+		<key>CFBundleIconFile</key>
+		<string>Eclipse.icns</string>
+		<key>CFBundleIdentifier</key>
+		<string>org.eclipse.Eclipse</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>Eclipse</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>4.16</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>4.16</string>
+		<key>NSHighResolutionCapable</key>
+		<true />
+		<key>CFBundleDevelopmentRegion</key>
+		<string>English</string>
+		<key>Eclipse</key>
+		<array>
+			<string>-vm</string>
+			<string>/Library/Java/JavaVirtualMachines/jdk17/Contents/Home/bin/java</string>
+			<string>-keyring</string>
+			<string>~/.eclipse_keyring</string>
+		</array>
+	</dict>
+</plist>
 ```
 
 #### b) The Gatekeeper of MacOS X blocks the launch of the SARL Eclipse
