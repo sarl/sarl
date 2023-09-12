@@ -206,6 +206,15 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+					<filters>
+						<filter>
+							<type>eclipse-plugin</type>
+  							<id>org.eclipse.equinox.registry</id>							
+							<restrictTo>
+								<version>3.11.200.v20220817-1601</version>
+							</restrictTo>
+						</filter>
+					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->
 					<dependency-resolution>
