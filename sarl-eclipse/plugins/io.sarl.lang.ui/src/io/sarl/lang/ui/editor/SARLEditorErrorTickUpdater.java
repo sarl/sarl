@@ -102,7 +102,9 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 					final ResourceSet resourceSet = this.resourceSetProvider.get(project);
 					assert resourceSet != null;
 					final URI uri = this.uriMapper.getUri((IStorage) resource);
-					return resourceSet.getResource(uri, true);
+					if (uri != null) {
+						return resourceSet.getResource(uri, true);
+					}
 				}
 			}
 		}
