@@ -24,6 +24,7 @@ package io.sarl.lang.typesystem;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;

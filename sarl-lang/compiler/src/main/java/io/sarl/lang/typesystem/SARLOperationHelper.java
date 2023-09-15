@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -942,77 +943,98 @@ public class SARLOperationHelper implements IOperationHelper {
 		return false;
 	}
 
-	private boolean internalHasOperationSideEffects(XAbstractFeatureCall originalExpression,
-			JvmOperation operation, ISideEffectContext context) {
-		// Test if the receiver has side effects
-		boolean hasEffectReceiver = false;
-		if (hasSideEffects(originalExpression.getActualReceiver(), context)) {
-			if (context.isStoppingAtFirstSideEffect()) {
-				return true;
-			}
-			hasEffectReceiver = true;
-		}
-		// Test the feature call itself
-		final ISideEffectContext ctx = new SideEffectContext(
-				Iterables.concat(context.getCalledOperations(),
-						Collections.singleton(getInferredPrototype(operation))));
-
-		boolean isPureOperation = this.annotations.findAnnotation(operation, Pure.class) != null
-				|| evaluatePureAnnotationAdapters(operation, ctx);
-
-		if (this.nameValidator.isNamePatternForNotPureOperation(operation)) {
-			isPureOperation = false;
-		} else if (this.nameValidator.isNamePatternForPureOperation(operation)) {
-			isPureOperation = true;
-		}
-
-		/*if (isPureOperation) {
-			hasEffectReceiver = !isLocalExpression(originalExpression.getActualReceiver(), context, true) || hasEffectReceiver;
-		}*/
-
-		if (!isPureOperation) {
-			context.registerSideEffect(originalExpression);
-		}
-
-		boolean hasEffectArgument = false;
-		if (!context.isStoppingAtFirstSideEffect() || isPureOperation) {
-			for (final XExpression ex : originalExpression.getActualArguments()) {
-				final Boolean bool = hasSideEffects(ex, context);
-				if (bool != null && bool.booleanValue()) {
-					if (context.isStoppingAtFirstSideEffect()) {
+	private static boolean isCalledOperation(JvmOperation operation, List<InferredPrototype> prototypes) {
+		final String containerId0 = operation.getDeclaringType().getIdentifier();
+		final String operationId0 = operation.getSimpleName();
+		final String fullOperationId0 = containerId0 + "." + operationId0; //$NON-NLS-1$
+		final List<String> parameterTypes0 = operation.getParameters().stream()
+				.map(it -> it.getParameterType().getIdentifier()).collect(Collectors.toList());
+		for (final InferredPrototype prototype : prototypes) {
+			final QualifiedActionName action1 = prototype.getActionName();
+			final String containerId1 = action1.getDeclaringType().getIdentifier();
+			final String operationId1 = action1.getActionName();
+			final String fullOperationId1 = containerId1 + "." + operationId1; //$NON-NLS-1$
+			if (Strings.equal(fullOperationId0, fullOperationId1)) {
+				for (final ActionParameterTypes parameterTypes1 : prototype.getParameterTypeAlternatives()) {
+					if (parameterTypes0.size() == parameterTypes1.size())  {
+						for (int i = 0; i < parameterTypes0.size(); ++i) {
+							final String type0 = parameterTypes0.get(i);
+							final String type1 = parameterTypes1.get(i);
+							if (!Strings.equal(type0, type1)) {
+								// Move to the next parameter types
+								break;
+							}
+						}
+						// The name of the operation and the types of the parameters are the same
 						return true;
 					}
-					hasEffectArgument = false;
 				}
 			}
 		}
-
-		return hasEffectReceiver || !isPureOperation || hasEffectArgument;
-	}
-
-	private static boolean internalHasExternalFeatureSideEffects(XAbstractFeatureCall expression, ISideEffectContext context, JvmIdentifiableElement feature) {
 		return false;
 	}
 
-	private static boolean isCalledOperation(JvmOperation operation, List<InferredPrototype> prototypes) {
-		final String container = operation.getDeclaringType().getQualifiedName();
-		for (final InferredPrototype prototype : prototypes) {
-			if (Strings.equal(container, prototype.getActionName().getDeclaringType().getIdentifier())
-					&& Strings.equal(operation.getSimpleName(), prototype.getActionName().getActionName())) {
-				final String prefix = container + "."; //$NON-NLS-1$
-				final String operationId = operation.getIdentifier();
-				for (final ActionParameterTypes types : prototype.getParameterTypeAlternatives()) {
-					String name = prefix + types.toActionPrototype(operation.getSimpleName()).toString();
-					if (Strings.equal(operationId, name)) {
-						return true;
-					}
-					name = prefix + types.toRawActionPrototype(operation.getSimpleName()).toString();
-					if (Strings.equal(operationId, name)) {
-						return true;
+	private boolean internalHasOperationSideEffects(XAbstractFeatureCall originalExpression,
+			JvmOperation operation, ISideEffectContext context) {
+		try {
+			// Test if the receiver has side effects
+			boolean hasEffectReceiver = false;
+			if (hasSideEffects(originalExpression.getActualReceiver(), context)) {
+				if (context.isStoppingAtFirstSideEffect()) {
+					return true;
+				}
+				hasEffectReceiver = true;
+			}
+			// Test the feature call itself
+			final ISideEffectContext ctx = new SideEffectContext(
+					Iterables.concat(context.getCalledOperations(),
+							Collections.singleton(getInferredPrototype(operation))));
+	
+			final boolean isPureOperation;
+			if (this.nameValidator.isNamePatternForNotPureOperation(operation)) {
+				isPureOperation = false;
+			} else if (this.nameValidator.isNamePatternForPureOperation(operation)) {
+				isPureOperation = true;
+			} else {
+				isPureOperation = this.annotations.findAnnotation(operation, Pure.class) != null
+					|| evaluatePureAnnotationAdapters(operation, ctx, true);
+			}
+	
+			/*if (isPureOperation) {
+				hasEffectReceiver = !isLocalExpression(originalExpression.getActualReceiver(), context, true) || hasEffectReceiver;
+			}*/
+	
+			if (!isPureOperation) {
+				context.registerSideEffect(originalExpression);
+			}
+	
+			boolean hasEffectArgument = false;
+			if (!context.isStoppingAtFirstSideEffect() || isPureOperation) {
+				for (final XExpression ex : originalExpression.getActualArguments()) {
+					final Boolean bool = hasSideEffects(ex, context);
+					if (bool != null && bool.booleanValue()) {
+						if (context.isStoppingAtFirstSideEffect()) {
+							return true;
+						}
+						hasEffectArgument = false;
 					}
 				}
 			}
+	
+			return hasEffectReceiver || !isPureOperation || hasEffectArgument;
+		} catch (StackOverflowError ex) {
+			var ex2 = new StackOverflowError(
+					ex.getLocalizedMessage()
+					+ "\nCalled operation: " + operation.getIdentifier() //$NON-NLS-1$
+					+ "\nin: " + originalExpression.toString() //$NON-NLS-1$
+					+ "\nwith context: " + context.toString() //$NON-NLS-1$
+					+ "\nisCalled=" + Boolean.toString(isCalledOperation(operation, context.getCalledOperations()))); //$NON-NLS-1$
+			ex2.setStackTrace(ex.getStackTrace());
+			throw ex2;
 		}
+	}
+
+	private static boolean internalHasExternalFeatureSideEffects(XAbstractFeatureCall expression, ISideEffectContext context, JvmIdentifiableElement feature) {
 		return false;
 	}
 
@@ -1058,16 +1080,20 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	@Override
 	public boolean evaluatePureAnnotationAdapters(JvmOperation operation) {
-		return evaluatePureAnnotationAdapters(operation, null);
+		return evaluatePureAnnotationAdapters(operation, null, true);
 	}
 
-	/** Evalute the Pure annotatino adapters.
+	/** Evaluate the Pure annotation adapters.
 	 *
 	 * @param operation the operation to adapt.
 	 * @param context the context.
+	 * @param resetAdapterValue indicates if the purity value must be written into the attached adapters.
+	 *     If it is true, the provided value will be used as the purity indicator for the operation during
+	 *     the next invokes of the adapter. If it is false, the adapter will still continue to
+	 *     evaluate the purity of the operation at the next use of the adapter.
 	 * @return {@code true} if the pure annotation could be associated to the given operation.
 	 */
-	boolean evaluatePureAnnotationAdapters(org.eclipse.xtext.common.types.JvmOperation operation, ISideEffectContext context) {
+	boolean evaluatePureAnnotationAdapters(org.eclipse.xtext.common.types.JvmOperation operation, ISideEffectContext context, boolean resetAdapterValue) {
 		int index = -1;
 		int i = 0;
 		for (final Adapter adapter : operation.eAdapters()) {
@@ -1080,7 +1106,14 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (index >= 0) {
 			final AnnotationJavaGenerationAdapter annotationAdapter = (AnnotationJavaGenerationAdapter) operation.eAdapters().get(index);
 			assert annotationAdapter != null;
-			return annotationAdapter.applyAdaptations(this, operation, context);
+			final boolean purity = annotationAdapter.applyAdaptations(this, operation, context);
+			if (resetAdapterValue) {
+				// Remove the adapter for replacing it by an adapter that evaluates directly to the previously computed purity.
+				// This process enables to avoid to check the same operation's code multiple times.
+				annotationAdapter.removeAllPredicates();
+				annotationAdapter.addPredicate((op, hlp) -> purity);
+			}
+			return purity;
 		}
 		return false;
 	}
@@ -1101,11 +1134,26 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	@Override
 	public boolean isPureOperation(JvmOperation operation) {
+		return isPureOperation(operation, null);
+	}
+
+	/** Check if the given operation is annoted with {@link org.eclipse.xtext.xbase.lib.Pure @Pure}.
+	 *
+	 * @param operation the operation to test.
+	 * @param context the context of the purity evaluation.
+	 * @return {@code true} if the operation is marked as pure; otherwise {@code false}.
+	 * @see org.eclipse.xtext.xbase.lib.Pure
+	 * @see #isPurableOperation(XtendFunction, ISideEffectContext)
+	 * @since 0.13
+	 */
+	public boolean isPureOperation(JvmOperation operation, ISideEffectContext context) {
 		if (operation == null) {
 			return false;
 		}
-		return this.annotations.findAnnotation(operation, Pure.class) != null
-				|| evaluatePureAnnotationAdapters(operation);
+		if (this.annotations.findAnnotation(operation, Pure.class) != null) {
+			return true;
+		}
+		return evaluatePureAnnotationAdapters(operation, context, true);
 	}
 
 	/** Context for the side effect.
@@ -1229,6 +1277,10 @@ public class SARLOperationHelper implements IOperationHelper {
 				buffer.append(proto.getActionName().getActionName());
 				buffer.append("("); //$NON-NLS-1$
 				buffer.append(proto.toString());
+				buffer.append(");orginalParams:("); //$NON-NLS-1$
+				buffer.append(proto.getOriginalParameterTypes());
+				buffer.append(");alternatives:("); //$NON-NLS-1$
+				buffer.append(Iterables.toString(proto.getParameterTypeAlternatives()));
 				buffer.append(")\n"); //$NON-NLS-1$
 			}
 			final Iterator<InternalContext> iterator = this.contextStack.descendingIterator();
@@ -1534,7 +1586,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		@Override
 		public boolean isPureOperation(JvmOperation operation) {
-			return this.delegate.isPureOperation(operation);
+			return this.delegate.isPureOperation(operation, this.context);
 		}
 
 		@Override
@@ -1544,7 +1596,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		@Override
 		public boolean evaluatePureAnnotationAdapters(JvmOperation operation) {
-			return this.delegate.evaluatePureAnnotationAdapters(operation, this.context);
+			return this.delegate.evaluatePureAnnotationAdapters(operation, this.context, true);
 		}
 
 		@Override

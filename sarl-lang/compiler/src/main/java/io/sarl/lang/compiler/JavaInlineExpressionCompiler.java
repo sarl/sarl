@@ -486,7 +486,10 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/**
 	 * Information about the line annotation.
 	 *
-	 *
+	 * @param valueOperation the JVM operation associated to the record's field {@code value}.
+	 * @param importedOperation the JVM operation associated to the record's field {@code imported}.
+	 * @param constantExpressionOperation the JVM operation associated to the record's field {@code constantExpression}.
+	 * @param statementExpressionOperation the JVM operation associated to the record's field {@code statementExpression}.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
