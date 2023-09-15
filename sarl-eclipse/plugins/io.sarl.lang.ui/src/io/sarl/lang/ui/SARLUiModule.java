@@ -27,10 +27,14 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.ui.editor.DirtyStateEditorSupport;
+import org.eclipse.xtext.ui.editor.DocumentBasedDirtyResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
+import io.sarl.lang.ui.bugs.bug1115.FixedDirtyStateEditorSupport;
+import io.sarl.lang.ui.bugs.bug1115.FixedPersistentDataAwareDirtyResource;
 import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -112,6 +116,18 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+	}
+
+	@Override
+	public Class<? extends DocumentBasedDirtyResource> bindDocumentBasedDirtyResource() {
+		// TODO: Remove this function when the issue #1115 is fixed
+		return FixedPersistentDataAwareDirtyResource.class;
+	}
+
+	@Override
+	public Class<? extends DirtyStateEditorSupport> bindDirtyStateEditorSupport(){
+		// TODO: Remove this function when the issue #1115 is fixed
+		return FixedDirtyStateEditorSupport.class;
 	}
 
 }

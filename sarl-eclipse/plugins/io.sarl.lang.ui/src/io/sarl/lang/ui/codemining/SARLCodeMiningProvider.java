@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
+
 import javax.inject.Inject;
 
 import com.google.common.base.Supplier;
@@ -40,8 +41,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.codemining.ICodeMining;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -160,6 +159,8 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	private void disableCodeMining(ITextViewer viewer, Throwable error) {
 		this.codeminingPreferences.setCodeminingEnabled(false);
 		final Throwable rootCause = Throwables.getRootCause(error);
+		SARLUiPlugin.log(rootCause);
+		/*
 		String message = Messages.SARLCodeMiningProvider_2;
 		if (rootCause != null) {
 			final String msg = rootCause.getLocalizedMessage();
@@ -169,11 +170,10 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		}
 		final String errorMessage = message;
 		Display.getDefault().asyncExec(() -> {
-			final Shell shell = viewer.getTextWidget().getShell();
 			SARLUiPlugin.openError(shell, Messages.SARLCodeMiningProvider_0,
 					MessageFormat.format(Messages.SARLCodeMiningProvider_1, errorMessage),
 					errorMessage, rootCause);
-		});
+		});*/
 	}
 
 	/** Root dispatch function for code mining.
@@ -341,18 +341,21 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	private static int findArgumentOffset(XExpression semanticObject) {
 		final INode node = NodeModelUtils.findActualNodeFor(semanticObject);
-		// Sometimes the node contains white spaces at the beginning.
-		// The offset should be increased to put the annotation after the white spaces.
-		final String text = node.getText();
-		int offset = node.getTotalOffset();
-		if (text.length() > 0) {
-			int i = 0;
-			while (Character.isWhitespace(text.charAt(i))) {
-				++offset;
-				++i;
+		if (node != null) {
+			// Sometimes the node contains white spaces at the beginning.
+			// The offset should be increased to put the annotation after the white spaces.
+			final String text = node.getText();
+			int offset = node.getTotalOffset();
+			if (text.length() > 0) {
+				int i = 0;
+				while (Character.isWhitespace(text.charAt(i))) {
+					++offset;
+					++i;
+				}
 			}
+			return offset;
 		}
-		return offset;
+		return 0;
 	}
 
 	private void provideArgumentName(String name, int offset, IAcceptor<? super ICodeMining> acceptor) {

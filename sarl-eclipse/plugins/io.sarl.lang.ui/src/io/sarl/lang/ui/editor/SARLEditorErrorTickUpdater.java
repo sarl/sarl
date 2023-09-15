@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.inject.Inject;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
@@ -163,8 +164,11 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 		final Set<String> errors = new TreeSet<>();
 		while (annotations.hasNext()) {
 			final Annotation annotation = annotations.next();
-			if (!annotation.isMarkedDeleted() && MARKER_TYPE.equals(annotation.getType())) {
-				errors.add(annotation.getText());
+			if (annotation != null && !annotation.isMarkedDeleted() && MARKER_TYPE.equals(annotation.getType())) {
+				final String text = annotation.getText();
+				if (!Strings.isNullOrEmpty(text)) {
+					errors.add(text);
+				}
 			}
 		}
 		return errors;
