@@ -21,10 +21,10 @@
 
 package io.sarl.lang.util;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 /**
- * Utility class for accessing to a method by reflection.
+ * Utility class for accessing to a field by reflection.
  *
  * @param <RT> the type of the receiver.
  * @param <T> the type of the returned value.
@@ -32,28 +32,28 @@ import java.lang.reflect.Method;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.13
  */
-public final class ReflectMethod<RT, T> {
+public final class ReflectField<RT, T> {
 
 	private final Class<RT> receiverType;
 
 	private final Class<T> returnType;
 
-	private final String methodName;
+	private final String fieldName;
 
-	private Method method;
+	private Field field;
 
 	/** Constructor.
 	 *
 	 * @param receiverType the type of the receiver.
 	 * @param returnType the type of the returned values.
-	 * @param methodName the name of the method.
+	 * @param fieldName the name of the field.
 	 */
-	protected ReflectMethod(Class<RT> receiverType, Class<T> returnType, String methodName) {
+	protected ReflectField(Class<RT> receiverType, Class<T> returnType, String fieldName) {
 		this.receiverType = receiverType;
 		this.returnType = returnType;
-		this.methodName = methodName;
+		this.fieldName = fieldName;
 	}
 
 	/** Static constructor.
@@ -62,32 +62,30 @@ public final class ReflectMethod<RT, T> {
 	 * @param <T> the type of the returned value.
 	 * @param receiverType the type of the receiver.
 	 * @param returnType the type of the returned values.
-	 * @param methodName the name of the method.
+	 * @param fieldName the name of the field.
 	 * @return the instance.
 	 */
-	public static <RT, T> ReflectMethod<RT, T> of(Class<RT> receiverType, Class<T> returnType, String methodName) {
-		return new ReflectMethod<>(receiverType, returnType, methodName);
+	public static <RT, T> ReflectField<RT, T> of(Class<RT> receiverType, Class<T> returnType, String fieldName) {
+		return new ReflectField<>(receiverType, returnType, fieldName);
 	}
 
-	/** Invoke the method.
+	/** Get the value from the field from an object.
 	 *
-	 * @param receiver the receiver, never {@code null}.
-	 * @param arguments the arguments.
-	 * @return the result of the invocation.
+	 * @param receiver the receiver.
+	 * @return the value.
 	 */
-	public T invoke(RT receiver, Object... arguments) {
-		assert receiver != null;
-		final Method method;
+	public T get(RT receiver) {
+		final Field field;
 		synchronized (this) {
-			if (this.method == null) {
-				this.method = getMethod(receiver, arguments);
-				method = this.method;
+			if (this.field == null) {
+				this.field = getField(receiver);
+				field = this.field;
 			} else {
-				method = this.method;
+				field = this.field;
 			}
 		}
 		try {
-			return this.returnType.cast(method.invoke(receiver, arguments));
+			return this.returnType.cast(field.get(receiver));
 		} catch (RuntimeException | Error exception) {
 			throw exception;
 		} catch (Throwable exception) {
@@ -95,17 +93,23 @@ public final class ReflectMethod<RT, T> {
 		}
 	}
 
-	private Method getMethod(RT receiver, Object[] args) {
-		try {
-			final Object[] arguments = args == null ? new Object[] {null} : args;
+	/** Get the value from the static field.
+	 *
+	 * @return the value.
+	 */
+	public T get() {
+		return get(null);
+	}
 
+	private Field getField(RT receiver) {
+		try {
 			Class<? extends Object> clazz = this.receiverType;
-			Method compatible = null;
+			Field compatible = null;
 			do {
-				for (final Method candidate : clazz.getDeclaredMethods()) {
-					if (candidate != null && !candidate.isBridge() && isCompatible(candidate, this.methodName, arguments)) {
+				for (final Field candidate : clazz.getDeclaredFields()) {
+					if (candidate != null && isCompatible(candidate, this.fieldName)) {
 						if (compatible != null) {
-							throw new IllegalStateException("Ambiguous methods to invoke. Both " //$NON-NLS-1$
+							throw new IllegalStateException("Ambiguous field to access. Both " //$NON-NLS-1$
 									+ compatible + " and " + candidate + " would be compatible choices.");  //$NON-NLS-1$//$NON-NLS-2$
 						}
 						compatible = candidate;
@@ -118,34 +122,24 @@ public final class ReflectMethod<RT, T> {
 				return compatible;
 			}
 			// not found provoke method not found exception
-			final Class<?>[] paramTypes = new Class<?>[arguments.length];
-			for (int i = 0; i < arguments.length; ++i) {
-				paramTypes[i] = arguments[i] == null ? Object.class : arguments[i].getClass();
+			if (receiver != null) {
+				return receiver.getClass().getField(this.fieldName);
 			}
-			return receiver.getClass().getMethod(this.methodName, paramTypes);
+			return this.receiverType.getField(this.fieldName);
 		} catch (Throwable exception) {
 			throw new Error(exception);
 		}
 	}
 
-	private static boolean isCompatible(Method candidate, String featureName, Object... args) {
+	private boolean isCompatible(Field candidate, String featureName) {
 		if (!candidate.getName().equals(featureName)) {
 			return false;
 		}
-		if (candidate.getParameterTypes().length != args.length) {
-			return false;
+		Class<?> class1 = candidate.getType();
+		if (class1.isPrimitive()) {
+			class1 = wrapperTypeFor(class1);
 		}
-		for (int i = 0; i < candidate.getParameterTypes().length; ++i) {
-			final Object param = args[i];
-			Class<?> class1 = candidate.getParameterTypes()[i];
-			if (class1.isPrimitive()) {
-				class1 = wrapperTypeFor(class1);
-			}
-			if (param != null && !class1.isInstance(param)) {
-				return false;
-			}
-		}
-		return true;
+		return this.returnType.isAssignableFrom(class1);
 	}
 
 	private static Class<?> wrapperTypeFor(Class<?> primitive) {
