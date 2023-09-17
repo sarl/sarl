@@ -536,4 +536,35 @@
       </configExtension>
 	</extension>
 
+	<!-- ========= io-sarl-tutorials-gametgob Tutorial ========= -->
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.tutorials.gametgob"
+			name="%io_sarl_tutorials_gametgob_Name"
+			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
+	        category="org.eclipse.ui.Examples/io.sarl.Tutorials"
+			icon="/icons/genproject.gif"
+			project="true">
+			<description>%io_sarl_tutorials_gametgob_Description</description>
+		</wizard>
+	</extension>
+
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.tutorials.gametgob"
+			name="%io_sarl_tutorials_gametgob_Name"
+			class="io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory:io.sarl.eclipse.examples.wizard.SarlExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
+			icon="/icons/genproject.gif"
+			project="true">
+			<description>%io_sarl_tutorials_gametgob_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.tutorials.gametgob" pageImage="/icons/genproject.gif">
+			<projectDescriptor name="io-sarl-tutorials-gametgob" contentURI="contents/io-sarl-tutorials-gametgob.zip" description="%io_sarl_tutorials_gametgob_Description"/>
+			<fileToOpen location="io/sarl/examples/gametgob/Person.sarl"/>
+		</example>
+	</extension>
+
 </plugin>

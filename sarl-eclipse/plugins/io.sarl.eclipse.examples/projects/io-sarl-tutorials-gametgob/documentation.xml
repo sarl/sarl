@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation id="io.sarl.tutorials.gametgob"
+               name="Person who has goal-oriented behavior"
+               category="io.sarl.tutorials">
+	<mainPage>http://www.sarl.io/docs/official/tutorials/GameTGob.html</mainPage>
+	<screenshot>screenshot.png</screenshot>
+	<description>The person has two goals and it has to select the best action to apply in order to archieve these goals. The selection mechanism is based on the standard time-based goal-oriented behavior that was defined in video game field.</description>
+</documentation>
