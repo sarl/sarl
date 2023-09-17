@@ -1,0 +1,113 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.game.tgob
+
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * Default implementation of an action that could be done by the agent in the game time-based
+ * goal-oriented behavior.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+ class BaseAction extends AbstractGob implements Action {
+
+	/** Duration of the action in time units. */
+	@Accessors
+	var duration : int
+
+	val insistences = <Goal, Double>newTreeMap[a, b |
+		if (a === b) {
+			return 0
+		}
+		if (a === null) {
+			return -1
+		}
+		if (b === null) {
+			return 1
+		}
+		var cmp = a.name.compareTo(b.name)
+		if (cmp !== 0) {
+			return cmp
+		}
+		return Integer.compare(System::identityHashCode(a), System::identityHashCode(b))
+	]
+
+	/** Constructor.
+	 * 
+	 * @param name the name of the action.
+	 * @param duration the duration of the action.
+	 */
+	new(name : String = null, duration : int = 0) {
+		setName(name)
+		setDuration(duration)
+	}
+
+	override getInsistenceChangeFor(goal : Goal) : double {
+		if (goal !== null) {
+			val value = this.insistences.get(goal)
+			if (value !== null) {
+				return value
+			}
+		}
+		return 0.0
+	}
+
+	/** Change the insistence for the given goal when this action is applied.
+	 *
+	 * @param goal the goal for which the insistence is changed.
+	 * @param insistence the new positive value of the insistence.
+	 */
+	def setInsistenceChangeFor(goal : Goal, insistence : double) : void {
+		if (goal !== null) {
+			if (insistence !== 0.0) {
+				this.insistences.put(goal, insistence)
+			} else {
+				this.insistences.remove(goal)
+			}
+		}
+	}
+
+	override toString : String {
+		val msg = new StringBuilder
+		msg.append("Action: ").append(getName).append("\t")
+		var first = true
+		for (entry : this.insistences.entrySet) {
+			val goal = entry.key
+			val insistence = entry.value
+			if (insistence !== 0.0) {
+				if (first) {
+					first = false
+				} else {
+					msg.append(", ")
+				}
+				msg.append(goal.name).append(": ").append(insistence.formatNumber)
+			}
+		}
+		msg.append("\t").append(getDuration.formatNumber).append(" unit(s)")
+		return msg.toString
+	}
+}

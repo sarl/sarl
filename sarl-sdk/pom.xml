@@ -14,6 +14,7 @@
 		<module>api.naming</module>
 		<module>api.probing</module>
 		<module>api.javafx</module>
+		<module>api.gametgob</module>
 		<module>api.experienceindex</module>
 		<module>sdk</module>
 	</modules>
