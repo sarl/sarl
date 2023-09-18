@@ -41,6 +41,10 @@
 * [Parallel execution within the agents](./tutorials/ParallelExecution.md)
 * [Initialization of a multiagent system](./tutorials/MASInitialization.md)
 
+### Action Selection Architectures
+
+* [Goal-oriented Action Selection from Video Game Field](./tutorials/GameTGob.md)
+
 ### Organizational Patterns
 
 * [English Auction with Holons](./tutorials/HolonicAuction.md)

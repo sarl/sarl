@@ -713,6 +713,10 @@ In the following example, the agent execute its proactive behavior every second.
 	}
 [:End:]
 
+### Specific Agent Architectures
+
+It is possible to define the behaviors of an agent according to a specific and already known agent architecture.
+SARL API provides a list of well-known agent architectures that are listed [here](./AgentArchitectures.md).
 
 ## Capacities and Skills
 

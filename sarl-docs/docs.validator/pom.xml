@@ -25,6 +25,10 @@
 			<groupId>io.sarl.sdk</groupId>
 			<artifactId>sdk</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>api.gametgob</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
