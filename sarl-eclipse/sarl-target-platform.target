@@ -32,7 +32,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>compiler</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -42,7 +42,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>afc.extension</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -52,7 +52,7 @@
 				<dependency>
 					<groupId>io.sarl.sre.janus</groupId>
 					<artifactId>janus.network</artifactId>
-					<version>3.0.13.0-SNAPSHOT</version>
+					<version>3.0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -62,7 +62,7 @@
 				<dependency>
 					<groupId>io.sarl.apputils</groupId>
 					<artifactId>bootiqueapp</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -72,7 +72,7 @@
 				<dependency>
 					<groupId>io.sarl.sdk</groupId>
 					<artifactId>api.experienceindex</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -82,7 +82,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>pythongenerator</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -92,7 +92,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>compiler.tests</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -102,7 +102,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>tests.api</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -153,7 +153,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>batchcompiler</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -163,7 +163,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>tests.api</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -173,7 +173,7 @@
 				<dependency>
 					<groupId>io.sarl.sdk</groupId>
 					<artifactId>sdk</artifactId>
-					<version>0.13.0-SNAPSHOT</version>
+					<version>0.13.0</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -1183,8 +1183,8 @@
 		<plugin id="wrapped.io.bootique.bootique.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api" version="0.13.0.SNAPSHOT"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.13.0.SNAPSHOT"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api" version="0.13.0"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.13.0"/>
 		<plugin id="wrapped.io.sarl.lang.compiler.tests"/>
 		<plugin id="wrapped.io.sarl.lang.compiler.tests.source"/>
 		<plugin id="wrapped.junit.junit"/>
@@ -1395,7 +1395,7 @@
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.13.0.SNAPSHOT"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.13.0"/>
 		<plugin id="wrapped.org.antlr.antlr-runtime.source" version="3.2"/>
 		<plugin id="wrapped.org.arakhne.afc.slf4j.slf4j-log4j.source" version="17.0"/>
 		<plugin id="wrapped.org.arakhne.afc.slf4j.slf4j-log4j.source" version="17.0"/>
