@@ -45,7 +45,7 @@ final class SreVersion {
 	 * <p>A stable release is a platform that will be not more compiled and generated.
 	 */
 	@Generated(value = "maven")
-	public static val IS_STABLE = false;
+	public static val IS_STABLE = true;
 
 	/** The group id of the Maven module that contains the SRE.
 	 *
