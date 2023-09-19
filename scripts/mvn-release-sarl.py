@@ -35,7 +35,7 @@ def ask_pass():
 	if pass_phrase:
 		pass_phrase = pass_phrase.strip()
 		if pass_phrase:
-			return pass_phrase
+			return pass_phrase.decode('utf8')
 	return None
 
 ##############################
@@ -113,6 +113,7 @@ def execute_maven(args):
 	         "-DMAVENSARLIO_URL=\"" + MAVENSARLIO_URL + "\"",
 	         "-DUPDATESSARLIO_URL=\"" + UPDATESSARLIO_URL + "\"",
 	         "-DDEPENDENCIESSARLIO_URL=\"" + DEPENDENCIESSARLIO_URL + "\"",
+	         "-DaltDeploymentRepository=\"io.sarl.maven.upload::" + MAVENSARLIO_URL + "\"",
 	         "-PuploadP2Repo",
 		]
 	for arg in args:
