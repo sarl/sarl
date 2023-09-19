@@ -113,8 +113,7 @@ def execute_maven(args):
 	         "-DMAVENSARLIO_URL=\"" + MAVENSARLIO_URL + "\"",
 	         "-DUPDATESSARLIO_URL=\"" + UPDATESSARLIO_URL + "\"",
 	         "-DDEPENDENCIESSARLIO_URL=\"" + DEPENDENCIESSARLIO_URL + "\"",
-	         "-DaltDeploymentRepository=\"io.sarl.maven.upload::" + MAVENSARLIO_URL + "\"",
-	         "-PuploadP2Repo",
+	         "-PuploadP2Repo"
 		]
 	for arg in args:
 		cmd.append(arg)

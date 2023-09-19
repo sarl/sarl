@@ -31,6 +31,19 @@
 		</extensions>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</repository>
+		<snapshotRepository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<developers>
 		<developer>
 			<id>sgalland</id>
