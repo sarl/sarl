@@ -185,7 +185,7 @@ These variables may be defined in the user configuration file `$HOME/.sarlrc`, t
 
 === 3.1) Maven Central Bundles
 
-Updload the Maven Bundle on Maven Central with http://oss.sonatype.org
+Upload the Maven Bundle on Maven Central with http://oss.sonatype.org
 
 === 3.2) Debian Packages
 
