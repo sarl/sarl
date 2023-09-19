@@ -121,7 +121,9 @@ Into the root `pom.xml` files, comment any reference to a snapshot maven reposit
      $> rm -rf $HOME/.m2/repository
      $> ./build-all.sh
      
-**COPY the products from "sarl-eclipse/products/io.sarl.eclipse.products.ide/target/products/" in a safe folder for being used in Phase 3.**
+NOTE: Copy the Eclipse products from `sarl-eclipse/products/io.sarl.eclipse.products.ide/target/products/` in a safe folder for being used in Phase 3.
+
+NOTE: Copy the CLI products from `sarl-cli/*/target/` in a safe folder for being used in Phase 3. Do not missed the products for Linux, Windows and MacOS. 
 
 === 2.7) Check auto-generated files
 
@@ -133,7 +135,7 @@ Prepare the bundles for Maven Central:
 
      $> ./scripts/prepare-maven-central.sh
 
-**COPY the bundles from "target/maven-central-bundles/" in a safe folder for being used in Phase 3.**
+NOTE: Copy the bundles from `target/maven-central-bundles/` in a safe folder for being used in Phase 3.
 
 === 2.9) Javadoc Generation
 
@@ -141,7 +143,7 @@ Generate the Javadoc for the public API (the real generation will be done by the
 
      $> ./scripts/generate-aggregate-javadoc.sh
 
-**COPY the generated website from "target/site/apidocs/" in a safe folder for being used in Phase 3.**
+NOTE: Copy the generated website from `target/site/apidocs/` in a safe folder for being used in Phase 3.
 
 === 2.10) Changelog Generation
 
@@ -149,7 +151,7 @@ Generate the changelog that contains the list of all the changes in the released
 
      $> ./scripts/prepare-release.sh --changes
 
-**COPY the generated changelog from "target/changes.md" in a safe folder for being used in Phase 3.**
+NOTE: Copy the generated changelog from `target/changes.md` in a safe folder for being used in Phase 3.
 
 === 2.11) Commit and push to Github
 
