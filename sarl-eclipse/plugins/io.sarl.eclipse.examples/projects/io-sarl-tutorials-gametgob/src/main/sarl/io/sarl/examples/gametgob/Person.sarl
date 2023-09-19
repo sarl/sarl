@@ -1,0 +1,143 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.examples.gametgob
+
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.Logging
+import io.sarl.api.game.tgob.Action
+import io.sarl.api.game.tgob.BaseAction
+import io.sarl.api.game.tgob.BaseGoal
+import io.sarl.api.game.tgob.SelectAction
+import io.sarl.api.game.tgob.StandardActionSelectionSkill
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
+
+/** Agent that tries to find the best plan of actions, time by time.
+ * @author $Author: sgalland$
+ */
+agent Person {
+
+	uses SelectAction
+	uses Behaviors
+	uses Logging
+	uses Lifecycle
+	
+	val goals = <BaseGoal>newArrayList
+
+	val actions = <BaseAction>newArrayList
+
+	val currentActionDuration = new AtomicInteger(0)
+
+	val currentAction = new AtomicReference<Action>(null)
+
+	
+	on Initialize {
+		initializeGoalSystem
+		showState(0, null, false)
+		setSkill(new StandardActionSelectionSkill)
+		wake(new Step)
+	}
+
+	on Step {
+		var selectedAction = this.currentAction.get
+		val isCont = selectedAction !== null && this.currentActionDuration.get > 1
+		if (!isCont) {
+			if (selectedAction !== null) {
+				applyAction(selectedAction)
+				this.currentAction.set(null)
+				this.currentActionDuration.set(1)
+			} else {
+				selectedAction = selectAction(this.actions, this.goals)
+				this.currentActionDuration.set(selectedAction.duration)
+				this.currentAction.set(selectedAction)
+				if (this.currentActionDuration.get == 1) {
+					applyAction(selectedAction)
+					this.currentAction.set(null)
+					this.currentActionDuration.set(1)
+				}
+			}
+		}
+		applyTimeChanges
+		showState(occurrence.number, selectedAction, isCont)
+		this.currentActionDuration.decrementAndGet
+		if (occurrence.number >= 100) {
+			killMe
+		} else {
+			wake(new Step(occurrence))
+		}
+	}
+
+	def initializeGoalSystem : void {
+		val g0 = new BaseGoal("Hunger", Math.floor(Math.random * 10.0), 0.6)
+		val g1 = new BaseGoal("Rest", Math.floor(Math.random * 10.0), 0.4)
+		this.goals += g0
+		this.goals += g1
+
+		val a0 = new BaseAction("Eat-Snack", 2) => [
+			setInsistenceChangeFor(g0, -2.0)
+		]
+		this.actions += a0
+		val a1 = new BaseAction("Eat-Main-Meal", 4) => [
+			setInsistenceChangeFor(g0, -4.0)
+		]
+		this.actions += a1
+		val a2 = new BaseAction("Visit-Bathroom", 1) => [
+			setInsistenceChangeFor(g1, -4.0)
+		]
+		this.actions += a2
+	}
+
+	def applyAction(action : Action) : void {
+		for (goal : this.goals) {
+			var change = action.getInsistenceChangeFor(goal)
+			goal.insistence = goal.insistence + change
+		}
+	}
+
+	def applyTimeChanges : void {
+		for (goal : this.goals) {
+			var change = goal.insistenceChangePerTimeUnit
+			goal.insistence = goal.insistence + change
+		}
+	}
+	
+	def showState(step : int, selectedAction : Action, isCont : boolean) : void {
+		info("---- Step " + step)
+		if (selectedAction !== null) {
+			if (isCont) {
+				info("++++++++ Action: " + selectedAction.name)
+			} else {
+				info("Selected Action: " + selectedAction.name)
+			}
+			info("New state: ")
+		}
+		for (goal : this.goals) {
+			info(goal.toString)
+		}
+		for (action : this.actions) {
+			info(action.toString)
+		}
+	}
+
+}

@@ -1,0 +1,89 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.boot.internal.services
+
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.bootique.di.Injector
+import io.bootique.di.Provides
+import io.sarl.apputils.bootiqueapp.config.LogConfig
+import io.sarl.sre.janus.boot.configs.SreConfig
+import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
+import javax.inject.Provider
+import javax.inject.Singleton
+
+/** 
+ * Module for the creator of loggers.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class LoggerCreatorModule implements BQModule {
+
+	override configure(binder : Binder) {
+		//
+	}
+
+	/** 
+	 * Replies the creator of loggers.
+	 * 
+	 * @param logConfig the provider of logging configuration.
+	 * @param sreConfig the provider of SRE configuration.
+	 * @param injector the injector of the members.
+	 * @return the logger creator.
+	 */
+	@Provides
+	@Singleton
+	def provideLoggerCreator(logConfig : Provider<LogConfig>, sreConfig : Provider<SreConfig>, injector : Injector) : JulLoggerCreator {
+		val creator = new JulLoggerCreator(
+			logConfig.get.level.toJul,
+			sreConfig)
+		injector.injectMembers(creator)
+		return creator
+	}
+	
+}
+
+/** Provider of the module for the logging services.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class LoggerCreatorModuleProvider implements BQModuleProvider {
+
+	override module : BQModule {
+		return new LoggerCreatorModule
+	}
+
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::LoggerCreatorModuleProvider_0);
+	}
+
+}
+

@@ -1,0 +1,2 @@
+org.arakhne.afc.bootique.printconfig.PrintConfigModuleProvider
+org.arakhne.afc.bootique.FusionModuleProvider

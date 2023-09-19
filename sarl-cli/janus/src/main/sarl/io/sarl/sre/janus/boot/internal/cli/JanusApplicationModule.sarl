@@ -1,0 +1,104 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.boot.internal.cli
+
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.sarl.apputils.bootiqueapp.utils.SystemProperties
+import io.sarl.lang.core.SARLVersion
+import io.sarl.sre.janus.boot.commands.RunSingleAgentCommand
+import io.sarl.sre.janus.boot.configs.SreConfig
+import java.text.MessageFormat
+import javax.inject.Provider
+import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription
+
+import static extension io.bootique.BQCoreModule.*
+
+/** 
+ * Module for configuring the janus application information.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 3.0.11.0
+ */
+class JanusApplicationModule implements BQModule {
+
+	override configure(extension binder : Binder) {
+		// Name of the application.
+		typeof(String).bind(typeof(DefaultApplicationName)).toInstance(
+				SystemProperties::getValue(SreConfig::PREFIX + ".programName", SreConfig::DEFAULT_PROGRAM_NAME))
+		// Short description of the application.
+		binder.extend.applicationDescription = Messages::JanusApplicationModule_0
+		// Long description of the application.
+		typeof(String).bind(typeof(ApplicationDetailedDescription)).toProvider(typeof(LongDescriptionProvider)).inSingletonScope
+		// Synopsis of the application's arguments.
+		typeof(String).bind(typeof(ApplicationArgumentSynopsis)).toInstance(Messages.JanusApplicationModule_1)
+		// Default command
+		binder.extend.defaultCommand = typeof(RunSingleAgentCommand)
+	}
+
+	/** Provider of the long description of the application.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 3.0.11.0
+	 */
+	private static class LongDescriptionProvider implements Provider<String> {
+
+		override get : String {
+			val implementationSarlVersion = SARLVersion::SPECIFICATION_RELEASE_VERSION_STRING
+			val implementationJavaVersion = SARLVersion::MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+			return MessageFormat::format(Messages.JanusApplicationModule_2, implementationSarlVersion, implementationJavaVersion)
+		}
+
+	}
+
+}
+
+/** Provider of the module for the janus application information.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 3.0.11.0
+ */
+class JanusApplicationModuleProvider implements BQModuleProvider {
+
+	override module : BQModule {
+		return new JanusApplicationModule
+	}
+
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::JanusApplicationModuleProvider_0)
+	}
+
+}

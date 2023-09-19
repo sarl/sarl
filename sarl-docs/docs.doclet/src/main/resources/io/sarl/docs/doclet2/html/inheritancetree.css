@@ -1,0 +1,18 @@
+div.doclet-inheritancetree {
+    margin:0;
+    padding:0;
+}
+ul.doclet-inheritancetree-tree {
+    margin:0;
+    padding:0;
+}
+ul.doclet-inheritancetree-tree li {
+    display:inline;
+    list-style:none;
+    color=red;
+}
+ul.doclet-inheritancetree-tree li ul.doclet-inheritancetree-tree {
+    margin-left:15px;
+    padding-left:15px;
+    padding-top:1px;
+}

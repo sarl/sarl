@@ -1,0 +1,190 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.sarl.bom</groupId>
+  <artifactId>sarl-bom-parent</artifactId>
+  <version>0.13.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Parent for all SARL Boms</name>
+
+  <modules>
+    <module>sarl-tests-bom</module>
+    <module>sarl-lang-bom</module>
+    <module>sarl-compiler-bom</module>
+    <module>sarl-mavenplugin-bom</module>
+    <module>sarl-sdk-bom</module>
+    <module>sarl-app-bom</module>
+    <module>sarl-sre-bom</module>
+    <module>sarl-docs-bom</module>
+  </modules>
+
+  <properties>
+	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>sgalland</id>
+      <name>St&amp;eacute;phane Galland</name>
+      <email>stephane.galland@utbm.fr</email>
+      <url>http://www.ciad-lab.fr/stephane_galland</url>
+      <organization>
+        Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
+      </organization>
+      <organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+      <roles>
+        <role>Co-founder</role>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!--
+  
+  The following build plugins are used for ensuring that the generated pom file for this BOM:
+  
+  1) Use the value definitions from the common property artifact (sarl-properties)
+  2) All the properties have been expanded in the dependencyManagement even if they are resolved before the building stage
+  3) Expand all the properties to their respective values into the target pom file.
+  
+  -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.1.0</version>
+        <executions>
+          <execution>
+            <id>read-properties</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <urls>
+            <url>classpath:/sarl-lang.properties</url>
+          </urls>
+        </configuration> 
+        <dependencies>
+          <dependency>
+            <groupId>io.sarl.bom</groupId>
+            <artifactId>sarl-properties</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>compute-sarl-properties</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scripts>
+            <script>
+<![CDATA[
+def replace_properties(input) {
+	return input.replaceAll("[\$][{](.*?)[}]", {x, y -> if (project.properties[y]) project.properties[y] else '${'+y+'}'});
+}
+if (project.dependencyManagement && project.dependencyManagement.dependencies) {
+	for (dep : project.dependencyManagement.dependencies) {
+		dep.version = replace_properties(dep.version)
+	}
+	for (dep : project.dependencyManagement.dependencies) {
+		log.warn("Force version: " + dep.groupId + ":" + dep.artifactId + ":" + dep.version);
+	}
+}
+]]>
+            </script>
+          </scripts>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <type>pom</type> 
+            <version>4.0.12</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.5.0</version>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <flattenMode>bom</flattenMode>
+          <pomElements>
+            <dependencyManagement>resolve</dependencyManagement>
+            <url>resolve</url>
+          </pomElements>
+        </configuration> 
+      </plugin>
+    </plugins>
+  </build>
+
+	<profiles>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

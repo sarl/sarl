@@ -1,0 +1,4 @@
+io.sarl.lang.sarlc.modules.configs.CompilerConfigModuleProvider
+io.sarl.lang.sarlc.modules.configs.SarlcConfigModuleProvider
+io.sarl.lang.sarlc.modules.configs.ValidatorConfigModuleProvider
+io.sarl.lang.sarlc.modules.general.SarlBatchCompilerModuleProvider

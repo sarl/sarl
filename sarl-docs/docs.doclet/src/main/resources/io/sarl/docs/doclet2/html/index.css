@@ -1,0 +1,10 @@
+dt.doclet-index {
+	font-weight: bold;
+    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size:14px;
+	background-color: #dee3e9;
+	padding: 5px 5px 5px 5px;
+    text-transform: uppercase;
+}
+dd.doclet-index {
+}

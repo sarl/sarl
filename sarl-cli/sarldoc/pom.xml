@@ -1,0 +1,343 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl.cli</groupId>
+	<artifactId>sarldoc</artifactId>
+	<version>0.13.0-SNAPSHOT</version>
+	<name>CLI Documentation Generator</name>
+	<description>Command-line version of the SARL documentation generator</description>
+	<packaging>jar</packaging>
+
+	<inceptionYear>${sarl.inception.year}</inceptionYear>
+	
+	<organization>
+		<name>${sarl.vendor}</name>
+	</organization>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<cliToolName>sarldoc</cliToolName>
+		<cliToolMainClass>io.sarl.docs.sarldoc.Main</cliToolMainClass>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarlc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.docs</groupId>
+			<artifactId>docs.generator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.docs</groupId>
+			<artifactId>docs.doclet</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-app-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-constants-class</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/main/java/io/sarl/docs/sarldoc/Constants.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(PROGRAM_NAME *= *")([^"]+)(";)</token>
+									<value>$1${cliToolName}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
+					<testSource>${sarl-dsl.min.jdk.version}</testSource>
+					<testTarget>${sarl-dsl.min.jdk.version}</testTarget>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>read-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<urls>
+						<url>classpath:/sarl-lang.properties</url>
+					</urls>
+				</configuration> 
+				<dependencies>
+					<dependency>
+						<groupId>io.sarl.bom</groupId>
+						<artifactId>sarl-properties</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				 <version>3.6.0</version>
+				<executions>
+					<execution>
+						<id>cli-application</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>cli.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifest>
+									<mainClass>${cliToolMainClass}</mainClass>
+								</manifest>
+							</archive>
+							<attach>false</attach>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>generate-sarlc-linux</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<property name="sarlc.linux.input"
+									value="${project.basedir}/src-templates/${cliToolName}.sh" />
+								<property name="sarlc.linux.output"
+									value="${project.build.directory}/${cliToolName}.tmp" />
+								<property name="sarlc.linux.output.full"
+									value="${project.build.directory}/${cliToolName}" />
+								<copy overwrite="true" file="${sarlc.linux.input}"
+									tofile="${sarlc.linux.output}" />
+								<replace file="${sarlc.linux.output}"
+									token="{cliToolMainClass}" value="${cliToolMainClass}" />
+								<replace file="${sarlc.linux.output}"
+									token="{project.build.finalName}"
+									value="${project.build.finalName}" />
+								<concat dest="${sarlc.linux.output.full}" binary="yes">
+									<fileset file="${sarlc.linux.output}" />
+									<fileset
+										file="${project.build.directory}/${project.build.finalName}-cli.jar" />
+								</concat>
+								<chmod perm="ugo+x">
+									<fileset file="${sarlc.linux.output.full}" />
+								</chmod>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<id>generate-sarlc-win</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>console</headerType>
+							<outfile>${project.build.directory}/${cliToolName}.exe</outfile>
+							<jar>${project.build.directory}/${project.build.finalName}-cli.jar</jar>
+							<icon>${project.basedir}/icons/sarldoc.ico</icon>
+							<classPath>
+								<mainClass>${cliToolMainClass}</mainClass>
+								<addDependencies>false</addDependencies>
+								<postCp>.</postCp>
+							</classPath>
+							<jre>
+								<path>${project.build.directory}/jre-download/unpack</path>
+								<minVersion>${sarl-run.min.jdk.version}</minVersion>
+								<requiresJdk>true</requiresJdk>
+								<requires64Bit>true</requires64Bit>
+							</jre>
+							<versionInfo>
+								<fileVersion>${sarl.release_version}.0</fileVersion>
+								<txtFileVersion>${project.version}</txtFileVersion>
+								<fileDescription>${cliToolName}</fileDescription>
+								<copyright>${sarl.copyrighters}</copyright>
+								<productVersion>${sarl.release_version}.0</productVersion>
+								<txtProductVersion>${project.version}</txtProductVersion>
+								<productName>${cliToolName}</productName>
+								<internalName>${cliToolName}</internalName>
+								<originalFilename>${cliToolName}.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>net.jsign</groupId>
+				<artifactId>jsign-maven-plugin</artifactId>
+				<version>5.0</version>
+				<executions>
+					<execution>
+						<id>sarldoc-exe-sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${cliToolName}.exe</file>
+							<name>SARL Documentation Command-Line Generator</name>
+							<url>${sarl.url}</url>
+							<keystore>${project.basedir}/cert/app.p12</keystore>
+							<storetype>PKCS12</storetype>
+							<alias>sarl-developpers</alias>
+							<storepass>sarl-developpers</storepass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<id>remove-default-project-artifact</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>remove-project-artifact</goal>
+						</goals>
+						<configuration>
+							<removeAll>true</removeAll>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-native-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/${cliToolName}.exe</file>
+									<type>exe</type>
+									<classifier></classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/${cliToolName}</file>
+									<type>sh</type>
+									<classifier></classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<developers>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/stephane_galland</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+</project>

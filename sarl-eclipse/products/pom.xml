@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>sarl-eclipse</artifactId>
+		<version>0.13.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>sarl-eclipse-products</artifactId>
+	<packaging>pom</packaging>
+	<name>SARL Eclipse Products</name>
+	<description>Eclipse Products</description>
+
+	<modules>
+		<module>io.sarl.eclipse.products.ide</module>
+		<module>io.sarl.eclipse.products.dev</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+</project>

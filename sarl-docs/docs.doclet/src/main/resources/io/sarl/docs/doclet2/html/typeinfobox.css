@@ -1,0 +1,33 @@
+.doclet-typeinfobox {
+    margin-top:0;
+}
+.doclet-typeinfobox dl dt {
+    font-size:12px;
+    font-weight:bold;
+    margin:10px 0 0 0;
+    color:#4E4E4E;
+}
+.doclet-typeinfobox dl dd {
+    margin:5px 0 10px 0px;
+    font-size:14px;
+    font-family:'DejaVu Sans Mono',monospace;
+}
+div.doclet-typesignature {
+    display:block;
+    font-family: monospace;
+    margin:1em 0 1em 0;
+    padding-top: 1em;
+    border-top-width:2px;
+    border-top-style:solid;
+    border-top-color:#474747;
+}
+span.doclet-typesignature-typename {
+    font-weight:bold;
+}
+div.doclet-typedescription {
+    display:block;
+    margin:3px 10px 2px 0px;
+    color:#474747;
+}
+div.doclet-typedescription-main {
+}

@@ -1,0 +1,15 @@
+package io.sarl.sre.janus.itests
+
+import java.io.File
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Lifecycle
+
+agent MyAgent {
+	uses Lifecycle
+	on Initialize {
+		var f0 = new File(occurrence.parameters.get(0) as String)
+		var f1 = new File(f0, "agentexecuted.dir")
+		f1.mkdirs
+		killMe
+	}
+}

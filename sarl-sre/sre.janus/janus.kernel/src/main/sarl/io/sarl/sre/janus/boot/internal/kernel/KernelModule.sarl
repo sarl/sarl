@@ -1,0 +1,115 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.boot.internal.kernel
+
+import io.bootique.BQModuleMetadata
+import io.bootique.BQModuleProvider
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.bootique.di.Injector
+import io.bootique.di.Provides
+import io.sarl.sre.janus.KernelScope
+import io.sarl.sre.janus.boot.configs.SreConfig
+import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.janus.boot.internal.services.SreServices
+import io.sarl.sre.janus.services.context.Context
+import io.sarl.sre.janus.services.context.ContextFactory
+import io.sarl.sre.janus.services.logging.LoggingService
+import java.text.MessageFormat
+import java.util.Set
+import java.util.UUID
+import javax.inject.Named
+import javax.inject.Provider
+import javax.inject.Singleton
+import org.arakhne.afc.services.IService
+import org.arakhne.afc.services.IServiceManager
+import org.arakhne.afc.services.SynchronousServiceManager
+
+/** 
+ * Module for configuring the kernel specific components.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class KernelModule implements BQModule {
+
+	override configure(binder : Binder) {
+		//
+	}
+
+	/** Replies the kernel instance.
+	 *
+	 * @param injector the current injector.
+	 * @param factory the factory of context for creating the root context.
+	 * @param rootContextId the identifier of the root context.
+	 * @param rootDefaultSpaceId the identifier of the root default space.
+	 * @param logger the logging service.
+	 * @return the kernel instance.
+	 */
+	@Provides
+	@KernelScope
+	@Singleton
+	def provideKernelContext(injector : Injector, factory : ContextFactory,
+		@Named(BootConfig::ROOT_CONTEXT_ID_NAME) rootContextId : UUID,
+		@Named(BootConfig::ROOT_DEFAULT_SPACE_ID_NAME) rootDefaultSpaceId : UUID,
+		logger : LoggingService) : Context {
+		logger.getKernelLogger.finer [MessageFormat::format(Messages::KernelModule_0, rootContextId, rootDefaultSpaceId)]
+		var context = factory.newInstance(rootContextId, rootDefaultSpaceId, null)
+		injector.injectMembers(context)
+		return context
+	}
+
+	/** Replies the manager of the SRE services.
+	 * 
+	 * @param services the SRE services.
+	 * @param config the provider of configuration.
+	 * @return the manager of the SRE services.
+	 */
+	@Provides
+	@Singleton
+	def provideServiceManager(@SreServices services : Set<IService>, config : Provider<SreConfig>) : IServiceManager {
+		new SynchronousServiceManager(services)
+	}
+
+}
+
+/** Provider of the module for configuring the kernel specific components.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class KernelModuleProvider implements BQModuleProvider {
+
+	override module : BQModule {
+		return new KernelModule
+	}
+
+	override moduleBuilder : BQModuleMetadata.Builder {
+		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::KernelModuleProvider_0);
+	}
+
+}

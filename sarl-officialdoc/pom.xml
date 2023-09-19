@@ -1,0 +1,354 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl.docs</groupId>
+	<artifactId>sarl-officialdoc</artifactId>
+	<version>0.13.0-SNAPSHOT</version>
+	<name>Official SARL Documentation</name>
+	<description>All ages that are documenting SARL</description>
+	<packaging>jar</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- URL of the maven repository of Janus -->
+		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
+
+		<!-- Are the links' addresses converted from a Markdown format to a HTML format? -->
+		<convert.links>true</convert.links>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.docs</groupId>
+			<artifactId>docs.validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>sarl-maven-plugin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.sre.janus</groupId>
+			<artifactId>janus.kernel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.sre.janus</groupId>
+			<artifactId>janus.network</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarldoc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>janus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarlc</artifactId>
+			<type>sh</type>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>sarldoc</artifactId>
+			<type>sh</type>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>janus</artifactId>
+			<type>sh</type>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.cli</groupId>
+			<artifactId>janusnode</artifactId>
+			<type>sh</type>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.eclipse</groupId>
+			<artifactId>io.sarl.eclipse</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.sdk</groupId>
+			<artifactId>api.gametgob</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-docs-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>io.sarl.docs</groupId>
+				<artifactId>docs.generator</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>docs-initialize</id>
+						<goals>
+							<goal>initialize</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+					<execution>
+						<id>docs-generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+					<execution>
+						<id>docs-validate</id>
+						<goals>
+							<goal>generatetests</goal>
+						</goals>
+						<phase>generate-test-sources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<addYamlHeader>true</addYamlHeader>
+					<githubExtension>true</githubExtension>
+
+					<md2html>${convert.links}</md2html>
+					<transformPureHtmlLinks>${convert.links}</transformPureHtmlLinks>
+
+					<autoSectionNumbering>true</autoSectionNumbering>
+
+					<outline>true</outline>
+					<outlineStyleId>page_outline</outlineStyleId>
+					<!-- <outlineExternalMarker>{:toc}</outlineExternalMarker> -->
+					<kramdown>true</kramdown>
+
+					<localLinkValidation>true</localLinkValidation>
+					<remoteLinkValidation>false</remoteLinkValidation>
+
+					<shellCommands>
+						<shellCommand>
+							<name>sarlc</name>
+							<groupId>io.sarl.cli</groupId>
+							<artifactId>sarlc</artifactId>
+							<type>sh</type>
+						</shellCommand>
+						<shellCommand>
+							<name>sarldoc</name>
+							<groupId>io.sarl.cli</groupId>
+							<artifactId>sarldoc</artifactId>
+							<type>sh</type>
+						</shellCommand>
+						<shellCommand>
+							<name>janus</name>
+							<groupId>io.sarl.cli</groupId>
+							<artifactId>janus</artifactId>
+							<type>sh</type>
+						</shellCommand>
+						<shellCommand>
+							<name>janusnode</name>
+							<groupId>io.sarl.cli</groupId>
+							<artifactId>janusnode</artifactId>
+							<type>sh</type>
+						</shellCommand>
+					</shellCommands>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/documentation</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-documentation-sources</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
+					<testSource>${sarl-dsl.min.jdk.version}</testSource>
+					<testTarget>${sarl-dsl.min.jdk.version}</testTarget>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>read-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<urls>
+						<url>classpath:/sarl-lang.properties</url>
+					</urls>
+				</configuration> 
+				<dependencies>
+					<dependency>
+						<groupId>io.sarl.bom</groupId>
+						<artifactId>sarl-properties</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<developers>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/stephane_galland</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ngaud</id>
+			<name>Nicolas Gaud</name>
+			<email>nicolas.gaud@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/nicolas_gaud</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>sebastian.rodriguez@rmit.edu.au</email>
+			<url>http://www.sebastianrodriguez.com.ar/</url>
+			<organization>Royal Melbourne Institute of Technology</organization>
+			<organizationUrl>http://www.rmit.edu.au/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Thomas Farrenkopf</name>
+			<url>https://github.com/ThomasFarrenkopf</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>James Foster</name>
+			<email>github@jgfoster.net</email>
+			<url>https://github.com/jgfoster</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
+			<email>jeremiejost@gmail.com</email>
+			<url>https://github.com/jjst</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Ludovico de Nittis</name>
+			<email>aasonykk@gmail.com</email>
+			<url>https://github.com/RyuzakiKK</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Sebastian Sardina</name>
+			<email>sebastian.sardina@rmit.edu.au</email>
+			<url>https://github.com/ssardina</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+		<license>
+			<name>Creative Commons CC-BY-SA-4.0</name>
+			<url>https://creativecommons.org/licenses/by-sa/4.0/deed.en</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+</project>

@@ -1,0 +1,368 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl.lang</groupId>
+	<artifactId>sarl-maven-plugin</artifactId>
+	<version>0.13.0-SNAPSHOT</version>
+	<name>Maven SARL Compiler</name>
+	<description>Maven plugin for compiling SARL code</description>
+	<packaging>maven-plugin</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-clean-plugin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>batchcompiler</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>vmutils</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-lang-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-compiler-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-mavenplugin-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-mavenbatchcompiler-class</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/main/java/io/sarl/lang/maven/compiler/compiler/MavenBatchCompiler.java</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+							</regexFlags>
+							<replacements>
+								<replacement>
+									<token>(DEFAULT_COMPILER_VERSION *= *")([^"]+)(";)</token>
+									<value>$1${maven.compiler.version}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-plugin-config</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/main/resources/io/sarl/lang/maven/compiler/utils/config.properties</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+							</regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(plugin.groupId *= *)(.*)$</token>
+									<value>$1${project.groupId}</value>
+								</replacement>
+								<replacement>
+									<token>^(plugin.artifactId *= *)(.*)$</token>
+									<value>$1${project.artifactId}</value>
+								</replacement>
+								<replacement>
+									<token>^(plugin.version *= *)(.*)$</token>
+									<value>$1${project.version}</value>
+								</replacement>
+								<replacement>
+									<token>^(sarl-lib.groupId *= *)(.*)$</token>
+									<value>$1${sarl.corelib.groupId}</value>
+								</replacement>
+								<replacement>
+									<token>^(sarl-lib.artifactId *= *)(.*)$</token>
+									<value>$1${sarl.corelib.artifactId}</value>
+								</replacement>
+								<replacement>
+									<token>^(sarl-lib.osgiBundleId *= *)(.*)$</token>
+									<value>$1${sarl.corelib.osgiBundle}</value>
+								</replacement>
+								<replacement>
+									<token>^(sarl-sdk.groupId *= *)(.*)$</token>
+									<value>$1${sarl.sdk.groupId}</value>
+								</replacement>
+								<replacement>
+									<token>^(sarl-sdk.artifactId *= *)(.*)$</token>
+									<value>$1${sarl.sdk.artifactId}</value>
+								</replacement>
+								<replacement>
+									<token>^(cleaner.groupId *= *)(.*)$</token>
+									<value>$1${sarl.cleaner.groupId}</value>
+								</replacement>
+								<replacement>
+									<token>^(cleaner.artifactId *= *)(.*)$</token>
+									<value>$1${sarl.cleaner.artifactId}</value>
+								</replacement>
+								<replacement>
+									<token>^(cleaner.mojo *= *)(.*)$</token>
+									<value>$1${sarl.cleaner.mojo}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.9.0</version>
+				<configuration>
+					<goalPrefix>sarl</goalPrefix>
+					<!-- No dependency is scanned for extracting the mojos -->
+					<mojoDependencies />
+					<!-- Only the java annotations are considered for detecting the mojos -->
+					<extractors>
+						<extractor>java-annotations</extractor>
+					</extractors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.groupId}.sarl_maven_plugin</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>read-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<urls>
+						<url>classpath:/sarl-lang.properties</url>
+					</urls>
+				</configuration> 
+				<dependencies>
+					<dependency>
+						<groupId>io.sarl.bom</groupId>
+						<artifactId>sarl-properties</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.5.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<!-- MJAVADOC-770: Javadoc cannot handler un-named modules properly.
+								     A workaround is to force Javadoc to be run before Bnd.
+								     https://issues.apache.org/jira/projects/MJAVADOC/issues/MJAVADOC-770 -->
+								<phase>process-classes</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<docencoding>${project.build.sourceEncoding}</docencoding>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<charset>${project.build.sourceEncoding}</charset>
+							<show>protected</show>
+							<detectJavaApiLink>true</detectJavaApiLink>
+							<docfilessubdirs>true</docfilessubdirs>
+							<excludePackageNames></excludePackageNames>
+							<nohelp>true</nohelp>
+							<notree>true</notree>
+							<bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.yearyear} ${sarl.copyrighters}.</bottom>
+							<tags>
+								<tag>
+									<name>mavengroupid</name>
+									<placement>pt</placement>
+									<head>Maven Group Id:</head>
+								</tag>
+								<tag>
+									<name>mavenartifactid</name>
+									<placement>pt</placement>
+									<head>Maven Artifact Id:</head>
+								</tag>
+								<tag>
+									<name>ExcludeFromApidoc</name>
+									<placement>X</placement>
+								</tag>
+							</tags>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<developers>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/stephane_galland</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Mohamed Ezzat</name>
+			<email>mohamed.ezzat@devfactory.com</email>
+			<url>https://github.com/m-ezzat</url>
+			<roles>
+				<role>Code cleaning and optimization</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Thomas Piotrowski</name>
+			<email>thomas.piotrowski@utbm.fr</email>
+			<url>https://github.com/tpiotrow</url>
+			<roles>
+				<role>Maven Configuration</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+</project>

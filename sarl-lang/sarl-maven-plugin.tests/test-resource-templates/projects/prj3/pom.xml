@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl.maven.compiler.tests</groupId>
+	<artifactId>this-is-for-test-only-prj3</artifactId>
+	<version>%sarlreleaseversion%</version>
+	<name>This is for Test ONLY</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>core</artifactId>
+			<version>%sarlreleaseversion%</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>%mavencompilerversion%</version>
+				<configuration>
+					<source>%javaversion%</source>
+					<target>%javaversion%</target>
+					<encoding>%fileencoding%</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>sarl-maven-plugin</artifactId>
+				<version>%sarlreleaseversion%</version>
+				<extensions>true</extensions>
+				<configuration>
+					<source>%javaversion%</source>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

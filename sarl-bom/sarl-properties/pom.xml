@@ -1,0 +1,214 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.sarl.bom</groupId>
+  <artifactId>sarl-properties</artifactId>
+  <version>0.13.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Properties for SARL Projects</name>
+
+  <properties>
+	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	  <minimal.jdk.version>17</minimal.jdk.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${minimal.jdk.version}</source>
+          <target>${minimal.jdk.version}</target>
+          <testSource>${minimal.jdk.version}</testSource>
+          <testTarget>${minimal.jdk.version}</testTarget>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <showDeprecation>false</showDeprecation>
+          <showWarnings>false</showWarnings>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>compute-sarl-properties</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scripts>
+            <script>
+<![CDATA[
+log.info("Starting configuration of the project properties");
+
+def now = session.getStartTime();
+
+//********************************
+// Read the property file
+def propertiesFile = new File(project.basedir, "sarl-lang.properties");
+log.info("Reading properties from " + propertiesFile);
+def properties = new Properties()
+propertiesFile.withInputStream {
+    properties.load(it)
+}
+
+//************************
+// Compute version and snapshot tag
+def snapshotTag = "-SNAPSHOT";
+def version;
+def releaseStatus;
+def isSnapshot;
+def endOfVersion;
+def p2UploadToDir;
+def projectVersion = project.version
+def isDevelVersion = projectVersion.endsWith(snapshotTag)
+
+if (isDevelVersion) {
+	def len = projectVersion.size() - snapshotTag.size();
+	version = projectVersion.substring(0, len);
+	releaseStatus = "Draft Release";
+	isSnapshot = true;
+	endOfVersion = snapshotTag;
+	properties["sarl.buildId"] = version + "-BETA"
+} else {
+	version = projectVersion;
+	releaseStatus = "Stable Release";
+	isSnapshot = false;
+	endOfVersion = "";
+	properties["sarl.buildId"] = project.properties["buildId"]
+}
+
+log.info("set sarl.buildId to: " + properties["sarl.buildId"]);
+
+//************************
+// Set SARL properties
+versionFields = version.split("\\.");
+properties["sarl.version"] = projectVersion;
+properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
+properties["sarl.release_version"] = properties["sarl.specification.release_version"] + "." + versionFields[2];
+
+if (isDevelVersion) {
+	properties["sarl.release_version.osgi"] = properties["sarl.release_version"]+".qualifier";
+} else {
+	properties["sarl.release_version.osgi"] = properties["sarl.release_version"];
+}
+
+properties["sarl.release_version.maven"] = properties["sarl.release_version"]+endOfVersion;
+properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+properties["sarl.specification.release_status"] = releaseStatus;
+properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
+properties["sarl.maven.compiler.version"] = properties["sarl.version"];
+
+log.info("set sarl.version to: " + properties["sarl.version"]);
+log.info("set sarl.specification.release_version to: " + properties["sarl.specification.release_version"]);
+log.info("set sarl.release_version to: " + properties["sarl.release_version"]);
+log.info("set sarl.release_version.osgi to: " + properties["sarl.release_version.osgi"]);
+log.info("set sarl.release_version.maven to: " + properties["sarl.release_version.maven"]);
+log.info("set sarl.specification.release_date to: " + properties["sarl.specification.release_date"]);
+log.info("set sarl.specification.release_status to: " + properties["sarl.specification.release_status"]);
+log.info("set sarl.maven.compiler.version to: " + properties["sarl.maven.compiler.version"]);
+
+properties["sarl-dsl.min.jre.environment"] = "JavaSE-" + properties["sarl-dsl.min.jdk.version"];
+properties["sarl-dsl.next.unsupported.jdk.version"] = "" + (properties["sarl-dsl.max.jdk.version"].toInteger() + 1);
+properties["sarl-run.min.jre.environment"] = "JavaSE-" + properties["sarl-run.min.jdk.version"];
+properties["sarl-run.next.unsupported.jdk.version"] = "" + (properties["sarl-run.max.jdk.version"].toInteger() + 1);
+properties["sarl-user.min.jre.environment"] = "JavaSE-" + properties["sarl-user.min.jdk.version"];
+properties["sarl-user.next.unsupported.jdk.version"] = "" + (properties["sarl-user.max.jdk.version"].toInteger() + 1);
+
+log.info("set sarl-dsl.min.jre.environment to: " + properties["sarl-dsl.min.jre.environment"]);
+log.info("set sarl-dsl.next.unsupported.jdk.version to: " + properties["sarl-dsl.next.unsupported.jdk.version"]);
+log.info("set sarl-run.min.jre.environment to: " + properties["sarl-run.min.jre.environment"]);
+log.info("set sarl-run.next.unsupported.jdk.version to: " + properties["sarl-run.next.unsupported.jdk.version"]);
+log.info("set sarl-user.min.jre.environment to: " + properties["sarl-user.min.jre.environment"]);
+log.info("set sarl-user.next.unsupported.jdk.version to: " + properties["sarl-user.next.unsupported.jdk.version"]);
+
+properties["janus.version"] = "3."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
+properties["janus.release_version"] = "3."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
+
+log.info("set janus.release_version to: " + properties["janus.release_version"]);
+log.info("set janus.version to: " + properties["janus.version"]);
+log.info("set janus.release_version to: " + properties["janus.release_version"]);
+
+//************************
+// Set Xtext properties
+versionFields = properties["xtext.version"].split("\\.");
+
+properties["xtext.version.next"] = versionFields[0] + "." + versionFields[1] + "." + (versionFields[2].toInteger() + 1);
+properties["xtext.version.javadoc"] = versionFields[0] + "." + versionFields[1];
+
+log.info("set xtext.version.next to: " + properties["xtext.version.next"]);
+log.info("set xtext.version.javadoc to: " + properties["xtext.version.javadoc"]);
+
+log.info("End of configuration of the project properties");
+
+//************************
+// Set Guice properties
+def guiceVersionParts = properties["guice.version"].tokenize(".");
+def guiceMinVersion = guiceVersionParts[0].toInteger();
+properties["guice.min.version"] = Integer.toString(guiceMinVersion);
+properties["guice.max.version"] = Integer.toString(guiceMinVersion + 1);
+
+//********************************
+// Save the property file
+
+def outPropertiesFolder = new File(project.build.outputDirectory);
+def outPropertiesFile = new File(outPropertiesFolder, "sarl-lang.properties");
+log.info("Saving configuration properties into " + outPropertiesFile);
+outPropertiesFolder.mkdirs();
+outPropertiesFile.withOutputStream {
+    properties.store(it, "Automatically generated. Do not change.")
+}
+]]>
+            </script>
+          </scripts>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <type>pom</type> 
+            <version>4.0.12</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+	<profiles>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
+

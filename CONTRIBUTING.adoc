@@ -9,17 +9,6 @@ Any contribution to the SARL is welcome.
 For setting up the development environment of SARL, please follow our recommendations in the following sections.
 
 
-
-
-[align="center",width="40%",frame="topbot",cols="2*^",options="header"]
-|==========================
-2+| Build Status 
-| **Linux footnote:[Linux 4.15.0-102, OpenJDK 1.8, Maven 3.6.2]** | image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:Sarl_Build)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=Sarl_Build&guest=1] 
-| Windows footnote:[Windows Server 2019, version 10.0, OpenJDK 1.8, Maven 3.6.2] | image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:SarlGit_Build_Windows)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=SarlGit_Build_Windows&guest=1]
-| OSX footnote:[OSX 10.12, Xcode 8.3, OracleJDK 1.8.0_112, Maven 3.6.3] | image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-|==========================
-
-
 == 1. Issues
 
 Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
@@ -45,7 +34,16 @@ This wizard required to hae a valid Github account.
 
 This section describes how to set up the Eclipse development environment for contributing to SARL.
 
-=== 2.1. Obtaining the SARL Source Code
+=== 2.1. Tested versions of the development tools
+
+The main SARL developpers are using the following development environment:
+
+* *Java Development Kit (JDK) 17* from OpenJDK or Oracle.
+* *Maven 3.9.4* (for shell command-line actions) from Apache.
+* *Eclipse 2023-06*, for Java and DSL Developers, and for RCP and RAP Developers
+
+
+=== 2.2. Obtaining the SARL Source Code
 
 We recommend to fork the SARL project into your own Github account, in order to make easier the pull request that is needed for sending your contribution.
 Forking the SARL project must be done through the Github web interface: click on the `Fork` button on the SARL project page.
@@ -58,46 +56,93 @@ git clone https://github.com/<your_github_login>/sarl
 
 We recommend to use the git tool on command-line until you're becoming expert with the git tools that is embedded in Eclipse.
 
-=== 2.2. First Compilation the SARL Source Code
+=== 2.3. Structure of the SARL project
+
+The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. These sub-projects are:
+
+* link:./sarl-bom[sarl-bom]: Provide the Build-of-Material, i.e., a shared list of Maven dependency, for all the SARL sub-projects;
+* link:./sarl-baseutils[sarl-baseutils]: Set of Maven artifacts that are independent of SARL but needed to build the SARL artifacts;
+* link:./sarl-lang[sarl-lang]: Provides the language definition, the associated compiler (including the Maven plugin) and code formatting styles for different text editors;
+* link:./sarl-sdk[sarl-sdk]: Set of Maven artifacts that constitute the SDK for all the SARL developers;
+* link:./sarl-apputils[sarl-apputils]: Shared projects for building applications that are using a SARL compiler;
+* link:./sarl-sdk[sarl-sre]: SARL runtime environment (or SARL virtual machine);
+* link:./sarl-docs[sarl-docs]: Tools and Doclet for the generation of the documentation, including the API documentation pages;
+* link:./sarl-cli[sarl-cli]: Set of command-line tools (sarlc, sarldoc, janus...);
+* link:./sarl-eclipse[sarl-eclipse]: Eclipse-based editor for SARL;
+* link:./sarl-officialdoc[sarl-officialdoc]: Markdown files of the official documentation of SARL.
+
+=== 2.4. First Compilation the SARL Source Code
 
 Maven is the standard tool for compiling SARL.
 
-We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment.
-The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
-This step is mandatory for compiling the embedded SARL run-time environment (Janus). Indeed, it needs the current SARL tools
-to be installed for being compiled.
+We recommended to launch the Maven compilation process on the shell command line before importing the code in the Eclipse environment.
+Indeed, Maven generates several Java code files, and updates resource files with the correct configuration values.
 
-The command line is:
+The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
+
+==== a) Linux or MacOS Operating Systems
+
+In a command-line shell, run the Bash script:
+
 ```bash
-mvn clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
+$> ./build-all.sh
 ```
 
-If you obtained a compilation error with the message: `Cannot run program "[...]/launch4j-maven-plugin-[...]-workdir-linux/bin/windres": error=2, No such file or directory`, it means that the launch4j Maven plugin cannot find a library into your operating system.
-According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issues/4[Issue 4 of launch4j-maven-plugin], you should install the following libraries: `zlib`, `ncurses`, `bzip2`.
+==== b) Windows Operating System
+
+A PowerShell script is provided for building all the projects of SARL:
+
+```bash
+C:> build-all
+```
 
 
-=== 2.3. Installing the Eclipse Development Environment
 
-For setting up the development environment, you should follow the steps:
+=== 2.5. Installing the Eclipse Development Environment
 
-* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2019-09` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+Two different types of contributions could be associated to the SARL project:
+
+* Contributions to the SARL tool chain (compiler, SDK, etc), excluding Eclipse-based tools; and
+* Contributions to the Ecipse tools: they are the plugins inside Eclipse and the Eclipse IDE.
+
+==== a) Contributions to the SARL tools excluding Eclipse
+
+For setting up the development environment for contributing to the SARL tools, you should follow the steps:
+
+* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* all the tools for compiling a language grammar.
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
-* Install the Checkstyle CS-Eclipse plugin.
-** Version: `8.18`.
-* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
-** Select the folder in which you have cloned the SARL project (see Section 2.1);
+** CAUTION: We do not recommend to import `sarl-bom` in Eclipse because of its specific static in the compilation process.
+** Select the folder in which you have cloned the SARL project (see Section 2.2);
+** Click on `Finish`.
+* Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
+* Clean and compile the project: `Menu Project > Clean`. 
+
+==== b) Contributions to the Eclipse tools of SARL
+
+For setting up the development environment for contributing to the Eclipse-based tools, you should follow the steps:
+
+* Download the *Eclipse IDE for RCP and RAP Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the tools for developping Eclipse plugins and applications.
+* Launch the *Eclipse IDE for RCP and RAP Developers*, and configure it (look&feel, etc.)
+* Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** CAUTION: We do not recommend to import `sarl-bom` in Eclipse because of its specific static in the compilation process.
+** Select the folder in which you have cloned the SARL project (see Section 2.2);
 ** Click on `Finish`.
 * Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
-** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
+** Open the target platform file `sarl-target-platform.target` in the project `sarl-eclipse`;
 ** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
 ** Click on `Set as Target Platform` or `Reload Target Platform` at the upper right corner of the file editor.
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
-* The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-=== 2.4. Compilation of SARL before Contributing
+=== 2.6. Creating the launch configuration within Eclipse 
+
+To create the initial version of the launch configuration, open the product overview and click in the top right corner on the "Launch an eclipse application" Button. This will automatically create a first launch configuration.
+
+Then,the "Run Configuration" to manage the detail of your launch config, switch to the "Plug-ins" tab, and check the "Include required Features and Plug-ins automatically while launching" checkbox, and run it.
+
+
+=== 2.7. Compilation of SARL before Submitting your Contribution
 
 Prior to any sending of your contribution (see Section 2.5), you must ensure that your local copy of SARL compiles without error.
 
@@ -110,21 +155,21 @@ mvn clean install
 
 This command line will launch the compilation, checkstyle and unit tests. It must be successfull.
 
-=== 2.5. Sending the Contribution
+=== 2.8. Sending the Contribution
 
 For sending your contribution to the SARL master repository, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
 
 For being merged, your must ensure the following points:
 
 * Your PR must be compilable with Maven.
-* Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking. This process is supported by link:https://travis-ci.org/sarl/sarl[Travis-CI] for linux and OSX platforms, and link:https://ci.appveyor.com/project/gallandarakhneorg/sarl[AppVeyor] for Windows platforms.
+* Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking.
 * You must sign the link:https://cla-assistant.io/sarl/sarl[Contributor License Agreement] on GitHub. It is supported by link:https://cla-assistant.io/sarl/sarl[cla-assistant] (link:https://github.com/sarl/sarl/blob/master/build-tools/licenses/CLA.md[CLA text]).
 * Your PR should be reviewed by one or more of the main contributors for ensuring it is following the development rules and philosophy related to SARL.
 
 The page of your PR on Github is displaying the status of your PR.
 If one point is failing, please follows the steps:
 
-* Go on the link:https://travis-ci.org/sarl/sarl[Travis-CI] or link:https://ci.appveyor.com/project/gallandarakhneorg/sarl[AppVeyor] console for obtaining the cause of the failure.
+* Go on the CI console for obtaining the cause of the failure.
 * Fix the code of your PR on your local copy.
 * Commit on your local repository, compile, and test until you have fixed the issue.
 * Push the changes on the same PR with `git push -f`, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*

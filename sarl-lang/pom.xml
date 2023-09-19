@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl.lang</groupId>
+	<artifactId>sarl-lang</artifactId>
+	<version>0.13.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>SARL Language</name>
+	<description>Definition of the language and compilers for SARL</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>core</module>
+				<module>mwe2</module>
+				<module>compiler</module>
+				<module>compiler.tests</module>
+				<module>pythongenerator</module>
+				<module>batchcompiler</module>
+				<module>sarl-maven-plugin</module>
+				<module>sarl-maven-plugin.tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>public-sarl-api-module-set</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>core</module>
+				<module>compiler</module>
+				<module>pythongenerator</module>
+				<module>batchcompiler</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>public-sarl-api-module-set-aggregateddoc</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>sarl-maven-plugin</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<developers>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/stephane_galland</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ngaud</id>
+			<name>Nicolas Gaud</name>
+			<email>nicolas.gaud@utbm.fr</email>
+			<url>http://www.ciad-lab.fr/nicolas_gaud</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>alombard</id>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>http://www.sarl.io/alexandre_lombard</url>
+			<organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+			<organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>sebastian.rodriguez@rmit.edu.au</email>
+			<url>http://www.sebastianrodriguez.com.ar/</url>
+			<organization>Royal Melbourne Institute of Technology</organization>
+			<organizationUrl>http://www.rmit.edu.au/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Mohamed Ezzat</name>
+			<url>https://github.com/m-ezzat</url>
+			<roles>
+				<role>Cleaning and optimization of source code</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Thomas Piotrowski</name>
+			<url>https://github.com/tpiotrow</url>
+			<roles>
+				<role>Maven configuration</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<repositories>
+	  <repository>
+	    <id>io.sarl-maven</id>
+	    <name>SARL Snapshots</name>
+	    <url>http://maven.sarl.io/</url>
+	  </repository>
+	</repositories>
+	<pluginRepositories>
+    	  <pluginRepository>
+	    <id>io.sarl-maven</id>
+	    <name>SARL Snapshots</name>
+	    <url>http://maven.sarl.io/</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	  </pluginRepository>
+	</pluginRepositories>
+
+</project>

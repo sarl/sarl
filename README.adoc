@@ -13,23 +13,23 @@ We are convinced that the agent-oriented paradigm holds the keys to effectively 
 
 Considering the variety of existing approaches and meta-models in the field of agent-oriented engineering and more generally multi-agent systems, our approach remains as generic as possible and highly extensible to easily integrate new concepts and features. The language is platform- and architecture-independent. 
 
-However, we provide a first set of tools to support its execution based on the new version 2.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
+However, we provide a first set of tools to support its execution based on the recent version 3.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
 
-image:http://www.sarl.io/images/compilation-process.png[align="center"]
+image:http://www.sarl.io/docs/official/compilation/compilation_process.png[align="center"]
 
 
-image:https://img.shields.io/badge/Documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
-image:https://img.shields.io/badge/Documentation-Reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/official/index.html]
+image:https://img.shields.io/badge/documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
+image:https://img.shields.io/badge/documentation-reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/official/index.html]
 image:https://badges.gitter.im/sarl/Lobby.svg[link=https://gitter.im/sarl/Lobby]
 
 
-image:https://img.shields.io/badge/Requires-Java%208-yellowgreen.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/badge/Interoperable%20with-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/maven-central/v/io.sarl.maven/io.sarl.maven.sdk.svg?label=Available%20on%20Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
-image:https://img.shields.io/badge/Build%20with-Maven-blue.svg?style=flat-square[link=http://maven.apache.org]
+image:https://img.shields.io/badge/requires-Java%2017-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/badge/interoperable%20with-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/maven-central/v/io.sarl.sdk/sdk.svg?label=available%20on%20Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
+image:https://img.shields.io/badge/build%20with-Maven-blue.svg?style=flat-square[link=http://maven.apache.org]
 
 
-image:https://img.shields.io/badge/Based%20on-Xtext-orange.svg?style=flat-square[link=https://eclipse.org/Xtext]
+image:https://img.shields.io/badge/based%20on-Xtext-orange.svg?style=flat-square[link=https://eclipse.org/Xtext]
 
 
 
@@ -38,23 +38,11 @@ image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=htt
 
 
 
-
-[align="center",width="40%",frame="topbot",cols="2*^",options="header"]
-|==========================
-2+| Build Status 
-| **Linux footnote:[Linux 4.15.0-102, OpenJDK 1.8, Maven 3.6.2]** | image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:Sarl_Build)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=Sarl_Build&guest=1] 
-| Windows footnote:[Windows Server 2019, version 10.0, OpenJDK 1.8, Maven 3.6.2] | image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:SarlGit_Build_Windows)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=SarlGit_Build_Windows&guest=1]
-| OSX footnote:[OSX 10.12, Xcode 8.3, OracleJDK 1.8.0_112, Maven 3.6.3] | image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-|==========================
-
-
-
 toc::[]
 
 == 1. Requirements
 
-* Java Development Toolkit (JDK) between 1.8 and 11.
-* You may encountering issues if your are using Java 12 or higher with SARL.
+* Java Development Toolkit (JDK) 17 or higher.
 
 == 2. Using SARL
 
@@ -72,14 +60,14 @@ Consequently, you could directly include the SARL module into the Maven dependen
 ```xml
 	...
 	<dependency>
-	  <groupId>io.sarl.maven</groupId>
-	  <artifactId>io.sarl.maven.sdk</artifactId>
-	  <version>0.11.0</version>
+	  <groupId>io.sarl.sdk</groupId>
+	  <artifactId>sdk</artifactId>
+	  <version>0.12.0</version>
 	</dependency>
 	...
 ```
 
-Please, replace Version `0.11.0` in the previous snipset by the number of the version you want to use.
+Please, replace Version `0.12.0` in the previous snipset by the number of the version you want to use.
 
 === 2.3. Use of the development version with Maven
 
@@ -90,9 +78,9 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	...
 	<dependencies>
 	  <dependency>
-	    <groupId>io.sarl.maven</groupId>
-	    <artifactId>io.sarl.maven.sdk</artifactId>
-	    <version>0.12.0-SNAPSHOT</version>
+	    <groupId>io.sarl.sdk</groupId>
+	    <artifactId>sdk</artifactId>
+	    <version>0.13.0-SNAPSHOT</version>
 	  </dependency>
 	<dependencies>
 	...
@@ -127,13 +115,13 @@ For using the `sarl-maven-plugin`, you should add in your pom file:
 	<build>
 	  <plugins>
 	    <plugin>
-	      <groupId>io.sarl.maven</groupId>
+	      <groupId>io.sarl.lang</groupId>
 	      <artifactId>sarl-maven-plugin</artifactId>
-	      <version>0.11.0</version>
+	      <version>0.12.0</version>
 	      <extensions>true</extensions>
 	      <configuration>
-	        <source>1.8</source>
-	        <target>1.8</target>
+	        <source>17</source>
+	        <target>17</target>
 	        <encoding>UTF-8</encoding>
 	      </configuration>
 	    </plugin>
@@ -144,7 +132,7 @@ For using the `sarl-maven-plugin`, you should add in your pom file:
 	...
 ```
 
-Please, replace Version `0.11.0` in the previous snipset by the number of the version you want to use.
+Please, replace Version `0.12.0` in the previous snipset by the number of the version you want to use.
 
 CAUTION: Do not forget to set the `extensions` flag to `true`.
 
@@ -153,21 +141,33 @@ CAUTION: Do not forget to set the `extensions` flag to `true`.
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
 
-* link:./formatting-styles/textmate/sarl.tmLanguage[Atom] (TextMate language definition)
-* link:./formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
-* link:./formatting-styles/prettify/lang-sarl.js[Google Prettify]
-* link:./formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[Atom] (TextMate language definition)
+* link:./sarl-lang/formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
+* link:./sarl-lang/formatting-styles/prettify/lang-sarl.js[Google Prettify]
+* link:./sarl-lang/formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
 * LaTeX:
-** LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
-** link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
-* link:./formatting-styles/pygments/sarlexer/sarl.py[Pygments]
-* link:./formatting-styles/textmate/sarl.tmLanguage[Sublime Text] (TextMate language definition)
-* link:./formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./formatting-styles/textmate/sarl.plist[plist definition]) 
-* link:./formatting-styles/vim/sarl.vim[Vim] 
+** LaTeX listing: link:./sarl-lang/formatting-styles/latex/sarl-listing.sty[monochrom], link:./sarl-lang/formatting-styles/latex/sarl-colorized-listing.sty[color]
+** link:./sarl-lang/formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
+* link:./sarl-lang/formatting-styles/pygments/sarlexer/sarl.py[Pygments]
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[Sublime Text] (TextMate language definition)
+* link:./sarl-lang/formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./sarl-lang/formatting-styles/textmate/sarl.plist[plist definition]) 
+* link:./sarl-lang/formatting-styles/vim/sarl.vim[Vim] 
 
-== 3. P2 Repository
+== 3. Separated Sub-Projects
 
-A P2 repository is set up and accesible at the address: `http://updates.sarl.io`.
+The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. These sub-projects are:
+
+* link:./sarl-bom[sarl-bom]: Provide the Build-of-Material, i.e., a shared list of Maven dependency, for all the SARL sub-projects;
+* link:./sarl-baseutils[sarl-baseutils]: Set of Maven artifacts that are independent of SARL but needed to build the SARL artifacts;
+* link:./sarl-lang[sarl-lang]: Provides the language definition, the associated compiler (including the Maven plugin) and code formatting styles for different text editors;
+* link:./sarl-sdk[sarl-sdk]: Set of Maven artifacts that constitute the SDK for all the SARL developers;
+* link:./sarl-apputils[sarl-apputils]: Shared projects for building applications that are using a SARL compiler;
+* link:./sarl-sdk[sarl-sre]: SARL runtime environment (or SARL virtual machine);
+* link:./sarl-docs[sarl-docs]: Tools and Doclet for the generation of the documentation, including the API documentation pages;
+* link:./sarl-cli[sarl-cli]: Set of command-line tools (sarlc, sarldoc, janus...);
+* link:./sarl-eclipse[sarl-eclipse]: Eclipse-based editor for SARL;
+* link:./sarl-officialdoc[sarl-officialdoc]: Markdown files of the official documentation of SARL.
+
 
 == 4. Issues
 
@@ -183,17 +183,21 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 
 == 6. Authors and Contributors
 
-* image:https://avatars.githubusercontent.com/klmp200[width="50px",link=https://github.com/klmp200] Antoine Bartuccio, fireworks and Sierpinski fractal examples.
-* image:https://avatars.githubusercontent.com/gb96[width="50px",link=https://github.com/gb96] Greg Bowering, fixes for localization support within the fireworks example.
-* image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
-* image:https://avatars.githubusercontent.com/ThomasFarrenkopf[width="50px",link=https://github.com/ThomasFarrenkopf] Thomas Farrenkopf, documentation contributor.
-* image:https://avatars.githubusercontent.com/jgfoster[width="50px",link=https://github.com/jgfoster] James Foster, documentation contributor.
-* image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.ciad-lab.fr/author-10836/[Stéphane GALLAND], founder, original and active author.
-* image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.ciad-lab.fr/author-10834/[Nicolas GAUD], founder, original and active author.
+* image:https://avatars.githubusercontent.com/klmp200[width="50px",link=https://github.com/klmp200] Antoine BARTUCCIO, fireworks and Sierpinski fractal examples.
+* image:https://avatars.githubusercontent.com/Lomadriel[width="50px",link=https://github.com/gb96] Gérôme BOULMIER, game of life example.
+* image:https://avatars.githubusercontent.com/gb96[width="50px",link=https://github.com/gb96] Greg BOWERING, fixes for localization support within the fireworks example.
+* image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed EZZAT, code cleaning and optimization.
+* image:https://avatars.githubusercontent.com/ThomasFarrenkopf[width="50px",link=https://github.com/ThomasFarrenkopf] Thomas FARRENKOPF, documentation contributor.
+* image:https://avatars.githubusercontent.com/jgfoster[width="50px",link=https://github.com/jgfoster] James FOSTER, documentation contributor.
+* image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.ciad-lab.fr/stephane_galland/[Stéphane GALLAND], founder, original and active author.
+* image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.ciad-lab.fr/nicolas_gaud/[Nicolas GAUD], founder, original and active author.
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
+* image:https://avatars.githubusercontent.com/alexandrelombard[width="50px",link=https://github.com/alexandrelombard] link:http://www.ciad-lab.fr/alexandre_lombard/[Alexandre LOMBARD], active author.
 * image:https://avatars.githubusercontent.com/RyuzakiKK[width="50px",link=https://github.com/RyuzakiKK] Ludovico de NITTIS, documentation contributor.
+* image:https://avatars.githubusercontent.com/pinam45[width="50px",link=https://github.com/pinam45] Maxime PINARD, game of life example.
 * image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, maven configuration.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://www.sebastianrodriguez.com.ar[Sebastian RODRIGUEZ], founder, original and active author.
+* image:https://avatars.githubusercontent.com/ssardina[width="50px",link=https://github.com/ssardina] Sebastian SARDINA, documentation contributor.
 
 == 7. License of SARL
 
@@ -201,8 +205,5 @@ SARL is distributed under the link:./LICENSE[Apache v2 license], and is copyrigt
 
 == 8. Success Stories
 
-The following projects have sucessfully used SARL:
-
-* link:https://github.com/gallandarakhneorg/jaak[Jaak Simulation Library]
-* link:https://bitbucket.org/sarlrmit/sarl-controller/src[SARL Elevator Simulator Controller]
+SARL was successfully used by multiple projects. They are listed on the link:http://www.sarl.io/community/index.html[official SARL website].
 

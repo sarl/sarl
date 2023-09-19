@@ -1,0 +1,7 @@
+.doclet-tags-comment {
+	display: none;
+}
+.doclet-tags-value-comment {
+	font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+}

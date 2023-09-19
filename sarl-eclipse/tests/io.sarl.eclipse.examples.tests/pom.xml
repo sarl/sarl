@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>sarl-eclipse-tests</artifactId>
+		<version>0.13.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.eclipse.examples.tests</artifactId>
+	<packaging>jar</packaging>
+
+	<name>SARL Eclipse Example Tests</name>
+
+	<properties>
+		<mvn.command>mvn</mvn.command>
+		<pathToExamplesProject>../../plugins/io.sarl.eclipse.examples</pathToExamplesProject>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.eclipse</groupId>
+			<artifactId>io.sarl.eclipse.examples</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>vmutils</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>batchcompiler</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>compiler.tests</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.bom</groupId>
+				<artifactId>sarl-tests-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-mavenbatchcompiler-class</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/test/java/io/sarl/eclipse/examples/tests/utils/ExamplesTestUtils.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(MAVEN_COMMAND *= *")([^"]+)(";)</token>
+									<value>$1${mvn.command}$3</value>
+								</replacement>
+								<replacement>
+									<token>(CURRENT_JAVA_VERSION *= *")([^"]+)(";)</token>
+									<value>$1${sarl-dsl.min.jdk.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(DEFAULT_RELATIVE_PATH_BASE *= *")([^"]+)(";)</token>
+									<value>$1${pathToExamplesProject}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>read-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<urls>
+						<url>classpath:/sarl-lang.properties</url>
+					</urls>
+				</configuration> 
+				<dependencies>
+					<dependency>
+						<groupId>io.sarl.bom</groupId>
+						<artifactId>sarl-properties</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,155 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>sarl-eclipse-plugins</artifactId>
+		<version>0.13.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>io.sarl.eclipse.sre.janus</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>Janus for Eclipse</name>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-eclipse-buildproperties</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(jre\.compilation\.profile *= *)(.*)$</token>
+									<value>$1${sarl-dsl.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-manifestmf</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/META-INF/MANIFEST.MF</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
+									<value>$1${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-aboutbox</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/about.mappings</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(0 *= *)(.*)$</token>
+									<value>$1${sarl.buildId}</value>
+								</replacement>
+								<replacement>
+									<token>^(1 *= *)(.*)$</token>
+									<value>$1${sarl.inception.year}-${sarl.last.year}</value>
+								</replacement>
+								<replacement>
+									<token>^(2 *= *)(.*)$</token>
+									<value>$1${sarl.copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>^(3 *= *)(.*)$</token>
+									<value>$1${sarl.url}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-janus-bundle-lists</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/sre/janus/buildpath/janus-bundles.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(JANUS_MAIN_BUNDLE *= *)(.*)$</token>
+									<value>$1${sarl.janus.main.bundle}</value>
+								</replacement>
+								<replacement>
+									<token>^(JANUS_BUNDLES *= *)(.*)$</token>
+									<value>$1${sarl.janus.all.bundles}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-janus-network-bundle-lists</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/sre/janus/network/janus-network-bundles.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(JANUS_NETWORK_BUNDLES *= *)(.*)$</token>
+									<value>$1${sarl.janus.network.all.bundles}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-java-plugin-names</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/sre/janus/JanusEclipsePlugin.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(PLUGIN_ID *= *")([^"]+)(";)</token>
+									<value>$1${sarl.janus.eclipse.bundle}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

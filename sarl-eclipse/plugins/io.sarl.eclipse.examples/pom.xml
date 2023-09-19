@@ -1,0 +1,234 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>io.sarl.eclipse</groupId>
+		<artifactId>sarl-eclipse-plugins</artifactId>
+		<version>0.13.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>io.sarl.eclipse.examples</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>SARL Examples in Eclipse</name>
+
+	<properties>
+		<path_to_pom_template_jar>${project.basedir}/../io.sarl.eclipse/src</path_to_pom_template_jar>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>prepare-eclipse-buildproperties</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(jre\.compilation\.profile *= *)(.*)$</token>
+									<value>$1${sarl-dsl.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-manifestmf</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/META-INF/MANIFEST.MF</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
+									<value>$1${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-aboutbox</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/about.mappings</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(0 *= *)(.*)$</token>
+									<value>$1${sarl.buildId}</value>
+								</replacement>
+								<replacement>
+									<token>^(1 *= *)(.*)$</token>
+									<value>$1${sarl.inception.year}-${sarl.last.year}</value>
+								</replacement>
+								<replacement>
+									<token>^(2 *= *)(.*)$</token>
+									<value>$1${sarl.copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>^(3 *= *)(.*)$</token>
+									<value>$1${sarl.url}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-build-xml</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.xml</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+								<regexFlag>DOTALL</regexFlag>
+							</regexFlags>
+							<replacements>
+								<replacement>
+									<token>(token="PROJECT_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${project.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="SARL_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${sarl.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="AFC_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${afc.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="FILE_ENCODING" +value=")([^"]+)(")</token>
+									<value>$1${project.build.sourceEncoding}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="JAVA_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${sarl-user.min.jdk.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="RELEASE_YEAR" +value=")([^"]+)(")</token>
+									<value>$1${sarl.last.year}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="MAVEN_COMPILER_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${maven.compiler.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(token="OPENJFX_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${openjfx.version}$3</value>
+								</replacement>
+								<replacement>
+									<token>(name="relative_path_to_source_folder_of_pom_template" +value=")([^"]+)(")</token>
+									<value>$1${path_to_pom_template_jar}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-installer-wizard</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/examples/wizard/SarlExampleInstallerWizard.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(int +MIN_JDK_VERSION *= *)([^;]+)(;)</token>
+									<value>$1${sarl-dsl.min.jdk.version}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-plugin</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/examples/SARLExamplePlugin.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(PLUGIN_ID *= *")(.*)(")</token>
+									<value>$1${project.artifactId}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<ant antfile="${project.basedir}/build.xml" target="zip_all_examples" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<runOnIncremental>false</runOnIncremental>
+										</execute>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

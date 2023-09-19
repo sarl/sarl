@@ -1,0 +1,107 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.boot
+
+import io.sarl.lang.core.SREClassLoader
+import org.arakhne.afc.vmutil.DynamicURLClassLoader
+
+/** Factory for SRE main object.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+interface RunnableSREBootstrapFactory {
+
+	/** Create the SRE main object.
+	 * 
+	 * @param bootiqueFactory is the factory for the bootique modules.
+	 * @return the main object.
+	 */
+	def createSreBootstrap(bootiqueFactory : BQRuntimeFactory = null) : RunnableSREBootstrap
+	
+}
+
+/** Standard factory for the SRE main object.
+ * This factory create the main object with the default factories.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+class StandardRunnableSREBootstrapFactory implements RunnableSREBootstrapFactory {
+
+	override createSreBootstrap(bootiqueFactory : BQRuntimeFactory) : RunnableSREBootstrap {
+		var main = new SreMain
+		if (bootiqueFactory !== null) {
+			main.bootiqueRuntimeFactory = bootiqueFactory
+		}
+		return main
+	}
+	
+}
+
+/** Factory for the SRE main object that is associated to a dynamic class loader.
+ * This factory create the main object inside a dynamic class loader and
+ * create all the modules of the SRE in the context of the class loader.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.13
+ */
+class DynamicClassLoaderRunnableSREBootstrapFactory implements RunnableSREBootstrapFactory {
+
+	static val MAIN_SRE_CLASS = "io.sarl.sre.janus.boot.SreMain"
+
+	val dynamicClassLoader : DynamicURLClassLoader
+
+	/** Constructor.
+	 *
+	 * @param dynamicClassLoader the dynamic class loader to use.
+	 */
+	new (dynamicClassLoader : DynamicURLClassLoader = null) {
+		if (dynamicClassLoader === null) {
+			this.dynamicClassLoader = DynamicURLClassLoader::newInstance(this.class.classLoader)
+		} else {
+			this.dynamicClassLoader = dynamicClassLoader
+		}
+	}
+
+	override createSreBootstrap(bootiqueFactory : BQRuntimeFactory) : RunnableSREBootstrap {
+		// Force the current thread to use the dynamic class loader
+		SREClassLoader::setPreferredSREClassloader(this.dynamicClassLoader)
+		// Create the bootstrap
+		var mainType = this.dynamicClassLoader.loadClass(MAIN_SRE_CLASS)
+		var main = mainType.constructor.newInstance as RunnableSREBootstrap
+		if (bootiqueFactory !== null) {
+			main.bootiqueRuntimeFactory = bootiqueFactory
+		}
+		return main
+	}
+	
+}

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.examples.behaviors">
-	<agent class="io.sarl.demos.basic.behaviors.BehaviorPlayer" name="Basic behavior demo" />
-</launchConfigurations>

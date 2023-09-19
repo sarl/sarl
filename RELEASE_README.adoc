@@ -1,0 +1,260 @@
+= How to Release SARL
+:toc: right
+:toc-placement!:
+:hide-uri-scheme:
+
+toc::[]
+
+The steps for releasing SARL are:
+
+== 1) PHASE 1: RELEASE CANDIDATE VERSION
+
+=== 1.1) Upgrade all the versions in the pom files and the Eclipse platform
+
+** Upgrade the Eclipse target platform
+** Synchronize the versions in the pom files (plugins and dependencies) with the same version numbers as in the Eclipse target platform.
+
+=== 1.2) Compiling locally without error
+
+     $> rm -rf $HOME/.m2/repository
+     $> ./build-all.sh
+
+=== 1.3) Commit all the changes
+
+=== 1.4) Tag the version
+
+* Tag the version with with `vX.Y.Z-rcN`, where `N` is the release candidate number.
+* Push the tag on Github.
+
+=== 1.3) Do manual tests
+
+If a manual test is failing, fix the problem, and go to step 1.2.
+
+=== 1.6) Maven Central Bundles
+
+Test the generation of the  bundles for Maven Central:
+
+     $> ./scripts/prepare-maven-central.sh
+
+=== 1.7) Javadoc Generation
+
+Test the generation of the Javadoc for the public API (the real generation will be done by the script of the website):
+
+     $> ./scripts/generate-aggregate-javadoc.sh
+
+== 2) PHASE 2: RELEASE VERSION
+
+=== 2.1) Change the version numbers
+
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--releaseversion`.
+
+==== 2.1.1) Remove snapshot markers
+
+Remove all the occurrences of `-SNAPSHOT` in all the poms.
+
+CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
+
+==== 2.1.2) Update the versions in the Eclipse configurations
+
+* Remove `.qualifier` in the `MANIFEST.MF` files (in `Bundle-Version`).
+* Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
+* Remove `.qualifier` in the `*.product` files (in root tag and feature tag).
+* Remove `.qualifier` in the `category.xml` files (in feature tags, url and version).
+
+=== 2.1.3) Update General and Contributor Readme Files
+
+Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using the new version numbers.
+
+=== 2.2) Update the Javadoc Tags
+
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--author`, `--maven`.
+
+In the `.sarl` and `.java` files:
+
+* Replace `$FullVersion$` by the current SARL version number, with the release date.
+* Replace `$GroupId$` by the group name of the current Maven module.
+* Replace `$ArtifactId$` by the artifact name of the current Maven module.
+* Replace `$Author$` by the hyperlink of the contributor with the identifier `ID`.
+
+=== 2.3) Update the Copyright texts in the file headers
+
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following option: `--copyrights`.
+
+In the `.sarl` and `.java` files:
+
+* Replace `Copyright (C) <DATES> SARL.io, the Original Authors and Main Authors` by the current SARL text.
+* Replace `Copyright (C) <DATES> the original authors or authors` by the current SARL text.
+
+=== 2.3) Comment any reference to the Snapshot Maven repository
+
+Into the root `pom.xml` files, comment any reference to a snapshot maven repository.
+
+=== 2.4) Update the graphical resources
+
+* **Splash screens**
+** Update the picture into the eclipse plugins:
+*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse.ideapp`
+*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse.devapp`
+*** Find the name of the author of the background image, and update the following files to mention this author:
+**** file: `io.sarl.eclipse*/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+* **Picture for the "about" dialog box**
+** Update the picture into the eclipse plugins:
+*** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration		
+
+=== 2.5) Compiling locally without error
+
+     $> rm -rf $HOME/.m2/repository
+     $> ./build-all.sh
+
+=== 2.6) Check auto-generated files
+
+Check if the `about.mappings` files and the `SARLVersion.java` file are containing the correct version numbers.
+
+=== 2.7) Maven Central Bundles
+
+Prepare the bundles for Maven Central:
+
+     $> ./scripts/prepare-maven-central.sh
+
+Copy the bundles inside a safe folder for the Phase 3.
+
+=== 2.8) Javadoc Generation
+
+Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
+
+     $> ./scripts/generate-aggregate-javadoc.sh
+
+=== 2.9) Commit and push to Github
+
+     $> git commit
+     $> git push --all
+
+=== 2.10) Tag the Git with the version number
+
+     $> git tag "vX.Y.Z"
+     $> git push --tags
+
+=== 2.11) Changelog Generation
+
+Generate the changelog that contains the list of all the changes in the released version:
+
+     $> ./scripts/prepare-release.sh --changes
+
+=== 2.12) Release on the SARL servers.
+
+For uploading the release files onto the SARL server, you could use the provided script:
+
+     $> ./scripts/release.sh
+
+This script needs to have environment variables for defining the SARL server addresses, and the access login.
+
+     export MAVENSARLIO_URL=dav:https://XXX
+     export UPDATESSARLIO_URL=dav:https://YYY
+     export MAVENSARLIO_USER=ZZZ
+
+These variables may be defined in the user configuration file `$HOME/.sarlrc`, that is automatically loaded by the release script.
+
+== 3) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
+
+=== 3.1) Maven Central Bundles
+
+Updload the Maven Bundle on Maven Central with http://oss.sonatype.org
+
+=== 3.2) Debian Packages
+
+Create and upload the debian packages.
+
+=== 3.3) Copy on Google Drive
+
+Copy the product, md5 and sha1 files within the Google Drive of SARL.
+
+=== 3.4) Synchronize with other projects
+
+Synchronize the link:https://github.com/sarl/awesome-sarl[Awesome SARL project] with the "Community" page of the website.
+
+=== 3.5) News
+
+Add a "News" in the SARL website.
+
+=== 3.8) Update the SARL website
+
+==== 3.8.1) Change properties
+
+Edit the file `_config.yml` with the correct properties.
+
+==== 3.8.2) Build the website
+
+     $> cd path/to/sarl-site
+     $> rake build_full
+     $> rake transfer
+
+=== 3.9) Commit and push the website Gits.
+
+=== 3.10) Clean issues
+
+Move all the remaining issues on Github to the following version.
+
+=== 3.11) Close milestones
+
+Close the released milestone on Github.
+
+=== 3.12) Release Notes
+
+Add release notes on Github (from the Changes page on the website), attached to the release tag.
+
+=== 3.13) Wikipedia Review
+
+Review the text on Wikipedia: https://en.wikipedia.org/wiki/SARL_language
+
+=== 3.14) Announcements
+
+Announce the new version of SARL on:
+
+* SARL's Google groups https://groups.google.com/forum/#!forum/sarl
+* SARL's Facebook page https://www.facebook.com/sarllanguage/
+* SARL Gitter https://gitter.im/sarl/Lobby
+* Linked-in https://www.linkedin.com/
+* ResearchGate https://www.researchgate.net
+* CIAD laboratory Intranet 
+* Research mailing lists (bull-ia@gdria.fr, bull-i3@irit.fr, sma@loria.fr, sage-announce@mailman.sage.org, tccc-announce@COMSOC.ORG, ecoop-info@ecoop.org, agents@cs.umbc.edu, pvs@csl.sri.com, mycolleagues@mailman.ufsc.br, icec@listserver.tue.nl, irma-list@irma-international.org, distributed-computing-announce@datasys.cs.iit.edu, stcos-announce@ieee.net, ahsntc-mailing-list@list.trlab.ca, computational.science@lists.iccsa.org, ant-conf@acadia.ca, latincolleagues@mailman.ufsc.br , authors@mailman.ufsc.br , appsem@lists.tcs.ifi.lmu.de, chi-Jobs@acm.org, cl-isabelle-users@lists.cam.ac.uk, clean-list@science.ru.nl, concurrency@listserver.tue.nl, cscw-all@jiscmail.ac.uk, easst-members@lists.le.ac.uk, events@fmeurope.org, gratra@lists.uni-paderborn.de, haskell@haskell.org, announce@aosd.net, multiagent@yahoogroups.com, petrinet@informatik.uni-hamburg.de, prog-lang@cs.uiuc.edu, seworld@sigsoft.org, types-announce@lists.seas.upenn.edu, zforum@comlab.ox.ac.uk, aixia@aixia.it, event-request@in.tu-clausthal.de)
+
+== 4) PHASE 4: DEVELOPMENT VERSION
+
+=== 4.1) Revert versions
+
+NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
+
+Revert step 2.1; and change the following:
+
+* Version ranges in the `Required-Bundles` of `MANIFEST.MF`.
+* Versions in the requirements of `feature.xml` (in root tag and in the "sarl" and "janus"" plugins references).
+* Versions in the `*.product` (in root tag and feature tag).
+* Versions in the `category.xml` (in feature tags, url and version).
+* Uncomment the Snapshot Maven repository.
+
+=== 4.2) Change the UI resources.
+
+* **Splash screens**
+*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse`
+*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A9`)
+	to be copied into the module `io.sarl.eclipse-dsl4sarl`
+*** Copy the slash screens into the associated modules
+*** Find the name of the author of the background image, and update the following files to mention this author:
+**** file: `io.sarl.eclipse*/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
+* **Picture for the "about" dialog box**
+*** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration
+*** If the author of the background is different than for the splash screen, add the author's name into the properties as explained above
+
+=== 4.3) Compiling locally without error.
+
+     $> rm -rf $HOME/.m2/repository
+     $> ./build-all.sh
+
+=== 4.4) Commit and push to Github:
+
+     $> git commit
+     $> git push --all
+

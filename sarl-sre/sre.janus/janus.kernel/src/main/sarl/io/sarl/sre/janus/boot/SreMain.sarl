@@ -1,0 +1,437 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.boot
+
+import com.google.common.base.Throwables
+import io.bootique.BQRuntime
+import io.bootique.Bootique
+import io.bootique.di.BQModule
+import io.bootique.di.Injector
+import io.sarl.apputils.bootiqueapp.config.LogConfig
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.SRE
+import io.sarl.lang.core.SREListener
+import io.sarl.sre.janus.Kernel
+import io.sarl.sre.janus.boot.configs.SreConfig
+import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.janus.boot.configs.subconfigs.RootContextType
+import io.sarl.sre.janus.services.lifecycle.KernelAgentLifecycleListener
+import io.sarl.sre.janus.services.lifecycle.LifecycleService
+import io.sarl.sre.janus.services.logging.LoggingService
+import java.util.Arrays
+import java.util.UUID
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicReference
+import java.util.logging.Level
+import java.util.logging.Logger
+import java.util.regex.Pattern
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.arakhne.afc.util.ListenerCollection
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.lang.core.SRE.*
+import org.arakhne.afc.services.IService
+
+/** Class that implements the standard main function for running a SARL run-time environment
+ * with bootique modules.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class SreMain implements RunnableSREBootstrap {
+
+	static val BACKGROUND_SHUTDOWN_TIMEOUT = 20000
+
+	static val D_PATTERN = "(?:(?:\\-\\-?)|(?:\\/))D([^=]+)=(.*)"
+
+	val kernel = new AtomicReference<Kernel>
+
+	@Accessors(PUBLIC_GETTER)
+	var runtime : BQRuntime
+
+	var bootType : RootContextType
+
+	var userDefinedContextId : UUID
+
+	var userDefinedSpaceId : UUID
+
+	val listeners = new ListenerCollection<SREListener>
+	
+	@Accessors(PUBLIC_SETTER)
+	var commandLineArguments : String[]
+
+	@Accessors(PUBLIC_SETTER)
+	var bootiqueRuntimeFactory : BQRuntimeFactory
+
+	override getBootiqueRuntimeFactory : BQRuntimeFactory {
+		if (this.bootiqueRuntimeFactory === null) {
+			this.bootiqueRuntimeFactory = new StandardBQRuntimeFactory
+		}
+		return this.bootiqueRuntimeFactory
+	}
+
+	private def addToCommandLineArguments(args : String[]) : String[] {
+		if (args !== null && args.length > 0) {
+			if (this.commandLineArguments !== null && this.commandLineArguments.length > 0) {
+				val nargs = Arrays::copyOf(this.commandLineArguments, this.commandLineArguments.length + args.length)
+				System::arraycopy(args, 0, nargs, this.commandLineArguments.length, args.length)
+				return nargs
+			}
+			return args
+		}
+		if (this.commandLineArguments !== null && this.commandLineArguments.length > 0) {
+			return this.commandLineArguments
+		}
+		return #[]
+	}
+
+	override getKernel : Kernel {
+		return this.kernel.get
+	}
+
+	override setRuntime(runtime : BQRuntime) : boolean {
+		if (this.runtime !== runtime) {
+			this.runtime = runtime
+			return true
+		}
+		return false
+	}
+
+	override isRunning : boolean {
+		val k = getKernel
+		return k !== null && k.isRunning
+	}
+
+	override setRandomContextUUID {
+		this.bootType = RootContextType::RANDOM
+		this.userDefinedContextId = null
+	}
+
+	override setBootAgentTypeContextUUID {
+		this.bootType = RootContextType::BOOT_AGENT_NAME
+		this.userDefinedContextId = null
+	}
+
+	override setSpecificContextUUID {
+		this.bootType = RootContextType::DEFAULT
+		this.userDefinedContextId = null
+	}
+
+	override setUniverseContextUUID(id : UUID) {
+		this.userDefinedContextId = id
+	}
+
+	override getUniverseContextUUID : UUID {
+		this.userDefinedContextId
+	}
+
+	override setUniverseSpaceUUID(id : UUID) {
+		this.userDefinedSpaceId = id
+	}
+
+	override getUniverseSpaceUUID : UUID {
+		this.userDefinedSpaceId
+	}
+
+	override setVerboseLevel(level : int) {
+		var julLevel : Level
+		switch (level) {
+			case 1: {
+				julLevel = Level::SEVERE
+			}
+			case 2: {
+				julLevel = Level::WARNING
+			}
+			case 3: {
+				julLevel = Level::INFO
+			}
+			case 4: {
+				julLevel = Level::FINE
+			}
+			case 5: {
+				julLevel = Level::FINER
+			}
+			case 6: {
+				julLevel = Level::FINEST
+			}
+			default: {
+				if (level <= 0) {
+					julLevel = Level::OFF
+				} else {
+					julLevel = Level::ALL
+				}
+			}
+		}
+		val runtime = getRuntime
+		if (runtime !== null) {
+			val logConfig = runtime.getInstance(typeof(LogConfig))
+			logConfig.level = io.sarl.apputils.bootiqueapp.config.Level.valueOf(julLevel)
+		}		
+		val logger = kernelLogger
+		if (logger !== null) {
+			logger.level = julLevel
+		}		
+	}
+
+	override getKernelLogger : Logger {
+		if (isActive) {
+			var service = this.runtime.getInstance(typeof(LoggingService))
+			return service.platformLogger
+		}
+		return null
+	}
+
+	private def ensureBootiqueRuntimeInstance(bootique : Bootique, module : Class<? extends BQModule>, args : String*) : BQRuntime {
+		var r = this.runtime
+		if (r === null) {
+			this.runtime = getBootiqueRuntimeFactory().createRuntime(bootique, module, args)
+			r = this.runtime
+		}
+		return this.runtime
+	}
+
+	/** Filter the command-line arguments for extracting the -D parameters.
+	 *
+	 * @param args the arguments.
+	 * @return the filtered arguments.
+	 * @since 0.12
+	 */
+	static def filterCommandLineArguments(args: String[]) : String[] {
+		val list = newArrayList
+		val pattern = Pattern::compile(D_PATTERN)
+		for (arg : args) {
+			val matcher = pattern.matcher(arg)
+			if (matcher.matches) {
+				val name = matcher.group(1)
+				val value = matcher.group(2)
+				System::setProperty(name, value)
+			} else {
+				list += arg
+			}
+		}
+		val tab = newArrayOfSize(list.size)
+		list.toArray(tab)
+		return tab
+	}
+
+	override runSRE(args : String*) : int {
+		val fargs = args.filterCommandLineArguments
+		var runtime = ensureBootiqueRuntimeInstance(null, null, fargs)
+		try {
+			// Force the bootstrap to be this object
+			SRE::bootstrap = this
+			val outcome = runtime.run
+			if (outcome !== null) {
+				if (!outcome.success && outcome.exception !== null) {
+					Logger::getGlobal.log(Level::SEVERE, outcome.message, outcome.exception)
+				}
+				return outcome.exitCode
+			}
+		} catch (exception : Throwable) {
+			val ex = Throwables::getRootCause(exception)
+			if (ex !== null) {
+				Logger::getGlobal.log(Level::SEVERE, ex.localizedMessage, ex)
+			} else {
+				Logger::getGlobal.severe(exception.localizedMessage)
+			}
+		}
+		return 255
+	}
+
+	private def ensureKernelInstance(asCommandLineApp : boolean, bootique : Bootique, module : Class<? extends BQModule>, args : String*) : Kernel {
+		var k = getKernel
+		if (k === null) {
+			var runtime = ensureBootiqueRuntimeInstance(bootique, module, args.addToCommandLineArguments)
+			// Start the SRE as it was called from a shell command line.
+			// This option breaks the programmatic usage of the bootstrap. It is provided for debugging purpose.
+			if (asCommandLineApp) {
+				val outcome = runtime.run
+				if (outcome !== null) {
+					if (!outcome.success && outcome.exception !== null) {
+						Logger::getGlobal.log(Level::SEVERE, outcome.message, outcome.exception)
+					}
+				}
+				return null
+			}
+			val injector = runtime.getInstance(typeof(Injector))
+			// Update the method for selecting the root context identifier
+			if (this.bootType !== null
+					|| this.userDefinedContextId !== null
+					|| this.userDefinedSpaceId !== null) {
+				val sreConfig = injector.getInstance(typeof(SreConfig))
+				if (this.bootType !== null) {
+					sreConfig.boot.rootContextBootType = this.bootType
+				}
+				if (this.userDefinedContextId !== null) {
+					sreConfig.boot.rootContextID = this.userDefinedContextId
+				}
+				if (this.userDefinedSpaceId !== null) {
+					sreConfig.boot.rootSpaceID = this.userDefinedSpaceId
+				}
+			}
+			k = injector.getInstance(typeof(Kernel))
+			val listener : KernelAgentLifecycleListener = [
+				this.kernel.set(null)
+				this.runtime = null
+				fireSREStopped
+			]
+			k.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener(listener)
+			this.kernel.set(k)
+			fireSREStarted
+		}
+		// Force the bootstrap to be this object
+		SRE::bootstrap = this
+		return k
+	}
+
+	override startWithoutAgent(asCommandLineApp : boolean, bootique : Bootique, module : Class<? extends BQModule>) : AgentContext {
+		val ctx = ensureKernelInstance(asCommandLineApp, bootique, module)
+		return ctx?.rootContext
+	}
+	
+	override startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
+		params : Object*) {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		val old = System::setProperty(propName, agentCls.name)
+		var kernel : Kernel
+		try {
+			kernel = ensureKernelInstance(false, null, null)
+		} finally {
+			if (old === null) {
+				System::clearProperty(propName)
+			} else {
+				System::setProperty(propName, old)
+			}
+		}
+		kernel.spawn(nbAgents, agentCls, params)
+	}
+
+	override startBootAgent {
+		var config = this.runtime.getInstance(typeof(SreConfig)).boot
+		var bootAgent = config.loadBootAgent
+		assert bootAgent !== null
+		var args = config.agentStartArgs
+		startAgent(bootAgent, args)
+	}
+
+	override startAgent(agentCls : Class<? extends Agent>, params : Object*) {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		assert propName !== null
+		var alreadyLaunched = System::getProperty(propName)
+		if (alreadyLaunched.nullOrEmpty) {
+			// Force the property that indicates the booted agent
+			System::setProperty(propName, agentCls.name)
+		}
+		val kernel = ensureKernelInstance(false, null, null)
+		kernel.spawn(agentCls, params)
+	}
+	
+	override startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		assert propName !== null
+		var alreadyLaunched = System::getProperty(propName)
+		if (alreadyLaunched.nullOrEmpty) {
+			// Force the property that indicates the booted agent
+			System::setProperty(propName, agentCls.name)
+		}
+		val kernel = ensureKernelInstance(false, null, null)
+		kernel.spawn(agentID, agentCls, params)
+	}
+
+	@SuppressWarnings("discouraged_reference")
+	override shutdown(timeout : int) {
+		val kern = this.kernel.getAndSet(null)
+		if (kern !== null) {
+			if (timeout !== 0) {
+				kern.shutdown(timeout)
+			} else {
+				val th = Executors::defaultThreadFactory.newThread [
+					kern.shutdown(BACKGROUND_SHUTDOWN_TIMEOUT)
+				]
+				th => [
+					daemon = true
+					name = "SRE Forced Async Shutdown"
+					start
+				]
+			}
+		}
+	}
+
+	override getService(serviceType : Class<T>) : T with T {
+		if (typeof(IService).isAssignableFrom(serviceType)) {
+			var kern = getKernel
+			if (kern !== null) {
+				var castedServiceType = serviceType.asSubclass(typeof(IService))
+				var serv = kern.getService(castedServiceType)
+				return serviceType.cast(serv)
+			}
+		}
+		return null
+	}
+
+	override addSREListener(listener : SREListener) {
+		if (listener !== null) {
+			this.listeners.add(typeof(SREListener), listener)
+		}
+	}
+
+	override removeSREListener(listener : SREListener) {
+		if (listener !== null) {
+			this.listeners.remove(typeof(SREListener), listener)
+		}
+	}
+
+	/** Notifies the observers that the SRE has been started.
+	 *
+	 * @since 0.11
+	 */
+	protected def fireSREStarted {
+		val observers = this.listeners.getListeners(typeof(SREListener))
+		for (observer : observers) {
+			try {
+				observer.sreStarted(this)
+			} catch (exception : Throwable) {
+				getKernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
+			}
+		}
+	}
+
+	/** Notifies the observers that the SRE has been stopped.
+	 * 
+	 * @since 0.11
+	 */
+	protected def fireSREStopped {
+		val observers = this.listeners.getListeners(typeof(SREListener))
+		for (observer : observers) {
+			try {
+				observer.sreStopped(this)
+			} catch (exception : Throwable) {
+				getKernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
+			}
+		}
+	}
+	
+}

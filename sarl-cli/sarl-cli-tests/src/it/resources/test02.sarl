@@ -1,0 +1,34 @@
+package io.sarl.lang.sarldoc.itests
+
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Logging
+
+/** Documentation of a test agent.
+ *
+ * @author S.G.
+ */
+agent MyAgent {
+	uses Logging
+	on Initialize {
+		if (doSomething("Hello")) {
+			info("Correct")
+		}
+	}
+
+	/** Documentation of a protected function.
+	 * @param arg the argument of the function
+	 * @return the returned value
+	 */
+	def doSomething(arg : String) : boolean {
+		info(arg)
+		return false
+	}
+
+	/** This function is an example of deprecated feature.
+	 * @deprecated No replacement
+	 */
+	@Deprecated(since="0.13", forRemoval=true)
+	def deprecatedFunction() : void {
+	}
+
+}
