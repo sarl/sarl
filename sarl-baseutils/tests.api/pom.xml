@@ -82,6 +82,13 @@
 	</dependencyManagement>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -152,6 +159,19 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</repository>
+		<snapshotRepository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<developers>
 		<developer>
 			<id>sgalland</id>
@@ -167,6 +187,7 @@
 			</roles>
 		</developer>
 	</developers>
+
 	<contributors>
 		<contributor>
 			<name>Mohamed Ezzat</name>
