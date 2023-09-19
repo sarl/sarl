@@ -100,7 +100,7 @@ def buildMavenFileList():
 			if filename == "pom.xml":
 				fileList.append(os.path.join(root, filename))
 	return fileList
-			
+
 #########################
 ##
 def buildEclipseFileList():
@@ -108,6 +108,16 @@ def buildEclipseFileList():
 	for root, dirs, files in os.walk("."):
 		for filename in files:
 			if filename == "MANIFEST.MF" or filename == "feature.xml" or filename == "category.xml" or filename.endswith(".product"):
+				fileList.append(os.path.join(root, filename))
+	return fileList
+
+#########################
+##
+def buildEclipseTargetPlatformList():
+	fileList = []
+	for root, dirs, files in os.walk("."):
+		for filename in files:
+			if filename.endswith(".target"):
 				fileList.append(os.path.join(root, filename))
 	return fileList
 
@@ -499,6 +509,18 @@ if mvn_root is not None:
 			if args.develversion:
 				show_update_file_msg(filename, changed_filenames)
 				moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
+
+		# Eclipse target platforms
+		files = buildEclipseTargetPlatformList()
+		for filename in files:
+			if args.releaseversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInEclipse(eclipse_version_number, next_stable_version, filename)
+				moveToReleaseVersionInMaven(mvn_version_number, next_stable_version, filename)
+			if args.develversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
+				moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
 
 	sys.exit(0)
 
