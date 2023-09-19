@@ -6,6 +6,8 @@
   <version>0.13.0</version>
   <packaging>pom</packaging>
   <name>SARL Bill of Materials</name>
+  <description>Root pom for all the SARL BOMs</description>
+  <url>http://www.sarl.io</url>
 
   <modules>
     <module>sarl-properties</module>
@@ -68,6 +70,11 @@
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<developers>
 		<developer>
@@ -84,5 +91,13 @@
 			</roles>
 		</developer>
 	</developers>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
 </project>

@@ -7,6 +7,7 @@
 	<name>Full SDK for SARL Applications</name>
 	<description>Provides all necessary dependencies to develop a MAS using SARL</description>
 	<packaging>jar</packaging>
+	<url>http://www.sarl.io</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -288,6 +289,11 @@
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<developers>
 		<developer>

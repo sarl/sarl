@@ -7,6 +7,7 @@
 	<packaging>pom</packaging>
 	<name>SARL Application Programming Interface</name>
 	<description>Definition of the SARL API</description>
+	<url>http://www.sarl.io</url>
 
 	<modules>
 		<module>api.util</module>
@@ -75,6 +76,11 @@
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<developers>
 		<developer>

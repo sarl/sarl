@@ -10,6 +10,8 @@
   <artifactId>sarl-tests-bom</artifactId>
   <packaging>pom</packaging>
   <name>SARL Tests Bill of Materials</name>
+  <description>BOM for test modules</description>
+  <url>http://www.sarl.io</url>
 
   <dependencyManagement>
     <dependencies>
@@ -163,6 +165,11 @@
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<profiles>
 		<profile>

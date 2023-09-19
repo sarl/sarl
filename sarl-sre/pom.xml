@@ -7,6 +7,7 @@
 	<packaging>pom</packaging>
 	<name>SARL Runtime Environment</name>
 	<description>Definition of the SARL Runtime Environment</description>
+	<url>http://www.sarl.io</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -86,6 +87,11 @@
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<developers>
 		<developer>

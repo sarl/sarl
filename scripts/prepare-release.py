@@ -384,7 +384,7 @@ def buildNextDevelVersion(current_version, next_devel):
 ## current_stable_version: the version of the current stable release
 ## changelog_file: the path to the changelog file to be written. If not specified, defualt is target/changelog.md
 def generateChanges(current_stable_version, changelog_file):
-	gitoutput = subprocess.check_output(['git-changelog', '-p', '-x', '-s', "v" + str(current_stable_version)])
+	gitoutput = subprocess.check_output(['git', 'log', '--format=tformat:* %s [[more details](http://sarl.io/sarl/sarl/commit/%H)]', str(current_stable_version) + '..HEAD'])
 	if changelog_file:
 		output_filename = changelog_file
 	else:
