@@ -81,7 +81,8 @@ if (isDevelVersion) {
 	releaseStatus = "Stable Release";
 	isSnapshot = false;
 	endOfVersion = "";
-	properties["sarl.buildId"] = project.properties["buildId"]
+	def buildId = new java.text.SimpleDateFormat("yyyyMMdd-HHmm").format(now)
+	properties["sarl.buildId"] = version + "-" + buildId
 }
 
 log.info("set sarl.buildId to: " + properties["sarl.buildId"]);
