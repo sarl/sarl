@@ -72,9 +72,9 @@ import io.sarl.lang.ui.internal.LangActivator;
 /** Abstract implementation for the configuration block dedicated to an extra language generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigurationBlock implements IExtraControlController {
@@ -688,9 +688,9 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	/** Internal data.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	private static class TableItemData {
 		private String sourceFolder;

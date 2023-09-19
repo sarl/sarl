@@ -206,9 +206,9 @@ import io.sarl.lang.util.Utils;
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
@@ -672,9 +672,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				/** Safe runnable.
 				 *
 				 * @author $Author: sgalland$
-				 * @version $FullVersion$
-				 * @mavengroupid $GroupId$
-				 * @mavenartifactid $ArtifactId$
+				 * @version compiler 0.13.0 20230919-093056
+				 * @mavengroupid io.sarl.lang
+				 * @mavenartifactid compiler
 				 */
 				final class SafeRunnable implements Runnable {
 
@@ -4257,9 +4257,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Internal error.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private abstract static class InternalError extends RuntimeException {
 
@@ -4274,9 +4274,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Internal error.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class GenerationContextNotFoundInternalError extends InternalError {
 

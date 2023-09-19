@@ -27,9 +27,9 @@ import java.lang.reflect.Field
  * on the annotation {@link Observable}.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 class AnnotationFieldAccessValidator implements IFieldAccessValidator {

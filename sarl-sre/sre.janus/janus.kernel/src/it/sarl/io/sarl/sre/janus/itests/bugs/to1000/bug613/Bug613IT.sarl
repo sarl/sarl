@@ -38,9 +38,9 @@ import static org.junit.jupiter.api.Assertions.*
  * Unit test for the issue #613: Exception when destroying the agent java.lang.InterruptedException.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/613
  */
 @ExtendWith(#[

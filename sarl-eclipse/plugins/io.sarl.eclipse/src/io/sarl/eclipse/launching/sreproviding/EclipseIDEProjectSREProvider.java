@@ -38,9 +38,9 @@ import io.sarl.eclipse.runtime.SARLRuntime;
  * determine the corresponding SRE.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @see EclipseIDEProjectSREProviderFactory
  */
 public class EclipseIDEProjectSREProvider implements ProjectSREProvider {

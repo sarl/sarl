@@ -59,9 +59,9 @@ import jdk.javadoc.doclet.Reporter;
 /** Reporter that enables only errors and is based on a delegate reporter.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class DelegateErrorReporter implements Reporter {

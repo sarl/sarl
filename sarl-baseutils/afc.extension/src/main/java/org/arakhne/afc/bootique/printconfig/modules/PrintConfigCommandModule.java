@@ -37,9 +37,9 @@ import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
 /** Module for the command that prints out the configuration values.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 public class PrintConfigCommandModule implements BQModule {

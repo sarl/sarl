@@ -70,9 +70,9 @@ import io.sarl.lang.maven.compiler.utils.MavenProjectResourceSetProvider;
 /** Abstract mojo that is able to use the SARL batch compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 

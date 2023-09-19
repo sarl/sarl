@@ -38,9 +38,9 @@ import io.sarl.lang.core.Capacity;
  *
  * @param <T> the type of the wizard page.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class SuperCapacitySelectionDialog<T extends NewTypeWizardPage> extends AbstractSuperTypeSelectionDialog<T> {
 

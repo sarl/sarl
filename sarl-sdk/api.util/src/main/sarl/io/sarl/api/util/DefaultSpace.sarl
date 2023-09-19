@@ -40,9 +40,9 @@ import javax.inject.Qualifier
  * of the default space of the context in which the injected space is located.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  * @since 0.10
  */
 @Target(ElementType::PARAMETER, ElementType::FIELD)

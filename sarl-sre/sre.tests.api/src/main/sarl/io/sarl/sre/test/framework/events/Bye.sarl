@@ -25,9 +25,9 @@ package io.sarl.sre.test.framework.events
  * Bye event.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.11
  */
 event Bye

@@ -27,9 +27,9 @@ import java.util.List
  * Capacity of an agent to select an action in the context of a game time-based goal-oriented behavior.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.gametgob 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.gametgob
  * @since 0.13
  */
 capacity SelectAction {

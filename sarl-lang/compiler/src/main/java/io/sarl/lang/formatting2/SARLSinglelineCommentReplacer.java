@@ -35,9 +35,9 @@ import io.sarl.lang.documentation.IDocumentationFormatter;
  * Format the single-line block comment according to the SARL standards.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLSinglelineCommentReplacer extends CommentReplacer {
 

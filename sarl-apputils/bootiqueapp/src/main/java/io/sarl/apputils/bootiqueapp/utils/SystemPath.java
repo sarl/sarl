@@ -35,9 +35,9 @@ import org.arakhne.afc.vmutil.FileSystem;
 /** Represents a collection of path with the OS syntax.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.10
  */
 public class SystemPath implements Iterable<File> {

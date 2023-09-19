@@ -32,9 +32,9 @@ import io.bootique.config.ConfigurationFactory;
  * Configuration for the loggers.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 @BQConfig("Configuration of the loggers")

@@ -31,9 +31,9 @@ import io.bootique.di.BQModule;
 /** Temporary module to avoid exception related to the multiple overriding of the BQCoreModule.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @deprecated Should be removed when the AFC modules have been moved to the main stream of AFC.
  */
 @Deprecated

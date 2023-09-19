@@ -28,9 +28,9 @@ import io.bootique.di.BQModule;
 /** Provider of the module for the sarldoc command.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocFakeCommandModuleProvider implements BQModuleProvider {

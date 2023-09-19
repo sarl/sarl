@@ -27,9 +27,9 @@ import java.io.Serializable;
  * Definition of the prototype of an action (name+parameters).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class ActionPrototype implements Cloneable, Serializable, Comparable<ActionPrototype> {
 

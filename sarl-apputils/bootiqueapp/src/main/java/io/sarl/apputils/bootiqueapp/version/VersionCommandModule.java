@@ -33,9 +33,9 @@ import io.bootique.log.BootLogger;
 /** Module for the command for printing out the version.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.8
  */
 public class VersionCommandModule implements BQModule {

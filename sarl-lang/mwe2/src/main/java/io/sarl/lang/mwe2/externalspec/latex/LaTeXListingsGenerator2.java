@@ -45,9 +45,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * the LaTeX listings.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragment2<IStyleAppendable> {
 
@@ -442,9 +442,9 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	/** Appendable for tex-based styles.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class TeXAppendable extends AbstractAppendable {

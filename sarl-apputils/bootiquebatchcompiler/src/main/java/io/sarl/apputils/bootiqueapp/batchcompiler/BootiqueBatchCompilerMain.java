@@ -34,9 +34,9 @@ import io.sarl.lang.SARLStandaloneSetup;
  * with bootique and SARL batch compiler modules.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiquebatchcompiler 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 public class BootiqueBatchCompilerMain extends BootiqueMain {

@@ -41,9 +41,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * @author $Author: sgalland$
  * @author $Author: alombard$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/895"
  */
 @DisplayName("Bug #895")

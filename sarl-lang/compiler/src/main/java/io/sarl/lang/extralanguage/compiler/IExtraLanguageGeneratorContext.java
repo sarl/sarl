@@ -38,9 +38,9 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 /** The generator from SARL to the Python language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public interface IExtraLanguageGeneratorContext extends IGeneratorContext {

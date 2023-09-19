@@ -50,9 +50,9 @@ import static extension io.sarl.sre.janus.internal.eventguard.reflect.StaticRefl
  * <p>This class is thread-safe.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluatorRegistry<GuardedEvaluator> {
 
@@ -238,9 +238,9 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * Description of an single guard evaluator.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.11
 	 */
 	@Data
@@ -256,9 +256,9 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * The iterator goes into the super-types.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static class MethodIterator implements Iterator<Evaluator> {
 

@@ -34,9 +34,9 @@ import org.w3c.dom.NodeList;
 /** Utilities related to the specification of launch configurations for examples.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples
  * @since 0.10
  */
 public final class SarlExampleLaunchConfiguration {

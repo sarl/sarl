@@ -32,9 +32,9 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
  * Comparator of BehaviorUnit.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit>, Serializable {
 	private static final long serialVersionUID = 5331105342444861433L;

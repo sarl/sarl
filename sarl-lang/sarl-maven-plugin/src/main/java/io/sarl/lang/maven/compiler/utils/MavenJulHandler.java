@@ -29,9 +29,9 @@ import org.slf4j.Logger;
 /** Adapter of the Maven logger to the JUL handler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.12
  */
 public final class MavenJulHandler extends Handler {

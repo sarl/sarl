@@ -30,9 +30,9 @@ import io.sarl.lang.util.Utils;
 /** Validator of the feature names.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameValidator {
 

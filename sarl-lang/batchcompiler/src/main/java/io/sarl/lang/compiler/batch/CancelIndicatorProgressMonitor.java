@@ -27,9 +27,9 @@ import org.eclipse.xtext.util.CancelIndicator;
 /** A wrapper from a CancelIndicator to a ProgressMonitor.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.9
  */
 public class CancelIndicatorProgressMonitor implements IProgressMonitor {

@@ -40,9 +40,9 @@ import io.sarl.lang.extralanguage.IExtraLanguageContributions;
  * Command for showing up the list of extra languages that are available on the classpath.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class ExtraLanguageListCommand extends CommandWithMetadata {

@@ -49,9 +49,9 @@ import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SuppressWarnings("all")
 @DisplayName("AbstractAgentTraitBehavior")
@@ -265,9 +265,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class AgentMock extends Agent {
 
@@ -284,9 +284,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static interface Capacity1 extends Capacity {
 		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
@@ -298,9 +298,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {

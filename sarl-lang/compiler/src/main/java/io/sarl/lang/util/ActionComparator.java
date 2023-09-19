@@ -30,9 +30,9 @@ import io.sarl.lang.sarl.SarlAction;
  * Comparator of ActionSignature.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class ActionComparator implements Comparator<SarlAction>, Serializable {
 	private static final long serialVersionUID = 6693376551313660666L;

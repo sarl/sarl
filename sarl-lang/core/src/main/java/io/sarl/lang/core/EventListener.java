@@ -30,9 +30,9 @@ package io.sarl.lang.core;
  * {@link EventSpace} (e.g. UI)
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public interface EventListener extends Identifiable {
 

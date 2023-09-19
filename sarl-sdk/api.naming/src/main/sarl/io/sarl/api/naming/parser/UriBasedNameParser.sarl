@@ -29,9 +29,9 @@ import java.util.Set
  * Default implementation of a parser of names that is accepting URI-based syntax.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 class UriBasedNameParser implements INameParser {

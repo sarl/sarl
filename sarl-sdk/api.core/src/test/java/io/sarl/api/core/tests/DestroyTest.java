@@ -32,9 +32,9 @@ import io.sarl.lang.core.Event;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 @DisplayName("Destroy")
 @Tag("unit")

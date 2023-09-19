@@ -34,9 +34,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * @param <T> is the type of objects that should be matched by this scope.
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @FunctionalInterface
 public interface Scope<T> extends Serializable {

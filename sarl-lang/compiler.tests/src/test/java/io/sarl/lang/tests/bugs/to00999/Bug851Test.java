@@ -43,9 +43,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/851
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/851"
  */
 @DisplayName("Bug #851")

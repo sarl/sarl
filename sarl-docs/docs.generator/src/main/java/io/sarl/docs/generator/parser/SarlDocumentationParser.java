@@ -68,9 +68,9 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
  *
  * @author $Author: sgalland$
  * @author $Author: alombard$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public class SarlDocumentationParser {
@@ -1130,9 +1130,9 @@ public class SarlDocumentationParser {
 	/** Exception in parser.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class ParsingException extends RuntimeException {
@@ -1189,9 +1189,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class ParsingContext {
@@ -1715,9 +1715,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public interface ParserInterceptor {
@@ -1764,9 +1764,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements for the parameters.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class DelegateParserInterceptor implements ParserInterceptor {
@@ -1840,9 +1840,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements for the parameters.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	private static class ContentParserInterceptor extends DelegateParserInterceptor {
@@ -1904,9 +1904,9 @@ public class SarlDocumentationParser {
 	/** Definition of the special tags.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public enum Stage {
@@ -1947,9 +1947,9 @@ public class SarlDocumentationParser {
 	/** Definition of the special tags.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public enum Tag {

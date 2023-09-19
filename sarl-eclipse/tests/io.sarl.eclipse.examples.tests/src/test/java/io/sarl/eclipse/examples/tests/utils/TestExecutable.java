@@ -24,9 +24,9 @@ package io.sarl.eclipse.examples.tests.utils;
 /** The code of a test.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples.tests 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  * @since 0.11
  */
 @FunctionalInterface

@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Utilities methods for accessing the properties and the environment variables.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.10
  */
 public final class SystemProperties {

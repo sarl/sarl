@@ -58,9 +58,9 @@ import static extension org.mockito.Mockito.verify
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -218,9 +218,9 @@ abstract class ShortFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ShortFieldProbe test with primitive short")
 	@Nested
@@ -236,9 +236,9 @@ abstract class ShortFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ShortFieldProbe test with final primitive short")
 	@Nested
@@ -253,9 +253,9 @@ abstract class ShortFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ShortFieldProbe test with Short")
 	@Nested
@@ -270,9 +270,9 @@ abstract class ShortFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ShortFieldProbe test with null Short")
 	@Nested
@@ -291,9 +291,9 @@ abstract class ShortFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ShortFieldProbe test with final Short")
 	@Nested

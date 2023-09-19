@@ -31,9 +31,9 @@ import com.google.common.collect.Iterables;
 /** Extended Functions for writing collection-based code within the documentation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.12
  */
 public final class CollectionExtensions {

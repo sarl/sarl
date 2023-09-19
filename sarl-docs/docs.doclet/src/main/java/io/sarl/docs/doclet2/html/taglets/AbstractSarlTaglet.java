@@ -76,9 +76,9 @@ import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 /** Abstract implementation of a taglet.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public abstract class AbstractSarlTaglet implements SarlTaglet {

@@ -38,9 +38,9 @@ import org.eclipse.jdt.launching.VMRunnerConfiguration;
  * This implementation is for debugging of SREs.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class EmbeddedNotModularVMRunner extends AbstractEmbeddedVMRunner {
 
@@ -52,9 +52,9 @@ public class EmbeddedNotModularVMRunner extends AbstractEmbeddedVMRunner {
 	/** Finder of the main class.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	protected static class CpMainClassFinder implements MainClassFinder {

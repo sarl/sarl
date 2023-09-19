@@ -36,9 +36,9 @@ import io.sarl.lang.SARLConfig;
 /** Provide the output configuration from the SARL code to the Java code.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SarlOutputConfigurationProvider extends OutputConfigurationProvider {

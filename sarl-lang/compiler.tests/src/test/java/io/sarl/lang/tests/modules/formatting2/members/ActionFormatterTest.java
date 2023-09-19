@@ -32,9 +32,9 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 /** Tests for formatting actions.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 @DisplayName("format: def")
@@ -44,9 +44,9 @@ public class ActionFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	public class FormatterAPITest extends AbstractMemberFormatterTest {

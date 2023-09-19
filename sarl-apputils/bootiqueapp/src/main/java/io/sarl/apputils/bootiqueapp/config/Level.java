@@ -28,9 +28,9 @@ import com.google.common.base.Strings;
  * Enumeration of the Log4j levels.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 15.0
  */
 public enum Level {

@@ -36,9 +36,9 @@ import org.eclipse.swt.widgets.Label;
 /** Wizard page that permits to add the Janus libraries into a project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.sre.janus 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  */
 public class JanusContainerWizardPage extends NewElementWizardPage implements IClasspathContainerPage {
 

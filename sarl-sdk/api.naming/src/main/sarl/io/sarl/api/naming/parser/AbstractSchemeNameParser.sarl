@@ -30,9 +30,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * 
  * @param <N> the type of the name that is the result of the decoding.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 abstract class AbstractSchemeNameParser<N extends SarlName> implements ISchemeNameParser<N> {

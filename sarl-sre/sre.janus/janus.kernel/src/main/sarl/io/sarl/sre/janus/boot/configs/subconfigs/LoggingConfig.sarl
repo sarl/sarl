@@ -37,9 +37,9 @@ import static io.sarl.sre.janus.boot.configs.subconfigs.LoggingConfig.*
  * Configuration for the agent logging service.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 @BQConfig("Configuration of the SRE logging service")
@@ -116,9 +116,9 @@ class LoggingConfig {
  * Module for the agent logging service configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class LoggingConfigModule implements BQModule {
@@ -132,9 +132,9 @@ class LoggingConfigModule implements BQModule {
 /** Provider of the module for the logging service configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class LoggingConfigModuleProvider implements BQModuleProvider {

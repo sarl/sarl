@@ -34,9 +34,9 @@ import org.arakhne.afc.bootique.variables.VariableDecls;
 /** Module for creating and configuring the sarlc validator's configuration.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class ValidatorConfigModule implements BQModule {

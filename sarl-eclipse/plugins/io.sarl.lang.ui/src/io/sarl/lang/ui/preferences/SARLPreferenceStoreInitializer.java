@@ -39,9 +39,9 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtensionPointExtraLanguagePref
 /** Initialize the preference store with SARL specific information.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @Singleton
 public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializer, IPropertyChangeListener {

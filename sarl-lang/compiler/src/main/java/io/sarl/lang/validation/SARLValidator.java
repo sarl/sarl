@@ -296,9 +296,9 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
  * </ul>
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @see "https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation"
  */
 @ComposedChecks(validators = {ExtraLanguageValidatorSupport.class})
@@ -3547,9 +3547,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	/** The modifier validator for constructors.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	protected final class SARLModifierValidator extends ModifierValidator {
 

@@ -83,9 +83,9 @@ import io.sarl.lang.core.util.OutParameter;
  *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
@@ -718,9 +718,9 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	/** Task for updating the project.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class UpdateRunnable implements IRunnableWithProgress {
 		private IStatus infoStatus = Status.OK_STATUS;

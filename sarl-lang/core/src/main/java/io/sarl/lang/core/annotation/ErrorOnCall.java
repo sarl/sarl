@@ -29,9 +29,9 @@ import java.lang.annotation.Target;
 /** Annotation for marking an element with a SARL compiler's error when the element is invoked from the SARL code.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })

@@ -32,9 +32,9 @@ import org.mockito.internal.util.Primitives
  * cannot be capture with a {@code Double} argument captor.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.10
  */
 final class NativeDoubleArgumentCaptor {

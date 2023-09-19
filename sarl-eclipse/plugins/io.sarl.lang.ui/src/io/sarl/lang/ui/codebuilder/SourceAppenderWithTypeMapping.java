@@ -31,9 +31,9 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /** A source appender that is mapping the Java function types (Function0...) to the equivalent SARL notation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 class SourceAppenderWithTypeMapping implements ISourceAppender {

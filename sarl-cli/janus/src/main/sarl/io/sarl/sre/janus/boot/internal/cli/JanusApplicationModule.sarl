@@ -41,9 +41,9 @@ import static extension io.bootique.BQCoreModule.*
  * Module for configuring the janus application information.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus 3.0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janus
  * @since 3.0.11.0
  */
 class JanusApplicationModule implements BQModule {
@@ -65,9 +65,9 @@ class JanusApplicationModule implements BQModule {
 	/** Provider of the long description of the application.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus 3.0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid janus
 	 * @since 3.0.11.0
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {
@@ -85,9 +85,9 @@ class JanusApplicationModule implements BQModule {
 /** Provider of the module for the janus application information.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus 3.0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janus
  * @since 3.0.11.0
  */
 class JanusApplicationModuleProvider implements BQModuleProvider {

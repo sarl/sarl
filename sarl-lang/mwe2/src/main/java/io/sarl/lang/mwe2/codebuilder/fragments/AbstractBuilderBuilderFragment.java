@@ -59,9 +59,9 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 /** Generator of the abstract code builder.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragment {
 

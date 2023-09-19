@@ -25,9 +25,9 @@ import org.eclipse.osgi.util.NLS;
 /** Messages for the SRE configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @ExcludeFromApidoc
  */
 public final class Messages extends NLS {

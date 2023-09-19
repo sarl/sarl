@@ -35,9 +35,9 @@ import io.bootique.annotation.BQConfigProperty;
  * Configuration for custom API documentation tag.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class Tag {

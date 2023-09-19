@@ -32,9 +32,9 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 /** Tests for formatting enumerations.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 @DisplayName("format: enum")
@@ -44,9 +44,9 @@ public class EnumFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	public class FormatterAPITest extends AbstractFormatterTest {

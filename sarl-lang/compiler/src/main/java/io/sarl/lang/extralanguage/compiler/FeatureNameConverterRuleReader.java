@@ -29,9 +29,9 @@ import org.eclipse.xtext.xbase.lib.Pair;
 /** Reader of the conversion rules.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public class FeatureNameConverterRuleReader {

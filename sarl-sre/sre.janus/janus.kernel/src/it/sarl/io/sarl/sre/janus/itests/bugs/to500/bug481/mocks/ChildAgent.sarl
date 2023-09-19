@@ -27,9 +27,9 @@ import io.sarl.api.core.Lifecycle
 
 /** 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/481
  */
 agent ChildAgent {

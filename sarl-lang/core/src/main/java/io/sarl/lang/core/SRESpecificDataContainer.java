@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <p>Any SRE-specific data into this object is assumed to be transient (not serializable).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.6
  */
 public abstract class SRESpecificDataContainer {

@@ -27,9 +27,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Provide static operators for numbers of type {@code Number}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.7
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */

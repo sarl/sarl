@@ -31,9 +31,9 @@ import io.sarl.lang.core.util.ConcurrentCollection
 /** Mock of an agent context.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 class MyContext0 implements AgentContext {
 

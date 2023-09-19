@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
  * <p>If not present, the @Mock and @InjectMocks will be considered.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

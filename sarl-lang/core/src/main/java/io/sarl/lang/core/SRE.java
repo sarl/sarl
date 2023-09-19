@@ -44,9 +44,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * This file contains a single line that is the fully qualified name of the {@link SRE}'s implementation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.6
  * @see ServiceLoader
  */
@@ -210,9 +210,9 @@ public final class SRE {
 	 * Private API: not documented.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.6
 	 * @ExcludeFromApidoc
 	 */

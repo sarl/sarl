@@ -51,9 +51,9 @@ import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess {

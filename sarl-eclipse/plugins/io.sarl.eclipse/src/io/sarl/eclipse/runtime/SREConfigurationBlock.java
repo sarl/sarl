@@ -56,9 +56,9 @@ import io.sarl.eclipse.preferences.SREsPreferencePage;
  * configure a SARL runtime environment.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class SREConfigurationBlock {
 
@@ -686,9 +686,9 @@ public class SREConfigurationBlock {
 	/** Listener of changes in the configuration block for SREs.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class InstallChange implements ISREInstallChangedListener {
 

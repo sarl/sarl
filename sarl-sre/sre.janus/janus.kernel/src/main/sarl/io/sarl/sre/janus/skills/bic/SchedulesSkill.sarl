@@ -64,9 +64,9 @@ import static extension io.sarl.sre.janus.services.lifecycle.BehaviorLife.*
  * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @SuppressWarnings("use_reserved_sarl_annotation", "potential_field_synchronization_problem")
 @PrivateAPI(isCallerOnly = true)
@@ -525,9 +525,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Description of a task.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.5.0
 	 */
 	private static final class TaskDescription {
@@ -586,9 +586,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * the receiver will be propagated to the real future.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.9
 	 */
 	private static class FutureReceiver implements Future<Object> {
@@ -636,9 +636,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Type of task termination.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.6.0
 	 */
 	private enum TaskTermination {
@@ -651,9 +651,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Implementation of an agent task that is run once time.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static abstract class TaskRunner extends SreRunnable {
 
@@ -784,9 +784,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Implementation of an agent task that is run once time.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static class SingleRunner extends TaskRunner {
 
@@ -800,9 +800,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Implementation of a periodic agent task.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static class PeriodicRunner extends TaskRunner {
 
@@ -816,9 +816,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * Implementation of an agent infinite loop task.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static class InfiniteRunner extends TaskRunner {
 
@@ -863,9 +863,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
  * Listener on events related to the task failures.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 interface FailureListener extends EventListener {
@@ -883,9 +883,9 @@ interface FailureListener extends EventListener {
 /** Factory for failure listener.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 interface FailureListenerFactory {

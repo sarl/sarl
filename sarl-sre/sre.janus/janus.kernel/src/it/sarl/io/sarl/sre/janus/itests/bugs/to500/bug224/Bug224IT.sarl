@@ -44,9 +44,9 @@ import static org.junit.jupiter.api.Assertions.*
  * Unit test for the issue #224: Equivalent of Skill.install for the Behavior class.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/224
  */
 @ExtendWith(#[

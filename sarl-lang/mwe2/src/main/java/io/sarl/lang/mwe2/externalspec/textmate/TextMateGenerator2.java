@@ -49,9 +49,9 @@ import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
  * the TextMate-compatible viewers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "https://manual.macromates.com/en/language_grammars"
  * @see "https://github.com/staltz/SublimeXtend/"
  */
@@ -530,9 +530,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	/** Definition of a pattern.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected final class Pattern {
@@ -684,9 +684,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * <p>This appendable uses the old property-file syntax.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class OldStyleTmAppendable extends AbstractAppendable implements ITmStyleAppendable {
@@ -791,9 +791,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * <p>This appendable uses the XML-based syntax.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class XmlBasedTmAppendable extends AbstractAppendable implements ITmStyleAppendable {
@@ -929,9 +929,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * property file..
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static final class CombinedTmAppendable implements ITmStyleAppendable {

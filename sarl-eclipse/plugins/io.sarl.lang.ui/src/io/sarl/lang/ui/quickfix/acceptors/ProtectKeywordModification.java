@@ -39,9 +39,9 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * Add the ^ character before a keywword.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public final class ProtectKeywordModification extends SARLSemanticModification {
 

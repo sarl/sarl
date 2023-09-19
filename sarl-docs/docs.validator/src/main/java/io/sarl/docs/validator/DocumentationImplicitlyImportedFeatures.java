@@ -28,9 +28,9 @@ import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
 /** Implicitly imported extensions for the testing of the documentation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImportedFeatures {

@@ -33,9 +33,9 @@ import io.sarl.lang.core.util.ConcurrentCollection;
  * basic interaction context.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public interface AgentContext {
 

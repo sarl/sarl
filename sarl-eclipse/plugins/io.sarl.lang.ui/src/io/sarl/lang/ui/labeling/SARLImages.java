@@ -37,9 +37,9 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
  * Providers of images for the SARL IDE.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @Singleton
 public class SARLImages extends XtendImages {
@@ -243,9 +243,9 @@ public class SARLImages extends XtendImages {
 	 * Type of the SARL element.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	public enum SarlElementType {
 		/** Agent.

@@ -40,9 +40,9 @@ import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),

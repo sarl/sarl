@@ -24,9 +24,9 @@ package io.sarl.lang.pythongenerator.configuration;
 /** Configuration for the SARL-to-Python generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.8
  */
 public class PyGeneratorConfiguration {

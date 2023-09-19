@@ -30,9 +30,9 @@ import org.apache.maven.plugin.logging.Log;
 /** Adapter of the Maven logger to the JUL handler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.12
  */
 final class MavenJulHandler extends Handler {

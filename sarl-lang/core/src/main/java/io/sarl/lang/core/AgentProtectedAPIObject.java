@@ -29,9 +29,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /** This class defines the protected API that is provided to the agents and the agent traits.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.4
  */
 public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {

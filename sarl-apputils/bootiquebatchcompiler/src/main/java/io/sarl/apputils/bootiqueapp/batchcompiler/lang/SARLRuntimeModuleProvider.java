@@ -28,9 +28,9 @@ import io.bootique.di.BQModule;
 /** Provider of the module for the SARL compiler runtime.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiquebatchcompiler 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 public class SARLRuntimeModuleProvider implements BQModuleProvider {

@@ -30,9 +30,9 @@ import org.eclipse.core.runtime.Status;
  * Utility functions for the plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  */
 public class PyGeneratorPlugin extends Plugin {
 

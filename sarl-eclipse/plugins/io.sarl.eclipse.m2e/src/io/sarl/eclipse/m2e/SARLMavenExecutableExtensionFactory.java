@@ -30,9 +30,9 @@ import io.sarl.lang.ui.internal.LangActivator;
 /** Factory for injecting SARL instances.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  */
 public class SARLMavenExecutableExtensionFactory extends SARLEclipseExecutableExtensionFactory {
 

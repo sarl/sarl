@@ -69,9 +69,9 @@ import io.sarl.lang.util.Utils;
  * Add a capacity use.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.12
  */
 public final class CapacityUseAddModification extends SARLSemanticModification {

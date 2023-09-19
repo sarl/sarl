@@ -48,9 +48,9 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
  * {@link org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil} and {@link AnnotationLookup}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @see org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil for Xbase annotations
  * @see AnnotationLookup for retreiving annotations.
  */

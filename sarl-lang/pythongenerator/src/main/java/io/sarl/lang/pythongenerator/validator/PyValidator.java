@@ -54,9 +54,9 @@ import io.sarl.lang.pythongenerator.generator.PyKeywordProvider;
 /** The validator from SARL to the Python target language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.6
  */
 @Singleton

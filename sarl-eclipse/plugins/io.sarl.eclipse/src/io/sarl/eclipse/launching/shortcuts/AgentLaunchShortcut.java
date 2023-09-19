@@ -40,9 +40,9 @@ import io.sarl.lang.ui.labeling.SARLImages;
 /** Shortcut for launching a SARL agent.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, Agent> {
 

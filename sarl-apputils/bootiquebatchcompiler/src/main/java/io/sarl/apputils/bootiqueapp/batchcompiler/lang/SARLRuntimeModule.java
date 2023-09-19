@@ -37,9 +37,9 @@ import io.sarl.lang.extralanguage.IExtraLanguageContributions;
  * from command-line tools when their CLI options should be computed.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiquebatchcompiler 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 public final class SARLRuntimeModule implements BQModule {

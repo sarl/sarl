@@ -57,9 +57,9 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 /** Generator of the builder for members.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuilderFragment {
 
@@ -1115,9 +1115,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	/** Description of a member.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class MemberDescription {
 

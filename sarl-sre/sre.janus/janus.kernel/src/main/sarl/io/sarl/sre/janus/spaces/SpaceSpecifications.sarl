@@ -38,9 +38,9 @@ import javax.inject.Singleton
  * Abstract specification for standard event spaces into the SRE. 
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 abstract class AbstractSreEventSpaceSpecification {
@@ -87,9 +87,9 @@ abstract class AbstractSreEventSpaceSpecification {
  * Specification for standard event spaces into the SRE. 
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class SreEventSpaceSpecification extends AbstractSreEventSpaceSpecification implements EventSpaceSpecification {
 
@@ -103,9 +103,9 @@ class SreEventSpaceSpecification extends AbstractSreEventSpaceSpecification impl
  * Event space specification related to the SRE. 
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class SreOpenEventSpaceSpecification extends AbstractSreEventSpaceSpecification implements OpenEventSpaceSpecification {
 	
@@ -119,9 +119,9 @@ class SreOpenEventSpaceSpecification extends AbstractSreEventSpaceSpecification 
  * Factory of space specification for SRE. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Singleton
 class SreSpaceSpecificationFactory {

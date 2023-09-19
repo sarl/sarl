@@ -64,9 +64,9 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 /** Describe generation context.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 abstract class GenerationContext {
 

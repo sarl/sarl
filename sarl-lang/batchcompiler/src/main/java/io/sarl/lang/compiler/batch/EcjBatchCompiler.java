@@ -40,9 +40,9 @@ import org.eclipse.xtext.util.Strings;
 /** A wrapper on top of the Eclipse Compiler for Java (ECJ), aka. JDT.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.8
  */
 @Singleton
@@ -201,9 +201,9 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 	/** Wrap a Eclipse IProgressMonitor into a JDT compilation progress.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version batchcompiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid batchcompiler
 	 */
 	private static class ProgressMonitorCompilationProgress extends CompilationProgress {
 

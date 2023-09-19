@@ -26,9 +26,9 @@ import io.sarl.api.naming.namespace.Observable
 /** Mock of an agent skill.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 skill MySkill1 implements MyCapacity {
 

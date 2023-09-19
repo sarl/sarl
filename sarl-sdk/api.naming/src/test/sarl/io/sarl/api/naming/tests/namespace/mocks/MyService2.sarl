@@ -28,9 +28,9 @@ import org.arakhne.afc.services.ServiceState
 /** Mock of a service.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 class MyService2 implements IService {
 

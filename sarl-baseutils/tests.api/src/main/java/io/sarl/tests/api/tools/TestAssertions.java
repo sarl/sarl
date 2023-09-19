@@ -58,9 +58,9 @@ import org.osgi.framework.Version;
 /** Set of utility classes that provide additional assertion functions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public final class TestAssertions {
@@ -1141,9 +1141,9 @@ public final class TestAssertions {
 	/** Code to be run.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.13.0 20230919-093055
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface
@@ -1161,9 +1161,9 @@ public final class TestAssertions {
 	 *
 	 * @param <T> the type of the exception.
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.13.0 20230919-093055
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface
@@ -1182,9 +1182,9 @@ public final class TestAssertions {
 	 *
 	 * @param <T> the type of the exception.
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.13.0 20230919-093055
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	public static class ExceptionChecker<T extends Throwable> {

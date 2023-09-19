@@ -33,9 +33,9 @@ import org.eclipse.xtend.core.XtendStandaloneSetup;
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 

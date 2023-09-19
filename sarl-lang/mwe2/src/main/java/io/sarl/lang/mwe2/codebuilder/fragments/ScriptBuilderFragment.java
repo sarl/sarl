@@ -61,9 +61,9 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 /** Generator of the script builder types.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 

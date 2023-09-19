@@ -61,9 +61,9 @@ import org.arakhne.afc.services.IService
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Singleton
 class Kernel {
@@ -305,9 +305,9 @@ class Kernel {
 	 * Asynchronous listener on platform events.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	protected static class AsynchronousKernelStoppingListener implements KernelAgentLifecycleListener, Runnable, UncaughtExceptionHandler {
 
@@ -373,9 +373,9 @@ class Kernel {
  * Cause of the agent termination when the kernel is shuting down.
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class KernelShutdownException extends RuntimeException {

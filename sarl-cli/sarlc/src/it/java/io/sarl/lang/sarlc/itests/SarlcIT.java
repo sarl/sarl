@@ -41,9 +41,9 @@ import io.sarl.tests.api.tools.TestShell;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  */
 @SuppressWarnings("all")
 @DisplayName("Run sarlc")

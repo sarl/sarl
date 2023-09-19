@@ -37,9 +37,9 @@ import io.sarl.lang.pythongenerator.generator.Messages;
 /** Provide the output configuration from the SARL code and the extra languages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.6
  */
 @Singleton

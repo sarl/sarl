@@ -28,9 +28,9 @@ import io.sarl.lang.core.SpaceID
 /** Mock of a space.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 class MySpace0 implements Space {
 

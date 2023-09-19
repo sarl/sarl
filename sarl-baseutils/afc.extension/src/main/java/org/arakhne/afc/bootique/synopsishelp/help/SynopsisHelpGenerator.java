@@ -32,9 +32,9 @@ import io.bootique.meta.application.ApplicationMetadata;
  * the other sections provided by {@link DefaultHelpGenerator}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 public class SynopsisHelpGenerator extends DefaultHelpGenerator {
@@ -133,9 +133,9 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 	/** Appender for the synopsis help.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version afc.extension 0.13.0 20230919-093055
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid afc.extension
 	 * @since 15.0
 	 */
 	protected static class SynopsisHelpAppender extends HelpAppender {

@@ -29,9 +29,9 @@ import com.google.common.base.Strings;
  * Type of hazelcast join.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 public enum JoinMethod {

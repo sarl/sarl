@@ -72,9 +72,9 @@ import org.jsoup.nodes.Node;
 /** Builder of HTML elements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  * @see HtmlAccessor
  */
@@ -846,9 +846,9 @@ public interface HtmlFactory {
 	/** Builder of HTML tabs.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 * @see HtmlFactory
 	 */
@@ -937,9 +937,9 @@ public interface HtmlFactory {
 	/** Memory of the building of a comment text.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	public interface CommentTextMemory {

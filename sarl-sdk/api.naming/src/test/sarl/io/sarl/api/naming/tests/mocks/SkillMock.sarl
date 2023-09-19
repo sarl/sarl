@@ -25,9 +25,9 @@ import io.sarl.lang.core.Skill
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 class SkillMock extends Skill implements CapacityMock {
 	//

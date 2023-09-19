@@ -43,9 +43,9 @@ import java.util.UUID
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event Initialize {
 
@@ -114,9 +114,9 @@ final event Initialize {
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 @EarlyExit
 final event Destroy
@@ -129,9 +129,9 @@ final event Destroy
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event AgentSpawned {
 
@@ -166,9 +166,9 @@ final event AgentSpawned {
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event AgentKilled {
 
@@ -206,9 +206,9 @@ final event AgentKilled {
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event SpaceCreated {
 
@@ -234,9 +234,9 @@ final event SpaceCreated {
  * The source of the event is the parent agent.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event SpaceDestroyed {
 
@@ -264,9 +264,9 @@ final event SpaceDestroyed {
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event MemberJoined {
 
@@ -300,9 +300,9 @@ final event MemberJoined {
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event MemberExcluded {
 
@@ -335,9 +335,9 @@ final event MemberExcluded {
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event MemberLeft {
 
@@ -368,9 +368,9 @@ final event MemberLeft {
  * The source of the event is the agent itself.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event ContextJoined {
 
@@ -400,9 +400,9 @@ final event ContextJoined {
  * The source of the event is the agent itself.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 final event ContextLeft {
 
@@ -427,9 +427,9 @@ final event ContextLeft {
  * The source of the event is the entering agent.
  *
  * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.10
  */
 final event ParticipantJoined {
@@ -457,9 +457,9 @@ final event ParticipantJoined {
  * The source of the event is the leaving agent.
  *
  * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.10
  */
 final event ParticipantLeft {

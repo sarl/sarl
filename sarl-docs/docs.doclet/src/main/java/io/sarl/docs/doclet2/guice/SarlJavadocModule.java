@@ -153,9 +153,9 @@ import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGeneratorImpl;
 /** Guice module for SARL Java Doclet.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.11
  */
 public class SarlJavadocModule extends AbstractModule {

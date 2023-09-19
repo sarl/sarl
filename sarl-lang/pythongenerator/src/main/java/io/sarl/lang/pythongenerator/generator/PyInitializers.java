@@ -36,9 +36,9 @@ import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 /** Initializers for Python 3.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.6
  */
 public final class PyInitializers {

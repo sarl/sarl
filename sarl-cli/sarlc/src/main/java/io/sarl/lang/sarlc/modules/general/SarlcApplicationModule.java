@@ -47,9 +47,9 @@ import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
 /** Module for configuring the sarlc application information.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class SarlcApplicationModule implements BQModule {
@@ -75,9 +75,9 @@ public class SarlcApplicationModule implements BQModule {
 	/** Provider of the long description of the application.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version sarlc 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid sarlc
 	 * @since 0.8
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {

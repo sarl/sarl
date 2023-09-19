@@ -32,9 +32,9 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
  * A configuration for the accessor to the grammar keywords.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent {
 

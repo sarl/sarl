@@ -38,9 +38,9 @@ import io.sarl.lang.sarl.SarlClass;
 /** Shortcut for launching a SARL application.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.6
  */
 public class ApplicationLaunchShortcut extends AbstractSarlLaunchShortcut<SarlClass, Object> {

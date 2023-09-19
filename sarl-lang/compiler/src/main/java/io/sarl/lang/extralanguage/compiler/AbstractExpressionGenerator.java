@@ -65,9 +65,9 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 /** Abstract Generator of XExpression.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public abstract class AbstractExpressionGenerator implements IExpressionGenerator {
@@ -476,9 +476,9 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 * <p>Thus generator should be overriden in order to provide specific language implementation.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	protected abstract class FeatureCallGenerator {
 

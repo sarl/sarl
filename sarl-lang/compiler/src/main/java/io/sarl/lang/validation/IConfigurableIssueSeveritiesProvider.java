@@ -39,9 +39,9 @@ import org.eclipse.xtext.validation.IssueSeveritiesProvider;
  * implementation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.5
  * @see IssueSeveritiesProvider
  */

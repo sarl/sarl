@@ -64,9 +64,9 @@ import io.sarl.lang.core.Event;
  * <p>An immutable type is a type those state cannot be changed after it is constructed.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 @Singleton

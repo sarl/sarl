@@ -32,9 +32,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * Plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.experienceindex 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.experienceindex
  * @since 0.6
  */
 public class SarlExperienceIndexPlugin extends AbstractUIPlugin {

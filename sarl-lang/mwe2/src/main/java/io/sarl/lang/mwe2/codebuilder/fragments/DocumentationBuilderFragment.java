@@ -77,9 +77,9 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 /** Generate the documentation adapters and related types.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment {
 

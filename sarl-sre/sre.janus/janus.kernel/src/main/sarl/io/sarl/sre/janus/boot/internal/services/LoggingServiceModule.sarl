@@ -39,9 +39,9 @@ import org.arakhne.afc.services.IService
  * Module for the logging services.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class LoggingServiceModule implements BQModule {
 
@@ -75,9 +75,9 @@ class LoggingServiceModule implements BQModule {
 /** Provider of the module for the logging services.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class LoggingServiceModuleProvider implements BQModuleProvider {

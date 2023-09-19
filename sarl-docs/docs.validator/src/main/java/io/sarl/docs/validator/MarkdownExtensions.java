@@ -35,9 +35,9 @@ import io.sarl.lang.core.util.CliUtilities;
 /** Tools for generating markdown from different sources.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public final class MarkdownExtensions {
@@ -159,9 +159,9 @@ public final class MarkdownExtensions {
 	/** Comparator of command-line options.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 * @since 0.6
 	 */
 	private static class OptionComparator implements Comparator<Option> {

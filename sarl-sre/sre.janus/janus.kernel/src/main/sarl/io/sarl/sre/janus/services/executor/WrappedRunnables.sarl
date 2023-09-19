@@ -31,9 +31,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * See {@link Runnables} for creating an instance.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6
  * @see Runnables
  */
@@ -140,9 +140,9 @@ abstract class SreExecutable {
  * to the Java execution layer. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6
  * @see Runnables
  */
@@ -245,9 +245,9 @@ class SreRunnable extends SreExecutable implements Runnable {
  * 
  * @param <T> the type of the result.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6
  * @see Runnables
  */
@@ -343,9 +343,9 @@ class SreCallable<T> extends SreExecutable implements Callable<T> {
  * 
  * @param <T> the type of the result.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.7
  * @see Runnables
  */
@@ -438,9 +438,9 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
  * See {@link Runnables} for creating an instance.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  * @see Runnables
  */

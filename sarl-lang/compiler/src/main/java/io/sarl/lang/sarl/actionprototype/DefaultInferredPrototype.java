@@ -32,9 +32,9 @@ import com.google.common.base.Strings;
  * associated to the parameter's default values.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class DefaultInferredPrototype implements InferredPrototype {
 
@@ -151,9 +151,9 @@ public class DefaultInferredPrototype implements InferredPrototype {
 	/** Iterator of the types of the action parameters.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class SignatureKeyIterator implements Iterator<ActionParameterTypes> {
 

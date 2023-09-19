@@ -76,9 +76,9 @@ import io.sarl.lang.SARLConfig;
  * most of its logic is defined in protected methods.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.10
  * @see ClassPathDetector
  */

@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS
 /** Messages for the SRE configuration.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @ExcludeFromApidoc
  */
 final class Messages extends NLS {

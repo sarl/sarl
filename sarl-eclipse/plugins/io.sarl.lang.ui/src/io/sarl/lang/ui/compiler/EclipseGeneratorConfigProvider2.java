@@ -36,9 +36,9 @@ import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
 /** Provider of a generator configuration v2.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.4
  */
 public class EclipseGeneratorConfigProvider2 implements IGeneratorConfigProvider2 {

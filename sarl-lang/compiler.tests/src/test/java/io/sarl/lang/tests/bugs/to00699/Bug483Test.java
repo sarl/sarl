@@ -37,9 +37,9 @@ import io.sarl.lang.validation.IssueCodes;
 /** Issue 483: Events are not cloned before they are given to the behavior units.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see https://github.com/sarl/sarl/issues/483
  */
 @DisplayName("Bug #483")

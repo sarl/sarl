@@ -26,9 +26,9 @@ import java.lang.reflect.Field
  * A tool that allows to observe fields because they are all considered as observable and writable.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 class PublicFieldAccessValidator implements IFieldAccessValidator {

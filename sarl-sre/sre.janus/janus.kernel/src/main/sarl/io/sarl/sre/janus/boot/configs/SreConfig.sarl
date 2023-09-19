@@ -51,9 +51,9 @@ import static extension io.bootique.BQCoreModule.extend
  * Configuration for the SARL run-time environment. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 @BQConfig("Configuration for the SARL run-time environment")
@@ -171,9 +171,9 @@ class SreConfig {
  * Module for creating and configuring the general SRE configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class SreConfigModule implements BQModule {
@@ -217,9 +217,9 @@ class SreConfigModule implements BQModule {
 /** Provider of the module for creating and configuring the general SRE configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class SreConfigModuleProvider implements BQModuleProvider {

@@ -43,9 +43,9 @@ import javax.inject.Provider
  * No injection mechanism is used.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class StandardLifecycleService extends AbstractLifecycleService {
@@ -124,9 +124,9 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * This factory does not support the {@code @Injectable} annotation.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.11
 	 */
 	private static class CreatorFactoryWithoutInjectableSupport extends AbtractAgentCreatorProvider {
@@ -146,9 +146,9 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * This factory supports the {@code @Injectable} annotation.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.11
 	 */
 	private static class CreatorFactoryWithInjectableSupport extends AbtractAgentCreatorProvider {

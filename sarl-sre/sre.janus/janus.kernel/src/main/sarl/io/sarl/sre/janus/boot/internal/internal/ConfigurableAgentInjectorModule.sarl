@@ -38,9 +38,9 @@ import javax.inject.Singleton
  * Module for configuring the injector of agents and agent components.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class ConfigurableAgentInjectorModule implements BQModule {
@@ -68,9 +68,9 @@ class ConfigurableAgentInjectorModule implements BQModule {
 /** Provider of the module for configuring the agent trait initializer.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class ConfigurableAgentInjectorModuleProvider implements BQModuleProvider {

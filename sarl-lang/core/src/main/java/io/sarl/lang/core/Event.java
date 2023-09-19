@@ -33,9 +33,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * precisely control/filter the potential recipients of an event.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public abstract class Event implements Serializable {
 

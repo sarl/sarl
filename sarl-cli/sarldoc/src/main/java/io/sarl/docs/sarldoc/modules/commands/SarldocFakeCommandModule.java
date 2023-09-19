@@ -40,9 +40,9 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
 /** Module for the sarldoc fake command.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$compiler
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100compiler
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocFakeCommandModule implements BQModule {

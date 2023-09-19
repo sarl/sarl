@@ -26,9 +26,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
 /** Appendable for TextMate output that provides high level methods.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.6
  */
 public interface ITmStyleAppendable extends IStyleAppendable {

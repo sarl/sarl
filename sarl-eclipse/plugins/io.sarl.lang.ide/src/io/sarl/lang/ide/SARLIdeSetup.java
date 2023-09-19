@@ -32,9 +32,9 @@ import io.sarl.lang.SARLStandaloneSetup;
  * Initialization support for running Xtext languages as language servers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ide 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ide
  * @since 0.12
  */
 public class SARLIdeSetup extends SARLStandaloneSetup {

@@ -24,9 +24,9 @@ package io.sarl.api.javafx
 /* Triggered when the JavaFX application needs to be exited.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.javafx 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.javafx
  * @since 0.7
  */
 event AppExit

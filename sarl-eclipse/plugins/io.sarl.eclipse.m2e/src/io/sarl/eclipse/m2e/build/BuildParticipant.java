@@ -60,9 +60,9 @@ import io.sarl.eclipse.util.Utilities;
 /** Build participant for detecting invalid versions of SARL components.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  */
 public class BuildParticipant extends AbstractBuildParticipant2 {
 

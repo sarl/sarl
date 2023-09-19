@@ -26,9 +26,9 @@ package io.sarl.lang.core;
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @FunctionalInterface
 public interface EventSpaceSpecification extends SpaceSpecification<EventSpace> {

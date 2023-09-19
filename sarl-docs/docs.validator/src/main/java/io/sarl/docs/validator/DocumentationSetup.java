@@ -34,9 +34,9 @@ import io.sarl.lang.SARLStandaloneSetup;
 /** Implicitly imported extensions for the testing of the documentation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public class DocumentationSetup extends SARLStandaloneSetup {
@@ -77,9 +77,9 @@ public class DocumentationSetup extends SARLStandaloneSetup {
 	/** Module for the documentation generator.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 * @since 0.6
 	 */
 	private static class DocumentationModule implements Module {

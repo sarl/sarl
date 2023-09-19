@@ -29,9 +29,9 @@ import java.lang.reflect.Method;
  * @param <RT> the type of the receiver.
  * @param <T> the type of the returned value.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 public final class ReflectMethod<RT, T> {

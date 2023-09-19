@@ -39,9 +39,9 @@ import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
  * features that are not types.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("all")
 public class SARLImportingTypesProposalProvider extends ImportingTypesProposalProvider {

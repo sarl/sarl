@@ -53,9 +53,9 @@ import static extension io.bootique.BQCoreModule.extend
  * Configuration for the networking features of the SRE. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 @BQConfig("Configuration for the SRE networking feature")
@@ -433,9 +433,9 @@ class SreNetworkConfig {
  * Module for creating and configuring the networking features of the SRE.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class SreNetworkConfigModule implements BQModule {
@@ -474,9 +474,9 @@ class SreNetworkConfigModule implements BQModule {
 /** Provider of the module for creating and configuring the networking features of the SRE.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class SreNetworkConfigModuleProvider implements BQModuleProvider {

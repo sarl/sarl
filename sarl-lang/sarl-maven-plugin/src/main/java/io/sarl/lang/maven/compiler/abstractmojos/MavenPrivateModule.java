@@ -35,9 +35,9 @@ import io.sarl.lang.maven.compiler.compiler.JavaCompiler;
 /** Child injection module for the SARL maven plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.8
  */
 public class MavenPrivateModule implements Module {

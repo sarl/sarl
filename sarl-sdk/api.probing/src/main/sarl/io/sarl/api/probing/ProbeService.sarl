@@ -29,9 +29,9 @@ import org.arakhne.afc.services.IService
  * This service provides probing mechanisms.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.probing 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.probing
  * @since 0.12
  */
 interface ProbeService extends IService {

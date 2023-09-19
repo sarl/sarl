@@ -27,9 +27,9 @@ import java.util.concurrent.Executor
  * Mock of a Java executor.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  */
 class ExecutorMock implements Executor {
 

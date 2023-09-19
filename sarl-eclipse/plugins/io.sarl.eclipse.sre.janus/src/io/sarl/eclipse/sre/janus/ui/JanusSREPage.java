@@ -44,9 +44,9 @@ import io.sarl.eclipse.wizards.sreinstall.AbstractSREInstallPage;
  * Implementation of a page for the SRE installation wizard.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.sre.janus 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  * @since 0.13
  */
 public class JanusSREPage extends AbstractSREInstallPage {

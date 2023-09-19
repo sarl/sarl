@@ -33,9 +33,9 @@ import io.sarl.lang.ui.extralanguage.validation.AbstractExtraLanguageValidatorPr
 /** Provider the Python validator if is it enabled.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.pythongenerator 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.pythongenerator
  * @since 0.6
  */
 @Singleton

@@ -35,9 +35,9 @@ import io.sarl.lang.extralanguage.compiler.IRootGenerator;
 /** Provider of the extra-language generators.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 public class ContributionBasedExtraLanguageGeneratorProvider implements IExtraLanguageGeneratorProvider {

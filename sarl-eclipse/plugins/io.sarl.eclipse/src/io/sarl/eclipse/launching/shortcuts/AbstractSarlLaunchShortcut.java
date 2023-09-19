@@ -73,9 +73,9 @@ import io.sarl.lang.sarl.SarlScript;
  * @param <ET> the type of the valid objects that are supported by this shortcut.
  * @param <JT> the type of the valid objects that are supported by this shortcut.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>

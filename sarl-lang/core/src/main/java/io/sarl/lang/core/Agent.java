@@ -40,9 +40,9 @@ import io.sarl.lang.core.annotation.SarlSpecification;
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvaluatorReceiver {

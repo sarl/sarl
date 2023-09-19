@@ -36,9 +36,9 @@ import javax.inject.Singleton
  * Command for showing the SRE version with the network feature inside.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 0.12
  */
 class VersionCommand extends io.sarl.apputils.bootiqueapp.version.VersionCommand {
@@ -64,9 +64,9 @@ class VersionCommand extends io.sarl.apputils.bootiqueapp.version.VersionCommand
 /** Module for the command for printing out the SRE version with the network feature inside.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 0.9
  */
 class VersionCommandModule implements BQModule {
@@ -90,9 +90,9 @@ class VersionCommandModule implements BQModule {
 /** Provider of the module for the version command.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 0.9
  */
 class VersionCommandModuleProvider implements BQModuleProvider {

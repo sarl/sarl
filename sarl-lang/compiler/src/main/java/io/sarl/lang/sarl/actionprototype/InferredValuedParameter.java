@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  * This class permits to wrap a default value when building the function signatures.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class InferredValuedParameter extends InferredStandardParameter {
 

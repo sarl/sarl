@@ -44,9 +44,9 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
  * An injected element.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class BindingFactory {
 

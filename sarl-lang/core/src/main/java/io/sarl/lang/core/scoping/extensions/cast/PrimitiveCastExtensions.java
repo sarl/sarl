@@ -35,9 +35,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Provide static functions related to the casting of primitives that are not numbers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.9
  */
 public final class PrimitiveCastExtensions {

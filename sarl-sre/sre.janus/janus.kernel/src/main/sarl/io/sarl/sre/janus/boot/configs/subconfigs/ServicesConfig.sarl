@@ -43,9 +43,9 @@ import static extension io.bootique.BQCoreModule.extend
  * Configuration of the SRE services.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.8
  */
 @BQConfig("Configuration of the services inside the SRE")
@@ -223,9 +223,9 @@ class ServicesConfig {
  * Module for the parallel services' configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class ServicesConfigModule implements BQModule {
@@ -263,9 +263,9 @@ class ServicesConfigModule implements BQModule {
 /** Provider of the module for the parallel executors' configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class ServicesConfigModuleProvider implements BQModuleProvider {

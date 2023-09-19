@@ -33,9 +33,9 @@ import io.sarl.lang.sarl.SarlScript;
 /** Provider of rename strategies in the SARL context.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLRenameStrategyProvider extends DefaultRenameStrategyProvider {
 

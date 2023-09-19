@@ -66,9 +66,9 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
  * between the real sarldoc command and its fake version.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public abstract class AbstractSarldocCommand extends CommandWithMetadata {

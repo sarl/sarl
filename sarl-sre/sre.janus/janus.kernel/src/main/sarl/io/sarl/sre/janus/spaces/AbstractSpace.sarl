@@ -31,9 +31,9 @@ import java.util.EventListener
  * Abstract implementation of a space.
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 abstract class AbstractSpace extends SRESpecificDataContainer implements Space {
 
@@ -83,9 +83,9 @@ abstract class AbstractSpace extends SRESpecificDataContainer implements Space {
  * Listener on events related to the space.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface SpaceListener extends EventListener {
 	/** 

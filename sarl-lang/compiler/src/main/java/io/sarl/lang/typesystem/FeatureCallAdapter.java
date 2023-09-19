@@ -32,9 +32,9 @@ import org.eclipse.xtext.xbase.typesystem.computation.IFeatureLinkingCandidate;
  * Adapter to memorize the type computing candidates for an abstract feature call.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.12
  */
 public class FeatureCallAdapter extends AdapterImpl {

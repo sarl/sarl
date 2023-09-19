@@ -26,9 +26,9 @@ package io.sarl.docs.validator;
  * An ampty array causes a not rendering of the markdown table. 
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.12
  */
 public class MarkdownEmptyArrayException extends RuntimeException {

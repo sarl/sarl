@@ -51,9 +51,9 @@ import javax.inject.Singleton
  * Provider of the built-in capacities of the SRE platform.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 @SuppressWarnings("use_reserved_sarl_annotation")

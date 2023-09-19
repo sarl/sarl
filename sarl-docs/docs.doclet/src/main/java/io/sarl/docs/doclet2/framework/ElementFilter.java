@@ -55,9 +55,9 @@ import javax.lang.model.element.TypeElement;
 /** Tool that filter elements for the selected elements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public interface ElementFilter {

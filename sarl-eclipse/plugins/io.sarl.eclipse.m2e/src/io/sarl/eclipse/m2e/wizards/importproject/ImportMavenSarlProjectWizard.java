@@ -52,9 +52,9 @@ import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
  * Wizard for importing a maven-based SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  * @since 0.8
  */
 public class ImportMavenSarlProjectWizard extends MavenImportWizard {

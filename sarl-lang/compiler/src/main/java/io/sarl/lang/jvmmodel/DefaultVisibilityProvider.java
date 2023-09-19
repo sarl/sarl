@@ -36,9 +36,9 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 /** Provide the default visibility modifier for elements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {
 

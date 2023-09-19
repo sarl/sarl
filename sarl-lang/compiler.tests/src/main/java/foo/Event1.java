@@ -27,8 +27,8 @@ import io.sarl.lang.core.Event;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
  * @mavenartifactid $ArifactId$
  */
 @SuppressWarnings("all")

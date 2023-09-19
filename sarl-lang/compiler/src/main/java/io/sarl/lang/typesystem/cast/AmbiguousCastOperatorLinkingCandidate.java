@@ -36,9 +36,9 @@ import org.eclipse.xtext.xbase.typesystem.internal.AbstractPendingLinkingCandida
 /** Ambiguous linking candidate for cast operator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class AmbiguousCastOperatorLinkingCandidate extends AbstractAmbiguousLinkingCandidate<CastOperatorLinkingCandidate>

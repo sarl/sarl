@@ -86,9 +86,9 @@ import io.sarl.lang.util.Utils;
 /** Abstract implementation for the generator from SARL to an extra language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator implements IRootGenerator {
@@ -809,9 +809,9 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	/** Specific properties with reading order.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.8
 	 */
 	private static class OrderedProperties extends Properties {

@@ -27,9 +27,9 @@ import org.eclipse.xtext.xbase.lib.Inline;
  * Describe the states of an agent.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 public final class PlatformTools {
 

@@ -33,9 +33,9 @@ import io.sarl.apputils.bootiqueapp.utils.SystemPath;
  * The files into this folders are extracted into a temporary folder "sarlc-sdk-X.X".
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 @Singleton

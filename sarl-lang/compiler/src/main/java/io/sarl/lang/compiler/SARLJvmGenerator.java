@@ -60,9 +60,9 @@ import io.sarl.lang.util.Utils;
  * </ul>
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.4
  */
 public class SARLJvmGenerator extends XtendGenerator {
@@ -165,9 +165,9 @@ public class SARLJvmGenerator extends XtendGenerator {
 	/** Import manager that is skipping the imports for types in default package.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.13
 	 */
 	public static class NoDefaultPackageImportManager extends ImportManager {

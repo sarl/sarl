@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS;
 /** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

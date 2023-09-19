@@ -26,9 +26,9 @@ import com.google.common.base.Strings;
 /** Level of optimization of the Java code.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.8
  */
 public enum OptimizationLevel {

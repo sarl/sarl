@@ -26,9 +26,9 @@ package io.sarl.eclipse.runtime;
  * SRE may provide and that are supported by the Eclipse tools.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.11
  */
 public final class SRECommandLineOptions {

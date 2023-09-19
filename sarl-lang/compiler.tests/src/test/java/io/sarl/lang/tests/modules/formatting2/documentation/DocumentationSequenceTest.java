@@ -29,9 +29,9 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 /** Tests for sequence of documented members.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.7
  */
 @SuppressWarnings("all")

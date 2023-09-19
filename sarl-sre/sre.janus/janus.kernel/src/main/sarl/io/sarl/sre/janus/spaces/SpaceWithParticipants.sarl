@@ -29,9 +29,9 @@ import java.util.UUID
  * Space with participants that exhibits the participants' list.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 @SuppressWarnings("use_reserved_sarl_annotation")

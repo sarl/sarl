@@ -53,9 +53,9 @@ import io.sarl.lang.maven.compiler.utils.Utils;
 /** Abstract Mojo for compiling SARL (standard en test).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.8
  */
 public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo {

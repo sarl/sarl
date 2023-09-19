@@ -46,9 +46,9 @@ import io.sarl.lang.core.Agent;
  * Wizard page for creating a new SARL agent.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 

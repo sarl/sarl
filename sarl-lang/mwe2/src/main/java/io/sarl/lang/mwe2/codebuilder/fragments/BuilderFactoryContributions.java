@@ -33,9 +33,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * Contributions to the code builder factory.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 @Singleton
 public class BuilderFactoryContributions {

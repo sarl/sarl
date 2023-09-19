@@ -44,9 +44,9 @@ import io.sarl.apputils.bootiqueapp.utils.JulPatternFormatter;
  * with bootique modules.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.8
  */
 public class BootiqueMain {

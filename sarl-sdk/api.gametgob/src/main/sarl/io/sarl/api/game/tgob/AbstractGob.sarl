@@ -28,9 +28,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Abstract class for the main entities that are used in the game time-based goal-oriented behavior.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.gametgob 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.gametgob
  * @since 0.13
  */
 abstract class AbstractGob {

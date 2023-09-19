@@ -35,9 +35,9 @@ import io.sarl.lang.core.SARLVersion;
  * Command for showing the sarlc version.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.8
  */
 public class VersionCommand extends CommandWithMetadata {

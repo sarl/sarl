@@ -31,9 +31,9 @@ import io.bootique.di.BQModule;
 /** Provider of the module for creating and configuring loggers.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 public class LogConfigModuleProvider implements BQModuleProvider {

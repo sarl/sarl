@@ -33,9 +33,9 @@ import java.lang.annotation.Target;
  * generation of these functions in order to use the default Java definitions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.8
  */
 @Target({ElementType.TYPE, ElementType.FIELD})

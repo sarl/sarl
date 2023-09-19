@@ -37,9 +37,9 @@ import io.sarl.lang.core.scoping.extensions.time.TimeExtensions;
 /** Provider of the implicitly imported features in the SARL language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {

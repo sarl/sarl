@@ -80,9 +80,9 @@ import io.sarl.lang.core.SARLVersion;
  * the creation of launch configurations, and the closing of the welcome page of Eclipse.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples
  * @since 0.6
  */
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
@@ -393,9 +393,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	/** Configuration page.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse.examples 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.8
 	 */
 	public class ConfigurationPage extends WizardPage {
@@ -469,9 +469,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	/** A file to be opened that is associated to a project.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse.examples 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.10
 	 */
 	public static class ProjectFileToOpen extends FileToOpen {
@@ -543,9 +543,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	/** Description of a launch configuration.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse.examples 0.13.0 20230919-093100
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.10
 	 */
 	public static class ConfigurationToLaunch {

@@ -25,9 +25,9 @@ package io.sarl.sre.janus.network.tests.framework
  * Context for running the SRE with multiple Hazelcast. This context is thread-safe.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 interface MultiHazelcastRunContext {
@@ -44,9 +44,9 @@ interface MultiHazelcastRunContext {
  * Context for running the SRE with Hazelcast. This context is thread-safe.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class MultiHazelcastRunContextImpl implements MultiHazelcastRunContext {

@@ -47,9 +47,9 @@ import static extension org.junit.jupiter.api.Assertions.*
  * <p>See: https://github.com/sarl/sarl/issues/861
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see "https://github.com/sarl/sarl/issues/861"
  */
 @ExtendWith(#[

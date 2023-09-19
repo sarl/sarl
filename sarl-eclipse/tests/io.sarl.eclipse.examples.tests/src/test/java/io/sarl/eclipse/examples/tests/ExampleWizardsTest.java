@@ -52,9 +52,9 @@ import io.sarl.eclipse.examples.SARLExampleExecutableExtensionFactory;
 /** Class for testing the examples.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples.tests 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  */
 @SuppressWarnings("all")
 @DisplayName("Example wizard definitions")

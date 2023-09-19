@@ -26,9 +26,9 @@ import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 /** Validator of the feature calls.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public interface IFeatureCallValidator {
 

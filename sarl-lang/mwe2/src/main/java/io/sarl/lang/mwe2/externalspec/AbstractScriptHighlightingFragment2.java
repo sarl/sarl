@@ -30,9 +30,9 @@ import org.eclipse.xtext.xtext.generator.CodeConfig;
  * a script-based external tool.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.6
  */
 public abstract class AbstractScriptHighlightingFragment2 extends AbstractExternalHighlightingFragment2<IStyleAppendable> {
@@ -45,9 +45,9 @@ public abstract class AbstractScriptHighlightingFragment2 extends AbstractExtern
 	/** Appendable for script-based styles.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class ScriptAppendable extends AbstractAppendable {

@@ -27,9 +27,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * to the first known dynamic skill provider that is able to provide a skill.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 public final class DelegateDynamicSkillProvider implements DynamicSkillProvider {

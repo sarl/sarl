@@ -27,9 +27,9 @@ import org.eclipse.core.resources.IProject;
  * create instances of {@link ProjectSREProvider}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public interface ProjectSREProviderFactory {
 

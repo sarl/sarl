@@ -48,9 +48,9 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * The contract is to have internal overriding of the preferences in this provider.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.5
  */
 @Singleton
@@ -99,9 +99,9 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 	/** Configurable value provider.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.5
 	 */
 	public static class ConfigurableValueProvider implements IPreferenceValuesProvider {
@@ -131,9 +131,9 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 	/** Configurable values.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.13.0 20230919-093056
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.5
 	 */
 	public static class ConfigurableValues implements IPreferenceValues {

@@ -24,9 +24,9 @@ package io.sarl.eclipse.launching.runner.general;
 /** Steps of preparation in the launching process.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public enum PreparationProcessState {
 	/** Get launch configuration parameters.

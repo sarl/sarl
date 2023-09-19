@@ -38,9 +38,9 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 /** The generator from SARL to the default target language and an extra target language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {

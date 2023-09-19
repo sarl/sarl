@@ -29,9 +29,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
  *
  * @param <T> the type of the objects in the set.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 class ConcurrentSetSkipListSet<T> extends ConcurrentSkipListSet<T> implements ConcurrentSet<T> {

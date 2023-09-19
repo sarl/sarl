@@ -44,9 +44,9 @@ import org.arakhne.afc.vmutil.OperatingSystem;
  * Configuration for the SARL API documentation generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 @BQConfig("Configuration of sarldoc")

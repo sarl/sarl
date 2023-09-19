@@ -33,9 +33,9 @@ import org.arakhne.afc.services.IService
  * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface LifecycleService extends IService {
 
@@ -140,9 +140,9 @@ interface LifecycleService extends IService {
  * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface LifecycleServiceListener extends EventListener {
 
@@ -193,9 +193,9 @@ interface LifecycleServiceListener extends EventListener {
 	 * Event adapter on events related to the life-cycle of an agent.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.10
 	 */
 	static class LifecycleServiceAdapter implements LifecycleServiceListener {
@@ -222,9 +222,9 @@ interface LifecycleServiceListener extends EventListener {
  * Listener on events related to the kernel agent.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface KernelAgentLifecycleListener extends EventListener {
 

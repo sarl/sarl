@@ -28,9 +28,9 @@ import java.util.ArrayList
  * other field access validators.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 class CascadeFieldAccessValidator implements IFieldAccessValidator {

@@ -27,9 +27,9 @@ import java.util.Comparator;
 /** Factory of collections that are not thread-safe.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  * @see DefaultConcurrentCollectionFactory
  */

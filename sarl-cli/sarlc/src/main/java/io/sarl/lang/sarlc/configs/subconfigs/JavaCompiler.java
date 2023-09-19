@@ -35,9 +35,9 @@ import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
  * Type of Java compielr to use by the SARL compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public enum JavaCompiler {

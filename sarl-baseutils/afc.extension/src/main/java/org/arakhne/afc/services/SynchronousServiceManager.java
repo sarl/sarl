@@ -25,9 +25,9 @@ package org.arakhne.afc.services;
  * Implementation of a service manager for the SRE platform that runs the services synchronously.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.13.0 20230919-093055
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 0.13
  */
 public class SynchronousServiceManager extends AbstractServiceManager {

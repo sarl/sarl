@@ -34,9 +34,9 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 /** An object able to provide the name and the type of a formal parameter.
 *
 * @author $Author: sgalland$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
+* @version compiler 0.13.0 20230919-093056
+* @mavengroupid io.sarl.lang
+* @mavenartifactid compiler
 */
 class SarlFormalParameterProvider implements FormalParameterProvider {
 

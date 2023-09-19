@@ -31,9 +31,9 @@ import io.sarl.lang.core.SARLVersion;
 /** Annotation for marking a JvmElement with the version number of the SARL specification.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

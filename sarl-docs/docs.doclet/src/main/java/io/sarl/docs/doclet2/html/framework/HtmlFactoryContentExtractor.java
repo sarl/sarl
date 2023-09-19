@@ -60,9 +60,9 @@ import org.jsoup.nodes.Node;
 /** Tool for extracting an HTML reference from the internal structure of a {@link HtmlFactory}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  * @see HtmlFactory
  */

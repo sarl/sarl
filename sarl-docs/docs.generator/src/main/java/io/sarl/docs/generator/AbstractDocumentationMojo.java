@@ -87,9 +87,9 @@ import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 /** Abstract Maven MOJO for the documentation of the SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public abstract class AbstractDocumentationMojo extends AbstractMojo {

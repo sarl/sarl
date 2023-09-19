@@ -41,9 +41,9 @@ import javax.inject.Singleton
  * is discarded (see {@link ThreadPoolExecutor.CallerRunsPolicy}).
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see ThreadPoolExecutor.CallerRunsPolicy 
  */
 @Singleton
@@ -80,9 +80,9 @@ abstract class AbstractThreadExecutorPolicy implements RejectedExecutionHandler,
  * A handler for rejected tasks that log a warning on the platform logger.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Singleton
 abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecutorPolicy {
@@ -160,9 +160,9 @@ abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecuto
  * when a task is rejected, and an error for each uncaught exception.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see ThreadPoolExecutor.CallerRunsPolicy
  */
 @Singleton
@@ -190,9 +190,9 @@ class VerboseThreadExecutorPolicy extends AbstractLoggingThreadExecutorPolicy {
  * A handler for rejected tasks and uncaught exceptions that logs nothing.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Singleton
 class QuietThreadExecutorPolicy extends AbstractThreadExecutorPolicy {

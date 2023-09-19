@@ -39,9 +39,9 @@ import io.sarl.lang.core.SpaceID;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @DisplayName("Address")
 @Tag("unit")

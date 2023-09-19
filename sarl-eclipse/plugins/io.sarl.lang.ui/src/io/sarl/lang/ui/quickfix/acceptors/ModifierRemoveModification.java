@@ -37,9 +37,9 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * Remove a modifier.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.12
  */
 public final class ModifierRemoveModification extends SARLSemanticModification {

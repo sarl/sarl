@@ -31,9 +31,9 @@ import com.google.inject.BindingAnnotation;
 /** Annotation for injecting the dynamic class loader of sarldoc.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 @Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD })

@@ -30,9 +30,9 @@ import java.lang.annotation.Target;
  * with default values.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @see DefaultValue
  * @see SarlSourceCode
  */

@@ -32,9 +32,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * the LaTeX Beamer.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class LaTeXBeamerGenerator2 extends LaTeXListingsGenerator2 {
 

@@ -54,9 +54,9 @@ import io.sarl.tests.api.tools.TestUtils;
  * for all the source files into a given resource set in a single compilation step.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.9
  */
 public class ResourceSetGlobalCompilationContext {

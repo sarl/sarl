@@ -57,9 +57,9 @@ import static extension org.mockito.Mockito.verify
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -211,9 +211,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with primitive boolean")
 	@Nested
@@ -232,9 +232,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with final primitive boolean")
 	@Nested
@@ -253,9 +253,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with Boolean")
 	@Nested
@@ -274,9 +274,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with final Boolean")
 	@Nested
@@ -295,9 +295,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with AtomicBoolean")
 	@Nested
@@ -316,9 +316,9 @@ abstract class BooleanFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BooleanFieldProbe test with final AtomicBoolean")
 	@Nested

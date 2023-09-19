@@ -27,9 +27,9 @@ import org.eclipse.emf.ecore.EObject;
 /** Provider of a generator configuration v2.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.4
  */
 @FunctionalInterface

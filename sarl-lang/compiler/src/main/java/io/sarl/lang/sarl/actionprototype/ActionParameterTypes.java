@@ -31,9 +31,9 @@ import org.eclipse.emf.common.util.BasicEList;
  * A definition of the types of the formal parameters of an action.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class ActionParameterTypes extends BasicEList<String> implements Comparable<ActionParameterTypes> {
 

@@ -49,9 +49,9 @@ import io.sarl.lang.validation.SyntaxIssueCodes;
 /** Extended Functions for obtaining information on SARL issues.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.13.0 20230919-093059
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.12
  */
 public final class IssueDatabaseExtensions {
@@ -393,9 +393,9 @@ public final class IssueDatabaseExtensions {
 	/** Description of an issue.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 * @since 0.12
 	 */
 	public static final class IssueDescription implements JsonableObject {
@@ -512,9 +512,9 @@ public final class IssueDatabaseExtensions {
 	/** Level of an issue.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.13.0 20230919-093059
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 * @since 0.12
 	 */
 	public enum IssueLevel {

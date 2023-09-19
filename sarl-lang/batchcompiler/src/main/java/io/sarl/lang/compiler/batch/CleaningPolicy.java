@@ -27,9 +27,9 @@ import org.eclipse.xtext.util.Files;
 /** The policy that should be used for cleaning the files after a compilation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.10
  */
 public enum CleaningPolicy {

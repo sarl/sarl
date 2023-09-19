@@ -27,9 +27,9 @@ import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
 /** SARL context in which templates are resolved.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.13.0 20230919-093100
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLTemplateContextType extends XbaseTemplateContextType {
 

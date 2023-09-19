@@ -59,9 +59,9 @@ import static extension org.mockito.Mockito.verify
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -219,9 +219,9 @@ abstract class BigIntegerFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BigIntegerFieldProbe test with BigInteger")
 	@Nested
@@ -236,9 +236,9 @@ abstract class BigIntegerFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BigIntegerFieldProbe test with null BigInteger")
 	@Nested
@@ -257,9 +257,9 @@ abstract class BigIntegerFieldProbeTest {
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.13.0 20230919-093058
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: BigIntegerFieldProbe test with final BigInteger")
 	@Nested

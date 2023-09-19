@@ -36,9 +36,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.13.0 20230919-093056
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("Bug #23")
 @SuppressWarnings("all")

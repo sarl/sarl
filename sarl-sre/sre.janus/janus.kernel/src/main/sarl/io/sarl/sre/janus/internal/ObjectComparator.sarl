@@ -28,9 +28,9 @@ import java.util.Comparator
  *
  *  @param <T> is the type of the compared objects.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.13.0 20230919-093058
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class ObjectComparator<T> implements Comparator<T> {
