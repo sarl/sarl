@@ -5,6 +5,7 @@ import re
 import os
 import subprocess
 import sys
+from pathlib import Path
 from xml.etree import ElementTree
 from datetime import datetime
 
@@ -381,16 +382,23 @@ def buildNextDevelVersion(current_version, next_devel):
 
 #########################
 ## current_stable_version: the version of the current stable release
-## generate_md: indicates if markdown format must be used for the output
-def generateChanges(current_stable_version, generate_md):
-	gitoutput = subprocess.check_output(['git-changes', '-p', '-x', '-s', str(current_stable_version)])
-	print(gitoutput)
+## changelog_file: the path to the changelog file to be written. If not specified, defualt is target/changelog.md
+def generateChanges(current_stable_version, changelog_file):
+	gitoutput = subprocess.check_output(['git-changelog', '-p', '-x', '-s', "v" + str(current_stable_version)])
+	if changelog_file:
+		output_filename = changelog_file
+	else:
+		output_filename = 'target/changelog.md'
+	Path(os.path.dirname(output_filename)).mkdir(parents=True, exist_ok=True)
+	with open (output_filename, "w") as myfile:
+		myfile.write(gitoutput.decode("utf-8"))
 
 #########################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument('pom', help="path to the root Maven pom file")
 parser.add_argument('--test', help="test cli configuration", action="store_true")
+
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--changes', help="Generate the changelog", action="store_true")
 group.add_argument('--author', help="replace $Author: id$", action="store_true")
@@ -398,10 +406,12 @@ group.add_argument('--maven', help="replace $GroupId$ and $ArtifactId$", action=
 group.add_argument('--copyrights', help="replace the copyright strings", action="store_true")
 group.add_argument('--releaseversion', help="move to the next release version", action="store_true")
 group.add_argument('--develversion', help="move to the next devel version", action="store_true")
+
 parser.add_argument('--noparentreadme', help="Disable the update of the README files in the parent folder of the given POM file", action="store_true")
 parser.add_argument('--currentstable', help="current stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextstable', help="next stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextdevel', help="next development version number without -SNAPSHOT and .qualifier", type=str)
+parser.add_argument('--changelogfile', help="path to the changelog file. Default is target/changelog.md", type=str)
 args = parser.parse_args()
 
 mvn_root = readXMLRootNode(str(args.pom))
@@ -444,7 +454,7 @@ if mvn_root is not None:
 		sys.exit(0)
 
 	if args.changes:
-		generateChanges(current_stable_version, args.md)
+		generateChanges(current_stable_version, args.changelogfile)
 	else:
 		# README
 		files = buildReadmeFileList(not args.noparentreadme)
