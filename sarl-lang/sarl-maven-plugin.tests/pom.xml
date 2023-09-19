@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.lang</groupId>
 	<artifactId>sarl-maven-plugin.tests</artifactId>
-	<version>0.13.0-SNAPSHOT</version>
+	<version>0.13.0</version>
 	<name>Tests for Maven SARL Compiler</name>
 	<description>Tests for Maven plugin for compiling SARL code</description>
 	<packaging>jar</packaging>

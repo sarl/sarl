@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.apputils</groupId>
 	<artifactId>bootiquebatchcompiler</artifactId>
-	<version>0.13.0-SNAPSHOT</version>
+	<version>0.13.0</version>
 	<name>Bootique Batch Compiler</name>
 	<description>Template for building SARL compiler based on the Bootique framework</description>
 	<packaging>jar</packaging>

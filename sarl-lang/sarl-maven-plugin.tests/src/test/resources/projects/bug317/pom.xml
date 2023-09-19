@@ -16,7 +16,7 @@
         <dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>core</artifactId>
-			<version>0.13.0-SNAPSHOT</version>
+			<version>0.13.0</version>
         </dependency>
     </dependencies>
 
@@ -34,7 +34,7 @@
 			<plugin>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.13.0-SNAPSHOT</version>
+				<version>0.13.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${javac.level}</source>

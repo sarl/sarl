@@ -62,12 +62,12 @@ Consequently, you could directly include the SARL module into the Maven dependen
 	<dependency>
 	  <groupId>io.sarl.sdk</groupId>
 	  <artifactId>sdk</artifactId>
-	  <version>0.12.0</version>
+	  <version>0.13.0</version>
 	</dependency>
 	...
 ```
 
-Please, replace Version `0.12.0` in the previous snipset by the number of the version you want to use.
+Please, replace Version `0.13.0` in the previous snipset by the number of the version you want to use.
 
 === 2.3. Use of the development version with Maven
 
@@ -80,7 +80,7 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	  <dependency>
 	    <groupId>io.sarl.sdk</groupId>
 	    <artifactId>sdk</artifactId>
-	    <version>0.13.0-SNAPSHOT</version>
+	    <version>0.14.0-SNAPSHOT</version>
 	  </dependency>
 	<dependencies>
 	...
@@ -117,7 +117,7 @@ For using the `sarl-maven-plugin`, you should add in your pom file:
 	    <plugin>
 	      <groupId>io.sarl.lang</groupId>
 	      <artifactId>sarl-maven-plugin</artifactId>
-	      <version>0.12.0</version>
+	      <version>0.13.0</version>
 	      <extensions>true</extensions>
 	      <configuration>
 	        <source>17</source>
@@ -132,7 +132,7 @@ For using the `sarl-maven-plugin`, you should add in your pom file:
 	...
 ```
 
-Please, replace Version `0.12.0` in the previous snipset by the number of the version you want to use.
+Please, replace Version `0.13.0` in the previous snipset by the number of the version you want to use.
 
 CAUTION: Do not forget to set the `extensions` flag to `true`.
 

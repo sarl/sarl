@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.apputils</groupId>
 	<artifactId>bootiqueapp</artifactId>
-	<version>0.13.0-SNAPSHOT</version>
+	<version>0.13.0</version>
 	<name>Bootique App Template</name>
 	<description>Template for building applications based on the Bootique framework</description>
 	<packaging>jar</packaging>

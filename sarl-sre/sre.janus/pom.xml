@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.sre.janus</groupId>
 	<artifactId>sre.janus</artifactId>
-	<version>3.0.13.0-SNAPSHOT</version>
+	<version>3.0.13.0</version>
 	<name>Janus SRE</name>
 	<description>Janus SARL Runtime Environment</description>
 	<packaging>pom</packaging>
@@ -14,7 +14,7 @@
 	</modules>
 
 	<properties>
-		<sarl.version>0.13.0-SNAPSHOT</sarl.version>
+		<sarl.version>0.13.0</sarl.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
