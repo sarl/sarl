@@ -18,7 +18,7 @@ function run_prepare {
 	echo "[INFO]"
 	if test -f "$CCDIR/pom.xml"
 	then
-		"$CDIR/scripts/prepare-release.py" "$@" "$CCDIR/pom.xml"
+		"$CDIR/scripts/prepare-release.py" --changelogfile "$CDIR/target/changelog.md" "$@" "$CCDIR/pom.xml"
 	else
 		echo "No root pom file in $CCDIR" >&2
 		exit 255
