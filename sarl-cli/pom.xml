@@ -55,22 +55,4 @@
 		</license>
 	</licenses>
 
-	<repositories>
-	  <repository>
-	    <id>io.sarl-maven</id>
-	    <name>SARL Snapshots</name>
-	    <url>http://maven.sarl.io/</url>
-	  </repository>
-	</repositories>
-	<pluginRepositories>
-    	  <pluginRepository>
-	    <id>io.sarl-maven</id>
-	    <name>SARL Snapshots</name>
-	    <url>http://maven.sarl.io/</url>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	  </pluginRepository>
-	</pluginRepositories>
-
 </project>
