@@ -25,7 +25,7 @@ import org.eclipse.osgi.util.NLS;
 
 /** Messages for the wizard "new SARL project".
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

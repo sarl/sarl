@@ -38,7 +38,7 @@ import org.eclipse.xtext.validation.IssueSeveritiesProvider;
  * <p>Usually, the implementation of this provider is a specific {@link IssueSeveritiesProvider}
  * implementation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

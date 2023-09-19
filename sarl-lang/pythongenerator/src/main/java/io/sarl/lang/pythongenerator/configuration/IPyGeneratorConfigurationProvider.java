@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 /** Provider of a configuration for the SARL-to-Python generator.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version pythongenerator 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid pythongenerator

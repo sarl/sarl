@@ -43,7 +43,7 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the Vim editor.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version mwe2 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid mwe2
@@ -627,7 +627,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 
 	/** Appendable for Vim styles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2
@@ -669,7 +669,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 
 	/** Syntax groups in vim.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2

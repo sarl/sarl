@@ -28,7 +28,7 @@ import org.apache.maven.it.VerificationException;
 
 /** Abstract test of Maven Mojo in the current process.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version tests.api 0.13.0 20230919-093055
  * @mavengroupid io.sarl.baseutils
  * @mavenartifactid tests.api
@@ -75,7 +75,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 
 	/** Wrapper for accessing the results of a Maven run.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version tests.api 0.13.0 20230919-093055
 	 * @mavengroupid io.sarl.baseutils
 	 * @mavenartifactid tests.api

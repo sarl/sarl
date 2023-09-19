@@ -53,7 +53,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  *
  * <p>This class provides the tools for helping to build a tab group for running SARL agents and SARL applications.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

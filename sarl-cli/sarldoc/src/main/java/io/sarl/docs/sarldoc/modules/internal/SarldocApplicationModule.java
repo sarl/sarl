@@ -56,7 +56,7 @@ import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
 
 /** Module for configuring the sarldoc application information.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarldoc 0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarldoc
@@ -110,7 +110,7 @@ public class SarldocApplicationModule implements BQModule {
 
 	/** Provider of the long description of the application.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version sarldoc 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.cli
 	 * @mavenartifactid sarldoc

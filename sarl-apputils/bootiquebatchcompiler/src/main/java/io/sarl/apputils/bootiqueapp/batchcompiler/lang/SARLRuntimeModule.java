@@ -36,7 +36,7 @@ import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 /** Empty module that is defined for enabling automatic loading of modules
  * from command-line tools when their CLI options should be computed.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version bootiquebatchcompiler 0.13.0 20230919-093058
  * @mavengroupid io.sarl.apputils
  * @mavenartifactid bootiquebatchcompiler

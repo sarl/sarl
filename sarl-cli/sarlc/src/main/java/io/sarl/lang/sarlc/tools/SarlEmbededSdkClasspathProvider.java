@@ -32,7 +32,7 @@ import io.sarl.apputils.bootiqueapp.utils.SystemPath;
  * The SARL libraries are supposed to be embedded into the sarlc archive file, into "embedded-sdk-libs" folder.
  * The files into this folders are extracted into a temporary folder "sarlc-sdk-X.X".
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarlc 0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarlc

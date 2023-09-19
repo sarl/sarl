@@ -147,7 +147,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Builder of HTML elements.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.13.0 20230919-093059
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet
@@ -1556,7 +1556,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Implementation of the tab factory.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet
@@ -1679,7 +1679,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Element in the stack of {@link HtmlFactoryImpl#createCommentText(Element, DocTree, PackageElement, String, io.sarl.docs.doclet2.html.HtmlFactory.HtmlFactoryContext)}.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet
@@ -1747,7 +1747,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Taglet is not found.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet
@@ -1769,7 +1769,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Implementation of a visitor of the documentation for extracting a text.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet
@@ -2329,7 +2329,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Memory of the generation of comment text.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet

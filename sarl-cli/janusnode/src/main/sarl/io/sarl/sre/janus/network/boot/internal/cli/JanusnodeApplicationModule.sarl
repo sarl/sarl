@@ -41,7 +41,7 @@ import static extension io.bootique.BQCoreModule.*
 /** 
  * Module for configuring the janusnode application information.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janusnode 3.0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid janusnode
@@ -65,7 +65,7 @@ class JanusnodeApplicationModule implements BQModule {
 
 	/** Provider of the long description of the application.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janusnode 3.0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.cli
 	 * @mavenartifactid janusnode
@@ -84,7 +84,7 @@ class JanusnodeApplicationModule implements BQModule {
 
 /** Provider of the module for the janusnode application information.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janusnode 3.0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid janusnode

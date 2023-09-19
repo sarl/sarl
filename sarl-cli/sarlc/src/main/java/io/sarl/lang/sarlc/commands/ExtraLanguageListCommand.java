@@ -39,7 +39,7 @@ import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 /**
  * Command for showing up the list of extra languages that are available on the classpath.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarlc 0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarlc

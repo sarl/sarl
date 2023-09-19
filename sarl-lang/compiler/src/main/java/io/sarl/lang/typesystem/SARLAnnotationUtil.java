@@ -47,7 +47,7 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
  * <p>This class provides additional utilities than
  * {@link org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil} and {@link AnnotationLookup}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

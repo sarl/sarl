@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /** Select the functions that should be called in place of a classic cast operator.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -51,7 +51,7 @@ public interface ICastOperationCandidateSelector {
 
 	/** Do the selection of a specific operation description.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

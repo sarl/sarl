@@ -32,7 +32,7 @@ import io.sarl.lang.core.util.ConcurrentCollection;
  * collection of Spaces. Each context has a default context that provides a
  * basic interaction context.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version core 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

@@ -32,7 +32,7 @@ import org.eclipse.xtext.util.RuntimeIOException;
  * <p>This implementation fix an issue in the xtext manager that is not adding
  * the source folder when ensuring the file system folder is existing.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.lang.ui 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.lang.ui

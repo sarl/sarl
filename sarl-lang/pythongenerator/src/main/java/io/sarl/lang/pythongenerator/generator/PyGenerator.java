@@ -91,7 +91,7 @@ import io.sarl.lang.util.Utils;
 
 /** The generator from SARL to the Python language.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version pythongenerator 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid pythongenerator

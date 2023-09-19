@@ -38,7 +38,7 @@ import io.sarl.tests.api.tools.Verifier;
 
 /** Test for issue #865: Maven complains on guava version in 0.8.2.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarl-maven-plugin.tests 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid sarl-maven-plugin.tests

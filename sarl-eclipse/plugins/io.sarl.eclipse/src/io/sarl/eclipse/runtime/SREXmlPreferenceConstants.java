@@ -24,7 +24,7 @@ package io.sarl.eclipse.runtime;
 /**
  * Constants that are representing elements to be saved into the XML preferences that are associated to the SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

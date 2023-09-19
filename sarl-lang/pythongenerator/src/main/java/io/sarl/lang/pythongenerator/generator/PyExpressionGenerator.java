@@ -90,7 +90,7 @@ import io.sarl.lang.util.Utils;
 
 /** Generator of XExpression for Python 3.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version pythongenerator 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid pythongenerator
@@ -1024,7 +1024,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 
 	/** Feature call generator for Python.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version pythongenerator 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid pythongenerator

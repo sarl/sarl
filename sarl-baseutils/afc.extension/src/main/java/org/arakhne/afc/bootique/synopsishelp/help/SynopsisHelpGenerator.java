@@ -31,7 +31,7 @@ import io.bootique.meta.application.ApplicationMetadata;
 /** A generator of command-line help that displays the synopsis in addition to
  * the other sections provided by {@link DefaultHelpGenerator}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version afc.extension 0.13.0 20230919-093055
  * @mavengroupid io.sarl.baseutils
  * @mavenartifactid afc.extension
@@ -132,7 +132,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 
 	/** Appender for the synopsis help.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version afc.extension 0.13.0 20230919-093055
 	 * @mavengroupid io.sarl.baseutils
 	 * @mavenartifactid afc.extension

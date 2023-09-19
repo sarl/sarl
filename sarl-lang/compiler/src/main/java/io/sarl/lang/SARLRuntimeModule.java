@@ -43,8 +43,8 @@ import io.sarl.lang.validation.SARLValidator;
  *
  * <p>DOT NOT ADD BINDINGS IN THIS CLASS. PREFER TO UPDATE THE MWE2 SCRIPT.
  *
- * @author $Author: sgalland$
- * @author $Author: srodriguez$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -53,7 +53,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
 	/** Provider of {@link ConfigurableIssueSeveritiesProvider}.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

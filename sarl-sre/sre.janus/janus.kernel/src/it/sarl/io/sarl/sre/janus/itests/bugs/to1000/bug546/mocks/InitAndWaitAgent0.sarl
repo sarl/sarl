@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import static io.sarl.sre.janus.itests.bugs.to1000.bug546.Constants.*
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

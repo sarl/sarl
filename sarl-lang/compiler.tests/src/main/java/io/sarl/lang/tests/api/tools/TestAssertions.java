@@ -37,7 +37,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 
 /** Set of utility classes that provide additional assertion functions.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler.tests 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests

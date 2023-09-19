@@ -84,7 +84,7 @@ import io.sarl.lang.core.util.CliUtilities;
  * <p>This configuration tab enables to enter the name of the agent to launch,
  * the launching parameters.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -664,7 +664,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	/** Listener of events in internal components for refreshing the tab.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse

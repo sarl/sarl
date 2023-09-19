@@ -29,7 +29,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 /**
  * Label provider for hyperlinks.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version io.sarl.lang.ui 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.lang.ui

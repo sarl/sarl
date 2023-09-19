@@ -72,7 +72,7 @@ import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
  * displays as:
  * <blockquote>The type {@code List<P>}</blockquote>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.13.0 20230919-093059
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet

@@ -29,7 +29,7 @@ import io.sarl.docs.sarldoc.modules.internal.SarldocApplicationModuleProvider;
 
 /** Main entry point for the SARL API documentation generator.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarldoc 0.13.0 20230919-093100
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarldoc

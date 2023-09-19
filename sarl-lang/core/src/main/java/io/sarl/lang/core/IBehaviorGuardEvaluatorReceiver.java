@@ -29,7 +29,7 @@ import java.util.Set;
  * guard associated to a given event and returns the list of behaviors' runnable that must be
  * executed according to the result of the guard evaluation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

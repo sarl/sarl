@@ -45,7 +45,7 @@ import org.eclipse.xtext.scoping.impl.MultimapBasedSelectable;
  *
  * <p>This class provides a temporary workaround.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

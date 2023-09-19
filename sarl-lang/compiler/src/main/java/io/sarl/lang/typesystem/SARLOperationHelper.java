@@ -102,7 +102,7 @@ import io.sarl.lang.util.Utils;
  * with a name starting with "get", "is", "has" is a pure function.
  * It also assumes that "equals", "hashCode", "clone" and "toString" are also pure functions.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -1158,7 +1158,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Context for the side effect.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -1371,7 +1371,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		/** A context.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version compiler 0.13.0 20230919-093056
 		 * @mavengroupid io.sarl.lang
 		 * @mavenartifactid compiler
@@ -1488,7 +1488,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Adapter that enables to adda annotation when generating the Java code.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -1557,7 +1557,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Internal sub helper. This helper forces the use of a specific side effect context.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  *
  * <p>The way how a folder is detected as a test folder depends on the implementation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

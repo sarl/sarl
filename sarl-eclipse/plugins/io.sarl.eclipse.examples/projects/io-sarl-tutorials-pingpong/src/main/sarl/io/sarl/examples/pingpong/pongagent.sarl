@@ -25,7 +25,7 @@ import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.Logging
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 agent PongAgent {
 	

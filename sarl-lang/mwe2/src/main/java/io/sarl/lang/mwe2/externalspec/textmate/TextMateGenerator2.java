@@ -48,7 +48,7 @@ import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
  * A {@link IGeneratorFragment} that create the language specification for
  * the TextMate-compatible viewers.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version mwe2 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid mwe2
@@ -529,7 +529,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 	/** Definition of a pattern.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2
@@ -683,7 +683,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 *
 	 * <p>This appendable uses the old property-file syntax.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2
@@ -790,7 +790,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 *
 	 * <p>This appendable uses the XML-based syntax.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2
@@ -928,7 +928,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	/** Appendable for TextMate styles that combines the old syntax and the new syntax for the
 	 * property file..
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version mwe2 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid mwe2

@@ -27,7 +27,7 @@ import javax.inject.Qualifier
 /** 
  * Annotation for injection of the kernel.
  * 
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

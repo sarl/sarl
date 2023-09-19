@@ -38,7 +38,7 @@ import javax.inject.Qualifier
 /**
  * Module for the namespace finders.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -63,7 +63,7 @@ class NamespaceFinderModule implements BQModule {
 /** 
  * Annotation to mark the set of namespace finders.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -78,7 +78,7 @@ annotation NamespaceFinders {
 
 /** Provider of the module for the namespace finders.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

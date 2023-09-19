@@ -27,7 +27,7 @@ import org.arakhne.afc.services.ServiceState
 /**
  * JUnit 5 extension that is saving and restoring system properties.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sre.tests.api 0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre
  * @mavenartifactid sre.tests.api

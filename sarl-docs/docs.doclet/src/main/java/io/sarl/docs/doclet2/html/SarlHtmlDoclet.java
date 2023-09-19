@@ -140,7 +140,7 @@ import io.sarl.docs.doclet2.html.types.TypeDocumentationGeneratorSelector;
  * <p>This version of the SARL doc let is an adaptation of the
  * previous SARL doclet (for Java 8) to Java 11 and higher API.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.13.0 20230919-093059
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet
@@ -1182,7 +1182,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 
 	/** Abstract definition of a CLI option.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet

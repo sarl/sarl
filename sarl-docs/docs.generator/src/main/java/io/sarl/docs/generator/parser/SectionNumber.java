@@ -26,7 +26,7 @@ import java.util.LinkedList;
 
 /** A number of section.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.generator 0.13.0 20230919-093059
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.generator

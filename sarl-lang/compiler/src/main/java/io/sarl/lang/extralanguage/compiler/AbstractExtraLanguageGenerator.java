@@ -85,7 +85,7 @@ import io.sarl.lang.util.Utils;
 
 /** Abstract implementation for the generator from SARL to an extra language.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -808,7 +808,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	/** Specific properties with reading order.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

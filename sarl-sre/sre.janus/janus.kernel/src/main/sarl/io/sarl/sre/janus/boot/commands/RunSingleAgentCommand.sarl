@@ -42,7 +42,7 @@ import static extension io.bootique.BQCoreModule.extend
  * The first command-line argument that is a agent's class is considered
  * as the agent to be launched.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -101,7 +101,7 @@ class RunSingleAgentCommand extends AbstractRunCommand {
 
 /** Module for the command for running the SRE with a single agent.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -120,7 +120,7 @@ class RunSingleAgentCommandModule implements BQModule {
 
 /** Provider of the module for running the SRE with a single agent.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

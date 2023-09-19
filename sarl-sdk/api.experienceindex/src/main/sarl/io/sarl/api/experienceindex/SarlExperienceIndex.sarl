@@ -98,7 +98,7 @@ import javax.crypto.spec.SecretKeySpec
  * <p>The disk score measures disk bandwidth (in Mega Bytes per Second). The conversion
  * to an index number is set up in a way that all modern disks will score at least 2.0.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.experienceindex 0.13.0 20230919-093058
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.experienceindex
@@ -205,7 +205,7 @@ final class SarlExperienceIndex {
 
 	/** This class contains the different SEI of your machine.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.experienceindex 0.13.0 20230919-093058
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.experienceindex
@@ -633,7 +633,7 @@ final class SarlExperienceIndex {
 
 /** This interace is a tool for canceling the SEI computation.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.experienceindex 0.13.0 20230919-093058
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.experienceindex

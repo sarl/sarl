@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /** Annotation for attaching a global compilation test suite to the annoted type.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler.tests 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests

@@ -28,7 +28,7 @@ import org.eclipse.xtext.xtext.generator.util.GrammarUtil2;
 /**
  * Fixing the invalid package name for the Xtend configurable issue provider.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version mwe2 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid mwe2

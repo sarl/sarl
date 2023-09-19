@@ -42,7 +42,7 @@ import javax.inject.Provider
  * for creating the agents.
  * No injection mechanism is used.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -123,7 +123,7 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * A factory of agent creator that provides the parent ID and agent ID to the created agent.
 	 * This factory does not support the {@code @Injectable} annotation.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janus.kernel 3.0.13.0 20230919-093058
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.kernel
@@ -145,7 +145,7 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 * A factory of agent creator that provides the parent ID and agent ID to the created agent.
 	 * This factory supports the {@code @Injectable} annotation.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janus.kernel 3.0.13.0 20230919-093058
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.kernel

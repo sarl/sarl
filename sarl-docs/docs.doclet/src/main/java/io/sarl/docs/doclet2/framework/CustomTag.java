@@ -54,7 +54,7 @@ import java.util.List;
 
 /** Custom tag.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.13.0 20230919-093059
  * @param name the name of the custom tag without the {@code @}.
  * @param locations the list of accepted locations.

@@ -72,7 +72,7 @@ import io.sarl.lang.validation.IssueCodes;
  * <p>This abstract implementation is not a EValidator implementation because the Xtext EValidator infrastructure
  * has issues with error reporting when the validator is dynamically added (as it is in the support class).
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -495,7 +495,7 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Comparator of feature calls.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -521,7 +521,7 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Validation context.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -620,7 +620,7 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Method wrapper.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

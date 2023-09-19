@@ -25,7 +25,7 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 /** Utilities for the SARL maven plugin.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarl-maven-plugin 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid sarl-maven-plugin

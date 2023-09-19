@@ -34,7 +34,7 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * {@link #getSkill(Class)} inside the {@link #install()} The Skill should
  * release all resources in the {@link #uninstall()}.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version core 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 
 /** Annotation for marking an element with a SARL compiler issue than the element is invoked from the SARL code.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

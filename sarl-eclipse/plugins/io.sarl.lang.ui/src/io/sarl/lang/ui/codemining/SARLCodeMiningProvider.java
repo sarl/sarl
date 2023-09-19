@@ -91,7 +91,7 @@ import io.sarl.lang.util.Utils;
  * minings for example to show inferred types, parameter names for literals and
  * other kind of meta information.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.lang.ui 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.lang.ui
@@ -564,7 +564,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * CancelableUnitOfWork-cancelIndicator is canceled.
 	 * <strong>Only for fixing bug 1041.</strong>
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.lang.ui 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.lang.ui
@@ -594,7 +594,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	/** Region of the code.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.lang.ui 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.lang.ui

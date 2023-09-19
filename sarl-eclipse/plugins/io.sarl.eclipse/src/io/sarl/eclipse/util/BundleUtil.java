@@ -66,8 +66,8 @@ import io.sarl.lang.SARLConfig;
 /** Utilities around bundles. It should be replaced
  * by the OSGi, Eclipse and Xtext API.
  *
- * @author $Author: sgalland$
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -323,7 +323,7 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -396,7 +396,7 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -487,7 +487,7 @@ public final class BundleUtil {
 	 *
 	 * <p>The set entries are sorted in the insertion order.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -557,7 +557,7 @@ public final class BundleUtil {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -997,7 +997,7 @@ public final class BundleUtil {
 
 		/** Iterator on symbolic names.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version io.sarl.eclipse 0.13.0 20230919-093100
 		 * @mavengroupid io.sarl.eclipse
 		 * @mavenartifactid io.sarl.eclipse
@@ -1032,7 +1032,7 @@ public final class BundleUtil {
 
 		/** Iterator on classpath entries.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version io.sarl.eclipse 0.13.0 20230919-093100
 		 * @mavengroupid io.sarl.eclipse
 		 * @mavenartifactid io.sarl.eclipse
@@ -1067,7 +1067,7 @@ public final class BundleUtil {
 
 		/** Iterator on runtime classpath entries.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version io.sarl.eclipse 0.13.0 20230919-093100
 		 * @mavengroupid io.sarl.eclipse
 		 * @mavenartifactid io.sarl.eclipse
@@ -1102,7 +1102,7 @@ public final class BundleUtil {
 
 		/** Iterator on transitive dependencies.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version io.sarl.eclipse 0.13.0 20230919-093100
 		 * @mavengroupid io.sarl.eclipse
 		 * @mavenartifactid io.sarl.eclipse

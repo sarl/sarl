@@ -89,7 +89,7 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This class extends the {@link SarlUtils} from the {@code io.sarl.lang} project.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.13.0 20230919-093100
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -604,7 +604,7 @@ public class Jdt2Ecore {
 
 	/** Iterator on the super types of a given type.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -729,7 +729,7 @@ public class Jdt2Ecore {
 
 	/** Provider of SARL formal parameters from a the JDT formal parameter list.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -815,7 +815,7 @@ public class Jdt2Ecore {
 
 	/** The interface permits to find the JDT definition of a type.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -836,7 +836,7 @@ public class Jdt2Ecore {
 
 	/** Parameter builder.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -848,7 +848,7 @@ public class Jdt2Ecore {
 
 	/** Action builder.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -865,7 +865,7 @@ public class Jdt2Ecore {
 
 	/** Constructor builder.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.13.0 20230919-093100
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse

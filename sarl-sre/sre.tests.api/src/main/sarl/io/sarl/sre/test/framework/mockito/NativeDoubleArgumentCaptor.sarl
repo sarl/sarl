@@ -31,7 +31,7 @@ import org.mockito.internal.util.Primitives
  * <p>This object enables to capture primitive double arguments that
  * cannot be capture with a {@code Double} argument captor.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sre.tests.api 0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre
  * @mavenartifactid sre.tests.api

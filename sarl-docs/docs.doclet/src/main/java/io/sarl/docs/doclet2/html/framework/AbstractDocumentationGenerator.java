@@ -112,7 +112,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Abstract implementation of a generator for the documentation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.13.0 20230919-093059
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet
@@ -1354,7 +1354,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	/** Implementation of an extractor for the tag content.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet
@@ -1392,7 +1392,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	/** Scanner of import statements from a Java code.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.13.0 20230919-093059
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet

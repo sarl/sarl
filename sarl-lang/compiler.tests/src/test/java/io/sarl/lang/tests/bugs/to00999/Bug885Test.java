@@ -43,8 +43,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/885
  *
- * @author $Author: sgalland$
- * @author $Author: alombard$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
  * @version compiler.tests 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests

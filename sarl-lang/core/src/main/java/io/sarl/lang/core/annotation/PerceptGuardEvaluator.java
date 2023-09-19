@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * Annotation for marking the functions that decides if the agent internal event dispatcher may execute the corresponding
  *  behavior (<b>on</b> clause) to process the incoming event.
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version core 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

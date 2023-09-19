@@ -49,7 +49,7 @@ import static extension io.sarl.sre.janus.internal.eventguard.reflect.StaticRefl
  * 
  * <p>This class is thread-safe.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.13.0 20230919-093058
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -237,7 +237,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	/** 
 	 * Description of an single guard evaluator.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janus.kernel 3.0.13.0 20230919-093058
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.kernel
@@ -255,7 +255,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	/** Iterator on the guard evaluators that are declared into the provided listener.
 	 * The iterator goes into the super-types.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janus.kernel 3.0.13.0 20230919-093058
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.kernel

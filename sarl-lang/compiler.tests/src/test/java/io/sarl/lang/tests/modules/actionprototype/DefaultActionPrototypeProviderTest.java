@@ -82,7 +82,7 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler.tests 0.13.0 20230919-093056
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests
@@ -228,7 +228,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler.tests 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler.tests
@@ -851,7 +851,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler.tests 0.13.0 20230919-093056
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler.tests
