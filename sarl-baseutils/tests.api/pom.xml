@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.baseutils</groupId>
 	<artifactId>tests.api</artifactId>
-	<version>0.13.0-SNAPSHOT</version>
+	<version>0.14.0-SNAPSHOT</version>
 	<name>SARL Tests Utilities</name>
 	<description>Definition of several utilities for tests</description>
 	<packaging>jar</packaging>

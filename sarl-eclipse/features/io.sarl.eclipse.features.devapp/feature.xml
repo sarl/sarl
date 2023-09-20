@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.eclipse.features.devapp"
       label="SARL IDE for SARL Contributors"
-      version="0.13.0.qualifier"
+      version="0.14.0.qualifier"
       plugin="io.sarl.eclipse.devapp">
 
    <description url="http://www.sarl.io/about/">
@@ -222,10 +222,10 @@
    </url>
 
    <requires>
-      <import feature="io.sarl.eclipse.features.baseplatform" version="0.13.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.contribs" version="0.13.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.13.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.sre.janus" version="0.13.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.baseplatform" version="0.14.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.contribs" version="0.14.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sre.janus" version="0.14.0.qualifier"/>
       <import feature="org.eclipse.e4.rcp" version="4.28.0.v20230525-0648"/>
       <import feature="org.eclipse.equinox.p2.rcp.feature" version="1.4.2000.v20230510-1208"/>
       <import feature="org.eclipse.rcp" version="4.28.0.v20230605-0440"/>

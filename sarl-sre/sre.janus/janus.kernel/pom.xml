@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl.sre.janus</groupId>
 		<artifactId>sre.janus</artifactId>
-		<version>3.0.13.0-SNAPSHOT</version>
+		<version>3.0.14.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>janus.kernel</artifactId>
@@ -96,7 +96,7 @@
 			<plugin>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.13.0-SNAPSHOT</version>
+				<version>0.14.0-SNAPSHOT</version>
 				<!-- Maven extension mechanism seems not working because the plugin is defined in the same project.
 				     The different goals must be explicitly provided. -->
 				<executions>

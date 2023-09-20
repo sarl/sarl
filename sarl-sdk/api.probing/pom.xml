@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.sdk</groupId>
 	<artifactId>api.probing</artifactId>
-	<version>0.13.0-SNAPSHOT</version>
+	<version>0.14.0-SNAPSHOT</version>
 	<name>SARL Probing API</name>
 	<description>Probing Library of the SARL SDK</description>
 	<packaging>jar</packaging>
@@ -71,7 +71,7 @@
 			<plugin>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.13.0-SNAPSHOT</version>
+				<version>0.14.0-SNAPSHOT</version>
 				<!-- Maven extension mechanism seems not working because the plugin is defined in the same project.
 				     The different goals must be explicitly provided. -->
 				<executions>

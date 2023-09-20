@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.eclipse.features.ideapp"
       label="SARL IDE Application"
-      version="0.13.0.qualifier"
+      version="0.14.0.qualifier"
       plugin="io.sarl.eclipse.ideapp">
 
    <description url="http://www.sarl.io/about/">
@@ -222,7 +222,7 @@
    </url>
 
    <requires>
-      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.13.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
    </requires>
 
    <plugin

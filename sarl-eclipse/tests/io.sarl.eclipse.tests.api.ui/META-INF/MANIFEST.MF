@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: io.sarl.eclipse.tests.api.ui
 Bundle-SymbolicName: io.sarl.eclipse.tests.api.ui;singleton:=true
-Bundle-Version: 0.13.0.qualifier
+Bundle-Version: 0.14.0.qualifier
 Export-Package: io.sarl.eclipse.tests.api,
  io.sarl.lang.ui.tests
 Require-Bundle: wrapped.io.sarl.baseutils.tests.api;bundle-version="0.13.0";visibility:=reexport,
