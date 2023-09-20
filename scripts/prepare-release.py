@@ -92,13 +92,17 @@ def buildCodeFileList():
 	return fileList
 
 #########################
-##
-def buildMavenFileList():
+##  extra_pom_files: list of extra pom files thatm ust be included in the list if they exist
+def buildMavenFileList(extra_pom_files):
 	fileList = []
 	for root, dirs, files in os.walk("."):
 		for filename in files:
 			if filename == "pom.xml":
 				fileList.append(os.path.join(root, filename))
+	if extra_pom_files:
+		for added_file in extra_pom_files:
+			if os.path.exists(added_file):
+				fileList.append(added_file)
 	return fileList
 
 #########################
@@ -299,11 +303,17 @@ def moveToReleaseVersionInMaven(current_devel_version, next_stable_version, file
 ## filename: the filename to change
 def moveToReleaseVersionInEclipse(current_devel_version, next_stable_version, filename):
 	if current_devel_version.endswith(".qualifier"):
+		short_version = current_devel_version[0:-10]
 		with open (filename, "r") as myfile:
 			data = myfile.readlines()
 		data2 = []
 		for line in data:
 			line2 = line.replace(current_devel_version, next_stable_version)
+			line2 = line2.replace(short_version + ".SNAPSHOT", next_stable_version)
+			line2 = re.sub(
+				re.escape(short_version + ".") + "[0-9]+",
+				next_stable_version,
+				line2)
 			data2.append(line2)
 		with open (filename, "w") as myfile:
 			myfile.write("".join(data2))
@@ -407,7 +417,6 @@ def generateChanges(current_stable_version, changelog_file):
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument('pom', help="path to the root Maven pom file")
-parser.add_argument('--test', help="test cli configuration", action="store_true")
 
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--changes', help="Generate the changelog", action="store_true")
@@ -417,11 +426,13 @@ group.add_argument('--copyrights', help="replace the copyright strings", action=
 group.add_argument('--releaseversion', help="move to the next release version", action="store_true")
 group.add_argument('--develversion', help="move to the next devel version", action="store_true")
 
+parser.add_argument('--test', help="test cli configuration", action="store_true")
 parser.add_argument('--noparentreadme', help="Disable the update of the README files in the parent folder of the given POM file", action="store_true")
 parser.add_argument('--currentstable', help="current stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextstable', help="next stable version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--nextdevel', help="next development version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--changelogfile', help="path to the changelog file. Default is target/changelog.md", type=str)
+parser.add_argument('--addpomfile', help="Add a file in the list of accepted Maven pom files.", action="append")
 args = parser.parse_args()
 
 mvn_root = readXMLRootNode(str(args.pom))
@@ -488,7 +499,7 @@ if mvn_root is not None:
 				replaceCopyrights(filename)
 
 		# Maven pom.xml
-		files = buildMavenFileList()
+		files = buildMavenFileList(args.addpomfile)
 		for filename in files:
 			if args.releaseversion:
 				show_update_file_msg(filename, changed_filenames)

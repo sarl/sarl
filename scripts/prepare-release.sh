@@ -28,7 +28,7 @@ function run_prepare {
 cd "$CDIR"
 
 # Build BOMs
-run_prepare "$CDIR/sarl-bom" "build of materials" "$@"
+run_prepare "$CDIR/sarl-bom" "build of materials" --addpomfile="$CDIR/scripts/pom-aggregate-javadoc.xml" "$@"
 
 # Build SARL core modules
 run_prepare "$CDIR/sarl-baseutils" "base utilities" --noparentreadme "$@"
