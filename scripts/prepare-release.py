@@ -355,11 +355,24 @@ def moveToDevelVersionInMaven(current_devel_version, next_devel_version, filenam
 ## next_devel_version: the next devel version number in the eclipse file
 ## filename: the filename to change
 def moveToDevelVersionInEclipse(current_devel_version, next_devel_version, filename):
+	if current_devel_version.endswith(".qualifier"):
+		short_version = current_devel_version[0:-10]
+	elif current_devel_version.endswith("-SNAPSHOT") or current_devel_version.endswith(".SNAPSHOT"):
+		short_version = current_devel_version[0:-9]
+	else:
+		short_version = current_devel_version
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
 		line2 = line.replace(current_devel_version, next_devel_version)
+		line2 = line2.replace(short_version + ".qualifier", next_devel_version)
+		line2 = line2.replace(short_version + ".SNAPSHOT", next_devel_version)
+		line2 = line2.replace(short_version + "-SNAPSHOT", next_devel_version)
+		line2 = re.sub(
+			re.escape(short_version + ".") + "[0-9]+",
+			next_devel_version,
+			line2)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
