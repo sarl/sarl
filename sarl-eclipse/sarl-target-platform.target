@@ -32,7 +32,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>compiler</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -42,7 +42,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>afc.extension</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -52,7 +52,7 @@
 				<dependency>
 					<groupId>io.sarl.sre.janus</groupId>
 					<artifactId>janus.network</artifactId>
-					<version>3.0.14.0.qualifier</version>
+					<version>3.0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -62,7 +62,7 @@
 				<dependency>
 					<groupId>io.sarl.apputils</groupId>
 					<artifactId>bootiqueapp</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -72,7 +72,7 @@
 				<dependency>
 					<groupId>io.sarl.sdk</groupId>
 					<artifactId>api.experienceindex</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -82,7 +82,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>pythongenerator</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -92,7 +92,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>compiler.tests</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -102,7 +102,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>tests.api</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -153,7 +153,7 @@
 				<dependency>
 					<groupId>io.sarl.lang</groupId>
 					<artifactId>batchcompiler</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -163,7 +163,7 @@
 				<dependency>
 					<groupId>io.sarl.baseutils</groupId>
 					<artifactId>tests.api</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -173,7 +173,7 @@
 				<dependency>
 					<groupId>io.sarl.sdk</groupId>
 					<artifactId>sdk</artifactId>
-					<version>0.14.0.qualifier</version>
+					<version>0.14.0-SNAPSHOT</version>
 					<type>jar</type>
 				</dependency>
 			</dependencies>
@@ -222,8 +222,8 @@
 		<plugin id="io.github.classgraph.classgraph.source" version="4.8.149"/>
 		<plugin id="io.sarl.lang.compiler"/>
 		<plugin id="io.sarl.lang.compiler.source"/>
-		<plugin id="io.sarl.lang.core" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.lang.core.source" version="0.14.0.qualifier"/>
+		<plugin id="io.sarl.lang.core" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.lang.core.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="io.sarl.lang.pythongenerator"/>
 		<plugin id="io.sarl.lang.pythongenerator.source"/>
 		<plugin id="jakarta.servlet-api"/>
@@ -1183,8 +1183,8 @@
 		<plugin id="wrapped.io.bootique.bootique.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api" version="0.14.0.qualifier"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.14.0.qualifier"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api" version="0.14.0.SNAPSHOT"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="wrapped.io.sarl.lang.compiler.tests"/>
 		<plugin id="wrapped.io.sarl.lang.compiler.tests.source"/>
 		<plugin id="wrapped.junit.junit"/>
@@ -1233,18 +1233,18 @@
 		<plugin id="stax2-api" version="4.2.1"/>
 		<plugin id="org.arakhne.afc.core.util" version="17.0.0"/>
 		<plugin id="org.arakhne.afc.core.util.source" version="17.0.0"/>
-		<plugin id="io.sarl.sdk.api.core" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.core.source" version="0.14.0.qualifier"/>
+		<plugin id="io.sarl.sdk.api.core" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.core.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="io.sarl.sdk.api.experienceindex"/>
 		<plugin id="io.sarl.sdk.api.experienceindex.source"/>
-		<plugin id="io.sarl.sdk.api.naming" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.naming.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.probing" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.probing.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.util" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.util.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.sdk" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.sdk.source" version="0.14.0.qualifier"/>
+		<plugin id="io.sarl.sdk.api.naming" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.naming.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.probing" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.probing.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.util" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.util.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.sdk" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.sdk.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="org.eclipse.equinox.registry.source" version="3.11.200.v20220817-1601"/>
 		<plugin id="org.eclipse.equinox.registry" version="3.11.300.v20230801-1826"/>
 		<plugin id="org.eclipse.equinox.registry.source" version="3.11.300.v20230801-1826"/>
@@ -1273,14 +1273,14 @@
 		<plugin id="com.sun.activation.javax.activation.source" version="1.2.0"/>
 		<plugin id="com.sun.activation.javax.activation.source" version="1.2.0"/>
 		<plugin id="io.github.classgraph.classgraph.source" version="4.8.149"/>
-		<plugin id="io.sarl.lang.core.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.lang.core.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.lang.core.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.core.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.naming.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.probing.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.api.util.source" version="0.14.0.qualifier"/>
-		<plugin id="io.sarl.sdk.sdk.source" version="0.14.0.qualifier"/>
+		<plugin id="io.sarl.lang.core.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.lang.core.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.lang.core.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.core.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.naming.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.probing.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.api.util.source" version="0.14.0.SNAPSHOT"/>
+		<plugin id="io.sarl.sdk.sdk.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="javax.inject.source" version="1.0.0"/>
 		<plugin id="javax.inject.source" version="1.0.0"/>
 		<plugin id="javax.inject.source" version="1.0.0"/>
@@ -1395,7 +1395,7 @@
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
 		<plugin id="wrapped.io.bootique.di.bootique-di.source" version="3.0.0.M1"/>
-		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.14.0.qualifier"/>
+		<plugin id="wrapped.io.sarl.baseutils.tests.api.source" version="0.14.0.SNAPSHOT"/>
 		<plugin id="wrapped.org.antlr.antlr-runtime.source" version="3.2"/>
 		<plugin id="wrapped.org.arakhne.afc.slf4j.slf4j-log4j.source" version="17.0"/>
 		<plugin id="wrapped.org.arakhne.afc.slf4j.slf4j-log4j.source" version="17.0"/>

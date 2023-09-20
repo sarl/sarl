@@ -361,14 +361,20 @@ def moveToDevelVersionInEclipse(current_devel_version, next_devel_version, filen
 		short_version = current_devel_version[0:-9]
 	else:
 		short_version = current_devel_version
+	if next_devel_version.endswith(".qualifier"):
+		short_version_n = next_devel_version[0:-10]
+	elif next_devel_version.endswith("-SNAPSHOT") or next_devel_version.endswith(".SNAPSHOT"):
+		short_version_n = next_devel_version[0:-9]
+	else:
+		short_version_n = next_devel_version
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
 		line2 = line.replace(current_devel_version, next_devel_version)
 		line2 = line2.replace(short_version + ".qualifier", next_devel_version)
-		line2 = line2.replace(short_version + ".SNAPSHOT", next_devel_version)
-		line2 = line2.replace(short_version + "-SNAPSHOT", next_devel_version)
+		line2 = line2.replace(short_version + ".SNAPSHOT", short_version_n + ".SNAPSHOT")
+		line2 = line2.replace(short_version + "-SNAPSHOT", short_version_n + "-SNAPSHOT")
 		line2 = re.sub(
 			re.escape(short_version + ".") + "[0-9]+",
 			next_devel_version,

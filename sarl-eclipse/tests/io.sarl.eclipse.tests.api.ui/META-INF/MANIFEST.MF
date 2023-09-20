@@ -5,9 +5,9 @@ Bundle-SymbolicName: io.sarl.eclipse.tests.api.ui;singleton:=true
 Bundle-Version: 0.14.0.qualifier
 Export-Package: io.sarl.eclipse.tests.api,
  io.sarl.lang.ui.tests
-Require-Bundle: wrapped.io.sarl.baseutils.tests.api;bundle-version="0.13.0";visibility:=reexport,
- wrapped.io.sarl.lang.compiler.tests;bundle-version="0.13.0";visibility:=reexport,
- io.sarl.lang.ui;bundle-version="0.13.0";visibility:=reexport,
+Require-Bundle: wrapped.io.sarl.baseutils.tests.api;bundle-version="0.14.0";visibility:=reexport,
+ wrapped.io.sarl.lang.compiler.tests;bundle-version="0.14.0";visibility:=reexport,
+ io.sarl.lang.ui;bundle-version="0.14.0";visibility:=reexport,
  org.eclipse.xtext.ui;bundle-version="2.31.0";visibility:=reexport,
  org.eclipse.xtext.testing;bundle-version="2.31.0";visibility:=reexport,
  com.google.inject;bundle-version="5.0.1";visibility:=reexport,

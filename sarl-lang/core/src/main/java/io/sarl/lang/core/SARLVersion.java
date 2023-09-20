@@ -43,7 +43,7 @@ public final class SARLVersion {
 	 * represent the version of the SARL specification and tools.
 	 */
 	@Generated(value = "maven")
-	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.13"; //$NON-NLS-1$
+	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.14"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library, e.g. {@code 0.13.0}.
 	 *
@@ -53,7 +53,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION = "0.13.0"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION = "0.14.0"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library, e.g. {@code 0.13.0.qualifier}.
 	 *
@@ -63,7 +63,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION_OSGI = "0.13.0.qualifier"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "0.14.0.qualifier"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library, e.g. {@code 0.13.0-SNAPSHOT}.
 	 *
@@ -73,7 +73,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION_MAVEN = "0.13.0-SNAPSHOT"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "0.14.0-SNAPSHOT"; //$NON-NLS-1$
 
 	/** The status of the SARL specification, e.g. {@code Draft Release}.
 	 *

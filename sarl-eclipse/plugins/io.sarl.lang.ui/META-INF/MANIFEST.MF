@@ -38,9 +38,9 @@ Automatic-Module-Name: io.sarl.lang.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
-Require-Bundle: io.sarl.lang.core;bundle-version="0.13.0",
- io.sarl.lang.compiler;bundle-version="0.13.0",
- io.sarl.lang.ide;bundle-version="0.13.0",
+Require-Bundle: io.sarl.lang.core;bundle-version="0.14.0",
+ io.sarl.lang.compiler;bundle-version="0.14.0",
+ io.sarl.lang.ide;bundle-version="0.14.0",
  org.eclipse.xtext.xbase.ui;bundle-version="2.31.0",
  org.eclipse.xtext.ui;bundle-version="2.31.0",
  org.eclipse.xtext.ui.shared;bundle-version="2.31.0",
