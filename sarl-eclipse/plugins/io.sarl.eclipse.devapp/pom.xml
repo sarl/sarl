@@ -97,6 +97,10 @@
 									<token>^(3 *= *)(.*)$</token>
 									<value>$1${sarl.url}</value>
 								</replacement>
+								<replacement>
+									<token>^(4 *= *)(.*)$</token>
+									<value>$1${sarl.version}</value>
+								</replacement>
 							</replacements>
 						</configuration>
 					</execution>
