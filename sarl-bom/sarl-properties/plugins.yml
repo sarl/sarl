@@ -1,0 +1,48 @@
+biz.aQute.bnd:
+  bnd-maven-plugin: 6.4.0
+
+com.akathist.maven.plugins.launch4j:
+  launch4j-maven-plugin: 2.4.1
+
+io.sarl.bom:
+  sarl-properties: $sarl.version
+
+io.sarl.lang:
+  core: $sarl.version
+  sarl-maven-plugin: $sarl.version
+
+net.jsign:
+  jsign-maven-plugin: "5.0"
+
+org.apache.groovy:
+  groovy-all: 4.0.15
+
+org.apache.maven.plugins:
+  maven-antrun-plugin: 3.1.0
+  maven-assembly-plugin: 3.6.0
+  maven-compiler-plugin: $maven.compiler.version
+  maven-failsafe-plugin: 3.1.2
+  maven-gpg-plugin: 3.1.0
+  maven-jar-plugin: 3.3.0
+  maven-javadoc-plugin: 3.6.0
+  maven-plugin-plugin: 3.9.0
+  maven-resources-plugin: 3.3.1
+  maven-source-plugin: 3.3.0
+  
+org.apache.maven.wagon:
+  wagon-webdav-jackrabbit: 3.5.3
+
+org.codehaus.gmavenplus:
+  gmavenplus-plugin: 3.0.0
+
+org.codehaus.mojo:
+  build-helper-maven-plugin: 3.4.0
+  flatten-maven-plugin: 1.5.0
+  properties-maven-plugin: 1.2.0
+  wagon-maven-plugin: 2.0.2
+
+org.eclipse.m2e:
+  lifecycle-mapping: 1.0.0
+
+com.google.code.maven-replacer-plugin:
+  replacer: 1.5.3
