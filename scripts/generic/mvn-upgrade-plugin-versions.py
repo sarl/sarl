@@ -27,6 +27,7 @@ def readVersionMappings(version_mapping, filename, properties):
 		for artifactId in input_data[groupId]:
 			pversion = input_data[groupId][artifactId]
 			if pversion:
+				pversion = str(pversion)
 				if pversion.startswith('$'):
 					key = pversion[1:]
 					if key not in properties:
@@ -59,14 +60,16 @@ def readXMLRootNode(filename):
 #########################
 ## node: the XML node
 ## name: the name of the value to read.
-def readXmlNode(node, name):
-	return node.find("xmlns:" + name, namespaces=NAMESPACES)
+## namespace: the namespace for the nodes, default is xmlns:
+def readXmlNode(node, name, namespace='xmlns:'):
+	return node.find(namespace + name, namespaces=NAMESPACES)
 
 #########################
 ## node: the XML node
 ## name: the name of the value to read.
-def readXml(node, name):
-	valueNode = readXmlNode(node, name)
+## namespace: the namespace for the nodes, default is xmlns:
+def readXml(node, name, namespace='xmlns:'):
+	valueNode = readXmlNode(node, name, namespace)
 	if valueNode is not None:
 		textValue = valueNode.text
 		if textValue:
@@ -74,20 +77,37 @@ def readXml(node, name):
 	return ''
 
 #########################
+## path: the nae to be fixed
+## namepace: the namespace to add
+## returns: the fixed path
+def fixPath(path, namespace):
+	return path.replace('/', '/' + namespace)
+
+#########################
 ## root: the XML root node
 ## version_mapping: the mapping from the plugin id to the plugin version.
 ## ignores: the list of keys to ignore for replacement
 ## changed: indicates if the XML was already changed before the call to this function.
 ## path: the xpath to the node that contains "groupId", "artifactId", and "version" tags
+## namespace: the namespace prefix
 ## returns: True if a node has changed, False otherwise
-def replaceInNode(root, version_mapping, ignores, changed, path):
-	nodes = root.findall(path, namespaces=NAMESPACES)
+def replacePomNodes(root, version_mapping, ignores, changed, path, namespace="xmlns:"):
+	if namespace:
+		fixed_path = fixPath(path, namespace)
+	else:
+		fixed_path = path
+	nodes = root.findall(fixed_path, namespaces=NAMESPACES)
 	changed_now = False
 	if nodes:
 		for node in nodes:
-			groupId = readXml(node, "groupId")
-			artifactId = readXml(node, "artifactId")
-			versionNode = readXmlNode(node, "version")
+			groupId = readXml(node, "groupId", namespace)
+			artifactId = readXml(node, "artifactId", namespace)
+			versionNode = readXmlNode(node, "version", namespace)
+			#print(dumpXML(node))
+			#print("groupId=" + groupId)
+			#print("artigactId=" + artifactId)
+			#print(dumpXML(versionNode))
+			#raise Exception("DBG")
 			if groupId and artifactId and versionNode is not None:
 				version = versionNode.text.strip()
 				if not version.startswith('$'):
@@ -99,6 +119,7 @@ def replaceInNode(root, version_mapping, ignores, changed, path):
 					else:
 						newVersion = version_mapping[pluginKey]
 						if newVersion != version:
+							print("\t" + pluginKey + ": " + version + " -> " + newVersion)
 							versionNode.text = newVersion
 							changed_now = True
 	return changed_now or changed
@@ -107,26 +128,40 @@ def replaceInNode(root, version_mapping, ignores, changed, path):
 ## root: the XML root node
 ## version_mapping: the mapping from the plugin id to the plugin version.
 ## ignores: the list of keys to ignore for replacement
+## enableDependencies: enables or disables the replacements of Maven dependencies
 ## returns: True if a node has changed, False otherwise
-def replaceInXML(root, version_mapping, ignores):
+def replaceInPom(root, version_mapping, ignores, enableDependencies):
 	changed = False
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:build/xmlns:extensions/xmlns:extension')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:build/xmlns:plugins/xmlns:plugin')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:build/xmlns:plugins/xmlns:plugin/xmlns:dependencies/xmlns:dependency')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:build/xmlns:pluginManagement/xmlns:plugins/xmlns:plugin')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:build/xmlns:pluginManagement/xmlns:plugins/xmlns:plugin/xmlns:dependencies/xmlns:dependency')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:profiles/xmlns:profile/xmlns:build/xmlns:plugins/xmlns:plugin')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:dependencies/xmlns:dependency')
-	changed = replaceInNode(root, version_mapping, ignores, changed,
-		'./xmlns:project/xmlns:dependencyManagement/xmlns:dependencies/xmlns:dependency')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./build/extensions/extension')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./build/plugins/plugin')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./build/plugins/plugin/dependencies/dependency')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./build/pluginManagement/plugins/plugin')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./build/pluginManagement/plugins/plugin/dependencies/dependency')
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./profiles/profile/build/plugins/plugin')
+	if enableDependencies:
+		changed = replacePomNodes(root, version_mapping, ignores, changed,
+			'./dependencies/dependency')
+		changed = replacePomNodes(root, version_mapping, ignores, changed,
+			'./dependencyManagement/dependencies/dependency')
 	return changed
+
+#########################
+## root: the XML root node
+## version_mapping: the mapping from the plugin id to the plugin version.
+## ignores: the list of keys to ignore for replacement
+## returns: True if a node has changed, False otherwise
+def replaceInEclipsePlatform(root, version_mapping, ignores):
+	changed = False
+	changed = replacePomNodes(root, version_mapping, ignores, changed,
+		'./locations/location/dependencies/dependency', '')
+	return changed
+
 
 ##############################
 ##
@@ -134,6 +169,8 @@ parser = argparse.ArgumentParser(description="Update Maven plugin versions")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 parser.add_argument('--properties', help="path to the property file", action='append')
 parser.add_argument('--ignore', help="groupId:artifactId to ignore", action='append')
+parser.add_argument('--nodependency', help="ignore Maven dependencies", action='store_true')
+parser.add_argument('--eclipseplatform', help="path to the Eclipse platform file in which the Maven versions must be updated", action='append')
 args = parser.parse_args()
 
 properties = Properties()
@@ -151,11 +188,23 @@ pom_files = buildMavenFileList();
 for pom_file in pom_files:
 	print("Scanning " + pom_file)
 	xml_root = readXMLRootNode(pom_file);
-	changed = replaceInXML(xml_root, version_mapping, args.ignore)
+	changed = replaceInPom(xml_root, version_mapping, args.ignore, (not args.nodependency))
 	if changed:
 		print("Saving " + pom_file)
 		with open(pom_file, 'wt') as output_file:
 			output_file.write(dumpXML(xml_root))
+
+if args.eclipseplatform:
+	for platform_file in args.eclipseplatform:
+		print("Scanning " + platform_file)
+		xml_root = readXMLRootNode(platform_file);
+		changed = replaceInEclipsePlatform(xml_root, version_mapping, args.ignore)
+		if changed:
+			print("Saving " + platform_file)
+			with open(platform_file, 'wt') as output_file:
+				output_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n")
+				output_file.write("<?pde version=\"3.8\"?>\n")
+				output_file.write(dumpXML(xml_root))
 
 sys.exit(0)
 

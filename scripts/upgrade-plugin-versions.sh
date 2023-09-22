@@ -27,10 +27,10 @@ function run_upgrade {
 
 cd "$CDIR"
 
-# Build BOMs
+# Ugrade BOMs
 run_upgrade "$CDIR/sarl-bom" "build of materials" "$@"
 
-# Build SARL core modules
+# Ugrade SARL core modules
 run_upgrade "$CDIR/sarl-baseutils" "base utilities" "$@"
 run_upgrade "$CDIR/sarl-lang" "SARL language tools" "$@"
 run_upgrade "$CDIR/sarl-sdk" "SARL Standard Development Kit - SDK" "$@"
@@ -38,6 +38,6 @@ run_upgrade "$CDIR/sarl-apputils" "SARL application utilities" "$@"
 run_upgrade "$CDIR/sarl-sre" "SARL Runtime Environment - SRE" "$@"
 run_upgrade "$CDIR/sarl-docs" "documentation tools and doclets" "$@"
 run_upgrade "$CDIR/sarl-cli" "SARL shell tools" "$@"
-run_upgrade "$CDIR/sarl-eclipse" "SARL Eclipse environment" "$@"
+run_upgrade "$CDIR/sarl-eclipse" "SARL Eclipse environment" --eclipseplatform "$CDIR/sarl-eclipse/sarl-target-platform.target" "$@"
 run_upgrade "$CDIR/sarl-officialdoc" "SARL official documentation" "$@"
 

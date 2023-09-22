@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>io.sarl.bom</groupId>
   <artifactId>sarl-properties</artifactId>
   <version>0.14.0-SNAPSHOT</version>
@@ -8,20 +7,18 @@
   <name>Properties for SARL Projects</name>
   <description>Definition of the SARL properties in a BOM</description>
   <url>http://www.sarl.io</url>
-
   <properties>
-	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	  <minimal.jdk.version>17</minimal.jdk.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <minimal.jdk.version>17</minimal.jdk.version>
   </properties>
-
   <build>
-	<extensions>
-		<extension>
-			<groupId>org.apache.maven.wagon</groupId>
-			<artifactId>wagon-webdav-jackrabbit</artifactId>
-			<version>3.5.3</version>
-		</extension>
-	</extensions>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <version>3.5.3</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -53,7 +50,7 @@
         <configuration>
           <scripts>
             <script>
-<![CDATA[
+
 log.info("Starting configuration of the project properties");
 
 def now = session.getStartTime();
@@ -174,7 +171,7 @@ outPropertiesFolder.mkdirs();
 outPropertiesFile.withOutputStream {
     properties.store(it, "Automatically generated. Do not change.")
 }
-]]>
+
             </script>
           </scripts>
         </configuration>
@@ -182,62 +179,59 @@ outPropertiesFile.withOutputStream {
           <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <type>pom</type> 
-            <version>4.0.12</version>
+            <type>pom</type>
+            <version>4.0.15</version>
           </dependency>
         </dependencies>
       </plugin>
     </plugins>
   </build>
-
-	<distributionManagement>
-		<repository>
-			<id>io.sarl.maven.upload</id>
-			<url>${MAVENSARLIO_URL}</url>
-			<name>SARL Maven Repository</name>
-		</repository>
-		<snapshotRepository>
-			<id>io.sarl.maven.upload</id>
-			<url>${MAVENSARLIO_URL}</url>
-			<name>SARL Maven Repository</name>
-		</snapshotRepository>
-	</distributionManagement>
-	<scm>
-		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
-		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
-		<url>git@github.com:sarl/sarl.git</url>
-	</scm>
-
-	<profiles>
-		<profile>
-			<id>release-tasks</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.1.0</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
+  <distributionManagement>
+    <repository>
+      <id>io.sarl.maven.upload</id>
+      <url>${MAVENSARLIO_URL}</url>
+      <name>SARL Maven Repository</name>
+    </repository>
+    <snapshotRepository>
+      <id>io.sarl.maven.upload</id>
+      <url>${MAVENSARLIO_URL}</url>
+      <name>SARL Maven Repository</name>
+    </snapshotRepository>
+  </distributionManagement>
+  <scm>
+    <connection>scm:git:git@github.com:sarl/sarl.git</connection>
+    <developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+    <url>git@github.com:sarl/sarl.git</url>
+  </scm>
+  <profiles>
+    <profile>
+      <id>release-tasks</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -245,7 +239,6 @@ outPropertiesFile.withOutputStream {
       <distribution>repo</distribution>
     </license>
   </licenses>
-
   <developers>
     <developer>
       <id>sgalland</id>
@@ -263,6 +256,4 @@ outPropertiesFile.withOutputStream {
       </roles>
     </developer>
   </developers>
-
 </project>
-

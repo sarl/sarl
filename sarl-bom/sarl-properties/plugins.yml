@@ -4,15 +4,55 @@ biz.aQute.bnd:
 com.akathist.maven.plugins.launch4j:
   launch4j-maven-plugin: 2.4.1
 
+com.vladsch.flexmark:
+  flexmark: 0.64.8
+
+commons-io:
+  commons-io: 2.13.0
+
+io.bootique:
+  bootique: 3.0.M1
+
+io.bootique.di:
+  bootique-di: 3.0.M1
+
+io.sarl.apputils:
+  bootiqueapp: $sarl.version
+
+io.sarl.baseutils:
+  afc.extension: $sarl.version
+  javax.inject: 1
+  tests.api: $sarl.version
+
 io.sarl.bom:
   sarl-properties: $sarl.version
 
 io.sarl.lang:
+  batchcompiler: $sarl.version
   core: $sarl.version
+  compiler: $sarl.version
+  compiler.tests: $sarl.version
+  pythongenerator: $sarl.version
   sarl-maven-plugin: $sarl.version
+
+io.sarl.sdk:
+  api.experienceindex: $sarl.version
+  sdk: $sarl.version
+
+io.sarl.sre.janus:
+  janus.network: $janus.version
+
+me.tongfei:
+  progressbar: 0.10.0
 
 net.jsign:
   jsign-maven-plugin: "5.0"
+
+net.sf.jopt-simple:
+  jopt-simple: 5.0.4
+
+org.apache.geronimo.specs:
+  geronimo-atinject_1.0_spec: "1.2"
 
 org.apache.groovy:
   groovy-all: 4.0.15
@@ -20,6 +60,7 @@ org.apache.groovy:
 org.apache.maven.plugins:
   maven-antrun-plugin: 3.1.0
   maven-assembly-plugin: 3.6.0
+  maven-clean-plugin: 3.3.1
   maven-compiler-plugin: $maven.compiler.version
   maven-failsafe-plugin: 3.1.2
   maven-gpg-plugin: 3.1.0
@@ -28,7 +69,13 @@ org.apache.maven.plugins:
   maven-plugin-plugin: 3.9.0
   maven-resources-plugin: 3.3.1
   maven-source-plugin: 3.3.0
-  
+
+org.apache.maven.plugin-tools:
+  maven-plugin-annotations: 3.9.0
+
+org.apache.maven.shared:
+  maven-verifier: 2.0.0-M1
+
 org.apache.maven.wagon:
   wagon-webdav-jackrabbit: 3.5.3
 
@@ -41,8 +88,27 @@ org.codehaus.mojo:
   properties-maven-plugin: 1.2.0
   wagon-maven-plugin: 2.0.2
 
+org.eclipse.emf:
+  org.eclipse.emf.mwe2.launch: 2.15.0
+
 org.eclipse.m2e:
   lifecycle-mapping: 1.0.0
 
 com.google.code.maven-replacer-plugin:
   replacer: 1.5.3
+
+org.jsoup:
+  jsoup: 1.16.1
+
+org.junit.jupiter:
+  junit-jupiter-engine: $junit.jupiter.version
+
+org.junit.platform:
+  junit-platform-launcher: 1.10.0
+
+org.mockito:
+  mockito-core: $junit.mockito.version
+
+org.objenesis:
+  objenesis: "3.3"
+
