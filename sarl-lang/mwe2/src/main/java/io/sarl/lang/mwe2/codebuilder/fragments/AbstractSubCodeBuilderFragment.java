@@ -88,6 +88,10 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Override
 	public void initialize(Injector injector) {
 		super.initialize(injector);
+
+		getCodeBuilderConfig().initialize(injector);
+		getCodeElementExtractor().initialize(getGrammar());
+
 		this.subFragments = initializeSubGenerators(injector);
 		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.initialize(injector);
