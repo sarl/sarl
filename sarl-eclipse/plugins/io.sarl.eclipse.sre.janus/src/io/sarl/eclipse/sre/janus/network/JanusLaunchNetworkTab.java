@@ -31,8 +31,7 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.arakhne.afc.bootique.variables.VariableNames;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;

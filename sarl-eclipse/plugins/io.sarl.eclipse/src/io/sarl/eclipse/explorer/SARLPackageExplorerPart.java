@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.explorer;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.filters.EmptyInnerPackageFilter;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerContentProvider;

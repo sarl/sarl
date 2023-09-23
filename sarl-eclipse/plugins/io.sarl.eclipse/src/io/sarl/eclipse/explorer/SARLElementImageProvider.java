@@ -24,9 +24,9 @@ package io.sarl.eclipse.explorer;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Named;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;

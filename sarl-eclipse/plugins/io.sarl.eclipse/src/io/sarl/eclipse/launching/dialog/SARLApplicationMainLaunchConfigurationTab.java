@@ -23,8 +23,8 @@ package io.sarl.eclipse.launching.dialog;
 
 import java.lang.ref.SoftReference;
 import java.text.MessageFormat;
-import javax.inject.Inject;
 
+import com.google.inject.Inject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;

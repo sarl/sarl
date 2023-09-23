@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.launching.shortcuts;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;

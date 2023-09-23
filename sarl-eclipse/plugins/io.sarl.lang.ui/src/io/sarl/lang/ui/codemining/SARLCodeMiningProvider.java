@@ -28,10 +28,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Supplier;
 import com.google.common.base.Throwables;
+import com.google.inject.Inject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;

@@ -21,9 +21,8 @@
 
 package io.sarl.eclipse.launching.shortcuts;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.emf.common.util.URI;

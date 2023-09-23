@@ -21,8 +21,7 @@
 
 package io.sarl.lang.ui.contentassist.templates;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;

@@ -21,8 +21,7 @@
 
 package io.sarl.lang.ui.codebuilder;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder;
 import org.eclipse.xtext.common.types.JvmVisibility;

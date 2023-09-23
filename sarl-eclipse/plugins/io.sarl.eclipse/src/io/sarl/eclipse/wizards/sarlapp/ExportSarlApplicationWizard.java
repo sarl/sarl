@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.wizards.sarlapp;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.jdt.internal.ui.wizards.JavaProjectWizard;
 import org.eclipse.jdt.ui.jarpackager.JarPackageData;

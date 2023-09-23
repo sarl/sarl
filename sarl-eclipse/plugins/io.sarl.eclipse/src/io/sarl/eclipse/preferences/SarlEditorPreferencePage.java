@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.preferences;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;

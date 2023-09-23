@@ -23,8 +23,7 @@ package io.sarl.lang.ui.highlighting;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingCalculator;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmGenericType;

@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.wizards.elements.oop.newenum;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizard;

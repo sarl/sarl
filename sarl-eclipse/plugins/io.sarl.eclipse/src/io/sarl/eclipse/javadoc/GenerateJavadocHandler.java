@@ -21,9 +21,8 @@
 
 package io.sarl.eclipse.javadoc;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

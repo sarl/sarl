@@ -25,9 +25,9 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 import java.util.Objects;
-import javax.inject.Named;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;

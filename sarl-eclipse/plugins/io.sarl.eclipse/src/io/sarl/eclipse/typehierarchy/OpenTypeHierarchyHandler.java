@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.typehierarchy;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

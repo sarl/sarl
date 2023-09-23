@@ -22,8 +22,8 @@
 package io.sarl.lang.ui.editor;
 
 import java.lang.reflect.Field;
-import javax.inject.Inject;
 
+import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
 import org.eclipse.jface.text.IDocument;

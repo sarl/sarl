@@ -21,8 +21,7 @@
 
 package io.sarl.eclipse.wizards.elements;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.jdt.ui.dialogs.ITypeInfoImageProvider;
 import org.eclipse.jdt.ui.dialogs.ITypeInfoRequestor;
 import org.eclipse.jdt.ui.dialogs.TypeSelectionExtension;

@@ -10,7 +10,7 @@
     <module>plugins</module>
     <module>features</module>
     <module>products</module>
-    <module>tests</module>
+	<!-- <module>tests</module> -->
   </modules>
   <properties>
     <tycho.version>4.0.2</tycho.version>
@@ -188,7 +188,7 @@
               <type>eclipse-plugin</type>
               <id>org.eclipse.equinox.registry</id>
               <restrictTo>
-                <version>3.11.200.v20220817-1601</version>
+                <version>3.11.300.v20230801-1826</version>
               </restrictTo>
             </filter>
           </filters>

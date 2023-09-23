@@ -29,9 +29,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;

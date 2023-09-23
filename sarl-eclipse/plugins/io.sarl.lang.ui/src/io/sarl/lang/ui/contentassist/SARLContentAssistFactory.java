@@ -21,8 +21,7 @@
 
 package io.sarl.lang.ui.contentassist;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;

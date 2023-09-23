@@ -21,11 +21,10 @@
 
 package io.sarl.lang.ui.outline;
 
-import javax.inject.Named;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.internal.ui.viewsupport.ColoringLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;

@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -595,9 +596,19 @@ abstract class GenerationContext {
 	 * @since 0.14
 	 */
 	protected boolean hasInjectAnnotation(JvmAnnotationTarget target) {
-		return this.annotationFinder.findAnnotation(target, com.google.inject.Inject.class) != null
-				|| this.annotationFinder.findAnnotation(target, javax.inject.Inject.class) != null
-				|| this.annotationFinder.findAnnotation(target, jakarta.inject.Inject.class) != null;
+		return target.getAnnotations().stream()
+				.anyMatch(it -> {
+					final JvmAnnotationType annotationType = it.getAnnotation();
+					if (annotationType != null) {
+						final String name = annotationType.getQualifiedName();
+						if ("com.google.inject.Inject".equals(name)
+								|| "javax.inject.Inject".equals(name)
+								|| "jakarta.inject.Inject".equals(name)) {
+							return true;
+						}
+					}
+					return false;
+				});
 	}
 
 	/** Change the flag that indicates if the given element is injected.

@@ -25,9 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
 import org.arakhne.afc.vmutil.FileSystem;
 
 import io.sarl.docs.sarldoc.Constants;

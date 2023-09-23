@@ -21,9 +21,8 @@
 
 package io.sarl.eclipse.typehierarchy;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.swt.graphics.Image;

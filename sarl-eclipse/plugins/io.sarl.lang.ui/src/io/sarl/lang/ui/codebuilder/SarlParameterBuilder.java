@@ -21,8 +21,7 @@
 
 package io.sarl.lang.ui.codebuilder;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;

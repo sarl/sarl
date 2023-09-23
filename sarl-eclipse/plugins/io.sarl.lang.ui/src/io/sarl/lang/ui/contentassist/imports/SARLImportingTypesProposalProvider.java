@@ -21,8 +21,7 @@
 
 package io.sarl.lang.ui.contentassist.imports;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.conversion.IValueConverter;

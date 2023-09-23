@@ -22,9 +22,9 @@
 package io.sarl.lang.pythongenerator.validator;
 
 import java.text.MessageFormat;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmConstructor;

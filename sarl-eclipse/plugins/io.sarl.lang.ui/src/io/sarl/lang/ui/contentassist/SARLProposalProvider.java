@@ -23,9 +23,8 @@ package io.sarl.lang.ui.contentassist;
 
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
