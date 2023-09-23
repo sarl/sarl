@@ -21,8 +21,7 @@
 
 package io.sarl.lang.jvmmodel;
 
-import javax.inject.Singleton;
-
+import com.google.inject.Singleton;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;

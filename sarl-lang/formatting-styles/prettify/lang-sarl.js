@@ -23,7 +23,7 @@
  *  limitations under the License.
  * 
 */
-/* Style for SARL 0.13 */
+/* Style for SARL 0.14 */
 
 PR['registerLangHandler'](
    PR['createSimpleLexer'](

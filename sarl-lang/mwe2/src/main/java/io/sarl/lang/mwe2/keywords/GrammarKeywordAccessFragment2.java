@@ -125,6 +125,15 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		super.initialize(injector);
 	}
 
+	/** Replies the type for {@code @Inject}.
+	 *
+	 * @return the inject annotation type.
+	 * @since 0.14
+	 */
+	public Class<?> getInjectType() {
+		return this.configuration.getInjectType();
+	}
+
 	@Override
 	public void generate() {
 		LOG.info("Generating the grammar keyword access for " + getLanguageName()); //$NON-NLS-1$
@@ -148,7 +157,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(Inject.class);
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(GrammarKeywordAccessFragment2.this.grammarAccessExtensions.getGrammarAccess(getGrammar()));

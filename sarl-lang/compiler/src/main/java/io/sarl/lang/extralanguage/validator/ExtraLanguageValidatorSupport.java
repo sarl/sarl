@@ -24,8 +24,7 @@ package io.sarl.lang.extralanguage.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtend.core.xtend.XtendPackage;

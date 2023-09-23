@@ -25,9 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmType;

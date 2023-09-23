@@ -21,12 +21,10 @@
 package io.sarl.lang.tests.modules.compiler.batch;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

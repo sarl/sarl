@@ -54,7 +54,7 @@ public final class VerifierFactory {
 	 * @param verifier the Maven verifier.
 	 * @return the verifier tool.
 	 */
-	public static Verifier build(File basedir, boolean outputOnConsole, org.apache.maven.it.Verifier verifier) {
+	public static Verifier build(File basedir, boolean outputOnConsole, org.apache.maven.shared.verifier.Verifier verifier) {
 		return new AbstractEmbeddedMavenMojoTest.EmbeddedVerifier(basedir, outputOnConsole, verifier);
 	}
 

@@ -22,14 +22,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Style for SARL 0.13
+# Style for SARL 0.14
 
 
 from setuptools import setup
 
 setup (
   name='sarl.pylexer',
-  version='0.13',
+  version='0.14',
   packages=['sarl.pylexer'],
   entry_points =
   """

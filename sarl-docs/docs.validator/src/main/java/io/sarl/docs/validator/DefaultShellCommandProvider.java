@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 
 /** Default implementation of a provider of shell commands.
  *

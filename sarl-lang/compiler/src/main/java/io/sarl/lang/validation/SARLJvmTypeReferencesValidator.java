@@ -23,8 +23,7 @@ package io.sarl.lang.validation;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;

@@ -24,8 +24,7 @@ package io.sarl.lang.formatting2;
 import java.text.MessageFormat;
 import java.util.Collection;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;

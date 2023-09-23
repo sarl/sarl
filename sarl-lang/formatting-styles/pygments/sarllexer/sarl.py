@@ -22,7 +22,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Style for SARL 0.13
+# Style for SARL 0.14
 
 
 import re
@@ -34,7 +34,7 @@ class SarlLexer(RegexLexer):
 	"""
 	For `SARL <http://www.sarl.io>`_ source code.
 	
-	.. versionadded:: 0.13
+	.. versionadded:: 0.14
 	"""
 	
 	name = 'SARL'

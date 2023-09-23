@@ -23,8 +23,7 @@ package io.sarl.lang.interpreter;
 
 import java.util.function.UnaryOperator;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.eclipse.xtext.common.types.util.JavaReflectAccess;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;

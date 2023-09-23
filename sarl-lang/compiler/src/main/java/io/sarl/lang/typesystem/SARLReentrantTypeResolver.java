@@ -24,8 +24,7 @@ package io.sarl.lang.typesystem;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.XtendReentrantTypeResolver;

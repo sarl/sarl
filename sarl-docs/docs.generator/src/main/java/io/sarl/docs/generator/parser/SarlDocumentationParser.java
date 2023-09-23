@@ -44,12 +44,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Named;
-
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.eclipse.xtext.Constants;

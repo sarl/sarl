@@ -32,9 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.inject.Provider;
-
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;

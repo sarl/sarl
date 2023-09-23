@@ -52,12 +52,12 @@ package io.sarl.docs.doclet2.framework;
 
 import java.util.List;
 
-import javax.inject.Provider;
 import javax.lang.model.element.Element;
 
+import com.google.inject.Provider;
+import com.sun.source.doctree.BlockTagTree;
 import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
-import com.sun.source.doctree.BlockTagTree;
 import com.sun.source.doctree.InlineTagTree;
 import com.sun.source.util.DocTrees;
 
@@ -82,7 +82,7 @@ import io.sarl.lang.core.util.SarlUtils;
  */
 public class DefaultApidocExcluder implements ApidocExcluder {
 
-	private Provider<SarlDocletEnvironment> environmentProvider;
+	private Provider<SarlDocletEnvironment> googleEnvironmentProvider;
 
 	private SarlDocletEnvironment environment;
 
@@ -91,7 +91,7 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 	 * @param environmentProvider the provider of the generation environment.
 	 */
 	public DefaultApidocExcluder(Provider<SarlDocletEnvironment> environmentProvider) {
-		this.environmentProvider = environmentProvider;
+		this.googleEnvironmentProvider = environmentProvider;
 	}
 
 	/** Replies the doclet generation environment.
@@ -100,7 +100,7 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 	 */
 	public SarlDocletEnvironment getDocletEnvironment() {
 		if (this.environment == null) {
-			this.environment = this.environmentProvider.get();
+			this.environment = this.googleEnvironmentProvider.get();
 		}
 		return this.environment;
 	}

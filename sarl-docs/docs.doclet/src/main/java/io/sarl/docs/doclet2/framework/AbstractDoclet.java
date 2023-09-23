@@ -57,12 +57,12 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import com.sun.source.util.DocTreePath;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;

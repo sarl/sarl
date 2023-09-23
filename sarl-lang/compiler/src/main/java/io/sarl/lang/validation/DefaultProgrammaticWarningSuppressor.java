@@ -24,8 +24,8 @@ package io.sarl.lang.validation;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.inject.Singleton;
 
+import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
 import org.eclipse.xtext.EcoreUtil2;

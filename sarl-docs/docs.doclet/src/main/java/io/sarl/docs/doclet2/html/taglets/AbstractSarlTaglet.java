@@ -57,10 +57,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.lang.model.element.Element;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import com.sun.source.doctree.DocTree;
 import org.jsoup.nodes.Node;
 
@@ -68,10 +68,10 @@ import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.html.framework.CssStyles;
 import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlFactory;
+import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContext;
 import io.sarl.docs.doclet2.html.framework.HtmlTags;
-import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 
 /** Abstract implementation of a taglet.
  *

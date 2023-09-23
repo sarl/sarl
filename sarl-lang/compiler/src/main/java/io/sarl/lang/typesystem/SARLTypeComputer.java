@@ -23,9 +23,8 @@ package io.sarl.lang.typesystem;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Throwables;
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;

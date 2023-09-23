@@ -45,12 +45,11 @@ import java.util.concurrent.atomic.DoubleAdder;
 import java.util.concurrent.atomic.LongAccumulator;
 import java.util.concurrent.atomic.LongAdder;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.ConcurrentHashMultiset;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.AtomicDoubleArray;
 import com.google.common.util.concurrent.AtomicLongMap;
+import com.google.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.xbase.lib.Pure;

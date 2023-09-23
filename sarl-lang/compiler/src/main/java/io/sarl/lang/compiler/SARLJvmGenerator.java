@@ -24,8 +24,7 @@ package io.sarl.lang.compiler;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;

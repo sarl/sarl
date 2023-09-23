@@ -31,11 +31,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.inject.Provider;
-
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -490,7 +489,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t@"); //$NON-NLS-1$
-					it.append(javax.inject.Inject.class);
+					it.append(getInjectType());
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(Provider.class);
@@ -1570,7 +1569,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (hasTypeParameters.get()) {
 					if (!forInterface && !forAppender) {
 						it.append("\t@"); //$NON-NLS-1$
-						it.append(javax.inject.Inject.class);
+						it.append(getInjectType());
 						it.newLine();
 						it.append("\tprivate "); //$NON-NLS-1$
 						it.append(Provider.class);

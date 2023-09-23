@@ -61,12 +61,12 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.inject.Inject;
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 

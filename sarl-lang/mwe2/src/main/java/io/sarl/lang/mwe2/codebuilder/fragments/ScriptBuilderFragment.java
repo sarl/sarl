@@ -27,10 +27,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Provider;
-
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -459,7 +458,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			protected void appendTo(TargetStringConcatenation it) {
 				if (!forInterface && !forAppender) {
 					it.append("\t@"); //$NON-NLS-1$
-					it.append(javax.inject.Inject.class);
+					it.append(getInjectType());
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(Provider.class);

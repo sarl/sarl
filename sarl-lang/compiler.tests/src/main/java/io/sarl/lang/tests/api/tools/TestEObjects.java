@@ -23,8 +23,7 @@ package io.sarl.lang.tests.api.tools;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Provider;
-
+import com.google.inject.Provider;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;

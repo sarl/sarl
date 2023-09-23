@@ -21,8 +21,7 @@
 
 package io.sarl.lang.validation;
 
-import javax.inject.Singleton;
-
+import com.google.inject.Singleton;
 import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
 import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.util.IAcceptor;

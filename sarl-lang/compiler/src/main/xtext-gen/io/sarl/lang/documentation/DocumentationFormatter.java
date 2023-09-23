@@ -23,13 +23,13 @@
  */
 package io.sarl.lang.documentation;
 
+import com.google.inject.Inject;
 import io.sarl.lang.services.SARLGrammarAccess;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import javax.inject.Inject;
 import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Group;

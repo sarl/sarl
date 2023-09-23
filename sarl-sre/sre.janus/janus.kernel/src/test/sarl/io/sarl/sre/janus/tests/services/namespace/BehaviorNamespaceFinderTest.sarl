@@ -125,7 +125,7 @@ class BehaviorNamespaceFinderTest {
 		this.beh0a = new MyBehavior(a0).spy
 		this.beh0b = new MyBehavior(a0).spy
 		a0.initBeh(this.beh0a, this.beh0b)
-		this.ag0 = a0.spy
+		this.ag0 = a0
 		var listener0 = typeof(InformedEventListener).mock
 		when(listener0.ownerInstance).thenReturn(this.ag0)
 		var participant0 = typeof(Participant).mock
@@ -147,7 +147,7 @@ class BehaviorNamespaceFinderTest {
 		this.beh1a = new MyBehavior(a1).spy
 		this.beh1b = new MyBehavior(a1).spy
 		a1.initBeh(this.beh1a, this.beh1b)
-		this.ag1 = a1.spy
+		this.ag1 = a1
 		var listener1 = typeof(InformedEventListener).mock
 		when(listener1.ownerInstance).thenReturn(this.ag1)
 		var participant1 = typeof(Participant).mock

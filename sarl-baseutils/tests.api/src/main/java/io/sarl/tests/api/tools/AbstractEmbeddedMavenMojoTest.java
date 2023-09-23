@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.maven.it.VerificationException;
+import org.apache.maven.shared.verifier.VerificationException;
 
 /** Abstract test of Maven Mojo in the current process.
  * 
@@ -58,17 +58,18 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		// Remove the command because Maven is embedded
 		command.remove(0);
 
-		org.apache.maven.it.Verifier verifier = new org.apache.maven.it.Verifier(baseDir.getAbsolutePath(), true);
+		org.apache.maven.shared.verifier.Verifier verifier = new org.apache.maven.shared.verifier.Verifier(baseDir.getAbsolutePath(), true);
 		verifier.setAutoclean(false);
 		verifier.setForkJvm(false);
-		for (final String arg : command.stream().filter(it -> it.startsWith("-")).toList()) { //$NON-NLS-1$
-			verifier.addCliOption(arg);
-		}
-		
 		try {
-			verifier.executeGoals(command.stream().filter(it -> !it.startsWith("-")).toList()); //$NON-NLS-1$
+			for (final String arg : command) {
+				verifier.addCliArgument(arg);
+			}
+			verifier.execute();
 		} catch (VerificationException ex) {
-			//
+			if (isDebug()) {
+				throw new Error(ex);
+			}
 		}
 		return VerifierFactory.build(baseDir, outputOnConsole, verifier);
 	}
@@ -83,7 +84,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 	 */
 	static class EmbeddedVerifier extends Verifier {
 
-		private final org.apache.maven.it.Verifier mavenVerifier;
+		private final org.apache.maven.shared.verifier.Verifier mavenVerifier;
 
 		/** Constructor.
 		 *
@@ -91,7 +92,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		 * @param outputOnConsole indicates if the standard output of the process must be on the console, or not.
 		 * @param verifier the Maven verifier to be packed.
 		 */
-		EmbeddedVerifier(File basedir, boolean outputOnConsole, org.apache.maven.it.Verifier verifier) {
+		EmbeddedVerifier(File basedir, boolean outputOnConsole, org.apache.maven.shared.verifier.Verifier verifier) {
 			super(basedir, outputOnConsole);
 			this.mavenVerifier = verifier;
 		}
@@ -103,7 +104,7 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 		@Override
 		public void waitFor() throws Exception {
 			if (this.outputOnConsole) {
-				this.mavenVerifier.displayStreamBuffers();
+				//
 			}
 		}
 

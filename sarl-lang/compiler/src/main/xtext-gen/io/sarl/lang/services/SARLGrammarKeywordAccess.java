@@ -23,12 +23,12 @@
  */
 package io.sarl.lang.services;
 
+import com.google.inject.Inject;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.inject.Inject;
 import org.eclipse.xtext.util.Strings;
 
 /** Set of SARL keywords that are not directly supported by the

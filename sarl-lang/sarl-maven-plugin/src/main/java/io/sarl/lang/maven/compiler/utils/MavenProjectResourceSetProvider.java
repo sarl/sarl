@@ -21,8 +21,7 @@
 
 package io.sarl.lang.maven.compiler.utils;
 
-import javax.inject.Provider;
-
+import com.google.inject.Provider;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;

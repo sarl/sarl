@@ -1,7 +1,0 @@
-package io.sarl.elevatorsim
-
-import io.sarl.elevatorsim.events.SendCarAction
-
-capacity SimulatorPush {
-    def pushSendCarAction(action : SendCarAction)
-}

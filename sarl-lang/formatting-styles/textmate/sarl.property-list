@@ -1,6 +1,6 @@
 {
   foldingStartMarker = '\{\s*(//.*)?$';
-  __sarlVersion = '0.13';
+  __sarlVersion = '0.14';
   scopeName = 'source.sarl';
   patterns = (
     {
@@ -130,8 +130,8 @@
   name = 'SARL';
   firstLineMatch = '^//.*\bsarl\b.';
   foldingStopMarker = '^\s*\}';
-  version = '0.13';
-  uuid = '679F47E9-4664-3E35-BC0D-606F07A1217E';
+  version = '0.14';
+  uuid = '2726E05D-1C01-363B-8742-FDBB3D89C0BC';
   fileTypes = (
     'sarl'
   )

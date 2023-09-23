@@ -98,6 +98,15 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		}
 	}
 
+	/** Replies the type for {@code @Inject}.
+	 *
+	 * @return the inject annotation type.
+	 * @since 0.14
+	 */
+	protected Class<?> getInjectType() {
+		return getCodeBuilderConfig().getInjectType();
+	}
+
 	/** Replies the naming conventions.
 	 *
 	 * @return the naming conventions.

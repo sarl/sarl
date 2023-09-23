@@ -24,10 +24,9 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Provider;
-
 import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -215,7 +214,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			protected void appendTo(TargetStringConcatenation it) {
 				if (!forInterface && !forAppender) {
 					it.append("\t@"); //$NON-NLS-1$
-					it.append(javax.inject.Inject.class);
+					it.append(getInjectType());
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(ITaskTagProvider.class);
@@ -223,7 +222,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
-					it.append(javax.inject.Inject.class);
+					it.append(getInjectType());
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(Provider.class);

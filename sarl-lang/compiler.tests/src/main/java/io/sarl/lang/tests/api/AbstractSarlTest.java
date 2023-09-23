@@ -20,10 +20,9 @@
  */
 package io.sarl.lang.tests.api;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -21,8 +21,7 @@
 
 package io.sarl.lang.validation;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;

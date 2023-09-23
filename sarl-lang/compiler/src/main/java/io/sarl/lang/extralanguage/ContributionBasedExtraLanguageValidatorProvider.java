@@ -24,8 +24,7 @@ package io.sarl.lang.extralanguage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import io.sarl.lang.extralanguage.validator.AbstractExtraLanguageValidator;

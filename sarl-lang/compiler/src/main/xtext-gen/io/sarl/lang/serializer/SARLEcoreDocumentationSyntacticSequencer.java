@@ -23,13 +23,13 @@
  */
 package io.sarl.lang.serializer;
 
+import com.google.inject.Inject;
 import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.InnerBlockDocumentationAdapter;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
-import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.AbstractRule;

@@ -50,12 +50,13 @@
 
 package io.sarl.docs.doclet2.html.types;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;

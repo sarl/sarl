@@ -23,8 +23,8 @@
  */
 package io.sarl.lang.documentation;
 
+import com.google.inject.Inject;
 import io.sarl.lang.services.SARLGrammarAccess;
-import javax.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.AbstractRule;

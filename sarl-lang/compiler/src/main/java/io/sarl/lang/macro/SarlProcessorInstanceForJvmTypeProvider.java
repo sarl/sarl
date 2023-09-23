@@ -21,8 +21,7 @@
 
 package io.sarl.lang.macro;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtext.common.types.JvmType;

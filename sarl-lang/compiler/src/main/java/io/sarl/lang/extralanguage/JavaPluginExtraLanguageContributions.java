@@ -26,10 +26,9 @@ import java.util.Collection;
 import java.util.ServiceLoader;
 import java.util.function.Predicate;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 
 /** Tool for obtaining all the contributions as an extra-language generators.
  *

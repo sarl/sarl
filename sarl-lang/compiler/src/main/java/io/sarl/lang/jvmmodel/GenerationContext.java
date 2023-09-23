@@ -29,10 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -129,7 +128,7 @@ abstract class GenerationContext {
 	 * evaluating guards and returning the event handler runnables.
 	 */
 	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>> guardEvaluators
-			= CollectionLiterals.newHashMap();
+	= CollectionLiterals.newHashMap();
 
 	/** The context object.
 	 */
@@ -244,7 +243,7 @@ abstract class GenerationContext {
 	 * @return the guard evaluators.
 	 */
 	public Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>>
-			getGuardEvaluationCodes() {
+	getGuardEvaluationCodes() {
 		return this.guardEvaluators.values();
 	}
 
@@ -529,7 +528,7 @@ abstract class GenerationContext {
 		}
 		return this.actionPrototypeContext;
 	}
-	
+
 	/** Replies if this context is released.
 	 *
 	 * @return {@code true} if the context was released, otherwise {@code false}.
@@ -589,15 +588,25 @@ abstract class GenerationContext {
 		this.isInjectable = injectable;
 	}
 
+	/** Replies if the given target has the {@code Inject} annotation.
+	 *
+	 * @param target the target to analyze.
+	 * @return {@code true} if the inject annotation is attached to the target.
+	 * @since 0.14
+	 */
+	protected boolean hasInjectAnnotation(JvmAnnotationTarget target) {
+		return this.annotationFinder.findAnnotation(target, com.google.inject.Inject.class) != null
+				|| this.annotationFinder.findAnnotation(target, javax.inject.Inject.class) != null
+				|| this.annotationFinder.findAnnotation(target, jakarta.inject.Inject.class) != null;
+	}
+
 	/** Change the flag that indicates if the given element is injected.
 	 *
 	 * @param element the element to test.
 	 * @since 0.12
 	 */
 	public void setInjectable(JvmAnnotationTarget element) {
-		if (element != null
-			&& (this.annotationFinder.findAnnotation(element, Inject.class) != null
-			   || this.annotationFinder.findAnnotation(element, com.google.inject.Inject.class) != null)) {
+		if (element != null && hasInjectAnnotation(element)) {
 			setInjectable(true);
 		}
 	}
@@ -611,7 +620,7 @@ abstract class GenerationContext {
 		if (element != null) {
 			final JvmType type = element.getType();
 			if (type instanceof JvmAnnotationTarget
-				&& this.annotationFinder.findAnnotation((JvmAnnotationTarget) type, Injectable.class) != null) {
+					&& this.annotationFinder.findAnnotation((JvmAnnotationTarget) type, Injectable.class) != null) {
 				setInjectable(true);
 			}
 		}

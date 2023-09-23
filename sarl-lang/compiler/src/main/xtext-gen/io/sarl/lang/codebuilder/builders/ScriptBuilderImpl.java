@@ -23,10 +23,10 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlScript;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;

@@ -21,8 +21,7 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;

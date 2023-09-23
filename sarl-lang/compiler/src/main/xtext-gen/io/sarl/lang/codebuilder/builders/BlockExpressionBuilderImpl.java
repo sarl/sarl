@@ -23,10 +23,10 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import io.sarl.lang.documentation.InnerBlockDocumentationAdapter;
 import java.util.function.Predicate;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;

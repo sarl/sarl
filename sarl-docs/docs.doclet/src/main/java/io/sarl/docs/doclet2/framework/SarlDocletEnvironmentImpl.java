@@ -52,7 +52,6 @@ package io.sarl.docs.doclet2.framework;
 
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -62,6 +61,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject.Kind;
 
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import com.sun.source.util.DocTrees;
 import jdk.javadoc.doclet.DocletEnvironment;
 

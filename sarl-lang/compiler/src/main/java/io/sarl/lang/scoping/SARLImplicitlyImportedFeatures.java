@@ -23,9 +23,8 @@ package io.sarl.lang.scoping;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 import io.sarl.lang.core.scoping.extensions.cast.GeneralCastImplicitlyImportedFeatures;

@@ -21,9 +21,8 @@
 
 package io.sarl.lang.compiler;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;

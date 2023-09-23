@@ -21,8 +21,7 @@
 
 package io.sarl.lang.formatting2;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtext.formatting2.ITextReplacerContext;
 import org.eclipse.xtext.formatting2.internal.CommentReplacer;
 import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer;

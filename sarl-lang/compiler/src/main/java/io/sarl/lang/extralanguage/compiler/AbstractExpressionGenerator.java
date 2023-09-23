@@ -26,9 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmConstructor;

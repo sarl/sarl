@@ -22,8 +22,8 @@
 package io.sarl.lang.bugfixes.unpublished;
 
 import java.util.List;
-import javax.inject.Singleton;
 
+import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;

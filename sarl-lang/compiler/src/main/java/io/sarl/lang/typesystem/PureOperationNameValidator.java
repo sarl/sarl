@@ -22,7 +22,8 @@
 package io.sarl.lang.typesystem;
 
 import java.util.regex.Pattern;
-import javax.inject.Singleton;
+
+import com.google.inject.Singleton;
 
 /**
  * Test if names are for pure or not pure operations.

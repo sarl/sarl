@@ -21,8 +21,7 @@
 
 package io.sarl.lang.bugfixes.pending.bug621;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideTester;

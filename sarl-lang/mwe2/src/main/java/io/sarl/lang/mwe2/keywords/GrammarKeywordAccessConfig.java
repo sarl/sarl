@@ -25,7 +25,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
 
 /**
@@ -37,6 +41,8 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
  * @mavenartifactid $ArtifactId$
  */
 public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent {
+
+	private boolean googleInjectionTypes = true;
 
 	private Set<String> additionalLiterals = new HashSet<>();
 
@@ -139,6 +145,73 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 */
 	public Set<String> getIgnoredKeywords() {
 		return this.ignoredKeywords;
+	}
+
+
+	/** Replies if the types for injection must be from the Google Guice.
+	 *
+	 * @return {@code true} if the injection types are from Google Guice, otherwise {@code false}.
+	 * @since 0.14
+	 */
+	public boolean getGoolgeInjectionTypes() {
+		return this.googleInjectionTypes;
+	}
+
+	/** Replies if the types for injection must be from the Google Guice.
+	 *
+	 * @param isGoogle {@code true} if the injection types are from Google Guice, otherwise {@code false}.
+	 * @since 0.14
+	 */
+	public void setGoolgeInjectionTypes(boolean isGoogle) {
+		this.googleInjectionTypes = isGoogle;
+	}
+
+	/** Replies the type for {@code @Inject}.
+	 *
+	 * @return the inject annotation type.
+	 * @since 0.14
+	 */
+	public Class<?> getInjectType() {
+		if (getGoolgeInjectionTypes()) {
+			return Inject.class;
+		}
+		return javax.inject.Inject.class;
+	}
+
+	/** Replies the type for {@code @Named}.
+	 *
+	 * @return the named annotation type.
+	 * @since 0.14
+	 */
+	public Class<?> getNamedType() {
+		if (getGoolgeInjectionTypes()) {
+			return Named.class;
+		}
+		return javax.inject.Named.class;
+	}
+
+	/** Replies the type for {@code @Provider}.
+	 *
+	 * @return the provider annotation type.
+	 * @since 0.14
+	 */
+	public Class<?> getProviderType() {
+		if (getGoolgeInjectionTypes()) {
+			return Provider.class;
+		}
+		return javax.inject.Provider.class;
+	}
+
+	/** Replies the type for {@code @Singleton}.
+	 *
+	 * @return the singleton annotation type.
+	 * @since 0.14
+	 */
+	public Class<?> getSingletonType() {
+		if (getGoolgeInjectionTypes()) {
+			return Singleton.class;
+		}
+		return javax.inject.Singleton.class;
 	}
 
 }

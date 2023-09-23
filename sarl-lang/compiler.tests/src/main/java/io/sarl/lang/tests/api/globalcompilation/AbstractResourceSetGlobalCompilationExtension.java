@@ -20,8 +20,7 @@
  */
 package io.sarl.lang.tests.api.globalcompilation;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.util.ParseHelper;

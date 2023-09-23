@@ -21,9 +21,8 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;

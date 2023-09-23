@@ -56,6 +56,26 @@ public abstract class AbstractMojoTest {
 
 	private static Boolean IS_SARL_WEBSITE_AVAILABLE = null;
 
+	private boolean isDebug;
+
+	/** Replies if the mojo is run in a debugging context.
+	 *
+	 * @return {@code true} if in debug mode.
+	 * @since 0.14
+	 */
+	protected boolean isDebug() {
+		return this.isDebug;
+	}
+
+	/** Change the flag that indicates if the mojo is run in a debugging context.
+	 *
+	 * @param debug {@code true} if in debug mode.
+	 * @since 0.14
+	 */
+	protected void setDebug(boolean debug) {
+		this.isDebug = debug;
+	}
+
 	/** Replies a logger that could be used for tests.
 	 *
 	 * @return a logger.
@@ -225,7 +245,7 @@ public abstract class AbstractMojoTest {
 		assumeTrue(mavenCmd != null, "Maven command not found"); //$NON-NLS-1$
 
 		@SuppressWarnings("null")
-		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-e", "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (!Strings.isNullOrEmpty(goalName)) {
 			cmd.add(goalName);
 		}

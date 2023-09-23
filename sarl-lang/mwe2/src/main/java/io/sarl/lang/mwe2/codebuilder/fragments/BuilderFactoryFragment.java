@@ -24,15 +24,14 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -128,7 +127,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(IResourceFactory.class);
@@ -139,7 +138,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(Provider.class);
@@ -149,7 +148,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(Injector.class);
@@ -162,7 +161,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tpublic void setFileExtensions(@"); //$NON-NLS-1$
 				it.append(Named.class);

@@ -24,14 +24,13 @@ package io.sarl.docs.doclet2.guice;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.MembersInjector;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import jdk.javadoc.doclet.Doclet;
@@ -177,7 +176,7 @@ public class SarlJavadocModule extends AbstractModule {
 	 * @param target the target type.
 	 */
 	protected <T> void bindSingleton(Class<T> source, Class<? extends T> target) {
-		binder().bind(source).to(target).in(Singleton.class);
+		binder().bind(source).to(target).asEagerSingleton();
 	}
 
 	/** Utility function for binding (not singleton).

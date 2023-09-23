@@ -50,7 +50,14 @@
 
 package io.sarl.docs.doclet2.html.frames;
 
-import static io.sarl.docs.doclet2.html.framework.HtmlTags.*;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.BOOLEAN_YES_ATTR_VALUE;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.COLS_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.NAME_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.ONLOAD_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.ROWS_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.SCROLLING_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.SRC_ATTR;
+import static io.sarl.docs.doclet2.html.framework.HtmlTags.TITLE_ATTR;
 
 import java.nio.file.Path;
 import java.text.MessageFormat;

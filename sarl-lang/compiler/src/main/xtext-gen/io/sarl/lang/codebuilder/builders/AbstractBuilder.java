@@ -23,12 +23,12 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlInterface;
-import javax.inject.Inject;
-import javax.inject.Named;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;

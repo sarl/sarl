@@ -23,7 +23,7 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmLowerBound;

@@ -90,9 +90,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -100,7 +97,10 @@ import javax.tools.Diagnostic.Kind;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.Resources;
+import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.Reporter;
 import jdk.javadoc.doclet.Taglet;

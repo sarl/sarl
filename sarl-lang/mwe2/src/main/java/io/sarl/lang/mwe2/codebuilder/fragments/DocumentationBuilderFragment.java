@@ -757,7 +757,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tpublic void setGrammarAccess("); //$NON-NLS-1$
 				it.append(DocumentationBuilderFragment.this.grammarAccessExtensions.getGrammarAccess(getGrammar()));
@@ -2181,7 +2181,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(getIDocumentationFormatter());
@@ -2189,7 +2189,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tpublic void setGrammarAccess("); //$NON-NLS-1$
 				it.append(DocumentationBuilderFragment.this.grammarAccessExtensions.getGrammarAccess(getGrammar()));
@@ -2556,7 +2556,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(getIEcoreDocumentationBuilder());
@@ -2564,7 +2564,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
-				it.append(javax.inject.Inject.class);
+				it.append(getInjectType());
 				it.newLine();
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(keywordAccessor);

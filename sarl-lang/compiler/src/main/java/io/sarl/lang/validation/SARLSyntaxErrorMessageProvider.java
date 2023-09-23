@@ -23,8 +23,7 @@ package io.sarl.lang.validation;
 
 import java.text.MessageFormat;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import org.antlr.runtime.RecognitionException;
 import org.eclipse.xtext.nodemodel.SyntaxErrorMessage;
 import org.eclipse.xtext.util.Strings;
