@@ -1,5 +1,4 @@
 <?eclipse version="3.0"?>
-
 <plugin>
 	<extension point="org.eclipse.ui.importWizards">
 		<category
@@ -172,22 +171,24 @@
               delegateDescription="%launch.agent.description"
               delegateName="%launch.agent"
               id="io.sarl.eclipse.debug.AgentLaunchConfigType"
-              modes="debug, run"
               name="%launch.agent"
               public="true"
+              modes="debug, run"
               sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
-        </launchConfigurationType>
+              <modeCombination modes="debug" perspective="io.sarl.eclipse.perspective.debug" />
+		</launchConfigurationType>
         <launchConfigurationType
               delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.application.SARLApplicationLaunchConfiguration"
               delegateDescription="%launch.application.description"
               delegateName="%launch.application"
               id="io.sarl.eclipse.debug.ApplicationLaunchConfigType"
-              modes="debug, run"
               name="%launch.application"
               public="true"
+              modes="debug, run"
               sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+              <modeCombination modes="debug" perspective="io.sarl.eclipse.perspective.debug" />
         </launchConfigurationType>
     </extension>
     
