@@ -445,7 +445,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			result.setAnnotation((JvmAnnotationType) jvmType);
 			final JvmIntAnnotationValue annotationValue = this.typesFactory.createJvmIntAnnotationValue();
-			annotationValue.getValues().add(value);
+			annotationValue.getValues().add(Integer.valueOf(value));
 			result.getExplicitValues().add(annotationValue);
 			if (target.getAnnotations().add(result)) {
 				return result;
@@ -1847,11 +1847,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				addDynamicPureAnnotationGenerator = inheritedOperation == null;
 				if (addDynamicPureAnnotationGenerator) {
 					this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
-						return helper.isPurableOperation(source);
+						return Boolean.valueOf(helper.isPurableOperation(source));
 					});
 				} else {
 					this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
-						return helper.isPureOperation(inheritedOperation);
+						return Boolean.valueOf(helper.isPureOperation(inheritedOperation));
 					});
 				}
 			} else {
@@ -2025,7 +2025,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							// @Pure annotation
 							if (addDynamicPureAnnotationGenerator) {
 								this.operationHelper.attachPureAnnotationAdapter(operation2, (op, helper) -> {
-									return helper.isPureOperation(operation);
+									return Boolean.valueOf(helper.isPureOperation(operation));
 								});
 							} else if (hasExplicitPureAnnotation) {
 								addAnnotationSafe(

@@ -641,7 +641,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the article.
 	 */
 	protected static String getAorAnArticle(String word) {
-		if (Arrays.asList('a', 'e', 'i', 'o', 'u', 'y').contains(Character.toLowerCase(word.charAt(0)))) {
+		if (Arrays.asList(
+				Character.valueOf('a'),
+				Character.valueOf('e'),
+				Character.valueOf('i'),
+				Character.valueOf('o'),
+				Character.valueOf('u'),
+				Character.valueOf('y')).contains(Character.valueOf(Character.toLowerCase(word.charAt(0))))) {
 			return "an"; //$NON-NLS-1$
 		}
 		return "a"; //$NON-NLS-1$
@@ -694,7 +700,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected static Assignment findAssignmentFromFeatureName(EObject rule, String name) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-			assignment -> name.equals(assignment.getFeature()));
+			assignment -> Boolean.valueOf(name.equals(assignment.getFeature())));
 	}
 
 	/** Replies the first assignement with the given name in the given rule.
@@ -705,7 +711,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected static Assignment findAssignmentFromTerminalPattern(EObject rule, String pattern) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-			assignment -> nameMatches(assignment.getTerminal(), pattern));
+			assignment -> Boolean.valueOf(nameMatches(assignment.getTerminal(), pattern)));
 	}
 
 	/** Binds the given descriptions according to the standard policy.

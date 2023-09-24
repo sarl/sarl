@@ -157,7 +157,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			value = System.getenv(variableNames[i]);
 			++i;
 		}
-		if (Boolean.valueOf(value)) {
+		if (Boolean.parseBoolean(value)) {
 			return "Tests are skipped."; //$NON-NLS-1$
 		}
 		return null;
@@ -277,7 +277,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		int i = 0;
 		for (final ValidationComponent component : successCompilationComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_1,
-					inputFile.getName(), component.getLinenoInSourceFile(), component.getCode()));
+					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
 			final String actionName = toActionName("success", component, i); //$NON-NLS-1$
 			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_7, i, component);
 			final ILocationData location = new LocationData(
@@ -300,9 +300,9 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
-				.append(str(component.getLinenoInSourceFile())).append(", \"") //$NON-NLS-1$
+				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append(", \"") //$NON-NLS-1$
 				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
-			it.append("assertNoIssue(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+			it.append("assertNoIssue(").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
 				.append(", issues);").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
 			//
@@ -315,7 +315,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		int i = 0;
 		for (final ValidationComponent component : failureCompilationComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_2,
-					inputFile.getName(), component.getLinenoInSourceFile(), component.getCode()));
+					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
 			final String actionName = toActionName("failure", component, i); //$NON-NLS-1$
 			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_8, i, component);
 			final ILocationData location = new LocationData(
@@ -338,9 +338,9 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
-				.append(str(component.getLinenoInSourceFile())).append(", \"") //$NON-NLS-1$
+				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append(", \"") //$NON-NLS-1$
 				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
-			it.append("assertIssues(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+			it.append("assertIssues(").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
 				.append(", issues);").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
 			//
@@ -353,7 +353,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		int i = 0;
 		for (final ValidationComponent component : factualComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_3,
-					inputFile.getName(), component.getLinenoInSourceFile(), component.getCode()));
+					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
 			final String actionName = toActionName("fact", component, i); //$NON-NLS-1$
 			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_9, i, component);
 			final ILocationData location = new LocationData(
@@ -379,25 +379,25 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 				.append(Boolean.class).append(".TRUE, false) + \"\\nOR\\nObject {\\n}\\n\";").newLine(); //$NON-NLS-1$
 			it.append("Object result;").newLine(); //$NON-NLS-1$
 			it.append("try {").increaseIndentation().newLine(); //$NON-NLS-1$
-			it.append("result = getScriptExecutor().execute(").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+			it.append("result = getScriptExecutor().execute(").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
 				.append(", \"").append(str(component.getCode())).append("\");").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("} catch (").append(Throwable.class).append(" exception) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
 				.append("(exception.getLocalizedMessage() + \" [line: ") //$NON-NLS-1$
-				.append(str(component.getLinenoInSourceFile())).append("]\", expected, ") //$NON-NLS-1$
+				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append("]\", expected, ") //$NON-NLS-1$
 				.append(Throwables.class).append(".getStackTraceAsString(exception));").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
 			it.append("if (result instanceof ").append(Boolean.class).append(") {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("boolean boolResult = ((").append(Boolean.class).append(") result).booleanValue();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("if (!boolResult) {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
-				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append("(\"Invalid expression result [line: ").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
 				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("} else if (result == null || result instanceof ").append(Exception.class) //$NON-NLS-1$
 				.append(") {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
-				.append("(\"Invalid expression result [line: ").append(str(component.getLinenoInSourceFile())) //$NON-NLS-1$
+				.append("(\"Invalid expression result [line: ").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
 				.append("]\", expected, ").append(Utils.class).append(".dump(result, false));").decreaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
@@ -621,8 +621,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		.append(") connection;").newLine(); //$NON-NLS-1$
 		it.append("try {").increaseIndentation().newLine(); //$NON-NLS-1$
 		it.append("httpConnection.setInstanceFollowRedirects(false);").newLine(); //$NON-NLS-1$
-		it.append("httpConnection.setConnectTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append("httpConnection.setReadTimeout(").append(str(this.remoteLinkTimeOut)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("httpConnection.setConnectTimeout(").append(str(Integer.valueOf(this.remoteLinkTimeOut))).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("httpConnection.setReadTimeout(").append(str(Integer.valueOf(this.remoteLinkTimeOut))).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 		it.append("httpConnection.setAllowUserInteraction(false);").newLine(); //$NON-NLS-1$
 		it.append("httpConnection.setRequestMethod(\"HEAD\");").newLine(); //$NON-NLS-1$
 		it.append("httpConnection.connect();").newLine(); //$NON-NLS-1$
@@ -701,7 +701,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 				it.append("proxies.add(new ").append(Proxy.class).append("(") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Type.class).append(".HTTP, new ").append(InetSocketAddress.class) //$NON-NLS-1$
 				.append("(\"").append(str(proxy.getHost())).append("\", ") //$NON-NLS-1$ //$NON-NLS-2$
-				.append(str(proxy.getPort())).append(")));"); //$NON-NLS-1$
+				.append(str(Integer.valueOf(proxy.getPort()))).append(")));"); //$NON-NLS-1$
 
 				if (hasProxy) {
 					it.decreaseIndentation().newLine();
@@ -807,7 +807,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			nm = name;
 		}
 		final String filename = component.getSourceFile() != null ? component.getSourceFile().getName() : "?"; //$NON-NLS-1$
-		return str(MessageFormat.format(nm, index, filename, component.getLinenoInSourceFile()));
+		return str(MessageFormat.format(nm, Integer.valueOf(index), filename, Integer.valueOf(component.getLinenoInSourceFile())));
 	}
 
 	private static String toClassDisplayName(File inputFile, String basicTestName, String generalTestName) {

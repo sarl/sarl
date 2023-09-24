@@ -79,9 +79,9 @@ public final class ProtectKeywordModification extends SARLSemanticModification {
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		final IXtextDocument document = context.getXtextDocument();
 		final Issue issue = getIssue();
-		final int keywordOffset = getTools().getOffsetForPattern(document, issue.getOffset(),
+		final int keywordOffset = getTools().getOffsetForPattern(document, issue.getOffset().intValue(),
 				".?" + Pattern.quote(this.oldKeyword)); //$NON-NLS-1$
-		if (keywordOffset >= issue.getOffset()) {
+		if (keywordOffset >= issue.getOffset().intValue()) {
 			context.getXtextDocument().replace(keywordOffset - this.oldKeyword.length(),
 					this.oldKeyword.length(), this.newKeyword);
 		}

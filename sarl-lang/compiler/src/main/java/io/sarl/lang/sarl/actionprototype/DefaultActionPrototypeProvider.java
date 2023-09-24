@@ -199,7 +199,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		final JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
 		final InnerMap<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new InnerMap<>();
 		if (type == null) {
-			return new Pair<>(tmpSignatures, isOptional);
+			return new Pair<>(tmpSignatures, Boolean.valueOf(isOptional));
 		}
 		final LightweightTypeReference ltype = unifiesType(type);
 		fillSignatureKeyOutputParameter.add(toIdentifier(ltype));
@@ -244,7 +244,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				tmpSignatures.put(key, paramList);
 			}
 		}
-		return new Pair<>(tmpSignatures, isOptional);
+		return new Pair<>(tmpSignatures, Boolean.valueOf(isOptional));
 	}
 
 	private InnerMap<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
@@ -303,7 +303,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 						signatures,
 						fillSignatureKeyOutputParameter);
 				signatures = pair.getKey();
-				if (pair.getValue()) {
+				if (pair.getValue().booleanValue()) {
 					annotationValues[i] = prefix + defaultValueIndex;
 					++defaultValueIndex;
 				}
@@ -311,7 +311,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 			indexes.getLock().writeLock().lock();
 			try {
-				indexes.put(actionId, defaultValueIndex);
+				indexes.put(actionId, Integer.valueOf(defaultValueIndex));
 			} finally {
 				indexes.getLock().writeLock().unlock();
 			}

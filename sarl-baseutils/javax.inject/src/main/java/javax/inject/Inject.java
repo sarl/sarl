@@ -182,4 +182,6 @@ import static java.lang.annotation.ElementType.FIELD;
 @Target({ METHOD, CONSTRUCTOR, FIELD })
 @Retention(RUNTIME)
 @Documented
-public @interface Inject {}
+public @interface Inject {
+	//
+}

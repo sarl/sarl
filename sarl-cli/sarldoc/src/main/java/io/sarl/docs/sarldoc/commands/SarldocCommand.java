@@ -134,7 +134,8 @@ public class SarldocCommand extends AbstractSarldocCommand {
 		if (Strings.isNullOrEmpty(sourceName)) {
 			return MessageFormat.format(Messages.SarldocCommand_11, diagMessage);
 		}
-		return MessageFormat.format(Messages.SarldocCommand_12, diagMessage, sourceName, line, column);
+		return MessageFormat.format(Messages.SarldocCommand_12, diagMessage, sourceName,
+				Long.valueOf(line), Long.valueOf(column));
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 			final DocumentationTool.DocumentationTask docTask = docTool.getTask(
 					new ErrorWriter(logger, errorCount),
 					fileManager, diagnosticListener, docletClass, javadocOptions, javaFiles);
-			final boolean result = docTask.call();
+			final boolean result = docTask.call().booleanValue();
 			if (result) {
 				return CommandOutcome.succeeded();
 			}

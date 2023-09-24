@@ -544,7 +544,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					if (sarlOutputDirProp != null) {
 						final File srcDir = new File(sourceDirectory);
 						getLogger().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_7,
-								srcDir.getPath(), srcDir.exists()));
+								srcDir.getPath(), Boolean.valueOf(srcDir.exists())));
 						if (srcDir.exists() && srcDir.getParent() != null) {
 							final String path = new File(srcDir.getParent(), sarlOutputDirProp).getPath();
 							getLogger().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_8, sarlOutputDirProp));

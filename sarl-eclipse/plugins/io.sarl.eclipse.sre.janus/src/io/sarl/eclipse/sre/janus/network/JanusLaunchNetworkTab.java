@@ -184,7 +184,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.minClusterSizeSpinner = createSpinner(this.globalGroup, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
 		createInfoDecorator(this.minClusterSizeSpinner, MessageFormat.format(Messages.JanusLaunchNetworkTab_10,
-				MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
+				Integer.valueOf(MIN_CLUSTER_SIZE),
+				Integer.valueOf(SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE)));
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(this.globalGroup,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_4,

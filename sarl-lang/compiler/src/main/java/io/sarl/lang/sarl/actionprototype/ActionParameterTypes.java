@@ -90,7 +90,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(super.hashCode(), this.isVarargs);
+		return Objects.hashCode(Integer.valueOf(super.hashCode()), Boolean.valueOf(this.isVarargs));
 	}
 
 	/** Replies if this signature has a variatic parameter.

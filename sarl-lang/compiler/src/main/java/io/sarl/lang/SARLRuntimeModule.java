@@ -95,7 +95,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public void configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(boolean.class).annotatedWith(Names.named(CompositeEValidator.USE_EOBJECT_VALIDATOR))
-				.toInstance(false);
+				.toInstance(Boolean.FALSE);
 		// Configure a system singleton for issue severities provider
 		binder.bind(ConfigurableIssueSeveritiesProvider.class)
 			.toProvider(ConfigurableIssueSeveritiesProviderProvider.class).asEagerSingleton();

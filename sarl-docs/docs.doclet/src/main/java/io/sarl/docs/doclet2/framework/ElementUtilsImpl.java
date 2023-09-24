@@ -1224,23 +1224,23 @@ public class ElementUtilsImpl implements ElementUtils {
 							return new SimpleAnnotationValueVisitor9<Boolean, Void>() {
 								@Override
 								public Boolean visitAnnotation(AnnotationMirror a, Void p) {
-									return true;
+									return Boolean.TRUE;
 								}
 								@Override
 								protected Boolean defaultAction(Object o, Void p) {
-									return false;
+									return Boolean.FALSE;
 								}
 							}.visit(vals.get(0));
 						}
 					}
-					return false;
+					return Boolean.FALSE;
 				}
 
 				@Override
 				protected Boolean defaultAction(Object o, Void p) {
-					return false;
+					return Boolean.FALSE;
 				}
-			}.visit(annotationValue);
+			}.visit(annotationValue).booleanValue();
 			if (rvalue) {
 				return true;
 			}

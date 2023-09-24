@@ -151,10 +151,10 @@ public class CompilerCommand extends CommandWithMetadata {
 			compilationResult = comp.compile();
 		}
 		if (!compilationResult) {
-			showErrorAndWarningCount(comp, nbErrors.longValue(), nbWarnings.longValue(), nbFiles.longValue());
+			showErrorAndWarningCount(comp, nbErrors, nbWarnings, nbFiles);
 			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, Strings.nullToEmpty(firstErrorMessage.get()));
 		}
-		showWarningCount(comp, nbWarnings.longValue(), nbFiles.longValue());
+		showWarningCount(comp, nbWarnings, nbFiles);
 		return CommandOutcome.succeeded();
 	}
 
@@ -180,7 +180,7 @@ public class CompilerCommand extends CommandWithMetadata {
 					msg = Messages.CompilerCommand_7;
 				}
 			}
-			comp.getLogger().info(MessageFormat.format(msg, errValue, warnValue));
+			comp.getLogger().info(MessageFormat.format(msg, Long.valueOf(errValue), Long.valueOf(warnValue)));
 		} else {
 			showWarningCount(comp, warns, files);
 		}
@@ -198,7 +198,7 @@ public class CompilerCommand extends CommandWithMetadata {
 		} else {
 			msg = Messages.CompilerCommand_10;
 		}
-		comp.getLogger().info(MessageFormat.format(msg, value, files.longValue()));
+		comp.getLogger().info(MessageFormat.format(msg, Long.valueOf(value), files));
 	}
 
 	/** Progress monitor that outputs on the console.

@@ -324,7 +324,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 			buffer.append("("); //$NON-NLS-1$
 			buffer.append(RegexpExtensions.toRegexpString(operator, false));
 			buffer.append(")"); //$NON-NLS-1$
-			operator.chars().forEach(c -> characters.add((char) c));
+			operator.chars().forEach(c -> characters.add(Character.valueOf((char) c)));
 		}
 		tag17.appendTagWithValue("match", buffer.toString()); //$NON-NLS-1$
 		tag17.close();

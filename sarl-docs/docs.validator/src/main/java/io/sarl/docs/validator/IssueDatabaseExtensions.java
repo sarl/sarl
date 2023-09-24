@@ -170,7 +170,8 @@ public final class IssueDatabaseExtensions {
 		} catch (IOException e) {
 			throw new RuntimeException(MessageFormat.format(Messages.IssueDatabaseExtensions_6, e.getLocalizedMessage()), e);
 		}
-		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7, props.size(), filename.getName()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7,
+				Integer.valueOf(props.size()), filename.getName()));
 		return props;
 	}
 
@@ -244,7 +245,8 @@ public final class IssueDatabaseExtensions {
 				prevIssue = description;
 			}
 		}
-		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_12, descriptions.size(), major));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_12,
+				Integer.valueOf(descriptions.size()), Integer.valueOf(major)));
 		return content;
 	}
 
@@ -304,7 +306,8 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
 		final Set<String> definedCodes = buildSarlIssueCodeList();
-		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13, definedCodes.size()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13,
+				Integer.valueOf(definedCodes.size())));
 		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) { //$NON-NLS-1$
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_14);
 		}
@@ -342,7 +345,8 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
 		final Set<String> definedCodes = buildIssueCodeList(issueListList);
-		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17, definedCodes.size()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17,
+				Integer.valueOf(definedCodes.size())));
 		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) { //$NON-NLS-1$
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_18);
 		}

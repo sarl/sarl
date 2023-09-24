@@ -103,7 +103,8 @@ public final class SarlExampleLaunchConfiguration {
 						}
 						final String type = readXmlAttribute(node, LAUNCH_PROPERTY_TYPE_FIELD);
 						if (!Strings.isNullOrEmpty(type)) {
-							callback.apply(type, readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD), isAgent, rootFolder);
+							callback.apply(type, readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD),
+									Boolean.valueOf(isAgent), rootFolder);
 						}
 					}
 					// Break the loop

@@ -61,10 +61,10 @@ public class PreferenceBasedFeatureNameConverterRuleReader extends FeatureNameCo
 			return ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue, (source, target) -> {
 				final String shortName = FeaturePattern.simpleName(source);
 				final char key = ExtraLanguageFeatureNameConverter.getKey(shortName);
-				List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = result.get(key);
+				List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = result.get(Character.valueOf(key));
 				if (internalStruct == null) {
 					internalStruct = new ArrayList<>();
-					result.put(key, internalStruct);
+					result.put(Character.valueOf(key), internalStruct);
 				}
 				internalStruct.add(new Pair<>(new FeaturePattern(source), new FeatureReplacement(target)));
 			});

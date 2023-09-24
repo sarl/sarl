@@ -98,7 +98,7 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 
 	private static boolean isInsideClosure(XAbstractFeatureCall call) {
 		final EObject container = Utils.getFirstContainerForPredicate(call, it -> {
-			return it instanceof XClosure || it instanceof XtendMember;
+			return Boolean.valueOf(it instanceof XClosure || it instanceof XtendMember);
 		});
 		return container instanceof XClosure;
 	}

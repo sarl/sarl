@@ -110,7 +110,7 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 		// Copy the Subword navigation from the JDT plugin.
 		if (org.eclipse.jdt.ui.PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION.equalsIgnoreCase(event.getProperty())) {
 			this.preferenceStoreAccess.getWritablePreferenceStore().setValue(PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION,
-					Boolean.valueOf(event.getNewValue().toString()));
+					Boolean.parseBoolean(event.getNewValue().toString()));
 		}
 
 	}

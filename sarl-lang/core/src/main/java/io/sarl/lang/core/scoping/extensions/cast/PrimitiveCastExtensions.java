@@ -134,7 +134,7 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static byte byteValue(CharSequence value) {
 		try {
-			return Byte.decode(value.toString());
+			return Byte.decode(value.toString()).byteValue();
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
@@ -179,7 +179,7 @@ public final class PrimitiveCastExtensions {
 		if (value instanceof Number) {
 			bvalue = ((Number) value).byteValue();
 		} else if (value != null) {
-			return toByte(value.toString());
+			return Byte.valueOf(toByte(value.toString()));
 		} else {
 			bvalue = 0;
 		}
@@ -203,7 +203,7 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static byte toByte(CharSequence value) {
 		try {
-			return Byte.decode(value.toString());
+			return Byte.decode(value.toString()).byteValue();
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
@@ -227,7 +227,7 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static short shortValue(CharSequence value) {
 		try {
-			return Short.decode(value.toString());
+			return Short.decode(value.toString()).shortValue();
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
@@ -300,7 +300,7 @@ public final class PrimitiveCastExtensions {
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0;
+		return Short.valueOf((short) 0);
 	}
 
 	/** Decodes a {@code CharSequence} into an {@code int}.
@@ -320,7 +320,7 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static int intValue(CharSequence value) {
 		try {
-			return Integer.decode(value.toString());
+			return Integer.decode(value.toString()).intValue();
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
@@ -393,7 +393,7 @@ public final class PrimitiveCastExtensions {
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0;
+		return Integer.valueOf(0);
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code char}.
@@ -467,11 +467,11 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static Character toCharacter(CharSequence value) {
 		try {
-			return value.charAt(0);
+			return Character.valueOf(value.charAt(0));
 		} catch (Throwable exception) {
 			//
 		}
-		return '\0';
+		return Character.valueOf('\0');
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code long}.
@@ -491,7 +491,7 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static long longValue(CharSequence value) {
 		try {
-			return Long.decode(value.toString());
+			return Long.decode(value.toString()).longValue();
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
@@ -564,7 +564,7 @@ public final class PrimitiveCastExtensions {
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0L;
+		return Long.valueOf(0l);
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code float}.
@@ -653,11 +653,11 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static Float toFloat(CharSequence value) {
 		try {
-			return Float.parseFloat(value.toString());
+			return Float.valueOf(value.toString());
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0f;
+		return Float.valueOf(0f);
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code double}.
@@ -746,11 +746,11 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static Double toDouble(CharSequence value) {
 		try {
-			return Double.parseDouble(value.toString());
+			return Double.valueOf(value.toString());
 		} catch (Throwable exception) {
 			// Silent exception.
 		}
-		return 0.0;
+		return Double.valueOf(0.0);
 	}
 
 	/** Decodes a {@code CharSequence} into a {@code AtomicBoolean}.

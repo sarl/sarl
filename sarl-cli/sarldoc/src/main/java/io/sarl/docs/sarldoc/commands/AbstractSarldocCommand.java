@@ -176,9 +176,9 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 			if (outcome == null || outcome.isSuccess()) {
 				if (warningCount.get() > 0) {
 					if (warningCount.get() > 1) {
-						logger.info(MessageFormat.format(Messages.SarldocCommand_7, warningCount.get()));
+						logger.info(MessageFormat.format(Messages.SarldocCommand_7, Integer.valueOf(warningCount.get())));
 					} else {
-						logger.info(MessageFormat.format(Messages.SarldocCommand_6, warningCount.get()));
+						logger.info(MessageFormat.format(Messages.SarldocCommand_6, Integer.valueOf(warningCount.get())));
 					}
 				} else {
 					logger.info(Messages.SarldocCommand_4);

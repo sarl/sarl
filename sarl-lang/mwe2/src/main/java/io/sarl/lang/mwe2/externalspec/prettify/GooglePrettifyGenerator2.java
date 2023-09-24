@@ -165,7 +165,7 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 		final StringBuilder punctuationCharacters1 = new StringBuilder();
 		final StringBuilder punctuationCharacters2 = new StringBuilder();
 		for (final Character candidate : characters) {
-			switch (candidate) {
+			switch (candidate.charValue()) {
 			case '-':
 			case '\\':
 			case '[':
@@ -182,7 +182,7 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 			default:
 				punctuationCharacters1.append(candidate.toString());
 			}
-			switch (candidate) {
+			switch (candidate.charValue()) {
 			case '\\':
 			case '\'':
 				punctuationCharacters2.append("\\").append(candidate.toString()); //$NON-NLS-1$

@@ -76,7 +76,7 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		final IXtextDocument document = context.getXtextDocument();
-		document.replace(getIssue().getOffset(), getIssue().getLength(), this.expectedType);
+		document.replace(getIssue().getOffset().intValue(), getIssue().getLength().intValue(), this.expectedType);
 	}
 
 }

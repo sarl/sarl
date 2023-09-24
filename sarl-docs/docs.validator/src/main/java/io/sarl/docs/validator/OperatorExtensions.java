@@ -363,12 +363,12 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(Math.max(leftDepth.get(), rightDepth.get()) + 1);
+				depth.set(Integer.valueOf(Math.max(leftDepth.get().intValue(), rightDepth.get().intValue()) + 1));
 			}
 			if (assoc != null) {
-				if (leftDepth.get() > rightDepth.get()) {
+				if (leftDepth.get().intValue() > rightDepth.get().intValue()) {
 					assoc.set(Associativity.LEFT_TO_RIGHT);
-				} else if (leftDepth.get() < rightDepth.get()) {
+				} else if (leftDepth.get().intValue() < rightDepth.get().intValue()) {
 					assoc.set(Associativity.RIGHT_TO_LEFT);
 				} else {
 					assoc.set(Associativity.NONE);
@@ -389,10 +389,10 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(leftDepth.get() + 1);
+				depth.set(Integer.valueOf(leftDepth.get().intValue() + 1));
 			}
 			if (assoc != null) {
-				if (leftDepth.get() > 1) {
+				if (leftDepth.get().intValue() > 1) {
 					assoc.set(Associativity.RIGHT_TO_LEFT);
 				} else {
 					assoc.set(Associativity.NONE);
@@ -413,10 +413,10 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(leftDepth.get() + 1);
+				depth.set(Integer.valueOf(leftDepth.get().intValue() + 1));
 			}
 			if (assoc != null) {
-				if (leftDepth.get() > 1) {
+				if (leftDepth.get().intValue() > 1) {
 					assoc.set(Associativity.LEFT_TO_RIGHT);
 				} else {
 					assoc.set(Associativity.NONE);
@@ -435,7 +435,7 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(leftDepth.get() + 1);
+				depth.set(Integer.valueOf(leftDepth.get().intValue() + 1));
 			}
 			if (assoc != null) {
 				assoc.set(Associativity.NONE);
@@ -453,10 +453,10 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(leftDepth.get() + 1);
+				depth.set(Integer.valueOf(leftDepth.get().intValue() + 1));
 			}
 			if (assoc != null) {
-				if (leftDepth.get() > 1) {
+				if (leftDepth.get().intValue() > 1) {
 					assoc.set(Associativity.LEFT_TO_RIGHT);
 				} else {
 					assoc.set(Associativity.NONE);
@@ -470,7 +470,7 @@ public final class OperatorExtensions {
 			final OutParameter<Integer> leftDepth = new OutParameter<>();
 			if (ass.getActualReceiver() == null) {
 				leftRaw.set(ass.getFeature().getSimpleName());
-				leftDepth.set(1);
+				leftDepth.set(Integer.valueOf(1));
 			} else {
 				dump(ass.getActualReceiver(), leftRaw, leftDepth, null);
 			}
@@ -485,12 +485,12 @@ public final class OperatorExtensions {
 				raw.set(rawb.toString());
 			}
 			if (depth != null) {
-				depth.set(Math.max(leftDepth.get(), rightDepth.get()) + 1);
+				depth.set(Integer.valueOf(Math.max(leftDepth.get().intValue(), rightDepth.get().intValue()) + 1));
 			}
 			if (assoc != null) {
-				if (leftDepth.get() > rightDepth.get()) {
+				if (leftDepth.get().intValue() > rightDepth.get().intValue()) {
 					assoc.set(Associativity.LEFT_TO_RIGHT);
-				} else if (leftDepth.get() < rightDepth.get()) {
+				} else if (leftDepth.get().intValue() < rightDepth.get().intValue()) {
 					assoc.set(Associativity.RIGHT_TO_LEFT);
 				} else {
 					assoc.set(Associativity.NONE);
@@ -501,7 +501,7 @@ public final class OperatorExtensions {
 				raw.set("x"); //$NON-NLS-1$
 			}
 			if (depth != null) {
-				depth.set(1);
+				depth.set(Integer.valueOf(1));
 			}
 			if (assoc != null) {
 				assoc.set(Associativity.NONE);
@@ -562,27 +562,27 @@ public final class OperatorExtensions {
 			}
 			if (!op1.contains("$i") && !op1.contains("$R") && !op1.contains("$L") && !op1.contains("$o")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				if (!op2.contains("$i") && !op2.contains("$R") && !op2.contains("$L") && !op2.contains("$o")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					cmp = associativities.get(op1).compareTo(associativities.get(op2));
+					cmp = Integer.valueOf(associativities.get(op1).compareTo(associativities.get(op2)));
 					if (cmp.intValue() == 0) {
 						if (!op1.contains("$v")) { //$NON-NLS-1$
-							cmp = 1;
+							cmp = Integer.valueOf(1);
 						} else if (!op2.contains("$v")) { //$NON-NLS-1$
-							cmp = -1;
+							cmp = Integer.valueOf(-1);
 						} else {
-							cmp = 0;
+							cmp = Integer.valueOf(0);
 						}
 					}
 					precBuffer.put(key1, cmp);
 					precBuffer.put(key2, cmp);
-					return cmp;
+					return cmp.intValue();
 				}
-				precBuffer.put(key1, 1);
-				precBuffer.put(key2, -1);
+				precBuffer.put(key1, Integer.valueOf(1));
+				precBuffer.put(key2, Integer.valueOf(-1));
 				return 1;
 			}
 			if (!op2.contains("$i") && !op2.contains("$R") && !op2.contains("$L") && !op2.contains("$o")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				precBuffer.put(key1, -1);
-				precBuffer.put(key2, 1);
+				precBuffer.put(key1, Integer.valueOf(-1));
+				precBuffer.put(key2, Integer.valueOf(1));
 				return -1;
 			}
 			final boolean binary1 = isBinaryOperator(op1);
@@ -610,32 +610,32 @@ public final class OperatorExtensions {
 			prec1 = computePrecedence(expr1);
 			prec2 = computePrecedence(expr2);
 			if (prec1 == null && prec2 == null) {
-				cmp = associativities.get(op1).compareTo(associativities.get(op2));
+				cmp = Integer.valueOf(associativities.get(op1).compareTo(associativities.get(op2)));
 				precBuffer.put(key1, cmp);
-				precBuffer.put(key2, -cmp);
-				return cmp;
+				precBuffer.put(key2, Integer.valueOf(-cmp.intValue()));
+				return cmp.intValue();
 			}
 			if (prec1 == null && prec2 != null) {
-				precBuffer.put(key1, -prec2.intValue());
-				precBuffer.put(key2, prec2.intValue());
+				precBuffer.put(key1, Integer.valueOf(-prec2.intValue()));
+				precBuffer.put(key2, Integer.valueOf(prec2.intValue()));
 				return -prec2.intValue();
 			}
 			if (prec1 != null && prec2 == null) {
-				precBuffer.put(key1, prec1.intValue());
-				precBuffer.put(key2, -prec1.intValue());
+				precBuffer.put(key1, Integer.valueOf(prec1.intValue()));
+				precBuffer.put(key2, Integer.valueOf(-prec1.intValue()));
 				return prec1.intValue();
 			}
 			assert prec1 != null && prec2 != null;
 			if (prec1.intValue() == prec2.intValue()) {
-				cmp = associativities.get(op1).compareTo(associativities.get(op2));
+				cmp = Integer.valueOf(associativities.get(op1).compareTo(associativities.get(op2)));
 				precBuffer.put(key1, cmp);
-				precBuffer.put(key2, -cmp);
-				return cmp;
+				precBuffer.put(key2, Integer.valueOf(-cmp.intValue()));
+				return cmp.intValue();
 			}
 			// Not same precedence
-			precBuffer.put(key1, prec1.intValue());
-			precBuffer.put(key2, -prec1.intValue());
-			return prec1;
+			precBuffer.put(key1, Integer.valueOf(prec1.intValue()));
+			precBuffer.put(key2, Integer.valueOf(-prec1.intValue()));
+			return prec1.intValue();
 		};
 		sortedOperators.sort(comp);
 
@@ -666,11 +666,11 @@ public final class OperatorExtensions {
 				dump(xexpr, raw, depth, assoc);
 				switch(assoc.get()) {
 				case LEFT_TO_RIGHT:
-					return 1;
+					return Integer.valueOf(1);
 				case RIGHT_TO_LEFT:
-					return -1;
+					return Integer.valueOf(-1);
 				case NONE:
-					return 0;
+					return Integer.valueOf(0);
 				default:
 				}
 			}

@@ -457,13 +457,13 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						boolean rvalue = new SimpleAnnotationValueVisitor9<Boolean, Void>() {
 							@Override
 							public Boolean visitArray(List<? extends AnnotationValue> vals, Void p) {
-								return !vals.isEmpty();
+								return Boolean.valueOf(!vals.isEmpty());
 							}
 							@Override
 							protected Boolean defaultAction(Object o, Void p) {
-								return false;
+								return Boolean.FALSE;
 							}
-						}.visit(value);
+						}.visit(value).booleanValue();
 						return rvalue;
 					}
 				}

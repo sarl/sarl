@@ -77,7 +77,7 @@ public class FeatureReplacement {
 				++i;
 			} else if (isVariable != null) {
 				if (character == ALL_CHAR && isVariable.length() == 0) {
-					this.dynamicParts.add(-1);
+					this.dynamicParts.add(Integer.valueOf(-1));
 					isVariable = null;
 					++i;
 				} else if (character >= '0' && character <= '9') {
@@ -85,7 +85,7 @@ public class FeatureReplacement {
 					++i;
 				} else {
 					final int varNumber = Integer.parseInt(isVariable.toString());
-					this.dynamicParts.add(varNumber);
+					this.dynamicParts.add(Integer.valueOf(varNumber));
 					isVariable = null;
 				}
 			} else {
@@ -105,7 +105,7 @@ public class FeatureReplacement {
 			}
 		}
 		if (isVariable != null) {
-			final int varNumber = Integer.parseInt(isVariable.toString());
+			final Integer varNumber = Integer.valueOf(isVariable.toString());
 			this.dynamicParts.add(varNumber);
 		} else if (builder.length() > 0) {
 			this.staticParts.add(builder.toString());

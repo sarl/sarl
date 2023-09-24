@@ -118,7 +118,7 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 				}
 			}
 			IResourceDescription.Event event = new ResourceDescriptionChangeEvent(uriToDelta.values());
-			return Tuples.create(event, size);
+			return Tuples.create(event, Integer.valueOf(size));
 		}
 	}
 

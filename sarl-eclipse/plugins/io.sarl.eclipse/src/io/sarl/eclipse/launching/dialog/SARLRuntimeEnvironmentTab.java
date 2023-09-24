@@ -316,8 +316,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 		final SREConfigurationBlock blk = getSREConfigurationBlock();
 		final ISREInstall sre = blk.getSelectedSRE();
 		this.configurator.setRuntimeConfiguration(configuration, sre,
-				blk.isSystemWideDefaultSRE(),
-				blk.isProjectSRE(),
+				Boolean.valueOf(blk.isSystemWideDefaultSRE()),
+				Boolean.valueOf(blk.isProjectSRE()),
 				this.resetJvaMainClass);
 	}
 

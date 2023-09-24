@@ -109,14 +109,14 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 		final IDialogSettings dialogSettings = getDialogSettings();
 		try {
 			this.reflect.set(this, "fShowLibrariesNode", //$NON-NLS-1$
-					dialogSettings.get(TAG_GROUP_LIBRARIES) == null ? DEFAULT_SHOW_LIBRARIES
-					: dialogSettings.getBoolean(TAG_GROUP_LIBRARIES));
+					Boolean.valueOf(dialogSettings.get(TAG_GROUP_LIBRARIES) == null ? DEFAULT_SHOW_LIBRARIES
+					: dialogSettings.getBoolean(TAG_GROUP_LIBRARIES)));
 
 			try {
 				this.reflect.set(this, "fIsCurrentLayoutFlat", //$NON-NLS-1$
-						dialogSettings.getInt(TAG_LAYOUT) == FLAT_LAYOUT);
+						Boolean.valueOf(dialogSettings.getInt(TAG_LAYOUT) == FLAT_LAYOUT));
 			} catch (NumberFormatException e) {
-				this.reflect.set(this, "fIsCurrentLayoutFlat", DEFAULT_SHOW_FLAT); //$NON-NLS-1$
+				this.reflect.set(this, "fIsCurrentLayoutFlat", Boolean.valueOf(DEFAULT_SHOW_FLAT)); //$NON-NLS-1$
 			}
 		} catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 			throw new Error(e);

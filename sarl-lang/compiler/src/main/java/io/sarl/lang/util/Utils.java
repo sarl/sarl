@@ -604,6 +604,7 @@ public final class Utils {
 		}
 		final TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
 				false, false, true, enablePrimitiveWidening, false, allowSynonyms);
+		assert fromType != null;
 		if (((fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive())
 				// if one of the types is an interface and the other is a non final class
 				// (or interface) there always can be a subtype
@@ -1448,7 +1449,7 @@ public final class Utils {
 		}
 		EObject elt = element.eContainer();
 		while (elt != null) {
-			if (predicate.apply(elt)) {
+			if (predicate.apply(elt).booleanValue()) {
 				return elt;
 			}
 			elt = elt.eContainer();
@@ -1836,7 +1837,7 @@ public final class Utils {
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) getFirstContainerForPredicate(featureCall,
-				it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
+				it -> Boolean.valueOf(it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall)));
 		} else {
 			rootFeatureCall = featureCall;
 		}

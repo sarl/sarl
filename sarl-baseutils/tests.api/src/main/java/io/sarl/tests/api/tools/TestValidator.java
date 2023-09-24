@@ -234,6 +234,7 @@ public class TestValidator {
 		}
 
 		@Override
+		@Deprecated
 		protected void finalize() throws Throwable {
 			this.resource = null;
 			this.testHelper = null;

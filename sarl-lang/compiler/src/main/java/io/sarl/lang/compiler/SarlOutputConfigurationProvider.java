@@ -74,7 +74,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 		defaultOutput.setCanClearOutputDirectory(false);
 		defaultOutput.setCleanUpDerivedResources(true);
 		defaultOutput.setSetDerivedProperty(true);
-		defaultOutput.setKeepLocalHistory(false);
+		defaultOutput.setKeepLocalHistory(Boolean.FALSE);
 		return defaultOutput;
 	}
 
@@ -93,7 +93,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 		testOutput.setCanClearOutputDirectory(false);
 		testOutput.setCleanUpDerivedResources(true);
 		testOutput.setSetDerivedProperty(true);
-		testOutput.setKeepLocalHistory(false);
+		testOutput.setKeepLocalHistory(Boolean.FALSE);
 		return testOutput;
 	}
 

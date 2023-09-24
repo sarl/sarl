@@ -41,7 +41,7 @@ public class NoXtextResourceException extends RuntimeException {
 	 * @param lineno the line number at which the error occurred.
 	 */
 	public NoXtextResourceException(int lineno) {
-		super(MessageFormat.format(Messages.NoXtextResourceException_0, lineno));
+		super(MessageFormat.format(Messages.NoXtextResourceException_0, Integer.valueOf(lineno)));
 	}
 	
 }

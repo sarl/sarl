@@ -156,7 +156,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	}
 
 	private void disableCodeMining(ITextViewer viewer, Throwable error) {
-		this.codeminingPreferences.setCodeminingEnabled(false);
+		this.codeminingPreferences.setCodeminingEnabled(Boolean.FALSE);
 		final Throwable rootCause = Throwables.getRootCause(error);
 		SARLUiPlugin.log(rootCause);
 		/*

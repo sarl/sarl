@@ -80,7 +80,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	 * @param inheritFromGrammarKeywordAccess {@code true} for using inherited configuration.
 	 */
 	public void setInheritFromGrammarKeywordAccesss(boolean inheritFromGrammarKeywordAccess) {
-		this.inheritFromGrammarKeywordAccess = inheritFromGrammarKeywordAccess;
+		this.inheritFromGrammarKeywordAccess = Boolean.valueOf(inheritFromGrammarKeywordAccess);
 	}
 
 	/** Replies if the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}
@@ -101,7 +101,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	 * @param addNativeTypes {@code true} for adding the native types.
 	 */
 	public void setAddNativeTypes(boolean addNativeTypes) {
-		this.addNativeTypes = addNativeTypes;
+		this.addNativeTypes = Boolean.valueOf(addNativeTypes);
 	}
 
 	/** Replies if the native types must be added in the keyword list.
@@ -310,7 +310,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 			final String[] components = rgb.split("[^0-9]+"); //$NON-NLS-1$
 			this.red = MIN_COLOR;
 			if (components.length > 0) {
-				this.red = Integer.valueOf(components[0]);
+				this.red = Integer.parseInt(components[0]);
 				if (this.red < MIN_COLOR || this.red > MAX_COLOR) {
 					throw new NumberFormatException("red is not between " //$NON-NLS-1$
 							+ MAX_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$
@@ -318,7 +318,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 			}
 			this.green = MIN_COLOR;
 			if (components.length > 1) {
-				this.green = Integer.valueOf(components[1]);
+				this.green = Integer.parseInt(components[1]);
 				if (this.green < MIN_COLOR || this.green > MAX_COLOR) {
 					throw new NumberFormatException("green is not between " //$NON-NLS-1$
 							+ MIN_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$
@@ -326,7 +326,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 			}
 			this.blue = MIN_COLOR;
 			if (components.length > 1) {
-				this.blue = Integer.valueOf(components[2]);
+				this.blue = Integer.parseInt(components[2]);
 				if (this.blue < MIN_COLOR || this.blue > MAX_COLOR) {
 					throw new NumberFormatException("blue is not between " //$NON-NLS-1$
 							+ MIN_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$

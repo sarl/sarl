@@ -64,7 +64,7 @@ public class PyOutputConfigurationProvider implements IOutputConfigurationProvid
 		pythonOutput.setCanClearOutputDirectory(true);
 		pythonOutput.setCleanUpDerivedResources(true);
 		pythonOutput.setSetDerivedProperty(true);
-		pythonOutput.setKeepLocalHistory(false);
+		pythonOutput.setKeepLocalHistory(Boolean.FALSE);
 		return newHashSet(pythonOutput);
 	}
 

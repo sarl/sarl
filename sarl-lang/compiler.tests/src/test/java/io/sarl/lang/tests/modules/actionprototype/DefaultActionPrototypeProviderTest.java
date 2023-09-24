@@ -256,7 +256,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void setUp() throws Exception {
 			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
-			when(this.parameterProvider.getFormalParameterCount()).thenReturn(3);
+			when(Integer.valueOf(this.parameterProvider.getFormalParameterCount())).thenReturn(Integer.valueOf(3));
 			when(this.parameterProvider.getFormalParameterName(ArgumentMatchers.anyInt())).thenAnswer(new Answer<String>() {
 				@Override
 				public String answer(InvocationOnMock invocation) throws Throwable {
@@ -879,7 +879,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void setUp() throws Exception {
 			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
-			when(this.parameterProvider.getFormalParameterCount()).thenReturn(4);
+			when(Integer.valueOf(this.parameterProvider.getFormalParameterCount())).thenReturn(Integer.valueOf(4));
 			when(this.parameterProvider.getFormalParameterName(ArgumentMatchers.anyInt())).thenAnswer((invocation) -> {
 				switch(((Integer) invocation.getArguments()[0]).intValue()) {
 				case 0:
@@ -907,7 +907,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 						}
 						return null;
 					});
-			when(this.parameterProvider.hasFormalParameterDefaultValue(ArgumentMatchers.anyInt())).thenAnswer((invocation) -> {
+			when(Boolean.valueOf(this.parameterProvider.hasFormalParameterDefaultValue(ArgumentMatchers.anyInt()))).thenAnswer((invocation) -> {
 				switch(((Integer) invocation.getArguments()[0]).intValue()) {
 				case 0:
 				case 2:
@@ -957,7 +957,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmAnnotationReference annotationRef = mock(JvmAnnotationReference.class);
 			when(annotationRef.getAnnotation()).thenReturn(annotationType);
 			when(jp.getAnnotations()).thenReturn(ECollections.singletonEList(annotationRef));
-			when(jp.eIsSet(ArgumentMatchers.any())).thenAnswer((invocation) -> {
+			when(Boolean.valueOf(jp.eIsSet(ArgumentMatchers.any()))).thenAnswer((invocation) -> {
 				if (Objects.equals(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS,
 						invocation.getArguments()[0])) {
 					return Boolean.TRUE;
@@ -982,7 +982,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			annotationRef = mock(JvmAnnotationReference.class);
 			when(annotationRef.getAnnotation()).thenReturn(annotationType);
 			when(jp.getAnnotations()).thenReturn(ECollections.singletonEList(annotationRef));
-			when(jp.eIsSet(ArgumentMatchers.any())).thenAnswer((invocation) -> {
+			when(Boolean.valueOf(jp.eIsSet(ArgumentMatchers.any()))).thenAnswer((invocation) -> {
 				if (Objects.equals(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS,
 						invocation.getArguments()[0])) {
 					return Boolean.TRUE;

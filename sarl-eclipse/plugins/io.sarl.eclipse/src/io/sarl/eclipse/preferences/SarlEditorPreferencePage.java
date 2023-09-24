@@ -211,13 +211,13 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 
 	@Override
 	public boolean performOk() {
-		getSourceViewerPreferenceAccessor().setAutoFormattingEnabled(this.autoformattingButton.getSelection());
+		getSourceViewerPreferenceAccessor().setAutoFormattingEnabled(Boolean.valueOf(this.autoformattingButton.getSelection()));
 		final SARLCodeminingPreferenceAccess codeminingAccessor = getCodeminingPreferenceAccessor();
-		codeminingAccessor.setCodeminingFieldTypeEnabled(this.codeminingFieldTypeButton.getSelection());
-		codeminingAccessor.setCodeminingVariableTypeEnabled(this.codeminingVariableTypeButton.getSelection());
-		codeminingAccessor.setCodeminingActionReturnTypeEnabled(this.codeminingActionReturnTypeButton.getSelection());
-		codeminingAccessor.setCodeminingFeatureCallArgumentNameEnabled(this.codeminingArgumentNameButton.getSelection());
-		codeminingAccessor.setCodeminingEnabled(this.codeminingButton.getSelection());
+		codeminingAccessor.setCodeminingFieldTypeEnabled(Boolean.valueOf(this.codeminingFieldTypeButton.getSelection()));
+		codeminingAccessor.setCodeminingVariableTypeEnabled(Boolean.valueOf(this.codeminingVariableTypeButton.getSelection()));
+		codeminingAccessor.setCodeminingActionReturnTypeEnabled(Boolean.valueOf(this.codeminingActionReturnTypeButton.getSelection()));
+		codeminingAccessor.setCodeminingFeatureCallArgumentNameEnabled(Boolean.valueOf(this.codeminingArgumentNameButton.getSelection()));
+		codeminingAccessor.setCodeminingEnabled(Boolean.valueOf(this.codeminingButton.getSelection()));
 		return super.performOk();
 	}
 

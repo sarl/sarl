@@ -314,7 +314,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	@Override
 	public boolean hasSideEffects(InferredPrototype calledOperation, XExpression expr) {
 		final SideEffectContext ctx = new SideEffectContext(calledOperation);
-		return internalHasSideEffects(expr, ctx);
+		return internalHasSideEffects(expr, ctx).booleanValue();
 	}
 
 	/** Determine if the given expression has a side effect.
@@ -339,7 +339,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (expr != null && !expr.eIsProxy()) {
 			return this.hasSideEffectsDispatcher.invoke(expr, context);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	/** Test if the given expression has side effects.
@@ -372,18 +372,18 @@ public class SARLOperationHelper implements IOperationHelper {
 		context.open();
 		try {
 			if (context.isStoppingAtFirstSideEffect()) {
-				if (hasSideEffects(expression.getPredicate(), context)) {
-					return true;
+				if (hasSideEffects(expression.getPredicate(), context).booleanValue()) {
+					return Boolean.TRUE;
 				}
-				if (hasSideEffects(expression.getBody(), context.branch())) {
-					return true;
+				if (hasSideEffects(expression.getBody(), context.branch()).booleanValue()) {
+					return Boolean.TRUE;
 				}
-				return false;
+				return Boolean.FALSE;
 			}
 			//
-			final boolean r0 = hasSideEffects(expression.getPredicate(), context);
-			final boolean r1 = hasSideEffects(expression.getBody(), context.branch());
-			return r0 || r1;
+			final boolean r0 = hasSideEffects(expression.getPredicate(), context).booleanValue();
+			final boolean r1 = hasSideEffects(expression.getBody(), context.branch()).booleanValue();
+			return Boolean.valueOf(r0 || r1);
 		} finally {
 			context.close();
 		}
@@ -399,8 +399,8 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (context.isStoppingAtFirstSideEffect()) {
 			context.open();
 			try {
-				if (hasSideEffects(expression.getForExpression(), context)) {
-					return true;
+				if (hasSideEffects(expression.getForExpression(), context).booleanValue()) {
+					return Boolean.TRUE;
 				}
 			} finally {
 				context.close();
@@ -411,11 +411,11 @@ public class SARLOperationHelper implements IOperationHelper {
 		context.open();
 		boolean r0 = false;
 		try {
-			r0 = hasSideEffects(expression.getForExpression(), context);
+			r0 = hasSideEffects(expression.getForExpression(), context).booleanValue();
 		} finally {
 			context.close();
 		}
-		return hasSideEffects(expression.getEachExpression(), context.branch()) || r0;
+		return Boolean.valueOf(hasSideEffects(expression.getEachExpression(), context.branch()).booleanValue() || r0);
 	}
 
 	/** Test if the given expression has side effects.
@@ -426,28 +426,28 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XIfExpression expression, ISideEffectContext context) {
 		if (context.isStoppingAtFirstSideEffect()) {
-			if (hasSideEffects(expression.getIf(), context)) {
-				return true;
+			if (hasSideEffects(expression.getIf(), context).booleanValue()) {
+				return Boolean.TRUE;
 			}
 			final Map<String, List<XExpression>> buffer1 = context.createVariableAssignmentBufferForBranch();
-			if (hasSideEffects(expression.getThen(), context.branch(buffer1))) {
-				return true;
+			if (hasSideEffects(expression.getThen(), context.branch(buffer1)).booleanValue()) {
+				return Boolean.TRUE;
 			}
 			final Map<String, List<XExpression>> buffer2 = context.createVariableAssignmentBufferForBranch();
-			if (hasSideEffects(expression.getElse(), context.branch(buffer2))) {
-				return true;
+			if (hasSideEffects(expression.getElse(), context.branch(buffer2)).booleanValue()) {
+				return Boolean.TRUE;
 			}
 			context.mergeBranchVariableAssignments(Arrays.asList(buffer1, buffer2));
-			return false;
+			return Boolean.FALSE;
 		}
 		//
-		final boolean r0 = hasSideEffects(expression.getIf(), context);
+		final boolean r0 = hasSideEffects(expression.getIf(), context).booleanValue();
 		final Map<String, List<XExpression>> buffer1 = context.createVariableAssignmentBufferForBranch();
-		final boolean r1 = hasSideEffects(expression.getThen(), context.branch(buffer1));
+		final boolean r1 = hasSideEffects(expression.getThen(), context.branch(buffer1)).booleanValue();
 		final Map<String, List<XExpression>> buffer2 = context.createVariableAssignmentBufferForBranch();
-		final boolean r2 = hasSideEffects(expression.getElse(), context.branch(buffer2));
+		final boolean r2 = hasSideEffects(expression.getElse(), context.branch(buffer2)).booleanValue();
 		context.mergeBranchVariableAssignments(Arrays.asList(buffer1, buffer2));
-		return r0 || r1 || r2;
+		return Boolean.valueOf(r0 || r1 || r2);
 	}
 
 	/** Test if the given expression has side effects.
@@ -469,7 +469,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	@SuppressWarnings("static-method")
 	protected Boolean _hasSideEffects(XThrowExpression expression, ISideEffectContext context) {
 		context.registerSideEffect(expression);
-		return true;
+		return Boolean.TRUE;
 	}
 
 	/** Test if the given expression has side effects.
@@ -482,16 +482,16 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (context.isStoppingAtFirstSideEffect()) {
 			final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
 			Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-			if (hasSideEffects(expression.getExpression(), context.branch(buffer))) {
-				return true;
+			if (hasSideEffects(expression.getExpression(), context.branch(buffer)).booleanValue()) {
+				return Boolean.TRUE;
 			}
 			buffers.add(buffer);
 			for (final XCatchClause clause : expression.getCatchClauses()) {
 				context.open();
 				try {
 					buffer = context.createVariableAssignmentBufferForBranch();
-					if (hasSideEffects(clause.getExpression(), context.branch(buffer))) {
-						return true;
+					if (hasSideEffects(clause.getExpression(), context.branch(buffer)).booleanValue()) {
+						return Boolean.TRUE;
 					}
 					buffers.add(buffer);
 				} finally {
@@ -499,30 +499,30 @@ public class SARLOperationHelper implements IOperationHelper {
 				}
 			}
 			context.mergeBranchVariableAssignments(buffers);
-			if (hasSideEffects(expression.getFinallyExpression(), context)) {
-				return true;
+			if (hasSideEffects(expression.getFinallyExpression(), context).booleanValue()) {
+				return Boolean.TRUE;
 			}
-			return false;
+			return Boolean.FALSE;
 		}
 		//
 		final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
 		Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-		final boolean r0 = hasSideEffects(expression.getExpression(), context.branch(buffer));
+		final boolean r0 = hasSideEffects(expression.getExpression(), context.branch(buffer)).booleanValue();
 		buffers.add(buffer);
 		boolean r1 = false;
 		for (final XCatchClause clause : expression.getCatchClauses()) {
 			context.open();
 			try {
 				buffer = context.createVariableAssignmentBufferForBranch();
-				r1 = hasSideEffects(clause.getExpression(), context.branch(buffer)) || r1;
+				r1 = hasSideEffects(clause.getExpression(), context.branch(buffer)).booleanValue() || r1;
 				buffers.add(buffer);
 			} finally {
 				context.close();
 			}
 		}
 		context.mergeBranchVariableAssignments(buffers);
-		final boolean r2 = hasSideEffects(expression.getFinallyExpression(), context);
-		return r0 || r1 || r2;
+		final boolean r2 = hasSideEffects(expression.getFinallyExpression(), context).booleanValue();
+		return Boolean.valueOf(r0 || r1 || r2);
 	}
 
 	/** Test if the given expression has side effects.
@@ -533,14 +533,14 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XVariableDeclaration expression, ISideEffectContext context) {
 		if (context.isStoppingAtFirstSideEffect()) {
-			if (hasSideEffects(expression.getRight(), context)) {
-				return true;
+			if (hasSideEffects(expression.getRight(), context).booleanValue()) {
+				return Boolean.TRUE;
 			}
 			context.declareVariable(expression.getIdentifier(), expression.getRight());
-			return false;
+			return Boolean.FALSE;
 		}
 		//
-		final boolean r0 = hasSideEffects(expression.getRight(), context);
+		final Boolean r0 = hasSideEffects(expression.getRight(), context);
 		context.declareVariable(expression.getIdentifier(), expression.getRight());
 		return r0;
 	}
@@ -556,35 +556,35 @@ public class SARLOperationHelper implements IOperationHelper {
 		try {
 			if (context.isStoppingAtFirstSideEffect()) {
 				for (final XExpression ex : expression.getInitExpressions()) {
-					if (hasSideEffects(ex, context)) {
-						return true;
+					if (hasSideEffects(ex, context).booleanValue()) {
+						return Boolean.TRUE;
 					}
 				}
-				if (hasSideEffects(expression.getEachExpression(), context)) {
-					return true;
+				if (hasSideEffects(expression.getEachExpression(), context).booleanValue()) {
+					return Boolean.TRUE;
 				}
 				for (final XExpression ex : expression.getUpdateExpressions()) {
-					if (hasSideEffects(ex, context.branch())) {
-						return true;
+					if (hasSideEffects(ex, context.branch()).booleanValue()) {
+						return Boolean.TRUE;
 					}
 				}
-				if (hasSideEffects(expression.getExpression(), context.branch())) {
-					return true;
+				if (hasSideEffects(expression.getExpression(), context.branch()).booleanValue()) {
+					return Boolean.TRUE;
 				}
-				return false;
+				return Boolean.FALSE;
 			}
 			//
 			boolean r0 = false;
 			for (final XExpression ex : expression.getInitExpressions()) {
-				r0 = hasSideEffects(ex, context) || r0;
+				r0 = hasSideEffects(ex, context).booleanValue() || r0;
 			}
-			final boolean r1 = hasSideEffects(expression.getEachExpression(), context);
+			final boolean r1 = hasSideEffects(expression.getEachExpression(), context).booleanValue();
 			boolean r2 = false;
 			for (final XExpression ex : expression.getUpdateExpressions()) {
-				r2 = hasSideEffects(ex, context.branch()) || r2;
+				r2 = hasSideEffects(ex, context.branch()).booleanValue() || r2;
 			}
-			final boolean r3 = hasSideEffects(expression.getExpression(), context.branch());
-			return r0 || r1 || r2 || r3;
+			final boolean r3 = hasSideEffects(expression.getExpression(), context.branch()).booleanValue();
+			return Boolean.valueOf(r0 || r1 || r2 || r3);
 		} finally {
 			context.close();
 		}
@@ -600,19 +600,19 @@ public class SARLOperationHelper implements IOperationHelper {
 		context.open();
 		try {
 			if (context.isStoppingAtFirstSideEffect()) {
-				if (hasSideEffects(expression.getSwitch(), context)) {
-					return true;
+				if (hasSideEffects(expression.getSwitch(), context).booleanValue()) {
+					return Boolean.TRUE;
 				}
 				final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
 				for (final XCasePart ex : expression.getCases()) {
 					context.open();
 					try {
-						if (hasSideEffects(ex.getCase(), context)) {
-							return true;
+						if (hasSideEffects(ex.getCase(), context).booleanValue()) {
+							return Boolean.TRUE;
 						}
 						final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-						if (hasSideEffects(ex.getThen(), context.branch(buffer))) {
-							return true;
+						if (hasSideEffects(ex.getThen(), context.branch(buffer)).booleanValue()) {
+							return Boolean.TRUE;
 						}
 						buffers.add(buffer);
 					} finally {
@@ -620,33 +620,33 @@ public class SARLOperationHelper implements IOperationHelper {
 					}
 				}
 				final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-				if (hasSideEffects(expression.getDefault(), context.branch(buffer))) {
-					return true;
+				if (hasSideEffects(expression.getDefault(), context.branch(buffer)).booleanValue()) {
+					return Boolean.TRUE;
 				}
 				buffers.add(buffer);
 				context.mergeBranchVariableAssignments(buffers);
-				return false;
+				return Boolean.FALSE;
 			}
 			//
-			final boolean r0 = hasSideEffects(expression.getSwitch(), context);
+			final boolean r0 = hasSideEffects(expression.getSwitch(), context).booleanValue();
 			final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
 			boolean r1 = false;
 			for (final XCasePart ex : expression.getCases()) {
 				context.open();
 				try {
-					r1 = hasSideEffects(ex.getCase(), context) || r1;
+					r1 = hasSideEffects(ex.getCase(), context).booleanValue() || r1;
 					final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-					r1 = hasSideEffects(ex.getThen(), context.branch(buffer)) || r1;
+					r1 = hasSideEffects(ex.getThen(), context.branch(buffer)).booleanValue() || r1;
 					buffers.add(buffer);
 				} finally {
 					context.close();
 				}
 			}
 			final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-			final boolean r2 = hasSideEffects(expression.getDefault(), context.branch(buffer));
+			final boolean r2 = hasSideEffects(expression.getDefault(), context.branch(buffer)).booleanValue();
 			buffers.add(buffer);
 			context.mergeBranchVariableAssignments(buffers);
-			return r0 || r1 || r2;
+			return Boolean.valueOf(r0 || r1 || r2);
 		} finally {
 			context.close();
 		}
@@ -663,18 +663,18 @@ public class SARLOperationHelper implements IOperationHelper {
 		try {
 			if (context.isStoppingAtFirstSideEffect()) {
 				for (final XExpression ex : expression.getElements()) {
-					if (hasSideEffects(ex, context)) {
-						return true;
+					if (hasSideEffects(ex, context).booleanValue()) {
+						return Boolean.TRUE;
 					}
 				}
-				return false;
+				return Boolean.FALSE;
 			}
 			//
 			boolean r0 = false;
 			for (final XExpression ex : expression.getElements()) {
-				r0 = hasSideEffects(ex, context) || r0;
+				r0 = hasSideEffects(ex, context).booleanValue() || r0;
 			}
-			return r0;
+			return Boolean.valueOf(r0);
 		} finally {
 			context.close();
 		}
@@ -689,18 +689,18 @@ public class SARLOperationHelper implements IOperationHelper {
 	protected Boolean _hasSideEffects(XConstructorCall expression, ISideEffectContext context) {
 		if (context.isStoppingAtFirstSideEffect()) {
 			for (final XExpression ex : expression.getArguments()) {
-				if (hasSideEffects(ex, context)) {
-					return true;
+				if (hasSideEffects(ex, context).booleanValue()) {
+					return Boolean.TRUE;
 				}
 			}
-			return false;
+			return Boolean.FALSE;
 		}
 		//
 		boolean r0 = false;
 		for (final XExpression ex : expression.getArguments()) {
-			r0 = hasSideEffects(ex, context) || r0;
+			r0 = hasSideEffects(ex, context).booleanValue() || r0;
 		}
-		return r0;
+		return Boolean.valueOf(r0);
 	}
 
 	/** Test if the given expression has side effects.
@@ -714,20 +714,20 @@ public class SARLOperationHelper implements IOperationHelper {
 			if (isReassignmentOperator(expression)) {
 				if (!isLocalExpression(expression.getLeftOperand(), context, false)) {
 					context.registerSideEffect(expression);
-					return true;
+					return Boolean.TRUE;
 				}
 			} else {
 				if (expression.isTypeLiteral() || expression.isPackageFragment()) {
-					return false;
+					return Boolean.FALSE;
 				}
-				if (hasSideEffects(expression.getLeftOperand(), context)) {
-					return true;
+				if (hasSideEffects(expression.getLeftOperand(), context).booleanValue()) {
+					return Boolean.TRUE;
 				}
 			}
-			if (hasSideEffects(expression.getRightOperand(), context)) {
-				return true;
+			if (hasSideEffects(expression.getRightOperand(), context).booleanValue()) {
+				return Boolean.TRUE;
 			}
-			return false;
+			return Boolean.FALSE;
 		}
 		//
 		boolean r0 = false;
@@ -738,10 +738,10 @@ public class SARLOperationHelper implements IOperationHelper {
 			}
 		} else {
 			r0 = !(expression.isTypeLiteral() || expression.isPackageFragment());
-			r0 = hasSideEffects(expression.getLeftOperand(), context) || r0;
+			r0 = hasSideEffects(expression.getLeftOperand(), context).booleanValue() || r0;
 		}
-		final boolean r1 = hasSideEffects(expression.getRightOperand(), context);
-		return r0 || r1;
+		final boolean r1 = hasSideEffects(expression.getRightOperand(), context).booleanValue();
+		return Boolean.valueOf(r0 || r1);
 	}
 
 	/** Test if the given expression has side effects.
@@ -755,15 +755,15 @@ public class SARLOperationHelper implements IOperationHelper {
 			if (expression.isTypeLiteral() || expression.isPackageFragment()) {
 				return Boolean.FALSE;
 			}
-			if (hasSideEffects(expression.getOperand(), context)) {
-				return true;
+			if (hasSideEffects(expression.getOperand(), context).booleanValue()) {
+				return Boolean.TRUE;
 			}
-			return false;
+			return Boolean.FALSE;
 		}
 		//
 		final boolean r0 = !(expression.isTypeLiteral() || expression.isPackageFragment());
-		final boolean r1 = hasSideEffects(expression.getOperand(), context);
-		return r0 || r1;
+		final boolean r1 = hasSideEffects(expression.getOperand(), context).booleanValue();
+		return Boolean.valueOf(r0 || r1);
 	}
 
 	/** Test if the given expression has side effects.
@@ -785,7 +785,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @return {@code true} if the expression has side effects.
 	 */
 	protected Boolean _hasSideEffects(XFeatureCall expression, ISideEffectContext context) {
-		return internalHasFeatureCallSideEffects(expression, context);
+		return Boolean.valueOf(internalHasFeatureCallSideEffects(expression, context));
 	}
 
 	/** Test if the given expression has side effects.
@@ -795,7 +795,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @return {@code true} if the expression has side effects.
 	 */
 	protected Boolean _hasSideEffects(XMemberFeatureCall expression, ISideEffectContext context) {
-		return internalHasFeatureCallSideEffects(expression, context);
+		return Boolean.valueOf(internalHasFeatureCallSideEffects(expression, context));
 	}
 
 	/** Test if the given expression has side effects.
@@ -808,21 +808,21 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (context.isStoppingAtFirstSideEffect()) {
 			final JvmIdentifiableElement feature = expression.getFeature();
 			if (feature instanceof XVariableDeclaration) {
-				final boolean se = hasSideEffects(expression.getValue(), context);
+				final Boolean se = hasSideEffects(expression.getValue(), context);
 				context.assignVariable(feature.getIdentifier(), expression.getValue());
 				return se;
 			}
-			return true;
+			return Boolean.TRUE;
 		}
 		//
-		final boolean r0 = hasSideEffects(expression.getActualReceiver(), context);
-		final boolean r1 = hasSideEffects(expression.getValue(), context);
 		final JvmIdentifiableElement feature = expression.getFeature();
 		if (feature instanceof XVariableDeclaration) {
+			final boolean r0 = hasSideEffects(expression.getActualReceiver(), context).booleanValue();
+			final boolean r1 = hasSideEffects(expression.getValue(), context).booleanValue();
 			context.assignVariable(feature.getIdentifier(), expression.getValue());
-			return r0 || r1;
+			return Boolean.valueOf(r0 || r1);
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 
 	/** Test if the given expression has side effects.
@@ -838,23 +838,23 @@ public class SARLOperationHelper implements IOperationHelper {
 			try {
 				if (context.isStoppingAtFirstSideEffect()) {
 					for (final XExpression ex : exprs) {
-						if (hasSideEffects(ex, context)) {
-							return true;
+						if (hasSideEffects(ex, context).booleanValue()) {
+							return Boolean.TRUE;
 						}
 					}
-					return false;
+					return Boolean.FALSE;
 				}
 				//
 				boolean r0 = false;
 				for (final XExpression ex : exprs) {
-					r0 = hasSideEffects(ex, context) || r0;
+					r0 = hasSideEffects(ex, context).booleanValue() || r0;
 				}
-				return r0;
+				return Boolean.valueOf(r0);
 			} finally {
 				context.close();
 			}
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	/** Test if the given expression has side effects.
@@ -978,7 +978,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		try {
 			// Test if the receiver has side effects
 			boolean hasEffectReceiver = false;
-			if (hasSideEffects(originalExpression.getActualReceiver(), context)) {
+			if (hasSideEffects(originalExpression.getActualReceiver(), context).booleanValue()) {
 				if (context.isStoppingAtFirstSideEffect()) {
 					return true;
 				}
@@ -1110,7 +1110,7 @@ public class SARLOperationHelper implements IOperationHelper {
 				// Remove the adapter for replacing it by an adapter that evaluates directly to the previously computed purity.
 				// This process enables to avoid to check the same operation's code multiple times.
 				annotationAdapter.removeAllPredicates();
-				annotationAdapter.addPredicate((op, hlp) -> purity);
+				annotationAdapter.addPredicate((op, hlp) -> Boolean.valueOf(purity));
 			}
 			return purity;
 		}
@@ -1590,7 +1590,7 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		@Override
 		public boolean hasSideEffects(InferredPrototype calledOperation, XExpression expr) {
-			return this.delegate.hasSideEffects(calledOperation, expr, this.context);
+			return this.delegate.hasSideEffects(calledOperation, expr, this.context).booleanValue();
 		}
 
 		@Override

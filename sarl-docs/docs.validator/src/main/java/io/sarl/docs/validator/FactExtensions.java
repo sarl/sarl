@@ -79,7 +79,7 @@ public final class FactExtensions {
 			for (final Field field : type.getDeclaredFields()) {
 				final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
 				final boolean deprecated = deprecatedAnnotation != null;
-				if (matcher.apply(type, field, deprecated)) {
+				if (matcher.apply(type, field, Boolean.valueOf(deprecated)).booleanValue()) {
 					return field;
 				}
 			}
@@ -98,7 +98,7 @@ public final class FactExtensions {
 			for (final Field field : type.getDeclaredFields()) {
 				final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
 				final boolean deprecated = deprecatedAnnotation != null;
-				if (!matcher.apply(type, field, deprecated)) {
+				if (!matcher.apply(type, field, Boolean.valueOf(deprecated)).booleanValue()) {
 					return false;
 				}
 			}

@@ -67,24 +67,24 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 			final int nbMin = MIN_NUMBER_OF_LINES_BEFORE_COMMENT + 1;
 			final int nbMax = MAX_NUMBER_OF_LINES_BEFORE_COMMENT + 1;
 			final IHiddenRegionFormatting formatting = leading.getFormatting();
-			formatting.setNewLinesDefault(nbMax);
-			formatting.setNewLinesMin(nbMin);
-			formatting.setNewLinesMax(nbMax);
-			formatting.setNoIndentation(false);
+			formatting.setNewLinesDefault(Integer.valueOf(nbMax));
+			formatting.setNewLinesMin(Integer.valueOf(nbMin));
+			formatting.setNewLinesMax(Integer.valueOf(nbMax));
+			formatting.setNoIndentation(Boolean.FALSE);
 		} else {
 			final IHiddenRegionFormatting formatting = leading.getFormatting();
-			formatting.setNewLinesDefault(0);
-			formatting.setNewLinesMin(0);
-			formatting.setNewLinesMax(0);
-			formatting.setNoIndentation(false);
+			formatting.setNewLinesDefault(Integer.valueOf(0));
+			formatting.setNewLinesMin(Integer.valueOf(0));
+			formatting.setNewLinesMax(Integer.valueOf(0));
+			formatting.setNoIndentation(Boolean.FALSE);
 		}
 		if (trailing.getRegion().getOffset() > 0) {
 			final int nb = NUMBER_OF_LINES_AFTER_COMMENT + 1;
 			final IHiddenRegionFormatting formatting = trailing.getFormatting();
-			formatting.setNewLinesDefault(nb);
-			formatting.setNewLinesMin(nb);
-			formatting.setNewLinesMax(nb);
-			formatting.setNoIndentation(false);
+			formatting.setNewLinesDefault(Integer.valueOf(nb));
+			formatting.setNewLinesMin(Integer.valueOf(nb));
+			formatting.setNewLinesMax(Integer.valueOf(nb));
+			formatting.setNoIndentation(Boolean.FALSE);
 		}
 	}
 

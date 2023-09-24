@@ -595,15 +595,15 @@ abstract class GenerationContext {
 	 * @return {@code true} if the inject annotation is attached to the target.
 	 * @since 0.14
 	 */
-	protected boolean hasInjectAnnotation(JvmAnnotationTarget target) {
+	protected static boolean hasInjectAnnotation(JvmAnnotationTarget target) {
 		return target.getAnnotations().stream()
 				.anyMatch(it -> {
 					final JvmAnnotationType annotationType = it.getAnnotation();
 					if (annotationType != null) {
 						final String name = annotationType.getQualifiedName();
-						if ("com.google.inject.Inject".equals(name)
-								|| "javax.inject.Inject".equals(name)
-								|| "jakarta.inject.Inject".equals(name)) {
+						if ("com.google.inject.Inject".equals(name) //$NON-NLS-1$
+								|| "javax.inject.Inject".equals(name) //$NON-NLS-1$
+								|| "jakarta.inject.Inject".equals(name)) { //$NON-NLS-1$
 							return true;
 						}
 					}

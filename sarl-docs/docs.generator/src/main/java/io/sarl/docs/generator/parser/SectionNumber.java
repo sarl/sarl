@@ -43,7 +43,7 @@ public class SectionNumber {
 	/** Constructor.
 	 */
 	public SectionNumber() {
-		this.numbers.add(0);
+		this.numbers.add(Integer.valueOf(0));
 	}
 
 	/** Change this version number from the given string representation.
@@ -73,7 +73,7 @@ public class SectionNumber {
 		assert level >= 1;
 		if (this.numbers.size() < level) {
 			do {
-				this.numbers.addLast(0);
+				this.numbers.addLast(Integer.valueOf(0));
 			} while (this.numbers.size() < level);
 		} else if (this.numbers.size() > level) {
 			do {
@@ -81,8 +81,8 @@ public class SectionNumber {
 			} while (this.numbers.size() > level);
 		}
 		assert this.numbers.size() == level;
-		final int previousSection = this.numbers.removeLast();
-		this.numbers.addLast(previousSection + 1);
+		final int previousSection = this.numbers.removeLast().intValue();
+		this.numbers.addLast(Integer.valueOf(previousSection + 1));
 	}
 
 	/** Format the section numbers.

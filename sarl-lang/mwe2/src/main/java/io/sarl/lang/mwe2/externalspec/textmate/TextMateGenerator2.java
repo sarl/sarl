@@ -636,7 +636,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @param style the style name.
 		 */
 		public void substyle(int part, String style) {
-			this.captures.put(part, toName(style));
+			this.captures.put(Integer.valueOf(part), toName(style));
 		}
 
 		/** Set the style for the begin pattern.
@@ -650,7 +650,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 			final Map<Integer, Map<String, String>> value = new HashMap<>();
 			final Map<String, String> svalue = new HashMap<>();
 			svalue.put(NAME_PROP, toName(style));
-			value.put(0, svalue);
+			value.put(Integer.valueOf(0), svalue);
 			this.content.put(BEGIN_CAPTURES_PROP, value);
 		}
 
@@ -665,7 +665,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 			final Map<Integer, Map<String, String>> value = new HashMap<>();
 			final Map<String, String> svalue = new HashMap<>();
 			svalue.put(NAME_PROP, toName(style));
-			value.put(0, svalue);
+			value.put(Integer.valueOf(0), svalue);
 			this.content.put(END_CAPTURES_PROP, value);
 		}
 

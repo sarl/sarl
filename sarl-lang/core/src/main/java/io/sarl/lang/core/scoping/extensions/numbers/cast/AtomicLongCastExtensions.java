@@ -110,7 +110,7 @@ public final class AtomicLongCastExtensions {
 	@Pure
 	@Inline(value = "$2.valueOf($1.longValue())", imported = Long.class)
 	public static Long toLong(AtomicLong number) {
-		return number.longValue();
+		return Long.valueOf(number.longValue());
 	}
 
 	/** Convert the given value to {@code Long}. This function is not null-safe.

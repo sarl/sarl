@@ -246,7 +246,10 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
 		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
-		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, resetJavaMainClass);
+		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(),
+				Boolean.valueOf(DEFAULT_USE_SYSTEM_SRE),
+				Boolean.valueOf(DEFAULT_USE_PROJECT_SRE),
+				resetJavaMainClass);
 		JavaMigrationDelegate.updateResourceMapping(wc);
 		return wc;
 	}
@@ -389,7 +392,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			try {
 				final String value = configuration.getAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.toString(DEFAULT_USE_SYSTEM_SRE));
-				return Boolean.valueOf(value);
+				return Boolean.parseBoolean(value);
 			} catch (Throwable e2) {
 				return DEFAULT_USE_SYSTEM_SRE;
 			}
@@ -405,7 +408,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			try {
 				final String value = configuration.getAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.toString(DEFAULT_USE_PROJECT_SRE));
-				return Boolean.valueOf(value);
+				return Boolean.parseBoolean(value);
 			} catch (Throwable e2) {
 				return DEFAULT_USE_PROJECT_SRE;
 			}

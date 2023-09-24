@@ -2671,14 +2671,14 @@ public class SARLValidator extends AbstractSARLValidator {
 		final OutParameter<EObject> container = new OutParameter<>();
 		final OutParameter<EObject> directContainerChild = new OutParameter<>();
 
-		final OutParameter<Boolean> failure = new OutParameter<>(false);
+		final OutParameter<Boolean> failure = new OutParameter<>(Boolean.FALSE);
 		final XMemberFeatureCall sequence = getRootOfMemberFeatureCallSequence(readOnlyExpression, null, it -> {
 			// Function call: if one of the functions called on the read-only keyword is not pure => WARNING
 			if (enableWarning && getExpressionHelper().hasSideEffects(it)) {
 				addIssue(MessageFormat.format(Messages.SARLValidator_11, keywordName),
 						it,
 						DISCOURAGED_OCCURRENCE_READONLY_USE);
-				failure.set(true);
+				failure.set(Boolean.TRUE);
 			}
 		});
 		if (failure.get().booleanValue()) {
@@ -2864,8 +2864,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkBreakKeywordUse(SarlBreakExpression expression) {
 		final EObject container = Utils.getFirstContainerForPredicate(expression,
-			it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
-			|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
+			it -> Boolean.valueOf(!(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+					|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression));
 		if (container instanceof XExpression) {
 			if (!isIgnored(DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
 					&& container instanceof XBasicForLoopExpression) {
@@ -2893,8 +2893,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkContinueKeywordUse(SarlContinueExpression expression) {
 		final EObject container = Utils.getFirstContainerForPredicate(expression,
-			it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
-			|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
+			it -> Boolean.valueOf(!(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+					|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression));
 		if (container instanceof XExpression) {
 			if (!isIgnored(DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
 					&& container instanceof XBasicForLoopExpression) {
@@ -3166,7 +3166,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkDefaultSkillAnnotation(SarlCapacity capacity) {
 		final String annotationId = DefaultSkill.class.getName();
 		final XAnnotation annotation = IterableExtensions.findFirst(capacity.getAnnotations(), it -> {
-			return Strings.equal(annotationId, it.getAnnotationType().getIdentifier());
+			return Boolean.valueOf(Strings.equal(annotationId, it.getAnnotationType().getIdentifier()));
 		});
 		if (annotation != null) {
 			final XExpression expr = annotation.getValue();

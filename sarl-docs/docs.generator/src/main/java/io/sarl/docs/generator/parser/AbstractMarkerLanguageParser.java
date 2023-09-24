@@ -95,17 +95,17 @@ public abstract class AbstractMarkerLanguageParser {
 				final String right = select(matcher.group("right1"), matcher.group("right2")); //$NON-NLS-1$ //$NON-NLS-2$
 				if (Strings.isEmpty(left)) {
 					if (!Strings.isEmpty(sep) && !Strings.isEmpty(right)) {
-						return new IntegerRange(minValue, Math.max(minValue, Integer.valueOf(right)));
+						return new IntegerRange(minValue, Math.max(minValue, Integer.parseInt(right)));
 					}
 				} else {
-					final int leftValue = Math.max(minValue, Integer.valueOf(left));
+					final int leftValue = Math.max(minValue, Integer.parseInt(left));
 					if (Strings.isEmpty(sep)) {
 						return new IntegerRange(leftValue, leftValue);
 					}
 					if (Strings.isEmpty(right)) {
 						return new IntegerRange(leftValue, Integer.MAX_VALUE);
 					}
-					final int rightValue = Math.max(minValue, Integer.valueOf(right));
+					final int rightValue = Math.max(minValue, Integer.parseInt(right));
 					if (rightValue < leftValue) {
 						return new IntegerRange(rightValue, leftValue);
 					}

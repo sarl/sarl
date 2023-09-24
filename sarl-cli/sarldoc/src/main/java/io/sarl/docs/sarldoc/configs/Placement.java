@@ -136,13 +136,13 @@ public enum Placement {
 	public static List<Placement> valuesOf(String text) {
 		final Map<Character, Placement> all = new TreeMap<>();
 		for (final Placement placement : values()) {
-			all.put(placement.toChar(), placement);
+			all.put(Character.valueOf(placement.toChar()), placement);
 		}
 
 		final Set<Placement> placements = new TreeSet<>();
 		final int len = text.length();
 		for (int i = 0; i < len; ++i) {
-			final Placement p = all.get(text.charAt(i));
+			final Placement p = all.get(Character.valueOf(text.charAt(i)));
 			if (p != null) {
 				placements.add(p);
 			}

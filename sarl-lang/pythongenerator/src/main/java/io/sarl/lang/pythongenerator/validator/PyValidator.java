@@ -88,10 +88,10 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 			message = MessageFormat.format(Messages.PyValidator_3, this.simpleNameProvider.getSimpleName(element));
 		} else {
 			// This type of JVM element is not supposed to be converted
-			return false;
+			return Boolean.FALSE;
 		}
 		error(message, source, XbasePackage.eINSTANCE.getXAbstractFeatureCall_Feature());
-		return true;
+		return Boolean.TRUE;
 	};
 
 	@Inject

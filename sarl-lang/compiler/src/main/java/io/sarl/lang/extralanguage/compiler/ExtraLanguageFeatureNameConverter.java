@@ -119,10 +119,10 @@ public class ExtraLanguageFeatureNameConverter {
 
 	private static void createMappingEntry(Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> map, char character,
 			String source, String target) {
-		List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = map.get(character);
+		List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = map.get(Character.valueOf(character));
 		if (internalStruct == null) {
 			internalStruct = new ArrayList<>();
-			map.put(character, internalStruct);
+			map.put(Character.valueOf(character), internalStruct);
 		}
 		internalStruct.add(new Pair<>(new FeaturePattern(source), new FeatureReplacement(target)));
 	}
@@ -159,7 +159,7 @@ public class ExtraLanguageFeatureNameConverter {
 				this.keywords.getThisKeywordLambda(),
 				this.keywords.getSuperKeywordLambda(),
 				this.referenceNameLambda2);
-		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
+		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 		if (struct != null) {
 			final String replacementId = featureCall.getFeature().getIdentifier();
 			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
@@ -189,7 +189,7 @@ public class ExtraLanguageFeatureNameConverter {
 		if (this.conversions == null) {
 			this.conversions = initMapping();
 		}
-		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
+		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 		if (struct != null) {
 			final String replacementId = calledFeature.getIdentifier();
 			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
@@ -271,7 +271,7 @@ public class ExtraLanguageFeatureNameConverter {
 			if (this.conversions == null) {
 				this.conversions = initMapping();
 			}
-			final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
+			final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 			if (struct == null) {
 				return simpleName;
 			}

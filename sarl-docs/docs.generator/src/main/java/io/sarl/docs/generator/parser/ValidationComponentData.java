@@ -59,11 +59,11 @@ public class ValidationComponentData implements JsonableObject {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add("file", this.file); //$NON-NLS-1$
-		buffer.add("lineno", this.lineno); //$NON-NLS-1$
-		buffer.add("endLineno", this.endLineno); //$NON-NLS-1$
-		buffer.add("offset", this.offset); //$NON-NLS-1$
-		buffer.add("length", this.length); //$NON-NLS-1$
-		buffer.add("code", this.code); //$NON-NLS-1$
+		buffer.add("lineno", Integer.valueOf(this.lineno)); //$NON-NLS-1$
+		buffer.add("endLineno", Integer.valueOf(this.endLineno)); //$NON-NLS-1$
+		buffer.add("offset", Integer.valueOf(this.offset)); //$NON-NLS-1$
+		buffer.add("length", Integer.valueOf(this.length)); //$NON-NLS-1$
+		buffer.add("code", Integer.valueOf(this.code)); //$NON-NLS-1$
 	}
 
 	@Override

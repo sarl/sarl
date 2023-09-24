@@ -76,7 +76,7 @@ public final class MemberRenameModification extends SARLSemanticModification {
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		final Issue issue = getIssue();
-		context.getXtextDocument().replace(issue.getOffset(), issue.getLength(), this.validName);
+		context.getXtextDocument().replace(issue.getOffset().intValue(), issue.getLength().intValue(), this.validName);
 	}
 
 }

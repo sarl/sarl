@@ -76,4 +76,6 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 @Target(ANNOTATION_TYPE)
 @Retention(RUNTIME)
 @Documented
-public @interface Scope {}
+public @interface Scope {
+	//
+}

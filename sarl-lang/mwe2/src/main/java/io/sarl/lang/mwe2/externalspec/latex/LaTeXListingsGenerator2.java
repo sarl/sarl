@@ -300,7 +300,10 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		if (getEnableColors()) {
 			for (final Color color : colors.getColors().values()) {
 				it.appendNl("\\definecolor'{'{0}'}{'RGB'}{'{1},{2},{3}'}'", //$NON-NLS-1$
-						color.getName(), color.getRed(), color.getGreen(), color.getBlue());
+						color.getName(),
+						Integer.valueOf(color.getRed()),
+						Integer.valueOf(color.getGreen()),
+						Integer.valueOf(color.getBlue()));
 			}
 			it.appendNl("\\colorlet'{'SARLcomment'}{'{0}'}'", colors.getCommentColor()); //$NON-NLS-1$
 			it.appendNl("\\colorlet'{'SARLstring'}{'{0}'}'", colors.getStringColor()); //$NON-NLS-1$
@@ -367,20 +370,23 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		it.appendNl("   language={0}, % the default language of the code", langName); //$NON-NLS-1$
 
-		it.append("   showspaces={0}, % show spaces everywhere adding particular ", this.showSpecialCharacters); //$NON-NLS-1$
+		it.append("   showspaces={0}, % show spaces everywhere adding particular ", //$NON-NLS-1$
+				Boolean.valueOf(this.showSpecialCharacters));
 		it.appendNl("underscores; it overrides 'showstringspaces'"); //$NON-NLS-1$
 		it.appendNl("   showstringspaces={0}, % underline spaces within strings only", //$NON-NLS-1$
-				this.showSpecialCharacters);
+				Boolean.valueOf(this.showSpecialCharacters));
 		it.appendNl("   showtabs={0}, % show tabs within strings adding particular underscores", //$NON-NLS-1$
-				this.showSpecialCharacters);
+				Boolean.valueOf(this.showSpecialCharacters));
 		if (this.showLines) {
 			it.appendNl("   numbers=left,% Numbers on left"); //$NON-NLS-1$
 			it.appendNl("   firstnumber=1, % First line number"); //$NON-NLS-1$
 			it.appendNl("   numberfirstline=false, %Start numbers at first line"); //$NON-NLS-1$
-			it.append("   stepnumber={0}, % the step between two line-numbers. ", this.lineStep); //$NON-NLS-1$
+			it.append("   stepnumber={0}, % the step between two line-numbers. ", //$NON-NLS-1$
+					Integer.valueOf(this.lineStep));
 			it.appendNl("If it's 1, each line will be numbered"); //$NON-NLS-1$
 		}
-		it.appendNl("   tabsize={0}, % sets default tabsize to 2 spaces", this.tabSize); //$NON-NLS-1$
+		it.appendNl("   tabsize={0}, % sets default tabsize to 2 spaces", //$NON-NLS-1$
+				Integer.valueOf(this.tabSize));
 		it.append("   title=\\lstname, % show the filename of files included with "); //$NON-NLS-1$
 		it.appendNl("\\lstinputlisting; also try caption instead of title"); //$NON-NLS-1$
 		it.appendNl("   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$

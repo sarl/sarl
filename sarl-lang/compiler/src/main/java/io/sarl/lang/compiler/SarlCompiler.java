@@ -1378,7 +1378,7 @@ public class SarlCompiler extends XtendCompiler {
 		// END Specific
 		final boolean mustInsertTypeCast;
 		try {
-			mustInsertTypeCast = (Boolean) this.reflect.invoke(this, "mustInsertTypeCast", context, wrapper); //$NON-NLS-1$
+			mustInsertTypeCast = ((Boolean) this.reflect.invoke(this, "mustInsertTypeCast", context, wrapper)).booleanValue(); //$NON-NLS-1$
 		} catch (Exception exception) {
 			throw new Error(exception);
 		}

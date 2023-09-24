@@ -330,7 +330,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public boolean removeToPreviousSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
-		return removeToPreviousSeparator(issue.getOffset(), issue.getLength(), document, separator);
+		return removeToPreviousSeparator(issue.getOffset().intValue(), issue.getLength().intValue(), document, separator);
 	}
 
 	/** Remove the portion of text, and the whitespaces before the text until the given separator.
@@ -399,7 +399,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces after the identifier until the separator
-		int index = issue.getOffset() + issue.getLength();
+		int index = issue.getOffset().intValue() + issue.getLength().intValue();
 		char c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index++;
@@ -417,8 +417,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			final int newLength = index - issue.getOffset();
-			document.replace(issue.getOffset(), newLength, ""); //$NON-NLS-1$
+			final int newLength = index - issue.getOffset().intValue();
+			document.replace(issue.getOffset().intValue(), newLength, ""); //$NON-NLS-1$
 		}
 
 		return foundSeparator;
@@ -437,7 +437,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
 			String keyword1, String... otherKeywords) throws BadLocationException {
 		// Skip spaces before the element
-		int index = issue.getOffset() - 1;
+		int index = issue.getOffset().intValue() - 1;
 		char c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index--;
@@ -459,8 +459,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			final int delta = issue.getOffset() - index - 1;
-			document.replace(index + 1, issue.getLength() + delta, ""); //$NON-NLS-1$
+			final int delta = issue.getOffset().intValue() - index - 1;
+			document.replace(index + 1, issue.getLength().intValue() + delta, ""); //$NON-NLS-1$
 
 			return true;
 		}
@@ -480,8 +480,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public boolean removeBetweenSeparators(Issue issue, IXtextDocument document,
 			String beginSeparator, String endSeparator) throws BadLocationException {
-		int offset = issue.getOffset();
-		int length = issue.getLength();
+		int offset = issue.getOffset().intValue();
+		int length = issue.getLength().intValue();
 
 		// Skip spaces before the identifier until the separator
 		int index = offset - 1;
@@ -535,7 +535,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		if (container.getMembers().isEmpty()) {
 			final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
 			final ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
-				lnode -> "{".equals(lnode.getText())); //$NON-NLS-1$
+				lnode -> Boolean.valueOf("{".equals(lnode.getText()))); //$NON-NLS-1$
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}

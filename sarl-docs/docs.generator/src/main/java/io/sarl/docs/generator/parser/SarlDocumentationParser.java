@@ -1006,8 +1006,8 @@ public class SarlDocumentationParser {
 		}
 		final Object[] args = new Object[parameter.length + 3];
 		args[0] = file;
-		args[1] = lineno;
-		args[2] = offset;
+		args[1] = Integer.valueOf(lineno);
+		args[2] = Integer.valueOf(offset);
 		System.arraycopy(parameter, 0, args, 3, parameter.length);
 		final String msg = MessageFormat.format(message, args);
 		if (cause != null) {

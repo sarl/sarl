@@ -146,7 +146,7 @@ public class SarlcConfigModule implements BQModule {
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATOR_OPTION,
 				MessageFormat.format(Messages.SarlcConfigModule_7,
-						ExtraLanguageListCommand.EXTRA_LANGUAGE_LIST_OPTION_SHORT_NAME,
+						Character.valueOf(ExtraLanguageListCommand.EXTRA_LANGUAGE_LIST_OPTION_SHORT_NAME),
 						File.pathSeparator))
 				.valueRequired(Messages.SarlcConfigModule_8)
 				.build())

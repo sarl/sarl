@@ -222,17 +222,17 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				case PRIVATE_GETTER:
 				case PROTECTED_GETTER:
 				case PUBLIC_GETTER:
-					hasGetter.set(true);
+					hasGetter.set(Boolean.TRUE);
 					return true;
 				case PACKAGE_SETTER:
 				case PRIVATE_SETTER:
 				case PROTECTED_SETTER:
 				case PUBLIC_SETTER:
-					hasSetter.set(true);
+					hasSetter.set(Boolean.TRUE);
 					return true;
 				case NONE:
-					hasGetter.set(false);
-					hasSetter.set(false);
+					hasGetter.set(Boolean.FALSE);
+					hasSetter.set(Boolean.FALSE);
 					return true;
 				default:
 				}
@@ -248,8 +248,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		if (jvmField != null) {
 			final JvmAnnotationReference annotation = this.annotationFinder.findAnnotation(jvmField, Accessors.class);
 			if (annotation != null) {
-				final OutParameter<Boolean> hasGetter = new OutParameter<>(false);
-				final OutParameter<Boolean> hasSetter = new OutParameter<>(false);
+				final OutParameter<Boolean> hasGetter = new OutParameter<>(Boolean.FALSE);
+				final OutParameter<Boolean> hasSetter = new OutParameter<>(Boolean.FALSE);
 				boolean explicitArgument = false;
 				if (!annotation.getValues().isEmpty()) {
 					for (final JvmAnnotationValue value : annotation.getValues()) {
@@ -263,13 +263,13 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					}
 				}
 				if (!explicitArgument) {
-					hasGetter.set(true);
-					hasSetter.set(true);
+					hasGetter.set(Boolean.TRUE);
+					hasSetter.set(Boolean.TRUE);
 				}
-				if (hasGetter.get() || hasSetter.get()) {
+				if (hasGetter.get().booleanValue() || hasSetter.get().booleanValue()) {
 					final JvmDeclaredType container = jvmField.getDeclaringType();
 					final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
-					if (hasGetter.get()) {
+					if (hasGetter.get().booleanValue()) {
 						JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
 						if (operation == null) {
 							operation = findMethod(container, "is" + basename); //$NON-NLS-1$
@@ -281,7 +281,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 							createNode(elementNode, operation);
 						}
 					}
-					if (hasSetter.get()) {
+					if (hasSetter.get().booleanValue()) {
 						final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
 						if (operation != null) {
 							createNode(elementNode, operation);

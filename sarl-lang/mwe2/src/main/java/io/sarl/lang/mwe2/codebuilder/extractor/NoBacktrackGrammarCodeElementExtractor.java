@@ -72,8 +72,8 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
-				.getMemberNameExtensionGrammarName().equals(passignment.getFeature()))) {
+				GrammarUtil.containedAssignments(container), passignment -> Boolean.valueOf(getCodeBuilderConfig()
+				.getMemberNameExtensionGrammarName().equals(passignment.getFeature())))) {
 			// Get the container of the name assignment
 			final EObject assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
 			if (assignmentContainer != null) {
@@ -94,8 +94,8 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
-				.getUnnamedMemberExtensionGrammarNames().contains(passignment.getFeature()))) {
+				GrammarUtil.containedAssignments(container), passignment -> Boolean.valueOf(getCodeBuilderConfig()
+				.getUnnamedMemberExtensionGrammarNames().contains(passignment.getFeature())))) {
 			// Get the container of the name assignment
 			final EObject assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
 			if (assignmentContainer != null) {
@@ -116,14 +116,14 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> callback) {
 		final Set<String> treatedConstructors = new HashSet<>();
 		for (final Assignment expressionAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
-				.getMemberBlockExpressionExtensionGrammarName().equals(passignment.getFeature()))) {
+				GrammarUtil.containedAssignments(container), passignment -> Boolean.valueOf(getCodeBuilderConfig()
+				.getMemberBlockExpressionExtensionGrammarName().equals(passignment.getFeature())))) {
 			// Get the container of the name assignment
 			final EObject consContainer = getContainerInRule(grammarContainer, expressionAssignment);
 			if (consContainer != null
 				&& !IterableExtensions.exists(GrammarUtil.containedAssignments(consContainer),
-					it -> getCodeBuilderConfig()
-					.getMemberNameExtensionGrammarName().equals(it.getFeature()))) {
+					it -> Boolean.valueOf(getCodeBuilderConfig()
+					.getMemberNameExtensionGrammarName().equals(it.getFeature())))) {
 				final EClassifier classifier = getGeneratedTypeFor(consContainer);
 				if (!treatedConstructors.contains(classifier.getName())) {
 					treatedConstructors.add(classifier.getName());

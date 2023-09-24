@@ -45,7 +45,7 @@ public class SARLAgentLaunchConfigurationTabGroup extends AbstractSARLLaunchConf
 
 			addSreChangeListeners(list, mainTab);
 
-			return true;
+			return Boolean.TRUE;
 		});
 		setTabs(tabs);
 	}

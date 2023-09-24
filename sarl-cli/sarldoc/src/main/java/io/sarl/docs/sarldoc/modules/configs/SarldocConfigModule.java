@@ -113,7 +113,7 @@ public class SarldocConfigModule implements BQModule {
 				customTagHelp.append(Messages.SarldocConfigModule_6);
 			}
 			customTagHelp.append(MessageFormat.format(Messages.SarldocConfigModule_7,
-					placement.toChar(), placement.toJsonString(),
+					Character.valueOf(placement.toChar()), placement.toJsonString(),
 					placement.getDocumentation()));
 		}
 

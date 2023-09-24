@@ -245,7 +245,7 @@ public abstract class AbstractMojoTest {
 		assumeTrue(mavenCmd != null, "Maven command not found"); //$NON-NLS-1$
 
 		@SuppressWarnings("null")
-		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (!Strings.isNullOrEmpty(goalName)) {
 			cmd.add(goalName);
 		}

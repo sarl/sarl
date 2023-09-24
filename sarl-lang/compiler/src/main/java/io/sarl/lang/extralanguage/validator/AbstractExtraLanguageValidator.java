@@ -471,7 +471,7 @@ public abstract class AbstractExtraLanguageValidator {
 			case FORBIDDEN_CONVERSION:
 			default:
 				if (featureErrorHandler != null) {
-					return !featureErrorHandler.apply(featureCall, featureCall.getFeature());
+					return !featureErrorHandler.apply(featureCall, featureCall.getFeature()).booleanValue();
 				}
 				return false;
 			}

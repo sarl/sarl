@@ -267,7 +267,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	protected String internalExecute() {
 		getLog().info(Messages.AbstractDocumentationMojo_1);
 		final Map<File, File> files = getFiles();
-		getLog().info(MessageFormat.format(Messages.AbstractDocumentationMojo_2, files.size()));
+		getLog().info(MessageFormat.format(Messages.AbstractDocumentationMojo_2, Integer.valueOf(files.size())));
 		return internalExecute(files);
 	}
 

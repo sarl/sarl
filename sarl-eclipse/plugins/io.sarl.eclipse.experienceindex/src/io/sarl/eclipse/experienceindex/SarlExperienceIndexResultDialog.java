@@ -83,10 +83,10 @@ public class SarlExperienceIndexResultDialog extends IconAndMessageDialog {
 		this.sei = sei;
 		this.message = MessageFormat.format(
 				Messages.SarlExperienceIndexResultDialog_0,
-				sei.getBaseScore(),
-				sei.getCpuScore(),
-				sei.getMemoryScore(),
-				sei.getDiskScore());
+				Float.valueOf(sei.getBaseScore()),
+				Float.valueOf(sei.getCpuScore()),
+				Float.valueOf(sei.getMemoryScore()),
+				Float.valueOf(sei.getDiskScore()));
 	}
 
 	/**
@@ -125,7 +125,8 @@ public class SarlExperienceIndexResultDialog extends IconAndMessageDialog {
 			gc.setForeground(new Color(display, SEI_FONT_COLOR_RED, SEI_FONT_COLOR_GREEN, SEI_FONT_COLOR_BLUE));
 			final Font newFont = new Font(display, SEI_FONT, SEI_FONT_SIZE, SEI_FONT_STYLE);
 			gc.setFont(newFont);
-			final String text = MessageFormat.format(Messages.SarlExperienceIndexResultDialog_1, this.sei.getBaseScore());
+			final String text = MessageFormat.format(Messages.SarlExperienceIndexResultDialog_1,
+					Float.valueOf(this.sei.getBaseScore()));
 			final Point size = gc.textExtent(text);
 			gc.drawText(text,
 					(GLOBAL_ICON_SIZE - size.x) / 2,

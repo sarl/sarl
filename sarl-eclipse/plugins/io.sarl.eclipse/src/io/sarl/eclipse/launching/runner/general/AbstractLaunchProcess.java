@@ -449,7 +449,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	 * @param monitor the progress monitor.
 	 * @throws CoreException if a parameter cannot be extracted.
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("removal")
 	protected void createRunConfiguration(IProgressMonitor monitor) throws CoreException {
 		monitor.subTask(Messages.AbstractLaunchProcess_3);
 

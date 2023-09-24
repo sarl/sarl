@@ -1992,7 +1992,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			final Diagnostic<JavaFileObject> diag = node.getDiagnostic();
 			if (diag != null) {
 				final String msg = MessageFormat.format(Messages.HtmlFactoryImpl_11,
-						diag.getSource().getName(), diag.getLineNumber(), diag.getColumnNumber(),
+						diag.getSource().getName(),
+						Long.valueOf(diag.getLineNumber()),
+						Long.valueOf(diag.getColumnNumber()),
 						diag.getMessage(Locale.getDefault()), node.getBody());
 				getContext().getReporter().print(diag.getKind(), msg);
 			}

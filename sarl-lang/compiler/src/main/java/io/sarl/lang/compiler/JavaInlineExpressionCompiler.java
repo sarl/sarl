@@ -440,7 +440,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			output.setConstant(child.isConstant());
 			bool = true;
 		}
-		return bool;
+		return Boolean.valueOf(bool);
 	}
 
 	/** Append the inline code for the given XInstanceOfExpression.
@@ -465,7 +465,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			output.setConstant(child.isConstant());
 			bool = true;
 		}
-		return bool;
+		return Boolean.valueOf(bool);
 	}
 
 	/** Append the inline code for the given XReturnLiteral.
@@ -479,7 +479,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	protected Boolean _generate(XReturnExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		return generate(expression.getExpression(), parentExpression, feature, output);
+		return Boolean.valueOf(generate(expression.getExpression(), parentExpression, feature, output));
 	}
 
 	/**

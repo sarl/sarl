@@ -320,7 +320,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 						final ConfigurationToLaunch ctl = new ConfigurationToLaunch();
 						ctl.setType(type);
 						ctl.setName(name);
-						ctl.setAgentLaunch(isAgent);
+						ctl.setAgentLaunch(isAgent.booleanValue());
 						this.configurationsToLaunch.add(ctl);
 					});
 				}

@@ -174,7 +174,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 				if (issue.isSyntaxError() || severity == Severity.ERROR) {
 					final Integer line = issue.getLineNumber();
 					final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
-					issues.add(MessageFormat.format(Messages.SarlScriptExecutor_1, message, issueLine));
+					issues.add(MessageFormat.format(Messages.SarlScriptExecutor_1, message, Integer.valueOf(issueLine)));
 				}
 			});
 		}
@@ -234,7 +234,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 			for (String message : issues) {
 				msg.append(message).append("\n"); //$NON-NLS-1$
 			}
-			fail(MessageFormat.format(Messages.SarlScriptExecutor_0, lineno, msg.toString()));
+			fail(MessageFormat.format(Messages.SarlScriptExecutor_0, Integer.valueOf(lineno), msg.toString()));
 		}
 	}
 

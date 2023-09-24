@@ -138,7 +138,7 @@ public class CompilerConfigModule implements BQModule {
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATEINLINES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_8,
-						GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION))
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION))
 				.build())
 			.mapConfigPath(GENERATEINLINES_OPTION, GENERATE_INLINES_NAME);
@@ -148,7 +148,8 @@ public class CompilerConfigModule implements BQModule {
 		VariableDecls.extend(binder).declareVar(GENERATE_PURES_NAME);
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATEPURES_OPTION,
-				MessageFormat.format(Messages.CompilerConfigModule_9, GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION))
+				MessageFormat.format(Messages.CompilerConfigModule_9,
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION))
 				.build())
 			.mapConfigPath(GENERATEPURES_OPTION, GENERATE_PURES_NAME);
@@ -156,7 +157,8 @@ public class CompilerConfigModule implements BQModule {
 		VariableDecls.extend(binder).declareVar(GENERATE_EQUALITY_TESTS_NAME);
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATEEQUALITYTESTS_OPTION,
-				MessageFormat.format(Messages.CompilerConfigModule_10, GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS))
+				MessageFormat.format(Messages.CompilerConfigModule_10,
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS))
 				.build())
 			.mapConfigPath(GENERATEEQUALITYTESTS_OPTION, GENERATE_EQUALITY_TESTS_NAME);
@@ -164,7 +166,8 @@ public class CompilerConfigModule implements BQModule {
 		VariableDecls.extend(binder).declareVar(GENERATE_TOSTRING_NAME);
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATETOSTRING_OPTION,
-				MessageFormat.format(Messages.CompilerConfigModule_11, GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION))
+				MessageFormat.format(Messages.CompilerConfigModule_11,
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION))
 				.build())
 			.mapConfigPath(GENERATETOSTRING_OPTION, GENERATE_TOSTRING_NAME);
@@ -172,7 +175,8 @@ public class CompilerConfigModule implements BQModule {
 		VariableDecls.extend(binder).declareVar(GENERATE_CLONE_NAME);
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATECLONES_OPTION,
-				MessageFormat.format(Messages.CompilerConfigModule_12, GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION))
+				MessageFormat.format(Messages.CompilerConfigModule_12,
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION))
 				.build())
 			.mapConfigPath(GENERATECLONES_OPTION, GENERATE_CLONE_NAME);
@@ -180,7 +184,8 @@ public class CompilerConfigModule implements BQModule {
 		VariableDecls.extend(binder).declareVar(GENERATE_SERIAL_IDS_NAME);
 		extend(binder).addOption(OptionMetadata.builder(
 				GENERATESERIALS_OPTION,
-				MessageFormat.format(Messages.CompilerConfigModule_13, GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
+				MessageFormat.format(Messages.CompilerConfigModule_13,
+						Boolean.valueOf(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD)))
 				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
 				.build())
 			.mapConfigPath(GENERATESERIALS_OPTION, GENERATE_SERIAL_IDS_NAME);
