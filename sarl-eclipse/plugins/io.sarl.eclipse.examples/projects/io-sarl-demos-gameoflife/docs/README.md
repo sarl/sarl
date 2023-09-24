@@ -39,4 +39,4 @@ The rules continue to be applied repeatedly to create further generations.
 
 ## Code
 
-[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-gameoflife)
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/sarl-eclipse/plugins/io.sarl.eclipse.examples/projects/io-sarl-demos-gameoflife)

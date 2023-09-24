@@ -8,4 +8,4 @@ This code sample provides an illustration of:
 * Kill of the agent.
 
 
-[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-basic-countdown)
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/sarl-eclipse/plugins/io.sarl.eclipse.examples/projects/io-sarl-demos-basic-countdown)

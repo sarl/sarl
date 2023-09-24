@@ -63,5 +63,5 @@ This application follows a MVC (Model-View-Controller) pattern for the GUI commu
 
 ## Code
 
-[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-sierpinskifractals)
+[**Code on GitHub**](https://github.com/sarl/sarl/tree/master/sarl-eclipse/plugins/io.sarl.eclipse.examples/projects/io-sarl-demos-sierpinskifractals)
 
