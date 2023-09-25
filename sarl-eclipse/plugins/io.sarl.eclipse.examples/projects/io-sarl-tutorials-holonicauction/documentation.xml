@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.tutorials.holonicauction"
+<documentation id="io.sarl.eclipse.examples.holonicauction"
                name="Auction between holonic members"
                category="io.sarl.tutorials">
 	<mainPage>http://www.sarl.io/docs/official/tutorials/HolonicAuction.html</mainPage>

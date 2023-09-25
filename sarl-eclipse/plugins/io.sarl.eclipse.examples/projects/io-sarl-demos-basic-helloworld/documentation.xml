@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.examples.helloworld"
+<documentation id="io.sarl.eclipse.examples.helloworld"
                name="A hello-world agent in SARL"
                category="io.sarl.metamodel">
 	<mainPage>docs/README.md</mainPage>

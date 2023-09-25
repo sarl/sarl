@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.basic.behaviorinheritance"
+<documentation id="io.sarl.eclipse.examples.basic.behaviorinheritance"
                name="Agent with a behavior extending an existing behavior"
                category="io.sarl.metamodel">
 	<mainPage>docs/README.md</mainPage>

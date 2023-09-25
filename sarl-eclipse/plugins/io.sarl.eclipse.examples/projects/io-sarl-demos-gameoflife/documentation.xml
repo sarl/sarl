@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.gameoflife"
+<documentation id="io.sarl.eclipse.examples.gameoflife"
                name="Coway's Game of Life (JavaFX interface)"
                category="io.sarl.simulation.nature">
 	<mainPage>docs/README.md</mainPage>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.fireworks"
+<documentation id="io.sarl.eclipse.examples.fireworks"
                name="Fireworks (JavaFX interface)"
                category="io.sarl.simulation.art">
 	<mainPage>docs/README.md</mainPage>

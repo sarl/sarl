@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.demos.boids.awt">
+<launchConfigurations id="io.sarl.eclipse.examples.boids.awt">
 	<application class="io.sarl.demos.boids.BoidsSimulationLauncher" name="Reynolds Boids - AWT" />
 </launchConfigurations>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.tutorials.pingpong"
+<documentation id="io.sarl.eclipse.examples.pingpong"
                name="Ping-Pong event exchanges"
                category="io.sarl.tutorials">
 	<mainPage>http://www.sarl.io/docs/official/tutorials/PingPong.html</mainPage>

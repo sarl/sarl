@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.tutorials.gametgob">
+<launchConfigurations id="io.sarl.eclipse.examples.gametgob">
 	<agent class="io.sarl.examples.gametgob.Person" name="Goald-oriented Person" />
 </launchConfigurations>

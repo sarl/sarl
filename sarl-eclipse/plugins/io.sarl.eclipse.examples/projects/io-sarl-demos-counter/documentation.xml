@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.counter"
+<documentation id="io.sarl.eclipse.examples.counter"
                name="Two simple agents in basic interaction"
                category="io.sarl.metamodel">
 	<mainPage>docs/README.md</mainPage>

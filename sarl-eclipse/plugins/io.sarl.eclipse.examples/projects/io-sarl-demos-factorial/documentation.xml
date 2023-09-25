@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.factorial"
+<documentation id="io.sarl.eclipse.examples.factorial"
                name="Two examples of factorial computation"
                category="io.sarl.math">
 	<mainPage>docs/README.md</mainPage>

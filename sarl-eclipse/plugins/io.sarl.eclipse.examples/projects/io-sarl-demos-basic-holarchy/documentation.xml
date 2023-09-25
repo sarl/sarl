@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.basic.holarchy"
+<documentation id="io.sarl.eclipse.examples.basic.holarchy"
                name="A first example of holarchy"
                category="io.sarl.metamodel">
 	<mainPage>docs/README.md</mainPage>

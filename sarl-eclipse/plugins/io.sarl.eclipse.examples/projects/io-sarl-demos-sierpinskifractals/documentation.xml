@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<documentation id="io.sarl.demos.sierpinskifractals"
+<documentation id="io.sarl.eclipse.examples.sierpinskifractals"
                name="Fractals of Sierpinski (JavaFX interface)"
                category="io.sarl.math">
 	<mainPage>docs/README.md</mainPage>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <introContent>
 
-	<extensionContent id="io.sarl.examples.introExtension"
+	<extensionContent id="io.sarl.eclipse.examples.introExtension"
 		name="SARL Overview Extension" path="samples/@">
 
 		<html src="./templates_intro.html"/>
@@ -9,7 +9,7 @@
 	<group style-id="quick-links" id="quick-links">
 		<link style-id="content-link" label="SARL application with JavaFX user interface"
 			url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.templates.javafx%29"
-			id="io.sarl.examples.myexample">
+			id="io.sarl.eclipse.examples.myexample">
 			<text>
 				This template provides the base implementation of a SARL software that is using a JavaFX user interface.
 			</text>
@@ -19,25 +19,23 @@
 		<html src="./examples_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
-			<link style-id="content-link" label="A Helloworld Agent in SARL"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.helloworld%29"
+			<link style-id="content-link" label="A Hello-world Agent in SARL"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.helloworld%29"
 				id="Helloworld-Sample">
 				<text>
-					A simple agent displaying Hello on the console and dying 2sec
-					later.
+					A simple agent displaying Hello on the console and dying 2 seconds later.
 				</text>
 			</link>
 			<link style-id="content-link" label="Agent with a behavior"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.behaviors%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.behaviors%29"
 				id="Behavior-Sample">
 				<text>
-					A simple agent playing an externally described behavior to
-					compute a factorial.
+					A simple agent playing an externally described behavior to compute a factorial.
 				</text>
 			</link>
 			<link style-id="content-link"
 				label="Agent with a behavior extending an existing behavior"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.behaviorinheritance%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.basic.behaviorinheritance%29"
 				id="Behavior-Sample">
 				<text>
 					A simple example to illustrate the richness of behavior
@@ -46,7 +44,7 @@
 			</link>
 			<link style-id="content-link"
 				label="A simple Agent decrementing an integer before dying"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.countdown%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.basic.countdown%29"
 				id="Behavior-Sample">
 				<text>
 					A first illustration of the concept of task to schedule a sub
@@ -54,14 +52,14 @@
 				</text>
 			</link>
 			<link style-id="content-link" label="A first example of holarchy"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.holarchy%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.basic.holarchy%29"
 				id="Behavior-Sample">
 				<text>
 					Creation of complete hierarchy of holons.
 				</text>
 			</link>
 			<link style-id="content-link" label="Two simple agents in basic interaction"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.counter%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.counter%29"
 				id="Counter-Sample">
 				<text>
 					A first agent creates two other agents, the first one counting
@@ -69,7 +67,7 @@
 				</text>
 			</link>
 			<link style-id="content-link" label="Two examples of factorial computation"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.factorial%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.factorial%29"
 				id="Factorial-Sample">
 				<text>
 					The first demo introduces a single agent computing a
@@ -84,7 +82,7 @@
 
 		<group style-id="quick-links" id="quick-links">
 			<link style-id="content-link" label="Fireworks in SARL"
-				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.fireworks%29"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.fireworks%29"
 				id="JavaFX-Fireworks-Sample">
 				<text>
 					A JavaFX application showing fireworks on the screen.
@@ -94,7 +92,7 @@
 
  		<group style-id="quick-links" id="quick-links">
  			<link style-id="content-link" label="Sierpinky's fractals"
- 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.sierpinskyfractals%29"
+ 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.sierpinskifractals%29"
  				id="JavaFX-SierPinskyFracatals-Sample">
  				<text>
  					A JavaFX application showing Sierpinky's fractals on the screen.
@@ -104,7 +102,7 @@
  
  		<group style-id="quick-links" id="quick-links">
  			<link style-id="content-link" label="Game of Life in SARL"
- 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.gameoflife%29"
+ 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.gameoflife%29"
  				id="JavaFX-GameOfLife-Sample">
  				<text>
  					A JavaFX application showing the Game of Life on the screen.
@@ -116,7 +114,7 @@
 
 		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Reynolds' Boids with AWT interface"
-		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.boids.awt%29"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.boids.awt%29"
 		        id="UIExemple-Boids-AWT-Sample">
 		        <text>
 		            An AWT application showing the simulation of Reynolds' Boids.
@@ -128,8 +126,8 @@
 
 		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Auction between holonic members"
-		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.holonicauction%29"
-		        id="io.sarl.tutorials.holonicauction">
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.holonicauction%29"
+		        id="io.sarl.eclipse.examples.holonicauction">
 		        <text>
 		            This project contains the code of the official tutorial related to holonic auctions.
 		            The auctioneer creates bidding agents into its inner context.
@@ -138,8 +136,8 @@
 		        </text>
 		    </link>
 		    <link style-id="content-link" label="Agent interaction with Ping-Pong protocol"
-		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpong%29"
-		        id="io.sarl.tutorials.pingpong">
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.pingpong%29"
+		        id="io.sarl.eclipse.examples.pingpong">
 		        <text>
 		            This project contains the implementation of the simple interaction protocol named "Ping-Pong".
 		            An agent fire a ping event. The receiving agent replies with a pong event.
@@ -147,13 +145,21 @@
 		        </text>
 		    </link>
 		    <link style-id="content-link" label="Agent interaction inside a specific space with Ping-Pong protocol"
-		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpongspace%29"
-		        id="io.sarl.tutorials.pingpongspace">
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.pingpongspace%29"
+		        id="io.sarl.eclipse.examples.pingpongspace">
 		        <text>
 		            This project contains the implementation of the simple interaction protocol named "Ping-Pong".
 		            An agent fire a ping event. The receiving agent replies with a pong event.
 		            Then, the pong event receiver replies with a new ping event, and so on.
 		            The events are exchanged inside a specific event space.
+		        </text>
+		    </link>
+		    <link style-id="content-link" label="Action selection with video game GOB algorithm"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.eclipse.examples.gametgob%29"
+		        id="io.sarl.eclipse.examples.gametgob">
+		        <text>
+		            This project contains the implementation of a Goal-Oriented Behabior (GOB) that is used in video game industry
+		            for enabling the agents to selected the next action to fulfil some goal.
 		        </text>
 		    </link>
 		</group>
