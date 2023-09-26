@@ -280,7 +280,7 @@ qualified name of the Bootique module provider class). Each line of this file co
 a Bootique module provider to be added to the application classpath. Therefore, you could add your own Bootique module provider in this file.
 The content of the file `META-INF/services/io.bootique.BQModuleProvider` becomes:
 
-```
+```text
 mypackage.MyLoggingServiceModuleProvider
 ```
 
@@ -303,7 +303,7 @@ For including your extension into the application, you have only to add the jar 
 of your application.
 
 For example, running the Janus framework with your extension may be done with the following command line:
-```
+```text
 janus -cp myextension.jar myagent
 ```
 

@@ -47,7 +47,7 @@ Sometimes, it is useful to point an internal section out within the targeted res
 notation. The format of the anchor name is the title of the section, in lower case, with all characters that are not
 alphanumeric to be replaced by the `-` character. 
 
-```
+```text
 [My link 3](./index.html#event-communication)
 ```
 		

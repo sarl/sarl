@@ -293,7 +293,7 @@ Write a SARL program to print the square and cube symbols in the area of a recta
 
 * Input variables:
 
-```
+```text
 area = 1256.66
 volume = 1254.725
 decimals = 2
@@ -301,7 +301,7 @@ decimals = 2
 
 * Sample output:
 
-```
+```text
 The area of the rectangle is 1256.66cm2
 The volume of the cylinder is 1254.725cm3
 ```
@@ -316,7 +316,7 @@ Write a SARL program to print the index of a character in a string.
 * Sample string: `w3resource`
 * Expected output:
 
-```
+```text
 Current character w position at 0
 Current character 3 position at 1
 Current character r position at 2
@@ -342,7 +342,7 @@ Write a SARL program to convert a given string into a list of words.
 * Input: `The quick brown fox jumps over the lazy dog.`
 * Sample Output:
 
-```
+```text
 ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog.']
 ```
 
@@ -472,7 +472,7 @@ Write a SARL program to wrap a given string into a paragraph with a given width.
 * Input the width of the paragraph: `10`
 * Result:
 
-```
+```text
 The quick
 brown fox.
 ```

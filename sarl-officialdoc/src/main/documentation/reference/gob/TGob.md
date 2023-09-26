@@ -127,7 +127,7 @@ It has two major weaknesses: it fails to take account of side effects that an ac
 
 Let the following example, provided in the book "Artificial Intelligence for Games", by Ian Millington (published by MK):
 
-```
+```text
 Goal: Eat = 4
 Goal: Bathroom = 3
 Action: Drink-Soda (Eat -2; Bathroom +3)
@@ -202,7 +202,7 @@ This can be factored into the discontentment calculation. If it is known how goa
 
 Let the following example, provided in the book "Artificial Intelligence for Games", by Ian Millington (published by MK):
 
-```
+```text
 Goal: Eat = 4 changing at +4 per hour
 Goal: Bathroom = 3 changing at +2 per hour
 Action: Eat-Snack (Eat -2) 15 minutes

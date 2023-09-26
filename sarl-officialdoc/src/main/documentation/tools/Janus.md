@@ -44,7 +44,7 @@ fully qualified name of the agent's type.
 You could change the behavior of the [:name:] tool with the command-line options.
 For obtaining a list of the options, type:
 
-```texts
+```text
 [:name!] -help
 ```
 

@@ -141,10 +141,10 @@ Example:
 An SARL class can define any number of constructors. Unlike Java, you do not have to repeat the name of the
 class over and over again, but use the keyword [:newkw:] to declare a constructor.
 
-Constructors can also delegate to other constructors using ```[:thiskw!](args...)``` in their first line.
+Constructors can also delegate to other constructors using `[:thiskw!](args...)` in their first line.
 
 If the super class does not define a no-argument constructor, you have to explicitly call
-one using ```[:superkw!](args...)``` as the first expression in the body of the constructor.
+one using `[:superkw!](args...)` as the first expression in the body of the constructor.
 
 [:Success:]
 	package io.sarl.docs.reference.oop

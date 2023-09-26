@@ -212,6 +212,7 @@ how the Java executor is running the handlers on the threads.
 ### How events are treated by the run-time environment?
 
 When the event `e` of type `E` is received by an agent the following algorithm is applied:
+
 ```text
 if "on Initialize" is currently running then
    add e to a buffer of events.
@@ -221,6 +222,7 @@ else
    [:firefct]{fire(e)}
 fi
 ```
+
 The function [:firefct:] retrieves all the `on E` and runs them in parallel, and
 there is a synchronization point after the running of all the `on E` if `E` is
 `Initialize` or `Destroy` (for forcing synchronous execution of `on Initialize`

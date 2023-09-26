@@ -11,7 +11,7 @@ Write a SARL program to create a lambda function that adds 15 to a given number 
 
 * Sample Output:
 
-```
+```text
 25
 48
 ```
@@ -25,7 +25,7 @@ Write a SARL program to create a function that takes one argument, and that argu
 
 * Sample Output:
 
-```
+```text
 Double the number of 15 = 30
 Triple the number of 15 = 45
 Quadruple the number of 15 = 60
@@ -90,7 +90,7 @@ Write a SARL program to extract year, month, date and time using Lambda.
 
 * Sample Output:
 
-```
+```text
 2020-01-15 09:03:32.744178
 2020
 1
@@ -107,7 +107,7 @@ Write a SARL program to check whether a given string is a number or not using La
 
 * Sample Output:
 
-```
+```text
 26587 : true
 4.2365 : true
 -12547 : false
@@ -140,7 +140,7 @@ Write a SARL program to find the intersection of two given arrays using Lambda.
 
 * Original arrays:
 
-```
+```text
 [1, 2, 3, 5, 7, 8, 9, 10]
 [1, 2, 4, 8, 9]
 ```
@@ -177,7 +177,7 @@ Write a SARL program to filter a given list to determine if the values in the li
 
 * Sample Output:
 
-```
+```text
 Monday
 Friday
 Sunday
@@ -192,7 +192,7 @@ Write a SARL program to add two given lists using map and lambda.
 
 * Original list:
 
-```
+```text
 [1, 2, 3]
 [4, 5, 6]
 ```
@@ -208,7 +208,7 @@ Write a SARL program to find the second lowest total marks of any student(s) fro
 
 * Names and Grades of all students: `[['S ROY', 1.0], ['B BOSE', 3.0], ['N KAR', 2.0], ['C DUTTA', 1.0], ['G GHOSH', 1.0]]`
 
-```
+```text
 Second lowest grade: 2.0
 Names: N KAR
 ```

@@ -132,7 +132,7 @@ Write a SARL program to access the index of a list.
 * Sample Input: `[5, 15, 35, 8, 98]`
 * Sample Output:
 
-```
+```text
 0 5
 1 15
 2 35
@@ -187,7 +187,7 @@ Write a SARL program to check whether two lists are circularly identical.
 
 * Input 1:
 
-```
+```text
 list1 = [10, 10, 0, 0, 10]
 list2 = [10, 10, 10, 0, 0]
 ```
@@ -196,7 +196,7 @@ list2 = [10, 10, 10, 0, 0]
 
 * Input 2:
 
-```
+```text
 list1 = [10, 10, 0, 10, 0]
 list2 = [10, 10, 10, 0, 0]
 ```
@@ -287,7 +287,7 @@ Write a SARL program to split a list based on the first character of a word.
 
 * Sample Input:
 
-```
+```text
 ['be', 'have', 'do', 'say', 'get', 'make', 'go', 'know', 'take', 'see', 'come', 'think',
  'look', 'want', 'give', 'use', 'find', 'tell', 'ask', 'work', 'seem', 'feel',
  'leave', 'call']
@@ -295,7 +295,7 @@ Write a SARL program to split a list based on the first character of a word.
 
 * Expected Output:
 
-```
+```text
 { 'a': ['ask'],
   'b': ['be'],
   'c': ['come', 'call'],
@@ -358,7 +358,7 @@ Write a SARL program to print nested lists (each list on a new line) using the `
 * Sample Input: `[['assign1', 'assign2'], ['final', 'assign4'], ['exam', 'study']]`
 * Expected Output:
 
-```
+```text
 assign1 assign2
 final assign4
 exam study
@@ -516,7 +516,7 @@ Write a SARL program to read a square matrix from the command line and print the
 
 * Input the size of the matrix: 3
 
-```
+```text
 2 3 4
 4 5 6
 3 4 7
@@ -533,7 +533,7 @@ Write a SARL program to Zip two given lists of lists.
 
 * Original lists:
 
-```
+```text
 [[1, 3], [5, 7], [9, 11]]
 [[2, 4], [6, 8], [10, 12, 14]]
 ```
@@ -561,7 +561,7 @@ Write a SARL program to compute average of two given lists.
 
 * Original list:
 
-```
+```text
 [1, 1, 3, 4, 4, 5, 6, 7]
 [0, 1, 2, 3, 4, 4, 5, 7, 8]
 ```

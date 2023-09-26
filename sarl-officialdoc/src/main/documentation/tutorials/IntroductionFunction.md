@@ -63,7 +63,7 @@ Write a SARL function that accepts a string and counts the number of upper and l
 * Sample String: `The quick Brow Fox`
 * Expected Output:
 
-```
+```text
 No. of Upper case characters : 3
 No. of Lower case Characters : 12
 ```
