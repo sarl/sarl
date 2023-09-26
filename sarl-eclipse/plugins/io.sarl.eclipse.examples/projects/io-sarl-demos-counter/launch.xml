@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.counter">
+<launchConfigurations id="io.sarl.eclipse.examples.counter" log="all">
 	<agent class="io.sarl.demos.counter.CounterBootAgent" name="Counting agent" />
 </launchConfigurations>

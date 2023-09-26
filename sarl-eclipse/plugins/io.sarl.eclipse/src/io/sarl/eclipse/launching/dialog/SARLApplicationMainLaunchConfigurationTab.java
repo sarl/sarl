@@ -167,7 +167,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
-		this.configurator.setLaunhcingParametersPrintedOut(config, this.logShowStartInformationButton.getSelection());
+		this.configurator.setLaunchingParametersPrintedOut(config, this.logShowStartInformationButton.getSelection());
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
 		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());

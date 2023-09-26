@@ -246,9 +246,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 				for (final ConfigurationToLaunch it : configs) {
 					try {
 						if (it.isAgentLaunch()) {
-							createAgentLaunchConfiguration(project, it.getType(), it.getName());
+							createAgentLaunchConfiguration(project, it.getType(), it.getName(), it.getLogLevel());
 						} else {
-							createApplicationLaunchConfiguration(project, it.getType(), it.getName());
+							createApplicationLaunchConfiguration(project, it.getType(), it.getName(), it.getLogLevel());
 						}
 					} catch (CoreException exception) {
 						SARLExamplePlugin.getDefault().openError(getShell(),
@@ -316,11 +316,12 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			if (jFile.canRead()) {
 				final Document document = readXmlContent(jFile);
 				if (document != null) {
-					readLaunchConfigurationFromXml(document, null, (type, name, isAgent, rootFolder) -> {
+					readLaunchConfigurationFromXml(document, null, (type, name, isAgent, rootFolder, logLevel) -> {
 						final ConfigurationToLaunch ctl = new ConfigurationToLaunch();
 						ctl.setType(type);
 						ctl.setName(name);
 						ctl.setAgentLaunch(isAgent.booleanValue());
+						ctl.setLogLevel(logLevel);
 						this.configurationsToLaunch.add(ctl);
 					});
 				}
@@ -334,16 +335,17 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 * @param project the associated project.
 	 * @param mainClassfullyQualifedName the fully qualified name of the main class.
 	 * @param configurationName the proposed name for the launch configuration.
+	 * @param logLevel the log level to be used for launching the app.
 	 * @throws CoreException if the launch configuration cannot be created.
 	 * @since 0.10
 	 */
 	protected void createApplicationLaunchConfiguration(IProject project, String mainClassfullyQualifedName,
-			String configurationName) throws CoreException {
+			String configurationName, String logLevel) throws CoreException {
 		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
 		if (configurator != null) {
 			final String projectName = project.getName();
 			configurator.newApplicationLaunchConfiguration(projectName,
-					configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class);
+					configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class, logLevel);
 		}
 	}
 
@@ -352,16 +354,17 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 * @param project the associated project.
 	 * @param agentFullyQualifiedName the fully qualified name of the agent to launch.
 	 * @param configurationName the proposed name for the launch configuration.
+	 * @param logLevel the log level to be used for launching the app.
 	 * @throws CoreException if the launch configuration cannot be created.
 	 * @since 0.10Agent
 	 */
 	protected void createAgentLaunchConfiguration(IProject project, String agentFullyQualifiedName,
-			String configurationName) throws CoreException {
+			String configurationName, String logLevel) throws CoreException {
 		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
 		if (configurator != null) {
 			final String projectName = project.getName();
 			configurator.newAgentLaunchConfiguration(projectName,
-					configurationName, agentFullyQualifiedName);
+					configurationName, agentFullyQualifiedName, logLevel);
 		}
 	}
 
@@ -562,6 +565,12 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		 */
 		protected boolean isAgentLaunch;
 
+		/** Indicates if the log level for launching the app.
+		 *
+		 * @since 0.14
+		 */
+		protected String logLevel;
+
 		/** Replies the name of the configuration.
 		 *
 		 * @return the name.
@@ -610,6 +619,24 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		 */
 		public void setAgentLaunch(boolean isAgent) {
 			this.isAgentLaunch = isAgent;
+		}
+
+		/** Replies the log level that should be used by default for launching the app.
+		 *
+		 * @return the log level, or {@code null} if the level from the general configuration should be used.
+		 * @since 0.14
+		 */
+		public String getLogLevel() {
+			return this.logLevel;
+		}
+
+		/** Change the log level that should be used by default for launching the app.
+		 *
+		 * @param level the log level, or {@code null} if the level from the general configuration should be used.
+		 * @since 0.14
+		 */
+		public void setLogLevel(String level) {
+			this.logLevel = level;
 		}
 
 	}

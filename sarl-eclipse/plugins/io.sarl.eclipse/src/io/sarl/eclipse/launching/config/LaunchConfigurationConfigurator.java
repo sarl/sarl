@@ -24,6 +24,7 @@ package io.sarl.eclipse.launching.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.inject.Singleton;
 
 import com.google.common.base.Strings;
@@ -41,6 +42,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SRECommandLineOptions;
 
 /**
  * Configurator for a SARL launch configuration.
@@ -194,22 +196,20 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
-			String fullyQualifiedNameOfAgent) throws CoreException {
+			String fullyQualifiedNameOfAgent, String logLevel) throws CoreException {
 		final String name = Strings.isNullOrEmpty(launchConfigurationName)
 				? simpleName(fullyQualifiedNameOfAgent) : launchConfigurationName;
-		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName,
-				name, true);
+		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName, name, true, logLevel);
 		setAgent(wc, fullyQualifiedNameOfAgent);
 		return wc.doSave();
 	}
 
 	@Override
 	public ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
-			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
+			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider, String logLevel) throws CoreException {
 		final String name = Strings.isNullOrEmpty(launchConfigurationName)
 				? simpleName(fullyQualifiedNameOfClass) : launchConfigurationName;
-		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName,
-				name, false);
+		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName, name, false, logLevel);
 		setMainJavaClass(wc, fullyQualifiedNameOfClass);
 		if (classPathProvider != null) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, classPathProvider.getName());
@@ -235,21 +235,29 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 * @param projectName the name of the project.
 	 * @param id the identifier of the launch configuration.
 	 * @param resetJavaMainClass indicates if the JAva main class should be reset from the SRE configuration.
+	 * @param logLevel the default log level to be used when launching the app.
 	 * @return the created launch configuration.
 	 * @throws CoreException if the configuration cannot be created.
-	 * @since 0.7
+	 * @since 0.14
 	 */
 	protected ILaunchConfigurationWorkingCopy initLaunchConfiguration(String configurationType, String projectName,
-			String id, boolean resetJavaMainClass) throws CoreException {
+			String id, boolean resetJavaMainClass, String logLevel) throws CoreException {
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(configurationType);
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
 		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
-		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(),
+		final ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+		setRuntimeConfiguration(wc, sre,
 				Boolean.valueOf(DEFAULT_USE_SYSTEM_SRE),
 				Boolean.valueOf(DEFAULT_USE_PROJECT_SRE),
 				resetJavaMainClass);
+		// Change the default log level
+		if (!Strings.isNullOrEmpty(logLevel)) {
+			final String logOpt = sre.getAvailableCommandLineOptions().get(SRECommandLineOptions.CLI_LOG);
+			setLogArgument(wc, logOpt, logLevel);
+
+		}
 		JavaMigrationDelegate.updateResourceMapping(wc);
 		return wc;
 	}
@@ -658,7 +666,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
-	public void setLaunhcingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
+	public void setLaunchingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
 		configuration.setAttribute(ATTR_ENABLE_LAUNCHING_PARAMETERS_PRINT_OUT, enable);
 	}
 

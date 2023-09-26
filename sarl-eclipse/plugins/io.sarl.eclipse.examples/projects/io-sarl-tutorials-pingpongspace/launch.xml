@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.pingpongspace">
+<launchConfigurations id="io.sarl.eclipse.examples.pingpongspace" log="all">
 	<agent class="io.sarl.examples.pingpongspace.BootAgent" name="Ping-Pong in specific space" />
 </launchConfigurations>

@@ -26,7 +26,7 @@ import static io.sarl.eclipse.examples.wizard.XmlUtils.readXmlAttribute;
 import java.io.File;
 
 import com.google.common.base.Strings;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure5;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -65,6 +65,10 @@ public final class SarlExampleLaunchConfiguration {
 	 */
 	public static final String LAUNCH_PROPERTY_NAME_FIELD = "name"; //$NON-NLS-1$
 
+	/** Name of the attribute for specify the log level of the launch configuration.
+	 */
+	public static final String LAUNCH_PROPERTY_LOGLEVEL_FIELD = "log"; //$NON-NLS-1$
+
 	private SarlExampleLaunchConfiguration() {
 		//
 	}
@@ -79,15 +83,14 @@ public final class SarlExampleLaunchConfiguration {
 	 *     if it is a configuration for launching an agent ({@code true}) or an
 	 *     application ({@code false}). And, the fourth argument is {@code rootFolder}.
 	 */
-	public static void readLaunchConfigurationFromXml(Document document,
-			File rootFolder,
-			Procedure4<String, String, Boolean, File> callback) {
+	public static void readLaunchConfigurationFromXml(Document document, File rootFolder, Procedure5<String, String, Boolean, File, String> callback) {
 		NodeList nodes = document.getChildNodes();
 		final int len = nodes.getLength();
 		for (int i = 0; i < len; ++i) {
 			Node node = nodes.item(i);
 			if (node != null) {
 				if (LAUNCH_PROPERTY_ROOT_TAG.equalsIgnoreCase(node.getNodeName())) {
+					final String logLevel = readXmlAttribute(node, LAUNCH_PROPERTY_LOGLEVEL_FIELD);
 					nodes = node.getChildNodes();
 					final int len2 = nodes.getLength();
 					for (int j = 0; j < len2; ++j) {
@@ -103,8 +106,11 @@ public final class SarlExampleLaunchConfiguration {
 						}
 						final String type = readXmlAttribute(node, LAUNCH_PROPERTY_TYPE_FIELD);
 						if (!Strings.isNullOrEmpty(type)) {
-							callback.apply(type, readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD),
-									Boolean.valueOf(isAgent), rootFolder);
+							callback.apply(type,
+									readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD),
+									Boolean.valueOf(isAgent),
+									rootFolder,
+									logLevel);
 						}
 					}
 					// Break the loop

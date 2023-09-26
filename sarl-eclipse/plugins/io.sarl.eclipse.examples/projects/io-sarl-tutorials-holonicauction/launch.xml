@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.holonicauction">
+<launchConfigurations id="io.sarl.eclipse.examples.holonicauction" log="all">
 	<agent class="io.sarl.examples.holonicauction.Auctioneer" name="Holonic auction" />
 </launchConfigurations>

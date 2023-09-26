@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.basic.countdown">
+<launchConfigurations id="io.sarl.eclipse.examples.basic.countdown" log="all">
 	<agent class="io.sarl.demos.basic.countdown.CountDownAgent" name="Count down agent" />
 </launchConfigurations>

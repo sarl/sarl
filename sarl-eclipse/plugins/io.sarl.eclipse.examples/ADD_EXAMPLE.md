@@ -117,14 +117,25 @@ Two cases: launch a Java application that embeds SARL, or launch agents.
 The content of the `launch.xml` file should be similar to:
 
 	<?xml version="1.0" encoding="UTF-8"?>
-	<launchConfigurations id="**ID**">
+	<launchConfigurations id="**ID**" log="**LEVEL**">
 		<application class="**CLASSNAME**" name="**NAME**" />
 	</launchConfigurations>
 
 
-`**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
+**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
 Java class that contains the `main()` function; and `**NAME**` is the name of the example.
 
+**LEVEL** is the logging level to use for launching the application. THe value must be one of, from the less verbose to the more verbose:
+
+* `OFF`: no log output
+* `ERROR`: only error and critical messages
+* `WARNING`: same as `ERROR`, plus the warning messages
+* `INFO`: same as `WARNING`, and with the information messages
+* `DEBUG`: same as `INFO`, and with the debugging messages
+* `TRACE`: same as `DEBUG`, and with the very detailed debugging messages
+* `ALL`: all the messages
+
+If **LEVEL** is not specified, the default level is used. It depends on the configuration of the SARL IDE configuration. 
 
 
 ### 7.2. Launch Agents
@@ -132,15 +143,27 @@ Java class that contains the `main()` function; and `**NAME**` is the name of th
 The content of the `launch.xml` file should be similar to:
 
 	<?xml version="1.0" encoding="UTF-8"?>
-	<launchConfigurations id="**ID**">
+	<launchConfigurations id="**ID**" log="**LEVEL**">
 		<agent class="**CLASSNAME**" name="**NAME**" />
 		<agent class="**CLASSNAME**" name="**NAME**" />
 		...
 	</launchConfigurations>
 
 
-`**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
+**ID** is the identifier of the example; **CLASSNAME** the fully qualified name of the
 agent to launch; and `**NAME**` is the name of the example.
+
+**LEVEL** is the logging level to use for launching the application. THe value must be one of, from the less verbose to the more verbose:
+
+* `OFF`: no log output
+* `ERROR`: only error and critical messages
+* `WARNING`: same as `ERROR`, plus the warning messages
+* `INFO`: same as `WARNING`, and with the information messages
+* `DEBUG`: same as `INFO`, and with the debugging messages
+* `TRACE`: same as `DEBUG`, and with the very detailed debugging messages
+* `ALL`: all the messages
+
+If **LEVEL** is not specified, the default level is used. It depends on the configuration of the SARL IDE configuration. 
 
 
 ## 8. Add an on-line documentation

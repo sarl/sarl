@@ -69,10 +69,10 @@ public interface ILaunchConfigurationConfigurator {
 	 * @return the launch configuration.
 	 * @throws CoreException if something is going wrong.
 	 */
-	@Inline("newAgentLaunchConfiguration($1, null, $2)")
+	@Inline("newAgentLaunchConfiguration($1, null, $2, null)")
 	default ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
 			throws CoreException {
-		return newAgentLaunchConfiguration(projectName, null, fullyQualifiedNameOfAgent);
+		return newAgentLaunchConfiguration(projectName, null, fullyQualifiedNameOfAgent, null);
 	}
 
 	/** Create a default launch configuration for SARL agents.
@@ -86,8 +86,26 @@ public interface ILaunchConfigurationConfigurator {
 	 * @throws CoreException if something is going wrong.
 	 * @since 0.10
 	 */
+	@Inline("newAgentLaunchConfiguration($1, $2, $3, null)")
+	default ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfAgent) throws CoreException {
+		return newAgentLaunchConfiguration(projectName, launchConfigurationName, fullyQualifiedNameOfAgent, null);
+	}
+
+	/** Create a default launch configuration for SARL agents.
+	 *
+	 * <p>The launch configuration is attached to the given project.
+	 *
+	 * @param projectName the name of the project that contains the main class.
+	 * @param launchConfigurationName a proposal of name for the launch configuration.
+	 * @param fullyQualifiedNameOfAgent the fully qualified name of the agent to be launched.
+	 * @param logLevel the log level to be used for launching the app.
+	 * @return the launch configuration.
+	 * @throws CoreException if something is going wrong.
+	 * @since 0.14
+	 */
 	ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
-			String fullyQualifiedNameOfAgent) throws CoreException;
+			String fullyQualifiedNameOfAgent, String logLevel) throws CoreException;
 
 	/** Create a default launch configuration for SARL agents.
 	 *
@@ -99,10 +117,10 @@ public interface ILaunchConfigurationConfigurator {
 	 * @return the launch configuration.
 	 * @throws CoreException if something is going wrong.
 	 */
-	@Inline("newApplicationLaunchConfiguration($1, null, $2, $3)")
+	@Inline("newApplicationLaunchConfiguration($1, null, $2, $3, null)")
 	default ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
 			Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
-		return newApplicationLaunchConfiguration(projectName, null, fullyQualifiedNameOfClass, classPathProvider);
+		return newApplicationLaunchConfiguration(projectName, null, fullyQualifiedNameOfClass, classPathProvider, null);
 	}
 
 	/** Create a default launch configuration for SARL agents.
@@ -117,9 +135,29 @@ public interface ILaunchConfigurationConfigurator {
 	 * @throws CoreException if something is going wrong.
 	 * @since 0.10
 	 */
-	ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
+	@Inline("newApplicationLaunchConfiguration($1, $2, $3, $4, null)")
+	default ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
 			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider)
-			throws CoreException;
+					throws CoreException {
+		return newApplicationLaunchConfiguration(projectName, launchConfigurationName, fullyQualifiedNameOfClass, classPathProvider, null);
+	}
+
+	/** Create a default launch configuration for SARL agents.
+	 *
+	 * <p>The launch configuration is attached to the given project.
+	 *
+	 * @param projectName the name of the project that contains the main class.
+	 * @param launchConfigurationName a proposal of name for the launch configuration.
+	 * @param fullyQualifiedNameOfClass the fully qualified name of the class that contains the main function.
+	 * @param classPathProvider type of the class path provider to use for launching the application.
+	 * @param logLevel the log level to be used for launching the app.
+	 * @return the launch configuration.
+	 * @throws CoreException if something is going wrong.
+	 * @since 0.14
+	 */
+	ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider,
+			String logLevel) throws CoreException;
 
 	/** Change the runtime configuration of the given launch configuration.
 	 *
@@ -132,6 +170,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * @param useSystemSre indicates if the system-wide SRE must be used. If null, the default is used.
 	 * @param useProjectSre indicates if the SRE in the project's classpath must be used. If null, the default is used.
 	 * @param resetJavaMainClass indicates if the Java main class must be reset or not within the configuration.
+	 * @since 0.14
 	 */
 	void setRuntimeConfiguration(ILaunchConfigurationWorkingCopy configuration, ISREInstall sre,
 			Boolean useSystemSre, Boolean useProjectSre, boolean resetJavaMainClass);
@@ -261,7 +300,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * @param enable is {@code true} if the launching parameters are printed out.
 	 * @since 0.12
 	 */
-	void setLaunhcingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable);
+	void setLaunchingParametersPrintedOut(ILaunchConfigurationWorkingCopy configuration, boolean enable);
 
 	/** Change the identifier of the classpath provider that is injected into the classpath by the given contributor.
 	 *
