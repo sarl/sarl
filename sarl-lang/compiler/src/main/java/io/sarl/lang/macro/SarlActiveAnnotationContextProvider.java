@@ -46,7 +46,7 @@ public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContext
 
 	//@Inject
 	//private Logger log;
-	
+
 	@Override
 	protected void searchAnnotatedElements(final EObject element, final IAcceptor<Pair<JvmAnnotationType, XAnnotation>> acceptor) {
 		try {

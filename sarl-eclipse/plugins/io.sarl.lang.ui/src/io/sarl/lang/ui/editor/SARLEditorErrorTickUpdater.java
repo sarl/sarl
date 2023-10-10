@@ -113,31 +113,28 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 	}
 
 	@Override
-	public void modelChanged(IAnnotationModel model) {
+	public void modelChanged(final IAnnotationModel model) {
 		super.modelChanged(model);
 		//FIXME: for helping to resolve #661
-		final XtextEditor editor = getEditor();
-		if (editor != null && !editor.isDirty() && editor.getInternalSourceViewer() != null) {
-			final IAnnotationModel currentModel = editor.getInternalSourceViewer().getAnnotationModel();
-			if (currentModel != null && currentModel == model) {
-				final Resource resource = getXtextResource();
-				if (isReconciliable(resource)) {
-					final Set<String> markers = extractErrorMarkerMessages(currentModel);
-					final List<Diagnostic> resourceErrors = resource.getErrors();
-					if (markers.size() != resourceErrors.size() || notSame(markers, resourceErrors)) {
-						final Display display = PlatformUI.getWorkbench().getDisplay();
-						display.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								LangActivator.getInstance().getLog().log(
-										new Status(IStatus.ERROR, LangActivator.PLUGIN_ID,
-										MessageFormat.format(Messages.SARLEditorErrorTickUpdater_0, resource.getURI())));
-							}
-						});
+		final Display display = PlatformUI.getWorkbench().getDisplay();
+		display.asyncExec(() -> {
+			final XtextEditor editor = getEditor();
+			if (editor != null && !editor.isDirty() && editor.getInternalSourceViewer() != null) {
+				final IAnnotationModel currentModel = editor.getInternalSourceViewer().getAnnotationModel();
+				if (currentModel != null && currentModel == model) {
+					final Resource resource = getXtextResource();
+					if (isReconciliable(resource)) {
+						final Set<String> markers = extractErrorMarkerMessages(currentModel);
+						final List<Diagnostic> resourceErrors = resource.getErrors();
+						if (markers.size() != resourceErrors.size() || notSame(markers, resourceErrors)) {
+							LangActivator.getInstance().getLog().log(
+									new Status(IStatus.ERROR, LangActivator.PLUGIN_ID,
+									MessageFormat.format(Messages.SARLEditorErrorTickUpdater_0, resource.getURI())));
+						}
 					}
 				}
 			}
-		}
+		});
 	}
 
 	private static boolean isReconciliable(Resource resource) {
