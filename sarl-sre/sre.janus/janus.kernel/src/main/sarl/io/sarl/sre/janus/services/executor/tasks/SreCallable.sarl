@@ -1,0 +1,129 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.services.executor.tasks
+
+import java.util.concurrent.Callable
+import java.util.logging.Level
+import java.util.logging.Logger
+
+/** 
+ * A specific SRE callable that is catching the {@link EarlyExitException}.
+ * See {@link Runnables} for creating an instance.
+ * 
+ * <p>The behavior of this callable regarding the exceptions depends on the
+ * definition of the logger. If a logger is defined, the exceptions are logged out but never
+ * thrown to the Java execution layer. If a logger is not defined, the exceptions are thrown
+ * to the Java execution layer. 
+ * 
+ * @param <T> the type of the result.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ * @see Runnables
+ */
+class SreCallable<T> extends SreExecutable implements Callable<T> {
+
+	val callable : Callable<T>
+
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
+	 * @param callable the wrapped task.
+	 * @param logger the logger to use.
+	 */
+	protected new (callable : Callable<T>, logger : Logger) {
+		super(logger)
+		assert callable !== null
+		this.callable = callable
+	}
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	new (logger : Logger) {
+		super(logger)
+		this.callable = null
+	}
+
+	/** Replies the wrapped task.
+	 * 
+	 * @return the callable.
+	 */
+	def getWrappedCallable : Callable<T> {
+		this.callable
+	}
+
+	/** Run the task. The default implementation runs the attached Runnable.
+	 *
+	 * @return the result of the computation
+	 */
+	protected def internalCall : T {
+		wrappedCallable?.call
+	}
+
+	final def call : T {
+		try {
+			this.exception = null
+			return internalCall
+		} catch (ex : EarlyExitException) {
+			ex.runPostTreatment(this.logger)
+			return null
+		} catch (ex : InterruptedException) {
+			// Ignore this exception
+			return null
+		} catch (ex : Throwable) {
+			val cause = ex.rootCause
+			if (cause instanceof EarlyExitException) {
+				cause.runPostTreatment(this.logger)
+			} else if (cause instanceof InterruptedException) {
+				// Ignore this exception
+			} else {
+				this.exception = cause
+				val doThrown = onError(cause)
+				val log = getLogger
+				if (log !== null) {
+					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
+				} else if (doThrown) {
+					throw cause
+				}
+			}
+			return null
+		} finally {
+			onFinished
+		}
+	}
+
+	def toString : String {
+		wrappedCallable?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		wrappedCallable == obj
+	}
+
+	def hashCode : int {
+		var c = wrappedCallable
+		if (c !== null) c.hashCode else 0
+	}
+
+}

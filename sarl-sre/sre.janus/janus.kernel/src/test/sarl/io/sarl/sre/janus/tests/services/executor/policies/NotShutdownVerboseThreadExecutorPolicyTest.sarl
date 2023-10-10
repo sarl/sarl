@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.tests.services.executor
+package io.sarl.sre.janus.tests.services.executor.policies
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.QuietThreadExecutorPolicy
+import io.sarl.sre.janus.services.executor.policies.VerboseThreadExecutorPolicy
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
@@ -60,12 +60,12 @@ import static extension org.mockito.Mockito.verify
 	typeof(JavaVersionCheckExtension),
 	typeof(PropertyRestoreExtension)
 ])
-@DisplayName("unit: shutdown QuietThreadExecutorPolicy test")
+@DisplayName("unit: not-shutdown VeboseThreadExecutorPolicy test")
 @Tag("unit")
 @Tag("janus")
 @Tag("sre-unit")
-class ShutdownQuietThreadExecutorPolicyTest {
-	
+class NotShutdownVerboseThreadExecutorPolicyTest {
+
 	@Nullable
 	var logService : LoggingService
 
@@ -76,20 +76,20 @@ class ShutdownQuietThreadExecutorPolicyTest {
 	var executor : ThreadPoolExecutor
 
 	@Nullable
-	var handler : QuietThreadExecutorPolicy
+	var handler : VerboseThreadExecutorPolicy
 
 	@BeforeEach
 	def setUp : void {
 		this.logger = typeof(Logger).mock
 		when(this.logger.isLoggable(typeof(Level).any)).thenReturn(true)
 		this.logService = typeof(LoggingService).mock
-		when(this.logService.getKernelLogger).thenReturn(this.logger)
 		when(this.logService.getKernelModuleLogger(anyString)).thenReturn(this.logger)
+		when(this.logService.getKernelLogger).thenReturn(this.logger)
 
 		this.executor = typeof(ThreadPoolExecutor).mock
-		when(this.executor.isShutdown).thenReturn(true)
+		when(this.executor.isShutdown).thenReturn(false)
 
-		this.handler = new QuietThreadExecutorPolicy
+		this.handler = new VerboseThreadExecutorPolicy(this.logger)
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class ShutdownQuietThreadExecutorPolicyTest {
 		var runnable = typeof(Runnable).mock
 		this.handler.rejectedExecution(runnable, this.executor)
 
-		verify(runnable, never).run
+		runnable.verify(only).run
 
 		var argument0 = ArgumentCaptor::forClass(typeof(Runnable))
 		this.executor.verify(never).submit(argument0.capture)
@@ -113,7 +113,11 @@ class ShutdownQuietThreadExecutorPolicyTest {
 		this.handler.uncaughtException(Thread.currentThread, e)
 
 		var argument = ArgumentCaptor::forClass(typeof(LogRecord))
-		this.logger.verify(never).log(argument.capture)
+		this.logger.verify.log(argument.capture)
+		assertSame(Level::SEVERE, argument.value.level)
+		assertSame(e, argument.value.thrown)
+		assertEquals(this.class.name, argument.value.sourceClassName)
+		assertEquals("uncaughtException_Exception", argument.value.sourceMethodName) //$NON-NLS-1$
 	}
 
 	@Test
@@ -134,7 +138,11 @@ class ShutdownQuietThreadExecutorPolicyTest {
 		this.handler.uncaughtException(Thread.currentThread, e)
 
 		var argument = ArgumentCaptor::forClass(typeof(LogRecord))
-		this.logger.verify(never).log(argument.capture)
+		this.logger.verify.log(argument.capture)
+		assertSame(Level::FINEST, argument.value.level)
+		assertSame(e, argument.value.thrown)
+		assertEquals(this.class.name, argument.value.sourceClassName)
+		assertEquals("uncaughtException_Cancellation", argument.value.sourceMethodName) //$NON-NLS-1$
 	}
 
 	@Test
@@ -144,7 +152,11 @@ class ShutdownQuietThreadExecutorPolicyTest {
 		this.handler.uncaughtException(Thread.currentThread, e)
 
 		var argument = ArgumentCaptor::forClass(typeof(LogRecord))
-		this.logger.verify(never).log(argument.capture)
+		this.logger.verify.log(argument.capture)
+		assertSame(Level::FINEST, argument.value.level)
+		assertSame(e, argument.value.thrown)
+		assertEquals(this.class.name, argument.value.sourceClassName)
+		assertEquals("uncaughtException_Interrupt", argument.value.sourceMethodName) //$NON-NLS-1$
 	}
 
 }

@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.tests.services.executor
+package io.sarl.sre.janus.tests.services.executor.policies
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.QuietThreadExecutorPolicy
+import io.sarl.sre.janus.services.executor.policies.QuietThreadExecutorPolicy
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
@@ -60,12 +60,12 @@ import static extension org.mockito.Mockito.verify
 	typeof(JavaVersionCheckExtension),
 	typeof(PropertyRestoreExtension)
 ])
-@DisplayName("unit: not-shutdown QuietThreadExecutorPolicy test")
+@DisplayName("unit: shutdown QuietThreadExecutorPolicy test")
 @Tag("unit")
 @Tag("janus")
 @Tag("sre-unit")
-class NotShutdownQuietThreadExecutorPolicyTest {
-
+class ShutdownQuietThreadExecutorPolicyTest {
+	
 	@Nullable
 	var logService : LoggingService
 
@@ -87,7 +87,7 @@ class NotShutdownQuietThreadExecutorPolicyTest {
 		when(this.logService.getKernelModuleLogger(anyString)).thenReturn(this.logger)
 
 		this.executor = typeof(ThreadPoolExecutor).mock
-		when(this.executor.isShutdown).thenReturn(false)
+		when(this.executor.isShutdown).thenReturn(true)
 
 		this.handler = new QuietThreadExecutorPolicy
 	}
@@ -97,7 +97,7 @@ class NotShutdownQuietThreadExecutorPolicyTest {
 		var runnable = typeof(Runnable).mock
 		this.handler.rejectedExecution(runnable, this.executor)
 
-		runnable.verify(only).run
+		verify(runnable, never).run
 
 		var argument0 = ArgumentCaptor::forClass(typeof(Runnable))
 		this.executor.verify(never).submit(argument0.capture)
@@ -119,7 +119,7 @@ class NotShutdownQuietThreadExecutorPolicyTest {
 	@Test
 	def uncaughtException_EarlyExit : void {
 		try {
-			ExecutorService::neverReturn(null)
+			ExecutorService.neverReturn(null)
 			fail("Early exit exception is expected")
 		} catch (e : Exception) {
 			this.handler.uncaughtException(Thread.currentThread, e)

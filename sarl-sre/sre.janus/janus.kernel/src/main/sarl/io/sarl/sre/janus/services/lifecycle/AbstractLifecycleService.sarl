@@ -32,7 +32,7 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ExternalContextMemberListener
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.Runnables
+import io.sarl.sre.janus.services.executor.tasks.Runnables
 import io.sarl.sre.janus.services.logging.LoggingService
 import java.lang.ref.WeakReference
 import java.util.Arrays
@@ -45,15 +45,15 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.arakhne.afc.services.AbstractService
+import org.arakhne.afc.services.IService
+import org.arakhne.afc.services.ServiceState
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 
 import static java.text.MessageFormat.*
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
-import org.arakhne.afc.services.IService
-import org.arakhne.afc.services.AbstractService
-import org.arakhne.afc.services.ServiceState
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.

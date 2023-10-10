@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.tests.services.executor
+package io.sarl.sre.janus.tests.services.executor.policies
 
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.VerboseThreadExecutorPolicy
+import io.sarl.sre.janus.services.executor.policies.VerboseThreadExecutorPolicy
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable

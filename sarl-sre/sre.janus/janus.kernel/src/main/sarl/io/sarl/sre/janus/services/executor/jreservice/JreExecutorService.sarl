@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services.executor
+package io.sarl.sre.janus.services.executor.jreservice
 
 import com.google.common.collect.Iterables
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.ExecutorsConfig
+import io.sarl.sre.janus.services.executor.ExecutorService
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.ref.WeakReference
 import java.util.Arrays
@@ -45,8 +46,8 @@ import org.arakhne.afc.services.IPreReleasableService
 import org.arakhne.afc.services.IService
 import org.arakhne.afc.vmutil.json.JsonBuffer
 
-import static extension io.sarl.sre.janus.services.executor.JreExecutorUtils.*
-import static extension io.sarl.sre.janus.services.executor.Runnables.*
+import static extension io.sarl.sre.janus.services.executor.jreservice.JreExecutorUtils.*
+import static extension io.sarl.sre.janus.services.executor.tasks.Runnables.*
 
 /** 
  * Service that executes the tasks asynchronously (in threads) with the JRE executor service.
@@ -136,6 +137,7 @@ class JreExecutorService extends AbstractService implements ExecutorService, IPr
 	def setUncaughtExceptionHandler(handler : UncaughtExceptionHandler) {
 		this.uncaughtExceptionHandler = handler
 	}
+
 	/** 
 	 * Replies the default exception handler.
 	 * 

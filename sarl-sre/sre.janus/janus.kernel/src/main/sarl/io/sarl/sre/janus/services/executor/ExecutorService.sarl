@@ -20,6 +20,7 @@
  */
 package io.sarl.sre.janus.services.executor
 
+import io.sarl.sre.janus.services.executor.tasks.EarlyExitException
 import java.util.Collection
 import java.util.concurrent.Callable
 import java.util.concurrent.Future
@@ -27,8 +28,8 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 import java.util.logging.Logger
-import org.arakhne.afc.vmutil.json.JsonBuffer
 import org.arakhne.afc.services.IService
+import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /** 
  * This class enables the SRE kernel to be distributed other a network.
@@ -263,7 +264,7 @@ interface ExecutorService extends IService {
 	 * <p>According to the implementation of the service, the given task may be run in the same or separated thread
 	 * than the one of the caller.
 	 * 
-	 * <p>If an exception occurs into the given consume, the exception is logged. It is never thrown by this function.
+	 * <p>If an exception occurs into the given task, the exception is logged. It is never thrown by this function.
 	 * 
 	 * @param logger the logger to use for errors.
 	 * @param task the task to submit.

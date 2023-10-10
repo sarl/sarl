@@ -82,7 +82,7 @@ class ExecutorsConfig {
 	 * 
 	 * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
 	 */
-	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 0
+	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 1
 
 	/** 
 	 * Name of the property for the duration for keeping the iddle threads alive (in seconds).
@@ -144,6 +144,22 @@ class ExecutorsConfig {
 	 */
 	public static val PERIODIC_THREAD_POOL_PURGE_VALUE = true
 
+	/** 
+	 * Name of the flag for the fact to map the number of threads of the executor service to the number of available processors.
+	 * 
+	 * @see #MAP_TO_AVAILABLE_PROCESSORS_VALUE
+	 * @since 0.14
+	 */
+	public static val MAP_TO_AVAILABLE_PROCESSORS_NAME = PREFIX + ".mapToAvailableProcessors"
+
+	/** 
+	 * Default activation flag for the fact to map the number of threads of the executor service to the number of available processors.
+	 * 
+	 * @see #MAP_TO_AVAILABLE_PROCESSORS_NAME
+	 * @since 0.14
+	 */
+	public static val MAP_TO_AVAILABLE_PROCESSORS_VALUE = false
+
 	var internalErrorVerboseLevel : Level
 
 	var maxThreads : int = MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
@@ -159,7 +175,10 @@ class ExecutorsConfig {
 
 	@Accessors(PUBLIC_GETTER)
 	var periodicThreadPoolPurge : boolean = PERIODIC_THREAD_POOL_PURGE_VALUE
-	
+
+	@Accessors(PUBLIC_GETTER)
+	var mapToAvailableProcessors : boolean = MAP_TO_AVAILABLE_PROCESSORS_VALUE
+
 	/** Change the maximum number of threads that could be used by the executor service.
 	 *
 	 * @param maxThreads the max number.
@@ -264,6 +283,30 @@ class ExecutorsConfig {
 		this.periodicThreadPoolPurge = purge
 	}
 
+	/** 
+	 * Change the flag that indicates if the executor service must be mapped to the available processors.
+	 * 
+	 * @param enable is {@code true} if the executor service maps the number of threads to the available processors.
+	 * @since 0.14
+	 */
+	@BQConfigProperty("Indicates if the executor service maps the number of threads to the number of available processors.")
+	def setMapToAvailableProcessors(enable : boolean) {
+		this.mapToAvailableProcessors = enable
+	}
+
+	/** 
+	 * Change the flag that indicates if the task queue of the executor service is implementing a rendez-vous between
+	 * the thread that is submitting the task and the thread that is running the task. In other words,
+	 * a rendez-vous mechanism forces the submitting thread to wait for a thread that is able to run the task.
+	 * 
+	 * @param enableRendezVous is {@code true} if the executor service must implements a rendez-vous between the threads
+	 * @since 0.14
+	 */
+	@BQConfigProperty("Indicates if the executor service forces a task submitting thread to wait for a thread that is able to run the task.")
+	def setRendezvousTaskQueue(enableRendezVous : boolean) {
+		this.rendezvousTaskQueue = enableRendezVous
+	}
+
 }
 
 /** 
@@ -288,7 +331,9 @@ class ExecutorsConfigModule implements BQModule {
 	static val INTERNALERRORLOGLEVEL_OPTION = "internal-error-log-level"
 
 	static val THREADPURGE_OPTION = "thread-purge"
-	
+
+	static val PROCESSORMAPPING_OPTION = "on-processors"
+
 	override configure(binder : Binder) : void {
 		VariableDecls::extend(binder).declareVar(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
 		binder.extend.addOption(
@@ -334,6 +379,13 @@ class ExecutorsConfigModule implements BQModule {
 				MessageFormat::format(Messages::ExecutorsConfigModule_9, PERIODIC_THREAD_POOL_PURGE_VALUE.toString)).
 				valueRequired(Messages::ExecutorsConfigModule_10).build).mapConfigPath(THREADPURGE_OPTION,
 					PERIODIC_THREAD_POOL_PURGE_NAME)
+
+		VariableDecls::extend(binder).declareVar(MAP_TO_AVAILABLE_PROCESSORS_NAME)
+		binder.extend.addOption(
+			OptionMetadata::builder(PROCESSORMAPPING_OPTION,
+				MessageFormat::format(Messages::ExecutorsConfigModule_11, MAP_TO_AVAILABLE_PROCESSORS_VALUE.toString)).
+				valueRequired(Messages::ExecutorsConfigModule_10).build).mapConfigPath(PROCESSORMAPPING_OPTION,
+			MAP_TO_AVAILABLE_PROCESSORS_NAME)
 	}
 
 }

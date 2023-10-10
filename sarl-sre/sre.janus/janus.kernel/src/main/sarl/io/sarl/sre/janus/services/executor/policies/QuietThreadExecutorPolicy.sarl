@@ -18,43 +18,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.services.executor
+package io.sarl.sre.janus.services.executor.policies
 
-import java.util.logging.Logger
-
-import static extension io.sarl.sre.janus.services.executor.Runnables.*
+import javax.inject.Singleton
 
 /** 
- * This exception is thrown when a function must never return from the point of view of an agent. It permits to never return from
- * functions such as {@code killMe}.
- * 
- * <p>The executors are supposed to never log this function.
+ * A handler for rejected tasks and uncaught exceptions that logs nothing.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class EarlyExitException extends RuntimeException {
+@Singleton
+class QuietThreadExecutorPolicy extends AbstractThreadExecutorPolicy {
 
-	val postCommand : Runnable
-
-	/**
-	 * Construct.
-	 */
-	package new (postCommand : Runnable) {
-		this.postCommand = postCommand
-	}
-
-	/** Run any post treatment that is associated with the early-exist action.
-	 *
-	 * @param logger the logger to use for outputing the errors.
-	 * @since 0.6.0
-	 */
-	def runPostTreatment(logger : Logger) {
-		if (this.postCommand !== null) {
-			this.postCommand.protectRunnable(logger).run
-		}
+	override uncaughtException(t : Thread, e : Throwable) {
 	}
 
 }

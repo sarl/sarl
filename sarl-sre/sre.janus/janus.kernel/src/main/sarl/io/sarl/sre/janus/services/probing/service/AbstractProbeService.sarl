@@ -92,7 +92,7 @@ abstract class AbstractProbeService extends AbstractService implements ProbeServ
 		typeof(ProbeService)
 	}
 
-	override onStop {
+	override onStop : void {
 		releaseAllProbes
 	}
 

@@ -1,0 +1,71 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.services.executor.policies
+
+import java.lang.Thread.UncaughtExceptionHandler
+import java.util.concurrent.RejectedExecutionHandler
+import java.util.concurrent.ThreadPoolExecutor
+import javax.inject.Singleton
+
+/** 
+ * Abstract implementation of the thread executor policies for rejected tasks and
+ * uncaught exceptions.
+ * 
+ * <p>The handler for rejected tasks runs the rejected task
+ * directly in the calling thread of the {@code execute} method,
+ * unless the executor has been shut down, in which case the task
+ * is discarded (see {@link ThreadPoolExecutor.CallerRunsPolicy}).
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see ThreadPoolExecutor.CallerRunsPolicy 
+ */
+@Singleton
+abstract class AbstractThreadExecutorPolicy implements RejectedExecutionHandler, UncaughtExceptionHandler {
+
+	/**
+	 * Run the given task within the current thread if the executor is not shut down.
+	 * The task is not run by the given executor. The executor is used for checking if
+	 * the executor service is shut down.
+	 * 
+	 * @param runnable the runnable task to be executed
+	 * @param executor the executor attempting to give the shut down status
+	 * @return {@code true} if the task is run. {@code false} if the task was not run.
+	 * @see ThreadPoolExecutor.CallerRunsPolicy 
+	 */
+    protected static def runRejectedTask(runnable : Runnable, executor : ThreadPoolExecutor) : boolean {
+		// Runs the task directly in the calling thread of the {@code execute} method,
+		// unless the executor has been shut down, in which case the task
+		// is discarded.
+		if (!executor.isShutdown) {
+			runnable.run
+			return true
+		}
+		return false
+	}
+
+	override rejectedExecution(runnable : Runnable, executor : ThreadPoolExecutor) {
+		runRejectedTask(runnable, executor)
+	}
+
+}

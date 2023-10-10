@@ -24,7 +24,7 @@ import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.Runnables
+import io.sarl.sre.janus.services.executor.tasks.Runnables
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -121,7 +121,7 @@ class AsynchronousProbeService extends AbstractProbeService {
 		this.synchronizationStarted.set(false)
 	}
 
-	override onStop {
+	override onStop : void {
 		stopSyncThread
 		super.onStop
 	}

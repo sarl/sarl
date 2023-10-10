@@ -42,6 +42,9 @@ final class Messages extends NLS {
 
 	public static var ContextServiceProvider_0 : String
 	public static var ExecutorServiceModule_0 : String
+	public static var ExecutorServiceModule_1 : String
+	public static var ExecutorServiceModule_2 : String
+	public static var ExecutorServiceModule_3 : String
 	public static var ExecutorServiceModuleProvider_0 : String
 	public static var InfrastructureServiceModuleProvider_0 : String
 	public static var LifecycleServiceModuleProvider_0 : String

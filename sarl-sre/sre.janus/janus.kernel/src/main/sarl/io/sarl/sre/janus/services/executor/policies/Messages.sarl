@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.services.executor
+package io.sarl.sre.janus.services.executor.policies
 
 import org.eclipse.osgi.util.NLS
 

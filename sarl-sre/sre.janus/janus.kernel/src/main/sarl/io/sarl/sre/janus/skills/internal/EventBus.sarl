@@ -29,8 +29,8 @@ import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluatorRegistry
-import io.sarl.sre.janus.services.executor.Runnables
-import io.sarl.sre.janus.services.executor.SreRunnable
+import io.sarl.sre.janus.services.executor.tasks.Runnables
+import io.sarl.sre.janus.services.executor.tasks.SreRunnable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ExecutionException

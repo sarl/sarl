@@ -28,12 +28,13 @@ import io.bootique.di.Injector
 import io.bootique.di.Provides
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.ExecutorsConfig
-import io.sarl.sre.janus.services.executor.JreExecutorService
-import io.sarl.sre.janus.services.executor.QuietThreadExecutorPolicy
-import io.sarl.sre.janus.services.executor.VerboseThreadExecutorPolicy
+import io.sarl.sre.janus.services.executor.jreservice.JreExecutorService
+import io.sarl.sre.janus.services.executor.policies.QuietThreadExecutorPolicy
+import io.sarl.sre.janus.services.executor.policies.VerboseThreadExecutorPolicy
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
 import java.lang.Thread.UncaughtExceptionHandler
+import java.text.MessageFormat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.RejectedExecutionHandler
@@ -140,18 +141,30 @@ class ExecutorServiceModule implements BQModule {
 	@Provides
 	@Singleton
 	def provideJvmExecutorService(configuration : Provider<SreConfig>,
-		rejectedExecutionHandler : Provider<RejectedExecutionHandler>) : ExecutorService {
+		rejectedExecutionHandler : Provider<RejectedExecutionHandler>,
+		logService : Provider<LoggingService>) : ExecutorService {
 		var executor : ExecutorService = null
 		var cfg = configuration.get.services.executors
-		if (cfg.hasMaxThreadsSpecified) {
-			val minPoolSize = cfg.minThreads
-			val maxPoolSize = cfg.maxThreads
-			val keepAliveDuration = cfg.keepAliveDuration
-			var min = Math::max(0, Math::min(minPoolSize, maxPoolSize))
-			var max = Math::max(1, Math::max(minPoolSize, maxPoolSize))
-			executor = new ThreadPoolExecutor(min, max, keepAliveDuration, TimeUnit::SECONDS, new SynchronousQueue)
+		if (cfg.mapToAvailableProcessors) {
+			val nbprocs = Runtime::runtime.availableProcessors
+			logService.get.kernelLogger.fine(MessageFormat::format(Messages::ExecutorServiceModule_1, nbprocs))
+			executor = Executors::newWorkStealingPool(nbprocs)
 		} else {
-			executor = Executors::newFixedThreadPool(ExecutorsConfig::MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE)
+			val minPoolSize = cfg.minThreads
+			var maxPoolSize = ExecutorsConfig::MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
+			if (cfg.hasMaxThreadsSpecified) {
+				maxPoolSize = cfg.maxThreads
+			}
+			var min = Math::max(1, Math::min(minPoolSize, maxPoolSize))
+			var max = Math::max(1, Math::max(minPoolSize, maxPoolSize))
+			if (maxPoolSize <= 1) {
+				logService.get.kernelLogger.fine(Messages::ExecutorServiceModule_2)
+				executor = Executors::newSingleThreadExecutor
+			} else {
+				val keepAliveDuration = if(max > min) cfg.keepAliveDuration else 0
+				logService.get.kernelLogger.fine(MessageFormat::format(Messages::ExecutorServiceModule_3, minPoolSize, maxPoolSize, keepAliveDuration))
+				executor = new ThreadPoolExecutor(min, max, keepAliveDuration, TimeUnit::SECONDS, new SynchronousQueue)
+			}
 		}
 		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
 			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler.get

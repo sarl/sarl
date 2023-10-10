@@ -1,0 +1,120 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.janus.services.executor.tasks
+
+import java.util.function.Consumer
+import java.util.logging.Level
+import java.util.logging.Logger
+
+/** 
+ * A specific SRE consumer that is catching the {@link EarlyExitException}.
+ * 
+ * @param <T> the type of the result.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7
+ * @see Runnables
+ */
+class SreConsumer<T> extends SreExecutable implements Consumer<T> {
+
+	val consumer : Consumer<T>
+
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
+	 * @param consumer the wrapped task.
+	 * @param logger the logger to use.
+	 */
+	protected new (consumer : Consumer<T>, logger : Logger) {
+		super(logger)
+		assert consumer !== null
+		this.consumer = consumer
+	}
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	new (logger : Logger) {
+		super(logger)
+		this.consumer = null
+	}
+
+	/** Replies the wrapped task.
+	 * 
+	 * @return the consumer.
+	 */
+	def getWrappedConsumer : Consumer<T> {
+		this.consumer
+	}
+
+	/** Run the task. The default implementation runs the attached Runnable.
+	 * 
+	 * @param t the element to accept
+	 */
+	protected def internalAccept(t : T) {
+		wrappedConsumer?.accept(t)
+	}
+
+	final def accept(t : T) {
+		try {
+			this.exception = null
+			internalAccept(t)
+		} catch (ex : EarlyExitException) {
+			ex.runPostTreatment(this.logger)
+		} catch (ex : InterruptedException) {
+			// Ignore this exception
+		} catch (ex : Throwable) {
+			val cause = ex.rootCause
+			if (cause instanceof EarlyExitException) {
+				cause.runPostTreatment(this.logger)
+			} else if (cause instanceof InterruptedException) {
+				// Ignore this exception
+			} else {
+				this.exception = cause
+				val doThrown = onError(cause)
+				val log = getLogger
+				if (log !== null) {
+					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
+				} else if (doThrown) {
+					throw cause
+				}
+			}
+		} finally {
+			onFinished
+		}
+	}
+
+	def toString : String {
+		wrappedConsumer?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		wrappedConsumer == obj
+	}
+
+	def hashCode : int {
+		val c = wrappedConsumer
+		if (c !== null) c.hashCode else 0
+	}
+	
+}

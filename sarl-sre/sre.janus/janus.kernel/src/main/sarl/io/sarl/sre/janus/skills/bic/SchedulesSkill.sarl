@@ -36,7 +36,7 @@ import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.executor.ExecutorService
-import io.sarl.sre.janus.services.executor.SreRunnable
+import io.sarl.sre.janus.services.executor.tasks.SreRunnable
 import io.sarl.sre.janus.services.lifecycle.AgentState
 import java.lang.ref.WeakReference
 import java.util.Collection
