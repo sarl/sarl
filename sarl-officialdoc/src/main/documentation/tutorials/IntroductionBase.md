@@ -92,7 +92,7 @@ color_list = ["Red","Green","White" ,"Black"]
 
 ## Exercise 8
 
-Write a SARL program that accepts an integer (n) on the command line and computes the value of n+nn+nnn.
+Write a SARL program that accepts an integer (n) on the command line and computes the value of n+n*n+n*n*n.
 
 * Sample value of n is 5
 * Expected Result : 615
