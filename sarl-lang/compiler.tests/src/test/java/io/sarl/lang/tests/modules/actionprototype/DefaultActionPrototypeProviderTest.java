@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,6 @@ import org.opentest4j.AssertionFailedError;
 
 import io.sarl.lang.core.annotation.DefaultValue;
 import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
@@ -87,7 +86,7 @@ import io.sarl.tests.api.Nullable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"javadoc", "nls", "incomplete-switch"})
+@SuppressWarnings({"nls", "incomplete-switch"})
 @DisplayName("DefaultActionPrototypeProvider")
 @Tag("core")
 @Tag("unit")
@@ -330,7 +329,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
 			SarlScript s = file(getParseHelper(), "agent Foo { def fooFct(a : float, b : Object*) {} }");
-			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
+			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) s.getXtendTypes().get(0)
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
 			assertEquals("java.lang.Object", param.getParameterType().getIdentifier());
@@ -1002,7 +1001,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
 			SarlScript s = file(getParseHelper(), "agent Foo { def fooFct(a : float, b : Object*) {} }");
-			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
+			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) s.getXtendTypes().get(0)
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
 			assertEquals("java.lang.Object", param.getParameterType().getIdentifier());

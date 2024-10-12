@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 @DisplayName("serialization: def")
 @Tag("core")
 @Tag("serialization")
-@SuppressWarnings("javadoc")
+@SuppressWarnings("all")
 public class ActionSerializerTest extends AbstractSerializerTest {
 
 	@Test

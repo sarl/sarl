@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ import java.util.Properties;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
 import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
 import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
-import org.eclipse.xtend.core.conversion.StringValueConverter;
+import org.eclipse.xtend.core.conversion.XtendStringValueConverter;
 import org.eclipse.xtend.core.conversion.XtendValueConverterService;
 import org.eclipse.xtend.core.documentation.XtendFileHeaderProvider;
 import org.eclipse.xtend.core.findReferences.XtendReferenceFinder;
@@ -758,7 +758,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends STRINGValueConverter> bindSTRINGValueConverter() {
-		return StringValueConverter.class;
+		return XtendStringValueConverter.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

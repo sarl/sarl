@@ -6,6 +6,6 @@ Bundle-Version: 0.14.0.qualifier
 Require-Bundle: io.sarl.eclipse;bundle-version="0.14.0"
 Bundle-SymbolicName: io.sarl.eclipse.devapp;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse.devapp
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 

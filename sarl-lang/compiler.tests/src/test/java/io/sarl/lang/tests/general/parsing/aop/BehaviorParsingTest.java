@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,11 @@
 package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.lang.validation.IssueCodes.CLASS_EXPECTED;
+import static io.sarl.lang.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
+import static io.sarl.lang.validation.IssueCodes.DUPLICATE_TYPE_NAME;
+import static io.sarl.lang.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
@@ -29,6 +34,12 @@ import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED;
+import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
+import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
+import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,7 +92,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
+				CLASS_EXPECTED,
 				"Invalid supertype. Expecting a class");
 		}
 
@@ -109,7 +120,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
+				CYCLIC_INHERITANCE,
 				"The inheritance hierarchy of B1 contains cycles");
 		}
 
@@ -176,7 +187,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
+				DUPLICATE_TYPE_NAME,
 				"Duplicate type B1");
 		}
 
@@ -231,7 +242,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -243,7 +254,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -297,7 +308,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -309,7 +320,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -342,7 +353,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -354,7 +365,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -366,7 +377,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -378,7 +389,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -390,7 +401,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -402,7 +413,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"The definition of B1 can either be abstract or final, not both");
 		}
 
@@ -417,7 +428,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
+					MISSING_ABSTRACT);
 		}
 
 		@Test
@@ -431,7 +442,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
+					MISSING_ABSTRACT);
 		}
 		
 		@Test
@@ -445,7 +456,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
+					MISSING_ABSTRACT);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -495,7 +506,7 @@ public class BehaviorParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"The definition of B1 can only set one of public / package / protected / private");
 		}
 
@@ -517,7 +528,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+					MISSING_OVERRIDE);
 		}
 
 		@Test
@@ -532,7 +543,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
+					OBSOLETE_OVERRIDE,
 					"The method name() of type B2 must override a superclass method");
 		}
 
@@ -562,7 +573,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
+				DUPLICATE_MEMBER,
 				"Duplicate method myaction(int) in type B1");
 		}
 
@@ -584,7 +595,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
+				INVALID_MEMBER_NAME,
 				"Invalid action name '$handle_myaction'.");
 		}
 
@@ -1064,7 +1075,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1077,7 +1088,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1090,7 +1101,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1131,7 +1142,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1144,7 +1155,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"public / package / protected / private");
 		}
 
@@ -1193,7 +1204,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
+				DUPLICATE_MEMBER,
 				"Duplicate field myfield");
 		}
 
@@ -1209,7 +1220,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
+				DUPLICATE_MEMBER,
 				"Duplicate field myfield");
 		}
 
@@ -1304,7 +1315,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
-				org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
+				FIELD_NOT_INITIALIZED,
 				"The blank final field field2 may not have been initialized");
 		}
 
@@ -1511,7 +1522,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1553,7 +1564,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1566,7 +1577,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"var or val / final, not both");
 		}
 
@@ -1580,7 +1591,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1593,7 +1604,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1606,7 +1617,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1619,7 +1630,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1632,7 +1643,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1645,7 +1656,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"public / package / protected / private");
 		}
 
@@ -1701,7 +1712,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
-				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
+				MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"No default constructor in super type B1");
 		}
 
@@ -1722,7 +1733,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
-				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
+				MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"No default constructor in super type B1");
 		}
 
@@ -1894,7 +1905,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1931,7 +1942,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1944,7 +1955,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1957,7 +1968,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1970,7 +1981,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1983,7 +1994,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1996,7 +2007,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2009,7 +2020,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+					INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2022,7 +2033,7 @@ public class BehaviorParsingTest {
 					"}"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					INVALID_MODIFIER,
 					"public / package / protected / private");
 		}
 

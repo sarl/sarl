@@ -93,7 +93,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.13.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -107,7 +107,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -121,7 +121,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -133,7 +133,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <id>read-properties</id>
@@ -159,7 +159,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.7.1</version>
         <executions>
           <execution>
             <id>cli-application</id>
@@ -215,7 +215,7 @@
       <plugin>
         <groupId>com.akathist.maven.plugins.launch4j</groupId>
         <artifactId>launch4j-maven-plugin</artifactId>
-        <version>2.4.1</version>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <id>generate-sarlc-win</id>
@@ -257,7 +257,7 @@
       <plugin>
         <groupId>net.jsign</groupId>
         <artifactId>jsign-maven-plugin</artifactId>
-        <version>5.0</version>
+        <version>6.0</version>
         <executions>
           <execution>
             <id>sarlc-exe-sign</id>
@@ -279,7 +279,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>remove-default-project-artifact</id>

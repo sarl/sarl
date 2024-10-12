@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@
 
 package io.sarl.lang.tests.bugs.to00699;
 
+import static io.sarl.lang.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.eclipse.xtend.core.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -125,9 +125,11 @@ public class Bug590Test extends AbstractSarlTest {
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class LocaleMessageFormat extends MessageFormat {",
 				"  @Override",
@@ -183,9 +185,11 @@ public class Bug590Test extends AbstractSarlTest {
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class LocaleMessageFormat extends MessageFormat {",
 				"  @Override",
@@ -227,9 +231,11 @@ public class Bug590Test extends AbstractSarlTest {
 					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.Locale;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+					"@XbaseGenerated",
 					"@SuppressWarnings(\"all\")",
 					"public class LocaleMessageFormat2 extends LocaleMessageFormat {",
 					"  @Override",
@@ -282,9 +288,11 @@ public class Bug590Test extends AbstractSarlTest {
 				"import java.text.MessageFormat;",
 				"import java.util.Locale;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class LocaleMessageFormat extends MessageFormat {",
 				"  @Override",
@@ -326,9 +334,11 @@ public class Bug590Test extends AbstractSarlTest {
 					"import io.sarl.lang.core.annotation.SyntheticMember;",
 					"import java.util.Locale;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+					"@XbaseGenerated",
 					"@SuppressWarnings(\"all\")",
 					"public class LocaleMessageFormat2 extends LocaleMessageFormat {",
 					"  @Override",
@@ -367,7 +377,7 @@ public class Bug590Test extends AbstractSarlTest {
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
-				IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
+				MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"No default constructor in super type MessageFormat");
 	}
 
@@ -390,9 +400,11 @@ public class Bug590Test extends AbstractSarlTest {
 				"import io.sarl.lang.core.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class LocaleMessageFormat extends MessageFormat {",
 				"  @Override",

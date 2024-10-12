@@ -69,7 +69,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -89,7 +89,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.13.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -103,7 +103,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -117,7 +117,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -129,7 +129,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <id>read-properties</id>

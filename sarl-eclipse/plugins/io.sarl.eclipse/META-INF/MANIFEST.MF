@@ -1,50 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SARL Eclipse
-Bundle-Vendor: SARL.io
-Bundle-Version: 0.14.0.qualifier
 Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
-Automatic-Module-Name: io.sarl.eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-17
-Bundle-ActivationPolicy: lazy
+Bundle-Version: 0.14.0.qualifier
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
-Export-Package: io.sarl.eclipse,
- io.sarl.eclipse.buildpath,
- io.sarl.eclipse.explorer,
- io.sarl.eclipse.javadoc,
- io.sarl.eclipse.launching,
- io.sarl.eclipse.launching.config,
- io.sarl.eclipse.launching.dialog,
- io.sarl.eclipse.launching.runner.agent,
- io.sarl.eclipse.launching.runner.application,
- io.sarl.eclipse.launching.runner.general,
- io.sarl.eclipse.launching.shortcuts,
- io.sarl.eclipse.launching.sreproviding;x-friends:="io.sarl.eclipse.tests",
- io.sarl.eclipse.log,
- io.sarl.eclipse.natures;x-friends:="io.sarl.eclipse.tests",
- io.sarl.eclipse.perspectives,
- io.sarl.eclipse.preferences,
- io.sarl.eclipse.properties,
- io.sarl.eclipse.refactoring,
- io.sarl.eclipse.runtime,
- io.sarl.eclipse.splash,
- io.sarl.eclipse.typehierarchy,
- io.sarl.eclipse.util,
- io.sarl.eclipse.util.classpath,
- io.sarl.eclipse.wizards.elements,
- io.sarl.eclipse.wizards.elements.aop.newagent,
- io.sarl.eclipse.wizards.elements.aop.newbehavior,
- io.sarl.eclipse.wizards.elements.aop.newcapacity,
- io.sarl.eclipse.wizards.elements.aop.newevent,
- io.sarl.eclipse.wizards.elements.aop.newskill,
- io.sarl.eclipse.wizards.elements.oop.newanno,
- io.sarl.eclipse.wizards.elements.oop.newclass,
- io.sarl.eclipse.wizards.elements.oop.newenum,
- io.sarl.eclipse.wizards.elements.oop.newinterface,
- io.sarl.eclipse.wizards.newfile,
- io.sarl.eclipse.wizards.newproject,
- io.sarl.eclipse.wizards.sarlapp,
- io.sarl.eclipse.wizards.sreinstall
+Bundle-Vendor: SARL.io
 Require-Bundle: io.sarl.lang.compiler;bundle-version="0.14.0",
  io.sarl.lang.core;bundle-version="0.14.0",
  io.sarl.lang.ide;bundle-version="0.14.0",
@@ -81,4 +41,6 @@ Require-Bundle: io.sarl.lang.compiler;bundle-version="0.14.0",
  org.eclipse.ui.console;bundle-version="3.13.0",
  org.eclipse.search;bundle-version="3.15.200",
  org.arakhne.afc.core.vmutils;bundle-version="17.0.0"
-
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: io.sarl.eclipse.singleton.true
+Bundle-ActivationPolicy: lazy

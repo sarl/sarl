@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,10 +117,10 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		if (this.mlStart == null || this.mlEnd == null) {
 			AbstractRule mlRule = access.getML_COMMENTRule();
 			for (AbstractElement element : ((Group) mlRule.getAlternatives()).getElements()) {
-				if (element instanceof Keyword && this.mlStart == null) {
-					this.mlStart = ((Keyword) element).getValue();
-				} else if (element instanceof UntilToken && this.mlEnd == null) {
-					this.mlEnd = ((Keyword) ((UntilToken) element).getTerminal()).getValue();
+				if (element instanceof Keyword $c$value && this.mlStart == null) {
+					this.mlStart = $c$value.getValue();
+				} else if (element instanceof UntilToken $c$value && this.mlEnd == null) {
+					this.mlEnd = ((Keyword) $c$value.getTerminal()).getValue();
 				}
 			}
 		}
@@ -130,8 +130,8 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		if (this.slPrefix == null) {
 			AbstractRule slRule = access.getSL_COMMENTRule();
 			for (AbstractElement element : ((Group) slRule.getAlternatives()).getElements()) {
-				if (element instanceof Keyword) {
-					this.slPrefix = ((Keyword) element).getValue().trim();
+				if (element instanceof Keyword $c$value) {
+					this.slPrefix = $c$value.getValue().trim();
 					break;
 				}
 			}

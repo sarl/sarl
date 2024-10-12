@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,9 +58,11 @@ public class InlineMapDeclarationTest extends AbstractSarlTest {
 				"import java.util.Map;",
 				"import org.eclipse.xtext.xbase.lib.CollectionLiterals;",
 				"import org.eclipse.xtext.xbase.lib.Pair;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  private static final Map<String, Integer> coefs = Collections.<String, Integer>unmodifiableMap(CollectionLiterals.<String, Integer>newHashMap(Pair.<String, Integer>of(\"I\", Integer.valueOf(1)), Pair.<String, Integer>of(\"V\", Integer.valueOf(5)), Pair.<String, Integer>of(\"X\", Integer.valueOf(10)), Pair.<String, Integer>of(\"L\", Integer.valueOf(50)), Pair.<String, Integer>of(\"C\", Integer.valueOf(100)), Pair.<String, Integer>of(\"D\", Integer.valueOf(500)), Pair.<String, Integer>of(\"M\", Integer.valueOf(1000))));",

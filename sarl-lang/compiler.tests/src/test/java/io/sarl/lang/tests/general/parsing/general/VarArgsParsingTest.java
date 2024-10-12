@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 package io.sarl.lang.tests.general.parsing.general;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterVarArg;
@@ -29,12 +30,12 @@ import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifi
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
-import org.eclipse.xtend.core.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
@@ -134,7 +135,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -213,7 +214,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -284,7 +285,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -381,7 +382,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					IssueCodes.DUPLICATE_METHOD,
+					DUPLICATE_MEMBER,
 					"Duplicate method myaction(int, int[]) in type B1");
 		}
 
@@ -475,7 +476,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -558,7 +559,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -631,7 +632,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 
@@ -704,7 +705,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
-					IssueCodes.INVALID_USE_OF_VAR_ARG,
+					INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
 		}
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,9 +73,11 @@ public class Bug856Test extends AbstractSarlTest {
 			"import java.util.UUID;",
 			"import org.eclipse.xtext.xbase.lib.CollectionLiterals;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class SomeClass {",
 			"  @Pure",
@@ -133,9 +135,11 @@ public class Bug856Test extends AbstractSarlTest {
 			"import java.util.UUID;",
 			"import org.eclipse.xtext.xbase.lib.CollectionLiterals;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class SomeClass {",
 			"  @DefaultValueSource",

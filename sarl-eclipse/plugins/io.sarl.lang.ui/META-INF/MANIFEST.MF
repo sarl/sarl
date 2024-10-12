@@ -36,7 +36,7 @@ Export-Package: io.sarl.lang.ui,
 Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Automatic-Module-Name: io.sarl.lang.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
 Require-Bundle: io.sarl.lang.core;bundle-version="0.14.0",
  io.sarl.lang.compiler;bundle-version="0.14.0",

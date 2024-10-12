@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
@@ -69,9 +70,11 @@ public class Bug736Test extends AbstractSarlTest {
 			"",
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class Test {",
 			"  private static int X;",
@@ -102,9 +105,11 @@ public class Bug736Test extends AbstractSarlTest {
 			"",
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class Test {",
 			"  private static final int X;",
@@ -219,9 +224,11 @@ public class Bug736Test extends AbstractSarlTest {
 			"",
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public final class Messages {",
 			"  private static final String BUNDLE_NAME = (Messages.class.getPackage().getName() + \".messages\");",
@@ -342,7 +349,7 @@ public class Bug736Test extends AbstractSarlTest {
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
+				DUPLICATE_MEMBER,
 				"Duplicate method " + Utils.getStaticConstructorName());
 	}
 

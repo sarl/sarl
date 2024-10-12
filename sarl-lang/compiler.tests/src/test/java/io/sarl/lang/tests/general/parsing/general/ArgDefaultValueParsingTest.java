@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 package io.sarl.lang.tests.general.parsing.general;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.lang.validation.IssueCodes.TYPE_MUST_BE_ABSTRACT;
 import static io.sarl.tests.api.tools.TestAssertions.assertNoParameterVarArg;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
@@ -2436,7 +2437,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					TYPE_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -2457,7 +2458,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					TYPE_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 

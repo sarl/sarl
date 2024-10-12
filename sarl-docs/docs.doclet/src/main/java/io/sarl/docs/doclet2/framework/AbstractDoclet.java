@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,9 +214,11 @@ public abstract class AbstractDoclet implements Doclet {
 	 */
 	@SuppressWarnings("static-method")
 	protected SourceVersion determineSourceVersion() {
-		final JavaVersion version = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+		final var version = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 		if (version != null) {
 			switch (version) {
+			case JAVA21:
+				return SourceVersion.RELEASE_21;
 			case JAVA17:
 				return SourceVersion.RELEASE_17;
 			case JAVA11:
@@ -227,12 +229,6 @@ public abstract class AbstractDoclet implements Doclet {
 				return SourceVersion.RELEASE_9;
 			case JAVA8:
 				return SourceVersion.RELEASE_8;
-			case JAVA7:
-				return SourceVersion.RELEASE_7;
-			case JAVA6:
-				return SourceVersion.RELEASE_6;
-			case JAVA5:
-				return SourceVersion.RELEASE_5;
 			default:
 				throw new UnsupportedClassVersionError();
 			}

@@ -181,7 +181,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.13.0</version>
         <configuration>
           <generatedSourcesDirectory>src/main/xtext-gen</generatedSourcesDirectory>
           <source>${sarl-dsl.min.jdk.version}</source>
@@ -194,7 +194,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -213,7 +213,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -227,7 +227,7 @@
       <plugin>
         <groupId>biz.aQute.bnd</groupId>
         <artifactId>bnd-maven-plugin</artifactId>
-        <version>6.4.0</version>
+        <version>7.0.0</version>
         <extensions>true</extensions>
         <executions>
           <execution>
@@ -255,7 +255,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifestFile>${manifest.file}</manifestFile>
@@ -265,7 +265,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <id>read-properties</id>
@@ -304,7 +304,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.7</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -318,7 +318,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version>
+            <version>3.10.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

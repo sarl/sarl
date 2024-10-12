@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -266,12 +266,22 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("14"));
 		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("15"));
 		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("16"));
-		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17"));
-		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17.1"));
-		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17.9"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17.1"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17.9"));
 		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("18"));
 		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("19"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("20"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("21"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("21.1"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("21.9"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("22"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("23"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("24"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("25"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("26"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("27"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("28"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("29"));
 	}
 
 	@Test
@@ -290,12 +300,21 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("14"));
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("15"));
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("16"));
-		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("17"));
-		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("17.1"));
-		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17.9"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("17"));
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("18"));
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("19"));
 		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("20"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("21"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("21.1"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("21.9"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("22"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("23"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("24"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("25"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("26"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("27"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("28"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("29"));
 	}
 
 	@Test
@@ -318,11 +337,22 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleXtextVersion("2.29"));
 		assertFalse(Utils.isCompatibleXtextVersion("2.30"));	
 		assertFalse(Utils.isCompatibleXtextVersion("2.31"));	
-		assertTrue(Utils.isCompatibleXtextVersion("2.32"));
-		assertTrue(Utils.isCompatibleXtextVersion("2.32.1"));
-		assertTrue(Utils.isCompatibleXtextVersion("2.33"));
-		assertTrue(Utils.isCompatibleXtextVersion("2.34"));
-		assertTrue(Utils.isCompatibleXtextVersion("2.35"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.32"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.32.1"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.33"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.34"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.35"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.36"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.36.1"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.37"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.38"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.39"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.40"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.41"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.42"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.43"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.44"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.45"));
 	}
 
 	@Test

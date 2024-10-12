@@ -30,7 +30,7 @@
       <dependency>
         <groupId>me.tongfei</groupId>
         <artifactId>progressbar</artifactId>
-        <version>0.10.0</version>
+        <version>0.10.1</version>
       </dependency>
       <dependency>
         <groupId>com.google.inject</groupId>
@@ -194,7 +194,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.7</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

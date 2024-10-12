@@ -52,10 +52,10 @@
 					<filter token="SARL_VERSION" value="0.14.0-SNAPSHOT"/>
 					<filter token="AFC_VERSION" value="17.0"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="17"/>
-					<filter token="RELEASE_YEAR" value="2023"/>
-					<filter token="MAVEN_COMPILER_VERSION" value="3.11.0"/>
-					<filter token="OPENJFX_VERSION" value="17.0.7-ea+1"/>
+					<filter token="JAVA_VERSION" value="21"/>
+					<filter token="RELEASE_YEAR" value="2024"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="3.13.0"/>
+					<filter token="OPENJFX_VERSION" value="21.0.4-ea+1"/>
 				</filterset>
 			</copy>
 			<copy file="@{pomtemplate}" tofile="@{archive}/@{name}/pom.xml" overwrite="false"
@@ -67,10 +67,10 @@
 					<filter token="SARL_VERSION" value="0.14.0-SNAPSHOT"/>
 					<filter token="AFC_VERSION" value="17.0"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="17"/>
-					<filter token="RELEASE_YEAR" value="2023"/>
-					<filter token="MAVEN_COMPILER_VERSION" value="3.11.0"/>
-					<filter token="OPENJFX_VERSION" value="17.0.7-ea+1"/>
+					<filter token="JAVA_VERSION" value="21"/>
+					<filter token="RELEASE_YEAR" value="2024"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="3.13.0"/>
+					<filter token="OPENJFX_VERSION" value="21.0.4-ea+1"/>
 				</filterset>
 			</copy>
 			<mkdir dir="@{target}" />

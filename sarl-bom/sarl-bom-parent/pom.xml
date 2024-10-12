@@ -56,7 +56,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <id>read-properties</id>
@@ -82,7 +82,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>4.0.1</version>
         <executions>
           <execution>
             <id>compute-sarl-properties</id>
@@ -116,14 +116,14 @@ if (project.dependencyManagement &amp;&amp; project.dependencyManagement.depende
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <type>pom</type>
-            <version>4.0.15</version>
+            <version>4.0.23</version>
           </dependency>
         </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
         <executions>
           <execution>
             <id>flatten</id>
@@ -181,7 +181,7 @@ if (project.dependencyManagement &amp;&amp; project.dependencyManagement.depende
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.7</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

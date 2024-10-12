@@ -7,11 +7,12 @@
  *******************************************************************************/
 package io.sarl.lang.tests.xtext;
 
+import static io.sarl.lang.validation.IssueCodes.CONFLICTING_DEFAULT_ACTIONS;
+import static io.sarl.lang.validation.IssueCodes.TYPE_MUST_BE_ABSTRACT;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
-import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -123,7 +124,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo { }",
 				"}",
 				"class C implements A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type C inherits multiple implementations of the method foo() from A and B.");
 	}
 
@@ -148,7 +149,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo { }",
 				"}",
 				"interface C extends A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type C inherits multiple implementations of the method foo() from A and B.");
 	}
 
@@ -173,7 +174,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo",
 				"}",
 				"class C implements A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The non-abstract method foo() inherited from A conflicts with the method foo() inherited from B.");
 	}
 
@@ -198,7 +199,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo",
 				"}",
 				"interface C extends A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), CONFLICTING_DEFAULT_ACTIONS,
 				"The non-abstract method foo() inherited from A conflicts with the method foo() inherited from B.");
 	}
 
@@ -229,7 +230,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo(list : java.util.List<Class<?>>) : double { 0 }",
 				"}",
 				"class C implements A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type C inherits multiple implementations of the method foo(List<String>) from A and B.");
 	}
 	
@@ -260,7 +261,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo(list : java.util.List<Class<?>>) : double { 0 }",
 				"}",
 				"interface C extends A, B { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type C inherits multiple implementations of the method foo(List<String>) from A and B.");
 	}
 
@@ -297,7 +298,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, C, D { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type E inherits multiple implementations of the method foo() from C and D.");
 	}
 
@@ -334,7 +335,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, D, C { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The type E inherits multiple implementations of the method foo() from D and C.");
 	}
 
@@ -371,7 +372,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, D, C { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The non-abstract method foo() inherited from D conflicts with the method foo() inherited from C.");
 	}
 
@@ -408,7 +409,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements B, C, A, D { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The non-abstract method foo() inherited from D conflicts with the method foo() inherited from C.");
 	}
 
@@ -436,7 +437,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface J1 extends J {}",
 				"class E implements I, J1 {}"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"The non-abstract method m() inherited from I conflicts with the method m() inherited from J.");
 	}
 
@@ -464,7 +465,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def m {}",
 				"}",
 				"class C extends B implements I {}"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), TYPE_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -489,7 +490,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override m",
 				"}",
 				"class C implements J {}"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), TYPE_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -520,7 +521,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface L extends J {}",
 				"class C implements I, K, L {}"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), TYPE_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -697,7 +698,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"class C implements A, B { }",
 				"class D extends C { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), CONFLICTING_DEFAULT_ACTIONS,
 				"");
 	}
 
@@ -725,7 +726,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface C extends A, B { }",
 				"interface D extends C { }"));
-		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), CONFLICTING_DEFAULT_ACTIONS,
 				"");
 	}
 

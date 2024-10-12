@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.tests.general.parsing.oop;
 
+import static io.sarl.lang.validation.IssueCodes.DUPLICATE_TYPE_NAME;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
@@ -345,7 +346,7 @@ public class ClassParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
-				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
+				DUPLICATE_TYPE_NAME,
 				"Duplicate type B1");
 		}
 

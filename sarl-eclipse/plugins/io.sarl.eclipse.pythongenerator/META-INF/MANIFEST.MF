@@ -5,7 +5,7 @@ Automatic-Module-Name: io.sarl.eclipse.pythongenerator
 Bundle-Version: 0.14.0.qualifier
 Bundle-Vendor: SARL.io
 Bundle-Name: %Bundle-Name
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: io.sarl.eclipse.pythongenerator,
  io.sarl.eclipse.pythongenerator.configuration,

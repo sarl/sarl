@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2023 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,10 +64,12 @@ public class Bug720Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.Capacity;", 
 			"import io.sarl.lang.core.annotation.SarlElementType;", 
 			"import io.sarl.lang.core.annotation.SarlSpecification;", 
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")", 
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")", 
 			"public interface ExampleCapacity extends Capacity {", 
 			"  <T extends Object> void exampleMethod(final Class<T> clazz);", 
@@ -106,10 +108,12 @@ public class Bug720Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.Capacity;", 
 			"import io.sarl.lang.core.annotation.SarlElementType;", 
 			"import io.sarl.lang.core.annotation.SarlSpecification;", 
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")", 
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")", 
 			"public interface ExampleCapacity extends Capacity {", 
 			"  <T extends Number> void exampleMethod(final Class<T> clazz);", 
@@ -148,10 +152,12 @@ public class Bug720Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.Capacity;", 
 			"import io.sarl.lang.core.annotation.SarlElementType;", 
 			"import io.sarl.lang.core.annotation.SarlSpecification;", 
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")", 
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")", 
 			"public interface ExampleCapacity extends Capacity {", 
 			"  <T extends Number, T2 extends T> void exampleMethod(final Class<T> clazz, final T2 clazz2);", 
@@ -191,10 +197,12 @@ public class Bug720Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;", 
 			"import io.sarl.lang.core.annotation.SarlSpecification;", 
 			"import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"", 
 			"@FunctionalInterface", 
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
 			"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")", 
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")", 
 			"public interface ExampleCapacity extends Capacity {", 
 			"  <T extends Object> void exampleMethod(final Procedure1<? super T> plan);", 
