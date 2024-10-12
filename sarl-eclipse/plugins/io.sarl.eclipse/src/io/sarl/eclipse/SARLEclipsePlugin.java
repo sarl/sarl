@@ -85,8 +85,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the section of the given name
 	 */
 	public IDialogSettings getDialogSettingsSection(String name) {
-		final IDialogSettings dialogSettings = getDialogSettings();
-		IDialogSettings section = dialogSettings.getSection(name);
+		final var dialogSettings = getDialogSettings();
+		var section = dialogSettings.getSection(name);
 		if (section == null) {
 			section = dialogSettings.addNewSection(name);
 		}
@@ -115,7 +115,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
-		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final var descriptor = getImageDescriptor(imagePath);
 		if (descriptor == null) {
 			return null;
 		}
@@ -128,7 +128,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
-		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
+		var descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = ResourceLocator.imageDescriptorFromBundle(SARLEclipsePlugin.PLUGIN_ID, imagePath).orElse(null);
 			if (descriptor != null) {
@@ -158,7 +158,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, String message, Throwable cause) {
-		String msg = message;
+		var msg = message;
 		if (Strings.isNullOrEmpty(msg)) {
 			msg = cause.getLocalizedMessage();
 			if (Strings.isNullOrEmpty(msg)) {
@@ -169,14 +169,14 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 			}
 		}
 		if (cause != null) {
-			final List<IStatus> childStatuses = new ArrayList<>();
-			final StackTraceElement[] stackTraces = cause.getStackTrace();
-			for (final StackTraceElement stackTrace: stackTraces) {
-				final IStatus status = createStatus(severity, stackTrace.toString());
+			final var childStatuses = new ArrayList<IStatus>();
+			final var stackTraces = cause.getStackTrace();
+			for (final var stackTrace: stackTraces) {
+				final var status = createStatus(severity, stackTrace.toString());
 				childStatuses.add(status);
 			}
 
-			final IStatus[] children = new IStatus[childStatuses.size()];
+			final var children = new IStatus[childStatuses.size()];
 			if (!childStatuses.isEmpty()) {
 				childStatuses.toArray(children);
 			}
@@ -255,14 +255,14 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 */
 	@SuppressWarnings("static-method")
 	public IStatus createMultiStatus(Iterable<? extends IStatus> status) {
-		final IStatus max = findMax(status);
+		final var max = findMax(status);
 		final MultiStatus multiStatus;
 		if (max == null) {
 			multiStatus = new MultiStatus(PLUGIN_ID, 0, null, null);
 		} else {
 			multiStatus = new MultiStatus(PLUGIN_ID, 0, max.getMessage(), max.getException());
 		}
-		for (final IStatus s : status) {
+		for (final var s : status) {
 			multiStatus.add(s);
 		}
 		return multiStatus;
@@ -270,7 +270,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	private static IStatus findMax(Iterable<? extends IStatus> status) {
 		IStatus max = null;
-		for (final IStatus s : status) {
+		for (final var s : status) {
 			if (max == null || max.getSeverity() > s.getSeverity()) {
 				max = s;
 			}
@@ -354,7 +354,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * Saves the preferences for the plug-in.
 	 */
 	public void savePreferences() {
-		final IEclipsePreferences prefs = getPreferences();
+		final var prefs = getPreferences();
 		try {
 			prefs.flush();
 		} catch (BackingStoreException e) {
@@ -374,10 +374,10 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @see #log(Throwable)
 	 */
 	public void openError(Shell shell, String title, String message, String reason, Throwable exception) {
-		final Throwable ex = (exception != null) ? Throwables.getRootCause(exception) : null;
+		final var ex = (exception != null) ? Throwables.getRootCause(exception) : null;
 		if (ex != null) {
 			log(ex);
-			final IStatus status = createStatus(IStatus.ERROR, reason, ex);
+			final var status = createStatus(IStatus.ERROR, reason, ex);
 			ErrorDialog.openError(shell, title, message, status);
 		} else {
 			MessageDialog.openError(shell, title, message);

@@ -95,16 +95,16 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t"); //$NON-NLS-1$
 		it.appendNl("\tname = ''{0}''", getLanguageSimpleName()); //$NON-NLS-1$
 		it.appendNl("\taliases = [''{0}'']", getLanguageSimpleName().toLowerCase()); //$NON-NLS-1$
-		final StringBuilder pyFileExtensions = new StringBuilder();
-		for (final String fileExtension : getLanguage().getFileExtensions()) {
+		final var pyFileExtensions = new StringBuilder();
+		for (final var fileExtension : getLanguage().getFileExtensions()) {
 			if (pyFileExtensions.length() > 0) {
 				pyFileExtensions.append(","); //$NON-NLS-1$
 			}
 			pyFileExtensions.append("'*.").append(fileExtension).append("'"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		it.appendNl("\tfilenames = [{0}]", pyFileExtensions); //$NON-NLS-1$
-		final StringBuilder pyMimes = new StringBuilder();
-		for (final String mimeType : getMimeTypes()) {
+		final var pyMimes = new StringBuilder();
+		for (final var mimeType : getMimeTypes()) {
 			if (pyMimes.length() > 0) {
 				pyMimes.append(","); //$NON-NLS-1$
 			}
@@ -126,8 +126,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t(r'/\\*.*?\\*/', Comment.Multiline),"); //$NON-NLS-1$
 		it.appendNl("\t\t\t(r'@[a-zA-Z_][\\w.]*', Name.Decorator),"); //$NON-NLS-1$
 
-		final StringBuilder rawKeywords = new StringBuilder();
-		for (final String keyword : expressionKeywords) {
+		final var rawKeywords = new StringBuilder();
+		for (final var keyword : expressionKeywords) {
 			if (rawKeywords.length() > 0) {
 				rawKeywords.append("|"); //$NON-NLS-1$
 			}
@@ -136,8 +136,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t(r''({0})\\b'',", rawKeywords); //$NON-NLS-1$
 		it.appendNl("\t\t\t Keyword),"); //$NON-NLS-1$
 
-		final StringBuilder rawModifiers = new StringBuilder();
-		for (final String modifier : modifiers) {
+		final var rawModifiers = new StringBuilder();
+		for (final var modifier : modifiers) {
 			if (rawModifiers.length() > 0) {
 				rawModifiers.append("|"); //$NON-NLS-1$
 			}
@@ -145,8 +145,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		}
 		it.appendNl("\t\t\t(r''({0})\\b'', Keyword.Declaration),", rawModifiers); //$NON-NLS-1$
 
-		final StringBuilder rawPrimitives = new StringBuilder();
-		for (final String primitive : primitiveTypes) {
+		final var rawPrimitives = new StringBuilder();
+		for (final var primitive : primitiveTypes) {
 			if (rawPrimitives.length() > 0) {
 				rawPrimitives.append("|"); //$NON-NLS-1$
 			}
@@ -156,8 +156,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t  Keyword.Type),"); //$NON-NLS-1$
 
 		// Special keyword
-		final StringBuilder rawSpecials = new StringBuilder();
-		for (final String special : specialKeywords) {
+		final var rawSpecials = new StringBuilder();
+		for (final var special : specialKeywords) {
 			if (!"import".equals(special)) { //$NON-NLS-1$
 				if (rawSpecials.length() > 0) {
 					rawSpecials.append("|"); //$NON-NLS-1$
@@ -168,8 +168,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t (r''({0})(\\s+)'', bygroups(Keyword.Namespace, Text)),", rawSpecials); //$NON-NLS-1$
 
 		// Literals
-		final StringBuilder rawLiterals = new StringBuilder();
-		for (final String literal : literals) {
+		final var rawLiterals = new StringBuilder();
+		for (final var literal : literals) {
 			if (rawLiterals.length() > 0) {
 				rawLiterals.append("|"); //$NON-NLS-1$
 			}
@@ -178,8 +178,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t (r''({0})\\b'', Keyword.Constant),", rawLiterals); //$NON-NLS-1$
 
 		// typeDeclarationKeywords
-		final StringBuilder rawTypeDeclarations = new StringBuilder();
-		for (final String typeDeclaration : typeDeclarationKeywords) {
+		final var rawTypeDeclarations = new StringBuilder();
+		for (final var typeDeclaration : typeDeclarationKeywords) {
 			if (rawTypeDeclarations.length() > 0) {
 				rawTypeDeclarations.append("|"); //$NON-NLS-1$
 			}
@@ -189,8 +189,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.appendNl("\t\t\t  'class'),"); //$NON-NLS-1$
 
 		// Special keyword
-		final StringBuilder rawImports = new StringBuilder();
-		for (final String special : specialKeywords) {
+		final var rawImports = new StringBuilder();
+		for (final var special : specialKeywords) {
 			if ("import".equals(special)) { //$NON-NLS-1$
 				if (rawImports.length() > 0) {
 					rawImports.append("|"); //$NON-NLS-1$
@@ -233,9 +233,7 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 
 	@Override
 	protected void generateAdditionalFiles(String basename, IStyleAppendable writtenAppendable) {
-		IStyleAppendable appendable;
-
-		appendable = newStyleAppendable();
+		var appendable = newStyleAppendable();
 		generatePythonPackage(appendable, basename);
 		writeFile("__init__.py", appendable); //$NON-NLS-1$
 

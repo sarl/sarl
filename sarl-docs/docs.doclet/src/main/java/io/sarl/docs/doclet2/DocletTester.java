@@ -50,8 +50,6 @@
 
 package io.sarl.docs.doclet2;
 
-import java.lang.reflect.Method;
-
 /** Tester for the SARL Doclet.
  *
  * <p>This utility class launch the Javadoc tool with the SARL doclet. Paths are hard coded.
@@ -77,7 +75,7 @@ public final class DocletTester {
 		try {
 			//System.setProperty("http.proxyHost", "proxy.utbm.fr"); //$NON-NLS-1$ //$NON-NLS-2$
 			//System.setProperty("http.proxyPort", "3128"); //$NON-NLS-1$ //$NON-NLS-2$
-			final String[] params = new String[] {
+			final var params = new String[] {
 				"-private", //$NON-NLS-1$
 				"-source", "11", //$NON-NLS-1$ //$NON-NLS-2$
 				"-doclet", Doclet.class.getName(), //$NON-NLS-1$
@@ -99,8 +97,8 @@ public final class DocletTester {
 				"-title", "The title", //$NON-NLS-1$ //$NON-NLS-2$
 				//"-help",
 			};
-			final Class<?> type = Class.forName("jdk.javadoc.internal.tool.Main");  //$NON-NLS-1$
-			final Method method = type.getDeclaredMethod("execute", String[].class); //$NON-NLS-1$
+			final var type = Class.forName("jdk.javadoc.internal.tool.Main");  //$NON-NLS-1$
+			final var method = type.getDeclaredMethod("execute", String[].class); //$NON-NLS-1$
 			method.setAccessible(true);
 			method.invoke(null, (Object) params);
 		} catch (Throwable ex) {
@@ -114,7 +112,7 @@ public final class DocletTester {
 	 * @return the cause.
 	 */
 	public static Throwable getCause(Throwable thr) {
-		Throwable cause = thr.getCause();
+		var cause = thr.getCause();
 		while (cause != null && cause != thr && cause != cause.getCause() && cause.getCause() != null) {
 			cause = cause.getCause();
 		}

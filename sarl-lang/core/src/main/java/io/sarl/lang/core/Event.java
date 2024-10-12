@@ -66,7 +66,7 @@ public abstract class Event implements Serializable {
 			return true;
 		}
 		if (obj != null && getClass().equals(obj.getClass())) {
-			final Event event = (Event) obj;
+			final var event = (Event) obj;
 			return (this.source == null && event.source == null)
 					|| (this.source != null && this.source.equals(event.source));
 		}
@@ -76,7 +76,7 @@ public abstract class Event implements Serializable {
 	@Override
 	@Pure
 	public int hashCode() {
-		int hash = 31 + getClass().hashCode();
+		var hash = 31 + getClass().hashCode();
 		if (this.source != null) {
 			hash = hash * 31 + this.source.hashCode();
 		}
@@ -105,7 +105,7 @@ public abstract class Event implements Serializable {
 	@Override
 	@Pure
 	public final String toString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		toString(builder);
 		return builder.toString();
 	}
@@ -142,7 +142,7 @@ public abstract class Event implements Serializable {
 	 */
 	@Pure
 	public boolean isFrom(UUID entityId) {
-		final Address iSource = getSource();
+		final var iSource = getSource();
 		return (entityId != null) && (iSource != null)
 				&& entityId.equals(iSource.getID());
 	}

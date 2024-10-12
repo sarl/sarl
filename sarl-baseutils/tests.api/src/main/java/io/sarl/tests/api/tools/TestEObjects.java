@@ -23,7 +23,6 @@ package io.sarl.tests.api.tools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Predicate;
@@ -95,13 +94,13 @@ public class TestEObjects {
 			script = parser.parse(string, resourceSet);
 		}
 		if (validationHelper != null) {
-			Resource resource = script.eResource();
-			ResourceSet resourceSet0 = resource.getResourceSet();
-			if (resourceSet0 instanceof XtextResourceSet) {
-				((XtextResourceSet) resourceSet0).setClasspathURIContext(TestEObjects.class);
+			var resource = script.eResource();
+			var resourceSet0 = resource.getResourceSet();
+			if (resourceSet0 instanceof XtextResourceSet xrs) {
+				xrs.setClasspathURIContext(TestEObjects.class);
 			}
 			assertEquals(0, resource.getErrors().size(), () -> resource.getErrors().toString());
-			Collection<Issue> issues = Collections2.filter(issues(validationHelper, resource), new Predicate<Issue>() {
+			var issues = Collections2.filter(issues(validationHelper, resource), new Predicate<Issue>() {
 				@Override
 				public boolean apply(Issue input) {
 					return input.getSeverity() == Severity.ERROR;
@@ -146,7 +145,7 @@ public class TestEObjects {
 	public static IPath path(String... path) {
 		assert(path != null && path.length > 0);
 		IPath p = new Path(path[0]);
-		for(int i=1; i<path.length; ++i) {
+		for(var i=1; i<path.length; ++i) {
 			p = p.append(path[i]);
 		}
 		return p;

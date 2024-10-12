@@ -30,8 +30,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmAnnotationType;
-import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
@@ -67,7 +65,7 @@ public class SARLAnnotationUtil {
 	 *     value.
 	 */
 	public String findStringValue(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findStringValue(reference);
 		}
@@ -83,9 +81,9 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public String findStringValue(JvmAnnotationReference reference) {
 		assert reference != null;
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmStringAnnotationValue) {
-				for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmStringAnnotationValue cvalue) {
+				for (final var strValue : cvalue.getValues()) {
 					if (strValue != null) {
 						return strValue;
 					}
@@ -102,7 +100,7 @@ public class SARLAnnotationUtil {
 	 * @return the values of the annotation, never {@code null}.
 	 */
 	public List<String> findStringValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findStringValues(reference);
 		}
@@ -117,10 +115,10 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public List<String> findStringValues(JvmAnnotationReference reference) {
 		assert reference != null;
-		final List<String> values = new ArrayList<>();
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmStringAnnotationValue) {
-				for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
+		final var values = new ArrayList<String>();
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmStringAnnotationValue cvalue) {
+				for (final var strValue : cvalue.getValues()) {
 					if (strValue != null) {
 						values.add(strValue);
 					}
@@ -137,7 +135,7 @@ public class SARLAnnotationUtil {
 	 * @return the values of the annotation, never {@code null}.
 	 */
 	public List<JvmTypeReference> findTypeValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findTypeValues(reference);
 		}
@@ -152,10 +150,10 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public List<JvmTypeReference> findTypeValues(JvmAnnotationReference reference) {
 		assert reference != null;
-		final List<JvmTypeReference> values = new ArrayList<>();
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmTypeAnnotationValue) {
-				for (final JvmTypeReference strValue : ((JvmTypeAnnotationValue) value).getValues()) {
+		final var values = new ArrayList<JvmTypeReference>();
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmTypeAnnotationValue cvalue) {
+				for (final var strValue : cvalue.getValues()) {
 					if (strValue != null) {
 						values.add(strValue);
 					}
@@ -174,7 +172,7 @@ public class SARLAnnotationUtil {
 	 * @since 0.6
 	 */
 	public Integer findIntValue(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findIntValue(reference);
 		}
@@ -191,9 +189,9 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public Integer findIntValue(JvmAnnotationReference reference) {
 		assert reference != null;
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmIntAnnotationValue) {
-				for (final Integer intValue : ((JvmIntAnnotationValue) value).getValues()) {
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmIntAnnotationValue cvalue) {
+				for (final var intValue : cvalue.getValues()) {
 					if (intValue != null) {
 						return intValue;
 					}
@@ -211,7 +209,7 @@ public class SARLAnnotationUtil {
 	 * @since 0.6
 	 */
 	public List<Integer> findIntValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findIntValues(reference);
 		}
@@ -227,10 +225,10 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public List<Integer> findIntValues(JvmAnnotationReference reference) {
 		assert reference != null;
-		final List<Integer> values = new ArrayList<>();
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmIntAnnotationValue) {
-				for (final Integer intValue : ((JvmIntAnnotationValue) value).getValues()) {
+		final var values = new ArrayList<Integer>();
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmIntAnnotationValue cvalue) {
+				for (final var intValue : cvalue.getValues()) {
 					if (intValue != null) {
 						values.add(intValue);
 					}
@@ -251,8 +249,8 @@ public class SARLAnnotationUtil {
 	public JvmAnnotationReference findAnnotation(JvmAnnotationTarget annotationTarget, String lookupType) {
 		// avoid creating an empty list for all given targets but check for #eIsSet first
 		if (annotationTarget.eIsSet(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS)) {
-			for (final JvmAnnotationReference annotation: annotationTarget.getAnnotations()) {
-				final JvmAnnotationType annotationType = annotation.getAnnotation();
+			for (final var annotation: annotationTarget.getAnnotations()) {
+				final var annotationType = annotation.getAnnotation();
 				if (annotationType != null && Objects.equals(lookupType, annotationType.getQualifiedName())) {
 					return annotation;
 				}
@@ -270,7 +268,7 @@ public class SARLAnnotationUtil {
 	 * @since 0.6
 	 */
 	public Boolean findBooleanValue(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findBooleanValue(reference);
 		}
@@ -287,9 +285,9 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public Boolean findBooleanValue(JvmAnnotationReference reference) {
 		assert reference != null;
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmBooleanAnnotationValue) {
-				for (final Boolean intValue : ((JvmBooleanAnnotationValue) value).getValues()) {
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmBooleanAnnotationValue cvalue) {
+				for (final var intValue : cvalue.getValues()) {
 					if (intValue != null) {
 						return intValue;
 					}
@@ -307,7 +305,7 @@ public class SARLAnnotationUtil {
 	 * @since 0.6
 	 */
 	public List<Boolean> findBooleanValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
-		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		final var reference = this.lookup.findAnnotation(op, annotationType);
 		if (reference != null) {
 			return findBooleanValues(reference);
 		}
@@ -323,10 +321,10 @@ public class SARLAnnotationUtil {
 	@SuppressWarnings("static-method")
 	public List<Boolean> findBooleanValues(JvmAnnotationReference reference) {
 		assert reference != null;
-		final List<Boolean> values = new ArrayList<>();
-		for (final JvmAnnotationValue value : reference.getValues()) {
-			if (value instanceof JvmBooleanAnnotationValue) {
-				for (final Boolean boolValue : ((JvmBooleanAnnotationValue) value).getValues()) {
+		final var values = new ArrayList<Boolean>();
+		for (final var value : reference.getValues()) {
+			if (value instanceof JvmBooleanAnnotationValue cvalue) {
+				for (final var boolValue : cvalue.getValues()) {
 					if (boolValue != null) {
 						values.add(boolValue);
 					}

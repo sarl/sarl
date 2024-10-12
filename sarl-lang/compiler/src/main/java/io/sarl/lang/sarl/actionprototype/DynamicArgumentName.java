@@ -67,7 +67,7 @@ public class DynamicArgumentName implements Cloneable, Serializable {
 	@Override
 	public DynamicArgumentName clone() {
 		try {
-			final DynamicArgumentName prototype = (DynamicArgumentName) super.clone();
+			final var prototype = (DynamicArgumentName) super.clone();
 			return prototype;
 		} catch (CloneNotSupportedException e) {
 			throw new Error(e);
@@ -85,7 +85,7 @@ public class DynamicArgumentName implements Cloneable, Serializable {
 		}
 
 		if (this.getClass() == obj.getClass()) {
-			final DynamicArgumentName arg = (DynamicArgumentName) obj;
+			final var arg = (DynamicArgumentName) obj;
 			return Strings.equal(this.argument, arg.argument);
 		}
 		return false;
@@ -93,7 +93,7 @@ public class DynamicArgumentName implements Cloneable, Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
+		var hash = 1;
 		hash = 31 * hash + ((this.argument == null) ? 0 : this.argument.hashCode());
 		return hash;
 	}

@@ -51,13 +51,11 @@ import org.eclipse.xtext.validation.CheckMode;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 
-import io.sarl.lang.extralanguage.compiler.ConversionType;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
@@ -115,8 +113,8 @@ public abstract class AbstractExtraLanguageValidator {
 	}
 
 	private List<MethodWrapper> updateMethodCache(Class<?> parameterType) {
-		final List<MethodWrapper> result = new ArrayList<>();
-		for (final MethodWrapper method : AbstractExtraLanguageValidator.this.checkMethods) {
+		final var result = new ArrayList<MethodWrapper>();
+		for (final var method : AbstractExtraLanguageValidator.this.checkMethods) {
 			if (method.isMatching(parameterType)) {
 				result.add(method);
 			}
@@ -159,8 +157,8 @@ public abstract class AbstractExtraLanguageValidator {
 	public void validate(StateAccess validationState, ValidationMessageAcceptor messageAcceptor) {
 		if (isResponsible(validationState.getState().context, validationState.getState().currentObject)) {
 			try {
-				for (final MethodWrapper method : getMethods(validationState.getState().currentObject)) {
-					final Context ctx = new Context(validationState, this, method, messageAcceptor);
+				for (final var method : getMethods(validationState.getState().currentObject)) {
+					final var ctx = new Context(validationState, this, method, messageAcceptor);
 					this.currentContext.set(ctx);
 					initializeContext(ctx);
 					method.invoke(ctx);
@@ -183,12 +181,12 @@ public abstract class AbstractExtraLanguageValidator {
 		if (!visitedClasses.add(clazz)) {
 			return;
 		}
-		for (final Method method : clazz.getDeclaredMethods()) {
+		for (final var method : clazz.getDeclaredMethods()) {
 			if (method.getAnnotation(Check.class) != null && method.getParameterTypes().length == 1) {
 				result.add(createMethodWrapper(method));
 			}
 		}
-		final Class<? extends AbstractExtraLanguageValidator> superClass = getSuperClass(clazz);
+		final var superClass = getSuperClass(clazz);
 		if (superClass != null) {
 			collectMethods(superClass, visitedClasses, result);
 		}
@@ -207,7 +205,7 @@ public abstract class AbstractExtraLanguageValidator {
 	private static Class<? extends AbstractExtraLanguageValidator> getSuperClass(
 			Class<? extends AbstractExtraLanguageValidator> clazz) {
 		try {
-			final Class<? extends AbstractExtraLanguageValidator> superClass = clazz.getSuperclass().asSubclass(
+			final var superClass = clazz.getSuperclass().asSubclass(
 					AbstractExtraLanguageValidator.class);
 			if (AbstractExtraLanguageValidator.class.equals(superClass)) {
 				return null;
@@ -225,8 +223,8 @@ public abstract class AbstractExtraLanguageValidator {
 		if (this.checkMethods == null) {
 			synchronized (this) {
 				if (this.checkMethods == null) {
-					final Set<MethodWrapper> checkMethods = new LinkedHashSet<>();
-					final Set<Class<?>> visitedClasses = new HashSet<>(4);
+					final var checkMethods = new LinkedHashSet<MethodWrapper>();
+					final var visitedClasses = new HashSet<Class<?>>(4);
 					collectMethods(getClass(), visitedClasses, checkMethods);
 					this.checkMethods = checkMethods;
 				}
@@ -245,7 +243,7 @@ public abstract class AbstractExtraLanguageValidator {
 	protected boolean isResponsible(Map<Object, Object> context, EObject eObject) {
 		// Skip the validation of an feature call if one of its container was validated previously
 		if (eObject instanceof XMemberFeatureCall || eObject instanceof XFeatureCall) {
-			final XAbstractFeatureCall rootFeatureCall = Utils.getRootFeatureCall((XAbstractFeatureCall) eObject);
+			final var rootFeatureCall = Utils.getRootFeatureCall((XAbstractFeatureCall) eObject);
 			return !isCheckedFeatureCall(context, rootFeatureCall);
 		}
 		return true;
@@ -331,7 +329,7 @@ public abstract class AbstractExtraLanguageValidator {
 	 * @return the type converter.
 	 */
 	public ExtraLanguageTypeConverter getTypeConverter() {
-		ExtraLanguageTypeConverter converter = this.typeConverter;
+		var converter = this.typeConverter;
 		if (converter == null) {
 			converter = createTypeConverterInstance(getTypeConverterInitializer(), null);
 			this.injector.injectMembers(converter);
@@ -358,7 +356,7 @@ public abstract class AbstractExtraLanguageValidator {
 	 * @return the feature name converter.
 	 */
 	public ExtraLanguageFeatureNameConverter getFeatureNameConverter() {
-		ExtraLanguageFeatureNameConverter converter = this.featureConverter;
+		var converter = this.featureConverter;
 		if (converter == null) {
 			converter = createFeatureNameConverterInstance(getFeatureConverterInitializer(), null);
 			this.injector.injectMembers(converter);
@@ -388,8 +386,8 @@ public abstract class AbstractExtraLanguageValidator {
 	 */
 	protected boolean doTypeMappingCheck(EObject source, JvmType type, Procedure3<? super EObject, ? super JvmType, ? super String> errorHandler) {
 		if (source != null && type != null) {
-			final ExtraLanguageTypeConverter converter = getTypeConverter();
-			final String qn = type.getQualifiedName();
+			final var converter = getTypeConverter();
+			final var qn = type.getQualifiedName();
 			if (converter != null && !converter.hasConversion(qn)) {
 				if (errorHandler != null) {
 					errorHandler.apply(source, type, qn);
@@ -402,7 +400,7 @@ public abstract class AbstractExtraLanguageValidator {
 
 	private static boolean isCheckedFeatureCall(Map<Object, Object> context, EObject eObject) {
 		if (eObject instanceof XMemberFeatureCall || eObject instanceof XFeatureCall) {
-			final Object calls = context.get(CHECKED_FEATURE_CALLS);
+			final var calls = context.get(CHECKED_FEATURE_CALLS);
 			if (calls != null && ((Collection<?>) calls).contains(eObject)) {
 				return true;
 			}
@@ -413,7 +411,7 @@ public abstract class AbstractExtraLanguageValidator {
 	@SuppressWarnings("unchecked")
 	private static void setCheckedFeatureCall(Map<Object, Object> context, EObject eObject) {
 		if (eObject instanceof XMemberFeatureCall || eObject instanceof XFeatureCall) {
-			Collection<XAbstractFeatureCall>  calls = (Collection<XAbstractFeatureCall>) context.get(CHECKED_FEATURE_CALLS);
+			var  calls = (Collection<XAbstractFeatureCall>) context.get(CHECKED_FEATURE_CALLS);
 			if (calls == null) {
 				calls = new TreeSet<>(FeatureCallComparator.SINGLETON);
 				context.put(CHECKED_FEATURE_CALLS, calls);
@@ -431,8 +429,8 @@ public abstract class AbstractExtraLanguageValidator {
 	protected void doCheckMemberFeatureCallMapping(XAbstractFeatureCall featureCall,
 			Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler,
 			Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler) {
-		final XAbstractFeatureCall rootFeatureCall = Utils.getRootFeatureCall(featureCall);
-		final Map<Object, Object> context = getContext().getContext();
+		final var rootFeatureCall = Utils.getRootFeatureCall(featureCall);
+		final var context = getContext().getContext();
 		if (isCheckedFeatureCall(context, rootFeatureCall)) {
 			// One of the containing expressions was already checked.
 			return;
@@ -446,20 +444,19 @@ public abstract class AbstractExtraLanguageValidator {
 	private boolean internalCheckMemberFeaturCallMapping(XAbstractFeatureCall featureCall,
 			Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler,
 			Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler) {
-		final ExtraLanguageFeatureNameConverter converter = getFeatureNameConverter();
+		final var converter = getFeatureNameConverter();
 		if (converter != null) {
-			final ConversionType conversionType = converter.getConversionTypeFor(featureCall);
+			final var conversionType = converter.getConversionTypeFor(featureCall);
 			switch (conversionType) {
 			case EXPLICIT:
 				return true;
 			case IMPLICIT:
-				final JvmIdentifiableElement element = featureCall.getFeature();
-				if (element instanceof JvmType) {
-					return doTypeMappingCheck(featureCall, (JvmType) element, typeErrorHandler);
+				final var element = featureCall.getFeature();
+				if (element instanceof JvmType cvalue) {
+					return doTypeMappingCheck(featureCall, cvalue, typeErrorHandler);
 				}
-				if (featureCall instanceof XMemberFeatureCall) {
-					final XMemberFeatureCall memberFeatureCall = (XMemberFeatureCall) featureCall;
-					final XExpression receiver = memberFeatureCall.getMemberCallTarget();
+				if (featureCall instanceof XMemberFeatureCall memberFeatureCall) {
+					final var receiver = memberFeatureCall.getMemberCallTarget();
 					if (receiver instanceof XMemberFeatureCall || receiver instanceof XFeatureCall) {
 						internalCheckMemberFeaturCallMapping(
 								(XAbstractFeatureCall) receiver,

@@ -52,8 +52,7 @@ public class ApplicationLaunchShortcut extends AbstractSarlLaunchShortcut<SarlCl
 
 	@Override
 	protected URI getResourceURIForValidEObject(Object object) {
-		if (object instanceof SarlClass) {
-			final SarlClass clazz = (SarlClass) object;
+		if (object instanceof SarlClass clazz) {
 			return clazz.eResource().getURI();
 		}
 		return null;

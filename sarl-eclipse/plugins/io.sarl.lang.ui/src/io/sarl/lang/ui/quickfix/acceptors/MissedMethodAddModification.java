@@ -123,7 +123,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor,
 			String label, String[] operationUris) {
 		if (operationUris.length > 0) {
-			final MissedMethodAddModification modification = new MissedMethodAddModification(operationUris);
+			final var modification = new MissedMethodAddModification(operationUris);
 			provider.getInjector().injectMembers(modification);
 			modification.setIssue(issue);
 			modification.setTools(provider);
@@ -139,31 +139,31 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final XtendTypeDeclaration container = (XtendTypeDeclaration) element;
-		final IXtextDocument document = context.getXtextDocument();
-		final SARLQuickfixProvider tools = getTools();
+		final var container = (XtendTypeDeclaration) element;
+		final var document = context.getXtextDocument();
+		final var tools = getTools();
 
-		final JvmDeclaredType declaringType = (JvmDeclaredType) this.associations.getPrimaryJvmElement(container);
+		final var declaringType = (JvmDeclaredType) this.associations.getPrimaryJvmElement(container);
 
-		final int insertOffset = tools.getInsertOffset(container);
-		final int length = tools.getSpaceSize(document, insertOffset);
-		final OptionalParameters options = new OptionalParameters();
+		final var insertOffset = tools.getInsertOffset(container);
+		final var length = tools.getSpaceSize(document, insertOffset);
+		final var options = new OptionalParameters();
 		options.isJava = false;
 		options.ensureEmptyLinesAround = false;
 		options.baseIndentationLevel = 1;
-		final ReplacingAppendable appendable = tools.getAppendableFactory().create(document,
+		final var appendable = tools.getAppendableFactory().create(document,
 				(XtextResource) container.eResource(), insertOffset, length, options);
 		// Compute the type parameters' mapping
-		final Map<String, JvmTypeReference> typeParameterMap = buildTypeParameterMapping(container);
+		final var typeParameterMap = buildTypeParameterMapping(container);
 
-		for (final JvmOperation operation : tools.getJvmOperationsFromURIs(container, this.operationUris)) {
+		for (final var operation : tools.getJvmOperationsFromURIs(container, this.operationUris)) {
 			if (this.annotationUtils.findAnnotation(operation, SyntheticMember.class.getName()) == null
 					&& !isGeneratedOperation(operation)) {
 
 				appendable.newLine().newLine();
 
-				final XtendMethodBuilder builder = this.methodBuilder.get();
-				final SarlMethodBuilder sarlBuilder = (builder instanceof SarlMethodBuilder) ? (SarlMethodBuilder) builder : null;
+				final var builder = this.methodBuilder.get();
+				final var sarlBuilder = builder instanceof SarlMethodBuilder cvalue ? cvalue : null;
 
 				builder.setContext(declaringType);
 				builder.setOwner(declaringType);
@@ -178,24 +178,24 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				builder.setVisibility(operation.getVisibility());
 				builder.setTypeParameters(cloneTypeParameters(operation, declaringType));
 
-				final QualifiedActionName qualifiedActionName = this.actionPrototypeProvider.createQualifiedActionName(
+				final var qualifiedActionName = this.actionPrototypeProvider.createQualifiedActionName(
 						declaringType,
 						operation.getSimpleName());
-				final InferredPrototype prototype = this.actionPrototypeProvider.createPrototypeFromJvmModel(
+				final var prototype = this.actionPrototypeProvider.createPrototypeFromJvmModel(
 						// TODO More general context?
 						this.actionPrototypeProvider.createContext(),
 						qualifiedActionName,
 						operation.isVarArgs(),
 						operation.getParameters());
-				final FormalParameterProvider formalParameters = prototype.getFormalParameters();
+				final var formalParameters = prototype.getFormalParameters();
 
-				int i = 0;
-				for (final JvmFormalParameter parameter : operation.getParameters()) {
-					final SarlParameterBuilder paramBuilder = (SarlParameterBuilder) builder.newParameterBuilder();
+				var i = 0;
+				for (final var parameter : operation.getParameters()) {
+					final var paramBuilder = (SarlParameterBuilder) builder.newParameterBuilder();
 					paramBuilder.setName(parameter.getSimpleName());
 					paramBuilder.setType(cloneTypeReference(parameter.getParameterType(), typeParameterMap));
 					if (formalParameters.hasFormalParameterDefaultValue(i)) {
-						final String defaultValue = formalParameters.getFormalParameterDefaultValueString(i);
+						final var defaultValue = formalParameters.getFormalParameterDefaultValueString(i);
 						if (defaultValue != null) {
 							paramBuilder.setDefaultValue(defaultValue);
 						}
@@ -209,9 +209,9 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				builder.setExceptions(cloneTypeReferences(operation.getExceptions(), typeParameterMap));
 
 				if (sarlBuilder != null) {
-					final JvmAnnotationReference firedEvents = this.annotationUtils.findAnnotation(operation, FiredEvent.class.getName());
+					final var firedEvents = this.annotationUtils.findAnnotation(operation, FiredEvent.class.getName());
 					if (firedEvents != null) {
-						final List<JvmTypeReference> events = this.annotationUtils.findTypeValues(firedEvents);
+						final var events = this.annotationUtils.findTypeValues(firedEvents);
 						if (events != null) {
 							sarlBuilder.setFires(cloneTypeReferences(events, typeParameterMap));
 						}
@@ -233,11 +233,11 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	 *     otherwise.
 	 */
 	public static boolean isGeneratedOperation(JvmOperation method) {
-		for (final JvmAnnotationReference annotation : method.getAnnotations()) {
+		for (final var annotation : method.getAnnotations()) {
 			if (Objects.equals(SyntheticMember.class.getName(), annotation.getAnnotation().getIdentifier())) {
 				return true;
 			}
-			final String simpleName = annotation.getAnnotation().getSimpleName();
+			final var simpleName = annotation.getAnnotation().getSimpleName();
 			if (Objects.equals(GENERATED_NAME, simpleName)) {
 				return true;
 			}
@@ -248,9 +248,9 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	private static JvmTypeReference mapToTypeParameter(JvmTypeReference type, Map<String, JvmTypeReference> map) {
 		if (type != null && type.getType() instanceof JvmTypeParameter) {
 			// The type is a type parameter of the super type.
-			JvmTypeReference ref = map.get(typeParameterId(type));
+			var ref = map.get(typeParameterId(type));
 			while (ref != null) {
-				final JvmTypeReference ref2 = map.get(typeParameterId(ref));
+				final var ref2 = map.get(typeParameterId(ref));
 				if (ref2 == null) {
 					return ref;
 				}
@@ -261,30 +261,27 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	}
 
 	private Map<String, JvmTypeReference> buildTypeParameterMapping(XtendTypeDeclaration container) {
-		final Map<String, JvmTypeReference> map = new TreeMap<>();
-		final EObject obj = this.associations.getPrimaryJvmElement(container);
-		if (obj instanceof JvmGenericType) {
-			final JvmGenericType genType = (JvmGenericType) obj;
+		final var map = new TreeMap<String, JvmTypeReference>();
+		final var obj = this.associations.getPrimaryJvmElement(container);
+		if (obj instanceof JvmGenericType genType) {
+			final var encounteredTypes = new TreeSet<String>();
 
-			final Set<String> encounteredTypes = new TreeSet<>();
-
-			final LinkedList<JvmGenericType> expectedReferences = new LinkedList<>();
+			final var expectedReferences = new LinkedList<JvmGenericType>();
 			expectedReferences.add(genType);
 
-			final String objectId = Object.class.getName();
+			final var objectId = Object.class.getName();
 
 			while (!expectedReferences.isEmpty()) {
-				final JvmGenericType type = expectedReferences.removeFirst();
+				final var type = expectedReferences.removeFirst();
 				if (encounteredTypes.add(type.getIdentifier())) {
 
-					for (final JvmTypeReference superType : type.getSuperTypes()) {
-						if (!objectId.equals(superType.getIdentifier()) && superType instanceof JvmParameterizedTypeReference) {
-							final JvmParameterizedTypeReference parametizedReference = (JvmParameterizedTypeReference) superType;
+					for (final var superType : type.getSuperTypes()) {
+						if (!objectId.equals(superType.getIdentifier()) && superType instanceof JvmParameterizedTypeReference parametizedReference) {
 							if (!parametizedReference.getArguments().isEmpty()) {
-								final JvmGenericType genericSuperType = (JvmGenericType) parametizedReference.getType();
-								int i = 0;
-								for (final JvmTypeReference refInstance : parametizedReference.getArguments()) {
-									final JvmTypeParameter typeParameter = genericSuperType.getTypeParameters().get(i);
+								final var genericSuperType = (JvmGenericType) parametizedReference.getType();
+								var i = 0;
+								for (final var refInstance : parametizedReference.getArguments()) {
+									final var typeParameter = genericSuperType.getTypeParameters().get(i);
 									map.put(
 											typeParameterId(typeParameter, genericSuperType.getQualifiedName()),
 											refInstance);
@@ -306,9 +303,9 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	}
 
 	private static String typeParameterId(JvmTypeReference type) {
-		final JvmType realType = type.getType();
+		final var realType = type.getType();
 		if (realType instanceof JvmTypeParameter) {
-			final JvmDeclaredType container = EcoreUtil2.getContainerOfType(realType, JvmDeclaredType.class);
+			final var container = EcoreUtil2.getContainerOfType(realType, JvmDeclaredType.class);
 			if (container != null) {
 				return container.getQualifiedName() + "$" + realType.getIdentifier(); //$NON-NLS-1$
 			}
@@ -324,8 +321,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	 */
 	private List<LightweightTypeReference> cloneTypeReferences(List<JvmTypeReference> types,
 			Map<String, JvmTypeReference> typeParameterMap) {
-		final List<LightweightTypeReference> newList = new ArrayList<>(types.size());
-		for (final JvmTypeReference type : types) {
+		final var newList = new ArrayList<LightweightTypeReference>(types.size());
+		for (final var type : types) {
 			newList.add(cloneTypeReference(type, typeParameterMap));
 		}
 		return newList;
@@ -333,19 +330,19 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	private LightweightTypeReference cloneTypeReference(JvmTypeReference type,
 			Map<String, JvmTypeReference> typeParameterMap) {
-		final JvmTypeReference mappedReference = mapToTypeParameter(type, typeParameterMap);
+		final var mappedReference = mapToTypeParameter(type, typeParameterMap);
 		return Utils.toLightweightTypeReference(mappedReference, this.services);
 	}
 
 	private List<JvmTypeParameter> cloneTypeParameters(JvmOperation fromOperation, JvmDeclaredType declaringType) {
-		final SARLQuickfixProvider tools = getTools();
-		final JvmTypeReferenceBuilder builder1 = tools.getJvmTypeParameterBuilder();
-		final JvmTypesBuilder builder2 = tools.getJvmTypeBuilder();
-		final TypeReferences builder3 = tools.getTypeServices().getTypeReferences();
-		final TypesFactory builder4 = tools.getTypeServices().getTypesFactory();
-		final List<JvmTypeParameter> outParameters = new ArrayList<>();
+		final var tools = getTools();
+		final var builder1 = tools.getJvmTypeParameterBuilder();
+		final var builder2 = tools.getJvmTypeBuilder();
+		final var builder3 = tools.getTypeServices().getTypeReferences();
+		final var builder4 = tools.getTypeServices().getTypesFactory();
+		final var outParameters = new ArrayList<JvmTypeParameter>();
 		// Get the type parameter mapping that is a consequence of the super type extension within the container.
-		final Map<String, JvmTypeReference> superTypeParameterMapping = new HashMap<>();
+		final var superTypeParameterMapping = new HashMap<String, JvmTypeReference>();
 		Utils.getSuperTypeParameterMap(declaringType, superTypeParameterMapping);
 		Utils.copyTypeParametersFromJvmOperation(
 				fromOperation.getTypeParameters(),

@@ -91,9 +91,8 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 	}
 
 	private static void findCandidateTypesWithOperation(String methodSimpleName, JvmGenericType genericType, IAcceptor<JvmGenericType> acceptor) {
-		for (final JvmMember jvmMember : genericType.getMembers()) {
-			if (jvmMember instanceof JvmOperation) {
-				final JvmOperation operation = (JvmOperation) jvmMember;
+		for (final var jvmMember : genericType.getMembers()) {
+			if (jvmMember instanceof JvmOperation operation) {
 				if (isEquivalentMethodName(methodSimpleName, operation.getSimpleName())) {
 					acceptor.accept(genericType);
 					return;
@@ -105,34 +104,31 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 	private static void findCandidateTypes(SARLQuickfixProvider provider, XtendTypeDeclaration sarlContainer,
 			JvmIdentifiableElement jvmContainer, String methodSimpleName,
 			IAcceptor<JvmGenericType> acceptor) throws JavaModelException, CoreException {
-		final JvmType jvmCapacityType = provider.getTypeServices().getTypeReferences().findDeclaredType(Capacity.class, jvmContainer);
+		final var jvmCapacityType = provider.getTypeServices().getTypeReferences().findDeclaredType(Capacity.class, jvmContainer);
 		if (jvmCapacityType != null) {
-			final IJavaElement jdtCapacityType = provider.getJavaElementFinder().findElementFor(jvmCapacityType);
-			if (jdtCapacityType instanceof IType) {
-				final IType jdtCapacityIType = (IType) jdtCapacityType;
-				final IJavaSearchScope hierarchyScope = SearchEngine.createStrictHierarchyScope(null, jdtCapacityIType, true, true, null);
+			final var jdtCapacityType = provider.getJavaElementFinder().findElementFor(jvmCapacityType);
+			if (jdtCapacityType instanceof IType jdtCapacityIType) {
+				final var hierarchyScope = SearchEngine.createStrictHierarchyScope(null, jdtCapacityIType, true, true, null);
 
-				final SearchPattern pattern = SearchPattern.createPattern("*", //$NON-NLS-1$
+				final var pattern = SearchPattern.createPattern("*", //$NON-NLS-1$
 						IJavaSearchConstants.INTERFACE,
 						IJavaSearchConstants.DECLARATIONS,
 						SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
 
-				final SearchParticipant[] participants = new SearchParticipant[] {
+				final var participants = new SearchParticipant[] {
 					SearchEngine.getDefaultSearchParticipant(),
 				};
-				final SearchEngine engine = new SearchEngine();
+				final var engine = new SearchEngine();
 
-				final SearchRequestor requestor = new SearchRequestor() {
+				final var requestor = new SearchRequestor() {
 					@Override
 					public void acceptSearchMatch(SearchMatch match) throws CoreException {
 						if (match.getAccuracy() == SearchMatch.A_ACCURATE) {
-							final Object element = match.getElement();
-							if (element instanceof NamedMember) {
-								final NamedMember member = (NamedMember) element;
-								final String fqn = member.getFullyQualifiedName('.', false);
-								final JvmType type = provider.getTypeServices().getTypeReferences().findDeclaredType(fqn, sarlContainer);
-								if (type instanceof JvmGenericType) {
-									final JvmGenericType genericType = (JvmGenericType) type;
+							final var element = match.getElement();
+							if (element instanceof NamedMember member) {
+								final var fqn = member.getFullyQualifiedName('.', false);
+								final var type = provider.getTypeServices().getTypeReferences().findDeclaredType(fqn, sarlContainer);
+								if (type instanceof JvmGenericType genericType) {
 									findCandidateTypesWithOperation(methodSimpleName, genericType, acceptor);
 								}
 							}
@@ -155,22 +151,21 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, EObject owner, IssueResolutionAcceptor acceptor) {
-		if (owner instanceof XAbstractFeatureCall) {
-			final XAbstractFeatureCall call = (XAbstractFeatureCall) owner;
+		if (owner instanceof XAbstractFeatureCall call) {
 			try {
-				final String text = call.getConcreteSyntaxFeatureName();
+				final var text = call.getConcreteSyntaxFeatureName();
 				if (!Strings.isEmpty(text)) {
-					final OutParameter<EObject> container = new OutParameter<>();
+					final var container = new OutParameter<EObject>();
 					if (Utils.getContainerOfType(call, container, null, XtendTypeDeclaration.class)) {
-						final EObject containerObj = container.get();
+						final var containerObj = container.get();
 						if (containerObj instanceof SarlAgent
 								|| containerObj instanceof SarlBehavior
 								|| containerObj instanceof SarlSkill) {
-							final XtendTypeDeclaration typeDeclaration = (XtendTypeDeclaration) containerObj;
-							final EObject jvmContainer = provider.getJvmAssociations().getPrimaryJvmElement(containerObj);
-							if (jvmContainer instanceof JvmIdentifiableElement) {
+							final var typeDeclaration = (XtendTypeDeclaration) containerObj;
+							final var jvmContainer = provider.getJvmAssociations().getPrimaryJvmElement(containerObj);
+							if (jvmContainer instanceof JvmIdentifiableElement cvalue) {
 								final IAcceptor<JvmGenericType> fqnAcceptor = fqn -> {
-									final CapacityUseAddModification modification = new CapacityUseAddModification(fqn);
+									final var modification = new CapacityUseAddModification(fqn);
 									modification.setIssue(issue);
 									modification.setTools(provider);
 									acceptor.accept(issue,
@@ -183,7 +178,7 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 								findCandidateTypes(
 										provider,
 										typeDeclaration,
-										(JvmIdentifiableElement) jvmContainer,
+										cvalue,
 										text,
 										fqnAcceptor);
 							}
@@ -198,14 +193,14 @@ public final class CapacityUseAddModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(element, XtendTypeDeclaration.class);
+		final var container = EcoreUtil2.getContainerOfType(element, XtendTypeDeclaration.class);
 		if (container != null) {
-			final int insertOffset = getTools().getInsertOffset(container);
-			final IXtextDocument document = context.getXtextDocument();
-			final int length = getTools().getSpaceSize(document, insertOffset);
-			final ReplacingAppendable appendable = getTools().getAppendableFactory().create(document,
+			final var insertOffset = getTools().getInsertOffset(container);
+			final var document = context.getXtextDocument();
+			final var length = getTools().getSpaceSize(document, insertOffset);
+			final var appendable = getTools().getAppendableFactory().create(document,
 					(XtextResource) element.eResource(), insertOffset, length);
-			final boolean changeIndentation = container.getMembers().isEmpty();
+			final var changeIndentation = container.getMembers().isEmpty();
 			if (changeIndentation) {
 				appendable.increaseIndentation();
 			}

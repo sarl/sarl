@@ -137,7 +137,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 					@SuppressWarnings("synthetic-access")
 					@Override
 					public List<ICodeMining> exec(XtextResource resource, CancelIndicator uowCancelIndicator) throws Exception {
-						final CombinedCancelIndicator indicator = new CombinedCancelIndicator(monitor, uowCancelIndicator);
+						final var indicator = new CombinedCancelIndicator(monitor, uowCancelIndicator);
 						return createCodeMinings(viewer.getDocument(), resource, indicator);
 					}
 				};
@@ -149,7 +149,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 					return defaultList.get();
 				}
 			};
-			final CompletableFuture<List<? extends ICodeMining>> future = CompletableFuture.supplyAsync(task);
+			final var future = CompletableFuture.supplyAsync(task);
 			return future;
 		}
 		return null;
@@ -157,17 +157,17 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	private void disableCodeMining(ITextViewer viewer, Throwable error) {
 		this.codeminingPreferences.setCodeminingEnabled(Boolean.FALSE);
-		final Throwable rootCause = Throwables.getRootCause(error);
+		final var rootCause = Throwables.getRootCause(error);
 		SARLUiPlugin.log(rootCause);
 		/*
-		String message = Messages.SARLCodeMiningProvider_2;
+		var message = Messages.SARLCodeMiningProvider_2;
 		if (rootCause != null) {
-			final String msg = rootCause.getLocalizedMessage();
+			final var msg = rootCause.getLocalizedMessage();
 			if (!Strings.isEmpty(msg)) {
 				message = msg;
 			}
 		}
-		final String errorMessage = message;
+		final var errorMessage = message;
 		Display.getDefault().asyncExec(() -> {
 			SARLUiPlugin.openError(shell, Messages.SARLCodeMiningProvider_0,
 					MessageFormat.format(Messages.SARLCodeMiningProvider_1, errorMessage),
@@ -196,32 +196,32 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 				return;
 			}
 			// get return type name from the generated JVM operation itself
-			final JvmOperation inferredOperation = (JvmOperation) this.jvmModelAssocitions.getPrimaryJvmElement(action);
+			final var inferredOperation = (JvmOperation) this.jvmModelAssocitions.getPrimaryJvmElement(action);
 			if (inferredOperation == null) {
 				return;
 			}
-			final JvmTypeReference returnType = inferredOperation.getReturnType();
+			final var returnType = inferredOperation.getReturnType();
 			if (returnType == null) {
 				return;
 			}
 			// find document offset for inline annotation
-			final AOPMemberElements aop = this.grammar.getAOPMemberAccess();
-			final Assignment actionName = aop.getNameAssignment_2_5_5();
-			final Keyword leftParenthesis = aop.getLeftParenthesisKeyword_2_5_6_0();
-			final Keyword rightParenthesis = aop.getRightParenthesisKeyword_2_5_6_2();
-			final CodeRegion region = findNode(action,
+			final var aop = this.grammar.getAOPMemberAccess();
+			final var actionName = aop.getNameAssignment_2_5_5();
+			final var leftParenthesis = aop.getLeftParenthesisKeyword_2_5_6_0();
+			final var rightParenthesis = aop.getRightParenthesisKeyword_2_5_6_2();
+			final var region = findNode(action,
 				candidate -> candidate instanceof RuleCall && EcoreUtil.equals(actionName, candidate.eContainer()),
 				candidate -> EcoreUtil.equals(leftParenthesis, candidate),
 				candidate -> EcoreUtil.equals(rightParenthesis, candidate));
-			int offset = -1;
+			var offset = -1;
 			if (region.getEnd() != null) {
 				offset = region.getEnd().getTotalEndOffset();
 			} else if (region.getStart() != null) {
 				offset = region.getStart().getTotalEndOffset();
 			}
 			if (offset >= 0) {
-				final String returnTypeName = Utils.toLightweightTypeReference(returnType, this.services).getHumanReadableName();
-				final String text = " " + this.keywords.getColonKeyword() + " " + returnTypeName; //$NON-NLS-1$ //$NON-NLS-2$
+				final var returnTypeName = Utils.toLightweightTypeReference(returnType, this.services).getHumanReadableName();
+				final var text = " " + this.keywords.getColonKeyword() + " " + returnTypeName; //$NON-NLS-1$ //$NON-NLS-2$
 				acceptor.accept(createNewLineContentCodeMining(offset, text));
 			}
 		}
@@ -237,7 +237,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			createImplicitVarValType(field, acceptor, XtendField.class,
 				it -> it.getType(),
 				it -> {
-					final JvmField inferredField = (JvmField) this.jvmModelAssocitions.getPrimaryJvmElement(it);
+					final var inferredField = (JvmField) this.jvmModelAssocitions.getPrimaryJvmElement(it);
 					if (inferredField == null || inferredField.getType() == null || inferredField.getType().eIsProxy()) {
 						return null;
 					}
@@ -258,7 +258,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			createImplicitVarValType(variable, acceptor, XtendVariableDeclaration.class,
 				it -> it.getType(),
 				it -> {
-					LightweightTypeReference type = getLightweightType(it.getRight());
+					var type = getLightweightType(it.getRight());
 					if (type.isAny()) {
 						type = getTypeForVariableDeclaration(it.getRight());
 					}
@@ -276,9 +276,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 */
 	protected void _codemining(XFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
 		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
-			final JvmIdentifiableElement feature = featureCall.getFeature();
-			if (feature instanceof JvmExecutable) {
-				createImplicitArgumentName((JvmExecutable) feature, featureCall.getActualArguments(), acceptor);
+			final var feature = featureCall.getFeature();
+			if (feature instanceof JvmExecutable cvalue) {
+				createImplicitArgumentName(cvalue, featureCall.getActualArguments(), acceptor);
 			}
 		}
 	}
@@ -290,9 +290,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 */
 	protected void _codemining(XMemberFeatureCall featureCall, IAcceptor<? super ICodeMining> acceptor) {
 		if (this.codeminingPreferences.isCodeminingFeatureCallArgumentNameEnabled()) {
-			final JvmIdentifiableElement feature = featureCall.getFeature();
-			if (feature instanceof JvmExecutable) {
-				createImplicitArgumentName((JvmExecutable) feature, featureCall.getActualArguments(), acceptor);
+			final var feature = featureCall.getFeature();
+			if (feature instanceof JvmExecutable cvalue) {
+				createImplicitArgumentName(cvalue, featureCall.getActualArguments(), acceptor);
 			}
 		}
 	}
@@ -311,9 +311,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	@Override
 	protected void createCodeMinings(IDocument document, XtextResource resource, CancelIndicator indicator,
 			IAcceptor<? super ICodeMining> acceptor) throws BadLocationException {
-		final TreeIterator<EObject> iterator = EcoreUtil2.eAll(resource.getContents().get(0));
+		final var iterator = EcoreUtil2.eAll(resource.getContents().get(0));
 		while (iterator.hasNext() && !isCanceled(indicator)) {
-			final EObject obj = iterator.next();
+			final var obj = iterator.next();
 			this.codeminingDispatcher.invoke(obj, acceptor);
 		}
 	}
@@ -325,28 +325,28 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @param acceptor the acceptor.
 	 */
 	private void createImplicitArgumentName(JvmExecutable feature, EList<XExpression> arguments, IAcceptor<? super ICodeMining> acceptor) {
-		final List<JvmFormalParameter> parameters = feature.getParameters();
+		final var parameters = feature.getParameters();
 		if (parameters.size() > 0 && parameters.size() <= arguments.size()) {
-			final Iterator<XExpression> args = arguments.iterator();
-			final Iterator<JvmFormalParameter> params = parameters.iterator();
+			final var args = arguments.iterator();
+			final var params = parameters.iterator();
 			provideArgumentName(params.next().getSimpleName(), findArgumentOffset(args.next()), acceptor);
 			while (args.hasNext() && params.hasNext()) {
-				final XExpression arg = args.next();
-				final JvmFormalParameter param = params.next();
+				final var arg = args.next();
+				final var param = params.next();
 				provideArgumentName(param.getSimpleName(), findArgumentOffset(arg), acceptor);
 			}
 		}
 	}
 
 	private static int findArgumentOffset(XExpression semanticObject) {
-		final INode node = NodeModelUtils.findActualNodeFor(semanticObject);
+		final var node = NodeModelUtils.findActualNodeFor(semanticObject);
 		if (node != null) {
 			// Sometimes the node contains white spaces at the beginning.
 			// The offset should be increased to put the annotation after the white spaces.
-			final String text = node.getText();
-			int offset = node.getTotalOffset();
+			final var text = node.getText();
+			var offset = node.getTotalOffset();
 			if (text.length() > 0) {
-				int i = 0;
+				var i = 0;
 				while (Character.isWhitespace(text.charAt(i))) {
 					++offset;
 					++i;
@@ -358,7 +358,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	}
 
 	private void provideArgumentName(String name, int offset, IAcceptor<? super ICodeMining> acceptor) {
-		final String text = MessageFormat.format(Messages.SARLCodeMiningProvider_3, name);
+		final var text = MessageFormat.format(Messages.SARLCodeMiningProvider_3, name);
 		acceptor.accept(createNewLineContentCodeMining(offset, text));
 	}
 
@@ -372,23 +372,23 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			Function1<T, XExpression> exprLambda,
 			Function0<Assignment> assignmentLambda) {
 		// inline annotation only for fields with no type
-		final JvmTypeReference declaredType = declaredTypeLambda.apply(element);
-		final XExpression expr = exprLambda != null ? exprLambda.apply(element) : null;
+		final var declaredType = declaredTypeLambda.apply(element);
+		final var expr = exprLambda != null ? exprLambda.apply(element) : null;
 		if (declaredType != null || (exprLambda != null && expr == null)) {
 			return;
 		}
 		// get inferred type name from JVM element
-		final String inferredType = inferredTypeLambda.apply(element);
+		final var inferredType = inferredTypeLambda.apply(element);
 		if (Strings.isEmpty(inferredType)) {
 			return;
 		}
 		// find document offset for inline annotation
-		final Assignment reference = assignmentLambda.apply();
-		final INode node = findNode(element,
+		final var reference = assignmentLambda.apply();
+		final var node = findNode(element,
 			candidate -> candidate instanceof RuleCall && EcoreUtil.equals(reference, candidate.eContainer()));
 		if (node != null) {
-			final String text = this.keywords.getColonKeyword() + " " + inferredType + " "; //$NON-NLS-1$ //$NON-NLS-2$
-			final int offset = node.getPreviousSibling().getTotalOffset();
+			final var text = this.keywords.getColonKeyword() + " " + inferredType + " "; //$NON-NLS-1$ //$NON-NLS-2$
+			final var offset = node.getPreviousSibling().getTotalOffset();
 			acceptor.accept(createNewLineContentCodeMining(offset, text));
 		}
 	}
@@ -404,13 +404,13 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	protected INode findNode(EObject element, Predicate<EObject> reference) {
 		assert element != null;
 		assert reference != null;
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		final var node = NodeModelUtils.findActualNodeFor(element);
 		//System.err.println(NodeModelUtils.compactDump(node, false));
-		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
-			final INode child = it.next();
+		for (final var it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final var child = it.next();
 			if (child != node) {
 				//System.err.println(NodeModelUtils.compactDump(child, false));
-				final EObject grammarElement = child.getGrammarElement();
+				final var grammarElement = child.getGrammarElement();
 				if (reference.test(grammarElement)) {
 					return child;
 				}
@@ -430,14 +430,14 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 */
 	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor, Predicate<EObject> grammarEndAnchor) {
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		final var node = NodeModelUtils.findActualNodeFor(element);
 		assert grammarBeginAnchor != null;
 		assert grammarEndAnchor != null;
 		INode start = null;
-		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
-			final INode child = it.next();
+		for (final var it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final var child = it.next();
 			if (child != node) {
-				final EObject grammarElement = child.getGrammarElement();
+				final var grammarElement = child.getGrammarElement();
 				if (start == null) {
 					if (grammarBeginAnchor.test(grammarElement)) {
 						start = child;
@@ -472,15 +472,15 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor,
 			Predicate<Keyword> grammarContinuationAnchor, Predicate<EObject> grammarEndAnchor) {
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		final var node = NodeModelUtils.findActualNodeFor(element);
 		assert grammarBeginAnchor != null;
 		assert grammarEndAnchor != null;
 		INode start = null;
-		boolean continuation = false;
-		for (Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
-			final INode child = it.next();
+		var continuation = false;
+		for (final var it = node.getAsTreeIterable().iterator(); it.hasNext();) {
+			final var child = it.next();
 			if (child != node) {
-				final EObject grammarElement = child.getGrammarElement();
+				final var grammarElement = child.getGrammarElement();
 				if (start == null) {
 					if (grammarBeginAnchor.test(grammarElement)) {
 						start = child;
@@ -489,8 +489,8 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 					if (grammarEndAnchor.test(grammarElement)) {
 						return new CodeRegion(start, child);
 					}
-				} else if (grammarElement instanceof Keyword) {
-					if (grammarContinuationAnchor.test((Keyword) grammarElement)) {
+				} else if (grammarElement instanceof Keyword cvalue) {
+					if (grammarContinuationAnchor.test(cvalue)) {
 						continuation = true;
 					} else {
 						return new CodeRegion(start, null);
@@ -525,10 +525,10 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the type of the expression.
 	 */
 	protected LightweightTypeReference getLightweightType(XExpression expr) {
-		final IResolvedTypes resolvedTypes = getResolvedTypes(expr);
-		final LightweightTypeReference expressionType = resolvedTypes.getActualType(expr);
+		final var resolvedTypes = getResolvedTypes(expr);
+		final var expressionType = resolvedTypes.getActualType(expr);
 		if (expr instanceof AnonymousClass) {
-			final List<LightweightTypeReference> superTypes = expressionType.getSuperTypes();
+			final var superTypes = expressionType.getSuperTypes();
 			if (superTypes.size() == 1) {
 				return superTypes.get(0);
 			}
@@ -542,10 +542,10 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the variable type.
 	 */
 	protected LightweightTypeReference getTypeForVariableDeclaration(XExpression expr) {
-		final IResolvedTypes resolvedTypes = getResolvedTypes(expr);
-		LightweightTypeReference actualType = resolvedTypes.getActualType(expr);
+		final var resolvedTypes = getResolvedTypes(expr);
+		var actualType = resolvedTypes.getActualType(expr);
 		if (actualType.isPrimitiveVoid()) {
-			LightweightTypeReference expectedType = resolvedTypes.getExpectedType(expr);
+			var expectedType = resolvedTypes.getExpectedType(expr);
 			if (expectedType == null) {
 				expectedType = resolvedTypes.getExpectedReturnType(expr);
 				if (expectedType == null) {

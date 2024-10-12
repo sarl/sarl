@@ -98,7 +98,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	 */
 	public static IJavaSearchScope createSearchScope(IJavaProject project, Class<?> type, boolean onlySubTypes) {
 		try {
-			final IType superType = project.findType(type.getName());
+			final var superType = project.findType(type.getName());
 			return SearchEngine.createStrictHierarchyScope(
 					project,
 					superType,
@@ -127,7 +127,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	@Override
 	protected void updateButtonsEnableState(IStatus status) {
 		super.updateButtonsEnableState(status);
-		final Button addButton = getButton(ADD_ID);
+		final var addButton = getButton(ADD_ID);
 		if (addButton != null && !addButton.isDisposed()) {
 			addButton.setEnabled(!status.matches(IStatus.ERROR));
 		}
@@ -188,16 +188,15 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	/** Adds selected interfaces to the list.
 	 */
 	private void fillWizardPageWithSelectedTypes() {
-		final StructuredSelection selection = getSelectedItems();
+		final var selection = getSelectedItems();
 		if (selection == null) {
 			return;
 		}
-		for (final Iterator<?> iter = selection.iterator(); iter.hasNext();) {
-			final Object obj = iter.next();
-			if (obj instanceof TypeNameMatch) {
+		for (final var iter = selection.iterator(); iter.hasNext();) {
+			final var obj = iter.next();
+			if (obj instanceof TypeNameMatch type) {
 				accessedHistoryItem(obj);
-				final TypeNameMatch type = (TypeNameMatch) obj;
-				final String qualifiedName = Utilities.getNameWithTypeParameters(type.getType());
+				final var qualifiedName = Utilities.getNameWithTypeParameters(type.getType());
 				final String message;
 
 				if (addTypeToWizardPage(this.typeWizardPage, qualifiedName)) {

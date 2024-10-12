@@ -24,19 +24,15 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
@@ -58,25 +54,25 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.members == null) {
 			this.members = new HashMap<>();
-			final List<CodeElementExtractor.ElementDescription> topElements = new ArrayList<>();
-			for (final CodeElementExtractor.ElementDescription topElement : getCodeElementExtractor().getTopElements(
+			final var topElements = new ArrayList<CodeElementExtractor.ElementDescription>();
+			for (final var topElement : getCodeElementExtractor().getTopElements(
 					getGrammar(), getCodeBuilderConfig())) {
 				topElements.add(topElement);
 			}
-			for (final CodeElementExtractor.ElementDescription containerDescription : topElements) {
-				final AbstractRule rule = getMemberRule(containerDescription);
+			for (final var containerDescription : topElements) {
+				final var rule = getMemberRule(containerDescription);
 				if (rule != null) {
-					final EClassifier commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
+					final var commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
 					getCodeElementExtractor().visitMemberElements(containerDescription, rule,
 							null,
 							(it, grammarContainer, memberContainer, classifier) -> {
-								String memberName = Strings.toFirstUpper(classifier.getName());
-								MemberDescription memberDescription = NamedMemberBuilderFragment.this.members.get(memberName);
+								var memberName = Strings.toFirstUpper(classifier.getName());
+								var memberDescription = NamedMemberBuilderFragment.this.members.get(memberName);
 								if (memberDescription == null) {
-									final CodeElementExtractor.ElementDescription elementDescription =
+									final var elementDescription =
 											it.newElementDescription(classifier.getName(), memberContainer,
 													classifier, commonSuperType);
-									final List<String> modifiers = getCodeBuilderConfig().getModifiers()
+									final var modifiers = getCodeBuilderConfig().getModifiers()
 											.get(elementDescription.elementType().getSimpleName());
 									memberDescription = new MemberDescription(
 											elementDescription,
@@ -86,8 +82,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 											modifiers);
 									NamedMemberBuilderFragment.this.members.put(memberName, memberDescription);
 								}
-								final String containerName = memberDescription.getContainerDescription().elementType().getSimpleName();
-								boolean isNoBody = getCodeBuilderConfig().getNoActionBodyTypes()
+								final var containerName = memberDescription.getContainerDescription().elementType().getSimpleName();
+								var isNoBody = getCodeBuilderConfig().getNoActionBodyTypes()
 										.contains(containerName);
 								Set<String> containers;
 								if (isNoBody) {
@@ -108,8 +104,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	@Override
 	public void generate() {
 		super.generate();
-		final Iterable<MemberDescription> members = getMembers();
-		for (final MemberDescription description : members) {
+		final var members = getMembers();
+		for (final var description : members) {
 			generateBuilderFactoryContributions(description);
 		}
 	}
@@ -125,14 +121,14 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 		if (description.getStandardContainers().isEmpty() && description.getNoBodyContainers().isEmpty()) {
 			return;
 		}
-		List<String> modifiers = description.getModifiers();
+		var modifiers = description.getModifiers();
 		if (modifiers.size() <= 1) {
 			// No need to create a function with the modifier's label in the name.
 			modifiers = Collections.singletonList(""); //$NON-NLS-1$
 		}
-		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
-		for (final String modifier : modifiers) {
-			final String createFunctionName = "create" //$NON-NLS-1$
+		final var enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		for (final var modifier : modifiers) {
+			final var createFunctionName = "create" //$NON-NLS-1$
 					+ Strings.toFirstUpper(modifier)
 					+ Strings.toFirstUpper(description.getElementDescription().name());
 
@@ -143,9 +139,9 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 				container = description.getNoBodyContainers().iterator().next();
 			}
 
-			final String createContainerFunctionName = "add" //$NON-NLS-1$
+			final var createContainerFunctionName = "add" //$NON-NLS-1$
 					+ Strings.toFirstUpper(container);
-			final TypeReference containerBuilder = description.getContainerDescription().builderInterfaceType();
+			final var containerBuilder = description.getContainerDescription().builderInterfaceType();
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
@@ -227,10 +223,10 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 				}
 			});
 			if (enableAppenders) {
-				final String buildFunctionName = "build" //$NON-NLS-1$
+				final var buildFunctionName = "build" //$NON-NLS-1$
 						+ Strings.toFirstUpper(modifier)
 						+ Strings.toFirstUpper(description.getElementDescription().name());
-				final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
+				final var appender = getCodeElementExtractor().getElementAppenderImpl(
 						description.getElementDescription().name());
 				this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 					@Override

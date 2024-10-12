@@ -64,7 +64,7 @@ public class ExtraLanguageListCommandModule implements BQModule {
 	public ExtraLanguageListCommand provideExtraLanguageListCommand(
 			BootLogger bootLogger,
 			@Named(SARL_INJECTOR_NAME) Injector guiceInjector) {
-		final Provider<IExtraLanguageContributions> contributions = guiceInjector.getProvider(IExtraLanguageContributions.class);
+		final var contributions = guiceInjector.getProvider(IExtraLanguageContributions.class);
 		return new ExtraLanguageListCommand(bootLogger, () -> contributions.get());
 	}
 

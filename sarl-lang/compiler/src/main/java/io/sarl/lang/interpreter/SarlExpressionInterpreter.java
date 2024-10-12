@@ -72,7 +72,7 @@ public class SarlExpressionInterpreter extends XbaseInterpreter {
 	 * @return the expand class loader.
 	 */
 	public ClassLoader expandClassLoader(UnaryOperator<ClassLoader> builder) {
-		final ClassLoader expandClassLoader =  builder.apply(this.classLoader);
+		final var expandClassLoader =  builder.apply(this.classLoader);
 		super.setClassLoader(expandClassLoader);
 		return expandClassLoader;
 	}

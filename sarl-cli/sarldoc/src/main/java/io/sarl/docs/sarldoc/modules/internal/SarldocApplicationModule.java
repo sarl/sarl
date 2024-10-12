@@ -24,7 +24,6 @@ package io.sarl.docs.sarldoc.modules.internal;
 import static io.bootique.BQCoreModule.extend;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -92,12 +91,12 @@ public class SarldocApplicationModule implements BQModule {
 	@Singleton
 	@Provides
 	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
-		final Class<?> type = getClass();
-		try (final InputStream stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
+		final var type = getClass();
+		try (final var stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
 			LogManager.getLogManager().readConfiguration(stream);
-			final Logger root = Logger.getAnonymousLogger();
+			final var root = Logger.getAnonymousLogger();
 			if (root != null) {
-				ProgressBarConfig cfg = config.get();
+				var cfg = config.get();
 				if (cfg.getEnable()) {
 					root.setLevel(cfg.getLevel().toJul());
 				}
@@ -120,12 +119,12 @@ public class SarldocApplicationModule implements BQModule {
 
 		@Override
 		public String get() {
-			final String sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
-			final String sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION);
-			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
-			final String javaOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
-			final String docOutputDirectory = SarldocConfig.DOC_OUTPUT_DIRECTORY_VALUE;
-			final String docOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION);
+			final var sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
+			final var sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION);
+			final var javaOutputDirectory = SARLConfig.FOLDER_BIN;
+			final var javaOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
+			final var docOutputDirectory = SarldocConfig.DOC_OUTPUT_DIRECTORY_VALUE;
+			final var docOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION);
 			return MessageFormat.format(Messages.SarldocApplicationModule_2,
 					sarlOutputDirectory, sarlOutputDirectoryOption,
 					javaOutputDirectory, javaOutputDirectoryOption,

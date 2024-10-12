@@ -97,19 +97,19 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 	@Override
 	public Model getModel() {
-		final Model model = super.getModel();
+		final var model = super.getModel();
 
 		model.addProperty(SARL_VERSION_PROPERTY, SARLVersion.SARL_RELEASE_VERSION_MAVEN);
 		model.addProperty(TARGET_JDK_VERSION_PROPERTY, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 		model.addProperty(ENCODING_PROPERTY, Charset.defaultCharset().displayName());
 
-		final Dependency dep = new Dependency();
+		final var dep = new Dependency();
 		dep.setGroupId(SARL_MAVENLIB_GROUP_ID);
 		dep.setArtifactId(SARL_MAVENLIB_ARTIFACT_ID);
 		dep.setVersion(VERSION);
 		model.addDependency(dep);
 
-		Build build = model.getBuild();
+		var build = model.getBuild();
 		if (build == null) {
 			build = new Build();
 			model.setBuild(build);
@@ -117,7 +117,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 		//We need to force the re-generation of the plugin map as it may be stale
 		build.flushPluginMap();
-		Plugin compilerPlugin = build.getPluginsAsMap().get(JAVA_GROUP_ID + ":" + JAVA_ARTIFACT_ID); //$NON-NLS-1$
+		var compilerPlugin = build.getPluginsAsMap().get(JAVA_GROUP_ID + ":" + JAVA_ARTIFACT_ID); //$NON-NLS-1$
 		if (compilerPlugin == null) {
 			compilerPlugin = build.getPluginsAsMap().get(JAVA_ARTIFACT_ID);
 		}
@@ -125,14 +125,14 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 			compilerPlugin = new Plugin();
 			compilerPlugin.setGroupId(JAVA_GROUP_ID);
 			compilerPlugin.setArtifactId(JAVA_ARTIFACT_ID);
-			final Xpp3Dom configuration = new Xpp3Dom(CONFIGURATION_KEY);
-			final Xpp3Dom sourceDom = new Xpp3Dom(CONFIGURATION_SOURCE_NAME);
+			final var configuration = new Xpp3Dom(CONFIGURATION_KEY);
+			final var sourceDom = new Xpp3Dom(CONFIGURATION_SOURCE_NAME);
 			sourceDom.setValue(CONFIGURATION_LEVEL_VALUE);
 			configuration.addChild(sourceDom);
-			final Xpp3Dom targetDom = new Xpp3Dom(CONFIGURATION_TARGET_NAME);
+			final var targetDom = new Xpp3Dom(CONFIGURATION_TARGET_NAME);
 			targetDom.setValue(CONFIGURATION_LEVEL_VALUE);
 			configuration.addChild(targetDom);
-			final Xpp3Dom encodingDom = new Xpp3Dom(CONFIGURATION_ENCODING_NAME);
+			final var encodingDom = new Xpp3Dom(CONFIGURATION_ENCODING_NAME);
 			encodingDom.setValue(CONFIGURATION_ENCODING_VALUE);
 			configuration.addChild(encodingDom);
 			compilerPlugin.setConfiguration(configuration);
@@ -141,7 +141,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 		//We need to force the re-generation of the plugin map as it may be stale
 		build.flushPluginMap();
-		Plugin sarlPlugin = build.getPluginsAsMap().get(SARL_PLUGIN_GROUP_ID + ":" + SARL_PLUGIN_ARTIFACT_ID); //$NON-NLS-1$
+		var sarlPlugin = build.getPluginsAsMap().get(SARL_PLUGIN_GROUP_ID + ":" + SARL_PLUGIN_ARTIFACT_ID); //$NON-NLS-1$
 		if (sarlPlugin == null) {
 			sarlPlugin = build.getPluginsAsMap().get(SARL_PLUGIN_ARTIFACT_ID);
 		}
@@ -153,11 +153,11 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 			// Do not turn on the "extensions" feature because it cause an invalid initialization of
 			// the Maven nature of the project.
 			sarlPlugin.setExtensions(false);
-			final Xpp3Dom configuration = new Xpp3Dom(CONFIGURATION_KEY);
-			final Xpp3Dom sourceDom = new Xpp3Dom(CONFIGURATION_SOURCE_NAME);
+			final var configuration = new Xpp3Dom(CONFIGURATION_KEY);
+			final var sourceDom = new Xpp3Dom(CONFIGURATION_SOURCE_NAME);
 			sourceDom.setValue(CONFIGURATION_LEVEL_VALUE);
 			configuration.addChild(sourceDom);
-			final Xpp3Dom encodingDom = new Xpp3Dom(CONFIGURATION_ENCODING_NAME);
+			final var encodingDom = new Xpp3Dom(CONFIGURATION_ENCODING_NAME);
 			encodingDom.setValue(CONFIGURATION_ENCODING_VALUE);
 			configuration.addChild(encodingDom);
 			sarlPlugin.setConfiguration(configuration);
@@ -186,9 +186,9 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 		// Override the creation of the artifact page.
 		// The override cannot be done in the addPages() function because of the complexity of the code.
 		// When the function addPages() call the addPage() function for the artifact page, the artifact page is replaced.
-		IWizardPage addablePage = page;
+		var addablePage = page;
 		if (page == this.artifactPage) {
-			final MavenProjectWizardArtifactPage newArtifactPage = new MavenSarlProjectWizardArtifactPage(this.importConfiguration);
+			final var newArtifactPage = new MavenSarlProjectWizardArtifactPage(this.importConfiguration);
 			this.artifactPage = newArtifactPage;
 			addablePage = newArtifactPage;
 		}
@@ -201,23 +201,23 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 		if (!super.performFinish()) {
 			return false;
 		}
-		final Job job = new WorkspaceJob("Force the SARL nature") { //$NON-NLS-1$
+		final var job = new WorkspaceJob("Force the SARL nature") { //$NON-NLS-1$
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				final Model model = NewMavenSarlProjectWizard.this.lastModel;
+				final var model = NewMavenSarlProjectWizard.this.lastModel;
 				if (model != null) {
-					final Plugin plugin = Iterables.find(model.getBuild().getPlugins(), it -> SARL_PLUGIN_ARTIFACT_ID.equals(it.getArtifactId()));
+					final var plugin = Iterables.find(model.getBuild().getPlugins(), it -> SARL_PLUGIN_ARTIFACT_ID.equals(it.getArtifactId()));
 					plugin.setExtensions(true);
-					final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-					final IWorkspaceRoot root = workspace.getRoot();
-					final String projectName = ProjectConfigurationManager.getProjectName(getProjectImportConfiguration(), model);
-					final IProject project = root.getProject(projectName);
+					final var workspace = ResourcesPlugin.getWorkspace();
+					final var root = workspace.getRoot();
+					final var projectName = ProjectConfigurationManager.getProjectName(getProjectImportConfiguration(), model);
+					final var project = root.getProject(projectName);
 					// Fixing the "extensions" within the pom file
-					final IFile pomFile = project.getFile(IMavenConstants.POM_FILE_NAME);
+					final var pomFile = project.getFile(IMavenConstants.POM_FILE_NAME);
 					pomFile.delete(true, new NullProgressMonitor());
 					MavenPlugin.getMavenModelManager().createMavenModel(pomFile, model);
 					// Update the project
-					final SubMonitor submon = SubMonitor.convert(monitor);
+					final var submon = SubMonitor.convert(monitor);
 					MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, submon.newChild(1));
 					project.refreshLocal(IResource.DEPTH_ONE, submon.newChild(1));
 				}

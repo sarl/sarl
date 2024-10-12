@@ -131,9 +131,9 @@ public enum JavaCompiler {
 	@Pure
 	public static JavaCompiler fromImplementationType(Class<? extends IJavaBatchCompiler> type) {
 		if (type != null) {
-			for (final JavaCompiler compiler : JavaCompiler.values()) {
+			for (final var compiler : JavaCompiler.values()) {
 				if (compiler != NONE) {
-					final Class<? extends IJavaBatchCompiler> implementation = compiler.getImplementationType();
+					final var implementation = compiler.getImplementationType();
 					if (implementation != null && implementation.isAssignableFrom(type)) {
 						return compiler;
 					}
@@ -149,8 +149,8 @@ public enum JavaCompiler {
 	 */
 	@Pure
 	public static JavaCompiler getDefault() {
-		final Class<? extends IJavaBatchCompiler> compilerType = SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType();
-		final JavaCompiler jc = fromImplementationType(compilerType);
+		final var compilerType = SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType();
+		final var jc = fromImplementationType(compilerType);
 		if (jc != null) {
 			return jc;
 		}

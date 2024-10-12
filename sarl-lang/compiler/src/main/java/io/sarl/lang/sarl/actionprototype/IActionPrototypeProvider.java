@@ -177,7 +177,7 @@ public interface IActionPrototypeProvider {
 	 */
 	@Deprecated(forRemoval = true, since = "0.10")
 	default Iterable<InferredPrototype> getPrototypes(QualifiedActionName id) {
-		final IActionPrototypeContext ctx = createContext();
+		final var ctx = createContext();
 		try {
 			return getPrototypes(ctx, id);
 		} finally {
@@ -205,7 +205,7 @@ public interface IActionPrototypeProvider {
 	 */
 	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID) {
-		final IActionPrototypeContext ctx = createContext();
+		final var ctx = createContext();
 		try {
 			return getPrototypes(ctx, actionID, signatureID);
 		} finally {
@@ -241,7 +241,7 @@ public interface IActionPrototypeProvider {
 	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs,
 			List<? extends XtendParameter> parameters) {
-		final IActionPrototypeContext ctx = createContext();
+		final var ctx = createContext();
 		try {
 			return createPrototypeFromSarlModel(ctx, id, isVarargs, parameters);
 		} finally {
@@ -276,7 +276,7 @@ public interface IActionPrototypeProvider {
 	 */
 	@Deprecated(forRemoval = true, since = "0.10")
 	default InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id, boolean isVarargs, List<JvmFormalParameter> parameters) {
-		final IActionPrototypeContext ctx = createContext();
+		final var ctx = createContext();
 		try {
 			return createPrototypeFromJvmModel(ctx, id, isVarargs, parameters);
 		} finally {

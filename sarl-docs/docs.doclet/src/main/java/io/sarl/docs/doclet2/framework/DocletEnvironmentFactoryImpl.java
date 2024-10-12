@@ -69,7 +69,7 @@ public class DocletEnvironmentFactoryImpl implements DocletEnvironmentFactory {
 	
 	@Override
 	public DocletEnvironment newDocletEnvironment(DocletEnvironment environment) {
-		final SarlDocletEnvironment env = this.provider.get();
+		final var env = this.provider.get();
 		env.setParent(environment);
 		return env;
 	}

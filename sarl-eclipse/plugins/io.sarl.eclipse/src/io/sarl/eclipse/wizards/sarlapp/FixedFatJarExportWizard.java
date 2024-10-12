@@ -92,8 +92,8 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 	 * Creates a wizard for exporting workspace resources to a JAR file.
 	 */
 	public FixedFatJarExportWizard() {
-		IDialogSettings workbenchSettings= JavaPlugin.getDefault().getDialogSettings();
-		IDialogSettings section= workbenchSettings.getSection(DIALOG_SETTINGS_KEY);
+		var workbenchSettings= JavaPlugin.getDefault().getDialogSettings();
+		var section= workbenchSettings.getSection(DIALOG_SETTINGS_KEY);
 		if (section == null)
 			fHasNewDialogSettings= true;
 		else {
@@ -133,12 +133,12 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 				return false;
 			}
 		}
-		IStatus status= op.getStatus();
+		var status = op.getStatus();
 		if (!status.isOK()) {
 			if (!wizardPageStatus.isOK()) {
-				if (!(status instanceof MultiStatus))
-					status= new MultiStatus(status.getPlugin(), status.getCode(), status.getMessage(), status.getException());
-
+				if (!(status instanceof MultiStatus)) {
+					status = new MultiStatus(status.getPlugin(), status.getCode(), status.getMessage(), status.getException());
+				}
 				((MultiStatus) status).add(wizardPageStatus);
 			}
 			ErrorDialog.openError(getShell(), FatJarPackagerMessages.JarPackageWizard_jarExport_title, null, status);
@@ -163,15 +163,14 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 	 * @return all java projects which contain the selected elements in the active workbench window
 	 */
 	protected IStructuredSelection getSelectedJavaProjects() {
-		ISelection currentSelection= JavaPlugin.getActiveWorkbenchWindow().getSelectionService().getSelection();
-		if (currentSelection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection= (IStructuredSelection) currentSelection;
-			HashSet<IJavaProject> selectedElements= new HashSet<>();
-			Iterator<?> iter= structuredSelection.iterator();
+		var currentSelection= JavaPlugin.getActiveWorkbenchWindow().getSelectionService().getSelection();
+		if (currentSelection instanceof IStructuredSelection structuredSelection) {
+			var selectedElements= new HashSet<IJavaProject>();
+			var iter= structuredSelection.iterator();
 			while (iter.hasNext()) {
-				Object selectedElement= iter.next();
-				if (selectedElement instanceof IJavaElement) {
-					IJavaProject javaProject= ((IJavaElement) selectedElement).getJavaProject();
+				var selectedElement= iter.next();
+				if (selectedElement instanceof IJavaElement cvalue) {
+					var javaProject= cvalue.getJavaProject();
 					if (javaProject != null)
 						selectedElements.add(javaProject);
 				}
@@ -216,15 +215,15 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 
 	@Override
 	public boolean performFinish() {
-		LibraryHandler libraryHandler= fJarPackageWizardPage.getLibraryHandler();
+		var libraryHandler= fJarPackageWizardPage.getLibraryHandler();
 		fJarPackage.setJarBuilder(libraryHandler.getBuilder(fJarPackage));
-		MultiStatus status= new MultiStatus(JavaPlugin.getPluginId(), IStatus.OK, FatJarPackagerMessages.FatJarPackageWizard_JarExportProblems_message, null);
-		Object[] elements= fJarPackageWizardPage.getSelectedElementsWithoutContainedChildren(status);
+		var status= new MultiStatus(JavaPlugin.getPluginId(), IStatus.OK, FatJarPackagerMessages.FatJarPackageWizard_JarExportProblems_message, null);
+		var elements= fJarPackageWizardPage.getSelectedElementsWithoutContainedChildren(status);
 		fJarPackage.setElements(elements);
 
 		if ((libraryHandler.isShowWarning()) && hasArchive(elements)) {
 			if (OptionalMessageDialog.isDialogEnabled(IPIssueWarningDialog.ID)) {
-				IPIssueWarningDialog dialog= new IPIssueWarningDialog(getShell(), FatJarPackagerMessages.FatJarPackageWizard_IPIssueDialog_title,
+				var dialog= new IPIssueWarningDialog(getShell(), FatJarPackagerMessages.FatJarPackageWizard_IPIssueDialog_title,
 						FatJarPackagerMessages.FatJarPackageWizard_IPIssueDialog_message);
 				if (dialog.open() != Window.OK)
 					return false;
@@ -238,8 +237,8 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 
 		// Save the dialog settings
 		if (fHasNewDialogSettings) {
-			IDialogSettings workbenchSettings= JavaPlugin.getDefault().getDialogSettings();
-			IDialogSettings section= workbenchSettings.getSection(DIALOG_SETTINGS_KEY);
+			var workbenchSettings= JavaPlugin.getDefault().getDialogSettings();
+			var section= workbenchSettings.getSection(DIALOG_SETTINGS_KEY);
 			section= workbenchSettings.addNewSection(DIALOG_SETTINGS_KEY);
 			setDialogSettings(section);
 		}
@@ -249,11 +248,11 @@ public class FixedFatJarExportWizard extends Wizard implements IExportWizard {
 	}
 
 	private boolean hasArchive(Object[] elements) {
-		for (int i= 0; i < elements.length; i++) {
-			if (elements[i] instanceof IPackageFragmentRoot) {
-				IPackageFragmentRoot root= (IPackageFragmentRoot) elements[i];
-				if (root.isArchive())
+		for (var i= 0; i < elements.length; i++) {
+			if (elements[i] instanceof IPackageFragmentRoot root) {
+				if (root.isArchive()) {
 					return true;
+				}
 			}
 		}
 		return false;

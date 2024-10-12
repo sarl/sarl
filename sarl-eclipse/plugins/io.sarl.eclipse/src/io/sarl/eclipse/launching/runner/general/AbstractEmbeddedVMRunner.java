@@ -70,7 +70,7 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 	public final void run(VMRunnerConfiguration configuration, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException {
 		try {
-			final Job myJob = createJob(configuration, launch);
+			final var myJob = createJob(configuration, launch);
 			monitor.done();
 			if (myJob != null) {
 				myJob.schedule();
@@ -87,11 +87,11 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 	protected abstract MainClassFinder getMainClassFinder();
 
 	private static void resetProperties() {
-		final Properties props = System.getProperties();
-		final Iterator<Entry<Object, Object>> iterator = props.entrySet().iterator();
+		final var props = System.getProperties();
+		final var iterator = props.entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Entry<Object, Object> entry = iterator.next();
-			final String name = entry.getKey().toString();
+			final var entry = iterator.next();
+			final var name = entry.getKey().toString();
 			if (name.startsWith(VariableNames.BOOTIQUE_PROPERTY_PREFIX)) {
 				iterator.remove();
 			}
@@ -99,13 +99,13 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 	}
 
 	private static void registerProperties(VMRunnerConfiguration configuration) {
-		final Properties props = System.getProperties();
-		final Pattern pattern = Pattern.compile(DEFINITION_PATTERN);
-		for (final String arg : configuration.getVMArguments()) {
-			final Matcher matcher = pattern.matcher(arg);
+		final var props = System.getProperties();
+		final var pattern = Pattern.compile(DEFINITION_PATTERN);
+		for (final var arg : configuration.getVMArguments()) {
+			final var matcher = pattern.matcher(arg);
 			if (matcher.matches()) {
-				final String name = matcher.group(1);
-				final String value = matcher.group(2);
+				final var name = matcher.group(1);
+				final var value = matcher.group(2);
 				props.setProperty(name, value);
 			}
 		}
@@ -118,7 +118,7 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 	 * @return the job.
 	 */
 	protected Job createJob(VMRunnerConfiguration configuration, ILaunch launch) {
-		final Job myJob = new Job(launch.getLaunchConfiguration().getName()) {
+		final var myJob = new Job(launch.getLaunchConfiguration().getName()) {
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				monitor.subTask(MessageFormat.format(Messages.AbstractEmbeddedVMRunner_0, launch.getLaunchConfiguration().getName()));
@@ -129,11 +129,11 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 					//
 					mcFinder.initialize(configuration, launch);
 					//
-					final String mainClass = configuration.getClassToLaunch();
+					final var mainClass = configuration.getClassToLaunch();
 					//
-					final Class<?> clazz = mcFinder.getMainClass(mainClass);
+					final var clazz = mcFinder.getMainClass(mainClass);
 					//
-					final Method mainMethod = clazz.getDeclaredMethod("main", String[].class); //$NON-NLS-1$
+					final var mainMethod = clazz.getDeclaredMethod("main", String[].class); //$NON-NLS-1$
 					mainMethod.invoke(null, (Object) configuration.getProgramArguments());
 					return SARLEclipsePlugin.getDefault().createOkStatus();
 				} catch (Throwable exception) {

@@ -24,7 +24,6 @@ package io.sarl.docs.validator;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
@@ -73,9 +71,9 @@ public final class IssueDatabaseExtensions {
 	 */
 	@Pure
 	public static List<IssueDescription> readIssueDescriptions(String filename) {
-		File file = new File(filename);
+		var file = new File(filename);
 		if (!file.isAbsolute()) {
-			final File folder = FileSystem.convertStringToFile(System.getProperty(ScriptExecutor.PROP_CURRENT_FOLDER));
+			final var folder = FileSystem.convertStringToFile(System.getProperty(ScriptExecutor.PROP_CURRENT_FOLDER));
 			assert folder != null;
 			file  = FileSystem.makeAbsolute(file, folder);
 		}
@@ -90,10 +88,10 @@ public final class IssueDatabaseExtensions {
 	@SuppressWarnings("resource")
 	@Pure
 	public static List<IssueDescription> readIssueDescriptions(File filename) {
-		final List<IssueDescription> props = new ArrayList<>();
-		final Gson gson = new Gson();
-		try (final FileReader stream = new FileReader(filename)) {
-			final JsonReader reader = gson.newJsonReader(stream);
+		final var props = new ArrayList<IssueDescription>();
+		final var gson = new Gson();
+		try (final var stream = new FileReader(filename)) {
+			final var reader = gson.newJsonReader(stream);
 			reader.beginArray();
 			while (reader.hasNext()) {
 				reader.beginObject();
@@ -103,7 +101,7 @@ public final class IssueDatabaseExtensions {
 				String solution = null;
 				String levelStr = null;
 				while (reader.hasNext()) {
-					final String name = reader.nextName();
+					final var name = reader.nextName();
 					switch (Strings.emptyIfNull(name)) {
 					case "code": //$NON-NLS-1$
 						code = reader.nextString();
@@ -156,7 +154,7 @@ public final class IssueDatabaseExtensions {
 							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_5, code));
 						}
 					}
-					final IssueDescription description = new IssueDescription(code);
+					final var description = new IssueDescription(code);
 					description.message = message;
 					description.cause = cause;
 					description.solution = solution;
@@ -189,14 +187,14 @@ public final class IssueDatabaseExtensions {
 	 */
 	@Pure
 	public static List<List<String>> asTable(List<IssueDescription> descriptions) {
-		final List<List<String>> content = new ArrayList<>();
-		int major = 0;
-		int minor = 1;
+		final var content = new ArrayList<List<String>>();
+		var major = 0;
+		var minor = 1;
 		IssueDescription prevIssue = null;
-		for (int i = 0; i < descriptions.size(); ++i) {
-			final IssueDescription description = descriptions.get(i);
+		for (var i = 0; i < descriptions.size(); ++i) {
+			final var description = descriptions.get(i);
 			if (description.level != IssueLevel.IGNORE) {
-				final List<String> columns = new ArrayList<>();
+				final var columns = new ArrayList<String>();
 
 				// Column "N."
 				if (Strings.equal(prevIssue == null ? null : prevIssue.getCode(), description.getCode())) {
@@ -216,7 +214,7 @@ public final class IssueDatabaseExtensions {
 				columns.add(formatIndex(major, minor, prevIssue, description, nextIssue));
 
 				// Column "Message and Description"
-				final StringBuilder msg = new StringBuilder();
+				final var msg = new StringBuilder();
 				msg.append(head(Messages.IssueDatabaseExtensions_8)).append(description.message).append(nl());
 				msg.append(head(Messages.IssueDatabaseExtensions_9)).append(description.cause);
 				if (!Strings.isEmpty(description.solution)) {
@@ -231,7 +229,7 @@ public final class IssueDatabaseExtensions {
 				columns.add(description.level.getLabel(description.delegate, description.defaultLevel));
 	
 				// Column "Code"
-				final StringBuilder code = new StringBuilder();
+				final var code = new StringBuilder();
 				code.append("["); //$NON-NLS-1$
 				code.append(description.getShortDisplayCode());
 				code.append("](: \""); //$NON-NLS-1$
@@ -252,9 +250,9 @@ public final class IssueDatabaseExtensions {
 
 	private static String formatIndex(int major, int minor, IssueDescription prevIssue, IssueDescription currentIssue,
 			IssueDescription nextIssue) {
-		String pcode = prevIssue == null ? null : prevIssue.getCode();
-		String ccode = currentIssue == null ? null : currentIssue.getCode();
-		String ncode = nextIssue == null ? null : nextIssue.getCode();
+		final var pcode = prevIssue == null ? null : prevIssue.getCode();
+		final var ccode = currentIssue == null ? null : currentIssue.getCode();
+		final var ncode = nextIssue == null ? null : nextIssue.getCode();
 		if (Strings.equal(pcode, ccode) || Strings.equal(ccode, ncode)) {
 			// Long numbering
 			final char c = (char) ('a' + (minor - 1));
@@ -272,7 +270,7 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> sort(List<IssueDescription> descriptions) {
 		descriptions.sort((a, b) -> {
-			int cmp = a.getShortDisplayCode().compareToIgnoreCase(b.getShortDisplayCode());
+			var cmp = a.getShortDisplayCode().compareToIgnoreCase(b.getShortDisplayCode());
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -305,7 +303,7 @@ public final class IssueDatabaseExtensions {
 	 */
 	@Pure
 	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
-		final Set<String> definedCodes = buildSarlIssueCodeList();
+		final var definedCodes = buildSarlIssueCodeList();
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13,
 				Integer.valueOf(definedCodes.size())));
 		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) { //$NON-NLS-1$
@@ -315,10 +313,10 @@ public final class IssueDatabaseExtensions {
 	}
 
 	private static boolean validateIssueCodes(List<IssueDescription> descriptions, Set<String> definedCodes, String label) {
-		boolean success = true;
-		final Set<String> notDocumentedCodes = new TreeSet<>();
+		var success = true;
+		final var notDocumentedCodes = new TreeSet<String>();
 		notDocumentedCodes.addAll(definedCodes);
-		for (final IssueDescription description : descriptions) {
+		for (final var description : descriptions) {
 			notDocumentedCodes.remove(description.getCode());
 			if (!definedCodes.contains(description.getCode())) {
 				success = false;
@@ -328,7 +326,7 @@ public final class IssueDatabaseExtensions {
 		if (!success) {
 			return false;
 		}
-		for (String notDocumentedCode : notDocumentedCodes) {
+		for (final var notDocumentedCode : notDocumentedCodes) {
 			success = false;
 			DocumentationLogger.getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_16, notDocumentedCode, label));
 		}
@@ -344,7 +342,7 @@ public final class IssueDatabaseExtensions {
 	 */
 	@Pure
 	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
-		final Set<String> definedCodes = buildIssueCodeList(issueListList);
+		final var definedCodes = buildIssueCodeList(issueListList);
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17,
 				Integer.valueOf(definedCodes.size())));
 		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) { //$NON-NLS-1$
@@ -354,7 +352,7 @@ public final class IssueDatabaseExtensions {
 	}
 
 	private static Set<String> buildSarlIssueCodeList() {
-		final Set<String> codes = new TreeSet<>();
+		final var codes = new TreeSet<String>();
 		// Validation issues
 		extractIssueCodes(IssueCodes.class, codes);
 		extractIssueCodes(org.eclipse.xtend.core.validation.IssueCodes.class, codes);
@@ -371,19 +369,19 @@ public final class IssueDatabaseExtensions {
 	}
 
 	private static Set<String> buildIssueCodeList(Collection<Class<?>> types) {
-		final Set<String> codes = new TreeSet<>();
-		for (final Class<?> type : types) {
+		final var codes = new TreeSet<String>();
+		for (final var type : types) {
 			extractIssueCodes(type, codes);
 		}
 		return codes;
 	}
 
 	private static void extractIssueCodes(Class<?> definitions, Set<String> codes) {
-		for (final Field field : definitions.getDeclaredFields()) {
+		for (final var field : definitions.getDeclaredFields()) {
 			if (String.class.equals(field.getType()) && Modifier.isStatic(field.getModifiers())
 					&& Modifier.isPublic(field.getModifiers())) {
 				try {
-					final String value = (String) field.get(null);
+					final var value = (String) field.get(null);
 					if (!Strings.isEmpty(value) && !value.endsWith(".")) { //$NON-NLS-1$
 						codes.add(value);
 					}
@@ -441,7 +439,7 @@ public final class IssueDatabaseExtensions {
 		 * @param code the code; with possible {@code &amp;dot;} inside.
 		 */
 		IssueDescription(final String code) {
-			final int lastIndex = code.lastIndexOf('.');
+			final var lastIndex = code.lastIndexOf('.');
 			this.rawCode = code.replaceAll(Pattern.quote("&dot;"), "."); //$NON-NLS-1$ //$NON-NLS-2$
 			if (lastIndex >= 0 && lastIndex < code.length() - 1) {
 				this.shortDisplayCode = code.substring(lastIndex + 1).replaceAll(Pattern.quote("&dot;"), "."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -453,7 +451,7 @@ public final class IssueDatabaseExtensions {
 		
 		@Override
 		public String toString() {
-			final JsonBuffer buf = new JsonBuffer();
+			final var buf = new JsonBuffer();
 			toJson(buf);
 			return buf.toString();
 		}
@@ -481,7 +479,7 @@ public final class IssueDatabaseExtensions {
 		 * @return the prefix.
 		 */
 		public String getCodePrefix() {
-			final int lastIndex = this.rawCode.lastIndexOf('.');
+			final var lastIndex = this.rawCode.lastIndexOf('.');
 			if (lastIndex > 0) {
 				return this.rawCode.substring(0, lastIndex);
 			}
@@ -653,7 +651,7 @@ public final class IssueDatabaseExtensions {
 			public String getDelegate(String json) {
 				try {
 					if (json.startsWith("d/")) { //$NON-NLS-1$
-						final int idx = json.indexOf('/', 2);
+						final var idx = json.indexOf('/', 2);
 						if (idx > 2) {
 							return json.substring(2, idx);
 						}
@@ -667,7 +665,7 @@ public final class IssueDatabaseExtensions {
 			public IssueLevel getDefaultLevel(String json) {
 				try {
 					if (json.startsWith("d/")) { //$NON-NLS-1$
-						final int idx = json.indexOf('/', 2);
+						final var idx = json.indexOf('/', 2);
 						if (idx >= 2 && idx < json.length() - 1) {
 							return fromJson(json.substring(idx + 1));
 						}

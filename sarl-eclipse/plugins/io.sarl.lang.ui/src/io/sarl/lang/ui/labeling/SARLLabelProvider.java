@@ -159,12 +159,12 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 */
 	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable exception) {
 		if (exception instanceof NullPointerException) {
-			final Object defaultImage = getDefaultImage();
-			if (defaultImage instanceof ImageDescriptor) {
-				return (ImageDescriptor) defaultImage;
+			final var defaultImage = getDefaultImage();
+			if (defaultImage instanceof ImageDescriptor cvalue) {
+				return cvalue;
 			}
-			if (defaultImage instanceof Image) {
-				return ImageDescriptor.createFromImage((Image) defaultImage);
+			if (defaultImage instanceof Image cvalue) {
+				return ImageDescriptor.createFromImage(cvalue);
 			}
 			return super.imageDescriptor(params[0]);
 		}
@@ -184,22 +184,22 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	@Override
 	protected StyledString signature(String simpleName, JvmIdentifiableElement element) {
 		final JvmTypeReference returnType;
-		if (element instanceof JvmOperation) {
-			returnType = ((JvmOperation) element).getReturnType();
-		} else if (element instanceof JvmField) {
-			returnType = ((JvmField) element).getType();
+		if (element instanceof JvmOperation cvalue) {
+			returnType = cvalue.getReturnType();
+		} else if (element instanceof JvmField cvalue) {
+			returnType = cvalue.getType();
 		} else {
 			returnType = null;
 		}
-		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, element);
-		final String returnTypeString = (returnType == null) ? this.keywords.getVoidKeyword()
+		final var owner = new StandardTypeReferenceOwner(this.services, element);
+		final var returnTypeString = (returnType == null) ? this.keywords.getVoidKeyword()
 			: owner.toLightweightTypeReference(returnType).getHumanReadableName();
-		String decoratedPart = " : " + returnTypeString; //$NON-NLS-1$
-		final String typeParam = Strings.nullToEmpty(this.uiStrings.typeParameters(element));
+		var decoratedPart = " : " + returnTypeString; //$NON-NLS-1$
+		final var typeParam = Strings.nullToEmpty(this.uiStrings.typeParameters(element));
 		if (!Strings.isNullOrEmpty(typeParam)) {
 			decoratedPart = " " + typeParam + " : " + returnTypeString; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final StyledString str = new StyledString();
+		final var str = new StyledString();
 		str.append(simpleName);
 		str.append(this.uiStrings.styledParameters(element));
 		str.append(decoratedPart, StyledString.DECORATIONS_STYLER);
@@ -215,7 +215,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		if (reference == null) {
 			return new StyledString("Object"); //$NON-NLS-1$
 		}
-		final String name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
+		final var name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
 		return convertToStyledString(name);
 	}
 
@@ -268,7 +268,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlAgent element) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forAgent(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -283,7 +283,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlEvent element) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forEvent(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -298,7 +298,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlCapacity element) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forCapacity(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -313,7 +313,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlSkill element) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forSkill(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -328,7 +328,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlBehavior element) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forBehavior(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -374,7 +374,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlAction element) {
-		final JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
+		final var jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
 		return this.images.forOperation(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -478,13 +478,13 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @return the text.
 	 */
 	protected StyledString text(SarlAction element) {
-		final JvmIdentifiableElement jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
-		final String simpleName = element.getName();
+		final var jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
+		final var simpleName = element.getName();
 		if (simpleName != null) {
-			final QualifiedName qnName = QualifiedName.create(simpleName);
-			final QualifiedName operator = this.operatorMapping.getOperator(qnName);
+			final var qnName = QualifiedName.create(simpleName);
+			final var operator = this.operatorMapping.getOperator(qnName);
 			if (operator != null) {
-				final StyledString result = signature(operator.getFirstSegment(), jvmElement);
+				final var result = signature(operator.getFirstSegment(), jvmElement);
 				result.append(" (" + simpleName + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$//$NON-NLS-2$
 				return result;
 			}
@@ -518,18 +518,18 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @return the text.
 	 */
 	protected StyledString text(SarlBehaviorUnit element) {
-		final StyledString text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
+		final var text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
 		text.append(getHumanReadableName(element.getName()));
 		if (element.getGuard() != null) {
 			String txt = null;
-			final ICompositeNode node = NodeModelUtils.getNode(element.getGuard());
+			final var node = NodeModelUtils.getNode(element.getGuard());
 			if (node != null) {
 				txt = node.getText().trim();
 			}
 			if (Strings.isNullOrEmpty(txt)) {
 				txt = "[" + Messages.SARLLabelProvider_2 + "]"; //$NON-NLS-1$//$NON-NLS-2$
 			} else if (txt != null) {
-				final String dots = "..."; //$NON-NLS-1$
+				final var dots = "..."; //$NON-NLS-1$
 				if (txt.length() > BEHAVIOR_UNIT_TEXT_LENGTH + dots.length()) {
 					txt = "[" + txt.substring(0, BEHAVIOR_UNIT_TEXT_LENGTH) + dots + "]"; //$NON-NLS-1$//$NON-NLS-2$
 				} else {
@@ -552,8 +552,8 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	@Override
 	protected String text(XVariableDeclaration variableDeclaration) {
-		final IResolvedTypes resolvedTypes = getTypeResolver().resolveTypes(variableDeclaration);
-		final LightweightTypeReference type = resolvedTypes.getActualType((JvmIdentifiableElement) variableDeclaration);
+		final var resolvedTypes = getTypeResolver().resolveTypes(variableDeclaration);
+		final var type = resolvedTypes.getActualType((JvmIdentifiableElement) variableDeclaration);
 		if (type != null) {
 			return variableDeclaration.getName() + " " + this.keywords.getColonKeyword() //$NON-NLS-1$
 				+ " " + type.getHumanReadableName(); //$NON-NLS-1$
@@ -576,13 +576,13 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		if (type == null && context != null) {
 			type = this.services.getTypeReferences().findDeclaredType(qualifiedName, context);
 		}
-		int adornments = this.adornments.get(type);
-		JvmVisibility visibility = JvmVisibility.DEFAULT;
+		var adornments = this.adornments.get(type);
+		var visibility = JvmVisibility.DEFAULT;
 		if (type != null) {
 			if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
-				final JvmGenericType gtype = (JvmGenericType) type;
+				final var gtype = (JvmGenericType) type;
 				visibility = gtype.getVisibility();
-				final int ecoreCode = this.inheritanceHelper.getSarlElementEcoreType(gtype);
+				final var ecoreCode = this.inheritanceHelper.getSarlElementEcoreType(gtype);
 				switch (ecoreCode) {
 				case SarlPackage.SARL_AGENT:
 					return this.images.forAgent(visibility, this.adornments.get(gtype));
@@ -602,11 +602,11 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 					}
 				}
 			} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
-				final JvmEnumerationType etype = (JvmEnumerationType) type;
+				final var etype = (JvmEnumerationType) type;
 				visibility = etype.getVisibility();
 				return this.images.forEnum(visibility, adornments);
 			} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
-				final JvmAnnotationType atype = (JvmAnnotationType) type;
+				final var atype = (JvmAnnotationType) type;
 				visibility = atype.getVisibility();
 				return this.images.forAnnotation(visibility, adornments);
 			} else {

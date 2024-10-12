@@ -63,7 +63,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 
 	@Override
 	protected List<Class<?>> getExtensionClasses() {
-		final List<Class<?>> xtextList = super.getExtensionClasses();
+		final var xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
 		xtextList.add(0, TimeExtensions.class);
 

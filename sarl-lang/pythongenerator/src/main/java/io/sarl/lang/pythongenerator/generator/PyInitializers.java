@@ -23,7 +23,6 @@ package io.sarl.lang.pythongenerator.generator;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IStatus;
@@ -72,13 +71,13 @@ public final class PyInitializers {
 	 */
 	public static IExtraLanguageConversionInitializer getTypeConverterInitializer() {
 		return it -> {
-			final List<Pair<String, String>> properties = loadPropertyFile(TYPE_CONVERSION_FILENAME);
+			final var properties = loadPropertyFile(TYPE_CONVERSION_FILENAME);
 			if (!properties.isEmpty()) {
-				for (final Pair<String, String> entry : properties) {
-					final String source = Objects.toString(entry.getKey());
-					final String target = Objects.toString(entry.getValue());
+				for (final var entry : properties) {
+					final var source = Objects.toString(entry.getKey());
+					final var target = Objects.toString(entry.getValue());
 					final String baseName;
-					final Matcher matcher = TYPE_NAME_PAT.matcher(source);
+					final var matcher = TYPE_NAME_PAT.matcher(source);
 					if (matcher.find()) {
 						baseName = matcher.group(1);
 					} else {
@@ -96,12 +95,12 @@ public final class PyInitializers {
 	 */
 	public static IExtraLanguageConversionInitializer getFeatureNameConverterInitializer() {
 		return it -> {
-			final List<Pair<String, String>> properties = loadPropertyFile(FEATURE_CONVERSION_FILENAME);
+			final var properties = loadPropertyFile(FEATURE_CONVERSION_FILENAME);
 			if (!properties.isEmpty()) {
-				for (final Pair<String, String> entry : properties) {
-					final String source = Objects.toString(entry.getKey());
-					final String target = Objects.toString(entry.getValue());
-					final Matcher matcher = FEATURE_NAME_PAT.matcher(source);
+				for (final var entry : properties) {
+					final var source = Objects.toString(entry.getKey());
+					final var target = Objects.toString(entry.getValue());
+					final var matcher = FEATURE_NAME_PAT.matcher(source);
 					final String featureName;
 					if (matcher.find()) {
 						featureName = matcher.group(1);

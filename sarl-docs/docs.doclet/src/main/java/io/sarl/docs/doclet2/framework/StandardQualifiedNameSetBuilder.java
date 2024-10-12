@@ -89,10 +89,10 @@ public class StandardQualifiedNameSetBuilder implements QualifiedNameSetBuilder 
 
 	@Override
 	public Set<String> buildCandidateList(String basename) {
-		final Set<String> candidates = new LinkedHashSet<>(this.importedPackages.size() + 3);
+		final var candidates = new LinkedHashSet<String>(this.importedPackages.size() + 3);
 
 		// Add the imports that were define into the element's source code
-		for (final String importedPkg : this.importedPackages) {
+		for (final var importedPkg : this.importedPackages) {
 			candidates.add(qualifiedName(importedPkg, basename));
 		}
 		
@@ -101,6 +101,7 @@ public class StandardQualifiedNameSetBuilder implements QualifiedNameSetBuilder 
 		
 		// Add as candidate the java default
 		candidates.add(qualifiedName(String.class.getPackageName(), basename));
+
 		return candidates;
 	}
 

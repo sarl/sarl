@@ -77,12 +77,12 @@ public class ExtraLanguageListCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final Set<String> identifiers = new TreeSet<>();
-		for (final IExtraLanguageContribution contribution : this.contributions.get().getContributions()) {
+		final var identifiers = new TreeSet<String>();
+		for (final var contribution : this.contributions.get().getContributions()) {
 			identifiers.addAll(contribution.getIdentifiers());
 		}
-		final StringBuilder text = new StringBuilder();
-		for (final String id : identifiers) {
+		final var text = new StringBuilder();
+		for (final var id : identifiers) {
 			text.append(id).append("\n"); //$NON-NLS-1$
 		}
 		this.bootLogger.stdout(text.toString());

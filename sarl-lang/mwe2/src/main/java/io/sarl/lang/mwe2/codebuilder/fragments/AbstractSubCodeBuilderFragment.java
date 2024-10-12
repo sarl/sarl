@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
@@ -51,7 +50,6 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractStubGeneratingFragment;
-import org.eclipse.xtext.xtext.generator.IXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.Issues;
 import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.model.FileAccessFactory;
@@ -93,7 +91,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		getCodeElementExtractor().initialize(getGrammar());
 
 		this.subFragments = initializeSubGenerators(injector);
-		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.initialize(injector);
 		}
 	}
@@ -144,7 +142,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Pure
 	public void checkConfiguration(Issues issues) {
 		super.checkConfiguration(issues);
-		final CodeBuilderConfig config = getCodeBuilderConfig();
+		final var config = getCodeBuilderConfig();
 		if (config == null) {
 			issues.addError("No code builder configuration", this); //$NON-NLS-1$
 		} else {
@@ -155,7 +153,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		if (this.subFragments == null) {
 			issues.addError("Sub generators are not created"); //$NON-NLS-1$
 		} else {
-			for (final IXtextGeneratorFragment subFragment : this.subFragments) {
+			for (final var subFragment : this.subFragments) {
 				subFragment.checkConfiguration(issues);
 			}
 		}
@@ -177,7 +175,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	@Override
 	public void generate() {
-		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generate();
 		}
 	}
@@ -185,7 +183,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Generates the Xtend stubs.
 	 */
 	public void generateXtendStubs() {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateXtendStubs();
 		}
 	}
@@ -193,7 +191,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Generates the Java stubs.
 	 */
 	public void generateJavaStubs() {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateJavaStubs();
 		}
 	}
@@ -203,7 +201,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateRuntimeBindings(BindingFactory factory) {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateRuntimeBindings(factory);
 		}
 	}
@@ -213,7 +211,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateEclipseBindings(BindingFactory factory) {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateEclipseBindings(factory);
 		}
 	}
@@ -223,7 +221,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateIdeaBindings(BindingFactory factory) {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateIdeaBindings(factory);
 		}
 	}
@@ -233,7 +231,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateWebBindings(BindingFactory factory) {
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateWebBindings(factory);
 		}
 	}
@@ -380,11 +378,11 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getLanguageScriptMemberGetter() {
-		final Grammar grammar = getGrammar();
-		final AbstractRule scriptRule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getScriptRuleName());
-		for (final Assignment assignment : GrammarUtil.containedAssignments(scriptRule)) {
-			if ((assignment.getTerminal() instanceof RuleCall)
-					&& Objects.equals(((RuleCall) assignment.getTerminal()).getRule().getName(),
+		final var grammar = getGrammar();
+		final var scriptRule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getScriptRuleName());
+		for (final var assignment : GrammarUtil.containedAssignments(scriptRule)) {
+			if ((assignment.getTerminal() instanceof RuleCall cvalue)
+					&& Objects.equals(cvalue.getRule().getName(),
 					getCodeBuilderConfig().getTopElementRuleName())) {
 				return "get" + Strings.toFirstUpper(assignment.getFeature()); //$NON-NLS-1$
 			}
@@ -408,14 +406,14 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getXFactoryFor(TypeReference type) {
-		final String packageName = type.getPackageName();
-		final Grammar grammar = getGrammar();
-		TypeReference reference = getXFactoryFor(packageName, grammar);
+		final var packageName = type.getPackageName();
+		final var grammar = getGrammar();
+		var reference = getXFactoryFor(packageName, grammar);
 		if (reference != null) {
 			return reference;
 		}
 
-		for (final Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
+		for (final var usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
 			reference = getXFactoryFor(packageName, usedGrammar);
 			if (reference != null) {
 				return reference;
@@ -435,8 +433,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	}
 
 	private TypeReference getXFactoryFor(String packageName, Grammar grammar) {
-		final String languageName = GrammarUtil.getSimpleName(grammar).toLowerCase();
-		final String basePackage = this.naming.getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
+		final var languageName = GrammarUtil.getSimpleName(grammar).toLowerCase();
+		final var basePackage = this.naming.getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
 		if (basePackage.equals(packageName)) {
 			return new TypeReference(basePackage + "." //$NON-NLS-1$
 					+ Strings.toFirstUpper(languageName) + "Factory"); //$NON-NLS-1$
@@ -678,13 +676,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return {@code true} if the element's name is matching.
 	 */
 	protected static boolean nameMatches(EObject element, String pattern) {
-		if (element instanceof RuleCall) {
-			return nameMatches(((RuleCall) element).getRule(), pattern);
+		if (element instanceof RuleCall cvalue) {
+			return nameMatches(cvalue.getRule(), pattern);
 		}
-		if (element instanceof AbstractRule) {
-			final String name = ((AbstractRule) element).getName();
-			final Pattern compilerPattern = Pattern.compile(pattern);
-			final Matcher matcher = compilerPattern.matcher(name);
+		if (element instanceof AbstractRule cvalue) {
+			final var name = cvalue.getName();
+			final var compilerPattern = Pattern.compile(pattern);
+			final var matcher = compilerPattern.matcher(name);
 			if (matcher.find()) {
 				return true;
 			}
@@ -723,7 +721,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param descriptions the descriptions to bind to.
 	 */
 	protected void bindElementDescription(BindingFactory factory, CodeElementExtractor.ElementDescription... descriptions) {
-		for (final CodeElementExtractor.ElementDescription description : descriptions) {
+		for (final var description : descriptions) {
 			bindTypeReferences(factory,
 					description.builderInterfaceType(),
 					description.builderImplementationType(),
@@ -743,7 +741,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected void bindTypeReferences(BindingFactory factory, TypeReference interfaceType,
 			TypeReference implementationType, TypeReference customImplementationType) {
-		final IFileSystemAccess2 fileSystem = getSrc();
+		final var fileSystem = getSrc();
 		final TypeReference type;
 		if ((fileSystem.isFile(implementationType.getJavaPath()))
 				|| (fileSystem.isFile(customImplementationType.getXtendPath()))) {
@@ -760,10 +758,10 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the rule that is defining the members.
 	 */
 	protected AbstractRule getMemberRule(CodeElementExtractor.ElementDescription description) {
-		for (final Assignment assignment : GrammarUtil.containedAssignments(description.grammarComponent())) {
+		for (final var assignment : GrammarUtil.containedAssignments(description.grammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
-				if (assignment.getTerminal() instanceof RuleCall) {
-					return ((RuleCall) assignment.getTerminal()).getRule();
+				if (assignment.getTerminal() instanceof RuleCall cvalue) {
+					return cvalue.getRule();
 				}
 			}
 		}

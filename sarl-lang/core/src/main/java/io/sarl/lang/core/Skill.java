@@ -136,7 +136,7 @@ public abstract class Skill extends AgentTrait implements IBehaviorGuardEvaluato
 	 * last call on the skill.
 	 */
 	void decreaseReference() {
-		final int newValue = this.referencesFromCapacityMap.decrementAndGet();
+		final var newValue = this.referencesFromCapacityMap.decrementAndGet();
 		if (newValue <= 0) {
 			prepareUninstallation();
 			uninstall();

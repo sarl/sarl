@@ -159,7 +159,7 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 		if (field.getName() == null && field.isExtension()) {
 			return getTypeName(field.getType());
 		}
-		final JvmField jvmField = this.associations.getJvmField(field);
+		final var jvmField = this.associations.getJvmField(field);
 		if (jvmField != null) {
 			return _signature(jvmField, typeAtEnd);
 		}
@@ -171,7 +171,7 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Override
 	protected String _signature(XtendFunction function, boolean typeAtEnd) {
-		final JvmOperation inferredOperation = this.associations.getDirectlyInferredOperation(function);
+		final var inferredOperation = this.associations.getDirectlyInferredOperation(function);
 		if (inferredOperation != null) {
 			return _signature(inferredOperation, typeAtEnd);
 		}
@@ -186,13 +186,13 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Override
 	protected String _signature(XtendConstructor constructor, boolean typeAtEnd) {
-		final JvmConstructor inferredConstructor = this.associations.getInferredConstructor(constructor);
+		final var inferredConstructor = this.associations.getInferredConstructor(constructor);
 		return _signature(inferredConstructor, typeAtEnd);
 	}
 
 	@Override
 	protected String _signature(XAbstractFeatureCall featureCall, boolean typeAtEnd) {
-		final JvmIdentifiableElement feature = featureCall.getFeature();
+		final var feature = featureCall.getFeature();
 		if (feature != null) {
 			return internalGetSignature(feature, typeAtEnd);
 		}
@@ -201,7 +201,7 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Override
 	protected String _signature(XConstructorCall featureCall, boolean typeAtEnd) {
-		final JvmIdentifiableElement feature = featureCall.getConstructor();
+		final var feature = featureCall.getConstructor();
 		if (feature != null) {
 			return internalGetSignature(feature, typeAtEnd);
 		}
@@ -210,8 +210,8 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Override
 	protected String _signature(JvmOperation jvmOperation, boolean typeAtEnd) {
-		String returnTypeString = this.keywords.getVoidKeyword();
-		final JvmTypeReference returnType = jvmOperation.getReturnType();
+		var returnTypeString = this.keywords.getVoidKeyword();
+		final var returnType = jvmOperation.getReturnType();
 		if (returnType != null) {
 			if (returnType instanceof JvmAnyTypeReference) {
 				throw new IllegalStateException();
@@ -219,9 +219,9 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 			returnTypeString = returnType.getSimpleName();
 		}
 
-		final String signature = jvmOperation.getSimpleName() + this.hoverUiStrings.parameters(jvmOperation);
-		final String postSignature = getThrowsDeclaration(jvmOperation);
-		final String typeParameter = this.uiStrings.typeParameters(jvmOperation.getTypeParameters());
+		final var signature = jvmOperation.getSimpleName() + this.hoverUiStrings.parameters(jvmOperation);
+		final var postSignature = getThrowsDeclaration(jvmOperation);
+		final var typeParameter = this.uiStrings.typeParameters(jvmOperation.getTypeParameters());
 		if (typeParameter != null && typeParameter.length() > 0) {
 			if (typeAtEnd) {
 				return signature + " " + typeParameter + " " //$NON-NLS-1$ //$NON-NLS-2$
@@ -242,8 +242,8 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @return the string representation into the hover.
 	 */
 	protected String _signature(XCastedExpression castExpression, boolean typeAtEnd) {
-		if (castExpression instanceof SarlCastedExpression) {
-			final JvmOperation delegate = ((SarlCastedExpression) castExpression).getFeature();
+		if (castExpression instanceof SarlCastedExpression cvalue) {
+			final var delegate = cvalue.getFeature();
 			if (delegate != null) {
 				return _signature(delegate, typeAtEnd);
 			}
@@ -254,9 +254,8 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Override
 	public String getImageTag(final EObject object) {
-		if (object instanceof SarlCastedExpression) {
-			final SarlCastedExpression expr = (SarlCastedExpression) object;
-			final JvmOperation delegate = expr.getFeature();
+		if (object instanceof SarlCastedExpression expr) {
+			final var delegate = expr.getFeature();
 			if (delegate != null) {
 				return getImageTag(delegate);
 			}
@@ -272,7 +271,7 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	protected String getTypeName(JvmType type) {
 		if (type != null) {
 			if (type instanceof JvmDeclaredType) {
-				final ITypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, type);
+				final var owner = new StandardTypeReferenceOwner(this.services, type);
 				return owner.toLightweightTypeReference(type).getHumanReadableName();
 			}
 			return type.getSimpleName();

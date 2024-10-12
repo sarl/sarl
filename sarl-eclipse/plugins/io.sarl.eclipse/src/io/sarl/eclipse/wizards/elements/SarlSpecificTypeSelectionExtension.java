@@ -69,9 +69,9 @@ public class SarlSpecificTypeSelectionExtension extends TypeSelectionExtension
 	@Override
 	public ImageDescriptor getImageDescriptor(ITypeInfoRequestor typeInfoRequestor) {
 		QualifiedName qualifiedName;
-		final String enclosing = typeInfoRequestor.getEnclosingName();
+		final var enclosing = typeInfoRequestor.getEnclosingName();
 		if (Strings.isEmpty(enclosing)) {
-			final String packageName = typeInfoRequestor.getPackageName();
+			final var packageName = typeInfoRequestor.getPackageName();
 			if (Strings.isEmpty(packageName)) {
 				qualifiedName = null;
 			} else {

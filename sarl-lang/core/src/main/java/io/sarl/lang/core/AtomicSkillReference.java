@@ -84,7 +84,7 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 	 * @return the old reference.
 	 */
 	public Skill clear() {
-		final Skill ref = this.reference;
+		final var ref = this.reference;
 		this.reference = null;
 		if (ref != null) {
 			ref.decreaseReference();
@@ -94,7 +94,7 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		final Skill ref = this.reference;
+		final var ref = this.reference;
 		if (ref != null) {
 			return ref.toString();
 		}
@@ -112,9 +112,9 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 		if (!obj.getClass().equals(AtomicSkillReference.class)) {
 			return false;
 		}
-		final Skill ref = this.reference;
-		final AtomicSkillReference aref = (AtomicSkillReference) obj;
-		final Skill oref = aref.reference;
+		final var ref = this.reference;
+		final var aref = (AtomicSkillReference) obj;
+		final var oref = aref.reference;
 		if (ref == null) {
 			return oref == null;
 		}
@@ -126,7 +126,7 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 
 	@Override
 	public int hashCode() {
-		final Skill ref = this.reference;
+		final var ref = this.reference;
 		if (ref == null) {
 			return 0;
 		}

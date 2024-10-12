@@ -46,8 +46,7 @@ class SarlScriptTypeSelector extends AbstractSarlScriptInteractiveSelector<Xtend
 
 	@Override
 	protected URI getResourceURIForValidEObject(Object object) {
-		if (object instanceof XtendTypeDeclaration) {
-			final XtendTypeDeclaration clazz = (XtendTypeDeclaration) object;
+		if (object instanceof XtendTypeDeclaration clazz) {
 			return clazz.eResource().getURI();
 		}
 		return null;
@@ -86,7 +85,7 @@ class SarlScriptTypeSelector extends AbstractSarlScriptInteractiveSelector<Xtend
 	@Override
 	protected Image getElementImage(Object element) {
 		if (element != null) {
-			final Image img = this.labelProvider.getImage(element);
+			final var img = this.labelProvider.getImage(element);
 			if (img != null) {
 				return img;
 			}

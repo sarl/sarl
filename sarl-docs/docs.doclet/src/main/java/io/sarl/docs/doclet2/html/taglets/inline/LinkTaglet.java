@@ -95,7 +95,7 @@ public class LinkTaglet extends AbstractSarlTaglet {
 		} else {
 			sig = referenceTree.getSignature();
 		}
-		final int idx = sig.indexOf("#"); //$NON-NLS-1$
+		final var idx = sig.indexOf("#"); //$NON-NLS-1$
 		if (idx >= 0 && idx < (sig.length() - 1)) {
 			return sig.substring(idx + 1);
 		}
@@ -105,9 +105,9 @@ public class LinkTaglet extends AbstractSarlTaglet {
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element,
 			DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor contentExtractor) {
-		final LinkTree node = (LinkTree) Iterables.find(tags, it -> it instanceof LinkTree);
+		final var node = (LinkTree) Iterables.find(tags, it -> it instanceof LinkTree);
 
-		final org.jsoup.nodes.Element labelElement = contentExtractor.extractSimpleText(node.getLabel());
+		final var labelElement = contentExtractor.extractSimpleText(node.getLabel());
 
 		if (node.getReference() == null) {
 			appendChildren(parent, labelElement.childNodes());
@@ -121,9 +121,9 @@ public class LinkTaglet extends AbstractSarlTaglet {
 			labelNode = labelElement.childNodes();
 		}
 
-		final boolean isplain = node.getKind() == com.sun.source.doctree.DocTree.Kind.LINK_PLAIN;
+		final var isplain = node.getKind() == com.sun.source.doctree.DocTree.Kind.LINK_PLAIN;
 
-		final List<Node> referenceNode = contentExtractor.extractReference(node.getReference(), labelNode, isplain);
+		final var referenceNode = contentExtractor.extractReference(node.getReference(), labelNode, isplain);
 		if (referenceNode == null) {
 			appendChildren(parent, labelElement.childNodes());
 			contentExtractor.getContext().getReporter().print(Kind.ERROR, Messages.LinkTaglet_0);

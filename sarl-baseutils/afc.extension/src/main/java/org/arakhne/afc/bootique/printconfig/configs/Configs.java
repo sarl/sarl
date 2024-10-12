@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -60,7 +59,7 @@ public final class Configs {
 	 * @return the configuration metadata nodes.
 	 */
 	public static List<ConfigMetadataNode> extractConfigs(ModulesMetadata modulesMetadata) {
-		final List<ModuleMetadata> modules = modulesMetadata
+		final var modules = modulesMetadata
                 .getModules()
                 .stream()
                 .collect(Collectors.toList());
@@ -80,16 +79,16 @@ public final class Configs {
 	public static void defineConfig(Map<String, Object> content, ConfigMetadataNode config, Injector injector) {
 		assert content != null;
 		assert config != null;
-		final Class<?> type = (Class<?>) config.getType();
-		final String sectionName = config.getName();
-		final Pattern setPattern = Pattern.compile("^set([A-Z])([a-zA-Z0-9]+)$"); //$NON-NLS-1$
+		final var type = (Class<?>) config.getType();
+		final var sectionName = config.getName();
+		final var setPattern = Pattern.compile("^set([A-Z])([a-zA-Z0-9]+)$"); //$NON-NLS-1$
 		Object theConfig = null;
-		for (final Method setterMethod : type.getMethods()) {
-			final Matcher matcher = setPattern.matcher(setterMethod.getName());
+		for (final var setterMethod : type.getMethods()) {
+			final var matcher = setPattern.matcher(setterMethod.getName());
 			if (matcher.matches()) {
-				final String firstLetter = matcher.group(1);
-				final String rest = matcher.group(2);
-				final String getterName = "get" + firstLetter + rest; //$NON-NLS-1$
+				final var firstLetter = matcher.group(1);
+				final var rest = matcher.group(2);
+				final var getterName = "get" + firstLetter + rest; //$NON-NLS-1$
 				Method getterMethod = null;
 				try {
 					getterMethod = type.getMethod(getterName);
@@ -104,9 +103,9 @@ public final class Configs {
 					}
 					try {
 						if (theConfig != null) {
-							final Object value = filterValue(getterMethod.getReturnType(),
+							final var value = filterValue(getterMethod.getReturnType(),
 									getterMethod.invoke(theConfig));
-							final String id = sectionName + "." + firstLetter.toLowerCase() + rest; //$NON-NLS-1$
+							final var id = sectionName + "." + firstLetter.toLowerCase() + rest; //$NON-NLS-1$
 							defineScalar(content, id, value);
 						}
 					} catch (Throwable exception) {
@@ -141,20 +140,20 @@ public final class Configs {
 	 * @throws Exception if a map cannot be created internally.
 	 */
 	public static void defineScalar(Map<String, Object> content, String bootiqueVariable, Object value) throws Exception {
-		final String[] elements = bootiqueVariable.split("\\."); //$NON-NLS-1$
-		final Map<String, Object> entry = getScalarParent(content, elements);
+		final var elements = bootiqueVariable.split("\\."); //$NON-NLS-1$
+		final var entry = getScalarParent(content, elements);
 		entry.put(elements[elements.length - 1], value);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static Map<String, Object> getScalarParent(Map<String, Object> content, String[] elements) throws Exception {
-		Map<String, Object> entry = content;
-		for (int i = 0; i < elements.length - 1; ++i) {
-			final Object val = entry.get(elements[i]);
-			if (val instanceof Map<?, ?>) {
-				entry = (Map<String, Object>) val;
+		var entry = content;
+		for (var i = 0; i < elements.length - 1; ++i) {
+			final var val = entry.get(elements[i]);
+			if (val instanceof Map<?, ?> mentry) {
+				entry = (Map<String, Object>) mentry;
 			} else {
-				final Map<String, Object> newElement = content.getClass().getDeclaredConstructor().newInstance();
+				final var newElement = content.getClass().getDeclaredConstructor().newInstance();
 				entry.put(elements[i], newElement);
 				entry = newElement;
 			}

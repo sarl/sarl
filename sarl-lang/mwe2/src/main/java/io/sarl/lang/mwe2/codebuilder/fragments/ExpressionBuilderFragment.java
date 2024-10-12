@@ -21,8 +21,6 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Iterators;
@@ -34,7 +32,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.Keyword;
@@ -56,7 +53,6 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
@@ -105,8 +101,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the expression builder interface.
 	 */
 	protected void generateIExpressionBuilder() {
-		final TypeReference builder = getExpressionBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getExpressionBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -127,16 +123,16 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the expression builder implementation.
 	 */
 	protected void generateExpressionBuilderImpl() {
-		final TypeReference builderInterface = getExpressionBuilderInterface();
-		final TypeReference builder = getExpressionBuilderImpl();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getExpressionBuilderInterface();
+		final var builder = getExpressionBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -161,16 +157,16 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the expression appender.
 	 */
 	protected void generateExpressionAppender() {
-		final TypeReference builderInterface = getExpressionBuilderInterface();
-		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getExpressionBuilderInterface();
+		final var appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -197,7 +193,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -208,7 +204,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the code.
 	 */
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		final ExpressionContextDescription expressionContext = getExpressionContextDescription();
+		final var expressionContext = getExpressionContextDescription();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -564,13 +560,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t\t\tif (reference instanceof "); //$NON-NLS-1$
 					it.append(JvmParameterizedTypeReference.class);
-					it.append(") {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tfinal "); //$NON-NLS-1$
-					it.append(JvmParameterizedTypeReference.class);
-					it.append(" pref = ("); //$NON-NLS-1$
-					it.append(JvmParameterizedTypeReference.class);
-					it.append(") reference;"); //$NON-NLS-1$
+					it.append(" pref) {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\tif (!pref.getArguments().isEmpty()) {"); //$NON-NLS-1$
 					it.newLine();
@@ -1080,11 +1070,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t\tif (jvmObject instanceof "); //$NON-NLS-1$
 						it.append(JvmDeclaredType.class);
-						it.append(") {"); //$NON-NLS-1$
+						it.append(" $c$value) {"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\tfeature = (("); //$NON-NLS-1$
-						it.append(JvmDeclaredType.class);
-						it.append(") jvmObject).getExtendedClass().getType();"); //$NON-NLS-1$
+						it.append("\t\t\tfeature = $c$value.getExtendedClass().getType();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t} else {"); //$NON-NLS-1$
 						it.newLine();
@@ -1092,11 +1080,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t\t\tif (feature instanceof "); //$NON-NLS-1$
 						it.append(JvmDeclaredType.class);
-						it.append(") {"); //$NON-NLS-1$
+						it.append(" $c$value) {"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t\tfeature = (("); //$NON-NLS-1$
-						it.append(JvmDeclaredType.class);
-						it.append(") feature).getExtendedClass().getType();"); //$NON-NLS-1$
+						it.append("\t\t\t\tfeature = $c$value.getExtendedClass().getType();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\t} else {"); //$NON-NLS-1$
 						it.newLine();
@@ -1154,7 +1140,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureContainerKeyword(EObject grammarContainer) {
-		final Iterator<Keyword> iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
+		final var iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
 		if (iterator.hasNext()) {
 			return iterator.next().getValue();
 		}
@@ -1167,7 +1153,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureFieldDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
-		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
+		final var modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
 		if (modifiers != null && !modifiers.isEmpty()) {
 			return modifiers.get(0);
 		}
@@ -1179,19 +1165,19 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the description.
 	 */
 	protected ExpressionContextDescription getExpressionContextDescription() {
-		for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
+		for (final var containerDescription : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
-			final AbstractRule rule = getMemberRule(containerDescription);
+			final var rule = getMemberRule(containerDescription);
 			if (rule != null) {
-				final Pattern fieldTypePattern = Pattern.compile(getExpressionConfig().getExpressionFieldTypenamePattern());
-				final ExpressionContextDescription description = getCodeElementExtractor().visitMemberElements(
+				final var fieldTypePattern = Pattern.compile(getExpressionConfig().getExpressionFieldTypenamePattern());
+				final var description = getCodeElementExtractor().visitMemberElements(
 						containerDescription, rule, null,
 					(it, grammarContainer, memberContainer, classifier) -> {
 						if (fieldTypePattern.matcher(classifier.getName()).find()) {
-							final Assignment expressionAssignment = findAssignmentFromTerminalPattern(
+							final var expressionAssignment = findAssignmentFromTerminalPattern(
 									memberContainer,
 									getExpressionConfig().getExpressionGrammarPattern());
-							final CodeElementExtractor.ElementDescription memberDescription =
+							final var memberDescription =
 									it.newElementDescription(classifier.getName(), memberContainer,
 											classifier, XExpression.class);
 							return new ExpressionContextDescription(
@@ -1215,8 +1201,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
-		final ExpressionContextDescription expressionContext = getExpressionContextDescription();
-		final String createFunctionName = "createXExpression"; //$NON-NLS-1$
+		final var expressionContext = getExpressionContextDescription();
+		final var createFunctionName = "createXExpression"; //$NON-NLS-1$
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -1290,8 +1276,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
-			final String buildFunctionName = "buildXExpression"; //$NON-NLS-1$
-			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
+			final var buildFunctionName = "buildXExpression"; //$NON-NLS-1$
+			final var appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {

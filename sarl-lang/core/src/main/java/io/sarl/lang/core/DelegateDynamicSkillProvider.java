@@ -48,8 +48,8 @@ public final class DelegateDynamicSkillProvider implements DynamicSkillProvider 
 	@Pure
 	@Override
 	public Skill createSkill(Class<? extends Capacity> capacity) {
-		for (final DynamicSkillProvider provider : this.delegates) {
-			final Skill skill = provider.createSkill(capacity);
+		for (final var provider : this.delegates) {
+			final var skill = provider.createSkill(capacity);
 			if (skill != null) {
 				return skill;
 			}
@@ -60,7 +60,7 @@ public final class DelegateDynamicSkillProvider implements DynamicSkillProvider 
 	@Pure
 	@Override
 	public boolean isSkillProviding(Class<? extends Capacity> capacity) {
-		for (final DynamicSkillProvider provider : this.delegates) {
+		for (final var provider : this.delegates) {
 			if (provider.isSkillProviding(capacity)) {
 				return true;
 			}

@@ -60,8 +60,8 @@ public class InvalidAnchorLabelException extends RuntimeException {
 	}
 
 	private static String format(String[] anchors) {
-		final StringBuilder builder = new StringBuilder();
-		for (final String anchor : anchors) {
+		final var builder = new StringBuilder();
+		for (final var anchor : anchors) {
 			if (builder.length() > 0) {
 				builder.append(", "); //$NON-NLS-1$
 			}

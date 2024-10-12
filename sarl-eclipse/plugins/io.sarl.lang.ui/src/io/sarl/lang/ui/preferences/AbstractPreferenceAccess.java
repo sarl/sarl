@@ -57,7 +57,7 @@ public abstract class AbstractPreferenceAccess {
 	 */
 	protected IPreferenceStoreAccess getPreferenceStoreAccess() {
 		if (this.preferenceStoreAccess == null) {
-			final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+			final var injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 			this.preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
 		}
 		return this.preferenceStoreAccess;

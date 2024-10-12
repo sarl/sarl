@@ -75,7 +75,7 @@ public class TestValidator {
 	public static Validator validate(SarlValidationTestHelper validationHelper, Injector injector, Resource resource) {
 		assert validationHelper != null;
 		assert injector != null;
-		Validator validator = new XtextValidator(resource, validationHelper);
+		var validator = new XtextValidator(resource, validationHelper);
 		injector.injectMembers(validator);
 		return validator;
 	}
@@ -251,9 +251,9 @@ public class TestValidator {
 
 		@Override
 		public Validator assertNoIssues() {
-			final List<Issue> issues = getIssues();
+			final var issues = getIssues();
 			if (!isEmpty(issues)) {
-				final String actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
+				final var actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
 				throw new ComparisonFailure("Expected no issues, but got :" + actual, //$NON-NLS-1$
 						"", actual); //$NON-NLS-1$
 			}
@@ -262,10 +262,10 @@ public class TestValidator {
 
 		@Override
 		public Validator assertNoErrors() {
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = filter(issues, input -> Severity.ERROR == input.getSeverity());
+			final var issues = getIssues();
+			final var fissues = filter(issues, input -> Severity.ERROR == input.getSeverity());
 			if (!isEmpty(fissues)) {
-				final String actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
+				final var actual = this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()).toString();
 				throw new ComparisonFailure("Expected no errors, but got :" + actual, //$NON-NLS-1$
 						"", actual); //$NON-NLS-1$
 			}
@@ -274,8 +274,8 @@ public class TestValidator {
 
 		@Override
 		public Validator assertNoError(String issuecode) {
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = filter(issues, input -> issuecode.equals(input.getCode()));
+			final var issues = getIssues();
+			final var fissues = filter(issues, input -> issuecode.equals(input.getCode()));
 			if (!isEmpty(fissues)) {
 				fail("Expected no error '" + issuecode + "' but got " //$NON-NLS-1$ //$NON-NLS-2$
 						+ this.testHelper.getIssuesAsString(this.resource, issues, new StringBuilder()));
@@ -284,11 +284,11 @@ public class TestValidator {
 		}
 
 		private Validator assertNoIssues(Severity severity, EClass objectType, String code, String... messageParts) {
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = this.testHelper.matchIssues(this.resource, objectType, code, -1, -1,
+			final var issues = getIssues();
+			final var fissues = this.testHelper.matchIssues(this.resource, objectType, code, -1, -1,
 					severity, issues, messageParts);
 			if (!Iterables.isEmpty(fissues)) {
-				final StringBuilder message = new StringBuilder("Expected no ") //$NON-NLS-1$
+				final var message = new StringBuilder("Expected no ") //$NON-NLS-1$
 					.append(severity)
 					.append(" '") //$NON-NLS-1$
 					.append(code)
@@ -314,8 +314,8 @@ public class TestValidator {
 
 		@Override
 		public Validator assertNoIssues(EClass objectType) {
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = filter(issues, input -> {
+			final var issues = getIssues();
+			final var fissues = filter(issues, input -> {
 					final EObject object = this.resource.getEObject(input.getUriToProblem().fragment());
 					if (objectType.isInstance(object)) {
 						return true;
@@ -331,10 +331,10 @@ public class TestValidator {
 
 		@Override
 		public Validator assertNoIssue(EClass objectType, String issuecode) {
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = filter(issues, input -> {
+			final var issues = getIssues();
+			final var fissues = filter(issues, input -> {
 					if (issuecode.equals(input.getCode())) {
-						final EObject object = this.resource.getEObject(input.getUriToProblem().fragment());
+						final var object = this.resource.getEObject(input.getUriToProblem().fragment());
 						if (objectType.isInstance(object)) {
 							return true;
 						}
@@ -360,11 +360,11 @@ public class TestValidator {
 
 		private void assertIssue(Severity severity, EClass objectType, String code, int offset, String... messageParts) {
 			assertNotNull(objectType);
-			final List<Issue> issues = getIssues();
-			final Iterable<Issue> fissues = this.testHelper.matchIssues(this.resource, objectType, code, offset,
+			final var issues = getIssues();
+			final var fissues = this.testHelper.matchIssues(this.resource, objectType, code, offset,
 					-1, severity, issues, messageParts);
 			if (isEmpty(fissues)) {
-				final StringBuilder message = new StringBuilder("Expected ") //$NON-NLS-1$
+				final var message = new StringBuilder("Expected ") //$NON-NLS-1$
 					.append(severity)
 					.append(" '") //$NON-NLS-1$
 					.append(code)
@@ -375,8 +375,8 @@ public class TestValidator {
 				assertEquals(Joiner.on('\n').join(messageParts), message.toString());
 				fail(message.toString());
 			} else {
-				final Issue[] issueTab = Iterables.toArray(fissues, Issue.class);
-				for (final Issue removableIssue : issueTab) {
+				final var issueTab = Iterables.toArray(fissues, Issue.class);
+				for (final var removableIssue : issueTab) {
 					this.issues.remove(removableIssue);
 				}
 			}

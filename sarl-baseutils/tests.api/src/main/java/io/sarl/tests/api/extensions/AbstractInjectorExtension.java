@@ -22,7 +22,6 @@ package io.sarl.tests.api.extensions;
 
 import static org.eclipse.xtext.util.Exceptions.throwUncheckedException;
 
-import com.google.inject.Injector;
 import org.eclipse.xtext.testing.IInjectorProvider;
 import org.eclipse.xtext.testing.IRegistryConfigurator;
 import org.eclipse.xtext.testing.InjectWith;
@@ -53,24 +52,23 @@ public class AbstractInjectorExtension implements Extension {
 	 */
 	@SuppressWarnings("static-method")
 	public void injectMembers(Object instance, ExtensionContext context) throws Exception {
-		IInjectorProvider injectorProvider = createInjectorProvider(context);
+		var injectorProvider = createInjectorProvider(context);
 		if (injectorProvider != null) {
-			Injector injector = injectorProvider.getInjector();
+			var injector = injectorProvider.getInjector();
 			if (injector != null)
 				injector.injectMembers(instance);
 		}
 	}
 	
 	private static IInjectorProvider createInjectorProvider(ExtensionContext context) {
-		InjectWith injectWith = context.getRequiredTestClass().getAnnotation(InjectWith.class);
+		var injectWith = context.getRequiredTestClass().getAnnotation(InjectWith.class);
 		if (injectWith != null) {
-			Class<? extends IInjectorProvider> klass = injectWith.value();
+			var klass = injectWith.value();
 			try {
 				// TODO this mode of creation is not efficient, but it ensures that the injector providers are really reset.
-				final IInjectorProvider injectorProvider = klass.getDeclaredConstructor().newInstance();
-				if (injectorProvider instanceof IRegistryConfigurator) {
-					final IRegistryConfigurator registryConfigurator = (IRegistryConfigurator) injectorProvider;
-					registryConfigurator.setupRegistry();
+				final var injectorProvider = klass.getDeclaredConstructor().newInstance();
+				if (injectorProvider instanceof IRegistryConfigurator rvalue) {
+					rvalue.setupRegistry();
 				}
 				return injectorProvider;
 			} catch (Exception e) {

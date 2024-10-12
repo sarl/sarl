@@ -47,18 +47,18 @@ public class ContributionBasedExtraLanguageValidatorProvider implements IExtraLa
 
 	@Override
 	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
-		final List<AbstractExtraLanguageValidator> validators = new ArrayList<>();
+		final var validators = new ArrayList<AbstractExtraLanguageValidator>();
 		if (this.providers == null) {
 			this.providers = new ArrayList<>();
-			for (final IExtraLanguageContribution contribution : this.source.getContributions()) {
-				final IExtraLanguageValidatorProvider provider = contribution.getValidatorProvider();
+			for (final var contribution : this.source.getContributions()) {
+				final var provider = contribution.getValidatorProvider();
 				if (provider != null) {
 					this.providers.add(provider);
 				}
 			}
 		}
-		for (final IExtraLanguageValidatorProvider provider:  this.providers) {
-			for (final AbstractExtraLanguageValidator validator : provider.getValidators(resource)) {
+		for (final var provider:  this.providers) {
+			for (final var validator : provider.getValidators(resource)) {
 				validators.add(validator);
 			}
 		}

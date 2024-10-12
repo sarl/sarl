@@ -23,17 +23,14 @@ package io.sarl.apputils.bootiqueapp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.bootique.BQModuleProvider;
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
 import io.bootique.BootiqueException;
-import io.bootique.command.CommandOutcome;
 import io.bootique.di.Injector;
 import io.bootique.help.HelpOption;
 
@@ -105,7 +102,7 @@ public class BootiqueMain {
 	 * @return the runtime.
 	 */
 	protected BQRuntime createRuntime(String... args) {
-		Bootique bootique = Bootique.app(args).autoLoadModules();
+		var bootique = Bootique.app(args).autoLoadModules();
 		return createRuntime(bootique);
 	}
 
@@ -117,8 +114,8 @@ public class BootiqueMain {
 	 * @since 0.12
 	 */
 	protected BQRuntime createRuntime(Class<? extends BQModuleProvider>[] modules, String... args) {
-		Bootique bootique = Bootique.app(args);
-		for (final Class<? extends BQModuleProvider> providerType : modules) {
+		var bootique = Bootique.app(args);
+		for (final var providerType : modules) {
 			BQModuleProvider provider;
 			try {
 				provider = providerType.getConstructor().newInstance();
@@ -133,9 +130,9 @@ public class BootiqueMain {
 	}
 
 	private BQRuntime createRuntime(Bootique bootique) {
-		Bootique bootiqueInstance = bootique;
+		var bootiqueInstance = bootique;
 		if (this.providers != null) {
-			for (final BQModuleProvider provider : this.providers) {
+			for (final var provider : this.providers) {
 				bootiqueInstance = bootiqueInstance.moduleProvider(provider);
 			}
 		}
@@ -151,25 +148,25 @@ public class BootiqueMain {
 	 * @return the exit code.
 	 */
 	public int runCommand(String... args) {
-		final Logger rootLogger = Logger.getGlobal();
+		final var rootLogger = Logger.getGlobal();
 		try {
 			// Configure the root logger with the default bootique configuration (because it is not yet available)
-			for (final Handler handler : rootLogger.getHandlers()) {
+			for (final var handler : rootLogger.getHandlers()) {
 				handler.setFormatter(new JulPatternFormatter(DEFAULT_LOG_FORMAT));
 			}			
 			if (isExperimental()) {
 				rootLogger.warning(Messages.BootiqueMain_0);
 			}
-			final String[] fargs = filterCommandLineArguments(args);
-			final BQRuntime runtime = createRuntime(fargs);
+			final var fargs = filterCommandLineArguments(args);
+			final var runtime = createRuntime(fargs);
 
-			final CommandOutcome outcome = runtime.run();
+			final var outcome = runtime.run();
 			if (!outcome.isSuccess() && outcome.getException() != null) {
 				rootLogger.log(Level.SEVERE, outcome.getMessage(), outcome.getException());
 			}
 			return outcome.getExitCode();
 		} catch (BootiqueException exception) {
-			final CommandOutcome outcome = exception.getOutcome();
+			final var outcome = exception.getOutcome();
 			if (outcome != null) {
 				if (outcome.getException() != null) {
 					rootLogger.log(Level.SEVERE, outcome.getMessage(), outcome.getException());
@@ -194,7 +191,7 @@ public class BootiqueMain {
 	 * @return the options of the program.
 	 */
 	public final List<HelpOption> getOptions() {
-		final BQRuntime runtime = createRuntime();
+		final var runtime = createRuntime();
 		return GenerateMarkdownHelpCommand.getOptions(runtime.getInstance(Injector.class));
 	}
 
@@ -205,7 +202,7 @@ public class BootiqueMain {
 	 * @since 0.12
 	 */
 	public final List<HelpOption> getOptionsForModules(Class<? extends BQModuleProvider>[] modules) {
-		final BQRuntime runtime = createRuntime(modules);
+		final var runtime = createRuntime(modules);
 		return GenerateMarkdownHelpCommand.getOptions(runtime.getInstance(Injector.class));
 	}
 
@@ -217,10 +214,10 @@ public class BootiqueMain {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Class<? extends BQModuleProvider>[] getStaticModuleProvidersFor(String[] names) {
-		final List<Class<? extends BQModuleProvider>> providers = new ArrayList<>(names.length);
-		for (int i = 0; i < names.length; ++i) {
+		final var providers = new ArrayList<Class<? extends BQModuleProvider>>(names.length);
+		for (var i = 0; i < names.length; ++i) {
 			try {
-				final Class<?> type = Class.forName(names[i]);
+				final var type = Class.forName(names[i]);
 				if (type != null && BQModuleProvider.class.isAssignableFrom(type)) {
 					providers.add(type.asSubclass(BQModuleProvider.class));
 				}
@@ -238,19 +235,19 @@ public class BootiqueMain {
 	 * @since 0.12
 	 */
 	public static String[] filterCommandLineArguments(String[] args) {
-		final List<String> list = new ArrayList<>();
-		final Pattern pattern = Pattern.compile(D_PATTERN);
-		for (final String arg : args) {
-			final Matcher matcher = pattern.matcher(arg);
+		final var list = new ArrayList<String>();
+		final var pattern = Pattern.compile(D_PATTERN);
+		for (final var arg : args) {
+			final var matcher = pattern.matcher(arg);
 			if (matcher.matches()) {
-				final String name = matcher.group(1);
-				final String value = matcher.group(2);
+				final var name = matcher.group(1);
+				final var value = matcher.group(2);
 				System.setProperty(name, value);
 			} else {
 				list.add(arg);
 			}
 		}
-		final String[] tab = new String[list.size()];
+		final var tab = new String[list.size()];
 		list.toArray(tab);
 		return tab;
 	}

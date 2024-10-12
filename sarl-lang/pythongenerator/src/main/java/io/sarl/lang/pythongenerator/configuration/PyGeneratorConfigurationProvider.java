@@ -22,14 +22,11 @@
 package io.sarl.lang.pythongenerator.configuration;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -63,12 +60,12 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 			resourceSet = null;
 		}
 		if (resourceSet != null) {
-			final PyGeneratorConfigAdapter adapter = PyGeneratorConfigAdapter.findInEmfObject(resourceSet);
+			final var adapter = PyGeneratorConfigAdapter.findInEmfObject(resourceSet);
 			if (adapter != null && adapter.getLanguage2GeneratorConfig().containsKey(this.languageId)) {
 				return adapter.getLanguage2GeneratorConfig().get(this.languageId);
 			}
 		}
-		final PyGeneratorConfiguration config = createConfiguration(context);
+		final var config = createConfiguration(context);
 		if (installedIfNew && resourceSet != null) {
 			install(resourceSet, config);
 		}
@@ -93,7 +90,7 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 	 */
 	public PyGeneratorConfiguration install(ResourceSet resourceSet, PyGeneratorConfiguration config) {
 		assert config != null;
-		PyGeneratorConfigAdapter adapter = PyGeneratorConfigAdapter.findInEmfObject(resourceSet);
+		var adapter = PyGeneratorConfigAdapter.findInEmfObject(resourceSet);
 		if (adapter == null) {
 			adapter = new PyGeneratorConfigAdapter();
 		}
@@ -120,9 +117,9 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 		 */
 		public static PyGeneratorConfigAdapter findInEmfObject(final Notifier emfObject) {
 			if (emfObject != null) {
-				for (final Adapter adapter : emfObject.eAdapters()) {
-					if (adapter instanceof PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter) {
-						return ((PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter) adapter).get();
+				for (final var adapter : emfObject.eAdapters()) {
+					if (adapter instanceof PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter cvalue) {
+						return cvalue.get();
 					}
 				}
 			}
@@ -135,13 +132,13 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 		 * @return the removed adapter.
 		 */
 		public static PyGeneratorConfigAdapter removeFromEmfObject(final Notifier emfObject) {
-			final List<Adapter> adapters = emfObject.eAdapters();
-			final Iterator<Adapter> iterator = adapters.iterator();
+			final var adapters = emfObject.eAdapters();
+			final var iterator = adapters.iterator();
 			while (iterator.hasNext()) {
-				final Adapter adapter = iterator.next();
-				if (adapter instanceof PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter) {
+				final var adapter = iterator.next();
+				if (adapter instanceof PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter cvalue) {
 					iterator.remove();
-					return ((PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter) adapter).get();
+					return cvalue.get();
 				}
 			}
 			return null;
@@ -152,12 +149,11 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 		 * @param emfObject the EMF object.
 		 */
 		public void attachToEmfObject(Notifier emfObject) {
-			final PyGeneratorConfigAdapter result = findInEmfObject(emfObject);
+			final var result = findInEmfObject(emfObject);
 			if (result != null) {
 				throw new IllegalStateException();
 			}
-			final PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter adapter =
-					new PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter(this);
+			final var adapter = new PyGeneratorConfigAdapter.PyGeneratorConfigAdapterAdapter(this);
 			emfObject.eAdapters().add(adapter);
 		}
 

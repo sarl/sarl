@@ -51,7 +51,7 @@ public class JanusClasspathContainerInitializer extends ClasspathContainerInitia
 	public void initialize(IPath containerPath, IJavaProject project)
 			throws CoreException {
 		if (CONTAINER_ID.equals(containerPath)) {
-			final IClasspathContainer container = new JanusClasspathContainer(containerPath, project);
+			final var container = new JanusClasspathContainer(containerPath, project);
 			JavaCore.setClasspathContainer(containerPath,
 					new IJavaProject[] {project},
 					new IClasspathContainer[] {container},
@@ -70,11 +70,11 @@ public class JanusClasspathContainerInitializer extends ClasspathContainerInitia
 			final IPath containerPath,
 			final IJavaProject javaProject,
 			final IClasspathContainer containerSuggestion) throws CoreException {
-		if (containerSuggestion instanceof JanusClasspathContainer) {
-			((JanusClasspathContainer) containerSuggestion).reset();
+		if (containerSuggestion instanceof JanusClasspathContainer cvalue) {
+			cvalue.reset();
 		}
 		super.requestClasspathContainerUpdate(containerPath, javaProject, containerSuggestion);
-		final Job job = new Job(Messages.JanusClasspathContainerInitializer_0) {
+		final var job = new Job(Messages.JanusClasspathContainerInitializer_0) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {

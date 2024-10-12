@@ -56,7 +56,7 @@ public class SarlFieldBuilder extends XtendFieldBuilder {
 		} else {
 			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
 		}
-		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
+		final var defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendField());
 		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		if (isStaticFlag()) {

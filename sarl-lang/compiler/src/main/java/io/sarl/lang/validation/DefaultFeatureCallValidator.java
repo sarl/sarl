@@ -22,7 +22,6 @@
 package io.sarl.lang.validation;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendEnum;
@@ -64,7 +63,7 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	}
 
 	private static boolean isInsideOOTypeDeclaration(XAbstractFeatureCall call) {
-		final XtendTypeDeclaration declaration = EcoreUtil2.getContainerOfType(call, XtendTypeDeclaration.class);
+		final var declaration = EcoreUtil2.getContainerOfType(call, XtendTypeDeclaration.class);
 		return declaration != null
 			&& (declaration instanceof XtendClass
 				|| declaration instanceof XtendEnum
@@ -75,14 +74,14 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	@Override
 	public boolean isDisallowedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			final JvmIdentifiableElement feature = call.getFeature();
-			final String id = feature.getQualifiedName();
+			final var feature = call.getFeature();
+			final var id = feature.getQualifiedName();
 			// Exit is forbidden on a agent-based system
 			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
 				return !isInsideOOTypeDeclaration(call);
 			}
 			// Avoid any call to the hidden functions (function name contains "$" character).
-			final String simpleName = feature.getSimpleName();
+			final var simpleName = feature.getSimpleName();
 			if (SarlUtils.isHiddenMember(simpleName)
 				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(simpleName)
 				&& (!Utils.isImplicitLambdaParameterName(simpleName) || !isInsideClosure(call))) {
@@ -97,16 +96,16 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	}
 
 	private static boolean isInsideClosure(XAbstractFeatureCall call) {
-		final EObject container = Utils.getFirstContainerForPredicate(call, it -> {
+		final var container = Utils.getFirstContainerForPredicate(call, it -> {
 			return Boolean.valueOf(it instanceof XClosure || it instanceof XtendMember);
 		});
 		return container instanceof XClosure;
 	}
 
 	private boolean isPrivateAPI(JvmIdentifiableElement element) {
-		JvmMember featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
+		var featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
 		while (featureContainer != null) {
-			final Boolean value = this.annotations.findBooleanValue(featureContainer, PrivateAPI.class);
+			final var value = this.annotations.findBooleanValue(featureContainer, PrivateAPI.class);
 			if (value != null && !value.booleanValue()) {
 				return true;
 			}
@@ -116,12 +115,12 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	}
 
 	private boolean isPrivateAPI(XAbstractFeatureCall element) {
-		final JvmIdentifiableElement jvmElement = this.containerProvider.getNearestLogicalContainer(element);
+		final var jvmElement = this.containerProvider.getNearestLogicalContainer(element);
 		return jvmElement != null && isPrivateAPICaller(jvmElement);
 	}
 
 	private boolean isPrivateAPICaller(JvmIdentifiableElement element) {
-		JvmMember featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
+		var featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
 		while (featureContainer != null) {
 			if (this.annotations.findAnnotation(featureContainer, PrivateAPI.class.getName()) != null) {
 				return true;
@@ -134,8 +133,8 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	@Override
 	public boolean isDiscouragedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			final JvmIdentifiableElement feature = call.getFeature();
-			final String id = feature.getQualifiedName();
+			final var feature = call.getFeature();
+			final var id = feature.getQualifiedName();
 			if (id != null) {
 				switch (id) {
 				case "java.lang.System.err": //$NON-NLS-1$

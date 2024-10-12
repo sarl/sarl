@@ -50,16 +50,16 @@ public class SarlJavaElementDelegateAdapterFactory extends JavaElementDelegateAd
 			result = this.mainDelegateProvider.get();
 		}
 		if (result != null) {
-			if (adaptableObject instanceof IFileEditorInput) {
-				result.initializeWith((IFileEditorInput) adaptableObject);
+			if (adaptableObject instanceof IFileEditorInput cvalue) {
+				result.initializeWith(cvalue);
 				return result;
 			}
-			if (adaptableObject instanceof IResource) {
-				result.initializeWith((IResource) adaptableObject);
+			if (adaptableObject instanceof IResource cvalue) {
+				result.initializeWith(cvalue);
 				return result;
 			}
-			if (adaptableObject instanceof IEditorPart) {
-				result.initializeWith((IEditorPart) adaptableObject);
+			if (adaptableObject instanceof IEditorPart cvalue) {
+				result.initializeWith(cvalue);
 				return result;
 			}
 		}

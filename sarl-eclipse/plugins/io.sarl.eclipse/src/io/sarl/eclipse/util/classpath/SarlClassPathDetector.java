@@ -128,7 +128,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 		this.testSarlSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_TEST_SOURCE_SARL);
 		this.generationSarlSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
 
-		IProgressMonitor mon = monitor;
+		var mon = monitor;
 		if (mon == null) {
 			mon = new NullProgressMonitor();
 		}
@@ -180,7 +180,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	}
 
 	private static int computeOrderPriority(IPath path) {
-		final int len = path.segmentCount();
+		final var len = path.segmentCount();
 		if (len >= 2 && "generated-sources".equals(path.segment(len - 2))) { //$NON-NLS-1$
 			return 0;
 		}
@@ -198,13 +198,13 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	@Pure
 	public Comparator<IClasspathEntry> getCPEntryComparator() {
 		// TODO Define a Collator for SARL?
-		final Collator collator = Collator.getInstance();
+		final var collator = Collator.getInstance();
 		return (e1, e2) -> {
-			final IPath p1 = e1.getPath();
-			final IPath p2 = e2.getPath();
-			final int priority1 = computeOrderPriority(p1);
-			final int priority2 = computeOrderPriority(p2);
-			final int cmp = priority2 - priority1;
+			final var p1 = e1.getPath();
+			final var p2 = e2.getPath();
+			final var priority1 = computeOrderPriority(p1);
+			final var priority2 = computeOrderPriority(p2);
+			final var cmp = priority2 - priority1;
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -225,7 +225,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 			this.project.accept(this, IResource.NONE);
 			this.monitor.worked(1);
 
-			final List<IClasspathEntry> cpEntries = new ArrayList<>();
+			final var cpEntries = new ArrayList<IClasspathEntry>();
 
 			detectSourceFolders(cpEntries);
 			if (this.monitor.isCanceled()) {
@@ -233,7 +233,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 			}
 			this.monitor.worked(1);
 
-			final IPath outputLocation = detectOutputFolder();
+			final var outputLocation = detectOutputFolder();
 			if (this.monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
@@ -251,7 +251,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 
 			this.defaultCPProvider.putDefaultClasspathEntriesIn(cpEntries);
 
-			final IClasspathEntry[] entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
+			final var entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 			if (!JavaConventions.validateClasspath(JavaCore.create(this.project), entries, outputLocation).isOK()) {
 				return;
 			}
@@ -268,12 +268,12 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param resEntries the list of entries that should be updated.
 	 */
 	protected void detectSourceFolders(List<IClasspathEntry> resEntries) {
-		final List<IClasspathEntry> res = new ArrayList<>();
-		final Set<IPath> sourceFolderSet = this.sourceFolders.keySet();
-		boolean generatedSourceFolderPresent = false;
-		int nbCodeFolders = 0;
-		for (final IPath path : sourceFolderSet) {
-			final IClasspathEntry entry = createSourceFolderEntry(path);
+		final var res = new ArrayList<IClasspathEntry>();
+		final var sourceFolderSet = this.sourceFolders.keySet();
+		var generatedSourceFolderPresent = false;
+		var nbCodeFolders = 0;
+		for (final var path : sourceFolderSet) {
+			final var entry = createSourceFolderEntry(path);
 			res.add(entry);
 			if (this.generationSarlSourceFolder.equals(path.removeFirstSegments(0))) {
 				generatedSourceFolderPresent = true;
@@ -283,14 +283,14 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 		}
 		// Ensure that the "generated-source" folder is present
 		if (!generatedSourceFolderPresent) {
-			final IPath projectPath = this.project.getFullPath();
-			final IClasspathEntry entry = createSourceFolderEntry(projectPath.append(this.generationSarlSourceFolder));
+			final var projectPath = this.project.getFullPath();
+			final var entry = createSourceFolderEntry(projectPath.append(this.generationSarlSourceFolder));
 			res.add(entry);
 		}
 		// Ensure that at least one source folder may receive code.
 		if (nbCodeFolders == 0) {
-			final IPath projectPath = this.project.getFullPath();
-			final IClasspathEntry entry = createSourceFolderEntry(projectPath.append(this.standardSarlSourceFolder));
+			final var projectPath = this.project.getFullPath();
+			final var entry = createSourceFolderEntry(projectPath.append(this.standardSarlSourceFolder));
 			res.add(entry);
 		}
 		Collections.sort(res, getCPEntryComparator());
@@ -298,14 +298,14 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	}
 
 	private IClasspathEntry createSourceFolderEntry(IPath path) {
-		final List<IPath> excluded = new ArrayList<>();
-		for (final IPath other : this.sourceFolders.keySet()) {
+		final var excluded = new ArrayList<IPath>();
+		for (final var other : this.sourceFolders.keySet()) {
 			if (!path.equals(other) && path.isPrefixOf(other)) {
-				final IPath pathToExclude = other.removeFirstSegments(path.segmentCount()).addTrailingSeparator();
+				final var pathToExclude = other.removeFirstSegments(path.segmentCount()).addTrailingSeparator();
 				excluded.add(pathToExclude);
 			}
 		}
-		final IPath[] excludedPaths = excluded.toArray(new IPath[excluded.size()]);
+		final var excludedPaths = excluded.toArray(new IPath[excluded.size()]);
 		return JavaCore.newSourceEntry(path, excludedPaths);
 	}
 
@@ -315,12 +315,12 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @throws CoreException in case of any failure.
 	 */
 	protected IPath detectOutputFolder() throws CoreException {
-		final Set<IPath> classFolders = new HashSet<>();
+		final var classFolders = new HashSet<IPath>();
 
-		for (final IResource resource : this.classFiles) {
-			final IFile file = (IFile) resource;
+		for (final var resource : this.classFiles) {
+			final var file = (IFile) resource;
 			IClassFileReader reader = null;
-			try (InputStream content = file.getContents()) {
+			try (var content = file.getContents()) {
 				reader = ToolFactory.createDefaultClassFileReader(content, IClassFileReader.CLASSFILE_ATTRIBUTES);
 			} catch (IOException exception) {
 				throw new CoreException(
@@ -330,25 +330,25 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 				// problematic class file
 				continue;
 			}
-			final char[] className = reader.getClassName();
-			final ISourceAttribute sourceAttribute = reader.getSourceFileAttribute();
+			final var className = reader.getClassName();
+			final var sourceAttribute = reader.getSourceFileAttribute();
 			if (className != null && sourceAttribute != null && sourceAttribute.getSourceFileName() != null) {
-				final IPath packPath = file.getParent().getFullPath();
-				final int idx = CharOperation.lastIndexOf('/', className) + 1;
-				final IPath relPath = new Path(new String(className, 0, idx));
-				final IPath cuPath = relPath.append(new String(sourceAttribute.getSourceFileName()));
+				final var packPath = file.getParent().getFullPath();
+				final var idx = CharOperation.lastIndexOf('/', className) + 1;
+				final var relPath = new Path(new String(className, 0, idx));
+				final var cuPath = relPath.append(new String(sourceAttribute.getSourceFileName()));
 
 				IPath resPath = null;
 				if (idx == 0) {
 					resPath = packPath;
 				} else {
-					final IPath folderPath = getFolderPath(packPath, relPath);
+					final var folderPath = getFolderPath(packPath, relPath);
 					if (folderPath != null) {
 						resPath = folderPath;
 					}
 				}
 				if (resPath != null) {
-					final IPath path = findInSourceFolders(cuPath);
+					final var path = findInSourceFolders(cuPath);
 					if (path != null) {
 						return resPath;
 					}
@@ -356,12 +356,12 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 				}
 			}
 		}
-		final IPath projPath = this.project.getFullPath();
+		final var projPath = this.project.getFullPath();
 		if (this.sourceFolders.size() == 1 && classFolders.isEmpty() && this.sourceFolders.get(projPath) != null) {
 			return projPath;
 		}
 		// Default path
-		IPath path = projPath.append(SARLConfig.FOLDER_BIN);
+		var path = projPath.append(SARLConfig.FOLDER_BIN);
 		while (classFolders.contains(path)) {
 			path = new Path(path.toString() + '1');
 		}
@@ -374,16 +374,16 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param outputLocation the detected output location.
 	 */
 	protected void detectLibraries(List<IClasspathEntry> cpEntries, IPath outputLocation) {
-		final List<IClasspathEntry> res = new ArrayList<>();
-		final Set<IPath> sourceFolderSet = this.sourceFolders.keySet();
-		for (final IPath path : this.jarFiles) {
+		final var res = new ArrayList<IClasspathEntry>();
+		final var sourceFolderSet = this.sourceFolders.keySet();
+		for (final var path : this.jarFiles) {
 			if (Utilities.isNested(path, sourceFolderSet.iterator())) {
 				continue;
 			}
 			if (outputLocation != null && outputLocation.isPrefixOf(path)) {
 				continue;
 			}
-			final IClasspathEntry entry = JavaCore.newLibraryEntry(path, null, null);
+			final var entry = JavaCore.newLibraryEntry(path, null, null);
 			res.add(entry);
 		}
 		Collections.sort(res, getCPEntryComparator());
@@ -399,7 +399,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 */
 	@Pure
 	protected IPath findInSourceFolders(IPath path) {
-		for (final Entry<IPath, List<IPath>> entry : this.sourceFolders.entrySet()) {
+		for (final var entry : this.sourceFolders.entrySet()) {
 			if (entry.getValue().contains(path)) {
 				return entry.getKey();
 			}
@@ -414,7 +414,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param relPath the sub path.
 	 */
 	protected static void addToMap(Map<IPath, List<IPath>> map, IPath folderPath, IPath relPath) {
-		List<IPath> list = map.get(folderPath);
+		var list = map.get(folderPath);
 		if (list == null) {
 			list = new ArrayList<>(50);
 			map.put(folderPath, list);
@@ -429,9 +429,9 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @return the folder path or {@code null} if it cannot be computed.
 	 */
 	protected static IPath getFolderPath(IPath packPath, IPath relpath) {
-		final int remainingSegments = packPath.segmentCount() - relpath.segmentCount();
+		final var remainingSegments = packPath.segmentCount() - relpath.segmentCount();
 		if (remainingSegments >= 0) {
-			final IPath common = packPath.removeFirstSegments(remainingSegments);
+			final var common = packPath.removeFirstSegments(remainingSegments);
 			if (common.equals(relpath)) {
 				return packPath.uptoSegment(remainingSegments);
 			}
@@ -444,21 +444,21 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param jfile the compilation unit.
 	 */
 	protected void visitJavaCompilationUnit(IFile jfile) {
-		final ICompilationUnit cu = JavaCore.createCompilationUnitFrom(jfile);
+		final var cu = JavaCore.createCompilationUnitFrom(jfile);
 		if (cu != null) {
-			final ASTParser parser = ASTParser.newParser(IASTSharedValues.SHARED_AST_LEVEL);
+			final var parser = ASTParser.newParser(IASTSharedValues.SHARED_AST_LEVEL);
 			parser.setSource(cu);
 			parser.setFocalPosition(0);
-			final CompilationUnit root = (CompilationUnit) parser.createAST(null);
-			final PackageDeclaration packDecl = root.getPackage();
+			final var root = (CompilationUnit) parser.createAST(null);
+			final var packDecl = root.getPackage();
 
-			final IPath packPath = jfile.getParent().getFullPath();
-			final String cuName = jfile.getName();
+			final var packPath = jfile.getParent().getFullPath();
+			final var cuName = jfile.getName();
 			if (packDecl == null) {
 				addToMap(this.sourceFolders, packPath, new Path(cuName));
 			} else {
-				final IPath relPath = new Path(packDecl.getName().getFullyQualifiedName().replace('.', '/'));
-				final IPath folderPath = getFolderPath(packPath, relPath);
+				final var relPath = new Path(packDecl.getName().getFullyQualifiedName().replace('.', '/'));
+				final var folderPath = getFolderPath(packPath, relPath);
 				if (folderPath != null) {
 					addToMap(this.sourceFolders, folderPath, relPath.append(cuName));
 				}
@@ -467,17 +467,17 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	}
 
 	private IPath findSarlSourceFolder(IPath path) {
-		for (final IPath sourceFolder : this.sourceFolders.keySet()) {
+		for (final var sourceFolder : this.sourceFolders.keySet()) {
 			if (sourceFolder.isPrefixOf(path)) {
 				return sourceFolder;
 			}
 		}
-		final IPath projectPath = path.uptoSegment(1);
-		final IPath stdSarl = projectPath.append(this.standardSarlSourceFolder);
+		final var projectPath = path.uptoSegment(1);
+		final var stdSarl = projectPath.append(this.standardSarlSourceFolder);
 		if (stdSarl.isPrefixOf(path)) {
 			return stdSarl;
 		}
-		final IPath testSarl = projectPath.append(this.testSarlSourceFolder);
+		final var testSarl = projectPath.append(this.testSarlSourceFolder);
 		if (testSarl.isPrefixOf(path)) {
 			return testSarl;
 		}
@@ -489,8 +489,8 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param sfile the compilation unit.
 	 */
 	protected void visitSarlCompilationUnit(IFile sfile) {
-		final IPath path = sfile.getFullPath();
-		final IPath sourceFolder = findSarlSourceFolder(path);
+		final var path = sfile.getFullPath();
+		final var sourceFolder = findSarlSourceFolder(path);
 		if (sourceFolder != null) {
 			addToMap(this.sourceFolders, sourceFolder,
 					path.removeFirstSegments(sourceFolder.segmentCount()));
@@ -503,7 +503,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 			throw new OperationCanceledException();
 		}
 		if (proxy.getType() == IResource.FILE) {
-			final String name = proxy.getName();
+			final var name = proxy.getName();
 			if (isValidJavaCUName(name)) {
 				visitJavaCompilationUnit((IFile) proxy.requestResource());
 			} else if (isValidSarlCUName(name)) {

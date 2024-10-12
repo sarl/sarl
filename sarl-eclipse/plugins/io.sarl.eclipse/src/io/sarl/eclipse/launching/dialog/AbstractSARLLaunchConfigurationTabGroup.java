@@ -80,7 +80,7 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	protected void setTabs(ILaunchConfigurationTab... tabs) {
 		//Override the function for automatic injection within the tabs.
 		if (this.injector != null) {
-			for (final ILaunchConfigurationTab tab : tabs) {
+			for (final var tab : tabs) {
 				this.injector.injectMembers(tab);
 			}
 		}
@@ -117,27 +117,27 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 			String mode,
 			Function1<List<ILaunchConfigurationTab>, Boolean> builder) {
 		assert builder != null;
-		final List<ILaunchConfigurationTab> list = new ArrayList<>();
+		final var list = new ArrayList<ILaunchConfigurationTab>();
 
-		final Boolean addStandardPanels = builder.apply(list);
+		final var addStandardPanels = builder.apply(list);
 
 		// Find the SARL run-time environment tab
 		ISarlRuntimeEnvironmentTab runtimeTab = null;
-		for (final ILaunchConfigurationTab tab : list) {
-			if (tab instanceof ISarlRuntimeEnvironmentTab) {
-				runtimeTab = (ISarlRuntimeEnvironmentTab) tab;
+		for (final var tab : list) {
+			if (tab instanceof ISarlRuntimeEnvironmentTab cvalue) {
+				runtimeTab = cvalue;
 				break;
 			}
 		}
 
-		final List<ISarlLaunchConfigurationPanelFactory> factories = getFactoriesFromExtension();
-		for (final ISarlLaunchConfigurationPanelFactory factory : factories) {
+		final var factories = getFactoriesFromExtension();
+		for (final var factory : factories) {
 			if (factory.canCreatePanel(dialog, mode, list, runtimeTab)) {
-				final ILaunchConfigurationTab panel = factory.newLaunchConfigurationPanel(dialog, mode, list, runtimeTab);
+				final var panel = factory.newLaunchConfigurationPanel(dialog, mode, list, runtimeTab);
 				if (panel != null) {
 					list.add(panel);
-					if (panel instanceof ISreChangeListener && runtimeTab != null) {
-						runtimeTab.addSreChangeListener((ISreChangeListener) panel);
+					if (panel instanceof ISreChangeListener cvalue && runtimeTab != null) {
+						runtimeTab.addSreChangeListener(cvalue);
 					}
 				}
 			}
@@ -150,22 +150,22 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 			list.add(new CommonTab());
 		}
 
-		final ILaunchConfigurationTab[] array = new ILaunchConfigurationTab[list.size()];
+		final var array = new ILaunchConfigurationTab[list.size()];
 		list.toArray(array);
 		return array;
 	}
 
 	private static List<ISarlLaunchConfigurationPanelFactory> getFactoriesFromExtension() {
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
 				SARLEclipseConfig.EXTENSION_POINT_LAUNCH_CONFIGURATION_PANEL_FACTORY);
 		if (extensionPoint != null) {
-			final List<ISarlLaunchConfigurationPanelFactory> factories = new ArrayList<>();
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			final var factories = new ArrayList<ISarlLaunchConfigurationPanelFactory>();
+			for (final var element : extensionPoint.getConfigurationElements()) {
 				try {
-					final Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ISarlLaunchConfigurationPanelFactory) {
-						factories.add((ISarlLaunchConfigurationPanelFactory) obj);
+					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					if (obj instanceof ISarlLaunchConfigurationPanelFactory cvalue) {
+						factories.add(cvalue);
 					} else {
 						SARLEclipsePlugin.getDefault().logErrorMessage(
 								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
@@ -188,10 +188,10 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	 */
 	protected static void addSreChangeListeners(List<ILaunchConfigurationTab> listOfTabs, ISreChangeListener... listeners) {
 		if (listOfTabs != null && listeners != null) {
-			for (final ILaunchConfigurationTab tab : listOfTabs) {
-				if (tab instanceof ISarlRuntimeEnvironmentTab) {
-					final ISarlRuntimeEnvironmentTab runtimeTab = (ISarlRuntimeEnvironmentTab) tab;
-					for (final ISreChangeListener listener : listeners) {
+			for (final var tab : listOfTabs) {
+				if (tab instanceof ISarlRuntimeEnvironmentTab cvalue) {
+					final var runtimeTab = cvalue;
+					for (final var listener : listeners) {
 						runtimeTab.addSreChangeListener(listener);
 					}
 				}
@@ -208,12 +208,11 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	 */
 	protected static JavaClasspathTab getClasspathTab(ILaunchConfigurationDialog dialog) {
 		JavaClasspathTab tab = null;
-		if (dialog instanceof LaunchConfigurationsDialog) {
-			final LaunchConfigurationTabGroupViewer tabViewer = ((LaunchConfigurationsDialog) dialog).getTabViewer();
+		if (dialog instanceof LaunchConfigurationsDialog cvalue) {
+			final var tabViewer = cvalue.getTabViewer();
 			if (tabViewer != null) {
-				final Object input = tabViewer.getInput();
-				if (input instanceof ILaunchConfiguration) {
-					final ILaunchConfiguration configuration = (ILaunchConfiguration) input;
+				final var input = tabViewer.getInput();
+				if (input instanceof ILaunchConfiguration configuration) {
 					if (JavaRuntime.isModularConfiguration(configuration)) {
 						tab = new JavaDependenciesTab();
 					}

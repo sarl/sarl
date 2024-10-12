@@ -52,6 +52,7 @@ package io.sarl.docs.doclet2.html.framework;
 
 import static com.sun.source.doctree.DocTree.Kind.CODE;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -1514,8 +1515,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				if (isOptional) {
 					prototype.add(new TextNode("[")); //$NON-NLS-1$
 				}
-				if (isVararg && type instanceof ArrayType) {
-					final ArrayType arrayType = (ArrayType) type;
+				if (isVararg && type instanceof ArrayType arrayType) {
 					final TypeMirror componentType = arrayType.getComponentType();
 					final TypeElement componentTypeElement = getElementUtils().asTypeElement(componentType, context.getEnvironment().getTypeUtils());
 					prototype.add(new TextNode(componentTypeElement.getSimpleName().toString()));
@@ -1546,8 +1546,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	public void addLinkTargetFrame(List<? extends Node> link, String target) {
 		if (!Strings.isNullOrEmpty(target)) {
 			for (final Node node : link) {
-				if (HtmlTags.A_TAG.equalsIgnoreCase(node.nodeName()) && node instanceof Element) {
-					final Element element = (Element) node;
+				if (HtmlTags.A_TAG.equalsIgnoreCase(node.nodeName()) && node instanceof Element element) {
 					element.attr(HtmlTags.TARGET_ATTR, target);
 				}
 			}
@@ -1881,10 +1880,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 					return createExecutableLink(stackElement.executableElement, label, theStyle, getContext());
 				}
 				if (stackElement.node != null) {
-					if (stackElement.node instanceof TextNode) {
-						innerLabel = ((TextNode) stackElement.node).getWholeText().trim();
-					} else if (stackElement.node instanceof Element) {
-						final Element elt = (Element) stackElement.node;
+					if (stackElement.node instanceof TextNode cvalue) {
+						innerLabel = cvalue.getWholeText().trim();
+					} else if (stackElement.node instanceof Element elt) {
 						if (HtmlTags.isPseudoTag(elt.tagName())) {
 							innerLabel = elt.wholeText().trim();
 						} else {
@@ -1900,7 +1898,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 							innerLabel = innerLabel.substring(1, index);
 							if (!Strings.isNullOrEmpty(innerLabel)) {
 								try {
-									final URL url = new URL(innerLabel);
+									final URL url = new URI(innerLabel).toURL();
 									if (label == null) {
 										return createLink(url, url.toString(), theStyle);
 									}
@@ -1960,8 +1958,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		 */
 		protected void invokeInlineTaglet(String name, Element top, List<? extends DocTree> children) {
 			final Taglet taglet = getTagletManager().getInlineTaglet(name);
-			if (taglet instanceof SarlTaglet) {
-				final SarlTaglet staglet = (SarlTaglet) taglet;
+			if (taglet instanceof SarlTaglet staglet) {
 				final boolean chg = staglet.appendNode(top, children, this.memory.getElement(), this.elementDocumentation, this.cssStyle, this);
 				if (chg) {
 					this.memory.changeDocumentationText();
@@ -2241,8 +2238,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		private void visitUnknownTag(List<? extends DocTree> nodes, String tagName, Taglet taglet, String errorMessage) {
 			if (taglet != null) {
 				final Element top = this.memory.getTop();
-				if (taglet instanceof SarlTaglet) {
-					final SarlTaglet staglet = (SarlTaglet) taglet;
+				if (taglet instanceof SarlTaglet staglet) {
 					final boolean chg = staglet.appendNode(top, nodes, this.memory.getElement(), this.elementDocumentation, this.cssStyle, this);
 					if (chg) {
 						this.memory.changeDocumentationText();
@@ -2291,16 +2287,16 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 					getCurrentType(),
 					getContext().getQualifiedNameSetBuilder(this.memory.getElement()));
 			
-			if (referencedElement instanceof TypeElement) {
-				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, (TypeElement) referencedElement);
+			if (referencedElement instanceof TypeElement cvalue) {
+				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, cvalue);
 				return null;
 			}
-			if (referencedElement instanceof ExecutableElement) {
-				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, (ExecutableElement) referencedElement);
+			if (referencedElement instanceof ExecutableElement cvalue) {
+				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, cvalue);
 				return null;
 			}
-			if (referencedElement instanceof VariableElement) {
-				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, (VariableElement) referencedElement);
+			if (referencedElement instanceof VariableElement cvalue) {
+				this.memory.pushElement(HtmlTags.REFERENCE_PSEUDO_TAG, cvalue);
 				return null;
 			}
 
@@ -2400,8 +2396,8 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 		@Override
 		public Element getTop() {
 			final StackElement top = this.stack.getFirst();
-			if (top.node instanceof Element) {
-				return (Element) top.node;
+			if (top.node instanceof Element cvalue) {
+				return cvalue;
 			}
 			return null;
 		}

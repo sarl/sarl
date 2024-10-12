@@ -60,9 +60,9 @@ public class SarlSplashHandler extends EclipseSplashHandler {
 		if (!SARLVersion.IS_STABLE) {
 			this.image = SARLEclipsePlugin.getDefault().getImage(BETA_PNG);
 			if (this.image != null) {
-				final Rectangle betaRectangle = new Rectangle(X, Y,
+				final var betaRectangle = new Rectangle(X, Y,
 						this.image.getImageData().width, this.image.getImageData().height);
-				final Label betaCtrl = new Label(getContent(), 0);
+				final var betaCtrl = new Label(getContent(), 0);
 				betaCtrl.setBackgroundImage(this.image);
 				betaCtrl.setBounds(betaRectangle);
 			}
@@ -72,7 +72,7 @@ public class SarlSplashHandler extends EclipseSplashHandler {
 	}
 
 	private void doEventLoop() {
-		final Shell splash = getSplash();
+		final var splash = getSplash();
 		if (!splash.getDisplay().readAndDispatch()) {
 			splash.getDisplay().sleep();
 		}

@@ -21,8 +21,7 @@
 package io.sarl.tests.api.extensions;
 
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
 
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
@@ -52,12 +51,12 @@ public class IgnorableTestExtension implements ExecutionCondition {
 
 	private static boolean isIgnorable(ExtensionContext context) {
 		if (context.getTestInstance().isPresent()) {
-			final Object instance = context.getTestInstance().get();
+			final var instance = context.getTestInstance().get();
 			if (instance != null) {
 				try {
-					final Object r = TestReflections.invoke(instance, "isIgnorable", context); //$NON-NLS-1$
-					if (r instanceof Boolean) {
-						return ((Boolean) r).booleanValue();
+					final var r = TestReflections.invoke(instance, "isIgnorable", context); //$NON-NLS-1$
+					if (r instanceof Boolean bvalue) {
+						return bvalue.booleanValue();
 					}
 				} catch (Throwable e) {
 					//
@@ -70,9 +69,9 @@ public class IgnorableTestExtension implements ExecutionCondition {
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
 		// This test is working only in Eclipse, or Maven/Tycho.
-		TestScope scope = context.getRequiredTestClass().getAnnotation(TestScope.class);
+		var scope = context.getRequiredTestClass().getAnnotation(TestScope.class);
 		if (scope == null) {
-			Class<?> enclosingType = context.getRequiredTestClass();
+			var enclosingType = context.getRequiredTestClass();
 			while (scope == null && enclosingType != null) {
 				scope = enclosingType.getAnnotation(TestScope.class);
 				enclosingType = enclosingType.getEnclosingClass();
@@ -83,7 +82,7 @@ public class IgnorableTestExtension implements ExecutionCondition {
 				return ConditionEvaluationResult.disabled("not running on the current framework"); //$NON-NLS-1$
 			}
 			if (scope.tycho() || scope.eclipse()) {
-				boolean isEclipse = TestUtils.isEclipseRuntimeEnvironment();
+				var isEclipse = TestUtils.isEclipseRuntimeEnvironment();
 				if (scope.tycho()) {
 					if (isEclipse) {
 						return ConditionEvaluationResult.disabled("cannot run Tycho-specific test in Eclipse"); //$NON-NLS-1$
@@ -93,14 +92,14 @@ public class IgnorableTestExtension implements ExecutionCondition {
 				}
 			}
 			if (scope.needmavencentral()) {
-				boolean canAccessNetwork = true;
+				var canAccessNetwork = true;
 				try {
-					URL central = new URL(MAVEN_CENTRAL_REPOSITORY_URL);
-					URLConnection connection = central.openConnection();
+					var central = new URI(MAVEN_CENTRAL_REPOSITORY_URL).toURL();
+					var connection = central.openConnection();
 					connection.setConnectTimeout(MAVEN_CENTRAL_TIMEOUT);
 					try (InputStream is = connection.getInputStream()) {
-						byte[] buffer = new byte[128];
-						int length = is.read(buffer);
+						var buffer = new byte[128];
+						var length = is.read(buffer);
 						while (length > 0) {
 							length = is.read(buffer);
 						}

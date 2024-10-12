@@ -46,15 +46,15 @@ public class EditSREInstallWizard extends SREInstallWizard {
 	 */
 	public EditSREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {
 		super(editSRE, currentInstalls);
-		final String name = editSRE.getName();
-		final String title = MessageFormat.format(Messages.SREInstallWizard_4, name);
+		final var name = editSRE.getName();
+		final var title = MessageFormat.format(Messages.SREInstallWizard_4, name);
 		setWindowTitle(title);
 	}
 
 	@Override
 	public void addPages() {
 		try {
-			final ISREInstall original = getOriginalSRE();
+			final var original = getOriginalSRE();
 			this.editPage = getPage(original);
 			this.editPage.initialize(original);
 			addPage(this.editPage);

@@ -43,8 +43,8 @@ public class PyValidatorProvider extends AbstractExtraLanguageValidatorProvider 
 
 	@Override
 	protected PyValidator createValidatorInstance(Injector injector) {
-		final PyValidator validator = injector.getInstance(PyValidator.class);
-		final IPyGeneratorConfigurationProvider configuration = injector.getInstance(PyGeneratorUiConfigurationProvider.class);
+		final var validator = injector.getInstance(PyValidator.class);
+		final var configuration = injector.getInstance(PyGeneratorUiConfigurationProvider.class);
 		validator.setPyGeneratorConfigurationProvider(configuration);
 		return validator;
 	}

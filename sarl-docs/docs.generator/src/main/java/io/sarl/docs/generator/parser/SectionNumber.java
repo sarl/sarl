@@ -55,12 +55,12 @@ public class SectionNumber {
 	 */
 	public void setFromString(String sectionNumber, int level) {
 		assert level >= 1;
-		final String[] numbers = sectionNumber.split("[^0-9]+"); //$NON-NLS-1$
-		final int len = Math.max(0, this.numbers.size() - numbers.length);
-		for (int i = 0; i < len; ++i) {
+		final var numbers = sectionNumber.split("[^0-9]+"); //$NON-NLS-1$
+		final var len = Math.max(0, this.numbers.size() - numbers.length);
+		for (var i = 0; i < len; ++i) {
 			this.numbers.removeLast();
 		}
-		for (int i = 0; i < numbers.length && i < level; ++i) {
+		for (var i = 0; i < numbers.length && i < level; ++i) {
 			this.numbers.addLast(Integer.valueOf(numbers[i]));
 		}
 	}
@@ -81,7 +81,7 @@ public class SectionNumber {
 			} while (this.numbers.size() > level);
 		}
 		assert this.numbers.size() == level;
-		final int previousSection = this.numbers.removeLast().intValue();
+		final var previousSection = this.numbers.removeLast().intValue();
 		this.numbers.addLast(Integer.valueOf(previousSection + 1));
 	}
 
@@ -103,7 +103,7 @@ public class SectionNumber {
 	 */
 	public String toString(String format) {
 		String str = null;
-		for (final Integer nb : this.numbers) {
+		for (final var nb : this.numbers) {
 			if (str == null) {
 				str = nb.toString();
 			} else {

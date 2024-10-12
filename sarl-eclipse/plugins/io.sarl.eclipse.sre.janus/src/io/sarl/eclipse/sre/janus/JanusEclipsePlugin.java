@@ -105,7 +105,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, Throwable cause) {
-		String message = cause.getLocalizedMessage();
+		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
 			message = cause.getMessage();
 		}
@@ -123,7 +123,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, Throwable cause) {
-		String message = cause.getLocalizedMessage();
+		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
 			message = cause.getMessage();
 		}
@@ -171,7 +171,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
-		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final var descriptor = getImageDescriptor(imagePath);
 		if (descriptor == null) {
 			return null;
 		}
@@ -184,7 +184,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
-		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
+		var descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath).orElse(null);
 			if (descriptor != null) {

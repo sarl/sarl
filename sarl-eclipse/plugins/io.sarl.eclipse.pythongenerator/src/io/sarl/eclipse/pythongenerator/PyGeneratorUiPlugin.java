@@ -81,8 +81,8 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 * @return the section of the given name
 	 */
 	public IDialogSettings getDialogSettingsSection(String name) {
-		final IDialogSettings dialogSettings = getDialogSettings();
-		IDialogSettings section = dialogSettings.getSection(name);
+		final var dialogSettings = getDialogSettings();
+		var section = dialogSettings.getSection(name);
 		if (section == null) {
 			section = dialogSettings.addNewSection(name);
 		}
@@ -95,7 +95,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
-		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final var descriptor = getImageDescriptor(imagePath);
 		if (descriptor == null) {
 			return null;
 		}
@@ -108,7 +108,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
-		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
+		v descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath).orElse(null);
 			if (descriptor != null) {
@@ -126,7 +126,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 */
 	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
-		String message = cause.getLocalizedMessage();
+		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
 			message = cause.getMessage();
 		}

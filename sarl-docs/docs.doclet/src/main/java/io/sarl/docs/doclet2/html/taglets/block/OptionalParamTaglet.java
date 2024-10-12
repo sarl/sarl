@@ -104,12 +104,11 @@ public class OptionalParamTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		final List<ParamTree> genericParameters = new ArrayList<>();
-		final List<ParamTree> regularParameters = new ArrayList<>();
-		for (final DocTree doc : tags) {
-			if (doc instanceof ParamTree) {
-				final ParamTree paramTree = (ParamTree) doc;
-				final String name = paramTree.getName().getName().toString();
+		final var genericParameters = new ArrayList<ParamTree>();
+		final var regularParameters = new ArrayList<ParamTree>();
+		for (final var doc : tags) {
+			if (doc instanceof ParamTree paramTree) {
+				final var name = paramTree.getName().getName().toString();
 				if (Strings.isNullOrEmpty(name)) {
 					referenceExtractor.getContext().getReporter().print(Kind.ERROR, MessageFormat.format(Messages.OptionalParamTaglet_1, element.getSimpleName().toString()));
 				} else  if (paramTree.isTypeParameter()) {
@@ -119,23 +118,23 @@ public class OptionalParamTaglet extends AbstractSarlTaglet {
 				}
 			}
 		}
-		final CssStyles rstyle = getTextCssStyle(style);
-		boolean changed = appendParameters(false, genericParameters, Messages.OptionalParamTaglet_2, parent, element, rstyle, referenceExtractor.getContext());
+		final var rstyle = getTextCssStyle(style);
+		var changed = appendParameters(false, genericParameters, Messages.OptionalParamTaglet_2, parent, element, rstyle, referenceExtractor.getContext());
 		changed = appendParameters(changed, regularParameters, Messages.OptionalParamTaglet_3, parent, element, rstyle, referenceExtractor.getContext());
 		return changed;
 	}
 
 	private boolean appendParameters(boolean previousChange, List<ParamTree> parameters, String headModel, org.jsoup.nodes.Element parent, Element element,
 			CssStyles style, HtmlFactoryContext context) {
-		boolean changed = previousChange;
-		for (final ParamTree parameter : parameters) {
+		var changed = previousChange;
+		for (final var parameter : parameters) {
 			if (changed) {
 				parent.appendChild(getHtmlFactory().createNewLineTag());
 			}
-			final String paramName = parameter.getName().getName().toString();
+			final var paramName = parameter.getName().getName().toString();
 			parent.appendText(MessageFormat.format(headModel, paramName));
 			getHtmlFactory().createSecableSpace(parent);
-			final boolean hasDescription = appendCommentTextWithSpace(parent, Collections.singletonList(parameter),
+			final var hasDescription = appendCommentTextWithSpace(parent, Collections.singletonList(parameter),
 					element, getTextCssStyle(style), context);
 			if (!hasDescription) {
 				context.getReporter().print(Kind.ERROR, MessageFormat.format(Messages.OptionalParamTaglet_1, paramName, element.getSimpleName().toString()));

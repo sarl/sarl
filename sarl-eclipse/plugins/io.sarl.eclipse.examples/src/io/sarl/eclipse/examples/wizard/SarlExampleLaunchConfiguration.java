@@ -84,18 +84,18 @@ public final class SarlExampleLaunchConfiguration {
 	 *     application ({@code false}). And, the fourth argument is {@code rootFolder}.
 	 */
 	public static void readLaunchConfigurationFromXml(Document document, File rootFolder, Procedure5<String, String, Boolean, File, String> callback) {
-		NodeList nodes = document.getChildNodes();
-		final int len = nodes.getLength();
-		for (int i = 0; i < len; ++i) {
-			Node node = nodes.item(i);
+		var nodes = document.getChildNodes();
+		final var len = nodes.getLength();
+		for (var i = 0; i < len; ++i) {
+			var node = nodes.item(i);
 			if (node != null) {
 				if (LAUNCH_PROPERTY_ROOT_TAG.equalsIgnoreCase(node.getNodeName())) {
-					final String logLevel = readXmlAttribute(node, LAUNCH_PROPERTY_LOGLEVEL_FIELD);
+					final var logLevel = readXmlAttribute(node, LAUNCH_PROPERTY_LOGLEVEL_FIELD);
 					nodes = node.getChildNodes();
-					final int len2 = nodes.getLength();
-					for (int j = 0; j < len2; ++j) {
+					final var len2 = nodes.getLength();
+					for (var j = 0; j < len2; ++j) {
 						node = nodes.item(j);
-						final String nodeName = node.getNodeName();
+						final var nodeName = node.getNodeName();
 						final boolean isAgent;
 						if (LAUNCH_PROPERTY_AGENT_TAG.equalsIgnoreCase(nodeName)) {
 							isAgent = true;
@@ -104,7 +104,7 @@ public final class SarlExampleLaunchConfiguration {
 						} else {
 							continue;
 						}
-						final String type = readXmlAttribute(node, LAUNCH_PROPERTY_TYPE_FIELD);
+						final var type = readXmlAttribute(node, LAUNCH_PROPERTY_TYPE_FIELD);
 						if (!Strings.isNullOrEmpty(type)) {
 							callback.apply(type,
 									readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD),

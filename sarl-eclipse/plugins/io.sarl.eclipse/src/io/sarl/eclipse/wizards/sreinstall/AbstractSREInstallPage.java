@@ -117,13 +117,13 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * @return the validation status.
 	 */
 	protected IStatus validateNameAgainstOtherSREs(String name) {
-		IStatus nameStatus = SARLEclipsePlugin.getDefault().createOkStatus();
+		var nameStatus = SARLEclipsePlugin.getDefault().createOkStatus();
 		if (isDuplicateName(name)) {
 			nameStatus = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					ISREInstall.CODE_NAME,
 					Messages.SREInstallWizard_1);
 		} else {
-			final IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
+			final var status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
 			if (!status.isOK()) {
 				nameStatus = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						ISREInstall.CODE_NAME,
@@ -153,8 +153,8 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	private boolean isDuplicateName(String name) {
 		if (this.existingNames != null) {
-			final String newName = Strings.nullToEmpty(name);
-			for (final String existingName : this.existingNames) {
+			final var newName = Strings.nullToEmpty(name);
+			for (final var existingName : this.existingNames) {
 				if (newName.equals(existingName)) {
 					return true;
 				}
@@ -171,7 +171,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	void setExistingNames(String... names) {
 		this.existingNames = names;
-		for (int i = 0; i < this.existingNames.length; ++i) {
+		for (var i = 0; i < this.existingNames.length; ++i) {
 			this.existingNames[i] = Strings.nullToEmpty(this.existingNames[i]);
 		}
 	}

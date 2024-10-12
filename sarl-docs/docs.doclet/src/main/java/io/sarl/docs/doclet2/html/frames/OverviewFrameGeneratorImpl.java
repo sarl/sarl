@@ -53,15 +53,11 @@ package io.sarl.docs.doclet2.html.frames;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.List;
 
-import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
 import io.sarl.docs.doclet2.html.framework.AbstractDocumentationGenerator;
@@ -102,12 +98,12 @@ public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.OverviewFrameGeneratorImpl_0);
 		computePaths(getPathBuilder().overviewFrame(), true);
 		//
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
-		final String title = getDocumentTitleFor(null);
+		final var document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
+		final var title = getDocumentTitleFor(null);
 		setLastTitle(title);
-		final Element htmlTag = getHtmlAccessor().getRootElement(document);
+		final var htmlTag = getHtmlAccessor().getRootElement(document);
 		//
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
@@ -123,13 +119,13 @@ public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator i
 	 * @param content the content.
 	 */
 	protected void generateContentHead(Element content) {
-		final Element head = getHtmlFactory().createHeadTag(content);
+		final var head = getHtmlFactory().createHeadTag(content);
 		getHtmlFactory().createTitleTag(head, getDocumentationTitle());
-		final Path pathToRoot = getPathToRoot();
-		for (final Path cssStyle : getCssStylesheets()) {
+		final var pathToRoot = getPathToRoot();
+		for (final var cssStyle : getCssStylesheets()) {
 			getHtmlFactory().createCssLinkTag(head, pathToRoot.resolve(cssStyle));
 		}
-		for (final Path jsScript : getJsScripts()) {
+		for (final var jsScript : getJsScripts()) {
 			getHtmlFactory().createJsLinkTag(head, pathToRoot.resolve(jsScript));
 		}
 	}
@@ -139,20 +135,20 @@ public class OverviewFrameGeneratorImpl extends AbstractDocumentationGenerator i
 	 * @param content the content.
 	 */
 	protected void generateContentBody(Element content) {
-		final Element body = getHtmlFactory().createBodyTag(content);
+		final var body = getHtmlFactory().createBodyTag(content);
 		body.addClass(CssStyles.FRAME.getCssClassname());
-		final Element allTypes = getHtmlFactory().createDivTag(body, null);
-		final Path path = getPathToRoot().resolve(getPathBuilder().allTypesFrame());
-		List<? extends Node> link = getHtmlFactory().createLink(path, Messages.OverviewFrameGeneratorImpl_1, null);
+		final var allTypes = getHtmlFactory().createDivTag(body, null);
+		final var path = getPathToRoot().resolve(getPathBuilder().allTypesFrame());
+		var link = getHtmlFactory().createLink(path, Messages.OverviewFrameGeneratorImpl_1, null);
 		getHtmlFactory().addLinkTargetFrame(link, HtmlIndexGeneratorImpl.MAIN_PACKAGE_FRAME_NAME);
 		allTypes.appendChildren(link);
 		//
-		final Element packageListBlock = getHtmlFactory().createDivTag(body, null);
-		final Element packageListTitle = getHtmlFactory().createH2Tag(packageListBlock, CssStyles.HEADER_SMALL_TITLE);
+		final var packageListBlock = getHtmlFactory().createDivTag(body, null);
+		final var packageListTitle = getHtmlFactory().createH2Tag(packageListBlock, CssStyles.HEADER_SMALL_TITLE);
 		packageListTitle.appendText(Messages.OverviewFrameGeneratorImpl_2);
-		final Element packageList = getHtmlFactory().createUlTag(packageListBlock, CssStyles.BULLET_LESS_LIST);
-		for (final PackageElement pkg : getTypeRepository().getPackages()) {
-			final Element pkgLine = getHtmlFactory().createLiTag(packageList, CssStyles.BULLET_LESS_LIST);
+		final var packageList = getHtmlFactory().createUlTag(packageListBlock, CssStyles.BULLET_LESS_LIST);
+		for (final var pkg : getTypeRepository().getPackages()) {
+			final var pkgLine = getHtmlFactory().createLiTag(packageList, CssStyles.BULLET_LESS_LIST);
 			link = getHtmlFactory().createPackageLink(pkg, pkg.getQualifiedName().toString(), null, this);
 			getHtmlFactory().addLinkTargetFrame(link, HtmlIndexGeneratorImpl.MAIN_PACKAGE_FRAME_NAME);
 			pkgLine.appendChildren(link);

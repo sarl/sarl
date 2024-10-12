@@ -22,6 +22,8 @@
 package io.sarl.lang.mwe2.bugfixes.unpublished;
 
 import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
+import org.eclipse.xtext.Grammar;
+import org.eclipse.xtext.xbase.annotations.validation.XbaseWithAnnotationsValidator;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import org.eclipse.xtext.xtext.generator.util.GrammarUtil2;
 
@@ -44,6 +46,11 @@ public class ValidatorFragment2 extends org.eclipse.xtext.xtext.generator.valida
 			return new TypeReference(XtendConfigurableIssueCodes.class);
 		}
 		return super.getSuperConfigurableIssueCodesProviderClass();
+	}
+	
+	@Override
+	protected TypeReference getGenValidatorSuperClass(Grammar grammar) {
+		return new TypeReference(XbaseWithAnnotationsValidator.class);
 	}
 
 }

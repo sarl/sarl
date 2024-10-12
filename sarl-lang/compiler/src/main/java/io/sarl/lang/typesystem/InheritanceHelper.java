@@ -23,9 +23,7 @@ package io.sarl.lang.typesystem;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -75,7 +73,7 @@ public class InheritanceHelper {
 	 */
 	public boolean isSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
-		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		final var reference = Utils.toLightweightTypeReference(candidate, this.services);
 		return isSubTypeOf(reference, jvmSuperType, sarlSuperType);
 	}
 
@@ -91,7 +89,7 @@ public class InheritanceHelper {
 	public boolean isSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
 		// Test the subtyping between the JVM elements.
-		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		final var reference = Utils.toLightweightTypeReference(candidate, this.services);
 		if (reference.isInterfaceType() != onlyInterface) {
 			return false;
 		}
@@ -107,7 +105,7 @@ public class InheritanceHelper {
 	 */
 	public boolean isSubTypeOf(JvmType candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
-		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		final var reference = Utils.toLightweightTypeReference(candidate, this.services);
 		return isSubTypeOf(reference, jvmSuperType, sarlSuperType);
 	}
 
@@ -123,7 +121,7 @@ public class InheritanceHelper {
 	public boolean isSubTypeOf(JvmType candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
 		// Test the subtyping between the JVM elements.
-		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		final var reference = Utils.toLightweightTypeReference(candidate, this.services);
 		if (reference.isInterfaceType() != onlyInterface) {
 			return false;
 		}
@@ -143,11 +141,10 @@ public class InheritanceHelper {
 			return true;
 		}
 		if (sarlSuperType != null) {
-			final JvmType type = candidate.getType();
-			if (type instanceof JvmGenericType) {
-				final JvmGenericType genType = (JvmGenericType) type;
+			final var type = candidate.getType();
+			if (type instanceof JvmGenericType genType) {
 				if (genType.getSuperTypes().isEmpty()) {
-					for (final EObject sarlObject : this.sarlAssociations.getSourceElements(type)) {
+					for (final var sarlObject : this.sarlAssociations.getSourceElements(type)) {
 						if (sarlSuperType.isInstance(sarlObject)) {
 							return true;
 						}
@@ -167,7 +164,7 @@ public class InheritanceHelper {
 	 */
 	public boolean isProxyOrSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
 			Class<? extends XtendTypeDeclaration> sarlSuperType) {
-		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		final var reference = Utils.toLightweightTypeReference(candidate, this.services);
 		return isSubTypeOf(reference, jvmSuperType, sarlSuperType);
 	}
 
@@ -210,9 +207,9 @@ public class InheritanceHelper {
 	 * @since 0.6
 	 */
 	public int getSarlElementEcoreType(JvmGenericType type) {
-		final JvmAnnotationReference annotationRef = this.annotationUtil.findAnnotation(type, SarlElementType.class.getName());
+		final var annotationRef = this.annotationUtil.findAnnotation(type, SarlElementType.class.getName());
 		if (annotationRef != null) {
-			final Integer intValue = this.annotationUtil.findIntValue(annotationRef);
+			final var intValue = this.annotationUtil.findIntValue(annotationRef);
 			if (intValue != null) {
 				return intValue.intValue();
 			}
@@ -227,9 +224,9 @@ public class InheritanceHelper {
 	 * @since 0.8
 	 */
 	public int getSarlElementEcoreType(LightweightTypeReference type) {
-		final JvmType jvmType = type.getType();
-		if (jvmType instanceof JvmGenericType) {
-			return getSarlElementEcoreType((JvmGenericType) jvmType);
+		final var jvmType = type.getType();
+		if (jvmType instanceof JvmGenericType cvalue) {
+			return getSarlElementEcoreType(cvalue);
 		}
 		return 0;
 	}

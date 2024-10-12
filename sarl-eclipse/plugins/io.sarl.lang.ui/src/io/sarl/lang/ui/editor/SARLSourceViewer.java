@@ -82,10 +82,10 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 	 * @return the service.
 	 */
 	public IDocumentAutoFormatter getDocumentAutoFormatter() {
-		final IDocument document = getDocument();
-		if (document instanceof IXtextDocument) {
-			final IDocumentAutoFormatter formatter = this.autoFormatterProvider.get();
-			formatter.bind((IXtextDocument) document, this.fContentFormatter);
+		final var document = getDocument();
+		if (document instanceof IXtextDocument cvalue) {
+			final var formatter = this.autoFormatterProvider.get();
+			formatter.bind(cvalue, this.fContentFormatter);
 			return formatter;
 		}
 		return new IDocumentAutoFormatter() {
@@ -96,9 +96,9 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 	@Override
 	public void doOperation(int operation) {
 		if (operation == ITextOperationTarget.PASTE && isAutoFormattingEnable()) {
-			final IRewriteTarget target = getRewriteTarget();
+			final var target = getRewriteTarget();
 			target.beginCompoundChange();
-			final IDocumentAutoFormatter formatter = getDocumentAutoFormatter();
+			final var formatter = getDocumentAutoFormatter();
 			formatter.beginAutoFormat();
 			try {
 				super.doOperation(operation);
@@ -129,9 +129,9 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 		@Override
 		public XtextSourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler,
 				IOverviewRuler overviewRuler, boolean showsAnnotationOverview, int styles) {
-			final SARLSourceViewer result = new SARLSourceViewer(parent, ruler, overviewRuler, showsAnnotationOverview, styles);
+			final var result = new SARLSourceViewer(parent, ruler, overviewRuler, showsAnnotationOverview, styles);
 			try {
-				final Field field = RichStringAwareSourceViewer.class.getDeclaredField("merger"); //$NON-NLS-1$
+				final var field = RichStringAwareSourceViewer.class.getDeclaredField("merger"); //$NON-NLS-1$
 				field.setAccessible(true);
 				field.set(result, this.merger);
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {

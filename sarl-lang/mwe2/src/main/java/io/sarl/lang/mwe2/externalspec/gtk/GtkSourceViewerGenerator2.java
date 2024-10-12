@@ -31,7 +31,6 @@ import org.eclipse.xtext.xtext.generator.web.RegexpExtensions;
 
 import io.sarl.lang.mwe2.externalspec.AbstractXmlHighlightingFragment2;
 import io.sarl.lang.mwe2.externalspec.IXmlStyleAppendable;
-import io.sarl.lang.mwe2.externalspec.IXmlStyleCloseable;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -68,13 +67,13 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		it.appendHeader();
 
-		final IXmlStyleCloseable tag1 = it.open("language", //$NON-NLS-1$
+		final var tag1 = it.open("language", //$NON-NLS-1$
 				"id", getLanguageSimpleName().toLowerCase(), //$NON-NLS-1$
 				"_name", getLanguageSimpleName(), //$NON-NLS-1$
 				"version", XML_FORMAT_VERSION, //$NON-NLS-1$
 				"_section", "Source"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		IXmlStyleCloseable tag2 = tag1.open("metadata"); //$NON-NLS-1$
+		var tag2 = tag1.open("metadata"); //$NON-NLS-1$
 		generateMetadata(tag2);
 		tag2.close();
 
@@ -100,8 +99,8 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				Strings.concat(";", getMimeTypes()), //$NON-NLS-1$
 				"name", "mimetypes"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final StringBuilder buffer = new StringBuilder();
-		for (final String fileExtension : getLanguage().getFileExtensions()) {
+		final var buffer = new StringBuilder();
+		for (final var fileExtension : getLanguage().getFileExtensions()) {
 			if (buffer.length() > 0) {
 				buffer.append(";"); //$NON-NLS-1$
 			}
@@ -211,7 +210,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"\\^?[a-zA-Z_$][a-zA-Z_$0-9]*", //$NON-NLS-1$
 				"id", "sarl-identifier"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final IXmlStyleCloseable tag1 = it.open("context", //$NON-NLS-1$
+		final var tag1 = it.open("context", //$NON-NLS-1$
 				"id", "qq-string", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "string", //$NON-NLS-1$ //$NON-NLS-2$
 				"end-at-line-end", "true", //$NON-NLS-1$ //$NON-NLS-2$
@@ -219,8 +218,8 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"class-disabled", "no-spell-check"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag1.appendTagWithValue("start", "\""); //$NON-NLS-1$ //$NON-NLS-2$
 		tag1.appendTagWithValue("end", "\""); //$NON-NLS-1$ //$NON-NLS-2$
-		final IXmlStyleCloseable tag2 = tag1.open("include"); //$NON-NLS-1$
-		final IXmlStyleCloseable tag3 = tag2.open("context", //$NON-NLS-1$
+		final var tag2 = tag1.open("include"); //$NON-NLS-1$
+		final var tag3 = tag2.open("context", //$NON-NLS-1$
 				"id", "qq-string-escaped-character", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "escaped-character"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag3.appendTagWithValue("match", "\\%{escaped-character}"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -228,7 +227,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		tag2.close();
 		tag1.close();
 
-		final IXmlStyleCloseable tag4 = it.open("context", //$NON-NLS-1$
+		final var tag4 = it.open("context", //$NON-NLS-1$
 				"id", "q-string", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "string", //$NON-NLS-1$ //$NON-NLS-2$
 				"end-at-line-end", "true", //$NON-NLS-1$ //$NON-NLS-2$
@@ -236,8 +235,8 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"class-disabled", "no-spell-check"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag4.appendTagWithValue("start", "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag4.appendTagWithValue("end", "'"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IXmlStyleCloseable tag5 = tag4.open("include"); //$NON-NLS-1$
-		final IXmlStyleCloseable tag6 = tag5.open("context", //$NON-NLS-1$
+		final var tag5 = tag4.open("include"); //$NON-NLS-1$
+		final var tag6 = tag5.open("context", //$NON-NLS-1$
 				"id", "q-string-escaped-character", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "escaped-character"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag6.appendTagWithValue("match", "\\%{escaped-character}"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -245,39 +244,39 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		tag5.close();
 		tag4.close();
 
-		final IXmlStyleCloseable tag7 = it.open("context", //$NON-NLS-1$
+		final var tag7 = it.open("context", //$NON-NLS-1$
 				"id", "line-comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"end-at-line-end", "true", //$NON-NLS-1$ //$NON-NLS-2$
 				"class", "comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"class-disabled", "no-spell-check"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag7.appendTagWithValue("start", "//"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IXmlStyleCloseable tag8 = tag7.open("include"); //$NON-NLS-1$
+		final var tag8 = tag7.open("include"); //$NON-NLS-1$
 		tag8.appendTag("context", //$NON-NLS-1$
 				"ref", "def:in-line-comment"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag8.close();
 		tag7.close();
 
-		final IXmlStyleCloseable tag9 = it.open("context", //$NON-NLS-1$
+		final var tag9 = it.open("context", //$NON-NLS-1$
 				"id", "block-comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"class", "comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"class-disabled", "no-spell-check"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag9.appendTagWithValue("start", "/\\*"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag9.appendTagWithValue("end", "\\*/"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IXmlStyleCloseable tag10 = tag9.open("include"); //$NON-NLS-1$
+		final var tag10 = tag9.open("include"); //$NON-NLS-1$
 		tag10.appendTag("context", //$NON-NLS-1$
 				"ref", "def:in-comment"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag10.close();
 		tag9.close();
 
-		final IXmlStyleCloseable tag11 = it.open("context", //$NON-NLS-1$
+		final var tag11 = it.open("context", //$NON-NLS-1$
 				"id", "close-comment-outside-comment", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "error"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag11.appendTagWithValue("match", "\\*/(?!\\*)"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag11.close();
 
-		final IXmlStyleCloseable tag12 = it.open("context", //$NON-NLS-1$
+		final var tag12 = it.open("context", //$NON-NLS-1$
 				"id", "sarl-keywords", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "keyword"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (final String keyword : keywords) {
@@ -285,7 +284,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		}
 		tag12.close();
 
-		final IXmlStyleCloseable tag13 = it.open("context", //$NON-NLS-1$
+		final var tag13 = it.open("context", //$NON-NLS-1$
 				"id", "sarl-literals", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "literal"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (final String literal : literals) {
@@ -293,31 +292,31 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		}
 		tag13.close();
 
-		final IXmlStyleCloseable tag14 = it.open("context", //$NON-NLS-1$
+		final var tag14 = it.open("context", //$NON-NLS-1$
 				"id", "annotations", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "annotation"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag14.appendTagWithValue("match", "\\@\\%{sarl-identifier}(\\.\\%{sarl-identifier})*"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag14.close();
 
-		final IXmlStyleCloseable tag15 = it.open("context", //$NON-NLS-1$
+		final var tag15 = it.open("context", //$NON-NLS-1$
 				"id", "identifiers", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "identifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag15.appendTagWithValue("match", "\\%{sarl-identifier}"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag15.close();
 
-		final IXmlStyleCloseable tag16 = it.open("context", //$NON-NLS-1$
+		final var tag16 = it.open("context", //$NON-NLS-1$
 				"id", "numeric", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "number"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag16.appendTagWithValue("match", "\\%{sarl-number}"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag16.close();
 
-		final IXmlStyleCloseable tag17 = it.open("context", //$NON-NLS-1$
+		final var tag17 = it.open("context", //$NON-NLS-1$
 				"id", "operators", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "operator", //$NON-NLS-1$ //$NON-NLS-2$
 				"extend-parent", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		StringBuilder buffer = new StringBuilder();
-		final Set<Character> characters = new TreeSet<>();
-		for (final String operator : punctuation) {
+		var buffer = new StringBuilder();
+		final var characters = new TreeSet<Character>();
+		for (final var operator : punctuation) {
 			if (buffer.length() > 0) {
 				buffer.append("|"); //$NON-NLS-1$
 			}
@@ -329,20 +328,20 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		tag17.appendTagWithValue("match", buffer.toString()); //$NON-NLS-1$
 		tag17.close();
 
-		final IXmlStyleCloseable tag18 = it.open("context", //$NON-NLS-1$
+		final var tag18 = it.open("context", //$NON-NLS-1$
 				"id", "invalid-operators", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "error"); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer = new StringBuilder();
-		for (final Character character : characters) {
+		for (final var character : characters) {
 			buffer.append(RegexpExtensions.toRegexpString(character.toString(), false));
 		}
 		tag18.appendTagWithValue("match", "[" + buffer.toString() + "]+"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tag18.close();
 
-		final IXmlStyleCloseable tag19 = it.open("context", //$NON-NLS-1$
+		final var tag19 = it.open("context", //$NON-NLS-1$
 				"id", getLanguageSimpleName().toLowerCase(), //$NON-NLS-1$
 				"class", "no-spell-check"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IXmlStyleCloseable tag20 = tag19.open("include"); //$NON-NLS-1$
+		final var tag20 = tag19.open("include"); //$NON-NLS-1$
 		tag20.appendTag("context", "ref", "qq-string"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tag20.appendTag("context", "ref", "q-string"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tag20.appendTag("context", "ref", "line-comment"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

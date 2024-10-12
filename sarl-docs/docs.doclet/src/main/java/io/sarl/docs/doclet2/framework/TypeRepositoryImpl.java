@@ -51,7 +51,6 @@
 package io.sarl.docs.doclet2.framework;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -113,8 +112,8 @@ public class TypeRepositoryImpl implements TypeRepository {
 	
 	@Override
 	public void buildRepository(Iterable<? extends TypeElement> typeElements, SarlDocletEnvironment environment) {
-		final Comparator<? super TypeElement> typeComparator = getElementUtils().getTypeElementComparator();
-		final Comparator<? super PackageElement> packageComparator = getElementUtils().getPackageElementComparator();
+		final var typeComparator = getElementUtils().getTypeElementComparator();
+		final var packageComparator = getElementUtils().getPackageElementComparator();
 		this.types = new TreeSet<>(typeComparator);
 		this.typesPerModule = new TreeMap<>(getElementUtils().getModuleElementComparator());
 		this.typesPerPackage = new TreeMap<>(packageComparator);
@@ -122,18 +121,18 @@ public class TypeRepositoryImpl implements TypeRepository {
 		this.deprecatedTypes = new TreeSet<>(typeComparator);
 		this.deprecatedFields = new TreeSet<>(getElementUtils().getVariableElementComparator());
 		this.deprecatedExecutables = new TreeSet<>(getElementUtils().getExecutableElementComparator());
-		for (final TypeElement element : typeElements) {
+		for (final var element : typeElements) {
 			this.types.add(element);
-			final ModuleElement moduleElement = environment.getElementUtils().getModuleOf(element);
+			final var moduleElement = environment.getElementUtils().getModuleOf(element);
 			if (moduleElement != null) {
-				final SortedSet<TypeElement> list0 = this.typesPerModule.computeIfAbsent(moduleElement, it -> new TreeSet<>(typeComparator));
+				final var list0 = this.typesPerModule.computeIfAbsent(moduleElement, it -> new TreeSet<>(typeComparator));
 				list0.add(element);
 			}
-			final PackageElement packageElement = environment.getElementUtils().getPackageOf(element);
+			final var packageElement = environment.getElementUtils().getPackageOf(element);
 			if (packageElement != null) {
-				final SortedSet<TypeElement> list0 = this.typesPerPackage.computeIfAbsent(packageElement, it -> new TreeSet<>(typeComparator));
+				final var list0 = this.typesPerPackage.computeIfAbsent(packageElement, it -> new TreeSet<>(typeComparator));
 				list0.add(element);
-				final SortedSet<PackageElement> list1 = this.packagesPerModule.computeIfAbsent(moduleElement, it -> new TreeSet<>(packageComparator));
+				final var list1 = this.packagesPerModule.computeIfAbsent(moduleElement, it -> new TreeSet<>(packageComparator));
 				list1.add(packageElement);
 			}
 			if (environment.getElementUtils().isDeprecated(element)) {
@@ -147,7 +146,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 	}
 
 	private void deprecate(Iterable<? extends Element> elements) {
-		for (final Element element : elements) {
+		for (final var element : elements) {
 			switch (element.getKind()) {
 			case FIELD:
 				this.deprecatedFields.add((VariableElement) element);
@@ -171,7 +170,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 	}
 
 	private void discoverDeprecatedMembers(Iterable<? extends Element> elements, Elements elementUtils) {
-		for (final Element element : elements) {
+		for (final var element : elements) {
 			if (elementUtils.isDeprecated(element)) {
 				switch (element.getKind()) {
 				case FIELD:
@@ -200,7 +199,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 
 	@Override
 	public SortedSet<TypeElement> getTypesInModule(ModuleElement moduleName) {
-		SortedSet<TypeElement> data = this.typesPerModule.get(moduleName);
+		var data = this.typesPerModule.get(moduleName);
 		if (data == null) {
 			return Collections.emptySortedSet();
 		}
@@ -209,7 +208,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 
 	@Override
 	public SortedSet<TypeElement> getTypesInPackage(PackageElement packageName) {
-		SortedSet<TypeElement> data = this.typesPerPackage.get(packageName);
+		var data = this.typesPerPackage.get(packageName);
 		if (data == null) {
 			return Collections.emptySortedSet();
 		}
@@ -218,7 +217,7 @@ public class TypeRepositoryImpl implements TypeRepository {
 
 	@Override
 	public Iterable<PackageElement> getPackagesFor(ModuleElement moduleName) {
-		SortedSet<PackageElement> data = this.packagesPerModule.get(moduleName);
+		var data = this.packagesPerModule.get(moduleName);
 		if (data == null) {
 			return Collections.emptySortedSet();
 		}

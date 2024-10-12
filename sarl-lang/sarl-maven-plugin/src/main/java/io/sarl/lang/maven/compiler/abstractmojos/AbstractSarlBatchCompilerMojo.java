@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -35,9 +34,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Handler;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Iterables;
@@ -45,14 +42,11 @@ import com.google.common.collect.Lists;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provider;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.toolchain.ToolchainManager;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
@@ -93,9 +87,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	private Provider<SarlBatchCompiler> sarlBatchCompilerProvider;
 
 	private ReflectExtensions reflect;
-
-	@Component
-	private ToolchainManager toolchainManager;
 
 	@Parameter(readonly = true, defaultValue = "${basedir}/.settings/io.sarl.lang.SARL.prefs")
 	private String propertiesFileLocation;
@@ -139,15 +130,15 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @since 0.12
 	 */
 	protected List<File> fixJreClassPathFiles(List<File> currentClassPath, String classpathName) {
-		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
-		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
-		final List<File> newClassPath = new ArrayList<>(currentClassPath.size());
-		final int currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
-		for (final File file : currentClassPath) {
-			final String basename = file.getName();
-			final Matcher matcher = conflictPattern.matcher(basename);
+		final var conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
+		final var numPattern = Pattern.compile(NUM_PATTERN);
+		final var newClassPath = new ArrayList<File>(currentClassPath.size());
+		final var currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
+		for (final var file : currentClassPath) {
+			final var basename = file.getName();
+			final var matcher = conflictPattern.matcher(basename);
 			if (matcher.find()) {
-				final int version = parseInt(numPattern, matcher.group(1));
+				final var version = parseInt(numPattern, matcher.group(1));
 				if (version <= currentVersion) {
 					newClassPath.add(file);
 				} else {
@@ -171,15 +162,15 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @since 0.13
 	 */
 	protected List<URL> fixJreClassPathURLs(List<URL> currentClassPath, String classpathName) {
-		final Pattern conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
-		final Pattern numPattern = Pattern.compile(NUM_PATTERN);
-		final List<URL> newClassPath = new ArrayList<>(currentClassPath.size());
-		final int currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
-		for (final URL file : currentClassPath) {
-			final String basename = FileSystem.largeBasename(file);
-			final Matcher matcher = conflictPattern.matcher(basename);
+		final var conflictPattern = Pattern.compile(CONFLICTING_JAR_PATTERN);
+		final var numPattern = Pattern.compile(NUM_PATTERN);
+		final var newClassPath = new ArrayList<URL>(currentClassPath.size());
+		final var currentVersion = parseInt(numPattern, System.getProperty("java.version")); //$NON-NLS-1$
+		for (final var file : currentClassPath) {
+			final var basename = FileSystem.largeBasename(file);
+			final var matcher = conflictPattern.matcher(basename);
 			if (matcher.find()) {
-				final int version = parseInt(numPattern, matcher.group(1));
+				final var version = parseInt(numPattern, matcher.group(1));
 				if (version <= currentVersion) {
 					newClassPath.add(file);
 				} else {
@@ -193,7 +184,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	}
 
 	private static int parseInt(Pattern pattern, String text) {
-		final Matcher matcher = pattern.matcher(text);
+		final var matcher = pattern.matcher(text);
 		if (matcher.find()) {
 			try {
 				return Integer.parseInt(matcher.group(1));
@@ -209,7 +200,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	protected synchronized void prepareExecution() throws MojoExecutionException {
 		if (this.injector == null) {
 			try {
-				ClassLoader classLoader = getClass().getClassLoader();
+				var classLoader = getClass().getClassLoader();
 				/*
 				// Override the standard class loader in order to remove the conflicting
 				// internal libs (in *.jar/lib/) from the classpath
@@ -224,12 +215,12 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 				// class loader that is defined above
 				//
 				// Create the SARL setup and create the injector
-				final Class<?> setup = classLoader.loadClass(SARLStandaloneSetup.class.getName());
-				final Method method = setup.getDeclaredMethod("doSetup"); //$NON-NLS-1$
-				final Injector mainInjector = (Injector) method.invoke(null);
+				final var setup = classLoader.loadClass(SARLStandaloneSetup.class.getName());
+				final var method = setup.getDeclaredMethod("doSetup"); //$NON-NLS-1$
+				final var mainInjector = (Injector) method.invoke(null);
 				// Create the plugin's injection module
-				final Class<? extends Module> innerModuleType = (Class<? extends Module>) classLoader.loadClass(MavenPrivateModule.class.getName());
-				final Module innerModule = innerModuleType.getConstructor(AbstractSarlBatchCompilerMojo.class).newInstance(this);
+				final var innerModuleType = (Class<? extends Module>) classLoader.loadClass(MavenPrivateModule.class.getName());
+				final var innerModule = innerModuleType.getConstructor(AbstractSarlBatchCompilerMojo.class).newInstance(this);
 				// Create the sub-injector
 				this.injector = mainInjector.createChildInjector(Arrays.asList(innerModule));
 				//
@@ -369,7 +360,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	protected boolean isSkipped() {
 		if (isTestContext()) {
 			// Check the general Maven test skipping flag
-			boolean mavenTestSkip = false;
+			var mavenTestSkip = false;
 			try {
 				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(MAVEN_TEST_SKIP_NAME, "false")); //$NON-NLS-1$
 			} catch (Throwable exception) {
@@ -388,7 +379,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			}
 		} else {
 			// Check the general SARL compile skipping flag
-			boolean mavenCompileSkip = false;
+			var mavenCompileSkip = false;
 			try {
 				mavenCompileSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_COMPILE_SKIP_NAME, "false")); //$NON-NLS-1$
 			} catch (Throwable exception) {
@@ -407,7 +398,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @since 0.12
 	 */
 	protected boolean isSarlJvmInferrerSkipped() {
-		boolean sarlCompileSkip = false;
+		var sarlCompileSkip = false;
 		try {
 			sarlCompileSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_JVMINFERRER_SKIP_NAME, "false")); //$NON-NLS-1$
 		} catch (Throwable exception) {
@@ -428,18 +419,18 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	protected void compile(List<File> classPath, List<File> modulePath, List<File> sourcePaths, File sarlOutputPath,
 			File classOutputPath) throws MojoExecutionException, MojoFailureException {
-		final SarlBatchCompiler compiler = getBatchCompiler();
-		final MavenProject project = getProject();
+		final var compiler = getBatchCompiler();
+		final var project = getProject();
 		compiler.setResourceSetProvider(new MavenProjectResourceSetProvider(project));
-		final Iterable<File> filtered = Iterables.filter(sourcePaths, input -> input.isDirectory());
+		final var filtered = Iterables.filter(sourcePaths, input -> input.isDirectory());
 		if (Iterables.isEmpty(filtered)) {
-			final String dir = Iterables.toString(sourcePaths);
+			final var dir = Iterables.toString(sourcePaths);
 			getLogger().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_1, dir));
 			return;
 		}
-		final String baseDir = project.getBasedir().getAbsolutePath();
+		final var baseDir = project.getBasedir().getAbsolutePath();
 		if (getLogger().isDebugEnabled()) {
-			final StringBuilder out = new StringBuilder();
+			final var out = new StringBuilder();
 			out.append("sarlOutputPath = "); //$NON-NLS-1$
 			out.append(sarlOutputPath);
 			out.append("\nclassOutputPath = "); //$NON-NLS-1$
@@ -447,11 +438,11 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			getLogger().debug(out.toString());
 		}
 		compiler.setSarlCompilationEnable(!isSarlJvmInferrerSkipped());
-		final JavaCompiler compilerType = getJavaCompiler();
+		final var compilerType = getJavaCompiler();
 
-		final Logger logger = Logger.getLogger(getClass().getName());
+		final var logger = Logger.getLogger(getClass().getName());
 		logger.setUseParentHandlers(false);
-		for (final Handler h : logger.getHandlers()) {
+		for (final var h : logger.getHandlers()) {
 			logger.removeHandler(h);
 		}
 		logger.addHandler(new MavenJulHandler(getLogger()));
@@ -467,7 +458,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(classPath);
 		compiler.setModulePath(modulePath);
-		final List<File> filteredSourcePaths = Lists.newArrayList(filtered);
+		final var filteredSourcePaths = Lists.<File>newArrayList(filtered);
 		compiler.setSourcePath(filteredSourcePaths);
 		compiler.setOutputPath(sarlOutputPath);
 		compiler.setFileEncoding(getEncoding());
@@ -480,8 +471,8 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setGenerateCloneFunctions(getGenerateCloneFunctions());
 		compiler.setGenerateSerialNumberFields(getGenerateSerialNumberFields());
 
-		final StringBuilder builder = new StringBuilder();
-		for (final String identifier : getExtraGenerators()) {
+		final var builder = new StringBuilder();
+		for (final var identifier : getExtraGenerators()) {
 			if (builder.length() > 0) {
 				builder.append(File.pathSeparator);
 			}
@@ -500,16 +491,16 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					filename, issue.getLineNumber(),
 					issue.getColumn(), issue.getMessage());
 		});
-		final String[] errorMessage = new String[] {null};
+		final var errorMessage = new String[] {null};
 		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
-			boolean isError = severity == Severity.ERROR || issue.isSyntaxError();
+			var isError = severity == Severity.ERROR || issue.isSyntaxError();
 			if (isError && Strings.isEmpty(errorMessage[0])) {
 				errorMessage[0] = message;
 			}
 		});
 		if (!compiler.compile()) {
-			final StringBuilder dir = new StringBuilder();
-			for (final File file : filtered) {
+			final var dir = new StringBuilder();
+			for (final var file : filtered) {
 				if (dir.length() > 0) {
 					dir.append(File.pathSeparator);
 				}
@@ -535,18 +526,18 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	protected String readSarlEclipseSetting(String sourceDirectory) {
 		if (this.propertiesFileLocation != null) {
-			final File file = new File(this.propertiesFileLocation);
+			final var file = new File(this.propertiesFileLocation);
 			if (file.canRead()) {
-				final Properties sarlSettings = new Properties();
-				try (FileInputStream stream = new FileInputStream(file)) {
+				final var sarlSettings = new Properties();
+				try (var stream = new FileInputStream(file)) {
 					sarlSettings.load(stream);
-					final String sarlOutputDirProp = sarlSettings.getProperty("outlet.DEFAULT_OUTPUT.directory", null); //$NON-NLS-1$
+					final var sarlOutputDirProp = sarlSettings.getProperty("outlet.DEFAULT_OUTPUT.directory", null); //$NON-NLS-1$
 					if (sarlOutputDirProp != null) {
-						final File srcDir = new File(sourceDirectory);
+						final var srcDir = new File(sourceDirectory);
 						getLogger().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_7,
 								srcDir.getPath(), Boolean.valueOf(srcDir.exists())));
 						if (srcDir.exists() && srcDir.getParent() != null) {
-							final String path = new File(srcDir.getParent(), sarlOutputDirProp).getPath();
+							final var path = new File(srcDir.getParent(), sarlOutputDirProp).getPath();
 							getLogger().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_8, sarlOutputDirProp));
 							return path;
 						}
@@ -579,9 +570,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	protected void updateAtomicallyClasspathFiles(List<File> classpathFiles,
 			Set<String> duplicateAvoider, boolean isMandatory,
 			boolean warnIfMissed, Iterable<String> files) {
-		for (final String file : files) {
+		for (final var file : files) {
 			if (duplicateAvoider.add(file)) {
-				final File fileObj = new File(file);
+				final var fileObj = new File(file);
 				if (fileObj.exists()) {
 					classpathFiles.add(fileObj);
 				} else if (isMandatory) {
@@ -606,9 +597,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @see #getClassPath()
 	 */
 	protected List<File> buildClassPath() throws MojoExecutionException {
-		final Set<String> duplicateAvoider = new LinkedHashSet<>();
-		final List<File> classpathFiles = new ArrayList<>();
-		final MavenProject project = getProject();
+		final var duplicateAvoider = new LinkedHashSet<String>();
+		final var classpathFiles = new ArrayList<File>();
+		final var project = getProject();
 		updateAtomicallyClasspathFiles(
 				classpathFiles, duplicateAvoider,
 				true, true,
@@ -625,7 +616,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
-		for (final Artifact dep : project.getArtifacts()) {
+		for (final var dep : project.getArtifacts()) {
 			updateAtomicallyClasspathFiles(
 					classpathFiles, duplicateAvoider,
 					false, true,
@@ -658,9 +649,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @see #buildClassPath()
 	 */
 	protected List<File> buildTestClassPath() throws MojoExecutionException {
-		final Set<String> duplicateAvoider = new LinkedHashSet<>();
-		final List<File> classpathFiles = new ArrayList<>();
-		final MavenProject project = getProject();
+		final var duplicateAvoider = new LinkedHashSet<String>();
+		final var classpathFiles = new ArrayList<File>();
+		final var project = getProject();
 		updateAtomicallyClasspathFiles(
 				classpathFiles, duplicateAvoider,
 				true, true,
@@ -677,7 +668,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
-		for (final Artifact dep : project.getArtifacts()) {
+		for (final var dep : project.getArtifacts()) {
 			updateAtomicallyClasspathFiles(
 					classpathFiles, duplicateAvoider,
 					false, true,
@@ -712,7 +703,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	@SuppressWarnings("static-method")
 	protected List<File> buildModulePath() throws MojoExecutionException {
-		final List<File> modulePathFiles = new ArrayList<>();
+		final var modulePathFiles = new ArrayList<File>();
 		return modulePathFiles;
 	}
 
@@ -741,7 +732,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	@SuppressWarnings("static-method")
 	protected List<File> buildTestModulePath() throws MojoExecutionException {
-		final List<File> modulePathFiles = new ArrayList<>();
+		final var modulePathFiles = new ArrayList<File>();
 		return modulePathFiles;
 	}
 

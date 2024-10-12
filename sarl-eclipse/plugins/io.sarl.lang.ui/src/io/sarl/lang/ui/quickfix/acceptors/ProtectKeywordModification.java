@@ -61,9 +61,9 @@ public final class ProtectKeywordModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final String[] data = issue.getData();
+		final var data = issue.getData();
 		if (data != null && data.length > 1 && !Strings.isEmpty(data[0]) && !Strings.isEmpty(data[1])) {
-			final ProtectKeywordModification modification = new ProtectKeywordModification(data[0], data[1]);
+			final var modification = new ProtectKeywordModification(data[0], data[1]);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
@@ -77,9 +77,9 @@ public final class ProtectKeywordModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final IXtextDocument document = context.getXtextDocument();
-		final Issue issue = getIssue();
-		final int keywordOffset = getTools().getOffsetForPattern(document, issue.getOffset().intValue(),
+		final var document = context.getXtextDocument();
+		final var issue = getIssue();
+		final var keywordOffset = getTools().getOffsetForPattern(document, issue.getOffset().intValue(),
 				".?" + Pattern.quote(this.oldKeyword)); //$NON-NLS-1$
 		if (keywordOffset >= issue.getOffset().intValue()) {
 			context.getXtextDocument().replace(keywordOffset - this.oldKeyword.length(),

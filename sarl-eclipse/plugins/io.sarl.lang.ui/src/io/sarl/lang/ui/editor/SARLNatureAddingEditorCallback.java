@@ -52,7 +52,7 @@ public class SARLNatureAddingEditorCallback extends IXtextEditorCallback.NullImp
 
 	@Override
 	public void afterCreatePartControl(XtextEditor editor) {
-		final IResource resource = editor.getResource();
+		final var resource = editor.getResource();
 		if (resource != null && !this.toggleNature.hasNature(resource.getProject())
 				&& resource.getProject().isAccessible() && !resource.getProject().isHidden() && canBuild(editor)) {
 			this.toggleNature.toggleNature(resource.getProject());
@@ -60,13 +60,12 @@ public class SARLNatureAddingEditorCallback extends IXtextEditorCallback.NullImp
 	}
 
 	private boolean canBuild(XtextEditor editor) {
-		final IResource resource = editor.getResource();
-		if (!(resource instanceof IStorage)) {
-			return false;
+		final var resource = editor.getResource();
+		if (resource instanceof IStorage storage) {
+			final var uri = this.mapper.getUri(storage);
+			return this.uriValidator.canBuild(uri, storage);
 		}
-		final IStorage storage = (IStorage) resource;
-		final URI uri = this.mapper.getUri(storage);
-		return this.uriValidator.canBuild(uri, storage);
+		return false;
 	}
 
 }

@@ -122,8 +122,8 @@ public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {
 
 	@Override
 	public final void doGenerate(Resource input, IFileSystemAccess fsa) {
-		final IFileSystemAccess2 casted = (IFileSystemAccess2) fsa;
-		final GeneratorContext context = new GeneratorContext();
+		final var casted = (IFileSystemAccess2) fsa;
+		final var context = new GeneratorContext();
 		try {
 			beforeGenerate(input, casted, context);
 			doGenerate(input, casted, context);
@@ -134,13 +134,13 @@ public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {
 
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final IGenerator2 mainGenerator = getMainGenerator();
+		final var mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
 			mainGenerator.doGenerate(input, fsa, context);
 		}
-		final Iterable<IRootGenerator> generators = getExtraGeneratorProvider().getGenerators(context, input);
+		final var generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
-			for (final IGenerator2 generator : generators) {
+			for (final var generator : generators) {
 				try {
 					generator.doGenerate(input, fsa, context);
 				} catch (Throwable exception) {
@@ -152,13 +152,13 @@ public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {
 
 	@Override
 	public void beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final IGenerator2 mainGenerator = getMainGenerator();
+		final var mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
 			mainGenerator.beforeGenerate(input, fsa, context);
 		}
-		final Iterable<IRootGenerator> generators = getExtraGeneratorProvider().getGenerators(context, input);
+		final var generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
-			for (final IGenerator2 generator : generators) {
+			for (final var generator : generators) {
 				try {
 					generator.beforeGenerate(input, fsa, context);
 				} catch (Throwable exception) {
@@ -170,13 +170,13 @@ public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {
 
 	@Override
 	public void afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final IGenerator2 mainGenerator = getMainGenerator();
+		final var mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
 			mainGenerator.afterGenerate(input, fsa, context);
 		}
-		final Iterable<IRootGenerator> generators = getExtraGeneratorProvider().getGenerators(context, input);
+		final var generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
-			for (final IGenerator2 generator : generators) {
+			for (final var generator : generators) {
 				try {
 					generator.afterGenerate(input, fsa, context);
 				} catch (Throwable exception) {

@@ -186,7 +186,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	private static String simpleName(String fullName) {
 		if (!Strings.isNullOrEmpty(fullName)) {
-			final int index = fullName.lastIndexOf('.');
+			final var index = fullName.lastIndexOf('.');
 			if (index >= 0 && index < fullName.length() - 1) {
 				return fullName.substring(index + 1);
 			}
@@ -197,9 +197,9 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
 			String fullyQualifiedNameOfAgent, String logLevel) throws CoreException {
-		final String name = Strings.isNullOrEmpty(launchConfigurationName)
+		final var name = Strings.isNullOrEmpty(launchConfigurationName)
 				? simpleName(fullyQualifiedNameOfAgent) : launchConfigurationName;
-		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName, name, true, logLevel);
+		final var wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName, name, true, logLevel);
 		setAgent(wc, fullyQualifiedNameOfAgent);
 		return wc.doSave();
 	}
@@ -207,9 +207,9 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
 			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider, String logLevel) throws CoreException {
-		final String name = Strings.isNullOrEmpty(launchConfigurationName)
+		final var name = Strings.isNullOrEmpty(launchConfigurationName)
 				? simpleName(fullyQualifiedNameOfClass) : launchConfigurationName;
-		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName, name, false, logLevel);
+		final var wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName, name, false, logLevel);
 		setMainJavaClass(wc, fullyQualifiedNameOfClass);
 		if (classPathProvider != null) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, classPathProvider.getName());
@@ -242,19 +242,19 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 */
 	protected ILaunchConfigurationWorkingCopy initLaunchConfiguration(String configurationType, String projectName,
 			String id, boolean resetJavaMainClass, String logLevel) throws CoreException {
-		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(configurationType);
-		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
+		final var launchManager = DebugPlugin.getDefault().getLaunchManager();
+		final var configType = launchManager.getLaunchConfigurationType(configurationType);
+		final var wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
 		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
-		final ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+		final var sre = SARLRuntime.getDefaultSREInstall();
 		setRuntimeConfiguration(wc, sre,
 				Boolean.valueOf(DEFAULT_USE_SYSTEM_SRE),
 				Boolean.valueOf(DEFAULT_USE_PROJECT_SRE),
 				resetJavaMainClass);
 		// Change the default log level
 		if (!Strings.isNullOrEmpty(logLevel)) {
-			final String logOpt = sre.getAvailableCommandLineOptions().get(SRECommandLineOptions.CLI_LOG);
+			final var logOpt = sre.getAvailableCommandLineOptions().get(SRECommandLineOptions.CLI_LOG);
 			setLogArgument(wc, logOpt, logLevel);
 
 		}
@@ -265,7 +265,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void attachResources(ILaunchConfigurationWorkingCopy configuration, IResource... resources)
 			throws CoreException {
-		final IResource[] oldTab = configuration.getMappedResources();
+		final var oldTab = configuration.getMappedResources();
 		final IResource[] newTab;
 		if (oldTab == null) {
 			newTab = Arrays.copyOf(resources, resources.length);
@@ -279,8 +279,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void detachResources(ILaunchConfigurationWorkingCopy configuration, IResource... resources)
 			throws CoreException {
-		final List<IResource> res = new ArrayList<>();
-		final IResource[] oldTab = configuration.getMappedResources();
+		final var res = new ArrayList<IResource>();
+		final var oldTab = configuration.getMappedResources();
 		if (oldTab != null) {
 			res.addAll(Arrays.asList(oldTab));
 		}
@@ -292,8 +292,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setRuntimeConfiguration(ILaunchConfigurationWorkingCopy configuration, ISREInstall sre,
 			Boolean useSystemSre, Boolean useProjectSre, boolean resetJavaMainClass) {
-		boolean system = useSystemSre == null ? DEFAULT_USE_SYSTEM_SRE : useSystemSre.booleanValue();
-		boolean project = useProjectSre == null ? DEFAULT_USE_PROJECT_SRE : useProjectSre.booleanValue();
+		var system = useSystemSre == null ? DEFAULT_USE_SYSTEM_SRE : useSystemSre.booleanValue();
+		var project = useProjectSre == null ? DEFAULT_USE_PROJECT_SRE : useProjectSre.booleanValue();
 		if (system && project) {
 			system = true;
 			project = false;
@@ -303,7 +303,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			configuration.setAttribute(
 					ATTR_SARL_RUNTIME_ENVIRONMENT,
 					sre.getId());
-			final String mainClass = sre.getMainClass();
+			final var mainClass = sre.getMainClass();
 			if (resetJavaMainClass) {
 				if (Strings.isNullOrEmpty(mainClass)) {
 					configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
@@ -357,7 +357,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setExtraSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
 			String arguments) {
-		final String attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
+		final var attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
 		configuration.setAttribute(attrName, Strings.emptyToNull(arguments));
 	}
 
@@ -369,7 +369,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setExtraJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
 			String arguments) {
-		final String attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
+		final var attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
 		configuration.setAttribute(attrName, Strings.emptyToNull(arguments));
 	}
 
@@ -398,7 +398,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		} catch (CoreException e) {
 			// For backward compatibility
 			try {
-				final String value = configuration.getAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+				final var value = configuration.getAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.toString(DEFAULT_USE_SYSTEM_SRE));
 				return Boolean.parseBoolean(value);
 			} catch (Throwable e2) {
@@ -414,7 +414,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		} catch (CoreException e) {
 			// For backward compatibility
 			try {
-				final String value = configuration.getAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				final var value = configuration.getAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.toString(DEFAULT_USE_PROJECT_SRE));
 				return Boolean.parseBoolean(value);
 			} catch (Throwable e2) {
@@ -451,7 +451,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		}
 		if (Strings.isNullOrEmpty(name)) {
 			try {
-				final RootContextIdentifierType type = RootContextIdentifierType.valueOf(name);
+				final var type = RootContextIdentifierType.valueOf(name);
 				return type;
 			} catch (Throwable exception) {
 				//
@@ -482,7 +482,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public String getExtraSRELaunchingArguments(ILaunchConfiguration configuration, String contributorId) {
 		try {
-			final String attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
+			final var attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
 			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
 		} catch (CoreException e) {
 			return null;
@@ -491,11 +491,11 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public String getExtraSRELaunchingArguments(ILaunchConfiguration configuration) {
-		final StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		try {
-			for (final String key : configuration.getAttributes().keySet()) {
+			for (final var key : configuration.getAttributes().keySet()) {
 				if (key.endsWith(ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS)) {
-					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					final var value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
 					if (!Strings.isNullOrEmpty(value)) {
 						if (builder.length() > 0) {
 							builder.append(" "); //$NON-NLS-1$
@@ -522,7 +522,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public String getExtraJRELaunchingArguments(ILaunchConfiguration configuration, String contributorId) {
 		try {
-			final String attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
+			final var attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
 			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
 		} catch (CoreException e) {
 			return null;
@@ -531,11 +531,11 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public String getExtraJRELaunchingArguments(ILaunchConfiguration configuration) {
-		final StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		try {
-			for (final String key : configuration.getAttributes().keySet()) {
+			for (final var key : configuration.getAttributes().keySet()) {
 				if (key.endsWith(ATTR_EXTRA_VM_ARGUMENTS)) {
-					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					final var value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
 					if (!Strings.isNullOrEmpty(value)) {
 						if (builder.length() > 0) {
 							builder.append(" "); //$NON-NLS-1$
@@ -595,7 +595,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public String getExtraClasspathProvider(ILaunchConfiguration configuration, String contributorId) {
 		try {
-			final String attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
+			final var attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
 			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
 		} catch (CoreException e) {
 			return null;
@@ -604,17 +604,17 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public void setExtraClasspathProvider(ILaunchConfigurationWorkingCopy configuration, String contributorId, String classpathContainerId) {
-		final String attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
+		final var attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
 		configuration.setAttribute(attrName, Strings.emptyToNull(classpathContainerId));
 	}
 
 	@Override
 	public List<String> getExtraClasspathProviders(ILaunchConfiguration configuration) {
-		final List<String> identifiers = new ArrayList<>();
+		final var identifiers = new ArrayList<String>();
 		try {
-			for (final String key : configuration.getAttributes().keySet()) {
+			for (final var key : configuration.getAttributes().keySet()) {
 				if (key.endsWith(ATTR_EXTRA_CLASSPATH_PROVIDER)) {
-					final String value = configuration.getAttribute(key, (String) null);
+					final var value = configuration.getAttribute(key, (String) null);
 					if (!Strings.isNullOrEmpty(value)) {
 						identifiers.add(value);
 					}
@@ -646,8 +646,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public void setLogArgument(ILaunchConfigurationWorkingCopy configuration, String optionName, String optionValue) {
-		String name = Strings.emptyToNull(optionName);
-		String value = Strings.emptyToNull(optionValue);
+		var name = Strings.emptyToNull(optionName);
+		var value = Strings.emptyToNull(optionValue);
 		if (name == null || value == null) {
 			value = null;
 			name = null;

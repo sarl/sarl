@@ -61,8 +61,8 @@ public class BootiqueBatchCompilerMain extends BootiqueMain {
 	@Override
 	protected BQRuntime createRuntime(String... args) {
 		SARLStandaloneSetup.doPreSetup();
-		final BQRuntime runtime = super.createRuntime(args);
-		final Injector injector = runtime.getInstance(Key.get(Injector.class, SARLRuntimeModule.SARL_INJECTOR_NAME));
+		final var runtime = super.createRuntime(args);
+		final var injector = runtime.getInstance(Key.get(Injector.class, SARLRuntimeModule.SARL_INJECTOR_NAME));
 		SARLStandaloneSetup.doPostSetup(injector);
 		return runtime;
 	}

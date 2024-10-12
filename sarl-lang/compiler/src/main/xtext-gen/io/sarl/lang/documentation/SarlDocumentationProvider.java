@@ -38,8 +38,8 @@ public class SarlDocumentationProvider extends XtendDocumentationProvider {
 		String text = super.getDocumentation(o);
 		if (text == null) {
 			// Get the grammar from the Ecore model element.
-			if (o instanceof EModelElement) {
-				text = EcoreUtil.getDocumentation((EModelElement) o);
+			if (o instanceof EModelElement $c$value) {
+				text = EcoreUtil.getDocumentation($c$value);
 			}
 			if (text == null) {
 				// Get the grammar from the code builder extension.

@@ -84,7 +84,7 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 	 */
 	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
-		String message = cause.getLocalizedMessage();
+		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
 			message = cause.getMessage();
 		}

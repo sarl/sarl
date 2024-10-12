@@ -102,9 +102,9 @@ public abstract class AbstractBuilder {
 				return expectedType.cast(obj);
 			}
 		}
-		if (resource instanceof DerivedStateAwareResource) {
-			((DerivedStateAwareResource) resource).discardDerivedState();
-			resource.getContents();
+		if (resource instanceof DerivedStateAwareResource $c$value) {
+			$c$value.discardDerivedState();
+			$c$value.getContents();
 			return getAssociatedElement(expectedType, dslObject, null);
 		}
 		throw new IllegalStateException("No JvmFormalParameter associated to " + dslObject + " in " + dslObject.eContainer());
@@ -175,7 +175,7 @@ public abstract class AbstractBuilder {
 	}
 
 	protected static XtextResource toResource(Notifier context) {
-		return (XtextResource) (context instanceof Resource ? context : ((EObject)context).eResource());
+		return (XtextResource) (context instanceof Resource ? context : ((EObject) context).eResource());
 	}
 
 	/** Replies the type reference for the given name in the given context.
@@ -202,8 +202,8 @@ public abstract class AbstractBuilder {
 			final JvmTypeReference original = pref.getArguments().get(i);
 			if (original instanceof JvmAnyTypeReference) {
 				args[i] = EcoreUtil.copy(original);
-			} else if (original instanceof JvmWildcardTypeReference) {
-				final JvmWildcardTypeReference wc = EcoreUtil.copy((JvmWildcardTypeReference) original);
+			} else if (original instanceof JvmWildcardTypeReference $c$value) {
+				final JvmWildcardTypeReference wc = EcoreUtil.copy($c$value);
 				for (final JvmTypeConstraint c : wc.getConstraints()) {
 					c.setTypeReference(newTypeRef(context, c.getTypeReference().getIdentifier()));
 				}

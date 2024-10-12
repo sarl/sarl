@@ -316,7 +316,7 @@ public interface CodeElementExtractor {
 				return true;
 			}
 			if (ElementDescription.class.equals(obj.getClass())) {
-				final ElementDescription desc = (ElementDescription) obj;
+				final var desc = (ElementDescription) obj;
 				return elementType().equals(desc.elementType())
 					&& name().equals(desc.name())
 					&& builderInterfaceType().equals(desc.builderInterfaceType())

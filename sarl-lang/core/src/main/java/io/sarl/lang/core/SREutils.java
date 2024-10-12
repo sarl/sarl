@@ -94,7 +94,7 @@ public final class SREutils {
 	 */
 	public static <S> S setSreSpecificData(SRESpecificDataContainer container, S data, Class<S> type) {
 		assert container != null;
-		final S oldData = container.$getSreSpecificData(type);
+		final var oldData = container.$getSreSpecificData(type);
 		container.$setSreSpecificData(data);
 		return oldData;
 	}

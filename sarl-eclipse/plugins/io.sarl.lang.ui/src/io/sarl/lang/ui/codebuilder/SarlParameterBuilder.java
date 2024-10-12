@@ -80,7 +80,7 @@ public class SarlParameterBuilder extends XtendParameterBuilder {
 			mAppender.append(this.keywords.getWildcardAsteriskKeyword());
 		} else  {
 			appendType(mAppender, getType(), Object.class.getName());
-			final String defaultVal = getDefaultValue();
+			final var defaultVal = getDefaultValue();
 			if (!Strings.isEmpty(defaultVal)) {
 				mAppender.append(" ").append(this.keywords.getEqualsSignKeyword()); //$NON-NLS-1$
 				mAppender.append(" ").append(defaultVal); //$NON-NLS-1$

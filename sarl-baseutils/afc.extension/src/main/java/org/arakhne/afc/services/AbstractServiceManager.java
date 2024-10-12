@@ -54,7 +54,7 @@ public abstract class AbstractServiceManager implements IServiceManager {
 	 * @param services the services to be managed by this manager.
 	 */
 	public AbstractServiceManager(Iterable<? extends IService> services) {
-		for (final IService service : services) {
+		for (final var service : services) {
 			this.servicesByState.put(ServiceState.NEW, service);
 			this.servicesByType.put(service.getReferenceType(), service);
 		}
@@ -150,9 +150,9 @@ public abstract class AbstractServiceManager implements IServiceManager {
 	 */
 	protected void preStop(Logger logger) {
 		logger.fine(Locale.getString("AbstractServiceManager_1")); //$NON-NLS-1$
-		for (final IService service : getServicesByState(ServiceState.RUNNING)) {
-			if (service instanceof IPreReleasableService) {
-				((IPreReleasableService) service).onPreStop();
+		for (final var service : getServicesByState(ServiceState.RUNNING)) {
+			if (service instanceof IPreReleasableService iservice) {
+				iservice.onPreStop();
 			}
 		}
 	}

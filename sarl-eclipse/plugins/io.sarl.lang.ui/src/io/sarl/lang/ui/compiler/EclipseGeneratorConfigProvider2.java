@@ -51,10 +51,10 @@ public class EclipseGeneratorConfigProvider2 implements IGeneratorConfigProvider
 
 	@Override
 	public GeneratorConfig2 get(EObject context) {
-		final GeneratorConfig2 config = new GeneratorConfig2();
+		final var config = new GeneratorConfig2();
 		IProject project = null;
 		if (context !=  null && context.eResource() != null) {
-			final Pair<IStorage, IProject> pair = Iterables.getFirst(
+			final var pair = Iterables.getFirst(
 					this.storage2UriMapper.getStorages(context.eResource().getURI()), null);
 			if (pair != null) {
 				project = pair.getSecond();

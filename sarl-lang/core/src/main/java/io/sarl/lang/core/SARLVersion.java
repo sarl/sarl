@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 
 import javax.annotation.processing.Generated;
 
+import org.eclipse.xtext.xbase.lib.XbaseGenerated;
+
 /**
  * Describes the specification of the SARL language.
  *
@@ -93,35 +95,35 @@ public final class SARLVersion {
 	/** The minimal Xtext version to use SARL features, e.g. {@code 2.31.0}.
 	 */
 	@Generated(value = "maven")
-	public static final String MINIMAL_XTEXT_VERSION = "2.32.0"; //$NON-NLS-1$
+	public static final String MINIMAL_XTEXT_VERSION = "2.36.0"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used for running the SARL compilation tools (IDE, or sarlc), e.g. {@code 17}.
 	 *
 	 * @since 0.10
 	 */
 	@Generated(value = "maven")
-	public static final String MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "17"; //$NON-NLS-1$
+	public static final String MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "21"; //$NON-NLS-1$
 
 	/** The first incompatible version of the JDK that must NOT be used for running the SARL compilation tools (IDE, or sarlc), e.g. {@code 18}.
 	 *
 	 * @since 0.10
 	 */
 	@Generated(value = "maven")
-	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "18"; //$NON-NLS-1$
+	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "27"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used on the classpath of SARL projects, e.g. {@code 17}.
 	 *
 	 * @since 0.10
 	 */
 	@Generated(value = "maven")
-	public static final String MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "17"; //$NON-NLS-1$
+	public static final String MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "21"; //$NON-NLS-1$
 
 	/** The first incompatible version of the JDK that must NOT be used on the classpath of SARL projects, e.g. {@code 18}.
 	 *
 	 * @since 0.10
 	 */
 	@Generated(value = "maven")
-	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "18"; //$NON-NLS-1$
+	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "27"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

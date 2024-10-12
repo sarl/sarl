@@ -21,13 +21,6 @@
 
 package io.sarl.lang.bugfixes.pending.bug621;
 
-import java.util.Set;
-
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmGenericType;
-import org.eclipse.xtext.xbase.typesystem.override.ResolvedFeatures;
-
 import io.sarl.lang.validation.SARLValidator;
 
 /**
@@ -48,11 +41,5 @@ import io.sarl.lang.validation.SARLValidator;
  */
 @SuppressWarnings("all")
 public class Bug621Validator extends SARLValidator {
-
-	@Override
-	protected void doCheckOverriddenMethods(XtendTypeDeclaration xtendType, JvmGenericType inferredType,
-			ResolvedFeatures resolvedFeatures, Set<EObject> flaggedOperations) {
-		super.doCheckOverriddenMethods(xtendType, inferredType, resolvedFeatures, flaggedOperations);
-	}
-
+	//
 }

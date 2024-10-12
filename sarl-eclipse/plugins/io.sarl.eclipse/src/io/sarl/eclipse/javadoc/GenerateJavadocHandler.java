@@ -56,10 +56,10 @@ public class GenerateJavadocHandler extends AbstractHandler {
 		try {
 			// Save current editor
 			this.syncUtil.get().totalSync(false);
-			final XtextEditor editor = EditorUtils.getActiveXtextEditor(event);
+			final var editor = EditorUtils.getActiveXtextEditor(event);
 			if (editor != null) {
-				final ITextSelection selection = (ITextSelection) editor.getSelectionProvider().getSelection();
-				final IXtextDocument document = editor.getDocument();
+				final var selection = (ITextSelection) editor.getSelectionProvider().getSelection();
+				final var document = editor.getDocument();
 				this.documentProvider.get().generateDocumentationIfPossible(document, selection);
 			}
 			return null;

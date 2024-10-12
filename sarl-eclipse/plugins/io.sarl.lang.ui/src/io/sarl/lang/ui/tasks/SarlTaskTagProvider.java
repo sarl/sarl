@@ -48,16 +48,16 @@ public class SarlTaskTagProvider implements ITaskTagProvider {
 
 	@Override
 	public TaskTags getTaskTags(Resource resource) {
-		final IPreferenceValues prefs = this.preferenceValuesProvider.getPreferenceValues(resource);
-		final String namePref = prefs.getPreference(new PreferenceKey(
+		final var prefs = this.preferenceValuesProvider.getPreferenceValues(resource);
+		final var namePref = prefs.getPreference(new PreferenceKey(
 				JavaCore.COMPILER_TASK_TAGS, "TODO,FIXME,XXX")); //$NON-NLS-1$
-		final String prioritiesPref = prefs.getPreference(new PreferenceKey(
+		final var prioritiesPref = prefs.getPreference(new PreferenceKey(
 				JavaCore.COMPILER_TASK_PRIORITIES, "NORMAL,HIGH,NORMAL")); //$NON-NLS-1$
-		final String caseSensitivePref = prefs.getPreference(new PreferenceKey(
+		final var caseSensitivePref = prefs.getPreference(new PreferenceKey(
 				JavaCore.COMPILER_TASK_CASE_SENSITIVE, JavaCore.ENABLED));
-		final List<TaskTag> tags = PreferenceTaskTagProvider.parseTags(namePref, prioritiesPref);
+		final var tags = PreferenceTaskTagProvider.parseTags(namePref, prioritiesPref);
 
-		final TaskTags taskTags = new TaskTags();
+		final var taskTags = new TaskTags();
 		taskTags.setCaseSensitive(caseSensitivePref.equals(JavaCore.ENABLED));
 		taskTags.getTaskTags().addAll(tags);
 		return taskTags;

@@ -79,8 +79,8 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 
 	@Override
 	public ILinkingCandidate getPreferredCandidate(ILinkingCandidate other) {
-		final CastOperatorLinkingCandidate right = (CastOperatorLinkingCandidate) other;
-		final CandidateCompareResult candidateCompareResult = compareTo(right);
+		final var right = (CastOperatorLinkingCandidate) other;
+		final var candidateCompareResult = compareTo(right);
 		switch (candidateCompareResult) {
 		case AMBIGUOUS:
 			return createAmbiguousLinkingCandidate(right);
@@ -104,9 +104,9 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		if (isSame(target, current)) {
 			return 0;
 		}
-		final LightweightTypeReference target2 = target.getWrapperTypeIfPrimitive();
+		final var target2 = target.getWrapperTypeIfPrimitive();
 		if (target2.isSubtypeOf(Number.class)) {
-			final LightweightTypeReference current2 = current.getWrapperTypeIfPrimitive();
+			final var current2 = current.getWrapperTypeIfPrimitive();
 			if (current2.isSubtypeOf(Number.class)) {
 				return 1 + Math.max(getNumberPrecision(target) - getNumberPrecision(current), 0);
 			}
@@ -145,9 +145,9 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 
 	private CandidateCompareResult compareTo(CastOperatorLinkingCandidate right) {
 		// FIXME: Override super#compareTo() when super's CandidateCompareResult is visible.
-		boolean invalid = false;
+		var invalid = false;
 
-		CandidateCompareResult result = compareWithObjectType(right);
+		var result = compareWithObjectType(right);
 		switch (result) {
 		case SUSPICIOUS_OTHER:
 			throw new IllegalStateException();
@@ -161,13 +161,13 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		default:
 		}
 
-		final LightweightTypeReference sourceType = getActualType(getExpression().getTarget());
-		final LightweightTypeReference leftSourceType = getOperationParameterType(this);
-		final LightweightTypeReference rightSourceType = getOperationParameterType(right);
+		final var sourceType = getActualType(getExpression().getTarget());
+		final var leftSourceType = getOperationParameterType(this);
+		final var rightSourceType = getOperationParameterType(right);
 
-		final LightweightTypeReference targetType = getState().getReferenceOwner().toLightweightTypeReference(getExpression().getType());
-		final LightweightTypeReference leftTargetType = getOperationReturnType(this);
-		final LightweightTypeReference rightTargetType = getOperationReturnType(right);
+		final var targetType = getState().getReferenceOwner().toLightweightTypeReference(getExpression().getType());
+		final var leftTargetType = getOperationReturnType(this);
+		final var rightTargetType = getOperationReturnType(right);
 
 		/*if ("boolean".equals(sourceType.getSimpleName()) && "String".equals(targetType.getSimpleName())) {
 			System.out.println(sourceType.getHumanReadableName() + " -> " + targetType.getHumanReadableName());
@@ -177,8 +177,8 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 				+ ") -> " + rightTargetType.getHumanReadableName());
 		}*/
 
-		final int leftTargetCompliance = computeCompliance(targetType, leftTargetType);
-		final int rightTargetCompliance = computeCompliance(targetType, rightTargetType);
+		final var leftTargetCompliance = computeCompliance(targetType, leftTargetType);
+		final var rightTargetCompliance = computeCompliance(targetType, rightTargetType);
 
 		if (leftTargetCompliance == 0) {
 			if (rightTargetCompliance != 0) {
@@ -188,11 +188,11 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 			return CandidateCompareResult.OTHER;
 		}
 
-		final int leftSourceCompliance = computeCompliance(sourceType, leftSourceType);
-		final int leftCompliance = leftSourceCompliance + leftTargetCompliance;
+		final var leftSourceCompliance = computeCompliance(sourceType, leftSourceType);
+		final var leftCompliance = leftSourceCompliance + leftTargetCompliance;
 
-		final int rightSourceCompliance = computeCompliance(sourceType, rightSourceType);
-		final int rightCompliance = rightSourceCompliance + rightTargetCompliance;
+		final var rightSourceCompliance = computeCompliance(sourceType, rightSourceType);
+		final var rightCompliance = rightSourceCompliance + rightTargetCompliance;
 
 		if (leftCompliance < rightCompliance) {
 			return CandidateCompareResult.THIS;
@@ -221,10 +221,10 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	private CandidateCompareResult compareWithObjectType(CastOperatorLinkingCandidate right) {
 		// This code prefer any candidate that is not provided by the Object type than
 		// the candidate from Object.
-		JvmOperation operation = right.getOperation();
-		final boolean otherIsObject = operation != null && Objects.equal(operation.getDeclaringType().getIdentifier(), Object.class.getName());
+		var operation = right.getOperation();
+		final var otherIsObject = operation != null && Objects.equal(operation.getDeclaringType().getIdentifier(), Object.class.getName());
 		operation = getOperation();
-		final boolean meIsObject = operation != null && Objects.equal(operation.getDeclaringType().getIdentifier(), Object.class.getName());
+		final var meIsObject = operation != null && Objects.equal(operation.getDeclaringType().getIdentifier(), Object.class.getName());
 		if (otherIsObject != meIsObject) {
 			if (otherIsObject) {
 				return CandidateCompareResult.THIS;
@@ -301,7 +301,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	}
 
 	private LightweightTypeReference getOperationParameterType(CastOperatorLinkingCandidate candidate) {
-		final JvmOperation operation = candidate.getOperation();
+		final var operation = candidate.getOperation();
 		if (operation.getParameters().isEmpty()) {
 			return getState().getReferenceOwner().toLightweightTypeReference(operation.getDeclaringType());
 		}
@@ -363,7 +363,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 
 	@Override
 	public void applyToModel(IResolvedTypes resolvedTypes) {
-		final XCastedExpression expr = getExpression();
+		final var expr = getExpression();
 		if (expr.eClass().isSuperTypeOf(SarlPackage.eINSTANCE.getSarlCastedExpression())) {
 			// Feature
 			setStructuralFeature(expr, SarlPackage.Literals.SARL_CASTED_EXPRESSION__FEATURE, getFeature());
@@ -384,7 +384,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	 * @return the description of the candidate.
 	 */
 	public String getValidationDescription() {
-		final JvmOperation feature = getOperation();
+		final var feature = getOperation();
 		String message = null;
 		if (!getDeclaredTypeParameters().isEmpty()) {
 			message = MessageFormat.format(Messages.CastOperatorLinkingCandidate_0,
@@ -407,7 +407,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	protected void ensureLinkingOperation() {
 		if (!this.hasLinkingOperation) {
 			this.hasLinkingOperation = true;
-			final XExpression target = getExpression().getTarget();
+			final var target = getExpression().getTarget();
 			if (!hasReceiver()) {
 				// Static call
 				this.receiver = null;
@@ -420,9 +420,9 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 				// Call to an object that is not the target, with the target as arugment
 				this.argument = target;
 
-				final XExpression obj1 = this.description.getSyntacticReceiver();
-				final XExpression obj2 = this.description.getImplicitFirstArgument();
-				final XExpression obj3 = this.description.getImplicitReceiver();
+				final var obj1 = this.description.getSyntacticReceiver();
+				final var obj2 = this.description.getImplicitFirstArgument();
+				final var obj3 = this.description.getImplicitReceiver();
 
 				if (obj1 != null && obj1 != target) {
 					this.receiver = obj1;

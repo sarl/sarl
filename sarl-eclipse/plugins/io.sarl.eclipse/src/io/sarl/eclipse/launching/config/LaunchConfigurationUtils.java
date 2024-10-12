@@ -67,8 +67,8 @@ public final class LaunchConfigurationUtils {
 	 * @since 0.12
 	 */
 	public static String join(Iterable<String> values) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final String value : values) {
+		final var buffer = new StringBuilder();
+		for (final var value : values) {
 			if (!Strings.isNullOrEmpty(value)) {
 				if (buffer.length() > 0) {
 					buffer.append(" "); //$NON-NLS-1$
@@ -161,7 +161,7 @@ public final class LaunchConfigurationUtils {
 		 */
 		@SuppressWarnings("unchecked")
 		public T resetArg(String name) {
-			final String varName = VariableNames.toPropertyName(name);
+			final var varName = VariableNames.toPropertyName(name);
 			this.argumentsToSet.remove(varName);
 			return (T) this;
 		}
@@ -178,12 +178,12 @@ public final class LaunchConfigurationUtils {
 		 */
 		@SuppressWarnings("unchecked")
 		public T arg(String name, String value, String defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
+			final var varName = VariableNames.toPropertyName(name);
 			if (Strings.isNullOrEmpty(value) || value.equals(defaultValue)) {
 				// Clear the attribute
 				this.argumentsToSet.remove(varName);
 			} else {
-				final String arg = DECL_PREFIX + varName + DECL_INFIX + value;
+				final var arg = DECL_PREFIX + varName + DECL_INFIX + value;
 				this.argumentsToSet.put(varName, arg);
 			}
 			return (T) this;
@@ -347,7 +347,7 @@ public final class LaunchConfigurationUtils {
 		@Override
 		protected void writeArguments(ILaunchConfigurationWorkingCopy configuration,
 				ILaunchConfigurationConfigurator configurator) {
-			final String args = join(this.argumentsToSet.values());
+			final var args = join(this.argumentsToSet.values());
 			configurator.setExtraSRELaunchingArguments(configuration, getContributorId(), args);
 		}
 
@@ -375,7 +375,7 @@ public final class LaunchConfigurationUtils {
 		@Override
 		protected void writeArguments(ILaunchConfigurationWorkingCopy configuration,
 				ILaunchConfigurationConfigurator configurator) {
-			final String args = join(this.argumentsToSet.values());
+			final var args = join(this.argumentsToSet.values());
 			configurator.setExtraJRELaunchingArguments(configuration, getContributorId(), args);
 		}
 
@@ -429,10 +429,10 @@ public final class LaunchConfigurationUtils {
 		@SuppressWarnings("unchecked")
 		public final T read(ILaunchConfiguration configuration, ILaunchConfigurationAccessor accessor) {
 			this.arguments.clear();
-			final String args = readArguments(configuration, accessor);
+			final var args = readArguments(configuration, accessor);
 			if (!Strings.isNullOrEmpty(args)) {
-				final Pattern pattern = Pattern.compile(Pattern.quote(DECL_PREFIX) + "(.+?)" + Pattern.quote(DECL_INFIX) + "([^ \n\r]*)"); //$NON_NLS-1$  //$NON-NLS-1$//$NON-NLS-2$
-				final Matcher matcher = pattern.matcher(args);
+				final var pattern = Pattern.compile(Pattern.quote(DECL_PREFIX) + "(.+?)" + Pattern.quote(DECL_INFIX) + "([^ \n\r]*)"); //$NON_NLS-1$  //$NON-NLS-1$//$NON-NLS-2$
+				final var matcher = pattern.matcher(args);
 				while (matcher.find()) {
 					this.arguments.put(matcher.group(1), Strings.nullToEmpty(matcher.group(2)));
 				}
@@ -455,8 +455,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public String arg(String name, String defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -473,8 +473,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public boolean arg(String name, boolean defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				// Value is not defined
 				return defaultValue;
@@ -497,8 +497,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public int arg(String name, int defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -520,8 +520,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public byte arg(String name, byte defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -543,8 +543,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public short arg(String name, short defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -566,8 +566,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public long arg(String name, long defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -589,8 +589,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public float arg(String name, float defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -612,8 +612,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public double arg(String name, double defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}
@@ -635,8 +635,8 @@ public final class LaunchConfigurationUtils {
 		 * @return the read value, or the default value.
 		 */
 		public char arg(String name, char defaultValue) {
-			final String varName = VariableNames.toPropertyName(name);
-			final String value = this.arguments.get(varName);
+			final var varName = VariableNames.toPropertyName(name);
+			final var value = this.arguments.get(varName);
 			if (value == null) {
 				return defaultValue;
 			}

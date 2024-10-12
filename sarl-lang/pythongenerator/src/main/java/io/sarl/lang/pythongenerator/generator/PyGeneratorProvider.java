@@ -48,7 +48,7 @@ public class PyGeneratorProvider implements IExtraLanguageGeneratorProvider {
 
 	@Override
 	public Iterable<IRootGenerator> getGenerators(IGeneratorContext context, Resource resource) {
-		final PyGenerator generator = this.injector.getInstance(PyGenerator.class);
+		final var generator = this.injector.getInstance(PyGenerator.class);
 		return Collections.singleton(generator);
 	}
 

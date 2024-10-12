@@ -20,25 +20,18 @@
  */
 package io.sarl.lang.tests.modules.compiler.batch;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceLoader;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
-import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompilerFactory;
 import io.sarl.lang.compiler.batch.JavacBatchCompilerFactory;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
 
 /**
@@ -55,12 +48,12 @@ public class IJavaBatchCompilerFactoryTest {
 
 	@Test
 	public void getService() throws Exception {
-		ServiceLoader<IJavaBatchCompilerFactory> loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
+		var loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
 		assertNotNull(loader);
-		Iterator<IJavaBatchCompilerFactory> iterator = loader.iterator();
+		var iterator = loader.iterator();
 		assertNotNull(iterator);
 		assertTrue(iterator.hasNext());
-		IJavaBatchCompilerFactory factory = iterator.next();
+		var factory = iterator.next();
 		assertNotNull(factory);
 		assertInstanceOf(JavacBatchCompilerFactory.class, factory);
 	}

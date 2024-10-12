@@ -25,7 +25,6 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,7 +33,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.slf4j.Logger;
 
 import io.sarl.lang.maven.compiler.abstractmojos.AbstractCompileMojo;
 
@@ -59,12 +57,12 @@ public class CompileMojo extends AbstractCompileMojo {
 	}
 
 	private static List<String> getSourceRoots(MavenProject project) {
-		final Set<String> testRoots = new TreeSet<>();
-		for (final String root : project.getTestCompileSourceRoots()) {
+		final var testRoots = new TreeSet<String>();
+		for (final var root : project.getTestCompileSourceRoots()) {
 			testRoots.add(root);
 		}
-		final List<String> roots = new ArrayList<>();
-		for (final String root : project.getCompileSourceRoots()) {
+		final var roots = new ArrayList<String>();
+		for (final var root : project.getCompileSourceRoots()) {
 			if (!testRoots.contains(root)) {
 				roots.add(root);
 			}
@@ -74,32 +72,32 @@ public class CompileMojo extends AbstractCompileMojo {
 
 	@Override
 	protected void compileSARL() throws MojoExecutionException, MojoFailureException {
-		final Logger log = getLogger();
-		File outputDirectory = getOutput();
+		final var log = getLogger();
+		var outputDirectory = getOutput();
 		log.info(Messages.CompileMojo_0);
 		if (log.isDebugEnabled()) {
-			final StringBuilder properties = new StringBuilder();
+			final var properties = new StringBuilder();
 			buildPropertyString(properties);
 			log.debug(properties.toString());
 		}
 		// If output is not explicitly set try to read SARL prefs from eclipse .settings folder
 		if (getDefaultOutput().equals(getOutput())) {
-			final String settingsValue = readSarlEclipseSetting(getProject().getBuild().getSourceDirectory());
+			final var settingsValue = readSarlEclipseSetting(getProject().getBuild().getSourceDirectory());
 			if (settingsValue != null && !settingsValue.isEmpty()) {
 				outputDirectory = new File(settingsValue);
 				log.info(MessageFormat.format(Messages.CompileMojo_1, outputDirectory));
 			}
 		}
-		final MavenProject project = getProject();
-		final List<File> compileSourceRoots = new ArrayList<>();
-		for (final String filename : getSourceRoots(project)) {
-			final File file = new File(filename);
+		final var project = getProject();
+		final var compileSourceRoots = new ArrayList<File>();
+		for (final var filename : getSourceRoots(project)) {
+			final var file = new File(filename);
 			if (isValidSourceDirectory(file, outputDirectory)) {
 				compileSourceRoots.add(file);
 			}
 		}
-		final List<File> classPath = getClassPath();
-		final List<File> modulePath = getModulePath();
+		final var classPath = getClassPath();
+		final var modulePath = getModulePath();
 		project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
 		compile(classPath, modulePath, compileSourceRoots, outputDirectory,
 				makeAbsolute(new File(getProject().getBuild().getOutputDirectory())));

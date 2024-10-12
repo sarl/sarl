@@ -106,7 +106,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 		//
 		// Trick for overriding the dialog settings with nicer default values.
 		//
-		final IDialogSettings dialogSettings = getDialogSettings();
+		final var dialogSettings = getDialogSettings();
 		try {
 			this.reflect.set(this, "fShowLibrariesNode", //$NON-NLS-1$
 					Boolean.valueOf(dialogSettings.get(TAG_GROUP_LIBRARIES) == null ? DEFAULT_SHOW_LIBRARIES
@@ -143,13 +143,13 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 * @return the package explorer from the active perspective
 	 */
 	public static SARLPackageExplorerPart getFromActivePerspective() {
-		final IWorkbenchPage activePage = JavaPlugin.getActivePage();
+		final var activePage = JavaPlugin.getActivePage();
 		if (activePage == null) {
 			return null;
 		}
-		final IViewPart view = activePage.findView(ID_PACKAGES);
-		if (view instanceof PackageExplorerPart) {
-			return (SARLPackageExplorerPart) view;
+		final var view = activePage.findView(ID_PACKAGES);
+		if (view instanceof PackageExplorerPart cvalue) {
+			return cvalue;
 		}
 		return null;
 	}
@@ -172,7 +172,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		// Open the context
-		final IContextService contextService = getSite().getService(IContextService.class);
+		final var contextService = getSite().getService(IContextService.class);
 		contextService.activateContext(CONTEXT_ID);
 		// Overridden for setting the label provider, which is set in a private function in the super type.
 		super.createPartControl(parent);
@@ -183,7 +183,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	/** Restore the filters and sorters.
 	 */
 	protected void restoreFilterAndSorter() {
-		final ProblemTreeViewer viewer = getViewer();
+		final var viewer = getViewer();
 		viewer.addFilter(new EmptyInnerPackageFilter());
 		viewer.addFilter(new HiddenFileFilter());
 	}
@@ -200,10 +200,10 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 */
 	protected void internalResetLabelProvider() {
 		try {
-			final PackageExplorerLabelProvider provider = createLabelProvider();
+			final var provider = createLabelProvider();
 			this.reflect.set(this, "fLabelProvider", provider); //$NON-NLS-1$
 			provider.setIsFlatLayout(isFlatLayout());
-			final DecoratingJavaLabelProvider decoratingProvider = new DecoratingJavaLabelProvider(
+			final var decoratingProvider = new DecoratingJavaLabelProvider(
 					provider, false, isFlatLayout());
 			this.reflect.set(this, "fDecoratingLabelProvider", decoratingProvider); //$NON-NLS-1$
 			getViewer().setLabelProvider(decoratingProvider);

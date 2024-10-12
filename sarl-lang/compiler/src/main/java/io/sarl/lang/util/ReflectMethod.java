@@ -97,12 +97,12 @@ public final class ReflectMethod<RT, T> {
 
 	private Method getMethod(RT receiver, Object[] args) {
 		try {
-			final Object[] arguments = args == null ? new Object[] {null} : args;
+			final var arguments = args == null ? new Object[] {null} : args;
 
 			Class<? extends Object> clazz = this.receiverType;
 			Method compatible = null;
 			do {
-				for (final Method candidate : clazz.getDeclaredMethods()) {
+				for (final var candidate : clazz.getDeclaredMethods()) {
 					if (candidate != null && !candidate.isBridge() && isCompatible(candidate, this.methodName, arguments)) {
 						if (compatible != null) {
 							throw new IllegalStateException("Ambiguous methods to invoke. Both " //$NON-NLS-1$
@@ -118,8 +118,8 @@ public final class ReflectMethod<RT, T> {
 				return compatible;
 			}
 			// not found provoke method not found exception
-			final Class<?>[] paramTypes = new Class<?>[arguments.length];
-			for (int i = 0; i < arguments.length; ++i) {
+			final var paramTypes = new Class<?>[arguments.length];
+			for (var i = 0; i < arguments.length; ++i) {
 				paramTypes[i] = arguments[i] == null ? Object.class : arguments[i].getClass();
 			}
 			return receiver.getClass().getMethod(this.methodName, paramTypes);
@@ -135,9 +135,9 @@ public final class ReflectMethod<RT, T> {
 		if (candidate.getParameterTypes().length != args.length) {
 			return false;
 		}
-		for (int i = 0; i < candidate.getParameterTypes().length; ++i) {
-			final Object param = args[i];
-			Class<?> class1 = candidate.getParameterTypes()[i];
+		for (var i = 0; i < candidate.getParameterTypes().length; ++i) {
+			final var param = args[i];
+			var class1 = candidate.getParameterTypes()[i];
 			if (class1.isPrimitive()) {
 				class1 = wrapperTypeFor(class1);
 			}

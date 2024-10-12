@@ -148,9 +148,8 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 
 	@Override
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
-		final AbstractMarkerLanguageParser parser = super.createLanguageParser(inputFile);
-		if (parser instanceof MarkdownParser) {
-			final MarkdownParser mdParser = (MarkdownParser) parser;
+		final var parser = super.createLanguageParser(inputFile);
+		if (parser instanceof MarkdownParser mdParser) {
 			mdParser.setAutoSectionNumbering(this.autoSectionNumbering);
 			mdParser.setAddLinkToOperationName(this.addLinkToOperationName);
 			mdParser.setOutlineDepthRange(AbstractMarkerLanguageParser.parseRange(this.outlineDepth, 1));
@@ -174,14 +173,14 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 	protected void internalExecute(File sourceFolder, File inputFile, File relativeInputFile, File outputFolder,
 			AbstractMarkerLanguageParser parser) throws IOException {
 		getLog().debug(MessageFormat.format(Messages.GenerateMojo_1, inputFile.getName()));
-		final String newContent = parser.transform(inputFile);
+		final var newContent = parser.transform(inputFile);
 
 		getLog().debug(MessageFormat.format(Messages.GenerateMojo_2, inputFile.getName()));
-		final File relativeFile = FileSystem.makeRelative(inputFile, sourceFolder);
-		final File outputFile = FileSystem.makeAbsolute(relativeFile, outputFolder);
+		final var relativeFile = FileSystem.makeRelative(inputFile, sourceFolder);
+		final var outputFile = FileSystem.makeAbsolute(relativeFile, outputFolder);
 
 		outputFile.getParentFile().mkdirs();
-		try (FileWriter writer = new FileWriter(outputFile)) {
+		try (var writer = new FileWriter(outputFile)) {
 			if (this.addYamlHeader) {
 				writer.write("---\ntitle: \""); //$NON-NLS-1$
 				writer.write(Strings.nullToEmpty(parser.extractPageTitle(newContent)));

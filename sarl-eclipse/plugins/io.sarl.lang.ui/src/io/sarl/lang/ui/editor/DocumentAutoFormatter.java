@@ -72,9 +72,9 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 				@Override
 				public void documentChanged(DocumentEvent event) {
 					if (!Strings.isEmpty(event.getText())
-							&& event.getDocument() instanceof IXtextDocument) {
+							&& event.getDocument() instanceof IXtextDocument cvalue) {
 						DocumentAutoFormatter.this.formattingRequests.add(new RegionFormattingRequest(
-								(IXtextDocument) event.getDocument(), event.getOffset(), event.getText().length()));
+								cvalue, event.getOffset(), event.getText().length()));
 					}
 				}
 			};
@@ -89,7 +89,7 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 			requests = this.formattingRequests;
 			this.formattingRequests = Collections.synchronizedList(new ArrayList<>(1));
 			if (this.autoFormatListener != null) {
-				final IDocumentListener listener = this.autoFormatListener;
+				final var listener = this.autoFormatListener;
 				this.autoFormatListener = null;
 				if (this.document != null) {
 					this.document.removeDocumentListener(listener);
@@ -97,7 +97,7 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 			}
 		}
 		if (this.contentFormatter != null) {
-			for (final RegionFormattingRequest request : requests) {
+			for (final var request : requests) {
 				formatRegion(request.document, request.offset, request.length);
 			}
 		}

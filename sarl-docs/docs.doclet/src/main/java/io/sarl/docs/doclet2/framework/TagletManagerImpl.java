@@ -98,7 +98,7 @@ public class TagletManagerImpl implements TagletManager {
 
 	@Override
 	public synchronized void addTaglet(Taglet taglet, boolean override) {
-		final String uname = unifyId(taglet.getName());
+		final var uname = unifyId(taglet.getName());
 		final boolean doAddition;
 		if (override) {
 			doAddition = true;
@@ -121,16 +121,16 @@ public class TagletManagerImpl implements TagletManager {
 			if (taglet.isInlineTag()) {
 				this.inlineTags.add(uname);
 			} else {
-				for (final Location loc : taglet.getAllowedLocations()) {
-					final Set<String> list = this.blockTagletsByLocation.computeIfAbsent(loc, it -> {
+				for (final var loc : taglet.getAllowedLocations()) {
+					final var list = this.blockTagletsByLocation.computeIfAbsent(loc, it -> {
 						return new TreeSet<>();
 					});
 					list.add(uname);
 				}
 			}
-			final DocletEnvironment env = this.environment == null ? null : this.environment.get();
+			final var env = this.environment == null ? null : this.environment.get();
 			if (env != null) {
-				final Doclet doclet = this.doclet == null ? null : this.doclet.get();
+				final var doclet = this.doclet == null ? null : this.doclet.get();
 				taglet.init(env, doclet);
 			}
 		} catch (Throwable ex) {
@@ -140,10 +140,10 @@ public class TagletManagerImpl implements TagletManager {
 
 	@Override
 	public Taglet getBlockTaglet(Location location, String name) {
-		final String uname = unifyId(name);
-		final Taglet taglet = this.allTaglets.get(uname);
+		final var uname = unifyId(name);
+		final var taglet = this.allTaglets.get(uname);
 		if (taglet != null) {
-			final Set<String> theset = this.blockTagletsByLocation.get(location);
+			final var theset = this.blockTagletsByLocation.get(location);
 			if (theset != null && theset.contains(uname)) {
 				return taglet;
 			}
@@ -153,8 +153,8 @@ public class TagletManagerImpl implements TagletManager {
 
 	@Override
 	public synchronized Taglet getInlineTaglet(String name) {
-		final String uname = unifyId(name);
-		final Taglet taglet = this.allTaglets.get(uname);
+		final var uname = unifyId(name);
+		final var taglet = this.allTaglets.get(uname);
 		if (taglet != null && this.inlineTags.contains(uname)) {
 			return taglet;
 		}
@@ -170,7 +170,7 @@ public class TagletManagerImpl implements TagletManager {
 	public synchronized void init(DocletEnvironment environment, Doclet doclet) {
 		this.environment = new WeakReference<>(environment);
 		this.doclet = new WeakReference<>(doclet);
-		for (final Taglet taglet : getAllTaglets()) {
+		for (final var taglet : getAllTaglets()) {
 			taglet.init(environment, doclet);
 		}
 	}

@@ -57,15 +57,15 @@ public class ExtensionPointExtraLanguagePreferenceInitializer implements IPrefer
 	public void initialize(IPreferenceStoreAccess access) {
 		if (this.initializers == null) {
 			this.initializers = new ArrayList<>();
-			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+			final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
 			if (extensionPoint != null) {
 				Object obj;
-				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+				for (final var element : extensionPoint.getConfigurationElements()) {
 					try {
 						obj = element.createExecutableExtension(EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE);
-						if (obj instanceof IPreferenceStoreInitializer) {
-							this.initializers.add((IPreferenceStoreInitializer) obj);
+						if (obj instanceof IPreferenceStoreInitializer cvalue) {
+							this.initializers.add(cvalue);
 						}
 					} catch (CoreException exception) {
 						LangActivator.getInstance().getLog().log(new Status(
@@ -77,7 +77,7 @@ public class ExtensionPointExtraLanguagePreferenceInitializer implements IPrefer
 				}
 			}
 		}
-		for (final IPreferenceStoreInitializer initializer : this.initializers) {
+		for (final var initializer : this.initializers) {
 			initializer.initialize(access);
 		}
 	}

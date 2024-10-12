@@ -54,7 +54,7 @@ public final class CollectionExtensions {
 		if (array == null) {
 			return null;
 		}
-		final T[] copy = Arrays.copyOf(array, array.length);
+		final var copy = Arrays.copyOf(array, array.length);
 		Arrays.sort(copy);
 		return copy;
 	}
@@ -70,7 +70,7 @@ public final class CollectionExtensions {
 		if (array == null) {
 			return null;
 		}
-		final Class<?>[] copy = Arrays.copyOf(array, array.length);
+		final var copy = Arrays.copyOf(array, array.length);
 		Arrays.sort(copy, (a, b) -> {
 			if (a == b) {
 				return 0;
@@ -97,7 +97,7 @@ public final class CollectionExtensions {
 		if (array == null) {
 			return null;
 		}
-		final Class<?>[] copy = Arrays.copyOf(array, array.length);
+		final var copy = Arrays.copyOf(array, array.length);
 		Arrays.sort(copy, (a, b) -> {
 			if (a == b) {
 				return 0;
@@ -122,12 +122,12 @@ public final class CollectionExtensions {
 	@SuppressWarnings("unchecked")
 	public static List<List<String>> toHorizontalStringMatrix(Object value) throws Exception {
 		List<List<String>> list = null;
-		if (value instanceof Class<?>[]) {
-			list = _toHorizontalStringMatrix((Class<?>[]) value);
+		if (value instanceof Class<?>[] cvalue) {
+			list = _toHorizontalStringMatrix(cvalue);
 		} else if (value instanceof List) {
-			final List<?> input = (List<?>) value;
+			final var input = (List<?>) value;
 			if (!input.isEmpty()) {
-				final Object element = Iterables.find(input, it -> it != null);
+				final var element = Iterables.find(input, it -> it != null);
 				if (element instanceof Class) {
 					list = _toHorizontalStringMatrix((List<Class<?>>) input);
 				}
@@ -146,8 +146,8 @@ public final class CollectionExtensions {
 	 * @throws Exception if the matrix cannot be generated.
 	 */
 	protected static List<List<String>> _toHorizontalStringMatrix(List<Class<?>> value) throws Exception {
-		final List<String> list = new ArrayList<>();
-		for (final Class<?> type : value) {
+		final var list = new ArrayList<String>();
+		for (final var type : value) {
 			list.add(type.getName());
 		}
 		return Collections.singletonList(list);
@@ -172,12 +172,12 @@ public final class CollectionExtensions {
 	@SuppressWarnings("unchecked")
 	public static List<List<String>> toVerticalStringMatrix(Object value) throws Exception {
 		List<List<String>> list = null;
-		if (value instanceof Class<?>[]) {
-			list = _toVerticalStringMatrix((Class<?>[]) value);
+		if (value instanceof Class<?>[] cvalue) {
+			list = _toVerticalStringMatrix(cvalue);
 		} else if (value instanceof List) {
-			final List<?> input = (List<?>) value;
+			final var input = (List<?>) value;
 			if (!input.isEmpty()) {
-				final Object element = Iterables.find(input, it -> it != null);
+				final var element = Iterables.find(input, it -> it != null);
 				if (element instanceof Class) {
 					list = _toVerticalStringMatrix((List<Class<?>>) input);
 				}
@@ -196,8 +196,8 @@ public final class CollectionExtensions {
 	 * @throws Exception if the matrix cannot be generated.
 	 */
 	protected static List<List<String>> _toVerticalStringMatrix(List<Class<?>> value) throws Exception {
-		final List<List<String>> list = new ArrayList<>();
-		for (final Class<?> type : value) {
+		final var list = new ArrayList<List<String>>();
+		for (final var type : value) {
 			list.add(Collections.singletonList(type.getName()));
 		}
 		return list;

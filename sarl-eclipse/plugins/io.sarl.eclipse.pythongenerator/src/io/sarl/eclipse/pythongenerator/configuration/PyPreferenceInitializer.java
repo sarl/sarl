@@ -45,25 +45,25 @@ public class PyPreferenceInitializer implements IPreferenceStoreInitializer {
 
 	@Override
 	public void initialize(IPreferenceStoreAccess access) {
-		final IPreferenceStore store = access.getWritablePreferenceStore();
+		final var store = access.getWritablePreferenceStore();
 		initializeGeneralOptions(store);
 		initializeTypeConversion(store);
 		initializeFeatureNameConversion(store);
 	}
 
 	private static void initializeTypeConversion(IPreferenceStore store) {
-		final IExtraLanguageConversionInitializer tcInitializer = PyInitializers.getTypeConverterInitializer();
-		final String preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(tcInitializer);
-		final String key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
+		final var tcInitializer = PyInitializers.getTypeConverterInitializer();
+		final var preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(tcInitializer);
+		final var key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
 				ExtraLanguagePreferenceAccess.TYPE_CONVERSION_PROPERTY);
 		store.setDefault(key, preferenceValue);
 		store.setToDefault(key);
 	}
 
 	private static void initializeFeatureNameConversion(IPreferenceStore store) {
-		final IExtraLanguageConversionInitializer fnInitializer = PyInitializers.getFeatureNameConverterInitializer();
-		final String preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(fnInitializer);
-		final String key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
+		final var fnInitializer = PyInitializers.getFeatureNameConverterInitializer();
+		final var preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(fnInitializer);
+		final var key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
 				ExtraLanguagePreferenceAccess.FEATURE_NAME_CONVERSION_PROPERTY);
 		store.setDefault(key, preferenceValue);
 		store.setToDefault(key);

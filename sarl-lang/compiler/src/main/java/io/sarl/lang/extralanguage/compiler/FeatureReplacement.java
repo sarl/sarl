@@ -22,7 +22,6 @@
 package io.sarl.lang.extralanguage.compiler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
@@ -65,12 +64,12 @@ public class FeatureReplacement {
 	 * @param specification the textual representation of the pattern.
 	 */
 	public FeatureReplacement(String specification) {
-		StringBuilder builder = new StringBuilder();
-		boolean isProtected = false;
+		var builder = new StringBuilder();
+		var isProtected = false;
 		StringBuilder isVariable = null;
-		int i = 0;
+		var i = 0;
 		while (i < specification.length()) {
-			final char character = specification.charAt(i);
+			final var character = specification.charAt(i);
 			if (isProtected) {
 				isProtected = false;
 				builder.append(character);
@@ -105,7 +104,7 @@ public class FeatureReplacement {
 			}
 		}
 		if (isVariable != null) {
-			final Integer varNumber = Integer.valueOf(isVariable.toString());
+			final var varNumber = Integer.valueOf(isVariable.toString());
 			this.dynamicParts.add(varNumber);
 		} else if (builder.length() > 0) {
 			this.staticParts.add(builder.toString());
@@ -140,17 +139,17 @@ public class FeatureReplacement {
 			List<Object> receiver, List<XExpression> arguments) {
 		assert this.hasReplacement;
 		if (!this.dynamicParts.isEmpty()) {
-			final List<Object> content = new ArrayList<>(this.staticParts.size() + this.dynamicParts.size());
-			final Iterator<String> staticIterator = this.staticParts.iterator();
-			final Iterator<Integer> dynamicIterator = this.dynamicParts.iterator();
+			final var content = new ArrayList<>(this.staticParts.size() + this.dynamicParts.size());
+			final var staticIterator = this.staticParts.iterator();
+			final var dynamicIterator = this.dynamicParts.iterator();
 			while (staticIterator.hasNext()) {
 				assert staticIterator.hasNext();
 				content.add(staticIterator.next());
 				if (dynamicIterator.hasNext()) {
-					final int varNumber = dynamicIterator.next().intValue();
+					final var varNumber = dynamicIterator.next().intValue();
 					if (varNumber == -1) {
-						boolean first = true;
-						for (final XExpression arg : arguments) {
+						var first = true;
+						for (final var arg : arguments) {
 							if (first) {
 								first = false;
 							} else {

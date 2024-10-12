@@ -62,7 +62,7 @@ public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesP
 
 	@Override
 	protected IPreferenceValuesProvider getValuesProvider() {
-		final IPreferenceValuesProvider original = super.getValuesProvider();
+		final var original = super.getValuesProvider();
 		if (this.overridingSeverities.isEmpty()) {
 			return original;
 		}
@@ -72,7 +72,7 @@ public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesP
 	@Override
 	public void setSeverity(String code, Severity severity) {
 		if (!Strings.isNullOrEmpty(code)) {
-			final PreferenceKey key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
+			final var key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
 			if (key != null) {
 				if (severity == null) {
 					this.overridingSeverities.remove(key.getId());
@@ -87,7 +87,7 @@ public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesP
 	public void setAllSeverities(Severity severity) {
 		this.overridingSeverities.clear();
 		if (severity != null) {
-			for (final PreferenceKey key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
+			for (final var key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
 				if (key != null) {
 					this.overridingSeverities.put(key.getId(), severity);
 				}

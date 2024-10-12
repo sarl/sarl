@@ -124,8 +124,8 @@ public class Tag {
 		if (Strings.isNullOrEmpty(text)) {
 			throw new NullPointerException("text is null"); //$NON-NLS-1$
 		}
-		final Tag tag = new Tag();
-		final String[] parts = text.split(Pattern.quote(SEPARATOR));
+		final var tag = new Tag();
+		final var parts = text.split(Pattern.quote(SEPARATOR));
 		if (parts != null) {
 			if (parts.length > 0) {
 				tag.setName(Strings.emptyToNull(parts[0]));
@@ -150,12 +150,12 @@ public class Tag {
 	 */
 	@JsonCreator
 	public static List<Tag> valuesOf(String text) {
-		final List<Tag> tags = new ArrayList<>();
+		final var tags = new ArrayList<Tag>();
 		if (!Strings.isNullOrEmpty(text)) {
-			final String[] parts = text.split(Pattern.quote(SEPARATOR));
+			final var parts = text.split(Pattern.quote(SEPARATOR));
 			if (parts != null) {
-				for (int i = 0; (i + 2) < parts.length;) {
-					final Tag tag = new Tag();
+				for (var i = 0; (i + 2) < parts.length;) {
+					final var tag = new Tag();
 					tag.setName(Strings.emptyToNull(parts[i]));
 					++i;
 					tag.setPlacements(Placement.valuesOf(parts[i]));
@@ -178,17 +178,17 @@ public class Tag {
 	@JsonValue
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
-		final String name = getName();
+		final var buffer = new StringBuilder();
+		final var name = getName();
 		if (!Strings.isNullOrEmpty(name)) {
 			buffer.append(name);
 		}
 		buffer.append(SEPARATOR);
-		for (final Placement placement : getPlacements()) {
+		for (final var placement : getPlacements()) {
 			buffer.append(placement.toChar());
 		}
 		buffer.append(SEPARATOR);
-		final String header = getHeader();
+		final var header = getHeader();
 		if (!Strings.isNullOrEmpty(header)) {
 			buffer.append(header);
 		}

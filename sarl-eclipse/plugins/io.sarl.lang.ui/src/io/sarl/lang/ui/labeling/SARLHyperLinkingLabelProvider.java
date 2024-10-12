@@ -48,7 +48,7 @@ public class SARLHyperLinkingLabelProvider extends SARLLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		final String result = super.getText(element);
+		final var result = super.getText(element);
 		if (result != null) {
 			return MessageFormat.format(Messages.SARLHyperLinkingLabelProvider_0, result);
 		}

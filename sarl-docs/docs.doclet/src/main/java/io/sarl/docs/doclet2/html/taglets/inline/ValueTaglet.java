@@ -99,14 +99,14 @@ public class ValueTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor contentExtractor) {
-		final ReferenceTree node = (ReferenceTree) Iterables.find(tags, it -> it instanceof ReferenceTree);
+		final var node = (ReferenceTree) Iterables.find(tags, it -> it instanceof ReferenceTree);
 
 		if (node == null) {
 			contentExtractor.getContext().getReporter().print(Kind.ERROR, Messages.ValueTaglet_0);
 			return false;
 		}
 		
-		final Element referencedElement = contentExtractor.extractReferencedElement(node);
+		final var referencedElement = contentExtractor.extractReferencedElement(node);
 		if (referencedElement == null) {
 			contentExtractor.getContext().getReporter().print(Kind.ERROR, MessageFormat.format(Messages.ValueTaglet_1, node.toString()));
 			return false;
@@ -117,18 +117,18 @@ public class ValueTaglet extends AbstractSarlTaglet {
 			return false;
 		}
 
-		final VariableElement variable = (VariableElement) referencedElement;
-		final Object constantValue = variable.getConstantValue();
+		final var variable = (VariableElement) referencedElement;
+		final var constantValue = variable.getConstantValue();
 		
 		if (constantValue == null) {
 			contentExtractor.getContext().getReporter().print(Kind.ERROR, MessageFormat.format(Messages.ValueTaglet_3, variable.getSimpleName(), node.toString()));
 			return false;
 		}
 
-		final TextNode textNode = new TextNode(formatValue(constantValue));
-		final CssStyles theStyle = getCssStyle(style);
+		final var textNode = new TextNode(formatValue(constantValue));
+		final var theStyle = getCssStyle(style);
 		if (theStyle != null) {
-			final org.jsoup.nodes.Element spanNode = getHtmlFactory().createSpanTag(parent, theStyle);
+			final var spanNode = getHtmlFactory().createSpanTag(parent, theStyle);
 			spanNode.appendChild(textNode);
 		} else {
 			parent.appendChild(textNode);

@@ -52,7 +52,6 @@ package io.sarl.docs.doclet2.html.summaries;
 
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.lang.model.element.TypeElement;
@@ -94,13 +93,13 @@ public class AllTypeSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 
 	@Override
 	protected void generateBodyContent(Element parent) {
-		final SortedSet<TypeElement> types = getTypeRepository().getTypes();
+		final var types = getTypeRepository().getTypes();
 		if (!types.isEmpty()) {
-			final SortedSet<TypeElement> stypes = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
+			final var stypes = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
 			stypes.addAll(types);
-			final Element list = getHtmlFactory().createUlTag(parent, null);
-			for (final TypeElement type : stypes) {
-				final Element entry = getHtmlFactory().createLiTag(list, null);
+			final var list = getHtmlFactory().createUlTag(parent, null);
+			for (final var type : stypes) {
+				final var entry = getHtmlFactory().createLiTag(list, null);
 				entry.appendChildren(getHtmlFactory().createTypeLink(type, true, null, this));
 			}
 		}

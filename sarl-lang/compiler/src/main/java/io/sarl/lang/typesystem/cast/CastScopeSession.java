@@ -24,7 +24,6 @@ package io.sarl.lang.typesystem.cast;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.scoping.IScope;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.scoping.batch.AbstractFeatureScopeSession;
 import org.eclipse.xtext.xbase.scoping.batch.AbstractNestedFeatureScopeSession;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
@@ -76,15 +75,14 @@ public class CastScopeSession extends AbstractNestedFeatureScopeSession {
 	 * @return the scope.
 	 */
 	protected IScope createCastOperatorScope(EObject context, EReference reference, IResolvedTypes resolvedTypes) {
-		if (!(context instanceof SarlCastedExpression)) {
-			return IScope.NULLSCOPE;
+		if (context instanceof SarlCastedExpression call) {
+			final var receiver = call.getTarget();
+			if (receiver == null) {
+				return IScope.NULLSCOPE;
+			}
+			return getFeatureScopes().createFeatureCallScopeForReceiver(call, receiver, getParent(), resolvedTypes);
 		}
-		final SarlCastedExpression call = (SarlCastedExpression) context;
-		final XExpression receiver = call.getTarget();
-		if (receiver == null) {
-			return IScope.NULLSCOPE;
-		}
-		return getFeatureScopes().createFeatureCallScopeForReceiver(call, receiver, getParent(), resolvedTypes);
+		return IScope.NULLSCOPE;
 	}
 
 }

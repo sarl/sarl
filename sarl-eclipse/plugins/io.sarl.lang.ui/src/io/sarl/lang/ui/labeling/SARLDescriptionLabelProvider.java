@@ -91,7 +91,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAgent agent) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(agent);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(agent);
 		return this.images.forAgent(
 				agent.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -103,7 +103,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlBehavior behavior) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(behavior);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(behavior);
 		return this.images.forBehavior(
 				behavior.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -115,7 +115,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlCapacity capacity) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(capacity);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(capacity);
 		return this.images.forCapacity(
 				capacity.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -127,7 +127,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlSkill skill) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(skill);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(skill);
 		return this.images.forSkill(
 				skill.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -139,7 +139,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlEvent event) {
-		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(event);
+		final var jvmElement = this.jvmModelAssociations.getInferredType(event);
 		return this.images.forEvent(
 				event.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -151,7 +151,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAction action) {
-		final JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(action);
+		final var jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(action);
 		return this.images.forOperation(
 				action.getVisibility(),
 				this.adornments.get(jvmElement));

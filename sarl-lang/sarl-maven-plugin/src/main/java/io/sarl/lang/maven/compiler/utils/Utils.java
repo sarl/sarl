@@ -56,9 +56,9 @@ public final class Utils {
 		if (second == null) {
 			return Integer.MAX_VALUE;
 		}
-		int na = first.getMajorVersion();
-		int nb = first.getMajorVersion();
-		final int cmp = na - nb;
+		var na = first.getMajorVersion();
+		var nb = first.getMajorVersion();
+		final var cmp = na - nb;
 		if (cmp != 0) {
 			return cmp;
 		}

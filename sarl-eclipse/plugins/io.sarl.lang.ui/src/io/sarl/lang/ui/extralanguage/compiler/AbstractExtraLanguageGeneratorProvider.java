@@ -70,7 +70,7 @@ public abstract class AbstractExtraLanguageGeneratorProvider implements IExtraLa
 
 	@Override
 	public Iterable<IRootGenerator> getGenerators(IGeneratorContext context, Resource resource) {
-		final IProject project = ProjectAdapter.getProject(resource);
+		final var project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
 				getPreferenceID(),
 				project)) {

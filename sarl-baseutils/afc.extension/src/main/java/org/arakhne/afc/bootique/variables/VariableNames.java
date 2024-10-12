@@ -1,6 +1,5 @@
 package org.arakhne.afc.bootique.variables;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
@@ -39,12 +38,12 @@ public final class VariableNames {
 		if (Strings.isNullOrEmpty(bootiqueVariable)) {
 			return null;
 		}
-		final StringBuilder name = new StringBuilder();
-		final Pattern pattern = Pattern.compile("((?:[a-z0_9_]+)|(?:[A-Z]+[^A-Z]*))"); //$NON-NLS-1$
-		for (final String component : bootiqueVariable.split("[^a-zA-Z0_9_]+")) { //$NON-NLS-1$
-			final Matcher matcher = pattern.matcher(component);
+		final var name = new StringBuilder();
+		final var pattern = Pattern.compile("((?:[a-z0_9_]+)|(?:[A-Z]+[^A-Z]*))"); //$NON-NLS-1$
+		for (final var component : bootiqueVariable.split("[^a-zA-Z0_9_]+")) { //$NON-NLS-1$
+			final var matcher = pattern.matcher(component);
 			while (matcher.find()) {
-				final String word = matcher.group(1);
+				final var word = matcher.group(1);
 				if (name.length() > 0) {
 					name.append("_"); //$NON-NLS-1$
 				}
@@ -60,7 +59,7 @@ public final class VariableNames {
 	 * @return the name of the property.
 	 */
 	public static String basename(String bootiqueVariable) {
-		final int idx = bootiqueVariable.lastIndexOf('.');
+		final var idx = bootiqueVariable.lastIndexOf('.');
 		if (idx >= 0) {
 			return bootiqueVariable.substring(idx + 1);
 		}

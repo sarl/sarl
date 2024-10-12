@@ -57,9 +57,8 @@ public class FieldInitializerUtil {
 	public IJavaElement getSelectedResource(IStructuredSelection selection) {
 		IJavaElement elem = null;
 		if (selection != null && !selection.isEmpty()) {
-			final Object object = selection.getFirstElement();
-			if (object instanceof IAdaptable) {
-				final IAdaptable adaptable = (IAdaptable) object;
+			final var object = selection.getFirstElement();
+			if (object instanceof IAdaptable adaptable) {
 				elem = adaptable.getAdapter(IJavaElement.class);
 				if (elem == null) {
 					elem = getPackage(adaptable);
@@ -67,20 +66,20 @@ public class FieldInitializerUtil {
 			}
 		}
 		if (elem == null) {
-			final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			IWorkbenchPart part = activePage.getActivePart();
+			final var activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			var part = activePage.getActivePart();
 			if (part instanceof ContentOutline) {
 				part = activePage.getActiveEditor();
 			}
-			if (part instanceof XtextEditor) {
-				final IXtextDocument doc = ((XtextEditor) part).getDocument();
-				final IFile file = doc.getAdapter(IFile.class);
+			if (part instanceof XtextEditor cvalue) {
+				final var doc = cvalue.getDocument();
+				final var file = doc.getAdapter(IFile.class);
 				elem = getPackage(file);
 			}
 		}
 		if (elem == null || elem.getElementType() == IJavaElement.JAVA_MODEL) {
 			try {
-				final IJavaProject[] projects = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
+				final var projects = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
 				if (projects.length == 1) {
 					elem = projects[0];
 				}
@@ -93,7 +92,7 @@ public class FieldInitializerUtil {
 
 	private static IJavaElement getPackage(IAdaptable adaptable) {
 		IJavaElement elem = null;
-		IResource resource = adaptable.getAdapter(IResource.class);
+		var resource = adaptable.getAdapter(IResource.class);
 		if (resource != null && resource.getType() != IResource.ROOT) {
 			while (elem == null && resource.getType() != IResource.PROJECT) {
 				resource = resource.getParent();

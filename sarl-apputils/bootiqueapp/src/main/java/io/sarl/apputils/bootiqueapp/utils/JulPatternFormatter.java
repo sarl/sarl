@@ -64,12 +64,12 @@ public class JulPatternFormatter extends Formatter {
 	@Override
 	public String format(LogRecord record) {
 		this.dat.setTime(record.getMillis());
-		final StringBuilder source = new StringBuilder();
-		final String scn = record.getSourceClassName();
-		final String logName = record.getLoggerName();
+		final var source = new StringBuilder();
+		final var scn = record.getSourceClassName();
+		final var logName = record.getLoggerName();
 		if (!Strings.isNullOrEmpty(scn)) {
 			source.append(scn);
-			final String smn = record.getSourceMethodName();
+			final var smn = record.getSourceMethodName();
 			if (!Strings.isNullOrEmpty(smn)) {
 				source.append(" "); //$NON-NLS-1$
 				source.append(smn);
@@ -77,11 +77,11 @@ public class JulPatternFormatter extends Formatter {
 		} else {
 			source.append(logName);
 		}
-		final String message = formatMessage(record);
+		final var message = formatMessage(record);
 		String throwable;
 		if (record.getThrown() != null) {
-			final StringWriter sw = new StringWriter();
-			try (PrintWriter pw = new PrintWriter(sw)) {
+			final var sw = new StringWriter();
+			try (var pw = new PrintWriter(sw)) {
 				pw.println();
 				record.getThrown().printStackTrace(pw);
 			}

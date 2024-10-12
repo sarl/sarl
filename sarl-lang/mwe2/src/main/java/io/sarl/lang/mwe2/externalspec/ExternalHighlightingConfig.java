@@ -307,7 +307,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 		 * @param rgb the color.
 		 */
 		public void setRgb(String rgb) {
-			final String[] components = rgb.split("[^0-9]+"); //$NON-NLS-1$
+			final var components = rgb.split("[^0-9]+"); //$NON-NLS-1$
 			this.red = MIN_COLOR;
 			if (components.length > 0) {
 				this.red = Integer.parseInt(components[0]);

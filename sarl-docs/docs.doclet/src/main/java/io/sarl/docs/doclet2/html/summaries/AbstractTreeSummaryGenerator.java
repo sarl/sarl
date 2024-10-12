@@ -50,14 +50,11 @@
 
 package io.sarl.docs.doclet2.html.summaries;
 
-import java.util.List;
 import java.util.SortedSet;
 
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
 import io.sarl.docs.doclet2.html.framework.CssStyles;
 import io.sarl.docs.doclet2.html.framework.Navigation;
@@ -125,7 +122,7 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	}
 
 	private void updateClasses(Element receiver, Element root, SortedSet<? extends TypeElement> types) {
-		for (final TypeElement type : types) {
+		for (final var type : types) {
 			final Element expectedRoot;
 			if (getElementUtils().isSarlAgent(type)) {
 				expectedRoot = this.agentHierarchy;
@@ -139,17 +136,17 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 				expectedRoot = this.classHierarchy;
 			}
 
-			Element parent = receiver;
+			var parent = receiver;
 			if (parent == null || expectedRoot != root) {
 				parent = expectedRoot;
 			}
 
 			if (isVisible(type)) {
-				final Element typeElement = getHtmlFactory().createLiTag(parent, null);
+				final var typeElement = getHtmlFactory().createLiTag(parent, null);
 				generateClassLink(typeElement, type);
-				final SortedSet<? extends TypeElement> subTypes = getTypeHierarchy().getDirectSubTypes(type);
+				final var subTypes = getTypeHierarchy().getDirectSubTypes(type);
 				if (!subTypes.isEmpty()) {
-					final Element container = getHtmlFactory().createUlTag(null, null);
+					final var container = getHtmlFactory().createUlTag(null, null);
 					updateClasses(container, expectedRoot, subTypes);
 					if (container.childNodeSize() > 0) {
 						typeElement.appendChild(container);
@@ -169,18 +166,18 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 				expectedRoot = this.interfaceHierarchy;
 			}
 
-			Element parent = receiver;
+			var parent = receiver;
 			if (parent == null || expectedRoot != root) {
 				parent = expectedRoot;
 			}
 
 			if (isVisible(type)) {
-				final Element typeElement = getHtmlFactory().createLiTag(parent, null);
+				final var typeElement = getHtmlFactory().createLiTag(parent, null);
 				generateInterfaceLink(typeElement, type);
 				
-				final SortedSet<? extends TypeElement> subTypes = getTypeHierarchy().getDirectSubTypes(type);
+				final var subTypes = getTypeHierarchy().getDirectSubTypes(type);
 				if (!subTypes.isEmpty()) {
-					final Element container = getHtmlFactory().createUlTag(null, null);
+					final var container = getHtmlFactory().createUlTag(null, null);
 					updateClasses(container, expectedRoot, subTypes);
 					if (container.childNodeSize() > 0) {
 						typeElement.appendChild(container);
@@ -196,12 +193,12 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 * @param type the type to link. 
 	 */
 	protected void generateClassLink(Element parent, TypeElement type) {
-		final PackageElement pkg = getEnvironment().getElementUtils().getPackageOf(type);
+		final var pkg = getEnvironment().getElementUtils().getPackageOf(type);
 		if (!pkg.isUnnamed()) {
 			parent.appendText(pkg.getQualifiedName().toString());
 			parent.appendText(getSARLGrammarKeywordAccess().getFullStopKeyword());
 		}
-		final List<Node> link = getHtmlFactory().createTypeLink(type, false, null, this);
+		final var link = getHtmlFactory().createTypeLink(type, false, null, this);
 		parent.appendChildren(link);
 	}
 
@@ -211,12 +208,12 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 * @param type the type to link. 
 	 */
 	protected void generateInterfaceLink(Element parent, TypeElement type) {
-		final PackageElement pkg = getEnvironment().getElementUtils().getPackageOf(type);
+		final var pkg = getEnvironment().getElementUtils().getPackageOf(type);
 		if (!pkg.isUnnamed()) {
 			parent.appendText(pkg.getQualifiedName().toString());
 			parent.appendText(getSARLGrammarKeywordAccess().getFullStopKeyword());
 		}
-		final List<Node> link = getHtmlFactory().createTypeLink(type, false, null, this);
+		final var link = getHtmlFactory().createTypeLink(type, false, null, this);
 		parent.appendChildren(link);
 	}
 
@@ -228,8 +225,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateAgentHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_0);
 			box.appendChild(hierarchy);
 		}
@@ -242,8 +239,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateBehaviorHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_1);
 			box.appendChild(hierarchy);
 		}
@@ -256,8 +253,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateCapacityHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_2);
 			box.appendChild(hierarchy);
 		}
@@ -270,8 +267,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateSkillHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_3);
 			box.appendChild(hierarchy);
 		}
@@ -284,8 +281,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateEventHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_4);
 			box.appendChild(hierarchy);
 		}
@@ -298,8 +295,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateClassHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_5);
 			box.appendChild(hierarchy);
 		}
@@ -312,8 +309,8 @@ public abstract class AbstractTreeSummaryGenerator extends AbstractSummaryGenera
 	 */
 	protected void generateInterfaceHierarchy(Element parent, Element hierarchy) {
 		if (hierarchy.childNodeSize() > 0) {
-			final Element box = getHtmlFactory().createDivTag(parent, null);
-			final Element nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
+			final var box = getHtmlFactory().createDivTag(parent, null);
+			final var nameDiv = getHtmlFactory().createDivTag(box, CssStyles.HEADER_TYPE_NAME);
 			nameDiv.appendText(Messages.AbstractTreeSummaryGeneratorImpl_6);
 			box.appendChild(hierarchy);
 		}

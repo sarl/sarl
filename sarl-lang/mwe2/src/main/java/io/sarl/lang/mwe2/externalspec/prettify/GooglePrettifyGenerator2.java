@@ -158,13 +158,13 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final Set<Character> characters = new TreeSet<>();
-		for (final String punct : punctuation) {
+		final var characters = new TreeSet<Character>();
+		for (final var punct : punctuation) {
 			punct.chars().forEach((int candidate) -> characters.add(Character.valueOf((char) candidate)));
 		}
-		final StringBuilder punctuationCharacters1 = new StringBuilder();
-		final StringBuilder punctuationCharacters2 = new StringBuilder();
-		for (final Character candidate : characters) {
+		final var punctuationCharacters1 = new StringBuilder();
+		final var punctuationCharacters2 = new StringBuilder();
+		for (final var candidate : characters) {
 			switch (candidate.charValue()) {
 			case '-':
 			case '\\':
@@ -192,8 +192,8 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 			}
 		}
 
-		final StringBuilder keywordPattern = new StringBuilder();
-		for (final String keyword : sortedConcat(expressionKeywords, modifiers, primitiveTypes,
+		final var keywordPattern = new StringBuilder();
+		for (final var keyword : sortedConcat(expressionKeywords, modifiers, primitiveTypes,
 				specialKeywords, typeDeclarationKeywords)) {
 			if (keywordPattern.length() > 0) {
 				keywordPattern.append("|"); //$NON-NLS-1$
@@ -201,8 +201,8 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 			keywordPattern.append(keyword);
 		}
 
-		final StringBuilder literalPattern = new StringBuilder();
-		for (final String literal : literals) {
+		final var literalPattern = new StringBuilder();
+		for (final var literal : literals) {
 			if (literalPattern.length() > 0) {
 				literalPattern.append("|"); //$NON-NLS-1$
 			}
@@ -230,7 +230,7 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 		it.appendNl("         [PR[''PR_COMMENT''], /{0}/],", this.commentPattern); //$NON-NLS-1$
 		it.appendNl("         [PR['PR_PUNCTUATION'], /^(?:\\.+|\\/)/]"); //$NON-NLS-1$
 		it.appendNl("      ]),"); //$NON-NLS-1$
-		final String language = getLanguageSimpleName().toLowerCase();
+		final var language = getLanguageSimpleName().toLowerCase();
 		it.appendNl("   [''{0}'']);", language); //$NON-NLS-1$
 	}
 

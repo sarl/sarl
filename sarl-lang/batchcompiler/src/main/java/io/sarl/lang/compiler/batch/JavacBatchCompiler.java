@@ -27,8 +27,6 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.security.PrivilegedAction;
 import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +76,7 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Optimization
 		//
-		final List<String> commandLineArguments = Lists.newArrayList();
+		final var commandLineArguments = Lists.<String>newArrayList();
 		if (optimizationLevel != null) {
 			switch (optimizationLevel) {
 			case G2:
@@ -107,7 +105,7 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Classpath
 		//
-		String path = buildPath(classPathEntries, progress);
+		var path = buildPath(classPathEntries, progress);
 		if (path == null || progress.isCanceled()) {
 			return CompilerStatus.CANCELED;
 		}
@@ -165,8 +163,8 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Source folders
 		//
-		boolean hasSourceFile = false;
-		for (final File sourceFolder : sourcePathDirectories) {
+		var hasSourceFile = false;
+		for (final var sourceFolder : sourcePathDirectories) {
 			if (progress.isCanceled()) {
 				return CompilerStatus.CANCELED;
 			}
@@ -184,27 +182,27 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Invoke the javac compiler
 		//
-		final String[] arguments = new String[commandLineArguments.size()];
+		final var arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
 		if (logger != null && logger.isLoggable(Level.FINEST)) {
 			logger.finest(MessageFormat.format(Messages.JavacBatchCompiler_0, Strings.concat(" ", commandLineArguments))); //$NON-NLS-1$
 		}
 
-		final JavacErrorStream stderr = new JavacErrorStream(errWriter, logger);
+		final var stderr = new JavacErrorStream(errWriter, logger);
 
 		try {
-			final WriterOutputStream.Builder builder = WriterOutputStream.builder();
+			final var builder = WriterOutputStream.builder();
 			builder.setWriter(outWriter);
 			builder.setCharset(Charset.defaultCharset());
-			final WriterOutputStream stdout = builder.get();
+			final var stdout = builder.get();
 	
 			if (progress.isCanceled()) {
 				return CompilerStatus.CANCELED;
 			}
 	
-			final JavaCompiler systemCompiler = getSystemJavaCompiler();
-			final int retcode = systemCompiler.run(null, stdout, stderr, arguments);
+			final var systemCompiler = getSystemJavaCompiler();
+			final var retcode = systemCompiler.run(null, stdout, stderr, arguments);
 			return retcode == 0 ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
 		} catch (IOException ex) {
 			if (logger != null) {
@@ -222,13 +220,13 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 	@SuppressWarnings("static-method")
 	protected JavaCompiler getSystemJavaCompiler() {
 		final PrivilegedAction<JavaCompiler> action = () -> ToolProvider.getSystemJavaCompiler();
-		final JavaCompiler standardCompiler = action.run();
+		final var standardCompiler = action.run();
 		if (standardCompiler == null) {
 			// This branch is defined for solving the problem introduced by JMS modules.
-			ServiceLoader<JavaCompiler> sl = ServiceLoader.load(JavaCompiler.class);
-			final Iterator<JavaCompiler> iter = sl.iterator();
+			final var sl = ServiceLoader.load(JavaCompiler.class);
+			final var iter = sl.iterator();
 			while (iter.hasNext()) {
-				JavaCompiler tool = iter.next();
+				var tool = iter.next();
 				if (tool != null) {
 					return tool;
 				}
@@ -264,7 +262,7 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 
 		@Override
 		public void write(byte[] buffer, int offset, int length) throws IOException {
-			final String msg = new String(buffer, offset, length);
+			final var msg = new String(buffer, offset, length);
 			if (msg.startsWith(NOTE_PREFIX)) {
 				if (this.logger != null) {
 					this.logger.info(msg.substring(NOTE_PREFIX.length()).trim());

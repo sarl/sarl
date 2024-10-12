@@ -40,7 +40,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -48,9 +47,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
-import org.eclipse.xtext.xtext.generator.model.XtendFileAccess;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypeFactory;
@@ -123,7 +120,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
-		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		final var enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -385,8 +382,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateXtendStubs() {
 		super.generateXtendStubs();
-		final TypeReference stub = getScriptBuilderImplCustom();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var stub = getScriptBuilderImplCustom();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
@@ -405,8 +402,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
-		final IFileSystemAccess2 fileSystem = getSrc();
+		final var xtendFile = getFileAccessFactory().createXtendFile(stub, content);
+		final var fileSystem = getSrc();
 		if (!fileSystem.isFile(xtendFile.getPath())) {
 			xtendFile.writeTo(fileSystem);
 		}
@@ -415,8 +412,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateJavaStubs() {
 		super.generateJavaStubs();
-		final TypeReference stub = getScriptBuilderImplCustom();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var stub = getScriptBuilderImplCustom();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
@@ -435,8 +432,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(stub, content);
-		final IFileSystemAccess2 fileSystem = getSrc();
+		final var javaFile = getFileAccessFactory().createJavaFile(stub, content);
+		final var fileSystem = getSrc();
 		if (!fileSystem.isFile(javaFile.getPath())) {
 			javaFile.writeTo(fileSystem);
 		}
@@ -451,8 +448,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	protected StringConcatenationClient generateTopElement(CodeElementExtractor.ElementDescription description,
 			boolean forInterface, boolean forAppender) {
-		final String topElementName = Strings.toFirstUpper(description.name());
-		final TypeReference builderType = getCodeElementExtractor().getElementBuilderInterface(topElementName);
+		final var topElementName = Strings.toFirstUpper(description.name());
+		final var builderType = getCodeElementExtractor().getElementBuilderInterface(topElementName);
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -524,8 +521,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the top elements.
 	 */
 	protected List<StringConcatenationClient> generateTopElements(boolean forInterface, boolean forAppender) {
-		final List<StringConcatenationClient> topElements = new ArrayList<>();
-		for (final CodeElementExtractor.ElementDescription description : getCodeElementExtractor().getTopElements(
+		final var topElements = new ArrayList<StringConcatenationClient>();
+		for (final var description : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
 			topElements.add(generateTopElement(description, forInterface, forAppender));
 		}
@@ -535,9 +532,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the script builder interface.
 	 */
 	protected void generateIScriptBuilder() {
-		final List<StringConcatenationClient> topElements = generateTopElements(true, false);
-		final TypeReference builder = getScriptBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var topElements = generateTopElements(true, false);
+		final var builder = getScriptBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of " + getLanguageName() + " scripts."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -562,7 +559,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateFieldsAndMethods(true, false));
-				for (final StringConcatenationClient element : topElements) {
+				for (final var element : topElements) {
 					it.append(element);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -571,16 +568,16 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the script appender.
 	 */
 	protected void generateScriptSourceAppender() {
-		final List<StringConcatenationClient> topElements = generateTopElements(false, true);
-		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Script"); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var topElements = generateTopElements(false, true);
+		final var appender = getCodeElementExtractor().getElementAppenderImpl("Script"); //$NON-NLS-1$
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of " + getLanguageName() + " scripts."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -601,7 +598,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateFieldsAndMethods(false, true));
-				for (final StringConcatenationClient element : topElements) {
+				for (final var element : topElements) {
 					it.append(element);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -610,17 +607,17 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the script builder default implementation.
 	 */
 	protected void generateScriptBuilderImpl() {
-		final List<StringConcatenationClient> topElements = generateTopElements(false, false);
-		final TypeReference script = getScriptBuilderImpl();
-		final TypeReference scriptInterface = getScriptBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var topElements = generateTopElements(false, false);
+		final var script = getScriptBuilderImpl();
+		final var scriptInterface = getScriptBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -635,7 +632,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateFieldsAndMethods(false, false));
-				for (final StringConcatenationClient element : topElements) {
+				for (final var element : topElements) {
 					it.append(element);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -643,7 +640,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(script, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(script, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -654,7 +651,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the fields and methods.
 	 */
 	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface, boolean forAppender) {
-		TypeReference scriptInterface = getCodeElementExtractor().getLanguageScriptInterface();
+		var scriptInterface = getCodeElementExtractor().getLanguageScriptInterface();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {

@@ -94,7 +94,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 		if (name == null) {
 			return null;
 		}
-		final int index = name.lastIndexOf(getInnerTypeSeparator());
+		final var index = name.lastIndexOf(getInnerTypeSeparator());
 		if (index < 0) {
 			return name;
 		}
@@ -103,11 +103,11 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	@Override
 	public boolean addImportFor(JvmType type) {
-		final String qualifiedName = convertQualifiedName(type.getQualifiedName(getInnerTypeSeparator()));
+		final var qualifiedName = convertQualifiedName(type.getQualifiedName(getInnerTypeSeparator()));
 		if (qualifiedName == null) {
 			return false;
 		}
-		final String simpleName = getSimpleName(qualifiedName);
+		final var simpleName = getSimpleName(qualifiedName);
 		if (!allowsSimpleName(qualifiedName, simpleName) && !needsQualifiedName(qualifiedName, simpleName)
 				&& !internalGetImports().containsKey(simpleName)) {
 			internalGetImports().put(simpleName, qualifiedName);
@@ -119,13 +119,13 @@ public class ExtraLanguageImportManager extends ImportManager {
 	@Override
 	public void appendType(Class<?> type, StringBuilder builder) {
 		if (type.isPrimitive()) {
-			final String qualifiedName = convertQualifiedName(type.getSimpleName());
+			final var qualifiedName = convertQualifiedName(type.getSimpleName());
 			if (qualifiedName == null) {
 				return;
 			}
 			builder.append(qualifiedName);
 		} else {
-			final String qualifiedName = convertQualifiedName(type.getCanonicalName());
+			final var qualifiedName = convertQualifiedName(type.getCanonicalName());
 			if (qualifiedName == null) {
 				return;
 			}
@@ -133,11 +133,11 @@ public class ExtraLanguageImportManager extends ImportManager {
 				builder.append(qualifiedName);
 				return;
 			}
-			String nameToImport = qualifiedName;
-			String shortName = getSimpleName(qualifiedName);
-			String outerShortName = shortName;
+			var nameToImport = qualifiedName;
+			var shortName = getSimpleName(qualifiedName);
+			var outerShortName = shortName;
 			if (shouldUseQualifiedNestedName(qualifiedName)) {
-				Class<?> outerContainer = type;
+				var outerContainer = type;
 				while (outerContainer.getDeclaringClass() != null) {
 					outerContainer = outerContainer.getDeclaringClass();
 				}
@@ -159,7 +159,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	@Override
 	public void appendType(JvmType type, StringBuilder builder) {
-		final String qualifiedName = convertQualifiedName(type.getQualifiedName(getInnerTypeSeparator()));
+		final var qualifiedName = convertQualifiedName(type.getQualifiedName(getInnerTypeSeparator()));
 		if (qualifiedName == null) {
 			return;
 		}
@@ -167,13 +167,13 @@ public class ExtraLanguageImportManager extends ImportManager {
 				|| !qualifiedName.contains(Character.toString(getInnerTypeSeparator()))) {
 			builder.append(qualifiedName);
 		} else {
-			String nameToImport = qualifiedName;
-			String shortName = getSimpleName(qualifiedName);
-			String outerShortName = shortName;
+			var nameToImport = qualifiedName;
+			var shortName = getSimpleName(qualifiedName);
+			var outerShortName = shortName;
 			if (shouldUseQualifiedNestedName(qualifiedName)) {
-				JvmType outerContainer = type;
-				while (outerContainer.eContainer() instanceof JvmType) {
-					outerContainer = (JvmType) outerContainer.eContainer();
+				var outerContainer = type;
+				while (outerContainer.eContainer() instanceof JvmType cvalue) {
+					outerContainer = cvalue;
 				}
 				if (type != outerContainer) {
 					outerShortName = outerContainer.getSimpleName();

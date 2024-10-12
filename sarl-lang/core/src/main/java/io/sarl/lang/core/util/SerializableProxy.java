@@ -72,7 +72,7 @@ public class SerializableProxy implements Serializable {
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		Constructor<?> compatible = null;
-		for (final Constructor<?> candidate : this.proxyType.getDeclaredConstructors()) {
+		for (final var candidate : this.proxyType.getDeclaredConstructors()) {
 			if (candidate != null && isCompatible(candidate)) {
 				if (compatible != null) {
 					throw new IllegalStateException();
@@ -84,7 +84,7 @@ public class SerializableProxy implements Serializable {
 			// TODO Is this compatible with Java 11?
 			compatible.setAccessible(true);
 			try {
-				final Object[] arguments = new Object[this.values.length + 1];
+				final var arguments = new Object[this.values.length + 1];
 				System.arraycopy(this.values, 0, arguments, 1, this.values.length);
 				return compatible.newInstance(arguments);
 			} catch (Exception exception) {
@@ -95,18 +95,18 @@ public class SerializableProxy implements Serializable {
 	}
 
 	private boolean isCompatible(Constructor<?> candidate) throws ObjectStreamException {
-		final Class<?>[] parameterTypes = candidate.getParameterTypes();
+		final var parameterTypes = candidate.getParameterTypes();
 		if (parameterTypes.length != this.values.length + 1) {
 			return false;
 		}
-		final Class<?> enclosingType = this.proxyType.getEnclosingClass();
+		final var enclosingType = this.proxyType.getEnclosingClass();
 		if (!parameterTypes[0].isAssignableFrom(enclosingType)) {
 			return false;
 		}
 		for (int i = 0, j = 1; i < this.values.length; ++i, ++j) {
 			final Object param = this.values[i];
 			assert j < parameterTypes.length;
-			Class<?> clazz = parameterTypes[j];
+			var clazz = parameterTypes[j];
 			if (clazz.isPrimitive()) {
 				clazz = wrapperTypeFor(clazz);
 			}

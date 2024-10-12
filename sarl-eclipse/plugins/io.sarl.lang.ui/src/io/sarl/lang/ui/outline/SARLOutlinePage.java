@@ -46,12 +46,11 @@ public class SARLOutlinePage extends XtendOutlinePage {
 	@Override
 	protected List<IOutlineNode> getInitiallyExpandedNodes() {
 		// Automatically expend the rot nodes into the outline.
-		final IOutlineNode rootNode = getTreeProvider().createRoot(getXtextDocument());
-		final List<IOutlineNode> result = newArrayList(rootNode);
-		for (final IOutlineNode firstLevelNode: rootNode.getChildren()) {
-			if (firstLevelNode instanceof EStructuralFeatureNode) {
-				final EStructuralFeatureNode snode = (EStructuralFeatureNode) firstLevelNode;
-				final EStructuralFeature feature = snode.getEStructuralFeature();
+		final var rootNode = getTreeProvider().createRoot(getXtextDocument());
+		final var result = newArrayList(rootNode);
+		for (final var firstLevelNode: rootNode.getChildren()) {
+			if (firstLevelNode instanceof EStructuralFeatureNode snode) {
+				final var feature = snode.getEStructuralFeature();
 				if (XtendTypeDeclaration.class.isAssignableFrom(feature.getContainerClass())) {
 					result.add(firstLevelNode);
 				}

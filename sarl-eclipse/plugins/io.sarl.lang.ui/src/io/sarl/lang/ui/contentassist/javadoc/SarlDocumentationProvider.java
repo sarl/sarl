@@ -126,7 +126,7 @@ public class SarlDocumentationProvider extends AbstractSarlDocumentationProvider
 	 */
 	protected void _generate(XtendFunction object, ISourceAppender it) {
 		generateFirstBlock(it, object);
-		final LightweightTypeReference returnType = getReturnType(object);
+		final var returnType = getReturnType(object);
 		if (returnType != null && !returnType.isPrimitiveVoid()) {
 			generateReturnType(it, returnType);
 		}
@@ -135,13 +135,13 @@ public class SarlDocumentationProvider extends AbstractSarlDocumentationProvider
 
 	private static void generateFirstBlock(ISourceAppender it, XtendExecutable executable) {
 		generateGenericTypes(it, executable.getTypeParameters());
-		for (final XtendParameter parameter : executable.getParameters()) {
+		for (final var parameter : executable.getParameters()) {
 			generateFormalParameters(it, parameter);
 		}
 	}
 
 	private void generateLastBlock(ISourceAppender it, XtendExecutable executable) {
-		for (final JvmTypeReference exception : executable.getExceptions()) {
+		for (final var exception : executable.getExceptions()) {
 			generateException(it, exception);
 		}
 		if (isDeprecated(executable)) {
@@ -150,7 +150,7 @@ public class SarlDocumentationProvider extends AbstractSarlDocumentationProvider
 	}
 
 	private static void generateGenericTypes(ISourceAppender it, List<JvmTypeParameter> types) {
-		for (final JvmTypeParameter genericType : types) {
+		for (final var genericType : types) {
 			it.append("@param <").append(genericType.getSimpleName()).append("> ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Messages.SarlDocumentationProvider_3).newLine();
 		}
@@ -158,8 +158,7 @@ public class SarlDocumentationProvider extends AbstractSarlDocumentationProvider
 
 	private static void generateFormalParameters(ISourceAppender it, XtendParameter parameter) {
 		it.append("@param ").append(parameter.getName()).append(" - ").append(Messages.SarlDocumentationProvider_4); //$NON-NLS-1$ //$NON-NLS-2$
-		if (parameter instanceof SarlFormalParameter) {
-			final SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
+		if (parameter instanceof SarlFormalParameter sarlParameter) {
 			if (sarlParameter.getDefaultValue() != null) {
 				it.append(" ").append(MessageFormat.format(Messages.SarlDocumentationProvider_5, Utils.getSarlCodeFor(sarlParameter.getDefaultValue()))); //$NON-NLS-1$
 			}

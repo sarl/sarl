@@ -135,8 +135,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 			SarlEvent topElement = (SarlEvent) script.getXtendTypes().get(0);
 			SarlField member = (SarlField) topElement.getMembers().get(0);
 			JvmTypeReference reference = member.getType();
-			if (reference instanceof JvmParameterizedTypeReference) {
-				final JvmParameterizedTypeReference pref = (JvmParameterizedTypeReference) reference;
+			if (reference instanceof JvmParameterizedTypeReference pref) {
 				if (!pref.getArguments().isEmpty()) {
 					EcoreUtil2.resolveAll(resource);
 					return pref;
@@ -331,12 +330,12 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource());
 		final XFeatureCall superFeature = XbaseFactory.eINSTANCE.createXFeatureCall();
 		JvmIdentifiableElement feature;
-		if (jvmObject instanceof JvmDeclaredType) {
-			feature = ((JvmDeclaredType) jvmObject).getExtendedClass().getType();
+		if (jvmObject instanceof JvmDeclaredType $c$value) {
+			feature = $c$value.getExtendedClass().getType();
 		} else {
 			feature = findType(expr, getQualifiedName(type)).getType();
-			if (feature instanceof JvmDeclaredType) {
-				feature = ((JvmDeclaredType) feature).getExtendedClass().getType();
+			if (feature instanceof JvmDeclaredType $c$value) {
+				feature = $c$value.getExtendedClass().getType();
 			} else {
 				feature = null;
 			}

@@ -54,14 +54,14 @@ public class PreferenceBasedFeatureNameConverterRuleReader extends FeatureNameCo
 	public boolean initializeConversions(Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> result,
 			IExtraLanguageGeneratorContext context) {
 		if (context != null) {
-			final IProject project = ProjectAdapter.getProject(context.getResource());
-			final IPreferenceStore store = this.preferences.getPreferenceStore(project);
-			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, context.getPreferenceID(),
+			final var project = ProjectAdapter.getProject(context.getResource());
+			final var store = this.preferences.getPreferenceStore(project);
+			final var rawValue = ExtraLanguagePreferenceAccess.getString(store, context.getPreferenceID(),
 							ExtraLanguagePreferenceAccess.FEATURE_NAME_CONVERSION_PROPERTY);
 			return ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue, (source, target) -> {
-				final String shortName = FeaturePattern.simpleName(source);
-				final char key = ExtraLanguageFeatureNameConverter.getKey(shortName);
-				List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = result.get(Character.valueOf(key));
+				final var shortName = FeaturePattern.simpleName(source);
+				final var key = ExtraLanguageFeatureNameConverter.getKey(shortName);
+				var internalStruct = result.get(Character.valueOf(key));
 				if (internalStruct == null) {
 					internalStruct = new ArrayList<>();
 					result.put(Character.valueOf(key), internalStruct);

@@ -54,10 +54,8 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.lang.model.element.ModuleElement;
-import javax.lang.model.element.PackageElement;
 
 import jdk.javadoc.doclet.Reporter;
 import jdk.javadoc.doclet.Taglet.Location;
@@ -95,7 +93,7 @@ public class ModuleSummaryGeneratorImpl extends AbstractSummaryGenerator impleme
 	@Override
 	public void generate(ModuleElement moduleElement, Collection<Path> cssStylesheets, Collection<Path> jsScripts, SarlDocletEnvironment environment, DocletOptions cliOptions, Reporter reporter) throws Exception {
 		this.moduleElement = moduleElement;
-		final String moduleName = getElementUtils().getElementName(moduleElement);
+		final var moduleName = getElementUtils().getElementName(moduleElement);
 		setDefaultTitle(MessageFormat.format(Messages.ModuleSummaryGeneratorImpl_1, moduleName));
 		generate(
 				MessageFormat.format(Messages.ModuleSummaryGeneratorImpl_0, moduleName),
@@ -109,7 +107,7 @@ public class ModuleSummaryGeneratorImpl extends AbstractSummaryGenerator impleme
 	 * @param parent the container.
 	 */
 	protected void generateBodyTitle(ModuleElement moduleElement, Element parent) {
-		final Element nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
+		final var nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
 		nameDiv.appendText(getLastTitle());
 	}
 
@@ -119,13 +117,13 @@ public class ModuleSummaryGeneratorImpl extends AbstractSummaryGenerator impleme
 	 * @param parent the container.
 	 */
 	protected void generatePackageList(ModuleElement moduleElement, Element parent) {
-		final Iterable<PackageElement> packages = getTypeRepository().getPackagesFor(moduleElement);
+		final var packages = getTypeRepository().getPackagesFor(moduleElement);
 		createSummaryBox1(Messages.ModuleSummaryGeneratorImpl_2,
 				Messages.ModuleSummaryGeneratorImpl_3, Messages.ModuleSummaryGeneratorImpl_4,
 				null, parent, packages,
 				getElementUtils().getPackageElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createPackageLink(element, element.getQualifiedName().toString(), null, this));
 					createFirstSentence(element, nodes, true, false);
 					createShortDeprecationMessage(element, nodes, true);
@@ -139,9 +137,9 @@ public class ModuleSummaryGeneratorImpl extends AbstractSummaryGenerator impleme
 	 * @param parent the container.
 	 */
 	protected void generateModuleDescription(ModuleElement moduleElement, Element parent) {
-		final List<Node> description = new ArrayList<>();
+		final var description = new ArrayList<Node>();
 		createFullDescriptionBody(moduleElement, description, false, true);
-		final Element descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.MODULE_DESCRIPTION);
+		final var descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.MODULE_DESCRIPTION);
 		descriptionDiv.appendChildren(description);
 	}
 
@@ -151,10 +149,10 @@ public class ModuleSummaryGeneratorImpl extends AbstractSummaryGenerator impleme
 	 * @param parent the container.
 	 */
 	protected void generateModuleIntroduction(ModuleElement moduleElement, Element parent) {
-		final List<Node> description = new ArrayList<>();
+		final var description = new ArrayList<Node>();
 		createFirstSentence(moduleElement, description, false, true);
 		createBlockTagsFor(moduleElement, description, Location.MODULE, CssStyles.MODULE_TAG_INFO);
-		final Element descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.MODULE_DESCRIPTION);
+		final var descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.MODULE_DESCRIPTION);
 		descriptionDiv.appendChildren(description);		
 	}
 

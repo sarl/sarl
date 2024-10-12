@@ -271,6 +271,118 @@ public final class IssueCodes {
 	public static final String AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER =
 			ISSUE_CODE_PREFIX + "ambiguous_interpretation_by_developper"; //$NON-NLS-1$
 
+	/**
+	 * A call to the super class constructor is missed
+	 *
+	 * @since 0.14
+	 */
+	public static final String MUST_INVOKE_SUPER_CONSTRUCTOR =
+			ISSUE_CODE_PREFIX + "must_invoke_super_constructor"; //$NON-NLS-1$
+
+	/**
+	 * Two types have been defined with the same name.
+	 *
+	 * @since 0.14
+	 */
+	public static final String DUPLICATE_TYPE_NAME =
+			ISSUE_CODE_PREFIX + "ducpliate_type_name"; //$NON-NLS-1$
+
+	/**
+	 * The reference to an interface is expected.
+	 *
+	 * @since 0.14
+	 */
+	public static final String INTERFACE_EXPECTED =
+			ISSUE_CODE_PREFIX + "interface_expected"; //$NON-NLS-1$
+
+	/**
+	 * The reference to a class is expected.
+	 *
+	 * @since 0.14
+	 */
+	public static final String CLASS_EXPECTED =
+			ISSUE_CODE_PREFIX + "class_expected"; //$NON-NLS-1$
+
+	/**
+	 * Unexpected override of a final element.
+	 *
+	 * @since 0.14
+	 */
+	public static final String OVERRIDDEN_FINAL =
+			ISSUE_CODE_PREFIX + "overridden_final"; //$NON-NLS-1$
+
+	/**
+	 * Invalid cycle in the type inheritance hierarchy.
+	 *
+	 * @since 0.14
+	 */
+	public static final String CYCLIC_INHERITANCE =
+			ISSUE_CODE_PREFIX + "cyclic_inheritance"; //$NON-NLS-1$
+
+	/**
+	 * Invalid cycle in the type inheritance hierarchy.
+	 *
+	 * @since 0.14
+	 */
+	public static final String WILDCARD_IN_SUPERTYPE =
+			ISSUE_CODE_PREFIX + "wildcard_in_supertype"; //$NON-NLS-1$
+
+	/**
+	 * Visibility cannot be reduced by overridden feature.
+	 *
+	 * @since 0.14
+	 */
+	public static final String OVERRIDE_REDUCES_VISIBILITY =
+			ISSUE_CODE_PREFIX + "override_reduces_visibility"; //$NON-NLS-1$
+
+	/**
+	 * Exceptions declared in the trows clause are invalid.
+	 *
+	 * @since 0.14
+	 */
+	public static final String INCOMPATIBLE_THROWS_CLAUSE =
+			ISSUE_CODE_PREFIX + "incompatible_throws_clause"; //$NON-NLS-1$
+
+	/**
+	 * A member was defined multiple time in the same container.
+	 *
+	 * @since 0.14
+	 */
+	public static final String DUPLICATE_MEMBER =
+			ISSUE_CODE_PREFIX + "duplicate_member"; //$NON-NLS-1$
+
+	/**
+	 * Is it not necessary to override the annotation.
+	 *
+	 * @since 0.14
+	 */
+	public static final String OBSOLETE_ANNOTATION_OVERRIDE =
+			ISSUE_CODE_PREFIX + "obsolete_annotation_override"; //$NON-NLS-1$
+
+	/**
+	 * Ambiguous inheritance of actions with conflicting signatures.
+	 *
+	 * @since 0.14
+	 */
+	public static final String CONFLICTING_DEFAULT_ACTIONS =
+			ISSUE_CODE_PREFIX + "conflicting_default_actions"; //$NON-NLS-1$
+
+	/**
+	 * Abstract modifier is missed.
+	 *
+	 * @since 0.14
+	 */
+	public static final String TYPE_MUST_BE_ABSTRACT =
+			ISSUE_CODE_PREFIX + "type_must_be_abstract"; //$NON-NLS-1$
+
+	/**
+	 * Members are missed in an anonymous method.
+	 *
+	 * @since 0.14
+	 */
+	public static final String ANONYMOUS_CLASS_MISSING_MEMBERS =
+			ISSUE_CODE_PREFIX + "anonymous_class_missing_members"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

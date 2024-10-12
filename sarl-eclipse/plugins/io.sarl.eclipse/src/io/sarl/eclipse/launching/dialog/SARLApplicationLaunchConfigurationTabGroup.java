@@ -38,9 +38,9 @@ public class SARLApplicationLaunchConfigurationTabGroup extends AbstractSARLLaun
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		final ILaunchConfigurationTab[] tabs = buildTabList(dialog, mode, list -> {
+		final var tabs = buildTabList(dialog, mode, list -> {
 			// Add before the dynamically provided panels
-			final SARLApplicationMainLaunchConfigurationTab mainTab = new SARLApplicationMainLaunchConfigurationTab();
+			final var mainTab = new SARLApplicationMainLaunchConfigurationTab();
 			list.add(0, mainTab);
 			list.add(1, new JavaArgumentsTab());
 			list.add(2, new SARLRuntimeEnvironmentTab(false));

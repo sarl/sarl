@@ -111,17 +111,17 @@ public class DefaultInferredPrototype implements InferredPrototype {
 	}
 
 	private void toParameterString(StringBuilder buffer, int param, boolean isVarArg) {
-		final String name = this.parameters.getFormalParameterName(param);
+		final var name = this.parameters.getFormalParameterName(param);
 		buffer.append((!Strings.isNullOrEmpty(name)) ? name : null);
 		buffer.append(" : "); //$NON-NLS-1$
-		final String type = this.parameters.getFormalParameterType(param, isVarArg);
+		final var type = this.parameters.getFormalParameterType(param, isVarArg);
 		buffer.append((!Strings.isNullOrEmpty(type)) ? type : null);
 	}
 
 	private void toParameterString(StringBuilder buffer) {
 		if (this.parameters.getFormalParameterCount() > 0) {
-			final int lastParamIndex = this.parameters.getFormalParameterCount() - 1;
-			for (int i = 0; i < lastParamIndex; ++i) {
+			final var lastParamIndex = this.parameters.getFormalParameterCount() - 1;
+			for (var i = 0; i < lastParamIndex; ++i) {
 				toParameterString(buffer, i, false);
 				buffer.append(", "); //$NON-NLS-1$
 			}
@@ -131,14 +131,14 @@ public class DefaultInferredPrototype implements InferredPrototype {
 
 	@Override
 	public String toString() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		toParameterString(b);
 		return b.toString();
 	}
 
 	@Override
 	public String toString(String functionName) {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append(functionName);
 		if (this.parameters.getFormalParameterCount() > 0) {
 			b.append("("); //$NON-NLS-1$
@@ -174,7 +174,7 @@ public class DefaultInferredPrototype implements InferredPrototype {
 		@Override
 		public ActionParameterTypes next() {
 			if (this.first != null) {
-				final ActionParameterTypes first = this.first;
+				final var first = this.first;
 				this.first = null;
 				return first;
 			}

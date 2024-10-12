@@ -61,7 +61,7 @@ public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 
 	@Override
 	protected Map<String, String> initializeHighlightedIdentifiers() {
-		final Map<String, String> result = super.initializeHighlightedIdentifiers();
+		final var result = super.initializeHighlightedIdentifiers();
 		result.put(this.grammarKeywordAccess.getOccurrenceKeyword(), DefaultHighlightingConfiguration.KEYWORD_ID);
 		return result;
 	}
@@ -70,9 +70,9 @@ public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 	protected void computeFeatureCallHighlighting(XAbstractFeatureCall featureCall, IHighlightedPositionAcceptor acceptor) {
 		super.computeFeatureCallHighlighting(featureCall, acceptor);
 
-		JvmIdentifiableElement feature = featureCall.getFeature();
-		if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation && !featureCall.isOperation()) {
-			final String code = getSarlSpecificHighlighting((JvmOperation) feature);
+		var feature = featureCall.getFeature();
+		if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation cvalue && !featureCall.isOperation()) {
+			final var code = getSarlSpecificHighlighting(cvalue);
 			if (code != null) {
 				highlightFeatureCall(featureCall, acceptor, code);
 			}
@@ -90,9 +90,9 @@ public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 			if (this.annotationLookup.findAnnotation(feature, SarlAsynchronousExecution.class) != null) {
 				return SARLHighlightingStyles.ASYNCHRONOUS_METHOD_INVOCATION;
 			}
-			final JvmDeclaredType container = feature.getDeclaringType();
-			if (container instanceof JvmGenericType
-				&& this.inheritanceHelper.isSarlCapacity((JvmGenericType) container)) {
+			final var container = feature.getDeclaringType();
+			if (container instanceof JvmGenericType cvalue
+				&& this.inheritanceHelper.isSarlCapacity(cvalue)) {
 				return SARLHighlightingStyles.CAPACITY_METHOD_INVOCATION;
 			}
 		}

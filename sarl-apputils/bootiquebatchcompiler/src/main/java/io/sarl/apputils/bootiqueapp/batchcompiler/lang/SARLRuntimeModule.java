@@ -64,7 +64,7 @@ public final class SARLRuntimeModule implements BQModule {
 	@Provides
 	@Named(SARL_INJECTOR_NAME)
 	public Injector providesSarlCompilerInjector() {
-		final Injector injector = new SARLStandaloneSetup().createInjector();
+		final var injector = new SARLStandaloneSetup().createInjector();
 		return injector;
 	}
 
@@ -78,7 +78,7 @@ public final class SARLRuntimeModule implements BQModule {
 	@Singleton
 	@Provides
 	public IExtraLanguageContributions providesExtraLanguageContributions(@Named(SARL_INJECTOR_NAME) Provider<Injector> sarlInjector) {
-		final IExtraLanguageContributions contribs = sarlInjector.get().getInstance(IExtraLanguageContributions.class);
+		final var contribs = sarlInjector.get().getInstance(IExtraLanguageContributions.class);
 		return contribs;
 	}
 	

@@ -22,23 +22,17 @@
 package io.sarl.lang.formatting2;
 
 import java.util.Collections;
-import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.formatting2.FormatterPreferences;
 import org.eclipse.xtext.formatting2.FormatterRequest;
 import org.eclipse.xtext.formatting2.IFormatter2;
-import org.eclipse.xtext.formatting2.regionaccess.ITextRegionAccess;
-import org.eclipse.xtext.formatting2.regionaccess.ITextReplacement;
 import org.eclipse.xtext.formatting2.regionaccess.TextRegionAccessBuilder;
-import org.eclipse.xtext.preferences.IPreferenceValues;
 import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
 import org.eclipse.xtext.preferences.TypedPreferenceValues;
 import org.eclipse.xtext.resource.IResourceFactory;
@@ -94,13 +88,12 @@ public class FormatterFacade {
 	@Pure
 	public String format(String sarlCode, ResourceSet resourceSet) {
 		try {
-			final URI createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
-			final Resource res = this.resourceFactory.createResource(createURI);
-			if (res instanceof XtextResource) {
-				final XtextResource resource = (XtextResource) res;
-				final EList<Resource> resources = resourceSet.getResources();
+			final var createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
+			final var res = this.resourceFactory.createResource(createURI);
+			if (res instanceof XtextResource resource) {
+				final var resources = resourceSet.getResources();
 				resources.add(resource);
-				try (StringInputStream stringInputStream = new StringInputStream(sarlCode)) {
+				try (var stringInputStream = new StringInputStream(sarlCode)) {
 					resource.load(stringInputStream, Collections.emptyMap());
 					return formatResource(resource);
 				} finally {
@@ -119,9 +112,9 @@ public class FormatterFacade {
 	 */
 	public void format(XtextResource resource) {
 		assert resource != null;
-		final String result = formatResource(resource);
+		final var result = formatResource(resource);
 		// Write back to the resource
-		try (StringInputStream stringInputStream = new StringInputStream(result)) {
+		try (var stringInputStream = new StringInputStream(result)) {
 			resource.load(stringInputStream, Collections.emptyMap());
 		} catch (Exception exception) {
 			throw Exceptions.sneakyThrow(exception);
@@ -139,14 +132,14 @@ public class FormatterFacade {
 	protected String formatResource(XtextResource resource) {
 		assert resource != null;
 		try {
-			final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
-			final FormatterRequest formatterRequest = new FormatterRequest();
+			final var regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+			final var formatterRequest = new FormatterRequest();
 			formatterRequest.setAllowIdentityEdits(false);
 			formatterRequest.setTextRegionAccess(regionAccess);
-			final IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider
+			final var preferenceValues = FormatterFacade.this.configurationProvider
 					.getPreferenceValues(resource);
 			formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
-			final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+			final var replacements = this.formatter.format(formatterRequest);
 			return regionAccess.getRewriter().renderToString(replacements);
 		} catch (Exception exception) {
 			throw Exceptions.sneakyThrow(exception);
@@ -163,9 +156,9 @@ public class FormatterFacade {
 		assert resource != null;
 		assert offset >= 0;
 		assert length >= 0;
-		final String result = formatResourceRegion(resource, offset, length);
+		final var result = formatResourceRegion(resource, offset, length);
 		// Write back to the resource
-		try (StringInputStream stringInputStream = new StringInputStream(result)) {
+		try (var stringInputStream = new StringInputStream(result)) {
 			resource.load(stringInputStream, Collections.emptyMap());
 		} catch (Exception exception) {
 			throw Exceptions.sneakyThrow(exception);
@@ -187,12 +180,12 @@ public class FormatterFacade {
 		assert offset >= 0;
 		assert length >= 0;
 		try {
-			final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
-			final FormatterRequest formatterRequest = new FormatterRequest();
+			final var regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+			final var formatterRequest = new FormatterRequest();
 			formatterRequest.setAllowIdentityEdits(false);
 			formatterRequest.setRegions(Collections.singleton(regionAccess.regionForOffset(offset, length)));
 			formatterRequest.setTextRegionAccess(regionAccess);
-			final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+			final var replacements = this.formatter.format(formatterRequest);
 			return regionAccess.getRewriter().renderToString(replacements);
 		} catch (Exception exception) {
 			throw Exceptions.sneakyThrow(exception);

@@ -47,8 +47,8 @@ public class SARLHoverProvider extends XtendHoverProvider {
 
 	@Override
 	protected EObject getObjectToView(EObject object) {
-		if (object instanceof SarlCastedExpression) {
-			final JvmOperation operation = ((SarlCastedExpression) object).getFeature();
+		if (object instanceof SarlCastedExpression cvalue) {
+			final var operation = cvalue.getFeature();
 			if (operation != null) {
 				return operation;
 			}

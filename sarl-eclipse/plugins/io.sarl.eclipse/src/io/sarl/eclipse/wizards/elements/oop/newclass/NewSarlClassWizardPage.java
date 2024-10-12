@@ -68,7 +68,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void doStatusUpdate() {
-		final IStatus[] status = new IStatus[] {
+		final var status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -81,18 +81,18 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 3);
-		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+		final var mon = SubMonitor.convert(monitor, 3);
+		final var scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
-		final ISarlClassBuilder clazz = scriptBuilder.addSarlClass(getTypeName());
-		final String superType = getSuperClass();
+		final var clazz = scriptBuilder.addSarlClass(getTypeName());
+		final var superType = getSuperClass();
 		// Do not add the "Object" type because it is the default.
 		if (Strings.isNullOrEmpty(superType) || Object.class.getName().equals(superType)) {
 			clazz.setExtends(null);
 		} else {
 			clazz.setExtends(superType);
 		}
-		for (final String type : getSuperInterfaces()) {
+		for (final var type : getSuperInterfaces()) {
 			clazz.addImplements(type);
 		}
 		clazz.setDocumentation(comment);

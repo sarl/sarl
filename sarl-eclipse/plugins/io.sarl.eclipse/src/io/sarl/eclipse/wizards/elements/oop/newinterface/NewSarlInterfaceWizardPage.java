@@ -64,7 +64,7 @@ public class NewSarlInterfaceWizardPage extends AbstractNewSarlElementWizardPage
 
 	@Override
 	protected void doStatusUpdate() {
-		final IStatus[] status = new IStatus[] {
+		final var status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -76,11 +76,11 @@ public class NewSarlInterfaceWizardPage extends AbstractNewSarlElementWizardPage
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 2);
-		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+		final var mon = SubMonitor.convert(monitor, 2);
+		final var scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
-		final ISarlInterfaceBuilder inter = scriptBuilder.addSarlInterface(getTypeName());
-		for (final String type : getSuperInterfaces()) {
+		final var inter = scriptBuilder.addSarlInterface(getTypeName());
+		for (final var type : getSuperInterfaces()) {
 			inter.addExtends(type);
 		}
 		inter.setDocumentation(comment);

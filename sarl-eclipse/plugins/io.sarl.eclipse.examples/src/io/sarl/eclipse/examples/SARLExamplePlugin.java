@@ -82,7 +82,7 @@ public class SARLExamplePlugin extends AbstractUIPlugin {
 	 * @see #openError(Shell, String, String, Throwable)
 	 */
 	public IStatus log(Throwable exception) {
-		final IStatus st = createStatus(exception);
+		final var st = createStatus(exception);
 		getLog().log(st);
 		return st;
 	}
@@ -99,11 +99,11 @@ public class SARLExamplePlugin extends AbstractUIPlugin {
 	 * @see #log(Throwable)
 	 */
 	public void openError(Shell shell, String title, String message, String reason, Throwable exception) {
-		final Throwable ex = (exception != null) ? Throwables.getRootCause(exception) : null;
+		final var ex = (exception != null) ? Throwables.getRootCause(exception) : null;
 		if (ex != null) {
 			log(ex);
-			final String rmessage = Strings.isNullOrEmpty(reason) ? message : reason;
-			final IStatus status = createStatus(IStatus.ERROR, 0, rmessage, ex);
+			final var rmessage = Strings.isNullOrEmpty(reason) ? message : reason;
+			final var status = createStatus(IStatus.ERROR, 0, rmessage, ex);
 			ErrorDialog.openError(shell, title, message, status);
 		} else {
 			MessageDialog.openError(shell, title, message);
@@ -139,7 +139,7 @@ public class SARLExamplePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, String message, Throwable cause) {
-		String msg = message;
+		var msg = message;
 		if (Strings.isNullOrEmpty(msg)) {
 			msg = cause.getLocalizedMessage();
 			if (Strings.isNullOrEmpty(msg)) {
@@ -150,14 +150,14 @@ public class SARLExamplePlugin extends AbstractUIPlugin {
 			}
 		}
 		if (cause != null) {
-			final List<IStatus> childStatuses = new ArrayList<>();
-			final StackTraceElement[] stackTraces = cause.getStackTrace();
-			for (final StackTraceElement stackTrace: stackTraces) {
-				final IStatus status = createStatus(severity, code, stackTrace.toString(), null);
+			final var childStatuses = new ArrayList<IStatus>();
+			final var stackTraces = cause.getStackTrace();
+			for (final var stackTrace: stackTraces) {
+				final var status = createStatus(severity, code, stackTrace.toString(), null);
 				childStatuses.add(status);
 			}
 
-			final IStatus[] children = new IStatus[childStatuses.size()];
+			final var children = new IStatus[childStatuses.size()];
 			if (!childStatuses.isEmpty()) {
 				childStatuses.toArray(children);
 			}

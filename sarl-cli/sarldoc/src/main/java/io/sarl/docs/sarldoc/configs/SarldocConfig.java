@@ -267,7 +267,7 @@ public class SarldocConfig {
 		// By default, System.getProperty( "java.home" ) = JRE_HOME and JRE_HOME
 		// should be in the JDK_HOME
 		// ----------------------------------------------------------------------
-		File javadocExe = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)), FileSystem.PARENT_DIRECTORY, BIN_FOLDER, javadocCommand);
+		var javadocExe = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)), FileSystem.PARENT_DIRECTORY, BIN_FOLDER, javadocCommand);
 
 		if (!javadocExe.exists() || !javadocExe.isFile()) {
 			// ----------------------------------------------------------------------
@@ -293,7 +293,7 @@ public class SarldocConfig {
 					throw new RuntimeException(Messages.SarldocConfig_0);
 				}
 				try {
-					final File javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
+					final var javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
 					if (!javaHomeDirectory.exists() || javaHomeDirectory.isFile()) {
 						throw new RuntimeException(MessageFormat.format(Messages.SarldocConfig_1, javaHome));
 					}
@@ -306,7 +306,7 @@ public class SarldocConfig {
 		}
 
 		try {
-			final File javadocExeCanon = javadocExe.getCanonicalFile();
+			final var javadocExeCanon = javadocExe.getCanonicalFile();
 			if (!javadocExeCanon.exists() || !javadocExeCanon.isFile()) {
 				throw new RuntimeException(MessageFormat.format(Messages.SarldocConfig_2, javadocExe));
 			}
@@ -339,7 +339,7 @@ public class SarldocConfig {
 		// By default, System.getProperty( "java.home" ) = JRE_HOME and JRE_HOME
 		// should be in the JDK_HOME
 		// ----------------------------------------------------------------------
-		File file = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)),
+		var file = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)),
 				FileSystem.PARENT_DIRECTORY, libFolder, toolsJar);
 
 		// ----------------------------------------------------------------------
@@ -359,7 +359,7 @@ public class SarldocConfig {
 				throw new FileNotFoundException(Messages.SarldocConfig_3);
 			}
 			try {
-				final File javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
+				final var javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
 				if (!javaHomeDirectory.exists() || javaHomeDirectory.isFile()) {
 					throw new FileNotFoundException(Messages.SarldocConfig_3);
 				}
@@ -371,7 +371,7 @@ public class SarldocConfig {
 		}
 
 		try {
-			final File fileCanon = file.getCanonicalFile();
+			final var fileCanon = file.getCanonicalFile();
 			if (!fileCanon.exists() || !fileCanon.isFile()) {
 				throw new FileNotFoundException(Messages.SarldocConfig_3);
 			}
@@ -408,7 +408,7 @@ public class SarldocConfig {
 	public List<String> getHttpNoProxyHosts() {
 		if (this.httpNoProxyHosts == null) {
 			this.httpNoProxyHosts = new ArrayList<>();
-			for (final String host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
+			for (final var host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
 				if (!Strings.isNullOrEmpty(host)) {
 					this.httpNoProxyHosts.add(host);
 				}
@@ -422,7 +422,7 @@ public class SarldocConfig {
 	 * @return the no proxy definitions for HTTP, or {@code null} if none.
 	 */
 	public String getHttpNoProxyHostsString() {
-		final List<String> hosts = getHttpNoProxyHosts();
+		final var hosts = getHttpNoProxyHosts();
 		if (hosts.isEmpty()) {
 			return null;
 		}
@@ -445,7 +445,7 @@ public class SarldocConfig {
 	public List<String> getHttpsNoProxyHosts() {
 		if (this.httpsNoProxyHosts == null) {
 			this.httpsNoProxyHosts = new ArrayList<>();
-			for (final String host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
+			for (final var host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
 				if (!Strings.isNullOrEmpty(host)) {
 					this.httpsNoProxyHosts.add(host);
 				}
@@ -459,7 +459,7 @@ public class SarldocConfig {
 	 * @return the no proxy definitions for HTTPS, or {@code null} if none.
 	 */
 	public String getHttpsNoProxyHostsString() {
-		final List<String> hosts = getHttpsNoProxyHosts();
+		final var hosts = getHttpsNoProxyHosts();
 		if (hosts.isEmpty()) {
 			return null;
 		}

@@ -51,7 +51,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.xtext.generator.trace.ILocationData;
 import org.eclipse.xtext.generator.trace.LocationData;
 import org.eclipse.xtext.generator.trace.TraceRegionSerializer;
 import org.eclipse.xtext.util.JavaVersion;
@@ -147,7 +146,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			"io.sarl.docs.tests.skip", //$NON-NLS-1$
 		};
 		String value = null;
-		int i = 0;
+		var i = 0;
 		while (Strings.isEmpty(value) && i < variableNames.length) {
 			value = System.getProperty(variableNames[i]);
 			++i;
@@ -165,9 +164,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	@Override
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
-		final AbstractMarkerLanguageParser parser = super.createLanguageParser(inputFile);
-		if (parser instanceof MarkdownParser) {
-			final MarkdownParser mdParser = (MarkdownParser) parser;
+		final var parser = super.createLanguageParser(inputFile);
+		if (parser instanceof MarkdownParser mdParser) {
 			mdParser.setLocalImageReferenceValidation(this.localImageValidation);
 			mdParser.setLocalFileReferenceValidation(this.localLinkValidation);
 			mdParser.setRemoteReferenceValidation(
@@ -179,8 +177,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	@Override
 	protected String internalExecute(Map<File, File> files) {
 		getLog().info(Messages.GenerateTestsMojo_11);
-		final File output = FileSystem.convertStringToFile(this.testSourceDirectory);
-		final String msg = internalExecute(files, output);
+		final var output = FileSystem.convertStringToFile(this.testSourceDirectory);
+		final var msg = internalExecute(files, output);
 		if (!Strings.isEmpty(msg)) {
 			return msg;
 		}
@@ -188,7 +186,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		try {
 			generateAbstractTest(output);
 		} catch (IOException exception) {
-			final String message = Throwables.getRootCause(exception).getLocalizedMessage();
+			final var message = Throwables.getRootCause(exception).getLocalizedMessage();
 			getLog().error(message);
 			getLog().debug(exception);
 			return message;
@@ -202,7 +200,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		try {
 			FileSystem.delete(outputFolder);
 		} catch (IOException exception) {
-			final String message = formatErrorMessage(outputFolder, exception);
+			final var message = formatErrorMessage(outputFolder, exception);
 			getLog().error(message);
 			getLog().debug(exception);
 			return message;
@@ -215,10 +213,10 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	protected void internalExecute(File sourceFolder, File inputFile, File relativeInputFile, File outputFolder,
 			AbstractMarkerLanguageParser parser) throws IOException {
 		getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_0, inputFile.getName()));
-		final List<ValidationComponent> successCompilationComponents = new ArrayList<>();
-		final List<ValidationComponent> failureCompilationComponents = new ArrayList<>();
-		final List<ValidationComponent> factualComponents = new ArrayList<>();
-		for (final ValidationComponent component : parser.getStandardValidationComponents(inputFile)) {
+		final var successCompilationComponents = new ArrayList<ValidationComponent>();
+		final var failureCompilationComponents = new ArrayList<ValidationComponent>();
+		final var factualComponents = new ArrayList<ValidationComponent>();
+		for (final var component : parser.getStandardValidationComponents(inputFile)) {
 			if (component.isCompilable()) {
 				if (component.isExecutable()) {
 					factualComponents.add(component);
@@ -230,13 +228,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			}
 		}
 
-		final DynamicValidationContext validationContext = new DynamicValidationContext();
+		final var validationContext = new DynamicValidationContext();
 		validationContext.setSourceRoots(this.session.getCurrentProject().getCompileSourceRoots());
 		validationContext.setResourceRoots(Lists.transform(this.session.getCurrentProject().getResources(),
 				it -> it.getDirectory()));
 		validationContext.setDestinationRoots(
 				Collections.singletonList(this.session.getCurrentProject().getBuild().getOutputDirectory()));
-		final List<DynamicValidationComponent> specificComponents = parser.getMarkerSpecificValidationComponents(
+		final var specificComponents = parser.getMarkerSpecificValidationComponents(
 				inputFile, sourceFolder, validationContext);
 		if (successCompilationComponents.isEmpty() && failureCompilationComponents.isEmpty()
 				&& factualComponents.isEmpty() && specificComponents.isEmpty()) {
@@ -244,13 +242,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 
 		// Do not change the "Test" postfix because it is used by Surefire for detecting test classes.
-		final String basicTestName = toTestName(inputFile);
-		final String generalTestName = basicTestName + "Test"; //$NON-NLS-1$
+		final var basicTestName = toTestName(inputFile);
+		final var generalTestName = basicTestName + "Test"; //$NON-NLS-1$
 
-		final ImportManager importManager = new ImportManager();
-		final TraceableTreeAppendable it = new TraceableTreeAppendable(importManager);
+		final var importManager = new ImportManager();
+		final var it = new TraceableTreeAppendable(importManager);
 
-		final String displayName = toClassDisplayName(relativeInputFile, basicTestName, generalTestName);
+		final var displayName = toClassDisplayName(relativeInputFile, basicTestName, generalTestName);
 		
 		it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		it.append("@").append(Tag.class).append("(\"documentation\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -265,8 +263,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		it.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
 
-		final File packagePath = relativeInputFile.getParentFile();
-		final String packageName = toPackageName("docs", packagePath); //$NON-NLS-1$
+		final var packagePath = relativeInputFile.getParentFile();
+		final var packageName = toPackageName("docs", packagePath); //$NON-NLS-1$
 		write(outputFolder, packageName, generalTestName, importManager, it);
 
 		//generateTraceFile(outputFolder, packageName, generalTestName, it.getTraceRegions());
@@ -274,13 +272,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private void generateTestsForSuccessCode(ITreeAppendable parent, ImportManager importManager,
 			File inputFile, List<ValidationComponent> successCompilationComponents) {
-		int i = 0;
-		for (final ValidationComponent component : successCompilationComponents) {
+		var i = 0;
+		for (final var component : successCompilationComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_1,
 					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
-			final String actionName = toActionName("success", component, i); //$NON-NLS-1$
-			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_7, i, component);
-			final ILocationData location = new LocationData(
+			final var actionName = toActionName("success", component, i); //$NON-NLS-1$
+			final var displayName = toTestDisplayName(Messages.GenerateTestsMojo_7, i, component);
+			final var location = new LocationData(
 					// Offset
 					component.getOffsetInSourceFile(),
 					// Length
@@ -291,7 +289,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					component.getEndLinenoInSourceFile(),
 					// Source URI
 					null);
-			final ITreeAppendable it = parent.trace(location);
+			final var it = parent.trace(location);
 			//
 			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -312,13 +310,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private void generateTestsForFailureCode(ITreeAppendable parent, ImportManager importManager,
 			File inputFile, List<ValidationComponent> failureCompilationComponents) {
-		int i = 0;
-		for (final ValidationComponent component : failureCompilationComponents) {
+		var i = 0;
+		for (final var component : failureCompilationComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_2,
 					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
-			final String actionName = toActionName("failure", component, i); //$NON-NLS-1$
-			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_8, i, component);
-			final ILocationData location = new LocationData(
+			final var actionName = toActionName("failure", component, i); //$NON-NLS-1$
+			final var displayName = toTestDisplayName(Messages.GenerateTestsMojo_8, i, component);
+			final var location = new LocationData(
 					// Offset
 					component.getOffsetInSourceFile(),
 					// Length
@@ -329,7 +327,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					component.getEndLinenoInSourceFile(),
 					// Source URI
 					null);
-			final ITreeAppendable it = parent.trace(location);
+			final var it = parent.trace(location);
 			//
 			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -350,13 +348,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private void generateTestsForFacts(ITreeAppendable parent, ImportManager importManager,
 			File inputFile, List<ValidationComponent> factualComponents) {
-		int i = 0;
-		for (final ValidationComponent component : factualComponents) {
+		var i = 0;
+		for (final var component : factualComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_3,
 					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
-			final String actionName = toActionName("fact", component, i); //$NON-NLS-1$
-			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_9, i, component);
-			final ILocationData location = new LocationData(
+			final var actionName = toActionName("fact", component, i); //$NON-NLS-1$
+			final var displayName = toTestDisplayName(Messages.GenerateTestsMojo_9, i, component);
+			final var location = new LocationData(
 					// Offset
 					component.getOffsetInSourceFile(),
 					// Length
@@ -367,7 +365,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					component.getEndLinenoInSourceFile(),
 					// Source URI
 					null);
-			final ITreeAppendable it = parent.trace(location);
+			final var it = parent.trace(location);
 			//
 			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -387,8 +385,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append("]\", expected, ") //$NON-NLS-1$
 				.append(Throwables.class).append(".getStackTraceAsString(exception));").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
-			it.append("if (result instanceof ").append(Boolean.class).append(") {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
-			it.append("boolean boolResult = ((").append(Boolean.class).append(") result).booleanValue();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("if (result instanceof ").append(Boolean.class).append(" $c$value) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("boolean boolResult = $c$value.booleanValue();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 			it.append("if (!boolResult) {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
 				.append("(\"Invalid expression result [line: ").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
@@ -408,13 +406,13 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private void generateDynamicTests(ITreeAppendable parent, ImportManager importManager,
 			File inputFile, List<DynamicValidationComponent> specificComponents) {
-		int i = 0;
-		for (final DynamicValidationComponent component : specificComponents) {
+		var i = 0;
+		for (final var component : specificComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_4,
 					inputFile.getName(), component.functionName() + i));
-			final String actionName = toActionName("dyn_" + component.functionName(), component, i); //$NON-NLS-1$
-			final String displayName = toTestDisplayName(Messages.GenerateTestsMojo_10, i, component);
-			final ILocationData location = new LocationData(
+			final var actionName = toActionName("dyn_" + component.functionName(), component, i); //$NON-NLS-1$
+			final var displayName = toTestDisplayName(Messages.GenerateTestsMojo_10, i, component);
+			final var location = new LocationData(
 					// Offset
 					component.getOffsetInSourceFile(),
 					// Length
@@ -425,7 +423,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 					component.getEndLinenoInSourceFile(),
 					// Source URI
 					null);
-			final ITreeAppendable it = parent.trace(location);
+			final var it = parent.trace(location);
 			//
 			it.append("@").append(Test.class).newLine(); //$NON-NLS-1$
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -458,8 +456,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	@SuppressWarnings("removal")
 	private void generateAbstractTest(File outputFolder) throws IOException {
 		getLog().debug(Messages.GenerateTestsMojo_5);
-		final ImportManager importManager = new ImportManager();
-		final ITreeAppendable it = new FakeTreeAppendable(importManager);
+		final var importManager = new ImportManager();
+		final var it = new FakeTreeAppendable(importManager);
 
 		it.append("@").append(SuppressWarnings.class).append("(\"all\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 		it.append("public class AbstractBaseTest {").increaseIndentation().newLine(); //$NON-NLS-1$
@@ -474,8 +472,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("if (this.scriptExecutor == null) {").increaseIndentation().newLine(); //$NON-NLS-1$
 		it.append("this.scriptExecutor = this.injector.getInstance(").append(ScriptExecutor.class).append(".class);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final StringBuilder cp = new StringBuilder();
-		for (final File cpElement : getClassPath()) {
+		final var cp = new StringBuilder();
+		for (final var cpElement : getClassPath()) {
 			if (cp.length() > 0) {
 				cp.append(File.pathSeparator);
 			}
@@ -483,8 +481,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 		it.append("scriptExecutor.setClassPath(\"").append(str(cp)).append("\");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final StringBuilder mp = new StringBuilder();
-		for (final File mpElement : getModulePath()) {
+		final var mp = new StringBuilder();
+		for (final var mpElement : getModulePath()) {
 			if (mp.length() > 0) {
 				mp.append(File.pathSeparator);
 			}
@@ -492,7 +490,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 		it.append("scriptExecutor.setModulePath(\"").append(str(mp)).append("\");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final String bootPath = getBootClassPath();
+		final var bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {
 			it.append("scriptExecutor.setBootClassPath(\"") //$NON-NLS-1$
 				.append(str(bootPath)).append("\");") //$NON-NLS-1$
@@ -671,19 +669,19 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append(List.class).append("<").append(Proxy.class).append("> proxies = new ") //$NON-NLS-1$ //$NON-NLS-2$
 			.append(ArrayList.class).append("(defaultSelector.select(uri));").newLine(); //$NON-NLS-1$
 
-			for (final org.apache.maven.settings.Proxy proxy : this.session.getRequest().getProxies()) {
+			for (final var proxy : this.session.getRequest().getProxies()) {
 				it.append("if (\"").append(str(proxy.getProtocol())).append("\".equals(uri.getScheme())) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-				final String nonProxyHosts = proxy.getNonProxyHosts();
-				boolean hasProxy = false;
+				final var nonProxyHosts = proxy.getNonProxyHosts();
+				var hasProxy = false;
 				if (!Strings.isEmpty(nonProxyHosts)) {
 					if (nonProxyHosts != null) {
 						hasProxy = true;
 						it.append("if ("); //$NON-NLS-1$
-						final StringTokenizer tokenizer = new StringTokenizer(nonProxyHosts, "|"); //$NON-NLS-1$
-						boolean first = true;
+						final var tokenizer = new StringTokenizer(nonProxyHosts, "|"); //$NON-NLS-1$
+						var first = true;
 						while (tokenizer.hasMoreTokens()) {
-							String pattern = tokenizer.nextToken();
+							var pattern = tokenizer.nextToken();
 							pattern = pattern.replace(".", "\\.").replace("*", ".*"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 							if (first) {
 								first = false;
@@ -739,7 +737,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	 * @return the output folder.
 	 */
 	private static File getOutputFolder(File root, String packageName) {
-		final File relativeFolder = toPackageFolder(packageName);
+		final var relativeFolder = toPackageFolder(packageName);
 		return FileSystem.join(root, relativeFolder);
 	}
 
@@ -765,15 +763,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private static void write(File root, String packageName, String typeName, ImportManager importManager,
 			ITreeAppendable it) throws IOException {
-		File outputFile = getOutputFolder(root, packageName);
+		var outputFile = getOutputFolder(root, packageName);
 		outputFile.mkdirs();
 		outputFile = getOutputJavaFilename(outputFile, typeName);
-		try (FileWriter writer = new FileWriter(outputFile)) {
+		try (var writer = new FileWriter(outputFile)) {
 			writer.write("/* This file was automatically generated. Do not change its content. */\n\n"); //$NON-NLS-1$
 			writer.write("package "); //$NON-NLS-1$
 			writer.write(packageName);
 			writer.write(";\n"); //$NON-NLS-1$
-			for (final String importedType : importManager.getImports()) {
+			for (final var importedType : importManager.getImports()) {
 				writer.write("import "); //$NON-NLS-1$
 				writer.write(importedType);
 				writer.write(";\n"); //$NON-NLS-1$
@@ -788,7 +786,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	}
 
 	private static String toActionName(String name, ValidationComponent component, int index) {
-		final StringBuilder fullName = new StringBuilder();
+		final var fullName = new StringBuilder();
 		fullName.append(name).append("_").append(index).append("_"); //$NON-NLS-1$ //$NON-NLS-2$
 		fullName.append(component.getLinenoInSourceFile()).append("_to_"); //$NON-NLS-1$
 		fullName.append(component.getEndLinenoInSourceFile());
@@ -798,15 +796,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	private static String toTestDisplayName(String name, int index, ValidationComponent component) {
 		final String nm;
 		if (Strings.isEmpty(name)) {
-			if (component instanceof DynamicValidationComponent) {
-				nm = ((DynamicValidationComponent) component).functionName();
+			if (component instanceof DynamicValidationComponent cvalue) {
+				nm = cvalue.functionName();
 			} else {
 				nm = component.getSourceFile().getName();
 			}
 		} else {
 			nm = name;
 		}
-		final String filename = component.getSourceFile() != null ? component.getSourceFile().getName() : "?"; //$NON-NLS-1$
+		final var filename = component.getSourceFile() != null ? component.getSourceFile().getName() : "?"; //$NON-NLS-1$
 		return str(MessageFormat.format(nm, Integer.valueOf(index), filename, Integer.valueOf(component.getLinenoInSourceFile())));
 	}
 

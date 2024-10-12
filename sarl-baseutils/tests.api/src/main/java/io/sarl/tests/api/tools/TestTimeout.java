@@ -99,7 +99,7 @@ public class TestTimeout {
 	 * @since 0.11
 	 */
 	public static TimeOutHandler startTimeOut(int timeout, boolean enable, Predicate predicate) {
-		final TimeOutHandler handler = newTimeOut(timeout, predicate);
+		final var handler = newTimeOut(timeout, predicate);
 		if (enable) {
 			handler.startAsync();
 		}
@@ -216,7 +216,7 @@ public class TestTimeout {
 
 		@Override
 		public void run() {
-			final long endTime = System.currentTimeMillis() + this.timeoutDuration;
+			final var endTime = System.currentTimeMillis() + this.timeoutDuration;
 			while (TimeOutHandler.this.continueLoop.get()
 					&& System.currentTimeMillis() <= endTime) {
 				Thread.yield();
@@ -241,7 +241,7 @@ public class TestTimeout {
 
 		/** Stop the time out process.
 		 */
-		@SuppressWarnings("deprecation")
+		@SuppressWarnings("removal")
 		public synchronized void stop() {
 			this.continueLoop.set(false);
 			if (this.thread != null) {

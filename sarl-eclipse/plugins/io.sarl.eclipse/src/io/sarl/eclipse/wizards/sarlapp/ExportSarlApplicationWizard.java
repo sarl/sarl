@@ -79,7 +79,7 @@ public class ExportSarlApplicationWizard extends FixedFatJarExportWizard {
 
 	@Override
 	protected FixedFatJarExportPage createPageInstance(JarPackageData jarPackage, IStructuredSelection selection) {
-		final FixedFatJarExportPage page = new ExportSarlApplicationPage(jarPackage, selection);
+		final var page = new ExportSarlApplicationPage(jarPackage, selection);
 		this.injector.injectMembers(page);
 		return page;
 	}

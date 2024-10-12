@@ -26,16 +26,12 @@ import static io.sarl.lang.util.Utils.setStructuralFeature;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import org.eclipse.xtext.resource.IEObjectDescription;
-import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.scoping.batch.AbstractFeatureScopeSession;
 import org.eclipse.xtext.xbase.scoping.batch.IIdentifiableElementDescription;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationResult;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
-import org.eclipse.xtext.xbase.typesystem.internal.ExpressionAwareStackedResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.internal.ExpressionTypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.ForwardingResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.internal.ResolvedTypes;
@@ -44,7 +40,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.typesystem.cast.ICastOperationCandidateSelector.ISelector;
 import io.sarl.lang.util.ReflectMethod;
 
 /** State for type computation associated to the cast operator.
@@ -91,8 +86,8 @@ public class CastedExpressionTypeComputationState extends ExpressionTypeComputat
 	 * @return {@code true} if the linking is enabled.
 	 */
 	public boolean isCastOperatorLinkingEnabled(SarlCastedExpression cast) {
-		final LightweightTypeReference sourceType = getStackedResolvedTypes().getReturnType(cast.getTarget());
-		final LightweightTypeReference destinationType = getReferenceOwner().toLightweightTypeReference(cast.getType());
+		final var sourceType = getStackedResolvedTypes().getReturnType(cast.getTarget());
+		final var destinationType = getReferenceOwner().toLightweightTypeReference(cast.getType());
 		if (sourceType.isPrimitiveVoid() || destinationType.isPrimitiveVoid()) {
 			return false;
 		}
@@ -109,9 +104,9 @@ public class CastedExpressionTypeComputationState extends ExpressionTypeComputat
 	 */
 	public List<? extends ILinkingCandidate> getLinkingCandidates(SarlCastedExpression cast) {
 		// Prepare the type resolver.
-		final StackedResolvedTypes demandComputedTypes = pushTypes();
-		final AbstractTypeComputationState forked = withNonVoidExpectation(demandComputedTypes);
-		final ForwardingResolvedTypes demandResolvedTypes = new ForwardingResolvedTypes() {
+		final var demandComputedTypes = pushTypes();
+		final var forked = withNonVoidExpectation(demandComputedTypes);
+		final var demandResolvedTypes = new ForwardingResolvedTypes() {
 			@Override
 			protected IResolvedTypes delegate() {
 				return forked.getResolvedTypes();
@@ -119,9 +114,9 @@ public class CastedExpressionTypeComputationState extends ExpressionTypeComputat
 
 			@Override
 			public LightweightTypeReference getActualType(XExpression expression) {
-				final LightweightTypeReference type = super.getActualType(expression);
+				final var type = super.getActualType(expression);
 				if (type == null) {
-					final ITypeComputationResult result = forked.computeTypes(expression);
+					final var result = forked.computeTypes(expression);
 					return result.getActualExpressionType();
 				}
 				return type;
@@ -129,25 +124,25 @@ public class CastedExpressionTypeComputationState extends ExpressionTypeComputat
 		};
 
 		// Create the scope
-		final IScope scope = getCastScopeSession().getScope(cast,
+		final var scope = getCastScopeSession().getScope(cast,
 				// Must be the feature of the AbstractFeatureCall in order to enable the scoping for a function call.
 				//XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
 				SarlPackage.Literals.SARL_CASTED_EXPRESSION__FEATURE,
 				demandResolvedTypes);
 
 		// Search for the features into the scope
-		final LightweightTypeReference targetType = getReferenceOwner().toLightweightTypeReference(cast.getType());
-		final List<ILinkingCandidate> resultList = Lists.newArrayList();
-		final LightweightTypeReference expressionType = getStackedResolvedTypes().getActualType(cast.getTarget());
-		final ISelector validator = this.candidateValidator.prepare(
+		final var targetType = getReferenceOwner().toLightweightTypeReference(cast.getType());
+		final var resultList = Lists.<ILinkingCandidate>newArrayList();
+		final var expressionType = getStackedResolvedTypes().getActualType(cast.getTarget());
+		final var validator = this.candidateValidator.prepare(
 				getParent(), targetType, expressionType);
 		// TODO: The call to getAllElements() is not efficient; find another way in order to be faster.
-		for (final IEObjectDescription description : scope.getAllElements()) {
-			final IIdentifiableElementDescription idesc = toIdentifiableDescription(description);
+		for (final var description : scope.getAllElements()) {
+			final var idesc = toIdentifiableDescription(description);
 			if (validator.isCastOperatorCandidate(idesc)) {
-				final ExpressionAwareStackedResolvedTypes descriptionResolvedTypes = pushTypes(cast);
-				final ExpressionTypeComputationState descriptionState = createExpressionComputationState(cast, descriptionResolvedTypes);
-				final ILinkingCandidate candidate = createCandidate(cast, descriptionState, idesc);
+				final var descriptionResolvedTypes = pushTypes(cast);
+				final var descriptionState = createExpressionComputationState(cast, descriptionResolvedTypes);
+				final var candidate = createCandidate(cast, descriptionState, idesc);
 				if (candidate != null) {
 					resultList.add(candidate);
 				}

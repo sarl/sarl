@@ -32,7 +32,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.slf4j.Logger;
 
 import io.sarl.lang.maven.compiler.abstractmojos.AbstractCompileMojo;
 
@@ -62,27 +61,27 @@ public class TestCompileMojo extends AbstractCompileMojo {
 
 	@Override
 	protected void compileSARL() throws MojoExecutionException, MojoFailureException {
-		final Logger log = getLogger();
-		File outputDirectory = getTestOutput();
+		final var log = getLogger();
+		var outputDirectory = getTestOutput();
 		log.info(Messages.TestCompileMojo_0);
 		// If output is not explicitly set try to read SARL prefs from eclipse .settings folder
 		if (getDefaultTestOutput().equals(getTestOutput())) {
-			final String settingsValue = readSarlEclipseSetting(getProject().getBuild().getTestSourceDirectory());
+			final var settingsValue = readSarlEclipseSetting(getProject().getBuild().getTestSourceDirectory());
 			if (settingsValue != null && !settingsValue.isEmpty()) {
 				outputDirectory = new File(settingsValue);
 				log.info(MessageFormat.format(Messages.TestCompileMojo_1, outputDirectory));
 			}
 		}
-		final MavenProject project = getProject();
-		final List<File> compileSourceRoots = new ArrayList<>();
-		for (final String filename : getSourceRoots(project)) {
-			final File file = new File(filename);
+		final var project = getProject();
+		final var compileSourceRoots = new ArrayList<File>();
+		for (final var filename : getSourceRoots(project)) {
+			final var file = new File(filename);
 			if (isValidSourceDirectory(file, outputDirectory)) {
 				compileSourceRoots.add(file);
 			}
 		}
-		final List<File> classPath = getTestClassPath();
-		final List<File> modulePath = getTestModulePath();
+		final var classPath = getTestClassPath();
+		final var modulePath = getTestModulePath();
 		project.addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
 		compile(classPath, modulePath, compileSourceRoots, outputDirectory,
 				makeAbsolute(new File(getProject().getBuild().getTestOutputDirectory())));

@@ -146,7 +146,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	@Override
 	public void setVisible(boolean visible) {
-		final boolean isShownFirstTime = visible && this.currProject == null;
+		final var isShownFirstTime = visible && this.currProject == null;
 		if (visible) {
 			// Entering from the first page
 			if (isShownFirstTime) {
@@ -165,18 +165,18 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private static boolean hasExistingContent(URI realLocation) throws CoreException {
-		final IFileStore file = EFS.getStore(realLocation);
+		final var file = EFS.getStore(realLocation);
 		return file.fetchInfo().exists();
 	}
 
 	private IStatus changeToNewProject() {
-		final UpdateRunnable op = new UpdateRunnable();
+		final var op = new UpdateRunnable();
 		try {
 			getContainer().run(true, false, new WorkspaceModifyDelegatingOperation(op));
 			return op.getInfoStatus();
 		} catch (InvocationTargetException e) {
-			final String title = NewWizardMessages.NewJavaProjectWizardPageTwo_error_title;
-			final String message = NewWizardMessages.NewJavaProjectWizardPageTwo_error_message;
+			final var title = NewWizardMessages.NewJavaProjectWizardPageTwo_error_title;
+			final var message = NewWizardMessages.NewJavaProjectWizardPageTwo_error_message;
 			updateStatus(e);
 			ExceptionHandler.handle(e, getShell(), title, message);
 		} catch (InterruptedException e) {
@@ -190,23 +190,23 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * @param event the exception.
 	 */
 	private void updateStatus(Throwable event) {
-		Throwable cause = event;
+		var cause = event;
 		while (cause != null
 				&& (!(cause instanceof CoreException))
 				&& cause.getCause() != null
 				&& cause.getCause() != cause) {
 			cause = cause.getCause();
 		}
-		if (cause instanceof CoreException) {
-			updateStatus(((CoreException) cause).getStatus());
+		if (cause instanceof CoreException cvalue) {
+			updateStatus(cvalue.getStatus());
 		} else {
-			final String message;
+			final var message;
 			if (cause != null) {
 				message = cause.getLocalizedMessage();
 			} else {
 				message = event.getLocalizedMessage();
 			}
-			final IStatus status = new StatusInfo(IStatus.ERROR, message);
+			final var status = new StatusInfo(IStatus.ERROR, message);
 			updateStatus(status);
 		}
 	}
@@ -216,7 +216,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		// Test if the project is inside workspace
 		if (theLocation == null) {
 			try {
-				final URI rootLocation = ResourcesPlugin.getWorkspace().getRoot().getLocationURI();
+				final var rootLocation = ResourcesPlugin.getWorkspace().getRoot().getLocationURI();
 				theLocation = new URI(rootLocation.getScheme(), null,
 						Path.fromPortableString(
 								rootLocation.getPath()).append(projectName).toString(),
@@ -229,8 +229,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private IStatus updateProject(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 7);
-		IStatus result = StatusInfo.OK_STATUS;
+		final var subMonitor = SubMonitor.convert(monitor, 7);
+		var result = StatusInfo.OK_STATUS;
 		try {
 			subMonitor.beginTask(
 					NewWizardMessages.NewJavaProjectWizardPageTwo_operation_initialize,
@@ -239,12 +239,12 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				throw new OperationCanceledException();
 			}
 
-			final String projectName = this.firstPage.getProjectName();
+			final var projectName = this.firstPage.getProjectName();
 
 			this.currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			this.currProjectLocation = this.firstPage.getProjectLocationURI();
 
-			final URI realLocation = getRealLocation(projectName, this.currProjectLocation);
+			final var realLocation = getRealLocation(projectName, this.currProjectLocation);
 			this.keepContent = hasExistingContent(realLocation);
 
 			if (subMonitor.isCanceled()) {
@@ -297,14 +297,14 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	private void keepExistingBuildPath(IProject project, OutParameter<IClasspathEntry[]> classpath,
 			OutParameter<IPath> outputLocation, IProgressMonitor monitor)
 			throws CoreException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		final var subMonitor = SubMonitor.convert(monitor, 3);
 		IClasspathEntry[] entries = null;
 		IPath outLocation = null;
 		if (!project.getFile(FILENAME_CLASSPATH).exists()) {
 			// Determine the default values
 			if (classpath != null) {
-				final List<IClasspathEntry> cpEntries = new ArrayList<>();
-				final Collection<IClasspathEntry> originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
+				final var cpEntries = new ArrayList<IClasspathEntry>();
+				final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
 								new Path(this.firstPage.getProjectName()).makeAbsolute());
 				cpEntries.addAll(originalEntries);
 				this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
@@ -316,7 +316,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				outputLocation.set(this.firstPage.getOutputLocation());
 			}
 			// Override with the existing configuration
-			final SarlClassPathDetector detector = new SarlClassPathDetector(
+			final var detector = new SarlClassPathDetector(
 					this.currProject, this.firstPage, subMonitor.newChild(1));
 			entries = detector.getClasspath();
 			outLocation = detector.getOutputLocation();
@@ -336,16 +336,16 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private void buildNewBuildPath(IProject project, OutParameter<IClasspathEntry[]> classpath,
 			OutParameter<IPath> outputLocation, IProgressMonitor monitor) throws CoreException {
-		final List<IClasspathEntry> cpEntries = new ArrayList<>();
-		final IWorkspaceRoot root = project.getWorkspace().getRoot();
+		final var cpEntries = new ArrayList<IClasspathEntry>();
+		final var root = project.getWorkspace().getRoot();
 
-		final Collection<IClasspathEntry> originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
+		final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
 						new Path(this.firstPage.getProjectName()).makeAbsolute());
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, originalEntries.size() + 1);
-		for (final IClasspathEntry sourceClasspathEntry : originalEntries) {
-			final IPath path = sourceClasspathEntry.getPath();
+		final var subMonitor = SubMonitor.convert(monitor, originalEntries.size() + 1);
+		for (final var sourceClasspathEntry : originalEntries) {
+			final var path = sourceClasspathEntry.getPath();
 			if (path.segmentCount() > 1) {
-				final IFolder folder = root.getFolder(path);
+				final var folder = root.getFolder(path);
 				CoreUtility.createFolder(
 						folder,
 						true, true,
@@ -356,11 +356,11 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 		this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
 
-		final IClasspathEntry[] entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
+		final var entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
-		final IPath outLocation = this.firstPage.getOutputLocation();
+		final var outLocation = this.firstPage.getOutputLocation();
 		if (outLocation.segmentCount() > 1) {
-			final IFolder folder = root.getFolder(outLocation);
+			final var folder = root.getFolder(outLocation);
 			CoreUtility.createDerivedFolder(
 					folder,
 					true, true,
@@ -410,8 +410,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		} catch (CoreException e) {
 			throw e;
 		} catch (Throwable e) {
-			if (e.getCause() instanceof CoreException) {
-				throw (CoreException) e.getCause();
+			if (e.getCause() instanceof CoreException cvalue) {
+				throw cvalue;
 			}
 			final Throwable ee;
 			if (e.getCause() != null && e.getCause() != e) {

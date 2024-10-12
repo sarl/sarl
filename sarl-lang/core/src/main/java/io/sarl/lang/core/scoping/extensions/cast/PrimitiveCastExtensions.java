@@ -71,8 +71,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static boolean booleanValue(Object value) {
-		if (value instanceof Boolean) {
-			return ((Boolean) value).booleanValue();
+		if (value instanceof Boolean bvalue) {
+			return bvalue.booleanValue();
 		}
 		if (value != null) {
 			return booleanValue(value.toString());
@@ -152,8 +152,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static byte byteValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).byteValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.byteValue();
 		}
 		if (value != null) {
 			return byteValue(value.toString());
@@ -172,12 +172,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Byte toByte(Object value) {
-		if (value instanceof Byte) {
-			return (Byte) value;
+		if (value instanceof Byte cvalue) {
+			return cvalue;
 		}
 		final byte bvalue;
-		if (value instanceof Number) {
-			bvalue = ((Number) value).byteValue();
+		if (value instanceof Number cvalue) {
+			bvalue = cvalue.byteValue();
 		} else if (value != null) {
 			return Byte.valueOf(toByte(value.toString()));
 		} else {
@@ -245,8 +245,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static short shortValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).shortValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.shortValue();
 		}
 		if (value != null) {
 			return shortValue(value.toString());
@@ -265,12 +265,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Short toShort(Object value) {
-		if (value instanceof Short) {
-			return (Short) value;
+		if (value instanceof Short cvalue) {
+			return cvalue;
 		}
 		final short svalue;
-		if (value instanceof Number) {
-			svalue = ((Number) value).shortValue();
+		if (value instanceof Number cvalue) {
+			svalue = cvalue.shortValue();
 		} else if (value != null) {
 			return toShort(value.toString());
 		} else {
@@ -338,8 +338,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static int intValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).intValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.intValue();
 		}
 		if (value != null) {
 			return intValue(value.toString());
@@ -358,12 +358,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Integer toInteger(Object value) {
-		if (value instanceof Integer) {
-			return (Integer) value;
+		if (value instanceof Integer cvalue) {
+			return cvalue;
 		}
 		final int ivalue;
-		if (value instanceof Number) {
-			ivalue = ((Number) value).intValue();
+		if (value instanceof Number cvalue) {
+			ivalue = cvalue.intValue();
 		} else if (value != null) {
 			return toInteger(value.toString());
 		} else {
@@ -423,8 +423,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static char charValue(Object value) {
-		if (value instanceof Character) {
-			return ((Character) value).charValue();
+		if (value instanceof Character cvalue) {
+			return cvalue.charValue();
 		}
 		if (value != null) {
 			return charValue(value.toString());
@@ -444,12 +444,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Character toCharacter(Object value) {
-		if (value instanceof Character) {
-			return (Character) value;
+		if (value instanceof Character cvalue) {
+			return cvalue;
 		}
 		final char cvalue;
-		if (value instanceof Number) {
-			cvalue = (char) ((Number) value).intValue();
+		if (value instanceof Number nvalue) {
+			cvalue = (char) nvalue.intValue();
 		} else if (value != null) {
 			return toCharacter(value.toString());
 		} else {
@@ -509,8 +509,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static long longValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).longValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.longValue();
 		}
 		if (value != null) {
 			return longValue(value.toString());
@@ -529,12 +529,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Long toLong(Object value) {
-		if (value instanceof Long) {
-			return (Long) value;
+		if (value instanceof Long cvalue) {
+			return cvalue;
 		}
 		final long lvalue;
-		if (value instanceof Number) {
-			lvalue = ((Number) value).longValue();
+		if (value instanceof Number cvalue) {
+			lvalue = cvalue.longValue();
 		} else if (value != null) {
 			return toLong(value.toString());
 		} else {
@@ -602,8 +602,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static float floatValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).floatValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.floatValue();
 		}
 		if (value != null) {
 			return floatValue(value.toString());
@@ -622,12 +622,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Float toFloat(Object value) {
-		if (value instanceof Float) {
-			return (Float) value;
+		if (value instanceof Float cvalue) {
+			return cvalue;
 		}
 		final float fvalue;
-		if (value instanceof Number) {
-			fvalue = ((Number) value).floatValue();
+		if (value instanceof Number cvalue) {
+			fvalue = cvalue.floatValue();
 		} else if (value != null) {
 			return toFloat(value.toString());
 		} else {
@@ -695,8 +695,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static double doubleValue(Object value) {
-		if (value instanceof Number) {
-			return ((Number) value).doubleValue();
+		if (value instanceof Number cvalue) {
+			return cvalue.doubleValue();
 		}
 		if (value != null) {
 			return doubleValue(value.toString());
@@ -715,12 +715,12 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static Double toDouble(Object value) {
-		if (value instanceof Double) {
-			return (Double) value;
+		if (value instanceof Double cvalue) {
+			return cvalue;
 		}
 		final double dvalue;
-		if (value instanceof Number) {
-			dvalue = ((Number) value).doubleValue();
+		if (value instanceof Number cvalue) {
+			dvalue = cvalue.doubleValue();
 		} else if (value != null) {
 			return toDouble(value.toString());
 		} else {
@@ -781,8 +781,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static AtomicBoolean toAtomicBoolean(Object value) {
-		if (value instanceof AtomicBoolean) {
-			return (AtomicBoolean) value;
+		if (value instanceof AtomicBoolean cvalue) {
+			return cvalue;
 		}
 		return new AtomicBoolean(booleanValue(value));
 	}
@@ -811,8 +811,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static AtomicInteger toAtomicInteger(Object value) {
-		if (value instanceof AtomicInteger) {
-			return (AtomicInteger) value;
+		if (value instanceof AtomicInteger cvalue) {
+			return cvalue;
 		}
 		return new AtomicInteger(intValue(value));
 	}
@@ -848,8 +848,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static AtomicLong toAtomicLong(Object value) {
-		if (value instanceof AtomicLong) {
-			return (AtomicLong) value;
+		if (value instanceof AtomicLong cvalue) {
+			return cvalue;
 		}
 		return new AtomicLong(longValue(value));
 	}
@@ -885,8 +885,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static AtomicDouble toAtomicDouble(Object value) {
-		if (value instanceof AtomicDouble) {
-			return (AtomicDouble) value;
+		if (value instanceof AtomicDouble cvalue) {
+			return cvalue;
 		}
 		return new AtomicDouble(doubleValue(value));
 	}
@@ -915,16 +915,16 @@ public final class PrimitiveCastExtensions {
 		if (value == null) {
 			return prefix == null;
 		}
-		final int prefixLength = prefix.length();
+		final var prefixLength = prefix.length();
 		if (value.length() == 0) {
 			return prefixLength == 0;
 		}
-		final int eoffset = index + prefixLength;
+		final var eoffset = index + prefixLength;
 		if (eoffset > value.length()) {
 			return false;
 		}
-		int idx0 = index;
-		for (int idx1 = 0; idx1 < prefixLength; ++idx1, ++idx0) {
+		var idx0 = index;
+		for (var idx1 = 0; idx1 < prefixLength; ++idx1, ++idx0) {
 			if (value.charAt(idx0) != prefix.charAt(idx1)) {
 				return false;
 			}
@@ -943,16 +943,16 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static BigInteger toBigInteger(Object value) {
-		if (value instanceof BigInteger) {
-			return (BigInteger) value;
+		if (value instanceof BigInteger cvalue) {
+			return cvalue;
 		}
-		if (value instanceof BigDecimal) {
-			return ((BigDecimal) value).toBigInteger();
+		if (value instanceof BigDecimal cvalue) {
+			return cvalue.toBigInteger();
 		}
 		final String svalue;
 		if (value != null) {
-			if (value instanceof Number) {
-				svalue = Long.toString(((Number) value).longValue());
+			if (value instanceof Number cvalue) {
+				svalue = Long.toString(cvalue.longValue());
 			} else {
 				svalue = value.toString();
 			}
@@ -979,9 +979,9 @@ public final class PrimitiveCastExtensions {
 	@Pure
 	public static BigInteger toBigInteger(CharSequence value) {
 		try {
-			boolean negative = false;
-			int index = 0;
-			final char firstChar = value.charAt(0);
+			var negative = false;
+			var index = 0;
+			final var firstChar = value.charAt(0);
 
 			// Handle sign, if present
 			if (firstChar == '-') {
@@ -992,7 +992,7 @@ public final class PrimitiveCastExtensions {
 			}
 
 			// Handle radix specifier, if present
-			int radix = 10;
+			var radix = 10;
 			if (startsWith(value, "0x", index) || startsWith(value, "0X", index)) { //$NON-NLS-1$ //$NON-NLS-2$
 				index += 2;
 				radix = 16;
@@ -1009,7 +1009,7 @@ public final class PrimitiveCastExtensions {
 			} else {
 				endValue = value;
 			}
-			final BigInteger number = new BigInteger(endValue.toString(), radix);
+			final var number = new BigInteger(endValue.toString(), radix);
 			if (negative) {
 				return number.negate();
 			}
@@ -1031,8 +1031,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static BigDecimal toBigDecimal(Object value) {
-		if (value instanceof BigDecimal) {
-			return (BigDecimal) value;
+		if (value instanceof BigDecimal cvalue) {
+			return cvalue;
 		}
 		if (value != null) {
 			return new BigDecimal(value.toString());
@@ -1075,8 +1075,8 @@ public final class PrimitiveCastExtensions {
 	 */
 	@Pure
 	public static UUID toUUID(Object value) {
-		if (value instanceof UUID) {
-			return (UUID) value;
+		if (value instanceof UUID cvalue) {
+			return cvalue;
 		}
 		if (value != null) {
 			return toUUID(value.toString());

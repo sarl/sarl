@@ -104,7 +104,7 @@ public class LogConfig implements Comparable<LogConfig> {
 	 * @return the logger.
 	 */
 	public Logger configureLogger(Logger logger) {
-		final String format = getLogFormat();
+		final var format = getLogFormat();
 		if (!Strings.isNullOrEmpty(format)) {
 			/*final Enumeration<? extends Appender> allAppenders  = logger.getAllAppenders();
 			while (allAppenders.hasMoreElements()) {
@@ -153,8 +153,8 @@ public class LogConfig implements Comparable<LogConfig> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof LogConfig) {
-			return this.level == ((LogConfig) obj).getLevel();
+		if (obj instanceof LogConfig logConfig) {
+			return this.level == logConfig.getLevel();
 		}
 		return false;
 	}

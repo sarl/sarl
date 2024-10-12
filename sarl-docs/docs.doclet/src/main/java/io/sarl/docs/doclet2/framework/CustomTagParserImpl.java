@@ -51,8 +51,6 @@
 package io.sarl.docs.doclet2.framework;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
@@ -74,25 +72,25 @@ public class CustomTagParserImpl implements CustomTagParser {
 	@Override
 	public CustomTag parse(String customTagDescription, CustomTagLocation defaultLocation, String defaultHeader) {
 		if (customTagDescription != null) {
-			final Matcher matcher0 = FULL_PATTERN.matcher(customTagDescription);
+			final var matcher0 = FULL_PATTERN.matcher(customTagDescription);
 			if (matcher0.matches()) {
-				final String name = matcher0.group(1);
+				final var name = matcher0.group(1);
 				if (!Strings.isNullOrEmpty(name)) {
-					final List<CustomTagLocation> locations = CustomTagLocation.parse(matcher0.group(2));
+					final var locations = CustomTagLocation.parse(matcher0.group(2));
 					if (!locations.contains(CustomTagLocation.DISABLED)) {
 						if (locations.isEmpty()) {
 							locations.add(CustomTagLocation.EVERYWHERE);
 						}
-						final String header = Strings.nullToEmpty(matcher0.group(3));
+						final var header = Strings.nullToEmpty(matcher0.group(3));
 						return new CustomTag(name, locations, header);
 					}
 				}
 			} else if (defaultLocation != null) {
-				final Matcher matcher1 = SIMPLE_PATTERN.matcher(customTagDescription);
+				final var matcher1 = SIMPLE_PATTERN.matcher(customTagDescription);
 				if (matcher1.matches()) {
-					final String name = matcher1.group(1);
+					final var name = matcher1.group(1);
 					if (!Strings.isNullOrEmpty(name)) {
-						final List<CustomTagLocation> allLocations = defaultLocation == CustomTagLocation.EVERYWHERE ? CustomTagLocation.getAllActiveLocations() : Collections.singletonList(defaultLocation);
+						final var allLocations = defaultLocation == CustomTagLocation.EVERYWHERE ? CustomTagLocation.getAllActiveLocations() : Collections.singletonList(defaultLocation);
 						return new CustomTag(name, allLocations, defaultHeader);
 					}
 				}

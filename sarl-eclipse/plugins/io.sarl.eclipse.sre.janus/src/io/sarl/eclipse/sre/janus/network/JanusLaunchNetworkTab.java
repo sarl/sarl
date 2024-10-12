@@ -142,7 +142,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	@Override
 	public void createControl(Composite parent) {
-		final Composite topComp = createComposite(parent, parent.getFont(), 2, 1, GridData.FILL_HORIZONTAL, 5, 5);
+		final var topComp = createComposite(parent, parent.getFont(), 2, 1, GridData.FILL_HORIZONTAL, 5, 5);
 
 		createWrapLabel(topComp, Messages.JanusLaunchNetworkTab_5, 2);
 
@@ -162,7 +162,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.globalGroup = SWTFactory.createGroup(topComp, Messages.JanusLaunchNetworkTab_11, 2, 2,
 				GridData.FILL_HORIZONTAL);
 
-		final String defaultClusterName = SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6);
+		final var defaultClusterName = SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6);
 		this.clusterNameLabel = createLabel(this.globalGroup,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_2,
 						CliUtilities.getCommandLineDefinition(
@@ -234,8 +234,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	 * Update the states of the components (enabling).
 	 */
 	protected void updateComponentStates() {
-		final boolean enable = this.enableNetworkButton.getSelection();
-		final boolean enableIpList = enable && this.tcpIPClusterRadioButton.getSelection();
+		final var enable = this.enableNetworkButton.getSelection();
+		final var enableIpList = enable && this.tcpIPClusterRadioButton.getSelection();
 		this.globalGroup.setEnabled(enable);
 		this.clusterNameLabel.setEnabled(enable);
 		this.clusterNameText.setEnabled(enable);
@@ -253,9 +253,9 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		super.initializeFrom(configuration);
-		final InputExtraJreArguments arguments = LaunchConfigurationUtils.createInputExtraJreArguments(CONTRIBUTOR_ID);
+		final var arguments = LaunchConfigurationUtils.createInputExtraJreArguments(CONTRIBUTOR_ID);
 		arguments.read(configuration, this.accessor);
-		final boolean enable = arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
+		final var enable = arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
 		this.enableNetworkButton.setSelection(enable);
 		this.clusterNameText.setText(
 				arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE));
@@ -264,7 +264,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		this.portAutoIncrementButton.setSelection(arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME,
 				SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE));
 
-		final JoinMethod join = JoinMethod.valueOfCaseInsensitive(
+		final var join = JoinMethod.valueOfCaseInsensitive(
 				arguments.arg(SreNetworkConfig.JOIN_METHOD_NAME, JoinMethod.getDefault().toJsonString()));
 		switch (join) {
 		case MULTICAST:
@@ -284,7 +284,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		final OutputExtraJreArguments arguments = LaunchConfigurationUtils
+		final var arguments = LaunchConfigurationUtils
 				.createOutputExtraJreArguments(CONTRIBUTOR_ID);
 		arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE,
 				SreNetworkConfig.DEFAULT_ENABLE_VALUE);
@@ -304,9 +304,9 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		final OutputExtraJreArguments arguments = LaunchConfigurationUtils
+		final var arguments = LaunchConfigurationUtils
 				.createOutputExtraJreArguments(CONTRIBUTOR_ID);
-		final boolean enable = this.enableNetworkButton.getSelection();
+		final var enable = this.enableNetworkButton.getSelection();
 		arguments.arg(SreNetworkConfig.ENABLE_NAME, enable, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
 		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText(),
 				SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
@@ -372,7 +372,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
-			final Object clickedObject = event.getSource();
+			final var clickedObject = event.getSource();
 			if (clickedObject == JanusLaunchNetworkTab.this.enableNetworkButton
 					|| clickedObject == JanusLaunchNetworkTab.this.tcpIPClusterRadioButton
 					|| clickedObject == JanusLaunchNetworkTab.this.multicastClusterRadioButton) {

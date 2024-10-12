@@ -56,14 +56,14 @@ public final class ClassPathUtils {
 	 */
 	public static SystemPath buildClassPath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
 			JavaVersion jversion, Logger logger) {
-		final SystemPath fullClassPath = new SystemPath();
+		final var fullClassPath = new SystemPath();
 		// Boot class path
 		if (!SarlBatchCompilerUtils.isModuleSupported(jversion)) {
 			fullClassPath.addEntries(cfg.getBootClasspath());
 		}
 		logger.fine(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
 		// User class path
-		final SystemPath userClassPath = new SystemPath();
+		final var userClassPath = new SystemPath();
 		userClassPath.addEntries(cfg.getClasspath());
 		if (userClassPath.isEmpty()) {
 			try {
@@ -87,10 +87,10 @@ public final class ClassPathUtils {
 	 */
 	public static SystemPath buildModulePath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
 			JavaVersion jversion, Logger logger) {
-		final SystemPath fullModulePath = new SystemPath();
+		final var fullModulePath = new SystemPath();
 		if (SarlBatchCompilerUtils.isModuleSupported(jversion)) {
 			// User module path
-			final SystemPath userModulePath = new SystemPath();
+			final var userModulePath = new SystemPath();
 			userModulePath.addEntries(cfg.getModulePath());
 			if (userModulePath.isEmpty()) {
 				try {

@@ -54,7 +54,7 @@ public final class SARLUiPlugin {
 	 * @see #openError(Shell, String, String, Throwable)
 	 */
 	public static void log(Throwable exception) {
-		final LangActivator activator = LangActivator.getInstance();
+		final var activator = LangActivator.getInstance();
 		if (exception instanceof CoreException) {
 			activator.getLog().log(new Status(IStatus.ERROR, LangActivator.PLUGIN_ID,
 					exception.getMessage(),
@@ -79,10 +79,10 @@ public final class SARLUiPlugin {
 	 * @see #log(Throwable)
 	 */
 	public static void openError(Shell shell, String title, String message, String reasonMessage, Throwable exception) {
-		final Throwable ex = (exception != null) ? Throwables.getRootCause(exception) : null;
+		final var ex = (exception != null) ? Throwables.getRootCause(exception) : null;
 		if (ex != null) {
 			log(ex);
-			final IStatus status = new Status(IStatus.ERROR, LangActivator.PLUGIN_ID, reasonMessage, ex);
+			final var status = new Status(IStatus.ERROR, LangActivator.PLUGIN_ID, reasonMessage, ex);
 			ErrorDialog.openError(shell, title, message, status);
 		} else {
 			MessageDialog.openError(shell, title, message);

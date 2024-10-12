@@ -64,9 +64,9 @@ public abstract class AbstractCsyntaxHighlightingFragment2 extends AbstractExter
 
 		@Override
 		public void appendComment(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
+			final var comment = applyFormat(text, parameters);
 			appendNl("/* "); //$NON-NLS-1$
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl(" * " + line.trim()); //$NON-NLS-1$
 			}
 			appendNl("*/"); //$NON-NLS-1$
@@ -74,9 +74,9 @@ public abstract class AbstractCsyntaxHighlightingFragment2 extends AbstractExter
 
 		@Override
 		public void appendHeader() {
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 			appendNl("/* "); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", " * ")); //$NON-NLS-1$//$NON-NLS-2$
 			}
 			appendNl("*/"); //$NON-NLS-1$

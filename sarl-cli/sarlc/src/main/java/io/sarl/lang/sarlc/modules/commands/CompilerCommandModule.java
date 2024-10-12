@@ -24,7 +24,6 @@ package io.sarl.lang.sarlc.modules.commands;
 import static io.bootique.BQCoreModule.extend;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -57,7 +56,7 @@ public class CompilerCommandModule implements BQModule {
 
 	@Override
 	public void configure(Binder binder) {
-		final String trueFalseValues = MessageFormat.format(Messages.CompilerCommandModule_1, Boolean.TRUE.toString(), Boolean.FALSE.toString());
+		final var trueFalseValues = MessageFormat.format(Messages.CompilerCommandModule_1, Boolean.TRUE.toString(), Boolean.FALSE.toString());
 		extend(binder)
 		.addOption(OptionMetadata.builder(
 				CompilerCommand.PROGRESS_OPTION_NAME, MessageFormat.format(Messages.CompilerCommandModule_0, Boolean.TRUE))
@@ -96,7 +95,7 @@ public class CompilerCommandModule implements BQModule {
 	@Provides
 	@Singleton
 	public ProgressBarConfig provideProgressBarConfig(ConfigurationFactory configFactory, Injector injector) {
-		final ProgressBarConfig config = ProgressBarConfig.getConfiguration(configFactory);
+		final var config = ProgressBarConfig.getConfiguration(configFactory);
 		injector.injectMembers(config);
 		return config;
 	}
@@ -110,12 +109,12 @@ public class CompilerCommandModule implements BQModule {
 	@Singleton
 	@Provides
 	public Logger provideRootLogger(ConfigurationFactory configFactory, Provider<ProgressBarConfig> config) {
-		final Class<?> type = getClass();
-		try (final InputStream stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
+		final var type = getClass();
+		try (final var stream = type.getResourceAsStream("logging.properties")) { //$NON-NLS-1$
 			LogManager.getLogManager().readConfiguration(stream);
-			final Logger root = Logger.getAnonymousLogger();
+			final var root = Logger.getAnonymousLogger();
 			if (root != null) {
-				ProgressBarConfig cfg = config.get();
+				final var cfg = config.get();
 				if (cfg.getEnable()) {
 					root.setLevel(cfg.getLevel().toJul());
 				}

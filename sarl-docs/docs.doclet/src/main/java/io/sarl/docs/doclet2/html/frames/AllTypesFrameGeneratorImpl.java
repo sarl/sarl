@@ -53,17 +53,12 @@ package io.sarl.docs.doclet2.html.frames;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.List;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
 import io.sarl.docs.doclet2.html.framework.AbstractDocumentationGenerator;
@@ -104,12 +99,12 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.AllTypesFrameGeneratorImpl_0);
 		computePaths(getPathBuilder().allTypesFrame(), true);
 		//
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
-		final String title = getDocumentTitleFor(null);
+		final var document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
+		final var title = getDocumentTitleFor(null);
 		setLastTitle(title);
-		final Element htmlTag = getHtmlAccessor().getRootElement(document);
+		final var htmlTag = getHtmlAccessor().getRootElement(document);
 		//
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
@@ -125,13 +120,13 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 	 * @param content the content.
 	 */
 	protected void generateContentHead(Element content) {
-		final Element head = getHtmlFactory().createHeadTag(content);
+		final var head = getHtmlFactory().createHeadTag(content);
 		getHtmlFactory().createTitleTag(head, getDocumentationTitle());
-		final Path pathToRoot = getPathToRoot();
-		for (final Path cssStyle : getCssStylesheets()) {
+		final var pathToRoot = getPathToRoot();
+		for (final var cssStyle : getCssStylesheets()) {
 			getHtmlFactory().createCssLinkTag(head, pathToRoot.resolve(cssStyle));
 		}
-		for (final Path jsScript : getJsScripts()) {
+		for (final var jsScript : getJsScripts()) {
 			getHtmlFactory().createJsLinkTag(head, pathToRoot.resolve(jsScript));
 		}
 	}
@@ -141,19 +136,19 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 	 * @param content the content.
 	 */
 	protected void generateContentBody(Element content) {
-		final Element body = getHtmlFactory().createBodyTag(content);
+		final var body = getHtmlFactory().createBodyTag(content);
 		body.addClass(CssStyles.FRAME.getCssClassname());
 		//
-		final Element typeListBlock = getHtmlFactory().createDivTag(body, null);
-		final Element typeListTitle = getHtmlFactory().createH2Tag(typeListBlock, CssStyles.HEADER_SMALL_TITLE);
+		final var typeListBlock = getHtmlFactory().createDivTag(body, null);
+		final var typeListTitle = getHtmlFactory().createH2Tag(typeListBlock, CssStyles.HEADER_SMALL_TITLE);
 		typeListTitle.appendText(Messages.AllTypesFrameGeneratorImpl_2);
-		final Element typeList = getHtmlFactory().createUlTag(typeListBlock, CssStyles.BULLET_LESS_LIST);
+		final var typeList = getHtmlFactory().createUlTag(typeListBlock, CssStyles.BULLET_LESS_LIST);
 		//
-		final SortedSet<TypeElement> list = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
+		final var list = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
 		list.addAll(getTypeRepository().getTypes());
-		for (final TypeElement type : list) {
-			final Element typeLine = getHtmlFactory().createLiTag(typeList, CssStyles.BULLET_LESS_LIST);
-			final List<? extends Node> link = getHtmlFactory().createTypeLink(type, true, null, this);
+		for (final var type : list) {
+			final var typeLine = getHtmlFactory().createLiTag(typeList, CssStyles.BULLET_LESS_LIST);
+			final var link = getHtmlFactory().createTypeLink(type, true, null, this);
 			getHtmlFactory().addLinkTargetFrame(link, HtmlIndexGeneratorImpl.MAIN_TYPE_FRAME_NAME);
 			typeLine.appendChildren(link);
 		}

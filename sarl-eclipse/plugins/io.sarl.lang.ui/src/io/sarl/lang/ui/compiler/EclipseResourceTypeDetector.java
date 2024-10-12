@@ -71,18 +71,18 @@ public class EclipseResourceTypeDetector extends AbstractResourceTypeDetector {
 	 *     the type of the resource.
 	 */
 	protected static Boolean isJavaOrMavenTestResource(Resource resource) {
-		final URI uri = resource.getURI();
+		final var uri = resource.getURI();
 		if (uri.isPlatformResource()) {
-			final String platformString = uri.toPlatformString(true);
-			final IResource iresource = ResourcesPlugin.getWorkspace().getRoot().findMember(platformString);
+			final var platformString = uri.toPlatformString(true);
+			final var iresource = ResourcesPlugin.getWorkspace().getRoot().findMember(platformString);
 			if (iresource != null) {
-				final IProject project = iresource.getProject();
-				final IJavaProject javaProject = JavaCore.create(project);
+				final var project = iresource.getProject();
+				final var javaProject = JavaCore.create(project);
 				try {
-					final IPackageFragment packageFragment = javaProject.findPackageFragment(iresource.getParent().getFullPath());
-					final IPackageFragmentRoot root = (IPackageFragmentRoot) packageFragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
+					final var packageFragment = javaProject.findPackageFragment(iresource.getParent().getFullPath());
+					final var root = (IPackageFragmentRoot) packageFragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
 					if (root != null) {
-						final IPath rootPath = root.getPath();
+						final var rootPath = root.getPath();
 						String name = null;
 						if (root.isExternal()) {
 							name = rootPath.toOSString();

@@ -72,7 +72,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public String toString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
 		builder.add("participantId", this.participantId); //$NON-NLS-1$
 		builder.add("spaceId", this.spaceId); //$NON-NLS-1$
@@ -106,7 +106,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public int hashCode() {
-		int result = 1;
+		var result = 1;
 		result = 31 * result + ((this.participantId == null) ? 0 : this.participantId.hashCode());
 		result = 31 * result + ((this.spaceId == null) ? 0 : this.spaceId.hashCode());
 		return result;
@@ -123,8 +123,8 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 			return false;
 		}
 
-		if (obj instanceof Address) {
-			return equals((Address) obj);
+		if (obj instanceof Address cvalue) {
+			return equals(cvalue);
 		}
 		return false;
 	}

@@ -42,14 +42,14 @@ public class SynchronousServiceManager extends AbstractServiceManager {
 
 	@Override
 	protected void internalStartAllServices() {
-		for (final IService service : getServicesByState(ServiceState.NEW)) {
+		for (final var service : getServicesByState(ServiceState.NEW)) {
 			startService(service);
 		}
 	}
 	
 	@Override
 	protected void internalStopAllServices() {
-		for (final IService service : getServicesByState(ServiceState.RUNNING)) {
+		for (final var service : getServicesByState(ServiceState.RUNNING)) {
 			stopService(service);
 		}
 	}

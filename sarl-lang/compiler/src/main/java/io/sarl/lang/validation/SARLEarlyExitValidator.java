@@ -26,10 +26,8 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.validation.XtendEarlyExitValidator;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
@@ -57,7 +55,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Override
 	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
-		final IssueSeverities severities = super.getIssueSeverities(context, eObject);
+		final var severities = super.getIssueSeverities(context, eObject);
 		return this.warningSuppressor.getIssueSeverities(context, eObject, severities);
 	}
 
@@ -73,14 +71,14 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	@Override
 	@Check
 	public void checkDeadCode(XBlockExpression block) {
-		final EList<XExpression> expressions = block.getExpressions();
-		final int size = expressions.size();
-		for (int i = 0; i < size - 1; ++i) {
-			final XExpression expression = expressions.get(i);
+		final var expressions = block.getExpressions();
+		final var size = expressions.size();
+		for (var i = 0; i < size - 1; ++i) {
+			final var expression = expressions.get(i);
 			if (this.earlyExitComputer.isEarlyExit(expression)) {
-				if (expression instanceof XAbstractFeatureCall) {
+				if (expression instanceof XAbstractFeatureCall cvalue) {
 					if (this.earlyExitComputer.isEarlyExitAnnotatedElement(
-							((XAbstractFeatureCall) expression).getFeature())) {
+							cvalue.getFeature())) {
 						markAsDeadCode(expressions.get(i + 1));
 					}
 				} else {
@@ -98,8 +96,8 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	@Override
 	protected void collectExits(EObject expr, List<XExpression> found) {
 		super.collectExits(expr, found);
-		if (expr instanceof XAbstractFeatureCall) {
-			final JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
+		if (expr instanceof XAbstractFeatureCall cvalue) {
+			final var element = cvalue.getFeature();
 			if (this.earlyExitComputer.isEarlyExitAnnotatedElement(element)) {
 				found.add((XExpression) expr);
 			}
@@ -108,9 +106,8 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	// This code is copied from the super type
 	private boolean markAsDeadCode(XExpression expression) {
-		if (expression instanceof XBlockExpression) {
-			final XBlockExpression block = (XBlockExpression) expression;
-			final EList<XExpression> expressions = block.getExpressions();
+		if (expression instanceof XBlockExpression block) {
+			final var expressions = block.getExpressions();
 			if (!expressions.isEmpty()) {
 				markAsDeadCode(expressions.get(0));
 				return true;

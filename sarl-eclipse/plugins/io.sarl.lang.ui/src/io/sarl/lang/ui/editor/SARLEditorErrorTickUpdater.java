@@ -94,15 +94,15 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 	 */
 	protected Resource getXtextResource() {
 		//FIXME: for helping to resolve #661
-		final XtextEditor editor = getEditor();
+		final var editor = getEditor();
 		if (editor != null) {
-			final IResource resource = editor.getResource();
+			final var resource = editor.getResource();
 			if (resource instanceof IStorage) {
-				final IProject project = resource.getProject();
+				final var project = resource.getProject();
 				if (project != null) {
-					final ResourceSet resourceSet = this.resourceSetProvider.get(project);
+					final var resourceSet = this.resourceSetProvider.get(project);
 					assert resourceSet != null;
-					final URI uri = this.uriMapper.getUri((IStorage) resource);
+					final var uri = this.uriMapper.getUri((IStorage) resource);
 					if (uri != null) {
 						return resourceSet.getResource(uri, true);
 					}
@@ -116,16 +116,16 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 	public void modelChanged(final IAnnotationModel model) {
 		super.modelChanged(model);
 		//FIXME: for helping to resolve #661
-		final Display display = PlatformUI.getWorkbench().getDisplay();
+		final var display = PlatformUI.getWorkbench().getDisplay();
 		display.asyncExec(() -> {
-			final XtextEditor editor = getEditor();
+			final var editor = getEditor();
 			if (editor != null && !editor.isDirty() && editor.getInternalSourceViewer() != null) {
-				final IAnnotationModel currentModel = editor.getInternalSourceViewer().getAnnotationModel();
+				final var currentModel = editor.getInternalSourceViewer().getAnnotationModel();
 				if (currentModel != null && currentModel == model) {
-					final Resource resource = getXtextResource();
+					final var resource = getXtextResource();
 					if (isReconciliable(resource)) {
-						final Set<String> markers = extractErrorMarkerMessages(currentModel);
-						final List<Diagnostic> resourceErrors = resource.getErrors();
+						final var markers = extractErrorMarkerMessages(currentModel);
+						final var resourceErrors = resource.getErrors();
 						if (markers.size() != resourceErrors.size() || notSame(markers, resourceErrors)) {
 							LangActivator.getInstance().getLog().log(
 									new Status(IStatus.ERROR, LangActivator.PLUGIN_ID,
@@ -147,7 +147,7 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 
 	private static boolean notSame(Set<String> markers, List<Diagnostic> diagnostics) {
 		//FIXME: for helping to resolve #661
-		for (final Diagnostic diag : diagnostics) {
+		for (final var diag : diagnostics) {
 			if (!markers.contains(diag.getMessage())) {
 				return true;
 			}
@@ -157,12 +157,12 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 
 	private static Set<String> extractErrorMarkerMessages(IAnnotationModel currentModel) {
 		//FIXME: for helping to resolve #661
-		final Iterator<Annotation> annotations = currentModel.getAnnotationIterator();
-		final Set<String> errors = new TreeSet<>();
+		final var annotations = currentModel.getAnnotationIterator();
+		final var errors = new TreeSet<String>();
 		while (annotations.hasNext()) {
-			final Annotation annotation = annotations.next();
+			final var annotation = annotations.next();
 			if (annotation != null && !annotation.isMarkedDeleted() && MARKER_TYPE.equals(annotation.getType())) {
-				final String text = annotation.getText();
+				final var text = annotation.getText();
 				if (!Strings.isNullOrEmpty(text)) {
 					errors.add(text);
 				}

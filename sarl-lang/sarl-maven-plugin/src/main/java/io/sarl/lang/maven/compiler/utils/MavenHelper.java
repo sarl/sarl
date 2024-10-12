@@ -25,7 +25,6 @@ import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -106,7 +105,7 @@ public class MavenHelper {
 		Method method;
 
 		method = null;
-		for (final Method m : this.session.getClass().getDeclaredMethods()) {
+		for (final var m : this.session.getClass().getDeclaredMethods()) {
 			if ("getRepositorySession".equals(m.getName())) { //$NON-NLS-1$
 				method = m;
 				break;
@@ -118,7 +117,7 @@ public class MavenHelper {
 		this.getRepositorySessionMethod = method;
 
 		method = null;
-		for (final Method m : this.buildPluginManager.getClass().getDeclaredMethods()) {
+		for (final var m : this.buildPluginManager.getClass().getDeclaredMethods()) {
 			if ("loadPlugin".equals(m.getName())) { //$NON-NLS-1$
 				method = m;
 				break;
@@ -174,7 +173,7 @@ public class MavenHelper {
 		} catch (MissingResourceException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
-		String value = resource.getString(key);
+		var value = resource.getString(key);
 		if (value == null || value.isEmpty()) {
 			value = Strings.nullToEmpty(value);
 			if (logger != null) {
@@ -193,7 +192,7 @@ public class MavenHelper {
 	public PluginDescriptor loadPlugin(Plugin plugin)
 			throws MojoExecutionException {
 		try {
-			final Object repositorySessionObject = this.getRepositorySessionMethod.invoke(this.session);
+			final var repositorySessionObject = this.getRepositorySessionMethod.invoke(this.session);
 			return (PluginDescriptor) this.loadPluginMethod.invoke(
 					this.buildPluginManager,
 					plugin,
@@ -227,7 +226,7 @@ public class MavenHelper {
 	 */
 	@SuppressWarnings("static-method")
 	public Dependency toDependency(Artifact artifact) {
-		final Dependency result = new Dependency();
+		final var result = new Dependency();
 		result.setArtifactId(artifact.getArtifactId());
 		result.setClassifier(artifact.getClassifier());
 		result.setGroupId(artifact.getGroupId());
@@ -383,16 +382,16 @@ public class MavenHelper {
 	 */
 	public synchronized Map<String, Dependency> getPluginDependencies() throws MojoExecutionException {
 		if (this.pluginDependencies == null) {
-			final String groupId = getSarlMavenPluginGroupId();
-			final String artifactId = getSarlMavenPluginArtifactId();
-			final String pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
+			final var groupId = getSarlMavenPluginGroupId();
+			final var artifactId = getSarlMavenPluginArtifactId();
+			final var pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
 
-			final Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey, true);
+			final var dependencies = resolveDependencies(pluginArtifactKey, true);
 
-			final Map<String, Dependency> deps = new TreeMap<>();
+			final var deps = new TreeMap<String, Dependency>();
 
-			for (final Artifact artifact : dependencies) {
-				final Dependency dep = toDependency(artifact);
+			for (final var artifact : dependencies) {
+				final var dep = toDependency(artifact);
 				deps.put(ArtifactUtils.versionlessKey(artifact), dep);
 			}
 
@@ -421,7 +420,7 @@ public class MavenHelper {
 	 * @since 0.8
 	 */
 	public Set<Artifact> resolve(String groupId, String artifactId) throws MojoExecutionException {
-		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		final var request = new ArtifactResolutionRequest();
 		request.setResolveRoot(true);
 		request.setResolveTransitively(true);
 		request.setLocalRepository(getSession().getLocalRepository());
@@ -433,7 +432,7 @@ public class MavenHelper {
 		request.setProxies(getSession().getRequest().getProxies());
 		request.setArtifact(createArtifact(groupId, artifactId));
 
-		final ArtifactResolutionResult result = resolve(request);
+		final var result = resolve(request);
 
 		return result.getArtifacts();
 	}
@@ -465,7 +464,7 @@ public class MavenHelper {
 			pluginArtifact = getSession().getCurrentProject().getArtifactMap().get(artifactId);
 		}
 
-		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		final var request = new ArtifactResolutionRequest();
 		request.setResolveRoot(false);
 		request.setResolveTransitively(true);
 		request.setLocalRepository(getSession().getLocalRepository());
@@ -477,12 +476,12 @@ public class MavenHelper {
 		request.setProxies(getSession().getRequest().getProxies());
 		request.setArtifact(pluginArtifact);
 
-		final ArtifactResolutionResult result = resolve(request);
+		final var result = resolve(request);
 
 		try {
 			this.resolutionErrorHandler.throwErrors(request, result);
 		} catch (MultipleArtifactsNotFoundException e) {
-			final Collection<Artifact> missing = new HashSet<>(e.getMissingArtifacts());
+			final var missing = new HashSet<>(e.getMissingArtifacts());
 			if (!missing.isEmpty()) {
 				throw new MojoExecutionException(e.getLocalizedMessage(), e);
 			}
@@ -502,13 +501,13 @@ public class MavenHelper {
 	 * @throws MojoExecutionException if the plugin was not found.
 	 */
 	public String getPluginDependencyVersion(String groupId, String artifactId) throws MojoExecutionException {
-		final Map<String, Dependency> deps = getPluginDependencies();
-		final String key = ArtifactUtils.versionlessKey(groupId, artifactId);
+		final var deps = getPluginDependencies();
+		final var key = ArtifactUtils.versionlessKey(groupId, artifactId);
 		this.log.debug("COMPONENT DEPENDENCIES(getPluginVersionFromDependencies):"); //$NON-NLS-1$
 		this.log.debug(deps.toString());
-		final Dependency dep = deps.get(key);
+		final var dep = deps.get(key);
 		if (dep != null) {
-			final String version = dep.getVersion();
+			final var version = dep.getVersion();
 			if (version != null && !version.isEmpty()) {
 				return version;
 			}
@@ -525,12 +524,12 @@ public class MavenHelper {
 	 * @since 0.8
 	 */
 	public Xpp3Dom toXpp3Dom(PlexusConfiguration config) throws PlexusConfigurationException {
-		final Xpp3Dom result = new Xpp3Dom(config.getName());
+		final var result = new Xpp3Dom(config.getName());
 		result.setValue(config.getValue(null));
-		for (final String name : config.getAttributeNames()) {
+		for (final var name : config.getAttributeNames()) {
 			result.setAttribute(name, config.getAttribute(name));
 		}
-		for (final PlexusConfiguration child : config.getChildren()) {
+		for (final var child : config.getChildren()) {
 			result.addChild(toXpp3Dom(child));
 		}
 		return result;
@@ -546,7 +545,7 @@ public class MavenHelper {
 	@SuppressWarnings("static-method")
 	public Xpp3Dom toXpp3Dom(String content, Logger logger) {
 		if (content != null && !content.isEmpty()) {
-			try (StringReader sr = new StringReader(content)) {
+			try (var sr = new StringReader(content)) {
 				return Xpp3DomBuilder.build(sr);
 			} catch (Exception exception) {
 				if (logger != null) {

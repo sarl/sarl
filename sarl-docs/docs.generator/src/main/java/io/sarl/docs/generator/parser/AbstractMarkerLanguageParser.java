@@ -28,9 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
@@ -82,30 +80,30 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return the integer range.
 	 */
 	public static IntegerRange parseRange(String stringRange, int minValue) {
-		final String sepPattern = "[,;\\-:]"; //$NON-NLS-1$
+		final var sepPattern = "[,;\\-:]"; //$NON-NLS-1$
 		try {
-			final Matcher matcher = Pattern.compile("^\\s*" //$NON-NLS-1$
+			final var matcher = Pattern.compile("^\\s*" //$NON-NLS-1$
 					+ "(?:(?<left>[0-9]+)\\s*(?:(?<sep1>" + sepPattern + ")\\s*(?<right1>[0-9]+)?)?)" //$NON-NLS-1$ //$NON-NLS-2$
 					+ "|(?:(?<sep2>" + sepPattern + ")\\s*(?<right2>[0-9]+))" //$NON-NLS-1$ //$NON-NLS-2$
 					+ "\\s*$") //$NON-NLS-1$
 					.matcher(stringRange);
 			if (matcher.matches()) {
-				final String left = matcher.group("left"); //$NON-NLS-1$
-				final String sep = select(matcher.group("sep1"), matcher.group("sep2")); //$NON-NLS-1$ //$NON-NLS-2$
-				final String right = select(matcher.group("right1"), matcher.group("right2")); //$NON-NLS-1$ //$NON-NLS-2$
+				final var left = matcher.group("left"); //$NON-NLS-1$
+				final var sep = select(matcher.group("sep1"), matcher.group("sep2")); //$NON-NLS-1$ //$NON-NLS-2$
+				final var right = select(matcher.group("right1"), matcher.group("right2")); //$NON-NLS-1$ //$NON-NLS-2$
 				if (Strings.isEmpty(left)) {
 					if (!Strings.isEmpty(sep) && !Strings.isEmpty(right)) {
 						return new IntegerRange(minValue, Math.max(minValue, Integer.parseInt(right)));
 					}
 				} else {
-					final int leftValue = Math.max(minValue, Integer.parseInt(left));
+					final var leftValue = Math.max(minValue, Integer.parseInt(left));
 					if (Strings.isEmpty(sep)) {
 						return new IntegerRange(leftValue, leftValue);
 					}
 					if (Strings.isEmpty(right)) {
 						return new IntegerRange(leftValue, Integer.MAX_VALUE);
 					}
-					final int rightValue = Math.max(minValue, Integer.parseInt(right));
+					final var rightValue = Math.max(minValue, Integer.parseInt(right));
 					if (rightValue < leftValue) {
 						return new IntegerRange(rightValue, leftValue);
 					}
@@ -140,7 +138,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return {@code true} if the extension is for a HTML file.
 	 */
 	public static boolean isHtmlFileExtension(String extension) {
-		for (final String ext : HTML_FILE_EXTENSIONS) {
+		for (final var ext : HTML_FILE_EXTENSIONS) {
 			if (Strings.equal(ext, extension)) {
 				return true;
 			}
@@ -211,7 +209,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 */
 	public String transform(File inputFile, boolean validationOfInternalLinks) {
 		preProcessingTransformation(null, inputFile, validationOfInternalLinks);
-		final String rawContent = getDocumentParser().transform(inputFile);
+		final var rawContent = getDocumentParser().transform(inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
 
@@ -224,7 +222,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 */
 	public String transform(Reader reader, File inputFile, boolean validationOfInternalLinks) {
 		preProcessingTransformation(null, inputFile, validationOfInternalLinks);
-		final String rawContent = getDocumentParser().transform(reader, inputFile);
+		final var rawContent = getDocumentParser().transform(reader, inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
 
@@ -237,7 +235,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 */
 	public String transform(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
 		preProcessingTransformation(content, inputFile, validationOfInternalLinks);
-		final String rawContent = getDocumentParser().transform(content, inputFile);
+		final var rawContent = getDocumentParser().transform(content, inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
 
@@ -265,8 +263,8 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return the validation components.
 	 */
 	public Iterable<ValidationComponent> getStandardValidationComponents(File inputFile) {
-		final ValidationHandler handler = new ValidationHandler();
-		final SarlDocumentationParser parser = getDocumentParser();
+		final var handler = new ValidationHandler();
+		final var parser = getDocumentParser();
 		parser.extractValidationComponents(inputFile, handler);
 		return handler.getComponents();
 	}
@@ -278,7 +276,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return the validation components.
 	 */
 	public Iterable<ValidationComponent> getStandardValidationComponents(CharSequence content, File inputFile) {
-		final ValidationHandler handler = new ValidationHandler();
+		final var handler = new ValidationHandler();
 		getDocumentParser().extractValidationComponents(content, inputFile, handler);
 		return handler.getComponents();
 	}
@@ -355,7 +353,7 @@ public abstract class AbstractMarkerLanguageParser {
 
 		@Override
 		public void apply(Map<Tag, List<ValidationComponentData>> it) {
-			for (final Entry<Tag, List<ValidationComponentData>> entry : it.entrySet()) {
+			for (final var entry : it.entrySet()) {
 				final boolean isCompilable;
 				final boolean isExecutable;
 				switch (entry.getKey()) {
@@ -375,8 +373,8 @@ public abstract class AbstractMarkerLanguageParser {
 				default:
 					continue;
 				}
-				for (final ValidationComponentData code : entry.getValue()) {
-					final ValidationComponent component = new ValidationComponent();
+				for (final var code : entry.getValue()) {
+					final var component = new ValidationComponent();
 					component.setCompilable(isCompilable);
 					component.setExecutable(isExecutable);
 					component.setSourceFile(code.file);
@@ -440,7 +438,7 @@ public abstract class AbstractMarkerLanguageParser {
 		 */
 		public String validateAnchor(String anchor, int line) {
 			if (!this.anchorToTitle.containsKey(anchor)) {
-				String anc = this.simpleAnchorToAnchor.get(anchor);
+				var anc = this.simpleAnchorToAnchor.get(anchor);
 				if (!Strings.isEmpty(anc) && anc != MANY) {
 					return anc;
 				}
@@ -448,9 +446,9 @@ public abstract class AbstractMarkerLanguageParser {
 				if (!Strings.isEmpty(anc) && anc != MANY) {
 					return anc;
 				}
-				final String[] anchors = new String[this.anchorToTitle.size()];
+				final var anchors = new String[this.anchorToTitle.size()];
 				int i = 0;
-				for (final String eanchor : this.anchorToTitle.keySet()) {
+				for (final var eanchor : this.anchorToTitle.keySet()) {
 					anchors[i] = eanchor;
 					++i;
 				}
@@ -462,8 +460,8 @@ public abstract class AbstractMarkerLanguageParser {
 
 		@Override
 		public String toString() {
-			final StringBuilder b = new StringBuilder();
-			for (final String key : this.anchorToTitle.keySet()) {
+			final var b = new StringBuilder();
+			for (final var key : this.anchorToTitle.keySet()) {
 				b.append(key);
 				b.append("\n"); //$NON-NLS-1$
 			}

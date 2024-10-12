@@ -30,11 +30,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
@@ -92,7 +90,7 @@ public abstract class AbstractMojoTest {
 	 * @throws Exception the error status.
 	 */
 	public static void touchSarlWebSites() throws Exception {
-		Boolean bool = IS_SARL_WEBSITE_AVAILABLE;
+		var bool = IS_SARL_WEBSITE_AVAILABLE;
 		if (bool != null) {
 			assumeTrue(bool.booleanValue(), () -> "SARL webiste are not available on Internet"); //$NON-NLS-1$
 			return;
@@ -115,7 +113,7 @@ public abstract class AbstractMojoTest {
 	 */
 	public static void touchRemotePage(String url, boolean failureIfNotAccessible) throws Exception {
 		assert url != null;
-		touchRemotePage(new URL(url), failureIfNotAccessible);
+		touchRemotePage(new URI(url).toURL(), failureIfNotAccessible);
 	}
 
 	/** Test if a remote page is accessible on Internet.
@@ -128,13 +126,13 @@ public abstract class AbstractMojoTest {
 	public static void touchRemotePage(URL url, boolean failureIfNotAccessible) throws Exception {
 		assert url != null;
 		try {
-			final URLConnection con = url.openConnection();
-			HttpURLConnection httpCon = (HttpURLConnection) con;
+			final var con = url.openConnection();
+			var httpCon = (HttpURLConnection) con;
 			httpCon.setRequestMethod("HEAD"); //$NON-NLS-1$
 			httpCon.setConnectTimeout(NETWORK_TIMEOUT);
 			httpCon.setReadTimeout(NETWORK_TIMEOUT);
 			httpCon.connect();
-			final int code = httpCon.getResponseCode();
+			final var code = httpCon.getResponseCode();
 			httpCon.disconnect();
 			if (code != HttpURLConnection.HTTP_OK) {
 				throw new IOException("Remote server replies unexpected code " + code //$NON-NLS-1$
@@ -154,8 +152,8 @@ public abstract class AbstractMojoTest {
 	 * @return the complete multiline string.
 	 */
 	public static String multilineString(Object... lines) {
-		final StringBuilder b = new StringBuilder();
-		for (final Object line : lines) {
+		final var b = new StringBuilder();
+		for (final var line : lines) {
 			if (line != null) {
 				b.append(line);
 			}
@@ -175,7 +173,7 @@ public abstract class AbstractMojoTest {
 			code.run();
 			fail("Expecting exception of type " + expected.getName() + " but no exception was thrown"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Throwable ex) {
-			final Throwable cs = getCause(ex);
+			final var cs = getCause(ex);
 			if (!expected.isAssignableFrom(cs.getClass())) {
 				fail("Expecting exception of type " + expected.getName() + " but catch exception of type " + cs.getClass().getName(), cs); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -184,7 +182,7 @@ public abstract class AbstractMojoTest {
 
 	private static Throwable getCause(Throwable ex) {
 		if (ex != null) {
-			Throwable cs = ex;
+			var cs = ex;
 			while (cs.getCause() != null && cs.getCause() != cs && cs.getCause() != ex) {
 				cs = cs.getCause();
 			}
@@ -220,19 +218,19 @@ public abstract class AbstractMojoTest {
 	 * @since 0.13
 	 */
 	protected Verifier executeMojo(String projectName, String goalName, boolean outputOnConsole) throws Exception {
-		String tempDirPath = System.getProperty("maven.test.tmpdir", //$NON-NLS-1$
+		var tempDirPath = System.getProperty("maven.test.tmpdir", //$NON-NLS-1$
 				System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
-		File tempDir = new File(tempDirPath);
-		File baseDir = new File(tempDir, projectName);
+		var tempDir = new File(tempDirPath);
+		var baseDir = new File(tempDir, projectName);
 		assertNotNull(baseDir);
 
 		FileUtils.deleteDirectory(baseDir);
 
-		URL url = getClass().getResource("/projects/" + projectName); //$NON-NLS-1$
+		var url = getClass().getResource("/projects/" + projectName); //$NON-NLS-1$
 		if (url == null) {
 			throw new IllegalArgumentException("Resource not found: " + projectName); //$NON-NLS-1$
 		}
-		File resourceFile = new File(new URI(url.toExternalForm()));
+		var resourceFile = new File(new URI(url.toExternalForm()));
 		assertTrue(resourceFile.isDirectory());
 		FileUtils.copyDirectory(resourceFile, baseDir);
 
@@ -241,11 +239,11 @@ public abstract class AbstractMojoTest {
 
 		recursiveDeleteOnShutdownHook(baseDir);
 
-		final File mavenCmd = findDefaultMavenBin();
+		final var mavenCmd = findDefaultMavenBin();
 		assumeTrue(mavenCmd != null, "Maven command not found"); //$NON-NLS-1$
 
 		@SuppressWarnings("null")
-		final List<String> cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$
+		final var cmd = new ArrayList<>(Arrays.asList(mavenCmd.getAbsolutePath(), "-ff", "clean")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (!Strings.isNullOrEmpty(goalName)) {
 			cmd.add(goalName);
 		}
@@ -272,14 +270,14 @@ public abstract class AbstractMojoTest {
 	 * @since 0.13
 	 */
 	protected void executeMojoWithError(String projectName, String goalName, boolean outputOnConsole, String expectedErrorMessage) throws Exception {
-		final Verifier verifier = executeMojo(projectName, goalName, outputOnConsole);
+		final var verifier = executeMojo(projectName, goalName, outputOnConsole);
 		verifier.assertErrorLog(expectedErrorMessage);
 	}
 
 	private static File findDefaultMavenBin() {
-		final File mavenHome = findDefaultMavenHome();
+		final var mavenHome = findDefaultMavenHome();
 		if (mavenHome != null) {
-			final File cmd = new File(new File(mavenHome, "bin"), "mvn"); //$NON-NLS-1$ //$NON-NLS-2$
+			final var cmd = new File(new File(mavenHome, "bin"), "mvn"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (cmd.exists() && cmd.canExecute()) {
 				return cmd;
 			}
@@ -292,18 +290,17 @@ public abstract class AbstractMojoTest {
 	 * @return the Maven home directory.
 	 */
 	protected static File findDefaultMavenHome() {
-		String defaultMavenHome = System.getProperty("maven.home"); //$NON-NLS-1$
+		var defaultMavenHome = System.getProperty("maven.home"); //$NON-NLS-1$
 
 		if ( defaultMavenHome == null ) {
-			final Map<String, String> envVars = System.getenv();
+			final var envVars = System.getenv();
 			defaultMavenHome = envVars.get("M2_HOME"); //$NON-NLS-1$
 		}
 
 		if ( defaultMavenHome == null )
 		{
-			File f = new File( System.getProperty( "user.home" ), "m2" ); //$NON-NLS-1$ //$NON-NLS-2$
-			if ( new File( f, "bin/mvn" ).isFile() ) //$NON-NLS-1$
-			{
+			var f = new File( System.getProperty( "user.home" ), "m2" ); //$NON-NLS-1$ //$NON-NLS-2$
+			if (new File(f, "bin/mvn" ).isFile() ) { //$NON-NLS-1$
 				defaultMavenHome = f.getAbsolutePath();
 			}
 		}

@@ -22,13 +22,10 @@
 package io.sarl.lang.compiler;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
@@ -67,12 +64,12 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 			resourceSet = null;
 		}
 		if (resourceSet != null) {
-			final GeneratorConfigAdapter adapter = GeneratorConfigAdapter.findInEmfObject(resourceSet);
+			final var adapter = GeneratorConfigAdapter.findInEmfObject(resourceSet);
 			if (adapter != null && adapter.getLanguage2GeneratorConfig().containsKey(this.languageId)) {
 				return adapter.getLanguage2GeneratorConfig().get(this.languageId);
 			}
 		}
-		final GeneratorConfig2 config = new GeneratorConfig2();
+		final var config = new GeneratorConfig2();
 		return config;
 	}
 
@@ -83,7 +80,7 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 	 * @return the configuration.
 	 */
 	public GeneratorConfig2 install(final ResourceSet resourceSet, GeneratorConfig2 config) {
-		GeneratorConfigAdapter adapter = GeneratorConfigAdapter.findInEmfObject(resourceSet);
+		var adapter = GeneratorConfigAdapter.findInEmfObject(resourceSet);
 		if (adapter == null) {
 			adapter = new GeneratorConfigAdapter();
 		}
@@ -110,9 +107,9 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 		 */
 		public static GeneratorConfigAdapter findInEmfObject(final Notifier emfObject) {
 			if (emfObject != null) {
-				for (final Adapter adapter : emfObject.eAdapters()) {
-					if (adapter instanceof GeneratorConfigAdapter.GeneratorConfigAdapterAdapter) {
-						return ((GeneratorConfigAdapter.GeneratorConfigAdapterAdapter) adapter).get();
+				for (final var adapter : emfObject.eAdapters()) {
+					if (adapter instanceof GeneratorConfigAdapter.GeneratorConfigAdapterAdapter gcaa) {
+						return gcaa.get();
 					}
 				}
 			}
@@ -125,13 +122,13 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 		 * @return the removed adapter.
 		 */
 		public static GeneratorConfigAdapter removeFromEmfObject(final Notifier emfObject) {
-			final List<Adapter> adapters = emfObject.eAdapters();
-			final Iterator<Adapter> iterator = adapters.iterator();
+			final var adapters = emfObject.eAdapters();
+			final var iterator = adapters.iterator();
 			while (iterator.hasNext()) {
-				final Adapter adapter = iterator.next();
-				if (adapter instanceof GeneratorConfigAdapter.GeneratorConfigAdapterAdapter) {
+				final var adapter = iterator.next();
+				if (adapter instanceof GeneratorConfigAdapter.GeneratorConfigAdapterAdapter gcaa) {
 					iterator.remove();
-					return ((GeneratorConfigAdapter.GeneratorConfigAdapterAdapter) adapter).get();
+					return gcaa.get();
 				}
 			}
 			return null;
@@ -142,11 +139,11 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 		 * @param emfObject the EMF object.
 		 */
 		public void attachToEmfObject(Notifier emfObject) {
-			final GeneratorConfigAdapter result = findInEmfObject(emfObject);
+			final var result = findInEmfObject(emfObject);
 			if (result != null) {
 				throw new IllegalStateException(Messages.GeneratorConfigProvider2_0);
 			}
-			final GeneratorConfigAdapter.GeneratorConfigAdapterAdapter adapter = new GeneratorConfigAdapter.GeneratorConfigAdapterAdapter(this);
+			final var adapter = new GeneratorConfigAdapter.GeneratorConfigAdapterAdapter(this);
 			emfObject.eAdapters().add(adapter);
 		}
 

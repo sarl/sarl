@@ -48,19 +48,18 @@ public class SARLHoverSerializer extends XtendHoverSerializer {
 
 	@Override
 	public String computeUnsugaredExpression(EObject object) {
-		if (object instanceof XAbstractFeatureCall) {
-			final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) object;
-			final JvmIdentifiableElement feature = featureCall.getFeature();
+		if (object instanceof XAbstractFeatureCall featureCall) {
+			final var feature = featureCall.getFeature();
 			if (feature instanceof JvmExecutable && !feature.eIsProxy()
 					&& (featureCall.getImplicitReceiver() != null || featureCall.getImplicitFirstArgument() != null)
 					&& !featureCall.isStatic()) {
-				final XExpression receiver = featureCall.getActualReceiver();
-				if (receiver instanceof XMemberFeatureCall) {
-					final JvmIdentifiableElement memberFeature = ((XMemberFeatureCall) receiver).getFeature();
-					final String name = memberFeature.getSimpleName();
+				final var receiver = featureCall.getActualReceiver();
+				if (receiver instanceof XMemberFeatureCall cvalue) {
+					final var memberFeature = cvalue.getFeature();
+					final var name = memberFeature.getSimpleName();
 					if (Utils.isNameForHiddenCapacityImplementationCallingMethod(name)) {
-						final JvmOperation op = (JvmOperation) memberFeature;
-						final StringBuilder result = new StringBuilder();
+						final var op = (JvmOperation) memberFeature;
+						final var result = new StringBuilder();
 						result.append("getSkill(typeof("); //$NON-NLS-1$
 						result.append(op.getReturnType().getSimpleName());
 						result.append("))."); //$NON-NLS-1$

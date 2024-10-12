@@ -136,7 +136,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	@Override
 	public ManifestBasedSREInstall clone() {
-		final ManifestBasedSREInstall clone = (ManifestBasedSREInstall) super.clone();
+		final var clone = (ManifestBasedSREInstall) super.clone();
 		clone.jarFile = this.jarFile == null ? null : Path.fromPortableString(clone.jarFile.toPortableString());
 		return clone;
 	}
@@ -162,7 +162,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	 */
 	public void setJarFile(IPath jarFile) {
 		if (!Objects.equal(jarFile, this.jarFile)) {
-			final PropertyChangeEvent event = new PropertyChangeEvent(this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
+			final var event = new PropertyChangeEvent(this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
 					this.jarFile, jarFile);
 			this.jarFile = jarFile;
 			setDirty(true);
@@ -174,7 +174,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getLocation() {
-		final IPath iJarFile = getJarFile();
+		final var iJarFile = getJarFile();
 		if (iJarFile == null) {
 			return getName();
 		}
@@ -183,9 +183,9 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getName() {
-		String nam = getNameNoDefault();
+		var nam = getNameNoDefault();
 		if (Strings.isNullOrEmpty(nam)) {
-			final IPath path = getJarFile();
+			final var path = getJarFile();
 			if (path != null) {
 				nam = path.removeFileExtension().lastSegment();
 			} else {
@@ -198,8 +198,8 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	@Override
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
-			try (JarFile jFile = new JarFile(this.jarFile.toFile())) {
-				final Manifest manifest = jFile.getManifest();
+			try (var jFile = new JarFile(this.jarFile.toFile())) {
+				final var manifest = jFile.getManifest();
 				//
 				// Main class
 				this.manifestMainClass = manifest.getMainAttributes().getValue(SREManifestPreferenceConstants.MANIFEST_MAIN_CLASS);
@@ -210,18 +210,18 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 					setMainClass(this.manifestMainClass);
 				}
 				// Get SARL section:
-				final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
+				final var sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 				if (sarlSection == null) {
 					throw new SREException(Messages.StandardSREInstall_1);
 				}
 				//
 				// SARL version
-				final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
+				final var sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 				String minVersion = null;
 				String maxVersion = null;
 				if (!Strings.isNullOrEmpty(sarlVersion)) {
 					try {
-						final Version sarlVer = Version.parseVersion(sarlVersion);
+						final var sarlVer = Version.parseVersion(sarlVersion);
 						if (sarlVer != null) {
 							minVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor(), 0).toString();
 							maxVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor() + 1, 0).toString();
@@ -244,9 +244,9 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				}
 				//
 				// VM arguments
-				final String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_VM_ARGUMENTS));
+				final var vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_VM_ARGUMENTS));
 				if (!this.vmArguments.equals(vmArgs)) {
-					final PropertyChangeEvent event = new PropertyChangeEvent(this,
+					final var event = new PropertyChangeEvent(this,
 							ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS, this.vmArguments, Strings.nullToEmpty(vmArgs));
 					this.vmArguments = vmArgs;
 					if (getNotify()) {
@@ -269,9 +269,9 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				this.cliLogDefaultValue = sarlSection.getValue(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE);
 				//
 				// Program arguments
-				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_PROGRAM_ARGUMENTS));
+				final var programArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_PROGRAM_ARGUMENTS));
 				if (!this.programArguments.equals(programArgs)) {
-					final PropertyChangeEvent event = new PropertyChangeEvent(this,
+					final var event = new PropertyChangeEvent(this,
 							ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS, this.programArguments, programArgs);
 					this.programArguments = programArgs;
 					if (getNotify()) {
@@ -281,22 +281,22 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				//
 				// Library Location
 				if (forceSettings || getClassPathEntries().isEmpty()) {
-					final List<IRuntimeClasspathEntry> classPath = new ArrayList<>();
-					LibraryLocation location = new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY);
-					IClasspathEntry cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
+					final var classPath = new ArrayList<IRuntimeClasspathEntry>();
+					var location = new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY);
+					var cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
 							location.getSystemLibrarySourcePath(), location.getPackageRootPath());
 
-					IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+					var rtcpEntry = new RuntimeClasspathEntry(cpEntry);
 					// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
 					// In fact you can have a single bootstrap library if you add a new one you remove the default one and it bugs
 					rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 					classPath.add(rtcpEntry);
 					//
-					final String classPathStr = manifest.getMainAttributes().getValue(SREManifestPreferenceConstants.MANIFEST_CLASS_PATH);
-					final IPath rootPath = this.jarFile.removeLastSegments(1);
+					final var classPathStr = manifest.getMainAttributes().getValue(SREManifestPreferenceConstants.MANIFEST_CLASS_PATH);
+					final var rootPath = this.jarFile.removeLastSegments(1);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
-						for (final String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
-							final IPath path = parsePath(cpElement, Path.EMPTY, rootPath);
+						for (final var cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
+							final var path = parsePath(cpElement, Path.EMPTY, rootPath);
 							location = new LibraryLocation(path, Path.EMPTY, Path.EMPTY);
 							cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
 									location.getSystemLibrarySourcePath(), location.getPackageRootPath());
@@ -311,12 +311,12 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				}
 				//
 				// Bootstrap
-				final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
+				final var jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 				String bootstrap = null;
 				if (jEntry != null) {
-					try (InputStream is = jFile.getInputStream(jEntry)) {
-						try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-							String line = reader.readLine();
+					try (var is = jFile.getInputStream(jEntry)) {
+						try (var reader = new BufferedReader(new InputStreamReader(is))) {
+							var line = reader.readLine();
 							if (line != null) {
 								line = line.trim();
 								if (!line.isEmpty()) {
@@ -363,11 +363,11 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 			return revalidate(ignoreCauses);
 		}
 		try {
-			final IPath path = getJarFile();
+			final var path = getJarFile();
 			if (path == null && (ignoreCauses & CODE_SOURCE) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
-			final File file = (path == null) ? null : path.toFile();
+			final var file = (path == null) ? null : path.toFile();
 			if ((file == null || !file.canRead()) && (ignoreCauses & CODE_SOURCE) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_3);
 			}
@@ -385,39 +385,33 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		final IPath path = getJarFile();
+		final var path = getJarFile();
 		element.setAttribute(SREXmlPreferenceConstants.XML_LIBRARY_PATH, path.toPortableString());
-		final String name = Strings.nullToEmpty(getName());
+		final var name = Strings.nullToEmpty(getName());
 		if (!name.equals(this.manifestName)) {
 			element.setAttribute(SREXmlPreferenceConstants.XML_SRE_NAME, name);
 		}
-		final String mainClass = Strings.nullToEmpty(getMainClass());
+		final var mainClass = Strings.nullToEmpty(getMainClass());
 		if (!mainClass.equals(this.manifestMainClass)) {
 			element.setAttribute(SREXmlPreferenceConstants.XML_MAIN_CLASS, mainClass);
 		}
-		final String bootstrap = Strings.nullToEmpty(getBootstrap());
+		final var bootstrap = Strings.nullToEmpty(getBootstrap());
 		if (!Strings.isNullOrEmpty(bootstrap)) {
 			element.setAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP, bootstrap);
 		} else {
 			element.removeAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP);
 		}
-		final List<IRuntimeClasspathEntry> libraries = getClassPathEntries();
+		final var libraries = getClassPathEntries();
 		if (libraries.size() != 1 || !libraries.get(0).getClasspathEntry().getPath().equals(this.jarFile)) {
-			final IPath rootPath = path.removeLastSegments(1);
-			for (final IRuntimeClasspathEntry location : libraries) {
-				final Element libraryNode = document.createElement(SREXmlPreferenceConstants.XML_LIBRARY_LOCATION);
+			final var rootPath = path.removeLastSegments(1);
+			for (final var location : libraries) {
+				final var libraryNode = document.createElement(SREXmlPreferenceConstants.XML_LIBRARY_LOCATION);
 				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_SYSTEM_LIBRARY_PATH,
 						makeRelativePath(location.getPath(), path, rootPath));
 				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_PACKAGE_ROOT_PATH,
 						makeRelativePath(location.getSourceAttachmentRootPath(), path, rootPath));
 				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_SOURCE_PATH,
 						makeRelativePath(location.getSourceAttachmentPath(), path, rootPath));
-				/* No javadoc path accessible from ClasspathEntry
-				final URL javadoc = location.getJavadocLocation();
-				if (javadoc != null) {
-					libraryNode.setAttribute(SREConstants.XML_JAVADOC_PATH, javadoc.toString());
-				}
-				*/
 				element.appendChild(libraryNode);
 			}
 		}
@@ -425,55 +419,55 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	@Override
 	public void setFromXML(Element element) throws IOException {
-		final IPath path = parsePath(
+		final var path = parsePath(
 				element.getAttribute(SREXmlPreferenceConstants.XML_LIBRARY_PATH), null, null);
 		try {
 			if (path != null) {
 				setJarFile(path);
 
-				final String name = element.getAttribute(SREXmlPreferenceConstants.XML_SRE_NAME);
+				final var name = element.getAttribute(SREXmlPreferenceConstants.XML_SRE_NAME);
 				if (!Strings.isNullOrEmpty(name)) {
 					setName(name);
 				}
-				final String mainClass = element.getAttribute(SREXmlPreferenceConstants.XML_MAIN_CLASS);
+				final var mainClass = element.getAttribute(SREXmlPreferenceConstants.XML_MAIN_CLASS);
 				if (!Strings.isNullOrEmpty(mainClass)) {
 					setMainClass(mainClass);
 				}
 
-				final String bootstrap = element.getAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP);
+				final var bootstrap = element.getAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP);
 				if (!Strings.isNullOrEmpty(bootstrap)) {
 					setBootstrap(bootstrap);
 				}
 
-				final List<IRuntimeClasspathEntry> locations = new ArrayList<>();
-				final NodeList children = element.getChildNodes();
-				final IPath rootPath = path.removeLastSegments(1);
-				for (int i = 0; i < children.getLength(); ++i) {
-					final Node node = children.item(i);
-					if (node instanceof Element && SREXmlPreferenceConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
-						final Element libraryNode = (Element) node;
-						final IPath systemLibraryPath = parsePath(
+				final var locations = new ArrayList<IRuntimeClasspathEntry>();
+				final var children = element.getChildNodes();
+				final var rootPath = path.removeLastSegments(1);
+				for (var i = 0; i < children.getLength(); ++i) {
+					final var node = children.item(i);
+					if (node instanceof Element libraryNode
+							&& SREXmlPreferenceConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
+						final var systemLibraryPath = parsePath(
 								libraryNode.getAttribute(SREXmlPreferenceConstants.XML_SYSTEM_LIBRARY_PATH), null, rootPath);
 						if (systemLibraryPath != null) {
-							final IPath packageRootPath = parsePath(
+							final var packageRootPath = parsePath(
 									libraryNode.getAttribute(SREXmlPreferenceConstants.XML_PACKAGE_ROOT_PATH),
 									Path.EMPTY, rootPath);
-							final IPath sourcePath = parsePath(
+							final var sourcePath = parsePath(
 									libraryNode.getAttribute(SREXmlPreferenceConstants.XML_SOURCE_PATH), Path.EMPTY, rootPath);
 							URL javadoc = null;
 							try {
-								final String urlTxt = libraryNode.getAttribute(SREXmlPreferenceConstants.XML_JAVADOC_PATH);
+								final var urlTxt = libraryNode.getAttribute(SREXmlPreferenceConstants.XML_JAVADOC_PATH);
 								javadoc = new URL(urlTxt);
 							} catch (Throwable exception) {
 								//
 							}
-							final LibraryLocation location = new LibraryLocation(systemLibraryPath, sourcePath, packageRootPath,
+							final var location = new LibraryLocation(systemLibraryPath, sourcePath, packageRootPath,
 									javadoc);
-							final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
+							final var cpEntry = JavaCore.newLibraryEntry(
 									location.getSystemLibraryPath(),
 									location.getSystemLibrarySourcePath(),
 									location.getPackageRootPath());
-							final IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+							final var rtcpEntry = new RuntimeClasspathEntry(cpEntry);
 							// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
 							// In fact you can have a single bootstrap library if you add a new one you remove the default one and it bugs
 							rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
@@ -507,7 +501,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	private static IPath parsePath(String path, IPath defaultPath, IPath rootPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
-				final IPath pathObject = Path.fromPortableString(path);
+				final var pathObject = Path.fromPortableString(path);
 				if (pathObject != null) {
 					if (rootPath != null && !pathObject.isAbsolute()) {
 						return rootPath.append(pathObject);
@@ -538,7 +532,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 			resolveDirtyFields(true);
 		}
 
-		Map<String, String> options = (this.optionBuffer == null) ? null : this.optionBuffer.get();
+		var options = (this.optionBuffer == null) ? null : this.optionBuffer.get();
 		if (options == null) {
 			options = Maps.newHashMap();
 			putIfNotempty(options, SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);

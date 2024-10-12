@@ -42,7 +42,7 @@ public abstract class Behavior extends AgentTrait implements IBehaviorGuardEvalu
 
 	@Override
 	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicSkillReference skillReference) {
-		final Skill original = skillReference.get();
+		final var original = skillReference.get();
 		if (original == null) {
 			throw new UnimplementedCapacityException(capacity, getOwner().getID());
 		}

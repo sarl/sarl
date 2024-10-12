@@ -88,16 +88,16 @@ public class ApplicationLaunchShortcut2 extends JavaApplicationLaunchShortcut {
 
 	@Override
 	public void launch(ISelection selection, String mode) {
-		if (selection instanceof IStructuredSelection) {
-			final IStructuredSelection newSelection = LaunchShortcutUtil
-					.replaceWithJavaElementDelegates((IStructuredSelection) selection, SarlJavaElementDelegateMainLaunch.class);
+		if (selection instanceof IStructuredSelection cvalue) {
+			final var newSelection = LaunchShortcutUtil
+					.replaceWithJavaElementDelegates(cvalue, SarlJavaElementDelegateMainLaunch.class);
 			super.launch(newSelection, mode);
 		}
 	}
 
 	@Override
 	public void launch(IEditorPart editor, String mode) {
-		final SarlJavaElementDelegateMainLaunch javaElementDelegate = editor.getAdapter(SarlJavaElementDelegateMainLaunch.class);
+		final var javaElementDelegate = editor.getAdapter(SarlJavaElementDelegateMainLaunch.class);
 		if (javaElementDelegate != null) {
 			super.launch(new StructuredSelection(javaElementDelegate), mode);
 		} else {

@@ -30,7 +30,6 @@ import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -101,13 +100,13 @@ public class ExtraLanguageFeatureNameConverter {
 	 * @return the mapping table.
 	 */
 	protected Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> initMapping() {
-		final Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> map = new TreeMap<>();
+		final var map = new TreeMap<Character, List<Pair<FeaturePattern, FeatureReplacement>>>();
 		if (!this.ruleReader.initializeConversions(map, this.context) && this.initializer != null) {
 			this.initializer.initializeConversions((simpleName, source, target) -> {
-				final char c = getKey(simpleName);
+				final var c = getKey(simpleName);
 				if (c == FeaturePattern.ALL_PATTERN_CHAR) {
-					for (int i = 'a'; i <= 'z'; ++i) {
-						createMappingEntry(map, (char) i, source, target);
+					for (var i = 'a'; i <= 'z'; ++i) {
+						createMappingEntry(map, i, source, target);
 					}
 				} else {
 					createMappingEntry(map, c, source, target);
@@ -119,7 +118,7 @@ public class ExtraLanguageFeatureNameConverter {
 
 	private static void createMappingEntry(Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> map, char character,
 			String source, String target) {
-		List<Pair<FeaturePattern, FeatureReplacement>> internalStruct = map.get(Character.valueOf(character));
+		var internalStruct = map.get(Character.valueOf(character));
 		if (internalStruct == null) {
 			internalStruct = new ArrayList<>();
 			map.put(Character.valueOf(character), internalStruct);
@@ -145,13 +144,13 @@ public class ExtraLanguageFeatureNameConverter {
 		if (this.conversions == null) {
 			this.conversions = initMapping();
 		}
-		final List<Object> receiver = new ArrayList<>();
+		final var receiver = new ArrayList<>();
 		AbstractExpressionGenerator.buildCallReceiver(
 				featureCall,
 				this.keywords.getThisKeywordLambda(),
 				this.referenceNameLambda,
 				receiver);
-		final String simpleName = AbstractExpressionGenerator.getCallSimpleName(
+		final var simpleName = AbstractExpressionGenerator.getCallSimpleName(
 				featureCall,
 				this.logicalContainerProvider,
 				this.simpleNameProvider,
@@ -159,10 +158,10 @@ public class ExtraLanguageFeatureNameConverter {
 				this.keywords.getThisKeywordLambda(),
 				this.keywords.getSuperKeywordLambda(),
 				this.referenceNameLambda2);
-		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
+		final var struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 		if (struct != null) {
-			final String replacementId = featureCall.getFeature().getIdentifier();
-			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
+			final var replacementId = featureCall.getFeature().getIdentifier();
+			final var replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
 			if (replacement != null) {
 				if (replacement.hasReplacement()) {
 					return ConversionType.EXPLICIT;
@@ -189,10 +188,10 @@ public class ExtraLanguageFeatureNameConverter {
 		if (this.conversions == null) {
 			this.conversions = initMapping();
 		}
-		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
+		final var struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 		if (struct != null) {
-			final String replacementId = calledFeature.getIdentifier();
-			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
+			final var replacementId = calledFeature.getIdentifier();
+			final var replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
 			if (replacement != null) {
 				if (replacement.hasReplacement()) {
 					return replacement.replace(calledFeature, leftOperand, receiver, arguments);
@@ -204,24 +203,22 @@ public class ExtraLanguageFeatureNameConverter {
 	}
 
 	private static void loopReceiver(LinkedList<String> sourceFeature, Object obj) {
-		if (obj instanceof XMemberFeatureCall) {
-			final XMemberFeatureCall memberFeatureCall = (XMemberFeatureCall) obj;
+		if (obj instanceof XMemberFeatureCall memberFeatureCall) {
 			sourceFeature.addFirst(memberFeatureCall.getFeature().getSimpleName());
 			loopReceiver(sourceFeature, memberFeatureCall.getMemberCallTarget());
-		} else if (obj instanceof XFeatureCall) {
-			final XFeatureCall featureCall = (XFeatureCall) obj;
+		} else if (obj instanceof XFeatureCall featureCall) {
 			sourceFeature.addFirst(featureCall.getFeature().getIdentifier());
 		}
 	}
 
 	private FeatureReplacement matchFirstPattern(List<Pair<FeaturePattern, FeatureReplacement>> patterns,
 			String source, String simpleName, List<Object> receiver) {
-		final LinkedList<String> sourceFeature = new LinkedList<>();
-		for (final Object obj : receiver) {
+		final var sourceFeature = new LinkedList<String>();
+		for (final var obj : receiver) {
 			loopReceiver(sourceFeature, obj);
 		}
 		sourceFeature.add(source);
-		final boolean isSarlKeyword = this.sarlKeywords.getThisKeyword().equals(simpleName) || this.sarlKeywords.getSuperKeyword().equals(simpleName);
+		final var isSarlKeyword = this.sarlKeywords.getThisKeyword().equals(simpleName) || this.sarlKeywords.getSuperKeyword().equals(simpleName);
 		final Deque<String> sarlKeyword;
 		if (isSarlKeyword) {
 			sarlKeyword = new LinkedList<>();
@@ -229,8 +226,8 @@ public class ExtraLanguageFeatureNameConverter {
 		} else {
 			sarlKeyword = null;
 		}
-		for (final Pair<FeaturePattern, FeatureReplacement> patternMatching : patterns) {
-			final FeaturePattern pattern = patternMatching.getKey();
+		for (final var patternMatching : patterns) {
+			final var pattern = patternMatching.getKey();
 			if (pattern.isNameReplacement()) {
 				if (isSarlKeyword && pattern.matches(sarlKeyword)) {
 					return patternMatching.getValue();
@@ -243,10 +240,10 @@ public class ExtraLanguageFeatureNameConverter {
 	}
 
 	private static FeatureReplacement matchFirstPattern(List<Pair<FeaturePattern, FeatureReplacement>> patterns, String source) {
-		final LinkedList<String> sourceFeature = new LinkedList<>();
+		final var sourceFeature = new LinkedList<String>();
 		sourceFeature.add(source);
-		for (final Pair<FeaturePattern, FeatureReplacement> patternMatching : patterns) {
-			final FeaturePattern pattern = patternMatching.getKey();
+		for (final var patternMatching : patterns) {
+			final var pattern = patternMatching.getKey();
 			if (pattern.isNameReplacement() && pattern.matches(sourceFeature)) {
 				return patternMatching.getValue();
 			}
@@ -266,16 +263,16 @@ public class ExtraLanguageFeatureNameConverter {
 	public String convertDeclarationName(String simpleName, SarlAction feature) {
 		assert simpleName != null;
 		assert feature != null;
-		final JvmOperation operation = this.associations.getDirectlyInferredOperation(feature);
+		final var operation = this.associations.getDirectlyInferredOperation(feature);
 		if (operation != null) {
 			if (this.conversions == null) {
 				this.conversions = initMapping();
 			}
-			final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
+			final var struct = this.conversions.get(Character.valueOf(getKey(simpleName)));
 			if (struct == null) {
 				return simpleName;
 			}
-			final FeatureReplacement replacement = matchFirstPattern(struct, operation.getIdentifier());
+			final var replacement = matchFirstPattern(struct, operation.getIdentifier());
 			if (replacement != null) {
 				if (replacement.hasReplacement()) {
 					return replacement.getText();

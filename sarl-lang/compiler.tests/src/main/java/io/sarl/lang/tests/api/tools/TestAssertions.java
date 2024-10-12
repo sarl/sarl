@@ -67,8 +67,8 @@ public final class TestAssertions {
 		int i = 0;
 		for (XtendParameter parameter : actualFormalParameters) {
 			if (expectedDefaultValues[i] == null) {
-				if (parameter instanceof SarlFormalParameter) {
-					assertNull("No default value expected", ((SarlFormalParameter) parameter).getDefaultValue()); //$NON-NLS-1$
+				if (parameter instanceof SarlFormalParameter cvalue) {
+					assertNull("No default value expected", cvalue.getDefaultValue()); //$NON-NLS-1$
 				}
 			} else {
 				assertTrue(parameter instanceof SarlFormalParameter);

@@ -92,8 +92,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	 */
 	public void setReferenceInto(XFeatureCall container) {
 		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
-		if (jvmVoid instanceof InternalEObject) {
-			final InternalEObject			jvmVoidProxy = (InternalEObject) jvmVoid;
+		if (jvmVoid instanceof InternalEObject jvmVoidProxy) {
 			final EObject param = getSarlFormalParameter();
 			final Resource resource = param.eResource();
 			// Get the derived object

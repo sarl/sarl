@@ -23,19 +23,15 @@ package io.sarl.lang.controlflow;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
-import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 
 import io.sarl.lang.core.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
@@ -57,11 +53,11 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 
 	@Override
 	protected Collection<ExitPoint> _exitPoints(XAbstractFeatureCall expression) {
-		final Collection<ExitPoint> exitPoints = super._exitPoints(expression);
+		final var exitPoints = super._exitPoints(expression);
 		if (isNotEmpty(exitPoints)) {
 			return exitPoints;
 		}
-		final JvmIdentifiableElement element = expression.getFeature();
+		final var element = expression.getFeature();
 		if (isEarlyExitAnnotatedElement(element)) {
 			return Collections.<ExitPoint>singletonList(new SarlExitPoint(expression, false));
 		}
@@ -71,7 +67,7 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 	@Override
 	public boolean isEarlyExitEvent(JvmTypeReference reference) {
 		if (reference != null && !reference.eIsProxy()) {
-			final JvmType type = reference.getType();
+			final var type = reference.getType();
 			return isEarlyExitAnnotatedElement(type);
 		}
 		return false;
@@ -79,8 +75,8 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 
 	@Override
 	public boolean isEarlyExitAnnotatedElement(Object element) {
-		return (element instanceof JvmAnnotationTarget)
-				&& (this.annotations.findAnnotation((JvmAnnotationTarget) element, EarlyExit.class) != null);
+		return (element instanceof JvmAnnotationTarget cvalue)
+				&& (this.annotations.findAnnotation(cvalue, EarlyExit.class) != null);
 	}
 
 	@Override
@@ -91,7 +87,7 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 	@Override
 	public boolean isEarlyExitOperation(SarlAction operation) {
 		if (operation != null) {
-			final Iterator<JvmTypeReference> eventIterator = operation.getFiredEvents().iterator();
+			final var eventIterator = operation.getFiredEvents().iterator();
 			while (eventIterator.hasNext()) {
 				if (isEarlyExitEvent(eventIterator.next())) {
 					return true;
@@ -103,9 +99,9 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 
 	@Override
 	public boolean isEarlyExitInJava(XExpression expression) {
-		final Collection<IEarlyExitComputer.ExitPoint> exitPoints = getExitPoints(expression);
+		final var exitPoints = getExitPoints(expression);
 		if (isNotEmpty(exitPoints)) {
-			for (final IEarlyExitComputer.ExitPoint exitPoint : exitPoints) {
+			for (final var exitPoint : exitPoints) {
 				if (exitPoint instanceof SarlExitPoint) {
 					return false;
 				}

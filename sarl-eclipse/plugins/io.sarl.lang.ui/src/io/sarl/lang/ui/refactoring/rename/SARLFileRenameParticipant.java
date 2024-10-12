@@ -76,24 +76,24 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 			return super.createRenameElementContexts(element);
 		}
 		assert element instanceof IFile;
-		final IFile file = (IFile) element;
-		final IPath filePath = file.getFullPath();
+		final var file = (IFile) element;
+		final var filePath = file.getFullPath();
 		if (Objects.equals(filePath.getFileExtension(), this.fileExtension)) {
-			final String typeName = filePath.removeFileExtension().lastSegment();
-			final IPath newPath = filePath.removeLastSegments(1).append(
+			final var typeName = filePath.removeFileExtension().lastSegment();
+			final var newPath = filePath.removeLastSegments(1).append(
 					getNewName()).addFileExtension(this.fileExtension);
-			final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
-			final URI resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
-			final Resource resource = resourceSet.getResource(resourceURI, true);
+			final var resourceSet = this.resourceSetProvider.get(file.getProject());
+			final var resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
+			final var resource = resourceSet.getResource(resourceURI, true);
 			if (resource != null && !resource.getContents().isEmpty()) {
-				for (final XtendTypeDeclaration type : EcoreUtil2.eAllOfType(resource.getContents().get(0),
+				for (final var type : EcoreUtil2.eAllOfType(resource.getContents().get(0),
 						XtendTypeDeclaration.class)) {
 					if (Objects.equals(typeName, type.getName())) {
-						final IRenameElementContext renameElementContext =
+						final var renameElementContext =
 								this.renameContextFactory.createRenameElementContext(
 										type, null, null, (XtextResource) resource);
-						if (renameElementContext instanceof IChangeRedirector.Aware) {
-							((IChangeRedirector.Aware) renameElementContext).setChangeRedirector(
+						if (renameElementContext instanceof IChangeRedirector.Aware cvalue) {
+							cvalue.setChangeRedirector(
 								source -> Objects.equals(source, filePath) ? newPath : filePath);
 						}
 						return singletonList(renameElementContext);

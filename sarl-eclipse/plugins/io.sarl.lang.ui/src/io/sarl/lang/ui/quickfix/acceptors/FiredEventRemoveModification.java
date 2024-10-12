@@ -56,7 +56,7 @@ public final class FiredEventRemoveModification extends SARLSemanticModification
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final FiredEventRemoveModification modification = new FiredEventRemoveModification();
+		final var modification = new FiredEventRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -69,10 +69,10 @@ public final class FiredEventRemoveModification extends SARLSemanticModification
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final Issue issue = getIssue();
-		final SARLQuickfixProvider tools = getTools();
-		final IXtextDocument document = context.getXtextDocument();
-		final String sep = tools.getGrammarAccess().getCommaKeyword();
+		final var issue = getIssue();
+		final var tools = getTools();
+		final var document = context.getXtextDocument();
+		final var sep = tools.getGrammarAccess().getCommaKeyword();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,

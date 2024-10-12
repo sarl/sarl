@@ -52,7 +52,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the abstract code builder.
@@ -72,9 +71,9 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Generate the abstract builder.
 	 */
 	protected void generateAbstractBuilder() {
-		final TypeReference abstractBuilder = getAbstractBuilderImpl();
-		final TypeReference expressionBuilder = getExpressionBuilderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var abstractBuilder = getAbstractBuilderImpl();
+		final var expressionBuilder = getExpressionBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Abstract implementation of a builder for the " //$NON-NLS-1$
@@ -194,13 +193,11 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\tif (resource instanceof "); //$NON-NLS-1$
 				it.append(DerivedStateAwareResource.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t(("); //$NON-NLS-1$
-				it.append(DerivedStateAwareResource.class);
-				it.append(") resource).discardDerivedState();"); //$NON-NLS-1$
+				it.append("\t\t\t$c$value.discardDerivedState();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tresource.getContents();"); //$NON-NLS-1$
+				it.append("\t\t\t$c$value.getContents();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn getAssociatedElement(expectedType, dslObject, null);"); //$NON-NLS-1$
 				it.newLine();
@@ -379,7 +376,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(Resource.class);
 				it.append(" ? context : (("); //$NON-NLS-1$
 				it.append(EObject.class);
-				it.append(")context).eResource());"); //$NON-NLS-1$
+				it.append(") context).eResource());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -461,13 +458,11 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\t\t} else if (original instanceof "); //$NON-NLS-1$
 				it.append(JvmWildcardTypeReference.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tfinal "); //$NON-NLS-1$
 				it.append(JvmWildcardTypeReference.class);
-				it.append(" wc = EcoreUtil.copy(("); //$NON-NLS-1$
-				it.append(JvmWildcardTypeReference.class);
-				it.append(") original);"); //$NON-NLS-1$
+				it.append(" wc = EcoreUtil.copy($c$value);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tfor (final "); //$NON-NLS-1$
 				it.append(JvmTypeConstraint.class);
@@ -662,8 +657,8 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append("true"); //$NON-NLS-1$
 				} else {
 					it.append("!("); //$NON-NLS-1$
-					boolean first = true;
-					for (String noBodyType : getCodeBuilderConfig().getNoActionBodyTypes()) {
+					var first = true;
+					for (final var noBodyType : getCodeBuilderConfig().getNoActionBodyTypes()) {
 						if (first) {
 							first = false;
 						} else {
@@ -739,7 +734,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(abstractBuilder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(abstractBuilder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 

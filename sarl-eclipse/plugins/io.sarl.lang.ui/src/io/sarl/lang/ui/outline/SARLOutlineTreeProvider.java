@@ -121,7 +121,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			createNode(parentNode, modelElement.getImportSection());
 		}*/
 		// Create a node per type declaration.
-		for (final XtendTypeDeclaration topElement : modelElement.getXtendTypes()) {
+		for (final var topElement : modelElement.getXtendTypes()) {
 			createNode(parentNode, topElement);
 		}
 	}
@@ -159,63 +159,60 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		// default implementation of createStructuralFeatureNode().
 		// The text region computation is overridden in order to have a correct link to the editor.
 		//
-		final boolean isFeatureSet = modelElement.eIsSet(XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME);
-		final EStructuralFeatureNode elementNode = new EStructuralFeatureNode(
+		final var isFeatureSet = modelElement.eIsSet(XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME);
+		final var elementNode = new EStructuralFeatureNode(
 				modelElement,
 				XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
 				parentNode,
 				this.imageDispatcher.invoke(modelElement),
 				this.textDispatcher.invoke(modelElement),
 				modelElement.getMembers().isEmpty() || !isFeatureSet);
-		final EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
-		final ICompositeNode parserNode = NodeModelUtils.getNode(
+		final var primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
+		final var parserNode = NodeModelUtils.getNode(
 				(primarySourceElement == null) ? modelElement : primarySourceElement);
 		elementNode.setTextRegion(parserNode.getTextRegion());
 		//
-		boolean hasConstructor = false;
+		var hasConstructor = false;
 		if (!modelElement.getMembers().isEmpty()) {
 			EObjectNode capacityUseNode = null;
 			EObjectNode capacityRequirementNode = null;
 
-			for (final EObject feature : modelElement.getMembers()) {
+			for (final var feature : modelElement.getMembers()) {
 				if (feature instanceof SarlConstructor) {
 					hasConstructor = true;
 					createNode(elementNode, feature);
-				} else if (feature instanceof SarlField) {
-					final SarlField field = (SarlField) feature;
+				} else if (feature instanceof SarlField field) {
 					createNode(elementNode, field);
 					createAutomaticAccessors(elementNode, field);
 				} else if (feature instanceof SarlAction
 						|| feature instanceof SarlBehaviorUnit
 						|| feature instanceof XtendTypeDeclaration) {
 					createNode(elementNode, feature);
-				} else if (feature instanceof SarlCapacityUses) {
-					capacityUseNode = createCapacityUseNode(elementNode, (SarlCapacityUses) feature, capacityUseNode);
-				} else if (feature instanceof SarlRequiredCapacity) {
+				} else if (feature instanceof SarlCapacityUses cvalue) {
+					capacityUseNode = createCapacityUseNode(elementNode, cvalue, capacityUseNode);
+				} else if (feature instanceof SarlRequiredCapacity cvalue) {
 					capacityRequirementNode = createRequiredCapacityNode(elementNode,
-							(SarlRequiredCapacity) feature, capacityRequirementNode);
+							cvalue, capacityRequirementNode);
 				}
 			}
 		}
-		if (!hasConstructor && modelElement instanceof XtendClass) {
-			createInheritedConstructors(elementNode, (XtendClass) modelElement);
+		if (!hasConstructor && modelElement instanceof XtendClass cvalue) {
+			createInheritedConstructors(elementNode, cvalue);
 		}
 	}
 
 	private static boolean extractGetterSetterFromAccessorsAnnotation(EObject value, OutParameter<Boolean> hasGetter,
 			OutParameter<Boolean> hasSetter) {
-		if (value instanceof XListLiteral) {
-			final XListLiteral list = (XListLiteral) value;
-			boolean hasArg = false;
-			for (final XExpression literalExpression : list.getElements()) {
+		if (value instanceof XListLiteral list) {
+			var hasArg = false;
+			for (final var literalExpression : list.getElements()) {
 				hasArg = extractGetterSetterFromAccessorsAnnotation(literalExpression, hasGetter, hasSetter) || hasArg;
 			}
 			return hasArg;
-		} else if (value instanceof XFeatureCall) {
-			final XFeatureCall call = (XFeatureCall) value;
-			final String id = call.getFeature().getSimpleName();
+		} else if (value instanceof XFeatureCall call) {
+			final var id = call.getFeature().getSimpleName();
 			try {
-				final AccessorType acc = AccessorType.valueOf(id);
+				final var acc = AccessorType.valueOf(id);
 				assert acc != null;
 				switch (acc) {
 				case PACKAGE_GETTER:
@@ -244,18 +241,17 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	}
 
 	private void createAutomaticAccessors(EStructuralFeatureNode elementNode, SarlField field) {
-		final JvmField jvmField = this.associations.getJvmField(field);
+		final var jvmField = this.associations.getJvmField(field);
 		if (jvmField != null) {
-			final JvmAnnotationReference annotation = this.annotationFinder.findAnnotation(jvmField, Accessors.class);
+			final var annotation = this.annotationFinder.findAnnotation(jvmField, Accessors.class);
 			if (annotation != null) {
-				final OutParameter<Boolean> hasGetter = new OutParameter<>(Boolean.FALSE);
-				final OutParameter<Boolean> hasSetter = new OutParameter<>(Boolean.FALSE);
-				boolean explicitArgument = false;
+				final var hasGetter = new OutParameter<>(Boolean.FALSE);
+				final var hasSetter = new OutParameter<>(Boolean.FALSE);
+				var explicitArgument = false;
 				if (!annotation.getValues().isEmpty()) {
-					for (final JvmAnnotationValue value : annotation.getValues()) {
-						if (value instanceof JvmCustomAnnotationValue) {
-							final JvmCustomAnnotationValue annotationValue = (JvmCustomAnnotationValue) value;
-							for (final EObject rvalue : annotationValue.getValues()) {
+					for (final var value : annotation.getValues()) {
+						if (value instanceof JvmCustomAnnotationValue annotationValue) {
+							for (final var rvalue : annotationValue.getValues()) {
 								explicitArgument = extractGetterSetterFromAccessorsAnnotation(rvalue, hasGetter, hasSetter) || explicitArgument;
 							}
 							break;
@@ -267,10 +263,10 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					hasSetter.set(Boolean.TRUE);
 				}
 				if (hasGetter.get().booleanValue() || hasSetter.get().booleanValue()) {
-					final JvmDeclaredType container = jvmField.getDeclaringType();
-					final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
+					final var container = jvmField.getDeclaringType();
+					final var basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
 					if (hasGetter.get().booleanValue()) {
-						JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
+						var operation = findMethod(container, "get" + basename); //$NON-NLS-1$
 						if (operation == null) {
 							operation = findMethod(container, "is" + basename); //$NON-NLS-1$
 							if (operation == null) {
@@ -282,7 +278,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 						}
 					}
 					if (hasSetter.get().booleanValue()) {
-						final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
+						final var operation = findMethod(container, "set" + basename); //$NON-NLS-1$
 						if (operation != null) {
 							createNode(elementNode, operation);
 						}
@@ -293,9 +289,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	}
 
 	private static JvmOperation findMethod(JvmDeclaredType container, String name) {
-		for (final JvmMember member : container.getMembers()) {
-			if (member instanceof JvmOperation) {
-				final JvmOperation operation = (JvmOperation) member;
+		for (final var member : container.getMembers()) {
+			if (member instanceof JvmOperation operation) {
 				if (Objects.equal(name, operation.getSimpleName())) {
 					return operation;
 				}
@@ -305,14 +300,14 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	}
 
 	private boolean hasInheritedConstructors(XtendTypeDeclaration modelElement) {
-		if (modelElement instanceof XtendClass) {
-			final JvmTypeReference extend = ((XtendClass) modelElement).getExtends();
+		if (modelElement instanceof XtendClass cvalue) {
+			final var extend = cvalue.getExtends();
 			if (extend != null) {
-				final LightweightTypeReference reference = Utils.toLightweightTypeReference(extend, this.services);
+				final var reference = Utils.toLightweightTypeReference(extend, this.services);
 				if (reference != null) {
-					final JvmType type = reference.getType();
-					if (type instanceof JvmDeclaredType) {
-						return ((JvmDeclaredType) type).getDeclaredConstructors().iterator().hasNext();
+					final var type = reference.getType();
+					if (type instanceof JvmDeclaredType cvalue) {
+						return cvalue.getDeclaredConstructors().iterator().hasNext();
 					}
 				}
 			}
@@ -321,13 +316,13 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	}
 
 	private void createInheritedConstructors(EStructuralFeatureNode elementNode, XtendClass modelElement) {
-		final JvmTypeReference extend = modelElement.getExtends();
+		final var extend = modelElement.getExtends();
 		if (extend != null) {
-			final LightweightTypeReference reference = Utils.toLightweightTypeReference(extend, this.services);
+			final var reference = Utils.toLightweightTypeReference(extend, this.services);
 			if (reference != null) {
-				final JvmType type = reference.getType();
-				if (type instanceof JvmDeclaredType) {
-					for (final JvmConstructor constructor : ((JvmDeclaredType) type).getDeclaredConstructors()) {
+				final var type = reference.getType();
+				if (type instanceof JvmDeclaredType cvalue) {
+					for (final var constructor : cvalue.getDeclaredConstructors()) {
 						createNode(elementNode, constructor);
 					}
 				}
@@ -337,7 +332,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	private EObjectNode createCapacityUseNode(EStructuralFeatureNode elementNode, SarlCapacityUses feature,
 			EObjectNode oldCapacityUseNode) {
-		EObjectNode capacityUseNode = oldCapacityUseNode;
+		var capacityUseNode = oldCapacityUseNode;
 		if (capacityUseNode == null) {
 			capacityUseNode = createEObjectNode(
 					elementNode, feature,
@@ -345,7 +340,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					this.textDispatcher.invoke(feature),
 					false);
 		}
-		for (final JvmParameterizedTypeReference item : feature.getCapacities()) {
+		for (final var item : feature.getCapacities()) {
 			createEObjectNode(
 					capacityUseNode, item,
 					this.imageDispatcher.invoke(item),
@@ -357,7 +352,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	private EObjectNode createRequiredCapacityNode(EStructuralFeatureNode elementNode, SarlRequiredCapacity feature,
 			EObjectNode oldCapacityRequirementNode) {
-		EObjectNode capacityRequirementNode = oldCapacityRequirementNode;
+		var capacityRequirementNode = oldCapacityRequirementNode;
 		if (capacityRequirementNode == null) {
 			capacityRequirementNode = createEObjectNode(
 					elementNode, feature,
@@ -365,7 +360,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					this.textDispatcher.invoke(feature),
 					false);
 		}
-		for (final JvmParameterizedTypeReference item : feature.getCapacities()) {
+		for (final var item : feature.getCapacities()) {
 			createEObjectNode(
 					capacityRequirementNode, item,
 					this.imageDispatcher.invoke(item),
@@ -409,14 +404,14 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			IOutlineNode parentNode,
 			EObject modelElement, Image image, Object text,
 			boolean isLeaf) {
-		final SARLEObjectNode objectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
+		final var objectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
 		configureNode(parentNode, modelElement, objectNode);
 		return objectNode;
 	}
 
 	private void configureNode(IOutlineNode parentNode, EObject modelElement, SARLEObjectNode objectNode) {
-		final EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
-		final ICompositeNode parserNode = NodeModelUtils.getNode(
+		final var primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
+		final var parserNode = NodeModelUtils.getNode(
 				(primarySourceElement == null) ? modelElement : primarySourceElement);
 
 		if (parserNode != null) {
@@ -431,15 +426,15 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	}
 
 	private static boolean isStatic(EObject element) {
-		if (element instanceof JvmFeature) {
-			return ((JvmFeature) element).isStatic();
+		if (element instanceof JvmFeature cvalue) {
+			return cvalue.isStatic();
 		}
-		if (element instanceof JvmDeclaredType) {
-			return ((JvmDeclaredType) element).isStatic();
+		if (element instanceof JvmDeclaredType cvalue) {
+			return cvalue.isStatic();
 		}
-		if (element instanceof XtendMember) {
+		if (element instanceof XtendMember cvalue) {
 			try {
-				return ((XtendMember) element).isStatic();
+				return cvalue.isStatic();
 			} catch (Exception exception) {
 				// Some XtendMember does not support
 			}
@@ -463,8 +458,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @return the text.
 	 */
 	protected CharSequence _text(JvmConstructor modelElement) {
-		if (this.labelProvider instanceof IStyledLabelProvider) {
-			final StyledString str = ((IStyledLabelProvider) this.labelProvider).getStyledText(modelElement);
+		if (this.labelProvider instanceof IStyledLabelProvider cvalue) {
+			final var str = cvalue.getStyledText(modelElement);
 			str.setStyle(0, str.length(), ColoringLabelProvider.INHERITED_STYLER);
 			return str;
 		}

@@ -90,7 +90,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 
 	@Override
 	public Image getImage() {
-		Image img = (this.image == null) ? null : this.image.get();
+		var img = (this.image == null) ? null : this.image.get();
 		if (img == null) {
 			img = SARLEclipsePlugin.getDefault().getImage(SARLEclipseConfig.SARL_APPLICATION_IMAGE);
 			this.image = new SoftReference<>(img);
@@ -111,7 +111,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		final Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
+		final var comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
 		((GridLayout) comp.getLayout()).verticalSpacing = 0;
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
@@ -128,7 +128,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	 * @param text the label of the group.
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
-		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		final var group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
@@ -149,10 +149,10 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	 * @param config the config to load the agent name from
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
-		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
-		final boolean showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
-		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
-		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
+		final var runInEclipse = this.accessor.isEmbeddedSRE(config);
+		final var showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
+		final var enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
+		final var enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
 		this.logShowStartInformationButton.setSelection(showLaunchingParameters);
 		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
 		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);

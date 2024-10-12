@@ -51,9 +51,7 @@ import com.google.common.util.concurrent.AtomicDoubleArray;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.google.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.core.util.ConcurrentCollection;
@@ -111,12 +109,12 @@ public class StandardSynchronizedFieldDetector implements ISynchronizedFieldDete
 	@Pure
 	@Override
 	public boolean isSynchronizedField(XtendField field) {
-		final LightweightTypeReference fieldType = Utils.toLightweightTypeReference(field.getType(), this.types).getPrimitiveIfWrapperType();
+		final var fieldType = Utils.toLightweightTypeReference(field.getType(), this.types).getPrimitiveIfWrapperType();
 		if (fieldType.isPrimitive()) {
 			return field.isFinal() || field.isVolatile();
 		}
-		for (final Class<?> type : SYNCHRONIZED_TYPES) {
-			final JvmType ltype = this.types.getTypeReferences().findDeclaredType(type, field);
+		for (final var type : SYNCHRONIZED_TYPES) {
+			final var ltype = this.types.getTypeReferences().findDeclaredType(type, field);
 			if (ltype != null && fieldType.isSubtypeOf(type)) {
 				return true;
 			}

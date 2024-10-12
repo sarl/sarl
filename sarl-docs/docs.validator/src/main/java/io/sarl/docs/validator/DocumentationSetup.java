@@ -69,7 +69,7 @@ public class DocumentationSetup extends SARLStandaloneSetup {
 	
 	@Override
 	public Injector createInjector(Module... modules) {
-		final Module[] nmodules = Arrays.copyOf(modules, modules.length + 1);
+		final var nmodules = Arrays.copyOf(modules, modules.length + 1);
 		nmodules[nmodules.length - 1] = new DocumentationModule();
 		return super.createInjector(nmodules);
 	}

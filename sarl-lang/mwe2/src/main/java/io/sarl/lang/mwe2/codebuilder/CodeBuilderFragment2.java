@@ -23,7 +23,6 @@ package io.sarl.lang.mwe2.codebuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -91,7 +90,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 */
 	@SuppressWarnings("static-method")
 	protected Collection<AbstractSubCodeBuilderFragment> initializeSubGenerators(Injector injector) {
-		final Collection<AbstractSubCodeBuilderFragment> fragments = new ArrayList<>();
+		final var fragments = new ArrayList<AbstractSubCodeBuilderFragment>();
 		fragments.add(injector.getInstance(BuilderFactoryFragment.class));
 		fragments.add(injector.getInstance(DocumentationBuilderFragment.class));
 		fragments.add(injector.getInstance(AbstractBuilderBuilderFragment.class));
@@ -106,7 +105,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		if (this.subFragments == null) {
 			issues.addError("Sub generators are not created"); //$NON-NLS-1$
 		} else {
-			for (final IXtextGeneratorFragment subFragment : this.subFragments) {
+			for (final var subFragment : this.subFragments) {
 				subFragment.checkConfiguration(issues);
 			}
 		}
@@ -117,9 +116,9 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		LOG.info("Generating the code builder for " + getLanguageName()); //$NON-NLS-1$
 
 		BuilderFactoryFragment fragment = null;
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
-			if (subFragment instanceof BuilderFactoryFragment) {
-				fragment = (BuilderFactoryFragment) subFragment;
+		for (final var subFragment : this.subFragments) {
+			if (subFragment instanceof BuilderFactoryFragment cvalue) {
+				fragment = cvalue;
 			} else {
 				subFragment.generate();
 			}
@@ -130,11 +129,11 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 
 		if (isGenerateStub()) {
 			if (isGenerateXtendStub()) {
-				for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+				for (final var subFragment : this.subFragments) {
 					subFragment.generateXtendStubs();
 				}
 			} else {
-				for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+				for (final var subFragment : this.subFragments) {
 					subFragment.generateJavaStubs();
 				}
 			}
@@ -144,8 +143,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		createIdeaBindings().contributeTo(getLanguage().getIdeGenModule());
 		createWebBindings().contributeTo(getLanguage().getWebGenModule());
 
-		final Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final var exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
+		for (final var subFragment : this.subFragments) {
 			subFragment.getExportedPackages(exportedPackages);
 		}
 	}
@@ -155,8 +154,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 * @return the bindings.
 	 */
 	protected BindingFactory createRuntimeBindings() {
-		final BindingFactory factory = new BindingFactory(getClass().getName());
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final var factory = new BindingFactory(getClass().getName());
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateRuntimeBindings(factory);
 		}
 		return factory;
@@ -167,8 +166,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 * @return the bindings.
 	 */
 	protected BindingFactory createEclipseBindings() {
-		final BindingFactory factory = new BindingFactory(getClass().getName());
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final var factory = new BindingFactory(getClass().getName());
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateEclipseBindings(factory);
 		}
 		return factory;
@@ -179,8 +178,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 * @return the bindings.
 	 */
 	protected BindingFactory createIdeaBindings() {
-		final BindingFactory factory = new BindingFactory(getClass().getName());
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final var factory = new BindingFactory(getClass().getName());
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateIdeaBindings(factory);
 		}
 		return factory;
@@ -191,8 +190,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 * @return the bindings.
 	 */
 	protected BindingFactory createWebBindings() {
-		final BindingFactory factory = new BindingFactory(getClass().getName());
-		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final var factory = new BindingFactory(getClass().getName());
+		for (final var subFragment : this.subFragments) {
 			subFragment.generateWebBindings(factory);
 		}
 		return factory;

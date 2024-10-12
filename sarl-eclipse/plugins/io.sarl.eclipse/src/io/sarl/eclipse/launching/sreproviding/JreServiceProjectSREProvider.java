@@ -129,7 +129,7 @@ public class JreServiceProjectSREProvider implements ProjectSREProvider {
 
 		@Override
 		public String getName() {
-			final String name = getNameNoDefault();
+			final var name = getNameNoDefault();
 			if (Strings.isNullOrEmpty(name)) {
 				return getLocation();
 			}

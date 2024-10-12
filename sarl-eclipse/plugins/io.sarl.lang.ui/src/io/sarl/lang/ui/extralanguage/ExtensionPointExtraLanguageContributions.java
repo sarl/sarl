@@ -76,18 +76,18 @@ public class ExtensionPointExtraLanguageContributions implements IExtraLanguageC
 		if (this.contributions == null) {
 			this.contributions = new ArrayList<>();
 
-			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+			final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
 			if (extensionPoint != null) {
-				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+				for (final var element : extensionPoint.getConfigurationElements()) {
 					try {
-						final IExtraLanguageGeneratorProvider generator = getType(
+						final var generator = getType(
 								IExtraLanguageGeneratorProvider.class, element, EXTENSION_POINT_GENERATOR_ATTRIBUTE);
-						final IExtraLanguageValidatorProvider validator = getType(
+						final var validator = getType(
 								IExtraLanguageValidatorProvider.class, element, EXTENSION_POINT_VALIDATOR_ATTRIBUTE);
-						final IOutputConfigurationProvider configuration = getType(
+						final var configuration = getType(
 								IOutputConfigurationProvider.class, element, EXTENSION_POINT_OUTPUT_CONFIGURATION_ATTRIBUTE);
-						final IExtraLanguageKeywordProvider keywords = getType(
+						final var keywords = getType(
 								IExtraLanguageKeywordProvider.class, element, EXTENSION_POINT_KEYWORDS_ATTRIBUTE);
 						this.contributions.add(new ExtensionPointContribution(generator, validator,
 								configuration, keywords));
@@ -105,7 +105,7 @@ public class ExtensionPointExtraLanguageContributions implements IExtraLanguageC
 	}
 
 	private static <T> T getType(Class<T> type, IConfigurationElement element, String attributeName) throws CoreException {
-		final Object obj = element.createExecutableExtension(attributeName);
+		final var obj = element.createExecutableExtension(attributeName);
 		if (type.isInstance(obj)) {
 			return type.cast(obj);
 		}

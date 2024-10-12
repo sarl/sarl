@@ -116,10 +116,10 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 	}
 
 	private static Pattern buildPurePattern(String[] patterns, String... additionalPatterns) {
-		final StringBuilder fullPattern = new StringBuilder();
+		final var fullPattern = new StringBuilder();
 		fullPattern.append("^"); //$NON-NLS-1$
-		boolean hasPattern = false;
-		for (final String pattern : patterns) {
+		var hasPattern = false;
+		for (final var pattern : patterns) {
 			if (hasPattern) {
 				fullPattern.append("|"); //$NON-NLS-1$
 			} else {
@@ -130,7 +130,7 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 			fullPattern.append(")"); //$NON-NLS-1$
 		}
 		if (additionalPatterns != null && additionalPatterns.length > 0) {
-			for (final String pattern : additionalPatterns) {
+			for (final var pattern : additionalPatterns) {
 				if (hasPattern) {
 					fullPattern.append("|"); //$NON-NLS-1$
 				} else {

@@ -55,8 +55,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
@@ -99,7 +97,7 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	@Override
 	public void generate(PackageElement packageElement, Collection<Path> cssStylesheets, Collection<Path> jsScripts, SarlDocletEnvironment environment, DocletOptions cliOptions, Reporter reporter) throws Exception {
 		this.packageElement = packageElement;
-		final String packageName = getElementUtils().getElementName(packageElement);
+		final var packageName = getElementUtils().getElementName(packageElement);
 		setDefaultTitle(MessageFormat.format(Messages.PackageSummaryGeneratorImpl_1, packageName));
 		generate(
 				MessageFormat.format(Messages.PackageSummaryGeneratorImpl_0, packageName),
@@ -113,7 +111,7 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateBodyTitle(PackageElement packageElement, Element parent) {
-		final Element nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
+		final var nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
 		nameDiv.appendText(getLastTitle());
 	}
 
@@ -123,9 +121,9 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generatePackageDescription(PackageElement packageElement, Element parent) {
-		final List<Node> description = new ArrayList<>();
+		final var description = new ArrayList<Node>();
 		createFullDescriptionBody(packageElement, description, false, true);
-		final Element descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.PACKAGE_DESCRIPTION);
+		final var descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.PACKAGE_DESCRIPTION);
 		descriptionDiv.appendChildren(description);
 	}
 
@@ -135,10 +133,10 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generatePackageIntroduction(PackageElement packageElement, Element parent) {
-		final List<Node> description = new ArrayList<>();
+		final var description = new ArrayList<Node>();
 		createFirstSentence(packageElement, description, false, true);
 		createBlockTagsFor(packageElement, description, Location.PACKAGE, CssStyles.PACKAGE_TAG_INFO);
-		final Element descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.PACKAGE_DESCRIPTION);
+		final var descriptionDiv = getHtmlFactory().createDivTag(parent, CssStyles.PACKAGE_DESCRIPTION);
 		descriptionDiv.appendChildren(description);
 	}
 
@@ -148,38 +146,38 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateAopList(PackageElement packageElement, Element parent) {
-		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends TypeElement>>();
 		//
-		final Iterable<TypeElement> allTypes = getTypeRepository().getTypesInPackage(packageElement);
+		final var allTypes = getTypeRepository().getTypesInPackage(packageElement);
 		//
-		final Iterable<TypeElement> aop = Iterables.filter(allTypes, it -> getElementUtils().isAopElement(it));
+		final var aop = Iterables.filter(allTypes, it -> getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_3, aop);
 		//
-		final Iterable<TypeElement> agents = Iterables.filter(allTypes, it -> getElementUtils().isSarlAgent(it));
+		final var agents = Iterables.filter(allTypes, it -> getElementUtils().isSarlAgent(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_10, agents);
 		//
-		final Iterable<TypeElement> behaviors = Iterables.filter(allTypes, it -> getElementUtils().isSarlBehavior(it));
+		final var behaviors = Iterables.filter(allTypes, it -> getElementUtils().isSarlBehavior(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_11, behaviors);
 		//
-		final Iterable<TypeElement> capacities = Iterables.filter(allTypes, it -> getElementUtils().isSarlCapacity(it));
+		final var capacities = Iterables.filter(allTypes, it -> getElementUtils().isSarlCapacity(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_12, capacities);
 		//
-		final Iterable<TypeElement> skills = Iterables.filter(allTypes, it -> getElementUtils().isSarlSkill(it));
+		final var skills = Iterables.filter(allTypes, it -> getElementUtils().isSarlSkill(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_13, skills);
 		//
-		final Iterable<TypeElement> events = Iterables.filter(allTypes, it -> getElementUtils().isSarlEvent(it));
+		final var events = Iterables.filter(allTypes, it -> getElementUtils().isSarlEvent(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_14, events);
 		//
 		createSummaryBox2(Messages.PackageSummaryGeneratorImpl_9, Messages.PackageSummaryGeneratorImpl_8,  Messages.PackageSummaryGeneratorImpl_15,
 				null, parent, allElements,
 				getElementUtils().getTypeElementBasenameComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createTypeLink(element, false, null, this));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createFirstSentence(element, nodes, false, false);
 					createShortDeprecationMessage(element, nodes, true);
 					return nodes;
@@ -193,35 +191,35 @@ public class PackageSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateOopList(PackageElement packageElement, Element parent) {
-		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends TypeElement>>();
 		//
-		final Iterable<TypeElement> allTypes = getTypeRepository().getTypesInPackage(packageElement);
+		final var allTypes = getTypeRepository().getTypesInPackage(packageElement);
 		//
-		final Iterable<TypeElement> oop = Iterables.filter(allTypes, it -> !getElementUtils().isAopElement(it));
+		final var oop = Iterables.filter(allTypes, it -> !getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_3, oop);
 		//
-		final Iterable<TypeElement> classes = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.CLASS && !getElementUtils().isAopElement(it));
+		final var classes = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.CLASS && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_4, classes);
 		//
-		final Iterable<TypeElement> interfaces = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.INTERFACE && !getElementUtils().isAopElement(it));
+		final var interfaces = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.INTERFACE && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_5, interfaces);
 		//
-		final Iterable<TypeElement> enumerations = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.ENUM && !getElementUtils().isAopElement(it));
+		final var enumerations = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.ENUM && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_6, enumerations);
 		//
-		final Iterable<TypeElement> annotations = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.ANNOTATION_TYPE && !getElementUtils().isAopElement(it));
+		final var annotations = Iterables.filter(allTypes, it -> it.getKind() == ElementKind.ANNOTATION_TYPE && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.PackageSummaryGeneratorImpl_7, annotations);
 		//
 		createSummaryBox2(Messages.PackageSummaryGeneratorImpl_2, Messages.PackageSummaryGeneratorImpl_8, Messages.PackageSummaryGeneratorImpl_15,
 				null, parent, allElements,
 				getElementUtils().getTypeElementBasenameComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createTypeLink(element, false, null, this));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createFirstSentence(element, nodes, false, false);
 					createShortDeprecationMessage(element, nodes, true);
 					return nodes;

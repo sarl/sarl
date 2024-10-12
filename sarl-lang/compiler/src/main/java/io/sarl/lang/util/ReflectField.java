@@ -106,7 +106,7 @@ public final class ReflectField<RT, T> {
 			Class<? extends Object> clazz = this.receiverType;
 			Field compatible = null;
 			do {
-				for (final Field candidate : clazz.getDeclaredFields()) {
+				for (final var candidate : clazz.getDeclaredFields()) {
 					if (candidate != null && isCompatible(candidate, this.fieldName)) {
 						if (compatible != null) {
 							throw new IllegalStateException("Ambiguous field to access. Both " //$NON-NLS-1$
@@ -135,7 +135,7 @@ public final class ReflectField<RT, T> {
 		if (!candidate.getName().equals(featureName)) {
 			return false;
 		}
-		Class<?> class1 = candidate.getType();
+		var class1 = candidate.getType();
 		if (class1.isPrimitive()) {
 			class1 = wrapperTypeFor(class1);
 		}

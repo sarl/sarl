@@ -116,7 +116,7 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 	 */
 	@Override
 	protected Set<OutputConfiguration> getOutputConfigurations(IProject project) {
-		final Set<OutputConfiguration> original = this.configurationProvider.getOutputConfigurations(getProject());
+		final var original = this.configurationProvider.getOutputConfigurations(getProject());
 		return Sets.filter(original, it -> !ExtraLanguageOutputConfigurations.isExtraLanguageOutputConfiguration(it.getName()));
 	}
 

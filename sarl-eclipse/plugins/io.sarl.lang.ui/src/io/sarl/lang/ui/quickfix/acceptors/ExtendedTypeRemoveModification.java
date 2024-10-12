@@ -77,13 +77,13 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 	 * @param type the type of the modification.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor, RemovalType type) {
-		final String[] data = issue.getData();
-		RemovalType removalType = type;
+		final var data = issue.getData();
+		var removalType = type;
 		String redundantName = null;
 		if (data != null && data.length >= 1) {
 			redundantName = data[0];
 			if (removalType == null && data.length >= 2) {
-				final String mode = data[1];
+				final var mode = data[1];
 				if (!Strings.isNullOrEmpty(mode)) {
 					try {
 						removalType = RemovalType.valueOf(mode.toUpperCase());
@@ -103,7 +103,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 			msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
 		}
 
-		final ExtendedTypeRemoveModification modification = new ExtendedTypeRemoveModification(removalType);
+		final var modification = new ExtendedTypeRemoveModification(removalType);
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -116,10 +116,10 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final IXtextDocument document = context.getXtextDocument();
-		final SARLQuickfixProvider tools = getTools();
-		final Issue issue = getIssue();
-		final String sep = tools.getGrammarAccess().getCommaKeyword();
+		final var document = context.getXtextDocument();
+		final var tools = getTools();
+		final var issue = getIssue();
+		final var sep = tools.getGrammarAccess().getCommaKeyword();
 		switch (this.type) {
 		case PRE:
 			tools.removeToPreviousSeparator(issue, document, sep);

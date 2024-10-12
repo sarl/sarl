@@ -20,7 +20,6 @@
  */
 package io.sarl.tests.api.tools;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -54,12 +53,12 @@ public class TestShell {
 	 */
 	@SuppressWarnings("resource")
 	public static String run(String... arguments) throws Exception {
-		final ProcessBuilder builder = new ProcessBuilder(arguments);
+		final var builder = new ProcessBuilder(arguments);
 		builder.redirectErrorStream(true);
-		final Process proc = builder.start();
+		final var proc = builder.start();
 		proc.waitFor(30, TimeUnit.SECONDS);
-		final StringBuilder out = new StringBuilder();
-		final BufferedReader is = proc.inputReader();
+		final var out = new StringBuilder();
+		final var is = proc.inputReader();
 		String line;
 		while ((line = is.readLine()) != null) {
 			out.append(line).append("\n"); //$NON-NLS-1$
@@ -74,8 +73,8 @@ public class TestShell {
 	 * @throws Exception if there is some issue when running the program.
 	 */
 	public static void runWithoutStreamOverriding(String... arguments) throws Exception {
-		final ProcessBuilder builder = new ProcessBuilder(arguments);
-		final Process proc = builder.start();
+		final var builder = new ProcessBuilder(arguments);
+		final var proc = builder.start();
 		proc.waitFor(30, TimeUnit.SECONDS);
 	}
 
@@ -87,7 +86,7 @@ public class TestShell {
 	 * @return all the arguments.
 	 */
 	public static String[] mergeJarArguments(String javaCmd, String jarFile, String... arguments) {
-		final String[] result = new String[arguments.length + 3];
+		final var result = new String[arguments.length + 3];
 		result[0] = javaCmd;
 		result[1] = "-jar"; //$NON-NLS-1$
 		result[2] = jarFile;
@@ -102,7 +101,7 @@ public class TestShell {
 	 * @throws FileNotFoundException if there is no executable jar.
 	 */
 	public static File findExecutableJar(String artifact) throws FileNotFoundException {
-		final Pattern pattern = Pattern.compile(Pattern.quote(artifact) + "\\-[0-9\\.]+(?:\\-SNAPSHOT)?\\.jar"); //$NON-NLS-1$
+		final var pattern = Pattern.compile(Pattern.quote(artifact) + "\\-[0-9\\.]+(?:\\-SNAPSHOT)?\\.jar"); //$NON-NLS-1$
 		return findExecutableJar(artifact, pattern);
 	}
 
@@ -114,17 +113,17 @@ public class TestShell {
 	 * @throws FileNotFoundException if there is no executable jar.
 	 */
 	public static File findExecutableJar(String artifact, String typeName) throws FileNotFoundException {
-		final Pattern pattern = Pattern.compile(Pattern.quote(artifact) + "\\-[0-9\\.]+(?:\\-SNAPSHOT)?\\-" + Pattern.quote(typeName) + "\\.jar"); //$NON-NLS-1$ //$NON-NLS-2$
+		final var pattern = Pattern.compile(Pattern.quote(artifact) + "\\-[0-9\\.]+(?:\\-SNAPSHOT)?\\-" + Pattern.quote(typeName) + "\\.jar"); //$NON-NLS-1$ //$NON-NLS-2$
 		return findExecutableJar(artifact, pattern);
 	}
 
 	private static File findExecutableJar(String artifact, Pattern filename) throws FileNotFoundException {
-		final File f0 = findExecutableJar(new File(FileSystem.CURRENT_DIRECTORY), filename);
+		final var f0 = findExecutableJar(new File(FileSystem.CURRENT_DIRECTORY), filename);
 		if (f0 != null) {
 			return f0;
 		}
-		final File brotherRoot = FileSystem.join(new File(FileSystem.PARENT_DIRECTORY), artifact);
-		final File f1 = findExecutableJar(brotherRoot, filename);
+		final var brotherRoot = FileSystem.join(new File(FileSystem.PARENT_DIRECTORY), artifact);
+		final var f1 = findExecutableJar(brotherRoot, filename);
 		if (f1 != null) {
 			return f1;
 		}
@@ -132,12 +131,12 @@ public class TestShell {
 	}
 
 	private static File findExecutableJar(File root, Pattern filename) {
-		final File folder = FileSystem.join(root, "target").getAbsoluteFile(); //$NON-NLS-1$
+		final var folder = FileSystem.join(root, "target").getAbsoluteFile(); //$NON-NLS-1$
 		final FileFilter filter = it -> {
 			final Matcher matcher = filename.matcher(it.getName());
 			return matcher.matches();
 		};
-		final File[] files = folder.listFiles(filter);
+		final var files = folder.listFiles(filter);
 		if (files != null && files.length == 1) {
 			return files[0];
 		}
@@ -150,11 +149,11 @@ public class TestShell {
 	 * @throws FileNotFoundException if there is no executable file.
 	 */
 	public static File findExecutableJava() throws FileNotFoundException {
-		final String pathvar = System.getenv("PATH"); //$NON-NLS-1$
+		final var pathvar = System.getenv("PATH"); //$NON-NLS-1$
 		if (!Strings.isNullOrEmpty(pathvar)) {
-			for (final String name : pathvar.split(Pattern.quote(File.pathSeparator))) {
-				final File path = FileSystem.convertStringToFile(name);
-				final File exec = FileSystem.join(path, "java"); //$NON-NLS-1$
+			for (final var name : pathvar.split(Pattern.quote(File.pathSeparator))) {
+				final var path = FileSystem.convertStringToFile(name);
+				final var exec = FileSystem.join(path, "java"); //$NON-NLS-1$
 				if (exec.canExecute()) {
 					return exec;
 				}

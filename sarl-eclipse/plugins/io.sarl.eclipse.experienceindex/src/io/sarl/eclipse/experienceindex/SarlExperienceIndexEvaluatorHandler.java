@@ -48,7 +48,7 @@ public class SarlExperienceIndexEvaluatorHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
-		final Task job = new Task();
+		final var job = new Task();
 		job.schedule();
 		return null;
 	}
@@ -61,7 +61,7 @@ public class SarlExperienceIndexEvaluatorHandler extends AbstractHandler {
 
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
-			final SEI experienceIndex = SarlExperienceIndex.getJanusExperienceIndex(() -> monitor.isCanceled());
+			final v experienceIndex = SarlExperienceIndex.getJanusExperienceIndex(() -> monitor.isCanceled());
 			if (!monitor.isCanceled()) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 					SarlExperienceIndexResultDialog.open(

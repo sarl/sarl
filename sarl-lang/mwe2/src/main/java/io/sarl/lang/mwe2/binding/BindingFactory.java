@@ -22,7 +22,6 @@
 package io.sarl.lang.mwe2.binding;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,7 +89,7 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWith(TypeReference bind, TypeReference annotatedWith, TypeReference to,
 			String functionName) {
-		final StringConcatenationClient client = new StringConcatenationClient() {
+		final var client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -102,12 +101,12 @@ public class BindingFactory {
 				builder.append(".class);"); //$NON-NLS-1$
 			}
 		};
-		String fctname = functionName;
+		var fctname = functionName;
 		if (Strings.isEmpty(fctname)) {
 			fctname = bind.getSimpleName();
 		}
-		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-		final  BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final var key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final  var statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -121,7 +120,7 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWithToInstance(TypeReference bind, TypeReference annotatedWith, String to,
 			String functionName) {
-		final StringConcatenationClient client = new StringConcatenationClient() {
+		final var client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -137,8 +136,8 @@ public class BindingFactory {
 		if (Strings.isEmpty(fctname)) {
 			fctname = bind.getSimpleName();
 		}
-		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-		final  BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final var key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final  var statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -152,14 +151,14 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWithName(TypeReference bind, String name, TypeReference to,
 			String functionName) {
-		String tmpName = Strings.emptyIfNull(name);
+		var tmpName = Strings.emptyIfNull(name);
 		if (tmpName.startsWith(REFERENCE_PREFIX)) {
 			tmpName = tmpName.substring(REFERENCE_PREFIX.length()).trim();
 		} else {
 			tmpName = "\"" + tmpName + "\""; //$NON-NLS-1$//$NON-NLS-2$
 		}
-		final String unferencedName = tmpName;
-		final StringConcatenationClient client = new StringConcatenationClient() {
+		final var unferencedName = tmpName;
+		final var client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -171,12 +170,12 @@ public class BindingFactory {
 				builder.append(".class);"); //$NON-NLS-1$
 			}
 		};
-		String fctname = functionName;
+		var fctname = functionName;
 		if (Strings.isEmpty(fctname)) {
 			fctname = name;
 		}
-		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-		final BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final var key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final var statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -190,14 +189,14 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWithNameToInstance(TypeReference bind, String name, String to,
 			String functionName) {
-		String tmpName = Strings.emptyIfNull(name);
+		var tmpName = Strings.emptyIfNull(name);
 		if (tmpName.startsWith(REFERENCE_PREFIX)) {
 			tmpName = tmpName.substring(REFERENCE_PREFIX.length()).trim();
 		} else {
 			tmpName = "\"" + tmpName + "\""; //$NON-NLS-1$//$NON-NLS-2$
 		}
-		final String unferencedName = tmpName;
-		final StringConcatenationClient client = new StringConcatenationClient() {
+		final var unferencedName = tmpName;
+		final var client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -209,12 +208,12 @@ public class BindingFactory {
 				builder.append(".class);"); //$NON-NLS-1$
 			}
 		};
-		String fctname = functionName;
+		var fctname = functionName;
 		if (Strings.isEmpty(fctname)) {
 			fctname = name;
 		}
-		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-		final BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final var key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final var statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -232,9 +231,9 @@ public class BindingFactory {
 		final BindKey type;
 		final BindValue value;
 		if (!Strings.isEmpty(functionName) && functionName.startsWith(CONFIGURE_PREFIX)) {
-			final String fname = functionName.substring(CONFIGURE_PREFIX.length());
+			final var fname = functionName.substring(CONFIGURE_PREFIX.length());
 			type = new BindKey(Strings.toFirstUpper(fname), null, isSingleton, isEager);
-			final StringConcatenationClient client = new StringConcatenationClient() {
+			final var client = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation builder) {
 					builder.append("binder.bind("); //$NON-NLS-1$
@@ -246,12 +245,12 @@ public class BindingFactory {
 			};
 			value = new BindValue(null, null, false, Collections.singletonList(client));
 		} else {
-			String fname = functionName;
+			var fname = functionName;
 			if (fname != null && fname.startsWith(BIND_PREFIX)) {
 				fname = fname.substring(BIND_PREFIX.length());
 			}
 			type = new BindKey(Strings.toFirstUpper(fname), bind, isSingleton, isEager);
-			final StringConcatenationClient client = new StringConcatenationClient() {
+			final var client = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation builder) {
 					builder.append(instanceExpression);
@@ -278,7 +277,7 @@ public class BindingFactory {
 		final BindKey type;
 		final BindValue value;
 		if (!Strings.isEmpty(functionName) && functionName.startsWith(CONFIGURE_PREFIX)) {
-			final String fname = functionName.substring(CONFIGURE_PREFIX.length());
+			final var fname = functionName.substring(CONFIGURE_PREFIX.length());
 			type = new GuiceModuleAccess.BindKey(Strings.toFirstUpper(fname), null, false, false);
 			final StringConcatenationClient client;
 			if (isProvider) {
@@ -306,7 +305,7 @@ public class BindingFactory {
 			}
 			value = new BindValue(null, null, false, Collections.singletonList(client));
 		} else {
-			String fname = functionName;
+			var fname = functionName;
 			if (fname != null && fname.startsWith(BIND_PREFIX)) {
 				fname = fname.substring(BIND_PREFIX.length());
 			}
@@ -317,7 +316,7 @@ public class BindingFactory {
 	}
 
 	private static Binding findBinding(Set<Binding> bindings, Binding binding) {
-		for (final Binding bnd : bindings) {
+		for (final var bnd : bindings) {
 			if (Objects.equals(bnd, binding)) {
 				return bnd;
 			}
@@ -326,7 +325,7 @@ public class BindingFactory {
 	}
 
 	private static String formatFunctionName(String name) {
-		String formattedName = name;
+		var formattedName = name;
 		if (formattedName.startsWith(CONFIGURE_PREFIX)) {
 			formattedName = formattedName.substring(CONFIGURE_PREFIX.length());
 		} else if (formattedName.startsWith(BIND_PREFIX)) {
@@ -341,8 +340,8 @@ public class BindingFactory {
 	 * @param override indicates if the binding could override an existing element.
 	 */
 	public void add(Binding binding, boolean override) {
-		final Set<Binding> moduleBindings = this.module.get().getBindings();
-		final Binding otherBinding = findBinding(moduleBindings, binding);
+		final var moduleBindings = this.module.get().getBindings();
+		final var otherBinding = findBinding(moduleBindings, binding);
 		if (!override) {
 			if (otherBinding != null) {
 				throw new IllegalArgumentException(MessageFormat.format(
@@ -361,15 +360,15 @@ public class BindingFactory {
 	/** Put the bindings to the associated module.
 	 */
 	public void contributeToModule() {
-		final GuiceModuleAccess module = this.module.get();
+		final var module = this.module.get();
 		if (!this.removableBindings.isEmpty()) {
 			// Ok, we are broking the Java secutiry manager.
 			// But it's for having something working!
 			try {
-				final Field field = module.getClass().getDeclaredField("bindings"); //$NON-NLS-1$
+				final var field = module.getClass().getDeclaredField("bindings"); //$NON-NLS-1$
 				// TODO Is this compatible with Java 11?
 				field.setAccessible(true);
-				final Collection<?> hiddenBindings = (Collection<?>) field.get(module);
+				final var hiddenBindings = (Collection<?>) field.get(module);
 				hiddenBindings.removeAll(this.removableBindings);
 			} catch (Exception exception) {
 				throw new IllegalStateException(exception);
@@ -381,11 +380,11 @@ public class BindingFactory {
 	private static TypeReference typeRef(String qualifiedName) {
 		int index = qualifiedName.indexOf('$');
 		if (index > 0) {
-			String classname = qualifiedName.substring(0, index);
-			final String innerClasses = qualifiedName.substring(index + 1);
+			var classname = qualifiedName.substring(0, index);
+			final var innerClasses = qualifiedName.substring(index + 1);
 			index = classname.lastIndexOf('.');
 			if (index >= 0) {
-				final String packageName = classname.substring(0, index);
+				final var packageName = classname.substring(0, index);
 				classname = classname.substring(index + 1) + '.' + innerClasses;
 				return new TypeReference(packageName, classname);
 			}
@@ -399,16 +398,16 @@ public class BindingFactory {
 	 * @return the Guice binding.
 	 */
 	public Binding toBinding(BindingElement element) {
-		final TypeReference typeReference = typeRef(element.getBind());
-		final String annotatedWith = element.getAnnotatedWith();
-		final String annotatedWithName = element.getAnnotatedWithName();
+		final var typeReference = typeRef(element.getBind());
+		final var annotatedWith = element.getAnnotatedWith();
+		final var annotatedWithName = element.getAnnotatedWithName();
 		if (!Strings.isEmpty(annotatedWith)) {
-			final TypeReference annotationType = typeRef(annotatedWith);
+			final var annotationType = typeRef(annotatedWith);
 			if (element.isInstance()) {
 				return bindAnnotatedWithToInstance(typeReference, annotationType, element.getTo(),
 						element.getFunctionName());
 			}
-			final TypeReference typeReference2 = typeRef(element.getTo());
+			final var typeReference2 = typeRef(element.getTo());
 			return bindAnnotatedWith(typeReference, annotationType, typeReference2,
 						element.getFunctionName());
 		}
@@ -418,7 +417,7 @@ public class BindingFactory {
 						element.getTo(),
 						element.getFunctionName());
 			}
-			final TypeReference typeReference2 = typeRef(element.getTo());
+			final var typeReference2 = typeRef(element.getTo());
 			return bindAnnotatedWithName(typeReference, annotatedWithName, typeReference2,
 						element.getFunctionName());
 		}
@@ -429,7 +428,7 @@ public class BindingFactory {
 					element.isSingleton(),
 					element.isEager());
 		}
-		final TypeReference typeReference2 = typeRef(element.getTo());
+		final var typeReference2 = typeRef(element.getTo());
 		return bindToType(
 					typeReference,
 					element.getFunctionName(),

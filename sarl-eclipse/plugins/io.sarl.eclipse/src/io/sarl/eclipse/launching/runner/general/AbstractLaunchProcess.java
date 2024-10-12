@@ -308,7 +308,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		monitor.subTask(
 				LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1);
 
-		final AbstractSARLLaunchConfiguration own = getOwner();
+		final var own = getOwner();
 
 		// Clear cached entries
 		own.clearBuffers();
@@ -316,7 +316,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		setMainTypeName(own.verifyMainTypeName(this.configuration));
 		setRunner(own.getVMRunner(this.configuration, this.mode));
 
-		final File workingDir = own.verifyWorkingDirectory(this.configuration);
+		final var workingDir = own.verifyWorkingDirectory(this.configuration);
 		setWorkingDirectory(null);
 		if (workingDir != null) {
 			setWorkingDirectory(workingDir.getAbsolutePath());
@@ -334,9 +334,9 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	protected void buildClasspathAndModulePath(IProgressMonitor monitor) throws CoreException {
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_0);
-		final String[][] paths = getOwner().getClasspathAndModulepath(this.configuration);
+		final var paths = getOwner().getClasspathAndModulepath(this.configuration);
 
-		final AbstractSARLLaunchConfiguration own = getOwner();
+		final var own = getOwner();
 		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
 			SARLEclipsePlugin.getDefault().getLog().info(
 					MessageFormat.format(Messages.AbstractLaunchProcess_9, Arrays.toString(paths[0])));
@@ -357,11 +357,11 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_1);
 
-		final AbstractSARLLaunchConfiguration own = getOwner();
+		final var own = getOwner();
 
 		// Program & VM arguments
-		final String pgmArgs = getProgramArguments(own);
-		final String vmArgs = getVMArguments(own);
+		final var pgmArgs = getProgramArguments(own);
+		final var vmArgs = getVMArguments(own);
 
 		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
 			SARLEclipsePlugin.getDefault().getLog().info(
@@ -373,7 +373,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		setExecutionArguments(new ExecutionArguments(vmArgs, pgmArgs));
 
 		// VM-specific attributes
-		final Map<String, Object> vmAttrs = own.getVMSpecificAttributesMap(this.configuration);
+		final var vmAttrs = own.getVMSpecificAttributesMap(this.configuration);
 
 		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
 			SARLEclipsePlugin.getDefault().getLog().info(
@@ -402,9 +402,9 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	 * @since 0.12
 	 */
 	protected String getVMArguments(AbstractSARLLaunchConfiguration own) throws CoreException {
-		final String vmArgs = own.getVMArguments(this.configuration);
+		final var vmArgs = own.getVMArguments(this.configuration);
 
-		final String modeArgs = own.getVMArguments(this.configuration, this.mode);
+		final var modeArgs = own.getVMArguments(this.configuration, this.mode);
 
 		// Add -ea option if in debug mode
 		final String eaArg;
@@ -418,7 +418,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		}
 
 		// Add special arguments that are provided by contributors
-		final String extraJreArgs = own.getConfigurationAccessor().getExtraJRELaunchingArguments(this.configuration);
+		final var extraJreArgs = own.getConfigurationAccessor().getExtraJRELaunchingArguments(this.configuration);
 
 		return join(vmArgs, modeArgs, eaArg, extraJreArgs);
 	}
@@ -432,11 +432,11 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_2);
 		if (Strings.isEmpty(getMainTypeName())) {
-			final AbstractSARLLaunchConfiguration own = getOwner();
+			final var own = getOwner();
 			// This case occurs when the launch configuration is using
 			// a SRE that is inside the class path.
 			// The name of the main class is then no saved in the launch configuration properties.
-			final ISREInstall sre = SrePathUtils.getSREInstallFor(this.configuration,
+			final var sre = SrePathUtils.getSREInstallFor(this.configuration,
 					own.getConfigurationAccessor(), cfg -> own.getJavaProject(cfg));
 			if (sre != null) {
 				setMainTypeName(sre.getMainClass());
@@ -453,7 +453,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	protected void createRunConfiguration(IProgressMonitor monitor) throws CoreException {
 		monitor.subTask(Messages.AbstractLaunchProcess_3);
 
-		final AbstractSARLLaunchConfiguration owner = getOwner();
+		final var owner = getOwner();
 
 		final String[] classpath;
 		final String[] modulepath;
@@ -474,7 +474,7 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 			modulepath = null;
 		}
 
-		final VMRunnerConfiguration cfg = new VMRunnerConfiguration(getMainTypeName(), classpath);
+		final var cfg = new VMRunnerConfiguration(getMainTypeName(), classpath);
 
 		cfg.setProgramArguments(getExecutionArguments().getProgramArgumentsArray());
 		cfg.setEnvironment(getEnvironment());
@@ -488,12 +488,12 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 				&& !getMainTypeName().equals("org.eclipse.jdt.internal.debug.ui.snippeteditor.ScrapbookMain")) { //$NON-NLS-1$
 			// Module name need not be the same as project name
 			try {
-				final IJavaProject proj = JavaRuntime.getJavaProject(this.configuration);
+				final var proj = JavaRuntime.getJavaProject(this.configuration);
 				if (proj != null) {
-					final IModuleDescription module = proj.getModuleDescription();
-					final String modName = module == null ? null : module.getElementName();
+					final var module = proj.getModuleDescription();
+					final var modName = module == null ? null : module.getElementName();
 					if (modName != null && modName.length() > 0) {
-						final String moduleName = this.configuration.getAttribute(
+						final var moduleName = this.configuration.getAttribute(
 								IJavaLaunchConfigurationConstants.ATTR_MODULE_NAME, (String) null);
 						if (moduleName != null) {
 							cfg.setModuleDescription(moduleName);

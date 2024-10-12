@@ -63,11 +63,11 @@ public class EmbeddedNotModularVMRunner extends AbstractEmbeddedVMRunner {
 
 		@Override
 		public void initialize(VMRunnerConfiguration configuration, ILaunch launch) {
-			final String[] classpath = configuration.getClassPath();
-			final URL[] classPathURLs = new URL[classpath.length];
+			final var classpath = configuration.getClassPath();
+			final var classPathURLs = new URL[classpath.length];
 			Arrays.parallelSetAll(classPathURLs, index -> {
-				String path = classpath[index];
-				final URL url = FileSystem.convertStringToURL(path, false);
+				var path = classpath[index];
+				final var url = FileSystem.convertStringToURL(path, false);
 				path = url.getFile();
 				if (!path.endsWith(JAR_EXTENSION) && !path.endsWith(SLASH)) {
 					path = path + SLASH;

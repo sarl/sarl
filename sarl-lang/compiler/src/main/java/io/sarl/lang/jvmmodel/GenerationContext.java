@@ -36,11 +36,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.util.JavaVersion;
@@ -255,9 +253,9 @@ abstract class GenerationContext {
 	 */
 	public Collection<Procedure1<? super ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
 		assert source != null;
-		final String id = source.getName().getIdentifier();
+		final var id = source.getName().getIdentifier();
 		final Collection<Procedure1<? super ITreeAppendable>> evaluators;
-		final Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>> pair = this.guardEvaluators.get(id);
+		final var pair = this.guardEvaluators.get(id);
 		if (pair == null) {
 			evaluators = new ArrayList<>();
 			this.guardEvaluators.put(id, new Pair<>(source, evaluators));
@@ -380,7 +378,7 @@ abstract class GenerationContext {
 	 * @since 0.12
 	 */
 	public JvmOperation getInheritedOperation(ActionPrototype prototype) {
-		JvmOperation inheritedOperation = getInheritedImplementedOperation(prototype);
+		var inheritedOperation = getInheritedImplementedOperation(prototype);
 		if (inheritedOperation == null) {
 			inheritedOperation = getInheritedOperationsToImplement().get(prototype);
 		}
@@ -394,7 +392,7 @@ abstract class GenerationContext {
 	 * @since 0.12
 	 */
 	public JvmOperation getInheritedImplementedOperation(ActionPrototype prototype) {
-		JvmOperation inheritedOperation = getInheritedFinalOperations().get(prototype);
+		var inheritedOperation = getInheritedFinalOperations().get(prototype);
 		if (inheritedOperation == null) {
 			inheritedOperation = getInheritedOverridableOperations().get(prototype);
 		}
@@ -407,7 +405,7 @@ abstract class GenerationContext {
 	 * @return the operation or {@code null}.
 	 */
 	public JvmOperation getDefinedOperation(ActionPrototype prototype) {
-		final JvmOperation localOperation = this.localOperations.get(prototype);
+		final var localOperation = this.localOperations.get(prototype);
 		if (localOperation != null) {
 			return localOperation;
 		}
@@ -439,7 +437,7 @@ abstract class GenerationContext {
 	 * @since 0.5
 	 */
 	public List<Runnable> getPostFinalizationElements() {
-		final GenerationContext prt = getParentContext();
+		final var prt = getParentContext();
 		if (prt != null) {
 			return prt.getPostFinalizationElements();
 		}
@@ -598,9 +596,9 @@ abstract class GenerationContext {
 	protected static boolean hasInjectAnnotation(JvmAnnotationTarget target) {
 		return target.getAnnotations().stream()
 				.anyMatch(it -> {
-					final JvmAnnotationType annotationType = it.getAnnotation();
+					final var annotationType = it.getAnnotation();
 					if (annotationType != null) {
-						final String name = annotationType.getQualifiedName();
+						final var name = annotationType.getQualifiedName();
 						if ("com.google.inject.Inject".equals(name) //$NON-NLS-1$
 								|| "javax.inject.Inject".equals(name) //$NON-NLS-1$
 								|| "jakarta.inject.Inject".equals(name)) { //$NON-NLS-1$
@@ -629,9 +627,9 @@ abstract class GenerationContext {
 	 */
 	public void setInjectable(JvmTypeReference element) {
 		if (element != null) {
-			final JvmType type = element.getType();
-			if (type instanceof JvmAnnotationTarget
-					&& this.annotationFinder.findAnnotation((JvmAnnotationTarget) type, Injectable.class) != null) {
+			final var type = element.getType();
+			if (type instanceof JvmAnnotationTarget cvalue
+					&& this.annotationFinder.findAnnotation(cvalue, Injectable.class) != null) {
 				setInjectable(true);
 			}
 		}
@@ -645,7 +643,7 @@ abstract class GenerationContext {
 	 */
 	public void addUserObject(String id, Object value) {
 		if (!Strings.isNullOrEmpty(id) && value != null) {
-			final List<Object> usrData = this.userData.computeIfAbsent(id, it -> {
+			final var usrData = this.userData.computeIfAbsent(id, it -> {
 				return new ArrayList<>();
 			});
 			usrData.add(value);
@@ -660,7 +658,7 @@ abstract class GenerationContext {
 	 */
 	public Iterable<Object> consumeUserObject(String id) {
 		if (!Strings.isNullOrEmpty(id)) {
-			final List<Object> usrData = this.userData.remove(id);
+			final var usrData = this.userData.remove(id);
 			if (usrData != null) {
 				return usrData;
 			}
@@ -678,9 +676,9 @@ abstract class GenerationContext {
 	 */
 	public <T> Iterable<T> consumeUserObject(String id, Class<T> dataType) {
 		if (!Strings.isNullOrEmpty(id)) {
-			final List<Object> usrData = this.userData.remove(id);
+			final var usrData = this.userData.remove(id);
 			if (usrData != null) {
-				final Collection<T> output = Collections2.transform(usrData, it -> {
+				final var output = Collections2.transform(usrData, it -> {
 					return dataType.cast(it);
 				});
 				return output;

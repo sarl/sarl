@@ -77,13 +77,11 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = SLASH
 				+ JanusClasspathContainer.class.getPackage().getName().replace(POINT, SLASH)
 				+ SLASH + BUNDLE_PROPERTY_BASENAME;
-		final ResourceBundle bundle = ResourceBundle.getBundle(JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
+		final var bundle = ResourceBundle.getBundle(JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
 
-		final Set<String> libs = new HashSet<>();
-
+		final var libs = new HashSet<String>();
 		
-		
-		for (final String lib : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
+		for (final var lib : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
 			libs.add(lib);
 		}
 
@@ -92,14 +90,14 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			throw new IllegalStateException(MAIN_BUNDLE_PROPERTY_NAME);
 		}
 
-		for (final String lib : bundle.getString(BUNDLES_PROPERTY_NAME).split(VALUE_SEPARATOR)) {
+		for (final var lib : bundle.getString(BUNDLES_PROPERTY_NAME).split(VALUE_SEPARATOR)) {
 			libs.add(lib.trim());
 		}
 		if (!libs.contains(JANUS_MAIN_BUNDLE_ID)) {
 			throw new IllegalStateException(BUNDLES_PROPERTY_NAME);
 		}
 
-		String[] allLibs = new String[libs.size()];
+		var allLibs = new String[libs.size()];
 		allLibs = libs.toArray(allLibs);
 		JANUS_DEPENDENCY_BUNDLE_NAMES = allLibs;
 	}
@@ -123,21 +121,21 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 * @return the classpath.
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
-		final Bundle bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
-		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
+		final var bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
+		final var resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
 		return resolvedBundles;
 	}
 
 	@Override
 	protected void updateBundleList(Set<String> entries) {
-		for (final String symbolicName : getJanusPlatformClasspath().getTransitiveSymbolicNames(true)) {
+		for (final var symbolicName : getJanusPlatformClasspath().getTransitiveSymbolicNames(true)) {
 			entries.add(symbolicName);
 		}
 	}
 
 	@Override
 	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
-		for (final IClasspathEntry cpe : getJanusPlatformClasspath().getTransitiveClasspathEntries(true)) {
+		for (final var cpe : getJanusPlatformClasspath().getTransitiveClasspathEntries(true)) {
 			entries.add(cpe);
 		}
 	}

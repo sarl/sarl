@@ -53,7 +53,6 @@ package io.sarl.docs.doclet2.html.taglets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -68,7 +67,6 @@ import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.html.framework.CssStyles;
 import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.HtmlFactory;
-import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContext;
 import io.sarl.docs.doclet2.html.framework.HtmlTags;
@@ -164,7 +162,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	
 	@Override
 	public String toString() {
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		if (isInlineTag()) {
 			buf.append("@"); //$NON-NLS-1$
 		}
@@ -176,7 +174,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	
 	@Override
 	public String toString(List<? extends DocTree> tags, Element element) {
-		final org.jsoup.nodes.Element elt = new org.jsoup.nodes.Element(HtmlTags.pseudoTag("empty")); //$NON-NLS-1$
+		final var elt = new org.jsoup.nodes.Element(HtmlTags.pseudoTag("empty")); //$NON-NLS-1$
 		if (appendNode(elt, tags, element, null, null, null)) {
 			return elt.html();
 		}
@@ -237,7 +235,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	 */
 	protected boolean appendCommentText(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element documentedElement, String separator, boolean createSpan, CssStyles style, HtmlFactoryContext context) {
       if (!tags.isEmpty()) {
-      	final Iterator<? extends DocTree> contentElements = tags.iterator();
+      	final var contentElements = tags.iterator();
       	// Pass null as parent in order to avoid to add it into the parent node if there is
       	// no text to output
       	final org.jsoup.nodes.Element outputNode;
@@ -246,8 +244,8 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
       	} else {
       		outputNode = parent;
       	}
-		final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(outputNode, documentedElement, context);
-      	boolean changed = getHtmlFactory().createCommentText(memory, contentElements.next(), style);
+		final var memory = getHtmlFactory().createCommentTextMemory(outputNode, documentedElement, context);
+		var changed = getHtmlFactory().createCommentText(memory, contentElements.next(), style);
       	while (contentElements.hasNext()) {
           	if (!Strings.isNullOrEmpty(separator)) {
           		outputNode.appendText(separator);
@@ -274,7 +272,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 	protected void appendChildren(org.jsoup.nodes.Element parent, Iterable<? extends Node> children) {
 		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		assert children != null : "children argument must not be null"; //$NON-NLS-1$
-		for (final Node child : children) {
+		for (final var child : children) {
 			if (child != null) {
 				appendChildren(parent, child);
 			}
@@ -293,7 +291,7 @@ public abstract class AbstractSarlTaglet implements SarlTaglet {
 		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		assert child != null : "child argument must not be null"; //$NON-NLS-1$
 		if (HtmlTags.isPseudoTag(child.nodeName()) && child instanceof Element) {
-			for (final Node chld : child.childNodes()) {
+			for (final var chld : child.childNodes()) {
 				parent.appendChild(chld.clone());
 			}
 		} else {

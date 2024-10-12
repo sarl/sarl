@@ -115,9 +115,9 @@ class ImportMavenSarlProjectsJob extends WorkspaceJob {
 		return new AbstractCreateMavenProjectsOperation() {
 			@Override
 			protected List<IProject> doCreateMavenProjects(IProgressMonitor progressMonitor) throws CoreException {
-				final SubMonitor monitor = SubMonitor.convert(progressMonitor, 101);
+				final var monitor = SubMonitor.convert(progressMonitor, 101);
 				try {
-					final List<IMavenProjectImportResult> results = MavenImportUtils.runFixedImportJob(
+					final var results = MavenImportUtils.runFixedImportJob(
 							true,
 							getProjects(),
 							getImportConfiguration(),
@@ -147,8 +147,8 @@ class ImportMavenSarlProjectsJob extends WorkspaceJob {
 		final AbstractCreateMavenProjectsOperation importOperation = createOperation();
 		try {
 			importOperation.run(monitor);
-			final List<IProject> createdProjects = importOperation.getCreatedProjects();
-			final MappingDiscoveryJob discoveryJob = new MappingDiscoveryJob(createdProjects, false);
+			final var createdProjects = importOperation.getCreatedProjects();
+			final var discoveryJob = new MappingDiscoveryJob(createdProjects, false);
 			discoveryJob.schedule();
 		} catch (InvocationTargetException exception) {
 			restorePom();

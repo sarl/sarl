@@ -136,8 +136,8 @@ public class ExtraLanguagePreferenceAccess {
 	 * @since 0.8
 	 */
 	public String getString(String preferenceContainerID, IProject project, String preferenceName) {
-		final IProject prj = ifSpecificConfiguration(preferenceContainerID, project);
-		final IPreferenceStore store = getPreferenceStore(prj);
+		final var prj = ifSpecificConfiguration(preferenceContainerID, project);
+		final var store = getPreferenceStore(prj);
 		return getString(store, preferenceContainerID, preferenceName);
 	}
 
@@ -166,8 +166,8 @@ public class ExtraLanguagePreferenceAccess {
 	 */
 	public boolean getBoolean(String preferenceContainerID, IProject project, String preferenceName) {
 		assert preferenceName != null;
-		final IProject prj = ifSpecificConfiguration(preferenceContainerID, project);
-		final IPreferenceStore store = getPreferenceStore(prj);
+		final var prj = ifSpecificConfiguration(preferenceContainerID, project);
+		final var store = getPreferenceStore(prj);
 		return getBoolean(store, preferenceContainerID, preferenceName);
 	}
 
@@ -219,15 +219,15 @@ public class ExtraLanguagePreferenceAccess {
 	 *     the general configuration should be used.
 	 */
 	public boolean hasProjectSpecificOptions(String preferenceContainerID, IProject project) {
-		final IPreferenceStore store = getWritablePreferenceStore(project);
+		final var store = getWritablePreferenceStore(project);
 		// Compute the key
-		String key = IS_PROJECT_SPECIFIC;
+		var key = IS_PROJECT_SPECIFIC;
 		if (preferenceContainerID != null) {
 			key = getPropertyPrefix(preferenceContainerID) + "." + IS_PROJECT_SPECIFIC; //$NON-NLS-1$
 		}
 		// backward compatibility
-		final boolean oldSettingsUsed = store.getBoolean(IS_PROJECT_SPECIFIC);
-		final boolean newSettingsValue = store.getBoolean(key);
+		final var oldSettingsUsed = store.getBoolean(IS_PROJECT_SPECIFIC);
+		final var newSettingsValue = store.getBoolean(key);
 		if (oldSettingsUsed && !newSettingsValue) {
 			store.setValue(key, true);
 			return true;
@@ -269,11 +269,11 @@ public class ExtraLanguagePreferenceAccess {
 	 * @return {@code true} if a data was parsed. {@code false} if no value was parsed.
 	 */
 	public static boolean parseConverterPreferenceValue(String input, Procedure2<? super String, ? super String> output) {
-		final StringTokenizer tokenizer = new StringTokenizer(input, PREFERENCE_SEPARATOR);
+		final var tokenizer = new StringTokenizer(input, PREFERENCE_SEPARATOR);
 		String key = null;
-		boolean foundValue = false;
+		var foundValue = false;
 		while (tokenizer.hasMoreTokens()) {
-			final String token = tokenizer.nextToken();
+			final var token = tokenizer.nextToken();
 			if (key != null) {
 				output.apply(key,  token);
 				foundValue = true;
@@ -292,9 +292,9 @@ public class ExtraLanguagePreferenceAccess {
 	 * @return the string representation.
 	 */
 	public static String toConverterPreferenceValue(Iterator<String> input) {
-		final StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		while (input.hasNext()) {
-			final String value = input.next();
+			final var value = input.next();
 			if (builder.length() > 0) {
 				builder.append(PREFERENCE_SEPARATOR);
 			}
@@ -320,7 +320,7 @@ public class ExtraLanguagePreferenceAccess {
 	 * @return the string representation.
 	 */
 	public static String toConverterPreferenceValue(IExtraLanguageConversionInitializer input) {
-		final StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		input.initializeConversions((baseName, source, target) -> {
 			if (builder.length() > 0) {
 				builder.append(PREFERENCE_SEPARATOR);
@@ -359,9 +359,9 @@ public class ExtraLanguagePreferenceAccess {
 
 		@Override
 		public String next() {
-			final Entry<String, String> entry = this.entries.next();
-			final String source = entry.getKey();
-			final String target = entry.getValue();
+			final var entry = this.entries.next();
+			final var source = entry.getKey();
+			final var target = entry.getValue();
 			return source + PREFERENCE_SEPARATOR + target;
 		}
 

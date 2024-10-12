@@ -48,8 +48,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 
 	@Override
 	protected IDialogSettings getDialogSettings() {
-		final IDialogSettings dialogSettings = super.getDialogSettings();
-		final IDialogSettings section = dialogSettings.getSection(SECTION_NAME);
+		final var dialogSettings = super.getDialogSettings();
+		final var section = dialogSettings.getSection(SECTION_NAME);
 		if (section == null) {
 			return dialogSettings.addNewSection(SECTION_NAME);
 		}
@@ -61,13 +61,12 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 		super.addAdditionalComponentsToSettingsPage(settingsPage, nbColumns, defaultIndent);
 		// Xtend block add the "Display Java Problems in Xtend".
 		// It must be replaced by "Display Java Problems in SARL".
-		for (final Control ctrl : settingsPage.getChildren()) {
-			if (ctrl instanceof Composite) {
-				final Composite composite = (Composite) ctrl;
-				for (final Control ctrl2 : composite.getChildren()) {
-					if (ctrl2 instanceof Label
-							&& Messages.SARLValidatorConfigurationBlock_1.equals(((Label) ctrl2).getText())) {
-						((Label) ctrl2).setText(Messages.SARLValidatorConfigurationBlock_9);
+		for (final var ctrl : settingsPage.getChildren()) {
+			if (ctrl instanceof Composite composite) {
+				for (final var ctrl2 : composite.getChildren()) {
+					if (ctrl2 instanceof Label cvalue
+							&& Messages.SARLValidatorConfigurationBlock_1.equals(cvalue.getText())) {
+						cvalue.setText(Messages.SARLValidatorConfigurationBlock_9);
 						break;
 					}
 				}

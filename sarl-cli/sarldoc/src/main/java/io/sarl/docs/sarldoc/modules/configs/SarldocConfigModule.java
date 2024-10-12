@@ -107,8 +107,8 @@ public class SarldocConfigModule implements BQModule {
 				.build())
 			.mapConfigPath(DOCTITLE_OPTION, TITLE_NAME);
 
-		final StringBuilder customTagHelp = new StringBuilder();
-		for (final Placement placement : Placement.values()) {
+		final var customTagHelp = new StringBuilder();
+		for (final var placement : Placement.values()) {
 			if (customTagHelp.length() > 0) {
 				customTagHelp.append(Messages.SarldocConfigModule_6);
 			}
@@ -133,7 +133,7 @@ public class SarldocConfigModule implements BQModule {
 				.build())
 			.mapConfigPath(LOCALE_OPTION, LOCALE_NAME);
 
-		final String truefalseString = Boolean.TRUE.toString() + "|" + Boolean.FALSE.toString(); //$NON-NLS-1$
+		final var truefalseString = Boolean.TRUE.toString() + "|" + Boolean.FALSE.toString(); //$NON-NLS-1$
 
 		extend(binder).addOption(OptionMetadata.builder(
 				VERSIONTAG_OPTION,
@@ -163,9 +163,9 @@ public class SarldocConfigModule implements BQModule {
 				.build())
 			.mapConfigPath(SINCETAG_OPTION, ENABLE_SINCE_TAG_NAME);
 
-		final StringBuilder visibilityDoc = new StringBuilder();
-		final StringBuilder visibilityValues = new StringBuilder();
-		for (final Visibility visibility : Visibility.values()) {
+		final var visibilityDoc = new StringBuilder();
+		final var visibilityValues = new StringBuilder();
+		for (final var visibility : Visibility.values()) {
 			if (visibilityDoc.length() > 0) {
 				visibilityDoc.append(Messages.SarldocConfigModule_6);
 			}
@@ -194,7 +194,7 @@ public class SarldocConfigModule implements BQModule {
 	@Provides
 	@Singleton
 	public SarldocConfig getSarldocConfig(ConfigurationFactory configFactory, Injector injector) {
-		final SarldocConfig config = SarldocConfig.getConfiguration(configFactory);
+		final var config = SarldocConfig.getConfiguration(configFactory);
 		injector.injectMembers(config);
 		return config;
 	}

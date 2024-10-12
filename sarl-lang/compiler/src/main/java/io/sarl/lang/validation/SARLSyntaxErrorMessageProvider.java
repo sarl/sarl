@@ -24,7 +24,6 @@ package io.sarl.lang.validation;
 import java.text.MessageFormat;
 
 import com.google.inject.Inject;
-import org.antlr.runtime.RecognitionException;
 import org.eclipse.xtext.nodemodel.SyntaxErrorMessage;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
@@ -52,12 +51,12 @@ public class SARLSyntaxErrorMessageProvider extends CardinalityAwareSyntaxErrorM
 	@Override
 	public SyntaxErrorMessage getSyntaxErrorMessage(IParserErrorContext context) {
 		if (context != null) {
-			final RecognitionException recognitionException = context.getRecognitionException();
+			final var recognitionException = context.getRecognitionException();
 			if (recognitionException != null && recognitionException.token != null) {
-				final String text = recognitionException.token.getText();
+				final var text = recognitionException.token.getText();
 				if (!Strings.isEmpty(text)) {
 					if (this.grammarAccess.isPureKeyword(text)) {
-						final String protectedText = this.converter.getQualifiedNameValueConverter().toString(text);
+						final var protectedText = this.converter.getQualifiedNameValueConverter().toString(text);
 			            return new SyntaxErrorMessage(
 			            		MessageFormat.format(Messages.SARLSyntaxErrorMessageProvider_0, text, protectedText),
 			            		SyntaxIssueCodes.USED_RESERVED_KEYWORD,

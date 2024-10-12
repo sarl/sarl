@@ -102,8 +102,7 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 	 * @return {@code true} if the receiver is a SARL editor.
 	 */
 	protected boolean isInSarlEditor(Object receiver) {
-		if (receiver instanceof IFileEditorInput) {
-			final IFileEditorInput input = (IFileEditorInput) receiver;
+		if (receiver instanceof IFileEditorInput input) {
 			return this.fileExtensionProvider.isValid(input.getFile().getFileExtension());
 		}
 		return false;
@@ -115,8 +114,7 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 	 * @return {@code true} if the receiver is a SARL script.
 	 */
 	protected boolean isSarlScript(Object receiver) {
-		if (receiver instanceof IFile) {
-			final IFile file = (IFile) receiver;
+		if (receiver instanceof IFile file) {
 			return this.fileExtensionProvider.isValid(file.getFileExtension());
 		}
 		return false;
@@ -129,15 +127,13 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean hasSarlNatureOnProject(Object receiver) {
-		if (receiver instanceof IJavaProject) {
-			final IJavaProject project = (IJavaProject) receiver;
+		if (receiver instanceof IJavaProject project) {
 			try {
 				return project.getProject().hasNature(SARLEclipseConfig.NATURE_ID);
 			} catch (CoreException exception) {
 				//
 			}
-		} else if (receiver instanceof IProject) {
-			final IProject project = (IProject) receiver;
+		} else if (receiver instanceof IProject project) {
 			try {
 				return project.hasNature(SARLEclipseConfig.NATURE_ID);
 			} catch (CoreException exception) {

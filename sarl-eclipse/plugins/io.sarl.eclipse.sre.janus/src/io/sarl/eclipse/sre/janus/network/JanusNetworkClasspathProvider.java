@@ -65,15 +65,15 @@ public class JanusNetworkClasspathProvider extends StandardClasspathProvider {
 		JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = "/" //$NON-NLS-1$
 				+ JanusNetworkClasspathProvider.class.getPackage().getName().replace(".", "/") //$NON-NLS-1$//$NON-NLS-2$
 				+ "/janus-network-bundles"; //$NON-NLS-1$
-		final ResourceBundle bundle = ResourceBundle.getBundle(JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
+		final var bundle = ResourceBundle.getBundle(JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
 
-		final Set<String> libs = new HashSet<>();
+		final var libs = new HashSet<String>();
 
-		for (final String lib : bundle.getString("JANUS_NETWORK_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
+		for (final var lib : bundle.getString("JANUS_NETWORK_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
 			libs.add(lib.trim());
 		}
 
-		String[] allLibs = new String[libs.size()];
+		var allLibs = new String[libs.size()];
 		allLibs = libs.toArray(allLibs);
 		JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES = allLibs;
 	}
@@ -82,15 +82,15 @@ public class JanusNetworkClasspathProvider extends StandardClasspathProvider {
 	public IRuntimeClasspathEntry[] computeUnresolvedClasspath(ILaunchConfiguration configuration)
 			throws CoreException {
 		if (this.unresolved == null) {
-			final List<IRuntimeClasspathEntry> entries = new ArrayList<>();
-			final Set<String> added = new TreeSet<>();
-			for (final String bundleId : JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES) {
-				final Bundle bundle = Platform.getBundle(bundleId);
+			final var entries = new ArrayList<IRuntimeClasspathEntry>();
+			final var added = new TreeSet<String>();
+			for (final var bundleId : JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES) {
+				final var bundle = Platform.getBundle(bundleId);
 				if (bundle != null) {
-					final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
+					final var resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
 					if (resolvedBundles != null) {
-						for (final IRuntimeClasspathEntry entry : resolvedBundles.getTransitiveRuntimeClasspathEntries(true)) {
-							final String location = entry.getLocation();
+						for (final var entry : resolvedBundles.getTransitiveRuntimeClasspathEntries(true)) {
+							final var location = entry.getLocation();
 							if (added.add(location)) {
 								entries.add(entry);
 							}

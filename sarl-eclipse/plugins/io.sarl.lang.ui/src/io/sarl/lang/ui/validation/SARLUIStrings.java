@@ -83,9 +83,8 @@ public class SARLUIStrings extends UIStrings {
 	 * @since 0.6
 	 */
 	public StyledString styledParameters(JvmIdentifiableElement element) {
-		final StyledString str = new StyledString();
-		if (element instanceof JvmExecutable) {
-			final JvmExecutable executable = (JvmExecutable) element;
+		final var str = new StyledString();
+		if (element instanceof JvmExecutable executable) {
 			str.append(this.keywords.getLeftParenthesisKeyword());
 			str.append(parametersToStyledString(
 					executable.getParameters(),
@@ -125,16 +124,16 @@ public class SARLUIStrings extends UIStrings {
 	 */
 	public static String getParameterString(Iterable<? extends JvmFormalParameter> elements, boolean isVarArgs,
 			boolean includeName, SARLGrammarKeywordAccess keywords, AnnotationLookup annotationFinder, UIStrings utils) {
-		final StringBuilder result = new StringBuilder();
-		boolean needsSeparator = false;
-		final Iterator<? extends JvmFormalParameter> iterator = elements.iterator();
+		final var result = new StringBuilder();
+		var needsSeparator = false;
+		final var iterator = elements.iterator();
 		while (iterator.hasNext()) {
-			final JvmFormalParameter parameter = iterator.next();
+			final var parameter = iterator.next();
 			if (needsSeparator) {
 				result.append(keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
 			}
 			needsSeparator = true;
-			final boolean isDefaultValued = annotationFinder.findAnnotation(parameter, DefaultValue.class) != null;
+			final var isDefaultValued = annotationFinder.findAnnotation(parameter, DefaultValue.class) != null;
 			if (isDefaultValued) {
 				result.append(keywords.getLeftSquareBracketKeyword());
 			}
@@ -142,9 +141,9 @@ public class SARLUIStrings extends UIStrings {
 				result.append(parameter.getName()).append(" ");  //$NON-NLS-1$
 				result.append(keywords.getColonKeyword()).append(" "); //$NON-NLS-1$
 			}
-			JvmTypeReference typeRef = parameter.getParameterType();
-			if (isVarArgs && !iterator.hasNext() && typeRef instanceof JvmGenericArrayTypeReference) {
-				typeRef = ((JvmGenericArrayTypeReference) typeRef).getComponentType();
+			var typeRef = parameter.getParameterType();
+			if (isVarArgs && !iterator.hasNext() && typeRef instanceof JvmGenericArrayTypeReference cvalue) {
+				typeRef = cvalue.getComponentType();
 				result.append(utils.referenceToString(typeRef, NULL_TYPE));
 				result.append(keywords.getWildcardAsteriskKeyword());
 			} else {
@@ -170,16 +169,16 @@ public class SARLUIStrings extends UIStrings {
 	 */
 	public static StyledString getParameterStyledString(Iterable<? extends JvmFormalParameter> elements, boolean isVarArgs,
 			boolean includeName, SARLGrammarKeywordAccess keywords, AnnotationLookup annotationFinder, UIStrings utils) {
-		final StyledString result = new StyledString();
-		boolean needsSeparator = false;
-		final Iterator<? extends JvmFormalParameter> iterator = elements.iterator();
+		final var result = new StyledString();
+		var needsSeparator = false;
+		final var iterator = elements.iterator();
 		while (iterator.hasNext()) {
-			final JvmFormalParameter parameter = iterator.next();
+			final var parameter = iterator.next();
 			if (needsSeparator) {
 				result.append(keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
 			}
 			needsSeparator = true;
-			final boolean isDefaultValued = annotationFinder.findAnnotation(parameter, DefaultValue.class) != null;
+			final var isDefaultValued = annotationFinder.findAnnotation(parameter, DefaultValue.class) != null;
 			final Styler styler;
 			if (isDefaultValued) {
 				styler = OPTIONAL_ELEMENT_STYLER;
@@ -192,8 +191,8 @@ public class SARLUIStrings extends UIStrings {
 				result.append(keywords.getColonKeyword(), styler).append(" ", styler); //$NON-NLS-1$
 			}
 			JvmTypeReference typeRef = parameter.getParameterType();
-			if (isVarArgs && !iterator.hasNext() && typeRef instanceof JvmGenericArrayTypeReference) {
-				typeRef = ((JvmGenericArrayTypeReference) typeRef).getComponentType();
+			if (isVarArgs && !iterator.hasNext() && typeRef instanceof JvmGenericArrayTypeReference cvalue) {
+				typeRef = cvalue.getComponentType();
 				result.append(utils.referenceToString(typeRef, NULL_TYPE), styler);
 				result.append(keywords.getWildcardAsteriskKeyword(), styler);
 			} else {

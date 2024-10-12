@@ -24,8 +24,6 @@ package io.sarl.lang.maven.compiler.compiler;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,13 +31,10 @@ import javax.annotation.processing.Generated;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.descriptor.MojoDescriptor;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
@@ -67,7 +62,7 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 	 * It is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
 	 */
 	@Generated(value = "maven")
-	private static final String DEFAULT_COMPILER_VERSION = "3.11.0"; //$NON-NLS-1$
+	private static final String DEFAULT_COMPILER_VERSION = "3.13.0"; //$NON-NLS-1$
 
 	private static final String MAVEN_COMPILER_PLUGIN_GROUPID = "org.apache.maven.plugins"; //$NON-NLS-1$
 
@@ -110,8 +105,8 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 			Logger logger,
 			IProgressMonitor progress) {
 		try {
-			final Map<String, Plugin> declaredPlugins = this.helper.getSession().getCurrentProject().getBuild().getPluginsAsMap();
-			Plugin plugin = declaredPlugins.get(ArtifactUtils.versionlessKey(MAVEN_COMPILER_PLUGIN_GROUPID, MAVEN_COMPILER_PLUGIN_ARTIFACTID));
+			final var declaredPlugins = this.helper.getSession().getCurrentProject().getBuild().getPluginsAsMap();
+			var plugin = declaredPlugins.get(ArtifactUtils.versionlessKey(MAVEN_COMPILER_PLUGIN_GROUPID, MAVEN_COMPILER_PLUGIN_ARTIFACTID));
 			if (plugin == null) {
 				// No maven-compiler-plugin declared within the project.
 				plugin = new Plugin();
@@ -119,12 +114,12 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 				plugin.setGroupId(MAVEN_COMPILER_PLUGIN_GROUPID);
 				plugin.setVersion(findVersion(logger));
 			}
-			final PluginDescriptor pluginDescriptor = this.helper.loadPlugin(plugin);
+			final var pluginDescriptor = this.helper.loadPlugin(plugin);
 			if (pluginDescriptor != null) {
-				final String goal = this.isTestContext
+				final var goal = this.isTestContext
 						? MAVEN_COMPILER_PLUGIN_TEST_GOAL
 						: MAVEN_COMPILER_PLUGIN_STANDARD_GOAL;
-				final MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
+				final var mojoDescriptor = pluginDescriptor.getMojo(goal);
 				if (mojoDescriptor != null) {
 					final Xpp3Dom mojoConfiguration;
 					try {
@@ -133,9 +128,9 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 						throw new MojoExecutionException(e1.getLocalizedMessage(), e1);
 					}
 
-					final Xpp3Dom pluginConfiguration = (Xpp3Dom) plugin.getConfiguration();
+					final var pluginConfiguration = (Xpp3Dom) plugin.getConfiguration();
 
-					final Xpp3Dom specificConfiguration = new Xpp3Dom("configuration"); //$NON-NLS-1$
+					final var specificConfiguration = new Xpp3Dom("configuration"); //$NON-NLS-1$
 					Xpp3Dom child;
 					if (!Strings.isEmpty(javaVersion)) {
 						child = new Xpp3Dom("source"); //$NON-NLS-1$
@@ -154,7 +149,7 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 					child.setValue(classDirectory.getAbsolutePath());
 					specificConfiguration.addChild(child);
 
-					Xpp3Dom configuration = specificConfiguration;
+					var configuration = specificConfiguration;
 					if (pluginConfiguration != null) {
 						configuration = Xpp3DomUtils.mergeXpp3Dom(configuration, pluginConfiguration);
 					}
@@ -162,7 +157,7 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 						configuration = Xpp3DomUtils.mergeXpp3Dom(configuration, mojoConfiguration);
 					}
 
-					final MojoExecution execution = new MojoExecution(mojoDescriptor, configuration);
+					final var execution = new MojoExecution(mojoDescriptor, configuration);
 					this.helper.executeMojo(execution);
 					return CompilerStatus.COMPILATION_SUCCESS;
 				}
@@ -176,10 +171,10 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 	}
 
 	private String findVersion(Logger logger) throws MojoExecutionException {
-		final Set<Artifact> artifacts = this.helper.resolve(
+		final var artifacts = this.helper.resolve(
 				MAVEN_COMPILER_PLUGIN_GROUPID,
 				MAVEN_COMPILER_PLUGIN_ARTIFACTID);
-		final Artifact pluginArtifact = Iterables.find(artifacts, it -> MAVEN_COMPILER_PLUGIN_ARTIFACTID.equals(it.getArtifactId())
+		final var pluginArtifact = Iterables.find(artifacts, it -> MAVEN_COMPILER_PLUGIN_ARTIFACTID.equals(it.getArtifactId())
 				&& MAVEN_COMPILER_PLUGIN_GROUPID.equals(it.getGroupId()));
 		if (pluginArtifact != null) {
 			return pluginArtifact.getVersion();

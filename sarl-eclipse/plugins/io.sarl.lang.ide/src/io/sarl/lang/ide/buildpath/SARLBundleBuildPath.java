@@ -58,11 +58,11 @@ public class SARLBundleBuildPath {
 						+ SARLBundleBuildPath.class.getPackage().getName().replace(".", NAME_SEPARATOR) //$NON-NLS-1$
 						+ NAME_SEPARATOR + "sarl-bundles"; //$NON-NLS-1$
 
-				final Set<String> done = new TreeSet<>();
-				final List<String> bundleList = new LinkedList<>();
+				final var done = new TreeSet<String>();
+				final var bundleList = new LinkedList<String>();
 
-				final ResourceBundle jbundle = ResourceBundle.getBundle(SARL_DEPENDENCY_BUNDLE_NAMES_RESOURCE_FILE);
-				for (final String lib : jbundle.getString("SARL_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$ //$NON-NLS-2$
+				final var jbundle = ResourceBundle.getBundle(SARL_DEPENDENCY_BUNDLE_NAMES_RESOURCE_FILE);
+				for (final var lib : jbundle.getString("SARL_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$ //$NON-NLS-2$
 					if (done.add(lib)) {
 						bundleList.add(lib);
 					}

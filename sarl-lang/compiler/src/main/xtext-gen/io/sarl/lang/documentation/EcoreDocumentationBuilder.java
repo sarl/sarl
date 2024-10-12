@@ -56,16 +56,16 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 		this.mlRule = access.getML_COMMENTRule();
 		this.slRule = access.getSL_COMMENTRule();
 		for (AbstractElement element : ((Group) this.mlRule.getAlternatives()).getElements()) {
-			if (element instanceof Keyword && Strings.isEmpty(this.mlStartSymbols)) {
-				this.mlStartSymbols = ((Keyword) element).getValue();
-			} else if (element instanceof UntilToken && Strings.isEmpty(this.mlEndTagSymbols)) {
-				this.mlEndTagSymbols = ((Keyword) ((UntilToken) element).getTerminal()).getValue();
+			if (element instanceof Keyword $c$value && Strings.isEmpty(this.mlStartSymbols)) {
+				this.mlStartSymbols = $c$value.getValue();
+			} else if (element instanceof UntilToken $c$value && Strings.isEmpty(this.mlEndTagSymbols)) {
+				this.mlEndTagSymbols = ((Keyword) $c$value.getTerminal()).getValue();
 			}
 		}
 		AbstractRule slRule = access.getSL_COMMENTRule();
 		for (AbstractElement element : ((Group) slRule.getAlternatives()).getElements()) {
-			if (element instanceof Keyword) {
-				this.slStartSymbols = ((Keyword) element).getValue().trim();
+			if (element instanceof Keyword $c$value) {
+				this.slStartSymbols = $c$value.getValue().trim();
 				break;
 			}
 		}

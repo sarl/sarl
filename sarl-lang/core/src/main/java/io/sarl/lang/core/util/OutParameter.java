@@ -68,7 +68,7 @@ public class OutParameter<T> implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		final T val = this.value;
+		final var val = this.value;
 		return val == null ? 0 : val.hashCode();
 	}
 

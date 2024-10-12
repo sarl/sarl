@@ -24,8 +24,6 @@ package io.sarl.lang.sarl.actionprototype;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -37,17 +35,13 @@ import com.google.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
@@ -100,9 +94,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * @since 0.12
 	 */
 	protected LightweightTypeReference unifiesType(JvmTypeReference reference) {
-		final LightweightTypeReference lreference = Utils.toLightweightTypeReference(reference, this.services);
+		final var lreference = Utils.toLightweightTypeReference(reference, this.services);
 		if (lreference.isFunctionType()) {
-			final FunctionTypeReference functionReference = lreference.getAsFunctionTypeReference();
+			final var functionReference = lreference.getAsFunctionTypeReference();
 			if (functionReference != null) {
 				return functionReference;
 			}
@@ -126,7 +120,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public Iterable<InferredPrototype> getPrototypes(IActionPrototypeContext context, QualifiedActionName id) {
-		final Context ctx = (Context) context;
+		final var ctx = (Context) context;
 		final InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
 		ctx.getPrototypes().getLock().readLock().lock();
 		try {
@@ -156,7 +150,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public InferredPrototype getPrototypes(IActionPrototypeContext context, QualifiedActionName actionID, ActionParameterTypes signatureID) {
-		final Context ctx = (Context) context;
+		final var ctx = (Context) context;
 		final InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
 		ctx.getPrototypes().getLock().readLock().lock();
 		try {
@@ -191,53 +185,53 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			FormalParameterProvider params,
 			InnerMap<ActionParameterTypes, List<InferredStandardParameter>> signatures,
 			ActionParameterTypes fillSignatureKeyOutputParameter) {
-		final boolean isOptional = params.hasFormalParameterDefaultValue(parameterIndex)
+		final var isOptional = params.hasFormalParameterDefaultValue(parameterIndex)
 				&& ((parameterIndex < lastParameterIndex)
 						|| (!fillSignatureKeyOutputParameter.isVarArg()));
-		final boolean isVarArg = parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg();
-		final String name = params.getFormalParameterName(parameterIndex);
-		final JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
-		final InnerMap<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new InnerMap<>();
+		final var isVarArg = parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg();
+		final var name = params.getFormalParameterName(parameterIndex);
+		final var type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
+		final var tmpSignatures = new InnerMap<ActionParameterTypes, List<InferredStandardParameter>>();
 		if (type == null) {
 			return new Pair<>(tmpSignatures, Boolean.valueOf(isOptional));
 		}
-		final LightweightTypeReference ltype = unifiesType(type);
+		final var ltype = unifiesType(type);
 		fillSignatureKeyOutputParameter.add(toIdentifier(ltype));
 		if (signatures.isEmpty()) {
 			// First parameter
 			if (isOptional) {
-				final ActionParameterTypes key = new ActionParameterTypes(isVarArg, 0);
-				final List<InferredStandardParameter> value = new ArrayList<>();
+				final var key = new ActionParameterTypes(isVarArg, 0);
+				final var value = new ArrayList<InferredStandardParameter>();
 				value.add(new InferredValuedParameter(
 						params.getFormalParameter(parameterIndex),
 						name, ltype,
 						argumentValue));
 				tmpSignatures.put(key, value);
 			}
-			final ActionParameterTypes key = new ActionParameterTypes(isVarArg, 1);
+			final var key = new ActionParameterTypes(isVarArg, 1);
 			key.add(toIdentifier(ltype));
-			final List<InferredStandardParameter> value = new ArrayList<>();
+			final var value = new ArrayList<InferredStandardParameter>();
 			value.add(new InferredStandardParameter(
 					params.getFormalParameter(parameterIndex),
 					name, ltype, argumentValue));
 			tmpSignatures.put(key, value);
 		} else {
 			// Other parameters
-			for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> entry : signatures.entrySet()) {
+			for (final var entry : signatures.entrySet()) {
 				if (isOptional) {
-					final ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size());
+					final var key = new ActionParameterTypes(isVarArg, entry.getKey().size());
 					key.addAll(entry.getKey());
-					final List<InferredStandardParameter> value = new ArrayList<>(entry.getValue());
+					final var value = new ArrayList<>(entry.getValue());
 					value.add(new InferredValuedParameter(
 							params.getFormalParameter(parameterIndex),
 							name, ltype,
 							argumentValue));
 					tmpSignatures.put(key, value);
 				}
-				final ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size() + 1);
+				final var key = new ActionParameterTypes(isVarArg, entry.getKey().size() + 1);
 				key.addAll(entry.getKey());
 				key.add(toIdentifier(ltype));
-				final List<InferredStandardParameter> paramList = entry.getValue();
+				final var paramList = entry.getValue();
 				paramList.add(new InferredStandardParameter(
 						params.getFormalParameter(parameterIndex),
 						name, ltype, argumentValue));
@@ -251,12 +245,12 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			Context context,
 			JvmIdentifiableElement container, String actionId,
 			FormalParameterProvider params, ActionParameterTypes fillSignatureKeyOutputParameter) {
-		InnerMap<ActionParameterTypes, List<InferredStandardParameter>> signatures = new InnerMap<>();
+		var signatures = new InnerMap<ActionParameterTypes, List<InferredStandardParameter>>();
 		fillSignatureKeyOutputParameter.clear();
 		if (params.getFormalParameterCount() > 0) {
-			final int lastParamIndex = params.getFormalParameterCount() - 1;
+			final var lastParamIndex = params.getFormalParameterCount() - 1;
 
-			final String containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
+			final var containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
 			InnerMap<String, Integer> indexes;
 			context.getDefaultValueIDPrefixes().getLock().readLock().lock();
 			try {
@@ -290,12 +284,12 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				defaultValueIndex = lastIndex.intValue();
 			}
 
-			final String[] annotationValues = new String[params.getFormalParameterCount()];
-			final String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
+			final var annotationValues = new String[params.getFormalParameterCount()];
+			final var prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
 					+ actionId.toUpperCase() + "_"; //$NON-NLS-1$
-			for (int i = 0; i <= lastParamIndex; ++i) {
-				final DynamicArgumentName argumentName = new DynamicArgumentName(prefix + defaultValueIndex);
-				final Pair<InnerMap<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
+			for (var i = 0; i <= lastParamIndex; ++i) {
+				final var argumentName = new DynamicArgumentName(prefix + defaultValueIndex);
+				final var pair = buildParameter(
 						i,
 						lastParamIndex,
 						argumentName,
@@ -316,9 +310,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				indexes.getLock().writeLock().unlock();
 			}
 
-			final List<InferredStandardParameter> parameters = signatures.get(fillSignatureKeyOutputParameter);
+			final var parameters = signatures.get(fillSignatureKeyOutputParameter);
 			if (parameters != null) {
-				for (int i = 0; i < parameters.size(); ++i) {
+				for (var i = 0; i < parameters.size(); ++i) {
 					if (!Strings.isNullOrEmpty(annotationValues[i])) {
 						parameters.get(i).setDefaultValueAnnotationValue(annotationValues[i],
 								annotationValues[i].substring(annotationValues[i].lastIndexOf("#") + 1)); //$NON-NLS-1$
@@ -342,20 +336,20 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	protected InferredPrototype createPrototype(Context context, QualifiedActionName id,
 			boolean isVarargs, FormalParameterProvider parameters) {
 		assert parameters != null;
-		final ActionParameterTypes key = new ActionParameterTypes(isVarargs, parameters.getFormalParameterCount());
-		final Map<ActionParameterTypes, List<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(
+		final var key = new ActionParameterTypes(isVarargs, parameters.getFormalParameterCount());
+		final var ip = buildSignaturesForArgDefaultValues(
 				context,
 				id.getDeclaringType(),
 				key.toActionPrototype(id.getActionName()).toActionId(),
 				parameters, key);
-		final List<InferredStandardParameter> op = ip.remove(key);
-		final InferredPrototype proto = new DefaultInferredPrototype(
+		final var op = ip.remove(key);
+		final var proto = new DefaultInferredPrototype(
 				id,
 				parameters,
 				key,
 				op,
 				ip);
-		final String containerID = id.getContainerID();
+		final var containerID = id.getContainerID();
 		InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
 		context.getPrototypes().getLock().readLock().lock();
 		try {
@@ -426,18 +420,18 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs,
 			List<? extends SarlFormalParameter> parameters) {
-		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
+		final var sig = new ActionParameterTypes(isVarargs, parameters.size());
 		if (!parameters.isEmpty()) {
-			final int lastIndex = parameters.size() - 1;
-			for (int i = 0; i < lastIndex; ++i) {
-				final SarlFormalParameter param = parameters.get(i);
+			final var lastIndex = parameters.size() - 1;
+			for (var i = 0; i < lastIndex; ++i) {
+				final var param = parameters.get(i);
 				if (param != null && param.getParameterType() != null) {
 					sig.add(toIdentifier(unifiesType(param.getParameterType())));
 				}
 			}
-			final SarlFormalParameter param = parameters.get(lastIndex);
+			final var param = parameters.get(lastIndex);
 			if (param != null && param.getParameterType() != null) {
-				JvmTypeReference type = param.getParameterType();
+				var type = param.getParameterType();
 				if (isVarargs) {
 					type = this.references.createArrayType(type);
 				}
@@ -467,17 +461,17 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public ActionParameterTypes createParameterTypes(boolean isVarargs,
 			FormalParameterProvider provider) {
-		int count = provider.getFormalParameterCount();
-		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, count);
+		var count = provider.getFormalParameterCount();
+		final var sig = new ActionParameterTypes(isVarargs, count);
 		if (count > 0) {
 			if (isVarargs) {
 				--count;
-				for (int i = 0; i < count; ++i) {
+				for (var i = 0; i < count; ++i) {
 					sig.add(provider.getFormalParameterType(i, false));
 				}
 				sig.add(provider.getFormalParameterType(count, true));
 			} else {
-				for (int i = 0; i < count; ++i) {
+				for (var i = 0; i < count; ++i) {
 					sig.add(provider.getFormalParameterType(i, false));
 				}
 			}
@@ -492,9 +486,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public ActionParameterTypes createParameterTypesFromJvmModel(boolean isVarargs, List<JvmFormalParameter> parameters) {
-		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
-		for (final JvmFormalParameter p : parameters) {
-			final JvmTypeReference paramType = p.getParameterType();
+		final var sig = new ActionParameterTypes(isVarargs, parameters.size());
+		for (final var p : parameters) {
+			final var paramType = p.getParameterType();
 			if (paramType != null) {
 				sig.add(toIdentifier(unifiesType(paramType)));
 			}
@@ -514,7 +508,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String createFunctionNameForDefaultValueID(String id) {
-		final int index = id.indexOf('#');
+		final var index = id.indexOf('#');
 		if (index > 0) {
 			return Utils.createNameForHiddenDefaultValueFunction(id.substring(index + 1));
 		}
@@ -523,7 +517,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String qualifyDefaultValueID(String containerQualifiedName, String id) {
-		final int index = id.indexOf('#');
+		final var index = id.indexOf('#');
 		if (index > 0) {
 			return id;
 		}
@@ -532,10 +526,10 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String toJavaArgument(String callerQualifiedName, String id) {
-		final StringBuilder b = new StringBuilder();
-		final int index = id.indexOf('#');
+		final var b = new StringBuilder();
+		final var index = id.indexOf('#');
 		if (index > 0) {
-			final String qn = id.substring(0, index);
+			final var qn = id.substring(0, index);
 			if (!Objects.equals(qn, callerQualifiedName)) {
 				b.append(qn);
 				b.append("."); //$NON-NLS-1$
@@ -551,17 +545,17 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Pure
 	@Override
 	public String extractDefaultValueString(JvmFormalParameter parameter) {
-		final String fieldId = this.annotationUtils.findStringValue(parameter, DefaultValue.class);
+		final var fieldId = this.annotationUtils.findStringValue(parameter, DefaultValue.class);
 		if (!Strings.isNullOrEmpty(fieldId)) {
-			final JvmDeclaredType container = EcoreUtil2.getContainerOfType(parameter, JvmDeclaredType.class);
+			final var container = EcoreUtil2.getContainerOfType(parameter, JvmDeclaredType.class);
 			if (container != null) {
-				final int index = fieldId.indexOf('#');
+				final var index = fieldId.indexOf('#');
 				final JvmDeclaredType target;
 				final String methodName;
 				if (index > 0) {
-					final JvmType type = this.references.findDeclaredType(fieldId.substring(0, index), container);
-					if (type instanceof JvmDeclaredType) {
-						target = (JvmDeclaredType) type;
+					final var type = this.references.findDeclaredType(fieldId.substring(0, index), container);
+					if (type instanceof JvmDeclaredType cvalue) {
+						target = cvalue;
 					} else {
 						target = container;
 					}
@@ -572,10 +566,10 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				}
 
 				// Since SARL 0.12, default values are stored into functions
-				final JvmOperation operation = Iterables.find(target.getDeclaredOperations(), it -> Objects.equals(it.getSimpleName(), methodName),
+				final var operation = Iterables.find(target.getDeclaredOperations(), it -> Objects.equals(it.getSimpleName(), methodName),
 						null);
 				if (operation != null) {
-					final String value = this.annotationUtils.findStringValue(operation, SarlSourceCode.class);
+					final var value = this.annotationUtils.findStringValue(operation, SarlSourceCode.class);
 					if (!Strings.isNullOrEmpty(fieldId)) {
 						return value;
 					}
@@ -583,10 +577,10 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 				// Backward compatibility: read default values from fields
 				// TODO: Remove when the backward compatibility is not any more needed.
-				final JvmField field = Iterables.find(target.getDeclaredFields(), it -> Objects.equals(it.getSimpleName(), methodName),
+				final var field = Iterables.find(target.getDeclaredFields(), it -> Objects.equals(it.getSimpleName(), methodName),
 						null);
 				if (field != null) {
-					final String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
+					final var value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
 					if (!Strings.isNullOrEmpty(fieldId)) {
 						return value;
 					}

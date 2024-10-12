@@ -24,7 +24,6 @@ package io.sarl.lang.mwe2.externalspec;
 import java.nio.channels.UnsupportedAddressTypeException;
 import java.text.MessageFormat;
 
-import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.util.Strings;
@@ -79,9 +78,9 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		 * @param parameters the parameters.
 		 */
 		void appendCommentNoNl(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
+			final var comment = applyFormat(text, parameters);
 			appendNl("<!-- "); //$NON-NLS-1$
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl("\t " + line.trim()); //$NON-NLS-1$
 			}
 			append("-->"); //$NON-NLS-1$
@@ -91,9 +90,9 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		public void appendHeader() {
 			appendNl(MessageFormat.format("<?xml version=\"1.0\" encoding=\"{0}\"?>", //$NON-NLS-1$
 					getCodeConfig().getEncoding()));
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 			appendNl("<!--"); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "\t ") //$NON-NLS-1$//$NON-NLS-2$
 						.replaceFirst("\\s+$", "")); //$NON-NLS-1$//$NON-NLS-2$
 			}
@@ -109,7 +108,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		 */
 		void internalOpenTag(String tag, String... nameValuePairs) {
 			append("<").append(tag); //$NON-NLS-1$
-			for (int i = 0; i < nameValuePairs.length; i = i + 2) {
+			for (var i = 0; i < nameValuePairs.length; i = i + 2) {
 				append(" "); //$NON-NLS-1$
 				append(nameValuePairs[i]);
 				append("=\""); //$NON-NLS-1$
@@ -160,24 +159,24 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 				append(" />"); //$NON-NLS-1$
 			} else {
 				append(">"); //$NON-NLS-1$
-				final boolean block = value.contains("\n") || value.contains("\r"); //$NON-NLS-1$//$NON-NLS-2$
-				final Escaper escaper = XmlEscapers.xmlContentEscaper();
+				final var block = value.contains("\n") || value.contains("\r"); //$NON-NLS-1$//$NON-NLS-2$
+				final var escaper = XmlEscapers.xmlContentEscaper();
 				if (block) {
 					increaseIndentation();
-					boolean first = true;
-					for (final String line : value.split("[\n\r]+")) { //$NON-NLS-1$
+					var first = true;
+					for (final var line : value.split("[\n\r]+")) { //$NON-NLS-1$
 						if (first) {
 							first = false;
 						} else {
 							newLine();
 						}
-						final String escapedValue = escaper.escape(line);
+						final var escapedValue = escaper.escape(line);
 						append(escapedValue);
 					}
 					decreaseIndentation();
 					newLine();
 				} else {
-					final String escapedValue = escaper.escape(value);
+					final var escapedValue = escaper.escape(value);
 					append(escapedValue.trim());
 				}
 				append("</").append(tag).append(">"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -300,7 +299,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		}
 
 		private void appendNewLines() {
-			final int nb = this.nbLines;
+			final var nb = this.nbLines;
 			this.nbLines = 0;
 			for (int i = 0; i < nb; ++i) {
 				this.parent.newLine();

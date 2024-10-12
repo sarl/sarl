@@ -174,9 +174,9 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite composite= new Composite(parent, SWT.NONE);
+		var composite= new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		GridLayout layout= new GridLayout(1, false);
+		var layout= new GridLayout(1, false);
 		layout.marginHeight= 0;
 		layout.marginWidth= 0;
 		composite.setLayout(layout);
@@ -185,7 +185,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 		createLibraryHandlingGroup(composite);
 
-		Label seperator= new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+		var seperator= new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		seperator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		createAntScriptGroup(composite);
@@ -200,7 +200,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	}
 
 	private void createContentGroup(Composite parent) {
-		Composite composite= new Composite(parent, SWT.NONE);
+		var composite= new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		composite.setLayout(new GridLayout(1, false));
 
@@ -222,8 +222,8 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		fLaunchConfigurationCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		fLauchConfigurationModel.addAll(Arrays.asList(getLaunchConfigurations()));
-		String[] names= new String[fLauchConfigurationModel.size()];
-		for (int i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
+		var names= new String[fLauchConfigurationModel.size()];
+		for (var i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
 			LaunchConfigurationElement element= fLauchConfigurationModel.get(i);
 			names[i]= element.getLaunchConfigurationName();
 		}
@@ -234,16 +234,16 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	}
 
 	private void createAntScriptGroup(Composite parent) {
-		Composite composite= new Composite(parent, SWT.NONE);
-		GridData layoutData= new GridData(SWT.FILL, SWT.TOP, true, false);
+		var composite= new Composite(parent, SWT.NONE);
+		var layoutData= new GridData(SWT.FILL, SWT.TOP, true, false);
 		composite.setLayoutData(layoutData);
-		GridLayout layout= new GridLayout(3, false);
+		var layout= new GridLayout(3, false);
 		composite.setLayout(layout);
 
 		fAntScriptSaveCheckbox= new Button(composite, SWT.CHECK | SWT.LEFT);
 		fAntScriptSaveCheckbox.setText(FatJarPackagerMessages.FatJarPackageWizardPage_saveAntScript_text);
 		fAntScriptSaveCheckbox.addListener(SWT.Selection, this);
-		GridData data= new GridData(SWT.BEGINNING);
+		var data= new GridData(SWT.BEGINNING);
 		data.horizontalSpan= 3;
 		fAntScriptSaveCheckbox.setLayoutData(data);
 
@@ -277,16 +277,16 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 *	to import from
 	 */
 	private void handleAntScriptBrowseButtonPressed() {
-		FileDialog dialog= new FileDialog(getContainer().getShell(), SWT.SAVE);
+		var dialog= new FileDialog(getContainer().getShell(), SWT.SAVE);
 		dialog.setFilterExtensions(new String[] { "*." + ANTSCRIPT_EXTENSION }); //$NON-NLS-1$
 
-		String currentSourceString= getAntScriptValue();
-		int lastSeparatorIndex= currentSourceString.lastIndexOf(File.separator);
+		var currentSourceString= getAntScriptValue();
+		var lastSeparatorIndex= currentSourceString.lastIndexOf(File.separator);
 		if (lastSeparatorIndex != -1) {
 			dialog.setFilterPath(currentSourceString.substring(0, lastSeparatorIndex));
 			dialog.setFileName(currentSourceString.substring(lastSeparatorIndex + 1, currentSourceString.length()));
 		}
-		String selectedFileName= dialog.open();
+		var selectedFileName= dialog.open();
 		if (selectedFileName != null)
 			fAntScriptNamesCombo.setText(selectedFileName);
 	}
@@ -298,7 +298,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 * @return java.lang.String
 	 */
 	private String getAntScriptValue() {
-		String antScriptText= fAntScriptNamesCombo.getText().trim();
+		var antScriptText= fAntScriptNamesCombo.getText().trim();
 		if (antScriptText.indexOf('.') < 0)
 			antScriptText+= "." + ANTSCRIPT_EXTENSION; //$NON-NLS-1$
 		return antScriptText;
@@ -313,11 +313,11 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 * @return the new label control
 	 */
 	protected Label createLabel(Composite parent, String text, boolean bold) {
-		Label label= new Label(parent, SWT.NONE);
+		var label= new Label(parent, SWT.NONE);
 		if (bold)
 			label.setFont(JFaceResources.getBannerFont());
 		label.setText(text);
-		GridData gridData= new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		var gridData= new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		label.setLayoutData(gridData);
 		return label;
 	}
@@ -329,7 +329,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 */
 	protected void createLibraryHandlingGroup(Composite parent) {
 		fLibraryHandlingGroup= new Composite(parent, SWT.NONE);
-		GridLayout layout= new GridLayout();
+		var layout= new GridLayout();
 		fLibraryHandlingGroup.setLayout(layout);
 		fLibraryHandlingGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
 
@@ -398,8 +398,8 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	protected void updateModel() {
 		super.updateModel();
 
-		String comboText= fAntScriptNamesCombo.getText();
-		IPath path= Path.fromOSString(comboText);
+		var comboText= fAntScriptNamesCombo.getText();
+		var path= Path.fromOSString(comboText);
 		if (path.segmentCount() > 0 && ensureAntScriptFileIsValid(path.toFile()) && path.getFileExtension() == null)
 			path= path.addFileExtension(ANTSCRIPT_EXTENSION);
 
@@ -408,7 +408,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	@Override
 	protected void updateWidgetEnablements() {
-		boolean antScriptSave= fAntScriptSaveCheckbox.getSelection();
+		var antScriptSave= fAntScriptSaveCheckbox.getSelection();
 		fAntScriptLabel.setEnabled(antScriptSave);
 		fAntScriptNamesCombo.setEnabled(antScriptSave);
 		fAntScriptBrowseButton.setEnabled(antScriptSave);
@@ -417,18 +417,18 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	@Override
 	public boolean isPageComplete() {
 		clearMessages();
-		boolean complete= validateDestinationGroup();
+		var complete= validateDestinationGroup();
 		complete= validateLaunchConfigurationGroup() && complete;
 		complete= validateAntScriptGroup() && complete;
 		return complete;
 	}
 
 	private boolean validateLaunchConfigurationGroup() {
-		int index= fLaunchConfigurationCombo.getSelectionIndex();
+		var index= fLaunchConfigurationCombo.getSelectionIndex();
 		if (index == -1)
 			return false;
 
-		LaunchConfigurationElement element= fLauchConfigurationModel.get(index);
+		var element= fLauchConfigurationModel.get(index);
 		if (element.hasProgramArguments())
 			setWarningMessage(FatJarPackagerMessages.FatJarPackageWizardPage_warning_launchConfigContainsProgramArgs);
 
@@ -473,10 +473,10 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		if (location.isAbsolute())
 			return location;
 
-		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
+		var root= ResourcesPlugin.getWorkspace().getRoot();
 		if (location.segmentCount() >= 2 && !"..".equals(location.segment(0))) { //$NON-NLS-1$
-			IFile file= root.getFile(location);
-			IPath absolutePath= file.getLocation();
+			var file= root.getFile(location);
+			var absolutePath= file.getLocation();
 			if (absolutePath != null) {
 				return absolutePath;
 			}
@@ -542,17 +542,17 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	//TODO: Replace "private" by "protected" within JDT
 	protected LaunchConfigurationElement[] getLaunchConfigurations() {
-		ArrayList<ExistingLaunchConfigurationElement> result= new ArrayList<>();
+		var result= new ArrayList<ExistingLaunchConfigurationElement>();
 
 		try {
-			ILaunchManager manager= DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfigurationType type= manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-			ILaunchConfiguration[] launchconfigs= manager.getLaunchConfigurations(type);
+			var manager= DebugPlugin.getDefault().getLaunchManager();
+			var type= manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+			var launchconfigs= manager.getLaunchConfigurations(type);
 
-			for (int i= 0; i < launchconfigs.length; i++) {
-				ILaunchConfiguration launchconfig= launchconfigs[i];
+			for (var i= 0; i < launchconfigs.length; i++) {
+				var launchconfig= launchconfigs[i];
 				if (!launchconfig.getAttribute(IDebugUIConstants.ATTR_PRIVATE, false)) {
-					String projectName= launchconfig.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+					var projectName= launchconfig.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
 					result.add(new ExistingLaunchConfigurationElement(launchconfig, projectName));
 				}
 			}
@@ -565,8 +565,8 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	public Object[] getSelectedElementsWithoutContainedChildren(MultiStatus status) {
 		try {
-			LaunchConfigurationElement element= fLauchConfigurationModel.get(fLaunchConfigurationCombo.getSelectionIndex());
-			ILaunchConfiguration launchconfig= element.getLaunchConfiguration();
+			var element= fLauchConfigurationModel.get(fLaunchConfigurationCombo.getSelectionIndex());
+			var launchconfig= element.getLaunchConfiguration();
 			fJarPackage.setLaunchConfigurationName(element.getLaunchConfigurationName());
 
 			return getSelectedElementsWithoutContainedChildren(launchconfig, fJarPackage, getContainer(), status);
@@ -579,18 +579,18 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	//TODO: Replace "private" by "protected within JDT
 	protected static IJavaProject[] getProjectSearchOrder(String projectName) {
 
-		ArrayList<String> projectNames= new ArrayList<>();
+		var projectNames= new ArrayList<String>();
 		projectNames.add(projectName);
 
-		int nextProject= 0;
+		var nextProject= 0;
 		while (nextProject < projectNames.size()) {
-			String nextProjectName= projectNames.get(nextProject);
-			IJavaProject jproject= getJavaProject(nextProjectName);
+			var nextProjectName= projectNames.get(nextProject);
+			var jproject= getJavaProject(nextProjectName);
 
 			if (jproject != null) {
 				try {
-					String[] childProjectNames= jproject.getRequiredProjectNames();
-					for (int i= 0; i < childProjectNames.length; i++) {
+					var childProjectNames= jproject.getRequiredProjectNames();
+					for (var i= 0; i < childProjectNames.length; i++) {
 						if (!projectNames.contains(childProjectNames[i])) {
 							projectNames.add(childProjectNames[i]);
 						}
@@ -602,10 +602,10 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			nextProject+= 1;
 		}
 
-		ArrayList<IJavaProject> result= new ArrayList<>();
-		for (int i= 0, size= projectNames.size(); i < size; i++) {
-			String name= projectNames.get(i);
-			IJavaProject project= getJavaProject(name);
+		var result= new ArrayList<IJavaProject>();
+		for (var i= 0, size= projectNames.size(); i < size; i++) {
+			var name= projectNames.get(i);
+			var project= getJavaProject(name);
 			if (project != null)
 				result.add(project);
 		}
@@ -615,11 +615,11 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	//TODO: Replace "private" by "protected within JDT
 	protected static IJavaProject getJavaProject(String projectName) {
-		IProject project= ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		var project= ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (project == null)
 			return null;
 
-		IJavaProject result= JavaCore.create(project);
+		var result= JavaCore.create(project);
 		if (result == null)
 			return null;
 
@@ -633,19 +633,19 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	// TODO: Replace "private" by "protected" within JDT
 	// TODO: In modular projects, the user classes are also exported
 	protected IPath[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
-		IRuntimeClasspathEntry[] entries= JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
+		var entries= JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
 		entries= JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 
-		boolean isModularConfig= JavaRuntime.isModularConfiguration(configuration);
-		ArrayList<IPath> userEntries= new ArrayList<>(entries.length);
-		for (int i= 0; i < entries.length; i++) {
-			int classPathProperty= entries[i].getClasspathProperty();
+		var isModularConfig= JavaRuntime.isModularConfiguration(configuration);
+		var userEntries= new ArrayList<IPath>(entries.length);
+		for (var i= 0; i < entries.length; i++) {
+			var classPathProperty= entries[i].getClasspathProperty();
 			if ((!isModularConfig && classPathProperty == IRuntimeClasspathEntry.USER_CLASSES)
 					|| (isModularConfig && (classPathProperty == IRuntimeClasspathEntry.USER_CLASSES || classPathProperty == IRuntimeClasspathEntry.CLASS_PATH || classPathProperty == IRuntimeClasspathEntry.MODULE_PATH))) {
 
-				String location= entries[i].getLocation();
+				var location= entries[i].getLocation();
 				if (location != null) {
-					IPath entry= Path.fromOSString(location);
+					var entry= Path.fromOSString(location);
 					if (!userEntries.contains(entry)) {
 						userEntries.add(entry);
 					}
@@ -680,20 +680,20 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	// TODO: Remove "static" modifier from JDT
 	// TODO: Replace "private" by "protected" within JDT
 	protected IPackageFragmentRoot[] getRequiredPackageFragmentRoots(IPath[] classpathEntries, final String projectName, MultiStatus status) {
-		ArrayList<IPackageFragmentRoot> result= new ArrayList<>();
+		var result= new ArrayList<IPackageFragmentRoot>();
 
-		IJavaProject[] searchOrder= getProjectSearchOrder(projectName);
+		var searchOrder= getProjectSearchOrder(projectName);
 		
-		for (int i= 0; i < classpathEntries.length; i++) {
-			IPath entry= classpathEntries[i];
-			IPackageFragmentRoot[] elements= findRootsForClasspath(entry, searchOrder);
+		for (var i= 0; i < classpathEntries.length; i++) {
+			var entry= classpathEntries[i];
+			var elements= findRootsForClasspath(entry, searchOrder);
 			if (elements == null) {
 				status.add(new Status(IStatus.WARNING, JavaUI.ID_PLUGIN,
 						org.eclipse.jdt.internal.corext.util.Messages.format(
 								FatJarPackagerMessages.FatJarPackageWizardPage_error_missingClassFile,
 								getPathLabel(entry, false))));
 			} else {
-				for (int j= 0; j < elements.length; j++) {
+				for (var j= 0; j < elements.length; j++) {
 					result.add(elements[j]);
 				}
 			}
@@ -721,8 +721,8 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	
 	//TODO: Replace "private" by "protected within JDT
 	protected static IPackageFragmentRoot[] findRootsForClasspath(IPath entry, IJavaProject[] searchOrder) {
-		for (int i= 0; i < searchOrder.length; i++) {
-			IPackageFragmentRoot[] elements= findRootsInProject(entry, searchOrder[i]);
+		for (var i= 0; i < searchOrder.length; i++) {
+			var elements= findRootsInProject(entry, searchOrder[i]);
 			if (elements.length != 0) {
 				return elements;
 			}
@@ -731,12 +731,12 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	}
 
 	private static IPackageFragmentRoot[] findRootsInProject(IPath entry, IJavaProject project) {
-		ArrayList<IPackageFragmentRoot> result= new ArrayList<>();
+		var result= new ArrayList<IPackageFragmentRoot>();
 
 		try {
-			IPackageFragmentRoot[] roots= project.getPackageFragmentRoots();
-			for (int i= 0; i < roots.length; i++) {
-				IPackageFragmentRoot packageFragmentRoot= roots[i];
+			var roots= project.getPackageFragmentRoots();
+			for (var i= 0; i < roots.length; i++) {
+				var packageFragmentRoot= roots[i];
 				if (isRootAt(packageFragmentRoot, entry))
 					result.add(packageFragmentRoot);
 			}
@@ -749,13 +749,13 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 	private static boolean isRootAt(IPackageFragmentRoot root, IPath entry) {
 		try {
-			IClasspathEntry cpe= root.getRawClasspathEntry();
+			var cpe= root.getRawClasspathEntry();
 			if (cpe.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-				IPath outputLocation= cpe.getOutputLocation();
+				var outputLocation= cpe.getOutputLocation();
 				if (outputLocation == null)
 					outputLocation= root.getJavaProject().getOutputLocation();
 
-				IPath location= ResourcesPlugin.getWorkspace().getRoot().findMember(outputLocation).getLocation();
+				var location= ResourcesPlugin.getWorkspace().getRoot().findMember(outputLocation).getLocation();
 				if (entry.equals(location))
 					return true;
 			}
@@ -763,11 +763,11 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			JavaPlugin.log(e);
 		}
 
-		IResource resource= root.getResource();
+		var resource= root.getResource();
 		if (resource != null && entry.equals(resource.getLocation()))
 			return true;
 
-		IPath path= root.getPath();
+		var path= root.getPath();
 		if (path != null && entry.equals(path))
 			return true;
 
@@ -777,22 +777,22 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	// TODO Replace "private" by "protected into the JDT.
 	protected static IType findMainMethodByName(String name, IPackageFragmentRoot[] classpathResources, IRunnableContext context) {
 
-		List<IResource> resources= JarPackagerUtil.asResources(classpathResources);
+		var resources= JarPackagerUtil.asResources(classpathResources);
 		if (resources == null) {
 			return null;
 		}
 
-		for (Iterator<IResource> iterator= resources.iterator(); iterator.hasNext();) {
-			IResource element= iterator.next();
+		for (final var iterator= resources.iterator(); iterator.hasNext();) {
+			final var element= iterator.next();
 			if (element == null)
 				iterator.remove();
 		}
 
-		IJavaSearchScope searchScope= JavaSearchScopeFactory.getInstance().createJavaSearchScope(resources.toArray(new IResource[resources.size()]), true);
-		MainMethodSearchEngine engine= new MainMethodSearchEngine();
+		var searchScope= JavaSearchScopeFactory.getInstance().createJavaSearchScope(resources.toArray(new IResource[resources.size()]), true);
+		var engine= new MainMethodSearchEngine();
 		try {
-			IType[] mainTypes= engine.searchMainMethods(context, searchScope, 0);
-			for (int i= 0; i < mainTypes.length; i++) {
+			var mainTypes= engine.searchMainMethods(context, searchScope, 0);
+			for (var i= 0; i < mainTypes.length; i++) {
 				if (mainTypes[i].getFullyQualifiedName().equals(name))
 					return mainTypes[i];
 			}
@@ -809,7 +809,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	public void dispose() {
 		super.dispose();
 		if (fLauchConfigurationModel != null) {
-			for (int i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
+			for (var i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
 				LaunchConfigurationElement element= fLauchConfigurationModel.get(i);
 				element.dispose();
 			}
@@ -820,13 +820,13 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	protected void restoreWidgetValues() {
 
 		// restore JARPACKAGEDATA from SETTINGS and set widgets
-		IDialogSettings settings= getDialogSettings();
+		var settings= getDialogSettings();
 		if (settings != null) {
 			// SAVE ANT SCRIPT
 			fAntScriptSaveCheckbox.setSelection(settings.getBoolean(STORE_ANTSCRIPT_SAVE));
 
 			// ANT SCRIPT LOCATION
-			String antScriptLocation= settings.get(STORE_ANTSCRIPT_LOCATION);
+			var antScriptLocation= settings.get(STORE_ANTSCRIPT_LOCATION);
 			if (antScriptLocation != null) {
 				fAntScriptLocation= Path.fromOSString(antScriptLocation);
 				if (fAntScriptLocation.isEmpty()) {
@@ -837,16 +837,16 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			}
 
 			// ANT SCRIPT LOCATION HISTORY
-			String[] directoryNames= settings.getArray(STORE_ANTSCRIPT_LOCATION_HISTORY);
+			var directoryNames= settings.getArray(STORE_ANTSCRIPT_LOCATION_HISTORY);
 			if (directoryNames != null) {
 				if (!fAntScriptNamesCombo.getText().equals(directoryNames[0]))
 					fAntScriptNamesCombo.add(fAntScriptNamesCombo.getText());
-				for (int i= 0; i < directoryNames.length; i++)
+				for (var i= 0; i < directoryNames.length; i++)
 					fAntScriptNamesCombo.add(directoryNames[i]);
 			}
 
 			// LIBRARY HANDLING
-			int libraryHandling= ExtractLibraryHandler.ID; // default value for migrated (Eclipse 3.4) settings
+			var libraryHandling= ExtractLibraryHandler.ID; // default value for migrated (Eclipse 3.4) settings
 			try {
 				libraryHandling= settings.getInt(STORE_LIBRARY_HANDLING);
 			} catch (NumberFormatException ignore) { // also thrown if no value was stored (null)
@@ -854,10 +854,10 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			setLibraryHandler(createLibraryHandlerById(libraryHandling));
 
 			// LAUNCH CONFIG
-			String name= settings.get(STORE_LAUNCH_CONFIGURATION_SELECTION_NAME);
+			var name= settings.get(STORE_LAUNCH_CONFIGURATION_SELECTION_NAME);
 			if (name != null) {
-				String[] items= fLaunchConfigurationCombo.getItems();
-				for (int i= 0; i < items.length; i++) {
+				var items= fLaunchConfigurationCombo.getItems();
+				for (var i= 0; i < items.length; i++) {
 					if (name.equals(items[i])) {
 						fLaunchConfigurationCombo.select(i);
 					}
@@ -865,7 +865,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			}
 
 			// DESTINATION
-			String destinationPath= settings.get(STORE_DESTINATION_ELEMENT);
+			var destinationPath= settings.get(STORE_DESTINATION_ELEMENT);
 			if (destinationPath != null && destinationPath.length() > 0) {
 				fJarPackage.setJarLocation(Path.fromOSString(destinationPath));
 			}
@@ -879,13 +879,13 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	protected void saveWidgetValues() {
 		super.saveWidgetValues();
 
-		IDialogSettings settings= getDialogSettings();
+		var settings= getDialogSettings();
 		if (settings != null) {
 			// ANT SCRIPT SAVE
 			settings.put(STORE_ANTSCRIPT_SAVE, fAntScriptSaveCheckbox.getSelection());
 
 			// ANT SCRIPT LOCATION
-			IPath antScriptLocation= fAntScriptLocation;
+			var antScriptLocation= fAntScriptLocation;
 			if (antScriptLocation == null) {
 				settings.put(STORE_ANTSCRIPT_LOCATION, ""); //$NON-NLS-1$
 			} else {
@@ -893,7 +893,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			}
 
 			// ANT SCRIPT LOCATION HISTORY
-			String[] directoryNames= settings.getArray(STORE_ANTSCRIPT_LOCATION_HISTORY);
+			var directoryNames= settings.getArray(STORE_ANTSCRIPT_LOCATION_HISTORY);
 			if (directoryNames == null)
 				directoryNames= new String[0];
 			directoryNames= addToHistory(directoryNames, getAntScriptValue());
@@ -903,7 +903,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			settings.put(STORE_LIBRARY_HANDLING, getLibraryHandler().getID());
 
 			// LAUNCH CONFIG
-			int index= fLaunchConfigurationCombo.getSelectionIndex();
+			var index= fLaunchConfigurationCombo.getSelectionIndex();
 			if (index == -1) {
 				settings.put(STORE_LAUNCH_CONFIGURATION_SELECTION_NAME, ""); //$NON-NLS-1$
 			} else {
@@ -912,7 +912,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			}
 
 			// DESTINATION
-			IPath location= fJarPackage.getJarLocation();
+			var location= fJarPackage.getJarLocation();
 			if (location == null) {
 				settings.put(STORE_DESTINATION_ELEMENT, ""); //$NON-NLS-1$
 			} else {
@@ -929,13 +929,13 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		if (launchconfig == null)
 			return new Object[0];
 
-		String projectName= launchconfig.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+		var projectName= launchconfig.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
 
-		IPath[] classpath= getClasspath(launchconfig);
-		IPackageFragmentRoot[] classpathResources= getRequiredPackageFragmentRoots(classpath, projectName, status);
+		var classpath= getClasspath(launchconfig);
+		var classpathResources= getRequiredPackageFragmentRoots(classpath, projectName, status);
 
-		String mainClass= getMainClass(launchconfig, status);
-		IType mainType= findMainMethodByName(mainClass, classpathResources, context);
+		var mainClass= getMainClass(launchconfig, status);
+		var mainType= findMainMethodByName(mainClass, classpathResources, context);
 		if (mainType == null) {
 			status.add(new Status(IStatus.ERROR, JavaUI.ID_PLUGIN, FatJarPackagerMessages.FatJarPackageWizardPage_error_noMainMethod));
 		}
@@ -949,9 +949,9 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 			return;
 
 		if (canCreateAntScript(getShell())) {
-			LaunchConfigurationElement element= fLauchConfigurationModel.get(fLaunchConfigurationCombo.getSelectionIndex());
+			var element= fLauchConfigurationModel.get(fLaunchConfigurationCombo.getSelectionIndex());
 			Assert.isNotNull(element);
-			FatJarAntExporter antExporter= getLibraryHandler().getAntExporter(fAntScriptLocation, fJarPackage.getAbsoluteJarLocation(), element.getLaunchConfiguration());
+			var antExporter= getLibraryHandler().getAntExporter(fAntScriptLocation, fJarPackage.getAbsoluteJarLocation(), element.getLaunchConfiguration());
 			try {
 				antExporter.run(status);
 			} catch (CoreException e) {
@@ -971,7 +971,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 */
 	private boolean canCreateAntScript(Shell parent) {
 
-		File file= fAntScriptLocation.toFile();
+		var file= fAntScriptLocation.toFile();
 		if (file.exists()) {
 			if (!file.canWrite())
 				return false;
@@ -983,12 +983,12 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		}
 
 		// Test if directory exists
-		String path = file.getAbsolutePath();
-		int separatorIndex= path.lastIndexOf(File.separator);
+		var path = file.getAbsolutePath();
+		var separatorIndex= path.lastIndexOf(File.separator);
 		if (separatorIndex == -1) // i.e.- default directory, which is fine
 			return true;
 
-		File directory= new File(path.substring(0, separatorIndex));
+		var directory= new File(path.substring(0, separatorIndex));
 		if (!directory.exists()) {
 			if (FatJarPackagerUtil.askToCreateAntScriptDirectory(parent, directory))
 				return directory.mkdirs();
@@ -1127,7 +1127,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 		@Override
 		public String getLaunchConfigurationName() {
-			StringBuffer result= new StringBuffer();
+			var result= new StringBuffer();
 
 			result.append(fLaunchConfiguration.getName());
 			result.append(" - "); //$NON-NLS-1$

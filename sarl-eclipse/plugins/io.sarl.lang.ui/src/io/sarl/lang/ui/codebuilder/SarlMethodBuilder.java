@@ -91,7 +91,7 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 		} else {
 			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
 		}
-		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
+		final var defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendFunction());
 		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		if (isStaticFlag()) {
@@ -107,7 +107,7 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 		mAppender.append(" "); //$NON-NLS-1$
 		mAppender.append(this.keywords.protectKeyword(getMethodName()));
 		appendParameters(mAppender);
-		final LightweightTypeReference retType = getReturnType();
+		final var retType = getReturnType();
 		if (retType != null && !retType.isPrimitiveVoid()) {
 			mAppender.append(" "); //$NON-NLS-1$
 			mAppender.append(this.keywords.getColonKeyword());
@@ -129,12 +129,12 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 	 * @return the appendable.
 	 */
 	protected ISourceAppender appendFiresClause(ISourceAppender appendable) {
-		final List<LightweightTypeReference> types = getFires();
-		final Iterator<LightweightTypeReference> iterator = types.iterator();
+		final var types = getFires();
+		final var iterator = types.iterator();
 		if (iterator.hasNext()) {
 			appendable.append(" ").append(this.keywords.getFiresKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
 			do {
-				final LightweightTypeReference type = iterator.next();
+				final var type = iterator.next();
 				appendable.append(type);
 				if (iterator.hasNext()) {
 					appendable.append(this.keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
@@ -146,22 +146,22 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 
 	@Override
 	protected ISourceAppender appendTypeParameters(ISourceAppender appendable, List<JvmTypeParameter> typeParameters) {
-		final Iterator<JvmTypeParameter> iterator = typeParameters.iterator();
+		final var iterator = typeParameters.iterator();
 		if (iterator.hasNext()) {
 			appendable.append(" ").append(this.keywords.getWithKeyword()).append(" "); //$NON-NLS-1$//$NON-NLS-2$
-			final String objectId = Object.class.getName();
+			final var objectId = Object.class.getName();
 			do {
-				final JvmTypeParameter typeParameter = iterator.next();
+				final var typeParameter = iterator.next();
 				appendable.append(this.keywords.protectKeyword(typeParameter.getName()));
-				final Iterable<JvmUpperBound> upperBounds =
+				final var upperBounds =
 					Iterables.filter(Iterables.filter(typeParameter.getConstraints(), JvmUpperBound.class),
 						it -> !it.getTypeReference().getIdentifier().equals(objectId));
-				final Iterator<JvmUpperBound> iterator2 = upperBounds.iterator();
+				final var iterator2 = upperBounds.iterator();
 				if (iterator2.hasNext()) {
 					appendable.append(" ").append(this.keywords.getExtendsKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
-					boolean isFirst = true;
-					final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, getContext());
-					for (final JvmUpperBound upperBound: upperBounds) {
+					var isFirst = true;
+					final var owner = new StandardTypeReferenceOwner(this.services, getContext());
+					for (final var upperBound: upperBounds) {
 						if (!isFirst) {
 							appendable.append(" ").append(this.keywords.getAmpersandKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
 						}
@@ -181,7 +181,7 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 
 	@Override
 	protected ISourceAppender appendParameters(ISourceAppender appendable) {
-		final List<AbstractParameterBuilder> builders = getParameterBuilders();
+		final var builders = getParameterBuilders();
 		if (builders.isEmpty()) {
 			return appendable;
 		}

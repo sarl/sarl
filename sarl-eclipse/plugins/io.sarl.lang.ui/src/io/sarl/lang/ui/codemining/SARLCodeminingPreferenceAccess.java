@@ -111,7 +111,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @see #getWritablePreferenceStore(Object)
 	 */
 	public void setCodeminingEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(CODEMINING_PROPERTY);
 		} else {
@@ -125,7 +125,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public boolean isCodeminingActionReturnTypeEnabled() {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		return store.getBoolean(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
 	}
 
@@ -136,7 +136,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public void setCodeminingActionReturnTypeEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
 		} else {
@@ -150,7 +150,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public boolean isCodeminingFieldTypeEnabled() {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		return store.getBoolean(CODEMINING_FIELD_TYPE_PROPERTY);
 	}
 
@@ -161,7 +161,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public void setCodeminingFieldTypeEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(CODEMINING_FIELD_TYPE_PROPERTY);
 		} else {
@@ -175,7 +175,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public boolean isCodeminingVariableTypeEnabled() {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		return store.getBoolean(CODEMINING_VARIABLE_TYPE_PROPERTY);
 	}
 
@@ -186,7 +186,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public void setCodeminingVariableTypeEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(CODEMINING_VARIABLE_TYPE_PROPERTY);
 		} else {
@@ -200,7 +200,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public boolean isCodeminingFeatureCallArgumentNameEnabled() {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		return store.getBoolean(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY);
 	}
 
@@ -211,7 +211,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 * @since 0.12
 	 */
 	public void setCodeminingFeatureCallArgumentNameEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(CODEMINING_FEATURECALL_ARGUMENT_NAME_PROPERTY);
 		} else {
@@ -221,7 +221,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 
 	@Override
 	public void setToDefault(Object context) {
-		final IPreferenceStore store = getWritablePreferenceStore(context);
+		final var store = getWritablePreferenceStore(context);
 		store.setToDefault(CODEMINING_PROPERTY);
 		store.setToDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY);
 		store.setToDefault(CODEMINING_FIELD_TYPE_PROPERTY);
@@ -240,7 +240,7 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	public static class Initializer implements IPreferenceStoreInitializer {
 		@Override
 		public void initialize(IPreferenceStoreAccess access) {
-			final IPreferenceStore store = access.getWritablePreferenceStore();
+			final var store = access.getWritablePreferenceStore();
 			store.setDefault(CODEMINING_PROPERTY, CODEMINING_DEFAULT_VALUE);
 			store.setDefault(CODEMINING_ACTION_RETURN_TYPE_PROPERTY, CODEMINING_ACTION_RETURN_TYPE_VALUE);
 			store.setDefault(CODEMINING_FIELD_TYPE_PROPERTY, CODEMINING_FIELD_TYPE_VALUE);

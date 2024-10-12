@@ -50,7 +50,7 @@ public abstract class AbstractResourceTypeDetector implements IResourceTypeDetec
 		if (uri.isArchive() || uri.isEmpty() || uri.isCurrentDocumentReference()) {
 			return false;
 		}
-		final List<String> segments = new ArrayList<>(uri.segmentsList());
+		final var segments = new ArrayList<>(uri.segmentsList());
 		if (segments.isEmpty()) {
 			return false;
 		}
@@ -62,9 +62,9 @@ public abstract class AbstractResourceTypeDetector implements IResourceTypeDetec
 			return false;
 		}
 		segments.remove(0);
-		for (int i = 0; i < testFolderName.size() && i < segments.size(); ++i) {
-			final String expected = testFolderName.get(i);
-			final String actual = segments.get(i);
+		for (var i = 0; i < testFolderName.size() && i < segments.size(); ++i) {
+			final var expected = testFolderName.get(i);
+			final var actual = segments.get(i);
 			if (!Objects.equals(expected, actual)) {
 				return false;
 			}

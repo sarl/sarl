@@ -56,11 +56,11 @@ public class SARLOperationOutlineFilter extends AbstractFilterOutlineContributio
 
 	@Override
 	protected boolean apply(IOutlineNode node) {
-		if (node instanceof EObjectNode) {
-			return !isAction(((EObjectNode) node).getEClass());
+		if (node instanceof EObjectNode cvalue) {
+			return !isAction(cvalue.getEClass());
 		}
-		if (node instanceof EStructuralFeatureNode) {
-			return !isAction(((EStructuralFeatureNode) node).getEStructuralFeature().eClass());
+		if (node instanceof EStructuralFeatureNode cvalue) {
+			return !isAction(cvalue.getEStructuralFeature().eClass());
 		}
 		return true;
 	}

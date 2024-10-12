@@ -242,10 +242,10 @@ public interface ISREInstall extends Cloneable {
 		} else if (libraries instanceof List<?>) {
 			list = (List<IRuntimeClasspathEntry>) libraries;
 		} else {
-			final Set<String> added = new TreeSet<>();
+			final var added = new TreeSet<String>();
 			list = new ArrayList<>();
-			for (final IRuntimeClasspathEntry cpe : libraries) {
-				final String location = cpe.getLocation();
+			for (final var cpe : libraries) {
+				final var location = cpe.getLocation();
 				assert location != null;
 				if (added.add(location)) {
 					list.add(cpe);

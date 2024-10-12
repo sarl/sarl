@@ -52,7 +52,7 @@ public class SarlSkillImplCustom extends SarlSkillImpl {
 
 	@Override
 	public boolean isAbstract() {
-		for (final String modifier: getModifiers()) {
+		for (final var modifier: getModifiers()) {
 			if (Strings.equal(modifier, "abstract")) {  //$NON-NLS-1$
 				return true;
 			}
@@ -65,7 +65,7 @@ public class SarlSkillImplCustom extends SarlSkillImpl {
 
 	@Override
 	public boolean isStrictFloatingPoint() {
-		for (final String modifier : getModifiers()) {
+		for (final var modifier : getModifiers()) {
 			if (Strings.equal(modifier, "strictfp")) {  //$NON-NLS-1$
 				return true;
 			}

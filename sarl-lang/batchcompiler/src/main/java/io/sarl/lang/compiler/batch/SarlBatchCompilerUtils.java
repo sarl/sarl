@@ -22,7 +22,6 @@
 package io.sarl.lang.compiler.batch;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.ServiceLoader;
 
 import com.google.inject.ImplementedBy;
@@ -49,14 +48,14 @@ public final class SarlBatchCompilerUtils {
 	@Pure
 	public static IJavaBatchCompiler newDefaultJavaBatchCompiler() {
 		try {
-			final ServiceLoader<IJavaBatchCompilerFactory> loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
-			final Iterator<IJavaBatchCompilerFactory> iterator = loader.iterator();
+			final var loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
+			final var iterator = loader.iterator();
 			try {
 				while (iterator.hasNext()) {
-					final IJavaBatchCompilerFactory factory = iterator.next();
+					final var factory = iterator.next();
 					try {
 						if (factory != null) {
-							final IJavaBatchCompiler compiler = factory.createBatchCompiler();
+							final var compiler = factory.createBatchCompiler();
 							if (compiler != null) {
 								return compiler;
 							}
@@ -68,12 +67,12 @@ public final class SarlBatchCompilerUtils {
 			} catch (Throwable exception) {
 				// Do nothing with the exception
 			}
-			final ImplementedBy annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
+			final var annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
 			if (annotation != null) {
-				final Class<?> type = annotation.value();
+				final var type = annotation.value();
 				if (type != null) {
-					final Class<? extends IJavaBatchCompiler> ctype = type.asSubclass(IJavaBatchCompiler.class);
-					final IJavaBatchCompiler compiler = ctype.getConstructor().newInstance();
+					final var ctype = type.asSubclass(IJavaBatchCompiler.class);
+					final var compiler = ctype.getConstructor().newInstance();
 					if (compiler != null) {
 						return compiler;
 					}
@@ -94,14 +93,14 @@ public final class SarlBatchCompilerUtils {
 	@Pure
 	public static Class<? extends IJavaBatchCompiler> getDefaultJavaBatchCompilerImplementationType() {
 		try {
-			final ServiceLoader<IJavaBatchCompilerFactory> loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
-			final Iterator<IJavaBatchCompilerFactory> iterator = loader.iterator();
+			final var loader = ServiceLoader.load(IJavaBatchCompilerFactory.class);
+			final var iterator = loader.iterator();
 			try {
 				while (iterator.hasNext()) {
-					final IJavaBatchCompilerFactory factory = iterator.next();
+					final var factory = iterator.next();
 					try {
 						if (factory != null) {
-							final Class<? extends IJavaBatchCompiler> type = factory.getType();
+							final var type = factory.getType();
 							if (type != null) {
 								return type;
 							}
@@ -113,9 +112,9 @@ public final class SarlBatchCompilerUtils {
 			} catch (Throwable exception) {
 				// Do nothing with the exception
 			}
-			final ImplementedBy annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
+			final var annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
 			if (annotation != null) {
-				final Class<?> type = annotation.value();
+				final var type = annotation.value();
 				if (type != null) {
 					return type.asSubclass(IJavaBatchCompiler.class);
 				}
@@ -134,7 +133,7 @@ public final class SarlBatchCompilerUtils {
 	 */
 	@Pure
 	public static JavaVersion parseJavaVersion(String javaVersion) {
-		String version = javaVersion;
+		var version = javaVersion;
 		if (Strings.isEmpty(version)) {
 			version = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
 		}
@@ -172,7 +171,7 @@ public final class SarlBatchCompilerUtils {
 	 */
 	@Pure
 	public static boolean isModuleFolder(File folder) {
-		final File file = new File(folder, "module-info.java"); //$NON-NLS-1$
+		final var file = new File(folder, "module-info.java"); //$NON-NLS-1$
 		return file.isFile();
 	}
 

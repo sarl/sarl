@@ -64,7 +64,7 @@ public class NewSarlEnumerationWizardPage extends AbstractNewSarlElementWizardPa
 
 	@Override
 	protected void doStatusUpdate() {
-		final IStatus[] status = new IStatus[] {
+		final var status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -75,10 +75,10 @@ public class NewSarlEnumerationWizardPage extends AbstractNewSarlElementWizardPa
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 2);
-		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+		final var mon = SubMonitor.convert(monitor, 2);
+		final var scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
-		final ISarlEnumerationBuilder annotation = scriptBuilder.addSarlEnumeration(getTypeName());
+		final var annotation = scriptBuilder.addSarlEnumeration(getTypeName());
 		annotation.setDocumentation(comment);
 		mon.worked(1);
 		scriptBuilder.build(appender);

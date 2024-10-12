@@ -102,15 +102,15 @@ public class CodeTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final DocTree tree : tags) {
-			if (tree instanceof TextTree) {
-				buffer.append(((TextTree) tree).getBody());
+		final var buffer = new StringBuilder();
+		for (final var tree : tags) {
+			if (tree instanceof TextTree cvalue) {
+				buffer.append(cvalue.getBody());
 			} else {
 				buffer.append(tree.toString());
 			}
 		}
-		final org.jsoup.nodes.Element codeTag = getHtmlFactory().createCodeTag(parent, buffer.toString());
+		final var codeTag = getHtmlFactory().createCodeTag(parent, buffer.toString());
 		if (style != null) {
 			codeTag.addClass(style.getCssClassname());
 		}

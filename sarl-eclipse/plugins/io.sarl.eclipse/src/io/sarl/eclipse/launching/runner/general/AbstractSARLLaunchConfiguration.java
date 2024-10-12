@@ -158,7 +158,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	}
 
 	private ExtraClassPathProviders ensureClasspathProvidersBuffer() {
-		ExtraClassPathProviders providers = this.bufferedClasspathProviders == null ? null : this.bufferedClasspathProviders.get();
+		var providers = this.bufferedClasspathProviders == null ? null : this.bufferedClasspathProviders.get();
 		if (providers == null) {
 			providers = new ExtraClassPathProviders();
 			this.bufferedClasspathProviders = new SoftReference<>(providers);
@@ -175,12 +175,12 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	private IRuntimeClasspathEntry[] getOrComputeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration)
 			throws CoreException {
 		synchronized (this) {
-			final IRuntimeClasspathEntry[] entries = this.unresolvedClasspath == null ? null : this.unresolvedClasspath.get();
+			final var entries = this.unresolvedClasspath == null ? null : this.unresolvedClasspath.get();
 			if (entries != null) {
 				return entries;
 			}
 		}
-		final IRuntimeClasspathEntry[] entries = SrePathUtils.computeUnresolvedSARLRuntimeClasspath(configuration, this.configAccessor,
+		final var entries = SrePathUtils.computeUnresolvedSARLRuntimeClasspath(configuration, this.configAccessor,
 			cfg -> getJavaProject(cfg), ensureClasspathProvidersBuffer());
 		if (entries == null) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
@@ -201,13 +201,13 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	private IRuntimeClasspathEntry[] getOrComputeResolvedSARLRuntimeClasspath(ILaunchConfiguration configuration)
 			throws CoreException {
 		synchronized (this) {
-			final IRuntimeClasspathEntry[] entries = this.resolvedClasspath == null ? null : this.resolvedClasspath.get();
+			final var entries = this.resolvedClasspath == null ? null : this.resolvedClasspath.get();
 			if (entries != null) {
 				return entries;
 			}
 		}
-		final IRuntimeClasspathEntry[] entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
-		final IRuntimeClasspathEntry[] entries2 = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
+		final var entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
+		final var entries2 = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 		if (entries2 == null) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					"Unable to computer the resolved classpath from the launch configuration")); //$NON-NLS-1$
@@ -226,7 +226,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	 */
 	private static boolean isNotSREEntry(IRuntimeClasspathEntry entry) {
 		try {
-			final File file = new File(entry.getLocation());
+			final var file = new File(entry.getLocation());
 			if (file.isDirectory()) {
 				return !SARLRuntime.isUnpackedSRE(file);
 			} else if (file.canRead()) {
@@ -248,23 +248,23 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Deprecated(forRemoval = true, since = "0.12")
 	public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
 		synchronized (this) {
-			final String[] classpathEntries = this.bufferedClasspath8 == null ? null : this.bufferedClasspath8.get();
+			final var classpathEntries = this.bufferedClasspath8 == null ? null : this.bufferedClasspath8.get();
 			if (classpathEntries != null) {
 				return classpathEntries;
 			}
 		}
-		final IRuntimeClasspathEntry[] entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
+		final var entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
 
-		final boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
-		boolean needSREEntry = isMavenProject;
+		final var isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
+		var needSREEntry = isMavenProject;
 
 		// Store in a list for preserving the order of the entries.
-		final List<String> userEntryList = new ArrayList<>(entries.length + 1);
-		final Set<String> set = new TreeSet<>();
-		for (int i = 0; i < entries.length; i++) {
+		final var userEntryList = new ArrayList<String>(entries.length + 1);
+		final var set = new TreeSet<String>();
+		for (var i = 0; i < entries.length; i++) {
 			if (entries[i].getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES
 					|| entries[i].getClasspathProperty() == IRuntimeClasspathEntry.CLASS_PATH) {
-				final String location = entries[i].getLocation();
+				final var location = entries[i].getLocation();
 				if (location != null && !set.contains(location)) {
 					userEntryList.add(location);
 					set.add(location);
@@ -276,12 +276,12 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		}
 
 		if (needSREEntry) {
-			int insertIndex = 0;
-			for (final IRuntimeClasspathEntry entry : SrePathUtils.getSREClasspathEntries(configuration,
+			var insertIndex = 0;
+			for (final var entry : SrePathUtils.getSREClasspathEntries(configuration,
 					this.configAccessor, cfg -> getJavaProject(cfg))) {
 				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES
 						|| entry.getClasspathProperty() == IRuntimeClasspathEntry.CLASS_PATH) {
-					final String location = entry.getLocation();
+					final var location = entry.getLocation();
 					if (location != null && !set.contains(location)) {
 						userEntryList.add(insertIndex, location);
 						set.add(location);
@@ -291,7 +291,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 			}
 		}
 
-		final String[] classpathEntries = userEntryList.toArray(new String[userEntryList.size()]);
+		final var classpathEntries = userEntryList.toArray(new String[userEntryList.size()]);
 		synchronized (this) {
 			this.bufferedClasspath8 = new SoftReference<>(classpathEntries);
 		}
@@ -307,26 +307,26 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public String[][] getClasspathAndModulepath(ILaunchConfiguration configuration) throws CoreException {
 		synchronized (this) {
-			final String[] classpathEntries = this.bufferedClasspath == null ? null : this.bufferedClasspath.get();
-			final String[] modulepathEntries = this.bufferedModulepath == null ? null : this.bufferedModulepath.get();
+			final var classpathEntries = this.bufferedClasspath == null ? null : this.bufferedClasspath.get();
+			final var modulepathEntries = this.bufferedModulepath == null ? null : this.bufferedModulepath.get();
 			if (classpathEntries != null && modulepathEntries != null) {
 				return new String[][] {classpathEntries, modulepathEntries};
 			}
 		}
-		final IRuntimeClasspathEntry[] entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
+		final var entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
 
-		final boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
-		boolean needSREEntry = isMavenProject;
+		final var isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
+		var needSREEntry = isMavenProject;
 
 		// Store in a list for preserving the order of the entries.
-		final List<String> classpathEntries = new ArrayList<>(entries.length);
-		final List<String> modulepathEntries = new ArrayList<>(entries.length);
+		final var classpathEntries = new ArrayList<String>(entries.length);
+		final var modulepathEntries = new ArrayList<String>(entries.length);
 
-		final Set<String> classpathSet = new TreeSet<>();
-		final Set<String> modulepathSet = new TreeSet<>();
+		final var classpathSet = new TreeSet<String>();
+		final var modulepathSet = new TreeSet<String>();
 
-		for (final IRuntimeClasspathEntry entry : entries) {
-			final String location = entry.getLocation();
+		for (final var entry : entries) {
+			final var location = entry.getLocation();
 			if (location != null) {
 				switch (entry.getClasspathProperty()) {
 				case IRuntimeClasspathEntry.USER_CLASSES:
@@ -363,10 +363,10 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		}
 
 		if (needSREEntry) {
-			int insertIndex = 0;
-			for (final IRuntimeClasspathEntry entry : SrePathUtils.getSREClasspathEntries(configuration,
+			var insertIndex = 0;
+			for (final var entry : SrePathUtils.getSREClasspathEntries(configuration,
 					this.configAccessor, cfg -> getJavaProject(cfg))) {
-				final String location = entry.getLocation();
+				final var location = entry.getLocation();
 				if (location != null) {
 					switch (entry.getClasspathProperty()) {
 					case IRuntimeClasspathEntry.USER_CLASSES:
@@ -397,8 +397,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 			}
 		}
 
-		final String[] classpath = classpathEntries.toArray(new String[classpathEntries.size()]);
-		final String[] modulepath = modulepathEntries.toArray(new String[modulepathEntries.size()]);
+		final var classpath = classpathEntries.toArray(new String[classpathEntries.size()]);
+		final var modulepath = modulepathEntries.toArray(new String[modulepathEntries.size()]);
 
 		synchronized (this) {
 			this.bufferedClasspath = new SoftReference<>(classpath);
@@ -417,20 +417,20 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		if (JavaRuntime.isModularConfiguration(configuration)) {
 			return null;
 		}
-		final String[][] paths = getBootpathExt(configuration);
-		final String[] pre = paths[0];
-		final String[] main = paths[1];
-		final String[] app = paths[2];
+		final var paths = getBootpathExt(configuration);
+		final var pre = paths[0];
+		final var main = paths[1];
+		final var app = paths[2];
 		if (pre == null && main == null && app == null) {
 			return null;
 		}
-		final IRuntimeClasspathEntry[] entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
-		final List<String> bootEntries = new ArrayList<>(entries.length);
-		boolean empty = true;
-		boolean allStandard = true;
-		for (int i = 0; i < entries.length; i++) {
+		final var entries = getOrComputeResolvedSARLRuntimeClasspath(configuration);
+		final var bootEntries = new ArrayList<String>(entries.length);
+		var empty = true;
+		var allStandard = true;
+		for (var i = 0; i < entries.length; i++) {
 			if (entries[i].getClasspathProperty() != IRuntimeClasspathEntry.USER_CLASSES) {
-				final String location = entries[i].getLocation();
+				final var location = entries[i].getLocation();
 				if (location != null) {
 					empty = false;
 					bootEntries.add(location);
@@ -455,13 +455,13 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public String[][] getBootpathExt(ILaunchConfiguration configuration)
 			throws CoreException {
-		final String[][] bootpathInfo = new String[3][];
-		final IRuntimeClasspathEntry[] entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
-		final List<IRuntimeClasspathEntry> bootEntriesPrepend = new ArrayList<>();
-		int index = 0;
+		final var bootpathInfo = new String[3][];
+		final var entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
+		final var bootEntriesPrepend = new ArrayList<IRuntimeClasspathEntry>();
+		var index = 0;
 		IRuntimeClasspathEntry jreEntry = null;
 		while (jreEntry == null && index < entries.length) {
-			final IRuntimeClasspathEntry entry = entries[index];
+			final var entry = entries[index];
 			if (JavaRuntime.isVMInstallReference(entry)) {
 				jreEntry = entry;
 			} else if (entry.getClasspathProperty() == IRuntimeClasspathEntry.BOOTSTRAP_CLASSES) {
@@ -469,7 +469,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 			}
 			++index;
 		}
-		final IRuntimeClasspathEntry[] bootEntriesPrep = JavaRuntime
+		final var bootEntriesPrep = JavaRuntime
 				.resolveRuntimeClasspath(
 						bootEntriesPrepend
 						.toArray(new IRuntimeClasspathEntry[bootEntriesPrepend
@@ -477,32 +477,32 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		String[] entriesPrep = null;
 		if (bootEntriesPrep.length > 0) {
 			entriesPrep = new String[bootEntriesPrep.length];
-			for (int i = 0; i < bootEntriesPrep.length; i++) {
+			for (var i = 0; i < bootEntriesPrep.length; i++) {
 				entriesPrep[i] = bootEntriesPrep[i].getLocation();
 			}
 		}
 		if (jreEntry != null) {
-			final List<IRuntimeClasspathEntry> bootEntriesAppend = new ArrayList<>();
+			final var bootEntriesAppend = new ArrayList<IRuntimeClasspathEntry>();
 			for (; index < entries.length; index++) {
-				final IRuntimeClasspathEntry entry = entries[index];
+				final var entry = entries[index];
 				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.BOOTSTRAP_CLASSES) {
 					bootEntriesAppend.add(entry);
 				}
 			}
 			bootpathInfo[0] = entriesPrep;
-			final IRuntimeClasspathEntry[] bootEntriesApp = JavaRuntime
+			final var bootEntriesApp = JavaRuntime
 					.resolveRuntimeClasspath(
 							bootEntriesAppend
 							.toArray(new IRuntimeClasspathEntry[bootEntriesAppend
 							                                    .size()]), configuration);
 			if (bootEntriesApp.length > 0) {
 				bootpathInfo[2] = new String[bootEntriesApp.length];
-				for (int i = 0; i < bootEntriesApp.length; i++) {
+				for (var i = 0; i < bootEntriesApp.length; i++) {
 					bootpathInfo[2][i] = bootEntriesApp[i].getLocation();
 				}
 			}
-			final IVMInstall install = getVMInstall(configuration);
-			final LibraryLocation[] libraryLocations = install.getLibraryLocations();
+			final var install = getVMInstall(configuration);
+			final var libraryLocations = install.getLibraryLocations();
 			if (libraryLocations != null) {
 				// determine if explicit bootpath should be used
 				// TODO: this test does not tell us if the bootpath entries are different (could still be
@@ -514,7 +514,7 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 					// resolve bootpath entries in JRE entry
 					IRuntimeClasspathEntry[] bootEntries = null;
 					if (jreEntry.getType() == IRuntimeClasspathEntry.CONTAINER) {
-						final IRuntimeClasspathEntry bootEntry = JavaRuntime.newRuntimeContainerClasspathEntry(
+						final var bootEntry = JavaRuntime.newRuntimeContainerClasspathEntry(
 								jreEntry.getPath(),
 								IRuntimeClasspathEntry.BOOTSTRAP_CLASSES,
 								getJavaProject(configuration));
@@ -524,15 +524,15 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 					}
 
 					// non-default JRE libraries - use explicit bootpath only
-					final String[] bootpath = new String[bootEntriesPrep.length
+					final var bootpath = new String[bootEntriesPrep.length
 					                                     + bootEntries.length
 					                                     + bootEntriesApp.length];
 					if (bootEntriesPrep.length > 0) {
 						System.arraycopy(bootpathInfo[0], 0, bootpath, 0,
 								bootEntriesPrep.length);
 					}
-					int dest = bootEntriesPrep.length;
-					for (int i = 0; i < bootEntries.length; i++) {
+					var dest = bootEntriesPrep.length;
+					for (var i = 0; i < bootEntries.length; i++) {
 						bootpath[dest] = bootEntries[i].getLocation();
 						dest++;
 					}
@@ -572,10 +572,10 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public final String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
 		// The following line get the standard arguments
-		final String standardProgramArguments = super.getProgramArguments(configuration);
+		final var standardProgramArguments = super.getProgramArguments(configuration);
 
 		// Get the specific SRE arguments
-		final ISREInstall sre = SrePathUtils.getSREInstallFor(configuration, getConfigurationAccessor(), cfg -> getJavaProject(cfg));
+		final var sre = SrePathUtils.getSREInstallFor(configuration, getConfigurationAccessor(), cfg -> getJavaProject(cfg));
 		assert sre != null;
 
 		return getProgramArguments(configuration, sre, standardProgramArguments);
@@ -593,10 +593,10 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public String getVMArguments(ILaunchConfiguration configuration) throws CoreException {
 		final String launchConfigArgs = super.getVMArguments(configuration);
-		final ISREInstall sre = SrePathUtils.getSREInstallFor(configuration, getConfigurationAccessor(), cfg -> getJavaProject(cfg));
+		final var sre = SrePathUtils.getSREInstallFor(configuration, getConfigurationAccessor(), cfg -> getJavaProject(cfg));
 		assert sre != null;
-		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
-		final String sreArgs = substitutor.performStringSubstitution(sre.getJVMArguments());
+		final var substitutor = VariablesPlugin.getDefault().getStringVariableManager();
+		final var sreArgs = substitutor.performStringSubstitution(sre.getJVMArguments());
 		return join(sreArgs, launchConfigArgs);
 	}
 
@@ -604,9 +604,9 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
-			final ILaunchProcess process = createLaunchingProcess(configuration, mode, launch);
+			final var process = createLaunchingProcess(configuration, mode, launch);
 			// Preparation
-			final SubMonitor progressMonitor = SubMonitor.convert(
+			final var progressMonitor = SubMonitor.convert(
 					monitor,
 					MessageFormat.format(Messages.AbstractSARLLaunchConfiguration_0,
 							configuration.getName()),
@@ -632,9 +632,9 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	@Override
 	public String showCommandLine(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
-			final ILaunchProcess process = createLaunchingProcess(configuration, mode, launch);
+			final var process = createLaunchingProcess(configuration, mode, launch);
 			// Preparation
-			final SubMonitor progressMonitor = SubMonitor.convert(
+			final var progressMonitor = SubMonitor.convert(
 					monitor,
 					MessageFormat.format(Messages.AbstractSARLLaunchConfiguration_0,
 							configuration.getName()),
@@ -646,8 +646,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 			}
 
 			// Get command line
-			final IVMRunner runner = getVMRunner(configuration, mode);
-			final String cmdLine = runner.showCommandLine(process.getVirtualMachineRunnerConfiguration(), launch, monitor);
+			final var runner = getVMRunner(configuration, mode);
+			final var cmdLine = runner.showCommandLine(process.getVirtualMachineRunnerConfiguration(), launch, monitor);
 			return cmdLine;
 		} finally {
 			// Clear cached entries

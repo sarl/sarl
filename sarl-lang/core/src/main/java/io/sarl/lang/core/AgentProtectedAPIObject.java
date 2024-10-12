@@ -39,7 +39,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	@Override
 	@Pure
 	public final String toString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		toString(builder);
 		return builder.toString();
 	}

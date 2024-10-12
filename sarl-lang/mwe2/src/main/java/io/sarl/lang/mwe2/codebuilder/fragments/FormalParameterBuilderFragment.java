@@ -43,7 +43,6 @@ import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
@@ -97,8 +96,8 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Generate the formal parameter builder interface.
 	 */
 	protected void generateIFormalParameterBuilder() {
-		final TypeReference builder = getFormalParameterBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getFormalParameterBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -119,16 +118,16 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the formal parameter builder implementation.
 	 */
 	protected void generateFormalParameterBuilderImpl() {
-		final TypeReference builderInterface = getFormalParameterBuilderInterface();
-		final TypeReference builder = getFormalParameterBuilderImpl();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getFormalParameterBuilderInterface();
+		final var builder = getFormalParameterBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -153,19 +152,19 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the formal parameter appender.
 	 */
 	protected void generateFormalParameterAppender() {
-		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
-		final String accessor = "get" //$NON-NLS-1$
+		final var parameter = getCodeElementExtractor().getFormalParameter();
+		final var accessor = "get" //$NON-NLS-1$
 				+ Strings.toFirstUpper(parameter.elementType().getSimpleName()) + "()"; //$NON-NLS-1$
-		final TypeReference builderInterface = getFormalParameterBuilderInterface();
-		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getFormalParameterBuilderInterface();
+		final var appender = getCodeElementExtractor().getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
@@ -191,7 +190,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -202,8 +201,8 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the code.
 	 */
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
-		final FormalParameterDescription exparameter = new FormalParameterDescription(parameter,
+		final var parameter = getCodeElementExtractor().getFormalParameter();
+		final var exparameter = new FormalParameterDescription(parameter,
 				findAssignmentFromFeatureName(parameter.grammarComponent(),
 						getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
 		return new StringConcatenationClient() {
@@ -447,13 +446,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.newLine();
 						it.append("\t\tif (jvmVoid instanceof "); //$NON-NLS-1$
 						it.append(InternalEObject.class);
-						it.append(") {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tfinal "); //$NON-NLS-1$
-						it.append(InternalEObject.class);
-						it.append("\t\t\tjvmVoidProxy = ("); //$NON-NLS-1$
-						it.append(InternalEObject.class);
-						it.append(") jvmVoid;"); //$NON-NLS-1$
+						it.append(" jvmVoidProxy) {"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tfinal "); //$NON-NLS-1$
 						it.append(EObject.class);

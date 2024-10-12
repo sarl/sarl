@@ -30,7 +30,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
-import io.sarl.lang.maven.compiler.compiler.JavaCompiler;
 
 /** Child injection module for the SARL maven plugin.
  *
@@ -66,9 +65,9 @@ public class MavenPrivateModule implements Module {
 	@Provides
 	@Singleton
 	public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector) {
-		final AbstractSarlBatchCompilerMojo own = this.owner.get();
-		final JavaCompiler cmp = own.getJavaCompiler();
-		final IJavaBatchCompiler compiler = cmp.newCompilerInstance(own.getProject(),
+		final var own = this.owner.get();
+		final var cmp = own.getJavaCompiler();
+		final var compiler = cmp.newCompilerInstance(own.getProject(),
 				own.mavenHelper,
 				own.isTestContext(),
 				injector);

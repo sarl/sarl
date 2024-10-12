@@ -57,7 +57,7 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	 * @return the style.
 	 */
 	public TextStyle capacityMethodInvocation() {
-		final TextStyle textStyle = extensionMethodInvocation().copy();
+		final var textStyle = extensionMethodInvocation().copy();
 		textStyle.setStyle(SWT.ITALIC);
 		return textStyle;
 	}
@@ -67,7 +67,7 @@ public class SARLHighlightingConfiguration extends XtendHighlightingConfiguratio
 	 * @return the style.
 	 */
 	public TextStyle asynchronousMethodInvocation() {
-		final TextStyle textStyle = extensionMethodInvocation().copy();
+		final var textStyle = extensionMethodInvocation().copy();
 		textStyle.setStyle(SWT.BOLD);
 		return textStyle;
 	}

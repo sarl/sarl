@@ -56,7 +56,7 @@ public class SarlConstructorBuilder extends XtendConstructorBuilder {
 		} else {
 			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
 		}
-		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
+		final var defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendConstructor());
 		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		mAppender.append(this.keywords.getNewKeyword());

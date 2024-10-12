@@ -47,7 +47,7 @@ public class SarlTaskFinder extends DefaultTaskFinder {
 
 	@Override
 	protected boolean canContainTaskTags(final ILeafNode node) {
-		final boolean result = super.canContainTaskTags(node);
+		final var result = super.canContainTaskTags(node);
 		if (!result) {
 			return isRichComment(node);
 		}
@@ -56,10 +56,10 @@ public class SarlTaskFinder extends DefaultTaskFinder {
 
 	@Override
 	protected String stripText(final ILeafNode node, final String text) {
-		final boolean isRichComment = isRichComment(node);
+		final var isRichComment = isRichComment(node);
 		if (isRichComment) {
-			final char newLine = '\n';
-			final int index = text.indexOf(newLine);
+			final var newLine = '\n';
+			final var index = text.indexOf(newLine);
 			if (index != -1) {
 				return text.substring(0, index);
 			}
@@ -69,10 +69,10 @@ public class SarlTaskFinder extends DefaultTaskFinder {
 	}
 
 	private boolean isRichComment(final ILeafNode node) {
-		final EObject grammarElement = node.getGrammarElement();
-		if (grammarElement instanceof RuleCall) {
-			return Objects.equal(((RuleCall) node.getGrammarElement()).getRule(), this.grammarAccess.getCOMMENT_RICH_TEXT_ENDRule())
-					|| Objects.equal(((RuleCall) node.getGrammarElement()).getRule(), this.grammarAccess.getCOMMENT_RICH_TEXT_INBETWEENRule());
+		final var grammarElement = node.getGrammarElement();
+		if (grammarElement instanceof RuleCall cvalue) {
+			return Objects.equal(cvalue.getRule(), this.grammarAccess.getCOMMENT_RICH_TEXT_ENDRule())
+					|| Objects.equal(cvalue.getRule(), this.grammarAccess.getCOMMENT_RICH_TEXT_INBETWEENRule());
 		}
 		return false;
 	}

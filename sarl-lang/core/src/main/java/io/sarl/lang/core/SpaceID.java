@@ -104,7 +104,7 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public int hashCode() {
-		int result = 1;
+		var result = 1;
 		result = 31 * result + (this.contextID == null ? 0 : this.contextID.hashCode());
 		result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
 		return result;
@@ -119,17 +119,13 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof SpaceID)) {
-			return false;
+		if (obj instanceof SpaceID other) {
+			if (!equalsContext(other)) {
+				return false;
+			}
+			return equalsID(other);
 		}
-
-		final SpaceID other = (SpaceID) obj;
-
-		if (!equalsContext(other)) {
-			return false;
-		}
-
-		return equalsID(other);
+		return false;
 	}
 
 	private boolean equalsContext(SpaceID other) {
@@ -149,7 +145,7 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public String toString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
 		builder.add("id", this.id); //$NON-NLS-1$
 		builder.add("contextID", this.contextID); //$NON-NLS-1$
@@ -160,7 +156,7 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public int compareTo(SpaceID otherID) {
-		final int cmp = this.contextID.compareTo(otherID.contextID);
+		final var cmp = this.contextID.compareTo(otherID.contextID);
 		if (cmp != 0) {
 			return cmp;
 		}

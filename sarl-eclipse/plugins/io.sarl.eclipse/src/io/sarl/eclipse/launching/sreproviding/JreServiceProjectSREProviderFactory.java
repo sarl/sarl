@@ -59,14 +59,14 @@ public class JreServiceProjectSREProviderFactory implements ProjectSREProviderFa
 
 	@Override
 	public ProjectSREProvider getProjectSREProvider(IProject project) {
-		final IJavaProject javaProject = JavaCore.create(project);
+		final var javaProject = JavaCore.create(project);
 		return findOnClasspath(javaProject);
 	}
 
 	private static ProjectSREProvider findOnClasspath(IJavaProject project) {
 		try {
-			final IClasspathEntry[] classpath = project.getResolvedClasspath(true);
-			for (final IClasspathEntry entry : classpath) {
+			final var classpath = project.getResolvedClasspath(true);
+			for (final var entry : classpath) {
 				final IPath path;
 				final String id;
 				final String name;
@@ -82,10 +82,9 @@ public class JreServiceProjectSREProviderFactory implements ProjectSREProviderFa
 					}
 					break;
 				case IClasspathEntry.CPE_PROJECT:
-					final IResource res = project.getProject().getParent().findMember(entry.getPath());
-					if (res instanceof IProject) {
-						final IProject dependency = (IProject) res;
-						final IJavaProject javaDependency = JavaCore.create(dependency);
+					final var res = project.getProject().getParent().findMember(entry.getPath());
+					if (res instanceof IProject dependency) {
+						final var javaDependency = JavaCore.create(dependency);
 						path = javaDependency.getOutputLocation();
 						id = javaDependency.getHandleIdentifier();
 						name = javaDependency.getElementName();
@@ -96,9 +95,9 @@ public class JreServiceProjectSREProviderFactory implements ProjectSREProviderFa
 					continue;
 				}
 				if (path != null && !SARLRuntime.isPackedSRE(path) && !SARLRuntime.isUnpackedSRE(path)) {
-					final String bootstrap = SARLRuntime.getDeclaredBootstrap(path);
+					final var bootstrap = SARLRuntime.getDeclaredBootstrap(path);
 					if (!Strings.isEmpty(bootstrap)) {
-						final List<IRuntimeClasspathEntry> 	classpathEntries = Collections.singletonList(new RuntimeClasspathEntry(entry));
+						final var classpathEntries = Collections.<IRuntimeClasspathEntry>singletonList(new RuntimeClasspathEntry(entry));
 						return new JreServiceProjectSREProvider(
 								id, name,
 								project.getPath().toPortableString(),

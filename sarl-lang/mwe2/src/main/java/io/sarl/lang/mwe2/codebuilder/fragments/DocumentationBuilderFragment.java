@@ -71,7 +71,6 @@ import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.grammarAccess.GrammarAccessExtensions;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generate the documentation adapters and related types.
@@ -221,8 +220,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	/** Generate the adapter that supports the inner documentation.
 	 */
 	protected void generateInnerDocumentationAdapter() {
-		final TypeReference adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("public class "); //$NON-NLS-1$
@@ -269,15 +268,15 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(adapter, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(adapter, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the interface for the documentation formatter.
 	 */
 	protected void generateIDocumentationFormatter() {
-		final TypeReference formatter = getIDocumentationFormatter();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var formatter = getIDocumentationFormatter();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Format a documentation string."); //$NON-NLS-1$
@@ -511,15 +510,15 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(formatter, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(formatter, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the interface for the documentation builder.
 	 */
 	protected void generateIEcoreDocumentationBuilder() {
-		final TypeReference builder = getIEcoreDocumentationBuilder();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getIEcoreDocumentationBuilder();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string for specific objects."); //$NON-NLS-1$
@@ -611,15 +610,15 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the implementation for the documentation formatter.
 	 */
 	protected void generateDocumentationFormatterImpl() {
-		final TypeReference formatter = getDocumentationFormatterImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var formatter = getDocumentationFormatterImpl();
+		final var content = new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -777,21 +776,17 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\t\tif (element instanceof "); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(" && this.mlStart == null) {"); //$NON-NLS-1$
+				it.append(" $c$value && this.mlStart == null) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tthis.mlStart = (("); //$NON-NLS-1$
-				it.append(Keyword.class);
-				it.append(") element).getValue();"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tthis.mlStart = $c$value.getValue();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t} else if (element instanceof "); //$NON-NLS-1$
 				it.append(UntilToken.class);
-				it.append(" && this.mlEnd == null) {"); //$NON-NLS-1$
+				it.append(" $c$value && this.mlEnd == null) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t\tthis.mlEnd = (("); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(") (("); //$NON-NLS-1$
-				it.append(UntilToken.class);
-				it.append(") element).getTerminal()).getValue();"); //$NON-NLS-1$
+				it.append(") $c$value.getTerminal()).getValue();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -819,11 +814,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\t\tif (element instanceof "); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tthis.slPrefix = (("); //$NON-NLS-1$
-				it.append(Keyword.class);
-				it.append(") element).getValue().trim();"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tthis.slPrefix = $c$value.getValue().trim();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t\tbreak;"); //$NON-NLS-1$
 				it.newLine();
@@ -2138,15 +2131,15 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(formatter, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(formatter, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the implementation for the documentation builder.
 	 */
 	protected void generateEcoreDocumentationBuilderImpl() {
-		final TypeReference builder = getEcoreDocumentationBuilderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getEcoreDocumentationBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -2207,25 +2200,21 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\tif (element instanceof "); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(" && "); //$NON-NLS-1$
+				it.append(" $c$value && "); //$NON-NLS-1$
 				it.append(Strings.class);
 				it.append(".isEmpty(this.mlStartSymbols)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tthis.mlStartSymbols = (("); //$NON-NLS-1$
-				it.append(Keyword.class);
-				it.append(") element).getValue();"); //$NON-NLS-1$
+				it.append("\t\t\t\tthis.mlStartSymbols = $c$value.getValue();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t} else if (element instanceof "); //$NON-NLS-1$
 				it.append(UntilToken.class);
-				it.append(" && "); //$NON-NLS-1$
+				it.append(" $c$value && "); //$NON-NLS-1$
 				it.append(Strings.class);
 				it.append(".isEmpty(this.mlEndTagSymbols)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tthis.mlEndTagSymbols = (("); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(") (("); //$NON-NLS-1$
-				it.append(UntilToken.class);
-				it.append(") element).getTerminal()).getValue();"); //$NON-NLS-1$
+				it.append(") $c$value.getTerminal()).getValue();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -2243,11 +2232,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\tif (element instanceof "); //$NON-NLS-1$
 				it.append(Keyword.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tthis.slStartSymbols = (("); //$NON-NLS-1$
-				it.append(Keyword.class);
-				it.append(") element).getValue().trim();"); //$NON-NLS-1$
+				it.append("\t\t\t\tthis.slStartSymbols = $c$value.getValue().trim();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
 				it.newLine();
@@ -2300,19 +2287,19 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\tpublic boolean isMultilineCommentFor(Class<?> type) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn "); //$NON-NLS-1$
-				Set<String> multilineCommentedTypes = getCodeBuilderConfig().getMultilineCommentedTypes();
+				final var multilineCommentedTypes = getCodeBuilderConfig().getMultilineCommentedTypes();
 				if (multilineCommentedTypes.isEmpty()) {
 					it.append("false"); //$NON-NLS-1$
 				} else {
-					boolean firstTest = true;
-					for (String typeName : multilineCommentedTypes) {
+					var firstTest = true;
+					for (final var typeName : multilineCommentedTypes) {
 						if (firstTest) {
 							firstTest = false;
 						} else {
 							it.newLine();
 							it.append("\t\t\t\t|| "); //$NON-NLS-1$
 						}
-						TypeReference reference = new TypeReference(typeName);
+						var reference = new TypeReference(typeName);
 						it.append(reference);
 						it.append(".class.isAssignableFrom(type)"); //$NON-NLS-1$
 					}
@@ -2405,7 +2392,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
@@ -2413,13 +2400,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	protected void generateDocumentationProviderImpl() {
 		TypeReference etype = null;
-		final LinkedList<Grammar> grammars = new LinkedList<>();
+		final var grammars = new LinkedList<Grammar>();
 		grammars.addAll(getGrammar().getUsedGrammars());
 		while (etype == null && !grammars.isEmpty()) {
-			final Grammar grammar = grammars.removeFirst();
+			final var grammar = grammars.removeFirst();
 			grammars.addAll(grammar.getUsedGrammars());
-			final String gbase = getNaming().getRuntimeBasePackage(grammar);
-			final String providerClassname = gbase + ".documentation." //$NON-NLS-1$
+			final var gbase = getNaming().getRuntimeBasePackage(grammar);
+			final var providerClassname = gbase + ".documentation." //$NON-NLS-1$
 					+ GrammarUtil.getSimpleName(grammar) + "DocumentationProvider"; //$NON-NLS-1$
 			try {
 				getClass().getClassLoader().loadClass(providerClassname);
@@ -2431,9 +2418,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 		if (etype == null) {
 			etype = new TypeReference(MultiLineCommentDocumentationProvider.class);
 		}
-		final TypeReference extendType = etype;
-		final TypeReference provider = getDocumentationProviderImpl();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var extendType = etype;
+		final var provider = getDocumentationProviderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Provider a documentation string."); //$NON-NLS-1$
@@ -2461,13 +2448,11 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\tif (o instanceof "); //$NON-NLS-1$
 				it.append(EModelElement.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\ttext = "); //$NON-NLS-1$
 				it.append(EcoreUtil.class);
-				it.append(".getDocumentation(("); //$NON-NLS-1$
-				it.append(EModelElement.class);
-				it.append(") o);"); //$NON-NLS-1$
+				it.append(".getDocumentation($c$value);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -2507,18 +2492,18 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(provider, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(provider, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the syntactic sequencer that supports Ecore documentation.
 	 */
 	protected void generateEcoreDocumentationSyntacticSequencer() {
-		final TypeReference sequencer = getSyntacticSequencer();
-		final TypeReference customSequencer = getEcoreDocumentationSyntacticSequencer();
-		final TypeReference innerBlockComment = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
-		final TypeReference keywordAccessor = getCodeElementExtractor().getLanguageKeywordAccessor();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var sequencer = getSyntacticSequencer();
+		final var customSequencer = getEcoreDocumentationSyntacticSequencer();
+		final var innerBlockComment = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
+		final var keywordAccessor = getCodeElementExtractor().getLanguageKeywordAccessor();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Syntactic sequencer which supports documentations of Ecore elements."); //$NON-NLS-1$
@@ -2592,11 +2577,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tif (sequenceAcceptor instanceof "); //$NON-NLS-1$
 				it.append(ISequenceAcceptor.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" $c$value) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.trailingSequenceAcceptor = ("); //$NON-NLS-1$
-				it.append(ISequenceAcceptor.class);
-				it.append(") sequenceAcceptor;"); //$NON-NLS-1$
+				it.append("\t\t\tthis.trailingSequenceAcceptor = $c$value;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -2808,7 +2791,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(customSequencer, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(customSequencer, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 }

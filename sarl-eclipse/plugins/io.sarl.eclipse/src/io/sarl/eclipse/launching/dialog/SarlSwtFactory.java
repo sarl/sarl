@@ -63,14 +63,14 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @return the spinner.
 	 */
 	public static Spinner createSpinner(Composite parent, int hspan, int min, int max, int increment, int pageIncrement) {
-		final Spinner spinner = new Spinner(parent, SWT.SINGLE | SWT.BORDER);
+		final var spinner = new Spinner(parent, SWT.SINGLE | SWT.BORDER);
 		spinner.setFont(parent.getFont());
 		spinner.setMinimum(min);
 		spinner.setMaximum(max);
 		spinner.setIncrement(increment);
 		spinner.setPageIncrement(pageIncrement);
 		spinner.setDigits(0);
-		final GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		final var gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
 		spinner.setLayoutData(gd);
 		return spinner;
@@ -97,9 +97,9 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @return the decorator.
 	 */
 	public static ControlDecoration createInfoDecorator(Control parent, String text, int location) {
-		final ControlDecoration txtDecorator = new ControlDecoration(parent, location);
-		final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
-		final Image img = fieldDecoration.getImage();
+		final var txtDecorator = new ControlDecoration(parent, location);
+		final var fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
+		final var img = fieldDecoration.getImage();
 		txtDecorator.setImage(img);
 		txtDecorator.setDescriptionText(text);
 		return txtDecorator;
@@ -123,9 +123,9 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @return the information icon widget.
 	 */
 	public static Label createInfoBubble(Composite parent, String text, int hspan) {
-		final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
-		final Image img = fieldDecoration.getImage();
-		final Label txtDecorator = createLabel(parent, "", hspan); //$NON-NLS-1$
+		final var fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
+		final var img = fieldDecoration.getImage();
+		final var txtDecorator = createLabel(parent, "", hspan); //$NON-NLS-1$
 		txtDecorator.setImage(img);
 		txtDecorator.setToolTipText(text);
 		return txtDecorator;

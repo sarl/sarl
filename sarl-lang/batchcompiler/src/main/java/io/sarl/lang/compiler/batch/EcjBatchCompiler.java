@@ -24,8 +24,6 @@ package io.sarl.lang.compiler.batch;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +53,7 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 
 	@Override
 	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
-			Iterable<File> classPathEntries_,
+			Iterable<File> classPathEntries,
 			Iterable<File> modulePathEntries,
 			JavaVersion javaVersion,
 			boolean isModuleSupport,
@@ -68,7 +66,7 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 			IProgressMonitor progress) {
 		assert progress != null;
 
-		final List<String> commandLineArguments = Lists.newArrayList();
+		final var commandLineArguments = Lists.<String>newArrayList();
 		//
 		// Optimization
 		//
@@ -100,9 +98,9 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Classpath
 		//
-		final Iterator<File> classPathIterator = classPathEntries_.iterator();
+		final var classPathIterator = classPathEntries.iterator();
 		if (classPathIterator.hasNext()) {
-			final String path = buildPath(classPathEntries_, progress);
+			final var path = buildPath(classPathEntries, progress);
 			if (path == null) {
 				return CompilerStatus.CANCELED;
 			}
@@ -118,7 +116,7 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		// Module-path
 		//
 		if (isModuleSupport) {
-			final String path = buildPath(modulePathEntries, progress);
+			final var path = buildPath(modulePathEntries, progress);
 			if (path == null) {
 				return CompilerStatus.CANCELED;
 			}
@@ -157,8 +155,8 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Source folders
 		//
-		boolean hasSourceFile = false;
-		for (final File sourceFolder : sourcePathDirectories) {
+		var hasSourceFile = false;
+		for (final var sourceFolder : sourcePathDirectories) {
 			if (progress.isCanceled()) {
 				return CompilerStatus.CANCELED;
 			}
@@ -176,12 +174,12 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Run the Eclipse compiler
 		//
-		final String[] arguments = new String[commandLineArguments.size()];
+		final var arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
 		if (logger != null && logger.isLoggable(Level.FINEST)) {
-			final StringBuilder buf = new StringBuilder();
-			for (final String str : commandLineArguments) {
+			final var buf = new StringBuilder();
+			for (final var str : commandLineArguments) {
 				if (!Strings.isEmpty(str)) {
 					buf.append(str).append("\n"); //$NON-NLS-1$
 				}
@@ -193,7 +191,7 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 			return CompilerStatus.CANCELED;
 		}
 
-		final boolean status = BatchCompiler.compile(arguments, outWriter, errWriter,
+		final var status = BatchCompiler.compile(arguments, outWriter, errWriter,
 				new ProgressMonitorCompilationProgress(progress));
 		return status ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
 	}

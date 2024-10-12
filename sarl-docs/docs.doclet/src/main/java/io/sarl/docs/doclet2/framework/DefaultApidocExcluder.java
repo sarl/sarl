@@ -50,16 +50,11 @@
 
 package io.sarl.docs.doclet2.framework;
 
-import java.util.List;
-
 import javax.lang.model.element.Element;
 
 import com.google.inject.Provider;
 import com.sun.source.doctree.BlockTagTree;
-import com.sun.source.doctree.DocCommentTree;
-import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.InlineTagTree;
-import com.sun.source.util.DocTrees;
 
 import io.sarl.docs.doclet2.html.taglets.block.ExcludeFromApidocTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.HiddenTaglet;
@@ -123,20 +118,18 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 		if (element.getAnnotation(SyntheticMember.class) != null) {
 			return true;
 		}
-		final SarlDocletEnvironment env = getDocletEnvironment();
-		final DocTrees tree = env.getDocTrees();
-		final DocCommentTree comment = tree.getDocCommentTree(element);
+		final var env = getDocletEnvironment();
+		final var tree = env.getDocTrees();
+		final var comment = tree.getDocCommentTree(element);
 		if (comment != null) {
-			final List<? extends DocTree> nodes = comment.getBlockTags();
+			final var nodes = comment.getBlockTags();
 			if (nodes != null) {
-				for (final DocTree node : nodes) {
-					if (node instanceof InlineTagTree) {
-						final InlineTagTree tag = (InlineTagTree) node;
+				for (final var node : nodes) {
+					if (node instanceof InlineTagTree tag) {
 						if (isExcluded(tag.getTagName())) {
 							return true;
 						}
-					} else if (node instanceof BlockTagTree) {
-						final BlockTagTree tag = (BlockTagTree) node;
+					} else if (node instanceof BlockTagTree tag) {
 						if (isExcluded(tag.getTagName())) {
 							return true;
 						}

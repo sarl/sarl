@@ -92,7 +92,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Pure
 	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		final AtomicSkillReference skill = $getSkill(capacity);
+		final var skill = $getSkill(capacity);
 		assert skill != null;
 		return $castSkill(capacity, skill);
 	}
@@ -107,7 +107,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Pure
 	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicSkillReference skillReference) {
 		if (skillReference != null) {
-			final S skill = capacity.cast(skillReference.get());
+			final var skill = capacity.cast(skillReference.get());
 			if (skill != null) {
 				return skill;
 			}
@@ -117,7 +117,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	@Override
 	protected AtomicSkillReference $getSkill(Class<? extends Capacity> capacity) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			throw new OwnerNotFoundException(this);
 		}
@@ -133,7 +133,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@SafeVarargs
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return skill;
 		}
@@ -143,7 +143,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@SafeVarargs
 	protected final void setSkillIfAbsent(Skill skill, Class<? extends Capacity>... capacities) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner != null) {
 			owner.setSkillIfAbsent(skill, capacities);
 		}
@@ -151,7 +151,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return null;
 		}
@@ -161,7 +161,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return false;
 		}
@@ -171,7 +171,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@Pure
 	public boolean isMe(Address address) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return false;
 		}
@@ -181,7 +181,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@Pure
 	public boolean isMe(UUID uID) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return false;
 		}
@@ -191,7 +191,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Override
 	@Pure
 	public boolean isFromMe(Event event) {
-		final Agent owner = getOwner();
+		final var owner = getOwner();
 		if (owner == null) {
 			return false;
 		}

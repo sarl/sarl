@@ -22,8 +22,6 @@
 package io.sarl.lang.compiler;
 
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 
 import com.google.inject.Inject;
@@ -36,9 +34,7 @@ import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
@@ -110,9 +106,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 	private JvmTypeReference getFunctionTypeReference(XtendFunction function) {
 		if (function != null) {
-			final JvmTypeReference reference = function.getReturnType();
+			final var reference = function.getReturnType();
 			if (reference != null) {
-				final JvmType type = reference.getType();
+				final var type = reference.getType();
 				if (type != null) {
 					return reference;
 				}
@@ -132,17 +128,16 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	}
 
 	private static XExpression filterSingleOperation(XExpression expression) {
-		XExpression content = expression;
-		while (content instanceof XBlockExpression) {
-			final XBlockExpression blockExpr = (XBlockExpression) content;
+		var content = expression;
+		while (content instanceof XBlockExpression blockExpr) {
 			if (blockExpr.getExpressions().size() == 1) {
 				content = blockExpr.getExpressions().get(0);
 			} else {
 				content = null;
 			}
 		}
-		if (content instanceof XReturnExpression) {
-			content = ((XReturnExpression) content).getExpression();
+		if (content instanceof XReturnExpression xre) {
+			content = xre.getExpression();
 		}
 		return content;
 	}
@@ -165,24 +160,20 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	protected void appendInlineAnnotation(JvmAnnotationTarget target, ResourceSet resourceSet,
 			String inlineExpression, boolean isConstantExpression, boolean isStatementExpression,
 			JvmTypeReference... types) {
-		final JvmAnnotationReferenceBuilder annotationTypesBuilder = this.annotationRefBuilderFactory.create(
-				resourceSet);
-		final JvmAnnotationReference annotationReference = annotationTypesBuilder.annotationRef(
-				Inline.class);
+		final var annotationTypesBuilder = this.annotationRefBuilderFactory.create(resourceSet);
+		final var annotationReference = annotationTypesBuilder.annotationRef(Inline.class);
 
-		final AnnotationInformation annotationInfo = AnnotationInformation.build(annotationReference);
+		final var annotationInfo = AnnotationInformation.build(annotationReference);
 
 		// Value
-		final JvmStringAnnotationValue annotationValue = this.services.getTypesFactory()
-				.createJvmStringAnnotationValue();
+		final var annotationValue = this.services.getTypesFactory().createJvmStringAnnotationValue();
 		annotationValue.getValues().add(inlineExpression);
 		annotationValue.setOperation(annotationInfo.valueOperation);
 		annotationReference.getExplicitValues().add(annotationValue);
 
 		// Imported
-		for (final JvmTypeReference type : types) {
-			final JvmTypeAnnotationValue annotationImportedType = this.services.getTypesFactory()
-					.createJvmTypeAnnotationValue();
+		for (final var type : types) {
+			final var annotationImportedType = this.services.getTypesFactory().createJvmTypeAnnotationValue();
 			annotationImportedType.getValues().add(this.typeBuilder.cloneWithProxies(type));
 			annotationImportedType.setOperation(annotationInfo.importedOperation);
 			annotationReference.getExplicitValues().add(annotationImportedType);
@@ -199,8 +190,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 		// Statement
 		if (isStatementExpression) {
-			final JvmBooleanAnnotationValue annotationStatement = this.services.getTypesFactory()
-					.createJvmBooleanAnnotationValue();
+			final var annotationStatement = this.services.getTypesFactory().createJvmBooleanAnnotationValue();
 			annotationStatement.getValues().add(Boolean.valueOf(isStatementExpression));
 			annotationStatement.setOperation(annotationInfo.statementExpressionOperation);
 			annotationReference.getExplicitValues().add(annotationStatement);
@@ -211,15 +201,15 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 	@Override
 	public void appendInlineAnnotation(JvmAnnotationTarget target, XtendExecutable source) {
-		final ImportManager imports = new ImportManager();
-		final InlineAnnotationTreeAppendable result = newAppendable(imports);
+		final var imports = new ImportManager();
+		final var result = newAppendable(imports);
 		generate(source.getExpression(), null, source, result);
 
-		final String content = result.getContent();
+		final var content = result.getContent();
 		if (!Strings.isEmpty(content)) {
-			final List<String> importedTypes = imports.getImports();
-			final JvmTypeReference[] importArray = new JvmTypeReference[importedTypes.size()];
-			for (int i = 0; i < importArray.length; ++i) {
+			final var importedTypes = imports.getImports();
+			final var importArray = new JvmTypeReference[importedTypes.size()];
+			for (var i = 0; i < importArray.length; ++i) {
 				importArray[i] = this.typeReferences.getTypeForName(importedTypes.get(i), source);
 			}
 			appendInlineAnnotation(target, source.eResource().getResourceSet(), content,
@@ -238,17 +228,16 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	protected boolean generate(XExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		final XExpression realExpression = filterSingleOperation(expression);
+		final var realExpression = filterSingleOperation(expression);
 		if (realExpression != null) {
-			final GeneratorConfig2 config = this.configProvider.get(feature);
+			final var config = this.configProvider.get(feature);
 			if (config.isUseExpressionInterpreterForInlineAnnotation()
-					&& feature instanceof XtendFunction) {
+					&& feature instanceof XtendFunction function) {
 				try {
-					final XtendFunction function = (XtendFunction) feature;
-					final Object evaluationResult = this.expressionInterpreter.evaluate(realExpression,
+					final var evaluationResult = this.expressionInterpreter.evaluate(realExpression,
 							getFunctionTypeReference(function));
 					if (evaluationResult != null) {
-						final Boolean res = this.generateDispatcher.invoke(evaluationResult, parentExpression, feature, output);
+						final var res = this.generateDispatcher.invoke(evaluationResult, parentExpression, feature, output);
 						if (res != null && res == Boolean.TRUE) {
 							return true;
 						}
@@ -257,7 +246,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 					// Ignore all the exceptions
 				}
 			}
-			final Boolean res = this.generateDispatcher.invoke(realExpression, parentExpression, feature, output);
+			final var res = this.generateDispatcher.invoke(realExpression, parentExpression, feature, output);
 			return res != null && res.booleanValue();
 		}
 		return false;
@@ -307,7 +296,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	@SuppressWarnings("static-method")
 	protected Boolean _generate(Number expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		final Class<?> type = ReflectionUtil.getRawType(expression.getClass());
+		final var type = ReflectionUtil.getRawType(expression.getClass());
 		if (Byte.class.equals(type) || byte.class.equals(type)) {
 			output.appendConstant("(byte) (" + expression.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (Short.class.equals(type) || short.class.equals(type)) {
@@ -347,12 +336,11 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	protected Boolean _generate(XNullLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		if (parentExpression == null && feature instanceof XtendFunction) {
-			final XtendFunction function = (XtendFunction) feature;
+		if (parentExpression == null && feature instanceof XtendFunction function) {
 			output.append("("); //$NON-NLS-1$
-			final JvmTypeReference reference = getFunctionTypeReference(function);
+			final var reference = getFunctionTypeReference(function);
 			if (reference != null) {
-				final JvmType type = reference.getType();
+				final var type = reference.getType();
 				if (type != null) {
 					output.append(type);
 				} else {
@@ -429,9 +417,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	protected Boolean _generate(XCastedExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		boolean bool = generate(expression.getTarget(), expression, feature, child);
-		final String childContent = child.getContent();
+		final var child = newAppendable(output.getImportManager());
+		var bool = generate(expression.getTarget(), expression, feature, child);
+		final var childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
 			output.append("("); //$NON-NLS-1$
 			output.append(expression.getType().getType());
@@ -454,9 +442,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 */
 	protected Boolean _generate(XInstanceOfExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		boolean bool = generate(expression.getExpression(), expression, feature, child);
-		final String childContent = child.getContent();
+		final var child = newAppendable(output.getImportManager());
+		var bool = generate(expression.getExpression(), expression, feature, child);
+		final var childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
 			output.append("("); //$NON-NLS-1$
 			output.append(childContent);
@@ -509,11 +497,11 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			JvmOperation imported = null;
 			JvmOperation constant = null;
 			JvmOperation statement = null;
-			final Iterator<JvmOperation> operationIterator = annotationReference.getAnnotation()
+			final var operationIterator = annotationReference.getAnnotation()
 					.getDeclaredOperations().iterator();
 			while ((value == null || imported == null || constant == null || statement == null)
 					&& operationIterator.hasNext()) {
-				final JvmOperation annotationOperation = operationIterator.next();
+				final var annotationOperation = operationIterator.next();
 				if (annotationOperation.getSimpleName().equals("value")) { //$NON-NLS-1$
 					value = annotationOperation;
 				} else if (annotationOperation.getSimpleName().equals("imported")) { //$NON-NLS-1$

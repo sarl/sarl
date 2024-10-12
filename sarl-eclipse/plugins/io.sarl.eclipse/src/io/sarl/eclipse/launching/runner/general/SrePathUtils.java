@@ -83,19 +83,19 @@ public final class SrePathUtils {
 			IJavaProjectAccessor projectAccessor,
 			ExtraClassPathProviders classpathProviders) throws CoreException {
 		// Get the classpath from the configuration (Java classpath).
-		final IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
+		final var entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
 		//
-		final Set<String> addedEntries = new TreeSet<>();
-		final List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
+		final var addedEntries = new TreeSet<String>();
+		final var filteredEntries = new ArrayList<IRuntimeClasspathEntry>();
 		List<IRuntimeClasspathEntry> sreClasspathEntries = null;
 		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
-		for (final IRuntimeClasspathEntry entry : entries) {
+		for (final var entry : entries) {
 			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
 				if (sreClasspathEntries == null) {
 					sreClasspathEntries = getSREClasspathEntries(configuration, configAccessor, projectAccessor);
 				}
-				for (final IRuntimeClasspathEntry containerEntry : sreClasspathEntries) {
-					final String location = containerEntry.getLocation();
+				for (final var containerEntry : sreClasspathEntries) {
+					final var location = containerEntry.getLocation();
 					if (Strings.isNullOrEmpty(location)) {
 						filteredEntries.add(containerEntry);
 					} else if (addedEntries.add(location)) {
@@ -103,7 +103,7 @@ public final class SrePathUtils {
 					}
 				}
 			} else {
-				final String location = entry.getLocation();
+				final var location = entry.getLocation();
 				if (Strings.isNullOrEmpty(location)) {
 					filteredEntries.add(entry);
 				} else if (addedEntries.add(location)) {
@@ -112,13 +112,13 @@ public final class SrePathUtils {
 			}
 		}
 		// Get classpath from the extra contributors
-		for (final String containerId : configAccessor.getExtraClasspathProviders(configuration)) {
-			final RuntimeClasspathProvider provider = classpathProviders.getProvider(containerId);
+		for (final var containerId : configAccessor.getExtraClasspathProviders(configuration)) {
+			final var provider = classpathProviders.getProvider(containerId);
 			if (provider != null) {
-				final IRuntimeClasspathEntry[] extraEntries = provider.computeUnresolvedClasspath(configuration);
+				final var extraEntries = provider.computeUnresolvedClasspath(configuration);
 				if (extraEntries != null) {
-					for (final IRuntimeClasspathEntry extraEntry : extraEntries) {
-						final String location = extraEntry.getLocation();
+					for (final var extraEntry : extraEntries) {
+						final var location = extraEntry.getLocation();
 						if (Strings.isNullOrEmpty(location)) {
 							filteredEntries.add(extraEntry);
 						} else if (addedEntries.add(location)) {
@@ -146,7 +146,7 @@ public final class SrePathUtils {
 			ILaunchConfiguration configuration,
 			ILaunchConfigurationAccessor configAccessor,
 			IJavaProjectAccessor projectAccessor) throws CoreException {
-		final ISREInstall sre = getSREInstallFor(configuration, configAccessor, projectAccessor);
+		final var sre = getSREInstallFor(configuration, configAccessor, projectAccessor);
 		return sre.getClassPathEntries();
 	}
 
@@ -172,7 +172,7 @@ public final class SrePathUtils {
 				verifySREValidity(sre, sre.getId());
 			}
 		} else  {
-			final String runtime = configAccessor.getSREId(configuration);
+			final var runtime = configAccessor.getSREId(configuration);
 			sre = SARLRuntime.getSREFromId(runtime);
 			if (sre != null) {
 				verifySREValidity(sre, runtime);
@@ -198,19 +198,19 @@ public final class SrePathUtils {
 	private static ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify,
 			IJavaProjectAccessor projectAccessor) throws CoreException {
 		assert projectAccessor != null;
-		final IJavaProject jprj = projectAccessor.get(configuration);
+		final var jprj = projectAccessor.get(configuration);
 		if (jprj != null) {
-			final IProject prj = jprj.getProject();
+			final var prj = jprj.getProject();
 			assert prj != null;
 
 			// Get the SRE from the extension point
-			ISREInstall sre = getSREFromExtension(prj, verify);
+			var sre = getSREFromExtension(prj, verify);
 			if (sre != null) {
 				return sre;
 			}
 
 			// Get the SRE from the default project configuration
-			final ProjectSREProvider provider = new EclipseIDEProjectSREProvider(prj);
+			final var provider = new EclipseIDEProjectSREProvider(prj);
 			sre = provider.getProjectSREInstall();
 			if (sre != null) {
 				if (verify) {
@@ -219,7 +219,7 @@ public final class SrePathUtils {
 				return sre;
 			}
 		}
-		final ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+		final var sre = SARLRuntime.getDefaultSREInstall();
 		if (verify) {
 			verifySREValidity(sre, (sre == null) ? Messages.SrepathUtils_1 : sre.getId());
 		}
@@ -227,18 +227,18 @@ public final class SrePathUtils {
 	}
 
 	private static ISREInstall getSREFromExtension(IProject project, boolean verify) {
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
 				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			for (final var element : extensionPoint.getConfigurationElements()) {
 				try {
-					final Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
 					assert obj instanceof ProjectSREProviderFactory;
-					final ProjectSREProviderFactory factory = (ProjectSREProviderFactory) obj;
-					final ProjectSREProvider provider = factory.getProjectSREProvider(project);
+					final var factory = (ProjectSREProviderFactory) obj;
+					final var provider = factory.getProjectSREProvider(project);
 					if (provider != null) {
-						final ISREInstall sre = provider.getProjectSREInstall();
+						final var sre = provider.getProjectSREInstall();
 						if (sre == null) {
 							return null;
 						}
@@ -260,7 +260,7 @@ public final class SrePathUtils {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
-		final int ignoreCode = 0;
+		final var ignoreCode = 0;
 		if (!sre.getValidity(ignoreCode).isOK()) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
 					io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_5,
@@ -295,12 +295,12 @@ public final class SrePathUtils {
 		protected void ensureProviders() {
 			if (this.cpProviders == null) {
 				this.cpProviders = new HashMap<>();
-				final IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(
+				final var point = Platform.getExtensionRegistry().getExtensionPoint(
 						LaunchingPlugin.ID_PLUGIN, JavaRuntime.EXTENSION_POINT_RUNTIME_CLASSPATH_PROVIDERS);
 				if (point != null) {
-					final IConfigurationElement[] extensions = point.getConfigurationElements();
-					for (final IConfigurationElement element : Arrays.asList(extensions)) {
-						final RuntimeClasspathProvider res = new RuntimeClasspathProvider(element);
+					final var extensions = point.getConfigurationElements();
+					for (final var element : Arrays.asList(extensions)) {
+						final var res = new RuntimeClasspathProvider(element);
 						this.cpProviders.put(res.getIdentifier(), res);
 					}
 				}

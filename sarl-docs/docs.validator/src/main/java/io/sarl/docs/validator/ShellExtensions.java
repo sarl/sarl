@@ -58,8 +58,8 @@ public final class ShellExtensions {
 	 * @throws IOException if the absolute path of the file cannot be computed.
 	 */
 	public static String makeExecName(String... command) throws FileNotFoundException, IOException {
-		final StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < command.length - 1; ++i) {
+		final var buffer = new StringBuilder();
+		for (var i = 0; i < command.length - 1; ++i) {
 			if (i > 0) {
 				buffer.append(File.separator);
 			}
@@ -68,7 +68,7 @@ public final class ShellExtensions {
 		if (command.length > 1) {
 			buffer.append(File.separator);
 		}
-		final OperatingSystem os = OperatingSystem.getCurrentOS();
+		final var os = OperatingSystem.getCurrentOS();
 		switch (os) {
 		case WIN:
 			buffer.append(command[command.length - 1]);
@@ -81,7 +81,7 @@ public final class ShellExtensions {
 		default:
 			buffer.append(command[command.length - 1]);
 		}
-		final String cmd = buffer.toString();
+		final var cmd = buffer.toString();
 		File file = new File(cmd);
 		if (!file.isAbsolute()) {
 			file = new File(System.getProperty("SARL_DOC_CURRENT_FOLDER") + File.separator + file.getPath()).getCanonicalFile(); //$NON-NLS-1$
@@ -132,12 +132,12 @@ public final class ShellExtensions {
 	 * @throws InterruptedException if the process is interrupted.
 	 */
 	public static String runShell(String... command) throws IOException, InterruptedException {
-		final ProcessBuilder processBuilder = new ProcessBuilder();
+		final var processBuilder = new ProcessBuilder();
 		processBuilder.command(command);
-		final Process process = processBuilder.start();
-		final StringBuilder output = new StringBuilder();
-		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			String line = reader.readLine();
+		final var process = processBuilder.start();
+		final var output = new StringBuilder();
+		try (final var reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			var line = reader.readLine();
 			while (line  != null) {
 				output.append(line + "\n"); //$NON-NLS-1$
 				line = reader.readLine();
@@ -155,11 +155,11 @@ public final class ShellExtensions {
 	 * @since 0.13
 	 */
 	public static String runJavaCommand(Runnable command) throws Exception {
-		final PrintStream oldStdOut = System.out;
-		final PrintStream oldStdErr = System.err;
+		final var oldStdOut = System.out;
+		final var oldStdErr = System.err;
 		try {
-			try (final ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-				try (final PrintStream newOut = new PrintStream(buffer)) {
+			try (final var buffer = new ByteArrayOutputStream()) {
+				try (final var newOut = new PrintStream(buffer)) {
 					System.setOut(newOut);
 					System.setErr(newOut);
 					command.run();
@@ -181,11 +181,11 @@ public final class ShellExtensions {
 	 * @since 0.13
 	 */
 	public static String whichShellCommand(String commandName) throws FileNotFoundException {
-		final ShellCommandProvider provider = shellCommandProvider;
+		final var provider = shellCommandProvider;
 		if (provider != null) {
-			final ShellCommand command = provider.getShellCommand(commandName);
+			final var command = provider.getShellCommand(commandName);
 			if (command != null) {
-				final File executable = command.executable();
+				final var executable = command.executable();
 				if (executable != null) {
 					return executable.getAbsolutePath();
 				}

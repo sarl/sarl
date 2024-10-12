@@ -138,16 +138,15 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 
 	@Override
 	public int getCategory(IOutlineNode node) {
-		if (node instanceof EStructuralFeatureNode) {
-			final EStructuralFeature feature = ((EStructuralFeatureNode) node).getEStructuralFeature();
+		if (node instanceof EStructuralFeatureNode cvalue) {
+			final var feature = cvalue.getEStructuralFeature();
 			if (feature == XTEND_FILE__PACKAGE) {
 				return SCRIPT_PRIORITY;
 			}
 			return TOPELEMENT_PRIORITY;
 		}
-		if (node instanceof EObjectNode) {
-			final EObjectNode objectNode = (EObjectNode) node;
-			final EClass objectNodeType = objectNode.getEClass();
+		if (node instanceof EObjectNode objectNode) {
+			final var objectNodeType = objectNode.getEClass();
 			if (XIMPORT_SECTION.isSuperTypeOf(objectNodeType)) {
 				return IMPORT_PRIORITY;
 			}
@@ -191,8 +190,8 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	}
 
 	private static boolean isStatic(EObjectNode eobjectNode) {
-		if (eobjectNode instanceof SARLEObjectNode) {
-			return ((SARLEObjectNode) eobjectNode).isStatic();
+		if (eobjectNode instanceof SARLEObjectNode cvalue) {
+			return cvalue.isStatic();
 		}
 		return false;
 	}

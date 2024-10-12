@@ -59,7 +59,6 @@ import javax.tools.Diagnostic.Kind;
 
 import com.google.common.collect.Iterables;
 import com.sun.source.doctree.DocTree;
-import com.sun.source.doctree.ReferenceTree;
 import com.sun.source.doctree.ThrowsTree;
 
 import io.sarl.docs.doclet2.html.framework.CssStyles;
@@ -111,33 +110,33 @@ public class ThrowsTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor context) {
-		final Iterable<ThrowsTree> throwsList0 = Iterables.filter(tags, ThrowsTree.class);
-		final Iterable<ThrowsTree> throwsList = Iterables.filter(throwsList0, it -> {
-			final ReferenceTree reference = it.getExceptionName();
+		final var throwsList0 = Iterables.filter(tags, ThrowsTree.class);
+		final var throwsList = Iterables.filter(throwsList0, it -> {
+			final var reference = it.getExceptionName();
 			if (reference == null) {
 				context.getContext().getReporter().print(Kind.ERROR, Messages.ThrowsTaglet_1);
 				return false;
 			}
 			return true;
 		});
-		final CssStyles rstyle = getTextCssStyle(style);
-		boolean changed = false;
+		final var rstyle = getTextCssStyle(style);
+		var changed = false;
 		if (throwsList.iterator().hasNext()) {
-			final org.jsoup.nodes.Element ulElement = getHtmlFactory().createUlTag(parent, rstyle);
-			for (final ThrowsTree throwsEntry : throwsList) {
-				final ReferenceTree reference = throwsEntry.getExceptionName();
-				final org.jsoup.nodes.Element tmpElement0 = getHtmlFactory().createSpanTag(null, null);
+			final var ulElement = getHtmlFactory().createUlTag(parent, rstyle);
+			for (final var throwsEntry : throwsList) {
+				final var reference = throwsEntry.getExceptionName();
+				final var tmpElement0 = getHtmlFactory().createSpanTag(null, null);
 				appendCommentTextWithSpace(tmpElement0, Collections.singletonList(reference), element, rstyle, context.getContext());
-				final org.jsoup.nodes.Element tmpElement1 = getHtmlFactory().createSpanTag(null, null);
-				final boolean hasDescription = appendCommentTextWithSpace(tmpElement1, throwsEntry.getDescription(),
+				final var tmpElement1 = getHtmlFactory().createSpanTag(null, null);
+				final var hasDescription = appendCommentTextWithSpace(tmpElement1, throwsEntry.getDescription(),
 						element, rstyle, context.getContext());
 				if (!hasDescription) {
 					context.getContext().getReporter().print(Kind.ERROR, MessageFormat.format(Messages.ThrowsTaglet_2, reference.toString()));
 				}
-				final String text = MessageFormat.format(Messages.ThrowsTaglet_3,
+				final var text = MessageFormat.format(Messages.ThrowsTaglet_3,
 						tmpElement0.html(),
 						tmpElement1.html());
-				final org.jsoup.nodes.Element liElement = getHtmlFactory().createLiTag(ulElement, rstyle);
+				final var liElement = getHtmlFactory().createLiTag(ulElement, rstyle);
 				liElement.append(text);
 				changed = true;
 			}

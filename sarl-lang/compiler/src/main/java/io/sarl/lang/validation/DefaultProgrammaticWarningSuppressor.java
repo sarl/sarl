@@ -32,9 +32,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.xbase.XCollectionLiteral;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 
 /** Suppress warnings programmatically with {@code @SuppressWarnings}.
  *
@@ -52,27 +50,26 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 	public IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject currentObject,
 			IssueSeverities predefinedSeverities) {
 		// Search for @SuppressWarnings annotations
-		final Set<String> codes = new HashSet<>();
-		XtendAnnotationTarget cObject = EcoreUtil2.getContainerOfType(currentObject, XtendAnnotationTarget.class);
-		boolean ignoreAll = false;
+		final var codes = new HashSet<String>();
+		var cObject = EcoreUtil2.getContainerOfType(currentObject, XtendAnnotationTarget.class);
+		var ignoreAll = false;
 		while (!ignoreAll && cObject != null) {
-			for (final XAnnotation annotation : cObject.getAnnotations()) {
+			for (final var annotation : cObject.getAnnotations()) {
 				if (SuppressWarnings.class.getName().equals(annotation.getAnnotationType().getIdentifier())) {
-					final XExpression expr = annotation.getValue();
-					if (expr instanceof XStringLiteral) {
-						final String id = ((XStringLiteral) expr).getValue();
+					final var expr = annotation.getValue();
+					if (expr instanceof XStringLiteral cvalue) {
+						final var id = cvalue.getValue();
 						if (ALL_WARNINGS.equalsIgnoreCase(id)) {
 							ignoreAll = true;
 							codes.clear();
 							break;
 						}
 						codes.add(extractId(id));
-					} else if (expr instanceof XCollectionLiteral) {
-						final XCollectionLiteral collection = (XCollectionLiteral) expr;
-						for (final XExpression idExpr : collection.getElements()) {
+					} else if (expr instanceof XCollectionLiteral collection) {
+						for (final var idExpr : collection.getElements()) {
 							final String id;
-							if (idExpr instanceof XStringLiteral) {
-								id = ((XStringLiteral) idExpr).getValue();
+							if (idExpr instanceof XStringLiteral cvalue) {
+								id = cvalue.getValue();
 							} else {
 								id = null;
 							}
@@ -95,7 +92,7 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 	}
 
 	private static String extractId(String code) {
-		final int index = code.lastIndexOf('.');
+		final var index = code.lastIndexOf('.');
 		if (index >= 0) {
 			return code.substring(index + 1);
 		}
@@ -129,7 +126,7 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 			if (this.delegate == null || this.ignoredAll) {
 				return Severity.IGNORE;
 			}
-			final String codeId = extractId(code);
+			final var codeId = extractId(code);
 			if (this.ignoredWarnings.contains(codeId)) {
 				return Severity.IGNORE;
 			}

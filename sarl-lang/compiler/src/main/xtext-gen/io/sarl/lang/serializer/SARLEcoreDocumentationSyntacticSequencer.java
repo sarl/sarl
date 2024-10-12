@@ -69,8 +69,8 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	public void init(ISerializationContext context, EObject semanticObject,
 				ISyntacticSequenceAcceptor sequenceAcceptor, ISerializationDiagnostic.Acceptor errorAcceptor) {
 		super.init(context, semanticObject, sequenceAcceptor, errorAcceptor);
-		if (sequenceAcceptor instanceof ISequenceAcceptor) {
-			this.trailingSequenceAcceptor = (ISequenceAcceptor) sequenceAcceptor;
+		if (sequenceAcceptor instanceof ISequenceAcceptor $c$value) {
+			this.trailingSequenceAcceptor = $c$value;
 		}
 		this.documentedSemanticObjects.clear();
 		this.indocumentedSemanticObjects.clear();

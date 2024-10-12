@@ -97,7 +97,7 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	@Override
 	protected final void $attachOwner(Skill skill) {
 		skill.setOwner(this);
-		final Procedure2<Agent, Skill> cb = this.skillCallback;
+		final var cb = this.skillCallback;
 		if (cb != null) {
 			cb.apply(this, skill);
 		}

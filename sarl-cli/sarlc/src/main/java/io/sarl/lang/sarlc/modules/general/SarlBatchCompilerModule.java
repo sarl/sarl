@@ -23,7 +23,6 @@ package io.sarl.lang.sarlc.modules.general;
 
 import static io.sarl.apputils.bootiqueapp.batchcompiler.lang.SARLRuntimeModule.SARL_INJECTOR_NAME;
 
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -35,18 +34,14 @@ import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.apputils.bootiqueapp.utils.SystemPath;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.IssueMessageFormatter;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
-import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
 import io.sarl.lang.sarlc.tools.ClassPathUtils;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 
@@ -92,8 +87,8 @@ public class SarlBatchCompilerModule implements BQModule {
 	public IJavaBatchCompiler providesJavaBatchCompiler(
 			Provider<SarlcConfig> config,
 			@Named(SARL_INJECTOR_NAME) Injector guiceInjector) {
-		final SarlcConfig cfg = config.get();
-		final IJavaBatchCompiler compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
+		final var cfg = config.get();
+		final var compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
 		guiceInjector.injectMembers(compiler);
 		return compiler;
 	}
@@ -118,24 +113,24 @@ public class SarlBatchCompilerModule implements BQModule {
 			Provider<Logger> logger,
 			Provider<IssueMessageFormatter> formatterProvider,
 			Provider<IJavaBatchCompiler> javaCompilerProvider) {
-		final SarlcConfig cfg = config.get();
-		final CompilerConfig compilerConfig = cfg.getCompiler();
-		final ValidatorConfig validatorConfig = cfg.getValidator();
+		final var cfg = config.get();
+		final var compilerConfig = cfg.getCompiler();
+		final var validatorConfig = cfg.getValidator();
 
-		final SarlBatchCompiler compiler = new SarlBatchCompiler();
+		final var compiler = new SarlBatchCompiler();
 		guiceInjector.injectMembers(compiler);
 
 		if (!Strings.isEmpty(compilerConfig.getFileEncoding())) {
 			compiler.setFileEncoding(compilerConfig.getFileEncoding());
 		}
 
-		final JavaVersion jversion = SarlBatchCompilerUtils.parseJavaVersion(compilerConfig.getJavaVersion());
+		final var jversion = SarlBatchCompilerUtils.parseJavaVersion(compilerConfig.getJavaVersion());
 		compiler.setJavaSourceVersion(jversion.getQualifier());
 
-		final SARLClasspathProvider classpathProvider = defaultClasspath.get();
-		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cfg, jversion, logger.get());
+		final var classpathProvider = defaultClasspath.get();
+		final var fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cfg, jversion, logger.get());
 		compiler.setClassPath(fullClassPath.toFileList());
-		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cfg, jversion, logger.get());
+		final var fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cfg, jversion, logger.get());
 		compiler.setModulePath(fullModulePath.toFileList());
 
 		compiler.setOptimizationLevel(cfg.getCompiler().getOptimizationLevelObject());
@@ -156,14 +151,14 @@ public class SarlBatchCompilerModule implements BQModule {
 			compiler.setAllWarningSeverities(Severity.IGNORE);
 		}
 
-		for (final Entry<String, Severity> entry : validatorConfig.getWarningLevels().entrySet()) {
+		for (final var entry : validatorConfig.getWarningLevels().entrySet()) {
 			compiler.setWarningSeverity(entry.getKey(), entry.getValue());
 		}
 
-		final IssueMessageFormatter issueMessageFormatter = formatterProvider.get();
+		final var issueMessageFormatter = formatterProvider.get();
 		compiler.setIssueMessageFormatter(issueMessageFormatter);
 
-		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
+		final var jcompiler = compilerConfig.getJavaCompiler();
 		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);
 		compiler.setJavaCompiler(javaCompilerProvider.get());
 

@@ -30,9 +30,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -42,21 +40,18 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Multimap;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.mwe.PathTraverser;
-import org.eclipse.xtext.util.JavaVersion;
 
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
 import io.sarl.docs.doclet2.Doclet;
 import io.sarl.docs.doclet2.html.SarlHtmlDocletOptions;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
-import io.sarl.docs.sarldoc.configs.Tag;
 import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
@@ -161,17 +156,17 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final Logger logger = this.logger.get();
-		final SarldocConfig dconfig = this.config.get();
+		final var logger = this.logger.get();
+		final var dconfig = this.config.get();
 		// Force proxy definition
 		forceProxyDefinition(dconfig, logger);
 		// Run sarlc
-		CommandOutcome outcome = runSarlc(cli, logger);
+		var outcome = runSarlc(cli, logger);
 		if (outcome.isSuccess()) {
 			// Run sarldoc
-			final SarlcConfig cconfig = this.sarlcConfig.get();
-			final AtomicInteger errorCount = new AtomicInteger();
-			final AtomicInteger warningCount = new AtomicInteger();
+			final var cconfig = this.sarlcConfig.get();
+			final var errorCount = new AtomicInteger();
+			final var warningCount = new AtomicInteger();
 			outcome = runJavadoc(cli, dconfig, cconfig, logger, errorCount, warningCount);
 			if (outcome == null || outcome.isSuccess()) {
 				if (warningCount.get() > 0) {
@@ -201,9 +196,9 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	protected abstract CommandOutcome runSarlc(Cli cli, Logger logger);
 
 	private static void addProxyFromProperty(Map<String, URI> activeProxies, String protocol, String hostVar, String portVar) {
-		final String host = System.getProperty(hostVar, null);
+		final var host = System.getProperty(hostVar, null);
 		if (!Strings.isNullOrEmpty(host)) {
-			final String port = System.getProperty(portVar, null);
+			final var port = System.getProperty(portVar, null);
 			final URI uri;
 			try {
 				if (Strings.isNullOrEmpty(port)) {
@@ -220,10 +215,10 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 	private static void addProxyFromEnvironment(Map<String, URI> activeProxies, String protocol, String var) {
         try {
-        	final String host = System.getenv(var);
+        	final var host = System.getenv(var);
     		if (!Strings.isNullOrEmpty(host)) {
     			try {
-    				final URI uri = new URI(host);
+    				final var uri = new URI(host);
     				activeProxies.putIfAbsent(protocol, uri);
     			} catch (Throwable exception) {
     				// Silent error
@@ -249,7 +244,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	}
 
 	private static void forceProxyDefinition(SarldocConfig config, Logger logger) {
-		final Map<String, URI> activeProxies = new HashMap<>();
+		final var activeProxies = new HashMap<String, URI>();
 
 		// Read the proxy definitions from the OS environment, the VM properties, and the sarldoc configuration in that order
 		addProxyFromEnvironment(activeProxies, HTTP_PROTOCOL_NAME, HTTP_HOST_VARIABLE_NAME);
@@ -258,9 +253,9 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		addProxyFromProperty(activeProxies, HTTP_PROTOCOL_NAME, HTTP_HOST_PROPERTY_NAME, HTTP_PORT_PROPERTY_NAME);
 		addProxyFromProperty(activeProxies, HTTPS_PROTOCOL_NAME, HTTPS_HOST_PROPERTY_NAME, HTTPS_PORT_PROPERTY_NAME);
 
-		for (final String proxyDefinition : config.getProxy()) {
+		for (final var proxyDefinition : config.getProxy()) {
 			try {
-				final URI proxy = new URI(proxyDefinition);
+				final var proxy = new URI(proxyDefinition);
 				if (!Strings.isNullOrEmpty(proxy.getHost())) {
 					activeProxies.putIfAbsent(proxy.getScheme(), proxy);
 				}
@@ -270,11 +265,11 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 
 		// Extract HTTPS configuration
-		URI uri = activeProxies.get(HTTPS_PROTOCOL_NAME);
-		boolean hasHttps = false;
+		var uri = activeProxies.get(HTTPS_PROTOCOL_NAME);
+		var hasHttps = false;
 		String httpsHost = null;
 		String httpsPort = null;
-		String httpsNoProxy = config.getHttpsNoProxyHostsString();
+		var httpsNoProxy = config.getHttpsNoProxyHostsString();
 		if (uri != null) {
 			httpsHost = ifNotEmpty(uri.getHost());
 			hasHttps = !Strings.isNullOrEmpty(httpsHost);
@@ -288,10 +283,10 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 		// Extract HTTP configuration, and if not HTTPS was provided, assumes HTTPS is the same as HTTP.
 		uri = activeProxies.get(HTTP_PROTOCOL_NAME);
-		boolean hasHttp = false;
+		var hasHttp = false;
 		String httpHost = null;
 		String httpPort = null;
-		String httpNoProxy = config.getHttpNoProxyHostsString();
+		var httpNoProxy = config.getHttpNoProxyHostsString();
 		if (uri != null) {
 			httpHost = ifNotEmpty(uri.getHost());
 			hasHttp = !Strings.isNullOrEmpty(httpHost);
@@ -349,21 +344,21 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	private CommandOutcome runJavadoc(Cli cli, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
 			AtomicInteger errorCount, AtomicInteger warningCount) throws IllegalArgumentException {
 		logger.info(Messages.SarldocCommand_2);
-		final List<String> cmd = new ArrayList<>();
+		final var cmd = new ArrayList<String>();
 
 		// Locale
 		addCmd(cmd, LOCALE_FLAG, docconfig.getLocale());
 
 		// Encoding
-		final String encoding = docconfig.getEncoding();
+		final var encoding = docconfig.getEncoding();
 		addCmd(cmd, ENCODING_FLAG, encoding);
 
 		// Java version
-		final JavaVersion javaVersion = SarlBatchCompilerUtils.parseJavaVersion(cconfig.getCompiler().getJavaVersion());
+		final var javaVersion = SarlBatchCompilerUtils.parseJavaVersion(cconfig.getCompiler().getJavaVersion());
 		addCmd(cmd, SOURCE_FLAG, javaVersion.getQualifier());
 
 		// Documentation title
-		final String title = docconfig.getTitle();
+		final var title = docconfig.getTitle();
 		addCmd(cmd, DOCTITLE_FLAG, title);
 		addCmd(cmd, SarlHtmlDocletOptions.TITLE_OPTION, title);
 
@@ -403,12 +398,12 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 
 		// Add custom tags
-		for (final Tag tag : docconfig.getCustomTags()) {
+		for (final var tag : docconfig.getCustomTags()) {
 			addCmd(cmd, TAG_FLAG, tag.toString());
 		}
 
 		// Doclet
-		String docletName = docconfig.getDoclet();
+		var docletName = docconfig.getDoclet();
 		final Class<?> docletType;
 		if (Strings.isNullOrEmpty(docletName)) {
 			docletType = Doclet.class;
@@ -421,12 +416,12 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 
 		// Javadoc Options
-		for (final String option : docconfig.getJavadocOption()) {
+		for (final var option : docconfig.getJavadocOption()) {
 			cmd.add(option);
 		}
 
 		// Path detection
-		final DocumentationPathDetector paths = this.pathDetector.get();
+		final var paths = this.pathDetector.get();
 		if (!paths.isResolved()) {
 			paths.setSarlOutputPath(cconfig.getOutputPath());
 			paths.setClassOutputPath(cconfig.getClassOutputPath());
@@ -443,8 +438,8 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		addCmd(cmd, SarlHtmlDocletOptions.LONG_DIRECTORY_OPTION, paths.getDocumentationOutputPath().getAbsolutePath());
 
 		// Source folder
-		final SystemPath sourcePath = new SystemPath();
-		for (final String path : cli.standaloneArguments()) {
+		final var sourcePath = new SystemPath();
+		for (final var path : cli.standaloneArguments()) {
 			sourcePath.add(path);
 		}
 		if (paths.getSarlOutputPath() != null) {
@@ -452,7 +447,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 
 		// Add source files
-		final Collection<File> files = getSourceFiles(sourcePath, docconfig);
+		final var files = getSourceFiles(sourcePath, docconfig);
 		
 		// Execute the Javadoc
 		return runJavadoc(
@@ -491,13 +486,13 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		if (file == null) {
 			return true;
 		}
-		final Set<String> excl = config.getExcludedPackages();
+		final var excl = config.getExcludedPackages();
 		if (excl.isEmpty()) {
 			return false;
 		}
-		final StringBuilder name = new StringBuilder();
-		File cfile = file.getParentFile();
-		boolean first = true;
+		final var name = new StringBuilder();
+		var cfile = file.getParentFile();
+		var first = true;
 		while (cfile != null && !Objects.equals(cfile.getName(), FileSystem.CURRENT_DIRECTORY)
 				&& !Objects.equals(cfile.getName(), FileSystem.PARENT_DIRECTORY)) {
 			if (first) {
@@ -512,15 +507,15 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	}
 
 	private static Collection<File> getSourceFiles(SystemPath sourcePaths, SarldocConfig config) {
-		final Set<File> allFiles = new TreeSet<>();
-		final PathTraverser pathTraverser = new PathTraverser();
-		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
+		final var allFiles = new TreeSet<File>();
+		final var pathTraverser = new PathTraverser();
+		final var pathes = pathTraverser.resolvePathes(
 			sourcePaths.toFilenameList(),
 			input -> Objects.equals(JAVA_FILE_EXTENSION, input.fileExtension()));
-		for (final Entry<String, org.eclipse.emf.common.util.URI> entry : pathes.entries()) {
-			final String filename = entry.getValue().toFileString();
-			final File file = FileSystem.convertStringToFile(filename);
-			final File root = FileSystem.convertStringToFile(entry.getKey());
+		for (final var entry : pathes.entries()) {
+			final var filename = entry.getValue().toFileString();
+			final var file = FileSystem.convertStringToFile(filename);
+			final var root = FileSystem.convertStringToFile(entry.getKey());
 			try {
 				if (!isExcludedPackage(FileSystem.makeRelative(file, root), config)) {
 					allFiles.add(file);

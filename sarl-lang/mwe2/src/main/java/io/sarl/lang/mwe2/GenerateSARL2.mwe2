@@ -1001,7 +1001,7 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.conversion.impl.STRINGValueConverter"
-    				to = "org.eclipse.xtend.core.conversion.StringValueConverter"
+    				to = "org.eclipse.xtend.core.conversion.XtendStringValueConverter"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.findReferences.TargetURICollector"

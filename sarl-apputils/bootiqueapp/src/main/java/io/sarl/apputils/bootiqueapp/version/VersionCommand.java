@@ -86,7 +86,7 @@ public class VersionCommand extends CommandWithMetadata {
 	
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final StringBuilder text = new StringBuilder();
+		final var text = new StringBuilder();
 		text.append(getVersionMessage());
 		this.bootLogger.stdout(text.toString());
 		return CommandOutcome.succeeded();

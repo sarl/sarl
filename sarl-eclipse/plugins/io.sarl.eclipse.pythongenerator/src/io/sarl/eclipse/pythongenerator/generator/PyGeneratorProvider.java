@@ -43,8 +43,8 @@ public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider 
 
 	@Override
 	protected PyGenerator createGeneratorInstance(Injector injector) {
-		final PyGenerator generator = injector.getInstance(PyGenerator.class);
-		final IPyGeneratorConfigurationProvider configuration = injector.getInstance(PyGeneratorUiConfigurationProvider.class);
+		final var generator = injector.getInstance(PyGenerator.class);
+		final var configuration = injector.getInstance(PyGeneratorUiConfigurationProvider.class);
 		generator.setPyGeneratorConfigurationProvider(configuration);
 		return generator;
 	}

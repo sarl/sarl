@@ -91,7 +91,7 @@ public final class SRE {
 	@Pure
 	public static ServiceLoader<SREBootstrap> getServiceLoader(boolean onlyInstalledInJRE) {
 		synchronized (SRE.class) {
-			ServiceLoader<SREBootstrap> sl = loader == null ? null : loader.get();
+			var sl = loader == null ? null : loader.get();
 			if (sl == null) {
 			    if (onlyInstalledInJRE) {
 					sl = ServiceLoader.loadInstalled(SREBootstrap.class);
@@ -124,7 +124,7 @@ public final class SRE {
 	 */
 	@Pure
 	public static Iterable<URL> getServiceLibraries(String libraryName) {
-		final String name = PREFIX + libraryName;
+		final var name = PREFIX + libraryName;
         return () -> {
         	try {
 	    		final Enumeration<URL> enumr = ClassLoader.getSystemResources(name);
@@ -177,11 +177,11 @@ public final class SRE {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
-		final Object[] params = new Object[args.length - 1];
+		final var params = new Object[args.length - 1];
 		if (args.length > 1) {
 			System.arraycopy(args, 1, params, 0, params.length);
 		}
-		final Class<? extends Agent> type = (Class<? extends Agent>) SREClassLoader.loadClass(args[0],
+		final var type = (Class<? extends Agent>) SREClassLoader.loadClass(args[0],
 				SRE.class.getClassLoader());
 		getBootstrap().startAgent(type, params);
 	}
@@ -195,7 +195,7 @@ public final class SRE {
 	public static SREBootstrap getBootstrap() {
 		synchronized (SRE.class) {
 			if (currentSRE == null) {
-				final Iterator<SREBootstrap> iterator = getServiceLoader().iterator();
+				final var iterator = getServiceLoader().iterator();
 				if (iterator.hasNext()) {
 					currentSRE = iterator.next();
 				} else {

@@ -57,7 +57,6 @@ import java.util.Collection;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
@@ -137,12 +136,12 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	}
 
 	private void generate() throws Exception {
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(getDocletOptions().getCharset(), this);
-		final String title = getDocumentTitleFor(null);
+		final var document = getHtmlFactory().createDocument(getDocletOptions().getCharset(), this);
+		final var title = getDocumentTitleFor(null);
 		setLastTitle(title);
-		final Element htmlTag = getHtmlAccessor().getRootElement(document);
+		final var htmlTag = getHtmlAccessor().getRootElement(document);
 		//
 		generateHtmlHeader(htmlTag);
 		generateHtmlBody(htmlTag);
@@ -159,13 +158,13 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag) {
-		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
+		final var headerTree = getHtmlFactory().createHeadTag(htmlTag);
 		getHtmlFactory().createTitleTag(headerTree, getLastTitle());
-		final Path pathToRoot = getPathToRoot();
-		for (final Path cssStyle : getCssStylesheets()) {
+		final var pathToRoot = getPathToRoot();
+		for (final var cssStyle : getCssStylesheets()) {
 			getHtmlFactory().createCssLinkTag(headerTree, pathToRoot.resolve(cssStyle));
 		}
-		for (final Path jsScript : getJsScripts()) {
+		for (final var jsScript : getJsScripts()) {
 			getHtmlFactory().createJsLinkTag(headerTree, pathToRoot.resolve(jsScript));
 		}
 		return headerTree;
@@ -177,9 +176,9 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag) {
-		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);
+		final var bodyTag = getHtmlFactory().createBodyTag(htmlTag);
 		generateBodyHeader(bodyTag);
-		final Element contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
+		final var contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
 		generateBodyContent(contentTag);
 		generateBodyFooter(bodyTag);
 		generateNavigationBar();
@@ -201,7 +200,7 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	 * @param parent the container.
 	 */
 	protected void generateBodyHeader(Element parent) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
 		getNavigation().createNavigationBar(divTag);
 	}
 
@@ -210,7 +209,7 @@ public abstract class AbstractSummaryGenerator extends AbstractDocumentationGene
 	 * @param parent the container.
 	 */
 	protected void generateBodyFooter(Element parent) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
 		getNavigation().createNavigationBar(divTag);
 		createCopyrightBox(divTag);
 	}

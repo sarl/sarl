@@ -81,8 +81,8 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 	 * @return the options.
 	 */
 	public static List<HelpOption> getOptions(Injector runtime) {
-		final ApplicationMetadata application = runtime.getInstance(ApplicationMetadata.class);
-		final HelpOptions helpOptions = new HelpOptions();
+		final var application = runtime.getInstance(ApplicationMetadata.class);
+		final var helpOptions = new HelpOptions();
 
 		application.getCommands().forEach(c -> {
 			helpOptions.add(c.asOption());
@@ -103,17 +103,17 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 	 * @return the options of the program as a matrix of strings.
 	 */
 	public static List<List<String>> getOptionsAsStrings(Injector runtime, boolean replacePipes) {
-		final List<HelpOption> options = getOptions(runtime);
-		final List<List<String>> matrix = new ArrayList<>(options.size());
-		for (final HelpOption option : options) {
-			String valueName = option.getOption().getValueName();
+		final var options = getOptions(runtime);
+		final var matrix = new ArrayList<List<String>>(options.size());
+		for (final var option : options) {
+			var valueName = option.getOption().getValueName();
 			if (valueName == null || valueName.length() == 0) {
 				valueName = "val"; //$NON-NLS-1$
 			} else if (replacePipes) {
 				valueName = valueName.replace("|", PIPE); //$NON-NLS-1$
 			}
 
-			final StringBuilder buffer0 = new StringBuilder();
+			final var buffer0 = new StringBuilder();
 			if (option.isShortNameAllowed()) {
 				buffer0.append("-"); //$NON-NLS-1$
 				buffer0.append(String.valueOf(option.getOption().getShortName()));
@@ -155,11 +155,11 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 				}
 			}
 
-			final StringBuilder buffer1 = new StringBuilder();
+			final var buffer1 = new StringBuilder();
 
-			final String description = option.getOption().getDescription();
+			final var description = option.getOption().getDescription();
 			if (description != null) {
-				String text = description.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+				var text = description.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
 				text = text.replace("<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
 				text = text.replace(">", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
 				if (replacePipes) {
@@ -176,11 +176,11 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final List<List<String>> options = getOptionsAsStrings(this.injector, true);
-		final StringBuilder content = new StringBuilder();	
-		for (final List<String> row : options) {
+		final var options = getOptionsAsStrings(this.injector, true);
+		final var content = new StringBuilder();	
+		for (final var row : options) {
 			boolean first = true;
-			for (final String cell : row) {
+			for (final var cell : row) {
 				if (first) {
 					first = false;
 					content.append("| "); // $NON-NLS-1$ //$NON-NLS-1$

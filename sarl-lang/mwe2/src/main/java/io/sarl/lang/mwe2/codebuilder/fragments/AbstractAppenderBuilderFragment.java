@@ -48,8 +48,6 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
 import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
-import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the abstract code builder.
  *
@@ -131,8 +129,8 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 	/** Generate the abstract appender.
 	 */
 	protected void generateAbstractAppender() {
-		final TypeReference abstractAppender = getCodeElementExtractor().getAbstractAppenderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var abstractAppender = getCodeElementExtractor().getAbstractAppenderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Abstract implementation of an appender for the " //$NON-NLS-1$
@@ -466,7 +464,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(abstractAppender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(abstractAppender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 

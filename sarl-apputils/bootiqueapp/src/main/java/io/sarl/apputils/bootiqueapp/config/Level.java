@@ -127,8 +127,8 @@ public enum Level {
 	 */
 	public static Level valueOf(org.apache.log4j.Level level) {
 		if (level != null) {
-			final int idx = level.toInt();
-			for (final Level lvl : values()) {
+			final var idx = level.toInt();
+			for (final var lvl : values()) {
 				if (lvl.toLog4j().toInt() <= idx) {
 					return lvl;
 				}
@@ -145,8 +145,8 @@ public enum Level {
 	 */
 	public static Level valueOf(java.util.logging.Level level) {
 		if (level != null) {
-			final int idx = level.intValue();
-			for (final Level lvl : values()) {
+			final var idx = level.intValue();
+			for (final var lvl : values()) {
 				if (lvl.toJul().intValue() <= idx) {
 					return lvl;
 				}
@@ -161,8 +161,8 @@ public enum Level {
 	 * @return all the labels.
 	 */
 	public static String getLabels() {
-		final StringBuilder labels = new StringBuilder();
-		for (final Level level : values()) {
+		final var labels = new StringBuilder();
+		for (final var level : values()) {
 			if (labels.length() > 0) {
 				labels.append(", "); //$NON-NLS-1$
 			}

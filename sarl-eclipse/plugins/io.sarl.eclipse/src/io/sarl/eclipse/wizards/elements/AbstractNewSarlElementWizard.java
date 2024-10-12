@@ -58,7 +58,7 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 	 */
 	public AbstractNewSarlElementWizard(IImageDescriptorHelper imgHelper, AbstractNewSarlElementWizardPage page, String title) {
 		this.page = page;
-		final ImageDescriptor image = imgHelper.getImageDescriptor("sarl_64.png"); //$NON-NLS-1$
+		final var image = imgHelper.getImageDescriptor("sarl_64.png"); //$NON-NLS-1$
 		setDefaultPageImageDescriptor(image);
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(title);
@@ -83,19 +83,18 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 
 	@Override
 	public boolean performFinish() {
-		final int size = this.page.asyncCreateType();
-		final IResource resource = this.page.getResource();
+		final var size = this.page.asyncCreateType();
+		final var resource = this.page.getResource();
 		if (resource != null) {
 			selectAndReveal(resource);
-			final Display display = getShell().getDisplay();
+			final var display = getShell().getDisplay();
 			display.asyncExec(() -> {
 				final IEditorPart editor;
 				try {
 					editor = IDE.openEditor(JavaPlugin.getActivePage(), (IFile) resource);
-					if (editor instanceof ITextEditor) {
-						final ITextEditor textEditor = (ITextEditor) editor;
-						final ISelectionProvider selectionProvider = textEditor.getSelectionProvider();
-						final ISelection selection = new TextSelection(size - 2, 0);
+					if (editor instanceof ITextEditor textEditor) {
+						final var selectionProvider = textEditor.getSelectionProvider();
+						final var selection = new TextSelection(size - 2, 0);
 						selectionProvider.setSelection(selection);
 					}
 				} catch (PartInitException e) {

@@ -62,24 +62,24 @@ public class OpenTypeHierarchyHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final IStructuredSelection activeSelection = HandlerUtil.getCurrentStructuredSelection(event);
+		final var activeSelection = HandlerUtil.getCurrentStructuredSelection(event);
 		if (activeSelection != null && activeSelection != StructuredSelection.EMPTY) {
-			final ElementDescription selectedElement = this.typeSelector.searchAndSelect(false, activeSelection.toArray());
+			final var selectedElement = this.typeSelector.searchAndSelect(false, activeSelection.toArray());
 			if (selectedElement != null) {
 				IJavaElement realJavaElement = null;
-				if (selectedElement.element instanceof IJavaElement) {
-					realJavaElement = (IJavaElement) selectedElement.element;
-				} else if (selectedElement.element instanceof XtendTypeDeclaration) {
-					final EObject jvmElement = this.sarlAssociations.getPrimaryJvmElement((XtendTypeDeclaration) selectedElement.element);
-					if (jvmElement instanceof JvmIdentifiableElement) {
-						realJavaElement = this.javaElementFinder.findElementFor((JvmIdentifiableElement) jvmElement);
+				if (selectedElement.element instanceof IJavaElement cvalue) {
+					realJavaElement = cvalue;
+				} else if (selectedElement.element instanceof XtendTypeDeclaration cvalue) {
+					final var jvmElement = this.sarlAssociations.getPrimaryJvmElement(cvalue.element);
+					if (jvmElement instanceof JvmIdentifiableElement cvalue) {
+						realJavaElement = this.javaElementFinder.findElementFor(cvalue);
 					}
 				}
 				if (realJavaElement != null) {
 					OpenTypeHierarchyUtil.open(realJavaElement, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				}
 			} else {
-				final OpenTypeHierarchyAction jdtTool = new OpenTypeHierarchyAction(HandlerUtil.getActiveSite(event));
+				final var jdtTool = new OpenTypeHierarchyAction(HandlerUtil.getActiveSite(event));
 				jdtTool.run(activeSelection);
 			}
 		}

@@ -50,13 +50,13 @@ public class CorrectIndentationHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final XtextEditor activeXtextEditor = EditorUtils.getActiveXtextEditor(event);
+		final var activeXtextEditor = EditorUtils.getActiveXtextEditor(event);
 		if (activeXtextEditor == null) {
 			return null;
 		}
-		final IXtextDocument doc = activeXtextEditor.getDocument();
-		final ITextSelection selection = (ITextSelection) activeXtextEditor.getSelectionProvider().getSelection();
-		final IRegion region = new Region(selection.getOffset(), selection.getLength());
+		final var doc = activeXtextEditor.getDocument();
+		final var selection = (ITextSelection) activeXtextEditor.getSelectionProvider().getSelection();
+		final var region = new Region(selection.getOffset(), selection.getLength());
 		this.formatterProvider.get().format(doc, region);
 		return null;
 	}

@@ -93,17 +93,17 @@ public class LiteralTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final DocTree tree : tags) {
-			if (tree instanceof TextTree) {
-				buffer.append(((TextTree) tree).getBody());
+		final var buffer = new StringBuilder();
+		for (final var tree : tags) {
+			if (tree instanceof TextTree cvalue) {
+				buffer.append(cvalue.getBody());
 			} else {
 				buffer.append(tree.toString());
 			}
 		}
 		if (buffer.length() > 0) {
 			if (style != null) {
-				final org.jsoup.nodes.Element literalTag = getHtmlFactory().createSpanTag(parent, style);
+				final var literalTag = getHtmlFactory().createSpanTag(parent, style);
 				literalTag.appendText(buffer.toString());
 			} else {
 				parent.appendText(buffer.toString());

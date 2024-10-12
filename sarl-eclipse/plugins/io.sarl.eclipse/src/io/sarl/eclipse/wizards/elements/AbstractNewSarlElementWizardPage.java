@@ -346,11 +346,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	@Override
 	protected IStatus typeNameChanged() {
 		assert this.sarlFileExtension != null;
-		final IPackageFragment packageFragment = getPackageFragment();
-		final String typeName = getTypeName();
+		final var packageFragment = getPackageFragment();
+		final var typeName = getTypeName();
 		if (packageFragment != null && !Strings.isNullOrEmpty(typeName)) {
 			if (isSarlFile(packageFragment, typeName)) {
-				String packageName = ""; //$NON-NLS-1$
+				var packageName = ""; //$NON-NLS-1$
 				if (!packageFragment.isDefaultPackage()) {
 					packageName = packageFragment.getElementName() + "."; //$NON-NLS-1$
 				}
@@ -374,12 +374,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (isFileExists(packageFragment, filename, this.sarlFileExtension)) {
 			return true;
 		}
-		final IJavaProject project = getPackageFragmentRoot().getJavaProject();
+		final var project = getPackageFragmentRoot().getJavaProject();
 		if (project != null) {
 			try {
-				final String packageName = packageFragment.getElementName();
-				for (final IPackageFragmentRoot root : project.getPackageFragmentRoots()) {
-					final IPackageFragment fragment = root.getPackageFragment(packageName);
+				final var packageName = packageFragment.getElementName();
+				for (final var root : project.getPackageFragmentRoots()) {
+					final var fragment = root.getPackageFragment(packageName);
 					if (isFileExists(fragment, filename, JAVA_FILE_EXTENSION)) {
 						return true;
 					}
@@ -400,9 +400,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String extension) {
 		if (packageFragment != null) {
-			final IResource resource = packageFragment.getResource();
-			if (resource instanceof IFolder) {
-				final IFolder folder = (IFolder) resource;
+			final var resource = packageFragment.getResource();
+			if (resource instanceof IFolder folder) {
 				if (folder.getFile(filename + "." + extension).exists()) { //$NON-NLS-1$
 					return true;
 				}
@@ -472,7 +471,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param selection the current selection.
 	 */
 	protected void init(IStructuredSelection selection) {
-		final IJavaElement elem = this.fieldInitializer.getSelectedResource(selection);
+		final var elem = this.fieldInitializer.getSelectedResource(selection);
 		initContainerPage(elem);
 		initTypePage(elem);
 		//
@@ -510,19 +509,19 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected boolean isValidExtendedType(String className) throws JavaModelException {
 		// accept the empty field (stands for the default super type)
 		if (!Strings.isNullOrEmpty(className)) {
-			final IType rootType = getRootSuperType();
+			final var rootType = getRootSuperType();
 			if (rootType == null) {
-				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+				final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						Messages.AbstractNewSarlElementWizardPage_3);
 				throw new JavaModelException(new CoreException(status));
 			}
-			final IType type = getJavaProject().findType(className);
+			final var type = getJavaProject().findType(className);
 			if (type == null) {
-				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+				final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_4, className));
 				throw new JavaModelException(new CoreException(status));
 			}
-			final ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+			final var hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			if (hierarchy == null || !hierarchy.contains(rootType)) {
 				return false;
 			}
@@ -540,11 +539,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected boolean isValidImplementedType(String className) throws JavaModelException {
 		if (!Strings.isNullOrEmpty(className)) {
-			final IType rootType = getRootSuperInterface();
+			final var rootType = getRootSuperInterface();
 			assert rootType != null;
-			final IType type = getJavaProject().findType(className);
+			final var type = getJavaProject().findType(className);
 			assert type != null;
-			final ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+			final var hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			assert hierarchy != null;
 			if (!hierarchy.contains(rootType)) {
 				return false;
@@ -554,10 +553,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private void reinitSuperClass() {
-		final String className = getSuperClass();
+		final var className = getSuperClass();
 		try {
 			if (!isValidExtendedType(className)) {
-				final IType rootType = getRootSuperType();
+				final var rootType = getRootSuperType();
 				assert rootType != null;
 				setSuperClass(rootType.getFullyQualifiedName(), true);
 			}
@@ -567,12 +566,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private void reinitSuperInterfaces() {
-		final List<IStatus> status = new ArrayList<>();
-		final Set<String> validInterfaces = new HashSet<>();
-		for (final String interfaceName : getSuperInterfaces()) {
+		final var status = new ArrayList<IStatus>();
+		final var validInterfaces = new HashSet<String>();
+		for (final var interfaceName : getSuperInterfaces()) {
 			try {
 				if (!isValidImplementedType(interfaceName)) {
-					final IType rootType = getRootSuperInterface();
+					final var rootType = getRootSuperInterface();
 					assert rootType != null;
 					validInterfaces.add(rootType.getFullyQualifiedName());
 				} else {
@@ -596,7 +595,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (status.isEmpty()) {
 			this.fSuperInterfacesStatus = SARLEclipsePlugin.getDefault().createOkStatus();
 		} else {
-			final IStatus[] tab = new IStatus[status.size()];
+			final var tab = new IStatus[status.size()];
 			status.toArray(tab);
 			this.fSuperInterfacesStatus = SARLEclipsePlugin.getDefault().createMultiStatus(tab);
 		}
@@ -604,10 +603,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected IStatus superClassChanged() {
-		IStatus status = super.superClassChanged();
+		var status = super.superClassChanged();
 		assert status != null;
 		if (status.isOK() && isSuperTypeActivated()) {
-			final String className = getSuperClass();
+			final var className = getSuperClass();
 			try {
 				if (!isValidExtendedType(className)) {
 					status = SARLEclipsePlugin.getDefault().createStatus(
@@ -624,12 +623,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected IStatus superInterfacesChanged() {
-		IStatus status = super.superInterfacesChanged();
+		var status = super.superInterfacesChanged();
 		assert status != null;
 		if (status.isOK() && isSuperInterfaceActivated()) {
-			final List<IStatus> statusInfo = new ArrayList<>();
-			boolean hasInterface = false;
-			for (final String superInterface : getSuperInterfaces()) {
+			final var statusInfo = new ArrayList<IStatus>();
+			var hasInterface = false;
+			for (final var superInterface : getSuperInterfaces()) {
 				try {
 					if (!isValidImplementedType(superInterface)) {
 						statusInfo.add(SARLEclipsePlugin.getDefault().createStatus(
@@ -654,7 +653,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				}
 			}
 			if (!statusInfo.isEmpty()) {
-				final IStatus[] tab = new IStatus[statusInfo.size()];
+				final var tab = new IStatus[statusInfo.size()];
 				statusInfo.toArray(tab);
 				status = SARLEclipsePlugin.getDefault().createMultiStatus(tab);
 			}
@@ -705,7 +704,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected Composite createCommonControls(Composite parent) {
 		initializeDialogUnits(parent);
-		final Composite composite = SWTFactory.createComposite(
+		final var composite = SWTFactory.createComposite(
 				parent,
 				parent.getFont(),
 				COLUMNS, 1,
@@ -719,7 +718,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	public final void createControl(Composite parent) {
-		final Composite composite = createCommonControls(parent);
+		final var composite = createCommonControls(parent);
 		createPageControls(composite);
 		setControl(composite);
 		readSettings();
@@ -738,7 +737,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected final int asyncCreateType() {
 		final int[] size = {0};
-		final IRunnableWithProgress op = new WorkspaceModifyOperation() {
+		final var op = new WorkspaceModifyOperation() {
 			@Override
 			protected void execute(IProgressMonitor monitor)
 				throws CoreException, InvocationTargetException, InterruptedException {
@@ -751,7 +750,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			// canceled by user
 			return 0;
 		} catch (InvocationTargetException e) {
-			final Throwable realException = e.getTargetException();
+			final var realException = e.getTargetException();
 			SARLEclipsePlugin.getDefault().openError(getShell(), getTitle(),
 					realException.getMessage(), null, realException);
 		}
@@ -765,7 +764,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private ICompilationUnit getCompilationUnitStub() {
-		final String compilationUnitName = getCompilationUnitName(getTypeName());
+		final var compilationUnitName = getCompilationUnitName(getTypeName());
 		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName, DefaultWorkingCopyOwner.PRIMARY);
 	}
 
@@ -808,9 +807,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			ConstructorBuilder constructorBuilder, ActionBuilder actionBuilder,
 			String superTypeQualifiedName, List<String> superInterfaceQualifiedNames)
 					throws JavaModelException {
-		final TypeFinder typeFinder = getTypeFinder();
+		final var typeFinder = getTypeFinder();
 
-		final Map<ActionParameterTypes, IMethod> baseConstructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
+		final var baseConstructors = Maps.<ActionParameterTypes, IMethod>newTreeMap((Comparator<ActionParameterTypes>) null);
 		this.jdt2sarl.populateInheritanceContext(
 				typeFinder,
 				null, null, null, null,
@@ -842,7 +841,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 		if (context != null) {
 			if (constructors != null && constructorBuilder != null) {
-				for (final Entry<ActionParameterTypes, IMethod> constructor : constructors.entrySet()) {
+				for (final var constructor : constructors.entrySet()) {
 					if (!baseConstructors.containsKey(constructor.getKey())) {
 						this.jdt2sarl.createStandardConstructorsWith(constructorBuilder,
 								Collections.singletonList(constructor.getValue()),
@@ -877,9 +876,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	public int createSARLType(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		try {
-			final SubMonitor mainmon = SubMonitor.convert(monitor, getTitle(), STEPS);
+			final var mainmon = SubMonitor.convert(monitor, getTitle(), STEPS);
 			// Create the package if not existing
-			IPackageFragment packageFragment = getPackageFragment();
+			var packageFragment = getPackageFragment();
 			if (!packageFragment.exists()) {
 				packageFragment = getPackageFragmentRoot().createPackageFragment(
 						getPackageFragment().getElementName(),
@@ -890,16 +889,16 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			}
 
 			// Create the file
-			final IFolder packageResource = (IFolder) packageFragment.getResource();
+			final var packageResource = (IFolder) packageFragment.getResource();
 			if (!packageResource.exists()) {
 				CoreUtility.createFolder(packageResource, true, true, mainmon.newChild(1));
 			} else {
 				mainmon.worked(1);
 			}
-			IFile sarlFile = packageResource.getFile(
+			var sarlFile = packageResource.getFile(
 					getTypeName() + "." //$NON-NLS-1$
 					+ this.sarlFileExtension);
-			int index = 1;
+			var index = 1;
 			while (sarlFile.exists()) {
 				sarlFile = packageResource.getFile(
 						getTypeName() + index + "." //$NON-NLS-1$
@@ -907,30 +906,30 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				++index;
 			}
 
-			final URI sarlUri = this.storage2UriMapper.getUri(sarlFile);
-			final ResourceSet resourceSet = this.resourceSetFactory.get(packageFragment.getJavaProject().getProject());
-			final ICompilationUnit compilationUnit = getCompilationUnitStub();
-			final String lineSeparator = this.whitespaceInformationProvider
+			final var sarlUri = this.storage2UriMapper.getUri(sarlFile);
+			final var resourceSet = this.resourceSetFactory.get(packageFragment.getJavaProject().getProject());
+			final var compilationUnit = getCompilationUnitStub();
+			final var lineSeparator = this.whitespaceInformationProvider
 					.getLineSeparatorInformation(sarlUri).getLineSeparator();
 			mainmon.worked(1);
 
 			// Create the type content
-			final SubMonitor mon1 = mainmon.newChild(1);
+			final var mon1 = mainmon.newChild(1);
 			mon1.setTaskName(MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_5, getTypeName()));
-			final String typeComment = getTypeComment(compilationUnit, lineSeparator);
-			final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(resourceSet);
-			final ImportManager imports = new ImportManager(true);
+			final var typeComment = getTypeComment(compilationUnit, lineSeparator);
+			final var typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(resourceSet);
+			final var imports = new ImportManager(true);
 			this.injector.injectMembers(imports);
-			final FakeTreeAppendable appender = new FakeTreeAppendable(imports);
+			final var appender = new FakeTreeAppendable(imports);
 			this.injector.injectMembers(appender);
 			generateTypeContent(appender, typeProvider, typeComment, mon1);
 			mon1.done();
 
 			// Build the full file content
-			final SubMonitor mon2 = mainmon.newChild(1);
+			final var mon2 = mainmon.newChild(1);
 			mon2.setTaskName(MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_6, getTypeName()));
-			final String fileComment = getFileComment(compilationUnit, lineSeparator);
-			final StringBuilder realContent = new StringBuilder();
+			final var fileComment = getFileComment(compilationUnit, lineSeparator);
+			final var realContent = new StringBuilder();
 			if (!Strings.isNullOrEmpty(fileComment)) {
 				realContent.append(fileComment);
 				realContent.append(lineSeparator);
@@ -940,15 +939,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			realContent.append(lineSeparator);
 			mon2.done();
 
-			final SubMonitor mon3 = mainmon.newChild(1);
+			final var mon3 = mainmon.newChild(1);
 			mon3.setTaskName(MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_7, getTypeName()));
 			final String content = this.formatterFacade.format(realContent.toString());
 			mon3.done();
 
 			// Write the resource
-			final SubMonitor mon4 = mainmon.newChild(1);
+			final var mon4 = mainmon.newChild(1);
 			mon4.setTaskName(MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_8, getTypeName()));
-			try (ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes())) {
+			try (var stream = new ByteArrayInputStream(content.getBytes())) {
 				sarlFile.create(stream, true, mon4);
 			}
 			setResource(sarlFile);
@@ -968,13 +967,13 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Read the settings of the dialog box.
 	 */
 	protected void readSettings() {
-		boolean createConstructors = false;
-		boolean createUnimplemented = true;
-		boolean createEventHandlers = true;
-		boolean createLifecycleFunctions = true;
-		final IDialogSettings dialogSettings = getDialogSettings();
+		var createConstructors = false;
+		var createUnimplemented = true;
+		var createEventHandlers = true;
+		var createLifecycleFunctions = true;
+		final var dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
-			final IDialogSettings section = dialogSettings.getSection(getName());
+			final var section = dialogSettings.getSection(getName());
 			if (section != null) {
 				createConstructors = section.getBoolean(SETTINGS_CREATECONSTR);
 				createUnimplemented = section.getBoolean(SETTINGS_CREATEUNIMPLEMENTED);
@@ -989,9 +988,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Save the settings of the dialog box.
 	 */
 	protected void saveSettings() {
-		final IDialogSettings dialogSettings = getDialogSettings();
+		final var dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
-			IDialogSettings section = dialogSettings.getSection(getName());
+			var section = dialogSettings.getSection(getName());
 			if (section == null) {
 				section = dialogSettings.addNewSection(getName());
 			}
@@ -1029,7 +1028,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		this.isInheritedCreationEnabled = enableInherited;
 		this.isDefaultEventGenerated = defaultEvents;
 		this.isDefaultLifecycleFunctionsGenerated = lifecycleFunctions;
-		final List<String> nameList = new ArrayList<>(4);
+		final var nameList = new ArrayList<String>(4);
 		if (enableConstructors) {
 			nameList.add(Messages.AbstractNewSarlElementWizardPage_0);
 		}
@@ -1045,18 +1044,18 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (nameList.isEmpty()) {
 			return;
 		}
-		final String[] buttonNames = new String[nameList.size()];
+		final var buttonNames = new String[nameList.size()];
 		nameList.toArray(buttonNames);
 
 		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
 		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
 
-		final Control labelControl = this.methodStubsButtons.getLabelControl(composite);
+		final var labelControl = this.methodStubsButtons.getLabelControl(composite);
 		LayoutUtil.setHorizontalSpan(labelControl, columns);
 
 		DialogField.createEmptySpace(composite);
 
-		final Control buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
+		final var buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
 		LayoutUtil.setHorizontalSpan(buttonGroup, columns - 1);
 	}
 
@@ -1076,7 +1075,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the selection state of the 'Create inherited abstract methods' checkbox
 	 */
 	protected boolean isCreateInherited() {
-		int idx = 0;
+		var idx = 0;
 		if (this.isConstructorCreationEnabled) {
 			++idx;
 		}
@@ -1090,7 +1089,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the selection state of the 'Create standard event handlers' checkbox
 	 */
 	protected boolean isCreateStandardEventHandlers() {
-		int idx = 0;
+		var idx = 0;
 		if (this.isConstructorCreationEnabled) {
 			++idx;
 		}
@@ -1107,7 +1106,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the selection state of the 'Create standard lifecycle functions' checkbox
 	 */
 	protected boolean isCreateStandardLifecycleFunctions() {
-		int idx = 0;
+		var idx = 0;
 		if (this.isConstructorCreationEnabled) {
 			++idx;
 		}
@@ -1133,7 +1132,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited,
 			boolean createEventHandlers, boolean createLifecycleFunctions, boolean canBeModified) {
 		if (this.methodStubsButtons != null) {
-			int idx = 0;
+			var idx = 0;
 			if (this.isConstructorCreationEnabled) {
 				this.methodStubsButtons.setSelection(idx, createConstructors);
 				++idx;
@@ -1172,15 +1171,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected IType chooseSuperClass() {
-		final IJavaProject project = getJavaProject();
+		final var project = getJavaProject();
 		if (project == null) {
 			return null;
 		}
-		final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
+		final var typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
 				this.resourceSetFactory.get(project.getProject()));
-		final SarlSpecificTypeSelectionExtension extension = new SarlSpecificTypeSelectionExtension(typeProvider);
+		final var extension = new SarlSpecificTypeSelectionExtension(typeProvider);
 		this.injector.injectMembers(extension);
-		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperClassSelectionDialog(getShell(),
+		final var dialog = createSuperClassSelectionDialog(getShell(),
 				getWizard().getContainer(), project, extension, false);
 		if (dialog == null) {
 			return super.chooseSuperClass();
@@ -1214,10 +1213,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private static void createInfoCall(IExpressionBuilder builder, String message) {
-		final JvmParameterizedTypeReference capacity = builder.newTypeRef(null, LOGGING_CAPACITY_NAME);
-		final String objectType = Object.class.getName();
-		final String objectArrayType = objectType + "[]"; //$NON-NLS-1$
-		final JvmOperation infoMethod = Iterables.find(
+		final var capacity = builder.newTypeRef(null, LOGGING_CAPACITY_NAME);
+		final var objectType = Object.class.getName();
+		final var objectArrayType = objectType + "[]"; //$NON-NLS-1$
+		final var infoMethod = Iterables.find(
 				((JvmDeclaredType) capacity.getType()).getDeclaredOperations(), it -> {
 				if (Objects.equals(it.getSimpleName(), "info") //$NON-NLS-1$
 						&& it.getParameters().size() == 2) {
@@ -1254,7 +1253,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			}
 			if (type == null) {
 				// SARL SDK is not on classpath
-				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+				final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_4, INITIALIZE_EVENT_NAME));
 				throw new JavaModelException(new CoreException(status));
 			}
@@ -1263,12 +1262,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 			usesAdder.apply(LOGGING_CAPACITY_NAME);
 
-			ISarlBehaviorUnitBuilder unit = behaviorUnitAdder.apply(INITIALIZE_EVENT_NAME);
-			IBlockExpressionBuilder block = unit.getExpression();
+			var unit = behaviorUnitAdder.apply(INITIALIZE_EVENT_NAME);
+			var block = unit.getExpression();
 			block.setInnerDocumentation(MessageFormat.format(
 					Messages.AbstractNewSarlElementWizardPage_9,
 					elementTypeName));
-			IExpressionBuilder expr = block.addExpression();
+			var expr = block.addExpression();
 			createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_26, elementTypeName));
 
 			unit = behaviorUnitAdder.apply(DESTROY_EVENT_NAME);
@@ -1364,12 +1363,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 		usesAdder.apply(LOGGING_CAPACITY_NAME);
 
-		ISarlActionBuilder action = actionAdder.apply(INSTALL_SKILL_NAME);
-		IBlockExpressionBuilder block = action.getExpression();
+		var action = actionAdder.apply(INSTALL_SKILL_NAME);
+		var block = action.getExpression();
 		block.setInnerDocumentation(MessageFormat.format(
 				Messages.AbstractNewSarlElementWizardPage_19,
 				elementTypeName));
-		IExpressionBuilder expr = block.addExpression();
+		var expr = block.addExpression();
 		createInfoCall(expr, MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_28, elementTypeName));
 
 		action = actionAdder.apply(PREPARE_UNINSTALL_SKILL_NAME);
@@ -1393,15 +1392,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected void chooseSuperInterfaces() {
-		final IJavaProject project = getJavaProject();
+		final var project = getJavaProject();
 		if (project == null) {
 			return;
 		}
-		final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
+		final var typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
 				this.resourceSetFactory.get(project.getProject()));
-		final SarlSpecificTypeSelectionExtension extension = new SarlSpecificTypeSelectionExtension(typeProvider);
+		final var extension = new SarlSpecificTypeSelectionExtension(typeProvider);
 		this.injector.injectMembers(extension);
-		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperInterfaceSelectionDialog(getShell(),
+		final var dialog = createSuperInterfaceSelectionDialog(getShell(),
 				getWizard().getContainer(), project, extension, true);
 		if (dialog != null) {
 			this.injector.injectMembers(dialog);
@@ -1414,12 +1413,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			}
 
 			if (dialog.open() == Window.OK) {
-				final Object[] tab = dialog.getResult();
+				final var tab = dialog.getResult();
 				if (tab != null) {
-					final List<String> list = new ArrayList<>(tab.length);
-					for (final Object obj : tab) {
-						if (obj instanceof IType) {
-							final IType type = (IType) obj;
+					final var list = new ArrayList<String>(tab.length);
+					for (final var obj : tab) {
+						if (obj instanceof IType type) {
 							list.add(type.getFullyQualifiedName());
 						}
 					}

@@ -53,13 +53,13 @@ public final class MarkdownExtensions {
 	 */
 	@SuppressWarnings("unchecked")
 	public static String renderToMarkdown(Object options) {
-		if (options instanceof Options) {
-			return _renderToMarkdown((Options) options);
+		if (options instanceof Options cvalue) {
+			return _renderToMarkdown(cvalue);
 		}
 		if (options instanceof List<?>) {
-			final List<?> rootList = (List<?>) options;
+			final var rootList = (List<?>) options;
 			if (!rootList.isEmpty()) {
-				Object element = rootList.get(0);
+				var element = rootList.get(0);
 				if (element instanceof List<?>) {
 					return _renderToMarkdown((List<List<String>>) options);
 				}
@@ -79,14 +79,14 @@ public final class MarkdownExtensions {
 		if (options == null) {
 			return ""; //$NON-NLS-1$
 		}
-		final List<Option> optList = new ArrayList<>(options.getOptions());
+		final var optList = new ArrayList<>(options.getOptions());
 		if (optList.isEmpty()) {
 			return ""; //$NON-NLS-1$
 		}
 		Collections.sort(optList, new OptionComparator());
 
-		final StringBuilder buffer = new StringBuilder();
-		for (final Option option : optList) {
+		final var buffer = new StringBuilder();
+		for (final var option : optList) {
 			buffer.append("| `"); //$NON-NLS-1$
 			if (option.getOpt() == null) {
 				buffer.append(CliUtilities.getCommandLineOption(option.getLongOpt()));
@@ -107,7 +107,7 @@ public final class MarkdownExtensions {
 			buffer.append("` | "); //$NON-NLS-1$
 
 			if (option.getDescription() != null) {
-				String text = option.getDescription().replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+				var text = option.getDescription().replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
 				text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
 				text = text.replaceAll("\\>", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
 				buffer.append(text);
@@ -128,12 +128,12 @@ public final class MarkdownExtensions {
 		if (table == null || table.isEmpty()) {
 			throw new MarkdownEmptyArrayException();
 		}
-		final StringBuilder buffer = new StringBuilder();
-		for (final List<String> line : table) {
+		final var buffer = new StringBuilder();
+		for (final var line : table) {
 			buffer.append("| "); //$NON-NLS-1$
 			if (line != null) {
-				boolean first = true;
-				for (final String column : line) {
+				var first = true;
+				for (final var column : line) {
 					if (first) {
 						first = false;
 					} else {
@@ -171,7 +171,7 @@ public final class MarkdownExtensions {
 		}
 
 		private static String getKey(Option opt) {
-			final String val = opt.getLongOpt();
+			final var val = opt.getLongOpt();
 			if (val == null) {
 				return opt.getOpt();
 			}

@@ -53,19 +53,14 @@ package io.sarl.docs.doclet2.html.summaries;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 import jdk.javadoc.doclet.Reporter;
-import org.eclipse.xtext.xbase.lib.Pair;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
@@ -114,7 +109,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	 * @param parent the container.
 	 */
 	protected void generateBodyTitle(Element parent) {
-		final Element nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
+		final var nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
 		nameDiv.appendText(getDocumentationTitle());
 	}
 
@@ -123,13 +118,13 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	 * @param parent the container.
 	 */
 	protected void generateModuleList(Element parent) {
-		final Iterable<ModuleElement> modules = getTypeRepository().getModules();
+		final var modules = getTypeRepository().getModules();
 		createSummaryBox1(Messages.OverviewSummaryGeneratorImpl_2,
 				Messages.OverviewSummaryGeneratorImpl_3, Messages.OverviewSummaryGeneratorImpl_4,
 				null, parent, modules,
 				getElementUtils().getModuleElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createModuleLink(element, element.getQualifiedName().toString(), null, this));
 					createFirstSentence(element, nodes, true, false);
 					createShortDeprecationMessage(element, nodes, true);
@@ -148,7 +143,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 				null, parent, packages,
 				getElementUtils().getPackageElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createPackageLink(element, element.getQualifiedName().toString(), null, this));
 					createFirstSentence(element, nodes, true, false);
 					createShortDeprecationMessage(element, nodes, true);
@@ -157,11 +152,11 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	}
 
 	private SortedSet<PackageElement> selectPackages(SortedSet<PackageElement> remainingPackages, Pattern pattern) {
-		final SortedSet<PackageElement> selectedPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
-		final Iterator<PackageElement> iterator = remainingPackages.iterator();
+		final var selectedPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
+		final var iterator = remainingPackages.iterator();
 		while (iterator.hasNext()) {
-			final PackageElement candidate = iterator.next();
-			final Matcher matcher = pattern.matcher(candidate.getQualifiedName().toString());
+			final var candidate = iterator.next();
+			final var matcher = pattern.matcher(candidate.getQualifiedName().toString());
 			if (matcher.matches()) {
 				iterator.remove();
 				selectedPackages.add(candidate);
@@ -177,17 +172,17 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	 * @return the {@code packages} that are not a member of a group.
 	 */
 	protected Collection<PackageElement> generateGroups(Element parent, Collection<PackageElement> packages) {
-		final SortedSet<PackageElement> remainingPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
+		final var remainingPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
 		remainingPackages.addAll(packages);
-		for (final Pair<String, Pattern> entry : getDocletOptions().getGroups()) {
-			final SortedSet<PackageElement> selectedPackages = selectPackages(remainingPackages, entry.getValue());
+		for (final var entry : getDocletOptions().getGroups()) {
+			final var selectedPackages = selectPackages(remainingPackages, entry.getValue());
 			if (!selectedPackages.isEmpty()) {
 				createSummaryBox1(entry.getKey(),
 						Messages.OverviewSummaryGeneratorImpl_6, Messages.OverviewSummaryGeneratorImpl_4,
 						null, parent, selectedPackages,
 						getElementUtils().getPackageElementComparator(),
 						element -> {
-							final List<Node> nodes = new ArrayList<>();
+							final var nodes = new ArrayList<Node>();
 							nodes.addAll(getHtmlFactory().createPackageLink(element, element.getQualifiedName().toString(), null, this));
 							createFirstSentence(element, nodes, true, false);
 							createShortDeprecationMessage(element, nodes, true);
@@ -201,7 +196,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	@Override
 	protected void generateBodyContent(Element parent) {
 		generateBodyTitle(parent);
-		final Collection<PackageElement> packages = generateGroups(parent, new ArrayList<>(getTypeRepository().getPackages()));
+		final var packages = generateGroups(parent, new ArrayList<>(getTypeRepository().getPackages()));
 		generateModuleList(parent);
 		generatePackageList(parent, packages);
 	}

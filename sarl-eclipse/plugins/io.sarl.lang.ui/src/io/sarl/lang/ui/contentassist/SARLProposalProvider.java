@@ -267,11 +267,11 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 			EReference reference, IValueConverter<String> valueConverter, final ITypesProposalProvider.Filter filter,
 			ICompletionProposalAcceptor acceptor) {
 		assert superType != null;
-		final INode lastCompleteNode = context.getLastCompleteNode();
-		if (lastCompleteNode instanceof ILeafNode && !((ILeafNode) lastCompleteNode).isHidden()) {
+		final var lastCompleteNode = context.getLastCompleteNode();
+		if (lastCompleteNode instanceof ILeafNode cvalue && !cvalue.isHidden()) {
 			if (lastCompleteNode.getLength() > 0 && lastCompleteNode.getTotalEndOffset() == context.getOffset()) {
-				final String text = lastCompleteNode.getText();
-				final char lastChar = text.charAt(text.length() - 1);
+				final var text = lastCompleteNode.getText();
+				final var lastChar = text.charAt(text.length() - 1);
 				if (Character.isJavaIdentifierPart(lastChar)) {
 					return;
 				}
@@ -281,13 +281,13 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		if (allowSuperTypeItself) {
 			subTypeFilter = filter;
 		} else {
-			final String superTypeQualifiedName = superType.getName();
+			final var superTypeQualifiedName = superType.getName();
 			subTypeFilter = new ITypesProposalProvider.Filter() {
 
 				@Override
 				public boolean accept(int modifiers, char[] packageName, char[] simpleTypeName,
 						char[][] enclosingTypeNames, String path) {
-					final String fullName = JavaModelUtil.concatenateName(packageName, simpleTypeName);
+					final var fullName = JavaModelUtil.concatenateName(packageName, simpleTypeName);
 					if (Objects.equals(superTypeQualifiedName, fullName)) {
 						return false;
 					}
@@ -333,11 +333,11 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	 * @return the expected package name.
 	 */
 	protected String getExpectedPackageName(EObject model) {
-		final URI fileURI = model.eResource().getURI();
-		for (final Pair<IStorage, IProject> storage: this.storage2UriMapper.getStorages(fileURI)) {
+		final var fileURI = model.eResource().getURI();
+		for (final var storage: this.storage2UriMapper.getStorages(fileURI)) {
 			if (storage.getFirst() instanceof IFile) {
-				final IPath fileWorkspacePath = storage.getFirst().getFullPath();
-				final IJavaProject javaProject = JavaCore.create(storage.getSecond());
+				final var fileWorkspacePath = storage.getFirst().getFullPath();
+				final var javaProject = JavaCore.create(storage.getSecond());
 				return extractProjectPath(fileWorkspacePath, javaProject);
 			}
 		}
@@ -347,13 +347,13 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	private static String extractProjectPath(IPath fileWorkspacePath, IJavaProject javaProject) {
 		if (javaProject != null && javaProject.exists() && javaProject.isOpen()) {
 			try {
-				for (final IPackageFragmentRoot root: javaProject.getPackageFragmentRoots()) {
+				for (final var root: javaProject.getPackageFragmentRoots()) {
 					if (!root.isArchive() && !root.isExternal()) {
-						final IResource resource = root.getResource();
+						final var resource = root.getResource();
 						if (resource != null) {
-							final IPath sourceFolderPath = resource.getFullPath();
+							final var sourceFolderPath = resource.getFullPath();
 							if (sourceFolderPath.isPrefixOf(fileWorkspacePath)) {
-								final IPath claspathRelativePath = fileWorkspacePath.makeRelativeTo(sourceFolderPath);
+								final var claspathRelativePath = fileWorkspacePath.makeRelativeTo(sourceFolderPath);
 								return claspathRelativePath.removeLastSegments(1)
 										.toString().replace("/", "."); //$NON-NLS-1$//$NON-NLS-2$
 							}
@@ -419,7 +419,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	 * @return {@code true} if the proposals are proposed.
 	 */
 	protected boolean isSarlProposalEnabled() {
-		final XbaseReferenceProposalCreator creator = getXbaseCrossReferenceProposalCreator();
+		final var creator = getXbaseCrossReferenceProposalCreator();
 		return creator.isShowTypeProposals() || creator.isShowSmartProposals();
 	}
 
@@ -436,10 +436,10 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	@Override
 	public void completeSarlScript_Package(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		final String expectedPackage = getExpectedPackageName(model);
+		final var expectedPackage = getExpectedPackageName(model);
 		if (!Strings.isNullOrEmpty(expectedPackage)) {
-			final String codeProposal = this.valueConverter.getQualifiedNameValueConverter().toString(expectedPackage);
-			final ICompletionProposal proposal = createCompletionProposal(codeProposal, expectedPackage,
+			final var codeProposal = this.valueConverter.getQualifiedNameValueConverter().toString(expectedPackage);
+			final var proposal = createCompletionProposal(codeProposal, expectedPackage,
 					this.imageHelper.getImage(this.images.forPackage()), context);
 			acceptor.accept(proposal);
 			return;
@@ -456,8 +456,8 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 			completeSarlCapacities(false, false, context, acceptor);
 		} else if (model instanceof XtendTypeDeclaration) {
 			final EObject grammarElement = context.getLastCompleteNode().getGrammarElement();
-			if (grammarElement instanceof Keyword) {
-				final String keyword = ((Keyword) grammarElement).getValue();
+			if (grammarElement instanceof Keyword cvalue) {
+				final var keyword = cvalue.getValue();
 				if (Objects.equals(keyword, this.keywords.getExtendsKeyword())) {
 					completeExtends(model, context, acceptor);
 				} else if (Objects.equals(keyword, this.keywords.getImplementsKeyword())) {
@@ -558,19 +558,18 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Override
 	public void completeAOPMember_Guard(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		if (model instanceof SarlBehaviorUnit) {
-			final SarlBehaviorUnit behaviorUnit = (SarlBehaviorUnit) model;
-			final XExpression guardExpr = behaviorUnit.getGuard();
+		if (model instanceof SarlBehaviorUnit behaviorUnit) {
+			final var guardExpr = behaviorUnit.getGuard();
 			if (guardExpr != null) {
 				// Generate the proposals by considering the guard expression as an anchor.
 				createLocalVariableAndImplicitProposals(guardExpr, IExpressionScope.Anchor.BEFORE, context, acceptor);
 				return;
 			}
-			final XExpression body = behaviorUnit.getExpression();
+			final var body = behaviorUnit.getExpression();
 			if (body != null) {
 				// Generate the proposals by considering that all elements that accessible from the body are accessible from the guard to.
 				// "it" is missed => it is manually added.
-				final ICompletionProposal itProposal = createCompletionProposal(
+				final var itProposal = createCompletionProposal(
 						this.keywords.getItKeyword(),
 						new StyledString(this.keywords.getItKeyword()),
 						this.imageHelper.getImage(this.images.forLocalVariable(0)),
@@ -612,7 +611,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		public boolean accept(int modifiers, char[] packageName, char[] simpleTypeName,
 				char[][] enclosingTypeNames, String path) {
 			// Avoid auto reference of type.
-			final String fullName = JavaModelUtil.concatenateName(packageName, simpleTypeName);
+			final var fullName = JavaModelUtil.concatenateName(packageName, simpleTypeName);
 			if (Objects.equals(this.modelFullName, fullName)) {
 				return false;
 			}

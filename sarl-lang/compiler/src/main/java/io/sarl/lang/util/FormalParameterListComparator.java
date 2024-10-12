@@ -23,11 +23,9 @@ package io.sarl.lang.util;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.Iterator;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend.core.xtend.XtendParameter;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
  * Comparator of lists of formal parameters.
@@ -51,10 +49,10 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 		if (right == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Integer.compare(left.size(), right.size());
+		var cmp = Integer.compare(left.size(), right.size());
 		if (cmp == 0) {
-			final Iterator<? extends XtendParameter> i1 = left.iterator();
-			final Iterator<? extends XtendParameter> i2 = right.iterator();
+			final var i1 = left.iterator();
+			final var i2 = right.iterator();
 			while (cmp == 0 && i1.hasNext() && i2.hasNext()) {
 				cmp = compare(i1.next(), i2.next());
 			}
@@ -79,8 +77,8 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 			if (p2 == null) {
 				return Integer.MAX_VALUE;
 			}
-			final JvmTypeReference t1 = p1.getParameterType();
-			final JvmTypeReference t2 = p2.getParameterType();
+			final var t1 = p1.getParameterType();
+			final var t2 = p2.getParameterType();
 			if (t1 != t2) {
 				final int cmp;
 				if (t1 == null) {

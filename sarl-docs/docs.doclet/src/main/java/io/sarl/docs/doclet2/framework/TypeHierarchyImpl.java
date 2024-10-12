@@ -56,7 +56,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -66,7 +65,6 @@ import java.util.function.Predicate;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 
 import com.google.inject.Inject;
 
@@ -126,8 +124,8 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 		this.implementingClasses.clear();
 		this.subTypes.clear();
 		//
-		for (TypeElement typeElement : typeElements) {
-			final ElementKind type = typeElement.getKind();
+		for (var typeElement : typeElements) {
+			final var type = typeElement.getKind();
 			if (type == ElementKind.CLASS) {
 				processType(typeElement, this.baseClasses, true, environment);
 			} else if (type == ElementKind.INTERFACE) {
@@ -157,7 +155,7 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	 */
 	@SuppressWarnings("static-method")
 	private boolean add(Map<TypeElement, SortedSet<TypeElement>> map, TypeElement superclass, TypeElement typeElement) {
-		final SortedSet<TypeElement> sset = map.computeIfAbsent(superclass, s ->  new TreeSet<>((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString())));
+		final var sset = map.computeIfAbsent(superclass, s ->  new TreeSet<>((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString())));
 		if (sset.contains(typeElement)) {
 			return false;
 		}
@@ -175,9 +173,9 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	 */
 	protected void processType(TypeElement typeElement, Set<TypeElement> bases,
 			boolean updateImplementingClasses, SarlDocletEnvironment environment) {
-		final TypeMirror superClass = getElementUtils().getFirstVisibleSuperType(typeElement, false, environment);
+		final var superClass = getElementUtils().getFirstVisibleSuperType(typeElement, false, environment);
 		if (superClass != null) {
-			final TypeElement superElement = getElementUtils().asTypeElement(superClass, environment.getTypeUtils());
+			final var superElement = getElementUtils().asTypeElement(superClass, environment.getTypeUtils());
 			if (!add(this.subTypes, superElement, typeElement)) {
 				return;
 			}
@@ -186,8 +184,8 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 			bases.add(typeElement);
 		}
 		if (updateImplementingClasses) {
-			final SortedSet<? extends TypeMirror> interfaces = getElementUtils().getAllInterfaces(typeElement, environment);
-			for (TypeMirror interf : interfaces) {
+			final var interfaces = getElementUtils().getAllInterfaces(typeElement, environment);
+			for (final var interf : interfaces) {
 				final TypeElement interf0 = getElementUtils().asTypeElement(interf, environment.getTypeUtils());
 				add(this.implementingClasses, interf0, typeElement);
 			}
@@ -196,37 +194,35 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 
 	@Override
 	public SortedSet<? extends TypeElement> getDirectSubTypes(TypeElement typeElement) {
-		final SortedSet<TypeElement> subtypes0 = this.subTypes.computeIfAbsent(typeElement,
+		final var subtypes0 = this.subTypes.computeIfAbsent(typeElement,
 				t ->  new TreeSet<>((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString())));
 		return Collections.unmodifiableSortedSet(subtypes0);
 	}
 
 	@Override
 	public Set<TypeElement> getImplementingClasses(TypeElement typeElement) {
-		final SortedSet<TypeElement> subtypes0 = this.implementingClasses.computeIfAbsent(typeElement,
+		final var subtypes0 = this.implementingClasses.computeIfAbsent(typeElement,
 				t ->  new TreeSet<>((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString())));
 		return Collections.unmodifiableSortedSet(subtypes0);
 	}
 
 	private void fillCandidates(SarlDocletEnvironment environment, boolean includeInterfaces, TypeElement type,
 			Deque<TypeElement> candidates, Set<String> done) {
-		final TypeMirror superMirror = type.getSuperclass();
+		final var superMirror = type.getSuperclass();
 		if (superMirror != null) {
-			final Element superElement = environment.getTypeUtils().asElement(superMirror);
-			if (superElement instanceof TypeElement && !environment.getApidocExcluder().isExcluded(superElement)) {
-				final TypeElement te = (TypeElement) superElement;
-				final String qn = getElementUtils().getLocalIdentifier(te);
+			final var superElement = environment.getTypeUtils().asElement(superMirror);
+			if (superElement instanceof TypeElement te && !environment.getApidocExcluder().isExcluded(superElement)) {
+				final var qn = getElementUtils().getLocalIdentifier(te);
 				if (done.add(qn)) {
 					candidates.add(te);
 				}
 			}
 		}
 		if (includeInterfaces) {
-			for (final TypeMirror interfaceMirror : type.getInterfaces()) {
-				final Element superElement = environment.getTypeUtils().asElement(interfaceMirror);
-				if (superElement instanceof TypeElement && environment.isIncluded(superElement)) {
-					final TypeElement te = (TypeElement) superElement;
-					final String qn = getElementUtils().getLocalIdentifier(te);
+			for (final var interfaceMirror : type.getInterfaces()) {
+				final var superElement = environment.getTypeUtils().asElement(interfaceMirror);
+				if (superElement instanceof TypeElement te && environment.isIncluded(superElement)) {
+					final var qn = getElementUtils().getLocalIdentifier(te);
 					if (done.add(qn)) {
 						candidates.add(te);
 					}
@@ -239,26 +235,26 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	public Collection<? extends Element> getInheritedElements(TypeElement typeElement, boolean includeInterfaces, 
 			boolean includedElementsOnly, boolean includeDuplicates, boolean considerTypeElementMembers, 
 			SarlDocletEnvironment environment, Predicate<Element> selector) {
-		final List<Element> collection = new ArrayList<>();
+		final var collection = new ArrayList<Element>();
 		if (typeElement != null && selector != null) {
-			final Deque<TypeElement> candidates = new LinkedList<>();
-			final Set<String> memberDone = new TreeSet<>();
+			final var candidates = new LinkedList<TypeElement>();
+			final var memberDone = new TreeSet<String>();
 			//
 			if (!includeDuplicates && considerTypeElementMembers) {
-				for (final Element member : typeElement.getEnclosedElements()) {
+				for (final var member : typeElement.getEnclosedElements()) {
 					if (selector.test(member)) {
-						final String qn = getElementUtils().getLocalIdentifier(member);
+						final var qn = getElementUtils().getLocalIdentifier(member);
 						memberDone.add(qn);
 					}
 				}
 			}
-			final Set<String> done = new TreeSet<>();
+			final var done = new TreeSet<String>();
 			fillCandidates(environment, includeInterfaces, typeElement, candidates, done);
 			while (!candidates.isEmpty()) {
-				final TypeElement candidate = candidates.removeFirst();
-				for (final Element member : candidate.getEnclosedElements()) {
+				final var candidate = candidates.removeFirst();
+				for (final var member : candidate.getEnclosedElements()) {
 					if (!includedElementsOnly || environment.isIncluded(member)) {
-						final String qn = getElementUtils().getLocalIdentifier(member);
+						final var qn = getElementUtils().getLocalIdentifier(member);
 						if (selector.test(member) && (includeDuplicates || memberDone.add(qn))) {
 							collection.add(member);
 						}
@@ -273,24 +269,24 @@ public class TypeHierarchyImpl implements TypeHierarchy {
 	@Override
 	public Collection<? extends Element> getDeclaredElements(TypeElement typeElement, boolean includeInterfaces, 
 			boolean includedElementsOnly, boolean includeDuplicates, SarlDocletEnvironment environment, Predicate<Element> selector) {
-		final List<Element> collection = new ArrayList<>();
+		final var collection = new ArrayList<Element>();
 		if (typeElement != null && selector != null) {
-			final Deque<TypeElement> candidates = new LinkedList<>();
-			final Set<String> memberDone = new TreeSet<>();
+			final var candidates = new LinkedList<TypeElement>();
+			final var memberDone = new TreeSet<String>();
 			//
-			for (final Element member : typeElement.getEnclosedElements()) {
-				final String qn = getElementUtils().getLocalIdentifier(member);
+			for (final var member : typeElement.getEnclosedElements()) {
+				final var qn = getElementUtils().getLocalIdentifier(member);
 				if (selector.test(member) && (includeDuplicates || memberDone.add(qn))) {
 					collection.add(member);
 				}
 			}
-			final Set<String> done = new TreeSet<>();
+			final var done = new TreeSet<String>();
 			fillCandidates(environment, includeInterfaces, typeElement, candidates, done);
 			while (!candidates.isEmpty()) {
-				final TypeElement candidate = candidates.removeFirst();
-				for (final Element member : candidate.getEnclosedElements()) {
+				final var candidate = candidates.removeFirst();
+				for (final var member : candidate.getEnclosedElements()) {
 					if (!includedElementsOnly || environment.isIncluded(member)) {
-						final String qn = getElementUtils().getLocalIdentifier(member);
+						final var qn = getElementUtils().getLocalIdentifier(member);
 						if (selector.test(member) && (includeDuplicates || memberDone.add(qn))) {
 							collection.add(member);
 						}

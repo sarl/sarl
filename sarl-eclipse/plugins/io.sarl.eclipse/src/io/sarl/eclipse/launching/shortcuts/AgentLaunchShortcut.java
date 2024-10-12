@@ -76,8 +76,7 @@ public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, A
 
 	@Override
 	protected URI getResourceURIForValidEObject(Object object) {
-		if (object instanceof SarlAgent) {
-			final SarlAgent agent = (SarlAgent) object;
+		if (object instanceof SarlAgent agent) {
 			return agent.eResource().getURI();
 		}
 		return null;

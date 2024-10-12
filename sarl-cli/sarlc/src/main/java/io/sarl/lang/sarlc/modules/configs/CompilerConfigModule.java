@@ -101,7 +101,7 @@ public class CompilerConfigModule implements BQModule {
 
 		VariableDecls.extend(binder).declareVar(JAVA_COMPILER_NAME);
 		String jcompilerValues = null;
-		for (final JavaCompiler jc : JavaCompiler.values()) {
+		for (final var jc : JavaCompiler.values()) {
 			if (jcompilerValues == null) {
 				jcompilerValues = jc.toJsonString();
 			} else {
@@ -116,7 +116,7 @@ public class CompilerConfigModule implements BQModule {
 				.build())
 			.mapConfigPath(JAVACOMPILER_OPTION, JAVA_COMPILER_NAME);
 
-		final String trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
+		final var trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
 				Boolean.TRUE.toString(), Boolean.FALSE.toString());
 		VariableDecls.extend(binder).declareVar(OUTPUT_TRACES_NAME);
 		extend(binder).addOption(OptionMetadata.builder(

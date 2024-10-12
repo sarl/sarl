@@ -68,8 +68,8 @@ public final class SARLPreferences {
 	 */
 	public static IPreferenceStore getSARLPreferencesFor(IProject project) {
 		if (project != null) {
-			final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-			final IPreferenceStoreAccess preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
+			final var injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+			final var preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
 			return preferenceStoreAccess.getWritablePreferenceStore(project);
 		}
 		return null;
@@ -81,9 +81,8 @@ public final class SARLPreferences {
 	 * @return the Xtext output configurations.
 	 */
 	public static Set<OutputConfiguration> getXtextConfigurationsFor(IProject project) {
-		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-		final EclipseOutputConfigurationProvider configurationProvider =
-				injector.getInstance(EclipseOutputConfigurationProvider.class);
+		final var injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final var configurationProvider = injector.getInstance(EclipseOutputConfigurationProvider.class);
 		return configurationProvider.getOutputConfigurations(project);
 	}
 
@@ -93,7 +92,7 @@ public final class SARLPreferences {
 	 * @param project the project.
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
-		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
+		final var preferenceStore = getSARLPreferencesFor(project);
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, false);
 	}
 
@@ -110,14 +109,14 @@ public final class SARLPreferences {
 	public static void setSpecificSARLConfigurationFor(IProject project, IPath outputPath, IPath testOutputPath) {
 		assert project != null;
 
-		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
+		final var preferenceStore = getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
 
 		// Loop on the Xtext configurations embedded in the SARL compiler.
 		String key;
-		for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
-			final String name = projectConfiguration.getName();
+		for (final var projectConfiguration : getXtextConfigurationsFor(project)) {
+			final var name = projectConfiguration.getName();
 
 			//
 			// OUTPUT PATH
@@ -180,16 +179,16 @@ public final class SARLPreferences {
 	 */
 	public static IPath getSARLOutputPathFor(IProject project) {
 		assert project != null;
-		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
+		final var preferenceStore = getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
-			final OutputConfiguration projectConfiguration = Iterables.find(
+			final var projectConfiguration = Iterables.find(
 				getXtextConfigurationsFor(project),
 				it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 			if (projectConfiguration != null) {
-				final String key = BuilderPreferenceAccess.getKey(
+				final var key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-				final String path = preferenceStore.getString(key);
+				final var path = preferenceStore.getString(key);
 				if (!Strings.isNullOrEmpty(path)) {
 					return Path.fromOSString(path);
 				}
@@ -203,16 +202,16 @@ public final class SARLPreferences {
 	 * @return the output path for SARL compiler in the global preferences.
 	 */
 	public static IPath getGlobalSARLOutputPath() {
-		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-		final IOutputConfigurationProvider configurationProvider =
+		final var injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final var configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
-		final OutputConfiguration config = Iterables.find(
+		final var config = Iterables.find(
 			configurationProvider.getOutputConfigurations(),
 			it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 		if (config != null) {
-			final String path = config.getOutputDirectory();
+			final var path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
-				final IPath pathObject = Path.fromOSString(path);
+				final var pathObject = Path.fromOSString(path);
 				if (pathObject != null) {
 					return pathObject;
 				}
@@ -227,16 +226,16 @@ public final class SARLPreferences {
 	 * @since 0.8
 	 */
 	public static IPath getGlobalSARLTestOutputPath() {
-		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-		final IOutputConfigurationProvider configurationProvider =
+		final var injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final var configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
-		final OutputConfiguration config = Iterables.find(
+		final var config = Iterables.find(
 			configurationProvider.getOutputConfigurations(),
 			it -> Objects.equals(it.getName(), SARLConfig.TEST_OUTPUT_CONFIGURATION));
 		if (config != null) {
-			final String path = config.getOutputDirectory();
+			final var path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
-				final IPath pathObject = Path.fromOSString(path);
+				final var pathObject = Path.fromOSString(path);
 				if (pathObject != null) {
 					return pathObject;
 				}

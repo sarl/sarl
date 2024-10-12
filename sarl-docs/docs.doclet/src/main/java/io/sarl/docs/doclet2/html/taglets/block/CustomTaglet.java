@@ -97,9 +97,9 @@ public class CustomTaglet extends AbstractSarlTaglet {
 	}
 
 	private static Location[] toLocations(List<CustomTagLocation> locations) {
-		final List<Location> locs = new ArrayList<>();
-		for (final CustomTagLocation ctl : locations) {
-			for (final Location loc : ctl.toJavadocLocation()) {
+		final var locs = new ArrayList<Location>();
+		for (final var ctl : locations) {
+			for (final var loc : ctl.toJavadocLocation()) {
 				locs.add(loc);
 			}
 		}

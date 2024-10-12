@@ -105,7 +105,7 @@ public class SarlcConfigModule implements BQModule {
 			.mapConfigPath(TEMP_DIR_OPTION, TEMP_DIRECTORY_NAME);
 
 		VariableDecls.extend(binder).declareVar(CLASSPATH_NAME);
-		final String cpDescription = MessageFormat.format(Messages.SarlcConfigModule_3,
+		final var cpDescription = MessageFormat.format(Messages.SarlcConfigModule_3,
 				VariableNames.toEnvironmentVariableName(CLASSPATH_NAME), CLASSPATH_SHORT_OPTION,
 				CLASSPATH_LONG_OPTION);
 		extend(binder).addOption(OptionMetadata.builder(
@@ -120,7 +120,7 @@ public class SarlcConfigModule implements BQModule {
 			.mapConfigPath(CLASSPATH_SHORT_OPTION, CLASSPATH_NAME);
 
 		VariableDecls.extend(binder).declareVar(MODULEPATH_NAME);
-		final String mpDescription = MessageFormat.format(Messages.SarlcConfigModule_9,
+		final var mpDescription = MessageFormat.format(Messages.SarlcConfigModule_9,
 				VariableNames.toEnvironmentVariableName(MODULEPATH_NAME), MODULEPATH_SHORT_OPTION,
 				MODULEPATH_LONG_OPTION);
 		extend(binder).addOption(OptionMetadata.builder(
@@ -163,7 +163,7 @@ public class SarlcConfigModule implements BQModule {
 	@Provides
 	@Singleton
 	public SarlcConfig getSarlcConfig(ConfigurationFactory configFactory, Injector injector) {
-		final SarlcConfig config = SarlcConfig.getConfiguration(configFactory);
+		final var config = SarlcConfig.getConfiguration(configFactory);
 		injector.injectMembers(config);
 		return config;
 	}

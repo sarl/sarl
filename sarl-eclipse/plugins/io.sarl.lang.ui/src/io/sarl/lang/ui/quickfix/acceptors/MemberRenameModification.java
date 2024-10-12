@@ -57,11 +57,11 @@ public final class MemberRenameModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		for (final String newName : issue.getData()) {
-			final String msg = MessageFormat.format(
+		for (final var newName : issue.getData()) {
+			final var msg = MessageFormat.format(
 					Messages.SARLQuickfixProvider_11,
 					newName);
-			final MemberRenameModification modification = new MemberRenameModification(newName);
+			final var modification = new MemberRenameModification(newName);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
@@ -75,7 +75,7 @@ public final class MemberRenameModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final Issue issue = getIssue();
+		final var issue = getIssue();
 		context.getXtextDocument().replace(issue.getOffset().intValue(), issue.getLength().intValue(), this.validName);
 	}
 

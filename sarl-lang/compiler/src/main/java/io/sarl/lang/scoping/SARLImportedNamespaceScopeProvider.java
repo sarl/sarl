@@ -27,7 +27,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.scoping.XtendImportedNamespaceScopeProvider;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
@@ -55,11 +54,10 @@ public class SARLImportedNamespaceScopeProvider extends XtendImportedNamespaceSc
 
 	@Override
 	protected ISelectable internalGetAllDescriptions(final Resource resource) {
-		final List<IEObjectDescription> descriptions = Lists.newArrayList();
-		for (final EObject content: resource.getContents()) {
-			if (content instanceof JvmDeclaredType) {
+		final var descriptions = Lists.<IEObjectDescription>newArrayList();
+		for (final var content: resource.getContents()) {
+			if (content instanceof JvmDeclaredType type) {
 				// Begin fixing of issue #356.
-				final JvmDeclaredType type = (JvmDeclaredType) content;
 				if (!Strings.isNullOrEmpty(type.getIdentifier())) {
 					// End of fixing
 					doGetAllDescriptions(type, descriptions);
@@ -72,17 +70,17 @@ public class SARLImportedNamespaceScopeProvider extends XtendImportedNamespaceSc
 	private void doGetAllDescriptions(JvmDeclaredType type, List<IEObjectDescription> descriptions) {
 		descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(type.getIdentifier()), type));
 		final EList<JvmMember> members;
-		if (type instanceof JvmDeclaredTypeImplCustom) {
-			members = ((JvmDeclaredTypeImplCustom) type).basicGetMembers();
+		if (type instanceof JvmDeclaredTypeImplCustom cvalue) {
+			members = cvalue.basicGetMembers();
 		} else {
 			members = type.getMembers();
 		}
-		for (final JvmMember member: members) {
-			if (member instanceof JvmDeclaredType) {
+		for (final var member: members) {
+			if (member instanceof JvmDeclaredType cvalue) {
 				// add nested types also with the dot delimiter
 				descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(
-						member.getQualifiedName('.')), member));
-				doGetAllDescriptions((JvmDeclaredType) member, descriptions);
+						member.getQualifiedName('.')), cvalue));
+				doGetAllDescriptions(cvalue, descriptions);
 			}
 		}
 	}

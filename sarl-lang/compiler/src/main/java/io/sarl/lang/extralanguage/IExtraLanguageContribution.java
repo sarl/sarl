@@ -46,9 +46,9 @@ public interface IExtraLanguageContribution {
 	 */
 	default boolean isAcceptedIdentifier(String identifier) {
 		if (identifier != null) {
-			final Iterable<String> ids = getIdentifiers();
+			final var ids = getIdentifiers();
 			if (ids != null) {
-				for (final String id : ids) {
+				for (final var id : ids) {
 					if (identifier.equalsIgnoreCase(id)) {
 						return true;
 					}

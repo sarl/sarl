@@ -21,7 +21,6 @@
 
 package io.sarl.docs.validator;
 
-import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -38,7 +37,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -164,7 +162,7 @@ public final class ShouldExtensions {
 		if (actual == null) {
 			return false;
 		}
-		final StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
+		final var pattern = new StringBuilder("^"); //$NON-NLS-1$
 		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
 		if (allowSnapshot) {
 			pattern.append("(?:"); //$NON-NLS-1$
@@ -186,11 +184,11 @@ public final class ShouldExtensions {
 
 	private static Version parseJavaVersion(String version, Version defaultVersion) {
 		try {
-			final Pattern pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
-			final Matcher matcher = pattern.matcher(version);
+			final var pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
+			final var matcher = pattern.matcher(version);
 			if (matcher.find()) {
-				int minor = 0;
-				String group = matcher.group(2);
+				var minor = 0;
+				var group = matcher.group(2);
 				if (group != null && !group.isEmpty()) {
 					try {
 						minor = Integer.parseInt(group);
@@ -198,7 +196,7 @@ public final class ShouldExtensions {
 						//
 					}
 				}
-				int micro = 0;
+				var micro = 0;
 				group = matcher.group(3);
 				if (group != null && !group.isEmpty()) {
 					try {
@@ -207,11 +205,11 @@ public final class ShouldExtensions {
 						//
 					}
 				}
-				final int major = Integer.parseInt(matcher.group(1));
+				final var major = Integer.parseInt(matcher.group(1));
 				return new Version(major, minor, micro);
 			}
 			if (version != null && !version.isEmpty()) {
-				final Version v = Version.valueOf(version);
+				final var v = Version.valueOf(version);
 				if (v != null) {
 					return v;
 				}
@@ -232,9 +230,9 @@ public final class ShouldExtensions {
 	 * @return the validation status.
 	 */
 	public static boolean shouldBeJavaRange(String minVersion, String maxVersion) {
-		final Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
+		final var jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
 		if (jreV != null && minVersion != null) {
-			final Version minV = parseJavaVersion(minVersion, null);
+			final var minV = parseJavaVersion(minVersion, null);
 			if (minV != null) {
 				Version maxV = null;
 				if (maxVersion != null) {
@@ -311,17 +309,17 @@ public final class ShouldExtensions {
 		}
 
 		// Unsignificant order
-		final List<Object> expectedElements = new LinkedList<>();
+		final var expectedElements = new LinkedList<>();
 		while (it.hasNext()) {
 			expectedElements.add(it.next());
 		}
 		boolean found;
 		while (actual.hasNext()) {
 			obj = actual.next();
-			final Iterator<Object> i = expectedElements.iterator();
+			final var i = expectedElements.iterator();
 			found = false;
 			while (!found && i.hasNext()) {
-				final Object eObj = i.next();
+				final var eObj = i.next();
 				if (obj instanceof XExpression) {
 					if (shouldBeLiteral((XExpression) obj, eObj)) {
 						i.remove();
@@ -359,7 +357,7 @@ public final class ShouldExtensions {
 			return false;
 		}
 		try {
-			final URL u = FileSystem.convertStringToURL(actual, true);
+			final var u = FileSystem.convertStringToURL(actual, true);
 			if (u == null) {
 				return false;
 			}
@@ -367,7 +365,7 @@ public final class ShouldExtensions {
 			if (allowedAPIhostname != null && !allowedAPIhostname.isEmpty()) {
 				validHostnames = allowedAPIhostname.split("[ \t]*[,;][ \t]*"); //$NON-NLS-1$
 			}
-			final List<String> hosts = Arrays.asList(validHostnames);
+			final var hosts = Arrays.asList(validHostnames);
 			if (!hosts.contains(u.getHost())
 					|| !u.getQuery().endsWith(".html") //$NON-NLS-1$
 					|| !u.getPath().endsWith("index.html")) { //$NON-NLS-1$
@@ -387,7 +385,7 @@ public final class ShouldExtensions {
 		if (stringRepresentation.startsWith("0x") || stringRepresentation.startsWith("0X")) { //$NON-NLS-1$//$NON-NLS-2$
 			return new BigInteger(stringRepresentation.substring(2), HEX_RADIX);
 		}
-		String literal = stringRepresentation.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
+		var literal = stringRepresentation.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
 		literal = literal.toLowerCase().replaceFirst("l|f|d|(bi)|(bd)$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		return new BigDecimal(literal);
 	}
@@ -402,7 +400,7 @@ public final class ShouldExtensions {
 		if (actual == null) {
 			return false;
 		}
-		final String string = (expected == null) ? null : expected.toString();
+		final var string = (expected == null) ? null : expected.toString();
 		return Objects.equals(string, actual.getValue());
 	}
 
@@ -449,7 +447,7 @@ public final class ShouldExtensions {
 				return false;
 			}
 		}
-		final Number anumber = cleanNumber(actual.getValue());
+		final var anumber = cleanNumber(actual.getValue());
 		return number.doubleValue() == anumber.doubleValue();
 	}
 
@@ -515,7 +513,7 @@ public final class ShouldExtensions {
 			return shouldBe((XCollectionLiteral) actual, expected);
 		}
 		if (actual instanceof XBinaryOperation) {
-			final XBinaryOperation op = (XBinaryOperation) actual;
+			final var op = (XBinaryOperation) actual;
 			if ("operator_mappedTo".equals(op.getFeature().getSimpleName())) { //$NON-NLS-1$
 				final Object key;
 				final Object value;
@@ -582,12 +580,12 @@ public final class ShouldExtensions {
 	 */
 	@SuppressWarnings("rawtypes")
 	protected static Method shouldHaveMethod(Class<?> type, String name, boolean deprecated) {
-		final Pattern pattern = Pattern.compile(
+		final var pattern = Pattern.compile(
 				"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
 				+ "(?:\\(\\s*([_a-zA-Z0-9.\\$]+(?:\\[\\])?\\s*" //$NON-NLS-1$
 				+ "(?:,\\s*[_a-zA-Z0-9.\\$]+(?:\\[\\])?\\s*)*)\\))?" //$NON-NLS-1$
 				+ "(?:\\s*:\\s*([_a-zA-Z0-9.\\$]+(?:\\[\\])?))?$"); //$NON-NLS-1$
-		final Matcher matcher = pattern.matcher(name);
+		final var matcher = pattern.matcher(name);
 		if (matcher.matches()) {
 			String paramText;
 			try {
@@ -607,17 +605,17 @@ public final class ShouldExtensions {
 			} else {
 				params = paramText.split("\\s*,\\s*"); //$NON-NLS-1$
 			}
-			final Class[] types = new Class[params.length];
-			for (int i = 0; i < params.length; ++i) {
+			final var types = new Class[params.length];
+			for (var i = 0; i < params.length; ++i) {
 				if (params[i].endsWith("[]")) { //$NON-NLS-1$
 					Class<?> paramType;
-					final String typeName = params[i].substring(0, params[i].length() - 2);
+					final var typeName = params[i].substring(0, params[i].length() - 2);
 					try {
 						paramType = ReflectionUtil.forName(typeName);
 					} catch (ClassNotFoundException e) {
 						throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_2, typeName));
 					}
-					final Object tmpArray = Array.newInstance(paramType, 0);
+					final var tmpArray = Array.newInstance(paramType, 0);
 					types[i] = tmpArray.getClass();
 				} else {
 					try {
@@ -627,7 +625,7 @@ public final class ShouldExtensions {
 					}
 				}
 			}
-			final String fctName = matcher.group(1);
+			final var fctName = matcher.group(1);
 			Method method;
 			try {
 				method = type.getDeclaredMethod(fctName, types);
@@ -651,7 +649,7 @@ public final class ShouldExtensions {
 				validReturnType = rtype.equals(method.getReturnType());
 			}
 			if (validReturnType) {
-				final Deprecated deprecatedAnnotation = method.getAnnotation(Deprecated.class);
+				final var deprecatedAnnotation = method.getAnnotation(Deprecated.class);
 				if ((deprecated && deprecatedAnnotation != null) || (!deprecated && deprecatedAnnotation == null)) {
 					return method;
 				}
@@ -694,18 +692,18 @@ public final class ShouldExtensions {
 	 * @since 0.12
 	 */
 	public static boolean shouldHaveMethods(Class<?> type, boolean considerHiddenNames, String... prototypes) {
-		List<Method> methods = new ArrayList<>();
-		for (final Method method : type.getDeclaredMethods()) {
+		final var methods = new ArrayList<Method>();
+		for (final var method : type.getDeclaredMethods()) {
 			if (Flags.isPublic(method.getModifiers())) {
-				final Deprecated deprecatedAnnotation = method.getAnnotation(Deprecated.class);
+				final var deprecatedAnnotation = method.getAnnotation(Deprecated.class);
 				if (deprecatedAnnotation == null &&
 						(considerHiddenNames || !shouldBeHiddenName(method.getName()))) {
 					methods.add(method);
 				}
 			}
 		}
-		for (final String prototype : prototypes) {
-			final Method method = shouldHaveMethod(type, prototype, false);
+		for (final var prototype : prototypes) {
+			final var method = shouldHaveMethod(type, prototype, false);
 			if (method != null) {
 				methods.remove(method);
 			} else {
@@ -771,19 +769,19 @@ public final class ShouldExtensions {
 	 */
 	protected static Field shouldHaveField(Class<?> type, String name, boolean deprecated) {
 		try {
-			final Pattern pattern = Pattern.compile(
+			final var pattern = Pattern.compile(
 					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
 					+ "(?:\\s*:\\s*([_a-zA-Z0-9.\\$]+(?:\\[\\])?))?$"); //$NON-NLS-1$
-			final Matcher matcher = pattern.matcher(name);
+			final var matcher = pattern.matcher(name);
 			if (matcher.matches()) {
-				final String fieldName = matcher.group(1);
+				final var fieldName = matcher.group(1);
 				String fieldType;
 				try {
 					fieldType = matcher.group(2).trim();
 				} catch (Throwable exception) {
 					fieldType = ""; //$NON-NLS-1$
 				}
-				final Field field = type.getDeclaredField(fieldName);
+				final var field = type.getDeclaredField(fieldName);
 				if (field == null) {
 					return null;
 				}
@@ -791,8 +789,8 @@ public final class ShouldExtensions {
 				if (fieldType != null && !fieldType.isEmpty()) {
 					Class<?> rtype;
 					if (fieldType.endsWith("[]")) { //$NON-NLS-1$
-						final Class<?> paramType = ReflectionUtil.forName(fieldType.substring(0, fieldType.length() - 2));
-						final Object tmpArray = Array.newInstance(paramType, 0);
+						final var paramType = ReflectionUtil.forName(fieldType.substring(0, fieldType.length() - 2));
+						final var tmpArray = Array.newInstance(paramType, 0);
 						rtype = tmpArray.getClass();
 					} else {
 						rtype = ReflectionUtil.forName(fieldType);
@@ -802,7 +800,7 @@ public final class ShouldExtensions {
 					validType = true;
 				}
 				if (validType) {
-					final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
+					final var deprecatedAnnotation = field.getAnnotation(Deprecated.class);
 					if ((deprecated && deprecatedAnnotation != null) || (!deprecated && deprecatedAnnotation == null)) {
 						return field;
 					}
@@ -825,8 +823,8 @@ public final class ShouldExtensions {
 			return false;
 		}
 		try {
-			final Class<?> st = type.getSuperclass();
-			final List<Class<?>> types = new LinkedList<>();
+			final var st = type.getSuperclass();
+			final var types = new LinkedList<Class<?>>();
 			if (st == null || Object.class.equals(st)) {
 				if (type.isInterface()) {
 					types.addAll(Arrays.asList(type.getInterfaces()));
@@ -838,8 +836,8 @@ public final class ShouldExtensions {
 			if (expectedTypes == null || expectedTypes.isEmpty()) {
 				return types.isEmpty();
 			}
-			for (final String expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
-				final Class<?> et = ReflectionUtil.forName(expectedType);
+			for (final var expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
+				final var et = ReflectionUtil.forName(expectedType);
 				if (!types.remove(et)) {
 					return false;
 				}
@@ -862,7 +860,7 @@ public final class ShouldExtensions {
 			return false;
 		}
 		try {
-			final int nb = type.getDeclaredConstructors().length
+			final var nb = type.getDeclaredConstructors().length
 					+ type.getDeclaredFields().length
 					+ type.getDeclaredMethods().length
 					+ type.getDeclaredAnnotations().length
@@ -889,11 +887,11 @@ public final class ShouldExtensions {
 		if (reference == null || reference.isEmpty()) {
 			return map.isEmpty();
 		}
-		for (final Entry<? super K, ? super V> entry : reference.entrySet()) {
+		for (final var entry : reference.entrySet()) {
 			if (!map.containsKey(entry.getKey())) {
 				return false;
 			}
-			final V currentValue = map.get(entry.getKey());
+			final var currentValue = map.get(entry.getKey());
 			if (!Objects.equals(currentValue, entry.getValue())) {
 				return false;
 			}
@@ -909,10 +907,10 @@ public final class ShouldExtensions {
 	 */
 	public static boolean shouldHaveProperty(URL propertyFile, String propertyName) {
 		try {
-			final Properties props = new Properties();
-			try (InputStream is = propertyFile.openStream()) {
+			final var props = new Properties();
+			try (var is = propertyFile.openStream()) {
 				props.load(is);
-				final String value = props.getProperty(propertyName, null);
+				final var value = props.getProperty(propertyName, null);
 				return value != null;
 			}
 		} catch (Throwable exception) {
@@ -930,10 +928,10 @@ public final class ShouldExtensions {
 	public static boolean shouldHaveProperty(URL propertyFile, Pair<String, String> property) {
 		if (propertyFile != null && property != null) {
 			try {
-				final Properties props = new Properties();
-				try (InputStream is = propertyFile.openStream()) {
+				final var props = new Properties();
+				try (var is = propertyFile.openStream()) {
 					props.load(is);
-					final String value = props.getProperty(property.getKey(), null);
+					final var value = props.getProperty(property.getKey(), null);
 					return Objects.equals(value, property.getValue());
 				}
 			} catch (Throwable exception) {
@@ -986,7 +984,7 @@ public final class ShouldExtensions {
 			if (this.obj == null) {
 				throw new NoSuchElementException();
 			}
-			final Object object = this.obj;
+			final var object = this.obj;
 			searchNext();
 			return object;
 		}

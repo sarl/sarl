@@ -136,15 +136,15 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			final IPath srcFolderPath = getSourceRootProjectFolderPath(bundle);
+			final var srcFolderPath = getSourceRootProjectFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
-				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
-				final String binaryJarName = bundleLocation.lastSegment();
-				final String symbolicName = bundle.getSymbolicName();
-				final String sourceJarName = binaryJarName.replace(symbolicName,
+				final var bundlesParentFolder = bundleLocation.removeLastSegments(1);
+				final var binaryJarName = bundleLocation.lastSegment();
+				final var symbolicName = bundle.getSymbolicName();
+				final var sourceJarName = binaryJarName.replace(symbolicName,
 						symbolicName.concat(SOURCE_SUFIX));
-				final IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
+				final var potentialSourceJar = bundlesParentFolder.append(sourceJarName);
 				if (potentialSourceJar.toFile().exists()) {
 					sourcesPath = potentialSourceJar;
 				}
@@ -159,11 +159,11 @@ public final class BundleUtil {
 	}
 
 	private static IPath getBinFolderPath(Bundle bundle) {
-		for (final String binFolder : BIN_FOLDERS) {
-			final URL binFolderURL = FileLocator.find(bundle, Path.fromPortableString(binFolder), null);
+		for (final var binFolder : BIN_FOLDERS) {
+			final var binFolderURL = FileLocator.find(bundle, Path.fromPortableString(binFolder), null);
 			if (binFolderURL != null) {
 				try {
-					final URL binFolderFileURL = FileLocator.toFileURL(binFolderURL);
+					final var binFolderFileURL = FileLocator.toFileURL(binFolderURL);
 					return new Path(binFolderFileURL.getPath()).makeAbsolute();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -174,13 +174,13 @@ public final class BundleUtil {
 	}
 
 	private static IPath getSourceRootProjectFolderPath(Bundle bundle) {
-		for (final String srcFolder : SRC_FOLDERS) {
-			final IPath relPath = Path.fromPortableString(srcFolder);
-			final URL srcFolderURL = FileLocator.find(bundle, relPath, null);
+		for (final var srcFolder : SRC_FOLDERS) {
+			final var relPath = Path.fromPortableString(srcFolder);
+			final var srcFolderURL = FileLocator.find(bundle, relPath, null);
 			if (srcFolderURL != null) {
 				try {
-					final URL srcFolderFileURL = FileLocator.toFileURL(srcFolderURL);
-					IPath absPath = new Path(srcFolderFileURL.getPath()).makeAbsolute();
+					final var srcFolderFileURL = FileLocator.toFileURL(srcFolderURL);
+					var absPath = new Path(srcFolderFileURL.getPath()).makeAbsolute();
 					absPath = absPath.removeLastSegments(relPath.segmentCount());
 					return absPath;
 				} catch (IOException e) {
@@ -198,10 +198,10 @@ public final class BundleUtil {
 	 * @see #getSourceBundlePath(Bundle, IPath)
 	 */
 	public static IPath getBundlePath(Bundle bundle) {
-		IPath path = getBinFolderPath(bundle);
+		var path = getBinFolderPath(bundle);
 		if (path == null) {
 			// common jar file case, no bin folder
-			final Optional<File> opt = FileLocator.getBundleFileLocation(bundle);
+			final var opt = FileLocator.getBundleFileLocation(bundle);
 			if (opt.isPresent()) {
 				path = new Path(opt.get().getAbsolutePath());
 			}
@@ -224,15 +224,15 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			final IPath srcFolderPath = getSourceRootProjectFolderPath(bundle);
+			final var srcFolderPath = getSourceRootProjectFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
-				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
-				final String binaryJarName = bundleLocation.lastSegment();
-				final String symbolicName = bundle.getSymbolicName();
-				final String sourceJarName = binaryJarName.replace(symbolicName,
+				final var bundlesParentFolder = bundleLocation.removeLastSegments(1);
+				final var binaryJarName = bundleLocation.lastSegment();
+				final var symbolicName = bundle.getSymbolicName();
+				final var sourceJarName = binaryJarName.replace(symbolicName,
 						symbolicName.concat(JAVADOC_SUFIX));
-				final IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
+				final var potentialSourceJar = bundlesParentFolder.append(sourceJarName);
 				if (potentialSourceJar.toFile().exists()) {
 					sourcesPath = potentialSourceJar;
 				}
@@ -261,7 +261,7 @@ public final class BundleUtil {
 	 * @return the bundle dependencies.
 	 */
 	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, BundleURLMappings javadocURLs) {
-		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
+		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
 		return new BundleDependencies(bundle, null, null, docMapping);
 	}
 
@@ -289,8 +289,8 @@ public final class BundleUtil {
 	 * @since 0.13
 	 */
 	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, BundleURLMappings javadocURLs, String... directDependencies) {
-		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
-		final Collection<String> deps = directDependencies == null || directDependencies.length == 0 ? null : Arrays.asList(directDependencies);
+		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
+		final var deps = directDependencies == null || directDependencies.length == 0 ? null : Arrays.asList(directDependencies);
 		return new BundleDependencies(bundle, deps, null, docMapping);
 	}
 
@@ -316,8 +316,8 @@ public final class BundleUtil {
 	 * @since 0.13
 	 */
 	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, BundleURLMappings javadocURLs, String... extraDependencies) {
-		final BundleURLMappings docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
-		final Collection<String> deps = extraDependencies == null || extraDependencies.length == 0 ? null : Arrays.asList(extraDependencies);
+		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
+		final var deps = extraDependencies == null || extraDependencies.length == 0 ? null : Arrays.asList(extraDependencies);
 		return new BundleDependencies(bundle, null, deps, docMapping);
 	}
 
@@ -520,7 +520,7 @@ public final class BundleUtil {
 		 * @param dependencies the dependencies.
 		 */
 		public void addDependencies(Collection<BundleDependency> dependencies) {
-			for (final BundleDependency dependency : dependencies) {
+			for (final var dependency : dependencies) {
 				if (this.dependencyIds.add(dependency.getBundle().getSymbolicName())) {
 					this.dependencies.add(dependency);
 				}
@@ -545,7 +545,7 @@ public final class BundleUtil {
 
 		@Override
 		public String toString() {
-			final StringBuilder buf = new StringBuilder();
+			final var buf = new StringBuilder();
 			buf.append("version="); //$NON-NLS-1$
 			buf.append(this.version);
 			buf.append("; dependencies="); //$NON-NLS-1$
@@ -607,19 +607,19 @@ public final class BundleUtil {
 		}
 
 		private DependencyDefinition getBundleDependencies(Bundle bundle) {
-			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
+			final var repository = getBundleDependencies();
 			synchronized (repository) {
 				return repository.get(bundle);
 			}
 		}
 
 		private void setBundleDependencies(Bundle bundle, Set<BundleDependency> cpEntries, boolean overwrite) {
-			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
+			final var repository = getBundleDependencies();
 			synchronized (repository) {
 				if (overwrite || !repository.containsKey(bundle)) {
 					repository.put(bundle, new DependencyDefinition(bundle.getVersion(), cpEntries));
 				} else {
-					final DependencyDefinition dependencySet = repository.get(bundle);
+					final var dependencySet = repository.get(bundle);
 					assert dependencySet != null;
 					dependencySet.setVersion(bundle.getVersion());
 					dependencySet.addDependencies(cpEntries);
@@ -628,9 +628,9 @@ public final class BundleUtil {
 		}
 
 		private void addToBundleDependencies(Bundle bundle, BundleDependency dependency) {
-			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
+			final var repository = getBundleDependencies();
 			synchronized (repository) {
-				final DependencyDefinition dependencySet = repository.get(bundle);
+				final var dependencySet = repository.get(bundle);
 				if (dependencySet == null) {
 					repository.put(bundle, new DependencyDefinition(bundle.getVersion(), Collections.singletonList(dependency)));
 				} else {
@@ -641,8 +641,8 @@ public final class BundleUtil {
 
 		@Override
 		public String toString() {
-			final StringBuilder buf = new StringBuilder();
-			final DependencyDefinition dependencies = getDependencyDefinition();
+			final var buf = new StringBuilder();
+			final var dependencies = getDependencyDefinition();
 			if (dependencies != null) {
 				toDependencyTree(
 						buf,
@@ -662,9 +662,9 @@ public final class BundleUtil {
 				builder.append(" (fragment)"); //$NON-NLS-1$
 			}
 			builder.append("\n"); //$NON-NLS-1$
-			for (final BundleDependency dependency : dependencies) {
+			for (final var dependency : dependencies) {
 				if (!Objects.equals(current.getSymbolicName(), dependency.getBundle().getSymbolicName())) {
-					final DependencyDefinition subdependencies = getBundleDependencies(dependency.getBundle());
+					final var subdependencies = getBundleDependencies(dependency.getBundle());
 					if (subdependencies != null) {
 						toDependencyTree(
 								builder,
@@ -717,28 +717,28 @@ public final class BundleUtil {
 		}
 
 		private DependencyDefinition getDependencyDefinition() {
-			DependencyDefinition dependencies = getBundleDependencies(this.bundle);
+			var dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
-				final IPath bundlePath = BundleUtil.getBundlePath(this.bundle);
+				final var bundlePath = BundleUtil.getBundlePath(this.bundle);
 				if (bundlePath.toFile().isDirectory()) {
 					// we have a directory, we assume we are in debug mode of the
 					// product
-					final IPath bundleSourcePath = BundleUtil.getSourceBundlePath(this.bundle, bundlePath);
+					final var bundleSourcePath = BundleUtil.getSourceBundlePath(this.bundle, bundlePath);
 
 					// Default value of the output folder for our project but will be
 					// overload later in we find a .classpath precising the output
 					// folder
-					IPath outputFolder = bundleSourcePath;
+					var outputFolder = bundleSourcePath;
 					if (!bundlePath.equals(bundleSourcePath)) {
 						outputFolder = Path.fromPortableString(bundleSourcePath.toPortableString().concat(DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
 					}
 					URL bundleURL = null;
 					try {
-						bundleURL = new URL("file://" + bundleSourcePath.toPortableString()); //$NON-NLS-1$
-					} catch (MalformedURLException e) {
+						bundleURL = new URI("file://" + bundleSourcePath.toPortableString()).toURL(); //$NON-NLS-1$
+					} catch (Exception e) {
 						return null;
 					}
-					final IPath classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, this.bundle, bundleURL);
+					final var classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, this.bundle, bundleURL);
 					if (classpathOutputFolder != null) {
 						outputFolder = classpathOutputFolder;
 					}
@@ -747,15 +747,15 @@ public final class BundleUtil {
 					this.binaryBundlePath = bundlePath;
 				}
 
-				final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
+				final var cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
 
-				final Set<BundleDependency> cpEntries = createBundleDependencySet();
+				final var cpEntries = createBundleDependencySet();
 	
 				updateBundleClassPath(this.bundle, cpEntry, cpEntries);
 				
 				if (this.extraDependencies != null) {
-					for (final String extraBundleName : this.extraDependencies) {
-						final Bundle extraBundle = Platform.getBundle(extraBundleName);
+					for (final var extraBundleName : this.extraDependencies) {
+						final var extraBundle = Platform.getBundle(extraBundleName);
 						if (extraBundle != null) {
 							updateBundleClassPath(extraBundle, cpEntry, cpEntries);
 						}
@@ -772,7 +772,7 @@ public final class BundleUtil {
 
 		@Override
 		public Version getBundleVersion() {
-			final DependencyDefinition dependencies = getDependencyDefinition();
+			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
 			}
@@ -786,7 +786,7 @@ public final class BundleUtil {
 
 		@Override
 		public Set<BundleDependency> getDirectDependencies() {
-			final DependencyDefinition dependencies = getDependencyDefinition();
+			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
 			}
@@ -795,7 +795,7 @@ public final class BundleUtil {
 
 		@Override
 		public Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments) {
-			final DependencyDefinition dependencies = getDependencyDefinition();
+			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return Collections.emptyList();
 			}
@@ -814,12 +814,12 @@ public final class BundleUtil {
 		private static BundleDependency updateBundleClassPath(Bundle bundle, IClasspathEntry entry, Set<BundleDependency> entries) {
 			assert bundle != null;
 			assert entry != null;
-			final BundleDependency rootDep = new BundleDependency(bundle, entry, false);
+			final var rootDep = new BundleDependency(bundle, entry, false);
 			entries.add(rootDep);
-			final Bundle[] fragments = Platform.getFragments(bundle);
+			final var fragments = Platform.getFragments(bundle);
 			if (fragments != null && fragments.length > 0) {
-				for (final Bundle fragment : fragments) {
-					final IClasspathEntry fragmentEntry = Utilities.newLibraryEntry(fragment, null, null);
+				for (final var fragment : fragments) {
+					final var fragmentEntry = Utilities.newLibraryEntry(fragment, null, null);
 					entries.add(new BundleDependency(fragment, fragmentEntry, true));
 				}
 			}
@@ -837,19 +837,19 @@ public final class BundleUtil {
 		 *      collections to filter the dependencies that are really useful.
 		 */
 		private void extractAllBundleDependencies(Bundle bundle, boolean firstCall) {
-			final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-			final List<BundleWire> bundleWires = bundleWiring.getRequiredWires(null);
+			final var bundleWiring = bundle.adapt(BundleWiring.class);
+			final var bundleWires = bundleWiring.getRequiredWires(null);
 
 			if (bundleWires != null) {
-				for (final BundleWire wire : bundleWires) {
+				for (final var wire : bundleWires) {
 
-					final Bundle dependency = wire.getProviderWiring().getBundle();
+					final var dependency = wire.getProviderWiring().getBundle();
 					assert dependency != null;
-					final String dependencyInstallationPath = dependency.getLocation();
+					final var dependencyInstallationPath = dependency.getLocation();
 
-					final DependencyDefinition existingDependencyCPE = getBundleDependencies(dependency);
+					final var existingDependencyCPE = getBundleDependencies(dependency);
 
-					final boolean validDependency = (existingDependencyCPE == null
+					final var validDependency = (existingDependencyCPE == null
 							|| dependency.getVersion().compareTo(existingDependencyCPE.getVersion()) > 0)
 							&& (!firstCall || this.directDependencies == null || this.directDependencies.contains(dependency.getSymbolicName()));
 
@@ -863,9 +863,9 @@ public final class BundleUtil {
 						}
 
 						if (dependencyInstallationPath.contains(JAR_EXTENSION) || u.getProtocol().equals(JAR_EXTENSION)) {
-							final IClasspathEntry cpEntry = Utilities.newLibraryEntry(dependency, null, this.javadocURLs);
-							final Set<BundleDependency> cpEntries = createBundleDependencySet();
-							final BundleDependency dep = updateBundleClassPath(dependency, cpEntry, cpEntries);
+							final var cpEntry = Utilities.newLibraryEntry(dependency, null, this.javadocURLs);
+							final var cpEntries = createBundleDependencySet();
+							final var dep = updateBundleClassPath(dependency, cpEntry, cpEntries);
 							setBundleDependencies(dependency, cpEntries, false);
 							addToBundleDependencies(bundle, dep);
 						} else {
@@ -890,28 +890,28 @@ public final class BundleUtil {
 		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;
-			final Set<BundleDependency> cpEntries = createBundleDependencySet();
-			final Enumeration<String> entries = bundle.getEntryPaths(ROOT_NAME);
+			final var cpEntries = createBundleDependencySet();
+			final var entries = bundle.getEntryPaths(ROOT_NAME);
 			String entry = null;
 			while (entries.hasMoreElements()) {
 				entry = entries.nextElement();
 				if (entry.contains(JavaProject.CLASSPATH_FILENAME)) {
 					try {
 						// copied from See {@link JavaProject#decodeClasspath}
-						final IClasspathEntry[][] classpath = JavaClasspathParser.readFileEntriesWithException(bundle.getSymbolicName(),
+						final var classpath = JavaClasspathParser.readFileEntriesWithException(bundle.getSymbolicName(),
 								bundleInstallURL);
 
 						if (classpath[0].length > 0) {
 							// extract the output location
-							int outputLocationEntryIndex = -1;
-							for (int i = 0; outputLocationEntryIndex < 0 && i < classpath[0].length; ++i) {
-								IClasspathEntry outputLocationEntry = classpath[0][i];
+							var outputLocationEntryIndex = -1;
+							for (var i = 0; outputLocationEntryIndex < 0 && i < classpath[0].length; ++i) {
+								var outputLocationEntry = classpath[0][i];
 								if (outputLocationEntry.getContentKind() == ClasspathEntry.K_OUTPUT) {
 									outputLocation = outputLocationEntry.getPath();
 									// Ensure that the classpath entry has a source attachment path
-									final IPath sourcePath = outputLocationEntry.getSourceAttachmentPath();
+									final var sourcePath = outputLocationEntry.getSourceAttachmentPath();
 									if (sourcePath == null) {
-										final IPath entryPath = outputLocationEntry.getPath();
+										final var entryPath = outputLocationEntry.getPath();
 										outputLocationEntry = Utilities.newOutputClasspathEntry(bundle, entryPath, null);
 									}
 									mainDependency = new BundleDependency(bundle, outputLocationEntry, false);
@@ -937,7 +937,7 @@ public final class BundleUtil {
 							}
 
 							if (copy != null && copy.length > 0) {
-								for (final IClasspathEntry cpentry : copy) {
+								for (final var cpentry : copy) {
 									if (cpentry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
 										// Do something if we have a
 										// container, usually this is the JRE
@@ -967,14 +967,13 @@ public final class BundleUtil {
 					// A jar inside the bundle.
 					// We have an error at runtime to these referenced jars.
 					try {
-						final URL bundleJARfileFullURL = new URL(bundleInstallURL.toExternalForm().concat(
-								"/").concat(entry)); //$NON-NLS-1$
-						final File jarFile = Util.toLocalFile(bundleJARfileFullURL.toURI(), null);
-						final IPath jarFilePath = new Path(jarFile.getAbsolutePath());
-						final IClasspathEntry cpEntry = Utilities.newLibraryEntry(bundle, jarFilePath, this.javadocURLs);
+						final var bundleJARfileFullURL = new URI(bundleInstallURL.toExternalForm().concat(
+								"/").concat(entry)).toURL(); //$NON-NLS-1$
+						final var jarFile = Util.toLocalFile(bundleJARfileFullURL.toURI(), null);
+						final var jarFilePath = new Path(jarFile.getAbsolutePath());
+						final var cpEntry = Utilities.newLibraryEntry(bundle, jarFilePath, this.javadocURLs);
 						updateBundleClassPath(bundle, cpEntry, cpEntries);
-					} catch (CoreException | URISyntaxException | MalformedURLException e) {
-
+					} catch (Exception e) {
 						SARLEclipsePlugin.getDefault().log(e);
 						return null;
 					}
@@ -1024,7 +1023,7 @@ public final class BundleUtil {
 
 			@Override
 			public String next() {
-				final BundleDependency dependency = this.iterator.next();
+				final var dependency = this.iterator.next();
 				return dependency.getBundle().getSymbolicName();
 			}
 
@@ -1059,7 +1058,7 @@ public final class BundleUtil {
 
 			@Override
 			public IClasspathEntry next() {
-				final BundleDependency dependency = this.iterator.next();
+				final var dependency = this.iterator.next();
 				return dependency.getClassPathEntry();
 			}
 
@@ -1094,7 +1093,7 @@ public final class BundleUtil {
 
 			@Override
 			public IRuntimeClasspathEntry next() {
-				final BundleDependency dependency = this.iterator.next();
+				final var dependency = this.iterator.next();
 				return dependency.getRuntimeClassPathEntry();
 			}
 
@@ -1137,14 +1136,14 @@ public final class BundleUtil {
 					if (this.currentIterator == null || !this.currentIterator.hasNext()) {
 						this.currentIterator = null;
 						while (this.currentIterator == null & !this.iterators.isEmpty()) {
-							final Iterator<BundleDependency> iterator = this.iterators.removeFirst();
+							final var iterator = this.iterators.removeFirst();
 							if (iterator.hasNext()) {
 								this.currentIterator = iterator;
 							}
 						}
 					}
 					while (this.current == null && this.currentIterator != null && this.currentIterator.hasNext()) {
-						final BundleDependency dep = this.currentIterator.next();
+						final var dep = this.currentIterator.next();
 						if (!this.repliedBundles.contains(dep.getBundle().getSymbolicName())
 								&& (this.includeFragments || !dep.isFragment())) {
 							this.current = dep;
@@ -1163,10 +1162,10 @@ public final class BundleUtil {
 				if (this.current == null) {
 					throw new NoSuchElementException();
 				}
-				final BundleDependency cur = this.current;
-				final DependencyDefinition deps = getBundleDependencies(cur.getBundle());
+				final var cur = this.current;
+				final var deps = getBundleDependencies(cur.getBundle());
 				if (deps != null) {
-					final Set<BundleDependency> depsdeps = deps.getDependencies();
+					final var depsdeps = deps.getDependencies();
 					if (depsdeps != null) {
 						this.iterators.add(depsdeps.iterator());
 					}

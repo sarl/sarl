@@ -199,19 +199,19 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 */
 	public void doCreate(Composite parentComposite, IDialogSettings settings) {
 		// Introduction
-		final String introductionMessage = getIntroductionLabel();
+		final var introductionMessage = getIntroductionLabel();
 		if (!Strings.isEmpty(introductionMessage)) {
-			final GridData gd = new GridData();
+			final var gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
 			gd.horizontalAlignment = GridData.FILL_HORIZONTAL;
 			gd.horizontalSpan = 2;
-			final Label textWidget = new Label(parentComposite, SWT.WRAP);
+			final var textWidget = new Label(parentComposite, SWT.WRAP);
 			textWidget.setLayoutData(gd);
 			textWidget.setText(introductionMessage);
 			textWidget.setFont(parentComposite.getFont());
 		}
 		//
-		final GridData gd = new GridData(GridData.FILL_BOTH);
+		final var gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = HEIGHT_HINT;
 		gd.widthHint = WIDTH_HINT;
 		this.table = new Table(parentComposite, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
@@ -221,7 +221,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		this.table.setLinesVisible(true);
 		this.table.setLinesVisible(true);
 
-		TableColumn column = new TableColumn(this.table, SWT.NULL);
+		var column = new TableColumn(this.table, SWT.NULL);
 		column.setText(getSourceColumnLabel());
 		if (!this.isSortedElements) {
 			column.addSelectionListener(new SelectionAdapter() {
@@ -274,10 +274,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		this.list.setColumnProperties(new String[] {SOURCE_COLUMN_PROPERTY, TARGET_COLUMN_PROPERTY});
 		this.list.setCellModifier(this.cellModifier);
 
-		final Composite buttons = SWTFactory.createComposite(parentComposite, parentComposite.getFont(), 1, 1,
+		final var buttons = SWTFactory.createComposite(parentComposite, parentComposite.getFont(), 1, 1,
 				GridData.VERTICAL_ALIGN_BEGINNING, 0, 0);
 
-		final Button addButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_0, null);
+		final var addButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_0, null);
 		addButton.addListener(SWT.Selection, evt -> addTypeConversion(null, null, true));
 
 		this.removeButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_1, null);
@@ -331,7 +331,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		return new DialogCellEditor(getControl()) {
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
-				final OpenTypeSelectionDialog dialog = new OpenTypeSelectionDialog(
+				final var dialog = new OpenTypeSelectionDialog(
 						getControl().getShell(),
 						false,
 						PlatformUI.getWorkbench().getProgressService(),
@@ -339,17 +339,19 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 						IJavaSearchConstants.TYPE);
 				dialog.setTitle(JavaUIMessages.OpenTypeAction_dialogTitle);
 				dialog.setMessage(JavaUIMessages.OpenTypeAction_dialogMessage);
-				final int result = dialog.open();
+				final var result = dialog.open();
 				if (result != IDialogConstants.OK_ID) {
 					return null;
 				}
-				final Object[] types = dialog.getResult();
-				if (types == null || types.length != 1 || !(types[0] instanceof IType)) {
+				final var types = dialog.getResult();
+				if (types == null || types.length != 1) {
 					return null;
 				}
-				final IType type = (IType) types[0];
-				final String name = type.getFullyQualifiedName();
-				return Strings.emptyIfNull(name);
+				if (types[0] instanceof IType type) {
+					final var name = type.getFullyQualifiedName();
+					return Strings.emptyIfNull(name);
+				}
+				return null;
 			}
 		};
 	}
@@ -370,10 +372,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 	@Override
 	public void updateControls() {
-		final IExtraControlController ctrl = getController();
-		final String preferenceName = getPreferenceKey();
-		final String rawValue = Strings.emptyIfNull(ctrl.getValue(preferenceName));
-		final List<Pair<String, String>> conversions = new ArrayList<>();
+		final var ctrl = getController();
+		final var preferenceName = getPreferenceKey();
+		final var rawValue = Strings.emptyIfNull(ctrl.getValue(preferenceName));
+		final var conversions = new ArrayList<Pair<String, String>>();
 		ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue,
 			(source, target) -> conversions.add(new Pair<>(source, target)));
 		setTypeConversions(conversions, false);
@@ -383,12 +385,12 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * Enables the type conversion buttons based on selected items counts in the viewer.
 	 */
 	private void enableButtons() {
-		final int itemCount = this.list.getTable().getItemCount();
-		final boolean hasElement = itemCount > 0;
+		final var itemCount = this.list.getTable().getItemCount();
+		final var hasElement = itemCount > 0;
 		IStructuredSelection selection;
 		if (hasElement) {
 			selection = this.list.getStructuredSelection();
-			final int selectionCount = selection.size();
+			final var selectionCount = selection.size();
 			if (selectionCount <= 0 || selectionCount > itemCount) {
 				selection = null;
 			}
@@ -398,10 +400,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		this.removeButton.setEnabled(selection != null);
 		this.clearButton.setEnabled(hasElement);
 		if (this.isSortedElements) {
-			final Object firstElement = selection != null ? this.list.getTable().getItem(0).getData() : null;
-			final Object lastElement = selection != null ? this.list.getTable().getItem(this.list.getTable().getItemCount() - 1).getData() : null;
-			final boolean isNotFirst = firstElement != null && selection != null && firstElement != selection.getFirstElement();
-			final boolean isNotLast = lastElement != null && selection != null && lastElement != selection.getFirstElement();
+			final var firstElement = selection != null ? this.list.getTable().getItem(0).getData() : null;
+			final var lastElement = selection != null ? this.list.getTable().getItem(this.list.getTable().getItemCount() - 1).getData() : null;
+			final var isNotFirst = firstElement != null && selection != null && firstElement != selection.getFirstElement();
+			final var isNotLast = lastElement != null && selection != null && lastElement != selection.getFirstElement();
 			this.moveTopButton.setEnabled(isNotFirst);
 			this.moveUpButton.setEnabled(isNotFirst);
 			this.moveDownButton.setEnabled(isNotLast);
@@ -418,7 +420,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	protected void setTypeConversions(List<Pair<String, String>> typeConversions, boolean notifyController) {
 		this.conversions.clear();
 		if (typeConversions != null) {
-			for (final Pair<String, String> entry : typeConversions) {
+			for (final var entry : typeConversions) {
 				this.conversions.add(new ConversionMapping(entry.getKey(), entry.getValue()));
 			}
 		}
@@ -436,7 +438,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * @param updateSelection indicates if the selection should be updated.
 	 */
 	protected void addTypeConversion(String javaType, String targetType, boolean updateSelection) {
-		final ConversionMapping entry = new ConversionMapping(javaType, targetType);
+		final var entry = new ConversionMapping(javaType, targetType);
 		this.conversions.add(entry);
 		//refresh from model
 		refreshListUI();
@@ -452,7 +454,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	}
 
 	private void preferenceValueChanged() {
-		final String preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(
+		final var preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(
 				new TypeConversionIterator());
 		getController().controlChanged(
 				getPreferenceKey(),
@@ -463,9 +465,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void removeCurrentTypeConversion() {
-		final IStructuredSelection selection = this.list.getStructuredSelection();
-		final String[] types = new String[selection.size()];
-		final Iterator<ConversionMapping> iter = selection.iterator();
+		final var selection = this.list.getStructuredSelection();
+		final var types = new String[selection.size()];
+		final var iter = selection.iterator();
 		int i = 0;
 		while (iter.hasNext()) {
 			types[i] = iter.next().getSource();
@@ -477,12 +479,12 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Move the selection at the top.
 	 */
 	protected void moveSelectionTop() {
-		final IStructuredSelection selection = this.list.getStructuredSelection();
-		final int index = this.conversions.indexOf(selection.getFirstElement());
+		final var selection = this.list.getStructuredSelection();
+		final var index = this.conversions.indexOf(selection.getFirstElement());
 		if (index > 0) {
-			final int endIndex = index + selection.size() - 1;
-			for (int i = 0; i < selection.size(); ++i) {
-				final ConversionMapping next = this.conversions.remove(endIndex);
+			final var endIndex = index + selection.size() - 1;
+			for (var i = 0; i < selection.size(); ++i) {
+				finalvar next = this.conversions.remove(endIndex);
 				this.conversions.addFirst(next);
 			}
 			refreshListUI();
@@ -495,10 +497,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Move the selection up.
 	 */
 	protected void moveSelectionUp() {
-		final IStructuredSelection selection = this.list.getStructuredSelection();
-		final int index = this.conversions.indexOf(selection.getFirstElement());
+		final var selection = this.list.getStructuredSelection();
+		final var index = this.conversions.indexOf(selection.getFirstElement());
 		if (index > 0) {
-			final ConversionMapping previous = this.conversions.remove(index - 1);
+			final var previous = this.conversions.remove(index - 1);
 			this.conversions.add(index + selection.size() - 1, previous);
 			refreshListUI();
 			this.list.refresh(true);
@@ -510,10 +512,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Move the selection down.
 	 */
 	protected void moveSelectionDown() {
-		final IStructuredSelection selection = this.list.getStructuredSelection();
-		final int index = this.conversions.indexOf(selection.getFirstElement());
+		final var selection = this.list.getStructuredSelection();
+		final var index = this.conversions.indexOf(selection.getFirstElement());
 		if (index >= 0 && (index + selection.size()) < this.conversions.size()) {
-			final ConversionMapping next = this.conversions.remove(index + selection.size());
+			final var next = this.conversions.remove(index + selection.size());
 			this.conversions.add(index, next);
 			refreshListUI();
 			this.list.refresh(true);
@@ -525,11 +527,11 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Move the selection at the bottom.
 	 */
 	protected void moveSelectionBottom() {
-		final IStructuredSelection selection = this.list.getStructuredSelection();
-		final int index = this.conversions.indexOf(selection.getFirstElement());
+		final var selection = this.list.getStructuredSelection();
+		final var index = this.conversions.indexOf(selection.getFirstElement());
 		if (index >= 0 && (index + selection.size()) < this.conversions.size()) {
-			for (int i = 0; i < selection.size(); ++i) {
-				final ConversionMapping previous = this.conversions.remove(index);
+			for (var i = 0; i < selection.size(); ++i) {
+				final var previous = this.conversions.remove(index);
 				this.conversions.addLast(previous);
 			}
 			refreshListUI();
@@ -544,10 +546,10 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * @param types the type conversions to be removed.
 	 */
 	protected void removeTypeConversions(String... types) {
-		for (final String type : types) {
-			final Iterator<ConversionMapping> iterator = this.conversions.iterator();
+		for (final var type : types) {
+			final var iterator = this.conversions.iterator();
 			while (iterator.hasNext()) {
-				final ConversionMapping pair = iterator.next();
+				final var pair = iterator.next();
 				if (Strings.equal(pair.getSource(), type)) {
 					iterator.remove();
 					break;
@@ -573,7 +575,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Refresh the UI list of type conversions.
 	 */
 	protected void refreshListUI() {
-		final Display display = Display.getDefault();
+		final var display = Display.getDefault();
 		if (display.getThread().equals(Thread.currentThread())) {
 			if (!this.list.isBusy()) {
 				this.list.refresh();
@@ -652,9 +654,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * @param settings the settings to read.
 	 */
 	private void restoreColumnWidths(IDialogSettings settings) {
-		final int columnCount = this.table.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
-			int width = -1;
+		final var columnCount = this.table.getColumnCount();
+		for (var i = 0; i < columnCount; i++) {
+			var width = -1;
 			try {
 				width = settings.getInt(getPreferenceContainerID() + getColumnWidthDialogSettingsKey() + i);
 			} catch (NumberFormatException exception) {
@@ -687,7 +689,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		if (!this.isSortedElements) {
 			this.sort = Column.SOURCE;
 			try {
-				final String columnName = settings.get(getPreferenceContainerID() + getColumnSortCriteraDialogSettingsKey());
+				final var columnName = settings.get(getPreferenceContainerID() + getColumnSortCriteraDialogSettingsKey());
 				if (!Strings.isEmpty(columnName)) {
 					this.sort = Column.valueOf(columnName);
 					if (this.sort == null) {
@@ -806,8 +808,8 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 			if (obj == this) {
 				return true;
 			}
-			if (obj instanceof ConversionMapping) {
-				return ((ConversionMapping) obj).getSource().equals(getSource());
+			if (obj instanceof ConversionMapping cvalue) {
+				return cvalue.getSource().equals(getSource());
 			}
 			return false;
 		}
@@ -854,7 +856,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
-			final ConversionMapping pair = (ConversionMapping) element;
+			final var pair = (ConversionMapping) element;
 			if (columnIndex == 1) {
 				return pair.getTarget();
 			}
@@ -933,7 +935,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 		@Override
 		public Object getValue(Object element, String property) {
-			final ConversionMapping pair = (ConversionMapping) element;
+			final var pair = (ConversionMapping) element;
 			if (Strings.equal(this.targetColumnPropertyName, property)) {
 				return pair.getTarget();
 			}
@@ -954,7 +956,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 		@Override
 		public void modify(Object element, String property, Object value) {
-			final TableItem item = (TableItem) element;
+			final var item = (TableItem) element;
 			if (Strings.equal(this.targetColumnPropertyName, property)) {
 				((ConversionMapping) item.getData()).setTarget(Objects.toString(value));
 				this.table.get().refreshListUI();
@@ -992,11 +994,11 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		@Override
 		public String next() {
 			if (this.value != null) {
-				final String next = this.value;
+				final var next = this.value;
 				this.value = null;
 				return next;
 			}
-			final ConversionMapping mapping = this.iterator.next();
+			final var mapping = this.iterator.next();
 			this.value = mapping.getTarget();
 			return mapping.getSource();
 		}

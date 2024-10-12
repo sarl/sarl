@@ -26,9 +26,7 @@ import java.text.MessageFormat;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmConstructor;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -43,11 +41,9 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
 
-import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.lang.extralanguage.validator.AbstractExtraLanguageValidator;
 import io.sarl.lang.pythongenerator.configuration.IPyGeneratorConfigurationProvider;
-import io.sarl.lang.pythongenerator.configuration.PyGeneratorConfiguration;
 import io.sarl.lang.pythongenerator.generator.PyInitializers;
 import io.sarl.lang.pythongenerator.generator.PyKeywordProvider;
 
@@ -119,9 +115,9 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 
 	@Override
 	protected void initializeContext(Context validatorContext) {
-		final Resource resource = validatorContext.getCurrentObject().eResource();
-		final PyGeneratorConfiguration config = this.configuration.get(resource, true);
-		final ExtraLanguageTypeConverter converter = getTypeConverter();
+		final var resource = validatorContext.getCurrentObject().eResource();
+		final var config = this.configuration.get(resource, true);
+		final var converter = getTypeConverter();
 		converter.setImplicitJvmTypes(config.isImplicitJvmTypes());
 	}
 
@@ -146,7 +142,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	 */
 	@Check
 	public void checkImportsMapping(XImportDeclaration importDeclaration) {
-		final JvmDeclaredType type = importDeclaration.getImportedType();
+		final var type = importDeclaration.getImportedType();
 		doTypeMappingCheck(importDeclaration, type, this.typeErrorHandler1);
 	}
 

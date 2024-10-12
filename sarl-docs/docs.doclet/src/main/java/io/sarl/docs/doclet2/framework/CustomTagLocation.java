@@ -56,7 +56,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
-
 import jdk.javadoc.doclet.Taglet.Location;
 
 /** Location of a custom tag.
@@ -74,8 +73,8 @@ public enum CustomTagLocation {
 	EVERYWHERE('a') {
 		@Override
 		public Location[] toJavadocLocation() {
-			final List<Location> list = new ArrayList<>();
-			for (final CustomTagLocation location : getAllActiveLocations()) {
+			final var list = new ArrayList<Location>();
+			for (final var location : getAllActiveLocations()) {
 				list.addAll(Arrays.asList(location.toJavadocLocation()));
 			}
 			return list.toArray(new Location[list.size()]);
@@ -186,7 +185,7 @@ public enum CustomTagLocation {
 	 * @return the location, or {@code null} if the given symbol is not recognized.
 	 */
 	public static CustomTagLocation valueOf(char symbol) {
-		for (final CustomTagLocation location : values()) {
+		for (final var location : values()) {
 			if (location.symbol == symbol) {
 				return location;
 			}
@@ -200,10 +199,10 @@ public enum CustomTagLocation {
 	 * @return the list of detected locations.
 	 */
 	public static List<CustomTagLocation> parse(String specification) {
-		final List<CustomTagLocation> list = new ArrayList<>();
+		final var list = new ArrayList<CustomTagLocation>();
 		if (!Strings.isNullOrEmpty(specification)) {
-			for (final char symbol : specification.toCharArray()) {
-				final CustomTagLocation location = valueOf(symbol);
+			for (final var symbol : specification.toCharArray()) {
+				final var location = valueOf(symbol);
 				if (location != null) {
 					list.add(location);
 				}

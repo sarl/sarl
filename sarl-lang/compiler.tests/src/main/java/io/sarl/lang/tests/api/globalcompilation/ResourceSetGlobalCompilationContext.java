@@ -234,8 +234,8 @@ public class ResourceSetGlobalCompilationContext {
 		} else {
 			script = this.parser.parse(code, this.resourceSet);
 		}
-		if (this.resourceSet instanceof XtextResourceSet) {
-			((XtextResourceSet) this.resourceSet).setClasspathURIContext(getClass());
+		if (this.resourceSet instanceof XtextResourceSet cvalue) {
+			cvalue.setClasspathURIContext(getClass());
 		}
 		Resource resource = script.eResource();
 		assertEquals(0, resource.getErrors().size(), () -> resource.getErrors().toString());

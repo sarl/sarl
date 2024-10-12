@@ -100,14 +100,14 @@ public class ReturnTaglet extends AbstractSarlTaglet {
 
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor context) {
-		final Iterable<ReturnTree> returns = Iterables.filter(tags, ReturnTree.class);
-		final CssStyles rstyle = getTextCssStyle(style);
-		boolean changed = false;
-		for (final ReturnTree returnEntry : returns) {
+		final var returns = Iterables.filter(tags, ReturnTree.class);
+		final var rstyle = getTextCssStyle(style);
+		var changed = false;
+		for (final var returnEntry : returns) {
 			if (changed) {
 				parent.appendChild(getHtmlFactory().createNewLineTag());
 			}
-			final boolean hasDescription = appendCommentTextWithSpace(parent, returnEntry.getDescription(),
+			final var hasDescription = appendCommentTextWithSpace(parent, returnEntry.getDescription(),
 					element, rstyle, context.getContext());
 			if (!hasDescription) {
 				context.getContext().getReporter().print(Kind.ERROR, Messages.ReturnTaglet_1);

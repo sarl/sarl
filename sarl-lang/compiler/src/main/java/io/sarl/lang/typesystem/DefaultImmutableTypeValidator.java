@@ -50,7 +50,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtend.lib.annotations.Data;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -181,7 +180,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isAlwaysImmutable(LightweightTypeReference ref) {
-		final LightweightTypeReference pref = ref.getPrimitiveIfWrapperType();
+		final var pref = ref.getPrimitiveIfWrapperType();
 		return pref.isPrimitive() || pref.isPrimitiveVoid();
 	}
 
@@ -193,10 +192,9 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 * @see #IMMUTABLE_TYPE_ANNOTATIONS
 	 */
 	protected boolean hasImmutableAnnotation(LightweightTypeReference ref) {
-		final JvmType backType = ref.getType();
-		if (backType instanceof JvmAnnotationTarget) {
-			final JvmAnnotationTarget target = (JvmAnnotationTarget) backType;
-			for (final Class<?> jvmType : IMMUTABLE_TYPE_ANNOTATIONS) {
+		final var backType = ref.getType();
+		if (backType instanceof JvmAnnotationTarget target) {
+			for (final var jvmType : IMMUTABLE_TYPE_ANNOTATIONS) {
 				if (this.annotationFinder.findAnnotation(target, jvmType.getCanonicalName()) != null) {
 					return true;
 				}
@@ -214,7 +212,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isRegisteredImmutableType(LightweightTypeReference ref) {
-		for (final Class<?> jvmType : IMMUTABLE_TYPES) {
+		for (final var jvmType : IMMUTABLE_TYPES) {
 			if (ref.isSubtypeOf(jvmType)) {
 				return true;
 			}

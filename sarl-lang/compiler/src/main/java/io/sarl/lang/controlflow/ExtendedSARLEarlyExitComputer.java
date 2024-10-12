@@ -69,7 +69,7 @@ public class ExtendedSARLEarlyExitComputer extends ExtendedEarlyExitComputer {
 			// Do not call expression.getFeature() since the feature may be unresolved.
 			// The type resolution at this point causes exceptions in the reentrant type resolver.
 			// The second parameter (false) forces to ignore feature resolution.
-			final Object element = expression.eGet(
+			final var element = expression.eGet(
 					XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
 					false);
 			return this.originalComputer.isEarlyExitAnnotatedElement(element);

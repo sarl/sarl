@@ -21,7 +21,6 @@
 
 package io.sarl.apputils.bootiqueapp.mdconfig;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -106,15 +104,15 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		if (Strings.isNullOrEmpty(selectedRoot)) {
 			filter = (it) -> true;
 		} else {
-			final String prefix = selectedRoot + "."; //$NON-NLS-1$
+			final var prefix = selectedRoot + "."; //$NON-NLS-1$
 			filter = (it) -> it.getName().equals(selectedRoot) || it.getName().startsWith(prefix);
 		}
-		final List<ModuleMetadata> sortedModules = modulesMetadata
+		final var sortedModules = modulesMetadata
 				.getModules()
 				.stream()
 				.sorted(Comparator.comparing(ModuleMetadata::getName))
 				.collect(Collectors.toList());
-		final List<ConfigMetadataNode> sortedConfigs = sortedModules.stream()
+		final var sortedConfigs = sortedModules.stream()
 				.map(ModuleMetadata::getConfigs)
 				.flatMap(Collection::stream)
 				.filter(filter)
@@ -133,10 +131,10 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	 * @return the configuration parameters.
 	 */
 	public static List<List<String>> getConfigurationParametersAsStrings(ModulesMetadata modulesMetadata, String selectedRoot, boolean replacePipes, boolean addLineIfNoData) {
-		final List<ConfigMetadataNode> parameters = getConfigurationParameters(modulesMetadata, selectedRoot);
-		final List<List<String>> matrix = new ArrayList<>(parameters.size());
-		final Visitor visitor = new Visitor(matrix, replacePipes);
-		for (final ConfigMetadataNode parameter : parameters) {
+		final var parameters = getConfigurationParameters(modulesMetadata, selectedRoot);
+		final var matrix = new ArrayList<List<String>>(parameters.size());
+		final var visitor = new Visitor(matrix, replacePipes);
+		for (final var parameter : parameters) {
 			parameter.accept(visitor);
 		}
 		if (addLineIfNoData && matrix.isEmpty()) {
@@ -159,12 +157,12 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final String rootName = System.getProperty(CLI_ROOT_PROPERTY, null);
-		final List<List<String>> parameters = getConfigurationParametersAsStrings(this.modulesMetadata, rootName, true, true);
-		final StringBuilder content = new StringBuilder();	
-		for (final List<String> row : parameters) {
-			boolean first = true;
-			for (final String cell : row) {
+		final var rootName = System.getProperty(CLI_ROOT_PROPERTY, null);
+		final var parameters = getConfigurationParametersAsStrings(this.modulesMetadata, rootName, true, true);
+		final var content = new StringBuilder();	
+		for (final var row : parameters) {
+			var first = true;
+			for (final var cell : row) {
 				if (first) {
 					first = false;
 					content.append("| "); // $NON-NLS-1$ //$NON-NLS-1$
@@ -209,7 +207,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		}
 
 		private String prepareStr(String value) {
-			final String fixedValue = Strings.nullToEmpty(value);
+			final var fixedValue = Strings.nullToEmpty(value);
 			if (this.replacePipes) {
 				return fixedValue.replace("|", PIPE); //$NON-NLS-1$
 			}
@@ -217,26 +215,26 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		}
 
 		private void printMetadata(ConfigMetadataNode metadata) {
-			final String name = prepareStr(metadata.getName());
+			final var name = prepareStr(metadata.getName());
 			if (this.added.add(name)) {
 				addToMatrix(this.matrix, name,
 						prepareStr(metadata.getDescription()));
-				final Class<?> type = (Class<?>) metadata.getType();
+				final var type = (Class<?>) metadata.getType();
 				if (type == null) {
 					return;
 				}
-				for (final Method setterMethod : type.getMethods()) {
+				for (final var setterMethod : type.getMethods()) {
 					if (Modifier.isPublic(setterMethod.getModifiers())
 							&& !Modifier.isAbstract(setterMethod.getModifiers())
 							&& !Modifier.isStatic(setterMethod.getModifiers())
 							&& setterMethod.getParameterCount() == 1) {
-						final BQConfigProperty annotation = setterMethod.getAnnotation(BQConfigProperty.class);
+						final var annotation = setterMethod.getAnnotation(BQConfigProperty.class);
 						if (annotation != null) {
-							final Matcher matcher = this.setPattern.matcher(setterMethod.getName());
+							final var matcher = this.setPattern.matcher(setterMethod.getName());
 							if (matcher.matches()) {
-								final String firstLetter = matcher.group(1);
-								final String rest = matcher.group(2);
-								final String propertyName = firstLetter.toLowerCase() + rest;
+								final var firstLetter = matcher.group(1);
+								final var rest = matcher.group(2);
+								final var propertyName = firstLetter.toLowerCase() + rest;
 								addToMatrix(
 										this.matrix,
 										prepareStr(propertyName),
@@ -252,7 +250,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		@SuppressWarnings("unchecked")
 		private String getTypeLabel(Class<?> type) {
 			assert type != null;
-			final Class<?> uwt = Primitives.unwrap(type);
+			final var uwt = Primitives.unwrap(type);
 			if (uwt.isPrimitive()) {
 				return uwt.getSimpleName();
 			}
@@ -260,9 +258,9 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 				return "string"; //$NON-NLS-1$
 			}
 			if (uwt.isEnum()) {
-				final Class<? extends Enum<?>> etype = (Class<? extends Enum<?>>) uwt;
-				final StringBuilder buf = new StringBuilder();
-				for (final Enum<?> cst : etype.getEnumConstants()) {
+				final var etype = (Class<? extends Enum<?>>) uwt;
+				final var buf = new StringBuilder();
+				for (final var cst : etype.getEnumConstants()) {
 					if (buf.length() > 0) {
 						buf.append(prepareStr(" | ")); //$NON-NLS-1$
 					}
@@ -285,7 +283,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 		public Void visitObjectMetadata(ConfigObjectMetadata metadata) {
 			printMetadata(metadata);
 			//
-			final List<ConfigObjectMetadata> selfAndSubconfigs = metadata
+			final var selfAndSubconfigs = metadata
 					.getAllSubConfigs()
 					.map(md -> md.accept(new ConfigMetadataVisitor<ConfigObjectMetadata>() {
 						@Override

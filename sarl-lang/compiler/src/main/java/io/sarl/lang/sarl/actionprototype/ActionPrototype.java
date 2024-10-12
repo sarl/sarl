@@ -71,7 +71,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	@Override
 	public ActionPrototype clone() {
 		try {
-			final ActionPrototype prototype = (ActionPrototype) super.clone();
+			final var prototype = (ActionPrototype) super.clone();
 			prototype.signature = this.signature.clone();
 			return prototype;
 		} catch (CloneNotSupportedException e) {
@@ -90,7 +90,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 		}
 
 		if (this.getClass() == obj.getClass()) {
-			final ActionPrototype prototype = (ActionPrototype) obj;
+			final var prototype = (ActionPrototype) obj;
 			return this.function.equals(prototype.function)
 					&& this.signature.equals(prototype.signature);
 		}
@@ -99,7 +99,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
+		var hash = 1;
 		hash = 31 * hash + this.function.hashCode();
 		hash = 31 * hash + this.signature.hashCode();
 		return hash;
@@ -115,7 +115,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 		if (otherProto == null) {
 			return Integer.MAX_VALUE;
 		}
-		final int cmp = this.function.compareTo(otherProto.function);
+		final var cmp = this.function.compareTo(otherProto.function);
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -127,11 +127,11 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	 * @return the identifier.
 	 */
 	public String toActionId() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append(getActionName());
-		for (final String type : this.signature) {
+		for (final var type : this.signature) {
 			b.append("_"); //$NON-NLS-1$
-			for (final char c : type.replaceAll("(\\[\\])|\\*", "Array").toCharArray()) { //$NON-NLS-1$//$NON-NLS-2$
+			for (final var c : type.replaceAll("(\\[\\])|\\*", "Array").toCharArray()) { //$NON-NLS-1$//$NON-NLS-2$
 				if (Character.isJavaIdentifierPart(c)) {
 					b.append(c);
 				}

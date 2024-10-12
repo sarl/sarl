@@ -59,7 +59,7 @@ public class JavaPluginExtraLanguageContributions implements IExtraLanguageContr
 		}
 		if (this.contributions == null) {
 			this.contributions = new ArrayList<>();
-			for (final IExtraLanguageContribution contrib : this.serviceLoader) {
+			for (final var contrib : this.serviceLoader) {
 				if (this.checker == null || this.checker.test(contrib)) {
 					this.injector.injectMembers(contrib);
 					this.contributions.add(contrib);

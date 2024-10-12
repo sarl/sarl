@@ -48,7 +48,7 @@ public final class BehaviorUnitGuardRemoveModification extends SARLSemanticModif
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final BehaviorUnitGuardRemoveModification modification = new BehaviorUnitGuardRemoveModification();
+		final var modification = new BehaviorUnitGuardRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -61,7 +61,7 @@ public final class BehaviorUnitGuardRemoveModification extends SARLSemanticModif
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final IXtextDocument document = context.getXtextDocument();
+		final var document = context.getXtextDocument();
 		getTools().removeBetweenSeparators(getIssue(), document, "[", "]"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 

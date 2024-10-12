@@ -57,7 +57,6 @@ import java.util.SortedSet;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 
 import jdk.javadoc.doclet.Reporter;
 
@@ -102,8 +101,8 @@ public class PackageTreeSummaryGeneratorImpl extends AbstractTreeSummaryGenerato
 
 	@Override
 	protected boolean isVisible(TypeElement type) {
-		final TypeMirror tm = type.asType();
-		for (final TypeElement type0 : this.packageTypes) {
+		final var tm = type.asType();
+		for (final var type0 : this.packageTypes) {
 			if (getEnvironment().getTypeUtils().isAssignable(type0.asType(), tm)) {
 				return true;
 			}

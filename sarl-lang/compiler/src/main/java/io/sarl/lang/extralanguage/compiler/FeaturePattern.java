@@ -22,9 +22,7 @@
 package io.sarl.lang.extralanguage.compiler;
 
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.xtext.util.Strings;
@@ -79,8 +77,8 @@ public class FeaturePattern {
 	 * @param specification the textual representation of the pattern.
 	 */
 	public FeaturePattern(String specification) {
-		final String[] elements = specification.split(SEPARATOR_PATTERN);
-		final String last = elements[elements.length - 1];
+		final var elements = specification.split(SEPARATOR_PATTERN);
+		final var last = elements[elements.length - 1];
 		if (last.contains(ALL_PATTERN)) {
 			this.rawFeature = null;
 			this.featurePattern = Pattern.compile(protect(last));
@@ -90,7 +88,7 @@ public class FeaturePattern {
 		}
 		this.pathPatterns = new Pattern[elements.length - 1];
 		if (this.pathPatterns.length > 0) {
-			for (int i = 0; i < this.pathPatterns.length; ++i) {
+			for (var i = 0; i < this.pathPatterns.length; ++i) {
 				this.pathPatterns[i] = Pattern.compile(protect(elements[i]));
 			}
 		}
@@ -109,9 +107,9 @@ public class FeaturePattern {
 		if (Strings.equal(source, ALL_PATTERN)) {
 			return ANY_PATTERN;
 		}
-		final StringBuilder builder = new StringBuilder();
-		boolean first = true;
-		for (final String element : source.split(Pattern.quote(ALL_PATTERN))) {
+		final var builder = new StringBuilder();
+		var first = true;
+		for (final var element : source.split(Pattern.quote(ALL_PATTERN))) {
 			if (first) {
 				first = false;
 			} else {
@@ -140,19 +138,19 @@ public class FeaturePattern {
 		if (this.rawFeature != null) {
 			match = this.rawFeature.equals(feature.getLast());
 		} else {
-			final Matcher featureMatcher = this.featurePattern.matcher(feature.getLast());
+			final var featureMatcher = this.featurePattern.matcher(feature.getLast());
 			match = featureMatcher.matches();
 		}
 		if (match && this.pathPatterns.length > 0) {
-			final Iterator<String> iterator = feature.descendingIterator();
+			final var iterator = feature.descendingIterator();
 			// Skip last
 			iterator.next();
-			for (int j = this.pathPatterns.length - 1;
+			for (var j = this.pathPatterns.length - 1;
 					match && iterator.hasNext() && j >= 0;
 					--j) {
-				final String component = iterator.next();
-				final Pattern pathPattern = this.pathPatterns[j];
-				final Matcher pathMatcher = pathPattern.matcher(component);
+				final var component = iterator.next();
+				final var pathPattern = this.pathPatterns[j];
+				final var pathMatcher = pathPattern.matcher(component);
 				match = pathMatcher.matches();
 			}
 		}
@@ -165,8 +163,8 @@ public class FeaturePattern {
 	 * @return the simple name.
 	 */
 	public static String simpleName(String textualRepresentation) {
-		int start = textualRepresentation.lastIndexOf(SEPARATOR);
-		int end = textualRepresentation.length();
+		var start = textualRepresentation.lastIndexOf(SEPARATOR);
+		var end = textualRepresentation.length();
 		if (start < 0) {
 			start = 0;
 		} else {
@@ -176,7 +174,7 @@ public class FeaturePattern {
 			end = textualRepresentation.lastIndexOf(OPARENTHESIS);
 			assert end > 0;
 		}
-		final int dot = textualRepresentation.lastIndexOf(DOT, end - 1);
+		final var dot = textualRepresentation.lastIndexOf(DOT, end - 1);
 		if (dot + 1 >= start) {
 			start = dot + 1;
 		}

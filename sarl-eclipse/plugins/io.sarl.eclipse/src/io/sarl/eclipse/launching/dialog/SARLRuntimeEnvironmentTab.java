@@ -104,16 +104,16 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	}
 
 	private static List<ProjectSREProviderFactory> getProviderFromExtension() {
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
 				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
-			final List<ProjectSREProviderFactory> providers = new ArrayList<>();
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			final var providers = new ArrayList<ProjectSREProviderFactory>();
+			for (final var element : extensionPoint.getConfigurationElements()) {
 				try {
-					final Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ProjectSREProviderFactory) {
-						providers.add((ProjectSREProviderFactory) obj);
+					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					if (obj instanceof ProjectSREProviderFactory cvalue) {
+						providers.add(cvalue);
 					} else {
 						SARLEclipsePlugin.getDefault().logErrorMessage(
 								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
@@ -131,17 +131,17 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
-		final ProjectProvider projectProvider = new ProjectAdapter();
-		final List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
+		final var projectProvider = new ProjectAdapter();
+		final var sreProviderFactories = getProviderFromExtension();
 		sreProviderFactories.add(new EclipseIDEProjectSREProviderFactory());
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 
-		final SREConfigurationBlock blk = getSREConfigurationBlock();
+		final var blk = getSREConfigurationBlock();
 		blk.createControl(parent);
-		final Composite oldComp = (Composite) getControl();
-		final Control[] children = oldComp.getChildren();
-		for (final Control ctl : children) {
+		final var oldComp = (Composite) getControl();
+		final var children = oldComp.getChildren();
+		for (final var ctl : children) {
 			ctl.setParent(blk.getControl());
 		}
 		setControl(blk.getControl());
@@ -162,9 +162,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	 * @since 0.11
 	 */
 	public void fireSreChange(ISREInstall sre) {
-		final Object[] listeners = this.sreChangeListeners.getListeners();
-		for (int i = 0; i < listeners.length; i++) {
-			final ISreChangeListener listener = (ISreChangeListener) listeners[i];
+		final var listeners = this.sreChangeListeners.getListeners();
+		for (var i = 0; i < listeners.length; i++) {
+			final var listener = (ISreChangeListener) listeners[i];
 			listener.sreChanged(sre);
 		}
 	}
@@ -206,8 +206,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	 * @param config the config to load the runtime environment from
 	 */
 	protected void selectSREFromConfig(ILaunchConfiguration config) {
-		final SREConfigurationBlock blk = getSREConfigurationBlock();
-		final boolean notify = blk.getNotify();
+		final var blk = getSREConfigurationBlock();
+		final var notify = blk.getNotify();
 		final boolean changed;
 		try {
 			blk.setNotify(false);
@@ -216,8 +216,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 			} else if (this.accessor.getUseProjectSREFlag(config)) {
 				changed = blk.selectProjectSRE();
 			} else {
-				final String sreId = this.accessor.getSREId(config);
-				final ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
+				final var sreId = this.accessor.getSREId(config);
+				final var sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
 				changed = blk.selectSpecificSRE(sre);
 			}
 		} finally {
@@ -231,7 +231,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	@Override
 	public void dispose() {
 		super.dispose();
-		final SREConfigurationBlock blk = getSREConfigurationBlock();
+		final var blk = getSREConfigurationBlock();
 		if (this.listener != null) {
 			if (blk != null) {
 				blk.removePropertyChangeListener(this.listener);
@@ -253,9 +253,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
-		final String id = this.accessor.getSREId(config);
-		final SREConfigurationBlock blk = getSREConfigurationBlock();
-		ISREInstall sre = SARLRuntime.getSREFromId(id);
+		final var id = this.accessor.getSREId(config);
+		final var blk = getSREConfigurationBlock();
+		var sre = SARLRuntime.getSREFromId(id);
 		if (sre == null) {
 			sre = blk.getSelectedSRE();
 		}
@@ -274,7 +274,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 			return super.isValid(config) && isValidJREVersion(config);
 		}
 		setErrorMessage(status.getMessage());
-		final Throwable throwable = status.getException();
+		final var throwable = status.getException();
 		if (throwable != null) {
 			JDIDebugUIPlugin.log(throwable);
 		}
@@ -288,9 +288,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	 * @return {@code true} if the JRE is compatible with SARL.
 	 */
 	protected boolean isValidJREVersion(ILaunchConfiguration config) {
-		final IVMInstall install = this.fJREBlock.getJRE();
-		if (install instanceof IVMInstall2) {
-			final String version = ((IVMInstall2) install).getJavaVersion();
+		final var install = this.fJREBlock.getJRE();
+		if (install instanceof IVMInstall2 cvalue) {
+			final var version = cvalue.getJavaVersion();
 			if (version == null) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_3, install.getName()));
@@ -313,8 +313,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
 		// Save the SRE specific parameters
-		final SREConfigurationBlock blk = getSREConfigurationBlock();
-		final ISREInstall sre = blk.getSelectedSRE();
+		final var blk = getSREConfigurationBlock();
+		final var sre = blk.getSelectedSRE();
 		this.configurator.setRuntimeConfiguration(configuration, sre,
 				Boolean.valueOf(blk.isSystemWideDefaultSRE()),
 				Boolean.valueOf(blk.isProjectSRE()),
@@ -344,15 +344,15 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 		@Override
 		@SuppressWarnings("synthetic-access")
 		public IProject getProject() {
-			ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();
+			var config = getLaunchConfigurationWorkingCopy();
 			if (config == null) {
 				config = getLaunchConfiguration();
 			}
 			if (config != null) {
 				try {
-					final String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
+					final var name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 					if (name != null && name.length() > 0) {
-						final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+						final var project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 						if (project.exists()) {
 							return project;
 						}

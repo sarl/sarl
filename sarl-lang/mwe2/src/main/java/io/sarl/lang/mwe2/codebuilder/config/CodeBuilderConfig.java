@@ -227,7 +227,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	public void addForbiddenInjectionPrefix(String prefix) {
 		if (!Strings.isEmpty(prefix)) {
-			final String real = prefix.endsWith(".") ? prefix.substring(0, prefix.length() - 1) : prefix; //$NON-NLS-1$
+			final var real = prefix.endsWith(".") ? prefix.substring(0, prefix.length() - 1) : prefix; //$NON-NLS-1$
 			this.forbiddenInjectionPrefixes.add(real);
 		}
 	}
@@ -238,7 +238,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	public void addForbiddenInjectionPostfixes(String postfix) {
 		if (!Strings.isEmpty(postfix)) {
-			final String real = postfix.startsWith(".") ? postfix.substring(1) : postfix; //$NON-NLS-1$
+			final var real = postfix.startsWith(".") ? postfix.substring(1) : postfix; //$NON-NLS-1$
 			this.forbiddenInjectionPrefixes.add(real);
 		}
 	}
@@ -454,9 +454,9 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	public void addModifier(Modifier modifier) {
 		if (modifier != null) {
-			final String ruleName = modifier.getType();
+			final var ruleName = modifier.getType();
 			if (!Strings.isEmpty(ruleName)) {
-				List<String> modifiers = this.modifiers.get(ruleName);
+				var modifiers = this.modifiers.get(ruleName);
 				if (modifiers == null) {
 					modifiers = new ArrayList<>();
 					this.modifiers.put(ruleName, modifiers);

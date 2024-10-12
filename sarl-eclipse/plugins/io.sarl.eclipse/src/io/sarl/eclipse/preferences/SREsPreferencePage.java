@@ -160,7 +160,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	protected void refreshSREListUI() {
 		// Refreshes the SRE listing after a SRE install notification, might not
 		// happen on the UI thread.
-		final Display display = Display.getDefault();
+		final var display = Display.getDefault();
 		if (display.getThread().equals(Thread.currentThread())) {
 			if (!this.sresList.isBusy()) {
 				this.sresList.refresh();
@@ -183,7 +183,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	public void setErrorMessage(Throwable exception) {
 		if (exception != null) {
-			String message = exception.getLocalizedMessage();
+			var message = exception.getLocalizedMessage();
 			if (Strings.isNullOrEmpty(message)) {
 				message = exception.getMessage();
 			}
@@ -205,7 +205,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		noDefaultAndApplyButton();
 
-		final GridLayout layout = new GridLayout();
+		final var layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.marginHeight = 2;
 		layout.marginWidth = 2;
@@ -219,12 +219,12 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		SWTFactory.createWrapLabel(parent,
 				Messages.SREsPreferencePage_1,
 				1, WRAP_WIDTH);
-		final Font font = parent.getFont();
-		final Composite listComposite = SWTFactory.createComposite(parent, font, 2, 1, GridData.FILL_BOTH);
+		final var font = parent.getFont();
+		final var listComposite = SWTFactory.createComposite(parent, font, 2, 1, GridData.FILL_BOTH);
 
 		this.sreTable = new Table(listComposite,
 				SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-		final GridData gd = new GridData(GridData.FILL_BOTH);
+		final var gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = HEIGHT_HINT;
 		gd.widthHint = WIDTH_HINT;
 		this.sreTable.setLayoutData(gd);
@@ -232,7 +232,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.sreTable.setHeaderVisible(true);
 		this.sreTable.setLinesVisible(true);
 
-		TableColumn column = new TableColumn(this.sreTable, SWT.NULL);
+		var column = new TableColumn(this.sreTable, SWT.NULL);
 		column.setText(Messages.SREsPreferencePage_2);
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -296,7 +296,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		});
 
-		final Composite buttons = SWTFactory.createComposite(listComposite, font, 1, 1,
+		final var buttons = SWTFactory.createComposite(listComposite, font, 1, 1,
 				GridData.VERTICAL_ALIGN_BEGINNING, 0, 0);
 
 		this.addButton = SWTFactory.createPushButton(buttons, Messages.SREsPreferencePage_4, null);
@@ -342,8 +342,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		SWTFactory.createVerticalSpacer(listComposite, 1);
 
 		// Populates the SRE table with existing SREs defined in the workspace.
-		final ISREInstall[] sres = SARLRuntime.getSREInstalls();
-		for (final ISREInstall sre : sres) {
+		final var sres = SARLRuntime.getSREInstalls();
+		for (final var sre : sres) {
 			sre.revalidate();
 		}
 		setSREs(sres);
@@ -367,7 +367,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	protected void setSREs(ISREInstall[] sres) {
 		this.sreArray.clear();
-		for (final ISREInstall sre : sres) {
+		for (final var sre : sres) {
 			this.sreArray.add(sre);
 		}
 		this.sresList.setInput(this.sreArray);
@@ -385,8 +385,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private boolean isDuplicateName(String name) {
-		final String sreName = Strings.nullToEmpty(name);
-		for (final ISREInstall sre : this.sreArray) {
+		final var sreName = Strings.nullToEmpty(name);
+		for (final var sre : this.sreArray) {
 			if (sreName.equals(sre.getName())) {
 				return true;
 			}
@@ -395,8 +395,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private boolean isDuplicateId(String id) {
-		final String normalizedId = Strings.nullToEmpty(id);
-		for (final ISREInstall sre : this.sreArray) {
+		final var normalizedId = Strings.nullToEmpty(id);
+		for (final var sre : this.sreArray) {
 			if (normalizedId.equals(sre.getId())) {
 				return true;
 			}
@@ -405,7 +405,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private String createUniqueIdentifier() {
-		String id = SARLRuntime.createUniqueIdentifier();
+		var id = SARLRuntime.createUniqueIdentifier();
 		while (isDuplicateId(id)) {
 			id = SARLRuntime.createUniqueIdentifier();
 		}
@@ -424,11 +424,11 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return name;
 		}
 		if (name.matches(".*\\(\\d*\\)")) { //$NON-NLS-1$
-			final int start = name.lastIndexOf('(');
-			final int end = name.lastIndexOf(')');
-			final String stringInt = name.substring(start + 1, end);
-			final int numericValue = Integer.parseInt(stringInt);
-			final String newName = name.substring(0, start + 1) + (numericValue + 1) + ")"; //$NON-NLS-1$
+			final var start = name.lastIndexOf('(');
+			final var end = name.lastIndexOf(')');
+			final var stringInt = name.substring(start + 1, end);
+			final var numericValue = Integer.parseInt(stringInt);
+			final var newName = name.substring(0, start + 1) + (numericValue + 1) + ")"; //$NON-NLS-1$
 			return createUniqueName(newName);
 		}
 		return createUniqueName(name + " (1)"); //$NON-NLS-1$
@@ -437,12 +437,12 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/** Add a SRE.
 	 */
 	protected void addSRE() {
-		final AddSREInstallWizard wizard = new AddSREInstallWizard(
+		final var wizard = new AddSREInstallWizard(
 				createUniqueIdentifier(),
 				this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
-		final WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		final var dialog = new WizardDialog(getShell(), wizard);
 		if (dialog.open() == Window.OK) {
-			final ISREInstall result = wizard.getCreatedSRE();
+			final var result = wizard.getCreatedSRE();
 			if (result != null) {
 				this.sreArray.add(result);
 				//refresh from model
@@ -464,14 +464,14 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/** Edit the selected SRE.
 	 */
 	protected void editSRE() {
-		final IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
-		final ISREInstall sre = (ISREInstall) selection.getFirstElement();
+		final var selection = (IStructuredSelection) this.sresList.getSelection();
+		final var sre = (ISREInstall) selection.getFirstElement();
 		if (sre == null) {
 			return;
 		}
-		final EditSREInstallWizard wizard = new EditSREInstallWizard(
+		final var wizard = new EditSREInstallWizard(
 				sre, this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
-		final WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		final var dialog = new WizardDialog(getShell(), wizard);
 		if (dialog.open() == Window.OK) {
 			this.sresList.setSelection(new StructuredSelection(sre));
 			this.sresList.refresh(true);
@@ -483,20 +483,20 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	@SuppressWarnings("unchecked")
 	protected void copySRE() {
-		final IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
-		final Iterator<ISREInstall> it = selection.iterator();
+		final var selection = (IStructuredSelection) this.sresList.getSelection();
+		final var it = selection.iterator();
 
-		final List<ISREInstall> newEntries = new ArrayList<>();
+		final var newEntries = new ArrayList<ISREInstall>();
 		while (it.hasNext()) {
-			final ISREInstall selectedSRE = it.next();
+			final var selectedSRE = it.next();
 
-			final ISREInstall copy = selectedSRE.copy(createUniqueIdentifier());
+			final var copy = selectedSRE.copy(createUniqueIdentifier());
 			copy.setName(createUniqueName(selectedSRE.getName()));
 
-			final EditSREInstallWizard wizard = new EditSREInstallWizard(
+			final var wizard = new EditSREInstallWizard(
 					copy, this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
-			final WizardDialog dialog = new WizardDialog(getShell(), wizard);
-			final int dlgResult = dialog.open();
+			final var dialog = new WizardDialog(getShell(), wizard);
+			final var dlgResult = dialog.open();
 			if (dlgResult == Window.OK) {
 				newEntries.add(copy);
 			} else {
@@ -520,10 +520,10 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	@SuppressWarnings("unchecked")
 	protected void removeSREs() {
-		final IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
-		final ISREInstall[] vms = new ISREInstall[selection.size()];
-		final Iterator<ISREInstall> iter = selection.iterator();
-		int i = 0;
+		final var selection = (IStructuredSelection) this.sresList.getSelection();
+		final var vms = new ISREInstall[selection.size()];
+		final var iter = selection.iterator();
+		var i = 0;
 		while (iter.hasNext()) {
 			vms[i] = iter.next();
 			i++;
@@ -537,20 +537,20 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @param sres the SREs to remove.
 	 */
 	public void removeSREs(ISREInstall... sres) {
-		final ISREInstall defaultSRE = getDefaultSRE();
-		final String defaultId = defaultSRE == null ? null : defaultSRE.getId();
-		int defaultIndex = -1;
+		final var defaultSRE = getDefaultSRE();
+		final var defaultId = defaultSRE == null ? null : defaultSRE.getId();
+		var defaultIndex = -1;
 		if (defaultId != null) {
-			for (int i = 0; defaultIndex == -1 && i < this.sreTable.getItemCount(); ++i) {
+			for (var i = 0; defaultIndex == -1 && i < this.sreTable.getItemCount(); ++i) {
 				if (defaultId.equals(
 						((ISREInstall) this.sreTable.getItem(i).getData()).getId())) {
 					defaultIndex = i;
 				}
 			}
 		}
-		final String normedDefaultId = Strings.nullToEmpty(defaultId);
-		boolean defaultIsRemoved = false;
-		for (final ISREInstall sre : sres) {
+		final var normedDefaultId = Strings.nullToEmpty(defaultId);
+		var defaultIsRemoved = false;
+		for (final var sre : sres) {
 			if (this.sreArray.remove(sre) && sre.getId().equals(normedDefaultId)) {
 				defaultIsRemoved = true;
 			}
@@ -597,12 +597,12 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return false;
 		}
 		// Check the SARL version.
-		final Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		final var bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
 		if (bundle != null) {
-			final Version sarlVersion = bundle.getVersion();
-			final Version minVersion = Utilities.parseVersion(sre.getMinimalSARLVersion());
-			final Version maxVersion = Utilities.parseVersion(sre.getMaximalSARLVersion());
-			final int cmp = Utilities.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+			final var sarlVersion = bundle.getVersion();
+			final var minVersion = Utilities.parseVersion(sre.getMinimalSARLVersion());
+			final var maxVersion = Utilities.parseVersion(sre.getMaximalSARLVersion());
+			final var cmp = Utilities.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 			if (cmp < 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
@@ -631,7 +631,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		if (this.sreArray.isEmpty()) {
 			setMessage(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_7);
 		} else {
-			final ISREInstall defaultSRE = getDefaultSRE();
+			final var defaultSRE = getDefaultSRE();
 			if (defaultSRE == null) {
 				setErrorMessage(Messages.SREsPreferencePage_8);
 				return false;
@@ -650,13 +650,13 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	@Override
 	public boolean performOk() {
-		final boolean[] canceled = new boolean[] {false};
+		final var canceled = new boolean[] {false};
 		BusyIndicator.showWhile(null, new Runnable() {
 			@Override
 			public void run() {
-				final ISREInstall defaultSRE = getDefaultSRE();
-				final ISREInstall[] sres = getSREs();
-				final NullProgressMonitor monitor = new NullProgressMonitor();
+				final var defaultSRE = getDefaultSRE();
+				final var sres = getSREs();
+				final var monitor = new NullProgressMonitor();
 				try {
 					SARLRuntime.setSREInstalls(sres, monitor);
 					SARLRuntime.setDefaultSREInstall(defaultSRE, monitor, false);
@@ -674,9 +674,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 
 		// save column widths
-		final IDialogSettings settings = JavaPlugin.getDefault().getDialogSettings();
-		final int columnCount = this.sreTable.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
+		final var settings = JavaPlugin.getDefault().getDialogSettings();
+		final var columnCount = this.sreTable.getColumnCount();
+		for (var i = 0; i < columnCount; i++) {
 			settings.put(ID + ".columnWidth" + i, //$NON-NLS-1$
 					this.sreTable.getColumn(i).getWidth());
 		}
@@ -691,9 +691,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @param settings the settings to read.
 	 */
 	private void restoreColumnWidths(IDialogSettings settings) {
-		final int columnCount = this.sreTable.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
-			int width = -1;
+		final var columnCount = this.sreTable.getColumnCount();
+		for (var i = 0; i < columnCount; i++) {
+			var width = -1;
 			try {
 				width = settings.getInt(ID + ".columnWidth" + i); //$NON-NLS-1$
 			} catch (NumberFormatException exception) {
@@ -719,7 +719,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		restoreColumnWidths(settings);
 		this.sortColumn = Column.NAME;
 		try {
-			final String columnName = settings.get(ID + ".sortColumn"); //$NON-NLS-1$
+			final var columnName = settings.get(ID + ".sortColumn"); //$NON-NLS-1$
 			if (!Strings.isNullOrEmpty(columnName)) {
 				this.sortColumn = Column.valueOf(columnName);
 				if (this.sortColumn == null) {
@@ -768,10 +768,10 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	@Override
 	public void setSelection(ISelection selection) {
-		if (selection instanceof IStructuredSelection
+		if (selection instanceof IStructuredSelection cvalue
 				&& !selection.equals(this.prevSelection)) {
 			this.prevSelection = selection;
-			final Object sre = ((IStructuredSelection) selection).getFirstElement();
+			final var sre = cvalue.getFirstElement();
 			if (sre == null) {
 				this.sresList.setCheckedElements(new Object[0]);
 				updateUI();
@@ -792,10 +792,10 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private void fireDefaultSREChanged() {
-		final SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
-		final Object[] listeners = this.selectionListeners.getListeners();
-		for (int i = 0; i < listeners.length; i++) {
-			final ISelectionChangedListener listener = (ISelectionChangedListener) listeners[i];
+		final var event = new SelectionChangedEvent(this, getSelection());
+		final var listeners = this.selectionListeners.getListeners();
+		for (var i = 0; i < listeners.length; i++) {
+			final var listener = (ISelectionChangedListener) listeners[i];
 			listener.selectionChanged(event);
 		}
 	}
@@ -816,7 +816,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @return the default SRE or {@code null} if none
 	 */
 	public ISREInstall getDefaultSRE() {
-		final Object[] objects = this.sresList.getCheckedElements();
+		final var objects = this.sresList.getCheckedElements();
 		if (objects.length == 0) {
 			return null;
 		}
@@ -828,14 +828,14 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	@SuppressWarnings("unchecked")
 	private void enableButtons() {
-		final IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
-		final int selectionCount = selection.size();
+		final var selection = (IStructuredSelection) this.sresList.getSelection();
+		final var selectionCount = selection.size();
 		this.editButton.setEnabled(selectionCount == 1);
 		this.copyButton.setEnabled(selectionCount > 0);
 		if (selectionCount > 0 && selectionCount <= this.sresList.getTable().getItemCount()) {
-			final Iterator<ISREInstall> iterator = selection.iterator();
+			final var iterator = selection.iterator();
 			while (iterator.hasNext()) {
-				final ISREInstall install = iterator.next();
+				final var install = iterator.next();
 				if (SARLRuntime.isPlatformSRE(install)) {
 					this.removeButton.setEnabled(false);
 					return;
@@ -854,9 +854,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.sresList.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
-				if ((e1 instanceof ISREInstall) && (e2 instanceof ISREInstall)) {
-					final ISREInstall left = (ISREInstall) e1;
-					final ISREInstall right = (ISREInstall) e2;
+				if (e1 instanceof ISREInstall left && e2 instanceof ISREInstall right) {
 					return left.getName().compareToIgnoreCase(right.getName());
 				}
 				return super.compare(viewer, e1, e2);
@@ -877,9 +875,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.sresList.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
-				if ((e1 instanceof ISREInstall) && (e2 instanceof ISREInstall)) {
-					final ISREInstall left = (ISREInstall) e1;
-					final ISREInstall right = (ISREInstall) e2;
+				if (e1 instanceof ISREInstall left && e2 instanceof ISREInstall right) {
 					return left.getLocation().compareToIgnoreCase(right.getLocation());
 				}
 				return super.compare(viewer, e1, e2);
@@ -916,8 +912,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 
 		private boolean isValid(Object element) {
-			if (element instanceof ISREInstall) {
-				final ISREInstall sre = (ISREInstall) element;
+			if (element instanceof ISREInstall sre) {
 				return verifyValidity(sre, false);
 			}
 			return true;
@@ -946,11 +941,10 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
-			if (element instanceof ISREInstall) {
-				final ISREInstall sre = (ISREInstall) element;
+			if (element instanceof ISREInstall sre) {
 				switch (columnIndex) {
 				case 0:
-					final String name = sre.getName();
+					final var name = sre.getName();
 					if (getDefaultSRE() == element) {
 						return MessageFormat.format(
 								JREMessages.InstalledJREsBlock_7, name);
@@ -1035,7 +1029,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		@Override
 		public void sreChanged(PropertyChangeEvent event) {
 			if (ISREInstallChangedListener.PROPERTY_NAME.equals(event.getProperty())) {
-				final ISREInstall sre = (ISREInstall) event.getSource();
+				final var sre = (ISREInstall) event.getSource();
 				if (SREsPreferencePage.this.sreArray.contains(sre)) {
 					refreshSREListUI();
 				}

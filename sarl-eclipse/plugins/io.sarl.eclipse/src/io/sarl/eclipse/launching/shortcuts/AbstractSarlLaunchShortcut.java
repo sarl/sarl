@@ -95,8 +95,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 
 	@Override
 	public IResource getLaunchableResource(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			final IStructuredSelection sel = (IStructuredSelection) selection;
+		if (selection instanceof IStructuredSelection sel) {
 			return findResource(sel.toArray());
 		}
 		return null;
@@ -104,7 +103,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 
 	@Override
 	public IResource getLaunchableResource(IEditorPart editorpart) {
-		final XtextEditor xtextEditor = EditorUtils.getXtextEditor(editorpart);
+		final var xtextEditor = EditorUtils.getXtextEditor(editorpart);
 		if (xtextEditor != null) {
 			return xtextEditor.getResource();
 		}
@@ -133,33 +132,31 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 
 	private IResource findResource(Object[] elements) {
 		try {
-			for (final Object element : elements) {
-				final URI fileURI = getResourceURIForValidEObject(element);
+			for (final var element : elements) {
+				final var fileURI = getResourceURIForValidEObject(element);
 				if (fileURI != null) {
-					for (final Pair<IStorage, IProject> storage: this.storage2UriMapper.getStorages(fileURI)) {
-						final Object obj = storage.getFirst();
-						if (obj instanceof IResource) {
-							final IResource res = (IResource) obj;
+					for (final var storage: this.storage2UriMapper.getStorages(fileURI)) {
+						final var obj = storage.getFirst();
+						if (obj instanceof IResource res) {
 							if (isValidResource(res)) {
 								return res;
 							}
 						}
 					}
 				} else {
-					final LinkedList<Object> stack = new LinkedList<>();
+					final var stack = new LinkedList<Object>();
 					stack.add(element);
-					final Class<ET> evalidType = getValidEObjectType();
-					final Class<JT> jvalidType = getValidJavaType();
+					final var evalidType = getValidEObjectType();
+					final var jvalidType = getValidJavaType();
 					while (!stack.isEmpty()) {
-						final Object current = stack.removeFirst();
-						if (current instanceof IFile) {
-							final IFile file = (IFile) current;
+						final var current = stack.removeFirst();
+						if (current instanceof IFile file) {
 							if (isValidResource(file)) {
-								final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
-								final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-								final Resource resource = resourceSet.getResource(resourceURI, true);
+								final var resourceSet = this.resourceSetProvider.get(file.getProject());
+								final var resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+								final var resource = resourceSet.getResource(resourceURI, true);
 								if (resource != null) {
-									for (final EObject content : resource.getContents()) {
+									for (final var content : resource.getContents()) {
 										if (content instanceof SarlScript
 											&& !EcoreUtil2.getAllContentsOfType(content, evalidType).isEmpty()) {
 											return file;
@@ -167,8 +164,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 									}
 								}
 							}
-						} else if (current instanceof IFolder) {
-							final IFolder folder = (IFolder) current;
+						} else if (current instanceof IFolder folder) {
 							if (isValidResource(folder)) {
 								try {
 									stack.addAll(Arrays.asList(folder.members(0)));
@@ -176,27 +172,24 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 									// Ignore the failing resources
 								}
 							}
-						} else if (current instanceof IType) {
-							final IType type = (IType) current;
-							final String qn = type.getFullyQualifiedName();
-							final IJavaProject project = type.getJavaProject();
+						} else if (current instanceof IType type) {
+							final var qn = type.getFullyQualifiedName();
+							final var project = type.getJavaProject();
 							if (this.jdt.isSubClassOf(this.jdt.toTypeFinder(project), qn, jvalidType.getName())) {
 								return type.getResource();
 							}
-						} else if (current instanceof IPackageFragment) {
-							final IPackageFragment fragment = (IPackageFragment) current;
+						} else if (current instanceof IPackageFragment fragment) {
 							stack.addAll(Arrays.asList(fragment.getNonJavaResources()));
-							for (final Object child : fragment.getChildren()) {
+							for (final var child : fragment.getChildren()) {
 								stack.add(child);
 							}
-						} else if (current instanceof IPackageFragmentRoot) {
-							final IPackageFragmentRoot fragment = (IPackageFragmentRoot) current;
+						} else if (current instanceof IPackageFragmentRoot fragment) {
 							stack.addAll(Arrays.asList(fragment.getNonJavaResources()));
-							for (final Object child : fragment.getChildren()) {
+							for (final var child : fragment.getChildren()) {
 								stack.add(child);
 							}
-						} else if (current instanceof IJavaProject) {
-							stack.addAll(Arrays.asList(((IJavaProject) current).getNonJavaResources()));
+						} else if (current instanceof IJavaProject cvalue) {
+							stack.addAll(Arrays.asList(cvalue.getNonJavaResources()));
 						}
 					}
 				}
@@ -215,7 +208,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 * @param scope the elements to consider for an element type that can be launched.
 	 */
 	private void searchAndLaunch(String mode, Object... scope) {
-		final ElementDescription element = searchAndSelect(true, scope);
+		final var element = searchAndSelect(true, scope);
 		if (element != null) {
 			try {
 				launch(element.projectName, element.elementName, mode);
@@ -229,28 +222,27 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 
 	@Override
 	public void launch(ISelection selection, String mode) {
-		if (selection instanceof IStructuredSelection) {
-			searchAndLaunch(mode, ((IStructuredSelection) selection).toArray());
+		if (selection instanceof IStructuredSelection cvalue) {
+			searchAndLaunch(mode, cvalue.toArray());
 		}
 	}
 
 	@Override
 	public void launch(IEditorPart editor, String mode) {
-		final XtextEditor xtextEditor = EditorUtils.getXtextEditor(editor);
-		final ISelection selection = xtextEditor.getSelectionProvider().getSelection();
-		if (selection instanceof ITextSelection) {
-			final ITextSelection sel = (ITextSelection) selection;
-			final EObject obj = xtextEditor.getDocument().readOnly(resource -> {
-				final IParseResult parseRes = resource.getParseResult();
+		final var xtextEditor = EditorUtils.getXtextEditor(editor);
+		final var selection = xtextEditor.getSelectionProvider().getSelection();
+		if (selection instanceof ITextSelection sel) {
+			final var obj = xtextEditor.getDocument().readOnly(resource -> {
+				final var parseRes = resource.getParseResult();
 				if (parseRes == null) {
 					return null;
 				}
-				final ICompositeNode rootNode = parseRes.getRootNode();
-				final ILeafNode node = NodeModelUtils.findLeafNodeAtOffset(rootNode, sel.getOffset());
+				final var rootNode = parseRes.getRootNode();
+				final var node = NodeModelUtils.findLeafNodeAtOffset(rootNode, sel.getOffset());
 				return NodeModelUtils.findActualSemanticObjectFor(node);
 			});
 			if (obj != null) {
-				final EObject elt = EcoreUtil2.getContainerOfType(obj, getValidEObjectType());
+				final var elt = EcoreUtil2.getContainerOfType(obj, getValidEObjectType());
 				if (elt != null) {
 					searchAndLaunch(mode, elt);
 					return;
@@ -274,9 +266,9 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 */
 	protected void launch(String projectName, String fullyQualifiedName, String mode)
 			throws CoreException {
-		final List<ILaunchConfiguration> configs = getCandidates(projectName, fullyQualifiedName);
+		final var configs = getCandidates(projectName, fullyQualifiedName);
 		ILaunchConfiguration config = null;
-		final int count = configs.size();
+		final var count = configs.size();
 		if (count == 1) {
 			config = configs.get(0);
 		} else if (count > 1) {
@@ -302,12 +294,12 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 */
 	protected List<ILaunchConfiguration> getCandidates(String projectName,
 			String fullyQualifiedName) throws CoreException {
-		final ILaunchConfigurationType ctype = getLaunchManager().getLaunchConfigurationType(getConfigurationType());
-		List<ILaunchConfiguration> candidateConfigs = Collections.emptyList();
-		final ILaunchConfiguration[] configs = getLaunchManager().getLaunchConfigurations(ctype);
+		final var ctype = getLaunchManager().getLaunchConfigurationType(getConfigurationType());
+		var candidateConfigs = Collections.<ILaunchConfiguration>emptyList();
+		final var configs = getLaunchManager().getLaunchConfigurations(ctype);
 		candidateConfigs = new ArrayList<>(configs.length);
-		for (int i = 0; i < configs.length; i++) {
-			final ILaunchConfiguration config = configs[i];
+		for (var i = 0; i < configs.length; i++) {
+			final var config = configs[i];
 			if (Objects.equals(
 					getElementQualifiedName(config),
 					fullyQualifiedName)
@@ -331,13 +323,13 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 */
 	@SuppressWarnings("static-method")
 	protected ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList) {
-		final IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();
-		final ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
+		final var labelProvider = DebugUITools.newDebugModelPresentation();
+		final var dialog = new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setElements(configList.toArray());
 		dialog.setTitle(Messages.AbstractSarlLaunchShortcut_0);
 		dialog.setMessage(Messages.AbstractSarlLaunchShortcut_1);
 		dialog.setMultipleSelection(false);
-		final int result = dialog.open();
+		final var result = dialog.open();
 		labelProvider.dispose();
 		if (result == Window.OK) {
 			return (ILaunchConfiguration) dialog.getFirstResult();

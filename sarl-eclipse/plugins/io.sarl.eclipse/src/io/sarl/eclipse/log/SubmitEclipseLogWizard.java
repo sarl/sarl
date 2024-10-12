@@ -101,8 +101,8 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the return code.
 	 */
 	public static int open(Shell parentShell) {
-		final SubmitEclipseLogWizard wizard = new SubmitEclipseLogWizard();
-		final WizardDialog dialog = new WizardDialog(parentShell, wizard);
+		final var wizard = new SubmitEclipseLogWizard();
+		final var dialog = new WizardDialog(parentShell, wizard);
 		wizard.setWizardDialog(dialog);
 		return dialog.open();
 	}
@@ -121,7 +121,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the dialog.
 	 */
 	WizardDialog getWizardDialog() {
-		final WeakReference<WizardDialog> ref = this.wizardDialog;
+		final var ref = this.wizardDialog;
 		return (ref == null) ? null : ref.get();
 	}
 
@@ -129,8 +129,8 @@ public class SubmitEclipseLogWizard extends Wizard {
 	public void addPages() {
 		URL url = null;
 		try {
-			url = new URL(GITHUB_PUBLIC_URL);
-		} catch (MalformedURLException exception) {
+			url = new URI(GITHUB_PUBLIC_URL).toURL();
+		} catch (Exception exception) {
 			//
 		}
 		this.detailPage = new IssueInformationPage(url);
@@ -141,16 +141,16 @@ public class SubmitEclipseLogWizard extends Wizard {
 	public boolean performFinish() {
 		if (this.detailPage.performFinish()) {
 			try {
-				final String title = this.detailPage.getIssueTitle();
-				final String description = this.detailPage.getIssueDescription();
-				final String login = this.detailPage.getGithubLogin();
-				final String password = this.detailPage.getGithubPassword();
-				final Job job = Job.create(Messages.SubmitEclipseLogWizard_0, monitor -> {
+				final var title = this.detailPage.getIssueTitle();
+				final var description = this.detailPage.getIssueDescription();
+				final var login = this.detailPage.getGithubLogin();
+				final var password = this.detailPage.getGithubPassword();
+				final var job = Job.create(Messages.SubmitEclipseLogWizard_0, monitor -> {
 					try {
-						final SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+						final var subMonitor = SubMonitor.convert(monitor, 2);
 						subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_1);
-						final Charset charset = Charset.defaultCharset();
-						final String content = buildContent(description, charset);
+						final var charset = Charset.defaultCharset();
+						final var content = buildContent(description, charset);
 						subMonitor.setWorkRemaining(1);
 						if (subMonitor.isCanceled()) {
 							return Status.CANCEL_STATUS;
@@ -189,15 +189,15 @@ public class SubmitEclipseLogWizard extends Wizard {
 	@SuppressWarnings("static-method")
 	protected IStatus submit(Charset charset, String title, String body, String login, String password,
 			IProgressMonitor progress) throws Exception {
-		final SubMonitor subMonitor = SubMonitor.convert(progress, 10);
+		final var subMonitor = SubMonitor.convert(progress, 10);
 
 		subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_15);
-		final Gson gson = new GsonBuilder().create();
-		final String json = gson.toJson(new GithubIssueJson(title, body));
+		final var gson = new GsonBuilder().create();
+		final var json = gson.toJson(new GithubIssueJson(title, body));
 		subMonitor.setWorkRemaining(9);
 
 		subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_2);
-		final ServiceTracker<IProxyService, IProxyService> proxyTracker = new ServiceTracker<>(
+		final var proxyTracker = new ServiceTracker<IProxyService, IProxyService>(
 				SARLEclipsePlugin.getDefault().getBundle().getBundleContext(),
 				IProxyService.class,
 				null);
@@ -209,8 +209,8 @@ public class SubmitEclipseLogWizard extends Wizard {
 		try {
 			final URI uri = new URI(GITHUB_URL);
 
-			final IProxyData[] proxyDataForHost = proxyTracker.getService().select(uri);
-			for (final IProxyData data : proxyDataForHost) {
+			final var proxyDataForHost = proxyTracker.getService().select(uri);
+			for (final var data : proxyDataForHost) {
 				if (data.getHost() != null) {
 					System.setProperty("http.proxySet", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 					System.setProperty("http.proxyHost", data.getHost()); //$NON-NLS-1$
@@ -234,7 +234,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 		}
 
 		subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_3);
-		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		final var con = (HttpURLConnection) url.openConnection();
 		subMonitor.setWorkRemaining(7);
 		if (subMonitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
@@ -245,7 +245,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 		con.setRequestMethod("POST"); //$NON-NLS-1$
 		con.setRequestProperty("User-Agent", "SARL IDE"); //$NON-NLS-1$ //$NON-NLS-2$
 		// Auth
-		final String auth = Base64.getEncoder().encodeToString((login + ":" + password).getBytes()); //$NON-NLS-1$
+		final var auth = Base64.getEncoder().encodeToString((login + ":" + password).getBytes()); //$NON-NLS-1$
 		con.setRequestProperty("Authorization", "Basic " + auth); //$NON-NLS-1$ //$NON-NLS-2$
 
 		con.setDoOutput(true);
@@ -256,7 +256,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 		}
 
 		// Send post request
-		try (DataOutputStream writer = new DataOutputStream(con.getOutputStream())) {
+		try (var writer = new DataOutputStream(con.getOutputStream())) {
 			writer.writeBytes(json);
 			writer.flush();
 		}
@@ -267,9 +267,9 @@ public class SubmitEclipseLogWizard extends Wizard {
 
 		//final int responseCode = con.getResponseCode();
 		subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_6);
-		final int responseCode = con.getResponseCode();
-		final StringBuffer response = new StringBuffer();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+		final var responseCode = con.getResponseCode();
+		final var response = new StringBuffer();
+		try (var reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
 			String inputLine;
 			while ((inputLine = reader.readLine()) != null) {
 				response.append(inputLine);
@@ -288,14 +288,6 @@ public class SubmitEclipseLogWizard extends Wizard {
 					Messages.SubmitEclipseLogWizard_14,
 					new Exception(response.toString()));
 		}
-		//System.out.println(responseCode);
-		//Display.getDefault().asyncExec(() -> {
-		//	final Shell shell = new Shell((Shell) null, SWT.SHELL_TRIM);
-		//	shell.setLayout(new FillLayout());
-		//	final Browser browser = new Browser(shell, SWT.NONE);
-		//	browser.setText(response.toString());
-		//	shell.layout();
-		//	shell.open();
 
 		return Status.OK_STATUS;
 	}
@@ -309,7 +301,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 */
 	@SuppressWarnings("static-method")
 	protected String buildContent(String description, Charset charset) throws IOException {
-		final StringBuilder fullContent = new StringBuilder();
+		final var fullContent = new StringBuilder();
 
 		// User message
 		if (!Strings.isEmpty(description)) {
@@ -318,31 +310,31 @@ public class SubmitEclipseLogWizard extends Wizard {
 		}
 
 		// Log
-		final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		final var plugin = SARLEclipsePlugin.getDefault();
 		plugin.getLog().log(plugin.createStatus(IStatus.INFO, Messages.SubmitEclipseLogWizard_12));
 
 		fullContent.append(Messages.SubmitEclipseLogWizard_9);
-		final String filename = Platform.getLogFileLocation().toOSString();
-		final File log = new File(filename);
+		final var filename = Platform.getLogFileLocation().toOSString();
+		final var log = new File(filename);
 		if (!log.exists()) {
 			throw new IOException("Unable to find the log file"); //$NON-NLS-1$
 		}
-		final List<String> logLines = Files.readLines(log, charset);
-		int logStartIndex = -1;
-		for (int i = logLines.size() - 1; logStartIndex == -1 && i >= 0; --i) {
-			final String line = logLines.get(i);
+		final var logLines = Files.readLines(log, charset);
+		var logStartIndex = -1;
+		for (var i = logLines.size() - 1; logStartIndex == -1 && i >= 0; --i) {
+			final var line = logLines.get(i);
 			if (line.startsWith("!SESSION")) { //$NON-NLS-1$
 				logStartIndex = i;
 			}
 		}
-		for (int i = logStartIndex; i < logLines.size(); ++i) {
+		for (var i = logStartIndex; i < logLines.size(); ++i) {
 			fullContent.append(logLines.get(i));
 			fullContent.append(Messages.SubmitEclipseLogWizard_8);
 		}
 
 		// Properties
 		fullContent.append(Messages.SubmitEclipseLogWizard_10);
-		for (final Entry<Object, Object> entry : System.getProperties().entrySet()) {
+		for (final var entry : System.getProperties().entrySet()) {
 			fullContent.append(Objects.toString(entry.getKey()));
 			fullContent.append(Messages.SubmitEclipseLogWizard_11);
 			fullContent.append(Objects.toString(entry.getValue()));

@@ -126,7 +126,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @see #POM_TEMPLATE_BASENAME
 	 */
 	public static URL getPomTemplateLocation() {
-		final URL url = Resources.getResource(NewSarlProjectWizard.class, POM_TEMPLATE_BASENAME);
+		final var url = Resources.getResource(NewSarlProjectWizard.class, POM_TEMPLATE_BASENAME);
 		assert url != null;
 		return url;
 	}
@@ -156,9 +156,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	private static boolean hasSourcePath(IJavaProject javaProject, IPath path) {
 		if (path != null) {
-			final IPath pathInProject = javaProject.getProject().getFullPath().append(path);
+			final var pathInProject = javaProject.getProject().getFullPath().append(path);
 			try {
-				for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
+				for (final var entry : javaProject.getRawClasspath()) {
 					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
 							&& pathInProject.equals(entry.getPath())) {
 						return true;
@@ -172,9 +172,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	private static String buildInvalidOutputPathMessageFragment(IJavaProject javaProject) {
-		final StringBuilder sourceFolders = new StringBuilder();
+		final varsourceFolders = new StringBuilder();
 		try {
-			for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
+			for (final var entry : javaProject.getRawClasspath()) {
 				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
 					sourceFolders.append("\t"); //$NON-NLS-1$
 					sourceFolders.append(entry.getPath().toOSString());
@@ -201,22 +201,22 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 */
 	protected boolean validateSARLSpecificElements(IJavaProject javaProject) {
 		// Check if the "SARL" generation directory is a source folder.
-		final IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
+		final var outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
 
 		if (outputPath == null) {
-			final String message = MessageFormat.format(
+			final var message = MessageFormat.format(
 					Messages.BuildSettingWizardPage_0,
 					SARLConfig.FOLDER_SOURCE_GENERATED);
-			final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
 			return false;
 		}
 		if (!hasSourcePath(javaProject, outputPath)) {
-			final String message = MessageFormat.format(
+			final var message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
 					toOSString(outputPath),
 					buildInvalidOutputPathMessageFragment(javaProject));
-			final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
 			return false;
 		}
@@ -231,7 +231,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	public boolean performFinish() {
-		final boolean res = super.performFinish();
+		final var res = super.performFinish();
 		if (res) {
 			final IJavaProject newElement;
 			try {
@@ -253,7 +253,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 				return false;
 			}
 
-			final IWorkingSet[] workingSets = this.firstPage.getWorkingSets();
+			final var workingSets = this.firstPage.getWorkingSets();
 			if (workingSets.length > 0) {
 				PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(newElement, workingSets);
 			}
@@ -270,9 +270,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					final IWorkbenchPart activePart = getActivePart();
+					final var activePart = getActivePart();
 					if (activePart instanceof IPackagesViewPart) {
-						final PackageExplorerPart view = PackageExplorerPart.openInActivePerspective();
+						final var view = PackageExplorerPart.openInActivePerspective();
 						view.tryToReveal(newElement);
 					}
 				}
@@ -290,19 +290,19 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @param compilerCompliance the Java version that is supported by the project.
 	 */
 	protected void createDefaultMavenPom(IJavaProject project, String compilerCompliance) {
-		final IFile pomFile = project.getProject().getFile("pom.xml"); //$NON-NLS-1$
+		final var pomFile = project.getProject().getFile("pom.xml"); //$NON-NLS-1$
 		// Do not create the pom if already present.
 		if (!pomFile.exists()) {
 			// Get the template resource.
-			final URL templateUrl = getPomTemplateLocation();
+			final var templateUrl = getPomTemplateLocation();
 			if (templateUrl != null) {
-				final String compliance = Strings.isNullOrEmpty(compilerCompliance)
+				final var compliance = Strings.isNullOrEmpty(compilerCompliance)
 						? SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH : compilerCompliance;
-				final String groupId = getDefaultMavenGroupId();
+				final var groupId = getDefaultMavenGroupId();
 				// Read the template and do string replacement.
-				final StringBuilder content = new StringBuilder();
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
-					String line = reader.readLine();
+				final var content = new StringBuilder();
+				try (var reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
+					var line = reader.readLine();
 					while (line != null) {
 						line = line.replaceAll(Pattern.quote("@GROUP_ID@"), groupId); //$NON-NLS-1$
 						line = line.replaceAll(Pattern.quote("@PROJECT_NAME@"), project.getElementName()); //$NON-NLS-1$
@@ -317,7 +317,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 					throw new RuntimeIOException(exception);
 				}
 				// Write the pom
-				try (StringInputStream is = new StringInputStream(content.toString())) {
+				try (var is = new StringInputStream(content.toString())) {
 					pomFile.create(is, true, new NullProgressMonitor());
 				} catch (CoreException exception) {
 					throw new RuntimeException(exception);
@@ -334,13 +334,13 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 */
 	@SuppressWarnings("static-method")
 	protected String getDefaultMavenGroupId() {
-		final String userdomain = System.getenv("userdomain"); //$NON-NLS-1$
+		final var userdomain = System.getenv("userdomain"); //$NON-NLS-1$
 		if (Strings.isNullOrEmpty(userdomain)) {
 			return "com.foo"; //$NON-NLS-1$
 		}
-		final String[] elements = userdomain.split(Pattern.quote(".")); //$NON-NLS-1$
-		final StringBuilder groupId = new StringBuilder();
-		for (int i = elements.length - 1; i >= 0; --i) {
+		final var elements = userdomain.split(Pattern.quote(".")); //$NON-NLS-1$
+		final var groupId = new StringBuilder();
+		for (var i = elements.length - 1; i >= 0; --i) {
 			if (groupId.length() > 0) {
 				groupId.append("."); //$NON-NLS-1$
 			}
@@ -354,9 +354,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @return the active part.
 	 */
 	IWorkbenchPart getActivePart() {
-		final IWorkbenchWindow activeWindow = getWorkbench().getActiveWorkbenchWindow();
+		final var activeWindow = getWorkbench().getActiveWorkbenchWindow();
 		if (activeWindow != null) {
-			final IWorkbenchPage activePage = activeWindow.getActivePage();
+			final var activePage = activeWindow.getActivePage();
 			if (activePage != null) {
 				return activePage.getActivePart();
 			}
@@ -366,8 +366,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	protected void handleFinishException(Shell shell, InvocationTargetException exception) {
-		final String title = NewWizardMessages.JavaProjectWizard_op_error_title;
-		final String message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
+		final var title = NewWizardMessages.JavaProjectWizard_op_error_title;
+		final var message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
 		ExceptionHandler.handle(exception, getShell(), title, message);
 	}
 
@@ -384,14 +384,14 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	public IJavaProject getCreatedElement() {
-		final IJavaProject javaProject = this.secondPage.getJavaProject();
+		final var javaProject = this.secondPage.getJavaProject();
 
 		try {
 			// Set the SRE configuration
-			final IProject project = javaProject.getProject();
-			final ISREInstall sre = this.firstPage.getSRE();
-			final boolean useDefaultSRE = sre == null || this.firstPage.isSystemDefaultSRE();
-			QualifiedName qn = RuntimeEnvironmentPropertyPage.qualify(
+			final var project = javaProject.getProject();
+			final var sre = this.firstPage.getSRE();
+			final var useDefaultSRE = sre == null || this.firstPage.isSystemDefaultSRE();
+			var qn = RuntimeEnvironmentPropertyPage.qualify(
 					RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
 			project.setPersistentProperty(qn, Boolean.toString(!useDefaultSRE));
 			if (!useDefaultSRE && sre != null) {

@@ -169,8 +169,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		return new Predicate<>() {
 			@Override
 			public boolean apply(Method input) {
-				final Fix annotation = input.getAnnotation(Fix.class);
-				final boolean result = annotation != null
+				final var annotation = input.getAnnotation(Fix.class);
+				final var result = annotation != null
 						&& ("*".equals(annotation.value()) || issueCode.equals(annotation.value())) //$NON-NLS-1$
 						&& input.getParameterTypes().length == 2 && Void.TYPE == input.getReturnType()
 						&& input.getParameterTypes()[0].isAssignableFrom(Issue.class)
@@ -201,13 +201,12 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public List<JvmOperation> getJvmOperationsFromURIs(XtendTypeDeclaration container, String... operationUris) {
 		// Collect the JvmOperation prior to any modification for ensuring that
 		// URI are pointing the JvmOperations.
-		final List<JvmOperation> operations = new ArrayList<>();
-		final ResourceSet resourceSet = container.eResource().getResourceSet();
-		for (final String operationUriAsString : operationUris) {
-			final URI operationURI = URI.createURI(operationUriAsString);
-			final EObject overridden = resourceSet.getEObject(operationURI, true);
-			if (overridden instanceof JvmOperation) {
-				final JvmOperation operation = (JvmOperation) overridden;
+		final var operations = new ArrayList<JvmOperation>();
+		final var resourceSet = container.eResource().getResourceSet();
+		for (final var operationUriAsString : operationUris) {
+			final var operationURI = URI.createURI(operationUriAsString);
+			final var overridden = resourceSet.getEObject(operationURI, true);
+			if (overridden instanceof JvmOperation operation) {
 				if (this.annotationFinder.findAnnotation(operation, DefaultValueUse.class) == null) {
 					operations.add(operation);
 				}
@@ -345,15 +344,15 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces before the identifier until the separator
-		int index = offset - 1;
-		char c = document.getChar(index);
+		var index = offset - 1;
+		var c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index--;
 			c = document.getChar(index);
 		}
 
 		// Test if it previous non-space character is the separator
-		final boolean foundSeparator = document.getChar(index) == separator.charAt(0);
+		final var foundSeparator = document.getChar(index) == separator.charAt(0);
 		if (foundSeparator) {
 			index--;
 			c = document.getChar(index);
@@ -363,7 +362,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			final int delta = offset - index - 1;
+			final var delta = offset - index - 1;
 			document.replace(index + 1, length + delta, ""); //$NON-NLS-1$
 		}
 
@@ -376,9 +375,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return the insertion index.
 	 */
 	public int getImportInsertOffset(SarlScript script) {
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
+		final var node = NodeModelUtils.findActualNodeFor(script.getImportSection());
 		if (node == null) {
-			final List<INode> children = NodeModelUtils.findNodesForFeature(script,
+			final var children = NodeModelUtils.findNodesForFeature(script,
 					XtendPackage.eINSTANCE.getXtendFile_Package());
 			if (children.isEmpty()) {
 				return 0;
@@ -399,15 +398,15 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces after the identifier until the separator
-		int index = issue.getOffset().intValue() + issue.getLength().intValue();
-		char c = document.getChar(index);
+		var index = issue.getOffset().intValue() + issue.getLength().intValue();
+		var c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index++;
 			c = document.getChar(index);
 		}
 
 		// Test if it next non-space character is the separator
-		final boolean foundSeparator = document.getChar(index) == separator.charAt(0);
+		final var foundSeparator = document.getChar(index) == separator.charAt(0);
 		if (foundSeparator) {
 			index++;
 			c = document.getChar(index);
@@ -417,7 +416,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			final int newLength = index - issue.getOffset().intValue();
+			final var newLength = index - issue.getOffset().intValue();
 			document.replace(issue.getOffset().intValue(), newLength, ""); //$NON-NLS-1$
 		}
 
@@ -437,15 +436,15 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
 			String keyword1, String... otherKeywords) throws BadLocationException {
 		// Skip spaces before the element
-		int index = issue.getOffset().intValue() - 1;
-		char c = document.getChar(index);
+		var index = issue.getOffset().intValue() - 1;
+		var c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index--;
 			c = document.getChar(index);
 		}
 
 		// Skip non-spaces before the identifier
-		final StringBuffer kw = new StringBuffer();
+		final var kw = new StringBuffer();
 		while (!Character.isWhitespace(c)) {
 			kw.insert(0, c);
 			index--;
@@ -459,7 +458,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			final int delta = issue.getOffset().intValue() - index - 1;
+			final var delta = issue.getOffset().intValue() - index - 1;
 			document.replace(index + 1, issue.getLength().intValue() + delta, ""); //$NON-NLS-1$
 
 			return true;
@@ -480,19 +479,19 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public boolean removeBetweenSeparators(Issue issue, IXtextDocument document,
 			String beginSeparator, String endSeparator) throws BadLocationException {
-		int offset = issue.getOffset().intValue();
-		int length = issue.getLength().intValue();
+		var offset = issue.getOffset().intValue();
+		var length = issue.getLength().intValue();
 
 		// Skip spaces before the identifier until the separator
-		int index = offset - 1;
-		char c = document.getChar(index);
+		var index = offset - 1;
+		var c = document.getChar(index);
 		while (Character.isWhitespace(c)) {
 			index--;
 			c = document.getChar(index);
 		}
 
 		// Test if it previous non-space character is the separator
-		boolean foundSeparator = document.getChar(index) == beginSeparator.charAt(0);
+		var foundSeparator = document.getChar(index) == beginSeparator.charAt(0);
 		if (foundSeparator) {
 			index--;
 			c = document.getChar(index);
@@ -533,16 +532,16 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public int getInsertOffset(XtendTypeDeclaration container) {
 		if (container.getMembers().isEmpty()) {
-			final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
-			final ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
+			final var node = NodeModelUtils.findActualNodeFor(container);
+			final var openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
 				lnode -> Boolean.valueOf("{".equals(lnode.getText()))); //$NON-NLS-1$
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}
 			return node.getEndOffset();
 		}
-		final EObject lastFeature = IterableExtensions.last(container.getMembers());
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(lastFeature);
+		final var lastFeature = IterableExtensions.last(container.getMembers());
+		final var node = NodeModelUtils.findActualNodeFor(lastFeature);
 		return node.getEndOffset();
 	}
 
@@ -554,8 +553,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public int getSpaceSize(IXtextDocument document, int offset) throws BadLocationException {
-		int size = 0;
-		char c = document.getChar(offset + size);
+		var size = 0;
+		var c = document.getChar(offset + size);
 		while (Character.isWhitespace(c)) {
 			size++;
 			c = document.getChar(offset + size);
@@ -572,10 +571,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 *     cannot be recognized.
 	 */
 	public int getOffsetForPattern(IXtextDocument document, int startOffset, String pattern) {
-		final Pattern compiledPattern = Pattern.compile(pattern);
-		final Matcher matcher = compiledPattern.matcher(document.get());
+		final var compiledPattern = Pattern.compile(pattern);
+		final var matcher = compiledPattern.matcher(document.get());
 		if (matcher.find(startOffset)) {
-			final int end = matcher.end();
+			final var end = matcher.end();
 			return end;
 		}
 		return -1;
@@ -588,7 +587,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public QualifiedName qualifiedName(String name) {
 		if (!com.google.common.base.Strings.isNullOrEmpty(name)) {
-			final List<String> segments = Strings.split(name, "."); //$NON-NLS-1$
+			final var segments = Strings.split(name, "."); //$NON-NLS-1$
 			return QualifiedName.create(segments);
 		}
 		return QualifiedName.create();
@@ -602,9 +601,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
 		final ICompositeNode node;
-		final SarlAction action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
+		final var action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
 		if (action == null) {
-			final XtendMember feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);
+			final var feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);
 			node = NodeModelUtils.findActualNodeFor(feature);
 		} else {
 			node = NodeModelUtils.findActualNodeFor(action);
@@ -632,27 +631,27 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public <T extends EObject> void removeIncludingWhiteSpaces(EObject element, Class<T> type,
 			IModificationContext context) throws BadLocationException {
 		// Search the node
-		final T container = EcoreUtil2.getContainerOfType(element, type);
+		final var container = EcoreUtil2.getContainerOfType(element, type);
 		if (container == null) {
 			return;
 		}
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
+		final var node = NodeModelUtils.findActualNodeFor(container);
 		if (node == null) {
 			return;
 		}
 		// Compute region for the node
-		int offset = node.getOffset();
-		int length = node.getLength();
+		var offset = node.getOffset();
+		var length = node.getLength();
 		if (node.hasPreviousSibling()) {
-			final INode previousSibling = node.getPreviousSibling();
-			final int endOffset = previousSibling.getEndOffset();
+			final var previousSibling = node.getPreviousSibling();
+			final var endOffset = previousSibling.getEndOffset();
 			length = length + (offset - endOffset);
 			offset = endOffset;
 		}
-		final IXtextDocument document = context.getXtextDocument();
+		final var document = context.getXtextDocument();
 		// Include spaces in the region
-		final int docEndOffset = document.getLength();
-		int endOffset = offset + length;
+		final var docEndOffset = document.getLength();
+		var endOffset = offset + length;
 		while (offset > 0 && isBasicSpace(document.getChar(offset - 1))) {
 			--offset;
 			++length;
@@ -765,7 +764,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	@Fix(IssueCodes.OVERRIDDEN_FINAL)
 	public void fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
-		final MultiModification modifications = new MultiModification(
+		final var modifications = new MultiModification(
 				this, issue, acceptor,
 				Messages.SARLQuickfixProvider_0,
 				Messages.SARLQuickfixProvider_1);
@@ -924,24 +923,21 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Override
 	protected void internalDoAddAbstractKeyword(EObject element, IModificationContext context)
 			throws BadLocationException {
-		EObject container = element;
+		var container = element;
 		if (element instanceof SarlAction) {
 			container = element.eContainer();
 		}
 		XtendTypeDeclaration declaration = null;
 		String keyword = null;
-		if (container instanceof SarlAgent) {
-			declaration = (XtendTypeDeclaration) container;
+		if (container instanceof SarlAgent declaration) {
 			keyword = getGrammarAccess().getAgentKeyword();
-		} else if (container instanceof SarlBehavior) {
-			declaration = (XtendTypeDeclaration) container;
+		} else if (container instanceof SarlBehavior declaration) {
 			keyword = getGrammarAccess().getBehaviorKeyword();
-		} else if (container instanceof SarlSkill) {
-			declaration = (XtendTypeDeclaration) container;
+		} else if (container instanceof SarlSkill declaration) {
 			keyword = getGrammarAccess().getSkillKeyword();
 		}
 		if (declaration != null && keyword != null) {
-			final IXtextDocument document = context.getXtextDocument();
+			final var document = context.getXtextDocument();
 			addAbstractKeyword(declaration, document, keyword);
 		} else {
 			super.internalDoAddAbstractKeyword(container, context);
@@ -950,20 +946,20 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	private void addAbstractKeyword(XtendTypeDeclaration typeDeclaration, IXtextDocument document,
 			String declarationKeyword) throws BadLocationException {
-		final ICompositeNode clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
+		final var clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
 		if (clazzNode == null) {
 			throw new IllegalStateException("Cannot determine node for the type declaration" //$NON-NLS-1$
 					+ typeDeclaration.getName());
 		}
-		int offset = -1;
-		final Iterator<ILeafNode> nodes = clazzNode.getLeafNodes().iterator();
+		var offset = -1;
+		final var nodes = clazzNode.getLeafNodes().iterator();
 		while (offset == -1 && nodes.hasNext()) {
-			final ILeafNode leafNode  = nodes.next();
+			final var leafNode  = nodes.next();
 			if (leafNode.getText().equals(declarationKeyword)) {
 				offset = leafNode.getOffset();
 			}
 		}
-		final ReplacingAppendable appendable = this.appendableFactory.create(document,
+		final var appendable = this.appendableFactory.create(document,
 				(XtextResource) typeDeclaration.eResource(),
 				offset, 0);
 		appendable.append(getGrammarAccess()

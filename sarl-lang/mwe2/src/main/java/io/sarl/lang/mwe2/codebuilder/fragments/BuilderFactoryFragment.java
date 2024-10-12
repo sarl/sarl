@@ -38,16 +38,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
-import org.eclipse.xtext.xtext.generator.model.XtendFileAccess;
 
 /** Generator of the script builder types.
  *
@@ -67,7 +64,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getBuilderFactoryImplCustom() {
-		final String runtimeBasePackage = getCodeElementExtractor().getBasePackage();
+		final var runtimeBasePackage = getCodeElementExtractor().getBasePackage();
 		return new TypeReference(runtimeBasePackage + ".CodeBuilderFactoryCustom"); //$NON-NLS-1$
 	}
 
@@ -82,8 +79,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generate() {
 		super.generate();
-		final TypeReference factory = getBuilderFactoryImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var factory = getBuilderFactoryImpl();
+		final var content = new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -100,7 +97,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_PREFIXES = new String[] {"); //$NON-NLS-1$
 				it.newLine();
-				for (final String forbiddenPackage : getCodeBuilderConfig().getForbiddenInjectionPrefixes()) {
+				for (final var forbiddenPackage : getCodeBuilderConfig().getForbiddenInjectionPrefixes()) {
 					it.append("\t\t\""); //$NON-NLS-1$
 					it.append(Strings.convertToJavaString(forbiddenPackage));
 					if (!forbiddenPackage.endsWith(".")) { //$NON-NLS-1$
@@ -114,7 +111,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_POSTFIXES = new String[] {"); //$NON-NLS-1$
 				it.newLine();
-				for (final String forbiddenPostfix : getCodeBuilderConfig().getForbiddenInjectionPostfixes()) {
+				for (final var forbiddenPostfix : getCodeBuilderConfig().getForbiddenInjectionPostfixes()) {
 					it.append("\t\t\""); //$NON-NLS-1$
 					if (!forbiddenPostfix.startsWith(".")) { //$NON-NLS-1$
 						it.append("."); //$NON-NLS-1$
@@ -509,7 +506,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				for (StringConcatenationClient client : generateMembers()) {
+				for (final var client : generateMembers()) {
 					it.append(client);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -518,7 +515,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(factory, content);
+		final var createJavaFile = getFileAccessFactory().createJavaFile(factory, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
@@ -533,8 +530,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateXtendStubs() {
 		super.generateXtendStubs();
-		final TypeReference stub = getBuilderFactoryImplCustom();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var stub = getBuilderFactoryImplCustom();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder factory of the " + getLanguageName() //$NON-NLS-1$
@@ -554,8 +551,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		final XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
-		final IFileSystemAccess2 fileSystem = getSrc();
+		final var xtendFile = getFileAccessFactory().createXtendFile(stub, content);
+		final var fileSystem = getSrc();
 		if (!fileSystem.isFile(xtendFile.getPath())) {
 			xtendFile.writeTo(fileSystem);
 		}
@@ -564,8 +561,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateJavaStubs() {
 		super.generateJavaStubs();
-		final TypeReference stub = getBuilderFactoryImplCustom();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final var stub = getBuilderFactoryImplCustom();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder factory of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
@@ -584,8 +581,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(stub, content);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final var javaFile = getFileAccessFactory().createJavaFile(stub, content);
+		final var fileSystem = getSrc();
 		if (!fileSystem.isFile(javaFile.getPath())) {
 			javaFile.writeTo(fileSystem);
 		}
@@ -594,7 +591,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateRuntimeBindings(BindingFactory factory) {
 		super.generateRuntimeBindings(factory);
-		final IFileSystemAccess2 fileSystem = getSrc();
+		final var fileSystem = getSrc();
 		final TypeReference type;
 		if ((fileSystem.isFile(getBuilderFactoryImplCustom().getJavaPath()))
 				|| (fileSystem.isFile(getBuilderFactoryImplCustom().getXtendPath()))) {

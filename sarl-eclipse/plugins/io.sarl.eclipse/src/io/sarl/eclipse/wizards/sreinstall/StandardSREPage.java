@@ -87,8 +87,8 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public void createControl(Composite parent) {
 		// create a composite with standard margins and spacing
-		final Composite composite = new Composite(parent, SWT.NONE);
-		final GridLayout layout = new GridLayout();
+		final var composite = new Composite(parent, SWT.NONE);
+		final var layout = new GridLayout();
 		layout.numColumns = 3;
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -156,13 +156,13 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			file = null;
 		}
 
-		final FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+		final var dialog = new FileDialog(getShell(), SWT.OPEN);
 		dialog.setText(Messages.StandardSREPage_4);
 		dialog.setFilterExtensions(new String[] {"*.jar"}); //$NON-NLS-1$
 		if (file != null && file.exists()) {
 			dialog.setFileName(file.getAbsolutePath());
 		}
-		final String selectedFile = dialog.open();
+		final var selectedFile = dialog.open();
 		if (selectedFile != null) {
 			final IPath path = Path.fromOSString(selectedFile);
 			//			IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -187,7 +187,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public boolean performFinish() {
 		try {
-			final String xml = SARLRuntime.getSREAsXML(this.workingCopy);
+			final var xml = SARLRuntime.getSREAsXML(this.workingCopy);
 			SARLRuntime.setSREFromXML(this.originalSRE, xml);
 			return true;
 		} catch (CoreException e) {
@@ -198,12 +198,13 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	@Override
 	public void initialize(ISREInstall sre) {
-		if (!(sre instanceof ManifestBasedSREInstall)) {
+		if (sre instanceof ManifestBasedSREInstall cvalue) {
+			setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
+			this.originalSRE = cvalue;
+			createWorkingCopy();
+		} else {
 			throw new SREException("Illegal SRE type: expecting ManifestBasedSREInstall."); //$NON-NLS-1$
 		}
-		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
-		this.originalSRE = (ManifestBasedSREInstall) sre;
-		createWorkingCopy();
 	}
 
 	/** Create a new instance of the working copy.
@@ -215,7 +216,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	@Override
 	public ISREInstall createSelection(String id) {
-		final ManifestBasedSREInstall sre = new ManifestBasedSREInstall(id);
+		final var sre = new ManifestBasedSREInstall(id);
 		sre.revalidate();
 		initialize(sre);
 		return sre;
@@ -225,12 +226,12 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	 * Initialize the dialogs fields.
 	 */
 	private void initializeFields() {
-		final IPath path = this.workingCopy.getJarFile();
+		final var path = this.workingCopy.getJarFile();
 		String tooltip = null;
 		String basename = null;
 		if (path != null) {
 			tooltip = path.toOSString();
-			final IPath tmpPath = path.removeTrailingSeparator();
+			final var tmpPath = path.removeTrailingSeparator();
 			if (tmpPath != null) {
 				basename = tmpPath.lastSegment();
 			}
@@ -238,17 +239,17 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.sreLibraryTextField.setText(Strings.nullToEmpty(basename));
 		this.sreLibraryTextField.setToolTipText(Strings.nullToEmpty(tooltip));
 		//
-		final String name = this.workingCopy.getNameNoDefault();
+		final var name = this.workingCopy.getNameNoDefault();
 		this.sreNameTextField.setText(Strings.nullToEmpty(name));
 		//
-		final String mainClass = this.workingCopy.getMainClass();
+		final var mainClass = this.workingCopy.getMainClass();
 		this.sreMainClassTextField.setText(Strings.nullToEmpty(mainClass));
 		//
 		this.sreIdTextField.setText(this.workingCopy.getId());
 	}
 
 	private IStatus validate() {
-		IStatus status = this.workingCopy.revalidate();
+		var status = this.workingCopy.revalidate();
 		if (status.isOK()) {
 			status = validateNameAgainstOtherSREs(this.workingCopy.getName());
 		}

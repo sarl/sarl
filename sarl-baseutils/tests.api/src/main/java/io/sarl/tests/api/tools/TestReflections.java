@@ -22,7 +22,6 @@ package io.sarl.tests.api.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -33,8 +32,6 @@ import java.lang.reflect.Method;
 import com.google.common.base.Objects;
 import com.google.common.base.Throwables;
 import org.mockito.internal.util.Primitives;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 import io.sarl.tests.api.TestPluginActivator;
 
@@ -66,7 +63,7 @@ public class TestReflections {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getStatic(Class<?> receiverType, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		Field f = getDeclaredField(receiverType, fieldName);
+		var f = getDeclaredField(receiverType, fieldName);
 		f.setAccessible(true);
 		return (T) f.get(null);
 	}
@@ -83,7 +80,7 @@ public class TestReflections {
 	 * @throws IllegalArgumentException see {@link Field#get(Object)}
 	 */
 	public static <T> void setStatic(Class<?> receiverType, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		Field f = getDeclaredField(receiverType, fieldName);
+		var f = getDeclaredField(receiverType, fieldName);
 		f.setAccessible(true);
 		f.set(null, value);
 	}
@@ -100,10 +97,10 @@ public class TestReflections {
 	 * @throws IllegalArgumentException see {@link Field#get(Object)}
 	 */
 	public static <T> void set(Object instance, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		Class<?> type = instance.getClass();
+		var type = instance.getClass();
 		while (type != null) {
 			try {
-				Field f = getDeclaredField(type, fieldName);
+				var f = getDeclaredField(type, fieldName);
 				f.setAccessible(true);
 				f.set(instance, value);
 				return;
@@ -128,10 +125,10 @@ public class TestReflections {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T get(Object instance, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		Class<?> type = instance.getClass();
+		var type = instance.getClass();
 		while (type != null) {
 			try {
-				Field f = getDeclaredField(type, fieldName);
+				var f = getDeclaredField(type, fieldName);
 				f.setAccessible(true);
 				return (T) f.get(instance);
 			} catch (NoSuchFieldException exception) {
@@ -157,9 +154,8 @@ public class TestReflections {
 	 * @throws SecurityException 
 	 * @throws NoSuchMethodException 
 	 */
-	public static <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException,
-	IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		final Object[] arguments = args == null ? new Object[]{null} : args;
+	public static <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		final var arguments = args == null ? new Object[]{null} : args;
 		Constructor<?> compatible = null;
 		for (Constructor<?> candidate : type.getDeclaredConstructors()) {
 			if (candidate != null && isCompatible(candidate, arguments)) {
@@ -176,11 +172,11 @@ public class TestReflections {
 			return type.cast(compatible.newInstance(arguments));
 		}
 		// not found provoke constructor not found exception
-		Class<?>[] paramTypes = new Class<?>[arguments.length];
-		for (int i = 0; i< arguments.length ; i++) {
+		var paramTypes = new Class<?>[arguments.length];
+		for (var i = 0; i< arguments.length ; i++) {
 			paramTypes[i] = arguments[i] == null ? Object.class : arguments[i].getClass();
 		}
-		Constructor<T> cons = type.getConstructor(paramTypes);
+		var cons = type.getConstructor(paramTypes);
 		return cons.newInstance(args);
 	}
 
@@ -193,9 +189,9 @@ public class TestReflections {
 	protected static boolean isCompatible(Constructor<?> candidate, Object... args) {
 		if (candidate.getParameterTypes().length != args.length)
 			return false;
-		for (int i = 0; i< candidate.getParameterTypes().length; i++) {
-			Object param = args[i];
-			Class<?> class1 = candidate.getParameterTypes()[i];
+		for (var i = 0; i< candidate.getParameterTypes().length; i++) {
+			var param = args[i];
+			var class1 = candidate.getParameterTypes()[i];
 			if (class1.isPrimitive()) {
 				class1 = wrapperTypeFor(class1);
 			}
@@ -233,11 +229,11 @@ public class TestReflections {
 	 * @throws NoSuchFieldException if the field cannot be found.
 	 */
 	protected static Field getDeclaredField(Class<?> clazz, String name) throws NoSuchFieldException {
-		Class<?> type = clazz;
+		var type = clazz;
 		NoSuchFieldException initialException = null;
 		do {
 			try {
-				Field f = type.getDeclaredField(name);
+				var f = type.getDeclaredField(name);
 				return f;
 			} catch(NoSuchFieldException noSuchField) {
 				if (initialException == null) {
@@ -268,7 +264,7 @@ public class TestReflections {
 	public static <T> T newInstance(String type, Object... args)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		final Class<?> t = forName(type);
+		final var t = forName(type);
 		return (T) newInstance(t, args);
 	}
 
@@ -285,9 +281,9 @@ public class TestReflections {
 		} catch (Exception exception) {
 			//
 		}
-		BundleContext context = TestPluginActivator.context;
+		var context = TestPluginActivator.context;
 		if (context != null) {
-			for (Bundle b : context.getBundles()) {
+			for (var b : context.getBundles()) {
 				try {
 					return b.loadClass(name);
 				} catch (ClassNotFoundException e) {
@@ -315,10 +311,10 @@ public class TestReflections {
 		assert receiver != null;
 		assert methodName != null;
 
-		Class<? extends Object> clazz = receiver.getClass();
+		var clazz = receiver.getClass();
 		Method compatible = null;
 		do {
-			for (Method candidate : clazz.getDeclaredMethods()) {
+			for (var candidate : clazz.getDeclaredMethods()) {
 				if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
 						&& candidate.getParameterCount() == 0) {
 					if (compatible != null) 
@@ -332,7 +328,7 @@ public class TestReflections {
 			return compatible.invoke(receiver);
 		}
 		// not found provoke method not found exception
-		Method method = receiver.getClass().getMethod(methodName);
+		var method = receiver.getClass().getMethod(methodName);
 		return method.invoke(receiver);
 	}
 
@@ -383,10 +379,10 @@ public class TestReflections {
 			arguments = args;
 		}
 
-		Class<? extends Object> clazz = receiverType;
+		var clazz = receiverType;
 		Method compatible = null;
 		do {
-			for (Method candidate : clazz.getDeclaredMethods()) {
+			for (var candidate : clazz.getDeclaredMethods()) {
 				if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
 						&& isValidArgs(candidate.isVarArgs(), arguments, candidate.getParameterTypes())) {
 					if (compatible != null) 
@@ -398,14 +394,14 @@ public class TestReflections {
 		if (compatible != null) {
 			compatible.setAccessible(true);
 			if (compatible.isVarArgs()) {
-				Object[] newArgs = new Object[compatible.getParameterCount()];
-				for (int i = 0; i < compatible.getParameterCount() - 1; ++i) {
+				var newArgs = new Object[compatible.getParameterCount()];
+				for (var i = 0; i < compatible.getParameterCount() - 1; ++i) {
 					newArgs[i] = arguments[i];
 				}
-				Class<?> componentType = compatible.getParameterTypes()[compatible.getParameterCount() - 1].getComponentType();
-				int varArgsLength = arguments.length - compatible.getParameterCount() + 1;
-				Object varArgs = Array.newInstance(componentType, varArgsLength);
-				for (int i = 0; i < varArgsLength; ++i) {
+				var componentType = compatible.getParameterTypes()[compatible.getParameterCount() - 1].getComponentType();
+				var varArgsLength = arguments.length - compatible.getParameterCount() + 1;
+				var varArgs = Array.newInstance(componentType, varArgsLength);
+				for (var i = 0; i < varArgsLength; ++i) {
 					Array.set(varArgs, i, arguments[i + compatible.getParameterCount() - 1]);
 				}
 				newArgs[compatible.getParameterCount() - 1] = varArgs;
@@ -414,7 +410,7 @@ public class TestReflections {
 			return compatible.invoke(compatible.getDeclaringClass().cast(receiver), arguments);
 		}
 		// not found provoke method not found exception
-		Method method = receiverType.getMethod(methodName);
+		var method = receiverType.getMethod(methodName);
 		return method.invoke(receiver);
 	}
 
@@ -434,7 +430,7 @@ public class TestReflections {
 	 */
 	public static <R> R invokeFunc(Class<?> receiverType, Object receiver, Class<R> returnType,
 			String methodName, Class<?>[] parameterTypes, Object... arguments) throws Exception {
-		Class<?> type = receiverType;
+		var type = receiverType;
 		Method method = null;
 		while (type != null && method == null) {
 			try {
@@ -447,17 +443,17 @@ public class TestReflections {
 		if (method != null) {
 			method.setAccessible(true);
 			try {
-				final Object result = method.invoke(receiver, arguments);
+				final var result = method.invoke(receiver, arguments);
 				if (result == null) {
 					return null;
 				}
 				return returnType.cast(result);
 			} catch (InvocationTargetException internalException) {
-				Throwable ex = Throwables.getRootCause(internalException);
-				if (ex instanceof RuntimeException) {
-					throw (RuntimeException) ex;
-				} else if (ex instanceof Error) {
-					throw (Error) ex;
+				var ex = Throwables.getRootCause(internalException);
+				if (ex instanceof RuntimeException cvalue) {
+					throw cvalue;
+				} else if (ex instanceof Error cvalue) {
+					throw cvalue;
 				} else if (ex != null) {
 					throw new Error(ex);
 				}
@@ -482,7 +478,7 @@ public class TestReflections {
 	 */
 	public static <R> R invokeFunc(Class<?> receiverType, Object receiver, Class<R> returnType,
 			String methodName) throws Exception {
-		Class<?> type = receiverType;
+		var type = receiverType;
 		Method method = null;
 		while (type != null && method == null) {
 			try {
@@ -495,17 +491,17 @@ public class TestReflections {
 		if (method != null) {
 			method.setAccessible(true);
 			try {
-				final Object result = method.invoke(receiver);
+				final var result = method.invoke(receiver);
 				if (result == null) {
 					return null;
 				}
 				return returnType.cast(result);
 			} catch (InvocationTargetException internalException) {
-				Throwable ex = Throwables.getRootCause(internalException);
-				if (ex instanceof RuntimeException) {
-					throw (RuntimeException) ex;
-				} else if (ex instanceof Error) {
-					throw (Error) ex;
+				var ex = Throwables.getRootCause(internalException);
+				if (ex instanceof RuntimeException cvalue) {
+					throw cvalue;
+				} else if (ex instanceof Error cvalue) {
+					throw cvalue;
 				} else if (ex != null) {
 					throw new Error(ex);
 				}
@@ -529,7 +525,7 @@ public class TestReflections {
 	 */
 	public static void invokeProc(Class<?> receiverType, Object receiver,
 			String methodName, Class<?>[] parameterTypes, Object... arguments) throws Exception {
-		Class<?> type = receiverType;
+		var type = receiverType;
 		Method method = null;
 		while (type != null && method == null) {
 			try {
@@ -544,11 +540,11 @@ public class TestReflections {
 			try {
 				method.invoke(receiver, arguments);
 			} catch (InvocationTargetException internalException) {
-				Throwable ex = Throwables.getRootCause(internalException);
-				if (ex instanceof RuntimeException) {
-					throw (RuntimeException) ex;
-				} else if (ex instanceof Error) {
-					throw (Error) ex;
+				var ex = Throwables.getRootCause(internalException);
+				if (ex instanceof RuntimeException cvalue) {
+					throw cvalue;
+				} else if (ex instanceof Error cvalue) {
+					throw cvalue;
 				} else if (ex != null) {
 					throw new Error(ex);
 				}
@@ -571,7 +567,7 @@ public class TestReflections {
 	 */
 	public static void invokeProc(Class<?> receiverType, Object receiver,
 			String methodName) throws Exception {
-		Class<?> type = receiverType;
+		var type = receiverType;
 		Method method = null;
 		while (type != null && method == null) {
 			try {
@@ -586,11 +582,11 @@ public class TestReflections {
 			try {
 				method.invoke(receiver);
 			} catch (InvocationTargetException internalException) {
-				Throwable ex = Throwables.getRootCause(internalException);
-				if (ex instanceof RuntimeException) {
-					throw (RuntimeException) ex;
-				} else if (ex instanceof Error) {
-					throw (Error) ex;
+				var ex = Throwables.getRootCause(internalException);
+				if (ex instanceof RuntimeException cvalue) {
+					throw cvalue;
+				} else if (ex instanceof Error cvalue) {
+					throw cvalue;
 				} else if (ex != null) {
 					throw new Error(ex);
 				}
@@ -602,7 +598,7 @@ public class TestReflections {
 	}
 
 	private static boolean isValidArgs(boolean varargs, Object[] args, Class<?>[] params) {
-		for (int i = 0; i < args.length; ++i) {
+		for (var i = 0; i < args.length; ++i) {
 			if (i >= params.length) {
 				return false;
 			}
@@ -611,15 +607,15 @@ public class TestReflections {
 					return false;
 				}
 			} else if ((!(params[i].isInstance(args[i]))) && varargs && i == params.length - 1) {
-				Class<?> componentType = params[i].getComponentType();
+				var componentType = params[i].getComponentType();
 
-				Class<?>[] newParams = new Class[args.length - params.length + 1];
-				for (int j = 0; j < newParams.length; ++j) {
+				var newParams = new Class[args.length - params.length + 1];
+				for (var j = 0; j < newParams.length; ++j) {
 					newParams[j] = componentType;
 				}
 
-				Object[] newArgs = new Object[newParams.length];
-				for (int j = 0; j < newArgs.length; ++j, ++i) {
+				var newArgs = new Object[newParams.length];
+				for (var j = 0; j < newArgs.length; ++j, ++i) {
 					newArgs[j] = args[i];
 				}
 
@@ -687,21 +683,21 @@ public class TestReflections {
 	@SuppressWarnings("resource")
 	public static String runInternal(String functionName, String className, String data, String... arguments) throws Exception {
 		String result = null;
-		try (final ByteArrayOutputStream stdout = new ByteArrayOutputStream()) {
-			try (final ByteArrayOutputStream stderr = new ByteArrayOutputStream()) {
-				final byte[] inputBytes = data == null ? new byte[0] : data.getBytes("UTF-8"); //$NON-NLS-1$
-				try (final InputStream input = new ByteArrayInputStream(inputBytes)) {
-					final PrintStream console = System.out;
-					final PrintStream errConsole = System.err;
-					final InputStream old = System.in;
-					final PrintStream ps0 = new PrintStream(stdout);
-					final PrintStream ps1 = new PrintStream(stderr);
+		try (final var stdout = new ByteArrayOutputStream()) {
+			try (final var stderr = new ByteArrayOutputStream()) {
+				final var inputBytes = data == null ? new byte[0] : data.getBytes("UTF-8"); //$NON-NLS-1$
+				try (final var input = new ByteArrayInputStream(inputBytes)) {
+					final var console = System.out;
+					final var errConsole = System.err;
+					final var old = System.in;
+					final var ps0 = new PrintStream(stdout);
+					final var ps1 = new PrintStream(stderr);
 					try {
 						System.setOut(ps0);
 						System.setErr(ps1);
 						System.setIn(input);
-						final Class<?> cls = Class.forName(className);
-						final Method meth = cls.getDeclaredMethod(functionName, String[].class);
+						final var cls = Class.forName(className);
+						final var meth = cls.getDeclaredMethod(functionName, String[].class);
 						meth.invoke(null, (Object) arguments);
 					} finally {
 						ps0.flush();

@@ -97,7 +97,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		//	.toInstance(".");
 
 		// Configure a system singleton for issue severities provider
-		final UIConfigurableIssueSeveritiesProviderProvider provider = new UIConfigurableIssueSeveritiesProviderProvider();
+		final var provider = new UIConfigurableIssueSeveritiesProviderProvider();
 		binder.bind(UIConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);

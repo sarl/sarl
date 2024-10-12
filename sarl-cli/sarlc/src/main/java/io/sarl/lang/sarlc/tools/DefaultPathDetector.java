@@ -174,11 +174,11 @@ public class DefaultPathDetector implements PathDetector {
 	 * @since 0.13
 	 */
 	protected static File normalize(File filename) {
-		final Path path1 = toFile(SARLConfig.FOLDER_SOURCE_SARL).toPath();
-		final Path path2 = toFile(SARLConfig.FOLDER_SOURCE_JAVA).toPath();
-		final Path path3 = toFile(SARLConfig.FOLDER_TEST_SOURCE_SARL).toPath();
-		final Path path4 = toFile(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL).toPath();
-		final Path path = filename.toPath();
+		final var path1 = toFile(SARLConfig.FOLDER_SOURCE_SARL).toPath();
+		final var path2 = toFile(SARLConfig.FOLDER_SOURCE_JAVA).toPath();
+		final var path3 = toFile(SARLConfig.FOLDER_TEST_SOURCE_SARL).toPath();
+		final var path4 = toFile(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL).toPath();
+		final var path = filename.toPath();
 		Path toRemove = null;
 		if (path.endsWith(path1)) {
 			toRemove = path1;
@@ -190,9 +190,9 @@ public class DefaultPathDetector implements PathDetector {
 			toRemove = path4;
 		}
 		if (toRemove != null) {
-			final int nb = toRemove.getNameCount();
-			File res = filename;
-			for (int i = 0; i < nb; ++i) {
+			final var nb = toRemove.getNameCount();
+			var res = filename;
+			for (var i = 0; i < nb; ++i) {
 				res = res.getParentFile();
 			}
 			return res;
@@ -208,7 +208,7 @@ public class DefaultPathDetector implements PathDetector {
 	 */
 	protected static File toFile(String filename) {
 		File result = null;
-		for (final String element : filename.split("\\/")) { //$NON-NLS-1$
+		for (final var element : filename.split("\\/")) { //$NON-NLS-1$
 			if (result == null) {
 				result = new File(element);
 			} else {
@@ -226,8 +226,8 @@ public class DefaultPathDetector implements PathDetector {
 	 * @since 0.13
 	 */
 	protected static File toFile(File root, String filename) {
-		File result = root;
-		for (final String element : filename.split("\\/")) { //$NON-NLS-1$
+		var result = root;
+		for (final var element : filename.split("\\/")) { //$NON-NLS-1$
 			result = new File(result, element);
 		}
 		return result;
@@ -251,15 +251,15 @@ public class DefaultPathDetector implements PathDetector {
 	protected static File determineCommonRoot(Iterable<File> files) {
 		LinkedList<String> longuestPrefix = null;
 
-		for (final File file : files) {
+		for (final var file : files) {
 			if (file == null) {
 				continue;
 			}
-			final LinkedList<String> components = splitFile(file);
+			final var components = splitFile(file);
 			if (longuestPrefix == null) {
 				longuestPrefix = components;
 			} else {
-				int i = 0;
+				var i = 0;
 				while (i < longuestPrefix.size() && i < components.size()
 						&& Strings.equal(longuestPrefix.get(i), components.get(i))) {
 					++i;
@@ -278,7 +278,7 @@ public class DefaultPathDetector implements PathDetector {
 		}
 
 		File prefix = null;
-		for (final String component : longuestPrefix) {
+		for (final var component : longuestPrefix) {
 			if (prefix == null) {
 				prefix = new File(component);
 			} else {
@@ -290,8 +290,8 @@ public class DefaultPathDetector implements PathDetector {
 	}
 
 	private static LinkedList<String> splitFile(File file) {
-		final LinkedList<String> elements = new LinkedList<>();
-		File current = file;
+		final var elements = new LinkedList<String>();
+		var current = file;
 		do {
 			elements.addFirst(current.getName());
 			current = current.getParentFile();

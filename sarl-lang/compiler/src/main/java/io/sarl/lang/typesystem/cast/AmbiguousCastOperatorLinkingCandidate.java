@@ -21,15 +21,11 @@
 
 package io.sarl.lang.typesystem.cast;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractAmbiguousLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractPendingLinkingCandidate;
 
@@ -88,10 +84,10 @@ public class AmbiguousCastOperatorLinkingCandidate extends AbstractAmbiguousLink
 
 	@Override
 	protected String[] getDiagnosticData() {
-		final Set<String> data = Sets.newLinkedHashSet();
-		for (final ILinkingCandidate candidate : getAlternatives()) {
-			final JvmIdentifiableElement feature = candidate.getFeature();
-			final String simpleName = feature.getSimpleName();
+		final var data = Sets.<String>newLinkedHashSet();
+		for (final var candidate : getAlternatives()) {
+			final var feature = candidate.getFeature();
+			final var simpleName = feature.getSimpleName();
 			data.add(simpleName + "()"); //$NON-NLS-1$
 		}
 		return data.toArray(new String[data.size()]);

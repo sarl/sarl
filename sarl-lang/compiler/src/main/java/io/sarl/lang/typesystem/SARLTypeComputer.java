@@ -28,22 +28,17 @@ import com.google.inject.Inject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.EObjectDiagnosticImpl;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.typesystem.computation.IFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -85,7 +80,7 @@ public class SARLTypeComputer extends XtendTypeComputer {
 		}
 		ILinkingCandidate preferredCandidateWithoutConstraint = null;
 		ILinkingCandidate preferredCandidateWithConstraint = null;
-		for (final ILinkingCandidate candidate : candidates) {
+		for (final var candidate : candidates) {
 			if (preferredCandidateWithoutConstraint == null) {
 				preferredCandidateWithoutConstraint = candidate;
 			} else {
@@ -96,7 +91,7 @@ public class SARLTypeComputer extends XtendTypeComputer {
 					preferredCandidateWithConstraint = candidate;
 				}
 			} else {
-				final ILinkingCandidate preferredCandidate = preferredCandidateWithConstraint.getPreferredCandidate(candidate);
+				final var preferredCandidate = preferredCandidateWithConstraint.getPreferredCandidate(candidate);
 				if (!(preferredCandidate instanceof AmbiguousFeatureLinkingCandidate)
 						|| !isIgnorableCallToFeature(candidate)) {
 					preferredCandidateWithConstraint = preferredCandidate;
@@ -115,13 +110,13 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @return {@code true} if ambiguity could be removed.
 	 */
 	protected boolean isIgnorableCallToFeature(ILinkingCandidate candidate) {
-		final JvmIdentifiableElement feature = candidate.getFeature();
+		final var feature = candidate.getFeature();
 		//
 		// @Deprecated
 		//
-		if (feature instanceof JvmOperation) {
-			JvmAnnotationTarget target = (JvmOperation) feature;
-			JvmAnnotationReference reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
+		if (feature instanceof JvmOperation cvalue) {
+			JvmAnnotationTarget target = cvalue;
+			var reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
 			if (reference == null) {
 				do {
 					target = EcoreUtil2.getContainerOfType(target.eContainer(), JvmAnnotationTarget.class);
@@ -139,19 +134,19 @@ public class SARLTypeComputer extends XtendTypeComputer {
 
 	@Override
 	public void computeTypes(XExpression expression, ITypeComputationState state) {
-		if (expression instanceof SarlBreakExpression) {
-			_computeTypes((SarlBreakExpression) expression, state);
-		} else if (expression instanceof SarlContinueExpression) {
-			_computeTypes((SarlContinueExpression) expression, state);
-		} else if (expression instanceof SarlAssertExpression) {
-			_computeTypes((SarlAssertExpression) expression, state);
-		} else if (expression instanceof SarlCastedExpression) {
-			_computeTypes((SarlCastedExpression) expression, state);
+		if (expression instanceof SarlBreakExpression cvalue) {
+			_computeTypes(cvalue, state);
+		} else if (expression instanceof SarlContinueExpression cvalue) {
+			_computeTypes(cvalue, state);
+		} else if (expression instanceof SarlAssertExpression cvalue) {
+			_computeTypes(cvalue, state);
+		} else if (expression instanceof SarlCastedExpression cvalue) {
+			_computeTypes(cvalue, state);
 		} else {
 			try {
 				super.computeTypes(expression, state);
 			} catch (Throwable exception) {
-				final Throwable cause = Throwables.getRootCause(exception);
+				final var cause = Throwables.getRootCause(exception);
 				state.addDiagnostic(new EObjectDiagnosticImpl(
 						Severity.ERROR,
 						IssueCodes.INTERNAL_ERROR,
@@ -170,7 +165,7 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @param state the state of the type resolver.
 	 */
 	protected void _computeTypes(SarlBreakExpression object, ITypeComputationState state) {
-		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
+		final var primitiveVoid = getPrimitiveVoid(state);
 		state.acceptActualType(primitiveVoid);
 	}
 
@@ -181,7 +176,7 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @since 0.7
 	 */
 	protected void _computeTypes(SarlContinueExpression object, ITypeComputationState state) {
-		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
+		final var primitiveVoid = getPrimitiveVoid(state);
 		state.acceptActualType(primitiveVoid);
 	}
 
@@ -201,28 +196,28 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 */
 	protected void _computeTypes(SarlCastedExpression cast, ITypeComputationState state) {
 		if (state instanceof AbstractTypeComputationState) {
-			final JvmTypeReference type = cast.getType();
+			final var type = cast.getType();
 			if (type != null) {
 				state.withNonVoidExpectation().computeTypes(cast.getTarget());
 				// Set the linked feature
 				try {
-					final AbstractTypeComputationState computationState = (AbstractTypeComputationState) state;
-					final CastedExpressionTypeComputationState astate = new CastedExpressionTypeComputationState(
+					final var computationState = (AbstractTypeComputationState) state;
+					final var astate = new CastedExpressionTypeComputationState(
 							cast,
 							computationState,
 							this.castOperationValidator);
 					astate.resetFeature(cast);
 					if (astate.isCastOperatorLinkingEnabled(cast)) {
-						final List<? extends ILinkingCandidate> candidates = astate.getLinkingCandidates(cast);
+						final var candidates = astate.getLinkingCandidates(cast);
 						if (!candidates.isEmpty()) {
-							final ILinkingCandidate best = getBestCandidate(candidates);
+							final var best = getBestCandidate(candidates);
 							if (best != null) {
 								best.applyToModel(computationState.getResolvedTypes());
 							}
 						}
 					}
 				} catch (Throwable exception) {
-					final Throwable cause = Throwables.getRootCause(exception);
+					final var cause = Throwables.getRootCause(exception);
 					state.addDiagnostic(new EObjectDiagnosticImpl(
 							Severity.ERROR,
 							IssueCodes.INTERNAL_ERROR,
@@ -244,9 +239,9 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	@Override
 	protected void _computeTypes(final XAbstractFeatureCall featureCall, ITypeComputationState state) {
 		// Save the different candidates that could be invoked
-		final List<? extends IFeatureLinkingCandidate> candidates = state.getLinkingCandidates(featureCall);
+		final var candidates = state.getLinkingCandidates(featureCall);
 		if (candidates.size() > 1) {
-			FeatureCallAdapter adapter = (FeatureCallAdapter) EcoreUtil.getAdapter(featureCall.eAdapters(), FeatureCallAdapter.class);
+			var adapter = (FeatureCallAdapter) EcoreUtil.getAdapter(featureCall.eAdapters(), FeatureCallAdapter.class);
 			if (adapter == null) {
 				adapter = new FeatureCallAdapter();
 				featureCall.eAdapters().add(adapter);

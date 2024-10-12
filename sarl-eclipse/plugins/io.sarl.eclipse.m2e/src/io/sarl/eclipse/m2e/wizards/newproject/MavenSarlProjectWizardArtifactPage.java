@@ -50,8 +50,8 @@ public final class MavenSarlProjectWizardArtifactPage extends MavenProjectWizard
 
 	  @Override
 	public List<String> getFolders() {
-		final List<String> folders = super.getFolders();
-		final List<String> newFolders = new ArrayList<>(folders);
+		final var folders = super.getFolders();
+		final var newFolders = new ArrayList<String>(folders);
 		newFolders.add(SARLConfig.FOLDER_SOURCE_SARL);
 		newFolders.add(SARLConfig.FOLDER_SOURCE_GENERATED);
 		return newFolders;

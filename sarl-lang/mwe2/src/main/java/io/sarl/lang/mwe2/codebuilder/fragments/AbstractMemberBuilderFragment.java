@@ -35,7 +35,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -48,8 +47,6 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
-import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
@@ -70,12 +67,12 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 	@Override
 	public void generate() {
-		final Iterable<MemberDescription> members = getMembers();
-		for (final MemberDescription description : members) {
+		final var members = getMembers();
+		for (final var description : members) {
 			generateIMemberBuilder(description);
 		}
-		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
-		for (final MemberDescription description : members) {
+		final var enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		for (final var description : members) {
 			generateMemberBuilderImpl(description);
 			if (enableAppenders) {
 				generateMemberAppender(description);
@@ -87,7 +84,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	@Override
 	public void generateRuntimeBindings(BindingFactory factory) {
 		super.generateRuntimeBindings(factory);
-		for (final MemberDescription description : getMembers()) {
+		for (final var description : getMembers()) {
 			if (!description.isTopElement()) {
 				bindElementDescription(factory, description.getElementDescription());
 			}
@@ -102,8 +99,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		if (description.isTopElement()) {
 			return;
 		}
-		final TypeReference builder = description.getElementDescription().builderInterfaceType();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = description.getElementDescription().builderInterfaceType();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -124,7 +121,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -136,9 +133,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		if (description.isTopElement()) {
 			return;
 		}
-		final TypeReference builderInterface = description.getElementDescription().builderInterfaceType();
-		final TypeReference builder = description.getElementDescription().builderImplementationType();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = description.getElementDescription().builderInterfaceType();
+		final var builder = description.getElementDescription().builderImplementationType();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -163,7 +160,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -175,9 +172,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		if (description.isTopElement()) {
 			return;
 		}
-		final TypeReference appender = description.getElementDescription().appenderType();
-		final String generatedFieldAccessor = getGeneratedMemberAccessor(description);
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var appender = description.getElementDescription().appenderType();
+		final var generatedFieldAccessor = getGeneratedMemberAccessor(description);
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Source appender of a " + getLanguageName() //$NON-NLS-1$
@@ -204,7 +201,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -228,23 +225,23 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 */
 	protected StringConcatenationClient generateMembers(MemberDescription description, boolean forInterface,
 			boolean forAppender) {
-		final TypeReference generatedType = description.getElementDescription().elementType();
-		final String generatedFieldName = Strings.toFirstLower(generatedType.getSimpleName());
-		final String generatedFieldAccessor = getGeneratedMemberAccessor(description);
+		final var generatedType = description.getElementDescription().elementType();
+		final var generatedFieldName = Strings.toFirstLower(generatedType.getSimpleName());
+		final var generatedFieldAccessor = getGeneratedMemberAccessor(description);
 
-		final AtomicBoolean hasName = new AtomicBoolean(false);
-		final AtomicBoolean hasTypeName = new AtomicBoolean(false);
-		final AtomicBoolean hasType = new AtomicBoolean(false);
-		final AtomicBoolean hasParameters = new AtomicBoolean(false);
-		final AtomicBoolean hasReturnType = new AtomicBoolean(false);
-		final AtomicBoolean hasThrows = new AtomicBoolean(false);
-		final AtomicBoolean hasFires = new AtomicBoolean(false);
-		final AtomicBoolean hasBlock = new AtomicBoolean(false);
-		final AtomicBoolean isAnnotated = new AtomicBoolean(false);
-		final AtomicBoolean hasModifiers = new AtomicBoolean(false);
-		final AtomicBoolean hasTypeParameters = new AtomicBoolean(false);
-		final List<String> expressions = new ArrayList<>();
-		for (Assignment assignment : GrammarUtil.containedAssignments(description.getElementDescription().grammarComponent())) {
+		final var hasName = new AtomicBoolean(false);
+		final var hasTypeName = new AtomicBoolean(false);
+		final var hasType = new AtomicBoolean(false);
+		final var hasParameters = new AtomicBoolean(false);
+		final var hasReturnType = new AtomicBoolean(false);
+		final var hasThrows = new AtomicBoolean(false);
+		final var hasFires = new AtomicBoolean(false);
+		final var hasBlock = new AtomicBoolean(false);
+		final var isAnnotated = new AtomicBoolean(false);
+		final var hasModifiers = new AtomicBoolean(false);
+		final var hasTypeParameters = new AtomicBoolean(false);
+		final var expressions = new ArrayList<String>();
+		for (final var assignment : GrammarUtil.containedAssignments(description.getElementDescription().grammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
 				hasModifiers.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getTypeParameterListGrammarName(), assignment.getFeature())) {
@@ -488,7 +485,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
 						if (description.isAnnotationInfo()) {
-							final TypeReference commonSuperType = description.getElementDescription().commonSuperType();
+							final var commonSuperType = description.getElementDescription().commonSuperType();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
 							it.append(".setAnnotationInfo("); //$NON-NLS-1$
@@ -512,7 +509,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						}
 						if (description.getModifiers().size() > 1) {
 							it.append("\t\t\tif ("); //$NON-NLS-1$
-							boolean first = true;
+							var first = true;
 							for (String mod : description.getModifiers()) {
 								if (first) {
 									first = false;
@@ -827,7 +824,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
-				for (String expressionName : expressions) {
+				for (final var expressionName : expressions) {
 					it.append("\t/** Replies the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
 					it.append("\t * @return the value of the "); //$NON-NLS-1$

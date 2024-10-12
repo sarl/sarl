@@ -91,8 +91,8 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	/** Constructor.
 	 */
 	public SARLProjectConfigurator() {
-		final Injector injector = SARLEclipseExecutableExtensionFactory.getSARLInjector();
-		final String fileExtension = injector.getInstance(
+		final var injector = SARLEclipseExecutableExtensionFactory.getSARLInjector();
+		final var fileExtension = injector.getInstance(
 				Key.get(String.class, Names.named(Constants.FILE_EXTENSIONS)));
 		if (Strings.isNullOrEmpty(fileExtension)) {
 			this.fileExtension = null;
@@ -107,9 +107,9 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 	@Override
 	public Set<File> findConfigurableLocations(File root, IProgressMonitor monitor) {
-		final Set<File> projectFolders = new LinkedHashSet<>();
+		final var projectFolders = new LinkedHashSet<File>();
 		if (this.fileExtension != null) {
-			final Set<String> visitedDirectories = new HashSet<>();
+			final var visitedDirectories = new HashSet<String>();
 			collectProjectFoldersFromDirectory(projectFolders, root, visitedDirectories, true, monitor);
 		}
 		return projectFolders;
@@ -122,8 +122,8 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 	@Override
 	public Set<IFolder> getFoldersToIgnore(IProject project, IProgressMonitor monitor) {
-		final Set<IFolder> ignoredFolders = new LinkedHashSet<>();
-		for (final String binPath : BundleUtil.BIN_FOLDERS) {
+		final var ignoredFolders = new LinkedHashSet<IFolder>();
+		for (final var binPath : BundleUtil.BIN_FOLDERS) {
 			ignoredFolders.add(project.getFolder(Path.fromPortableString(binPath)));
 		}
 		ignoredFolders.add(project.getFolder(Path.fromPortableString(SARLConfig.FOLDER_RESOURCES)));
@@ -168,14 +168,14 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	@Override
 	public void unconfigure(IProject project, IProgressMonitor monitor) throws CoreException {
 		try {
-			final SubMonitor mon = SubMonitor.convert(monitor, 4);
-			final IProjectDescription description = project.getDescription();
-			final List<String> natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
+			final var mon = SubMonitor.convert(monitor, 4);
+			final var description = project.getDescription();
+			final var natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
 			natures.remove(SARLEclipseConfig.XTEXT_NATURE_ID);
 			natures.remove(SARLEclipseConfig.NATURE_ID);
-			final String[] newNatures = natures.toArray(new String[natures.size()]);
+			final var newNatures = natures.toArray(new String[natures.size()]);
 			mon.worked(1);
-			final IStatus status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
+			final var status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
 			mon.worked(1);
 			if (status.getCode() == IStatus.OK) {
 				description.setNatureIds(newNatures);
@@ -254,9 +254,9 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	public static void configureSARLProject(IProject project, boolean addNatures,
 			boolean configureJavaNature, boolean createFolders, IProgressMonitor monitor) {
 		try {
-			final SubMonitor subMonitor = SubMonitor.convert(monitor, 11);
+			final var subMonitor = SubMonitor.convert(monitor, 11);
 			// Add Natures
-			final IStatus status = Status.OK_STATUS;
+			final var status = Status.OK_STATUS;
 			if (addNatures) {
 				addSarlNatures(project, subMonitor.newChild(1));
 				if (status != null && !status.isOK()) {
@@ -265,14 +265,14 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 
 			// Ensure SARL specific folders.
-			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> testSourceFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> testGenerationFolders = new OutParameter<>();
-			final OutParameter<IFolder> generationFolder = new OutParameter<>();
-			final OutParameter<IFolder> testGenerationFolder = new OutParameter<>();
-			final OutParameter<IFolder> outputFolder = new OutParameter<>();
-			final OutParameter<IFolder> testOutputFolder = new OutParameter<>();
+			final var sourceFolders = new OutParameter<IFolder[]>();
+			final var testSourceFolders = new OutParameter<IFolder[]>();
+			final var generationFolders = new OutParameter<IFolder[]>();
+			final var testGenerationFolders = new OutParameter<IFolder[]>();
+			final var generationFolder = new OutParameter<IFolder>();
+			final var testGenerationFolder = new OutParameter<IFolder>();
+			final var outputFolder = new OutParameter<IFolder>();
+			final var testOutputFolder = new OutParameter<IFolder>();
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,
 					generationFolders, testGenerationFolders,
@@ -280,8 +280,8 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					outputFolder, testOutputFolder);
 
 			// SARL specific configuration
-			final IFolder testGenerationFolderFolder = testGenerationFolder.get();
-			final IPath testGenerationFolderPath = testGenerationFolderFolder == null ? null
+			final var testGenerationFolderFolder = testGenerationFolder.get();
+			final var testGenerationFolderPath = testGenerationFolderFolder == null ? null
 					: testGenerationFolderFolder.getProjectRelativePath();
 			SARLPreferences.setSpecificSARLConfigurationFor(project,
 					generationFolder.get().getProjectRelativePath(),
@@ -295,7 +295,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					addNatures(project, subMonitor.newChild(1), JavaCore.NATURE_ID);
 				}
 
-				final IJavaProject javaProject = JavaCore.create(project);
+				final var javaProject = JavaCore.create(project);
 				subMonitor.worked(1);
 
 				// Build path
@@ -324,21 +324,21 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			OutParameter<IFolder> testingGenerationFolder,
 			OutParameter<IFolder> classOutput,
 			OutParameter<IFolder> testClassOutput) throws CoreException {
-		final IFolder sourceSarlFolder = ensureSourceFolder(project,
+		final var sourceSarlFolder = ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, monitor.newChild(1));
-		final IFolder sourceJavaFolder = ensureSourceFolder(project,
+		final var sourceJavaFolder = ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_JAVA, false, createFolders, monitor.newChild(1));
-		final IFolder resourcesFolder = ensureSourceFolder(project,
+		final var resourcesFolder = ensureSourceFolder(project,
 				SARLConfig.FOLDER_RESOURCES, false, createFolders, monitor.newChild(1));
-		final IFolder testSourceSarlFolder = ensureSourceFolder(project,
+		final var testSourceSarlFolder = ensureSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_SARL, false, createFolders, monitor.newChild(1));
-		final IFolder generationFolder = ensureGeneratedSourceFolder(project,
+		final var generationFolder = ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_GENERATED, true, createFolders, monitor.newChild(1));
-		final IFolder testGenerationFolder = ensureGeneratedSourceFolder(project,
+		final var testGenerationFolder = ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, monitor.newChild(1));
-		final IFolder outputFolder = ensureOutputFolder(project,
+		final var outputFolder = ensureOutputFolder(project,
 				SARLConfig.FOLDER_BIN, true, createFolders, monitor.newChild(1));
-		final IFolder testOutputFolder = ensureOutputFolder(project,
+		final var testOutputFolder = ensureOutputFolder(project,
 				SARLConfig.FOLDER_TEST_BIN, true, createFolders, monitor.newChild(1));
 		if (sourcePaths != null) {
 			assert sourceSarlFolder != null : "sourceSarlFolder must not be null"; //$NON-NLS-1$
@@ -401,13 +401,13 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 */
 	public static void configureSARLSourceFolders(IProject project, boolean createFolders, IProgressMonitor monitor) {
 		try {
-			final SubMonitor subMonitor = SubMonitor.convert(monitor, 8);
+			final var subMonitor = SubMonitor.convert(monitor, 8);
 
-			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> testSourceFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
-			final OutParameter<IFolder[]> testGenerationFolders = new OutParameter<>();
-			final OutParameter<IFolder> testOutputFolder = new OutParameter<>();
+			final var sourceFolders = new OutParameter<IFolder[]>();
+			final var testSourceFolders = new OutParameter<IFolder[]>();
+			final var generationFolders = new OutParameter<IFolder[]>();
+			final var testGenerationFolders = new OutParameter<IFolder[]>();
+			final var testOutputFolder = new OutParameter<IFolder>();
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,
 					generationFolders, testGenerationFolders,
@@ -416,7 +416,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					null,
 					testOutputFolder);
 
-			final IJavaProject javaProject = JavaCore.create(project);
+			final var javaProject = JavaCore.create(project);
 			subMonitor.worked(1);
 
 			// Build path
@@ -442,29 +442,29 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 * @return the classpath entries.
 	 */
 	public static List<IClasspathEntry> getDefaultSourceClassPathEntries(IPath projectFolder) {
-		final IPath srcJava = projectFolder.append(
+		final var srcJava = projectFolder.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
-		final IClasspathEntry srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
+		final var srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
 
-		final IPath srcSarl = projectFolder.append(
+		final var srcSarl = projectFolder.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
-		final IClasspathEntry srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
+		final var srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
 
-		final IPath srcGeneratedSources = projectFolder.append(
+		final var srcGeneratedSources = projectFolder.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
-		final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+		final var attr = JavaCore.newClasspathAttribute(
 				IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
 				Boolean.TRUE.toString());
-		final IClasspathEntry srcGeneratedSourcesEntry = JavaCore.newSourceEntry(
+		final var srcGeneratedSourcesEntry = JavaCore.newSourceEntry(
 				srcGeneratedSources.makeAbsolute(),
 				ClasspathEntry.INCLUDE_ALL,
 				ClasspathEntry.EXCLUDE_NONE,
 				null /*output location*/,
 				new IClasspathAttribute[] {attr});
 
-		final IPath srcResources = projectFolder.append(
+		final var srcResources = projectFolder.append(
 				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
-		final IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
+		final var srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
 
 		return Arrays.asList(
 				srcSarlEntry,
@@ -488,15 +488,15 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			IFolder[] generationPaths, IFolder[] testGenerationPaths,
 			IPath testOutputPath,
 			boolean keepProjectClasspath, boolean addSarllLibraries) {
-		final List<CPListElement> list = new ArrayList<>();
+		final var list = new ArrayList<CPListElement>();
 
-		final Set<String> added = new TreeSet<>();
+		final var added = new TreeSet<String>();
 
-		for (final IFolder sourcePath : sourcePaths) {
+		for (final var sourcePath : sourcePaths) {
 			if (sourcePath != null) {
-				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				final var filename = sourcePath.getFullPath().makeAbsolute();
 				if (added.add(filename.toPortableString())) {
-					final IClasspathEntry entry = JavaCore.newSourceEntry(
+					final var entry = JavaCore.newSourceEntry(
 							filename,
 							ClasspathEntry.INCLUDE_ALL,
 							ClasspathEntry.EXCLUDE_NONE,
@@ -506,14 +506,14 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 		}
 
-		for (final IFolder sourcePath : testSourcePaths) {
+		for (final var sourcePath : testSourcePaths) {
 			if (sourcePath != null) {
-				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				final var filename = sourcePath.getFullPath().makeAbsolute();
 				if (added.add(filename.toPortableString())) {
-					final IClasspathAttribute attr0 = JavaCore.newClasspathAttribute(
+					final var attr0 = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.TEST,
 							Boolean.TRUE.toString());
-					final IClasspathEntry entry = JavaCore.newSourceEntry(
+					final var entry = JavaCore.newSourceEntry(
 							filename,
 							ClasspathEntry.INCLUDE_ALL,
 							ClasspathEntry.EXCLUDE_NONE,
@@ -526,12 +526,12 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 		for (final IFolder sourcePath : generationPaths) {
 			if (sourcePath != null) {
-				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				final var filename = sourcePath.getFullPath().makeAbsolute();
 				if (added.add(filename.toPortableString())) {
-					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+					final var attr = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
 							Boolean.TRUE.toString());
-					final IClasspathEntry entry = JavaCore.newSourceEntry(
+					final var entry = JavaCore.newSourceEntry(
 							filename,
 							ClasspathEntry.INCLUDE_ALL,
 							ClasspathEntry.EXCLUDE_NONE,
@@ -544,15 +544,15 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 		for (final IFolder sourcePath : testGenerationPaths) {
 			if (sourcePath != null) {
-				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				final var filename = sourcePath.getFullPath().makeAbsolute();
 				if (added.add(filename.toPortableString())) {
-					final IClasspathAttribute attr0 = JavaCore.newClasspathAttribute(
+					final var attr0 = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
 							Boolean.TRUE.toString());
-					final IClasspathAttribute attr1 = JavaCore.newClasspathAttribute(
+					final var attr1 = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.TEST,
 							Boolean.TRUE.toString());
-					final IClasspathEntry entry = JavaCore.newSourceEntry(
+					final var entry = JavaCore.newSourceEntry(
 							filename,
 							ClasspathEntry.INCLUDE_ALL,
 							ClasspathEntry.EXCLUDE_NONE,
@@ -564,7 +564,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 
 		if (addSarllLibraries) {
-			for (final IClasspathEntry current : PreferenceConstants.getDefaultJRELibrary()) {
+			for (final var current : PreferenceConstants.getDefaultJRELibrary()) {
 				if (current != null && added.add(current.getPath().toPortableString())) {
 					list.add(CPListElement.create(current, true, project));
 					break;
@@ -580,7 +580,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 		if (keepProjectClasspath) {
 			try {
-				for (final IClasspathEntry entry : project.getRawClasspath()) {
+				for (final var entry : project.getRawClasspath()) {
 					if (added.add(entry.getPath().toPortableString())) {
 						list.add(CPListElement.create(entry, false, project));
 					}
@@ -595,7 +595,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 	private static IFolder ensureGeneratedSourceFolder(IProject project, String folderPath, boolean isIFolderRequired,
 			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final IFolder folder = project.getFolder(Path.fromPortableString(folderPath));
+		final var folder = project.getFolder(Path.fromPortableString(folderPath));
 		if (!folder.exists()) {
 			if (createFolder) {
 				CoreUtility.createFolder(folder, true, true, monitor);
@@ -611,7 +611,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 	private static IFolder ensureSourceFolder(IProject project, String folderPath, boolean isIFolderRequired,
 			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final IFolder folder = project.getFolder(Path.fromPortableString(folderPath));
+		final var folder = project.getFolder(Path.fromPortableString(folderPath));
 		if (!folder.exists()) {
 			if (createFolder) {
 				CoreUtility.createFolder(folder, true, true, monitor);
@@ -626,7 +626,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 	private static IFolder ensureOutputFolder(IProject project, String folderPath, boolean isIFolderRequired,
 			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final IFolder folder = project.getFolder(Path.fromPortableString(folderPath));
+		final var folder = project.getFolder(Path.fromPortableString(folderPath));
 		if (!folder.exists()) {
 			if (createFolder) {
 				CoreUtility.createFolder(folder, true, true, monitor);
@@ -657,12 +657,12 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				Messages.SARLProjectConfigurator_0,
 				directory.getPath()));
 
-		final File[] contents = directory.listFiles();
+		final var contents = directory.listFiles();
 		if (contents == null) {
 			return;
 		}
 
-		Set<String> visited = directoriesVisited;
+		var visited = directoriesVisited;
 		if (visited == null) {
 			visited = new HashSet<>();
 			try {
@@ -674,14 +674,14 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 		}
 
-		final Set<File> subdirectories = new LinkedHashSet<>();
+		final var subdirectories = new LinkedHashSet<File>();
 
-		for (final File file : contents) {
+		for (final var file : contents) {
 			if (file.isDirectory()) {
 				subdirectories.add(file);
 			} else if (file.getName().endsWith(this.fileExtension)) {
 				// Found a SARL file.
-				final File rootFile = getProjectFolderForSourceFolder(file.getParentFile());
+				final var rootFile = getProjectFolderForSourceFolder(file.getParentFile());
 				if (rootFile != null) {
 					folders.add(rootFile);
 					return;
@@ -689,9 +689,9 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 		}
 
-		for (final File subdir : subdirectories) {
+		for (final var subdir : subdirectories) {
 			try {
-				final String canonicalPath = subdir.getCanonicalPath();
+				final var canonicalPath = subdir.getCanonicalPath();
 				if (!visited.add(canonicalPath)) {
 					// already been here --> do not recurse
 					continue;
@@ -707,12 +707,12 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	}
 
 	private File getProjectFolderForSourceFolder(File file) {
-		final IPath filePath = Path.fromOSString(file.getAbsolutePath());
-		for (final String rawPath : this.candidates) {
-			final IPath path = Path.fromPortableString(rawPath);
+		final var filePath = Path.fromOSString(file.getAbsolutePath());
+		for (final var rawPath : this.candidates) {
+			final var path = Path.fromPortableString(rawPath);
 
 			IPath parent = null;
-			IPath fp = (IPath) filePath.clone();
+			var fp = (IPath) filePath.clone();
 			while (fp != null) {
 				if (path.isPrefixOf(fp)) {
 					if (parent == null) {
@@ -746,19 +746,19 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	public static IStatus addNatures(IProject project, IProgressMonitor monitor, String... natureIdentifiers) {
 		if (project != null && natureIdentifiers != null && natureIdentifiers.length > 0) {
 			try {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, natureIdentifiers.length + 2);
-				final IProjectDescription description = project.getDescription();
-				final List<String> natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
+				final var subMonitor = SubMonitor.convert(monitor, natureIdentifiers.length + 2);
+				final var description = project.getDescription();
+				final var natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
 
-				for (final String natureIdentifier : natureIdentifiers) {
+				for (final var natureIdentifier : natureIdentifiers) {
 					if (!Strings.isNullOrEmpty(natureIdentifier) && !natures.contains(natureIdentifier)) {
 						natures.add(0, natureIdentifier);
 					}
 					subMonitor.worked(1);
 				}
 
-				final String[] newNatures = natures.toArray(new String[natures.size()]);
-				final IStatus status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
+				final var newNatures = natures.toArray(new String[natures.size()]);
+				final var status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
 				subMonitor.worked(1);
 
 				// check the status and decide what to do

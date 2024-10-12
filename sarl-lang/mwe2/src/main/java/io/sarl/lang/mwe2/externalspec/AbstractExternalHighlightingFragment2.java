@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -41,9 +40,6 @@ import java.util.regex.Pattern;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.common.types.JvmType;
@@ -144,8 +140,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @return the regular expression
 	 */
 	protected static String orRegex(Iterable<String> elements) {
-		final StringBuilder regex = new StringBuilder();
-		for (final String element : elements) {
+		final var regex = new StringBuilder();
+		for (final var element : elements) {
 			if (regex.length() > 0) {
 				regex.append("|"); //$NON-NLS-1$
 			}
@@ -172,9 +168,9 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 */
 	@SafeVarargs
 	protected static Set<String> sortedConcat(Iterable<String>... iterables) {
-		final Set<String> set = new TreeSet<>();
-		for (final Iterable<String> iterable : iterables) {
-			for (final String obj : iterable) {
+		final var set = new TreeSet<String>();
+		for (final var iterable : iterables) {
+			for (final var obj : iterable) {
 				set.add(obj);
 			}
 		}
@@ -187,7 +183,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 */
 	public void addMimeType(String mimeType) {
 		if (!Strings.isEmpty(mimeType)) {
-			for (final String mtype : mimeType.split("[:;,]")) { //$NON-NLS-1$
+			for (final var mtype : mimeType.split("[:;,]")) { //$NON-NLS-1$
 				this.mimeTypes.add(mtype);
 			}
 		}
@@ -327,14 +323,13 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	private static void exploreGrammar(Grammar grammar, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation,
 			Set<String> literals, Set<String> excludedKeywords, Set<String> ignored) {
-		for (final AbstractRule rule : grammar.getRules()) {
-			final boolean isModifierRule = MODIFIER_RULE_PATTERN.matcher(rule.getName()).matches();
-			final TreeIterator<EObject> iterator = rule.eAllContents();
+		for (final var rule : grammar.getRules()) {
+			final var isModifierRule = MODIFIER_RULE_PATTERN.matcher(rule.getName()).matches();
+			final var iterator = rule.eAllContents();
 			while (iterator.hasNext()) {
-				final EObject object = iterator.next();
-				if (object instanceof Keyword) {
-					final Keyword xkeyword = (Keyword) object;
-					final String value = xkeyword.getValue();
+				final var object = iterator.next();
+				if (object instanceof Keyword xkeyword) {
+					final var value = xkeyword.getValue();
 					if (!Strings.isEmpty(value)) {
 						if (KEYWORD_PATTERN.matcher(value).matches()) {
 							if (!literals.contains(value) && !primitiveTypes.contains(value)) {
@@ -359,19 +354,19 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	@Override
 	public final void generate() {
-		final Grammar grammar = getGrammar();
+		final var grammar = getGrammar();
 		if (grammar == null) {
 			throw new RuntimeException("No grammar defined"); //$NON-NLS-1$
 		}
 
 		LOG.info(MessageFormat.format("Generating highlighting configuration for {0}", toString())); //$NON-NLS-1$
 
-		final Set<String> literals = new TreeSet<>();
-		final Set<String> expressionKeywords = new TreeSet<>();
-		final Set<String> modifiers = new TreeSet<>();
-		final Set<String> primitiveTypes = new TreeSet<>();
+		final var literals = new TreeSet<String>();
+		final var expressionKeywords = new TreeSet<String>();
+		final var modifiers = new TreeSet<String>();
+		final var primitiveTypes = new TreeSet<String>();
 
-		final ExternalHighlightingConfig hconfig = getHighlightingConfig();
+		final var hconfig = getHighlightingConfig();
 
 		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
 			literals.addAll(this.grammarKeywordAccessConfig.getLiterals());
@@ -379,34 +374,34 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		literals.addAll(hconfig.getLiterals());
 
 		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
-			for (final String keyword : this.grammarKeywordAccessConfig.getKeywords()) {
+			for (final var keyword : this.grammarKeywordAccessConfig.getKeywords()) {
 				if (!literals.contains(keyword)) {
 					expressionKeywords.add(keyword);
 				}
 			}
 		}
-		final Set<String> hKeywords = hconfig.getKeywords();
-		for (final String keyword : hKeywords) {
+		final var hKeywords = hconfig.getKeywords();
+		for (final var keyword : hKeywords) {
 			if (!literals.contains(keyword)) {
 				expressionKeywords.add(keyword);
 			}
 		}
 
 		if (hconfig.getAddNativeTypes()) {
-			for (final Class<?> type : Primitives.ALL_PRIMITIVE_TYPES) {
+			for (final var type : Primitives.ALL_PRIMITIVE_TYPES) {
 				primitiveTypes.add(type.getSimpleName());
 			}
 		}
 
-		final Set<String> punctuation = new TreeSet<>();
+		final var punctuation = new TreeSet<String>();
 		punctuation.addAll(hconfig.getPunctuation());
 
-		final Queue<Grammar> grammars = new ArrayDeque<>();
+		final var grammars = new ArrayDeque<Grammar>();
 		grammars.add(grammar);
 
-		final Set<String> excluded = new HashSet<>();
+		final var excluded = new HashSet<String>();
 		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
-			for (final String ignoredKeyword : this.grammarKeywordAccessConfig.getIgnoredKeywords()) {
+			for (final var ignoredKeyword : this.grammarKeywordAccessConfig.getIgnoredKeywords()) {
 				if (!hKeywords.contains(ignoredKeyword)) {
 					excluded.add(ignoredKeyword);
 				}
@@ -414,16 +409,16 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		}
 		excluded.addAll(hconfig.getIgnoredKeywords());
 
-		final Set<String> ignored = new TreeSet<>();
+		final var ignored = new TreeSet<String>();
 
 		while (!grammars.isEmpty()) {
-			final Grammar grammarToTreat = grammars.poll();
+			final var grammarToTreat = grammars.poll();
 			grammars.addAll(grammarToTreat.getUsedGrammars());
 			exploreGrammar(grammarToTreat, expressionKeywords, modifiers, primitiveTypes, punctuation, literals, excluded, ignored);
 		}
 		expressionKeywords.removeAll(modifiers);
 
-		final Set<String> tmp = new TreeSet<>(excluded);
+		final var tmp = new TreeSet<>(excluded);
 		tmp.removeAll(ignored);
 		if (!tmp.isEmpty()) {
 			throw new RuntimeException(MessageFormat.format(
@@ -431,8 +426,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 					tmp));
 		}
 
-		final Set<String> specialKeywords = new TreeSet<>();
-		for (final String specialKeyword : hconfig.getSpecialKeywords()) {
+		final var specialKeywords = new TreeSet<String>();
+		for (final var specialKeyword : hconfig.getSpecialKeywords()) {
 			if ((expressionKeywords.contains(specialKeyword) || modifiers.contains(specialKeyword)
 					|| primitiveTypes.contains(specialKeyword)) && !ignored.contains(specialKeyword)) {
 				specialKeywords.add(specialKeyword);
@@ -442,8 +437,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 			}
 		}
 
-		final Set<String> typeDeclarationKeywords = new TreeSet<>();
-		for (final String typeDeclarationKeyword : hconfig.getTypeDeclarationKeywords()) {
+		final var typeDeclarationKeywords = new TreeSet<String>();
+		for (final var typeDeclarationKeyword : hconfig.getTypeDeclarationKeywords()) {
 			if ((expressionKeywords.contains(typeDeclarationKeyword) || modifiers.contains(typeDeclarationKeyword)
 					|| primitiveTypes.contains(typeDeclarationKeyword)) && !ignored.contains(typeDeclarationKeyword)) {
 				typeDeclarationKeywords.add(typeDeclarationKeyword);
@@ -472,11 +467,11 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	protected final void generate(Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation,
 			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final T appendable = newStyleAppendable();
+		final var appendable = newStyleAppendable();
 		generate(appendable, literals, expressionKeywords, modifiers, primitiveTypes, punctuation, ignored,
 				specialKeywords, typeDeclarationKeywords);
-		final String language = getLanguageSimpleName().toLowerCase();
-		final String basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));
+		final var language = getLanguageSimpleName().toLowerCase();
+		final var basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));
 		writeFile(basename, appendable);
 		generateAdditionalFiles(basename, appendable);
 		generateReadme(basename);
@@ -553,7 +548,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 			@Override
 			public int length() {
 				if (this.length < 0) {
-					int len = 0;
+					var len = 0;
 					for (final CharSequence seq : lines) {
 						len += seq.length() + 1;
 					}
@@ -577,16 +572,16 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @since 0.6
 	 */
 	protected void generateReadme(String basename) {
-		final Object content = getReadmeFileContent(basename);
+		final var content = getReadmeFileContent(basename);
 		if (content != null) {
-			final String textualContent = content.toString();
+			final var textualContent = content.toString();
 			if (!Strings.isEmpty(textualContent)) {
-				final byte[] bytes = textualContent.getBytes();
-				for (final String output : getOutputs()) {
-					final File directory = new File(output).getAbsoluteFile();
+				final var bytes = textualContent.getBytes();
+				for (final var output : getOutputs()) {
+					final var directory = new File(output).getAbsoluteFile();
 					try {
 						directory.mkdirs();
-						final File outputFile = new File(directory, README_BASENAME);
+						final var outputFile = new File(directory, README_BASENAME);
 						Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
 					} catch (IOException e) {
 						throw new RuntimeException(e);
@@ -615,7 +610,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 			Function2<? super File, ? super String, ? extends File> outputDirectoryFilter) {
 		// Create the file.
 		// Encode
-		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
+		final var bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
 		writeFile(basename, bytes, outputDirectoryFilter);
 	}
 
@@ -639,13 +634,13 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 */
 	protected void writeFile(String basename, byte[] content,
 			Function2<? super File, ? super String, ? extends File> outputDirectoryFilter) {
-		for (final String output : getOutputs()) {
-			File directory = new File(output).getAbsoluteFile();
+		for (final var output : getOutputs()) {
+			var directory = new File(output).getAbsoluteFile();
 			if (outputDirectoryFilter != null) {
 				directory = outputDirectoryFilter.apply(directory, basename);
 			}
 			try {
-				final File outputFile = new File(directory, basename);
+				final var outputFile = new File(directory, basename);
 				outputFile.getParentFile().mkdirs();
 				Files.write(Paths.get(outputFile.getAbsolutePath()), content);
 			} catch (IOException e) {
@@ -659,8 +654,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @return the name.
 	 */
 	protected String getLanguageSimpleName() {
-		final String name = getGrammar().getName();
-		final int index = name.lastIndexOf('.');
+		final var name = getGrammar().getName();
+		final var index = name.lastIndexOf('.');
 		if (index > 0) {
 			return name.substring(index + 1);
 		}
@@ -689,9 +684,9 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 */
 	@Pure
 	protected String lines(String prefix, String... lines) {
-		final String delimiter = getCodeConfig().getLineDelimiter();
-		final StringBuilder buffer = new StringBuilder();
-		for (final String line : lines) {
+		final var delimiter = getCodeConfig().getLineDelimiter();
+		final var buffer = new StringBuilder();
+		for (final var line : lines) {
 			buffer.append(prefix);
 			buffer.append(line);
 			buffer.append(delimiter);

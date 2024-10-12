@@ -92,8 +92,8 @@ class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public String getFormalParameterDefaultValueString(int position) {
-		final JvmFormalParameter parameter = this.parameters.get(position);
-		final IActionPrototypeProvider provider = this.prototypeProvider.get();
+		final var parameter = this.parameters.get(position);
+		final var provider = this.prototypeProvider.get();
 		if (provider != null) {
 			return provider.extractDefaultValueString(parameter);
 		}

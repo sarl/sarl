@@ -21,7 +21,6 @@
 
 package io.sarl.lang.core;
 
-import java.lang.reflect.Constructor;
 import java.security.InvalidParameterException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -114,15 +113,15 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 		AtomicSkillReference newRef = null;
 		if (capacities == null || capacities.length == 0) {
 			// No capacity was provided as argument, the implemented capacities are automatically extracted
-			for (final TypeToken<?> element : TypeToken.of(skill.getClass()).getTypes().interfaces()) {
-				final Class<?> type = element.getRawType();
+			for (final var element : TypeToken.of(skill.getClass()).getTypes().interfaces()) {
+				final var type = element.getRawType();
 				if (Capacity.class.isAssignableFrom(type) && !Capacity.class.equals(type)) {
-					final Class<? extends Capacity> capacityType = type.asSubclass(Capacity.class);
+					final var capacityType = type.asSubclass(Capacity.class);
 					newRef = registerSkill(skill, ifabsent, capacityType, newRef);
 				}
 			}
 		} else {
-			for (final Class<? extends Capacity> capacity : capacities) {
+			for (final var capacity : capacities) {
 				assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
 				assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
 				if (!capacity.isInstance(skill)) {
@@ -152,7 +151,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 			});
 		} else {
 			newReference =  new AtomicSkillReference(skill);
-			final AtomicSkillReference oldReference = $getSkillRepository().put(capacity, newReference);
+			final var oldReference = $getSkillRepository().put(capacity, newReference);
 			if (oldReference != null) {
 				oldReference.clear();
 			}
@@ -167,7 +166,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	@Pure
 	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		final AtomicSkillReference skill = $getSkill(capacity);
+		final var skill = $getSkill(capacity);
 		assert skill != null;
 		return $castSkill(capacity, skill);
 	}
@@ -181,7 +180,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	 */
 	@Pure
 	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicSkillReference skillReference) {
-		final S skill = capacity.cast(skillReference.get());
+		final var skill = capacity.cast(skillReference.get());
 		if (skill == null) {
 			throw new UnimplementedCapacityException(capacity, getID());
 		}
@@ -209,27 +208,27 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	private AtomicSkillReference createSkillDynamically(Class<? extends Capacity> capacity, AtomicSkillReference existingSkill) {
 		// Check if the stored skill is still not empty
 		if (existingSkill != null) {
-			final Skill s = existingSkill.get();
+			final var s = existingSkill.get();
 			if (s != null) {
 				return existingSkill;
 			}
 		}
 
 		// Try to load dynamically the skill
-		final Skill skill = this.skillProvider.createSkill(capacity);
+		final var skill = this.skillProvider.createSkill(capacity);
 		if (skill != null) {
 			$attachOwner(skill);
 			return new AtomicSkillReference(skill);
 		}
 
 		// Use the default skill declaration if present.
-		final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
+		final var annotation = capacity.getAnnotation(DefaultSkill.class);
 		if (annotation != null) {
 			try {
-				final Class<? extends Skill> type = annotation.value();
-				final Constructor<? extends Skill> cons = type.getConstructor();
+				final var type = annotation.value();
+				final var cons = type.getConstructor();
 				cons.setAccessible(true);
-				final Skill skillInstance = cons.newInstance();
+				final var skillInstance = cons.newInstance();
 				$attachOwner(skillInstance);
 				return new AtomicSkillReference(skillInstance);
 			} catch (Throwable exception) {
@@ -248,7 +247,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 			if (this.skillProvider != null && this.skillProvider.isSkillProviding(capacity)) {
 				return true;
 			}
-			final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
+			final var annotation = capacity.getAnnotation(DefaultSkill.class);
 			return annotation != null && annotation.value() != null;
 		}
 		return true;
@@ -257,9 +256,9 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final AtomicSkillReference reference = $getSkillRepository().remove(capacity);
+		final var reference = $getSkillRepository().remove(capacity);
 		if (reference != null) {
-			final Skill skill = reference.clear();
+			final var skill = reference.clear();
 			if (skill != null) {
 				return capacity.cast(skill);
 			}

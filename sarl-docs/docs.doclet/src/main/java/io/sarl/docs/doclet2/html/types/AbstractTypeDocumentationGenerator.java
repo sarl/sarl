@@ -59,10 +59,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -70,13 +66,8 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.ModuleElement;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleAnnotationValueVisitor9;
@@ -85,11 +76,9 @@ import javax.tools.Diagnostic.Kind;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
 import jdk.javadoc.doclet.Reporter;
 import jdk.javadoc.doclet.Taglet.Location;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -99,7 +88,6 @@ import io.sarl.docs.doclet2.html.framework.AbstractDocumentationGenerator;
 import io.sarl.docs.doclet2.html.framework.CssStyles;
 import io.sarl.docs.doclet2.html.framework.DocletOptions;
 import io.sarl.docs.doclet2.html.framework.Navigation;
-import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
 import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
 import io.sarl.docs.doclet2.html.taglets.inline.ValueTaglet;
 import io.sarl.lang.core.annotation.FiredEvent;
@@ -189,12 +177,12 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.AbstractTypeDocumentationGenerator_0, type.getQualifiedName().toString()));
 			//
 			computePaths(type.getQualifiedName().toString(), true);
-			final Path outputPath = cliOptions.getOutputDirectory().resolve(getRelativePath());
+			final var outputPath = cliOptions.getOutputDirectory().resolve(getRelativePath());
 			//
-			final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
-			final String title = getDocumentTitleFor(type.getSimpleName().toString());
+			final var document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
+			final var title = getDocumentTitleFor(type.getSimpleName().toString());
 			setLastTitle(title);
-			final Element htmlTag = getHtmlAccessor().getRootElement(document);
+			final var htmlTag = getHtmlAccessor().getRootElement(document);
 			//
 			generateTypeDocumentation(type, environment, htmlTag);
 			//
@@ -203,13 +191,13 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				writeDocument(outputPath, document);
 			}
 		} catch (Exception ex) {
-			final Reporter rep = getReporter();
+			final var rep = getReporter();
 			if (rep == null) {
 				throw new RuntimeException(ex);
 			}
-			final StringWriter writer = new StringWriter();
-			try (final PrintWriter printWriter = new PrintWriter(writer)) {
-				String msg = ex.getLocalizedMessage();
+			final var writer = new StringWriter();
+			try (final var printWriter = new PrintWriter(writer)) {
+				var msg = ex.getLocalizedMessage();
 				if (Strings.isNullOrEmpty(msg)) {
 					msg = ex.getMessage();
 				}
@@ -234,7 +222,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @throws Exception if the documentation cannot be generated.
 	 */
 	protected void generateTypeDocumentation(TypeElement type, SarlDocletEnvironment environment, Element htmlTag) throws Exception {
-		final List<? extends Node> linkContent = getHtmlFactory().createModuleLink(
+		final var linkContent = getHtmlFactory().createModuleLink(
 				getEnvironment().getElementUtils().getModuleOf(type), Messages.AbstractTypeDocumentationGenerator_2, 
 				CssStyles.NAVIGATION, this);
 		getNavigation().setModuleLink(linkContent);
@@ -250,13 +238,13 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag, TypeElement typeElement) {
-		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
+		final var headerTree = getHtmlFactory().createHeadTag(htmlTag);
 		getHtmlFactory().createTitleTag(headerTree, getLastTitle());
-		final Path pathToRoot = getPathToRoot();
-		for (final Path cssStyle : getCssStylesheets()) {
+		final var pathToRoot = getPathToRoot();
+		for (final var cssStyle : getCssStylesheets()) {
 			getHtmlFactory().createCssLinkTag(headerTree, pathToRoot.resolve(cssStyle));
 		}
-		for (final Path jsScript : getJsScripts()) {
+		for (final var jsScript : getJsScripts()) {
 			getHtmlFactory().createJsLinkTag(headerTree, pathToRoot.resolve(jsScript));
 		}
 		return headerTree;
@@ -269,9 +257,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag, TypeElement typeElement) {
-		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);
+		final var bodyTag = getHtmlFactory().createBodyTag(htmlTag);
 		generateBodyHeader(bodyTag, typeElement);
-		final Element contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
+		final var contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
 		generateTypeIntroduction(contentTag, typeElement);
 		generateTypeTree(contentTag, typeElement);
 		generateTypeInfo(contentTag, typeElement);
@@ -305,8 +293,8 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (!getElementUtils().isEventHandlerContainer(typeElement)) {
 			return;
 		}
-		final Iterable<ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<ExecutableElement> eventHandlers = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var eventHandlers = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.METHOD && !getElementUtils().isStatic(it)
 				&& it.getAnnotation(PerceptGuardEvaluator.class) != null);
 		//
@@ -315,20 +303,20 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				getElementUtils().getExecutableElementComparator(),
 				element -> getHtmlFactory().toExecutableAnchor(element), 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.add(new TextNode(getSARLGrammarKeywordAccess().getOnKeyword()));
 					nodes.add(getHtmlFactory().createSecableSpace(null));
-					final TypeMirror eventType = element.getParameters().get(0).asType();
-					final TypeElement eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
+					final var eventType = element.getParameters().get(0).asType();
+					final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 					nodes.add(new TextNode(eventTypeElement.getSimpleName().toString()));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype = getHtmlFactory().createPreTag(null, null);
+					final var nodes = new ArrayList<Node>();
+					final var prototype = getHtmlFactory().createPreTag(null, null);
 					getHtmlFactory().keyword(prototype, getSARLGrammarKeywordAccess().getOnKeyword());
 					getHtmlFactory().createSecableSpace(prototype);
-					final TypeMirror eventType = element.getParameters().get(0).asType();
+					final var eventType = element.getParameters().get(0).asType();
 					prototype.appendChildren(getHtmlFactory().createTypeLink(eventType, false, null, this));
 					nodes.add(prototype);
 					//
@@ -345,9 +333,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param receiver is the element that will receive the return type.
 	 */
 	protected void generateReturnTypeConstruct(ExecutableElement element, Element receiver) {
-		final TypeMirror rtype = element.getReturnType();
+		final var rtype = element.getReturnType();
 		if (rtype != null && rtype.getKind() != TypeKind.VOID) {
-			final List<? extends Node> type = getHtmlFactory().createTypeLink(rtype, true, null, this);
+			final var type = getHtmlFactory().createTypeLink(rtype, true, null, this);
 			if (type != null) {
 				getHtmlFactory().createSecableSpace(receiver);
 				receiver.appendText(getSARLGrammarKeywordAccess().getColonKeyword());
@@ -364,16 +352,16 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param addNewLine if {@code true}, add a new line before the {@code with} construct.
 	 */
 	protected void generateTypeParameterConstruct(ExecutableElement element, Element receiver, boolean addNewLine) {
-		final List<? extends TypeParameterElement> parameters = element.getTypeParameters();
+		final var parameters = element.getTypeParameters();
 		if (parameters != null && !parameters.isEmpty()) {
-			Element realReceiver = receiver;
+			var realReceiver = receiver;
 			if (addNewLine) {
 				realReceiver = getHtmlFactory().createParagraphTag(receiver, CssStyles.PRE_INDENT);
 			}
 			getHtmlFactory().createSecableSpace(realReceiver);
 			getHtmlFactory().keyword(realReceiver, getSARLGrammarKeywordAccess().getWithKeyword());
-			boolean first = true;
-			for (final TypeParameterElement typeParam : parameters) {
+			var first = true;
+			for (final var typeParam : parameters) {
 				if (first) {
 					first = false;
 				} else {
@@ -381,17 +369,17 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				}
 				getHtmlFactory().createSecableSpace(realReceiver);
 				realReceiver.appendText(typeParam.getSimpleName().toString());
-			    final List<? extends TypeMirror> bounds = typeParam.getBounds();
+			    final var bounds = typeParam.getBounds();
 			    if (bounds != null && !bounds.isEmpty()) {
-			    	final Iterable<? extends TypeMirror> boundTypes = Iterables.filter(bounds, it -> {
-			    		final TypeElement te = getElementUtils().asTypeElement(it, getEnvironment().getTypeUtils());
+			    	final var boundTypes = Iterables.filter(bounds, it -> {
+			    		final var te = getElementUtils().asTypeElement(it, getEnvironment().getTypeUtils());
 			    		return te == null || !Object.class.getName().equals(getElementUtils().getFullyQualifiedName(te, true));
 			    	});
 			    	if (boundTypes.iterator().hasNext()) {
 						getHtmlFactory().createSecableSpace(realReceiver);
 						getHtmlFactory().keyword(realReceiver, getSARLGrammarKeywordAccess().getExtendsKeyword());
-			    		boolean first0 = true;
-				    	for (final TypeMirror tm : boundTypes) {
+						var first0 = true;
+				    	for (final var tm : boundTypes) {
 							getHtmlFactory().createSecableSpace(realReceiver);
 				    		if (first0) {
 				    			first0 = false;
@@ -399,7 +387,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				    			realReceiver.appendText(getSARLGrammarKeywordAccess().getAmpersandKeyword());
 				    			getHtmlFactory().createSecableSpace(realReceiver);
 				    		}
-				    		final List<Node> typeRef = getHtmlFactory().createTypeLink(tm, true, null, this);
+				    		final var typeRef = getHtmlFactory().createTypeLink(tm, true, null, this);
 				    		realReceiver.appendChildren(typeRef);
 				    	}
 			    	}
@@ -415,17 +403,17 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param addNewLine if {@code true}, add a new line before the {@code throws} construct.
 	 */
 	protected void generateThrowsConstruct(ExecutableElement element, Element receiver, boolean addNewLine) {
-		final List<? extends TypeMirror> exceptions = element.getThrownTypes();
+		final var exceptions = element.getThrownTypes();
 		if (exceptions != null && !exceptions.isEmpty()) {
-			Element realReceiver = receiver;
+			var realReceiver = receiver;
 			if (addNewLine) {
 				realReceiver = getHtmlFactory().createParagraphTag(receiver, CssStyles.PRE_INDENT);
 			}
 			getHtmlFactory().createSecableSpace(realReceiver);
 			getHtmlFactory().keyword(realReceiver, getSARLGrammarKeywordAccess().getThrowsKeyword());
-			boolean first = true;
-			for (final TypeMirror exception : exceptions) {
-				final List<? extends Node> type = getHtmlFactory().createTypeLink(exception, true, null, this);
+			var first = true;
+			for (final var exception : exceptions) {
+				final var type = getHtmlFactory().createTypeLink(exception, true, null, this);
 				if (type != null) {
 					if (first) {
 						first = false;
@@ -446,15 +434,15 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param addNewLine if {@code true}, add a new line before the {@code fires} construct.
 	 */
 	protected void generateFiresConstruct(ExecutableElement element, Element receiver, boolean addNewLine) {
-		final Iterable<? extends AnnotationMirror> annotations = Iterables.filter(element.getAnnotationMirrors(), it -> {
-			final DeclaredType dt = it.getAnnotationType();
-			final String qn = getElementUtils().getFullyQualifiedName(dt.asElement(), true);
+		final var annotations = Iterables.filter(element.getAnnotationMirrors(), it -> {
+			final var dt = it.getAnnotationType();
+			final var qn = getElementUtils().getFullyQualifiedName(dt.asElement(), true);
 			if (FiredEvent.class.getName().equals(qn)) {
-				final Map<? extends ExecutableElement, ? extends AnnotationValue> values = it.getElementValues();
+				final var values = it.getElementValues();
 				if (values.size() == 1) {
-					final AnnotationValue value = values.values().iterator().next();
+					final var value = values.values().iterator().next();
 					if (value != null) {
-						boolean rvalue = new SimpleAnnotationValueVisitor9<Boolean, Void>() {
+						var rvalue = new SimpleAnnotationValueVisitor9<Boolean, Void>() {
 							@Override
 							public Boolean visitArray(List<? extends AnnotationValue> vals, Void p) {
 								return Boolean.valueOf(!vals.isEmpty());
@@ -471,17 +459,17 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			return false;
 		});
 		if (annotations.iterator().hasNext()) {
-			final Element realReceiver = addNewLine ? getHtmlFactory().createParagraphTag(receiver, CssStyles.PRE_INDENT) : receiver;
+			final var realReceiver = addNewLine ? getHtmlFactory().createParagraphTag(receiver, CssStyles.PRE_INDENT) : receiver;
 			getHtmlFactory().createSecableSpace(realReceiver);
 			getHtmlFactory().keyword(realReceiver, getSARLGrammarKeywordAccess().getFiresKeyword());
-			final boolean[] first = new boolean[] { true };
-			for (final AnnotationMirror annotation : annotations) {
-				final AnnotationValue value = annotation.getElementValues().values().iterator().next();
+			final var first = new boolean[] { true };
+			for (final var annotation : annotations) {
+				final var value = annotation.getElementValues().values().iterator().next();
 				new SimpleAnnotationValueVisitor9<Void, Void>() {
 					@Override
 					public Void visitArray(List<? extends AnnotationValue> vals, Void p) {
-						for (final AnnotationValue eventType : vals) {
-							final TypeMirror tm = new SimpleAnnotationValueVisitor9<TypeMirror, Void>() {
+						for (final var eventType : vals) {
+							final var tm = new SimpleAnnotationValueVisitor9<TypeMirror, Void>() {
 								@Override
 								public TypeMirror visitType(TypeMirror t, Void p) {
 									return t;
@@ -498,7 +486,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 									realReceiver.appendText(getSARLGrammarKeywordAccess().getCommaKeyword());
 								}
 								getHtmlFactory().createSecableSpace(realReceiver);
-								final List<Node> typeNodes = getHtmlFactory().createTypeLink(tm, true, null, AbstractTypeDocumentationGenerator.this);
+								final var typeNodes = getHtmlFactory().createTypeLink(tm, true, null, AbstractTypeDocumentationGenerator.this);
 								realReceiver.appendChildren(typeNodes);
 							}
 						}
@@ -519,8 +507,8 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateActionsDetails(Element parent, TypeElement typeElement) {
-		final Iterable<ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<ExecutableElement> actions = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var actions = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.METHOD && getEnvironment().isIncluded(it));
 		//
 		createDetailBox(Messages.AbstractTypeDocumentationGenerator_54,
@@ -528,24 +516,24 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				getElementUtils().getExecutableElementComparator(),
 				element -> getHtmlFactory().toExecutableAnchor(element), 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String simpleName = element.getSimpleName().toString();
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, simpleName, this);
+					final var nodes = new ArrayList<Node>();
+					final var simpleName = element.getSimpleName().toString();
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, simpleName, this);
 					nodes.addAll(constructorPrototype);
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype = getHtmlFactory().createPreTag(null, null);
-					final String modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
+					final var nodes = new ArrayList<Node>();
+					final var prototype = getHtmlFactory().createPreTag(null, null);
+					final var modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						getHtmlFactory().keyword(prototype, modifierStr);
 						getHtmlFactory().createSecableSpace(prototype);
 					}
 					getHtmlFactory().keyword(prototype, getSARLGrammarKeywordAccess().getDefKeyword());
 					getHtmlFactory().createSecableSpace(prototype);
-					final String simpleName = element.getSimpleName().toString();
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, simpleName, this);
+					final var simpleName = element.getSimpleName().toString();
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, simpleName, this);
 					prototype.appendChildren(constructorPrototype);
 					generateReturnTypeConstruct(element, prototype);
 					generateTypeParameterConstruct(element, prototype, true);
@@ -569,31 +557,31 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (typeElement.getKind() != ElementKind.CLASS) {
 			return;
 		}
-		final Iterable<? extends ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<? extends ExecutableElement> constructors = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var constructors = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.CONSTRUCTOR && getEnvironment().isIncluded(it));
 		//
-		final String constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
+		final var constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
 		//
 		createDetailBox(Messages.AbstractTypeDocumentationGenerator_53, ID_CONSTRUCTOR_DETAILS, parent, constructors,
 				getElementUtils().getExecutableElementComparator(),
 				element -> getHtmlFactory().toExecutableAnchor(element), 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, constructorName, this);
+					final var nodes = new ArrayList<Node>();
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, constructorName, this);
 					nodes.addAll(constructorPrototype);
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype = getHtmlFactory().createPreTag(null, null);
-					final String modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
+					final var nodes = new ArrayList<Node>();
+					final var prototype = getHtmlFactory().createPreTag(null, null);
+					final var modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						getHtmlFactory().keyword(prototype, modifierStr);
 						getHtmlFactory().createSecableSpace(prototype);
 					}
-					final List<Node> label = Collections.singletonList(getHtmlFactory().keyword(null, constructorName));
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, label, this);
+					final var label = Collections.<Node>singletonList(getHtmlFactory().keyword(null, constructorName));
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, label, this);
 					prototype.appendChildren(constructorPrototype);
 					generateTypeParameterConstruct(element, prototype, true);
 					generateThrowsConstruct(element, prototype, true);
@@ -613,38 +601,38 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateFieldsDetails(Element parent, TypeElement typeElement) {
-		final Iterable<VariableElement> source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
-		final Iterable<VariableElement> fields = Iterables.filter(source, it -> it.getKind() == ElementKind.FIELD && getEnvironment().isIncluded(it));
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
+		final var fields = Iterables.filter(source, it -> it.getKind() == ElementKind.FIELD && getEnvironment().isIncluded(it));
 		//
 		createDetailBox(Messages.AbstractTypeDocumentationGenerator_52, ID_FIELD_DETAILS, parent, fields,
 				getElementUtils().getVariableElementComparator(),
 				element -> getHtmlFactory().toVariableAnchor(element), 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.add(new TextNode(element.getSimpleName().toString()));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype = getHtmlFactory().createPreTag(null, null);
-					final String modifierStr = getElementUtils().getModifiersString(element, false, false, true);
+					final var nodes = new ArrayList<Node>();
+					final var prototype = getHtmlFactory().createPreTag(null, null);
+					final var modifierStr = getElementUtils().getModifiersString(element, false, false, true);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						getHtmlFactory().keyword(prototype, modifierStr);
 						getHtmlFactory().createSecableSpace(prototype);
 					}
-					final String fieldName = element.getSimpleName().toString();
+					final var fieldName = element.getSimpleName().toString();
 					prototype.appendText(fieldName);
 					getHtmlFactory().createSecableSpace(prototype);
 					prototype.appendText(getSARLGrammarKeywordAccess().getColonKeyword());
 					getHtmlFactory().createSecableSpace(prototype);
-					final TypeMirror type = element.asType();
+					final var type = element.asType();
 					if (type != null) {
-						final List<Node> typeNodes = getHtmlFactory().createTypeLink(type, true, null, this);
+						final var typeNodes = getHtmlFactory().createTypeLink(type, true, null, this);
 						prototype.appendChildren(typeNodes);
 					} else {
 						prototype.appendChild(new TextNode(element.toString()));
 					}
-					final Object constantValue = element.getConstantValue();
+					final var constantValue = element.getConstantValue();
 					if (constantValue != null) {
 						getHtmlFactory().createSecableSpace(prototype);
 						prototype.appendText(getSARLGrammarKeywordAccess().getEqualsSignKeyword());
@@ -666,9 +654,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generatePropertiesDetails(Element parent, TypeElement typeElement) {
-		final Iterable<? extends ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final NoType voidType = getEnvironment().getTypeUtils().getNoType(TypeKind.VOID);
-		final Iterable<? extends ExecutableElement> properties = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var voidType = getEnvironment().getTypeUtils().getNoType(TypeKind.VOID);
+		final var properties = Iterables.filter(source,
 				it -> {
 					if (getEnvironment().isIncluded(it) && !getElementUtils().isStatic(it)
 							&& it.getParameters().size() == 0 && it.getReturnType() != null
@@ -678,11 +666,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					return false;
 				});
 		//
-		final Set<String> declaredSetters = new TreeSet<>();
-		for (final javax.lang.model.element.Element element : getTypeHierarchy().getDeclaredElements(
-				typeElement, true, getEnvironment(), it1 -> {
-			if (it1 instanceof ExecutableElement) {
-				final ExecutableElement ee = (ExecutableElement) it1;
+		final var declaredSetters = new TreeSet<String>();
+		for (final var element : getTypeHierarchy().getDeclaredElements(typeElement, true, getEnvironment(), it1 -> {
+			if (it1 instanceof ExecutableElement ee) {
 				if (!getElementUtils().isStatic(ee) && ee.getParameters().size() == 1
 						&& (ee.getReturnType() == null || voidType.equals(ee.getReturnType()))
 						&& isPropertySetterName(ee.getSimpleName().toString())) {
@@ -691,7 +677,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				}
 			return false;
 		})) {
-			final String name = setterName2property(element.getSimpleName().toString());
+			final var name = setterName2property(element.getSimpleName().toString());
 			assert name != null;
 			declaredSetters.add(name);
 		}
@@ -700,20 +686,20 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				getElementUtils().getExecutableElementComparator(),
 				null, 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String propertyName = getterName2property(element.getSimpleName().toString());
+					final var nodes = new ArrayList<Node>();
+					final var propertyName = getterName2property(element.getSimpleName().toString());
 					nodes.add(new TextNode(propertyName));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype = getHtmlFactory().createPreTag(null, null);
-					final String modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
+					final var nodes = new ArrayList<Node>();
+					final var prototype = getHtmlFactory().createPreTag(null, null);
+					final var modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						getHtmlFactory().keyword(prototype, modifierStr);
 						getHtmlFactory().createSecableSpace(prototype);
 					}
-					final String propertyName = getterName2property(element.getSimpleName().toString());
+					final var propertyName = getterName2property(element.getSimpleName().toString());
 					if (declaredSetters.contains(propertyName)) {
 						getHtmlFactory().keyword(prototype, getSARLGrammarKeywordAccess().getWriteableVarKeyword());
 					} else {
@@ -724,9 +710,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					getHtmlFactory().createSecableSpace(prototype);
 					prototype.appendText(getSARLGrammarKeywordAccess().getColonKeyword());
 					getHtmlFactory().createSecableSpace(prototype);
-					final TypeMirror type = element.getReturnType();
+					final var type = element.getReturnType();
 					if (type != null) {
-						final List<Node> typeNodes = getHtmlFactory().createTypeLink(type, true, null, this);
+						final var typeNodes = getHtmlFactory().createTypeLink(type, true, null, this);
 						prototype.appendChildren(typeNodes);
 					} else {
 						prototype.appendChild(new TextNode(element.toString()));
@@ -735,10 +721,10 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					//
 					createFullDescriptionBody(element, nodes, false, true);
 					//
-					final List<Node> aliasedLabel = getHtmlFactory().getExecutablePrototype(element, this);
-					final List<Node> aliasedNodes = getHtmlFactory().createExecutableLink(element, aliasedLabel, null, this);
+					final var aliasedLabel = getHtmlFactory().getExecutablePrototype(element, this);
+					final var aliasedNodes = getHtmlFactory().createExecutableLink(element, aliasedLabel, null, this);
 					if (!aliasedNodes.isEmpty()) {
-						final Element paragraph = getHtmlFactory().createParagraphTag(null, null);
+						final var paragraph = getHtmlFactory().createParagraphTag(null, null);
 						paragraph.appendText(Messages.AbstractTypeDocumentationGenerator_51);
 						paragraph.appendChildren(aliasedNodes);
 						nodes.add(paragraph);
@@ -758,21 +744,21 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (typeElement.getKind() != ElementKind.ENUM) {
 			return;
 		}
-		final Iterable<? extends VariableElement> source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
-		final Iterable<? extends VariableElement> enumConstants = Iterables.filter(source, it -> it.getKind() == ElementKind.ENUM_CONSTANT);
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
+		final var enumConstants = Iterables.filter(source, it -> it.getKind() == ElementKind.ENUM_CONSTANT);
 		createDetailBox(Messages.AbstractTypeDocumentationGenerator_49, ID_ENUM_CONSTANT_DETAILS, parent, enumConstants,
 				getElementUtils().getVariableElementComparator(),
 				element -> getHtmlFactory().toVariableAnchor(element), 
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.add(new TextNode(element.getSimpleName().toString()));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final Element prototype0 = getHtmlFactory().createPreTag(null, null);
+					final var nodes = new ArrayList<Node>();
+					final var prototype0 = getHtmlFactory().createPreTag(null, null);
 					nodes.add(prototype0);
-					final Element prototype1 = getHtmlFactory().createPreTag(prototype0, null);
+					final var prototype1 = getHtmlFactory().createPreTag(prototype0, null);
 					getHtmlFactory().keyword(prototype1, getSARLGrammarKeywordAccess().getStaticStaticKeyword());
 					getHtmlFactory().createSecableSpace(prototype1);
 					getHtmlFactory().keyword(prototype1, getSARLGrammarKeywordAccess().getValKeyword());
@@ -814,25 +800,25 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (!getElementUtils().isCapacityUser(typeElement)) {
 			return;
 		}
-		final Iterable<VariableElement> source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
-		final Iterable<VariableElement> capacityUsers = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
+		final var capacityUsers = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.FIELD && !getElementUtils().isStatic(it)
 				&& it.getAnnotation(ImportedCapacityFeature.class) != null);
-		final Iterable<AnnotationMirror> capacityUses = Iterables.transform(capacityUsers, it -> {
-			final Iterable<? extends AnnotationMirror> mirrors = Iterables.filter(it.getAnnotationMirrors(), it0 -> {
-				final DeclaredType dt = it0.getAnnotationType();
-				final String qn = getElementUtils().getFullIdentifier(dt.asElement());
+		final var capacityUses = Iterables.transform(capacityUsers, it -> {
+			final var mirrors = Iterables.filter(it.getAnnotationMirrors(), it0 -> {
+				final var dt = it0.getAnnotationType();
+				final var qn = getElementUtils().getFullIdentifier(dt.asElement());
 				return ImportedCapacityFeature.class.getName().equals(qn);
 			});
 			return mirrors.iterator().next();
 		});
-		final Set<TypeElement> capacityElements = new TreeSet<>(getElementUtils().getTypeElementComparator());
-		for (final AnnotationMirror annotation : capacityUses) {
+		final var capacityElements = new TreeSet<>(getElementUtils().getTypeElementComparator());
+		for (final var annotation : capacityUses) {
 			if (annotation.getElementValues().size() == 1) {
 				new SimpleAnnotationValueVisitor9<Void,Void>() {
 					@Override
 					public Void visitType(TypeMirror t, Void p) {
-						final TypeElement te = getElementUtils().asTypeElement(t, getEnvironment().getTypeUtils());
+						final var te = getElementUtils().asTypeElement(t, getEnvironment().getTypeUtils());
 						capacityElements.add(te);
 						return null;
 					}
@@ -859,8 +845,8 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (!getElementUtils().isEventHandlerContainer(typeElement)) {
 			return;
 		}
-		final Iterable<ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<ExecutableElement> eventHandlers = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var eventHandlers = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.METHOD && !getElementUtils().isStatic(it)
 				&& it.getAnnotation(PerceptGuardEvaluator.class) != null);
 		//
@@ -868,30 +854,30 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				Messages.AbstractTypeDocumentationGenerator_57, ID_EVENT_HANDLER_SUMMARY, parent, eventHandlers,
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
-					final List<Node> label = new ArrayList<>();
+					final var label = new ArrayList<Node>();
 					label.add(new TextNode(getSARLGrammarKeywordAccess().getOnKeyword()));
 					label.add(getHtmlFactory().createSecableSpace(null));
-					final TypeMirror eventType = element.getParameters().get(0).asType();
-					final TypeElement eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
+					final var eventType = element.getParameters().get(0).asType();
+					final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 					label.add(new TextNode(eventTypeElement.getSimpleName().toString()));
-					final String anchor = getHtmlFactory().toEventHandlerAnchor(element);
+					final var anchor = getHtmlFactory().toEventHandlerAnchor(element);
 					List<Node> elementLink = label;
 					try {
 						elementLink = getHtmlFactory().createLink((Path) null, anchor, label, null);
 					} catch (Throwable ex) {
 						//
 					}
-					final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+					final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 					emphLink.appendChildren(elementLink);
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.add(emphLink);
 					createFirstSentence(element, nodes, true, false);
 					createShortDeprecationMessage(element, nodes, true);
 					return nodes;
 				},
 				() -> {
-					final SortedMap<String, List<? extends Node>> nodes = new TreeMap<>();
-					for (final javax.lang.model.element.Element element : getTypeHierarchy().getInheritedElements(
+					final var nodes = new TreeMap<String, List<? extends Node>>();
+					for (final var element : getTypeHierarchy().getInheritedElements(
 							typeElement, true, false, true, true, getEnvironment(), it1 -> {
 						if (it1 instanceof ExecutableElement && it1.getKind() == ElementKind.METHOD && !getElementUtils().isStatic(it1)
 								&& it1.getAnnotation(PerceptGuardEvaluator.class) != null) {
@@ -899,17 +885,17 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						}
 						return false;
 					})) {
-						final javax.lang.model.element.Element enclosing = element.getEnclosingElement();
-						final TypeMirror enclosingType = enclosing.asType();
-						final String anchor = getHtmlFactory().toEventHandlerAnchor((ExecutableElement) element);
-						final TypeElement enclosingTypeElement = getElementUtils().asTypeElement(enclosingType, getEnvironment().getTypeUtils());
-						final List<Node> label = new ArrayList<>();
+						final var enclosing = element.getEnclosingElement();
+						final var enclosingType = enclosing.asType();
+						final var anchor = getHtmlFactory().toEventHandlerAnchor((ExecutableElement) element);
+						final var enclosingTypeElement = getElementUtils().asTypeElement(enclosingType, getEnvironment().getTypeUtils());
+						final var label = new ArrayList<Node>();
 						label.add(new TextNode(enclosingTypeElement.getSimpleName().toString()));
 						label.add(new TextNode("/")); //$NON-NLS-1$
 						label.add(new TextNode(getSARLGrammarKeywordAccess().getOnKeyword()));
 						label.add(getHtmlFactory().createSecableSpace(null));
-						final TypeMirror eventType = ((ExecutableElement) element).getParameters().get(0).asType();
-						final TypeElement eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
+						final var eventType = ((ExecutableElement) element).getParameters().get(0).asType();
+						final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 						label.add(new TextNode(eventTypeElement.getSimpleName().toString()));
 						List<Node> elementLink = label;
 						try {
@@ -919,9 +905,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						}
 						nodes.putIfAbsent(eventTypeElement.getSimpleName().toString(), elementLink);
 					}
-					final List<Node> list = new ArrayList<>();
-					boolean first = true;
-					for (List<? extends Node> entity : nodes.values()) {
+					final var list = new ArrayList<Node>();
+					var first = true;
+					for (var entity : nodes.values()) {
 						if (first) {
 							first = false;
 						} else {
@@ -940,13 +926,13 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateActionsSummary(Element parent, TypeElement typeElement) {
-		final Iterable<ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<ExecutableElement> allActions = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var allActions = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.METHOD && getEnvironment().isIncluded(it));
-		final Iterable<ExecutableElement> staticActions = Iterables.filter(allActions, it -> getElementUtils().isStatic(it));
-		final Iterable<ExecutableElement> concreteActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && !getElementUtils().isAbstract(it));
-		final Iterable<ExecutableElement> abstractActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && getElementUtils().isAbstract(it));
-		final Map<String, Iterable<? extends ExecutableElement>> actions = new LinkedHashMap<>();
+		final var staticActions = Iterables.filter(allActions, it -> getElementUtils().isStatic(it));
+		final var concreteActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && !getElementUtils().isAbstract(it));
+		final var abstractActions = Iterables.filter(allActions, it -> !getElementUtils().isStatic(it) && getElementUtils().isAbstract(it));
+		final var actions = new LinkedHashMap<String, Iterable<? extends ExecutableElement>>();
 		// All methods
 		actions.put(Messages.AbstractTypeDocumentationGenerator_39, allActions);
 		// Static methods
@@ -960,26 +946,26 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				Messages.AbstractTypeDocumentationGenerator_41, ID_ACTION_SUMMARY, parent, actions,
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String modifierStr = getElementUtils().getModifiersString(element, false, true, false);
+					final var nodes = new ArrayList<Node>();
+					final var modifierStr = getElementUtils().getModifiersString(element, false, true, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						nodes.add(new TextNode(modifierStr));
 						nodes.add(getHtmlFactory().createUnsecableSpace(null));
 					}
-					final TypeMirror rtype = element.getReturnType();
-					final List<? extends Node> type = getHtmlFactory().createTypeLink(rtype, true, null, this);
+					final var rtype = element.getReturnType();
+					final var type = getHtmlFactory().createTypeLink(rtype, true, null, this);
 					if (type != null) {
 						nodes.addAll(type);
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String methodName = element.getSimpleName().toString();
-					final List<Node> methodPrototype = getHtmlFactory().getExecutablePrototype(element, methodName, this);
-					final List<? extends Node> elementLink = getHtmlFactory().createExecutableLink(element, methodPrototype, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var methodName = element.getSimpleName().toString();
+					final var methodPrototype = getHtmlFactory().getExecutablePrototype(element, methodName, this);
+					final var elementLink = getHtmlFactory().createExecutableLink(element, methodPrototype, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -988,21 +974,21 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					return nodes;
 				},
 				() -> {
-					final SortedMap<String, List<? extends Node>> nodes = new TreeMap<>();
-					for (final javax.lang.model.element.Element element : getTypeHierarchy().getInheritedElements(
+					final var nodes = new TreeMap<String, List<? extends Node>>();
+					for (final var element : getTypeHierarchy().getInheritedElements(
 							typeElement, true, getEnvironment(), it1 -> {
 						if (it1 instanceof ExecutableElement && it1.getKind() == ElementKind.METHOD) {
 							return true;
 						}
 						return false;
 					})) {
-						final ExecutableElement ee = (ExecutableElement) element;
-						final String methodName = element.getSimpleName().toString();
-						final List<Node> methodPrototype = getHtmlFactory().getExecutablePrototype(ee, methodName, this);
+						final var ee = (ExecutableElement) element;
+						final var methodName = element.getSimpleName().toString();
+						final var methodPrototype = getHtmlFactory().getExecutablePrototype(ee, methodName, this);
 						nodes.putIfAbsent(methodPrototype.toString(), getHtmlFactory().createExecutableLink(ee, methodPrototype, null, this));
 					}
-					final List<Node> list = new ArrayList<>();
-					for (List<? extends Node> entity : nodes.values()) {
+					final var list = new ArrayList<Node>();
+					for (var entity : nodes.values()) {
 						list.addAll(entity);
 					}
 					return list;
@@ -1018,19 +1004,19 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (typeElement.getKind() != ElementKind.CLASS) {
 			return;
 		}
-		final Iterable<? extends ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final Iterable<? extends ExecutableElement> constructors = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var constructors = Iterables.filter(source,
 				it -> it.getKind() == ElementKind.CONSTRUCTOR && getEnvironment().isIncluded(it));
-		final String constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
+		final var constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
 		createSummaryBox1(Messages.AbstractTypeDocumentationGenerator_35, Messages.AbstractTypeDocumentationGenerator_36,
 				Messages.AbstractTypeDocumentationGenerator_37, ID_CONSTRUCTOR_SUMMARY, parent, constructors,
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, constructorName, this);
-					final List<Node> elementLink = getHtmlFactory().createExecutableLink(element, constructorPrototype, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, constructorName, this);
+					final var elementLink = getHtmlFactory().createExecutableLink(element, constructorPrototype, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -1046,26 +1032,26 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateNestedClassesSummary(Element parent, TypeElement typeElement) {
-		final Iterable<? extends TypeElement> source = Iterables.filter(typeElement.getEnclosedElements(), TypeElement.class);
-		final Iterable<? extends TypeElement> nestedTypes = Iterables.filter(source, it -> getEnvironment().isIncluded(it));
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), TypeElement.class);
+		final var nestedTypes = Iterables.filter(source, it -> getEnvironment().isIncluded(it));
 		createSummaryBox2(Messages.AbstractTypeDocumentationGenerator_31, Messages.AbstractTypeDocumentationGenerator_32,
 				Messages.AbstractTypeDocumentationGenerator_33, Messages.AbstractTypeDocumentationGenerator_34,
 				ID_NESTED_CLASS_SUMMARY, parent, nestedTypes,
 				getElementUtils().getTypeElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
+					final var nodes = new ArrayList<Node>();
+					final var modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						nodes.add(new TextNode(modifierStr));
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String typeName = getElementUtils().getInnerTypeQualifiedName(element);
-					final List<? extends Node> elementLink = getHtmlFactory().createTypeLink(element, typeName, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var typeName = getElementUtils().getInnerTypeQualifiedName(element);
+					final var elementLink = getHtmlFactory().createTypeLink(element, typeName, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -1085,17 +1071,17 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (typeElement.getKind() != ElementKind.ENUM) {
 			return;
 		}
-		final Iterable<? extends VariableElement> source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
-		final Iterable<? extends VariableElement> enumConstants = Iterables.filter(source, it -> it.getKind() == ElementKind.ENUM_CONSTANT);
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
+		final var enumConstants = Iterables.filter(source, it -> it.getKind() == ElementKind.ENUM_CONSTANT);
 		createSummaryBox1(Messages.AbstractTypeDocumentationGenerator_23, Messages.AbstractTypeDocumentationGenerator_24,
 				Messages.AbstractTypeDocumentationGenerator_25, ID_ENUM_CONSTANT_SUMMARY, parent, enumConstants,
 				getElementUtils().getVariableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String constantName = element.getSimpleName().toString();
-					final List<? extends Node> elementLink = getHtmlFactory().createVariableLink(element, constantName, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var constantName = element.getSimpleName().toString();
+					final var elementLink = getHtmlFactory().createVariableLink(element, constantName, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -1111,13 +1097,13 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateFieldsSummary(Element parent, TypeElement typeElement) {
-		final Iterable<VariableElement> source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
-		final Iterable<VariableElement> allFields = Iterables.filter(source, it -> it.getKind() == ElementKind.FIELD && getEnvironment().isIncluded(it));
-		final Iterable<VariableElement> staticFields = Iterables.filter(allFields, it -> !getElementUtils().isFinal(it) && getElementUtils().isStatic(it));
-		final Iterable<VariableElement> concreteFields = Iterables.filter(allFields, it -> !getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
-		final Iterable<VariableElement> staticValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && getElementUtils().isStatic(it));
-		final Iterable<VariableElement> concreteValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
-		final Map<String, Iterable<? extends VariableElement>> fields = new LinkedHashMap<>();
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), VariableElement.class);
+		final var allFields = Iterables.filter(source, it -> it.getKind() == ElementKind.FIELD && getEnvironment().isIncluded(it));
+		final var staticFields = Iterables.filter(allFields, it -> !getElementUtils().isFinal(it) && getElementUtils().isStatic(it));
+		final var concreteFields = Iterables.filter(allFields, it -> !getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
+		final var staticValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && getElementUtils().isStatic(it));
+		final var concreteValues = Iterables.filter(allFields, it -> getElementUtils().isFinal(it) && !getElementUtils().isStatic(it));
+		final var fields = new LinkedHashMap<String, Iterable<? extends VariableElement>>();
 		// All fields
 		fields.put(Messages.AbstractTypeDocumentationGenerator_28, allFields);
 		// Static fields
@@ -1133,25 +1119,25 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				ID_FIELD_SUMMARY, parent, fields,
 				getElementUtils().getVariableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String modifierStr = getElementUtils().getModifiersString(element, false, false, true);
+					final var nodes = new ArrayList<Node>();
+					final var modifierStr = getElementUtils().getModifiersString(element, false, false, true);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						nodes.add(new TextNode(modifierStr));
 						nodes.add(getHtmlFactory().createUnsecableSpace(null));
 					}
-					final TypeMirror rtype = element.asType();
-					final List<? extends Node> type = getHtmlFactory().createTypeLink(rtype, true, null, this);
+					final var rtype = element.asType();
+					final var type = getHtmlFactory().createTypeLink(rtype, true, null, this);
 					if (type != null) {
 						nodes.addAll(type);
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String fieldName = element.getSimpleName().toString();
-					final List<? extends Node> elementLink = getHtmlFactory().createVariableLink(element, fieldName, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var fieldName = element.getSimpleName().toString();
+					final var elementLink = getHtmlFactory().createVariableLink(element, fieldName, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -1160,19 +1146,19 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					return nodes;
 				},
 				() -> {
-					final SortedMap<String, List<? extends Node>> nodes = new TreeMap<>();
-					for (final javax.lang.model.element.Element element : getTypeHierarchy().getInheritedElements(
+					final var nodes = new TreeMap<String, List<? extends Node>>();
+					for (final var element : getTypeHierarchy().getInheritedElements(
 							typeElement, true, getEnvironment(), it1 -> {
 						if (it1 instanceof VariableElement && it1.getKind() == ElementKind.FIELD) {
 							return true;
 						}
 						return false;
 					})) {
-						final String name = element.getSimpleName().toString();
+						final var name = element.getSimpleName().toString();
 						nodes.putIfAbsent(name, getHtmlFactory().createVariableLink((VariableElement) element, name, null, this));
 					}
-					final List<Node> list = new ArrayList<>();
-					for (List<? extends Node> entity : nodes.values()) {
+					final var list = new ArrayList<Node>();
+					for (final var entity : nodes.values()) {
 						list.addAll(entity);
 					}
 					return list;
@@ -1185,9 +1171,9 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generatePropertiesSummary(Element parent, TypeElement typeElement) {
-		final Iterable<? extends ExecutableElement> source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
-		final NoType voidType = getEnvironment().getTypeUtils().getNoType(TypeKind.VOID);
-		final Iterable<? extends ExecutableElement> properties = Iterables.filter(source,
+		final var source = Iterables.filter(typeElement.getEnclosedElements(), ExecutableElement.class);
+		final var voidType = getEnvironment().getTypeUtils().getNoType(TypeKind.VOID);
+		final var properties = Iterables.filter(source,
 				it -> {
 					if (getEnvironment().isIncluded(it) && !getElementUtils().isStatic(it)
 							&& it.getParameters().size() == 0 && it.getReturnType() != null
@@ -1202,26 +1188,26 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				ID_PROPERTY_SUMMARY, parent, properties,
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					
-					final String modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
+					final var modifierStr = getElementUtils().getVisibilityModifiersString(element, false);
 					if (!Strings.isNullOrEmpty(modifierStr)) {
 						nodes.add(new TextNode(modifierStr));
 						nodes.add(getHtmlFactory().createUnsecableSpace(null));
 					}
-					final TypeMirror rtype = element.getReturnType();
-					final List<? extends Node> type = getHtmlFactory().createTypeLink(rtype, true, null, this);
+					final var rtype = element.getReturnType();
+					final var type = getHtmlFactory().createTypeLink(rtype, true, null, this);
 					if (type != null) {
 						nodes.addAll(type);
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String propertyName = getterName2property(element.getSimpleName().toString());
-					final List<? extends Node> elementLink = getHtmlFactory().createExecutableLink(element, propertyName, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var propertyName = getterName2property(element.getSimpleName().toString());
+					final var elementLink = getHtmlFactory().createExecutableLink(element, propertyName, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
+						final var emphLink = getHtmlFactory().createSpanTag(null, CssStyles.SUMMARY_BOX_ID);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
@@ -1230,11 +1216,10 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					return nodes;
 				},
 				() -> {
-					final SortedMap<String, List<? extends Node>> nodes = new TreeMap<>();
-					for (final javax.lang.model.element.Element element : getTypeHierarchy().getInheritedElements(
+					final var nodes = new TreeMap<String, List<? extends Node>>();
+					for (final var element : getTypeHierarchy().getInheritedElements(
 							typeElement, true, getEnvironment(), it1 -> {
-						if (it1 instanceof ExecutableElement) {
-							final ExecutableElement ee = (ExecutableElement) it1;
+						if (it1 instanceof ExecutableElement ee) {
 							if (!getElementUtils().isStatic(ee) && ee.getParameters().size() == 0 && ee.getReturnType() != null
 									&& !voidType.equals(ee.getReturnType()) && isPropertyGetterName(ee.getSimpleName().toString())) {
 								return true;
@@ -1245,8 +1230,8 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						final String name = getterName2property(element.getSimpleName().toString());
 						nodes.putIfAbsent(name, getHtmlFactory().createExecutableLink((ExecutableElement) element, name, null, this));
 					}
-					final List<Node> list = new ArrayList<>();
-					for (List<? extends Node> entity : nodes.values()) {
+					final var list = new ArrayList<Node>();
+					for (var entity : nodes.values()) {
 						list.addAll(entity);
 					}
 					return list;
@@ -1259,7 +1244,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateTypeInfo(Element parent, TypeElement typeElement) {
-		final Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_INFO_BOX);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_INFO_BOX);
 		generateTypeParameterInfo(divTag, typeElement);
 		generateSuperInterfacesInfo(divTag, typeElement);
 		generateSubTypeInfo(divTag, typeElement);
@@ -1278,7 +1263,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement is the element for which the deprecation info must be generated.
 	 */
 	protected void generateTypeTagInfo(Element parent, TypeElement typeElement) {
-		final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.TYPE_TAG_INFO);
+		final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.TYPE_TAG_INFO);
 		createTagInfo(dlTag, typeElement, Location.TYPE, CssStyles.TYPE_TAG_INFO);
 	}
 
@@ -1288,14 +1273,14 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement is the element for which the deprecation info must be generated.
 	 */
 	protected void generateTypeDescription(Element parent, TypeElement typeElement) {
-		final Element descriptionTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_DESCRIPTION);
-		final DocCommentTree commentTree = getEnvironment().getDocTrees().getDocCommentTree(typeElement);
+		final var descriptionTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_DESCRIPTION);
+		final var commentTree = getEnvironment().getDocTrees().getDocCommentTree(typeElement);
 		if (commentTree != null) {
-			final List<? extends DocTree> body = commentTree.getFullBody();
+			final var body = commentTree.getFullBody();
 			if (!body.isEmpty()) {
-				final Element textDiv = getHtmlFactory().createDivTag(descriptionTag, CssStyles.TYPE_DESCRIPTION_MAIN);
-				final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(textDiv, typeElement, this);
-				for (final DocTree comment : body) {
+				final var textDiv = getHtmlFactory().createDivTag(descriptionTag, CssStyles.TYPE_DESCRIPTION_MAIN);
+				final var memory = getHtmlFactory().createCommentTextMemory(textDiv, typeElement, this);
+				for (final var comment : body) {
 					getHtmlFactory().createCommentText(memory, comment, CssStyles.TYPE_DESCRIPTION_MAIN);
 				}
 			}
@@ -1308,14 +1293,14 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement is the element for which the deprecation info must be generated.
 	 */
 	protected void generateDeprecationInfo(Element parent, TypeElement typeElement) {
-		final javax.lang.model.element.Element deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(typeElement);
+		final var deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(typeElement);
 		if (deprecatedElement != null) {
-			final List<? extends DocTree> deprs = getDocUtils().getBlockTags(deprecatedElement, DocTree.Kind.DEPRECATED, getEnvironment());
+			final var deprs = getDocUtils().getBlockTags(deprecatedElement, DocTree.Kind.DEPRECATED, getEnvironment());
 			if (!deprs.isEmpty()) {
-				final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.DEPRECATION_INFO);
-				final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.DEPRECATION_INFO);
-				final boolean isForRemoval = getElementUtils().isDeprecatedForRemoval(deprecatedElement);
-				final String since = getElementUtils().getDeprecatedSince(deprecatedElement);
+				final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.DEPRECATION_INFO);
+				final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.DEPRECATION_INFO);
+				final var isForRemoval = getElementUtils().isDeprecatedForRemoval(deprecatedElement);
+				final var since = getElementUtils().getDeprecatedSince(deprecatedElement);
 				if (Strings.isNullOrEmpty(since)) {
 					if (isForRemoval) {
 						dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_16);
@@ -1329,11 +1314,11 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 				}
 				final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.DEPRECATION_INFO);
 				//
-				final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(ddTag, deprecatedElement, this);
-				for (final DocTree comment : deprs) {
-					final List<? extends DocTree> text = getDocUtils().getCommentForDeprecatedTag(comment);
+				final var memory = getHtmlFactory().createCommentTextMemory(ddTag, deprecatedElement, this);
+				for (final var comment : deprs) {
+					final var text = getDocUtils().getCommentForDeprecatedTag(comment);
 					if (!text.isEmpty()) {
-						for (final DocTree tree : text) {
+						for (final var tree : text) {
 							getHtmlFactory().createCommentText(memory, tree, CssStyles.DEPRECATION_INFO);
 						}
 					}
@@ -1352,14 +1337,14 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	}
 
 	private boolean addAnnotationInfo(Element containerTag, int indent, TypeElement element, List<? extends AnnotationMirror> descList, boolean lineBreak) {
-		final List<Element> annotations = getHtmlFactory().getAnnotationsFor(indent, descList, lineBreak,
+		final var annotations = getHtmlFactory().getAnnotationsFor(indent, descList, lineBreak,
 				CssStyles.TYPE_SIGNATURE_ANNOTATION_INFO, CssStyles.TYPE_SIGNATURE_ANNOTATION_INFO_VALUE, this);
 
 		if (annotations.isEmpty()) {
 			return false;
 		}
-		boolean first = true;
-		for (final Element annotation : annotations) {
+		var first = true;
+		for (final var annotation : annotations) {
 			containerTag.appendChild(annotation);
 			if (first) {
 				first = false;
@@ -1376,24 +1361,24 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateTypeSignature(Element parent, TypeElement typeElement) {
-		final Element preTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_SIGNATURE);
+		final var preTag = getHtmlFactory().createDivTag(parent, CssStyles.TYPE_SIGNATURE);
 
 		// Annotations
 		generateAnnotationInfo(preTag, typeElement);
 
 		// Modifiers
-		final String modifiers = getElementUtils().getModifiersString(typeElement, true, true, false);
+		final var modifiers = getElementUtils().getModifiersString(typeElement, true, true, false);
 		preTag.appendText(modifiers);
 
 		// Basename
-		final Element typeNameElement = getHtmlFactory().createSpanTag(preTag, CssStyles.TYPE_SIGNATURE_TYPE_NAME);
+		final var typeNameElement = getHtmlFactory().createSpanTag(preTag, CssStyles.TYPE_SIGNATURE_TYPE_NAME);
 		typeNameElement.appendText(typeElement.getSimpleName().toString());
 
 		// Generic types
 		if (!typeElement.getTypeParameters().isEmpty()) {
 			typeNameElement.appendText(getSARLGrammarKeywordAccess().getLessThanSignKeyword());
-			boolean first = true;
-			for (final TypeParameterElement parameter : typeElement.getTypeParameters()) {
+			var first = true;
+			for (final var parameter : typeElement.getTypeParameters()) {
 				if (first) {
 					first = false;
 				} else {
@@ -1407,7 +1392,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 
 		// Extends
 		if (typeElement.getKind() != ElementKind.INTERFACE) {
-			final TypeMirror superclass = getElementUtils().getFirstVisibleSuperType(typeElement, false, getEnvironment());
+			final var superclass = getElementUtils().getFirstVisibleSuperType(typeElement, false, getEnvironment());
 			if (superclass != null && superclass.getKind() != TypeKind.NONE) {
 				preTag.appendChild(getHtmlFactory().createNewLineTag());
 				preTag.appendText(getSARLGrammarKeywordAccess().getExtendsKeyword());
@@ -1417,11 +1402,11 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		}
 
 		// Implements
-		final List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
+		final var interfaces = typeElement.getInterfaces();
 		if (!interfaces.isEmpty()) {
-			boolean first = true;
-			for (final TypeMirror type : interfaces) {
-				final TypeElement type0 = getElementUtils().asTypeElement(type, getEnvironment().getTypeUtils());
+			var first = true;
+			for (final var type : interfaces) {
+				final var type0 = getElementUtils().asTypeElement(type, getEnvironment().getTypeUtils());
 				if (getElementUtils().isPublic(type0) || getElementUtils().isLinkable(type0, getEnvironment())) {
 					if (first) {
 						first = false;
@@ -1448,10 +1433,10 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 */
 	protected void generateFunctionalInterfaceInfo(Element bodyTag, TypeElement typeElement) {
 		if (typeElement.getKind() == ElementKind.INTERFACE && getEnvironment().getElementUtils().isFunctionalInterface(typeElement)) {
-			final Element dlTag = getHtmlFactory().createDlTag(bodyTag, CssStyles.NESTED_TYPE_INFO);
-			final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.NESTED_TYPE_INFO);
+			final var dlTag = getHtmlFactory().createDlTag(bodyTag, CssStyles.NESTED_TYPE_INFO);
+			final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.NESTED_TYPE_INFO);
 			dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_14);
-			final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.NESTED_TYPE_INFO);
+			final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.NESTED_TYPE_INFO);
 			ddTag.appendText(Messages.AbstractTypeDocumentationGenerator_15);
 		}
 	}
@@ -1462,19 +1447,19 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateNestedTypeInfo(Element parent, TypeElement typeElement) {
-		final javax.lang.model.element.Element outerClass = typeElement.getEnclosingElement();
+		final var outerClass = typeElement.getEnclosingElement();
 		if (outerClass != null) {
 			new SimpleElementVisitor9<Void, Void>() {
 				@Override
 				public Void visitType(TypeElement currentElement, Void parameter) {
-					final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.NESTED_TYPE_INFO);
-					final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.NESTED_TYPE_INFO);
+					final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.NESTED_TYPE_INFO);
+					final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.NESTED_TYPE_INFO);
 					if (currentElement.getKind() == ElementKind.INTERFACE) {
 						dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_13);
 					} else {
 						dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_12);
 					}
-					final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.NESTED_TYPE_INFO);
+					final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.NESTED_TYPE_INFO);
 					ddTag.appendChildren(getHtmlFactory().createTypeLink(currentElement, true,
 							CssStyles.NESTED_TYPE_INFO, AbstractTypeDocumentationGenerator.this));
 					return null;
@@ -1490,14 +1475,14 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 */
 	protected void generateInterfaceUsageInfo(Element parent, TypeElement typeElement) {
 		if (typeElement.getKind() == ElementKind.INTERFACE) {
-			final Set<TypeElement> impl = getTypeHierarchy().getImplementingClasses(typeElement);
+			final var impl = getTypeHierarchy().getImplementingClasses(typeElement);
 			if (!impl.isEmpty()) {
-				final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.IMPLEMENTING_CLASS_LIST);
-				final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.IMPLEMENTING_CLASS_LIST);
+				final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.IMPLEMENTING_CLASS_LIST);
+				final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.IMPLEMENTING_CLASS_LIST);
 				dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_11);
-				final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.IMPLEMENTING_CLASS_LIST);
-				boolean first = true;
-				for (final TypeElement type : impl) {
+				final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.IMPLEMENTING_CLASS_LIST);
+				var first = true;
+				for (final var type : impl) {
 					if (first) {
 						first = false;
 					} else {
@@ -1515,18 +1500,18 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateSubTypeInfo(Element parent, TypeElement typeElement) {
-		final SortedSet<? extends TypeElement> directSubTypes = getTypeHierarchy().getDirectSubTypes(typeElement);
+		final var directSubTypes = getTypeHierarchy().getDirectSubTypes(typeElement);
 		if (!directSubTypes.isEmpty()) {
-			final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.DIRECT_SUBTYPE_LIST);
-			final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.DIRECT_SUBTYPE_LIST);
+			final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.DIRECT_SUBTYPE_LIST);
+			final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.DIRECT_SUBTYPE_LIST);
 			if (typeElement.getKind() == ElementKind.INTERFACE) {
 				dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_9);
 			} else {
 				dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_10);
 			}
-			final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.DIRECT_SUBTYPE_LIST);
-			boolean first = true;
-			for (final TypeElement type : directSubTypes) {
+			final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.DIRECT_SUBTYPE_LIST);
+			var first = true;
+			for (final var type : directSubTypes) {
 				if (first) {
 					first = false;
 				} else {
@@ -1543,14 +1528,14 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateSuperInterfacesInfo(Element parent, TypeElement typeElement) {
-		final SortedSet<? extends TypeMirror> interfaces = getElementUtils().getAllInterfaces(typeElement, getEnvironment());
+		final var interfaces = getElementUtils().getAllInterfaces(typeElement, getEnvironment());
 		if (!interfaces.isEmpty()) {
-			final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.SUPER_INTERFACE_LIST);
-			final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.SUPER_INTERFACE_LIST);
+			final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.SUPER_INTERFACE_LIST);
+			final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.SUPER_INTERFACE_LIST);
 			dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_7);
-			final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.SUPER_INTERFACE_LIST);
-			boolean first = true;
-			for (final TypeMirror type : interfaces) {
+			final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.SUPER_INTERFACE_LIST);
+			var first = true;
+			for (final var type : interfaces) {
 				if (first) {
 					first = false;
 				} else {
@@ -1568,16 +1553,16 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 */
 	protected void generateTypeParameterInfo(Element parent, TypeElement typeElement) {
 		if (!typeElement.getTypeParameters().isEmpty()) {
-			final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.TYPE_PARAMETER_LIST);
-			final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.TYPE_PARAMETER_LIST);
+			final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.TYPE_PARAMETER_LIST);
+			final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.TYPE_PARAMETER_LIST);
 			dtTag.appendText(Messages.AbstractTypeDocumentationGenerator_4);
 			//
-			for (final TypeParameterElement parameter : typeElement.getTypeParameters()) {
-				final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.TYPE_PARAMETER_LIST);
-				final List<? extends DocTree> comment = getDocUtils().getTypeParameterComment(typeElement, parameter.getSimpleName().toString(), getEnvironment());
+			for (final var parameter : typeElement.getTypeParameters()) {
+				final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.TYPE_PARAMETER_LIST);
+				final var comment = getDocUtils().getTypeParameterComment(typeElement, parameter.getSimpleName().toString(), getEnvironment());
 				ddTag.appendText(MessageFormat.format(Messages.AbstractTypeDocumentationGenerator_5, parameter.getSimpleName().toString()));
-				final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(ddTag, typeElement, this);
-				for (final DocTree text : comment) {
+				final var memory = getHtmlFactory().createCommentTextMemory(ddTag, typeElement, this);
+				for (final var text : comment) {
 					getHtmlFactory().createCommentText(memory, text, CssStyles.TYPE_PARAMETER_LIST);
 				}
 			}
@@ -1590,7 +1575,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateTypeTree(Element parent, TypeElement typeElement) {
-		final Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.INHERITANCE_TREE);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.INHERITANCE_TREE);
 		getHtmlFactory().createTypeInheritanceTree(divTag, typeElement.asType(),
 				CssStyles.INHERITANCE_TREE_TREE, CssStyles.INHERITANCE_TREE_TYPE, this);
 	}
@@ -1601,7 +1586,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generatePrivateApiMessage(Element parent, TypeElement typeElement) {
-		final Element messageDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_PRIVATEAPI_MESSAGE);
+		final var messageDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_PRIVATEAPI_MESSAGE);
 		messageDiv.appendText(MessageFormat.format(Messages.AbstractTypeDocumentationGenerator_18, typeElement.getSimpleName().toString()));
 	}
 
@@ -1611,27 +1596,27 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateTypeIntroduction(Element parent, TypeElement typeElement) {
-		final ModuleElement module = getEnvironment().getElementUtils().getModuleOf(typeElement);
+		final var module = getEnvironment().getElementUtils().getModuleOf(typeElement);
 		if (!module.isUnnamed()) {
-			final Element moduleNameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_MODULE_NAME);
+			final var moduleNameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_MODULE_NAME);
 			moduleNameDiv.appendText(Messages.AbstractTypeDocumentationGenerator_2);
 			getHtmlFactory().createUnsecableSpace(moduleNameDiv);
-			final List<? extends Node> moduleLink = getHtmlFactory().createModuleLink(module, module.getQualifiedName().toString(),
+			final var moduleLink = getHtmlFactory().createModuleLink(module, module.getQualifiedName().toString(),
 					CssStyles.HEADER_MODULE_NAME, this);
 			moduleNameDiv.appendChildren(moduleLink);
 		}
-		final PackageElement packageElement = getEnvironment().getElementUtils().getPackageOf(typeElement);
+		final var packageElement = getEnvironment().getElementUtils().getPackageOf(typeElement);
 		if (!packageElement.isUnnamed()) {
-			final Element packageNameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_PACKAGE_NAME);
-			final List<? extends Node> packageLink = getHtmlFactory().createPackageLink(packageElement, packageElement.getQualifiedName().toString(),
+			final var packageNameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_PACKAGE_NAME);
+			final var packageLink = getHtmlFactory().createPackageLink(packageElement, packageElement.getQualifiedName().toString(),
 					CssStyles.HEADER_PACKAGE_NAME, this);
 			packageNameDiv.appendChildren(packageLink);
 		}
-		final Element nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
+		final var nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
 		final String name;
 		if (!typeElement.getTypeParameters().isEmpty()) {
-			final StringBuilder params = new StringBuilder();
-			for (final TypeParameterElement parameter : typeElement.getTypeParameters()) {
+			final var params = new StringBuilder();
+			for (final var parameter : typeElement.getTypeParameters()) {
 				if (params.length() > 0) {
 					params.append(", "); //$NON-NLS-1$
 				}
@@ -1652,7 +1637,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateBodyHeader(Element parent, TypeElement typeElement) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
 		generateHeaderNavigationBar(divTag, typeElement);
 		if (getElementUtils().isPrivateAPI(typeElement)) {
 			generatePrivateApiMessage(divTag, typeElement);
@@ -1683,7 +1668,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 	 * @param typeElement the type element.
 	 */
 	protected void generateBodyFooter(Element parent, TypeElement typeElement) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
 		generateFooterNavigationBar(divTag, typeElement);
 		createCopyrightBox(divTag);
 	}

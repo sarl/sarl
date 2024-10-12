@@ -184,7 +184,7 @@ public final class SARLRuntime {
 	 * @param event event describing the change.
 	 */
 	public static void fireSREChanged(PropertyChangeEvent event) {
-		for (final Object listener : SRE_LISTENERS.getListeners()) {
+		for (final var listener : SRE_LISTENERS.getListeners()) {
 			((ISREInstallChangedListener) listener).sreChanged(event);
 		}
 	}
@@ -195,7 +195,7 @@ public final class SARLRuntime {
 	 * @param installation the installed SRE.
 	 */
 	public static void fireSREAdded(ISREInstall installation) {
-		for (final Object listener : SRE_LISTENERS.getListeners()) {
+		for (final var listener : SRE_LISTENERS.getListeners()) {
 			((ISREInstallChangedListener) listener).sreAdded(installation);
 		}
 	}
@@ -206,7 +206,7 @@ public final class SARLRuntime {
 	 * @param installation the removed SRE.
 	 */
 	public static void fireSRERemoved(ISREInstall installation) {
-		for (final Object listener : SRE_LISTENERS.getListeners()) {
+		for (final var listener : SRE_LISTENERS.getListeners()) {
 			((ISREInstallChangedListener) listener).sreRemoved(installation);
 		}
 	}
@@ -252,7 +252,7 @@ public final class SARLRuntime {
 	 *     SRE was set or when the default SRE has been disposed.
 	 */
 	public static ISREInstall getDefaultSREInstall() {
-		final ISREInstall install = getSREFromId(getDefaultSREId());
+		final var install = getSREFromId(getDefaultSREId());
 		if (install != null && install.getValidity().isOK()) {
 			return install;
 		}
@@ -277,27 +277,27 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
-		final SubMonitor mon = SubMonitor.convert(monitor,
+		final var mon = SubMonitor.convert(monitor,
 				io.sarl.eclipse.runtime.Messages.SARLRuntime_0,
 				sres.length * 2 + ALL_SRE_INSTALLS.size());
 		initializeSREs();
 		final String oldDefaultId;
 		String newDefaultId;
-		final List<ISREInstall> newElements = new ArrayList<>();
+		final var newElements = new ArrayList<ISREInstall>();
 		final Map<String, ISREInstall> allKeys;
 		LOCK.lock();
 		try {
 			oldDefaultId = getDefaultSREId();
 			newDefaultId = oldDefaultId;
 			allKeys = new TreeMap<>(ALL_SRE_INSTALLS);
-			for (final ISREInstall sre : sres) {
+			for (final var sre : sres) {
 				if (allKeys.remove(sre.getId()) == null) {
 					newElements.add(sre);
 					ALL_SRE_INSTALLS.put(sre.getId(), sre);
 				}
 				mon.worked(1);
 			}
-			for (final ISREInstall sre : allKeys.values()) {
+			for (final var sre : allKeys.values()) {
 				ALL_SRE_INSTALLS.remove(sre.getId());
 				platformSREInstalls.remove(sre.getId());
 				mon.worked(1);
@@ -308,7 +308,7 @@ public final class SARLRuntime {
 		} finally {
 			LOCK.unlock();
 		}
-		boolean changed = false;
+		var changed = false;
 		mon.subTask(io.sarl.eclipse.runtime.Messages.SARLRuntime_1);
 		if (oldDefaultId != null && newDefaultId == null) {
 			changed = true;
@@ -316,11 +316,11 @@ public final class SARLRuntime {
 		}
 		mon.worked(1);
 		mon.subTask(io.sarl.eclipse.runtime.Messages.SARLRuntime_2);
-		for (final ISREInstall sre : allKeys.values()) {
+		for (final var sre : allKeys.values()) {
 			changed = true;
 			fireSRERemoved(sre);
 		}
-		for (final ISREInstall sre : newElements) {
+		for (final var sre : newElements) {
 			changed = true;
 			fireSREAdded(sre);
 		}
@@ -386,7 +386,7 @@ public final class SARLRuntime {
 	 * @param current the new current default SRE
 	 */
 	private static void fireDefaultSREChanged(ISREInstall previous, ISREInstall current) {
-		for (final Object listener : SRE_LISTENERS.getListeners()) {
+		for (final var listener : SRE_LISTENERS.getListeners()) {
 			((ISREInstallChangedListener) listener).defaultSREInstallChanged(previous, current);
 		}
 	}
@@ -441,7 +441,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {
-		final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		final var plugin = SARLEclipsePlugin.getDefault();
 		plugin.getPreferences().put(getCurrentPreferenceKey(), getSREsAsXML(monitor));
 		plugin.savePreferences();
 	}
@@ -452,7 +452,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void clearSREConfiguration() throws CoreException {
-		final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		final var plugin = SARLEclipsePlugin.getDefault();
 		plugin.getPreferences().remove(getCurrentPreferenceKey());
 		plugin.savePreferences();
 	}
@@ -461,17 +461,16 @@ public final class SARLRuntime {
 	 * Initializes SRE extensions.
 	 */
 	private static void initializeSREExtensions() {
-		final MultiStatus status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
+		final var status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
 				IStatus.OK, "Exceptions occurred", null);  //$NON-NLS-1$
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID, SARLEclipseConfig.EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
 		if (extensionPoint != null) {
 			Object obj;
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			for (final var element : extensionPoint.getConfigurationElements()) {
 				try {
 					obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ISREInstall) {
-						final ISREInstall sre = (ISREInstall) obj;
+					if (obj instanceof ISREInstall sre) {
 						platformSREInstalls.add(sre.getId());
 						ALL_SRE_INSTALLS.put(sre.getId(), sre);
 					} else {
@@ -498,23 +497,23 @@ public final class SARLRuntime {
 	 */
 	public static String getSREAsXML(ISREInstall sre) throws CoreException {
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
-			final Document xmldocument = builder.newDocument();
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
+			final var xmldocument = builder.newDocument();
 
-			final Element sreNode = xmldocument.createElement("SRE"); //$NON-NLS-1$
+			final var sreNode = xmldocument.createElement("SRE"); //$NON-NLS-1$
 			sreNode.setAttribute("platform", Boolean.toString(isPlatformSRE(sre))); //$NON-NLS-1$
 			sreNode.setAttribute("id", sre.getId()); //$NON-NLS-1$
 			sreNode.setAttribute("class", sre.getClass().getName()); //$NON-NLS-1$
 			sre.getAsXML(xmldocument, sreNode);
 			xmldocument.appendChild(sreNode);
 
-			final TransformerFactory transFactory = TransformerFactory.newInstance();
-			final Transformer trans = transFactory.newTransformer();
-			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-				final DOMSource source = new DOMSource(xmldocument);
-				final PrintWriter flot = new PrintWriter(baos);
-				final StreamResult xmlStream = new StreamResult(flot);
+			final var transFactory = TransformerFactory.newInstance();
+			final var trans = transFactory.newTransformer();
+			try (var baos = new ByteArrayOutputStream()) {
+				final var source = new DOMSource(xmldocument);
+				final var flot = new PrintWriter(baos);
+				final var xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 				return new String(baos.toByteArray());
 			}
@@ -532,7 +531,7 @@ public final class SARLRuntime {
 	 */
 	public static void setSREFromXML(ISREInstall sre, String xml) throws CoreException {
 		try {
-			final Element root = parseXML(xml, false);
+			final var root = parseXML(xml, false);
 			sre.setFromXML(root);
 		} catch (Throwable e) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e));
@@ -549,17 +548,17 @@ public final class SARLRuntime {
 	public static String getSREsAsXML(IProgressMonitor monitor) throws CoreException {
 		initializeSREs();
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
-			final Document xmldocument = builder.newDocument();
-			final Element rootElement = getXml(xmldocument);
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
+			final var xmldocument = builder.newDocument();
+			final var rootElement = getXml(xmldocument);
 			xmldocument.appendChild(rootElement);
-			final TransformerFactory transFactory = TransformerFactory.newInstance();
-			final Transformer trans = transFactory.newTransformer();
-			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-				final DOMSource source = new DOMSource(xmldocument);
-				final PrintWriter flot = new PrintWriter(baos);
-				final StreamResult xmlStream = new StreamResult(flot);
+			final var transFactory = TransformerFactory.newInstance();
+			final var trans = transFactory.newTransformer();
+			try (var baos = new ByteArrayOutputStream()) {
+				final var source = new DOMSource(xmldocument);
+				final var flot = new PrintWriter(baos);
+				final var xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 				return new String(baos.toByteArray());
 			}
@@ -569,11 +568,11 @@ public final class SARLRuntime {
 	}
 
 	private static Element getXml(Document xmlDocument) throws IOException {
-		final Element sresNode = xmlDocument.createElement("SREs"); //$NON-NLS-1$
+		final var sresNode = xmlDocument.createElement("SREs"); //$NON-NLS-1$
 		LOCK.lock();
 		try {
-			for (final ISREInstall sre : ALL_SRE_INSTALLS.values()) {
-				final Element sreNode = xmlDocument.createElement("SRE"); //$NON-NLS-1$
+			for (final var sre : ALL_SRE_INSTALLS.values()) {
+				final var sreNode = xmlDocument.createElement("SRE"); //$NON-NLS-1$
 				sreNode.setAttribute("platform", Boolean.toString(isPlatformSRE(sre))); //$NON-NLS-1$
 				sreNode.setAttribute("id", sre.getId()); //$NON-NLS-1$
 				sreNode.setAttribute("class", sre.getClass().getName()); //$NON-NLS-1$
@@ -590,7 +589,7 @@ public final class SARLRuntime {
 	}
 
 	private static Element parseXML(String rawXml, boolean isMultiple) throws IOException {
-		try (InputStream stream = new BufferedInputStream(new ByteArrayInputStream(rawXml.getBytes()))) {
+		try (var stream = new BufferedInputStream(new ByteArrayInputStream(rawXml.getBytes()))) {
 			return parseXML(stream, isMultiple);
 		}
 	}
@@ -598,7 +597,7 @@ public final class SARLRuntime {
 	private static Element parseXML(InputStream stream, boolean isMultiple) throws IOException {
 		Element config = null;
 		try {
-			final DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			final var parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			parser.setErrorHandler(new DefaultHandler());
 			config = parser.parse(new InputSource(stream)).getDocumentElement();
 		} catch (SAXException e) {
@@ -620,8 +619,8 @@ public final class SARLRuntime {
 	private static ISREInstall createSRE(String classname, String id) {
 		if (!Strings.isNullOrEmpty(id)) {
 			try {
-				final Class<? extends ISREInstall> type = Class.forName(classname).asSubclass(ISREInstall.class);
-				final Constructor<? extends ISREInstall> cons = type.getConstructor(String.class);
+				final var type = Class.forName(classname).asSubclass(ISREInstall.class);
+				final var cons = type.getConstructor(String.class);
 				return cons.newInstance(id);
 			} catch (Throwable exception) {
 				//
@@ -641,7 +640,7 @@ public final class SARLRuntime {
 		//		} catch (CoreException e1) {
 		//			e1.printStackTrace();
 		//		}
-		final String rawXml = SARLEclipsePlugin.getDefault().getPreferences().get(
+		final var rawXml = SARLEclipsePlugin.getDefault().getPreferences().get(
 				getCurrentPreferenceKey(), ""); //$NON-NLS-1$
 
 		try {
@@ -651,16 +650,16 @@ public final class SARLRuntime {
 				config = parseXML(rawXml, true);
 			} else {
 				// Otherwise, look for the old file that previously held the SRE definitions
-				final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+				final var plugin = SARLEclipsePlugin.getDefault();
 				if (plugin.getBundle() != null) {
-					final IPath stateLocation = plugin.getStateLocation();
-					final IPath stateFile = stateLocation.append("sreConfiguration.xml"); //$NON-NLS-1$
-					final File file = stateFile.toFile();
+					final var stateLocation = plugin.getStateLocation();
+					final var stateFile = stateLocation.append("sreConfiguration.xml"); //$NON-NLS-1$
+					final var file = stateFile.toFile();
 					if (file.exists()) {
 						// If file exists, load SRE definitions from it into memory and
 						// write the definitions to the preference store WITHOUT triggering
 						// any processing of the new value
-						try (InputStream fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
+						try (var fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
 							config = parseXML(fileInputStream, true);
 						} catch (IOException e) {
 							SARLEclipsePlugin.getDefault().log(e);
@@ -669,18 +668,17 @@ public final class SARLRuntime {
 				}
 			}
 			if (config != null) {
-				final String defaultId = config.getAttribute("defaultSRE"); //$NON-NLS-1$
-				final NodeList children = config.getChildNodes();
-				for (int i = 0; i < children.getLength(); ++i) {
+				final var defaultId = config.getAttribute("defaultSRE"); //$NON-NLS-1$
+				final var children = config.getChildNodes();
+				for (var i = 0; i < children.getLength(); ++i) {
 					try {
-						final Node child = children.item(i);
+						final var child = children.item(i);
 						if ("SRE".equalsIgnoreCase(child.getNodeName()) //$NON-NLS-1$
-								&& child instanceof Element) {
-							final Element element = (Element) child;
-							final boolean isPlatform = Boolean.parseBoolean(element.getAttribute("platform")); //$NON-NLS-1$
-							final String id = element.getAttribute("id"); //$NON-NLS-1$
+								&& child instanceof Element element) {
+							final var isPlatform = Boolean.parseBoolean(element.getAttribute("platform")); //$NON-NLS-1$
+							final var id = element.getAttribute("id"); //$NON-NLS-1$
 							if (!isPlatform || !(ALL_SRE_INSTALLS.containsKey(id))) {
-								final ISREInstall sre = createSRE(
+								final var sre = createSRE(
 										element.getAttribute("class"), //$NON-NLS-1$
 										id);
 								if (sre == null) {
@@ -696,7 +694,7 @@ public final class SARLRuntime {
 									platformSREInstalls.add(id);
 								}
 							} else {
-								final ISREInstall sre = ALL_SRE_INSTALLS.get(id);
+								final var sre = ALL_SRE_INSTALLS.get(id);
 								if (sre != null) {
 									try {
 										sre.setFromXML(element);
@@ -725,10 +723,10 @@ public final class SARLRuntime {
 	 * @since 3.2
 	 */
 	private static void initializeSREs() {
-		ISREInstall[] newSREs = new ISREInstall[0];
-		boolean savePrefs = false;
+		var newSREs = new ISREInstall[0];
+		var savePrefs = false;
 		LOCK.lock();
-		final String previousDefault = defaultSREId;
+		final var previousDefault = defaultSREId;
 		try {
 			if (platformSREInstalls == null) {
 				platformSREInstalls = new HashSet<>();
@@ -739,15 +737,15 @@ public final class SARLRuntime {
 					initializeSREExtensions();
 				}
 				// install the SREs from the user-defined preferences.
-				final String predefinedDefaultId = Strings.nullToEmpty(initializePersistedSREs());
+				final var predefinedDefaultId = Strings.nullToEmpty(initializePersistedSREs());
 
 				newSREs = new ISREInstall[ALL_SRE_INSTALLS.size()];
 
 				// Verify default SRE is valid
 				ISREInstall initDefaultSRE = null;
-				final Iterator<ISREInstall> iterator = ALL_SRE_INSTALLS.values().iterator();
-				for (int i = 0; iterator.hasNext(); ++i) {
-					final ISREInstall sre = iterator.next();
+				final var iterator = ALL_SRE_INSTALLS.values().iterator();
+				for (var i = 0; iterator.hasNext(); ++i) {
+					final var sre = iterator.next();
 					newSREs[i] = sre;
 					if (sre.getValidity().isOK()) {
 						if (initDefaultSRE == null
@@ -757,7 +755,7 @@ public final class SARLRuntime {
 					}
 				}
 
-				final String oldDefaultId = initDefaultSRE == null ? null : initDefaultSRE.getId();
+				final var oldDefaultId = initDefaultSRE == null ? null : initDefaultSRE.getId();
 				defaultSREId = oldDefaultId;
 				savePrefs = true;
 			}
@@ -765,9 +763,9 @@ public final class SARLRuntime {
 			if (Strings.isNullOrEmpty(defaultSREId)) {
 				ISREInstall firstSRE = null;
 				ISREInstall firstValidSRE = null;
-				final Iterator<ISREInstall> iterator = ALL_SRE_INSTALLS.values().iterator();
+				final var iterator = ALL_SRE_INSTALLS.values().iterator();
 				while (firstValidSRE == null && iterator.hasNext()) {
-					final ISREInstall sre = iterator.next();
+					final var sre = iterator.next();
 					if (firstSRE == null) {
 						firstSRE = sre;
 					}
@@ -835,13 +833,13 @@ public final class SARLRuntime {
 			// Clear the SRE configuration stored into the preferences.
 			clearSREConfiguration();
 			// Reset the internal data structures.
-			final ISREInstall previous = getDefaultSREInstall();
-			final Map<String, ISREInstall> oldSREs = new HashMap<>(ALL_SRE_INSTALLS);
+			final var previous = getDefaultSREInstall();
+			final var oldSREs = new HashMap<String, ISREInstall>(ALL_SRE_INSTALLS);
 			ALL_SRE_INSTALLS.clear();
 			platformSREInstalls = null;
 			defaultSREId = null;
 			// Notify about the removals
-			for (final ISREInstall sre : oldSREs.values()) {
+			for (final var sre : oldSREs.values()) {
 				fireSRERemoved(sre);
 			}
 			if (previous != null) {
@@ -861,20 +859,20 @@ public final class SARLRuntime {
 	 * @see #isPackedSRE(File)
 	 */
 	public static boolean isUnpackedSRE(File directory) {
-		File manifestFile = new File(directory, "META-INF"); //$NON-NLS-1$
+		var manifestFile = new File(directory, "META-INF"); //$NON-NLS-1$
 		manifestFile = new File(manifestFile, "MANIFEST.MF"); //$NON-NLS-1$
 		if (manifestFile.canRead()) {
-			try (InputStream manifestStream = new FileInputStream(manifestFile)) {
-				final Manifest manifest = new Manifest(manifestStream);
-				final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
+			try (var manifestStream = new FileInputStream(manifestFile)) {
+				final var manifest = new Manifest(manifestStream);
+				final var sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 				if (sarlSection == null) {
 					return false;
 				}
-				final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
+				final var sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 				if (sarlVersion == null || sarlVersion.isEmpty()) {
 					return false;
 				}
-				final Version sarlVer = Version.parseVersion(sarlVersion);
+				final var sarlVer = Version.parseVersion(sarlVersion);
 				return sarlVer != null;
 			} catch (IOException exception) {
 				return false;
@@ -891,11 +889,11 @@ public final class SARLRuntime {
 	 */
 	public static boolean isUnpackedSRE(IPath directory) {
 		try {
-			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
+			final var location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
 			if (location != null) {
-				final IPath path = location.getLocation();
+				final var path = location.getLocation();
 				if (path != null) {
-					final File file = path.toFile();
+					final var file = path.toFile();
 					if (file.exists()) {
 						if (file.isDirectory()) {
 							return isUnpackedSRE(file);
@@ -919,20 +917,20 @@ public final class SARLRuntime {
 	 * @see #isUnpackedSRE(File)
 	 */
 	public static boolean isPackedSRE(File jarFile) {
-		try (JarFile jFile = new JarFile(jarFile)) {
-			final Manifest manifest = jFile.getManifest();
+		try (var jFile = new JarFile(jarFile)) {
+			final var manifest = jFile.getManifest();
 			if (manifest == null) {
 				return false;
 			}
-			final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
+			final var sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 			if (sarlSection == null) {
 				return false;
 			}
-			final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
+			final var sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 			if (sarlVersion == null || sarlVersion.isEmpty()) {
 				return false;
 			}
-			final Version sarlVer = Version.parseVersion(sarlVersion);
+			final var sarlVer = Version.parseVersion(sarlVersion);
 			return sarlVer != null;
 		} catch (IOException exception) {
 			return false;
@@ -949,11 +947,11 @@ public final class SARLRuntime {
 	 */
 	public static boolean isPackedSRE(IPath jarFile) {
 		try {
-			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
+			final var location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
 			if (location != null) {
-				final IPath path = location.getLocation();
+				final var path = location.getLocation();
 				if (path != null) {
-					final File file = path.toFile();
+					final var file = path.toFile();
 					if (file.exists()) {
 						if (file.isFile()) {
 							return isPackedSRE(file);
@@ -978,15 +976,15 @@ public final class SARLRuntime {
 	 * @see #containsPackedBootstrap(File)
 	 */
 	public static boolean containsUnpackedBootstrap(File directory) {
-		final String[] elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
-		File serviceFile = directory;
-		for (final String element : elements) {
+		final var elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		var serviceFile = directory;
+		for (final var element : elements) {
 			serviceFile = new File(serviceFile, element);
 		}
 		if (serviceFile.isFile() && serviceFile.canRead()) {
-			try (InputStream is = new FileInputStream(serviceFile)) {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-					String line = reader.readLine();
+			try (var is = new FileInputStream(serviceFile)) {
+				try (var reader = new BufferedReader(new InputStreamReader(is))) {
+					var line = reader.readLine();
 					if (line != null) {
 						line = line.trim();
 						if (!line.isEmpty()) {
@@ -1012,11 +1010,11 @@ public final class SARLRuntime {
 	 * @see #getDeclaredBootstrap(IPath)
 	 */
 	public static boolean containsUnpackedBootstrap(IPath directory) {
-		final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
+		final var location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
 		if (location != null) {
-			final IPath path = location.getLocation();
+			final var path = location.getLocation();
 			if (path != null) {
-				final File file = path.toFile();
+				final var file = path.toFile();
 				if (file.exists()) {
 					if (file.isDirectory()) {
 						return containsUnpackedBootstrap(file);
@@ -1038,12 +1036,12 @@ public final class SARLRuntime {
 	 * @see #containsUnpackedBootstrap(File)
 	 */
 	public static boolean containsPackedBootstrap(File jarFile) {
-		try (JarFile jFile = new JarFile(jarFile)) {
-			final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
+		try (var jFile = new JarFile(jarFile)) {
+			final var jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 			if (jEntry != null) {
-				try (InputStream is = jFile.getInputStream(jEntry)) {
-					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-						String line = reader.readLine();
+				try (var is = jFile.getInputStream(jEntry)) {
+					try (var reader = new BufferedReader(new InputStreamReader(is))) {
+						var line = reader.readLine();
 						if (line != null) {
 							line = line.trim();
 							if (!line.isEmpty()) {
@@ -1071,11 +1069,11 @@ public final class SARLRuntime {
 	 */
 	public static boolean containsPackedBootstrap(IPath jarFile) {
 		try {
-			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
+			final var location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
 			if (location != null) {
-				final IPath path = location.getLocation();
+				final var path = location.getLocation();
 				if (path != null) {
-					final File file = path.toFile();
+					final var file = path.toFile();
 					if (file.exists()) {
 						if (file.isFile()) {
 							return containsPackedBootstrap(file);
@@ -1102,11 +1100,11 @@ public final class SARLRuntime {
 	 */
 	public static String getDeclaredBootstrap(IPath path) {
 		try {
-			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+			final var location = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 			if (location != null) {
-				final IPath pathLocation = location.getLocation();
+				final var pathLocation = location.getLocation();
 				if (pathLocation != null) {
-					final File file = pathLocation.toFile();
+					final var file = pathLocation.toFile();
 					if (file.exists()) {
 						if (file.isDirectory()) {
 							return getDeclaredBootstrapInFolder(file);
@@ -1118,7 +1116,7 @@ public final class SARLRuntime {
 					}
 				}
 			}
-			final File file = path.makeAbsolute().toFile();
+			final var file = path.makeAbsolute().toFile();
 			if (file.exists()) {
 				if (file.isDirectory()) {
 					return getDeclaredBootstrapInJar(file);
@@ -1134,12 +1132,12 @@ public final class SARLRuntime {
 	}
 
 	private static String getDeclaredBootstrapInJar(File jarFile) {
-		try (JarFile jFile = new JarFile(jarFile)) {
-			final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
+		try (var jFile = new JarFile(jarFile)) {
+			final var jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 			if (jEntry != null) {
-				try (InputStream is = jFile.getInputStream(jEntry)) {
-					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-						String line = reader.readLine();
+				try (var is = jFile.getInputStream(jEntry)) {
+					try (var reader = new BufferedReader(new InputStreamReader(is))) {
+						var line = reader.readLine();
 						if (line != null) {
 							line = line.trim();
 							if (!line.isEmpty()) {
@@ -1156,15 +1154,15 @@ public final class SARLRuntime {
 	}
 
 	private static String getDeclaredBootstrapInFolder(File directory) {
-		final String[] elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
-		File serviceFile = directory;
-		for (final String element : elements) {
+		final var elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		var serviceFile = directory;
+		for (final var element : elements) {
 			serviceFile = new File(serviceFile, element);
 		}
 		if (serviceFile.isFile() && serviceFile.canRead()) {
-			try (InputStream is = new FileInputStream(serviceFile)) {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-					String line = reader.readLine();
+			try (var is = new FileInputStream(serviceFile)) {
+				try (var reader = new BufferedReader(new InputStreamReader(is))) {
+					var line = reader.readLine();
 					if (line != null) {
 						line = line.trim();
 						if (!line.isEmpty()) {

@@ -67,10 +67,10 @@ public class ProjectAdapter extends AdapterImpl {
 	 * @return the project.
 	 */
 	public static IProject getProject(Resource resource) {
-		ProjectAdapter adapter = (ProjectAdapter) EcoreUtil.getAdapter(resource.getResourceSet().eAdapters(), ProjectAdapter.class);
+		var adapter = (ProjectAdapter) EcoreUtil.getAdapter(resource.getResourceSet().eAdapters(), ProjectAdapter.class);
 		if (adapter == null) {
-			final String platformString = resource.getURI().toPlatformString(true);
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformString)).getProject();
+			final var platformString = resource.getURI().toPlatformString(true);
+			final var project = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformString)).getProject();
 			adapter = new ProjectAdapter(project);
 			resource.getResourceSet().eAdapters().add(adapter);
 		}

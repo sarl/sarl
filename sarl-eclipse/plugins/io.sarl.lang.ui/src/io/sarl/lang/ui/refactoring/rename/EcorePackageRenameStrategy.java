@@ -79,8 +79,7 @@ public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider
 
 	@Override
 	public boolean initialize(EObject targetEObject, IRenameElementContext renameElementContext) {
-		if (targetEObject instanceof SarlScript) {
-			final SarlScript script = (SarlScript) targetEObject;
+		if (targetEObject instanceof SarlScript script) {
 			this.currentPackageName = Strings.emptyIfNull(script.getPackage());
 			this.uriProvider = it -> renameElementContext.getTargetElementURI();
 			return true;
@@ -104,9 +103,9 @@ public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider
 	 * @param resourceSet the set of resource to use.
 	 */
 	protected void setPackageName(String newName, ResourceSet resourceSet) {
-		final EObject object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
-		if (object instanceof SarlScript) {
-			((SarlScript) object).setPackage(newName);
+		final var object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
+		if (object instanceof SarlScript cvalue) {
+			cvalue.setPackage(newName);
 		} else {
 			throw new RefactoringException("SARL script not loaded."); //$NON-NLS-1$
 		}
@@ -136,9 +135,9 @@ public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider
 	 * @return the text update.
 	 */
 	protected TextEdit getDeclarationTextEdit(String newName, ResourceSet resourceSet) {
-		final EObject object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
-		if (object instanceof SarlScript) {
-			final ITextRegion region = getOriginalPackageRegion((SarlScript) object);
+		final var object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
+		if (object instanceof SarlScript cvalue) {
+			final var region = getOriginalPackageRegion(cvalue);
 			if (region != null) {
 				return new ReplaceEdit(region.getOffset(), region.getLength(), newName);
 			}

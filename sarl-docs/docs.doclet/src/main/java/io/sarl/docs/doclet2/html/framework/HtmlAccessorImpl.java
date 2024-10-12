@@ -67,8 +67,7 @@ public class HtmlAccessorImpl implements HtmlAccessor, HtmlTags {
 	@Override
 	public Element getChildNode(Node parent, String tagName) {
 		for (final Node node : parent.childNodes()) {
-			if (node instanceof Element) {
-				final Element element = (Element) node;
+			if (node instanceof Element element) {
 				final String name = element.tagName();
 				if (name == tagName || (name != null && name.equalsIgnoreCase(tagName))) {
 					return element;

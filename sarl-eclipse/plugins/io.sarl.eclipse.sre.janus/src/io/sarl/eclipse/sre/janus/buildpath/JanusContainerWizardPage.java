@@ -57,11 +57,11 @@ public class JanusContainerWizardPage extends NewElementWizardPage implements IC
 
 	@Override
 	public void createControl(Composite parent) {
-		final Composite composite = new Composite(parent, SWT.NONE);
+		final var composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
-		final Label label = new Label(composite, SWT.NONE);
-		final StringBuilder text = new StringBuilder();
-		for (final String entry : JanusClasspathContainer.JANUS_DEPENDENCY_BUNDLE_NAMES) {
+		final var label = new Label(composite, SWT.NONE);
+		final var text = new StringBuilder();
+		for (final var entry : JanusClasspathContainer.JANUS_DEPENDENCY_BUNDLE_NAMES) {
 			text.append(entry);
 			text.append("\n"); //$NON-NLS-1$
 		}

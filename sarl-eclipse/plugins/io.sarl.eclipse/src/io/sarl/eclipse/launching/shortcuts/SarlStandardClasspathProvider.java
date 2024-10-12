@@ -54,24 +54,24 @@ public class SarlStandardClasspathProvider extends StandardClasspathProvider {
 	@Override
 	public IRuntimeClasspathEntry[] computeUnresolvedClasspath(ILaunchConfiguration configuration)
 			throws CoreException {
-		IRuntimeClasspathEntry[] classpath = super.computeUnresolvedClasspath(configuration);
-		final ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+		var classpath = super.computeUnresolvedClasspath(configuration);
+		final var sre = SARLRuntime.getDefaultSREInstall();
 		if (sre != null) {
-			final IPath containerId = sre.getPreferredClassPathContainerPath();
+			final var containerId = sre.getPreferredClassPathContainerPath();
 			if (containerId != null && !containerId.equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
-				final IClasspathEntry library = JavaCore.newContainerEntry(containerId);
-				final IRuntimeClasspathEntry runtimeEntry = JavaRuntime.newRuntimeContainerClasspathEntry(
+				final var library = JavaCore.newContainerEntry(containerId);
+				final var runtimeEntry = JavaRuntime.newRuntimeContainerClasspathEntry(
 						library.getPath(), IRuntimeClasspathEntry.USER_CLASSES);
-				final IRuntimeClasspathEntry[] newClasspath = new IRuntimeClasspathEntry[classpath.length + 1];
+				final var newClasspath = new IRuntimeClasspathEntry[classpath.length + 1];
 				System.arraycopy(classpath, 0, newClasspath, 0, classpath.length);
 				newClasspath[classpath.length] = runtimeEntry;
 				classpath = newClasspath;
 			} else {
-				final List<IRuntimeClasspathEntry> entries = sre.getClassPathEntries();
-				final IRuntimeClasspathEntry[] newClasspath = new IRuntimeClasspathEntry[classpath.length + entries.size()];
+				final var entries = sre.getClassPathEntries();
+				final var newClasspath = new IRuntimeClasspathEntry[classpath.length + entries.size()];
 				System.arraycopy(classpath, 0, newClasspath, 0, classpath.length);
-				final Iterator<IRuntimeClasspathEntry> iterator = entries.iterator();
-				for (int j = classpath.length; j < newClasspath.length && iterator.hasNext(); ++j) {
+				final var iterator = entries.iterator();
+				for (var j = classpath.length; j < newClasspath.length && iterator.hasNext(); ++j) {
 					newClasspath[j] = iterator.next();
 				}
 				classpath = newClasspath;

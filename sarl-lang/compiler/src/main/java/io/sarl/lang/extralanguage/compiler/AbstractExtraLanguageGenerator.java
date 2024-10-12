@@ -22,11 +22,9 @@
 package io.sarl.lang.extralanguage.compiler;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -38,20 +36,16 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.generator.AbstractGenerator;
@@ -63,16 +57,12 @@ import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.compiler.ImportManager;
-import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
@@ -179,8 +169,8 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		if (url == null) {
 			return Lists.newArrayList();
 		}
-		final OrderedProperties properties = new OrderedProperties();
-		try (InputStream is = url.openStream()) {
+		final var properties = new OrderedProperties();
+		try (var is = url.openStream()) {
 			properties.load(is);
 		} catch (IOException exception) {
 			if (bundledPlugin != null) {
@@ -405,14 +395,14 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return the expression, or {@code null} if none.
 	 */
 	protected XExpression getAssociatedExpression(JvmMember object) {
-		final XExpression expr = getTypeBuilder().getExpression(object);
+		final var expr = getTypeBuilder().getExpression(object);
 		if (expr == null) {
 			// The member may be a automatically generated code with dynamic code-building strategies
-			final Procedure1<? super ITreeAppendable> strategy = getTypeExtensions().getCompilationStrategy(object);
+			final var strategy = getTypeExtensions().getCompilationStrategy(object);
 			if (strategy != null) {
 				//
 			} else {
-				final StringConcatenationClient template = getTypeExtensions().getCompilationTemplate(object);
+				final var template = getTypeExtensions().getCompilationTemplate(object);
 				if (template != null) {
 					//
 				}
@@ -434,11 +424,11 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return the filename.
 	 */
 	protected String toFilename(QualifiedName name, String separator) {
-		final List<String> segments = name.getSegments();
+		final var segments = name.getSegments();
 		if (segments.isEmpty()) {
 			return ""; //$NON-NLS-1$
 		}
-		final StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		builder.append(name.toString(separator));
 		builder.append(getFilenameExtension());
 		return builder.toString();
@@ -473,24 +463,24 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return {@code true} if the file was written.
 	 */
 	protected boolean writeFile(QualifiedName name, ExtraLanguageAppendable appendable, IExtraLanguageGeneratorContext context) {
-		final ExtraLanguageAppendable fileAppendable = createAppendable(null, context);
+		final var fileAppendable = createAppendable(null, context);
 		generateFileHeader(name, fileAppendable, context);
 
-		final ImportManager importManager = appendable.getImportManager();
+		final var importManager = appendable.getImportManager();
 		if (importManager != null && !importManager.getImports().isEmpty()) {
-			for (final String imported : importManager.getImports()) {
-				final QualifiedName qn = getQualifiedNameConverter().toQualifiedName(imported);
+			for (final var imported : importManager.getImports()) {
+				final var qn = getQualifiedNameConverter().toQualifiedName(imported);
 				generateImportStatement(qn, fileAppendable, context);
 			}
 			fileAppendable.newLine();
 		}
 
 		fileAppendable.append(appendable.getContent());
-		final String content = fileAppendable.getContent();
+		final var content = fileAppendable.getContent();
 
 		if (!Strings.isEmpty(content)) {
-			final String fileName = toFilename(name, FILENAME_SEPARATOR);
-			final String outputConfiguration = getOutputConfigurationName();
+			final var fileName = toFilename(name, FILENAME_SEPARATOR);
+			final var outputConfiguration = getOutputConfigurationName();
 			if (Strings.isEmpty(outputConfiguration)) {
 				context.getFileSystemAccess().generateFile(fileName, content);
 			} else {
@@ -509,14 +499,14 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	@Override
 	public void beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final IExtraLanguageGeneratorContext generatorContext = createGeneratorContext(fsa, context, input);
-		final EList<EObject> contents = input.getContents();
-		for (final EObject obj : contents) {
+		final var generatorContext = createGeneratorContext(fsa, context, input);
+		final var contents = input.getContents();
+		for (final var obj : contents) {
 			if (canGenerateFor(obj)) {
 				before(obj, generatorContext);
-				final Iterator<EObject> iterator = EcoreUtil.getAllContents(obj, false);
+				final var iterator = EcoreUtil.<EObject>getAllContents(obj, false);
 				while (iterator.hasNext()) {
-					final EObject subobj = iterator.next();
+					final var subobj = iterator.next();
 					before(subobj, generatorContext);
 				}
 			}
@@ -537,8 +527,8 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		final IExtraLanguageGeneratorContext generatorContext = createGeneratorContext(fsa, context, input);
 		initializeContext(generatorContext);
-		final EList<EObject> contents = input.getContents();
-		for (final EObject obj : contents) {
+		final var contents = input.getContents();
+		for (final var obj : contents) {
 			if (canGenerateFor(obj)) {
 				generate(obj, generatorContext);
 			}
@@ -567,13 +557,13 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	@Override
 	public void afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final IExtraLanguageGeneratorContext generatorContext = createGeneratorContext(fsa, context, input);
-		final EList<EObject> contents = input.getContents();
-		for (final EObject obj : contents) {
+		final var generatorContext = createGeneratorContext(fsa, context, input);
+		final var contents = input.getContents();
+		for (final var obj : contents) {
 			if (canGenerateFor(obj)) {
-				final Iterator<EObject> iterator = EcoreUtil.getAllContents(obj, false);
+				final var iterator = EcoreUtil.<EObject>getAllContents(obj, false);
 				while (iterator.hasNext()) {
-					final EObject subobj = iterator.next();
+					final var subobj = iterator.next();
 					after(subobj, generatorContext);
 				}
 				after(obj, generatorContext);
@@ -590,8 +580,8 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 */
 	protected IExtraLanguageGeneratorContext createGeneratorContext(IFileSystemAccess2 fsa, IGeneratorContext context,
 			Resource resource) {
-		if (context instanceof IExtraLanguageGeneratorContext) {
-			return (IExtraLanguageGeneratorContext) context;
+		if (context instanceof IExtraLanguageGeneratorContext cvalue) {
+			return cvalue;
 		}
 		return new ExtraLanguageGeneratorContext(context, fsa, this, resource, getPreferenceID());
 	}
@@ -652,7 +642,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 */
 	protected void generate(XExpression expression, LightweightTypeReference needReturn, ExtraLanguageAppendable appendable,
 			IExtraLanguageGeneratorContext context) {
-		final IExpressionGenerator generator = getExpressionGenerator();
+		final var generator = getExpressionGenerator();
 		if (generator == null) {
 			throw new UnsupportedOperationException();
 		}
@@ -675,7 +665,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 */
 	protected void _generate(SarlScript script, IExtraLanguageGeneratorContext context) {
 		if (script != null) {
-			for (final XtendTypeDeclaration content : script.getXtendTypes()) {
+			for (final var content : script.getXtendTypes()) {
 				if (context.getCancelIndicator().isCanceled()) {
 					return;
 				}
@@ -719,7 +709,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 */
 	protected boolean generateJvmMembers(List<? extends JvmMember> members, ExtraLanguageAppendable it,
 			IExtraLanguageGeneratorContext context) {
-		for (final JvmMember member : members) {
+		for (final var member : members) {
 			if (!(member instanceof JvmConstructor)) {
 				if (context.getCancelIndicator().isCanceled()) {
 					return false;
@@ -739,7 +729,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 */
 	protected boolean generateSarlMembers(List<? extends XtendMember> members, ExtraLanguageAppendable it,
 			IExtraLanguageGeneratorContext context) {
-		for (final XtendMember member : members) {
+		for (final var member : members) {
 			if (!(member instanceof SarlConstructor)) {
 				if (context.getCancelIndicator().isCanceled()) {
 					return false;
@@ -757,7 +747,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return the super types.
 	 */
 	protected static List<JvmTypeReference> getSuperTypes(JvmTypeReference extension, List<? extends JvmTypeReference> implemented) {
-		final List<JvmTypeReference> list = new ArrayList<>();
+		final var list = new ArrayList<JvmTypeReference>();
 		if (extension != null) {
 			list.add(extension);
 		}
@@ -773,8 +763,8 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return the expected type of the argument.
 	 */
 	protected LightweightTypeReference getExpectedType(XExpression expr) {
-		final IResolvedTypes resolvedTypes = getTypeResolver().resolveTypes(expr);
-		final LightweightTypeReference actualType = resolvedTypes.getActualType(expr);
+		final var resolvedTypes = getTypeResolver().resolveTypes(expr);
+		final var actualType = resolvedTypes.getActualType(expr);
 		return actualType;
 	}
 
@@ -787,9 +777,8 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	protected LightweightTypeReference getExpectedType(XtendExecutable executable, JvmTypeReference declaredReturnType) {
 		if (declaredReturnType == null) {
 			// Try to get any inferred return type.
-			if (executable instanceof XtendFunction) {
-				final XtendFunction function = (XtendFunction) executable;
-				final JvmOperation operation = this.sarlAssociations.getDirectlyInferredOperation(function);
+			if (executable instanceof XtendFunction function) {
+				final var operation = this.sarlAssociations.getDirectlyInferredOperation(function);
 				if (operation != null) {
 					return Utils.toLightweightTypeReference(operation.getReturnType(), this.services);
 				}

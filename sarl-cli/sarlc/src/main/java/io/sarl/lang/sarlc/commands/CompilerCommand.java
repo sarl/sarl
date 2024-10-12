@@ -94,8 +94,8 @@ public class CompilerCommand extends CommandWithMetadata {
 			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, Messages.CompilerCommand_1);
 		}
 
-		final SarlcConfig config = this.configuration.get();
-		final PathDetector paths = this.pathDetector.get();
+		final var config = this.configuration.get();
+		final var paths = this.pathDetector.get();
 		paths.setSarlOutputPath(config.getOutputPath());
 		paths.setClassOutputPath(config.getClassOutputPath());
 		paths.setTempDirectory(config.getTempDirectory());
@@ -105,19 +105,19 @@ public class CompilerCommand extends CommandWithMetadata {
 			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
 		}
 
-		final SarlBatchCompiler comp = this.compiler.get();
+		final var comp = this.compiler.get();
 
 		comp.setOutputPath(paths.getSarlOutputPath());
 		comp.setClassOutputPath(paths.getClassOutputPath());
 		comp.setTempDirectory(paths.getTempDirectory());
 
-		for (final String cliArg : cli.standaloneArguments()) {
+		for (final var cliArg : cli.standaloneArguments()) {
 			comp.addSourcePath(cliArg);
 		}
 
-		final OutParameter<String> firstErrorMessage = new OutParameter<>();
-		final AtomicInteger nbErrors = new AtomicInteger(0);
-		final AtomicInteger nbWarnings = new AtomicInteger(0);
+		final var firstErrorMessage = new OutParameter<String>();
+		final var nbErrors = new AtomicInteger(0);
+		final var nbWarnings = new AtomicInteger(0);
 		comp.addIssueMessageListener((severity, issue, uri, message) -> {
 			if (firstErrorMessage.get() == null) {
 				firstErrorMessage.set(message);
@@ -129,11 +129,11 @@ public class CompilerCommand extends CommandWithMetadata {
 			}
 		});
 
-		final AtomicInteger nbFiles = new AtomicInteger(0);
+		final var nbFiles = new AtomicInteger(0);
 		comp.addCompiledResourceReceiver(it -> nbFiles.incrementAndGet());
 
 		// Configuration of the extra-language generators
-		final String extraGenerators = config.getExtraGenerators();
+		final var extraGenerators = config.getExtraGenerators();
 		if (!Strings.isNullOrEmpty(extraGenerators)) {
 			comp.setExtraLanguageGenerators(extraGenerators);
 		}
@@ -143,7 +143,7 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	private CommandOutcome runCompiler(SarlBatchCompiler comp, OutParameter<String> firstErrorMessage,
 			AtomicInteger nbErrors, AtomicInteger nbWarnings, AtomicInteger nbFiles) {
-		final ProgressBarConfig progressConfig = this.progressConfig.get();
+		final var progressConfig = this.progressConfig.get();
 		final boolean compilationResult;
 		if (progressConfig.getEnable()) {
 			compilationResult = comp.compile(new ConsoleProgressMonitor(progressConfig.getStyle()));
@@ -159,9 +159,9 @@ public class CompilerCommand extends CommandWithMetadata {
 	}
 
 	private static void showErrorAndWarningCount(SarlBatchCompiler comp, Number errs, Number warns, Number files) {
-		final long errValue = errs.longValue();
+		final var errValue = errs.longValue();
 		if (errValue > 0) {
-			final long warnValue = warns.longValue();
+			final var warnValue = warns.longValue();
 			final String msg;
 			if (errValue > 1) {
 				if (warnValue > 1) {
@@ -187,7 +187,7 @@ public class CompilerCommand extends CommandWithMetadata {
 	}
 
 	private static void showWarningCount(SarlBatchCompiler comp, Number warns, Number files) {
-		final long value = warns.longValue();
+		final var value = warns.longValue();
 		final String msg;
 		if (value > 0) {
 			if (value > 1) {

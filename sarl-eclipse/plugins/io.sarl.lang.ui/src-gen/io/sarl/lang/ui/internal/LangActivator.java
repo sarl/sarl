@@ -23,12 +23,12 @@
  */
 package io.sarl.lang.ui.internal;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.sarl.lang.SARLRuntimeModule;
 import io.sarl.lang.ui.SARLUiModule;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -49,7 +49,7 @@ public class LangActivator extends AbstractUIPlugin {
 	
 	private static LangActivator INSTANCE;
 	
-	private Map<String, Injector> injectors = Collections.synchronizedMap(Maps.<String, Injector> newHashMapWithExpectedSize(1));
+	private Map<String, Injector> injectors = Collections.synchronizedMap(new HashMap<>(2));
 	
 	@Override
 	public void start(BundleContext context) throws Exception {

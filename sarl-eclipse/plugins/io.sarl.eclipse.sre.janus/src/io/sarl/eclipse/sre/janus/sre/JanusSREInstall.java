@@ -72,7 +72,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 	 */
 	public JanusSREInstall() {
 		super(JanusClasspathContainer.JANUS_MAIN_BUNDLE_ID);
-		final IBundleDependencies dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
+		final var dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
 		//
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
 		assert this.janusSREInstallPath != null;
@@ -85,14 +85,14 @@ public class JanusSREInstall extends AbstractSREInstall {
 
 	@Override
 	public JanusSREInstall clone() {
-		final JanusSREInstall clone = (JanusSREInstall) super.clone();
+		final var clone = (JanusSREInstall) super.clone();
 		clone.janusSREInstallPath = this.janusSREInstallPath == null ? null : Path.fromPortableString(clone.janusSREInstallPath.toPortableString());
 		return clone;
 	}
 
 	@Override
 	public String getName() {
-		final String name = getNameNoDefault();
+		final var name = getNameNoDefault();
 		if (Strings.isNullOrEmpty(name)) {
 			return Messages.JanusSREInstall_0;
 		}
@@ -111,7 +111,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 
 	@Override
 	public Map<String, String> getAvailableCommandLineOptions() {
-		final Map<String, String> options = Maps.newHashMap();
+		final var options = Maps.<String, String>newHashMap();
 		// Logging
 		options.put(SRECommandLineOptions.CLI_LOG, LogConfigModule.LOG_LONG_OPTION);
 		options.put(SRECommandLineOptions.CLI_LOG_VALUES, Level.getLabels());

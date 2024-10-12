@@ -45,8 +45,8 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
-		final OutputConfiguration defaultOutput = createStandardOutputConfiguration();
-		final OutputConfiguration testOutput = createTestOutputConfiguration();
+		final var defaultOutput = createStandardOutputConfiguration();
+		final var testOutput = createTestOutputConfiguration();
 		if (defaultOutput != null) {
 			if (testOutput != null) {
 				return newHashSet(defaultOutput, testOutput);
@@ -66,7 +66,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 	 */
 	@SuppressWarnings("static-method")
 	protected OutputConfiguration createStandardOutputConfiguration() {
-		final OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
+		final var defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
 		defaultOutput.setDescription(Messages.SarlOutputConfigurationProvider_0);
 		defaultOutput.setOutputDirectory(SARLConfig.FOLDER_SOURCE_GENERATED);
 		defaultOutput.setOverrideExistingResources(true);
@@ -85,7 +85,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 	 */
 	@SuppressWarnings("static-method")
 	protected OutputConfiguration createTestOutputConfiguration() {
-		final OutputConfiguration testOutput = new OutputConfiguration(SARLConfig.TEST_OUTPUT_CONFIGURATION);
+		final var testOutput = new OutputConfiguration(SARLConfig.TEST_OUTPUT_CONFIGURATION);
 		testOutput.setDescription(Messages.SarlOutputConfigurationProvider_1);
 		testOutput.setOutputDirectory(SARLConfig.FOLDER_TEST_SOURCE_GENERATED);
 		testOutput.setOverrideExistingResources(true);

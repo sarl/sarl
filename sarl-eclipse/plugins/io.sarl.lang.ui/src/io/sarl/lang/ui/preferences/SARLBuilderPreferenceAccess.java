@@ -90,7 +90,7 @@ public class SARLBuilderPreferenceAccess {
 	 */
 	@SuppressWarnings("static-method")
 	public void loadBuilderPreferences(GeneratorConfig2 generatorConfig, IProject context) {
-		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
+		final var preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
 		if (preferenceStore != null) {
 			if (preferenceStore.contains(PREF_GENERATED_TEST_SOURCE_FOLDER)) {
 				generatorConfig.setGeneratedTestSourceFolder(preferenceStore.getString(PREF_GENERATED_TEST_SOURCE_FOLDER));
@@ -132,7 +132,7 @@ public class SARLBuilderPreferenceAccess {
 
 		@Override
 		public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
-			final IPreferenceStore store = preferenceStoreAccess.getWritablePreferenceStore();
+			final var store = preferenceStoreAccess.getWritablePreferenceStore();
 			store.setDefault(PREF_GENERATED_TEST_SOURCE_FOLDER, SARLConfig.FOLDER_TEST_SOURCE_GENERATED);
 			store.setDefault(PREF_GENERATE_INLINE, GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION);
 			store.setDefault(PREF_USE_EXPRESSION_INTERPRETER, GeneratorConfig2.DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION);

@@ -58,20 +58,19 @@ public class AddSarlNatureHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
-		if (currentSelection instanceof IStructuredSelection) {
-			final IStructuredSelection structuredSelection = (IStructuredSelection) currentSelection;
-			final List<IProject> projects = new ArrayList<>();
-			final Iterator<?> iterator = structuredSelection.iterator();
+		final var currentSelection = HandlerUtil.getCurrentSelection(event);
+		if (currentSelection instanceof IStructuredSelection structuredSelection) {
+			final var projects = new ArrayList<IProject>();
+			final var iterator = structuredSelection.iterator();
 			while (iterator.hasNext()) {
-				final Object obj = iterator.next();
-				if (obj instanceof IJavaProject) {
-					projects.add(((IJavaProject) obj).getProject());
-				} else if (obj instanceof IProject) {
-					projects.add((IProject) obj);
+				final var obj = iterator.next();
+				if (obj instanceof IJavaProject cvalue) {
+					projects.add(cvalue.getProject());
+				} else if (obj instanceof IProject cvalue) {
+					projects.add(cvalue);
 				}
 			}
-			final Shell activeShell = HandlerUtil.getActiveShell(event);
+			final var activeShell = HandlerUtil.getActiveShell(event);
 			convertAllWithProgress(activeShell, projects);
 		}
 		return null;

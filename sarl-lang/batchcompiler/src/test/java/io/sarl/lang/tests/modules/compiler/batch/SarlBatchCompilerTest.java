@@ -49,7 +49,7 @@ public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 	
 	@Override
 	public boolean runBatchCompiler(File basePath, File sourcePath, File sarlcOutputFolder, File javacOutputFolder, File tempFolder, List<Issue> issues) {
-		SarlBatchCompiler compiler = this.compilerProvider.get();
+		var compiler = this.compilerProvider.get();
 		compiler.setBasePath(basePath.getAbsolutePath());
 		compiler.setSourcePath(sourcePath.getAbsolutePath());
 		compiler.setOutputPath(sarlcOutputFolder);

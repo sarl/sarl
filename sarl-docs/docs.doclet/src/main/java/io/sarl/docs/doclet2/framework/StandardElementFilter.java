@@ -50,9 +50,6 @@
 
 package io.sarl.docs.doclet2.framework;
 
-import java.util.Set;
-
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 import com.google.common.collect.Iterables;
@@ -71,8 +68,8 @@ public class StandardElementFilter implements ElementFilter {
 
 	@Override
 	public Iterable<? extends TypeElement> extractTypeElements(SarlDocletEnvironment environment) {
-		final Set<? extends Element> elements = environment.getIncludedElements();
-		Iterable<? extends TypeElement> filtered = Iterables.filter(elements, TypeElement.class);
+		final var elements = environment.getIncludedElements();
+		final var filtered = Iterables.filter(elements, TypeElement.class);
 		//filtered = Iterables.filter(filtered, it -> it.getSimpleName().toString().equals("SARLJvmModelInferrer"));
 		return filtered;
 	}

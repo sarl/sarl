@@ -84,10 +84,10 @@ public class SarlcApplicationModule implements BQModule {
 
 		@Override
 		public String get() {
-			final String sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
-			final String sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.SARL_OUTPUT_DIRECTORY_OPTION);
-			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
-			final String javaOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
+			final var sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
+			final var sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.SARL_OUTPUT_DIRECTORY_OPTION);
+			final var javaOutputDirectory = SARLConfig.FOLDER_BIN;
+			final var javaOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
 			return MessageFormat.format(Messages.SarlcApplicationModule_2,
 					sarlOutputDirectory, sarlOutputDirectoryOption,
 					javaOutputDirectory, javaOutputDirectoryOption);

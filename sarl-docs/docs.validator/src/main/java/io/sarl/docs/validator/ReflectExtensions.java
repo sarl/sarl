@@ -22,7 +22,6 @@
 package io.sarl.docs.validator;
 
 import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
@@ -39,14 +38,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.collect.Iterables;
@@ -58,10 +55,8 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.annotation.DefaultValue;
@@ -179,7 +174,7 @@ public final class ReflectExtensions {
 	 */
 	@Pure
 	public static String getPublicMethodsWithFormat(Class<?> type, Function<Method, String> nameFormatter, Class<?>... otherTypes) {
-		final StringBuilder it = new StringBuilder();
+		final var it = new StringBuilder();
 		appendPublicMethods(it, false, nameFormatter, IterableExtensions.flatten(
 				Arrays.asList(
 						Collections.singletonList(type),
@@ -224,15 +219,15 @@ public final class ReflectExtensions {
 	 */
 	private static void appendMethods(StringBuilder it, boolean indent, Function<Method, String> nameFormatter, 
 			Iterable<? extends Class<?>> types, Predicate<Method> selector) {
-		final List<String> lines = new LinkedList<>();
-		for (final Class<?> type : types) {
-			for (final Method method : type.getDeclaredMethods()) {
+		final var lines = new LinkedList<String>();
+		for (final var type : types) {
+			for (final var method : type.getDeclaredMethods()) {
 				if (selector.test(method)) {
-					final StringBuilder line = new StringBuilder();
+					final var line = new StringBuilder();
 					if (indent) {
 						line.append("\t"); //$NON-NLS-1$
 					}
-					Function<Method, String> nformatter = nameFormatter;
+					var nformatter = nameFormatter;
 					if (nformatter == null) {
 						nformatter = getDefaultMethodNameFormatter();
 					}
@@ -245,9 +240,9 @@ public final class ReflectExtensions {
 					line.append("def ").append(formattedName); //$NON-NLS-1$
 					if (method.getParameterCount() > 0) {
 						line.append("("); //$NON-NLS-1$
-						boolean first = true;
-						int i = 1;
-						for (final Parameter param : method.getParameters()) {
+						var first = true;
+						var i = 1;
+						for (final var param : method.getParameters()) {
 							if (first) {
 								first = false;
 							} else {
@@ -256,7 +251,7 @@ public final class ReflectExtensions {
 							//it.append(param.getName());
 							//it.append(" : "); //$NON-NLS-1$
 							toType(line, param.getParameterizedType(), method.isVarArgs() && i == method.getParameterCount());
-							final String defaultValue = extractDefaultValueString(param);
+							final var defaultValue = extractDefaultValueString(param);
 							if (!Strings.isEmpty(defaultValue)) {
 								line.append(" = "); //$NON-NLS-1$
 								line.append(defaultValue);
@@ -270,8 +265,8 @@ public final class ReflectExtensions {
 						line.append(" : "); //$NON-NLS-1$
 						toType(line, method.getGenericReturnType(), false);
 					}
-					boolean first = true;
-					for (final TypeVariable<Method> typeVariable : method.getTypeParameters()) {
+					var first = true;
+					for (final var typeVariable : method.getTypeParameters()) {
 						if (first) {
 							line.append(" with "); //$NON-NLS-1$
 							first = false;
@@ -286,26 +281,26 @@ public final class ReflectExtensions {
 			}
 		}
 		lines.sort(null);
-		for (final String line : lines) {
+		for (final var line : lines) {
 			it.append(line);
 		}
 	}
 
 	private static String extractDefaultValueString(Parameter parameter) {
-		final DefaultValue defaultValueAnnotation = parameter.getAnnotation(DefaultValue.class);
+		final var defaultValueAnnotation = parameter.getAnnotation(DefaultValue.class);
 		if (defaultValueAnnotation == null) {
 			return null;
 		}
-		final String methodId = defaultValueAnnotation.value();
+		final var methodId = defaultValueAnnotation.value();
 		if (!Strings.isEmpty(methodId)) {
-			final Class<?> container = parameter.getDeclaringExecutable().getDeclaringClass();
+			final var container = parameter.getDeclaringExecutable().getDeclaringClass();
 			if (container != null) {
-				final int index = methodId.indexOf('#');
+				final var index = methodId.indexOf('#');
 				Class<?> target;
 				final String methodName;
 				if (index > 0) {
 					try {
-						final Class<?> type = Class.forName(methodId.substring(0, index), true, container.getClassLoader());
+						final var type = Class.forName(methodId.substring(0, index), true, container.getClassLoader());
 						target = type;
 					} catch (Throwable exception) {
 						target = container;
@@ -316,13 +311,13 @@ public final class ReflectExtensions {
 					methodName = Utils.createNameForHiddenDefaultValueFunction(methodId);
 				}
 
-				final Method method = Iterables.find(Arrays.asList(target.getDeclaredMethods()),
+				final var method = Iterables.find(Arrays.asList(target.getDeclaredMethods()),
 						(it) -> Strings.equal(it.getName(), methodName),
 						null);
 				if (method != null) {
-					final SarlSourceCode sourceCodeAnnotation = parameter.getAnnotation(SarlSourceCode.class);
+					final var sourceCodeAnnotation = parameter.getAnnotation(SarlSourceCode.class);
 					if (sourceCodeAnnotation != null) {
-						final String value = sourceCodeAnnotation.value();
+						final var value = sourceCodeAnnotation.value();
 						if (!Strings.isEmpty(methodId)) {
 							return value;
 						}
@@ -372,15 +367,15 @@ public final class ReflectExtensions {
 	 */
 	private static void appendFields(StringBuilder it, boolean indent, Function<Field, String> nameFormatter, 
 			Iterable<? extends Class<?>> types, Predicate<Field> selector) {
-		final List<String> lines = new LinkedList<>();
-		for (final Class<?> type : types) {
-			for (final Field field : type.getDeclaredFields()) {
+		final var lines = new LinkedList<String>();
+		for (final var type : types) {
+			for (final var field : type.getDeclaredFields()) {
 				if (selector.test(field)) {
-					final StringBuilder line = new StringBuilder();
+					final var line = new StringBuilder();
 					if (indent) {
 						line.append("\t"); //$NON-NLS-1$
 					}
-					Function<Field, String> nformatter = nameFormatter;
+					var nformatter = nameFormatter;
 					if (nformatter == null) {
 						nformatter = getDefaultFieldNameFormatter();
 					}
@@ -407,7 +402,7 @@ public final class ReflectExtensions {
 			}
 		}
 		lines.sort(null);
-		for (final String line : lines) {
+		for (final var line : lines) {
 			it.append(line);
 		}
 	}
@@ -420,43 +415,42 @@ public final class ReflectExtensions {
 	 */
 	public static void toType(StringBuilder it, Type otype, boolean isVarArg) {
 		final Type type;
-		if (otype instanceof Class<?>) {
-			type = isVarArg ? ((Class<?>) otype).getComponentType() : otype;
+		if (otype instanceof Class<?> cvalue) {
+			type = isVarArg ? cvalue.getComponentType() : otype;
 		} else {
 			type = otype;
 		}
-		if (type instanceof Class<?>) {
-			it.append(((Class<?>) type).getSimpleName());
-		} else if (type instanceof ParameterizedType) {
-			final ParameterizedType paramType = (ParameterizedType) type;
-			final Type ownerType = paramType.getOwnerType();
-			final boolean isForFunction = ownerType != null && Functions.class.getName().equals(ownerType.getTypeName());
-			final boolean isForProcedure = ownerType != null && Procedures.class.getName().equals(ownerType.getTypeName());
+		if (type instanceof Class<?> cvalue) {
+			it.append(cvalue.getSimpleName());
+		} else if (type instanceof ParameterizedType paramType) {
+			final var ownerType = paramType.getOwnerType();
+			final var isForFunction = ownerType != null && Functions.class.getName().equals(ownerType.getTypeName());
+			final var isForProcedure = ownerType != null && Procedures.class.getName().equals(ownerType.getTypeName());
 			if (!isForFunction && !isForProcedure) {
 				it.append(((Class<?>) paramType.getRawType()).getSimpleName());
 				if (paramType.getActualTypeArguments().length > 0) {
 					it.append("<"); //$NON-NLS-1$
-					boolean first = true;
-					for (final Type subtype : paramType.getActualTypeArguments()) {
+					var first = true;
+					for (final var subtype : paramType.getActualTypeArguments()) {
 						if (first) {
 							first = false;
 						} else {
 							it.append(", "); //$NON-NLS-1$
 						}
-						final StringBuilder it2 = new StringBuilder();
+						final var it2 = new StringBuilder();
 						toType(it2, subtype, false);
 						it.append(it2);
 					}
 					it.append(">"); //$NON-NLS-1$
 				}
 			} else {
-				int nb = paramType.getActualTypeArguments().length;
+				var nb = paramType.getActualTypeArguments().length;
 				if (isForFunction) {
 					--nb;
 				}
 				it.append("("); //$NON-NLS-1$
-				for (int i = 0; i < nb; ++i) {
-					final Type subtype = paramType.getActualTypeArguments()[i];
+				for (var i = 0; i < nb; ++i) {
+					final var subtype = paramType.getActualTypeArguments()[i];
 					if (i > 0) {
 						it.append(", "); //$NON-NLS-1$
 					}
@@ -469,14 +463,14 @@ public final class ReflectExtensions {
 					it.append("void"); //$NON-NLS-1$
 				}
 			}
-		} else if (type instanceof WildcardType) {
-			final Type[] types = ((WildcardType) type).getUpperBounds();
+		} else if (type instanceof WildcardType cvalue) {
+			final var types = cvalue.getUpperBounds();
 			toType(it, types[0], false);
-		} else if (type instanceof GenericArrayType) {
-			toType(it, ((GenericArrayType) type).getGenericComponentType(), false);
+		} else if (type instanceof GenericArrayType cvalue) {
+			toType(it, cvalue.getGenericComponentType(), false);
 			it.append("[]"); //$NON-NLS-1$
-		} else if (type instanceof TypeVariable<?>) {
-			it.append(((TypeVariable<?>) type).getName());
+		} else if (type instanceof TypeVariable<?> cvalue) {
+			it.append(cvalue.getName());
 		} else {
 			it.append(Object.class.getSimpleName());
 		}
@@ -513,7 +507,7 @@ public final class ReflectExtensions {
 		assert mavenPluginGroupId != null;
 		assert mavenPluginArtifactId != null;
 		assert classContext != null;
-		final String resourceName = String.format(PLUGIN_HELP_PATH, mavenPluginGroupId, mavenPluginArtifactId);
+		final var resourceName = String.format(PLUGIN_HELP_PATH, mavenPluginGroupId, mavenPluginArtifactId);
 		URL url = classContext.getResource(resourceName);
 		if (url == null) {
 			// Try to find the plugin's help description as a global resource
@@ -521,9 +515,9 @@ public final class ReflectExtensions {
 			if (url == null) {
 				// Try to find the plugin's help description as a local file
 				try {
-					File userFile = FileSystem.join(FileSystem.getUserHomeDirectory(),
+					var userFile = FileSystem.join(FileSystem.getUserHomeDirectory(),
 							".m2", "repository"); //$NON-NLS-1$ //$NON-NLS-2$
-					for (final String element : mavenPluginGroupId.split(Pattern.quote("."))) { //$NON-NLS-1$
+					for (final var element : mavenPluginGroupId.split(Pattern.quote("."))) { //$NON-NLS-1$
 						userFile = new File(userFile, element);
 					}
 					userFile = FileSystem.join(userFile,
@@ -537,24 +531,24 @@ public final class ReflectExtensions {
 			}
 		}
 		if (url != null) {
-			try (InputStream is = url.openStream()) {
-				final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				final Document document = dBuilder.parse(is);
-				final Node pluginNode = getSingleChild(document, "plugin"); //$NON-NLS-1$
-				final Node mojosNode = getSingleChild(pluginNode, "mojos"); //$NON-NLS-1$
+			try (var is = url.openStream()) {
+				final var dbFactory = DocumentBuilderFactory.newInstance();
+				final var dBuilder = dbFactory.newDocumentBuilder();
+				final var document = dBuilder.parse(is);
+				final var pluginNode = getSingleChild(document, "plugin"); //$NON-NLS-1$
+				final var mojosNode = getSingleChild(pluginNode, "mojos"); //$NON-NLS-1$
 
-				final Map<String, List<String>> documentation = new TreeMap<>();
+				final var documentation = new TreeMap<String, List<String>>();
 
-				for (final Node mojoNode : findNamedChild(mojosNode, "mojo")) { //$NON-NLS-1$
-					final String mojoName = getValue(mojoNode, "goal"); //$NON-NLS-1$
-					final Node parametersNode = getSingleChild(mojoNode, "parameters"); //$NON-NLS-1$
-					final Node configurationNode = getSingleChild(mojoNode, "configuration"); //$NON-NLS-1$
-					for (final Node parameterNode : findNamedChild(parametersNode, "parameter")) { //$NON-NLS-1$
+				for (final var mojoNode : findNamedChild(mojosNode, "mojo")) { //$NON-NLS-1$
+					final var mojoName = getValue(mojoNode, "goal"); //$NON-NLS-1$
+					final var parametersNode = getSingleChild(mojoNode, "parameters"); //$NON-NLS-1$
+					final var configurationNode = getSingleChild(mojoNode, "configuration"); //$NON-NLS-1$
+					for (final var parameterNode : findNamedChild(parametersNode, "parameter")) { //$NON-NLS-1$
 						if (Strings.isEmpty(getValue(parameterNode, "deprecated")) //$NON-NLS-1$
 								&& getBoolean(parameterNode, "editable")) { //$NON-NLS-1$
-							final String name = getValue(parameterNode, "name"); //$NON-NLS-1$
-							List<String> columns = documentation.get(name);
+							final var name = getValue(parameterNode, "name"); //$NON-NLS-1$
+							var columns = documentation.get(name);
 							if (columns == null) {
 								columns = new ArrayList<>();
 								documentation.put(name, columns);
@@ -583,15 +577,15 @@ public final class ReflectExtensions {
 	}
 
 	private static String getDefaultValue(Node node, String parameterName) {
-		final Node parameterNode = getSingleChild(node, parameterName);
-		if (parameterNode instanceof Element) {
-			return Strings.emptyIfNull(((Element) parameterNode).getAttribute("default-value")); //$NON-NLS-1$
+		final var parameterNode = getSingleChild(node, parameterName);
+		if (parameterNode instanceof Element cvalue) {
+			return Strings.emptyIfNull(cvalue.getAttribute("default-value")); //$NON-NLS-1$
 		}
 		return null;
 	}
 
 	private static String getValue(Node node, String elementName)  {
-		final Node elementNode = getSingleChild(node, elementName);
+		final var elementNode = getSingleChild(node, elementName);
 		if (elementNode != null) {
 			return elementNode.getTextContent();
 		}
@@ -599,7 +593,7 @@ public final class ReflectExtensions {
 	}
 
 	private static boolean getBoolean(Node node, String elementName)  {
-		final String value = getValue(node, elementName);
+		final var value = getValue(node, elementName);
 		if (!Strings.isEmpty(value)) {
 			try {
 				return Boolean.parseBoolean(value);
@@ -611,7 +605,7 @@ public final class ReflectExtensions {
 	}
 
 	private static Node getSingleChild(Node node, String elementName) {
-		final List<Node> namedChild = findNamedChild(node, elementName);
+		final var namedChild = findNamedChild(node, elementName);
 		if (namedChild.isEmpty()) {
 			return null;
 		}
@@ -622,10 +616,10 @@ public final class ReflectExtensions {
 	}
 
 	private static List<Node> findNamedChild(Node node, String elementName) {
-		final List<Node> result = new ArrayList<>();
-		final NodeList childNodes = node.getChildNodes();
-		for (int i = 0; i < childNodes.getLength(); ++i) {
-			final Node item = childNodes.item(i);
+		final var result = new ArrayList<Node>();
+		final var childNodes = node.getChildNodes();
+		for (var i = 0; i < childNodes.getLength(); ++i) {
+			final var item = childNodes.item(i);
 			if (elementName.equals(item.getNodeName())) {
 				result.add(item);
 			}
@@ -646,8 +640,8 @@ public final class ReflectExtensions {
 	 * @since 0.12
 	 */
 	public static Object callStaticMethod(Class<?> type, String methodName) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final Method method = type.getMethod(methodName);
-		final Object value = method.invoke(null);
+		final var method = type.getMethod(methodName);
+		final var value = method.invoke(null);
 		return value;
 	}
 

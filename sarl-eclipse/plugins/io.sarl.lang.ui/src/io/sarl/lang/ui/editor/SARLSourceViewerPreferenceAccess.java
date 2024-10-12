@@ -66,7 +66,7 @@ public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
 	 * @see #getWritablePreferenceStore(Object)
 	 */
 	public void setAutoFormattingEnabled(Boolean enable) {
-		final IPreferenceStore store = getWritablePreferenceStore(null);
+		final var store = getWritablePreferenceStore(null);
 		if (enable == null) {
 			store.setToDefault(AUTOFORMATTING_PROPERTY);
 		} else {
@@ -76,7 +76,7 @@ public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
 
 	@Override
 	public void setToDefault(Object context) {
-		final IPreferenceStore store = getWritablePreferenceStore(context);
+		final var store = getWritablePreferenceStore(context);
 		store.setToDefault(AUTOFORMATTING_PROPERTY);
 	}
 

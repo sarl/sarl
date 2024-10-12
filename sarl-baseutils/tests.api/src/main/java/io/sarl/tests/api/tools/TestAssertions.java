@@ -28,10 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
@@ -92,14 +89,14 @@ public final class TestAssertions {
 	 * @return the cause.
 	 */
 	public static <T extends Throwable> T assertCause(Class<T> expected, Throwable actual) {
-		Throwable cause0 = actual;
+		var cause0 = actual;
 		while (cause0 != null && cause0.getCause() != null && cause0.getCause() != cause0) {
 			cause0 = cause0.getCause();
 		}
 		if (cause0 == null) {
 			cause0 = actual;
 		}
-		final Throwable cause = cause0;
+		final var cause = cause0;
 		assertTrue(expected.isInstance(cause0),
 				() -> "Unexpected type of exception's cause. Expected: " + expected.getName() + ". Actual: " //$NON-NLS-1$ //$NON-NLS-2$
 						+ cause.getClass().getName());
@@ -193,16 +190,16 @@ public final class TestAssertions {
 	 */
 	public static void assertContainsCollection(Iterable<?> actual, Iterable<?> expected, Supplier<String> message) {
 		assertNotNull(actual);
-		Collection<Object> la = new ArrayList<>();
+		var la = new ArrayList<>();
 		Iterables.addAll(la, actual);
-		Collection<Object> le = new ArrayList<>();
+		var le = new ArrayList<>();
 		Iterables.addAll(le, expected);
 
-		final SortedSet<String> unexpectedElements = new TreeSet<>();
+		final var unexpectedElements = new TreeSet<String>();
 
-		Iterator<?> it1 = la.iterator();
+		var it1 = la.iterator();
 		while (it1.hasNext()) {
-			Object ac = it1.next();
+			var ac = it1.next();
 			it1.remove();
 			if (ac != null && !le.remove(ac)) {
 				unexpectedElements.add(ac.toString());
@@ -211,20 +208,20 @@ public final class TestAssertions {
 
 		if (!unexpectedElements.isEmpty()) {
 			if (!le.isEmpty()) {
-				final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+				final var emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 				throw new AssertionFailedError(
 						"Unexpected elements:\n" + unexpectedElements.toString() //$NON-NLS-1$
 						+ "\nExpecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 						toString(expected),
 						toString(actual));
 			}
-			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			final var emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AssertionFailedError(
 					"Unexpected elements:\n" + unexpectedElements.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
 		} else if (!le.isEmpty()) {
-			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			final var emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
@@ -250,14 +247,14 @@ public final class TestAssertions {
 	 */
 	public static void assertContainsAtLeastCollection(Iterable<?> actual, Iterable<?> expected, Supplier<String> message) {
 		assertNotNull(actual);
-		Collection<Object> la = new ArrayList<>();
+		var la = new ArrayList<>();
 		Iterables.addAll(la, actual);
-		Collection<Object> le = new ArrayList<>();
+		var le = new ArrayList<>();
 		Iterables.addAll(le, expected);
 
-		Iterator<?> it1 = la.iterator();
+		var it1 = la.iterator();
 		while (it1.hasNext()) {
-			Object ac = it1.next();
+			var ac = it1.next();
 			it1.remove();
 			if (ac != null) {
 				le.remove(ac);
@@ -265,7 +262,7 @@ public final class TestAssertions {
 		}
 
 		if (!le.isEmpty()) {
-			final String emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			final var emsg = message != null ? "\n" + message.get() : ""; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg, //$NON-NLS-1$
 					toString(expected),
 					toString(actual));
@@ -273,20 +270,20 @@ public final class TestAssertions {
 	}
 
 	private static String toString(Iterable<?> iterable) {
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		if (iterable != null) {
-			final List<String> elements = new ArrayList<>();
-			for (final Object obj : iterable) {
+			final var elements = new ArrayList<String>();
+			for (final var obj : iterable) {
 				if (obj == null) {
 					elements.add("null"); //$NON-NLS-1$
 				} else {
 					elements.add("<" + obj.toString() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-			final String[] tab = new String[elements.size()];
+			final var tab = new String[elements.size()];
 			elements.toArray(tab);
 			Arrays.sort(tab);
-			for (final String obj : tab) {
+			for (final var obj : tab) {
 				buf.append(obj).append("\n"); //$NON-NLS-1$
 			}
 		}
@@ -309,14 +306,14 @@ public final class TestAssertions {
 	 */
 	public static void assertPartlyContainsCollection(Iterable<?> actual, Iterable<?> expected) {
 		assertNotNull(actual);
-		Collection<Object> la = new ArrayList<>();
+		var la = new ArrayList<>();
 		Iterables.addAll(la, actual);
-		Collection<Object> le = new ArrayList<>();
+		var le = new ArrayList<>();
 		Iterables.addAll(le, expected);
 
-		Iterator<?> it1 = la.iterator();
+		var it1 = la.iterator();
 		while (it1.hasNext()) {
-			Object ac = it1.next();
+			var ac = it1.next();
 			it1.remove();
 			le.remove(ac);
 		}
@@ -343,14 +340,14 @@ public final class TestAssertions {
 	 */
 	public static void assertContainsStringCollection(Iterable<?> actual, Iterable<String> expected) {
 		assertNotNull(actual);
-		Collection<Object> la = new ArrayList<>();
+		var la = new ArrayList<>();
 		Iterables.addAll(la, actual);
-		Collection<String> le = new ArrayList<>();
+		var le = new ArrayList<>();
 		Iterables.addAll(le, expected);
 
-		Iterator<?> it1 = la.iterator();
+		var it1 = la.iterator();
 		while (it1.hasNext()) {
-			Object ac = it1.next();
+			var ac = it1.next();
 			it1.remove();
 			if (!le.remove(ac.toString())) {
 				fail("Unexpecting element: " + ac); //$NON-NLS-1$
@@ -389,7 +386,7 @@ public final class TestAssertions {
 	 */
 	public static void assertMultiContains(String actual, String... expected) {
 		assertNotNull(actual, "The value is null and cannot contain a substring"); //$NON-NLS-1$
-		for (final String exp : expected) {
+		for (final var exp : expected) {
 			if (!actual.contains(exp)) {
 				AssertionFailureBuilder.assertionFailure()
 					.expected(exp)
@@ -446,7 +443,7 @@ public final class TestAssertions {
 	 * @param name the name of the property.
 	 */
 	public static void assertTrueProperty(String name) {
-		String v = System.getProperty(name);
+		var v = System.getProperty(name);
 		if (Strings.isNullOrEmpty(v)) {
 			fail("The property '" + name + "' is not defined."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -459,7 +456,7 @@ public final class TestAssertions {
 	 * @param name the name of the property.
 	 */
 	public static void assertFalseProperty(String name) {
-		String v = System.getProperty(name);
+		var v = System.getProperty(name);
 		if (Strings.isNullOrEmpty(v)) {
 			fail("The property '" + name + "' is not defined."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -472,7 +469,7 @@ public final class TestAssertions {
 	 * @param name the name of the property.
 	 */
 	public static void assertNullProperty(String name) {
-		String v = System.getProperty(name);
+		var v = System.getProperty(name);
 		if (!Strings.isNullOrEmpty(v)) {
 			fail("The property '" + name + "' is expected to be undefined; but is has the value: " + v); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -488,7 +485,7 @@ public final class TestAssertions {
 		if (Strings.isNullOrEmpty(value)) {
 			assertNullProperty(name);
 		} else {
-			String v = System.getProperty(name);
+			var v = System.getProperty(name);
 			if (Strings.isNullOrEmpty(v)) {
 				fail("The property '" + name + "' is expected to be defined." + v); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -708,7 +705,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNaN(double actual, Supplier<String> message) {
 		if (!Double.isNaN(actual)) {
-			final StringBuilder bmsg = new StringBuilder();
+			final var bmsg = new StringBuilder();
 			if (message != null) {
 				bmsg.append(message.get());
 			}
@@ -727,11 +724,11 @@ public final class TestAssertions {
 	 * @param actual the actual values.
 	 */
 	public static <T> void assertArraySimilar(T[] expected, T[] actual) {
-		List<T> expectedValues = new ArrayList<>(Arrays.asList(expected));
-		List<T> actualValues = new ArrayList<>(Arrays.asList(actual));
-		Iterator<T> iterator = expectedValues.iterator();
+		var expectedValues = new ArrayList<>(Arrays.asList(expected));
+		var actualValues = new ArrayList<>(Arrays.asList(actual));
+		var iterator = expectedValues.iterator();
 		while (iterator.hasNext()) {
-			T v = iterator.next();
+			var v = iterator.next();
 			iterator.remove();
 			if (!actualValues.remove(v)) {
 				fail("Expecting a value in the array: " + v); //$NON-NLS-1$
@@ -748,7 +745,7 @@ public final class TestAssertions {
 	 * @param actual the value.
 	 */
 	public static <T> void assertArrayContains(T[] expected, T actual) {
-		for (T value : expected) {
+		for (var value : expected) {
 			if (Objects.equal(actual, value)) {
 				return;
 			}
@@ -766,8 +763,8 @@ public final class TestAssertions {
 	 * @see JvmTypeReference#getIdentifier()
 	 */
 	public static void assertTypeReferenceIdentifiers(Iterable<? extends JvmTypeReference> actualReferences, String... expectedIdentifiers) {
-		int i = 0;
-		for (final JvmTypeReference reference : actualReferences) {
+		var i = 0;
+		for (final var reference : actualReferences) {
 			assertTypeReferenceIdentifier(reference, expectedIdentifiers[i]);
 			++i;
 		}
@@ -799,9 +796,9 @@ public final class TestAssertions {
 	 * @param expectedParameterNames the expected names for the formal parameters.
 	 */
 	public static void assertParameterNames(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterNames) {
-		int i = 0;
-		for (final XtendParameter parameter : actualFormalParameters) {
-			final int ii = i;
+		var i = 0;
+		for (final var parameter : actualFormalParameters) {
+			final var ii = i;
 			assertEquals(parameter.getName(), expectedParameterNames[i],
 					() -> "Unexpected parameter: " + parameter + ". Expected: " + expectedParameterNames[ii]); //$NON-NLS-1$ //$NON-NLS-2$
 			++i;
@@ -820,8 +817,8 @@ public final class TestAssertions {
 	 * @param expectedParameterTypes the expected types for the formal parameters.
 	 */
 	public static void assertParameterTypes(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterTypes) {
-		int i = 0;
-		for (XtendParameter parameter : actualFormalParameters) {
+		var i = 0;
+		for (var parameter : actualFormalParameters) {
 			assertTypeReferenceIdentifier(
 					parameter.getParameterType(), expectedParameterTypes[i]);
 			++i;
@@ -837,7 +834,7 @@ public final class TestAssertions {
 	 * @param actualFormalParameters
 	 */
 	public static void assertParameterVarArg(Iterable<? extends XtendParameter> actualFormalParameters) {
-		Iterator<? extends XtendParameter> iterator = actualFormalParameters.iterator();
+		var iterator = actualFormalParameters.iterator();
 		XtendParameter lastParam = null;
 		while (iterator.hasNext()) {
 			lastParam = iterator.next();
@@ -852,7 +849,7 @@ public final class TestAssertions {
 	 * @param actualFormalParameters
 	 */
 	public static void assertNoParameterVarArg(Iterable<? extends XtendParameter> actualFormalParameters) {
-		Iterator<? extends XtendParameter> iterator = actualFormalParameters.iterator();
+		var iterator = actualFormalParameters.iterator();
 		XtendParameter lastParam = null;
 		while (iterator.hasNext()) {
 			lastParam = iterator.next();
@@ -897,7 +894,7 @@ public final class TestAssertions {
 	 * @param message the error message.
 	 */
 	public static void assertInstanceOf(Class<?> expected, Object actual, Supplier<String> message) {
-		String m = (message == null) ? null : message.get();
+		var m = (message == null) ? null : message.get();
 		if (Strings.isNullOrEmpty(m)) {
 			m = "Unexpected object type."; //$NON-NLS-1$
 		}
@@ -928,7 +925,7 @@ public final class TestAssertions {
 				&& expected.getMinor() == actual.getMinor()
 				&& expected.getMicro() == actual.getMicro()) {
 			if (!Strings.isNullOrEmpty(expected.getQualifier())) {
-				final String expectedQualifier = expected.getQualifier();
+				final var expectedQualifier = expected.getQualifier();
 				if ("qualifier".equals(expectedQualifier)) { //$NON-NLS-1$
 					if (!Strings.isNullOrEmpty(actual.getQualifier())) {
 						return;
@@ -956,11 +953,11 @@ public final class TestAssertions {
 	 */
 	public static void assertIssue(List<Issue> issues, Severity severity, EObject model,
 			EClass objectType, String code, String... messageParts) {
-		Iterator<Issue> iterator = issues.iterator();
+		var iterator = issues.iterator();
 		while (iterator.hasNext()) {
-			Issue issue = iterator.next();
+			var issue = iterator.next();
 			if (Objects.equal(issue.getCode(), code) && issue.getSeverity() == severity) {
-				EObject object = model.eResource().getResourceSet().getEObject(issue.getUriToProblem(), true);
+				var object = model.eResource().getResourceSet().getEObject(issue.getUriToProblem(), true);
 				if (objectType.isInstance(object)) {
 					if (TestIssues.isIssueMessage(issue, messageParts)) {
 						iterator.remove();
@@ -969,7 +966,7 @@ public final class TestAssertions {
 				}
 			}
 		}
-		StringBuilder message = new StringBuilder("Expected "); //$NON-NLS-1$
+		var message = new StringBuilder("Expected "); //$NON-NLS-1$
 		message.append(severity);
 		message.append(" '"); //$NON-NLS-1$
 		message.append(code);
@@ -989,8 +986,8 @@ public final class TestAssertions {
 	 */
 	public static void assertAnyError(ValidationTestHelper validationHelper, EObject source, String... codes) {
 		assert validationHelper != null;
-		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = validationHelper.validate(source);
+		final var codeSet = Arrays.asList(codes);
+		final var validate = validationHelper.validate(source);
 		if (!Iterables.any(validate, input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode()))) {
 			fail("Expected an error, but got nothing"); //$NON-NLS-1$
 		}
@@ -1005,8 +1002,8 @@ public final class TestAssertions {
 	 */
 	public static void assertNoErrorsExcept(ValidationTestHelper validationHelper, EObject source, String... codes) {
 		assert validationHelper != null;
-		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = validationHelper.validate(source);
+		final var codeSet = Arrays.asList(codes);
+		final var validate = validationHelper.validate(source);
 		final Predicate<Issue> pred = input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode());
 		if (Iterables.any(validate, pred)) {
 			fail("Expected no error, found: " + Iterables.filter(validate, pred)); //$NON-NLS-1$
@@ -1035,7 +1032,7 @@ public final class TestAssertions {
 	 */
 	public static void assertNoMoreIssues(List<Issue> issues, EObject model) {
 		if (!issues.isEmpty()) {
-			StringBuilder message = new StringBuilder("Expecting no issue but got\n"); //$NON-NLS-1$
+			var message = new StringBuilder("Expecting no issue but got\n"); //$NON-NLS-1$
 			TestIssues.getIssuesAsString(model, issues, message);
 			fail(message.toString());
 		}
@@ -1046,12 +1043,12 @@ public final class TestAssertions {
 	 * @param collection the collection to test.
 	 */
 	public static void assertAllDifferents(List<?> collection) {
-		final int len = collection.size();
-		final int penulvian = collection.size() - 1;
-		for (int i = 0; i < penulvian; ++i) {
-			final Object obj1 = collection.get(i);
-			for (int j = i + 1; j < len; ++j) {
-				final Object obj2 = collection.get(j);
+		final var len = collection.size();
+		final var penulvian = collection.size() - 1;
+		for (var i = 0; i < penulvian; ++i) {
+			final var obj1 = collection.get(i);
+			for (var j = i + 1; j < len; ++j) {
+				final var obj2 = collection.get(j);
 				if (Objects.equal(obj1, obj2)) {
 					fail("Same objects at positions " + i + " and " + j); //$NON-NLS-1$ //$NON-NLS-2$
 				}
@@ -1076,7 +1073,7 @@ public final class TestAssertions {
 			// See fail above
 			return null;
 		} catch (Throwable ex) {
-			final Throwable cause = Throwables.getRootCause(ex);
+			final var cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
 				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause); //$NON-NLS-1$ //$NON-NLS-2$
 				return null;
@@ -1100,7 +1097,7 @@ public final class TestAssertions {
 			code.run();
 			fail("Expecting exception of type " + expected.getName() + ", but no exception is known"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Throwable ex) {
-			final Throwable cause = Throwables.getRootCause(ex);
+			final var cause = Throwables.getRootCause(ex);
 			if (!expected.isAssignableFrom(cause.getClass())) {
 				fail("Expecting exception of type " + expected.getName() + ", but get " + cause.getClass().getName(), cause); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
@@ -1118,9 +1115,9 @@ public final class TestAssertions {
 	 * @since 0.12
 	 */
 	public static void assertEqualsExceptNewLines(String expected, String actual, Supplier<String> message) {
-		String es = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		var es = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		es = es.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		String as = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		var as = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		as = as.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(es, as, message);
 	}

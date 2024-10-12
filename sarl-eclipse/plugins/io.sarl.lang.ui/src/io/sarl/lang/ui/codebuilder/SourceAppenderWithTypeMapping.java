@@ -69,10 +69,10 @@ class SourceAppenderWithTypeMapping implements ISourceAppender {
 	@Override
 	public ISourceAppender append(LightweightTypeReference typeRef) {
 		if (typeRef.isFunctionType()) {
-			final FunctionTypeReference functionReference = typeRef.getAsFunctionTypeReference();
+			final var functionReference = typeRef.getAsFunctionTypeReference();
 			this.source.append(this.keywords.getLeftParenthesisKeyword());
-			boolean first = true;
-			for (final LightweightTypeReference parameter : functionReference.getParameterTypes()) {
+			var first = true;
+			for (final var parameter : functionReference.getParameterTypes()) {
 				if (first) {
 					first = false;
 				} else {

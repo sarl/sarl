@@ -91,11 +91,11 @@ public final class MavenImportUtils {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			    try {
-			    	final SubMonitor submon = SubMonitor.convert(monitor, 3);
+			    	final var submon = SubMonitor.convert(monitor, 3);
 			    	forceSimplePom(workspaceRoot, projectName, submon.newChild(1));
-					final AbstractProjectScanner<MavenProjectInfo> scanner = getProjectScanner(workspaceRoot, projectName);
+					final var scanner = getProjectScanner(workspaceRoot, projectName);
 					scanner.run(submon.newChild(1));
-					final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration();
+					final var importConfiguration = new ProjectImportConfiguration();
 					runFixedImportJob(addSarlSpecificSourceFolders,
 							scanner.getProjects(), importConfiguration,
 							null, submon.newChild(1));
@@ -124,11 +124,11 @@ public final class MavenImportUtils {
 			Collection<MavenProjectInfo> projectInfos,
 			ProjectImportConfiguration importConfiguration, IProjectCreationListener projectCreationListener,
 			IProgressMonitor monitor) throws CoreException {
-		final List<IMavenProjectImportResult> importResults = MavenPlugin.getProjectConfigurationManager()
+		final var importResults = MavenPlugin.getProjectConfigurationManager()
 				.importProjects(projectInfos, importConfiguration, projectCreationListener, monitor);
 		if (addSarlSpecificSourceFolders) {
-			final SubMonitor submon = SubMonitor.convert(monitor, importResults.size());
-			for (final IMavenProjectImportResult importResult : importResults) {
+			final var submon = SubMonitor.convert(monitor, importResults.size());
+			for (final var importResult : importResults) {
 				SARLProjectConfigurator.configureSARLSourceFolders(
 						// Project to configure
 						importResult.getProject(),
@@ -136,7 +136,7 @@ public final class MavenImportUtils {
 						true,
 						// Monitor
 						submon.newChild(1));
-				final WorkspaceJob job = new WorkspaceJob("Creating Maven project") { //$NON-NLS-1$
+				final var job = new WorkspaceJob("Creating Maven project") { //$NON-NLS-1$
 					@Override
 					public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 						try {
@@ -155,15 +155,15 @@ public final class MavenImportUtils {
 	}
 
 	private static void runBugFix(IProject project, IProgressMonitor monitor) throws Exception {
-		final SubMonitor submon = SubMonitor.convert(monitor, 2);
+		final var submon = SubMonitor.convert(monitor, 2);
     	restorePom(project, submon);
     	MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
 	}
 
 	private static AbstractProjectScanner<MavenProjectInfo> getProjectScanner(IWorkspaceRoot workspaceRoot, String projectName) {
-		final File root = workspaceRoot.getLocation().toFile();
-		final String projectPath = new File(root, projectName).getAbsolutePath();
-		final MavenModelManager modelManager = MavenPlugin.getMavenModelManager();
+		final var root = workspaceRoot.getLocation().toFile();
+		final var projectPath = new File(root, projectName).getAbsolutePath();
+		final var modelManager = MavenPlugin.getMavenModelManager();
 		return new LocalProjectScanner(
 				Collections.singletonList(projectPath),
 				false,
@@ -171,7 +171,7 @@ public final class MavenImportUtils {
 	}
 
 	private static void forceSimplePom(IWorkspaceRoot workspaceRoot, String projectName, IProgressMonitor monitor) throws Exception {
-		final File projectDir = new File(workspaceRoot.getLocation().toFile(), projectName);
+		final var projectDir = new File(workspaceRoot.getLocation().toFile(), projectName);
 		forceSimplePom(projectDir, monitor);
 	}
 
@@ -182,19 +182,19 @@ public final class MavenImportUtils {
 	 * @throws IOException if the pom file cannot be changed.
 	 */
 	static void forceSimplePom(File projectDir, IProgressMonitor monitor) throws IOException {
-		final File pomFile = new File(projectDir, POM_FILE);
+		final var pomFile = new File(projectDir, POM_FILE);
 		if (pomFile.exists()) {
-			final SubMonitor submon = SubMonitor.convert(monitor, 4);
-			final File savedPomFile = new File(projectDir, POM_BACKUP_FILE);
+			final var submon = SubMonitor.convert(monitor, 4);
+			final var savedPomFile = new File(projectDir, POM_BACKUP_FILE);
 			if (savedPomFile.exists()) {
 				savedPomFile.delete();
 			}
 			submon.worked(1);
 			Files.copy(pomFile, savedPomFile);
 			submon.worked(1);
-			final StringBuilder content = new StringBuilder();
-			try (BufferedReader stream = new BufferedReader(new FileReader(pomFile))) {
-				String line = stream.readLine();
+			final var content = new StringBuilder();
+			try (var stream = new BufferedReader(new FileReader(pomFile))) {
+				var line = stream.readLine();
 				while (line != null) {
 					line = line.replaceAll("<extensions>\\s*true\\s*</extensions>", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					content.append(line).append("\n"); //$NON-NLS-1$
@@ -214,13 +214,13 @@ public final class MavenImportUtils {
 	 * @throws CoreException if the pom file cannot be changed.
 	 */
 	static void restorePom(IProject project, IProgressMonitor monitor) throws CoreException {
-		final IFile pomFile = project.getFile(POM_FILE);
-		final IFile savedPomFile = project.getFile(POM_BACKUP_FILE);
+		final var pomFile = project.getFile(POM_FILE);
+		final var savedPomFile = project.getFile(POM_BACKUP_FILE);
 		pomFile.refreshLocal(IResource.DEPTH_ZERO, monitor);
 		savedPomFile.refreshLocal(IResource.DEPTH_ZERO, monitor);
 		monitor.worked(1);
 		if (savedPomFile.exists()) {
-			final SubMonitor submon = SubMonitor.convert(monitor, 3);
+			final var submon = SubMonitor.convert(monitor, 3);
 			if (pomFile.exists()) {
 				pomFile.delete(true, false, submon);
 			} else {
@@ -241,8 +241,8 @@ public final class MavenImportUtils {
 	 * @throws IOException if the pom file cannot be changed.
 	 */
 	static void restorePom(File projectDir, IProgressMonitor monitor) throws IOException {
-		final File pomFile = new File(projectDir, POM_FILE);
-		final File savedPomFile = new File(projectDir, POM_BACKUP_FILE);
+		final var pomFile = new File(projectDir, POM_FILE);
+		final var savedPomFile = new File(projectDir, POM_BACKUP_FILE);
 		if (savedPomFile.exists()) {
 			if (pomFile.exists()) {
 				pomFile.delete();

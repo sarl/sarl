@@ -90,7 +90,7 @@ public final class SystemProperties {
 			} catch (Throwable exception) {
 				//
 			}
-			final String bqName = "bq." + name; //$NON-NLS-1$
+			final var bqName = "bq." + name; //$NON-NLS-1$
 			try {
 				value = System.getProperty(bqName, null);
 				if (!Strings.isNullOrEmpty(value)) {

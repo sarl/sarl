@@ -63,10 +63,10 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final String[] data = issue.getData();
+		final var data = issue.getData();
 		if (data != null && data.length > 0) {
-			final String expectedType = data[0];
-			final ReturnTypeAddModification modification = new ReturnTypeAddModification(expectedType);
+			final var expectedType = data[0];
+			final var modification = new ReturnTypeAddModification(expectedType);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
@@ -80,22 +80,22 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final XtendExecutable xtendExecutable = EcoreUtil2.getContainerOfType(element, XtendExecutable.class);
+		final var xtendExecutable = EcoreUtil2.getContainerOfType(element, XtendExecutable.class);
 		final int insertPosition;
 		if (xtendExecutable.getExpression() == null) {
-			final ICompositeNode functionNode = NodeModelUtils.findActualNodeFor(xtendExecutable);
+			final var functionNode = NodeModelUtils.findActualNodeFor(xtendExecutable);
 			if (functionNode == null) {
 				throw new IllegalStateException("functionNode may not be null"); //$NON-NLS-1$
 			}
 			insertPosition = functionNode.getEndOffset();
 		} else {
-			final ICompositeNode expressionNode = NodeModelUtils.findActualNodeFor(xtendExecutable.getExpression());
+			final var expressionNode = NodeModelUtils.findActualNodeFor(xtendExecutable.getExpression());
 			if (expressionNode == null) {
 				throw new IllegalStateException("expressionNode may not be null"); //$NON-NLS-1$
 			}
 			insertPosition = expressionNode.getOffset();
 		}
-		final ReplacingAppendable appendable = getTools().getAppendableFactory().create(context.getXtextDocument(),
+		final var appendable = getTools().getAppendableFactory().create(context.getXtextDocument(),
 				(XtextResource) xtendExecutable.eResource(), insertPosition, 0);
 		if (xtendExecutable.getExpression() == null) {
 			appendable.append(" "); //$NON-NLS-1$

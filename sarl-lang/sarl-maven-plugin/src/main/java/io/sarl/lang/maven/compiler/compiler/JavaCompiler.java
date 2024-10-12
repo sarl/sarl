@@ -52,7 +52,7 @@ public enum JavaCompiler {
 
 		@Override
 		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext, Injector injector) {
-			final IJavaBatchCompiler cmp = new MavenBatchCompiler(helper, isTestContext);
+			final var cmp = new MavenBatchCompiler(helper, isTestContext);
 			injector.injectMembers(cmp);
 			return cmp;
 		}
@@ -152,9 +152,9 @@ public enum JavaCompiler {
 	@Pure
 	public static JavaCompiler fromImplementationType(Class<? extends IJavaBatchCompiler> type) {
 		if (type != null) {
-			for (final JavaCompiler compiler : JavaCompiler.values()) {
+			for (final var compiler : JavaCompiler.values()) {
 				if (compiler != NONE) {
-					final Class<? extends IJavaBatchCompiler> implementation = compiler.getImplementationType();
+					final var implementation = compiler.getImplementationType();
 					if (implementation != null && implementation.isAssignableFrom(type)) {
 						return compiler;
 					}
@@ -169,7 +169,7 @@ public enum JavaCompiler {
 	 * @return the java compiler.
 	 */
 	public static JavaCompiler getDefault() {
-		final JavaCompiler jc = fromImplementationType(SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType());
+		final var jc = fromImplementationType(SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType());
 		if (jc != null) {
 			return jc;
 		}

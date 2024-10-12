@@ -60,9 +60,9 @@ public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {
 
 	@Override
 	public JvmVisibility getDefaultJvmVisibility(EObject element) {
-		EObject realObject = element;
+		var realObject = element;
 		if (realObject instanceof JvmIdentifiableElement) {
-			final EObject obj = this.associations.getPrimarySourceElement(realObject);
+			final var obj = this.associations.getPrimarySourceElement(realObject);
 			if (obj != null) {
 				realObject = obj;
 			}
@@ -79,9 +79,9 @@ public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {
 
 	@Override
 	public JvmVisibility getDefaultJvmVisibility(EObject container, EClass element) {
-		EObject realObject = container;
+		var realObject = container;
 		if (realObject instanceof JvmIdentifiableElement) {
-			final EObject obj = this.associations.getPrimarySourceElement(realObject);
+			final var obj = this.associations.getPrimarySourceElement(realObject);
 			if (obj != null) {
 				realObject = obj;
 			}

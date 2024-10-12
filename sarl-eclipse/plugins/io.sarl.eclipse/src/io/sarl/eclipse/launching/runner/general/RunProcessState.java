@@ -42,8 +42,8 @@ public enum RunProcessState {
 	 * @return the next step.
 	 */
 	public RunProcessState next() {
-		final int index = ordinal() + 1;
-		final RunProcessState[] vals = values();
+		final var index = ordinal() + 1;
+		final var vals = values();
 		if (index < vals.length) {
 			return vals[index];
 		}

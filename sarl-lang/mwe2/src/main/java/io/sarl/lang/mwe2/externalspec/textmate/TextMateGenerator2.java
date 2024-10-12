@@ -23,13 +23,11 @@ package io.sarl.lang.mwe2.externalspec.textmate;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -173,7 +171,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected void generate(ITmStyleAppendable appendable, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final Map<String, Object> root = new HashMap<>();
+		final var root = new HashMap<String, Object>();
 		root.put(NAME_PROP, getLanguageSimpleName());
 		root.put(SARL_VERSION_PROP, getLanguageVersion());
 		root.put(VERSION_PROP, getLanguageVersion());
@@ -194,8 +192,8 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 	@Override
 	protected void generateAdditionalFiles(String oldBasename, ITmStyleAppendable writtenAppendable) {
-		if (writtenAppendable instanceof CombinedTmAppendable) {
-			generatePlistFile((CombinedTmAppendable) writtenAppendable);
+		if (writtenAppendable instanceof CombinedTmAppendable cvalue) {
+			generatePlistFile(cvalue);
 		}
 		generateLicenseFile();
 	}
@@ -213,9 +211,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	/** Generate the LICENSE file.
 	 */
 	protected void generateLicenseFile() {
-		final CharSequence licenseText = getLicenseText();
+		final var licenseText = getLicenseText();
 		if (licenseText != null) {
-			final String text = licenseText.toString();
+			final var text = licenseText.toString();
 			if (!Strings.isEmpty(text)) {
 				writeFile(LICENSE_FILE, text.getBytes());
 			}
@@ -227,11 +225,11 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the text.
 	 */
 	protected CharSequence getLicenseText() {
-		final URL url = getClass().getResource(LICENSE_FILE);
+		final var url = getClass().getResource(LICENSE_FILE);
 		if (url != null) {
-			final File filename = new File(url.getPath());
+			final var filename = new File(url.getPath());
 			try {
-				final byte[] array = Files.toByteArray(filename);
+				final var array = Files.toByteArray(filename);
 				if (array != null) {
 					return new String(array);
 				}
@@ -257,7 +255,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<?> createPatterns(Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final List<Map<String, ?>> patterns = new ArrayList<>();
+		final var patterns = new ArrayList<Map<String, ?>>();
 
 		patterns.addAll(generateComments());
 		patterns.addAll(generateStrings());
@@ -284,7 +282,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateAnnotations() {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		list.add(pattern(it -> {
 			it.matches("\\@[_a-zA-Z$][_0-9a-zA-Z$]*"); //$NON-NLS-1$
 			it.style(ANNOTATION_STYLE);
@@ -298,7 +296,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateComments() {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		// Block comment
 		list.add(pattern(it -> {
 			it.delimiters("(/\\*+)", "(\\*/)"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -326,7 +324,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateStrings() {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		// Double quote
 		list.add(pattern(it -> {
 			it.delimiters("\"", "\""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -359,7 +357,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateNumericConstants() {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		list.add(pattern(it -> {
 			it.matches(
 					"(?:" //$NON-NLS-1$
@@ -381,7 +379,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generatePrimitiveTypes(Set<String> primitiveTypes) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!primitiveTypes.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(primitiveTypes) + "(?:\\s*\\[\\s*\\])*"); //$NON-NLS-1$
@@ -398,7 +396,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateLiterals(Set<String> literals) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!literals.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(literals));
@@ -415,7 +413,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generatePunctuation(Set<String> punctuation) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!punctuation.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(orRegex(punctuation));
@@ -432,7 +430,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateModifiers(Set<String> modifiers) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!modifiers.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(modifiers));
@@ -449,7 +447,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateSpecialKeywords(Set<String> keywords) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!keywords.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(keywords));
@@ -466,7 +464,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateStandardKeywords(Set<String> keywords) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!keywords.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(keywords));
@@ -483,7 +481,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the rules.
 	 */
 	protected List<Map<String, ?>> generateTypeDeclarations(Set<String> declarators) {
-		final List<Map<String, ?>> list = new ArrayList<>();
+		final var list = new ArrayList<Map<String, ?>>();
 		if (!declarators.isEmpty()) {
 			list.add(pattern(it -> {
 				it.matches(keywordRegex(declarators));
@@ -500,7 +498,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @return the definition.
 	 */
 	protected Map<String, ?> pattern(Procedure1<? super Pattern> proc) {
-		final Pattern patternDefinition = new Pattern();
+		final var patternDefinition = new Pattern();
 		proc.apply(patternDefinition);
 		return patternDefinition.getDefinition();
 	}
@@ -555,9 +553,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 */
 		public Map<String, Object> getDefinition() {
 			if (!this.captures.isEmpty()) {
-				final Map<String, Map<String, String>> captures = new HashMap<>();
-				for (final Entry<Integer, String> part : this.captures.entrySet()) {
-					final Map<String, String> val = new HashMap<>();
+				final var captures = new HashMap<String, Map<String, String>>();
+				for (final var part : this.captures.entrySet()) {
+					final var val = new HashMap<String, String>();
 					val.put(NAME_PROP, part.getValue());
 					captures.put(part.getKey().toString(), val);
 				}
@@ -575,7 +573,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @see TextMateGenerator2#pattern(Procedure1)
 		 */
 		public void pattern(Procedure1<? super Pattern> proc) {
-			final Map<String, ?> pattern = TextMateGenerator2.this.pattern(proc);
+			final var pattern = TextMateGenerator2.this.pattern(proc);
 			this.patterns.add(pattern);
 		}
 
@@ -647,8 +645,8 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @param style the style name.
 		 */
 		public void endStyle(String style) {
-			final Map<Integer, Map<String, String>> value = new HashMap<>();
-			final Map<String, String> svalue = new HashMap<>();
+			final var value = new HashMap<Integer, Map<String, String>>();
+			final var svalue = new HashMap<String, String>();
 			svalue.put(NAME_PROP, toName(style));
 			value.put(Integer.valueOf(0), svalue);
 			this.content.put(BEGIN_CAPTURES_PROP, value);
@@ -662,8 +660,8 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @param style the style name.
 		 */
 		public void beginStyle(String style) {
-			final Map<Integer, Map<String, String>> value = new HashMap<>();
-			final Map<String, String> svalue = new HashMap<>();
+			final var value = new HashMap<Integer, Map<String, String>>();
+			final var svalue = new HashMap<String, String>();
 			svalue.put(NAME_PROP, toName(style));
 			value.put(Integer.valueOf(0), svalue);
 			this.content.put(END_CAPTURES_PROP, value);
@@ -743,11 +741,11 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 		@Override
 		public void appendProperty(Object value) {
-			if (value instanceof Iterable) {
+			if (value instanceof Iterable<?> cvalue) {
 				append("("); //$NON-NLS-1$
 				increaseIndentation().newLine();
-				boolean first = true;
-				for (final Object arrayElement : (Iterable<?>) value) {
+				var first = true;
+				for (final var arrayElement : cvalue) {
 					if (first) {
 						first = false;
 					} else {
@@ -757,19 +755,19 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 				}
 				decreaseIndentation().newLine();
 				append(")"); //$NON-NLS-1$
-			} else if (value instanceof Map) {
+			} else if (value instanceof Map<?,?> cvalue) {
 				append("{"); //$NON-NLS-1$
 				increaseIndentation().newLine();
-				boolean first = true;
-				for (final Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
-					final Object rawKey = entry.getKey();
+				var first = true;
+				for (final var entry : cvalue.entrySet()) {
+					final var rawKey = entry.getKey();
 					if (rawKey != null) {
 						if (first) {
 							first = false;
 						} else {
 							append(";").newLine(); //$NON-NLS-1$
 						}
-						final Object rawValue = entry.getValue();
+						final var rawValue = entry.getValue();
 						append(rawKey.toString());
 						append(" = "); //$NON-NLS-1$
 						appendProperty(rawValue);
@@ -827,9 +825,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 			append("<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-"); //$NON-NLS-1$
 			append(PLIST_VERSION);
 			appendNl(".dtd\">"); //$NON-NLS-1$
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 			appendNl("<!--"); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "\t ") //$NON-NLS-1$//$NON-NLS-2$
 						.replaceFirst("\\s+$", "")); //$NON-NLS-1$//$NON-NLS-2$
 			}
@@ -857,9 +855,9 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @param parameters the parameters.
 		 */
 		void appendCommentNoNl(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
+			final var comment = applyFormat(text, parameters);
 			appendNl("<!-- "); //$NON-NLS-1$
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl("\t " + line.trim()); //$NON-NLS-1$
 			}
 			append("-->"); //$NON-NLS-1$
@@ -867,11 +865,11 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 		@Override
 		public void appendProperty(Object value) {
-			if (value instanceof Iterable) {
+			if (value instanceof Iterable<?> cvalue) {
 				append("<array>"); //$NON-NLS-1$
 				increaseIndentation().newLine();
-				boolean first = true;
-				for (final Object arrayElement : (Iterable<?>) value) {
+				var first = true;
+				for (final var arrayElement : cvalue) {
 					if (first) {
 						first = false;
 					} else {
@@ -881,19 +879,19 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 				}
 				decreaseIndentation().newLine();
 				append("</array>"); //$NON-NLS-1$
-			} else if (value instanceof Map) {
+			} else if (value instanceof Map<?,?> cvalue) {
 				append("<dict>"); //$NON-NLS-1$
 				increaseIndentation().newLine();
-				boolean first = true;
-				for (final Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
-					final Object rawKey = entry.getKey();
+				var first = true;
+				for (final var entry : cvalue.entrySet()) {
+					final var rawKey = entry.getKey();
 					if (rawKey != null) {
 						if (first) {
 							first = false;
 						} else {
 							newLine();
 						}
-						final Object rawValue = entry.getValue();
+						final var rawValue = entry.getValue();
 						append("<key>"); //$NON-NLS-1$
 						append(rawKey.toString());
 						appendNl("</key>"); //$NON-NLS-1$
@@ -918,7 +916,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 */
 		@SuppressWarnings("static-method")
 		protected String protect(String value) {
-			String tmp = value.replaceAll("&", "&amp;"); //$NON-NLS-1$//$NON-NLS-2$
+			var tmp = value.replaceAll("&", "&amp;"); //$NON-NLS-1$//$NON-NLS-2$
 			tmp = tmp.replaceAll(">", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
 			return tmp.replaceAll("<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
 		}

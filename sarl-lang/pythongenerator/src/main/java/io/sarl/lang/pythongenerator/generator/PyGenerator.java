@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.inject.Inject;
@@ -37,21 +35,17 @@ import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -60,11 +54,9 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
-import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;
 import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 import io.sarl.lang.pythongenerator.configuration.IPyGeneratorConfigurationProvider;
-import io.sarl.lang.pythongenerator.configuration.PyGeneratorConfiguration;
 import io.sarl.lang.pythongenerator.configuration.PyOutputConfigurationProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -81,12 +73,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
-import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.sarl.actionprototype.InferredPrototype;
-import io.sarl.lang.sarl.actionprototype.InferredStandardParameter;
 import io.sarl.lang.sarl.actionprototype.InferredValuedParameter;
-import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.lang.util.Utils;
 
 /** The generator from SARL to the Python language.
@@ -151,15 +138,15 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 
 	@Override
 	protected void initializeContext(IExtraLanguageGeneratorContext generatorContext) {
-		final PyGeneratorConfiguration config = this.configuration.get(generatorContext.getResource(), true);
-		final ExtraLanguageTypeConverter converter = getExpressionGenerator().getTypeConverter(generatorContext);
+		final var config = this.configuration.get(generatorContext.getResource(), true);
+		final var converter = getExpressionGenerator().getTypeConverter(generatorContext);
 		converter.setImplicitJvmTypes(config.isImplicitJvmTypes());
 	}
 
 	@Override
 	protected PyAppendable createAppendable(JvmDeclaredType thisType, IExtraLanguageGeneratorContext context) {
-		final ExtraLanguageTypeConverter converter = getTypeConverter(context);
-		final PyAppendable appendable = new PyAppendable(thisType, converter);
+		final var converter = getTypeConverter(context);
+		final var appendable = new PyAppendable(thisType, converter);
 		markCapacityFunctions(appendable);
 		return appendable;
 	}
@@ -200,18 +187,18 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	protected void writePackageFiles(QualifiedName name, String lineSeparator,
 			IExtraLanguageGeneratorContext context) {
-		final IFileSystemAccess2 fsa = context.getFileSystemAccess();
-		final String outputConfiguration = getOutputConfigurationName();
+		final var fsa = context.getFileSystemAccess();
+		final var outputConfiguration = getOutputConfigurationName();
 		QualifiedName libraryName = null;
-		for (final String segment : name.skipLast(1).getSegments()) {
+		for (final var segment : name.skipLast(1).getSegments()) {
 			if (libraryName == null) {
 				libraryName = QualifiedName.create(segment, LIBRARY_FILENAME);
 			} else {
 				libraryName = libraryName.append(segment).append(LIBRARY_FILENAME);
 			}
-			final String fileName = toFilename(libraryName);
+			final var fileName = toFilename(libraryName);
 			if (!fsa.isFile(fileName)) {
-				final String content = PYTHON_FILE_HEADER + lineSeparator
+				final var content = PYTHON_FILE_HEADER + lineSeparator
 						+ getGenerationComment(context) + lineSeparator
 						+ LIBRARY_CONTENT;
 				if (Strings.isEmpty(outputConfiguration)) {
@@ -252,9 +239,9 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			IExtraLanguageGeneratorContext context) {
 		if (!Strings.isEmpty(typeName)) {
 			it.append("class ").append(typeName).append("("); //$NON-NLS-1$ //$NON-NLS-2$
-			boolean isOtherSuperType = false;
-			boolean first = true;
-			for (final JvmTypeReference reference : superTypes) {
+			var isOtherSuperType = false;
+			var first = true;
+			for (final var reference : superTypes) {
 				if (!ignoreObjectType || !Strings.equal(reference.getQualifiedName(), Object.class.getCanonicalName())) {
 					isOtherSuperType = true;
 					if (first) {
@@ -284,11 +271,11 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @return {@code true} if the docstring is added, {@code false} otherwise.
 	 */
 	protected static boolean generateDocString(String comment, PyAppendable it) {
-		final String cmt = comment == null ? null : comment.trim();
+		final var cmt = comment == null ? null : comment.trim();
 		if (!Strings.isEmpty(cmt)) {
 			assert cmt != null;
 			it.append("\"\"\"").increaseIndentation(); //$NON-NLS-1$
-			for (final String line : cmt.split("[\n\r\f]+")) {  //$NON-NLS-1$
+			for (final var line : cmt.split("[\n\r\f]+")) {  //$NON-NLS-1$
 				it.newLine().append(line);
 			}
 			it.decreaseIndentation().newLine();
@@ -305,10 +292,10 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @return {@code true} if the block comment is added, {@code false} otherwise.
 	 */
 	protected static boolean generateBlockComment(String comment, PyAppendable it) {
-		final String cmt = comment == null ? null : comment.trim();
+		final var cmt = comment == null ? null : comment.trim();
 		if (!Strings.isEmpty(cmt)) {
 			assert cmt != null;
-			for (final String line : cmt.split("[\n\r\f]+")) {  //$NON-NLS-1$
+			for (final var line : cmt.split("[\n\r\f]+")) {  //$NON-NLS-1$
 				it.append("# ").append(line).newLine(); //$NON-NLS-1$
 			}
 			return true;
@@ -388,12 +375,11 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			it.increaseIndentation().newLine();
 			generateDocString(getTypeBuilder().getDocumentation(enumeration), it);
 			int i = 0;
-			for (final XtendMember item : enumeration.getMembers()) {
+			for (final var item : enumeration.getMembers()) {
 				if (context.getCancelIndicator().isCanceled()) {
 					return false;
 				}
-				if (item instanceof XtendEnumLiteral) {
-					final XtendEnumLiteral literal = (XtendEnumLiteral) item;
+				if (item instanceof XtendEnumLiteral literal) {
 					it.append(literal.getName()).append(" = "); //$NON-NLS-1$
 					it.append(Integer.toString(i));
 					it.newLine();
@@ -418,8 +404,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	protected boolean generatePythonConstructors(String container, List<? extends XtendMember> members,
 			PyAppendable it, IExtraLanguageGeneratorContext context) {
 		// Prepare field initialization
-		boolean hasConstructor = false;
-		for (final XtendMember member : members) {
+		var hasConstructor = false;
+		for (final var member : members) {
 			if (context.getCancelIndicator().isCanceled()) {
 				return false;
 			}
@@ -439,7 +425,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			if (fields.isEmpty()) {
 				it.append("pass"); //$NON-NLS-1$
 			} else {
-				for (final SarlField field : fields) {
+				for (final var field : fields) {
 					generatePythonField(field, it, context);
 				}
 			}
@@ -455,8 +441,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	protected JvmType newType(String pythonName) {
-		final JvmGenericType type = TypesFactory.eINSTANCE.createJvmGenericType();
-		final int index = pythonName.indexOf("."); //$NON-NLS-1$
+		final var type = TypesFactory.eINSTANCE.createJvmGenericType();
+		final var index = pythonName.indexOf("."); //$NON-NLS-1$
 		if (index <= 0) {
 			type.setSimpleName(pythonName);
 		} else {
@@ -477,7 +463,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 		if (!field.isStatic()) {
 			it.append("self."); //$NON-NLS-1$
 		}
-		final String fieldName = it.declareUniqueNameVariable(field, field.getName());
+		final var fieldName = it.declareUniqueNameVariable(field, field.getName());
 		it.append(fieldName);
 		it.append(" = "); //$NON-NLS-1$
 		if (field.getInitialValue() != null) {
@@ -503,12 +489,12 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			JvmTypeReference returnType, String comment, PyAppendable it, IExtraLanguageGeneratorContext context) {
 		it.append("def ").append(name); //$NON-NLS-1$
 		it.append("("); //$NON-NLS-1$
-		boolean firstParam = true;
+		var firstParam = true;
 		if (appendSelf) {
 			firstParam = false;
 			it.append(getExpressionGenerator().getExtraLanguageKeywordProvider().getThisKeywordLambda().apply());
 		}
-		for (final XtendParameter parameter : executable.getParameters()) {
+		for (final var parameter : executable.getParameters()) {
 			if (firstParam) {
 				firstParam = false;
 			} else {
@@ -517,10 +503,10 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			if (parameter.isVarArg()) {
 				it.append("*"); //$NON-NLS-1$
 			}
-			final String pname = it.declareUniqueNameVariable(parameter, parameter.getName());
+			final var pname = it.declareUniqueNameVariable(parameter, parameter.getName());
 			it.append(pname).append(" : ").append(parameter.getParameterType().getType()); //$NON-NLS-1$
 		}
-		final LightweightTypeReference actualReturnType = getExpectedType(executable, returnType);
+		final var actualReturnType = getExpectedType(executable, returnType);
 		it.append(")"); //$NON-NLS-1$
 		if (actualReturnType != null) {
 			it.append(" -> ").append(actualReturnType); //$NON-NLS-1$
@@ -540,19 +526,19 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 		it.decreaseIndentation().newLine();
 		//
 		// Generate the additional functions
-		final IActionPrototypeProvider prototypeProvider = getActionPrototypeProvider();
-		final QualifiedActionName actionName = prototypeProvider.createQualifiedActionName(
+		final var prototypeProvider = getActionPrototypeProvider();
+		final var actionName = prototypeProvider.createQualifiedActionName(
 				(JvmIdentifiableElement) getJvmModelAssociations().getPrimaryJvmElement(executable.getDeclaringType()),
 				name);
-		final InferredPrototype inferredPrototype = getActionPrototypeProvider().createPrototypeFromSarlModel(
+		final var inferredPrototype = getActionPrototypeProvider().createPrototypeFromSarlModel(
 				context.getActionPrototypeContext(getActionPrototypeProvider()),
 				actionName,
 				Utils.isVarArg(executable.getParameters()), executable.getParameters());
-		for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> types : inferredPrototype.getInferredParameterTypes().entrySet()) {
-			final List<InferredStandardParameter> argumentsToOriginal = types.getValue();
+		for (final var types : inferredPrototype.getInferredParameterTypes().entrySet()) {
+			final var argumentsToOriginal = types.getValue();
 			it.append("def ").append(name); //$NON-NLS-1$
 			it.append("(self"); //$NON-NLS-1$
-			for (final InferredStandardParameter parameter : argumentsToOriginal) {
+			for (final var parameter : argumentsToOriginal) {
 				if (!(parameter instanceof InferredValuedParameter)) {
 					it.append(", "); //$NON-NLS-1$
 					if (((XtendParameter) parameter.getParameter()).isVarArg()) {
@@ -571,15 +557,14 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				it.append("return "); //$NON-NLS-1$
 			}
 			it.append("self.").append(name).append("("); //$NON-NLS-1$ //$NON-NLS-2$
-			boolean first = true;
-			for (final InferredStandardParameter parameter : argumentsToOriginal) {
+			var first = true;
+			for (final var parameter : argumentsToOriginal) {
 				if (first) {
 					first = false;
 				} else {
 					it.append(", "); //$NON-NLS-1$
 				}
-				if (parameter instanceof InferredValuedParameter) {
-					final InferredValuedParameter valuedParameter = (InferredValuedParameter) parameter;
+				if (parameter instanceof InferredValuedParameter valuedParameter) {
 					generate(((SarlFormalParameter) valuedParameter.getParameter()).getDefaultValue(), null, it, context);
 				} else {
 					it.append(parameter.getName());
@@ -603,7 +588,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			return;
 		}
 		boolean first = true;
-		for (final Entry<String, List<Pair<XExpression, String>>> entry : guardEvaluators.entrySet()) {
+		for (final var entry : guardEvaluators.entrySet()) {
 			if (first) {
 				first = false;
 			} else {
@@ -614,9 +599,9 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			it.append("__(self, occurrence):"); //$NON-NLS-1$
 			it.increaseIndentation().newLine();
 			it.append("it = occurrence").newLine(); //$NON-NLS-1$
-			final String eventHandleName = it.declareUniqueNameVariable(new Object(), "__event_handles"); //$NON-NLS-1$
+			final var eventHandleName = it.declareUniqueNameVariable(new Object(), "__event_handles"); //$NON-NLS-1$
 			it.append(eventHandleName).append(" = list"); //$NON-NLS-1$
-			for (final Pair<XExpression, String> guardDesc : entry.getValue()) {
+			for (final var guardDesc : entry.getValue()) {
 				it.newLine();
 				if (guardDesc.getKey() == null) {
 					it.append(eventHandleName).append(".add(").append(guardDesc.getValue()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -649,8 +634,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	@Override
 	protected void generateImportStatement(QualifiedName qualifiedName, ExtraLanguageAppendable appendable,
 			IExtraLanguageGeneratorContext context) {
-		final String typeName = qualifiedName.getLastSegment();
-		final QualifiedName packageName = qualifiedName.skipLast(1);
+		final var typeName = qualifiedName.getLastSegment();
+		final var packageName = qualifiedName.skipLast(1);
 		appendable.append("from "); //$NON-NLS-1$
 		appendable.append(packageName.toString());
 		appendable.append(" import "); //$NON-NLS-1$
@@ -668,8 +653,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlClass clazz, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(clazz);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(clazz);
+		final var appendable = createAppendable(jvmType, context);
 		if (generateTypeDeclaration(
 				this.qualifiedNameProvider.getFullyQualifiedName(clazz).toString(),
 				clazz.getName(), clazz.isAbstract(),
@@ -677,7 +662,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				getTypeBuilder().getDocumentation(clazz),
 				true,
 				clazz.getMembers(), appendable, context, null)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(clazz);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(clazz);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -688,15 +673,15 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlInterface interf, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(interf);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(interf);
+		final var appendable = createAppendable(jvmType, context);
 		if (generateTypeDeclaration(
 				this.qualifiedNameProvider.getFullyQualifiedName(interf).toString(),
 				interf.getName(), true, interf.getExtends(),
 				getTypeBuilder().getDocumentation(interf),
 				true,
 				interf.getMembers(), appendable, context, null)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(interf);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(interf);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -707,10 +692,10 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlEnumeration enumeration, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(enumeration);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(enumeration);
+		final var appendable = createAppendable(jvmType, context);
 		if (generateEnumerationDeclaration(enumeration, appendable, context)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(enumeration);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(enumeration);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -721,15 +706,15 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlAnnotationType annotation, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(annotation);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(annotation);
+		final var appendable = createAppendable(jvmType, context);
 		if (generateTypeDeclaration(
 				this.qualifiedNameProvider.getFullyQualifiedName(annotation).toString(),
 				annotation.getName(), false, Collections.emptyList(),
 				getTypeBuilder().getDocumentation(annotation),
 				true,
 				annotation.getMembers(), appendable, context, null)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(annotation);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(annotation);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -740,8 +725,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlEvent event, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(event);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(event);
+		final var appendable = createAppendable(jvmType, context);
 		final List<JvmTypeReference> superTypes;
 		if (event.getExtends() != null) {
 			superTypes = Collections.singletonList(event.getExtends());
@@ -754,7 +739,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				getTypeBuilder().getDocumentation(event),
 				true,
 				event.getMembers(), appendable, context, null)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(event);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(event);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -764,16 +749,16 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param agent the agent.
 	 * @param context the context.
 	 */
-	protected void _generate(SarlAgent agent, IExtraLanguageGeneratorContext context) {
+	protected void var(SarlAgent agent, IExtraLanguageGeneratorContext context) {
 		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(agent);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var appendable = createAppendable(jvmType, context);
 		final List<JvmTypeReference> superTypes;
 		if (agent.getExtends() != null) {
 			superTypes = Collections.singletonList(agent.getExtends());
 		} else {
 			superTypes = Collections.singletonList(getTypeReferences().getTypeForName(Agent.class, agent));
 		}
-		final String qualifiedName = this.qualifiedNameProvider.getFullyQualifiedName(agent).toString();
+		final var qualifiedName = this.qualifiedNameProvider.getFullyQualifiedName(agent).toString();
 		if (generateTypeDeclaration(
 				qualifiedName,
 				agent.getName(), agent.isAbstract(), superTypes,
@@ -782,7 +767,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			agent.getMembers(), appendable, context, (it, context2) -> {
 				generateGuardEvaluators(qualifiedName, it, context2);
 			})) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(agent);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(agent);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -793,15 +778,15 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlBehavior behavior, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(behavior);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(behavior);
+		final var appendable = createAppendable(jvmType, context);
 		final List<JvmTypeReference> superTypes;
 		if (behavior.getExtends() != null) {
 			superTypes = Collections.singletonList(behavior.getExtends());
 		} else {
 			superTypes = Collections.singletonList(getTypeReferences().getTypeForName(Behavior.class, behavior));
 		}
-		final String qualifiedName = this.qualifiedNameProvider.getFullyQualifiedName(behavior).toString();
+		final var qualifiedName = this.qualifiedNameProvider.getFullyQualifiedName(behavior).toString();
 		if (generateTypeDeclaration(
 				qualifiedName,
 				behavior.getName(), behavior.isAbstract(), superTypes,
@@ -810,7 +795,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				behavior.getMembers(), appendable, context, (it, context2) -> {
 				generateGuardEvaluators(qualifiedName, it, context2);
 			})) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(behavior);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(behavior);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -821,8 +806,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlCapacity capacity, IExtraLanguageGeneratorContext context) {
-		final JvmDeclaredType jvmType = getJvmModelAssociations().getInferredType(capacity);
-		final PyAppendable appendable = createAppendable(jvmType, context);
+		final var jvmType = getJvmModelAssociations().getInferredType(capacity);
+		final var appendable = createAppendable(jvmType, context);
 		final List<? extends JvmTypeReference> superTypes;
 		if (!capacity.getExtends().isEmpty()) {
 			superTypes = capacity.getExtends();
@@ -835,7 +820,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				getTypeBuilder().getDocumentation(capacity),
 				true,
 				capacity.getMembers(), appendable, context, null)) {
-			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(capacity);
+			final var name = getQualifiedNameProvider().getFullyQualifiedName(capacity);
 			writeFile(name, appendable, context);
 		}
 	}
@@ -938,8 +923,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			// Static field
 			generatePythonField(field, it, context);
 		} else {
-			final String key = this.qualifiedNameProvider.getFullyQualifiedName(field.getDeclaringType()).toString();
-			final List<SarlField> fields = context.getMultimapValues(INSTANCE_VARIABLES_MEMENTO, key);
+			final var key = this.qualifiedNameProvider.getFullyQualifiedName(field.getDeclaringType()).toString();
+			final var fields = context.getMultimapValues(INSTANCE_VARIABLES_MEMENTO, key);
 			fields.add(field);
 		}
 	}
@@ -951,7 +936,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlAction action, PyAppendable it, IExtraLanguageGeneratorContext context) {
-		final String feature = getFeatureNameConverter(context).convertDeclarationName(action.getName(), action);
+		final var feature = getFeatureNameConverter(context).convertDeclarationName(action.getName(), action);
 		generateExecutable(feature, action, !action.isStatic(), action.isAbstract(),
 				action.getReturnType(),
 				getTypeBuilder().getDocumentation(action),
@@ -984,8 +969,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlBehaviorUnit handler, PyAppendable it, IExtraLanguageGeneratorContext context) {
-		final JvmTypeReference event = handler.getName();
-		final String handleName = it.declareUniqueNameVariable(handler, "__on_" + event.getSimpleName() + "__"); //$NON-NLS-1$ //$NON-NLS-2$
+		final var event = handler.getName();
+		final var handleName = it.declareUniqueNameVariable(handler, "__on_" + event.getSimpleName() + "__"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.append("def ").append(handleName).append("(self, occurrence):"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.increaseIndentation().newLine();
 		generateDocString(getTypeBuilder().getDocumentation(handler), it);
@@ -995,15 +980,15 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 			it.append("pass"); //$NON-NLS-1$
 		}
 		it.decreaseIndentation().newLine();
-		final String key = this.qualifiedNameProvider.getFullyQualifiedName(handler.getDeclaringType()).toString();
+		final var key = this.qualifiedNameProvider.getFullyQualifiedName(handler.getDeclaringType()).toString();
 		final Map<String, Map<String, List<Pair<XExpression, String>>>> map = context.getMapData(EVENT_GUARDS_MEMENTO);
 		Map<String, List<Pair<XExpression, String>>> submap = map.get(key);
 		if (submap == null) {
 			submap = new HashMap<>();
 			map.put(key, submap);
 		}
-		final String eventId = event.getIdentifier();
-		List<Pair<XExpression, String>> guards = submap.get(eventId);
+		final var eventId = event.getIdentifier();
+		var guards = submap.get(eventId);
 		if (guards == null) {
 			guards = new ArrayList<>();
 			submap.put(eventId, guards);
@@ -1032,23 +1017,23 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	protected void _before(SarlCapacityUses uses, IExtraLanguageGeneratorContext context) {
 		// Rename the function in order to produce the good features at the calls.
-		for (final JvmTypeReference capacity : uses.getCapacities()) {
-			final JvmType type = capacity.getType();
-			if (type instanceof JvmDeclaredType) {
-				computeCapacityFunctionMarkers((JvmDeclaredType) type);
+		for (final var capacity : uses.getCapacities()) {
+			final var type = capacity.getType();
+			if (type instanceof JvmDeclaredType cvalue) {
+				computeCapacityFunctionMarkers(cvalue);
 			}
 		}
 	}
 
 	private void computeCapacityFunctionMarkers(JvmDeclaredType leafType) {
-		final Map<JvmOperation, String> mapping = new HashMap<>();
-		final LinkedList<JvmDeclaredType> buffer = new LinkedList<>();
-		final Set<String> processed = new TreeSet<>();
+		final var mapping = new HashMap<JvmOperation, String>();
+		final var buffer = new LinkedList<JvmDeclaredType>();
+		final var processed = new TreeSet<String>();
 		buffer.addLast(leafType);
 		while (!buffer.isEmpty()) {
-			final JvmDeclaredType type = buffer.removeFirst();
-			boolean markOne = false;
-			for (final JvmOperation operation : type.getDeclaredOperations()) {
+			final var type = buffer.removeFirst();
+			var markOne = false;
+			for (final var operation : type.getDeclaredOperations()) {
 				if (!mapping.containsKey(operation)) {
 					markOne = true;
 					mapping.put(operation, "getSkill(" + type.getSimpleName() //$NON-NLS-1$
@@ -1056,10 +1041,10 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				}
 			}
 			if (markOne) {
-				for (final JvmTypeReference superTypeReference : type.getExtendedInterfaces()) {
+				for (final var superTypeReference : type.getExtendedInterfaces()) {
 					if (processed.add(superTypeReference.getIdentifier())
-						&& superTypeReference.getType() instanceof JvmDeclaredType) {
-						buffer.addLast((JvmDeclaredType) superTypeReference.getType());
+						&& superTypeReference.getType() instanceof JvmDeclaredType cvalue) {
+						buffer.addLast(cvalue);
 					}
 				}
 			}
@@ -1068,12 +1053,12 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	}
 
 	private void markCapacityFunctions(PyAppendable it) {
-		final Map<JvmOperation, String> mapping = this.useCapacityMapping;
+		final var mapping = this.useCapacityMapping;
 		this.useCapacityMapping = new HashMap<>();
-		final ImportManager imports = it.getImportManager();
-		for (final Entry<JvmOperation, String> entry : mapping.entrySet()) {
-			final JvmOperation operation = entry.getKey();
-			final JvmDeclaredType type = operation.getDeclaringType();
+		final var imports = it.getImportManager();
+		for (final var entry : mapping.entrySet()) {
+			final var operation = entry.getKey();
+			final var type = operation.getDeclaringType();
 			imports.addImportFor(type);
 			it.declareVariable(operation, entry.getValue());
 		}

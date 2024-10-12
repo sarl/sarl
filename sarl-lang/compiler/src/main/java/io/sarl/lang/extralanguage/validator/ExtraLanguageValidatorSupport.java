@@ -33,7 +33,6 @@ import org.eclipse.xtext.validation.AbstractDeclarativeValidator;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
-import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.eclipse.xtext.xtype.XtypePackage;
@@ -53,7 +52,7 @@ public class ExtraLanguageValidatorSupport extends AbstractDeclarativeValidator 
 
 	@Override
 	protected List<EPackage> getEPackages() {
-		final List<EPackage> result = new ArrayList<>(super.getEPackages());
+		final var result = new ArrayList<>(super.getEPackages());
 		result.add(io.sarl.lang.sarl.SarlPackage.eINSTANCE);
 		result.add(XtendPackage.eINSTANCE);
 		result.add(XbasePackage.eINSTANCE);
@@ -74,12 +73,12 @@ public class ExtraLanguageValidatorSupport extends AbstractDeclarativeValidator 
 	 */
 	@Check(CheckType.NORMAL)
 	public void checkExtraLanguageRules(EObject currentObject) {
-		final List<AbstractExtraLanguageValidator> validators = this.validatorProvider.getValidators(
+		final var validators = this.validatorProvider.getValidators(
 				currentObject.eResource());
 		if (!validators.isEmpty()) {
-			for (final AbstractExtraLanguageValidator validator : validators) {
-				final ValidationMessageAcceptor acceptor = getMessageAcceptor();
-				final StateAccess stateAccess = setMessageAcceptor(acceptor);
+			for (final var validator : validators) {
+				final var acceptor = getMessageAcceptor();
+				final var stateAccess = setMessageAcceptor(acceptor);
 				validator.validate(stateAccess, acceptor);
 			}
 		}

@@ -24,7 +24,7 @@ package io.sarl.docs.generator.markdown;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -32,8 +32,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
@@ -61,7 +59,6 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import io.sarl.docs.generator.bugfixes.FileSystemAddons;
@@ -220,11 +217,11 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	@Override
 	public String extractPageTitle(String content) {
-		final Pattern sectionPattern = Pattern.compile(
+		final var sectionPattern = Pattern.compile(
 				isAutoSectionNumbering() ? SECTION_PATTERN_AUTONUMBERING : SECTION_PATTERN_NO_AUTONUMBERING,
 						Pattern.MULTILINE);
-		final Matcher matcher = sectionPattern.matcher(content);
-		final IntegerRange depthRange = getOutlineDepthRange();
+		final var matcher = sectionPattern.matcher(content);
+		final var depthRange = getOutlineDepthRange();
 		final int titleGroupId;
 		if (isAutoSectionNumbering()) {
 			titleGroupId = 3;
@@ -232,10 +229,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			titleGroupId = 2;
 		}
 		while (matcher.find()) {
-			final String prefix = matcher.group(1);
-			final int clevel = prefix.length();
+			final var prefix = matcher.group(1);
+			final var clevel = prefix.length();
 			if (clevel < depthRange.getStart()) {
-				final String title = matcher.group(titleGroupId);
+				final var title = matcher.group(titleGroupId);
 				if (!Strings.isEmpty(title)) {
 					return title;
 				}
@@ -580,9 +577,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		Function<Method, String> formatter = null;
 		if (isAddLinkToOperationName()) {
 			formatter = it -> {
-				final URL url = findOperationLink(it);
+				final var url = findOperationLink(it);
 				if (url != null) {
-					final StringBuilder name = new StringBuilder();
+					final var name = new StringBuilder();
 					name.append("[").append(it.getName()).append("]("); //$NON-NLS-1$//$NON-NLS-2$
 					name.append(url.toExternalForm()).append(")"); //$NON-NLS-1$
 					return name.toString();
@@ -595,8 +592,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	@Override
 	protected String postProcessingTransformation(String content, boolean validationOfInternalLinks) {
-		String result = updateOutline(content);
-		final ReferenceContext references = validationOfInternalLinks ? extractReferencableElements(result) : null;
+		var result = updateOutline(content);
+		final var references = validationOfInternalLinks ? extractReferencableElements(result) : null;
 		result = transformMardownLinks(result, references);
 		result = transformHtmlLinks(result, references);
 		result = transformInformationNotes(result);
@@ -611,22 +608,22 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	@SuppressWarnings("static-method")
 	protected String transformInformationNotes(String text) {
-		final String info = Strings.emptyIfNull(System.getProperty(INFO_NOTE_PATTERN_PROPERTY));
-		final String warning = Strings.emptyIfNull(System.getProperty(WARNING_NOTE_PATTERN_PROPERTY));
-		final String danger = Strings.emptyIfNull(System.getProperty(DANGER_NOTE_PATTERN_PROPERTY));
+		final var info = Strings.emptyIfNull(System.getProperty(INFO_NOTE_PATTERN_PROPERTY));
+		final var warning = Strings.emptyIfNull(System.getProperty(WARNING_NOTE_PATTERN_PROPERTY));
+		final var danger = Strings.emptyIfNull(System.getProperty(DANGER_NOTE_PATTERN_PROPERTY));
 		if (Strings.isEmpty(info) && Strings.isEmpty(warning) && Strings.isEmpty(danger)) {
 			return text;
 		}
 
-		final Pattern startPattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN1);
-		final Pattern continuePattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN2);
-		final StringBuilder result = new StringBuilder();
+		final var startPattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN1);
+		final var continuePattern = Pattern.compile(MARKDOWN_INFORMATION_NOTE_PATTERN2);
+		final var result = new StringBuilder();
 		String currentName = null;
 		StringBuilder currentNote = null;
-		for (final String line : text.split("\r*\n\r*")) { //$NON-NLS-1$
+		for (final var line : text.split("\r*\n\r*")) { //$NON-NLS-1$
 			String newLine = null;
 			if (currentName == null) {
-				final Matcher matcher = startPattern.matcher(line);
+				final var matcher = startPattern.matcher(line);
 				if (matcher.matches()) {
 					currentName = matcher.group(1).trim();
 					currentNote = new StringBuilder(matcher.group(2).trim());
@@ -635,7 +632,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					newLine = line;
 				}
 			} else {
-				final Matcher matcher = continuePattern.matcher(line);
+				final var matcher = continuePattern.matcher(line);
 				if (matcher.matches()) {
 					assert currentNote != null;
 					currentNote.append(" ").append(matcher.group(1).trim()); //$NON-NLS-1$
@@ -654,11 +651,11 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private static void updateBuffer(StringBuilder result, String name, StringBuilder note, String info, String warning, String danger) {
 		if (!Strings.isEmpty(name) && note != null) {
-			final int type = parseType(name);
+			final var type = parseType(name);
 			switch (type) {
 			case 0:
 				if (!Strings.isEmpty(info)) {
-					String res = info.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					var res = info.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
 					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
@@ -667,7 +664,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				break;
 			case 1:
 				if (!Strings.isEmpty(warning)) {
-					String res = warning.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					var res = warning.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
 					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
@@ -676,7 +673,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				break;
 			case 2:
 				if (!Strings.isEmpty(danger)) {
-					String res = danger.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
+					var res = danger.replaceAll(Pattern.quote("$1"), Matcher.quoteReplacement(name)); //$NON-NLS-1$
 					res = res.replaceAll(Pattern.quote("$2"), Matcher.quoteReplacement(note.toString())); //$NON-NLS-1$
 					updateBuffer(result, res);
 				} else {
@@ -696,7 +693,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	}
 
 	private static int parseType(String name) {
-		final String label = name.toLowerCase();
+		final var label = name.toLowerCase();
 		if (WARNING_LABELS.contains(label)) {
 			return 1;
 		}
@@ -712,43 +709,43 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the referencables objects
 	 */
 	protected ReferenceContext extractReferencableElements(String text) {
-		final ReferenceContext context = new ReferenceContext();
+		final var context = new ReferenceContext();
 
 		// Visit the links and record the transformations
-		final MutableDataSet options = new MutableDataSet();
-		final Parser parser = Parser.builder(options).build();
-		final Node document = parser.parse(text);
-		final Pattern pattern = Pattern.compile(SECTION_PATTERN_AUTONUMBERING);
-		NodeVisitor visitor = new NodeVisitor(
+		final var options = new MutableDataSet();
+		final var parser = Parser.builder(options).build();
+		final var document = parser.parse(text);
+		final var pattern = Pattern.compile(SECTION_PATTERN_AUTONUMBERING);
+		var visitor = new NodeVisitor(
 				new VisitHandler<>(Paragraph.class, it -> {
-					final CharSequence paragraphText = it.getContentChars();
-					final Matcher matcher = pattern.matcher(paragraphText);
+					final var paragraphText = it.getContentChars();
+					final var matcher = pattern.matcher(paragraphText);
 					if (matcher.find()) {
-						final String number = matcher.group(2);
-						final String title = matcher.group(3);
-						final String key1 = computeHeaderId(number, title);
-						final String key2 = computeHeaderId(null, title);
+						final var number = matcher.group(2);
+						final var title = matcher.group(3);
+						final var key1 = computeHeaderId(number, title);
+						final var key2 = computeHeaderId(null, title);
 						context.registerSection(key1, key2, title);
 					}
 				}));
 		visitor.visitChildren(document);
 
-		final Pattern pattern1 = Pattern.compile(SECTION_PATTERN_TITLE_EXTRACTOR_WITHOUT_MD_PREFIX);
+		final var pattern1 = Pattern.compile(SECTION_PATTERN_TITLE_EXTRACTOR_WITHOUT_MD_PREFIX);
 		visitor = new NodeVisitor(
 				new VisitHandler<>(Heading.class, it -> {
-					String key = it.getAnchorRefId();
-					String title = it.getText().toString();
+					var key = it.getAnchorRefId();
+					var title = it.getText().toString();
 					// Sometimes, the title already contains the section number.
 					// It should be removed.
-					final Matcher matcher = pattern1.matcher(title);
+					final var matcher = pattern1.matcher(title);
 					if (matcher.find()) {
-						final String number = matcher.group(1);
+						final var number = matcher.group(1);
 						title = matcher.group(2);
 						if (Strings.isEmpty(key)) {
 							key = computeHeaderId(number, title);
 						}
 					}
-					final String key2 = computeHeaderId(null, title);
+					final var key2 = computeHeaderId(null, title);
 					if (Strings.isEmpty(key)) {
 						key = key2;
 					}
@@ -771,10 +768,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		}
 
 		// Prepare replacement data structures
-		final Map<String, String> replacements = new TreeMap<>();
+		final var replacements = new TreeMap<String, String>();
 
 		// Visit the links and record the transformations
-		final org.jsoup.select.NodeVisitor visitor = new org.jsoup.select.NodeVisitor() {
+		final var visitor = new org.jsoup.select.NodeVisitor() {
 			@Override
 			public void tail(org.jsoup.nodes.Node node, int depth) {
 				//
@@ -782,15 +779,14 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 			@Override
 			public void head(org.jsoup.nodes.Node node, int depth) {
-				if (node instanceof Element) {
-					final Element tag = (Element) node;
+				if (node instanceof Element tag) {
 					if ("a".equals(tag.nodeName()) && tag.hasAttr("href")) { //$NON-NLS-1$ //$NON-NLS-2$
-						final String href = tag.attr("href"); //$NON-NLS-1$
+						final var href = tag.attr("href"); //$NON-NLS-1$
 						if (!Strings.isEmpty(href)) {
-							URL url = FileSystem.convertStringToURL(href, true);
+							var url = FileSystem.convertStringToURL(href, true);
 							url = transformURL(url, -1, references);
 							if (url != null) {
-								final String newUrl = convertURLToString(url);
+								final var newUrl = convertURLToString(url);
 								if (!Strings.isEmpty(newUrl) && !Objects.equals(href, newUrl)) {
 									replacements.put(href, newUrl);
 								}
@@ -800,15 +796,15 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				}
 			}
 		};
-		final Document htmlDocument = Jsoup.parse(content);
+		final var htmlDocument = Jsoup.parse(content);
 		htmlDocument.traverse(visitor);
 
 		// Apply the replacements
 		if (!replacements.isEmpty()) {
-			String buffer = content;
-			for (final Entry<String, String> entry : replacements.entrySet()) {
-				final String source = entry.getKey();
-				final String dest = entry.getValue();
+			var buffer = content;
+			for (final var entry : replacements.entrySet()) {
+				final var source = entry.getKey();
+				final var dest = entry.getValue();
 				buffer = buffer.replaceAll(Pattern.quote(source), Matcher.quoteReplacement(dest));
 			}
 			return buffer;
@@ -828,8 +824,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		}
 
 		// Prepare replacement data structures
-		final Map<BasedSequence, String> replacements = new TreeMap<>((cmp1, cmp2) -> {
-			final int cmp = Integer.compare(cmp2.getStartOffset(), cmp1.getStartOffset());
+		final var replacements = new TreeMap<BasedSequence, String>((cmp1, cmp2) -> {
+			final var cmp = Integer.compare(cmp2.getStartOffset(), cmp1.getStartOffset());
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -837,12 +833,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		});
 
 		// Visit the links and record the transformations
-		final MutableDataSet options = new MutableDataSet();
-		final Parser parser = Parser.builder(options).build();
-		final Node document = parser.parse(content);
-		final NodeVisitor visitor = new NodeVisitor(
+		final var options = new MutableDataSet();
+		final var parser = Parser.builder(options).build();
+		final var document = parser.parse(content);
+		final var visitor = new NodeVisitor(
 				new VisitHandler<>(Link.class, it -> {
-					URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
+					var url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
 					url = transformURL(url, it.getLineNumber(), references);
 					if (url != null) {
 						replacements.put(it.getUrl(), convertURLToString(url));
@@ -852,9 +848,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 		// Apply the replacements
 		if (!replacements.isEmpty()) {
-			final StringBuilder buffer = new StringBuilder(content);
-			for (final Entry<BasedSequence, String> entry : replacements.entrySet()) {
-				final BasedSequence seq = entry.getKey();
+			final var buffer = new StringBuilder(content);
+			for (final var entry : replacements.entrySet()) {
+				final var seq = entry.getKey();
 				buffer.replace(seq.getStartOffset(), seq.getEndOffset(), entry.getValue());
 			}
 			return buffer.toString();
@@ -869,9 +865,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	static String convertURLToString(URL url) {
 		if (URISchemeType.FILE.isURL(url)) {
-			final StringBuilder externalForm = new StringBuilder();
+			final var externalForm = new StringBuilder();
 			externalForm.append(url.getPath());
-			final String ref = url.getRef();
+			final var ref = url.getRef();
 			if (!Strings.isEmpty(ref)) {
 				externalForm.append("#").append(ref); //$NON-NLS-1$
 			}
@@ -894,30 +890,30 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	protected URL transformURL(URL link, int line, ReferenceContext references) {
 		if (URISchemeType.FILE.isURL(link)) {
-			File filename = FileSystem.convertURLToFile(link);
+			var filename = FileSystem.convertURLToFile(link);
 			if (Strings.isEmpty(filename.getName())) {
 				// This is a link to the local document.
-				final String anchor = transformURLAnchor(filename, line, link.getRef(), references);
-				final URL url = FileSystemAddons.convertFileToURL(filename, true);
+				final var anchor = transformURLAnchor(filename, line, link.getRef(), references);
+				final var url = FileSystemAddons.convertFileToURL(filename, true);
 				if (!Strings.isEmpty(anchor)) {
 					try {
-						return new URL(url.toExternalForm() + "#" + anchor); //$NON-NLS-1$
-					} catch (MalformedURLException e) {
+						return new URI(url.toExternalForm() + "#" + anchor).toURL(); //$NON-NLS-1$
+					} catch (Exception e) {
 						//
 					}
 				}
 				return url;
 			}
 			// This is a link to another document.
-			final String extension = FileSystem.extension(filename);
+			final var extension = FileSystem.extension(filename);
 			if (isMarkdownFileExtension(extension)) {
 				filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
-				final String anchor = transformURLAnchor(filename, line, link.getRef(), null);
-				final URL url = FileSystemAddons.convertFileToURL(filename, true);
+				final var anchor = transformURLAnchor(filename, line, link.getRef(), null);
+				final var url = FileSystemAddons.convertFileToURL(filename, true);
 				if (!Strings.isEmpty(anchor)) {
 					try {
-						return new URL(url.toExternalForm() + "#" + anchor); //$NON-NLS-1$
-					} catch (MalformedURLException e) {
+						return new URI(url.toExternalForm() + "#" + anchor).toURL(); //$NON-NLS-1$
+					} catch (Exception e) {
 						//
 					}
 				}
@@ -938,7 +934,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	@SuppressWarnings("static-method")
 	protected String transformURLAnchor(File file, int line, String anchor, ReferenceContext references) {
-		String anc = anchor;
+		var anc = anchor;
 		if (references != null) {
 			anc = references.validateAnchor(anc, line);
 		}
@@ -951,7 +947,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return {@code true} if the extension is for a Markdown file.
 	 */
 	public static boolean isMarkdownFileExtension(String extension) {
-		for (final String ext : MARKDOWN_FILE_EXTENSIONS) {
+		for (final var ext : MARKDOWN_FILE_EXTENSIONS) {
 			if (Strings.equal(ext, extension)) {
 				return true;
 			}
@@ -965,22 +961,22 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the content with expended outline.
 	 */
 	protected String updateOutline(String content) {
-		final Pattern sectionPattern = Pattern.compile(
+		final var sectionPattern = Pattern.compile(
 				isAutoSectionNumbering() ? SECTION_PATTERN_AUTONUMBERING : SECTION_PATTERN_NO_AUTONUMBERING,
 						Pattern.MULTILINE);
-		final Matcher matcher = sectionPattern.matcher(content);
+		final var matcher = sectionPattern.matcher(content);
 
-		final Set<String> identifiers = new TreeSet<>();
-		final StringBuilder outline = new StringBuilder();
+		final var identifiers = new TreeSet<String>();
+		final var outline = new StringBuilder();
 		outline.append("\n"); //$NON-NLS-1$
-		final String outlineStyleId = getOutlineStyleId();
-		final boolean styledOutline = !Strings.isEmpty(outlineStyleId);
+		final var outlineStyleId = getOutlineStyleId();
+		final var styledOutline = !Strings.isEmpty(outlineStyleId);
 		if (styledOutline) {
 			outline.append("<ul class=\"").append(Strings.convertToJavaString(outlineStyleId)); //$NON-NLS-1$
 			outline.append("\" id=\"").append(Strings.convertToJavaString(outlineStyleId)); //$NON-NLS-1$
 			outline.append("\">\n\n"); //$NON-NLS-1$
 		}
-		final IntegerRange outlineDepthRange = getOutlineDepthRange();
+		final var outlineDepthRange = getOutlineDepthRange();
 
 		final StringBuffer output;
 		final SectionNumber sections;
@@ -995,21 +991,21 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			titleGroupId = 2;
 		}
 
-		int prevLevel = 0;
-		int nbOpened = 0;
+		var prevLevel = 0;
+		var nbOpened = 0;
 
 		while (matcher.find()) {
-			final String prefix = matcher.group(1);
-			final int clevel = prefix.length();
+			final var prefix = matcher.group(1);
+			final var clevel = prefix.length();
 			if (outlineDepthRange.contains(clevel)) {
-				final int relLevel = clevel - outlineDepthRange.getStart();
-				final String title = matcher.group(titleGroupId);
+				final var relLevel = clevel - outlineDepthRange.getStart();
+				final var title = matcher.group(titleGroupId);
 				String sectionId = matcher.group(titleGroupId + 1);
 
 				if (output != null) {
 					assert sections != null;
 
-					String sectionNumber = matcher.group(2);
+					var sectionNumber = matcher.group(2);
 					if (!Strings.isEmpty(sectionNumber)) {
 						sections.setFromString(sectionNumber, relLevel + 1);
 					} else {
@@ -1020,8 +1016,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					if (Strings.isEmpty(sectionId)) {
 						sectionId = computeHeaderId(sectionNumber, title);
 						if (!identifiers.add(sectionId)) {
-							int idNum = 1;
-							String nbId = sectionId + "-" + idNum; //$NON-NLS-1$
+							var idNum = 1;
+							var nbId = sectionId + "-" + idNum; //$NON-NLS-1$
 							while (!identifiers.add(nbId)) {
 								++idNum;
 								nbId = sectionId + "-" + idNum; //$NON-NLS-1$
@@ -1034,12 +1030,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 					if (styledOutline && (relLevel > 0 || prevLevel > 0) && relLevel != prevLevel) {
 						if (relLevel > prevLevel) {
-							for (int i = prevLevel; i < relLevel; ++i) {
+							for (var i = prevLevel; i < relLevel; ++i) {
 								outline.append("<ul>\n"); //$NON-NLS-1$
 								++nbOpened;
 							}
 						} else {
-							for (int i = relLevel; i < prevLevel; ++i) {
+							for (var i = relLevel; i < prevLevel; ++i) {
 								outline.append("</ul>\n"); //$NON-NLS-1$
 								--nbOpened;
 							}
@@ -1051,8 +1047,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					if (Strings.isEmpty(sectionId)) {
 						sectionId = computeHeaderId(null, title);
 						if (!identifiers.add(sectionId)) {
-							int idNum = 1;
-							String nbId = sectionId + "-" + idNum; //$NON-NLS-1$
+							var idNum = 1;
+							var nbId = sectionId + "-" + idNum; //$NON-NLS-1$
 							while (!identifiers.add(nbId)) {
 								++idNum;
 								nbId = sectionId + "-" + idNum; //$NON-NLS-1$
@@ -1077,14 +1073,14 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 		outline.append("\n"); //$NON-NLS-1$
 		if (styledOutline) {
-			for (int i = 0; i <= nbOpened; ++i) {
+			for (var i = 0; i <= nbOpened; ++i) {
 				outline.append("</ul>\n"); //$NON-NLS-1$
 			}
 		}
 
-		final String outlineTag = getDocumentParser().getOutlineOutputTag();
+		final var outlineTag = getDocumentParser().getOutlineOutputTag();
 		if (isOutlineGeneration()) {
-			final String externalMarker = getOutlineExternalMarker();
+			final var externalMarker = getOutlineExternalMarker();
 			if (!Strings.isEmpty(externalMarker)) {
 				return newContent.replaceAll(Pattern.quote(outlineTag), Matcher.quoteReplacement(externalMarker));
 			}
@@ -1105,7 +1101,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		if (Strings.isEmpty(headerNumber)) {
 			return computeHeaderIdForText(Strings.emptyIfNull(headerText));
 		}
-		final String nb = computeHeaderIdForNumber(headerNumber);
+		final var nb = computeHeaderIdForNumber(headerNumber);
 		return nb + "-" + computeHeaderIdForText(Strings.emptyIfNull(headerText)); //$NON-NLS-1$
 	}
 
@@ -1118,7 +1114,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @since 0.12
 	 */
 	private String computeHeaderIdForNumber(String header) {
-		String id = header;
+		var id = header;
 		if (isKramdownFix()) {
 			id = id .replaceAll("\\.", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -1141,7 +1137,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @since 0.12
 	 */
 	private static String computeHeaderIdForText(String header) {
-		String id = header.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+		var id = header.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.toLowerCase();
 		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.replaceFirst("[^a-zA-Z0-9]+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1173,7 +1169,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			outline.append(title);
 			outline.append("</a></li>"); //$NON-NLS-1$
 		} else {
-			final String prefix = "*"; //$NON-NLS-1$
+			final var prefix = "*"; //$NON-NLS-1$
 			final String entry;
 			outline.append("> "); //$NON-NLS-1$
 			indent(outline, level - 1, "\t"); //$NON-NLS-1$
@@ -1216,7 +1212,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param character the string for a single indentation.
 	 */
 	protected static void indent(StringBuilder buffer, int number, String character) {
-		for (int i = 0; i < number; ++i) {
+		for (var i = 0; i < number; ++i) {
 			buffer.append(character);
 		}
 	}
@@ -1225,29 +1221,27 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	protected List<DynamicValidationComponent> getSpecificValidationComponents(String text, File inputFile,
 			File rootFolder,
 			DynamicValidationContext context) {
-		final MutableDataSet options = new MutableDataSet();
-		final Parser parser = Parser.builder(options).build();
-		final Node document = parser.parse(text);
-		final List<DynamicValidationComponent> validators = new ArrayList<>();
+		final var options = new MutableDataSet();
+		final var parser = Parser.builder(options).build();
+		final var document = parser.parse(text);
+		final var validators = new ArrayList<DynamicValidationComponent>();
 		File cfile;
 		try {
 			cfile = FileSystem.makeRelative(inputFile, rootFolder);
 		} catch (IOException exception) {
 			cfile = inputFile.getParentFile();
 		}
-		final File currentFile = cfile;
-		final NodeVisitor visitor = new NodeVisitor(
+		final var currentFile = cfile;
+		final var visitor = new NodeVisitor(
 				new VisitHandler<>(Link.class, it -> {
-					final Iterable<DynamicValidationComponent> components = createValidatorComponents(it,
-							currentFile, context);
-					for (final DynamicValidationComponent component : components) {
+					final var components = createValidatorComponents(it, currentFile, context);
+					for (final var component : components) {
 						validators.add(component);
 					}
 				}),
 				new VisitHandler<>(Image.class, it -> {
-					final Iterable<DynamicValidationComponent> components = createValidatorComponents(it,
-							currentFile, context);
-					for (final DynamicValidationComponent component : components) {
+					final var components = createValidatorComponents(it, currentFile, context);
+					for (final var component : components) {
 						validators.add(component);
 					}
 				}));
@@ -1261,10 +1255,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the line number for the node.
 	 */
 	protected static int computeLineNo(Node node) {
-		final int offset = node.getStartOffset();
-		final BasedSequence seq = node.getDocument().getChars();
-		int tmpOffset = seq.endOfLine(0);
-		int lineno = 1;
+		final var offset = node.getStartOffset();
+		final var seq = node.getDocument().getChars();
+		var tmpOffset = seq.endOfLine(0);
+		var lineno = 1;
 		while (tmpOffset < offset) {
 			++lineno;
 			tmpOffset = seq.endOfLineAnyEOL(tmpOffset + seq.eolStartLength(tmpOffset));
@@ -1281,12 +1275,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	protected Iterable<DynamicValidationComponent> createValidatorComponents(Image it, File currentFile,
 			DynamicValidationContext context) {
-		final Collection<DynamicValidationComponent> components = new ArrayList<>();
+		final var components = new ArrayList<DynamicValidationComponent>();
 		if (isLocalImageReferenceValidation()) {
-			final int lineno = computeLineNo(it);
-			final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
+			final var lineno = computeLineNo(it);
+			final var url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
 			if (URISchemeType.FILE.isURL(url)) {
-				final DynamicValidationComponent component = createLocalImageValidatorComponent(
+				final var component = createLocalImageValidatorComponent(
 						it, url, lineno, currentFile, context);
 				if (component != null) {
 					components.add(component);
@@ -1305,17 +1299,17 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	protected Iterable<DynamicValidationComponent> createValidatorComponents(Link it, File currentFile,
 			DynamicValidationContext context) {
-		final Collection<DynamicValidationComponent> components = new ArrayList<>();
+		final var components = new ArrayList<DynamicValidationComponent>();
 		if (Strings.equal(":", it.getUrl().toStringOrNull())) { //$NON-NLS-1$
 			// Special case: the hyperlink is not referencing something
 			return components;
 		}
 		if (isLocalFileReferenceValidation() || isRemoteReferenceValidation()) {
-			final int lineno = computeLineNo(it);
-			final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
+			final var lineno = computeLineNo(it);
+			final var url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
 			if (URISchemeType.HTTP.isURL(url) || URISchemeType.HTTPS.isURL(url) || URISchemeType.FTP.isURL(url)) {
 				if (isRemoteReferenceValidation()) {
-					final Collection<DynamicValidationComponent> newComponents = createRemoteReferenceValidatorComponents(
+					final var newComponents = createRemoteReferenceValidatorComponents(
 							it, url, lineno, currentFile, context);
 					if (newComponents != null && !newComponents.isEmpty()) {
 						components.addAll(newComponents);
@@ -1323,7 +1317,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				}
 			} else if (URISchemeType.FILE.isURL(url)) {
 				if (isLocalFileReferenceValidation()) {
-					final Collection<DynamicValidationComponent> newComponents = createLocalFileValidatorComponents(
+					final var newComponents = createLocalFileValidatorComponents(
 							it, url, lineno, currentFile, context);
 					if (newComponents != null && !newComponents.isEmpty()) {
 						components.addAll(newComponents);
@@ -1346,11 +1340,11 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	@SuppressWarnings("static-method")
 	protected DynamicValidationComponent createLocalImageValidatorComponent(Image it, URL url, int lineno,
 			File currentFile, DynamicValidationContext context) {
-		File fn = FileSystem.convertURLToFile(url);
+		var fn = FileSystem.convertURLToFile(url);
 		if (!fn.isAbsolute()) {
 			fn = FileSystem.join(currentFile.getParentFile(), fn);
 		}
-		final File filename = fn;
+		final var filename = fn;
 		return new DynamicValidationComponent() {
 			@Override
 			public String functionName() {
@@ -1376,10 +1370,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	@SuppressWarnings("static-method")
 	protected Collection<DynamicValidationComponent> createLocalFileValidatorComponents(Link it, URL url, int lineno,
 			File currentFile, DynamicValidationContext context) {
-		File fn = FileSystem.convertURLToFile(url);
+		var fn = FileSystem.convertURLToFile(url);
 		if (Strings.isEmpty(fn.getName())) {
 			// Special case: the URL should point to a anchor in the current document.
-			final String linkRef = url.getRef();
+			final var linkRef = url.getRef();
 			if (!Strings.isEmpty(linkRef)) {
 				return Arrays.asList(new DynamicValidationComponent() {
 					@Override
@@ -1405,8 +1399,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		if (!fn.isAbsolute()) {
 			fn = FileSystem.join(currentFile.getParentFile(), fn);
 		}
-		final File filename = fn;
-		final String extension = FileSystem.extension(filename);
+		final var filename = fn;
+		final var extension = FileSystem.extension(filename);
 		if (isMarkdownFileExtension(extension) || isHtmlFileExtension(extension)) {
 			// Special case: the file may be a HTML or a Markdown file.
 			final DynamicValidationComponent existence = new DynamicValidationComponent() {

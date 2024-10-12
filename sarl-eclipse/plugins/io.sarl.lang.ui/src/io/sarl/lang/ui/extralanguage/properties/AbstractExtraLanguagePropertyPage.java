@@ -66,7 +66,7 @@ public abstract class AbstractExtraLanguagePropertyPage extends PropertyAndPrefe
 
 	@Override
 	public void createControl(Composite parent) {
-		final IWorkbenchPreferenceContainer container = (IWorkbenchPreferenceContainer) getContainer();
+		final var container = (IWorkbenchPreferenceContainer) getContainer();
 		this.builderConfigurationBlock.setProject(getProject());
 		this.builderConfigurationBlock.setWorkbenchPreferenceContainer(container);
 		this.builderConfigurationBlock.setStatusChangeListener(getNewStatusChangedListener());

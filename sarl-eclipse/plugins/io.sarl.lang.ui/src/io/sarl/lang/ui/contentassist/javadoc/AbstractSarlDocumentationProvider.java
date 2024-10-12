@@ -97,12 +97,12 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 
 	@Override
 	public void generateDocumentationIfPossible(IXtextDocument document, ITextSelection selection) throws Exception {
-		final XtextResource resource = reloadResource(document);
+		final var resource = reloadResource(document);
 
-		final EObject semanticObject = findSemanticObject(resource, selection);
+		final var semanticObject = findSemanticObject(resource, selection);
 
 		if (isValidElement(semanticObject)) {
-			final String documentation = this.typeBuilder.getDocumentation(semanticObject);
+			final var documentation = this.typeBuilder.getDocumentation(semanticObject);
 			if (Strings.isNullOrEmpty(documentation)) {
 				generateDocumentation(document, selection, resource, semanticObject);
 			}
@@ -110,10 +110,10 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	}
 
 	private EObject findSemanticObject(XtextResource resource, ITextSelection selection) {
-		final IParseResult parseResult = resource.getParseResult();
+		final var parseResult = resource.getParseResult();
 		if (parseResult != null) {
-			final ICompositeNode rootNode = parseResult.getRootNode();
-			ILeafNode node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset());
+			final var rootNode = parseResult.getRootNode();
+			var node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset());
 			if (node == null) {
 				return null;
 			}
@@ -127,9 +127,9 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 				node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset() - 1);
 			}
 			if (node != null) {
-				EObject currentSemanticElement = NodeModelUtils.findActualSemanticObjectFor(node);
+				var currentSemanticElement = NodeModelUtils.findActualSemanticObjectFor(node);
 				if (currentSemanticElement != null) {
-					EObject parent = currentSemanticElement.eContainer();
+					var parent = currentSemanticElement.eContainer();
 					while (parent != null && !isValidElement(parent)) {
 						parent = parent.eContainer();
 					}
@@ -160,18 +160,18 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	 */
 	protected void generateDocumentation(IXtextDocument document, ITextSelection selection, XtextResource resource,
 			EObject semanticObject) throws Exception {
-		final DocumentRewriter documentRewriter = this.rewriterFactory.create(document, resource);
+		final var documentRewriter = this.rewriterFactory.create(document, resource);
 		final DocumentRewriteSession rewriteSession;
-		if (document instanceof IDocumentExtension4) {
-			rewriteSession = ((IDocumentExtension4) document).startRewriteSession(DocumentRewriteSessionType.UNRESTRICTED);
+		if (document instanceof IDocumentExtension4 cvalue) {
+			rewriteSession = cvalue.startRewriteSession(DocumentRewriteSessionType.UNRESTRICTED);
 		} else {
 			rewriteSession = null;
 		}
 
 		computeChange(documentRewriter, semanticObject);
 
-		final List<ReplaceRegion> changes = documentRewriter.getChanges();
-		final TextEdit convertToTextEdit = this.replaceConverter.convertToTextEdit(changes);
+		final var changes = documentRewriter.getChanges();
+		final var convertToTextEdit = this.replaceConverter.convertToTextEdit(changes);
 		if (convertToTextEdit != null) {
 			convertToTextEdit.apply(document);
 		}
@@ -186,11 +186,11 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	 * @param semanticObject the semantic object for which the documentation should be created.
 	 */
 	protected void computeChange(DocumentRewriter rewriter, EObject semanticObject) {
-		final ICompositeNode elementNode = NodeModelUtils.findActualNodeFor(semanticObject);
+		final var elementNode = NodeModelUtils.findActualNodeFor(semanticObject);
 		if (elementNode == null) {
 			return;
 		}
-		final Section section = rewriter.newSection(elementNode.getOffset(), 0);
+		final var section = rewriter.newSection(elementNode.getOffset(), 0);
 		generateDocumentationText(semanticObject, section);
 	}
 
@@ -200,7 +200,7 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	 * @param receiver the receiver of the documentation.
 	 */
 	protected void generateDocumentationText(EObject semanticObject, ISourceAppender receiver) {
-		final Receiver it = new Receiver(receiver);
+		final var it = new Receiver(receiver);
 		this.generatorDispatcher.invoke(semanticObject, it);
 		if (!it.isChanged()) {
 			it.doEmptyDocument();
@@ -233,9 +233,9 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	 * @return the return type.
 	 */
 	protected LightweightTypeReference getReturnType(XtendFunction function) {
-		JvmTypeReference type = function.getReturnType();
+		var type = function.getReturnType();
 		if (type == null) {
-			final JvmOperation operation = this.sarlAssociations.getDirectlyInferredOperation(function);
+			final var operation = this.sarlAssociations.getDirectlyInferredOperation(function);
 			if (operation != null) {
 				type = operation.getReturnType();
 			}
@@ -252,9 +252,9 @@ public abstract class AbstractSarlDocumentationProvider implements ISarlDocument
 	 * @return {@code true} if the object is deprecated.
 	 */
 	protected boolean isDeprecated(EObject object) {
-		final EObject obj = this.sarlAssociations.getPrimaryJvmElement(object);
-		if (obj instanceof JvmAnnotationTarget) {
-			return DeprecationUtil.isTransitivelyDeprecated((JvmAnnotationTarget) obj);
+		final var obj = this.sarlAssociations.getPrimaryJvmElement(object);
+		if (obj instanceof JvmAnnotationTarget cvalue) {
+			return DeprecationUtil.isTransitivelyDeprecated(cvalue);
 		}
 		return false;
 	}

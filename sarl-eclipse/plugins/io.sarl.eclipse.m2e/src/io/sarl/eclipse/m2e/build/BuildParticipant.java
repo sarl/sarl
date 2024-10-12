@@ -81,7 +81,7 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		if (kind == AbstractBuildParticipant.AUTO_BUILD || kind == AbstractBuildParticipant.FULL_BUILD) {
-			final SubMonitor subm = SubMonitor.convert(monitor, Messages.BuildParticipant_0, NSTEPS);
+			final var subm = SubMonitor.convert(monitor, Messages.BuildParticipant_0, NSTEPS);
 			getBuildContext().removeMessages(getMavenProjectFacade().getPomFile());
 			subm.worked(1);
 			validateSARLCompilerPlugin();
@@ -97,7 +97,7 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 	}
 
 	private Bundle validateSARLVersion(String groupId, String artifactId, String artifactVersion) {
-		final Bundle bundle = Platform.getBundle(SARL_LANG_BUNDLE_NAME);
+		final var bundle = Platform.getBundle(SARL_LANG_BUNDLE_NAME);
 		if (bundle == null) {
 			getBuildContext().addMessage(
 					getMavenProjectFacade().getPomFile(),
@@ -108,7 +108,7 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 			return bundle;
 		}
 
-		final Version bundleVersion = bundle.getVersion();
+		final var bundleVersion = bundle.getVersion();
 		if (bundleVersion == null) {
 			getBuildContext().addMessage(
 					getMavenProjectFacade().getPomFile(),
@@ -119,12 +119,12 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 			return bundle;
 		}
 
-		final Version minVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor(), 0);
-		final Version maxVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor() + 1, 0);
+		final var minVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor(), 0);
+		final var maxVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor() + 1, 0);
 		assert minVersion != null && maxVersion != null;
 
-		final Version mvnVersion = M2EUtilities.parseMavenVersion(artifactVersion);
-		final int compare = Utilities.compareVersionToRange(mvnVersion, minVersion, maxVersion);
+		final var mvnVersion = M2EUtilities.parseMavenVersion(artifactVersion);
+		final var compare = Utilities.compareVersionToRange(mvnVersion, minVersion, maxVersion);
 		if (compare < 0) {
 			getBuildContext().addMessage(
 					getMavenProjectFacade().getPomFile(),
@@ -154,8 +154,8 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 	 * @throws CoreException if internal error occurs.
 	 */
 	protected void validateSARLLibraryVersion() throws CoreException {
-		final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
-		final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
+		final var artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+		final var artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
 		if (artifact != null) {
 			validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
 		} else {
@@ -174,8 +174,8 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 	 * @throws CoreException if internal error occurs.
 	 */
 	protected Bundle validateSARLCompilerPlugin() throws CoreException {
-		final Map<String, Artifact> plugins = getMavenProjectFacade().getMavenProject().getPluginArtifactMap();
-		final Artifact pluginArtifact = plugins.get(ArtifactUtils.versionlessKey(SARL_PLUGIN_GROUP_ID,
+		final var plugins = getMavenProjectFacade().getMavenProject().getPluginArtifactMap();
+		final var pluginArtifact = plugins.get(ArtifactUtils.versionlessKey(SARL_PLUGIN_GROUP_ID,
 				SARL_PLUGIN_ARTIFACT_ID));
 		if (pluginArtifact == null) {
 			getBuildContext().addMessage(
@@ -185,7 +185,7 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 					BuildContext.SEVERITY_ERROR,
 					null);
 		} else {
-			final String version = pluginArtifact.getVersion();
+			final var version = pluginArtifact.getVersion();
 			if (Strings.isNullOrEmpty(version)) {
 				getBuildContext().addMessage(
 						getMavenProjectFacade().getPomFile(),
@@ -212,15 +212,15 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 	 * @throws CoreException if internal error occurs.
 	 */
 	protected void validateSARLDependenciesVersions(IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subm = SubMonitor.convert(monitor, 3);
+		final var subm = SubMonitor.convert(monitor, 3);
 
-		final Map<String, String> neededArtifactVersions = new TreeMap<>();
-		final IMavenProjectFacade facade = getMavenProjectFacade();
-		final DependencyNode root = MavenPlugin.getMavenModelManager().readDependencyTree(
+		final var neededArtifactVersions = new TreeMap<String, String>();
+		final var facade = getMavenProjectFacade();
+		final var root = MavenPlugin.getMavenModelManager().readDependencyTree(
 				facade, facade.getMavenProject(),
 				Artifact.SCOPE_COMPILE,
 				subm.newChild(1));
-		final DependencyNode[] sarlNode = new DependencyNode[] {null};
+		final var sarlNode = new DependencyNode[] {null};
 		root.accept(new DependencyVisitor() {
 			@Override
 			public boolean visitLeave(DependencyNode node) {
@@ -247,10 +247,10 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 				@Override
 				public boolean visitLeave(DependencyNode node) {
 					if (node.getDependency() != null) {
-						final String grId = node.getDependency().getArtifact().getGroupId();
-						final String arId = node.getDependency().getArtifact().getArtifactId();
-						final String key = ArtifactUtils.versionlessKey(grId, arId);
-						final String vers = neededArtifactVersions.get(key);
+						final var grId = node.getDependency().getArtifact().getGroupId();
+						final var arId = node.getDependency().getArtifact().getArtifactId();
+						final var key = ArtifactUtils.versionlessKey(grId, arId);
+						final var vers = neededArtifactVersions.get(key);
 						if (vers == null
 								|| M2EUtilities.compareMavenVersions(vers, node.getVersion().toString()) < 0) {
 							neededArtifactVersions.put(key, node.getVersion().toString());
@@ -267,14 +267,14 @@ public class BuildParticipant extends AbstractBuildParticipant2 {
 		}
 
 		subm.worked(2);
-		final SubMonitor subm2 = SubMonitor.convert(subm, neededArtifactVersions.size());
-		int i = 0;
-		final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+		final var subm2 = SubMonitor.convert(subm, neededArtifactVersions.size());
+		var i = 0;
+		final var artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
 
-		for (final Entry<String, String> neededDependency : neededArtifactVersions.entrySet()) {
-			final Artifact artifact = artifacts.get(neededDependency.getKey());
+		for (final var neededDependency : neededArtifactVersions.entrySet()) {
+			final var artifact = artifacts.get(neededDependency.getKey());
 			if (artifact != null) {
-				final int cmp = M2EUtilities.compareMavenVersions(neededDependency.getValue(), artifact.getVersion());
+				final var cmp = M2EUtilities.compareMavenVersions(neededDependency.getValue(), artifact.getVersion());
 				if (cmp > 1) {
 					getBuildContext().addMessage(
 							getMavenProjectFacade().getPomFile(),

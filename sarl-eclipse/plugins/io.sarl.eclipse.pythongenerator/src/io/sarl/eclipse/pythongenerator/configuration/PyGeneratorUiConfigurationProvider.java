@@ -50,10 +50,10 @@ public class PyGeneratorUiConfigurationProvider extends PyGeneratorConfiguration
 
 	@Override
 	protected PyGeneratorConfiguration createConfiguration(Resource resource) {
-		final PyGeneratorConfiguration config = super.createConfiguration(resource);
-		IProject project = ProjectAdapter.getProject(resource);
+		final var config = super.createConfiguration(resource);
+		var project = ProjectAdapter.getProject(resource);
 		project = this.preferences.ifSpecificConfiguration(PyGeneratorPlugin.PREFERENCE_ID, project);
-		final IPreferenceStore store = this.preferences.getPreferenceStore(project);
+		final var store = this.preferences.getPreferenceStore(project);
 		PyPreferenceAccess.loadPreferences(config, store);
 		return config;
 	}

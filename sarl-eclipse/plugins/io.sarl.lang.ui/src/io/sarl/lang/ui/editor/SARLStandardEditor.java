@@ -40,9 +40,9 @@ public class SARLStandardEditor extends SARLEditor {
 	@Override
 	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		if (SARLCodeminingPreferenceAccess.CODEMINING_PROPERTY.equals(event.getProperty())) {
-			final ISourceViewer viewer = getSourceViewer();
-			if (viewer instanceof ISourceViewerExtension5) {
-				((ISourceViewerExtension5) viewer).updateCodeMinings();
+			final var viewer = getSourceViewer();
+			if (viewer instanceof ISourceViewerExtension5 cvalue) {
+				cvalue.updateCodeMinings();
 			}
 		}
 		super.handlePreferenceStoreChanged(event);

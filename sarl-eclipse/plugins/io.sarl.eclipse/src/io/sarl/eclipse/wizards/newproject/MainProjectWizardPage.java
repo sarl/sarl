@@ -205,28 +205,28 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
 
-		final Composite composite = new Composite(parent, SWT.NULL);
+		final var composite = new Composite(parent, SWT.NULL);
 		composite.setFont(parent.getFont());
 		composite.setLayout(initGridLayout(new GridLayout(1, false), true));
 		composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		// create UI elements
-		final Control nameControl = createNameControl(composite);
+		final var nameControl = createNameControl(composite);
 		nameControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Control locationControl = createLocationControl(composite);
+		final var locationControl = createLocationControl(composite);
 		locationControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Control sreControl = createSRESelectionControl(composite);
+		final var sreControl = createSRESelectionControl(composite);
 		sreControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Control jreControl = createJRESelectionControl(composite);
+		final var jreControl = createJRESelectionControl(composite);
 		jreControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Control workingSetControl = createWorkingSetControl(composite);
+		final var workingSetControl = createWorkingSetControl(composite);
 		workingSetControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Control infoControl = createInfoControl(composite);
+		final var infoControl = createInfoControl(composite);
 		infoControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		setControl(composite);
@@ -363,7 +363,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * @param uri the new project location.
 	 */
 	public void setProjectLocationURI(URI uri) {
-		final IPath path = uri != null ? URIUtil.toPath(uri) : null;
+		final var path = uri != null ? URIUtil.toPath(uri) : null;
 		this.locationGroup.setLocation(path);
 	}
 
@@ -378,15 +378,15 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	@Override
 	public void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries) {
-		final IPath newPath = this.jreGroup.getJREContainerPath();
+		final var newPath = this.jreGroup.getJREContainerPath();
 		if (newPath != null) {
 			classpathEntries.add(JavaCore.newContainerEntry(newPath));
 		} else {
-			final IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
+			final var entries = PreferenceConstants.getDefaultJRELibrary();
 			classpathEntries.addAll(Arrays.asList(entries));
 		}
 
-		final IClasspathEntry sarlClasspathEntry = JavaCore.newContainerEntry(
+		final var sarlClasspathEntry = JavaCore.newContainerEntry(
 				SARLClasspathContainerInitializer.CONTAINER_ID,
 				new IAccessRule[0],
 				new IClasspathAttribute[0],
@@ -401,7 +401,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * @return returns the default class path entries
 	 */
 	public IPath getOutputLocation() {
-		IPath outputLocationPath = new Path(getProjectName()).makeAbsolute();
+		var outputLocationPath = new Path(getProjectName()).makeAbsolute();
 
 		outputLocationPath = outputLocationPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_BIN));
@@ -453,10 +453,10 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	private static IWorkingSet[] getSelectedWorkingSet(IStructuredSelection selection, IWorkbenchPart activePart) {
-		IWorkingSet[] selected = getSelectedWorkingSet(selection);
+		var selected = getSelectedWorkingSet(selection);
 		assert selected != null;
 		if (selected.length > 0) {
-			for (int i = 0; i < selected.length; ++i) {
+			for (var i = 0; i < selected.length; ++i) {
 				if (!isValidWorkingSet(selected[i])) {
 					return EMPTY_WORKING_SET_ARRAY;
 				}
@@ -466,20 +466,19 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		selected = EMPTY_WORKING_SET_ARRAY;
 
-		if (activePart instanceof PackageExplorerPart) {
-			final PackageExplorerPart explorerPart = (PackageExplorerPart) activePart;
+		if (activePart instanceof PackageExplorerPart explorerPart) {
 			if (explorerPart.getRootMode() == PackageExplorerPart.PROJECTS_AS_ROOTS) {
 				// Get active filter
-				final IWorkingSet filterWorkingSet = explorerPart.getFilterWorkingSet();
+				final var filterWorkingSet = explorerPart.getFilterWorkingSet();
 				if (filterWorkingSet != null && isValidWorkingSet(filterWorkingSet)) {
 					selected = new IWorkingSet[] {filterWorkingSet};
 				}
 			} else {
 				// If we have been gone into a working set return the working set
-				final Object input = explorerPart.getViewPartInput();
-				if (input instanceof IWorkingSet
-						&& isValidWorkingSet((IWorkingSet) input)) {
-					selected = new IWorkingSet[] {(IWorkingSet) input};
+				final var input = explorerPart.getViewPartInput();
+				if (input instanceof IWorkingSet cvalue
+						&& isValidWorkingSet(cvalue)) {
+					selected = new IWorkingSet[] {cvalue};
 				}
 			}
 		}
@@ -488,10 +487,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	private static IWorkingSet[] getSelectedWorkingSet(IStructuredSelection selection) {
-		IWorkingSet[] workingSet = EMPTY_WORKING_SET_ARRAY;
+		var workingSet = EMPTY_WORKING_SET_ARRAY;
 
-		if (selection instanceof ITreeSelection) {
-			final ITreeSelection treeSelection = (ITreeSelection) selection;
+		if (selection instanceof ITreeSelection treeSelection) {
 			if (!treeSelection.isEmpty()) {
 				workingSet = getSelectedWorkingSet(treeSelection);
 			}
@@ -501,24 +499,24 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	private static IWorkingSet[] getSelectedWorkingSet(ITreeSelection treeSelection) {
 		assert !treeSelection.isEmpty();
-		final List<?> elements = treeSelection.toList();
+		final var elements = treeSelection.toList();
 		if (elements.size() == 1) {
-			final Object element = elements.get(0);
-			final TreePath[] paths = treeSelection.getPathsFor(element);
+			final var element = elements.get(0);
+			final var paths = treeSelection.getPathsFor(element);
 			if (paths.length == 1
 					&& paths[0].getSegmentCount() != 0) {
-				final Object candidate = paths[0].getSegment(0);
-				if (candidate instanceof IWorkingSet
-						&& isValidWorkingSet((IWorkingSet) candidate)) {
-					return new IWorkingSet[] {(IWorkingSet) candidate};
+				final var candidate = paths[0].getSegment(0);
+				if (candidate instanceof IWorkingSet cvalue
+						&& isValidWorkingSet(cvalue) {
+					return new IWorkingSet[] {cvalue};
 				}
 			}
 		} else {
-			final List<IWorkingSet> result = new ArrayList<>();
-			for (Iterator<?> iterator = elements.iterator(); iterator.hasNext();) {
-				final Object element = iterator.next();
-				if (element instanceof IWorkingSet && isValidWorkingSet((IWorkingSet) element)) {
-					result.add((IWorkingSet) element);
+			final var result = new ArrayList<IWorkingSet>();
+			for (var iterator = elements.iterator(); iterator.hasNext();) {
+				final var element = iterator.next();
+				if (element instanceof IWorkingSet cvalue && isValidWorkingSet(cvalue)) {
+					result.add(cvalue);
 				}
 			}
 			return result.toArray(new IWorkingSet[result.size()]);
@@ -527,7 +525,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	private static boolean isValidWorkingSet(IWorkingSet workingSet) {
-		final String id = workingSet.getId();
+		final var id = workingSet.getId();
 		if (!IWorkingSetIDs.JAVA.equals(id) && !IWorkingSetIDs.RESOURCE.equals(id)) {
 			return false;
 		}
@@ -557,7 +555,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		public Control createControl(Composite composite) {
-			final Composite nameComposite = new Composite(composite, SWT.NONE);
+			final var nameComposite = new Composite(composite, SWT.NONE);
 			nameComposite.setFont(composite.getFont());
 			nameComposite.setLayout(new GridLayout(2, false));
 
@@ -624,9 +622,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		public Control createControl(Composite composite) {
-			final int numColumns = 4;
+			final var numColumns = 4;
 
-			final Composite locationComposite = new Composite(composite, SWT.NONE);
+			final var locationComposite = new Composite(composite, SWT.NONE);
 			locationComposite.setLayout(new GridLayout(numColumns, false));
 
 			this.useDefaults.doFillIntoGrid(locationComposite, numColumns);
@@ -643,7 +641,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		protected String getDefaultPath(String name) {
-			final IPath path = Platform.getLocation().append(name);
+			final var path = Platform.getLocation().append(name);
 			return path.toOSString();
 		}
 
@@ -678,27 +676,27 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		@Override
 		public void changeControlPressed(DialogField field) {
-			final DirectoryDialog dialog = new DirectoryDialog(getShell());
+			final var dialog = new DirectoryDialog(getShell());
 			dialog.setMessage(NewWizardMessages.NewJavaProjectWizardPageOne_directory_message);
 			String directoryName = this.location.getText().trim();
 			if (directoryName.length() == 0) {
-				final String prevLocation = JavaPlugin.getDefault().getDialogSettings().get(DIALOGSTORE_LAST_EXTERNAL_LOC);
+				final var prevLocation = JavaPlugin.getDefault().getDialogSettings().get(DIALOGSTORE_LAST_EXTERNAL_LOC);
 				if (prevLocation != null) {
 					directoryName = prevLocation;
 				}
 			}
 
 			if (directoryName.length() > 0) {
-				final File path = new File(directoryName);
+				final var path = new File(directoryName);
 				if (path.exists()) {
 					dialog.setFilterPath(directoryName);
 				}
 			}
 			final String selectedDirectory = dialog.open();
 			if (selectedDirectory != null) {
-				final String oldDirectory = new Path(this.location.getText().trim()).lastSegment();
+				final var oldDirectory = new Path(this.location.getText().trim()).lastSegment();
 				this.location.setText(selectedDirectory);
-				final String lastSegment = new Path(selectedDirectory).lastSegment();
+				final var lastSegment = new Path(selectedDirectory).lastSegment();
 				if (lastSegment != null
 						&& (MainProjectWizardPage.this.nameGroup.getName().length() == 0
 						|| MainProjectWizardPage.this.nameGroup.getName().equals(oldDirectory))) {
@@ -711,7 +709,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		@Override
 		public void dialogFieldChanged(DialogField field) {
 			if (field == this.useDefaults) {
-				final boolean checked = this.useDefaults.isSelected();
+				final var checked = this.useDefaults.isSelected();
 				if (checked) {
 					this.previousExternalLocation = this.location.getText();
 					this.location.setText(getDefaultPath(MainProjectWizardPage.this.nameGroup.getName()));
@@ -817,11 +815,11 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			this.group.setText(NewWizardMessages.NewJavaProjectWizardPageOne_JREGroup_title);
 
 			this.useEEJRE.doFillIntoGrid(this.group, 1);
-			final Combo eeComboControl = this.eeCombo.getComboControl(this.group);
+			final var eeComboControl = this.eeCombo.getComboControl(this.group);
 			eeComboControl.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 			this.useProjectJRE.doFillIntoGrid(this.group, 1);
-			final Combo comboControl = this.jreCombo.getComboControl(this.group);
+			final var comboControl = this.jreCombo.getComboControl(this.group);
 			comboControl.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 			this.useDefaultJRE.doFillIntoGrid(this.group, 1);
@@ -837,8 +835,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private void fillInstalledJREs(ComboDialogField comboField) {
-			String selectedItem = getLastSelectedJRE();
-			int selectionIndex = comboField.getSelectionIndex();
+			var selectedItem = getLastSelectedJRE();
+			var selectionIndex = comboField.getSelectionIndex();
 			if (this.useProjectJRE.isSelected()) {
 				if (selectionIndex != -1) {
 					// paranoia
@@ -851,12 +849,12 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 				@Override
 				public int compare(IVMInstall i0, IVMInstall i1) {
-					if (i1 instanceof IVMInstall2 && i0 instanceof IVMInstall2) {
-						final String cc0 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i0,
+					if (i1 instanceof IVMInstall2 cvalue1 && i0 instanceof IVMInstall2 cvalue0) {
+						final var cc0 = JavaModelUtil.getCompilerCompliance(cvalue0,
 								SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
-						final String cc1 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i1,
+						final var cc1 = JavaModelUtil.getCompilerCompliance(cvalue1,
 								SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
-						final int result = cc1.compareTo(cc0);
+						final var result = cc1.compareTo(cc0);
 						if (result != 0) {
 							return result;
 						}
@@ -867,16 +865,16 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			});
 			// find new index
 			selectionIndex = -1;
-			final String[] jreLabels = new String[this.installedJVMs.length];
+			final var jreLabels = new String[this.installedJVMs.length];
 			this.jreCompliance = new String[this.installedJVMs.length];
-			for (int i = 0; i < this.installedJVMs.length; i++) {
+			for (var i = 0; i < this.installedJVMs.length; i++) {
 				jreLabels[i] = this.installedJVMs[i].getName();
 				if (selectedItem != null && jreLabels[i].equals(selectedItem)) {
 					selectionIndex = i;
 				}
-				if (this.installedJVMs[i] instanceof IVMInstall2) {
+				if (this.installedJVMs[i] instanceof IVMInstall2 cvalue) {
 					this.jreCompliance[i] = JavaModelUtil.getCompilerCompliance(
-							(IVMInstall2) this.installedJVMs[i],
+							cvalue,
 							SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 				} else {
 					this.jreCompliance[i] = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
@@ -891,8 +889,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private void fillExecutionEnvironments(ComboDialogField comboField) {
-			String selectedItem = getLastSelectedEE();
-			int selectionIndex = comboField.getSelectionIndex();
+			var selectedItem = getLastSelectedEE();
+			var selectionIndex = comboField.getSelectionIndex();
 			if (this.useEEJRE.isSelected()) {
 				if (selectionIndex != -1) {
 					// paranoia
@@ -909,9 +907,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			});
 			// find new index
 			selectionIndex = -1;
-			final String[] eeLabels = new String[this.installedEEs.length];
+			final var eeLabels = new String[this.installedEEs.length];
 			this.eeCompliance = new String[this.installedEEs.length];
-			for (int i = 0; i < this.installedEEs.length; i++) {
+			for (var i = 0; i < this.installedEEs.length; i++) {
 				eeLabels[i] = this.installedEEs[i].getId();
 				if (selectedItem != null && eeLabels[i].equals(selectedItem)) {
 					selectionIndex = i;
@@ -927,13 +925,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private IVMInstall[] getWorkspaceJREs() {
-			final List<VMStandin> standins = new ArrayList<>();
-			final IVMInstallType[] types = JavaRuntime.getVMInstallTypes();
-			for (int i = 0; i < types.length; i++) {
-				final IVMInstallType type = types[i];
-				final IVMInstall[] installs = type.getVMInstalls();
-				for (int j = 0; j < installs.length; j++) {
-					final IVMInstall install = installs[j];
+			final var standins = new ArrayList<VMStandin>();
+			final var types = JavaRuntime.getVMInstallTypes();
+			for (var i = 0; i < types.length; i++) {
+				final var type = types[i];
+				final var installs = type.getVMInstalls();
+				for (var j = 0; j < installs.length; j++) {
+					final var install = installs[j];
 					standins.add(new VMStandin(install));
 				}
 			}
@@ -941,7 +939,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private String getDefaultJVMName() {
-			final IVMInstall install = JavaRuntime.getDefaultVMInstall();
+			final var install = JavaRuntime.getDefaultVMInstall();
 			if (install != null) {
 				return install.getName();
 			}
@@ -949,13 +947,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private String getDefaultEEName() {
-			final IVMInstall defaultVM = JavaRuntime.getDefaultVMInstall();
+			final var defaultVM = JavaRuntime.getDefaultVMInstall();
 
-			final IExecutionEnvironment[] environments = JavaRuntime.getExecutionEnvironmentsManager()
+			final var environments = JavaRuntime.getExecutionEnvironmentsManager()
 					.getExecutionEnvironments();
 			if (defaultVM != null) {
-				for (int i = 0; i < environments.length; i++) {
-					final IVMInstall eeDefaultVM = environments[i].getDefaultVM();
+				for (var i = 0; i < environments.length; i++) {
+					final var eDefaultVM = environments[i].getDefaultVM();
 					if (eeDefaultVM != null && defaultVM.getId().equals(eeDefaultVM.getId())) {
 						return environments[i].getId();
 					}
@@ -963,14 +961,14 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			}
 
 			final String defaultCC;
-			if (defaultVM instanceof IVMInstall2) {
-				defaultCC = JavaModelUtil.getCompilerCompliance((IVMInstall2) defaultVM, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+			if (defaultVM instanceof IVMInstall2 cvalue) {
+				defaultCC = JavaModelUtil.getCompilerCompliance(cvalue, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 			} else {
 				defaultCC = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 			}
 
-			for (int i = 0; i < environments.length; i++) {
-				final String eeCompliance = JavaModelUtil.getExecutionEnvironmentCompliance(environments[i]);
+			for (var i = 0; i < environments.length; i++) {
+				final var eeCompliance = JavaModelUtil.getExecutionEnvironmentCompliance(environments[i]);
 				if (defaultCC.endsWith(eeCompliance)) {
 					return environments[i].getId();
 				}
@@ -991,7 +989,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private void updateEnableState() {
-			final boolean detect = MainProjectWizardPage.this.detectGroup.mustDetect();
+			final var detect = MainProjectWizardPage.this.detectGroup.mustDetect();
 			this.useDefaultJRE.setEnabled(!detect);
 			this.useProjectJRE.setEnabled(!detect);
 			this.useEEJRE.setEnabled(!detect);
@@ -1012,10 +1010,10 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		@Override
 		public void widgetDefaultSelected(SelectionEvent event) {
-			final String jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
-			final String eeID = BuildPathSupport.EE_PREF_PAGE_ID;
-			final String complianceId = CompliancePreferencePage.PREF_ID;
-			final Map<String, Boolean> data = new HashMap<>();
+			final var jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
+			final var eeID = BuildPathSupport.EE_PREF_PAGE_ID;
+			final var complianceId = CompliancePreferencePage.PREF_ID;
+			final var data = new HashMap<>();
 			data.put(PropertyAndPreferencePage.DATA_NO_LINK, Boolean.TRUE);
 			PreferencesUtil.createPreferenceDialogOn(
 					getShell(), jreID,
@@ -1066,17 +1064,17 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private void storeSelectionValue(ComboDialogField combo, String preferenceKey) {
-			final int index = combo.getSelectionIndex();
+			final var index = combo.getSelectionIndex();
 			if (index == -1) {
 				return;
 			}
 
-			final String item = combo.getItems()[index];
+			final var item = combo.getItems()[index];
 			JavaPlugin.getDefault().getDialogSettings().put(preferenceKey, item);
 		}
 
 		private int getLastSelectedJREKind() {
-			final IDialogSettings settings = JavaPlugin.getDefault().getDialogSettings();
+			final var settings = JavaPlugin.getDefault().getDialogSettings();
 			if (settings.get(LAST_SELECTED_JRE_KIND2) == null) {
 				return EE_JRE;
 			}
@@ -1085,7 +1083,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private String getLastSelectedEE() {
-			final IDialogSettings settings = JavaPlugin.getDefault().getDialogSettings();
+			final var settings = JavaPlugin.getDefault().getDialogSettings();
 			return settings.get(LAST_SELECTED_EE_SETTINGS_KEY);
 		}
 
@@ -1096,7 +1094,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		public IVMInstall getSelectedJVM() {
 			if (this.useProjectJRE.isSelected()) {
-				final int index = this.jreCombo.getSelectionIndex();
+				final var index = this.jreCombo.getSelectionIndex();
 				if (index >= 0 && index < this.installedJVMs.length) {
 					// paranoia
 					return this.installedJVMs[index];
@@ -1107,13 +1105,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		public IPath getJREContainerPath() {
 			if (this.useProjectJRE.isSelected()) {
-				final int index = this.jreCombo.getSelectionIndex();
+				final var index = this.jreCombo.getSelectionIndex();
 				if (index >= 0 && index < this.installedJVMs.length) {
 					// paranoia
 					return JavaRuntime.newJREContainerPath(this.installedJVMs[index]);
 				}
 			} else if (this.useEEJRE.isSelected()) {
-				final int index = this.eeCombo.getSelectionIndex();
+				final var index = this.eeCombo.getSelectionIndex();
 				if (index >= 0 && index < this.installedEEs.length) {
 					// paranoia
 					return JavaRuntime.newJREContainerPath(this.installedEEs[index]);
@@ -1124,13 +1122,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		public String getSelectedCompilerCompliance() {
 			if (this.useProjectJRE.isSelected()) {
-				final int index = this.jreCombo.getSelectionIndex();
+				final var index = this.jreCombo.getSelectionIndex();
 				if (index >= 0 && index < this.jreCompliance.length) {
 					// paranoia
 					return this.jreCompliance[index];
 				}
 			} else if (this.useEEJRE.isSelected()) {
-				final int index = this.eeCombo.getSelectionIndex();
+				final var index = this.eeCombo.getSelectionIndex();
 				if (index >= 0 && index < this.eeCompliance.length) {
 					// paranoia
 					return this.eeCompliance[index];
@@ -1153,13 +1151,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		private WorkingSetConfigurationBlock workingSetBlock;
 
 		WorkingSetGroup() {
-			final String[] workingSetIds = new String[] {IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE};
+			final var workingSetIds = new String[] {IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE};
 			this.workingSetBlock = new WorkingSetConfigurationBlock(workingSetIds, JavaPlugin.getDefault().getDialogSettings());
 			// fWorkingSetBlock.setDialogMessage(NewWizardMessages.NewJavaProjectWizardPageOne_WorkingSetSelection_message);
 		}
 
 		public Control createControl(Composite composite) {
-			final Group workingSetGroup = new Group(composite, SWT.NONE);
+			final var workingSetGroup = new Group(composite, SWT.NONE);
 			workingSetGroup.setFont(composite.getFont());
 			workingSetGroup.setText(NewWizardMessages.NewJavaProjectWizardPageOne_WorkingSets_group);
 			workingSetGroup.setLayout(new GridLayout(1, false));
@@ -1208,15 +1206,15 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		@SuppressWarnings("synthetic-access")
 		public Control createControl(Composite parent) {
 
-			final Composite composite = new Composite(parent, SWT.NONE);
+			final var composite = new Composite(parent, SWT.NONE);
 			composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-			final GridLayout layout = new GridLayout(2, false);
+			final var layout = new GridLayout(2, false);
 			layout.horizontalSpacing = HORIZONTAL_SPACING;
 			composite.setLayout(layout);
 
 			this.icon = new Label(composite, SWT.LEFT);
 			this.icon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
-			GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+			var gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
 			this.icon.setLayoutData(gridData);
 
 			this.fHintText = new Link(composite, SWT.WRAP);
@@ -1241,9 +1239,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				return;
 			}
 
-			String selectedCompliance = MainProjectWizardPage.this.jreGroup.getSelectedCompilerCompliance();
+			var selectedCompliance = MainProjectWizardPage.this.jreGroup.getSelectedCompilerCompliance();
 			if (selectedCompliance != null) {
-				final String defaultCompliance = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
+				final var defaultCompliance = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
 				if (selectedCompliance.equals(defaultCompliance)) {
 					this.fHintText.setVisible(false);
 					this.icon.setVisible(false);
@@ -1260,13 +1258,13 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			}
 
 			selectedCompliance = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
-			IVMInstall selectedJVM = MainProjectWizardPage.this.jreGroup.getSelectedJVM();
+			var selectedJVM = MainProjectWizardPage.this.jreGroup.getSelectedJVM();
 			if (selectedJVM == null) {
 				selectedJVM = JavaRuntime.getDefaultVMInstall();
 			}
-			String jvmCompliance = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
-			if (selectedJVM instanceof IVMInstall2) {
-				jvmCompliance = JavaModelUtil.getCompilerCompliance((IVMInstall2) selectedJVM,
+			var jvmCompliance = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
+			if (selectedJVM instanceof IVMInstall2 cvalue) {
+				jvmCompliance = JavaModelUtil.getCompilerCompliance(cvalue,
 						SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 			}
 			if (!selectedCompliance.equals(jvmCompliance)
@@ -1288,23 +1286,23 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		private boolean computeDetectState() {
 			if (MainProjectWizardPage.this.locationGroup.isUseDefaultSelected()) {
-				final String name = MainProjectWizardPage.this.nameGroup.getName();
+				final var name = MainProjectWizardPage.this.nameGroup.getName();
 				if (name.length() == 0 || JavaPlugin.getWorkspace().getRoot().findMember(name) != null) {
 					return false;
 				}
 
-				final File directory = MainProjectWizardPage.this.locationGroup.getLocation().append(name).toFile();
+				final var directory = MainProjectWizardPage.this.locationGroup.getLocation().append(name).toFile();
 				return directory.isDirectory();
 			}
 
-			final File directory = MainProjectWizardPage.this.locationGroup.getLocation().toFile();
+			final var directory = MainProjectWizardPage.this.locationGroup.getLocation().toFile();
 			return directory.isDirectory();
 		}
 
 		@Override
 		public void update(Observable observable, Object arg) {
 			if (observable instanceof LocationGroup) {
-				final boolean oldDetectState = this.fDetect;
+				final var oldDetectState = this.fDetect;
 				this.fDetect = computeDetectState();
 
 				if (oldDetectState != this.fDetect) {
@@ -1334,12 +1332,12 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		@Override
 		public void widgetDefaultSelected(SelectionEvent event) {
-			final String jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
-			final String eeID = BuildPathSupport.EE_PREF_PAGE_ID;
-			final String complianceId = CompliancePreferencePage.PREF_ID;
-			final Map<String, Boolean> data = new HashMap<>();
+			final var jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
+			final var eeID = BuildPathSupport.EE_PREF_PAGE_ID;
+			final var complianceId = CompliancePreferencePage.PREF_ID;
+			final var data = new HashMap<String, Boolean>();
 			data.put(PropertyAndPreferencePage.DATA_NO_LINK, Boolean.TRUE);
-			final String id = "JRE".equals(event.text) ? jreID : complianceId; //$NON-NLS-1$
+			final var id = "JRE".equals(event.text) ? jreID : complianceId; //$NON-NLS-1$
 			PreferencesUtil.createPreferenceDialogOn(getShell(), id,
 					new String[] {jreID, complianceId, eeID},
 					data).open();
@@ -1363,12 +1361,12 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		@Override
 		public void update(Observable observable, Object arg) {
 			try {
-				final IWorkspace workspace = JavaPlugin.getWorkspace();
-				final String name = MainProjectWizardPage.this.nameGroup.getName();
+				final var workspace = JavaPlugin.getWorkspace();
+				final var name = MainProjectWizardPage.this.nameGroup.getName();
 				checkProjectName(workspace, name);
-				final IProject handle = checkProjectExist(workspace, name);
-				final String location = MainProjectWizardPage.this.locationGroup.getLocation().toOSString();
-				final IPath projectPath = checkLocationSyntax(location);
+				final var handle = checkProjectExist(workspace, name);
+				final var location = MainProjectWizardPage.this.locationGroup.getLocation().toOSString();
+				final var projectPath = checkLocationSyntax(location);
 				validateLocation(workspace, handle, projectPath);
 
 				setErrorMessage(null);
@@ -1397,7 +1395,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			}
 
 			// check whether the project name is valid
-			final IStatus nameStatus = workspace.validateName(name, IResource.PROJECT);
+			final var nameStatus = workspace.validateName(name, IResource.PROJECT);
 			if (!nameStatus.isOK()) {
 				throw new ValidationException(
 						null,
@@ -1413,24 +1411,24 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		 * @throws ValidationException if the project exists.
 		 */
 		private IProject checkProjectExist(IWorkspace workspace, String name) throws ValidationException {
-			final IProject handle = workspace.getRoot().getProject(name);
+			final var handle = workspace.getRoot().getProject(name);
 			if (handle.exists()) {
 				throw new ValidationException(
 						null,
 						NewWizardMessages.NewJavaProjectWizardPageOne_Message_projectAlreadyExists);
 			}
 
-			IPath projectLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(name);
+			var projectLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(name);
 			if (projectLocation.toFile().exists()) {
 				try {
 					// correct casing
-					final String canonicalPath = projectLocation.toFile().getCanonicalPath();
+					final var canonicalPath = projectLocation.toFile().getCanonicalPath();
 					projectLocation = new Path(canonicalPath);
 				} catch (IOException e) {
 					SARLEclipsePlugin.getDefault().log(e);
 				}
 
-				final String existingName = projectLocation.lastSegment();
+				final var existingName = projectLocation.lastSegment();
 				if (!existingName.equals(MainProjectWizardPage.this.nameGroup.getName())) {
 					throw new ValidationException(
 							null,
@@ -1488,7 +1486,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		private void validateLocation(
 				IWorkspace workspace,
 				IProject handle, IPath projectPath)  throws ValidationException {
-			final IStatus locationStatus = workspace.validateProjectLocation(handle, projectPath);
+			final var locationStatus = workspace.validateProjectLocation(handle, projectPath);
 			if (!locationStatus.isOK()) {
 				throw new ValidationException(
 						null,
@@ -1497,7 +1495,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		private boolean canCreate(File file) {
-			File fileInHierarchy = file;
+			var fileInHierarchy = file;
 			while (!fileInHierarchy.exists()) {
 				fileInHierarchy = fileInHierarchy.getParentFile();
 				if (fileInHierarchy == null) {

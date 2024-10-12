@@ -67,7 +67,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor,
 			Class<? extends XtendMember> type) {
-		final MemberRemoveModification modification = new MemberRemoveModification(type);
+		final var modification = new MemberRemoveModification(type);
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -87,7 +87,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final MemberRemoveModification modification = new MemberRemoveModification();
+		final var modification = new MemberRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,

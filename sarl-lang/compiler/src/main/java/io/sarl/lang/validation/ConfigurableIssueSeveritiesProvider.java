@@ -62,7 +62,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 	@Override
 	protected IPreferenceValuesProvider getValuesProvider() {
-		final IPreferenceValuesProvider original = super.getValuesProvider();
+		final var original = super.getValuesProvider();
 		if (this.overridingSeverities.isEmpty()) {
 			return original;
 		}
@@ -72,7 +72,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 	@Override
 	public void setSeverity(String code, Severity severity) {
 		if (!Strings.isNullOrEmpty(code)) {
-			final PreferenceKey key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
+			final var key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
 			if (key != null) {
 				if (severity == null) {
 					this.overridingSeverities.remove(key.getId());
@@ -87,7 +87,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 	public void setAllSeverities(Severity severity) {
 		this.overridingSeverities.clear();
 		if (severity != null) {
-			for (final PreferenceKey key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
+			for (final var key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
 				if (key != null) {
 					this.overridingSeverities.put(key.getId(), severity);
 				}
@@ -121,7 +121,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 		@Override
 		public IPreferenceValues getPreferenceValues(Resource context) {
-			final IPreferenceValues values = this.original.getPreferenceValues(context);
+			final var values = this.original.getPreferenceValues(context);
 			return new ConfigurableValues(values, this.overridingSeverities);
 		}
 
@@ -154,7 +154,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 		@Override
 		public String getPreference(PreferenceKey key) {
 			if (key != null) {
-				final Severity severity = this.overridingSeverities.get(key.getId());
+				final var severity = this.overridingSeverities.get(key.getId());
 				if (severity != null) {
 					switch (severity) {
 					case ERROR:

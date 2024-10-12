@@ -75,7 +75,7 @@ public class SARLImages extends XtendImages {
 			boolean isInner, boolean isInInterfaceOrAnnotation, int flags, boolean useLightIcons) {
 		final ImageDescriptor desc;
 		if (type != null) {
-			final StringBuilder iconName = new StringBuilder(IMAGE_NAMES[type.ordinal()]);
+			final var iconName = new StringBuilder(IMAGE_NAMES[type.ordinal()]);
 			if (Flags.isPackageDefault(flags)) {
 				iconName.append("_package"); //$NON-NLS-1$
 			} else if (Flags.isProtected(flags)) {

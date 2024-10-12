@@ -63,7 +63,7 @@ public final class ModifierRemoveModification extends SARLSemanticModification {
 	 * @param modifier the modifier to remove.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor, String modifier) {
-		final ModifierRemoveModification modification = new ModifierRemoveModification(modifier);
+		final var modification = new ModifierRemoveModification(modifier);
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -76,8 +76,8 @@ public final class ModifierRemoveModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		if (element instanceof XtendMember) {
-			((XtendMember) element).getModifiers().remove(this.modifier);
+		if (element instanceof XtendMember cvalue) {
+			cvalue.getModifiers().remove(this.modifier);
 		}
 	}
 

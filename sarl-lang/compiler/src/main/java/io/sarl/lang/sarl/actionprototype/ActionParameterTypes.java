@@ -21,8 +21,6 @@
 
 package io.sarl.lang.sarl.actionprototype;
 
-import java.util.Iterator;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.util.BasicEList;
@@ -58,13 +56,13 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	 */
 	public ActionParameterTypes(String text) {
 		assert text != null;
-		final String[] elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
+		final var elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
 		this.isVarargs = elements.length > 0 && elements[elements.length - 1].endsWith("*"); //$NON-NLS-1$
 		if (this.isVarargs) {
 			elements[elements.length - 1] = elements[elements.length - 1].replaceFirst(
 					"\\*$", "[]");  //$NON-NLS-1$//$NON-NLS-2$
 		}
-		for (final String p : elements) {
+		for (final var p : elements) {
 			if (!Strings.isNullOrEmpty(p) && !"void".equals(p) && !"java.lang.Void".equals(p)) { //$NON-NLS-1$//$NON-NLS-2$
 				add(p);
 			}
@@ -81,8 +79,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 			return false;
 		}
 
-		if (this.getClass() == object.getClass() && object instanceof ActionParameterTypes && super.equals(object)) {
-			final ActionParameterTypes types = (ActionParameterTypes) object;
+		if (this.getClass() == object.getClass() && object instanceof ActionParameterTypes types && super.equals(object)) {
 			return this.isVarargs == types.isVarargs;
 		}
 		return false;
@@ -126,9 +123,9 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	 */
 	public String toString(boolean isRaw) {
 		if (!isEmpty()) {
-			final StringBuilder b = new StringBuilder();
-			final int size = size() - 1;
-			for (int i = 0; i < size; ++i) {
+			final var b = new StringBuilder();
+			final var size = size() - 1;
+			for (var i = 0; i < size; ++i) {
 				if (i > 0) {
 					b.append(","); //$NON-NLS-1$
 				}
@@ -140,7 +137,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 				}
 				b.append(elt);
 			}
-			String lastElement = get(size);
+			var lastElement = get(size);
 			if (isVarArg()) {
 				lastElement = lastElement.replaceFirst("\\[\\]$", "*");  //$NON-NLS-1$//$NON-NLS-2$
 			}
@@ -161,15 +158,15 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 		if (otherTypes == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Integer.compare(size(), otherTypes.size());
+		var cmp = Integer.compare(size(), otherTypes.size());
 		if (cmp != 0) {
 			return cmp;
 		}
-		final Iterator<String> i1 = iterator();
-		final Iterator<String> i2 = otherTypes.iterator();
+		final var i1 = iterator();
+		final var i2 = otherTypes.iterator();
 		while (i1.hasNext() && i2.hasNext()) {
-			final String s1 = i1.next();
-			final String s2 = i2.next();
+			final var s1 = i1.next();
+			final var s2 = i2.next();
 			cmp = s1.compareTo(s2);
 			if (cmp != 0) {
 				return cmp;

@@ -55,12 +55,12 @@ public class EclipseIDEProjectSREProvider implements ProjectSREProvider {
 	 * @param project the project.
 	 */
 	public EclipseIDEProjectSREProvider(IProject project) {
-		boolean tmpSpecific = false;
-		boolean tmpUseSystem = false;
+		var tmpSpecific = false;
+		var tmpUseSystem = false;
 		String tmpSRE = null;
 		if (project != null) {
 			try {
-				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
+				var propertyName = RuntimeEnvironmentPropertyPage.qualify(
 						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
 				tmpSpecific = Boolean.parseBoolean(MoreObjects.firstNonNull(
 						project.getPersistentProperty(propertyName),

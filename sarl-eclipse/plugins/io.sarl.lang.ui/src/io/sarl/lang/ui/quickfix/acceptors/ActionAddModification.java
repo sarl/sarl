@@ -65,10 +65,10 @@ public final class ActionAddModification extends SARLSemanticModification {
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final String[] data = issue.getData();
+		final var data = issue.getData();
 		if (data != null && data.length > 1) {
-			final String actionName = data[1];
-			final ActionAddModification modification = new ActionAddModification(actionName);
+			final var actionName = data[1];
+			final var modification = new ActionAddModification(actionName);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
@@ -82,14 +82,14 @@ public final class ActionAddModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		final XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(element, XtendTypeDeclaration.class);
+		final var container = EcoreUtil2.getContainerOfType(element, XtendTypeDeclaration.class);
 		if (container != null) {
-			final int insertOffset = getTools().getInsertOffset(container);
-			final IXtextDocument document = context.getXtextDocument();
-			final int length = getTools().getSpaceSize(document, insertOffset);
-			final ReplacingAppendable appendable = getTools().getAppendableFactory().create(document,
+			final var insertOffset = getTools().getInsertOffset(container);
+			final var document = context.getXtextDocument();
+			final var length = getTools().getSpaceSize(document, insertOffset);
+			final var appendable = getTools().getAppendableFactory().create(document,
 					(XtextResource) element.eResource(), insertOffset, length);
-			final boolean changeIndentation = container.getMembers().isEmpty();
+			final var changeIndentation = container.getMembers().isEmpty();
 			if (changeIndentation) {
 				appendable.increaseIndentation();
 			}

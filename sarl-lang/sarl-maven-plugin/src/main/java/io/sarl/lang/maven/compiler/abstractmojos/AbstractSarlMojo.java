@@ -28,9 +28,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.inject.Inject;
 
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -43,9 +43,6 @@ import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.descriptor.MojoDescriptor;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -110,13 +107,13 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	/**
 	 * The Build PluginManager component.
 	 */
-	@Component
+	@Inject
 	private BuildPluginManager buildPluginManager;
 
-	@Component
+	@Inject
 	private RepositorySystem repositorySystem;
 
-	@Component
+	@Inject
 	private ResolutionErrorHandler resolutionErrorHandler;
 
 	/** The directory in which the Java code files are generated from the standard SARL code files.
@@ -216,7 +213,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected static File unix2os(String filename) {
 		File file = null;
-		for (final String base : filename.split(Pattern.quote("/"))) { //$NON-NLS-1$
+		for (final var base : filename.split(Pattern.quote("/"))) { //$NON-NLS-1$
 			if (file == null) {
 				file = new File(base);
 			} else {
@@ -233,7 +230,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected File makeAbsolute(File file) {
 		if (!file.isAbsolute()) {
-			final File basedir = this.mavenHelper.getSession().getCurrentProject().getBasedir();
+			final var basedir = this.mavenHelper.getSession().getCurrentProject().getBasedir();
 			return new File(basedir, file.getPath()).getAbsoluteFile();
 		}
 		return file;
@@ -323,7 +320,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			String version, String goal,
 			String configuration,
 			Dependency... dependencies) throws MojoExecutionException, MojoFailureException {
-		final Plugin plugin = new Plugin();
+		final var plugin = new Plugin();
 		plugin.setArtifactId(artifactId);
 		plugin.setGroupId(groupId);
 		plugin.setVersion(version);
@@ -331,11 +328,11 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 		getLogger().debug(MessageFormat.format(Messages.AbstractSarlMojo_0, plugin.getId()));
 
-		final PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
+		final var pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
 		if (pluginDescriptor == null) {
 			throw new MojoExecutionException(MessageFormat.format(Messages.AbstractSarlMojo_1, plugin.getId()));
 		}
-		final MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
+		final var mojoDescriptor = pluginDescriptor.getMojo(goal);
 		if (mojoDescriptor == null) {
 			throw new MojoExecutionException(MessageFormat.format(Messages.AbstractSarlMojo_2, goal));
 		}
@@ -346,7 +343,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		} catch (PlexusConfigurationException e1) {
 			throw new MojoExecutionException(e1.getLocalizedMessage(), e1);
 		}
-		Xpp3Dom configurationXml = this.mavenHelper.toXpp3Dom(configuration, getLogger());
+		var configurationXml = this.mavenHelper.toXpp3Dom(configuration, getLogger());
 		if (configurationXml != null) {
 			configurationXml = Xpp3DomUtils.mergeXpp3Dom(
 					configurationXml,
@@ -373,20 +370,20 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
 	 */
 	protected Dependency[] getDependenciesFor(String configurationKeyPrefix) throws MojoExecutionException {
-		final List<Dependency> dependencies = new ArrayList<>();
-		final Pattern pattern = Pattern.compile(
+		final var dependencies = new ArrayList<Dependency>();
+		final var pattern = Pattern.compile(
 				"^[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*:[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*$"); //$NON-NLS-1$
-		final String rawDependencies = this.mavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
+		final var rawDependencies = this.mavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
 
-		final Map<String, Dependency> pomDependencies = this.mavenHelper.getPluginDependencies();
+		final var pomDependencies = this.mavenHelper.getPluginDependencies();
 
-		for (final String dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
-			final Matcher matcher = pattern.matcher(dependencyId);
+		for (final var dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
+			final var matcher = pattern.matcher(dependencyId);
 			if (matcher != null && matcher.matches()) {
-				final String dependencyGroupId = matcher.group(1);
-				final String dependencyArtifactId = matcher.group(2);
-				final String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
-				final Dependency dependencyObject = pomDependencies.get(dependencyKey);
+				final var dependencyGroupId = matcher.group(1);
+				final var dependencyArtifactId = matcher.group(2);
+				final var dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
+				final var dependencyObject = pomDependencies.get(dependencyKey);
 				if (dependencyObject == null) {
 					throw new MojoExecutionException(MessageFormat.format(
 							Messages.AbstractSarlMojo_4, dependencyKey));
@@ -395,7 +392,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			}
 		}
 
-		final Dependency[] dependencyArray = new Dependency[dependencies.size()];
+		final var dependencyArray = new Dependency[dependencies.size()];
 		dependencies.toArray(dependencyArray);
 		return dependencyArray;
 	}
@@ -417,16 +414,14 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the current classpath.
 	 * @since 0.13
 	 */
-	@SuppressWarnings("resource")
 	protected List<URL> getMavenPlatformClassPath() {
-		final ClassLoader cl = getClass().getClassLoader();
-		if (cl instanceof URLClassLoader) {
-			final URLClassLoader ucl = (URLClassLoader) cl;
+		final var cl = getClass().getClassLoader();
+		if (cl instanceof URLClassLoader ucl) {
 			return Arrays.asList(ucl.getURLs());
 		}
-		final String[] paths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator)); //$NON-NLS-1$
-		final List<URL> files = new ArrayList<>(paths.length);
-		for (final String path : paths) {
+		final var paths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator)); //$NON-NLS-1$
+		final var files = new ArrayList<URL>(paths.length);
+		for (final var path : paths) {
 			files.add(FileSystem.convertStringToURL(path, false));
 		}
 		return files;

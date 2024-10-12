@@ -20,7 +20,6 @@
  */
 package io.sarl.tests.api.extensions;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -41,11 +40,11 @@ public class FieldResetExtension implements TestInstancePreDestroyCallback {
 	@Override
 	public void preDestroyTestInstance(ExtensionContext context) throws Exception {
 		if (context.getTestInstance().isPresent()) {
-			final Object instance = context.getTestInstance().get();
+			final var instance = context.getTestInstance().get();
 			if (context.getTestClass().isPresent()) {
-				Class<?> type = context.getTestClass().get();
+				var type = context.getTestClass().get();
 				while (type != null && !Object.class.equals(type)) {
-					for (Field field : type.getDeclaredFields()) {
+					for (final var field : type.getDeclaredFields()) {
 						if (TestMockito.isNullable(field) && (field.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) == 0) {
 							try {
 								field.setAccessible(true);

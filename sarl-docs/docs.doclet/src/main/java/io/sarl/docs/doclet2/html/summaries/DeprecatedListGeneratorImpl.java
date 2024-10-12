@@ -54,8 +54,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -112,7 +110,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateBodyTitle(Element parent) {
-		final Element nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
+		final var nameDiv = getHtmlFactory().createDivTag(parent, CssStyles.HEADER_TYPE_NAME);
 		nameDiv.appendText(getLastTitle());
 	}
 
@@ -121,38 +119,38 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateAopList(Element parent) {
-		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends TypeElement>>();
 		//
-		final Iterable<TypeElement> allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
+		final var allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
 		//
-		final Iterable<TypeElement> aop = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isAopElement(it));
+		final var aop = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_2, aop);
 		//
-		final Iterable<TypeElement> agents = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlAgent(it));
+		final var agents = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlAgent(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_3, agents);
 		//
-		final Iterable<TypeElement> behaviors = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlBehavior(it));
+		final var behaviors = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlBehavior(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_4, behaviors);
 		//
-		final Iterable<TypeElement> capacities = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlCapacity(it));
+		final var capacities = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlCapacity(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_5, capacities);
 		//
-		final Iterable<TypeElement> skills = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlSkill(it));
+		final var skills = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlSkill(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_6, skills);
 		//
-		final Iterable<TypeElement> events = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlEvent(it));
+		final var events = Iterables.filter(allDeprecatedTypes, it -> getElementUtils().isSarlEvent(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_7, events);
 		//
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_8, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
 				getElementUtils().getTypeElementBasenameComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createTypeLink(element, false, null, this));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createShortDeprecationMessage(element, nodes, false);
 					return nodes;
 				},
@@ -164,35 +162,35 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateOopList(Element parent) {
-		final Map<String, Iterable<? extends TypeElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends TypeElement>>();
 		//
-		final Iterable<TypeElement> allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
+		final var allDeprecatedTypes = getTypeRepository().getDeprecatedTypes();
 		//
-		final Iterable<TypeElement> oop = Iterables.filter(allDeprecatedTypes, it -> !getElementUtils().isAopElement(it));
+		final var oop = Iterables.filter(allDeprecatedTypes, it -> !getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_2, oop);
 		//
-		final Iterable<TypeElement> classes = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.CLASS && !getElementUtils().isAopElement(it));
+		final var classes = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.CLASS && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_12, classes);
 		//
-		final Iterable<TypeElement> interfaces = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.INTERFACE && !getElementUtils().isAopElement(it));
+		final var interfaces = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.INTERFACE && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_13, interfaces);
 		//
-		final Iterable<TypeElement> enumerations = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.ENUM && !getElementUtils().isAopElement(it));
+		final var enumerations = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.ENUM && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_14, enumerations);
 		//
-		final Iterable<TypeElement> annotations = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.ANNOTATION_TYPE && !getElementUtils().isAopElement(it));
+		final var annotations = Iterables.filter(allDeprecatedTypes, it -> it.getKind() == ElementKind.ANNOTATION_TYPE && !getElementUtils().isAopElement(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_15, annotations);
 		//
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_11, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
 				getElementUtils().getTypeElementBasenameComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					nodes.addAll(getHtmlFactory().createTypeLink(element, false, null, this));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createShortDeprecationMessage(element, nodes, false);
 					return nodes;
 				},
@@ -204,28 +202,28 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateFieldList(Element parent) {
-		final Map<String, Iterable<? extends VariableElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends VariableElement>>();
 		//
-		final Iterable<VariableElement> allDeprecatedFields = getTypeRepository().getDeprecatedFields();
+		final var allDeprecatedFields = getTypeRepository().getDeprecatedFields();
 		allElements.put(Messages.DeprecatedListGeneratorImpl_17, allDeprecatedFields);
 		//
-		final Iterable<VariableElement> staticFields = Iterables.filter(allDeprecatedFields, it -> getElementUtils().isStatic(it));
+		final var staticFields = Iterables.filter(allDeprecatedFields, it -> getElementUtils().isStatic(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_20, staticFields);
 		//
-		final Iterable<VariableElement> concreteFields = Iterables.filter(allDeprecatedFields, it -> !getElementUtils().isStatic(it));
+		final var concreteFields = Iterables.filter(allDeprecatedFields, it -> !getElementUtils().isStatic(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_21, concreteFields);
 		//
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_16, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
 				getElementUtils().getVariableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
+					final var nodes = new ArrayList<Node>();
+					final var label = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
 					nodes.addAll(getHtmlFactory().createVariableLink(element, label, null, this));
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createShortDeprecationMessage(element, nodes, false);
 					return nodes;
 				},
@@ -237,30 +235,30 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateConstructorList(Element parent) {
-		final Map<String, Iterable<? extends ExecutableElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends ExecutableElement>>();
 		//
-		final Iterable<ExecutableElement> allDeprecatedExecutables = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
+		final var allDeprecatedExecutables = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
 				it -> it.getKind() == ElementKind.CONSTRUCTOR);
 		allElements.put(Messages.DeprecatedListGeneratorImpl_23, allDeprecatedExecutables);
 		//
-		final String constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
+		final var constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_22, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
 				getElementUtils().getVariableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String label = element.getEnclosingElement().getSimpleName().toString() + "." + constructorName; //$NON-NLS-1$
-					final List<Node> constructorPrototype = getHtmlFactory().getExecutablePrototype(element, label, this);
-					final List<Node> elementLink = getHtmlFactory().createExecutableLink(element, constructorPrototype, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var label = element.getEnclosingElement().getSimpleName().toString() + "." + constructorName; //$NON-NLS-1$
+					final var constructorPrototype = getHtmlFactory().getExecutablePrototype(element, label, this);
+					final var elementLink = getHtmlFactory().createExecutableLink(element, constructorPrototype, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, null);
+						final var emphLink = getHtmlFactory().createSpanTag(null, null);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createShortDeprecationMessage(element, nodes, false);
 					return nodes;
 				},
@@ -272,38 +270,38 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 	 * @param parent the container.
 	 */
 	protected void generateActionList(Element parent) {
-		final Map<String, Iterable<? extends ExecutableElement>> allElements = new LinkedHashMap<>();
+		final var allElements = new LinkedHashMap<String, Iterable<? extends ExecutableElement>>();
 		//
-		final Iterable<ExecutableElement> allDeprecatedActions = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
+		final var allDeprecatedActions = Iterables.filter(getTypeRepository().getDeprecatedExecutables(),
 				it -> it.getKind() == ElementKind.METHOD);
 		allElements.put(Messages.DeprecatedListGeneratorImpl_25, allDeprecatedActions);
 		//
-		final Iterable<ExecutableElement> staticActions = Iterables.filter(allDeprecatedActions, it -> getElementUtils().isStatic(it));
+		final var staticActions = Iterables.filter(allDeprecatedActions, it -> getElementUtils().isStatic(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_26, staticActions);
 		//
-		final Iterable<ExecutableElement> abstractActions = Iterables.filter(allDeprecatedActions, it -> !getElementUtils().isStatic(it) && getElementUtils().isAbstract(it));
+		final var abstractActions = Iterables.filter(allDeprecatedActions, it -> !getElementUtils().isStatic(it) && getElementUtils().isAbstract(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_27, abstractActions);
 		//
-		final Iterable<ExecutableElement> concreteActions = Iterables.filter(allDeprecatedActions, it -> !getElementUtils().isStatic(it) && !getElementUtils().isAbstract(it));
+		final var concreteActions = Iterables.filter(allDeprecatedActions, it -> !getElementUtils().isStatic(it) && !getElementUtils().isAbstract(it));
 		allElements.put(Messages.DeprecatedListGeneratorImpl_28, concreteActions);
 		//
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_24, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
 				getElementUtils().getExecutableElementComparator(),
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
-					final String methodName = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
-					final List<Node> methodPrototype = getHtmlFactory().getExecutablePrototype(element, methodName, this);
-					final List<? extends Node> elementLink = getHtmlFactory().createExecutableLink(element, methodPrototype, null, this);
+					final var nodes = new ArrayList<Node>();
+					final var methodName = element.getEnclosingElement().getSimpleName().toString() + "." + element.getSimpleName().toString(); //$NON-NLS-1$
+					final var methodPrototype = getHtmlFactory().getExecutablePrototype(element, methodName, this);
+					final var elementLink = getHtmlFactory().createExecutableLink(element, methodPrototype, null, this);
 					if (elementLink != null) {
-						final Element emphLink = getHtmlFactory().createSpanTag(null, null);
+						final var emphLink = getHtmlFactory().createSpanTag(null, null);
 						emphLink.appendChildren(elementLink);
 						nodes.add(emphLink);
 					}
 					return nodes;
 				},
 				element -> {
-					final List<Node> nodes = new ArrayList<>();
+					final var nodes = new ArrayList<Node>();
 					createShortDeprecationMessage(element, nodes, false);
 					return nodes;
 				},

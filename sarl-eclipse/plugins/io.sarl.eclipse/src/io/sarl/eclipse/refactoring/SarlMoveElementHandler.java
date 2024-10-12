@@ -159,12 +159,12 @@ public class SarlMoveElementHandler extends AbstractHandler {
 		try {
 			// Save all editors
 			this.syncUtil.get().totalSync(true);
-			final XtextEditor editor = EditorUtils.getActiveXtextEditor(event);
+			final var editor = EditorUtils.getActiveXtextEditor(event);
 			if (editor != null) {
-				final ITextSelection selection = (ITextSelection) editor.getSelectionProvider().getSelection();
-				final IXtextDocument document = editor.getDocument();
-				final XtextResource resource = reloadResource(document);
-				final XtendMember semanticObject = findSemanticObject(resource, selection);
+				final var selection = (ITextSelection) editor.getSelectionProvider().getSelection();
+				final var document = editor.getDocument();
+				final var resource = reloadResource(document);
+				final var semanticObject = findSemanticObject(resource, selection);
 				if (semanticObject == null) {
 					SARLEclipsePlugin.getDefault().openError(editor.getShell(),
 							"Move Element", //$NON-NLS-1$
@@ -188,10 +188,10 @@ public class SarlMoveElementHandler extends AbstractHandler {
 
 	@SuppressWarnings("static-method")
 	private XtendMember findSemanticObject(XtextResource resource, ITextSelection selection) {
-		final IParseResult parseResult = resource.getParseResult();
+		final var parseResult = resource.getParseResult();
 		if (parseResult != null) {
-			final ICompositeNode rootNode = parseResult.getRootNode();
-			ILeafNode node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset());
+			final var rootNode = parseResult.getRootNode();
+			var node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset());
 			if (node == null) {
 				return null;
 			}
@@ -205,10 +205,10 @@ public class SarlMoveElementHandler extends AbstractHandler {
 				node = NodeModelUtils.findLeafNodeAtOffset(rootNode, selection.getOffset() - 1);
 			}
 			if (node != null) {
-				final EObject currentSemanticElement = NodeModelUtils.findActualSemanticObjectFor(node);
+				final var currentSemanticElement = NodeModelUtils.findActualSemanticObjectFor(node);
 				if (currentSemanticElement != null) {
-					if (currentSemanticElement instanceof XtendMember) {
-						return (XtendMember) currentSemanticElement;
+					if (currentSemanticElement instanceof XtendMember cvalue) {
+						return cvalue;
 					}
 					return EcoreUtil2.getContainerOfType(currentSemanticElement.eContainer(), XtendMember.class);
 				}
@@ -224,7 +224,7 @@ public class SarlMoveElementHandler extends AbstractHandler {
 	 */
 	@SuppressWarnings("static-method")
 	protected void showUnsupportedElementError(XtendMember element, Shell shell) {
-		final String typeName = getTypeName(element);
+		final var typeName = getTypeName(element);
 		SARLEclipsePlugin.getDefault().openError(shell,
 				"Move Element", //$NON-NLS-1$
 				MessageFormat.format("Unable to move {0}.", typeName), //$NON-NLS-1$

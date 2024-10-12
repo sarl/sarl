@@ -71,10 +71,10 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	protected void updateBundleList(Set<String> entries) {
-		for (final String rootBundleName : getSarlDependencyBundleNames()) {
-			final Bundle bundle = Platform.getBundle(rootBundleName);
+		for (final var rootBundleName : getSarlDependencyBundleNames()) {
+			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
-				for (final String symbolicName : BundleUtil.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
+				for (final var symbolicName : BundleUtil.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
 					entries.add(symbolicName);
 				}
 			} else {
@@ -86,10 +86,10 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
-		for (final String rootBundleName : getSarlDependencyBundleNames()) {
-			final Bundle bundle = Platform.getBundle(rootBundleName);
+		for (final var rootBundleName : getSarlDependencyBundleNames()) {
+			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
-				for (final IClasspathEntry entry : BundleUtil.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
+				for (final var entry : BundleUtil.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
 					entries.add(entry);
 				}
 			} else {

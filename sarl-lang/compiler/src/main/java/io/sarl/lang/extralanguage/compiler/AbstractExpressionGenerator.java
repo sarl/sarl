@@ -29,9 +29,7 @@ import java.util.Objects;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmConstructor;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
@@ -57,7 +55,6 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
@@ -249,8 +246,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 * @return the expected type of the argument.
 	 */
 	protected LightweightTypeReference getExpectedType(XExpression expr) {
-		final IResolvedTypes resolvedTypes = getTypeResolver().resolveTypes(expr);
-		final LightweightTypeReference actualType = resolvedTypes.getActualType(expr);
+		final var resolvedTypes = getTypeResolver().resolveTypes(expr);
+		final var actualType = resolvedTypes.getActualType(expr);
 		return actualType;
 	}
 
@@ -265,7 +262,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 	@Override
 	public ExtraLanguageTypeConverter getTypeConverter(IExtraLanguageGeneratorContext context) {
-		ExtraLanguageTypeConverter converter = context.getData(TYPE_CONVERTER_INSTANCE, ExtraLanguageTypeConverter.class);
+		var converter = context.getData(TYPE_CONVERTER_INSTANCE, ExtraLanguageTypeConverter.class);
 		if (converter == null) {
 			converter = createTypeConverterInstance(getTypeConverterInitializer(), context);
 			this.injector.injectMembers(converter);
@@ -298,8 +295,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 	@Override
 	public ExtraLanguageFeatureNameConverter getFeatureNameConverter(IExtraLanguageGeneratorContext context) {
-		ExtraLanguageFeatureNameConverter converter = context.getData(FEATURE_NAME_CONVERTER_INSTANCE,
-				ExtraLanguageFeatureNameConverter.class);
+		var converter = context.getData(FEATURE_NAME_CONVERTER_INSTANCE, ExtraLanguageFeatureNameConverter.class);
 		if (converter == null) {
 			converter = createFeatureNameConverterInstance(getFeatureNameConverterInitializer(), context);
 			this.injector.injectMembers(converter);
@@ -323,7 +319,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	@Override
 	public XExpression generate(XExpression expression, LightweightTypeReference expectedType, IAppendable output,
 			IExtraLanguageGeneratorContext context) {
-		final LightweightTypeReference old = context.setExpectedExpressionType(expectedType);
+		final var old = context.setExpectedExpressionType(expectedType);
 		try {
 			before(expression, output, context);
 			return this.generateDispatcher.invoke(expression, output, context);
@@ -360,11 +356,11 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 */
 	protected String getOperatorSymbol(XAbstractFeatureCall call) {
 		if (call != null) {
-			final Resource res = call.eResource();
-			if (res instanceof StorageAwareResource) {
-				final boolean isLoadedFromStorage = ((StorageAwareResource) res).isLoadedFromStorage();
+			final var res = call.eResource();
+			if (res instanceof StorageAwareResource cvalue) {
+				final var isLoadedFromStorage = cvalue.isLoadedFromStorage();
 				if (isLoadedFromStorage) {
-					final QualifiedName operator = getOperatorMapping().getOperator(
+					final var operator = getOperatorMapping().getOperator(
 							QualifiedName.create(call.getFeature().getSimpleName()));
 					return Objects.toString(operator);
 				}
@@ -393,18 +389,18 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			Function0<? extends String> superKeyword,
 			Function1<? super JvmIdentifiableElement, ? extends String> referenceNameLambda) {
 		String name = null;
-		final JvmIdentifiableElement calledFeature = featureCall.getFeature();
-		if (calledFeature instanceof JvmConstructor) {
-			final JvmDeclaredType constructorContainer = ((JvmConstructor) calledFeature).getDeclaringType();
-			final JvmIdentifiableElement logicalContainer = logicalContainerProvider.getNearestLogicalContainer(featureCall);
-			final JvmDeclaredType contextType = ((JvmMember) logicalContainer).getDeclaringType();
+		final var calledFeature = featureCall.getFeature();
+		if (calledFeature instanceof JvmConstructor cvalue) {
+			final var constructorContainer = cvalue.getDeclaringType();
+			final var logicalContainer = logicalContainerProvider.getNearestLogicalContainer(featureCall);
+			final var contextType = ((JvmMember) logicalContainer).getDeclaringType();
 			if (contextType == constructorContainer) {
 				name = thisKeyword.apply();
 			} else {
 				name = superKeyword.apply();
 			}
 		} else if (calledFeature != null) {
-			final String referenceName = referenceNameLambda.apply(calledFeature);
+			final var referenceName = referenceNameLambda.apply(calledFeature);
 			if (referenceName != null) {
 				name = referenceName;
 			} else if (calledFeature instanceof JvmOperation) {
@@ -430,11 +426,10 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	public static boolean buildCallReceiver(XAbstractFeatureCall call, Function0<? extends String> thisKeyword,
 			Function1<? super XExpression, ? extends String> referenceNameDefinition, List<Object> output) {
 		if (call.isStatic()) {
-			if (call instanceof XMemberFeatureCall) {
-				final XMemberFeatureCall memberFeatureCall = (XMemberFeatureCall) call;
+			if (call instanceof XMemberFeatureCall memberFeatureCall) {
 				if (memberFeatureCall.isStaticWithDeclaringType()) {
-					final XAbstractFeatureCall target = (XAbstractFeatureCall) memberFeatureCall.getMemberCallTarget();
-					final JvmType declaringType = (JvmType) target.getFeature();
+					final var target = (XAbstractFeatureCall) memberFeatureCall.getMemberCallTarget();
+					final var declaringType = (JvmType) target.getFeature();
 					output.add(declaringType);
 					return true;
 				}
@@ -442,16 +437,16 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			output.add(((JvmFeature) call.getFeature()).getDeclaringType());
 			return true;
 		}
-		final XExpression receiver = call.getActualReceiver();
+		final var receiver = call.getActualReceiver();
 		if (receiver == null) {
 			return false;
 		}
-		final XExpression implicit = call.getImplicitReceiver();
+		final var implicit = call.getImplicitReceiver();
 		if (receiver == implicit) {
 			output.add(thisKeyword.apply());
 		} else {
 			output.add(receiver);
-			if (receiver instanceof XAbstractFeatureCall) {
+			if (receiver instanceof XAbstractFeatureCall cvalue) {
 				// some local types have a reference name bound to the empty string
 				// which is the reason why we have to check for an empty string as a valid
 				// reference name here
@@ -459,8 +454,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 				// if it turns out that we have to deal with generics there too, we may
 				// have to create a field in the synthesized local class with a unique
 				// name that points to 'this'
-				if (((XAbstractFeatureCall) receiver).getFeature() instanceof JvmType) {
-					final String referenceName = referenceNameDefinition.apply(receiver);
+				if (cvalue.getFeature() instanceof JvmType) {
+					final var referenceName = referenceNameDefinition.apply(receiver);
 					if (referenceName != null && referenceName.length() == 0) {
 						return false;
 					}
@@ -511,8 +506,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		}
 
 		private XExpression normalizeBlockExpression(XExpression expr) {
-			if (expr instanceof XBlockExpression) {
-				final XBlockExpression block = (XBlockExpression) expr;
+			if (expr instanceof XBlockExpression block) {
 				if (block.getExpressions().size() == 1) {
 					return normalizeBlockExpression(block.getExpressions().get(0));
 				}
@@ -521,12 +515,12 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		}
 
 		private List<XExpression> getActualArguments(XAbstractFeatureCall expr) {
-			final List<XExpression> actualArguments = expr.getActualArguments();
+			final var actualArguments = expr.getActualArguments();
 			return Lists.transform(actualArguments, it  -> normalizeBlockExpression(it));
 		}
 
 		private List<XExpression> getActualArguments(XConstructorCall expr) {
-			final List<XExpression> actualArguments = expr.getArguments();
+			final var actualArguments = expr.getArguments();
 			return Lists.transform(actualArguments, it  -> normalizeBlockExpression(it));
 		}
 
@@ -536,12 +530,12 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		 */
 		public void generate(XAbstractFeatureCall expr) {
 			if (expr.isTypeLiteral()) {
-				final JvmType type = (JvmType) expr.getFeature();
+				final var type = (JvmType) expr.getFeature();
 				this.codeReceiver.append(type);
 			//} else if (getExpressionHelper().isShortCircuitOperation(expr)) {
 			//	generateShortCircuitInvocation(expr);
 			} else {
-				if (expr instanceof XMemberFeatureCall && ((XMemberFeatureCall) expr).isNullSafe()) {
+				if (expr instanceof XMemberFeatureCall cvalue && cvalue.isNullSafe()) {
 					featureCalltoJavaExpression(expr, () -> expr);
 				} else {
 					featureCalltoJavaExpression(expr, null);
@@ -554,18 +548,17 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		 * @param expr the call expression.
 		 */
 		public void generate(XConstructorCall expr) {
-			final List<Object> leftOperand = new ArrayList<>();
-			final List<Object> receiver = new ArrayList<>();
-			final JvmConstructor feature = expr.getConstructor();
-			final List<XExpression> args = getActualArguments(expr);
-			final JvmType type = expr.getConstructor().getDeclaringType();
+			final var leftOperand = new ArrayList<>();
+			final var receiver = new ArrayList<>();
+			final var feature = expr.getConstructor();
+			final var args = getActualArguments(expr);
+			final var type = expr.getConstructor().getDeclaringType();
 			this.codeReceiver.getImportManager().addImportFor(type);
 			internalAppendCall(feature, leftOperand, receiver, type.getSimpleName(), args, null);
 		}
 
 		private boolean needMultiAssignment(XAbstractFeatureCall expr) {
-			if (expr instanceof XBinaryOperation) {
-				final XBinaryOperation binaryOperation = (XBinaryOperation) expr;
+			if (expr instanceof XBinaryOperation binaryOperation) {
 				return binaryOperation.isReassignFirstArgument();
 			}
 			return false;
@@ -575,8 +568,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			if (this.codeReceiver.hasName(expr)) {
 				return this.codeReceiver.getName(expr);
 			}
-			if (expr instanceof XFeatureCall) {
-				final XFeatureCall featureCall = (XFeatureCall) expr;
+			if (expr instanceof XFeatureCall featureCall) {
 				if (this.codeReceiver.hasName(featureCall.getFeature())) {
 					return this.codeReceiver.getName(featureCall.getFeature());
 				}
@@ -585,9 +577,9 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		}
 
 		private void buildLeftOperand(XAbstractFeatureCall expr, List<Object> output) {
-			final XBinaryOperation binaryOperation = (XBinaryOperation) expr;
-			final XAbstractFeatureCall leftOperand = (XAbstractFeatureCall) binaryOperation.getLeftOperand();
-			final JvmIdentifiableElement feature = leftOperand.getFeature();
+			final var binaryOperation = (XBinaryOperation) expr;
+			final var leftOperand = (XAbstractFeatureCall) binaryOperation.getLeftOperand();
+			final var feature = leftOperand.getFeature();
 			if (this.codeReceiver.hasName(feature)) {
 				output.add(this.codeReceiver.getName(feature));
 				return;
@@ -598,14 +590,14 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		}
 
 		private void featureCalltoJavaExpression(XAbstractFeatureCall call, Function0<? extends XExpression> beginOfBlock) {
-			final List<Object> leftOperand = new ArrayList<>();
+			final var leftOperand = new ArrayList<>();
 			if (needMultiAssignment(call)) {
 				buildLeftOperand(call, leftOperand);
 			}
-			final List<Object> receiver = new ArrayList<>();
+			final var receiver = new ArrayList<>();
 			buildCallReceiver(call, getExtraLanguageKeywordProvider().getThisKeywordLambda(),
 					this.referenceNameLambda, receiver);
-			final JvmIdentifiableElement feature = call.getFeature();
+			final var feature = call.getFeature();
 			List<XExpression> args = null;
 			if (feature instanceof JvmExecutable) {
 				args = getActualArguments(call);
@@ -624,22 +616,21 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		private void internalAppendCall(JvmIdentifiableElement calledFeature, List<Object> leftOperand,
 				List<Object> receiver, String name, List<XExpression> args,
 				Function0<? extends XExpression> beginOfBlock) {
-			final ExtraLanguageFeatureNameConverter converter = getFeatureNameConverter(this.context);
-			final ConversionResult result = converter.convertFeatureCall(name, calledFeature, leftOperand, receiver, args);
+			final var converter = getFeatureNameConverter(this.context);
+			final var result = converter.convertFeatureCall(name, calledFeature, leftOperand, receiver, args);
 			if (result != null) {
 				if (result.isFeatureRenaming()) {
 					appendCall(calledFeature, leftOperand, receiver, result.toString(), args, beginOfBlock);
 				} else {
-					for (final Object obj : result.toComplexConversion()) {
-						if (obj instanceof CharSequence) {
-							this.codeReceiver.append((CharSequence) obj);
-						} else if (obj instanceof JvmType) {
-							this.codeReceiver.append((JvmType) obj);
-						} else if (obj instanceof LightweightTypeReference) {
-							this.codeReceiver.append((LightweightTypeReference) obj);
-						} else if (obj instanceof XExpression) {
-							AbstractExpressionGenerator.this.generate(
-									(XExpression) obj, this.codeReceiver, this.context);
+					for (final var obj : result.toComplexConversion()) {
+						if (obj instanceof CharSequence cvalue) {
+							this.codeReceiver.append(cvalue);
+						} else if (obj instanceof JvmType cvalue) {
+							this.codeReceiver.append(cvalue);
+						} else if (obj instanceof LightweightTypeReference cvalue) {
+							this.codeReceiver.append(cvalue);
+						} else if (obj instanceof XExpression cvalue) {
+							AbstractExpressionGenerator.this.generate(cvalue, this.codeReceiver, this.context);
 						}
 					}
 				}

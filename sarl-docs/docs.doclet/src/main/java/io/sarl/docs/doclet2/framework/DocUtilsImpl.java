@@ -57,8 +57,6 @@ import java.util.List;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.Elements;
 
 import com.google.inject.Inject;
 import com.sun.source.doctree.BlockTagTree;
@@ -120,11 +118,11 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public List<? extends DocTree> getTypeParameterComment(Element element, String parameterElement, SarlDocletEnvironment environment) {
-		final DocCommentTree commentTree = environment.getDocTrees().getDocCommentTree(element);
+		final var commentTree = environment.getDocTrees().getDocCommentTree(element);
 		if (commentTree != null) {
-			for (final DocTree docTag : commentTree.getBlockTags()) {
+			for (final var docTag : commentTree.getBlockTags()) {
 				if (docTag instanceof ParamTree) {
-					final ParamTree paramTag = (ParamTree) docTag;
+					final var paramTag = (ParamTree) docTag;
 					if (paramTag.isTypeParameter() && parameterElement.equals(paramTag.getName().toString())) {
 						return paramTag.getDescription();
 					}
@@ -136,7 +134,7 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public List<? extends DocTree> getCommentForDeprecatedTag(DocTree tree) {
-		final List<DocTree> documentation = new ArrayList<>();
+		final var documentation = new ArrayList<DocTree>();
 		tree.accept(new SimpleDocTreeVisitor<Void, Void>() {
 			@Override
 			public Void visitDeprecated(DeprecatedTree node, Void p) {
@@ -149,10 +147,10 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public List<? extends BlockTagTree> getBlockTags(Element element, Kind type, SarlDocletEnvironment environment) {
-		final List<BlockTagTree> list = new ArrayList<>();
-		final DocCommentTree commentTree = environment.getDocTrees().getDocCommentTree(element);
+		final var list = new ArrayList<BlockTagTree>();
+		final var commentTree = environment.getDocTrees().getDocCommentTree(element);
 		if (commentTree != null) {
-			for (final DocTree tagBlock : commentTree.getBlockTags()) {
+			for (final var tagBlock : commentTree.getBlockTags()) {
 				if (tagBlock.getKind() == type && tagBlock instanceof BlockTagTree) {
 					list.add((BlockTagTree) tagBlock);
 				}
@@ -163,10 +161,10 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public List<? extends BlockTagTree> getBlockTags(Element element, SarlDocletEnvironment environment) {
-		final List<BlockTagTree> list = new ArrayList<>();
-		final DocCommentTree commentTree = environment.getDocTrees().getDocCommentTree(element);
+		final var list = new ArrayList<BlockTagTree>();
+		final var commentTree = environment.getDocTrees().getDocCommentTree(element);
 		if (commentTree != null) {
-			for (final DocTree tagBlock : commentTree.getBlockTags()) {
+			for (final var tagBlock : commentTree.getBlockTags()) {
 				if (tagBlock instanceof BlockTagTree) {
 					list.add((BlockTagTree) tagBlock);
 				}
@@ -212,10 +210,10 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public List<? extends DocTree> getInheritedDocumentation(Element element, SarlDocletEnvironment environment) {
-		final List<DocTree> doc = new ArrayList<>();
-		final DocCommentTree doc0 = getInheritedFullDocumentation(element, environment);
+		final var doc = new ArrayList<DocTree>();
+		final var doc0 = getInheritedFullDocumentation(element, environment);
 		if (doc0 != null) {
-			final List<? extends DocTree> doc1 = doc0.getFullBody();
+			final var doc1 = doc0.getFullBody();
 			if (doc1 != null) {
 				doc.addAll(doc1);
 			}
@@ -225,11 +223,11 @@ public class DocUtilsImpl implements DocUtils {
 
 	@Override
 	public DocCommentTree getInheritedFullDocumentation(Element element, SarlDocletEnvironment environment) {
-		final TypeElement type = getElementUtils().getEnclosingTypeElement(element);
-		final Elements elts = environment.getElementUtils();
+		final var type = getElementUtils().getEnclosingTypeElement(element);
+		final var elts = environment.getElementUtils();
 		final Collection<? extends Element> inheritedElements;
 		if (element instanceof ExecutableElement) {
-			final ExecutableElement ee = (ExecutableElement) element;
+			final var ee = (ExecutableElement) element;
 			inheritedElements = getTypeHierarchy().getInheritedElements(
 					type, true, true, false, false, environment, it -> {
 				return it instanceof ExecutableElement && elts.overrides(ee, (ExecutableElement) it, type);
@@ -241,8 +239,8 @@ public class DocUtilsImpl implements DocUtils {
 			});
 		}
 		if (!inheritedElements.isEmpty()) {
-			for (final Element superElement : inheritedElements) {
-				final DocCommentTree doc0 = environment.getDocTrees().getDocCommentTree(superElement);
+			for (final var superElement : inheritedElements) {
+				final var doc0 = environment.getDocTrees().getDocCommentTree(superElement);
 				if (doc0 != null) {
 					return doc0;
 				}

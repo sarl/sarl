@@ -118,7 +118,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 
 	@Override
 	public CancelIndicator getCancelIndicator() {
-		final CancelIndicator indicator = this.delegate.getCancelIndicator();
+		final var indicator = this.delegate.getCancelIndicator();
 		if (indicator == null) {
 			return CancelIndicator.NullImpl;
 		}
@@ -140,7 +140,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (Strings.isEmpty(id) || this.temporaryData == null) {
 			return defaultValue;
 		}
-		final Object data = this.temporaryData.get(id);
+		final var data = this.temporaryData.get(id);
 		if (data == null) {
 			return defaultValue;
 		}
@@ -185,7 +185,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (this.temporaryData == null) {
 			this.temporaryData = new TreeMap<>();
 		}
-		List<T> list = (List<T>) this.temporaryData.get(id);
+		var list = (List<T>) this.temporaryData.get(id);
 		if (list == null) {
 			list = new ArrayList<>();
 			this.temporaryData.put(id, list);
@@ -199,7 +199,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (this.temporaryData == null) {
 			this.temporaryData = new TreeMap<>();
 		}
-		Set<T> set = (Set<T>) this.temporaryData.get(id);
+		var set = (Set<T>) this.temporaryData.get(id);
 		if (set == null) {
 			set = new HashSet<>();
 			this.temporaryData.put(id, set);
@@ -213,7 +213,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (this.temporaryData == null) {
 			this.temporaryData = new TreeMap<>();
 		}
-		Map<K, V> map = (Map<K, V>) this.temporaryData.get(id);
+		var map = (Map<K, V>) this.temporaryData.get(id);
 		if (map == null) {
 			map = new HashMap<>();
 			this.temporaryData.put(id, map);
@@ -227,7 +227,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (this.temporaryData == null) {
 			this.temporaryData = new TreeMap<>();
 		}
-		Map<K, List<V>> multimap = (Map<K, List<V>>) this.temporaryData.get(id);
+		var multimap = (Map<K, List<V>>) this.temporaryData.get(id);
 		if (multimap == null) {
 			multimap = new HashMap<>();
 			this.temporaryData.put(id, multimap);
@@ -241,12 +241,12 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 		if (this.temporaryData == null) {
 			this.temporaryData = new TreeMap<>();
 		}
-		Map<K, List<V>> multimap = (Map<K, List<V>>) this.temporaryData.get(id);
+		var multimap = (Map<K, List<V>>) this.temporaryData.get(id);
 		if (multimap == null) {
 			multimap = new HashMap<>();
 			this.temporaryData.put(id, multimap);
 		}
-		List<V> list = multimap.get(multimapKey);
+		var list = multimap.get(multimapKey);
 		if (list == null) {
 			list = new ArrayList<>();
 			multimap.put(multimapKey, list);
@@ -261,7 +261,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 
 	@Override
 	public LightweightTypeReference setExpectedExpressionType(LightweightTypeReference expectedType) {
-		final LightweightTypeReference old = this.expectedExpressionType;
+		final var old = this.expectedExpressionType;
 		if (expectedType != null && expectedType.isPrimitiveVoid()) {
 			this.expectedExpressionType = null;
 		} else {

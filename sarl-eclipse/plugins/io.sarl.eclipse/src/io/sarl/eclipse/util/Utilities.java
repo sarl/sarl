@@ -64,7 +64,7 @@ public final class Utilities {
 	 */
 	public static boolean isNested(IPath path, Iterator<IPath> rootPaths) {
 		while (rootPaths.hasNext()) {
-			final IPath other = rootPaths.next();
+			final var other = rootPaths.next();
 			if (other.isPrefixOf(path)) {
 				return true;
 			}
@@ -162,16 +162,16 @@ public final class Utilities {
 	 */
 	public static String getNameWithTypeParameters(IType type) {
 		assert type != null;
-		final String superName = type.getFullyQualifiedName('.');
+		final var superName = type.getFullyQualifiedName('.');
 		if (!JavaModelUtil.is50OrHigher(type.getJavaProject())) {
 			return superName;
 		}
 		try {
-			final ITypeParameter[] typeParameters = type.getTypeParameters();
+			final var typeParameters = type.getTypeParameters();
 			if (typeParameters != null && typeParameters.length > 0) {
-				final StringBuffer buf = new StringBuffer(superName);
+				final var buf = new StringBuffer(superName);
 				buf.append('<');
-				for (int k = 0; k < typeParameters.length; ++k) {
+				for (var k = 0; k < typeParameters.length; ++k) {
 					if (k != 0) {
 						buf.append(',').append(' ');
 					}
@@ -204,15 +204,15 @@ public final class Utilities {
 		} else {
 			bundlePath = precomputedBundlePath;
 		}
-		final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-		final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+		final var sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+		final var javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
 
 		final IClasspathAttribute[] extraAttributes;
 		if (javadocPath == null) {
 			if (javadocURLs != null) {
-				final String url = javadocURLs.getURLForBundle(bundle);
+				final var url = javadocURLs.getURLForBundle(bundle);
 				if (!Strings.isNullOrEmpty(url)) {
-					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+					final var attr = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
 							url);
 					extraAttributes = new IClasspathAttribute[] {attr};
@@ -223,7 +223,7 @@ public final class Utilities {
 				extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
 			}
 		} else {
-			final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+			final var attr = JavaCore.newClasspathAttribute(
 					IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
 					javadocPath.makeAbsolute().toOSString());
 			extraAttributes = new IClasspathAttribute[] {attr};
@@ -255,15 +255,15 @@ public final class Utilities {
 		} else {
 			bundlePath = precomputedBundlePath;
 		}
-		final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-		final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+		final var sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+		final var javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
 
 		final IClasspathAttribute[] extraAttributes;
 		if (javadocPath == null) {
 			if (javadocURLs != null) {
-				final String url = javadocURLs.getURLForBundle(bundle);
+				final var url = javadocURLs.getURLForBundle(bundle);
 				if (!Strings.isNullOrEmpty(url)) {
-					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+					final var attr = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
 							url);
 					extraAttributes = new IClasspathAttribute[] {attr};
@@ -274,7 +274,7 @@ public final class Utilities {
 				extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
 			}
 		} else {
-			final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+			final var attr = JavaCore.newClasspathAttribute(
 					IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
 					javadocPath.makeAbsolute().toOSString());
 			extraAttributes = new IClasspathAttribute[] {attr};
@@ -324,7 +324,7 @@ public final class Utilities {
 
 		@Override
 		public String getURLForBundle(Bundle bundle) {
-			final String name = bundle.getSymbolicName();
+			final var name = bundle.getSymbolicName();
 			if (name.startsWith(SARL_PREFIX) || name.startsWith(WRAPPED_SARL_PREFIX)) {
 				return SARLConfig.JAVADOC_URL;
 			}

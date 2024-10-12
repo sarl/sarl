@@ -57,7 +57,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -68,7 +67,6 @@ import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
@@ -99,9 +97,9 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		if (b == null) {
 			return Integer.MAX_VALUE;
 		}
-		final String abn = a.getSimpleName().toString();
-		final String bbn = b.getSimpleName().toString();
-		final int cmp = abn.compareTo(bbn);
+		final var abn = a.getSimpleName().toString();
+		final var bbn = b.getSimpleName().toString();
+		final var cmp = abn.compareTo(bbn);
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -130,12 +128,12 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		getReporter().print(Kind.NOTE, Messages.IndexGeneratorImpl_0);
 		computePaths(getPathBuilder().index(), true);
 		//
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final Document document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
-		final String title = getDocumentTitleFor(null);
+		final var document = getHtmlFactory().createDocument(cliOptions.getCharset(), this);
+		final var title = getDocumentTitleFor(null);
 		setLastTitle(title);
-		final Element htmlTag = getHtmlAccessor().getRootElement(document);
+		final var htmlTag = getHtmlAccessor().getRootElement(document);
 		//
 		generateHtmlHeader(htmlTag);
 		generateHtmlBody(htmlTag);
@@ -152,13 +150,13 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @return the header.
 	 */
 	protected Element generateHtmlHeader(Element htmlTag) {
-		final Element headerTree = getHtmlFactory().createHeadTag(htmlTag);
+		final var headerTree = getHtmlFactory().createHeadTag(htmlTag);
 		getHtmlFactory().createTitleTag(headerTree, getLastTitle());
-		final Path pathToRoot = getPathToRoot();
-		for (final Path cssStyle : getCssStylesheets()) {
+		final var pathToRoot = getPathToRoot();
+		for (final var cssStyle : getCssStylesheets()) {
 			getHtmlFactory().createCssLinkTag(headerTree, pathToRoot.resolve(cssStyle));
 		}
-		for (final Path jsScript : getJsScripts()) {
+		for (final var jsScript : getJsScripts()) {
 			getHtmlFactory().createJsLinkTag(headerTree, pathToRoot.resolve(jsScript));
 		}
 		return headerTree;
@@ -170,9 +168,9 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @return the body.
 	 */
 	protected Element generateHtmlBody(Element htmlTag) {
-		final Element bodyTag = getHtmlFactory().createBodyTag(htmlTag);
+		final var bodyTag = getHtmlFactory().createBodyTag(htmlTag);
 		generateBodyHeader(bodyTag);
-		final Element contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
+		final var contentTag = getHtmlFactory().createDivTag(bodyTag, CssStyles.CONTENT);
 		generateBodyContent(contentTag);
 		generateBodyFooter(bodyTag);
 		generateNavigationBar();
@@ -184,7 +182,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @param parent the container.
 	 */
 	protected void generateBodyHeader(Element parent) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.HEADER);
 		getNavigation().createNavigationBar(divTag);
 	}
 
@@ -193,7 +191,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @param parent the container.
 	 */
 	protected void generateBodyFooter(Element parent) {
-		Element divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
+		final var divTag = getHtmlFactory().createDivTag(parent, CssStyles.FOOTER);
 		getNavigation().createNavigationBar(divTag);
 		createCopyrightBox(divTag);
 	}
@@ -208,7 +206,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	private void addEntry(Map<String, SortedSet<javax.lang.model.element.Element>> index, javax.lang.model.element.Element element) {
 		final String name = element.getSimpleName().toString();
 		final String letter = Character.valueOf(name.charAt(0)).toString().toUpperCase();
-		SortedSet<javax.lang.model.element.Element> entries = index.computeIfAbsent(letter, it -> new TreeSet<>(COMPARATOR));
+		var entries = index.computeIfAbsent(letter, it -> new TreeSet<>(COMPARATOR));
 		entries.add(element);
 	}
 	
@@ -217,13 +215,13 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @return the map with keys as letters, and values as entries.
 	 */
 	protected Map<String, SortedSet<javax.lang.model.element.Element>> buildIndex() {
-		final Map<String, SortedSet<javax.lang.model.element.Element>> index = new TreeMap<>();
-		final SortedSet<TypeElement> types = getTypeRepository().getTypes();
-		for (final TypeElement type : types) {
+		final var index = new TreeMap<String, SortedSet<javax.lang.model.element.Element>>();
+		final var types = getTypeRepository().getTypes();
+		for (final var type : types) {
 			if (getEnvironment().isIncluded(type)) {
 				addEntry(index, type);
 				
-				for (final javax.lang.model.element.Element member : type.getEnclosedElements()) {
+				for (final var member : type.getEnclosedElements()) {
 					if (getEnvironment().isIncluded(member)) {
 						switch (member.getKind()) {
 						case FIELD:
@@ -251,14 +249,14 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @param index is the map with keys as letters, and values as entries.
 	 */
 	protected void generateIndex(Element parent, Map<String, SortedSet<javax.lang.model.element.Element>> index) {
-		final Element dlTag = getHtmlFactory().createDlTag(parent, CssStyles.INDEX);		
-		for (final Entry<String, SortedSet<javax.lang.model.element.Element>> entry : index.entrySet()) {
-			final Element dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.INDEX);
+		final var dlTag = getHtmlFactory().createDlTag(parent, CssStyles.INDEX);		
+		for (final var entry : index.entrySet()) {
+			final var dtTag = getHtmlFactory().createDtTag(dlTag, CssStyles.INDEX);
 			dtTag.appendText(entry.getKey());
-			final Element ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.INDEX);
-			final Element ulTag = getHtmlFactory().createUlTag(ddTag, CssStyles.INDEX);
-			for (final javax.lang.model.element.Element element : entry.getValue()) {
-				final Element liTag = getHtmlFactory().createLiTag(null, null);
+			final var ddTag = getHtmlFactory().createDdTag(dlTag, CssStyles.INDEX);
+			final var ulTag = getHtmlFactory().createUlTag(ddTag, CssStyles.INDEX);
+			for (final var element : entry.getValue()) {
+				final var liTag = getHtmlFactory().createLiTag(null, null);
 				if (generateSingleEntry(liTag, element)) {
 					ulTag.appendChild(liTag);
 				}
@@ -274,14 +272,12 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 */
 	protected boolean generateSingleEntry(Element parent, javax.lang.model.element.Element element) {
 		final List<Node> link;
-		if (element instanceof TypeElement) {
-			link = getHtmlFactory().createTypeLink((TypeElement) element, true, null, this);
-		} else if (element instanceof ExecutableElement) {
-			final ExecutableElement ee = (ExecutableElement) element;
-			final List<Node> label = getHtmlFactory().getExecutablePrototype(ee, ee.getSimpleName().toString(), this);
+		if (element instanceof TypeElement cvalue) {
+			link = getHtmlFactory().createTypeLink(cvalue, true, null, this);
+		} else if (element instanceof ExecutableElement ee) {
+			final var label = getHtmlFactory().getExecutablePrototype(ee, ee.getSimpleName().toString(), this);
 			link = getHtmlFactory().createExecutableLink(ee, label, null, this);
-		} else if (element instanceof VariableElement) {
-			final VariableElement ve = (VariableElement) element;
+		} else if (element instanceof VariableElement ve) {
 			link = getHtmlFactory().createVariableLink(ve, ve.getSimpleName().toString(), null, this);
 		} else {
 			return false;
@@ -290,7 +286,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 		getHtmlFactory().createUnsecableSpace(parent);
 		parent.appendText("-"); //$NON-NLS-1$
 		getHtmlFactory().createUnsecableSpace(parent);
-		final List<Node> description = new ArrayList<>();
+		final var description = new ArrayList<Node>();
 		createFirstSentence(element, description, false, false);
 		createShortDeprecationMessage(element, description, true);
 		parent.appendChildren(description);
@@ -302,7 +298,7 @@ public class IndexGeneratorImpl extends AbstractDocumentationGenerator implement
 	 * @param parent the container.
 	 */
 	protected void generateBodyContent(Element parent) {
-		final Map<String, SortedSet<javax.lang.model.element.Element>> fullIndex = buildIndex();
+		final var fullIndex = buildIndex();
 		generateIndex(parent, fullIndex);
 	}
 

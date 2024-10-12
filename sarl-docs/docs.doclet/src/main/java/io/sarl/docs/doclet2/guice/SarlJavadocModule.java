@@ -27,7 +27,6 @@ import java.util.Set;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -190,10 +189,10 @@ public class SarlJavadocModule extends AbstractModule {
 	}
 
 	private <T extends Taglet> Provider<T> createProvider(Class<T> type) {
-		final MembersInjector<T> minjector = binder().getMembersInjector(type);
+		final var minjector = binder().getMembersInjector(type);
 		final Provider<T> provider = () -> {
 			try {
-				final T taglet = type.getConstructor().newInstance();
+				final var taglet = type.getConstructor().newInstance();
 				minjector.injectMembers(taglet);
 				return taglet;
 			} catch (Throwable ex) {
@@ -288,7 +287,7 @@ public class SarlJavadocModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public Doclet providesDoclet(Injector injector) {
-		final SarlHtmlDoclet doclet = new SarlHtmlDoclet(this.doclet);
+		final var doclet = new SarlHtmlDoclet(this.doclet);
 		injector.injectMembers(doclet);
 		return doclet;
 	}
@@ -302,7 +301,7 @@ public class SarlJavadocModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public SarlDocletEnvironment providesEnvironment(Injector injector) {
-		final SarlDocletEnvironment env = new SarlDocletEnvironmentImpl();
+		final var env = new SarlDocletEnvironmentImpl();
 		injector.injectMembers(env);
 		return env;
 	}
@@ -317,7 +316,7 @@ public class SarlJavadocModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public ApidocExcluder providesApidocExcluder(Injector injector, Provider<SarlDocletEnvironment> environment) {
-		final ApidocExcluder excluder = new DefaultApidocExcluder(environment);
+		final var excluder = new DefaultApidocExcluder(environment);
 		injector.injectMembers(excluder);
 		return excluder;
 	}
@@ -333,7 +332,7 @@ public class SarlJavadocModule extends AbstractModule {
 		return new SarlTagletFactory() {
 			@Override
 			public <T extends Taglet> T newTaglet(Class<T> type) {
-				final Provider<T> provider = createProvider(type);
+				final var provider = createProvider(type);
 				return provider.get();
 			}
 		};
@@ -345,15 +344,15 @@ public class SarlJavadocModule extends AbstractModule {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void bindTaglets(Object... pairs) {
-		final Set<Provider<? extends Taglet>> typeSet = new HashSet<>(); 
-		for (int i = 0; i < pairs.length; i += 2) {
-			final Class<? extends Taglet> type = (Class<? extends Taglet>) pairs[i + 1];
+		final var typeSet = new HashSet<Provider<? extends Taglet>>(); 
+		for (var i = 0; i < pairs.length; i += 2) {
+			final var type = (Class<? extends Taglet>) pairs[i + 1];
 			typeSet.add(createProvider(type));
 		}
-		final TypeLiteral<Set<Provider<? extends Taglet>>> typeLiteral = new TypeLiteral<>() {
+		final var typeLiteral = new TypeLiteral<Set<Provider<? extends Taglet>>>() {
 			//
 		};
-		final Key<Set<Provider<? extends Taglet>>> collectionKey = Key.get(typeLiteral, Names.named("registered-taglets")); //$NON-NLS-1$
+		final var collectionKey = Key.get(typeLiteral, Names.named("registered-taglets")); //$NON-NLS-1$
 		binder().bind(collectionKey).toInstance(typeSet);
 	}
 

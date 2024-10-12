@@ -55,7 +55,7 @@ public class DefaultPackageExplorerLabelProviderBuilder implements IPackageExplo
 
 	@Override
 	public PackageExplorerLabelProvider newInstance(PackageExplorerContentProvider contentProvider) {
-		final SARLPackageExplorerLabelProvider provider = new SARLPackageExplorerLabelProvider(contentProvider);
+		final var provider = new SARLPackageExplorerLabelProvider(contentProvider);
 		this.injector.injectMembers(provider);
 		return provider;
 	}

@@ -52,7 +52,7 @@ public final class CliUtilities {
 	}
 
 	private static boolean isUnixCompliant() {
-		final String os = System.getProperty("os.name").trim().toLowerCase(); //$NON-NLS-1$
+		final var os = System.getProperty("os.name").trim().toLowerCase(); //$NON-NLS-1$
 		if (os.indexOf("windows") >= 0) { //$NON-NLS-1$
 			return false;
 		}
@@ -163,7 +163,7 @@ public final class CliUtilities {
 	public static String getCommandLineOption(String name, String value) {
 		assert !Strings.isNullOrEmpty(name);
 		assert !Strings.isNullOrEmpty(value);
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		buf.append(getCommandLineOption(name));
 		buf.append(EQUAL_SIGN).append(value);
 		return buf.toString();
@@ -216,7 +216,7 @@ public final class CliUtilities {
 	public static String getCommandLineDefinition(String name, String value) {
 		assert !Strings.isNullOrEmpty(name);
 		assert !Strings.isNullOrEmpty(value);
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		buf.append(getCommandLineOption(DEFINITION_PREFIX));
 		buf.append(name);
 		buf.append(EQUAL_SIGN).append(value);
@@ -249,7 +249,7 @@ public final class CliUtilities {
 	public static String getUnixCommandLineOption(String name, String value) {
 		assert !Strings.isNullOrEmpty(name);
 		assert !Strings.isNullOrEmpty(value);
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		buf.append(getUnixCommandLineOption(name));
 		buf.append(EQUAL_SIGN).append(value);
 		return buf.toString();

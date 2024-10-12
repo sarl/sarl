@@ -50,10 +50,8 @@
 
 package io.sarl.docs.doclet2.html.raw;
 
-import java.nio.file.Path;
 import java.text.MessageFormat;
 
-import javax.lang.model.element.ModuleElement;
 import javax.tools.Diagnostic.Kind;
 
 import com.google.common.base.Strings;
@@ -97,11 +95,11 @@ public class RawModuleListGeneratorImpl extends AbstractDocumentationGenerator i
 		getReporter().print(Kind.NOTE, Messages.RawModuleListGeneratorImpl_0);
 		computePaths(getPathBuilder().rawModuleList(), false);
 		//
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final StringBuilder content = new StringBuilder();
-		for (final ModuleElement moduleElement : getTypeRepository().getModules()) {
-			final String qn = moduleElement.getQualifiedName().toString();
+		final var content = new StringBuilder();
+		for (final var moduleElement : getTypeRepository().getModules()) {
+			final var qn = moduleElement.getQualifiedName().toString();
 			if (!Strings.isNullOrEmpty(qn)) {
 				content.append(qn);
 				content.append("\n"); //$NON-NLS-1$

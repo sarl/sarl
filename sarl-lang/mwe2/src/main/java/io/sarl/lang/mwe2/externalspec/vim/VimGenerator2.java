@@ -27,9 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.inject.Injector;
@@ -126,8 +124,8 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 */
 	protected void generatePreamble(IStyleAppendable it) {
 		clearHilights();
-		final String nm = getLanguageSimpleName().toLowerCase();
-		final String cmd = Strings.toFirstUpper(getLanguageSimpleName().toLowerCase()) + "HiLink"; //$NON-NLS-1$
+		final var nm = getLanguageSimpleName().toLowerCase();
+		final var cmd = Strings.toFirstUpper(getLanguageSimpleName().toLowerCase()) + "HiLink"; //$NON-NLS-1$
 		appendComment(it, "Quit when a syntax file was already loaded"); //$NON-NLS-1$
 		appendCmd(it, false, "if !exists(\"main_syntax\")").increaseIndentation().newLine(); //$NON-NLS-1$
 		appendCmd(it, false, "if exists(\"b:current_syntax\")").increaseIndentation().newLine(); //$NON-NLS-1$
@@ -183,7 +181,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		appendCmd(it, "exec \"syn sync ccomment sarlComment minlines=\" . sarl_minlines"); //$NON-NLS-1$
 		it.newLine();
 		appendComment(it, "The default highlighting."); //$NON-NLS-1$
-		for (final Entry<String, VimSyntaxGroup> hilight : this.highlights.entrySet()) {
+		for (final var hilight : this.highlights.entrySet()) {
 			appendCmd(it, "SarlHiLink " + hilight.getKey() + " " + hilight.getValue().getVimConstant()); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		clearHilights();
@@ -218,7 +216,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 * @param types the primitive types.
 	 */
 	protected void generatePrimitiveTypes(IStyleAppendable it, Iterable<String> types) {
-		final Iterator<String> iterator = types.iterator();
+		final var iterator = types.iterator();
 		if (iterator.hasNext()) {
 			appendComment(it, "primitive types."); //$NON-NLS-1$
 			appendMatch(it, "sarlArrayDeclaration", "\\(\\s*\\[\\s*\\]\\)*", true); //$NON-NLS-1$//$NON-NLS-2$
@@ -308,7 +306,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 */
 	protected void generateKeywords(IStyleAppendable it, String family, VimSyntaxGroup color, Iterable<String> keywords) {
 		appendComment(it, "keywords for the '" + family + "' family."); //$NON-NLS-1$ //$NON-NLS-2$
-		final Iterator<String> iterator = keywords.iterator();
+		final var iterator = keywords.iterator();
 		if (iterator.hasNext()) {
 			it.append("syn keyword "); //$NON-NLS-1$
 			it.append(family);
@@ -362,7 +360,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		it.append(getLanguageSimpleName().toLowerCase());
 		it.append("Top add="); //$NON-NLS-1$
 		it.append(element0);
-		for (final String element : elements) {
+		for (final var element : elements) {
 			it.append(","); //$NON-NLS-1$
 			it.append(element);
 		}
@@ -415,13 +413,13 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		it.append(name);
 		it.append(" start="); //$NON-NLS-1$
 		it.append(regexString(start));
-		for (final String endPattern : end) {
+		for (final var endPattern : end) {
 			it.append(" end="); //$NON-NLS-1$
 			it.append(regexString(endPattern));
 		}
 		if (contains.length > 0) {
 			it.append(" contains=").append(contains[0]); //$NON-NLS-1$
-			for (int i = 1; i < contains.length; ++i) {
+			for (var i = 1; i < contains.length; ++i) {
 				it.append(",").append(contains[i]); //$NON-NLS-1$
 			}
 		}
@@ -491,7 +489,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		it.append(regexString(pattern));
 		if (contains.length > 0) {
 			it.append(" contains=").append(contains[0]); //$NON-NLS-1$
-			for (int i = 1; i < contains.length; ++i) {
+			for (var i = 1; i < contains.length; ++i) {
 				it.append(",").append(contains[i]); //$NON-NLS-1$
 			}
 		}
@@ -581,13 +579,13 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	protected void generateFileTypeDetectionScript(String basename) {
 		final CharSequence scriptContent = getFileTypeDetectionScript();
 		if (scriptContent != null) {
-			final String textualContent = scriptContent.toString();
+			final var textualContent = scriptContent.toString();
 			if (!Strings.isEmpty(textualContent)) {
-				final byte[] bytes = textualContent.getBytes();
-				for (final String output : getOutputs()) {
-					final File directory = new File(output, FTDETECT_FOLDER).getAbsoluteFile();
+				final var bytes = textualContent.getBytes();
+				for (final var output : getOutputs()) {
+					final var directory = new File(output, FTDETECT_FOLDER).getAbsoluteFile();
 					try {
-						final File outputFile = new File(directory, basename);
+						final var outputFile = new File(directory, basename);
 						outputFile.getParentFile().mkdirs();
 						Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
 					} catch (IOException e) {
@@ -647,8 +645,8 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 
 		@Override
 		public void appendComment(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			final var comment = applyFormat(text, parameters);
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl("\" " + line.trim()); //$NON-NLS-1$
 			}
 		}
@@ -658,8 +656,8 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 			appendNl("\" Vim syntax file"); //$NON-NLS-1$
 			appendNl("\" Language: " + getLanguageSimpleName()); //$NON-NLS-1$
 			appendNl("\" Version: " + getLanguageVersion()); //$NON-NLS-1$
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "\" ")); //$NON-NLS-1$//$NON-NLS-2$
 			}
 			newLine().newLine();

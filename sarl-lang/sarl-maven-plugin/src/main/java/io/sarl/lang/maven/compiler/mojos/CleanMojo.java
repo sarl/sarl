@@ -46,7 +46,7 @@ public class CleanMojo extends AbstractSarlMojo {
 	@Override
 	protected boolean isSkipped() {
 		// Check the general SARL clean skipping flag
-		boolean mavenCleanSkip = false;
+		var mavenCleanSkip = false;
 		try {
 			mavenCleanSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty(SARL_CLEAN_SKIP_NAME, "false")); //$NON-NLS-1$
 		} catch (Throwable exception) {
@@ -59,10 +59,10 @@ public class CleanMojo extends AbstractSarlMojo {
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException {
 		if (!isSkipped()) {
 			getLogger().info(Messages.CleanMojo_0);
-			final String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
-			final String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
-			final String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
-			final String cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
+			final var cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
+			final var cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
+			final var cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
+			final var cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
 			executeMojo(
 					cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
 					MessageFormat.format(

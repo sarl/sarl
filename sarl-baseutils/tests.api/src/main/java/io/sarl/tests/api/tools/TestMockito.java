@@ -20,10 +20,8 @@
  */
 package io.sarl.tests.api.tools;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -56,7 +54,7 @@ public final class TestMockito {
 		if (type == null) {
 			return null;
 		}
-		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		final var loader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
 		try {
 			return Mockito.mock(type);
@@ -75,7 +73,7 @@ public final class TestMockito {
 		if (instance == null) {
 			return null;
 		}
-		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		final var loader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
 		try {
 			return Mockito.spy(instance);
@@ -89,9 +87,8 @@ public final class TestMockito {
 	 * @param type the expected type.
 	 * @return the default value for the given type.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> T anyInstanceOrNull(Class<T> type) {
-		final ArgumentMatcher matcher = new InstanceOf(type);
+		final var matcher = new InstanceOf(type);
 		return ArgumentMatchers.argThat((it) -> {
 			return it == null || matcher.matches(it);
 		});
@@ -106,13 +103,13 @@ public final class TestMockito {
 	 * @return the type of mockable features. If it is {@code 0}, no mockable feature was found.
 	 */
 	public static int getAutomaticMockableFeatures(Class<?> typeToExplore) {
-		int features = 0;
-		Class<?> type = typeToExplore;
+		var features = 0;
+		var type = typeToExplore;
 		while (type != null) {
 			if (type.getAnnotation(ManualMocking.class) != null) {
 				return 0;
 			}
-			for (Field field : type.getDeclaredFields()) {
+			for (var field : type.getDeclaredFields()) {
 				if (field.getAnnotation(Mock.class) != null) {
 					features |= 0x1;
 				} else if (field.getAnnotation(InjectMocks.class) != null) {
@@ -137,7 +134,7 @@ public final class TestMockito {
 				|| field.getAnnotation(InjectMocks.class) != null) {
 			return true;
 		}
-		for (Annotation annotation : field.getAnnotations()) {
+		for (var annotation : field.getAnnotations()) {
 			if ("Nullable".equals(annotation.annotationType().getSimpleName()) //$NON-NLS-1$
 					|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) { //$NON-NLS-1$
 				return true;

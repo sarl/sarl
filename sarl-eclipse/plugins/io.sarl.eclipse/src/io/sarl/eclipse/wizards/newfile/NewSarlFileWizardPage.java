@@ -69,11 +69,11 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	private static IPath determinePackageName(IPath path) {
 		if (path != null) {
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
+			final var project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
 			try {
 				if (project != null && project.hasNature(JavaCore.NATURE_ID)) {
-					final IJavaProject javaProject = JavaCore.create(project);
-					for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
+					final var javaProject = JavaCore.create(project);
+					for (final var entry : javaProject.getRawClasspath()) {
 						if (entry.getPath().isPrefixOf(path)) {
 							return path.removeFirstSegments(entry.getPath().segmentCount());
 						}
@@ -88,17 +88,17 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	@Override
 	protected InputStream getInitialContents() {
-		final StringBuilder content = new StringBuilder();
+		final var content = new StringBuilder();
 
-		final IPath folderInWorkspace = getContainerFullPath();
+		final var folderInWorkspace = getContainerFullPath();
 
-		final IPath packagePath = determinePackageName(folderInWorkspace);
+		final var packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
 			content.append(this.grammarAccess.getPackageKeyword() + " "); //$NON-NLS-1$
-			final StringBuilder packageName = new StringBuilder();
+			final var packageName = new StringBuilder();
 			packageName.append(packagePath.segment(0));
-			for (int i = 1; i < packagePath.segmentCount(); ++i) {
+			for (var i = 1; i < packagePath.segmentCount(); ++i) {
 				packageName.append(this.grammarAccess.getFullStopKeyword());
 				packageName.append(packagePath.segment(i));
 			}

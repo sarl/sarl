@@ -66,7 +66,7 @@ public class SynopsisHelpGeneratorModule implements BQModule {
 	@Singleton
 	public HelpGenerator provideHelpGenerator(
 			ApplicationMetadata metadata, Injector injector, Terminal terminal) {
-		int maxColumns = terminal.getColumns();
+		var maxColumns = terminal.getColumns();
 		if (maxColumns < TTY_MIN_COLUMNS) {
 			maxColumns = TTY_DEFAULT_COLUMNS;
 		}

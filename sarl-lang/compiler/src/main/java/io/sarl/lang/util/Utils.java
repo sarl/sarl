@@ -25,18 +25,15 @@ import static io.sarl.lang.core.util.SarlUtils.HIDDEN_MEMBER_CHARACTER;
 import static io.sarl.lang.core.util.SarlUtils.isHiddenMember;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,17 +43,14 @@ import com.google.common.collect.Iterables;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
@@ -76,7 +70,6 @@ import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.util.EmfFormatter;
@@ -87,7 +80,6 @@ import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
-import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
@@ -159,10 +151,10 @@ public final class Utils {
 	private static final Pattern IMPLICIT_LAMBDA_PARAMETER_PATTERN = Pattern.compile("^\\$[0-9]+$"); //$NON-NLS-1$
 
 	static {
-		final StringBuilder name = new StringBuilder();
-		final String[] components = EarlyExit.class.getPackage().getName().split("\\."); //$NON-NLS-1$
-		final int len = Math.min(3, components.length);
-		for (int i = 0; i < len; ++i) {
+		final var name = new StringBuilder();
+		final var components = EarlyExit.class.getPackage().getName().split("\\."); //$NON-NLS-1$
+		final var len = Math.min(3, components.length);
+		for (var i = 0; i < len; ++i) {
 			name.append(components[i]);
 			name.append("."); //$NON-NLS-1$
 		}
@@ -219,13 +211,12 @@ public final class Utils {
 			Map<ActionPrototype, JvmOperation> operations,
 			Map<String, JvmField> fields,
 			IActionPrototypeProvider sarlSignatureProvider) {
-		for (final JvmFeature feature : jvmElement.getAllFeatures()) {
+		for (final var feature : jvmElement.getAllFeatures()) {
 			if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
-				if (operations != null && feature instanceof JvmOperation) {
-					final JvmOperation operation = (JvmOperation) feature;
-					final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+				if (operations != null && feature instanceof JvmOperation operation) {
+					final var sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 							operation.isVarArgs(), operation.getParameters());
-					final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+					final var actionKey = sarlSignatureProvider.createActionPrototype(
 							operation.getSimpleName(), sig);
 					operations.put(actionKey, operation);
 				} else if (fields != null && feature instanceof JvmField) {
@@ -289,17 +280,16 @@ public final class Utils {
 			IActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null && extendedInterfaces != null) {
-			for (final JvmTypeReference interfaceReference : extendedInterfaces) {
-				final JvmType interfaceReferenceType = interfaceReference.getType();
-				if (interfaceReferenceType instanceof JvmGenericType) {
-					for (final JvmFeature feature : ((JvmGenericType) interfaceReferenceType).getAllFeatures()) {
+			for (final var interfaceReference : extendedInterfaces) {
+				final var interfaceReferenceType = interfaceReference.getType();
+				if (interfaceReferenceType instanceof JvmGenericType cvalue) {
+					for (final var feature : cvalue.getAllFeatures()) {
 						if (!"java.lang.Object".equals(//$NON-NLS-1$
 								feature.getDeclaringType().getQualifiedName())) {
-							if (feature instanceof JvmOperation) {
-								final JvmOperation operation = (JvmOperation) feature;
-								final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+							if (feature instanceof JvmOperation operation) {
+								final var sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 										operation.isVarArgs(), operation.getParameters());
-								final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+								final var actionKey = sarlSignatureProvider.createActionPrototype(
 										operation.getSimpleName(), sig);
 								if (operation.isDefault()) {
 									if (overridableOperations != null) {
@@ -319,19 +309,17 @@ public final class Utils {
 
 		// Check on the implemented features, inherited from the super type
 		if (extendedClass != null) {
-			final JvmType extendedClassJvmType = extendedClass.getType();
-			if (extendedClassJvmType instanceof JvmGenericType) {
-				final JvmGenericType parentType = (JvmGenericType) extendedClassJvmType;
-				for (final JvmFeature feature : parentType.getAllFeatures()) {
+			final var extendedClassJvmType = extendedClass.getType();
+			if (extendedClassJvmType instanceof JvmGenericType parentType) {
+				for (final var feature : parentType.getAllFeatures()) {
 					if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
 							&& isVisible(jvmElement, feature)
 							&& !isHiddenMember(feature.getSimpleName())) {
-						if (feature instanceof JvmOperation) {
+						if (feature instanceof JvmOperation operation) {
 							if (!feature.isStatic()) {
-								final JvmOperation operation = (JvmOperation) feature;
-								final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+								final var sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 										operation.isVarArgs(), operation.getParameters());
-								final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+								final var actionKey = sarlSignatureProvider.createActionPrototype(
 										feature.getSimpleName(), sig);
 								if (operation.isAbstract() && !operation.isDefault()) {
 									if (operationsToImplement != null) {
@@ -353,15 +341,15 @@ public final class Utils {
 									}
 								}
 							}
-						} else if (feature instanceof JvmField && inheritedFields != null) {
-							inheritedFields.put(feature.getSimpleName(), (JvmField) feature);
+						} else if (feature instanceof JvmField cvalue && inheritedFields != null) {
+							inheritedFields.put(feature.getSimpleName(), cvalue);
 						}
 					}
 				}
 
 				if (superConstructors != null) {
-					for (final JvmConstructor cons : parentType.getDeclaredConstructors()) {
-						final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+					for (final var cons : parentType.getDeclaredConstructors()) {
+						final var sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 								cons.isVarArgs(), cons.getParameters());
 						superConstructors.put(sig,  cons);
 					}
@@ -397,7 +385,7 @@ public final class Utils {
 	public static boolean isVarArg(List<? extends XtendParameter> params) {
 		assert params != null;
 		if (params.size() > 0) {
-			final XtendParameter param = params.get(params.size() - 1);
+			final var param = params.get(params.size() - 1);
 			assert param != null;
 			return param.isVarArg();
 		}
@@ -516,9 +504,9 @@ public final class Utils {
 	 * @return {@code true} if the pointed element is a class type.
 	 */
 	public static boolean isClass(LightweightTypeReference typeRef) {
-		final JvmType t = typeRef.getType();
-		if (t instanceof JvmGenericType) {
-			return !((JvmGenericType) t).isInterface();
+		final var t = typeRef.getType();
+		if (t instanceof JvmGenericType cvalue) {
+			return !cvalue.isInterface();
 		}
 		return false;
 	}
@@ -544,8 +532,8 @@ public final class Utils {
 		if (expressionTypeRef.isPrimitive()) {
 			return true;
 		}
-		return expressionTypeRef.getType() instanceof JvmDeclaredType
-				&& ((JvmDeclaredType) expressionTypeRef.getType()).isFinal();
+		return expressionTypeRef.getType() instanceof JvmDeclaredType cvalue
+				&& cvalue.isFinal();
 	}
 
 	/** Replies if the given type is a final type.
@@ -570,8 +558,8 @@ public final class Utils {
 	 * @return {@code true} if the given type is an interface.
 	 */
 	public static boolean isInterface(LightweightTypeReference type) {
-		return type.getType() instanceof JvmGenericType
-				&& ((JvmGenericType) type.getType()).isInterface();
+		return type.getType() instanceof JvmGenericType cvalue
+				&& cvalue.isInterface();
 	}
 
 	/** Replies if it is allowed to cast between the given types.
@@ -588,8 +576,8 @@ public final class Utils {
 			boolean enablePrimitiveWidening, boolean enableVoidMatchingNull,
 			boolean allowSynonyms) {
 		if (enableVoidMatchingNull) {
-			final boolean fromVoid = fromType == null || fromType.isPrimitiveVoid();
-			final boolean toVoid = toType == null || toType.isPrimitiveVoid();
+			final var fromVoid = fromType == null || fromType.isPrimitiveVoid();
+			final var toVoid = toType == null || toType.isPrimitiveVoid();
 			if (fromVoid) {
 				return toVoid;
 			}
@@ -602,7 +590,7 @@ public final class Utils {
 				|| (fromType.isPrimitiveVoid() != toType.isPrimitiveVoid())) {
 			return false;
 		}
-		final TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
+		final var conform = new TypeConformanceComputationArgument(
 				false, false, true, enablePrimitiveWidening, false, allowSynonyms);
 		assert fromType != null;
 		if (((fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive())
@@ -625,7 +613,7 @@ public final class Utils {
 		if (object == null) {
 			return null;
 		}
-		final Resource r = object.eResource();
+		final var r = object.eResource();
 		if (r == null) {
 			return null;
 		}
@@ -686,10 +674,10 @@ public final class Utils {
 		if (typeRef == null) {
 			return null;
 		}
-		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, context);
-		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner,
+		final var owner = new StandardTypeReferenceOwner(services, context);
+		final var factory = new LightweightTypeReferenceFactory(owner,
 				keepUnboundWildcardInformation);
-		final LightweightTypeReference reference = factory.toLightweightReference(typeRef);
+		final var reference = factory.toLightweightReference(typeRef);
 		return reference;
 	}
 
@@ -718,10 +706,10 @@ public final class Utils {
 		if (type == null) {
 			return null;
 		}
-		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, type);
-		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner,
+		final var owner = new StandardTypeReferenceOwner(services, type);
+		final var factory = new LightweightTypeReferenceFactory(owner,
 				keepUnboundWildcardInformation);
-		final LightweightTypeReference reference = factory.toLightweightReference(type);
+		final var reference = factory.toLightweightReference(type);
 		return reference;
 	}
 
@@ -741,8 +729,8 @@ public final class Utils {
 		//final String fixedv2 = v2.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		//final Version vobject1 = Version.parseVersion(fixedv1);
 		//final Version vobject2 = Version.parseVersion(fixedv2);
-		final Version vobject1 = Version.parseVersion(v1);
-		final Version vobject2 = Version.parseVersion(v2);
+		final var vobject1 = Version.parseVersion(v1);
+		final var vobject2 = Version.parseVersion(v2);
 		return vobject1.compareTo(vobject2);
 	}
 
@@ -756,10 +744,10 @@ public final class Utils {
 	 * @since 0.13
 	 */
 	public static int compareMajorMinorVersions(String v1, String v2) {
-		final Version vobject1 = Version.parseVersion(v1);
-		final Version vo1 = new Version(vobject1.getMajor(), vobject1.getMinor(), 0);
-		final Version vobject2 = Version.parseVersion(v2);
-		final Version vo2 = new Version(vobject2.getMajor(), vobject2.getMinor(), 0);
+		final var vobject1 = Version.parseVersion(v1);
+		final var vo1 = new Version(vobject1.getMajor(), vobject1.getMinor(), 0);
+		final var vobject2 = Version.parseVersion(v2);
+		final var vo2 = new Version(vobject2.getMajor(), vobject2.getMinor(), 0);
 		return vo1.compareTo(vo2);
 	}
 
@@ -767,15 +755,15 @@ public final class Utils {
 			ISerializer serializer, ImportManager importManager, XAnnotation annotation) {
 		textRepresentation.append(elements.getCommercialAtKeyword());
 		textRepresentation.append(getSignatureType(annotation.getAnnotationType(), importManager));
-		final XExpression value = annotation.getValue();
+		final var value = annotation.getValue();
 		if (value != null) {
 			textRepresentation.append(elements.getLeftParenthesisKeyword());
 			textRepresentation.append(serializer.serialize(value).trim());
 			textRepresentation.append(elements.getRightParenthesisKeyword());
 		} else if (!annotation.getElementValuePairs().isEmpty()) {
 			textRepresentation.append(elements.getLeftParenthesisKeyword());
-			boolean addComa = false;
-			for (final XAnnotationElementValuePair pair : annotation.getElementValuePairs()) {
+			var addComa = false;
+			for (final var pair : annotation.getElementValuePairs()) {
 				if (addComa) {
 					textRepresentation.append(elements.getCommaKeyword());
 				} else {
@@ -803,9 +791,9 @@ public final class Utils {
 	 * @since 0.7
 	 */
 	public static String getSarlCodeFor(EObject object) {
-		final ICompositeNode node = NodeModelUtils.getNode(object);
+		final var node = NodeModelUtils.getNode(object);
 		if (node != null) {
-			String text = node.getText();
+			var text = node.getText();
 			if (text != null) {
 				text = text.trim();
 				text = text.replaceAll("[\n\r\f]+", " "); //$NON-NLS-1$//$NON-NLS-2$
@@ -832,21 +820,21 @@ public final class Utils {
 		} catch (Throwable exception) {
 			// No working, perhaps the context's of the signature is unknown
 		}
-		final StringBuilder textRepresentation = new StringBuilder();
+		final var textRepresentation = new StringBuilder();
 		// Annotations
-		for (final XAnnotation annotation : signature.getAnnotations()) {
+		for (final var annotation : signature.getAnnotations()) {
 			addAnnotationToSignature(textRepresentation, grammarAccess, serializer, importManager, annotation);
 		}
 		// Modifiers
-		for (final String modifier : signature.getModifiers()) {
+		for (final var modifier : signature.getModifiers()) {
 			textRepresentation.append(modifier);
 			textRepresentation.append(' ');
 		}
 		// Generic type
 		if (!signature.getTypeParameters().isEmpty()) {
-			boolean addComa = false;
+			var addComa = false;
 			textRepresentation.append(grammarAccess.getLessThanSignKeyword());
-			for (final JvmTypeParameter typeParameter : signature.getTypeParameters()) {
+			for (final var typeParameter : signature.getTypeParameters()) {
 				if (addComa) {
 					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
@@ -863,8 +851,8 @@ public final class Utils {
 		// Parameters
 		if (!signature.getParameters().isEmpty()) {
 			textRepresentation.append(grammarAccess.getLeftParenthesisKeyword());
-			final int idx = signature.getParameters().size() - 1;
-			for (int i = 0; i < idx; ++i) {
+			final var idx = signature.getParameters().size() - 1;
+			for (var i = 0; i < idx; ++i) {
 				addParamToSignature(textRepresentation, signature.getParameters().get(i), grammarAccess,
 						importManager, serializer);
 				textRepresentation.append(grammarAccess.getCommaKeyword());
@@ -875,7 +863,7 @@ public final class Utils {
 			textRepresentation.append(grammarAccess.getRightParenthesisKeyword());
 		}
 		// Return type
-		final JvmTypeReference returnType = signature.getReturnType();
+		final var returnType = signature.getReturnType();
 		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
 			textRepresentation.append(' ');
 			textRepresentation.append(grammarAccess.getColonKeyword());
@@ -887,8 +875,8 @@ public final class Utils {
 			textRepresentation.append(' ');
 			textRepresentation.append(grammarAccess.getThrowsKeyword());
 			textRepresentation.append(' ');
-			boolean addComa = false;
-			for (final JvmTypeReference eventType : signature.getExceptions()) {
+			var addComa = false;
+			for (final var eventType : signature.getExceptions()) {
 				if (addComa) {
 					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
@@ -903,8 +891,8 @@ public final class Utils {
 			textRepresentation.append(' ');
 			textRepresentation.append(grammarAccess.getFiresKeyword());
 			textRepresentation.append(' ');
-			boolean addComa = false;
-			for (final JvmTypeReference eventType : signature.getFiredEvents()) {
+			var addComa = false;
+			for (final var eventType : signature.getFiredEvents()) {
 				if (addComa) {
 					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
@@ -926,8 +914,7 @@ public final class Utils {
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
 			signature.append(grammarAccess.getWildcardAsteriskKeyword());
-		} else if (parameter instanceof SarlFormalParameter) {
-			final SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
+		} else if (parameter instanceof SarlFormalParameter sarlParameter) {
 			if (sarlParameter.getDefaultValue() != null) {
 				signature.append(' ');
 				signature.append(grammarAccess.getEqualsSignKeyword());
@@ -952,11 +939,11 @@ public final class Utils {
 	 * @see "http://docs.oracle.com/javase/8/docs/platform/serialization/spec/class.html#a4100"
 	 */
 	public static long computeSerialVersionUID(JvmGenericType jvm) {
-		final StringBuilder serialVersionUIDBuffer = new StringBuilder();
+		final var serialVersionUIDBuffer = new StringBuilder();
 
 		serialVersionUIDBuffer.append(jvm.getQualifiedName());
 
-		BitSet bitset = new BitSet(32);
+		var bitset = new BitSet(32);
 		bitset.set(jvm.getVisibility().getValue());
 		if (jvm.isFinal()) {
 			bitset.set(4);
@@ -969,37 +956,34 @@ public final class Utils {
 		}
 		serialVersionUIDBuffer.append(bitset.toByteArray());
 
-		final SortedSet<JvmTypeReference> superTypes = CollectionLiterals.newTreeSet(new JvmTypeReferenceComparator());
+		final var superTypes = CollectionLiterals.<JvmTypeReference>newTreeSet(new JvmTypeReferenceComparator());
 		superTypes.addAll(jvm.getSuperTypes());
 
-		final SortedSet<JvmField> fields = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		final SortedSet<JvmConstructor> constructors = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		final SortedSet<JvmOperation> operations = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		for (final JvmMember member : jvm.getMembers()) {
-			if (member instanceof JvmField) {
-				final JvmField field = (JvmField) member;
+		final var fields = CollectionLiterals.<JvmField>newTreeSet(new JvmIdentifiableComparator());
+		final var constructors = CollectionLiterals.<JvmConstructor>newTreeSet(new JvmIdentifiableComparator());
+		final var operations = CollectionLiterals.<JvmOperation>newTreeSet(new JvmIdentifiableComparator());
+		for (final var member : jvm.getMembers()) {
+			if (member instanceof JvmField field) {
 				if ((field.getVisibility() != JvmVisibility.PRIVATE)
 						|| (!field.isStatic() && !field.isTransient())) {
 					fields.add(field);
 				}
-			} else if (member instanceof JvmConstructor) {
-				final JvmConstructor constructor = (JvmConstructor) member;
+			} else if (member instanceof JvmConstructor constructor) {
 				if (constructor.getVisibility() != JvmVisibility.PRIVATE) {
 					constructors.add(constructor);
 				}
-			} else if (member instanceof JvmOperation) {
-				final JvmOperation operation = (JvmOperation) member;
+			} else if (member instanceof JvmOperation operation) {
 				if (operation.getVisibility() != JvmVisibility.PRIVATE) {
 					operations.add(operation);
 				}
 			}
 		}
 
-		for (final JvmTypeReference superType : superTypes) {
+		for (final var superType : superTypes) {
 			serialVersionUIDBuffer.append(superType.getQualifiedName());
 		}
 
-		for (final JvmField field : fields) {
+		for (final var field : fields) {
 			serialVersionUIDBuffer.append(field.getSimpleName());
 			bitset = new BitSet(32);
 			bitset.set(field.getVisibility().getValue());
@@ -1019,7 +1003,7 @@ public final class Utils {
 			serialVersionUIDBuffer.append(field.getType().getIdentifier());
 		}
 
-		for (final JvmConstructor constructor : constructors) {
+		for (final var constructor : constructors) {
 			bitset = new BitSet(32);
 			bitset.set(constructor.getVisibility().getValue());
 			if (constructor.isStatic()) {
@@ -1029,12 +1013,12 @@ public final class Utils {
 				bitset.set(5);
 			}
 			serialVersionUIDBuffer.append(bitset.toByteArray());
-			for (final JvmFormalParameter parameter : constructor.getParameters()) {
+			for (final var parameter : constructor.getParameters()) {
 				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
 			}
 		}
 
-		for (final JvmOperation operation : operations) {
+		for (final var operation : operations) {
 			bitset = new BitSet(32);
 			bitset.set(operation.getVisibility().getValue());
 			if (operation.isStatic()) {
@@ -1059,15 +1043,15 @@ public final class Utils {
 				bitset.set(10);
 			}
 			serialVersionUIDBuffer.append(bitset.toByteArray());
-			for (final JvmFormalParameter parameter : operation.getParameters()) {
+			for (final var parameter : operation.getParameters()) {
 				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
 			}
 		}
 
-		long key = 1L;
+		var key = 1L;
 		try {
-			final byte[] uniqueKey = serialVersionUIDBuffer.toString().getBytes();
-			final byte[] sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
+			final var uniqueKey = serialVersionUIDBuffer.toString().getBytes();
+			final var sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
 			key = ((sha[0] >>> 24) & 0xFF)
 					| ((sha[0] >>> 16) & 0xFF) << 8
 					| ((sha[0] >>> 8) & 0xFF) << 16
@@ -1113,9 +1097,9 @@ public final class Utils {
 	 */
 	public static boolean hasAbstractMember(XtendTypeDeclaration declaration) {
 		if (declaration != null) {
-			for (final XtendMember member : declaration.getMembers()) {
-				if (member instanceof XtendFunction) {
-					if (((XtendFunction) member).isAbstract()) {
+			for (final var member : declaration.getMembers()) {
+				if (member instanceof XtendFunction cvalue) {
+					if (cvalue.isAbstract()) {
 						return true;
 					}
 				}
@@ -1132,8 +1116,8 @@ public final class Utils {
 	 *     Otherwise {@code false}.
 	 */
 	public static boolean isCompatibleSARLLibraryOnClasspath(TypeReferences typeReferences, Notifier context) {
-		final OutParameter<String> version = new OutParameter<>();
-		final SarlLibraryErrorCode code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
+		final var version = new OutParameter<String>();
+		final var code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
 		if (code == SarlLibraryErrorCode.SARL_FOUND) {
 			return isCompatibleSARLLibraryVersion(version.get());
 		}
@@ -1148,8 +1132,8 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleSARLLibraryVersion(String version) {
 		if (version != null) {
-			final Version currentVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
-			final Version paramVersion = Version.parseVersion(version);
+			final var currentVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+			final var paramVersion = Version.parseVersion(version);
 			return currentVersion.getMajor() == paramVersion.getMajor()
 					&& currentVersion.getMinor() == paramVersion.getMinor();
 		}
@@ -1169,12 +1153,12 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment(String version) {
 		if (version != null && !version.isEmpty()) {
-			final Version current = Version.parseVersion(version);
+			final var current = Version.parseVersion(version);
 			if (current != null) {
-				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+				final var minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 				assert minJdk != null;
 				if (current.compareTo(minJdk) >= 0) {
-					final Version maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+					final var maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 					assert maxJdk != null;
 					return current.compareTo(maxJdk) < 0;
 				}
@@ -1210,12 +1194,12 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleJDKVersionWhenInSARLProjectClasspath(String version) {
 		if (version != null && !version.isEmpty()) {
-			final Version current = Version.parseVersion(version);
+			final var current = Version.parseVersion(version);
 			if (current != null) {
-				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+				final var minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 				assert minJdk != null;
 				if (current.compareTo(minJdk) >= 0) {
-					final Version maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+					final var maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 					assert maxJdk != null;
 					return current.compareTo(maxJdk) < 0;
 				}
@@ -1241,7 +1225,7 @@ public final class Utils {
 	 *     Otherwise {@code false}.
 	 */
 	public static boolean isCompatibleXtextVersion() {
-		final XtextVersion xtextVersion = XtextVersion.getCurrent();
+		final var xtextVersion = XtextVersion.getCurrent();
 		if (xtextVersion != null && !Strings.isNullOrEmpty(xtextVersion.getVersion())) {
 			return isCompatibleXtextVersion(xtextVersion.getVersion());
 		}
@@ -1258,8 +1242,8 @@ public final class Utils {
 	 */
 	@Deprecated(forRemoval = true, since = "0.10")
 	public static String getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context) {
-		final OutParameter<String> version = new OutParameter<>();
-		final SarlLibraryErrorCode code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
+		final var version = new OutParameter<String>();
+		final var code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
 		if (code == SarlLibraryErrorCode.SARL_FOUND) {
 			return version.get();
 		}
@@ -1279,7 +1263,7 @@ public final class Utils {
 		if (checkSarlVersionClass) {
 			checkSarlVersionClass = false;
 			try {
-				final Object v = SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_STR);
+				final var v = SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_STR);
 				if (v == null) {
 					return SarlLibraryErrorCode.INVALID_SARL_VERSION_BYTECODE;
 				}
@@ -1299,11 +1283,11 @@ public final class Utils {
 		if (!(type instanceof JvmDeclaredType)) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_DECLARED_TYPE;
 		}
-		final JvmDeclaredType sarlVersionType = (JvmDeclaredType) type;
+		final var sarlVersionType = (JvmDeclaredType) type;
 		JvmField versionField = null;
-		final Iterator<JvmField> iterator = sarlVersionType.getDeclaredFields().iterator();
+		final var iterator = sarlVersionType.getDeclaredFields().iterator();
 		while (versionField == null && iterator.hasNext()) {
-			final JvmField field = iterator.next();
+			final var field = iterator.next();
 			if (SARL_VERSION_FIELD_NAME_STR.equals(field.getSimpleName())) {
 				versionField = field;
 			}
@@ -1311,7 +1295,7 @@ public final class Utils {
 		if (versionField == null) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_FIELD;
 		}
-		final String value = versionField.getConstantValueAsString();
+		final var value = versionField.getConstantValueAsString();
 		if (Strings.isNullOrEmpty(value)) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_VALUE;
 		}
@@ -1351,10 +1335,10 @@ public final class Utils {
 	 */
 	public static boolean isFunctionalInterface(JvmGenericType type, IActionPrototypeProvider sarlSignatureProvider) {
 		if (type != null && type.isInterface()) {
-			final Map<ActionPrototype, JvmOperation> operations = new HashMap<>();
+			final var operations = new HashMap<ActionPrototype, JvmOperation>();
 			populateInterfaceElements(type, operations, null, sarlSignatureProvider);
 			if (operations.size() == 1) {
-				final JvmOperation op = operations.values().iterator().next();
+				final var op = operations.values().iterator().next();
 				return !op.isStatic() && !op.isDefault();
 			}
 		}
@@ -1374,8 +1358,8 @@ public final class Utils {
 	 */
 	public static boolean getContainerNotOfType(EObject element, Class<? extends EObject> type,
 			OutParameter<EObject> container, OutParameter<EObject> directContainerChild) {
-		EObject previous = element;
-		EObject elt = element.eContainer();
+		var previous = element;
+		var elt = element.eContainer();
 		while (elt != null) {
 			if (!type.isInstance(elt)) {
 				if (directContainerChild != null) {
@@ -1407,8 +1391,8 @@ public final class Utils {
 	public static boolean getContainerOfType(EObject element,
 			OutParameter<EObject> container, OutParameter<EObject> directContainerChild,
 			Class<? extends EObject>... types) {
-		EObject previous = element;
-		EObject elt = element.eContainer();
+		var previous = element;
+		var elt = element.eContainer();
 		while (elt != null) {
 			if (isInstance(types, elt)) {
 				if (directContainerChild != null) {
@@ -1426,7 +1410,7 @@ public final class Utils {
 	}
 
 	private static boolean isInstance(Class<? extends EObject>[] types, Object element) {
-		for (final Class<? extends EObject> type : types) {
+		for (final var type : types) {
 			if (type.isInstance(element)) {
 				return true;
 			}
@@ -1447,7 +1431,7 @@ public final class Utils {
 		if (predicate == null || element == null) {
 			return null;
 		}
-		EObject elt = element.eContainer();
+		var elt = element.eContainer();
 		while (elt != null) {
 			if (predicate.apply(elt).booleanValue()) {
 				return elt;
@@ -1509,13 +1493,13 @@ public final class Utils {
 		if (object == null) {
 			return new String();
 		}
-		final StringBuilder buffer = new StringBuilder();
-		final LinkedList<Class<?>> types = new LinkedList<>();
+		final var buffer = new StringBuilder();
+		final var types = new LinkedList<Class<?>>();
 		types.add(object.getClass());
 		while (!types.isEmpty()) {
-			final Class<?> type = types.removeFirst();
+			final var type = types.removeFirst();
 
-			final Class<?> supertype = type.getSuperclass();
+			final var supertype = type.getSuperclass();
 			if (supertype != null && !supertype.equals(Object.class)) {
 				types.add(supertype);
 			}
@@ -1523,12 +1507,12 @@ public final class Utils {
 			if (buffer.length() > 0) {
 				buffer.append("\n"); //$NON-NLS-1$
 			}
-			final Field[] fields = type.getDeclaredFields();
+			final var fields = type.getDeclaredFields();
 			buffer.append(type.getSimpleName()).append(" {\n"); //$NON-NLS-1$
 
-			boolean firstRound = true;
+			var firstRound = true;
 
-			for (final Field field : fields) {
+			for (final var field : fields) {
 				if (!includeStaticField && Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
@@ -1540,7 +1524,7 @@ public final class Utils {
 						buffer.append(",\n"); //$NON-NLS-1$
 					}
 					try {
-						final Object fieldObj = field.get(object);
+						final var fieldObj = field.get(object);
 						final String value;
 						if (null == fieldObj) {
 							value = "null"; //$NON-NLS-1$
@@ -1589,13 +1573,13 @@ public final class Utils {
 			return typeParameterBuilder.typeRef(Object.class);
 		}
 
-		boolean cloneType = true;
-		JvmTypeReference typeCandidate = type;
+		var cloneType = true;
+		var typeCandidate = type;
 
 		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
 		if ((executableTypeParameters.iterator().hasNext() || !superTypeParameterMapping.isEmpty()) && cloneType) {
-			final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
-			for (final JvmTypeParameter typeParameter : executableTypeParameters) {
+			final var typeParameterIdentifiers = new TreeMap<String, JvmTypeParameter>();
+			for (final var typeParameter : executableTypeParameters) {
 				typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
 			}
 
@@ -1604,12 +1588,11 @@ public final class Utils {
 				cloneType = false;
 				typeCandidate = cloneAndAssociate(type, typeParameterIdentifiers, superTypeParameterMapping,
 						typeParameterBuilder, typeReferences, jvmTypesFactory);
-			} else if (type instanceof XFunctionTypeRef) {
+			} else if (type instanceof XFunctionTypeRef functionRef) {
 				// Try to clone the function reference.
-				final XFunctionTypeRef functionRef = (XFunctionTypeRef) type;
 				cloneType = false;
-				final XFunctionTypeRef cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
-				for (final JvmTypeReference paramType : functionRef.getParamTypes()) {
+				final var cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
+				for (final var paramType : functionRef.getParamTypes()) {
 					cloneReference.getParamTypes().add(cloneAndAssociate(
 							paramType, typeParameterIdentifiers, superTypeParameterMapping,
 							typeParameterBuilder, typeReferences, jvmTypesFactory));
@@ -1640,35 +1623,34 @@ public final class Utils {
 			JvmTypeReferenceBuilder typeParameterBuilder,
 			TypeReferences typeReferences,
 			TypesFactory jvmTypesFactory) {
-		final EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
+		final var copier = new EcoreUtil.Copier(false) {
 			private static final long serialVersionUID = 698510355384773254L;
 
 			@Override
 			public EObject copy(EObject eobject) {
 				final String id;
 				// Try to override the type parameters
-				if (eobject instanceof JvmTypeReference) {
-					id = ((JvmTypeReference) eobject).getIdentifier();
-				} else if (eobject instanceof JvmIdentifiableElement) {
-					id = ((JvmIdentifiableElement) eobject).getIdentifier();
+				if (eobject instanceof JvmTypeReference cvalue) {
+					id = cvalue.getIdentifier();
+				} else if (eobject instanceof JvmIdentifiableElement cvalue) {
+					id = cvalue.getIdentifier();
 				} else {
 					id = null;
 				}
 				if (id != null) {
-					final JvmTypeParameter param = typeParameterIdentifiers.get(id);
+					final var param = typeParameterIdentifiers.get(id);
 					if (param != null) {
 						return typeReferences.createTypeRef(param);
 					}
-					final JvmTypeReference superTypeReference = superTypeParameterMapping.get(id);
+					final var superTypeReference = superTypeParameterMapping.get(id);
 					if (superTypeReference != null) {
 						return typeReferences.createDelegateTypeReference(superTypeReference);
 					}
 				}
-				final EObject result = super.copy(eobject);
-				if (result instanceof JvmWildcardTypeReference) {
-					final JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
-					boolean upperBoundSeen = false;
-					for (final JvmTypeConstraint constraint : wildcardType.getConstraints()) {
+				final var result = super.copy(eobject);
+				if (result instanceof JvmWildcardTypeReference wildcardType) {
+					var upperBoundSeen = false;
+					for (final var constraint : wildcardType.getConstraints()) {
 						if (constraint instanceof JvmUpperBound) {
 							upperBoundSeen = true;
 							break;
@@ -1676,8 +1658,8 @@ public final class Utils {
 					}
 					if (!upperBoundSeen) {
 						// no upper bound found - seems to be an invalid - assume object as upper bound
-						final JvmTypeReference object = typeParameterBuilder.typeRef(Object.class);
-						final JvmUpperBound upperBound = jvmTypesFactory.createJvmUpperBound();
+						final var object = typeParameterBuilder.typeRef(Object.class);
+						final var upperBound = jvmTypesFactory.createJvmUpperBound();
 						upperBound.setTypeReference(object);
 						wildcardType.getConstraints().add(0, upperBound);
 					}
@@ -1685,7 +1667,7 @@ public final class Utils {
 				return result;
 			}
 		};
-		final JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
+		final var copy = (JvmTypeReference) copier.copy(type);
 		copier.copyReferences();
 		return copy;
 	}
@@ -1715,14 +1697,12 @@ public final class Utils {
 	 * @since 0.7
 	 */
 	public static void getSuperTypeParameterMap(JvmDeclaredType type, Map<String, JvmTypeReference> mapping) {
-		for (final JvmTypeReference superTypeReference : type.getSuperTypes()) {
-			if (superTypeReference instanceof JvmParameterizedTypeReference) {
-				final JvmParameterizedTypeReference parameterizedTypeReference = (JvmParameterizedTypeReference) superTypeReference;
-				final JvmType st = superTypeReference.getType();
-				if (st instanceof JvmTypeParameterDeclarator) {
-					final JvmTypeParameterDeclarator superType = (JvmTypeParameterDeclarator) st;
+		for (final var superTypeReference : type.getSuperTypes()) {
+			if (superTypeReference instanceof JvmParameterizedTypeReference parameterizedTypeReference) {
+				final var st = superTypeReference.getType();
+				if (st instanceof JvmTypeParameterDeclarator superType) {
 					int i = 0;
-					for (final JvmTypeParameter typeParameter : superType.getTypeParameters()) {
+					for (final var typeParameter : superType.getTypeParameters()) {
 						mapping.put(typeParameter.getIdentifier(), parameterizedTypeReference.getArguments().get(i));
 						++i;
 					}
@@ -1750,7 +1730,7 @@ public final class Utils {
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
 			TypeReferences typeReferences, TypesFactory jvmTypesFactory) {
 		// Get the type parameter mapping that is a consequence of the super type extension within the container.
-		final Map<String, JvmTypeReference> superTypeParameterMapping = new HashMap<>();
+		final var superTypeParameterMapping = new HashMap<String, JvmTypeReference>();
 		Utils.getSuperTypeParameterMap(toOperation.getDeclaringType(), superTypeParameterMapping);
 		copyTypeParametersFromJvmOperation(
 				fromOperation.getTypeParameters(),
@@ -1781,16 +1761,16 @@ public final class Utils {
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
 			TypeReferences typeReferences, TypesFactory jvmTypesFactory) {
 		// Copy the generic types in two steps: first step is the name's copy.
-		for (final JvmTypeParameter typeParameter : inputParameters) {
-			final JvmTypeParameter typeParameterCopy = jvmTypesFactory.createJvmTypeParameter();
+		for (final var typeParameter : inputParameters) {
+			final var typeParameterCopy = jvmTypesFactory.createJvmTypeParameter();
 			typeParameterCopy.setName(typeParameter.getName());
 			outputParameters.add(typeParameterCopy);
 		}
 		// Second step is the constraints' copy
-		for (int i = 0; i < inputParameters.size(); ++i) {
-			final JvmTypeParameter typeParameter = inputParameters.get(i);
-			final JvmTypeParameter typeParameterCopy = outputParameters.get(i);
-			for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
+		for (var i = 0; i < inputParameters.size(); ++i) {
+			final var typeParameter = inputParameters.get(i);
+			final var typeParameterCopy = outputParameters.get(i);
+			for (final var constraint : typeParameter.getConstraints()) {
 				JvmTypeConstraint cst = null;
 				if (constraint instanceof JvmLowerBound) {
 					cst = jvmTypesFactory.createJvmLowerBound();
@@ -1833,7 +1813,7 @@ public final class Utils {
 	 * @see #getRootFeatureCall(XAbstractFeatureCall, XExpression, List)
 	 */
 	public static XAbstractFeatureCall getRootFeatureCall(XAbstractFeatureCall featureCall) {
-		final EObject container = featureCall.eContainer();
+		final var container = featureCall.eContainer();
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) getFirstContainerForPredicate(featureCall,
@@ -1861,11 +1841,11 @@ public final class Utils {
 				|| !(featureCall instanceof XMemberFeatureCall || featureCall instanceof XFeatureCall)) {
 			return null;
 		}
-		XAbstractFeatureCall current = featureCall;
-		EObject currentContainer = current.eContainer();
+		var current = featureCall;
+		var currentContainer = current.eContainer();
 		while (currentContainer != null) {
 			if (currentContainer instanceof XMemberFeatureCall || currentContainer instanceof XFeatureCall) {
-				final XAbstractFeatureCall c = (XAbstractFeatureCall) currentContainer;
+				final var c = (XAbstractFeatureCall) currentContainer;
 				if (hasLocalParameters(c, container, containerParameters)) {
 					return current;
 				}
@@ -1879,21 +1859,20 @@ public final class Utils {
 	}
 
 	private static boolean hasLocalParameters(EObject current, XExpression container, List<JvmFormalParameter> containerParameters) {
-		if (current instanceof XAbstractFeatureCall) {
-			final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) current;
+		if (current instanceof XAbstractFeatureCall featureCall) {
 			if (isLocalEntity(featureCall, container, containerParameters)) {
 				return true;
 			}
-			for (final XExpression argument : featureCall.getActualArguments()) {
+			for (final var argument : featureCall.getActualArguments()) {
 				final Iterable<XAbstractFeatureCall> iterable;
-				if (argument instanceof XAbstractFeatureCall) {
+				if (argument instanceof XAbstractFeatureCall cvalue) {
 					iterable = Iterables.concat(
-							Collections.singletonList((XAbstractFeatureCall) argument),
+							Collections.singletonList(cvalue),
 							EcoreUtil2.getAllContentsOfType(argument, XAbstractFeatureCall.class));
 				} else {
 					iterable = EcoreUtil2.getAllContentsOfType(argument, XAbstractFeatureCall.class);
 				}
-				for (final XAbstractFeatureCall c : iterable) {
+				for (final var c : iterable) {
 					if (isLocalEntity(c, container, containerParameters)) {
 						return true;
 					}
@@ -1904,7 +1883,7 @@ public final class Utils {
 	}
 
 	private static boolean isLocalEntity(XAbstractFeatureCall featureCall, XExpression container, List<JvmFormalParameter> containerParameters) {
-		final JvmIdentifiableElement feature = featureCall.getFeature();
+		final var feature = featureCall.getFeature();
 		if (feature instanceof JvmFormalParameter) {
 			if (containerParameters.contains(feature)) {
 				return true;
@@ -1926,11 +1905,11 @@ public final class Utils {
 		if (type == null) {
 			return false;
 		}
-		final JvmType jtype = type.getType();
+		final var jtype = type.getType();
 		if (jtype instanceof JvmTypeParameter) {
 			return true;
 		}
-		for (final LightweightTypeReference atype : type.getTypeArguments()) {
+		for (final var atype : type.getTypeArguments()) {
 			if (containsGenericType(atype)) {
 				return true;
 			}
@@ -1960,7 +1939,7 @@ public final class Utils {
 	 */
 	@Pure
 	public static Object toReadableString(String text) {
-		final String str = Strings.emptyToNull(text);
+		final var str = Strings.emptyToNull(text);
 		if (str == null) {
 			return Messages.Utils_0;
 		}

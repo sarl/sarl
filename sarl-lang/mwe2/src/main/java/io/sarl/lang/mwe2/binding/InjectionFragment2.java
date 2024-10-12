@@ -32,7 +32,6 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess;
-import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.Binding;
 
 /**
  * A {@link AbstractXtextGeneratorFragment} that enables to create user-defined
@@ -161,11 +160,11 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	}
 
 	private void bind(GuiceModuleAccess module, List<BindingElement> bindings) {
-		final BindingFactory bindingFactory = this.injector.getInstance(BindingFactory.class);
+		final var bindingFactory = this.injector.getInstance(BindingFactory.class);
 		bindingFactory.setName(this.name);
 		bindingFactory.setGuiceModule(module);
-		for (final BindingElement element : bindings) {
-			final Binding guiceBinding = bindingFactory.toBinding(element);
+		for (final var element : bindings) {
+			final var guiceBinding = bindingFactory.toBinding(element);
 			bindingFactory.add(guiceBinding, isOverrideAll() || element.isOverride());
 		}
 		bindingFactory.contributeToModule();

@@ -20,7 +20,6 @@
  */
 package io.sarl.tests.api.tools;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Issue;
 
@@ -45,7 +44,7 @@ public final class TestIssues {
 	 * @return {@code true} if all parts are found.
 	 */
 	public static boolean isIssueMessage(Issue issue, String... messageParts) {
-		for (String messagePart : messageParts) {
+		for (var messagePart : messageParts) {
 			if (!issue.getMessage().toLowerCase().contains(messagePart.toLowerCase())) {
 				return false;
 			}
@@ -61,8 +60,8 @@ public final class TestIssues {
 	 * @return {@code result}.
 	 */
 	public static StringBuilder getIssuesAsString(EObject model, Iterable<Issue> issues, StringBuilder result) {
-		for(Issue issue : issues) {
-			final URI uri = issue.getUriToProblem();
+		for(var issue : issues) {
+			final var uri = issue.getUriToProblem();
 			result.append(issue.getSeverity());
 			result.append(" ("); //$NON-NLS-1$
 			result.append(issue.getCode());
@@ -70,7 +69,7 @@ public final class TestIssues {
 			result.append(issue.getMessage());
 			result.append("'"); //$NON-NLS-1$
 			if (uri != null) {
-				EObject eObject = model.eResource().getResourceSet().getEObject(uri, true);
+				var eObject = model.eResource().getResourceSet().getEObject(uri, true);
 				result.append(" on "); //$NON-NLS-1$
 				result.append(eObject.eClass().getName());
 			}

@@ -89,7 +89,7 @@ public abstract class Verifier {
 	 * @param path the path that is relative to the base directory.
 	 */
 	public void assertFilePresent(Path path) {
-		final File filename = FileSystem.join(this.basedir, path.toFile());
+		final var filename = FileSystem.join(this.basedir, path.toFile());
 		assertTrue(filename.exists(), "File not found: " + filename.getAbsolutePath()); //$NON-NLS-1$
 	}
 
@@ -100,10 +100,10 @@ public abstract class Verifier {
 	 * @throws Exception if the file cannot be read.
 	 */
 	public String readFile(Path path) throws Exception {
-		final StringBuilder content = new StringBuilder();
-		final File filename = FileSystem.join(this.basedir, path.toFile());
-		try (final BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-			String line = reader.readLine();
+		final var content = new StringBuilder();
+		final var filename = FileSystem.join(this.basedir, path.toFile());
+		try (final var reader = new BufferedReader(new FileReader(filename))) {
+			var line = reader.readLine();
 			while (line != null) {
 				content.append(line).append("\n"); //$NON-NLS-1$
 				line = reader.readLine();

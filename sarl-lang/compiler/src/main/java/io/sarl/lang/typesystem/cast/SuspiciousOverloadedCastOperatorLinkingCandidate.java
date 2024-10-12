@@ -35,7 +35,6 @@ import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ISuspiciouslyOverloadedCandidate;
-import org.eclipse.xtext.xbase.typesystem.internal.ResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
@@ -78,7 +77,7 @@ public class SuspiciousOverloadedCastOperatorLinkingCandidate implements ISuspic
 
 	@Override
 	public void applyToComputationState() {
-		final ResolvedTypes types = getChosenCandidate().getState().getResolvedTypes();
+		final var types = getChosenCandidate().getState().getResolvedTypes();
 		try {
 			this.reflect.invoke(types, "reassignLinkingInformation", this.chosenCandidate.getExpression(), this); //$NON-NLS-1$
 		} catch (Throwable exception) {
@@ -114,12 +113,12 @@ public class SuspiciousOverloadedCastOperatorLinkingCandidate implements ISuspic
 
 	@Override
 	public boolean validate(IAcceptor<? super AbstractDiagnostic> result) {
-		final CastOperatorLinkingCandidate ccandidate = getChosenCandidate();
+		final var ccandidate = getChosenCandidate();
 		if (ccandidate.validate(result)) {
-			final String message = MessageFormat.format(
+			final var message = MessageFormat.format(
 					Messages.SuspiciousOverloadedCastOperatorLinkingCandidate_0,
 					ccandidate.getValidationDescription(), getRejectedCandidate().toString());
-			final AbstractDiagnostic diagnostic = new EObjectDiagnosticImpl(
+			final var diagnostic = new EObjectDiagnosticImpl(
 					ccandidate.getState().getSeverity(IssueCodes.SUSPICIOUSLY_OVERLOADED_FEATURE),
 					IssueCodes.SUSPICIOUSLY_OVERLOADED_FEATURE, message, getExpression(),
 					XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, -1, null);

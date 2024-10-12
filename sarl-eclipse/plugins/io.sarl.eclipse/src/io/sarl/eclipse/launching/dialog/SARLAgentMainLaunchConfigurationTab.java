@@ -132,13 +132,13 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	@Override
 	public void sreChanged(ISREInstall sre) {
-		final Map<String, String> options = sre == null ? Collections.emptyMap() : sre.getAvailableCommandLineOptions();
+		final var options = sre == null ? Collections.<String, String>emptyMap() : sre.getAvailableCommandLineOptions();
 		assert options != null;
-		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();
+		final var noOpt = CliUtilities.getCommandLineLastOptionPrefix();
 		if (this.logLevelCombo != null && this.logLevelLabel != null) {
-			final String logOpt = options.getOrDefault(SRECommandLineOptions.CLI_LOG, noOpt);
-			boolean enable = !Objects.equals(noOpt, logOpt);
-			final String logOptValuesStr = options.getOrDefault(SRECommandLineOptions.CLI_LOG_VALUES, null);
+			final var logOpt = options.getOrDefault(SRECommandLineOptions.CLI_LOG, noOpt);
+			var enable = !Objects.equals(noOpt, logOpt);
+			final var logOptValuesStr = options.getOrDefault(SRECommandLineOptions.CLI_LOG_VALUES, null);
 			final String[] logOptValues;
 			if (Strings.isNullOrEmpty(logOptValuesStr)) {
 				logOptValues = new String[0];
@@ -147,26 +147,26 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 				logOptValues = logOptValuesStr.trim().split("\\s*,\\s*"); //$NON-NLS-1$
 			}
 			//
-			final ILaunchConfiguration currentConfig = getCurrentLaunchConfiguration();
+			final var currentConfig = getCurrentLaunchConfiguration();
 			int index;
 			if (currentConfig != null) {
-				final String current = this.accessor.getLogArgumentValue(currentConfig);
+				final var current = this.accessor.getLogArgumentValue(currentConfig);
 				index = Arrays.asList(logOptValues).indexOf(current);
 			} else {
 				index = this.logLevelCombo.getSelectionIndex();
 				if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
-					final String selectedValue = this.logLevelCombo.getItem(index);
+					final var selectedValue = this.logLevelCombo.getItem(index);
 					index = Arrays.asList(logOptValues).indexOf(selectedValue);
 				}
 			}
-			final String logOptStr = CliUtilities.getUnixCommandLineOption(logOpt, Messages.MainLaunchConfigurationTab_16);
+			final var logOptStr = CliUtilities.getUnixCommandLineOption(logOpt, Messages.MainLaunchConfigurationTab_16);
 			this.logLevelLabel.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, logOptStr));
 			this.logLevelLabel.setData(logOpt);
 			this.logLevelCombo.setItems(logOptValues);
 			if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
 				this.logLevelCombo.select(index);
 			} else if (this.logLevelCombo.getItemCount() > 0) {
-				final String defaultValue = options.getOrDefault(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE, ""); //$NON-NLS-1$
+				final var defaultValue = options.getOrDefault(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE, ""); //$NON-NLS-1$
 				index = Arrays.asList(logOptValues).indexOf(defaultValue);
 				if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
 					this.logLevelCombo.select(index);
@@ -178,19 +178,19 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			this.logLevelCombo.setEnabled(enable);
 		}
 		if (this.defaultContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, noOpt);
+			final var opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, noOpt);
 			this.defaultContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_11, opt));
 			this.defaultContextIdentifierButton.requestLayout();
 			this.defaultContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.randomContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, noOpt);
+			final var opt = options.getOrDefault(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, noOpt);
 			this.randomContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_12, opt));
 			this.randomContextIdentifierButton.requestLayout();
 			this.randomContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.bootContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, noOpt);
+			final var opt = options.getOrDefault(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, noOpt);
 			this.bootContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_13, opt));
 			this.bootContextIdentifierButton.requestLayout();
 			this.bootContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
@@ -199,7 +199,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	@Override
 	public Image getImage() {
-		Image img = (this.image == null) ? null : this.image.get();
+		var img = (this.image == null) ? null : this.image.get();
 		if (img == null) {
 			img = SARLEclipsePlugin.getDefault().getImage(SARLEclipseConfig.SARL_LOGO_IMAGE);
 			this.image = new SoftReference<>(img);
@@ -219,7 +219,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	@Override
 	public void createControl(Composite parent) {
-		final Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
+		final var comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
 		((GridLayout) comp.getLayout()).verticalSpacing = 0;
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
@@ -239,7 +239,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param text the label of the group.
 	 */
 	protected void createAgentNameEditor(Composite parent, String text) {
-		final Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
+		final var group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
 		this.agentNameTextField = SWTFactory.createSingleText(group, 1);
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
@@ -271,8 +271,8 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param text the label of the group.
 	 */
 	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
-		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();
+		final var group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		final var noOpt = CliUtilities.getCommandLineLastOptionPrefix();
 		this.defaultContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_11, noOpt));
 		this.defaultContextIdentifierButton.addSelectionListener(this.defaultListener);
 		this.randomContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_12, noOpt));
@@ -302,9 +302,9 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param text the label of the group.
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
-		final Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
+		final var group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
 
-		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();
+		final var noOpt = CliUtilities.getCommandLineLastOptionPrefix();
 		this.logLevelLabel = SWTFactory.createLabel(group,
 				MessageFormat.format(Messages.MainLaunchConfigurationTab_15, noOpt), 1);
 		this.logLevelCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, new String[0]);
@@ -343,7 +343,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to load the agent name from
 	 */
 	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
-		final RootContextIdentifierType type = this.accessor.getDefaultContextIdentifier(config);
+		final var type = this.accessor.getDefaultContextIdentifier(config);
 		assert type != null;
 		switch (type) {
 		case RANDOM_CONTEXT_ID:
@@ -365,12 +365,12 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to load the agent name from
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
-		final String logOptValue = this.accessor.getLogArgumentValue(config);
-		final boolean showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
-		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
-		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
-		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
-		final int index = Arrays.asList(this.logLevelCombo.getItems()).indexOf(logOptValue);
+		final var logOptValue = this.accessor.getLogArgumentValue(config);
+		final var showLaunchingParameters = this.accessor.isLaunhcingParametersPrintedOut(config);
+		final var runInEclipse = this.accessor.isEmbeddedSRE(config);
+		final var enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
+		final var enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
+		final var index = Arrays.asList(this.logLevelCombo.getItems()).indexOf(logOptValue);
 		if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
 			this.logLevelCombo.select(index);
 		}
@@ -386,7 +386,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to load the agent name from
 	 */
 	protected void updateAgentNameFromConfig(ILaunchConfiguration config) {
-		final String agentName = this.accessor.getAgent(config);
+		final var agentName = this.accessor.getAgent(config);
 		this.agentNameTextField.setText(Strings.nullToEmpty(agentName));
 	}
 
@@ -422,13 +422,13 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected boolean isValidAgentName() {
 		if (this.lastAgentNameError != null) {
-			final boolean isValid = Strings.isNullOrEmpty(this.lastAgentNameError);
+			final var isValid = Strings.isNullOrEmpty(this.lastAgentNameError);
 			if (!isValid) {
 				setErrorMessage(this.lastAgentNameError);
 			}
 			return isValid;
 		}
-		final String name = this.agentNameTextField.getText();
+		final var name = this.agentNameTextField.getText();
 		if (Strings.isNullOrEmpty(name)) {
 			this.lastAgentNameError = Messages.MainLaunchConfigurationTab_2;
 			setErrorMessage(this.lastAgentNameError);
@@ -450,15 +450,15 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @return the validity state.
 	 */
 	protected boolean isValidProjectName() {
-		final String name = this.fProjText.getText();
+		final var name = this.fProjText.getText();
 		if (Strings.isNullOrEmpty(name)) {
 			setErrorMessage(Messages.MainLaunchConfigurationTab_3);
 			return false;
 		}
-		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		final IStatus status = workspace.validateName(name, IResource.PROJECT);
+		final var workspace = ResourcesPlugin.getWorkspace();
+		final var status = workspace.validateName(name, IResource.PROJECT);
 		if (status.isOK()) {
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+			final var project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 			if (!project.exists()) {
 				setErrorMessage(MessageFormat.format(
 						Messages.MainLaunchConfigurationTab_4, name));
@@ -482,10 +482,10 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		this.configurator.setProjectName(config, Strings.emptyToNull(this.fProjText.getText().trim()));
 		this.configurator.setAgent(config, Strings.emptyToNull(this.agentNameTextField.getText().trim()));
 		this.configurator.setDefaultContextIdentifier(config, getSelectedContextIdentifierType());
-		final Object optObj = this.logLevelLabel.getData();
-		final String opt = optObj == null ? null : Strings.emptyToNull(optObj.toString());
-		final int index = this.logLevelCombo.getSelectionIndex();
-		final String optValue = index >= 0 && index < this.logLevelCombo.getItemCount() ? this.logLevelCombo.getItem(index) : null;
+		final var optObj = this.logLevelLabel.getData();
+		final var opt = optObj == null ? null : Strings.emptyToNull(optObj.toString());
+		final var index = this.logLevelCombo.getSelectionIndex();
+		final var optValue = index >= 0 && index < this.logLevelCombo.getItemCount() ? this.logLevelCombo.getItem(index) : null;
 		this.configurator.setLogArgument(config, opt, optValue);
 		this.configurator.setLaunchingParametersPrintedOut(config, this.logShowStartInformationButton.getSelection());
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
@@ -496,7 +496,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		final IJavaElement javaElement = getContext();
+		final var javaElement = getContext();
 		if (javaElement != null) {
 			initializeJavaProject(javaElement, config);
 		} else {
@@ -528,16 +528,16 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {
 		String name = null;
 		if (javaElement != null) {
-			final String[] nameRef = new String[1];
+			final var nameRef = new String[1];
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
 					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							final IJavaProject javaProject = javaElement.getJavaProject();
-							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
-							final IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+							final var javaProject = javaElement.getJavaProject();
+							final var agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final var types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 							if (types != null && types.length > 0) {
 								nameRef[0] = types[0].getFullyQualifiedName();
 							}
@@ -564,14 +564,14 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to set with the agent name.
 	 */
 	protected void initializeAgentName(IJavaElement javaElement, ILaunchConfigurationWorkingCopy config) {
-		String name = extractNameFromJavaElement(javaElement);
+		var name = extractNameFromJavaElement(javaElement);
 
 		// Set the attribute
 		this.configurator.setAgent(config, name);
 
 		// Rename the launch configuration
 		if (name.length() > 0) {
-			final int index = name.lastIndexOf('.');
+			final var index = name.lastIndexOf('.');
 			if (index > 0) {
 				name = name.substring(index + 1);
 			}
@@ -581,10 +581,10 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	}
 
 	private IType[] searchAgentNames() {
-		final IType[][] res = new IType[1][];
+		final var res = new IType[1][];
 		res[0] = new IType[0];
-		final String projectName = this.fProjText.getText();
-		final IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		final var projectName = this.fProjText.getText();
+		final var status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
 		if (status.isOK()) {
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
@@ -592,9 +592,9 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-							final IJavaProject javaProject = JavaCore.create(project);
-							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final var project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							final var javaProject = JavaCore.create(project);
+							final var agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
 							res[0] = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
@@ -611,21 +611,21 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	}
 
 	private boolean isAgentNameDefined(final String agentName) {
-		final String projectName = this.fProjText.getText();
-		final IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		final var projectName = this.fProjText.getText();
+		final var status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
 		if (status.isOK()) {
 			try {
-				final boolean[] res = new boolean[1];
+				final var res = new boolean[1];
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
 					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-							final IJavaProject javaProject = JavaCore.create(project);
-							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final var project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							final var javaProject = JavaCore.create(project);
+							final var agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
 							if (agentType != null) {
-								final IType type = javaProject.findType(agentName);
+								final var type = javaProject.findType(agentName);
 								if (type != null) {
 									res[0] = type.newSupertypeHierarchy(pm).contains(agentType);
 								}
@@ -647,14 +647,14 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	/** Invoked when the search button for the agent agent was clocked.
 	 */
 	protected void handleAgentNameSearchButtonSelected() {
-		final IType[] types = searchAgentNames();
+		final var types = searchAgentNames();
 		// Ask to the user
-		final DebugTypeSelectionDialog mmsd = new DebugTypeSelectionDialog(getShell(),
+		final var mmsd = new DebugTypeSelectionDialog(getShell(),
 				types, ""); //$NON-NLS-1$
 		if (mmsd.open() == Window.CANCEL) {
 			return;
 		}
-		final IType type = (IType) mmsd.getFirstResult();
+		final var type = (IType) mmsd.getFirstResult();
 		if (type != null) {
 			this.agentNameTextField.setText(type.getFullyQualifiedName());
 			this.fProjText.setText(type.getJavaProject().getElementName());

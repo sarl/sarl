@@ -21,7 +21,6 @@
 
 package io.sarl.lang.mwe2.binding;
 
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -169,14 +168,14 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	}
 
 	private static void fillFrom(Set<BindingElement> bindings, Class<?> type) {
-		for (final Method declaredMethod : type.getDeclaredMethods()) {
-			final String methodName = declaredMethod.getName();
+		for (final var declaredMethod : type.getDeclaredMethods()) {
+			final var methodName = declaredMethod.getName();
 			if (!Strings.isEmpty(methodName)
 					&& ((methodName.length() > CONFIGURE_PREFIX.length() && methodName.startsWith(CONFIGURE_PREFIX))
 					|| (methodName.length() > BIND_PREFIX.length() && methodName.startsWith(BIND_PREFIX)))) {
 				if (declaredMethod.getReturnType() != null && !Void.TYPE.equals(declaredMethod.getReturnType())) {
 					// Binding function
-					final Class<?> returnType = declaredMethod.getReturnType();
+					final var returnType = declaredMethod.getReturnType();
 					String typeName;
 					if (returnType.equals(Class.class)) {
 						typeName = declaredMethod.getGenericReturnType().getTypeName();
@@ -186,10 +185,10 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 						typeName = getTypeName(returnType);
 					}
 					if (!Strings.isEmpty(typeName) && !isIgnorableType(typeName)) {
-						final BindingElement element = new BindingElement();
+						final var element = new BindingElement();
 						element.setBind(typeName);
 						element.setTo(Object.class.getName());
-						final SingletonBinding singleton = declaredMethod.getAnnotation(SingletonBinding.class);
+						final var singleton = declaredMethod.getAnnotation(SingletonBinding.class);
 						if (singleton != null) {
 							element.setSingleton(true);
 							element.setEager(singleton.eager());
@@ -197,9 +196,9 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 						bindings.add(element);
 					}
 				} else if (methodName.startsWith(CONFIGURE_PREFIX)) {
-					final String typeName = methodName.substring(CONFIGURE_PREFIX.length());
+					final var typeName = methodName.substring(CONFIGURE_PREFIX.length());
 					if (!Strings.isEmpty(typeName) && !isIgnorableType(typeName)) {
-						final BindingElement element = new BindingElement();
+						final var element = new BindingElement();
 						element.setBind(typeName);
 						element.setTo(Object.class.getName());
 						element.setFunctionName(methodName);
@@ -218,9 +217,9 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	 */
 	protected void recommendFrom(String label, Set<BindingElement> source, Set<Binding> current) {
 		this.bindingFactory.setName(getName());
-		boolean hasRecommend = false;
-		for (final BindingElement sourceElement : source) {
-			final Binding wrapElement = this.bindingFactory.toBinding(sourceElement);
+		var hasRecommend = false;
+		for (final var sourceElement : source) {
+			final var wrapElement = this.bindingFactory.toBinding(sourceElement);
 			if (!current.contains(wrapElement)) {
 				if (!hasRecommend) {
 					LOG.info(MessageFormat.format("Begin recommendations for {0}", //$NON-NLS-1$
@@ -248,11 +247,11 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	protected void recommend(Class<?> superModule, GuiceModuleAccess currentModuleAccess) {
 		LOG.info(MessageFormat.format("Building injection configuration from {0}", //$NON-NLS-1$
 				superModule.getName()));
-		final Set<BindingElement> superBindings = new LinkedHashSet<>();
+		final var superBindings = new LinkedHashSet<BindingElement>();
 		fillFrom(superBindings, superModule.getSuperclass());
 		fillFrom(superBindings, superModule);
 
-		final Set<Binding> currentBindings = currentModuleAccess.getBindings();
+		final var currentBindings = currentModuleAccess.getBindings();
 
 		recommendFrom(superModule.getName(), superBindings, currentBindings);
 	}

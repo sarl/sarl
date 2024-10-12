@@ -78,7 +78,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getFieldDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getFieldDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getFieldDefaultVisibilityIn(type);
 	}
 
@@ -124,7 +124,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getActionDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getActionDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getActionDefaultVisibilityIn(type);
 	}
 
@@ -162,7 +162,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getAnnotationTypeDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getAnnotationTypeDefaultVisibilityIn(type);
 	}
 
@@ -200,7 +200,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getClassDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getClassDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getClassDefaultVisibilityIn(type);
 	}
 
@@ -238,7 +238,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getEnumerationDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getEnumerationDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getEnumerationDefaultVisibilityIn(type);
 	}
 
@@ -276,7 +276,7 @@ public interface IDefaultVisibilityProvider {
 	 */
 	@Inline("getInterfaceDefaultVisibilityIn(($1).getClass())")
 	static JvmVisibility getInterfaceDefaultVisibilityIn(EObject container) {
-		final Class<?> type = container == null ? null : container.getClass();
+		final var type = container == null ? null : container.getClass();
 		return getInterfaceDefaultVisibilityIn(type);
 	}
 

@@ -24,16 +24,11 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import java.util.Collections;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xtext.generator.model.TypeReference;
-
-import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for constructors.
  *
@@ -52,14 +47,14 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	@Override
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.constructor == null) {
-			for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
+			for (final var containerDescription : getCodeElementExtractor().getTopElements(
 					getGrammar(), getCodeBuilderConfig())) {
-				final AbstractRule rule = getMemberRule(containerDescription);
+				final var rule = getMemberRule(containerDescription);
 				if (rule != null) {
-					final EClassifier commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
+					final var commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
 					this.constructor = getCodeElementExtractor().visitMemberElements(containerDescription, rule,
 						(it, grammarContainer, memberContainer, classifier) -> {
-							final CodeElementExtractor.ElementDescription memberDescription = it.newElementDescription(
+							final var memberDescription = it.newElementDescription(
 									classifier.getName(), memberContainer, classifier, commonSuperType);
 							return new MemberDescription(memberDescription, containerDescription, false,
 									memberDescription.annotationInfo(), null);
@@ -87,11 +82,11 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	 */
 	protected void generateBuilderFactoryContributions() {
 		// Get a container
-		final String createFunctionName = "create" //$NON-NLS-1$
+		final var createFunctionName = "create" //$NON-NLS-1$
 				+ Strings.toFirstUpper(this.constructor.getElementDescription().name());
-		final String createContainerFunctionName = "add" //$NON-NLS-1$
+		final var createContainerFunctionName = "add" //$NON-NLS-1$
 				+ Strings.toFirstUpper(this.constructor.getContainerDescription().name());
-		final TypeReference containerBuilder = this.constructor.getContainerDescription().builderInterfaceType();
+		final var containerBuilder = this.constructor.getContainerDescription().builderInterfaceType();
 		// Generate the contribution.
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
@@ -165,9 +160,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 			}
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
-			final String buildFunctionName = "build" //$NON-NLS-1$
+			final var buildFunctionName = "build" //$NON-NLS-1$
 					+ Strings.toFirstUpper(this.constructor.getElementDescription().name());
-			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
+			final var appender = getCodeElementExtractor().getElementAppenderImpl(
 					this.constructor.getElementDescription().name());
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override

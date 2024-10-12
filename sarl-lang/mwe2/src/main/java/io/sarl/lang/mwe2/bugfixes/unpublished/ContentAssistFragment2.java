@@ -42,7 +42,7 @@ public class ContentAssistFragment2 extends org.eclipse.xtext.xtext.generator.ui
 
 	@Override
 	protected TypeReference getProposalProviderClass(Grammar grammar) {
-		final String simpleName = GrammarUtil.getSimpleName(grammar);
+		final var simpleName = GrammarUtil.getSimpleName(grammar);
 		if (XTEND_GRAMMAR_NAME.equals(simpleName)) {
 			return new TypeReference(XTEND_PROPOSAL_PROVIDER);
 		}

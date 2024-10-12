@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.bootique.synopsishelp.help;
 
-import java.lang.reflect.Method;
-
 import com.google.common.base.Strings;
 import io.bootique.help.ConsoleAppender;
 import io.bootique.help.DefaultHelpGenerator;
@@ -88,9 +86,9 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 
 	@Override
 	public void append(Appendable out) {
-		final SynopsisHelpAppender appender = createAppender(out);
-		final ApplicationMetadata meta = getApplicationMetadata();
-		final String name = meta.getName();
+		final var appender = createAppender(out);
+		final var meta = getApplicationMetadata();
+		final var name = meta.getName();
 		printName(appender, name, meta.getDescription());
 		printSynopsis(appender, name, this.argumentSynopsis);
 		printDetailedDescription(appender, this.detailedDescription);
@@ -160,7 +158,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		protected ConsoleAppender getOrCreateOffsetAppender() {
 			if (this.offsetAppender == null) {
 				try {
-					final Method method = HelpAppender.class.getDeclaredMethod("getOrCreateOffsetAppender"); //$NON-NLS-1$
+					final var method = HelpAppender.class.getDeclaredMethod("getOrCreateOffsetAppender"); //$NON-NLS-1$
 					method.setAccessible(true);
 					this.offsetAppender = (ConsoleAppender) method.invoke(this);
 				} catch (Throwable exception) {
@@ -179,7 +177,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		protected ConsoleAppender getOrCreateDoubleOffsetAppender() {
 			if (this.doubleOffsetAppender == null) {
 				try {
-					final Method method = HelpAppender.class.getDeclaredMethod("getOrCreateDoubleOffsetAppender"); //$NON-NLS-1$
+					final var method = HelpAppender.class.getDeclaredMethod("getOrCreateDoubleOffsetAppender"); //$NON-NLS-1$
 					method.setAccessible(true);
 					this.doubleOffsetAppender = (ConsoleAppender) method.invoke(this);
 				} catch (Throwable exception) {
@@ -195,9 +193,9 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		 * @param parts the parts to print out.
 		 */
 		public void printLongDescription(String... parts) {
-			final ConsoleAppender appender = getOrCreateOffsetAppender();
-			boolean first = true;
-			for (final String paragraph : parts) {
+			final var appender = getOrCreateOffsetAppender();
+			var first = true;
+			for (final var paragraph : parts) {
 				if (first) {
 					first = false;
 				} else {

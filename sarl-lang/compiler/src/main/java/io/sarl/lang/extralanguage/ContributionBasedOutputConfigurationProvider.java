@@ -48,17 +48,17 @@ public class ContributionBasedOutputConfigurationProvider extends SarlOutputConf
 
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
-		final Set<OutputConfiguration> configurations = super.getOutputConfigurations();
+		final var configurations = super.getOutputConfigurations();
 		if (this.providers == null) {
 			this.providers = new ArrayList<>();
-			for (final IExtraLanguageContribution contribution : this.source.getContributions()) {
-				final IOutputConfigurationProvider provider = contribution.getOutputConfigurationProvider();
+			for (final var contribution : this.source.getContributions()) {
+				final var provider = contribution.getOutputConfigurationProvider();
 				if (provider != null) {
 					this.providers.add(provider);
 				}
 			}
 		}
-		for (final IOutputConfigurationProvider provider : this.providers) {
+		for (final var provider : this.providers) {
 			configurations.addAll(provider.getOutputConfigurations());
 		}
 		return configurations;

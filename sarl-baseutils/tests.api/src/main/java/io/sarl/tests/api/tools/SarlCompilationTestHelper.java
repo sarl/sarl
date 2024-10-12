@@ -50,10 +50,10 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 	 */
 	public void assertCompilesTo(boolean checkJavaCompilation, CharSequence source, final CharSequence expected) throws IOException {
 		if (checkJavaCompilation) {
-			final AtomicBoolean called = new AtomicBoolean(false);
+			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
 				assertEquals(expected.toString(), r.getSingleGeneratedCode());
-				final Class<?> generatedJavaClass = r.getCompiledClass();
+				final var generatedJavaClass = r.getCompiledClass();
 				assertNotNull(generatedJavaClass);
 				called.set(true);
 			});
@@ -73,10 +73,10 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 	 */
 	public void assertCompilesTo(String javaClassname, CharSequence source, final CharSequence expected) throws IOException {
 		if (!Strings.isNullOrEmpty(javaClassname)) {
-			final AtomicBoolean called = new AtomicBoolean(false);
+			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
 				assertEquals(expected.toString(), r.getGeneratedCode(javaClassname));
-				final Class<?> generatedJavaClass = r.getCompiledClass(javaClassname);
+				final var generatedJavaClass = r.getCompiledClass(javaClassname);
 				assertNotNull(generatedJavaClass);
 				called.set(true);
 			});

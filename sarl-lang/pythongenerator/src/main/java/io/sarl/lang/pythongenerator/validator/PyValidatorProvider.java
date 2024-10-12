@@ -48,7 +48,7 @@ public class PyValidatorProvider implements IExtraLanguageValidatorProvider {
 
 	@Override
 	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
-		final PyValidator validator = this.injector.getInstance(PyValidator.class);
+		final var validator = this.injector.getInstance(PyValidator.class);
 		return Collections.singletonList(validator);
 	}
 

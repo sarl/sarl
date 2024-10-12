@@ -24,10 +24,8 @@ package io.sarl.docs.generator;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.base.Throwables;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -62,13 +60,13 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	@Override
 	protected String internalExecute() {
 		try {
-			for (final String sourceFolder : this.inferredSourceDirectories) {
+			for (final var sourceFolder : this.inferredSourceDirectories) {
 				addSourceFolder(sourceFolder);
 			}
 			addTestSourceFolder(this.testSourceDirectory);
 			registerShellCommands();
 		} catch (Throwable exception) {
-			final String message = Throwables.getRootCause(exception).getLocalizedMessage();
+			final var message = Throwables.getRootCause(exception).getLocalizedMessage();
 			getLog().error(message);
 			getLog().debug(exception);
 			return message;
@@ -83,11 +81,11 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	protected void registerShellCommands() throws MojoExecutionException {
 		getLog().debug("Shell commands = " + this.shellCommands); //$NON-NLS-1$
 		if (this.shellCommands != null) {
-			final ShellCommandProvider provider = this.injector.getInstance(ShellCommandProvider.class);
+			final var provider = this.injector.getInstance(ShellCommandProvider.class);
 			if (provider == null) {
 				throw new MojoExecutionException("No shell command provider defined in the mojo source code"); //$NON-NLS-1$
 			}
-			for (final ShellCommand command : this.shellCommands) {
+			for (final var command : this.shellCommands) {
 				if (!registerShellCommand(command, provider)) {
 					throw new MojoExecutionException("Artifact not found: " + command.toString()); //$NON-NLS-1$
 				}
@@ -98,16 +96,16 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 
 	private boolean registerShellCommand(ShellCommand command, ShellCommandProvider provider) throws MojoExecutionException {
 		getLog().debug("Register shell command: " + command); //$NON-NLS-1$
-		final Dependency dep = findDependency(command.getGroupId(), command.getArtifactId(), command.getType());
+		final var dep = findDependency(command.getGroupId(), command.getArtifactId(), command.getType());
 		getLog().debug("Associated dependency: " + dep); //$NON-NLS-1$
 		if (dep != null) {
-			final Set<Artifact> artifacts = resolve(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), dep.getType());
-			for (final Artifact artifact : artifacts) {
+			final var artifacts = resolve(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), dep.getType());
+			for (final var artifact : artifacts) {
 				if (Strings.equal(command.getGroupId(), artifact.getGroupId())
 						&& Strings.equal(command.getArtifactId(), artifact.getArtifactId())
 						&& Strings.equal(command.getType(), artifact.getType())) {
 					getLog().debug("Artifact candidate: " + artifact); //$NON-NLS-1$
-					final File artifactFile = artifact.getFile();
+					final var artifactFile = artifact.getFile();
 					getLog().debug("Artifact file: " + artifactFile); //$NON-NLS-1$
 					if (artifactFile != null) {
 						getLog().info("Register shell command '" + command.getName() + "': " + artifactFile); //$NON-NLS-1$ //$NON-NLS-2$
@@ -132,7 +130,7 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	 * @return the dependency.
 	 */
 	protected Dependency findDependency(String groupId, String artifactId, String type) {
-		for (final Dependency dep : this.session.getCurrentProject().getDependencies()) {
+		for (final var dep : this.session.getCurrentProject().getDependencies()) {
 			if (Strings.equal(groupId, dep.getGroupId())
 				&& Strings.equal(artifactId, dep.getArtifactId())
 				&& Strings.equal(type, dep.getType())) {
@@ -147,8 +145,8 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	 * @param path the source folder path.
 	 */
 	protected void addSourceFolder(String path) {
-		final List<String> existingFolders1 = this.project.getCompileSourceRoots();
-		final List<String> existingFolders2 = this.project.getTestCompileSourceRoots();
+		final var existingFolders1 = this.project.getCompileSourceRoots();
+		final var existingFolders2 = this.project.getTestCompileSourceRoots();
 		if (!existingFolders1.contains(path) && !existingFolders2.contains(path)) {
 			getLog().info(MessageFormat.format(Messages.InitializeMojo_0, path));
 			this.session.getCurrentProject().addCompileSourceRoot(path);
@@ -170,8 +168,8 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	 * @param path the source folder path.
 	 */
 	protected void addTestSourceFolder(String path) {
-		final List<String> existingFolders1 = this.project.getCompileSourceRoots();
-		final List<String> existingFolders2 = this.project.getTestCompileSourceRoots();
+		final var existingFolders1 = this.project.getCompileSourceRoots();
+		final var existingFolders2 = this.project.getTestCompileSourceRoots();
 		if (!existingFolders1.contains(path) && !existingFolders2.contains(path)) {
 			getLog().info(MessageFormat.format(Messages.InitializeMojo_2, path));
 			this.session.getCurrentProject().addTestCompileSourceRoot(path);
@@ -272,7 +270,7 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 
 		@Override
 		public String toString() {
-			final StringBuilder str = new StringBuilder();
+			final var str = new StringBuilder();
 			str.append(getGroupId()).append(":"); //$NON-NLS-1$
 			str.append(getArtifactId()).append(":"); //$NON-NLS-1$
 			str.append(getType()).append(":"); //$NON-NLS-1$

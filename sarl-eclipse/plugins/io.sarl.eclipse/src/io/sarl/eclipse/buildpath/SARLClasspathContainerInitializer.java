@@ -51,7 +51,7 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 	public void initialize(IPath containerPath, IJavaProject project)
 			throws CoreException {
 		if (CONTAINER_ID.equals(containerPath)) {
-			final IClasspathContainer container = new SARLClasspathContainer(containerPath, project);
+			final var container = new SARLClasspathContainer(containerPath, project);
 			JavaCore.setClasspathContainer(containerPath,
 					new IJavaProject[] {project},
 					new IClasspathContainer[] {container},
@@ -70,11 +70,11 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 			final IPath containerPath,
 			final IJavaProject javaProject,
 			final IClasspathContainer containerSuggestion) throws CoreException {
-		if (containerSuggestion instanceof SARLClasspathContainer) {
-			((SARLClasspathContainer) containerSuggestion).reset();
+		if (containerSuggestion instanceof SARLClasspathContainer cvalue) {
+			cvalue.reset();
 		}
 		super.requestClasspathContainerUpdate(containerPath, javaProject, containerSuggestion);
-		final Job job = new Job(Messages.SARLClasspathContainerInitializer_0) {
+		final var job = new Job(Messages.SARLClasspathContainerInitializer_0) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {

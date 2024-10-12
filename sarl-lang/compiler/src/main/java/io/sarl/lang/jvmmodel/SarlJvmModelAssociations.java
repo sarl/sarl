@@ -23,7 +23,6 @@ package io.sarl.lang.jvmmodel;
 
 import com.google.inject.ImplementedBy;
 import com.google.inject.Singleton;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -33,7 +32,6 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.xbase.XExpression;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -226,90 +224,90 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlEvent getSarlEvent(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlEvent) {
-				return (SarlEvent) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlEvent cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlAgent getSarlAgent(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlAgent) {
-				return (SarlAgent) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlAgent cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlBehavior getSarlBehavior(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlBehavior) {
-				return (SarlBehavior) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlBehavior cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlCapacity getSarlCapacity(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlCapacity) {
-				return (SarlCapacity) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlCapacity cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlSpace getSarlSpace(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlSpace) {
-				return (SarlSpace) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlSpace cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlArtifact getSarlArtifact(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlArtifact) {
-				return (SarlArtifact) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlArtifact cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlClass getSarlClass(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlClass) {
-				return (SarlClass) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlClass cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlInterface getSarlInterface(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlInterface) {
-				return (SarlInterface) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlInterface cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlEnumeration getSarlEnumeration(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlEnumeration) {
-				return (SarlEnumeration) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlEnumeration cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public SarlAnnotationType getSarlAnnotationType(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlAnnotationType) {
-				return (SarlAnnotationType) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlAnnotationType cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
@@ -346,20 +344,20 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlSkill getSarlSkill(JvmGenericType jvmType) {
-			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlSkill) {
-				return (SarlSkill) primarySourceElement;
+			final var primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlSkill cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
 
 		@Override
 		public JvmOperation getInferredGuardOperation(SarlBehaviorUnit behaviorUnit) {
-			final XExpression guard = behaviorUnit.getGuard();
+			final var guard = behaviorUnit.getGuard();
 			if (guard != null) {
-				final EObject primaryJvmElement = getPrimaryJvmElement(guard);
-				if (primaryJvmElement instanceof JvmOperation) {
-					return (JvmOperation) primaryJvmElement;
+				final var primaryJvmElement = getPrimaryJvmElement(guard);
+				if (primaryJvmElement instanceof JvmOperation cvalue) {
+					return cvalue;
 				}
 			}
 			return null;
@@ -367,9 +365,9 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public JvmOperation getInferredBodyOperation(SarlBehaviorUnit behaviorUnit) {
-			final EObject primaryJvmElement = getPrimaryJvmElement(behaviorUnit);
-			if (primaryJvmElement instanceof JvmOperation) {
-				return (JvmOperation) primaryJvmElement;
+			final var primaryJvmElement = getPrimaryJvmElement(behaviorUnit);
+			if (primaryJvmElement instanceof JvmOperation cvalue) {
+				return cvalue;
 			}
 			return null;
 		}
@@ -383,9 +381,9 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 				fct = null;
 			}
 			if (fct == null) {
-				for (final EObject obj : getSourceElements(jvmOperation)) {
-					if (obj instanceof XtendFunction) {
-						fct = (XtendFunction) obj;
+				for (final var obj : getSourceElements(jvmOperation)) {
+					if (obj instanceof XtendFunction cvalue) {
+						fct = cvalue;
 						break;
 					}
 				}
@@ -395,8 +393,8 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlAction getSarlAction(JvmOperation jvmOperation) {
-			final XtendFunction fct = getXtendFunction(jvmOperation);
-			return fct instanceof SarlAction ? (SarlAction) fct : null;
+			final var fct = getXtendFunction(jvmOperation);
+			return fct instanceof SarlAction cvalue ? cvalue : null;
 		}
 
 		@Override
@@ -408,9 +406,9 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 				fld = null;
 			}
 			if (fld == null) {
-				for (final EObject obj : getSourceElements(jvmField)) {
-					if (obj instanceof XtendField) {
-						fld = (XtendField) obj;
+				for (final var obj : getSourceElements(jvmField)) {
+					if (obj instanceof XtendField cvalue) {
+						fld = cvalue;
 						break;
 					}
 				}
@@ -420,8 +418,8 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlField getSarlField(JvmField jvmField) {
-			final XtendField fld = getXtendField(jvmField);
-			return fld instanceof SarlField ? (SarlField) fld : null;
+			final var fld = getXtendField(jvmField);
+			return fld instanceof SarlField cvalue ? cvalue : null;
 		}
 
 		@Override
@@ -433,9 +431,9 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 				cons = null;
 			}
 			if (cons == null) {
-				for (final EObject obj : getSourceElements(jvmConstructor)) {
-					if (obj instanceof XtendConstructor) {
-						cons = (XtendConstructor) obj;
+				for (final var obj : getSourceElements(jvmConstructor)) {
+					if (obj instanceof XtendConstructor cvalue) {
+						cons = cvalue;
 						break;
 					}
 				}
@@ -445,8 +443,8 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlConstructor getSarlConstructor(JvmConstructor jvmConstructor) {
-			final XtendConstructor cons = getXtendConstructor(jvmConstructor);
-			return cons instanceof SarlConstructor ? (SarlConstructor) cons : null;
+			final var cons = getXtendConstructor(jvmConstructor);
+			return cons instanceof SarlConstructor cvalue ? cvalue : null;
 		}
 
 	}

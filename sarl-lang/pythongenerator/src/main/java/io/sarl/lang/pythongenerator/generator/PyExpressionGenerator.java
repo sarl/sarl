@@ -32,9 +32,7 @@ import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
@@ -45,9 +43,7 @@ import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBinaryOperation;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
-import org.eclipse.xtext.xbase.XCasePart;
 import org.eclipse.xtext.xbase.XCastedExpression;
-import org.eclipse.xtext.xbase.XCatchClause;
 import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XDoWhileExpression;
@@ -74,7 +70,6 @@ import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XWhileExpression;
 import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
-import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
@@ -82,7 +77,6 @@ import io.sarl.lang.extralanguage.compiler.AbstractExpressionGenerator;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;
-import io.sarl.lang.extralanguage.compiler.IRootGenerator;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
@@ -133,11 +127,11 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	protected void before(XExpression expression, IAppendable output, IExtraLanguageGeneratorContext context) {
 		if (!(expression instanceof XClosure) && !(expression instanceof AnonymousClass)) {
 			// Generate the closure definitions before their usage in the expressions
-			for (final XClosure closure : EcoreUtil2.getAllContentsOfType(expression, XClosure.class)) {
+			for (final var closure : EcoreUtil2.getAllContentsOfType(expression, XClosure.class)) {
 				generateClosureDefinition(closure, output, context);
 			}
 			// Generate the closure definitions before their usage in the expressions
-			for (final AnonymousClass anonClass : EcoreUtil2.getAllContentsOfType(expression, AnonymousClass.class)) {
+			for (final var anonClass : EcoreUtil2.getAllContentsOfType(expression, AnonymousClass.class)) {
 				generateAnonymousClassDefinition(anonClass, output, context);
 			}
 		}
@@ -151,37 +145,37 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected void generateClosureDefinition(XClosure closure, IAppendable it, IExtraLanguageGeneratorContext context) {
 		if (!it.hasName(closure)) {
-			final LightweightTypeReference closureType0 = getExpectedType(closure);
-			LightweightTypeReference closureType = closureType0;
+			final var closureType0 = getExpectedType(closure);
+			var closureType = closureType0;
 			if (closureType0.isFunctionType()) {
-				final FunctionTypeReference fctRef = closureType0.tryConvertToFunctionTypeReference(true);
+				final var fctRef = closureType0.tryConvertToFunctionTypeReference(true);
 				if (fctRef != null) {
 					closureType = Utils.toLightweightTypeReference(fctRef.getType(), this.typeServices).getRawTypeReference();
 				}
 			}
-			final String closureName = it.declareSyntheticVariable(closure, "__Jclosure_" //$NON-NLS-1$
+			final var closureName = it.declareSyntheticVariable(closure, "__Jclosure_" //$NON-NLS-1$
 					+ closureType.getSimpleName());
-			final JvmDeclaredType rawType = (JvmDeclaredType) closureType.getType();
-			final JvmOperation function = rawType.getDeclaredOperations().iterator().next();
+			final var rawType = (JvmDeclaredType) closureType.getType();
+			final var function = rawType.getDeclaredOperations().iterator().next();
 			// Add the object type as super type because of an issue in the Python language.
-			final JvmTypeReference objType = getTypeReferences().getTypeForName(Object.class, closure);
+			final var objType = getTypeReferences().getTypeForName(Object.class, closure);
 			it.openPseudoScope();
 			it.append("class ").append(closureName).append("(") //$NON-NLS-1$//$NON-NLS-2$
 				.append(closureType).append(",").append(objType.getType()).append("):") //$NON-NLS-1$ //$NON-NLS-2$
 				.increaseIndentation().newLine().append("def ") //$NON-NLS-1$
 				.append(function.getSimpleName()).append("(") //$NON-NLS-1$
 				.append(getExtraLanguageKeywordProvider().getThisKeywordLambda().apply());
-			for (final JvmFormalParameter param : closure.getFormalParameters()) {
+			for (final var param : closure.getFormalParameters()) {
 				it.append(", "); //$NON-NLS-1$
-				final String name = it.declareUniqueNameVariable(param, param.getName());
+				final var name = it.declareUniqueNameVariable(param, param.getName());
 				it.append(name);
 			}
 			it.append("):"); //$NON-NLS-1$
 			it.increaseIndentation().newLine();
 			if (closure.getExpression() != null) {
-				LightweightTypeReference returnType = closureType0;
+				var returnType = closureType0;
 				if (returnType.isFunctionType()) {
-					final FunctionTypeReference fctRef = returnType.tryConvertToFunctionTypeReference(true);
+					final var fctRef = returnType.tryConvertToFunctionTypeReference(true);
 					if (fctRef != null) {
 						returnType = fctRef.getReturnType();
 					} else {
@@ -208,23 +202,23 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected void generateAnonymousClassDefinition(AnonymousClass anonClass, IAppendable it, IExtraLanguageGeneratorContext context) {
 		if (!it.hasName(anonClass) && it instanceof PyAppendable) {
-			final LightweightTypeReference jvmAnonType = getExpectedType(anonClass);
-			final String anonName = it.declareSyntheticVariable(anonClass, jvmAnonType.getSimpleName());
-			QualifiedName anonQualifiedName = QualifiedName.create(
+			final var jvmAnonType = getExpectedType(anonClass);
+			final var anonName = it.declareSyntheticVariable(anonClass, jvmAnonType.getSimpleName());
+			var anonQualifiedName = QualifiedName.create(
 					jvmAnonType.getType().getQualifiedName().split(Pattern.quote("."))); //$NON-NLS-1$
 			anonQualifiedName = anonQualifiedName.skipLast(1);
 			if (anonQualifiedName.isEmpty()) {
 				// The type resolver does not include the enclosing class.
 				assert anonClass.getDeclaringType() == null : "The Xtend API has changed the AnonymousClass definition!"; //$NON-NLS-1$
-				final XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(anonClass.eContainer(), XtendTypeDeclaration.class);
+				final var container = EcoreUtil2.getContainerOfType(anonClass.eContainer(), XtendTypeDeclaration.class);
 				anonQualifiedName = anonQualifiedName.append(this.qualifiedNameProvider.getFullyQualifiedName(container));
 			}
 			anonQualifiedName = anonQualifiedName.append(anonName);
 			it.openPseudoScope();
-			final IRootGenerator rootGenerator = context.getRootGenerator();
+			final var rootGenerator = context.getRootGenerator();
 			assert rootGenerator instanceof PyGenerator;
-			final List<JvmTypeReference> types = new ArrayList<>();
-			for (final JvmTypeReference superType : anonClass.getConstructorCall().getConstructor().getDeclaringType().getSuperTypes()) {
+			final var types = new ArrayList<JvmTypeReference>();
+			for (final var superType : anonClass.getConstructorCall().getConstructor().getDeclaringType().getSuperTypes()) {
 				if (!Object.class.getCanonicalName().equals(superType.getIdentifier())) {
 					types.add(superType);
 				}
@@ -255,8 +249,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		if (it.hasName(anonClass)) {
 			appendReturnIfExpectedReturnedExpression(it, context);
 			it.append(it.getName(anonClass)).append("("); //$NON-NLS-1$
-			boolean firstArg = true;
-			for (final XExpression arg : anonClass.getConstructorCall().getArguments()) {
+			var firstArg = true;
+			for (final var arg : anonClass.getConstructorCall().getArguments()) {
 				if (firstArg) {
 					firstArg = false;
 				} else {
@@ -299,7 +293,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		} else {
 			it.openScope();
 			if (context.getExpectedExpressionType() == null) {
-				boolean first = true;
+				var first = true;
 				for (final XExpression expression : block.getExpressions()) {
 					if (first) {
 						first = false;
@@ -309,9 +303,9 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 					last = generate(expression, it, context);
 				}
 			} else {
-				final List<XExpression> exprs = block.getExpressions();
+				final var exprs = block.getExpressions();
 				if (!exprs.isEmpty()) {
-					for (int i = 0; i < exprs.size() - 1; ++i) {
+					for (var i = 0; i < exprs.size() - 1; ++i) {
 						if (i > 0) {
 							it.newLine();
 						}
@@ -395,7 +389,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(SarlAssertExpression assertStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
-		final boolean haveAssert = !assertStatement.isIsStatic() && assertStatement.getCondition() != null;
+		final var haveAssert = !assertStatement.isIsStatic() && assertStatement.getCondition() != null;
 		if (haveAssert) {
 			it.append("assert (lambda:"); //$NON-NLS-1$
 			it.increaseIndentation().newLine();
@@ -438,7 +432,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected XExpression _generate(XBinaryOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
-		final String operator = getOperatorSymbol(operation);
+		final var operator = getOperatorSymbol(operation);
 		if (operator != null) {
 			it.append("("); //$NON-NLS-1$
 			generate(operation.getLeftOperand(), it, context);
@@ -519,7 +513,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected XExpression _generate(XPostfixOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
-		final String operator = getOperatorSymbol(operation);
+		final var operator = getOperatorSymbol(operation);
 		if (operator != null) {
 			it.append("("); //$NON-NLS-1$
 			switch (operator) {
@@ -548,7 +542,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected XExpression _generate(XUnaryOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
-		final String operator = getOperatorSymbol(operation);
+		final var operator = getOperatorSymbol(operation);
 		if (operator != null) {
 			it.append("("); //$NON-NLS-1$
 			switch (operator) {
@@ -625,13 +619,13 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	protected XExpression _generate(XForLoopExpression forLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
 		it.append("for "); //$NON-NLS-1$
-		final String varName = it.declareUniqueNameVariable(forLoop.getDeclaredParam(), forLoop.getDeclaredParam().getSimpleName());
+		final var varName = it.declareUniqueNameVariable(forLoop.getDeclaredParam(), forLoop.getDeclaredParam().getSimpleName());
 		it.append(varName);
 		it.append(" in "); //$NON-NLS-1$
 		generate(forLoop.getForExpression(), it, context);
 		it.append(":"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
-		final XExpression last = generate(forLoop.getEachExpression(), it, context);
+		final var last = generate(forLoop.getEachExpression(), it, context);
 		it.decreaseIndentation();
 		return last;
 	}
@@ -644,7 +638,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the last statement in the loop or {@code null}.
 	 */
 	protected XExpression _generate(XBasicForLoopExpression forLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
-		for (final XExpression expr : forLoop.getInitExpressions()) {
+		for (final var expr : forLoop.getInitExpressions()) {
 			generate(expr, it, context);
 			it.newLine();
 		}
@@ -652,8 +646,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		generate(forLoop.getExpression(), it, context);
 		it.append(":"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
-		final XExpression last = generate(forLoop.getEachExpression(), it, context);
-		for (final XExpression expr : forLoop.getUpdateExpressions()) {
+		final var last = generate(forLoop.getEachExpression(), it, context);
+		for (final var expr : forLoop.getUpdateExpressions()) {
 			it.newLine();
 			generate(expr, it, context);
 		}
@@ -696,8 +690,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	protected XExpression _generate(XListLiteral literal, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("["); //$NON-NLS-1$
-		boolean first = true;
-		for (final XExpression value : literal.getElements()) {
+		var first = true;
+		for (final var value : literal.getElements()) {
 			if (first) {
 				first = false;
 			} else {
@@ -719,8 +713,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	protected XExpression _generate(XSetLiteral literal, IAppendable it, IExtraLanguageGeneratorContext context) {
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("{"); //$NON-NLS-1$
-		boolean first = true;
-		for (final XExpression value : literal.getElements()) {
+		var first = true;
+		for (final var value : literal.getElements()) {
 			if (first) {
 				first = false;
 			} else {
@@ -830,9 +824,9 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		it.append(varName).append(" = "); //$NON-NLS-1$
 		generate(switchStatement.getSwitch(), it, context);
 		it.newLine();
-		boolean first = true;
-		boolean fallThrough = false;
-		for (final XCasePart caseExpression : switchStatement.getCases()) {
+		var first = true;
+		var fallThrough = false;
+		for (final var caseExpression : switchStatement.getCases()) {
 			if (fallThrough) {
 				it.append(") or ("); //$NON-NLS-1$
 			} else if (first) {
@@ -926,7 +920,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		it.increaseIndentation().newLine();
 		generate(tryStatement.getExpression(), context.getExpectedExpressionType(), it, context);
 		it.decreaseIndentation().newLine();
-		for (final XCatchClause clause : tryStatement.getCatchClauses()) {
+		for (final var clause : tryStatement.getCatchClauses()) {
 			it.append("except "); //$NON-NLS-1$
 			it.append(clause.getDeclaredParam().getParameterType().getType());
 			it.append(", "); //$NON-NLS-1$
@@ -967,7 +961,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XVariableDeclaration varDeclaration, IAppendable it, IExtraLanguageGeneratorContext context) {
-		final String name = it.declareUniqueNameVariable(varDeclaration, varDeclaration.getName());
+		final var name = it.declareUniqueNameVariable(varDeclaration, varDeclaration.getName());
 		it.append(name);
 		it.append(" = "); //$NON-NLS-1$
 		if (varDeclaration.getRight() != null) {
@@ -990,7 +984,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the default value.
 	 */
 	public static String toDefaultValue(JvmTypeReference type) {
-		final String id = type.getIdentifier();
+		final var id = type.getIdentifier();
 		if (!"void".equals(id)) { //$NON-NLS-1$
 			if (Strings.equal(Boolean.class.getName(), id) || Strings.equal(Boolean.TYPE.getName(), id)) {
 				return "False"; //$NON-NLS-1$
@@ -1042,19 +1036,19 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 
 		private void appendCallPrefix(Collection<?> elements, String postfix) {
 			if (elements != null && !elements.isEmpty()) {
-				boolean first = true;
-				for (final Object element : elements) {
+				var first = true;
+				for (final var element : elements) {
 					if (first) {
 						first = false;
 					} else {
 						this.codeReceiver.append("."); //$NON-NLS-1$
 					}
-					if (element instanceof XExpression) {
-						PyExpressionGenerator.this.generate((XExpression) element, this.codeReceiver, this.context);
-					} else if (element instanceof JvmType) {
-						this.codeReceiver.append((JvmType) element);
-					} else if (element instanceof LightweightTypeReference) {
-						this.codeReceiver.append((LightweightTypeReference) element);
+					if (element instanceof XExpression cvalue) {
+						PyExpressionGenerator.this.generate(cvalue, this.codeReceiver, this.context);
+					} else if (element instanceof JvmType cvalue) {
+						this.codeReceiver.append(cvalue);
+					} else if (element instanceof LightweightTypeReference cvalue) {
+						this.codeReceiver.append(cvalue);
 					} else {
 						this.codeReceiver.append(element.toString());
 					}
@@ -1079,8 +1073,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 			if (args != null) {
 				this.codeReceiver.append(name);
 				this.codeReceiver.append("("); //$NON-NLS-1$
-				boolean first = true;
-				for (final XExpression arg : args) {
+				var first = true;
+				for (final var arg : args) {
 					if (first) {
 						first = false;
 					} else {

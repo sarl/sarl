@@ -108,13 +108,13 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 		if (this.externalModules == null || this.externalPackages == null) {
 			this.externalModules = new TreeMap<>();
 			this.externalPackages = new TreeMap<>();
-			for (final URI uri : getExternalLinks()) {
+			for (final var uri : getExternalLinks()) {
 				context.getReporter().print(Kind.NOTE, MessageFormat.format(Messages.ExternalLinkManagerImpl_0, uri.toASCIIString()));
 				// Read the element-list file
-				boolean read = true;
+				var read = true;
 				try {
-					final URL url = uri.resolve(ELEMENT_LIST_NAME).toURL();
-					try (final InputStream is = url.openStream()) {
+					final var url = uri.resolve(ELEMENT_LIST_NAME).toURL();
+					try (final var is = url.openStream()) {
 						readElementList(is, uri, context);
 					}
 				} catch (IOException exception) {
@@ -123,8 +123,8 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 				}
 				// Read the package-list file
 				try {
-					final URL url = uri.resolve(PACKAGE_LIST_NAME).toURL();
-					try (final InputStream is = url.openStream()) {
+					final var url = uri.resolve(PACKAGE_LIST_NAME).toURL();
+					try (final var is = url.openStream()) {
 						readElementList(is, uri, context);
 					}
 				} catch (IOException exception) {
@@ -145,27 +145,27 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 	 * @throws IOException if there is a problem reading or closing the stream.
 	 */
 	protected void readElementList(InputStream input, URI path, ExternalLinkManagerContext context) throws IOException {
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(input))) {
+		try (var in = new BufferedReader(new InputStreamReader(input))) {
 			String moduleName = null;
-			String elementName = in.readLine();
+			var elementName = in.readLine();
 			while (elementName != null) {
 				if (!elementName.isBlank()) {
 					if (elementName.startsWith(MODULE_PREFIX)) {
 						moduleName = elementName.replace(MODULE_PREFIX, ""); //$NON-NLS-1$
-						final URI fixedPath = path.resolve("/"); //$NON-NLS-1$
-						final Item item = new Item(moduleName, fixedPath);
+						final var fixedPath = path.resolve("/"); //$NON-NLS-1$
+						final var item = new Item(moduleName, fixedPath);
 						this.externalModules.put(moduleName, item);
 					} else {
-						final String packagePath = elementName.replace('.', '/');
+						final var packagePath = elementName.replace('.', '/');
 						final URI elementPath;
 						if (moduleName != null && !moduleName.isBlank()) {
-							final URI moduleUri = path.resolve(moduleName + '/');
+							final var moduleUri = path.resolve(moduleName + '/');
 							elementPath = moduleUri.resolve(packagePath + '/');
 						} else {
 							elementPath = path.resolve(packagePath + '/');
 						}
-						final String actualModuleName = checkLinkCompatibility(elementName, moduleName, path, context);
-						final Item item = new Item(elementName, elementPath);
+						final var actualModuleName = checkLinkCompatibility(elementName, moduleName, path, context);
+						final var item = new Item(elementName, elementPath);
 						this.externalPackages.computeIfAbsent(actualModuleName, k -> new TreeMap<>()).put(elementName, item);
 					}
 				}
@@ -185,9 +185,9 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 	 * @return the module name to use according to actual modularity of the package
 	 */
 	private String checkLinkCompatibility(String packageName, String moduleName, URI path, ExternalLinkManagerContext context)  {
-		final PackageElement packageElement = context.getEnvironment().getElementUtils().getPackageElement(packageName);
+		final var packageElement = context.getEnvironment().getElementUtils().getPackageElement(packageName);
 		if (packageElement != null) {
-			final ModuleElement moduleElement = (ModuleElement) packageElement.getEnclosingElement();
+			final var moduleElement = (ModuleElement) packageElement.getEnclosingElement();
 			if (moduleElement == null || moduleElement.isUnnamed()) {
 				if (moduleName != null) {
 					context.getReporter().print(Kind.WARNING,
@@ -253,7 +253,7 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 	public void addExternalLink(URL url) {
 		assert url != null;
 		try {
-			final URI uri = url.toURI();
+			final var uri = url.toURI();
 			addExternalLink(uri);
 		} catch (URISyntaxException ex) {
 			throw new RuntimeException(ex);
@@ -265,21 +265,20 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 		if (context.getDocletOptions().isOffline()) {
 			return null;
 		}
-		final Item item = getCachedItem(element, context);
+		final var item = getCachedItem(element, context);
 		if (item == null) {
 			return null;
 		}
 		final URI fullUri;
-		if (element instanceof TypeElement) {
-			final TypeElement typeElement = (TypeElement) element;
+		if (element instanceof TypeElement typeElement) {
 			fullUri = item.path.resolve(typeElement.getSimpleName() + ".html"); //$NON-NLS-1$
 		} else {
 			fullUri = item.path;
 		}
 		if (fullUri != null && !Strings.isNullOrEmpty(anchorName)) {
 			try {
-				final String anchorName0 = URLEncoder.encode(anchorName, Charset.defaultCharset().displayName());
-				final String completedUri = fullUri.toString() + "#" + anchorName0; //$NON-NLS-1$
+				final var anchorName0 = URLEncoder.encode(anchorName, Charset.defaultCharset().displayName());
+				final var completedUri = fullUri.toString() + "#" + anchorName0; //$NON-NLS-1$
 				return URI.create(completedUri);
 			} catch (UnsupportedEncodingException ex) {
 				throw new RuntimeException(ex);
@@ -298,19 +297,16 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 		Item item = null;
 		if (getElementUtils().isExternal(element, context.getEnvironment())) {
 			synchronizeExternalLinks(context);
-			if (element instanceof ModuleElement) {
-	            final ModuleElement moduleElement = (ModuleElement) element;
+			if (element instanceof ModuleElement moduleElement) {
 	            item = this.externalModules.get(getElementUtils().getElementName(moduleElement));
-			} else if (element instanceof PackageElement) {
-	            final PackageElement packageElement = (PackageElement) element;
-	            final ModuleElement moduleElement = context.getEnvironment().getElementUtils().getModuleOf(packageElement);
-	            final Map<String, Item> packageMap = this.externalPackages.get(getElementUtils().getElementName(moduleElement));
+			} else if (element instanceof PackageElement packageElement) {
+	            final var moduleElement = context.getEnvironment().getElementUtils().getModuleOf(packageElement);
+	            final var packageMap = this.externalPackages.get(getElementUtils().getElementName(moduleElement));
 	            item = packageMap != null ? packageMap.get(getElementUtils().getElementName(packageElement)) : null;
-			} else if (element instanceof TypeElement) {
-	            final TypeElement typeElement = (TypeElement) element;
-	            final PackageElement packageElement = context.getEnvironment().getElementUtils().getPackageOf(typeElement);
-	            final ModuleElement moduleElement = context.getEnvironment().getElementUtils().getModuleOf(packageElement);
-	            final Map<String, Item> packageMap = this.externalPackages.get(getElementUtils().getElementName(moduleElement));
+			} else if (element instanceof TypeElement typeElement) {
+	            final var packageElement = context.getEnvironment().getElementUtils().getPackageOf(typeElement);
+	            final var moduleElement = context.getEnvironment().getElementUtils().getModuleOf(packageElement);
+	            final var packageMap = this.externalPackages.get(getElementUtils().getElementName(moduleElement));
 	            item = packageMap != null ? packageMap.get(getElementUtils().getElementName(packageElement)) : null;
 			}
 		}

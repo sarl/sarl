@@ -69,7 +69,7 @@ public final class TestUtils {
 		if (operand2 == null) {
 			return operand1;
 		}
-		String[] tab = new String[operand1.length + operand2.length];
+		var tab = new String[operand1.length + operand2.length];
 		System.arraycopy(
 				operand1, 0,
 				tab, 0,
@@ -91,7 +91,7 @@ public final class TestUtils {
 	public static <T> void setField(Object instance, Class<T> fieldType,
 			String fieldName, T fieldValue) {
 		Field field = null;
-		Class<?> type = instance.getClass();
+		var type = instance.getClass();
 		while (type != null) {
 			try {
 				field = type.getDeclaredField(fieldName);
@@ -112,7 +112,7 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static boolean isEclipseRuntimeEnvironment() {
-		final String cmd = System.getProperty("sun.java.command", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final var cmd = System.getProperty("sun.java.command", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		// Assuming that the Maven launcher is providing an absolute path to the launcher.
 		return cmd != null
 				&& (cmd.startsWith("org.eclipse.equinox.launcher.Main") //$NON-NLS-1$
@@ -137,12 +137,12 @@ public final class TestUtils {
 		try {
 			throw new Exception();
 		} catch (Throwable e) {
-			List<StackTraceElement> types = new ArrayList<>();
-			StackTraceElement[] elements = e.getStackTrace();
-			for (int i = 1; i < elements.length; ++i) {
+			var types = new ArrayList<>();
+			var elements = e.getStackTrace();
+			for (var i = 1; i < elements.length; ++i) {
 				types.add(elements[i]);
 			}
-			StackTraceElement[] array = new StackTraceElement[types.size()];
+			var array = new StackTraceElement[types.size()];
 			types.toArray(array);
 			return array;
 		}
@@ -155,7 +155,7 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String getLineSeparator() {
-		final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
+		final var nl = System.getProperty("line.separator"); //$NON-NLS-1$
 		if (Strings.isNullOrEmpty(nl)) {
 			throw new Error("NO LINE SEPARATOR DEFINED"); //$NON-NLS-1$
 			//return "\n";
@@ -183,25 +183,24 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String multilineString2(boolean clearSpaceLines, Object... lines) {
-		final StringBuilder buffer = new StringBuilder();
-		final String nl = getLineSeparator();
-		boolean first = true;
-		for (final Object obj : lines) {
+		final var buffer = new StringBuilder();
+		final var nl = getLineSeparator();
+		var first = true;
+		for (final var obj : lines) {
 			if (first) {
 				first = false;
 			} else {
 				buffer.append(nl);
 			}
 			if (obj != null) {
-				if (obj instanceof CharSequence) {
-					final CharSequence cs = (CharSequence) obj;
+				if (obj instanceof CharSequence cs) {
 					if (clearSpaceLines) {
 						buffer.append(cs.toString().stripTrailing());
 					} else {
 						buffer.append(cs);
 					}
 				} else {
-					final String str = obj.toString(); 
+					final var str = obj.toString(); 
 					if (clearSpaceLines) {
 						buffer.append(str.stripTrailing());
 					} else {
@@ -225,8 +224,8 @@ public final class TestUtils {
 		if (v1 == v2) {
 			return true;
 		}
-		final boolean nanA = Double.isNaN(v1);
-		final boolean nanB = Double.isNaN(v2);
+		final var nanA = Double.isNaN(v1);
+		final var nanB = Double.isNaN(v2);
 		if (nanA || nanB) {
 			if (isNaNEqual) {
 				return nanA == nanB;
@@ -249,10 +248,10 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
-		final BigDecimal ma = v1.movePointRight(precision);
-		final BigDecimal mb = v2.movePointRight(precision);
-		BigDecimal aa = ma.setScale(0, RoundingMode.HALF_UP);
-		BigDecimal bb = mb.setScale(0, RoundingMode.HALF_UP);
+		final var ma = v1.movePointRight(precision);
+		final var mb = v2.movePointRight(precision);
+		var aa = ma.setScale(0, RoundingMode.HALF_UP);
+		var bb = mb.setScale(0, RoundingMode.HALF_UP);
 		if (aa.compareTo(bb) == 0) {
 			return true;
 		}
@@ -271,7 +270,7 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static <T> T elementAt(List<?> source, Class<T> type, int index) {
-		final Object element = source.get(index);
+		final var element = source.get(index);
 		if (element == null || type.isInstance(element)) {
 			return type.cast(element);
 		}
@@ -285,9 +284,9 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String simpleTypeName(String typeName) {
-		final int index1 = typeName.lastIndexOf("$"); //$NON-NLS-1$
-		final int index2 = typeName.lastIndexOf("."); //$NON-NLS-1$
-		final int index = Math.max(index1, index2);
+		final var index1 = typeName.lastIndexOf("$"); //$NON-NLS-1$
+		final var index2 = typeName.lastIndexOf("."); //$NON-NLS-1$
+		final var index = Math.max(index1, index2);
 		if (index >= 0) {
 			return typeName.substring(index + 1);
 		}
@@ -303,7 +302,7 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String differences(String a, String b) {
-		final String diff = DiffUtil.diff(a,  b);
+		final var diff = DiffUtil.diff(a,  b);
 		return diff;
 	}
 

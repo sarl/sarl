@@ -104,32 +104,32 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 	protected List<? extends IRenameElementContext> createRenameElementContexts(Object element) {
 		if (getArguments().getUpdateReferences()) {
 			assert element instanceof IPackageFragment;
-			final IPackageFragment packageFragment = (IPackageFragment) element;
-			final List<IRenameElementContext> contexts = new ArrayList<>();
+			final var packageFragment = (IPackageFragment) element;
+			final var contexts = new ArrayList<IRenameElementContext>();
 
-			final QualifiedName currentQualifiedName = this.nameConverter.toQualifiedName(packageFragment.getElementName());
-			final String separator = Character.toString(IPath.SEPARATOR);
-			final String newQualifiedName = this.nameConverter.toQualifiedName(getNewName()).toString(separator);
+			final var currentQualifiedName = this.nameConverter.toQualifiedName(packageFragment.getElementName());
+			final var separator = Character.toString(IPath.SEPARATOR);
+			final var newQualifiedName = this.nameConverter.toQualifiedName(getNewName()).toString(separator);
 
-			final Iterator<IFile> sarlFiles = getSarlFiles(packageFragment);
+			final var sarlFiles = getSarlFiles(packageFragment);
 			while (sarlFiles.hasNext()) {
-				final IFile currentFile = sarlFiles.next();
-				final IPath filePath = currentFile.getFullPath();
-				final URI resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
-				final ResourceSet resourceSet = this.resourceSetProvider.get(currentFile.getProject());
-				final Resource resource = resourceSet.getResource(resourceURI, true);
+				final var currentFile = sarlFiles.next();
+				final var filePath = currentFile.getFullPath();
+				final var resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
+				final var resourceSet = this.resourceSetProvider.get(currentFile.getProject());
+				final var resource = resourceSet.getResource(resourceURI, true);
 				if (resource != null) {
-					final SarlScript sarlScript = (SarlScript) Iterables.find(resource.getContents(), it -> it instanceof SarlScript);
+					final var sarlScript = (SarlScript) Iterables.find(resource.getContents(), it -> it instanceof SarlScript);
 					if (sarlScript != null && this.nameConverter.toQualifiedName(sarlScript.getPackage()).startsWith(currentQualifiedName)) {
-						final XtextResource xtextResource = (XtextResource) resource;
-						final IRenameElementContext context = this.renameContextFactory.createRenameElementContext(
+						final var xtextResource = (XtextResource) resource;
+						final var context = this.renameContextFactory.createRenameElementContext(
 								sarlScript,
 								null, null,
 								xtextResource);
-						final IPath newPath = Path.fromPortableString(filePath.toPortableString().replaceAll(
+						final var newPath = Path.fromPortableString(filePath.toPortableString().replaceAll(
 								currentQualifiedName.toString(separator), newQualifiedName));
-						if (context instanceof IChangeRedirector.Aware) {
-							((IChangeRedirector.Aware) context).setChangeRedirector(source ->
+						if (context instanceof IChangeRedirector.Aware cvalue) {
+							cvalue.setChangeRedirector(source ->
 								Objects.equals(source, filePath) ? newPath : source);
 						}
 						contexts.add(context);

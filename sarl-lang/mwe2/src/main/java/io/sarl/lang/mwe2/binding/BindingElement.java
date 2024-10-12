@@ -61,17 +61,17 @@ public class BindingElement {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof BindingElement) {
-			return Objects.equals(getBind(), ((BindingElement) obj).getBind())
-					&& Objects.equals(getAnnotatedWith(), ((BindingElement) obj).getAnnotatedWith())
-					&& Objects.equals(getAnnotatedWithName(), ((BindingElement) obj).getAnnotatedWithName());
+		if (obj instanceof BindingElement cvalue) {
+			return Objects.equals(getBind(), cvalue.getBind())
+					&& Objects.equals(getAnnotatedWith(), cvalue.getAnnotatedWith())
+					&& Objects.equals(getAnnotatedWithName(), cvalue.getAnnotatedWithName());
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1;
 		bits = bits * HASH_VALUE + Objects.hashCode(getBind());
 		bits = bits * HASH_VALUE + Objects.hashCode(getAnnotatedWith());
 		bits = bits * HASH_VALUE + Objects.hashCode(getAnnotatedWithName());

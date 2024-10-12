@@ -69,7 +69,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 	protected MavenImportWizardPage getMavenImportWizardPage() {
 		if (this.mainPageBuffer == null) {
 			try {
-				final Field field = MavenImportWizard.class.getDeclaredField("page"); //$NON-NLS-1$
+				final var field = MavenImportWizard.class.getDeclaredField("page"); //$NON-NLS-1$
 				field.setAccessible(true);
 				this.mainPageBuffer = (MavenImportWizardPage) field.get(this);
 			} catch (Exception exception) {
@@ -81,24 +81,24 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 
 	@Override
 	public boolean performFinish() {
-		final MavenImportWizardPage page = getMavenImportWizardPage();
+		final var page = getMavenImportWizardPage();
 		if (!page.isPageComplete()) {
 			return false;
 		}
 
-		final Collection<MavenProjectInfo> projects = getProjects();
+		final var projects = getProjects();
 
 		// ignore any preselected working set
-		final List<IWorkingSet> workingSets = new ArrayList<>();
+		final var workingSets = new ArrayList<IWorkingSet>();
 		if (page.shouldCreateWorkingSet() && !projects.isEmpty()) {
-			final IWorkingSet workingSet = WorkingSets.getOrCreateWorkingSet(page.getWorkingSetName());
+			final var workingSet = WorkingSets.getOrCreateWorkingSet(page.getWorkingSetName());
 			if (!workingSets.contains(workingSet)) {
 				workingSets.add(workingSet);
 			}
 		}
 
-		final WorkspaceJob importJob = createImportJob(projects);
-		final WorkspaceJob globalJob;
+		final var importJob = createImportJob(projects);
+		final var globalJob;
 
 		// XXX: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
 		// Solution: Create a simple project, and switch to a real SARL project.
@@ -107,15 +107,15 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 					MultiStatus status = null;
-					final SubMonitor submon = SubMonitor.convert(monitor, projects.size() * 2);
-					for (final MavenProjectInfo projectInfo : projects) {
-						final File pomFile = projectInfo.getPomFile();
+					final var submon = SubMonitor.convert(monitor, projects.size() * 2);
+					for (final var projectInfo : projects) {
+						final var pomFile = projectInfo.getPomFile();
 						try {
 							MavenImportUtils.forceSimplePom(pomFile.getParentFile(), monitor);
 							submon.worked(1);
 							// Reset the maven model
 							final Model model;
-							try (final InputStream inputStream = new FileInputStream(pomFile)) {
+							try (final var inputStream = new FileInputStream(pomFile)) {
 								model = MavenPlugin.getMavenModelManager().readMavenModel(inputStream);
 							}
 							projectInfo.setModel(model);
@@ -159,7 +159,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 	 * @return the import job.
 	 */
 	protected WorkspaceJob createImportJob(Collection<MavenProjectInfo> projects) {
-		final WorkspaceJob job = new ImportMavenSarlProjectsJob(projects, this.workingSets, this.importConfiguration);
+		final var job = new ImportMavenSarlProjectsJob(projects, this.workingSets, this.importConfiguration);
 		job.setRule(MavenPlugin.getProjectConfigurationManager().getRule());
 		return job;
 	}

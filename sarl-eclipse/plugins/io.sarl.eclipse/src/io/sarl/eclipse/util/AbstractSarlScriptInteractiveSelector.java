@@ -171,16 +171,16 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	@SuppressWarnings("unchecked")
 	private List<ElementDescription> findElements(Object[] selection, IProgressService progress)
 			throws InvocationTargetException, InterruptedException {
-		final List<ElementDescription> descs = new ArrayList<>();
+		final var descs = new ArrayList<ElementDescription>();
 		progress.busyCursorWhile(monitor -> {
 			try {
 				monitor.beginTask(
 						MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_0, getElementsLabel()),
 						selection.length);
-				for (final Object element : selection) {
-					final URI fileURI = getResourceURIForValidEObject(element);
+				for (final var element : selection) {
+					final var fileURI = getResourceURIForValidEObject(element);
 					if (fileURI != null) {
-						for (final Pair<IStorage, IProject> storage: this.storage2UriMapper.getStorages(fileURI)) {
+						for (final var storage: this.storage2UriMapper.getStorages(fileURI)) {
 							descs.add(new ElementDescription(
 									storage.getSecond().getName(),
 									getQualifiedNameFor((ET) element),
@@ -188,25 +188,24 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 							break;
 						}
 					} else {
-						final LinkedList<Object> stack = new LinkedList<>();
+						final var stack = new LinkedList<>();
 						stack.add(element);
-						final Class<ET> validElementType = getValidEObjectType();
+						final var validElementType = getValidEObjectType();
 						while (!stack.isEmpty()) {
-							final Object current = stack.removeFirst();
-							if (current instanceof IFile) {
-								final IFile file = (IFile) current;
+							final var current = stack.removeFirst();
+							if (current instanceof IFile file) {
 								if (isValidResource(file)) {
-									final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
-									final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+									final var resourceSet = this.resourceSetProvider.get(file.getProject());
+									final var resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 									if (resourceURI != null) {
 										try {
-											final Resource resource = resourceSet.getResource(resourceURI, true);
+											final var resource = resourceSet.getResource(resourceURI, true);
 											if (resource != null) {
-												final String projectName = file.getProject().getName();
-												for (final EObject content : resource.getContents()) {
+												final var projectName = file.getProject().getName();
+												for (final var content : resource.getContents()) {
 													if (content instanceof SarlScript) {
-														final List<ET> types = EcoreUtil2.getAllContentsOfType(content, validElementType);
-														for (final ET elt : types) {
+														final var types = EcoreUtil2.getAllContentsOfType(content, validElementType);
+														for (final var elt : types) {
 															if (isSelectableElement(elt)) {
 																descs.add(new ElementDescription(
 																		projectName,
@@ -223,8 +222,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 										}
 									}
 								}
-							} else if (current instanceof IFolder) {
-								final IFolder folder = (IFolder) current;
+							} else if (current instanceof IFolder folder) {
 								if (isValidResource(folder)) {
 									try {
 										stack.addAll(Arrays.asList(folder.members(0)));
@@ -232,27 +230,24 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 										// Ignore the failing resources
 									}
 								}
-							} else if (current instanceof IType) {
-								final IType type = (IType) current;
-								final String qn = type.getFullyQualifiedName();
-								final IJavaProject project = type.getJavaProject();
+							} else if (current instanceof IType type) {
+								final var qn = type.getFullyQualifiedName();
+								final var project = type.getJavaProject();
 								if (this.jdt.isSubClassOf(this.jdt.toTypeFinder(project), qn, Agent.class.getName())) {
 									descs.add(new ElementDescription(project.getElementName(), qn, type));
 								}
-							} else if (current instanceof IPackageFragment) {
-								final IPackageFragment fragment = (IPackageFragment) current;
+							} else if (current instanceof IPackageFragment fragment) {
 								stack.addAll(Arrays.asList(fragment.getNonJavaResources()));
-								for (final Object child : fragment.getChildren()) {
+								for (final var child : fragment.getChildren()) {
 									stack.add(child);
 								}
-							} else if (current instanceof IPackageFragmentRoot) {
-								final IPackageFragmentRoot fragment = (IPackageFragmentRoot) current;
+							} else if (current instanceof IPackageFragmentRoot fragment) {
 								stack.addAll(Arrays.asList(fragment.getNonJavaResources()));
-								for (final Object child : fragment.getChildren()) {
+								for (final var child : fragment.getChildren()) {
 									stack.add(child);
 								}
-							} else if (current instanceof IJavaProject) {
-								stack.addAll(Arrays.asList(((IJavaProject) current).getNonJavaResources()));
+							} else if (current instanceof IJavaProject cvalue) {
+								stack.addAll(Arrays.asList(cvalue.getNonJavaResources()));
 							}
 						}
 					}
@@ -274,7 +269,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 */
 	public ElementDescription searchAndSelect(boolean showEmptySelectionError, Object... scope) {
 		try {
-			final List<ElementDescription> elements = findElements(scope, PlatformUI.getWorkbench().getProgressService());
+			final var elements = findElements(scope, PlatformUI.getWorkbench().getProgressService());
 			ElementDescription element = null;
 			if (elements == null || elements.isEmpty()) {
 				if (showEmptySelectionError) {
@@ -323,14 +318,14 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * @return the selected element or {@code null} if none.
 	 */
 	private ElementDescription chooseElement(List<ElementDescription> elements) {
-		final ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(),
+		final var dialog = new ElementListSelectionDialog(getShell(),
 				new LabelProvider());
 		dialog.setElements(elements.toArray());
 		dialog.setTitle(MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_3, getElementLabel()));
 		dialog.setMessage(MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_3,
 				getElementLongLabel()));
 		dialog.setMultipleSelection(false);
-		final int result = dialog.open();
+		final var result = dialog.open();
 		if (result == Window.OK) {
 			return (ElementDescription) dialog.getFirstResult();
 		}
@@ -422,16 +417,16 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 
 		@Override
 		public Image getImage(Object element) {
-			if (element instanceof ElementDescription) {
-				return getElementImage(((ElementDescription) element).element);
+			if (element instanceof ElementDescription cvalue) {
+				return getElementImage(cvalue.element);
 			}
 			return AbstractSarlScriptInteractiveSelector.this.labelProvider.getImage(element);
 		}
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof ElementDescription) {
-				return ((ElementDescription) element).elementName;
+			if (element instanceof ElementDescription cvalue) {
+				return cvalue.elementName;
 			}
 			return AbstractSarlScriptInteractiveSelector.this.labelProvider.getText(element);
 		}

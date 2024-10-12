@@ -73,9 +73,9 @@ public class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
-		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
+		var descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
-			Optional<ImageDescriptor> odescriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath);
+			var odescriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath);
 			if (odescriptor.isPresent()) {
 				descriptor = odescriptor.get();
 				getImageRegistry().put(imagePath, descriptor);
@@ -90,7 +90,7 @@ public class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
-		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final var descriptor = getImageDescriptor(imagePath);
 		return descriptor != null ? descriptor.createImage() : null;
 	}
 

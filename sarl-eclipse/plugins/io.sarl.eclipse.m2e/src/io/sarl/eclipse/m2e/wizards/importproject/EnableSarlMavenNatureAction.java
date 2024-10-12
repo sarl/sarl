@@ -99,15 +99,15 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	@Override
 	public void run(IAction action) {
 		if (this.selection instanceof IStructuredSelection) {
-			final IStructuredSelection structuredSelection = (IStructuredSelection) this.selection;
-			final Iterator<?> it = structuredSelection.iterator();
+			final var structuredSelection = (IStructuredSelection) this.selection;
+			final var it = structuredSelection.iterator();
 			while (it.hasNext()) {
-				final Object element = it.next();
+				final var element = it.next();
 				IProject project = null;
-				if (element instanceof IProject) {
-					project = (IProject) element;
-				} else if (element instanceof IAdaptable) {
-					project = ((IAdaptable) element).getAdapter(IProject.class);
+				if (element instanceof IProject cvalue) {
+					project = cvalue;
+				} else if (element instanceof IAdaptable cvalue) {
+					project = cvalue.getAdapter(IProject.class);
 				}
 				if (project != null) {
 					enableNature(project);
@@ -121,7 +121,7 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	 * @param project the project.
 	 */
 	protected void enableNature(IProject project) {
-		final IFile pom = project.getFile(IMavenConstants.POM_FILE_NAME);
+		final var pom = project.getFile(IMavenConstants.POM_FILE_NAME);
 		final Job job;
 		if (pom.exists()) {
 			job = createJobForMavenProject(project);
@@ -144,13 +144,13 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final SubMonitor mon = SubMonitor.convert(monitor, 3);
+				final var mon = SubMonitor.convert(monitor, 3);
 				try {
 					// The project should be a Maven project.
-					final IPath descriptionFilename = project.getFile(new Path(IProjectDescription.DESCRIPTION_FILE_NAME)).getLocation();
-					final File projectDescriptionFile = descriptionFilename.toFile();
-					final IPath classpathFilename = project.getFile(new Path(FILENAME_CLASSPATH)).getLocation();
-					final File classpathFile = classpathFilename.toFile();
+					final var descriptionFilename = project.getFile(new Path(IProjectDescription.DESCRIPTION_FILE_NAME)).getLocation();
+					final var projectDescriptionFile = descriptionFilename.toFile();
+					final var classpathFilename = project.getFile(new Path(FILENAME_CLASSPATH)).getLocation();
+					final var classpathFile = classpathFilename.toFile();
 					// Project was open by the super class. Close it because Maven fails when a project already exists.
 					project.close(mon.newChild(1));
 					// Delete the Eclipse project and classpath definitions because Maven fails when a project already exists.
@@ -186,7 +186,7 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final SubMonitor mon = SubMonitor.convert(monitor, 3);
+				final var mon = SubMonitor.convert(monitor, 3);
 				// Force the project configuration to SARL.
 				SARLProjectConfigurator.configureSARLProject(
 						// Project to configure

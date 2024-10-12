@@ -76,9 +76,9 @@ public class DefaultIssueComparator implements Comparator<Issue> {
 		if (issue2 == null) {
 			return 1;
 		}
-		final org.eclipse.emf.common.util.URI u1 = issue1.getUriToProblem();
-		final org.eclipse.emf.common.util.URI u2 = issue2.getUriToProblem();
-		int cmp = 0;
+		final var u1 = issue1.getUriToProblem();
+		final var u2 = issue2.getUriToProblem();
+		var cmp = 0;
 		if (u1 != u2 && u1 != null && u2 != null) {
 			cmp = u1.toFileString().compareTo(u2.toFileString());
 		}

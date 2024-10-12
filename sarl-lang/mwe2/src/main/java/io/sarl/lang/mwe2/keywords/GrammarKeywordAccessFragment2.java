@@ -32,7 +32,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -43,11 +42,9 @@ import com.google.inject.Injector;
 import org.apache.log4j.Logger;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.EnumRule;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.Keyword;
-import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.JavaKeywords;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -57,7 +54,6 @@ import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.grammarAccess.GrammarAccessExtensions;
 import org.eclipse.xtext.xtext.generator.model.FileAccessFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /**
@@ -137,7 +133,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	@Override
 	public void generate() {
 		LOG.info("Generating the grammar keyword access for " + getLanguageName()); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var content = new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -164,12 +160,12 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.append(" grammarAccess;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				final Set<String> addedKeywords = new HashSet<>();
-				final Map<String, String> getters = new HashMap<>();
-				final LinkedList<Grammar> grammars = new LinkedList<>();
+				final var addedKeywords = new HashSet<String>();
+				final var getters = new HashMap<String, String>();
+				final var grammars = new LinkedList<Grammar>();
 				grammars.add(getGrammar());
 				while (!grammars.isEmpty()) {
-					final Grammar grammar = grammars.removeFirst();
+					final var grammar = grammars.removeFirst();
 					if (isValidGrammar(grammar)) {
 						it.append(generateMembers(grammar, addedKeywords, getters));
 						if (GrammarKeywordAccessFragment2.this.configuration.getDependencyGrammarInheritance()) {
@@ -185,7 +181,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = this.fileAccessFactory.createJavaFile(
+		final var javaFile = this.fileAccessFactory.createJavaFile(
 				getAccessorType(), content);
 		javaFile.writeTo(getProjectConfig().getRuntime().getSrcGen());
 	}
@@ -207,16 +203,16 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @return the content.
 	 */
 	protected StringConcatenationClient generateMembersFromConfig(Set<String> addedKeywords, Map<String, String> getters) {
-		final List<StringConcatenationClient> clients = new ArrayList<>();
-		for (final String keyword : this.configuration.getKeywords()) {
-			final String id = keyword.toLowerCase();
+		final var clients = new ArrayList<StringConcatenationClient>();
+		for (final var keyword : this.configuration.getKeywords()) {
+			final var id = keyword.toLowerCase();
 			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
 				clients.add(generateKeyword(keyword, getGrammar().getName(), getters));
 				addedKeywords.add(id);
 			}
 		}
-		for (final String keyword : this.configuration.getLiterals()) {
-			final String id = keyword.toLowerCase();
+		for (final var keyword : this.configuration.getLiterals()) {
+			final var id = keyword.toLowerCase();
 			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
 				clients.add(generateKeyword(keyword, getGrammar().getName(), getters));
 				addedKeywords.add(id);
@@ -225,7 +221,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				for (final StringConcatenationClient client : clients) {
+				for (final var client : clients) {
 					it.append(client);
 				}
 			}
@@ -241,9 +237,9 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 */
 	protected StringConcatenationClient generateMembers(Grammar grammar, Set<String> addedKeywords,
 			Map<String, String> getters) {
-		final List<StringConcatenationClient> clients = new ArrayList<>();
-		for (final Keyword grammarKeyword : getAllKeywords(grammar)) {
-			final String keyword = grammarKeyword.getValue().trim();
+		final var clients = new ArrayList<StringConcatenationClient>();
+		for (final var grammarKeyword : getAllKeywords(grammar)) {
+			final var keyword = grammarKeyword.getValue().trim();
 			if (!keyword.isEmpty()) {
 				if (!addedKeywords.contains(keyword) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
 					clients.add(generateKeyword(grammarKeyword, grammar.getName(), getters));
@@ -254,7 +250,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				for (final StringConcatenationClient client : clients) {
+				for (final var client : clients) {
 					it.append(client);
 				}
 			}
@@ -267,18 +263,18 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @return the keywords.
 	 */
 	protected static Iterable<Keyword> getAllKeywords(Grammar grammar) {
-		final Map<String, Keyword> keywords = new HashMap<>();
-		final List<ParserRule> rules = GrammarUtil.allParserRules(grammar);
-		for (final ParserRule parserRule : rules) {
-			final List<Keyword> list = typeSelect(eAllContentsAsList(parserRule), Keyword.class);
-			for (final Keyword keyword : list) {
+		final var keywords = new HashMap<String, Keyword>();
+		final var rules = GrammarUtil.allParserRules(grammar);
+		for (final var parserRule : rules) {
+			final var list = typeSelect(eAllContentsAsList(parserRule), Keyword.class);
+			for (final var keyword : list) {
 				keywords.put(keyword.getValue(), keyword);
 			}
 		}
-		final List<EnumRule> enumRules = GrammarUtil.allEnumRules(grammar);
-		for (final EnumRule enumRule : enumRules) {
-			final List<Keyword> list = typeSelect(eAllContentsAsList(enumRule), Keyword.class);
-			for (final Keyword keyword : list) {
+		final var enumRules = GrammarUtil.allEnumRules(grammar);
+		for (final var enumRule : enumRules) {
+			final var list = typeSelect(eAllContentsAsList(enumRule), Keyword.class);
+			for (final var keyword : list) {
 				keywords.put(keyword.getValue(), keyword);
 			}
 		}
@@ -293,8 +289,8 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @return the content.
 	 */
 	protected StringConcatenationClient generateKeyword(final String keyword, final String comment, Map<String, String> getters) {
-		final String fieldName = keyword.toUpperCase().replaceAll("[^a-zA-Z0-9_]+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-		final String methodName = Strings.toFirstUpper(keyword.replaceAll("[^a-zA-Z0-9_]+", "_")) //$NON-NLS-1$ //$NON-NLS-2$
+		final var fieldName = keyword.toUpperCase().replaceAll("[^a-zA-Z0-9_]+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		final var methodName = Strings.toFirstUpper(keyword.replaceAll("[^a-zA-Z0-9_]+", "_")) //$NON-NLS-1$ //$NON-NLS-2$
 				+ "Keyword"; //$NON-NLS-1$
 		if (getters != null) {
 			getters.put(methodName, keyword);
@@ -345,8 +341,8 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	protected StringConcatenationClient generateKeyword(final Keyword keyword, final String comment,
 			Map<String, String> getters) {
 		try {
-			final String methodName = getIdentifier(keyword);
-			final String accessor = GrammarKeywordAccessFragment2.this.grammarAccessExtensions.gaAccessor(keyword);
+			final var methodName = getIdentifier(keyword);
+			final var accessor = GrammarKeywordAccessFragment2.this.grammarAccessExtensions.gaAccessor(keyword);
 			if (!Strings.isEmpty(methodName) && !Strings.isEmpty(accessor)) {
 				if (getters != null) {
 					getters.put(methodName, keyword.getValue());
@@ -422,10 +418,10 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @return the used grammars.
 	 */
 	protected static List<Grammar> getEffectivelyUsedGrammars(final Grammar grammar) {
-		final List<AbstractRule> allRules = GrammarUtil.allRules(grammar);
-		final List<Grammar> map = ListExtensions.<AbstractRule, Grammar>map(allRules, it -> GrammarUtil.getGrammar(it));
-		final Iterable<Grammar> filter = IterableExtensions.<Grammar>filter(map, it -> Boolean.valueOf(it != grammar));
-		final Set<Grammar> set = IterableExtensions.<Grammar>toSet(filter);
+		final var allRules = GrammarUtil.allRules(grammar);
+		final var map = ListExtensions.<AbstractRule, Grammar>map(allRules, it -> GrammarUtil.getGrammar(it));
+		final var filter = IterableExtensions.<Grammar>filter(map, it -> Boolean.valueOf(it != grammar));
+		final var set = IterableExtensions.<Grammar>toSet(filter);
 		return IterableExtensions.<Grammar>toList(set);
 	}
 
@@ -468,8 +464,8 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.append(TreeSet.class);
 				it.append("<>();"); //$NON-NLS-1$
 				it.newLine();
-				final Pattern pattern = Pattern.compile("^[a-zA-Z_$]+$"); //$NON-NLS-1$
-				for (final Entry<String, String> getter : getters.entrySet()) {
+				final var pattern = Pattern.compile("^[a-zA-Z_$]+$"); //$NON-NLS-1$
+				for (final var getter : getters.entrySet()) {
 					if (pattern.matcher(getter.getValue()).matches()) {
 						it.append("\t\t\tkws.add(get"); //$NON-NLS-1$
 						it.append(getter.getKey());
@@ -538,7 +534,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.append(HashSet.class);
 				it.append("<>();"); //$NON-NLS-1$
 				it.newLine();
-				for (final Entry<String, String> getter : getters.entrySet()) {
+				for (final var getter : getters.entrySet()) {
 					if (pattern.matcher(getter.getValue()).matches()
 							&& !GrammarKeywordAccessFragment2.this.javaKeywords.isJavaKeyword(getter.getValue())) {
 						it.append("\t\t\tkws.add(get"); //$NON-NLS-1$

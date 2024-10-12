@@ -77,7 +77,7 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 		}
 
 		private void readStream(BufferedReader reader) throws Exception {
-			String line = reader.readLine();
+			var line = reader.readLine();
 			while (line != null) {
 				StringBuilder out;
 				PrintStream console;
@@ -130,7 +130,7 @@ public abstract class AbstractForkMavenMojoTest extends AbstractMojoTest  {
 		@Override
 		public void assertErrorLog(String expectedErrorMessage) throws Exception {
 			assertNotEquals(0, this.process.exitValue(), "Maven exit code is " + this.process.exitValue()); //$NON-NLS-1$
-			final String log = this.errorOutput.toString().trim();
+			final var log = this.errorOutput.toString().trim();
 			assertTrue(log.contains(expectedErrorMessage), "Error log does not contains: " + expectedErrorMessage); //$NON-NLS-1$
 		}
 

@@ -78,8 +78,8 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final IFile file = provider.getProjectUtil().findFileStorage(issue.getUriToProblem(), false);
-		final ResourceSet resourceSet = provider.getResourceSetProvider().get(file.getProject());
+		final var file = provider.getProjectUtil().findFileStorage(issue.getUriToProblem(), false);
+		final var resourceSet = provider.getResourceSetProvider().get(file.getProject());
 		final EObject failingObject;
 		try {
 			failingObject = resourceSet.getEObject(issue.getUriToProblem(), true);
@@ -87,16 +87,16 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 			// Something is going really wrong. Must of the time the cause is a major syntax error.
 			return;
 		}
-		XtendAnnotationTarget eObject = EcoreUtil2.getContainerOfType(failingObject, XtendAnnotationTarget.class);
-		boolean first = true;
-		int relevance = IProposalRelevance.ADD_SUPPRESSWARNINGS;
+		var eObject = EcoreUtil2.getContainerOfType(failingObject, XtendAnnotationTarget.class);
+		var first = true;
+		var relevance = IProposalRelevance.ADD_SUPPRESSWARNINGS;
 		while (eObject != null) {
-			final URI uri = EcoreUtil2.getNormalizedURI(eObject);
-			final SuppressWarningsAddModification modification = new SuppressWarningsAddModification(uri, issue.getCode());
+			final var uri = EcoreUtil2.getNormalizedURI(eObject);
+			final var modification = new SuppressWarningsAddModification(uri, issue.getCode());
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			final String elementName;
-			final QualifiedName name = provider.getQualifiedNameProvider().getFullyQualifiedName(eObject);
+			final var name = provider.getQualifiedNameProvider().getFullyQualifiedName(eObject);
 			if (name != null) {
 				elementName = name.getLastSegment();
 			} else if (first) {
@@ -126,11 +126,10 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 		} else {
 			currentElement = element.eResource().getResourceSet().getEObject(this.uri, true);
 		}
-		if (currentElement instanceof XtendAnnotationTarget) {
-			final JvmType swtype = getTools().getTypeServices().getTypeReferences().findDeclaredType(
+		if (currentElement instanceof XtendAnnotationTarget annotationTarget) {
+			final var swtype = getTools().getTypeServices().getTypeReferences().findDeclaredType(
 					SuppressWarnings.class, element);
-			final XtendAnnotationTarget annotationTarget = (XtendAnnotationTarget) currentElement;
-			final XAnnotation annotation = findAnnotation(annotationTarget, swtype);
+			final var annotation = findAnnotation(annotationTarget, swtype);
 			if (annotation == null) {
 				addAnnotation(currentElement, context, swtype);
 			} else {
@@ -140,7 +139,7 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	}
 
 	private static XAnnotation findAnnotation(XtendAnnotationTarget target, JvmType suppressWarningsAnnotation) {
-		for (final XAnnotation annotation : target.getAnnotations()) {
+		for (final var annotation : target.getAnnotations()) {
 			if (Objects.equals(annotation.getAnnotationType().getQualifiedName(),
 					suppressWarningsAnnotation.getIdentifier())) {
 				return annotation;
@@ -158,12 +157,12 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	 */
 	protected void addAnnotation(EObject element, IModificationContext context,
 			JvmType suppressWarningsAnnotation) throws Exception {
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(element);
+		final var node = NodeModelUtils.findActualNodeFor(element);
 		if (node != null) {
-			final int insertOffset = node.getOffset();
-			final IXtextDocument document = context.getXtextDocument();
-			final int length = getTools().getSpaceSize(document, insertOffset);
-			final ReplacingAppendable appendable = getTools().getAppendableFactory().create(document,
+			final var insertOffset = node.getOffset();
+			final var document = context.getXtextDocument();
+			final var length = getTools().getSpaceSize(document, insertOffset);
+			final var appendable = getTools().getAppendableFactory().create(document,
 					(XtextResource) element.eResource(), insertOffset, length);
 			appendable.append(getTools().getGrammarAccess().getCommercialAtKeyword());
 			appendable.append(suppressWarningsAnnotation);
@@ -184,11 +183,11 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	 */
 	protected void addAnnotation(EObject element, XAnnotation annotation,
 			IModificationContext context) throws Exception {
-		final ICompositeNode node = NodeModelUtils.findActualNodeFor(annotation);
+		final var node = NodeModelUtils.findActualNodeFor(annotation);
 		if (node != null) {
-			final IXtextDocument document = context.getXtextDocument();
-			final int startOffset = node.getOffset();
-			final int parameterOffset = getTools().getOffsetForPattern(document, startOffset,
+			final var document = context.getXtextDocument();
+			final var startOffset = node.getOffset();
+			final var parameterOffset = getTools().getOffsetForPattern(document, startOffset,
 					"@\\s*" + toPattern(annotation.getAnnotationType().getQualifiedName()) //$NON-NLS-1$
 					+ "\\s*\\(\\s*"); //$NON-NLS-1$
 			final int insertOffset;
@@ -197,7 +196,7 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 			} else {
 				insertOffset = parameterOffset;
 			}
-			final ReplacingAppendable appendable = getTools().getAppendableFactory().create(document,
+			final var appendable = getTools().getAppendableFactory().create(document,
 					(XtextResource) element.eResource(), insertOffset, 0);
 			appendable.append("\""); //$NON-NLS-1$
 			appendable.append(extractId(this.code));
@@ -207,10 +206,10 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	}
 
 	private static String toPattern(String qualifiedName) {
-		final StringBuilder buffer = new StringBuilder();
-		final String[] parts = qualifiedName.split(Pattern.quote(".")); //$NON-NLS-1$
-		final int len = parts.length - 1;
-		for (int i = 0; i < len; ++i) {
+		final var buffer = new StringBuilder();
+		final var parts = qualifiedName.split(Pattern.quote(".")); //$NON-NLS-1$
+		final var len = parts.length - 1;
+		for (var i = 0; i < len; ++i) {
 			buffer.append(Pattern.quote(parts[i]));
 			buffer.append(Pattern.quote(".")); //$NON-NLS-1$
 			buffer.append(")?"); //$NON-NLS-1$
@@ -223,7 +222,7 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	}
 
 	private static String extractId(String code) {
-		final int index = code.lastIndexOf('.');
+		final var index = code.lastIndexOf('.');
 		if (index >= 0) {
 			return code.substring(index + 1);
 		}

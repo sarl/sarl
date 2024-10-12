@@ -21,9 +21,6 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -32,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -47,7 +43,6 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
@@ -105,8 +100,8 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Generate the expression builder interface.
 	 */
 	protected void generateIBlockExpressionBuilder() {
-		final TypeReference builder = getBlockExpressionBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getBlockExpressionBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -127,16 +122,16 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the expression builder implementation.
 	 */
 	protected void generateBlockExpressionBuilderImpl() {
-		final TypeReference builderInterface = getBlockExpressionBuilderInterface();
-		final TypeReference builder = getBlockExpressionBuilderImpl();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getBlockExpressionBuilderInterface();
+		final var builder = getBlockExpressionBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -161,16 +156,16 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the expression appender.
 	 */
 	protected void generateBlockExpressionAppender() {
-		final TypeReference builderInterface = getBlockExpressionBuilderInterface();
-		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("BlockExpression"); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getBlockExpressionBuilderInterface();
+		final var appender = getCodeElementExtractor().getElementAppenderImpl("BlockExpression"); //$NON-NLS-1$
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
@@ -197,7 +192,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -208,7 +203,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the code.
 	 */
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		final TypeReference adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
+		final var adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -673,8 +668,8 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
-		final BlockExpressionContextDescription blockContext = getBlockExpressionContextDescription();
-		final String createFunctionName = "createXBlockExpression"; //$NON-NLS-1$
+		final var blockContext = getBlockExpressionContextDescription();
+		final var createFunctionName = "createXBlockExpression"; //$NON-NLS-1$
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -755,8 +750,8 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			}
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
-			final String buildFunctionName = "buildXBlockExpression"; //$NON-NLS-1$
-			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("BlockExpression"); //$NON-NLS-1$
+			final var buildFunctionName = "buildXBlockExpression"; //$NON-NLS-1$
+			final var appender = getCodeElementExtractor().getElementAppenderImpl("BlockExpression"); //$NON-NLS-1$
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
@@ -833,7 +828,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureContainerKeyword(EObject grammarContainer) {
-		final Iterator<Keyword> iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
+		final var iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
 		if (iterator.hasNext()) {
 			return iterator.next().getValue();
 		}
@@ -846,7 +841,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureMemberDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
-		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
+		final var modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.name());
 		if (modifiers != null && !modifiers.isEmpty()) {
 			return modifiers.get(0);
 		}
@@ -858,22 +853,22 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the description.
 	 */
 	protected BlockExpressionContextDescription getBlockExpressionContextDescription() {
-		for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
+		for (final var containerDescription : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
 			if (!getCodeBuilderConfig().getNoActionBodyTypes().contains(containerDescription.name())) {
-				final AbstractRule rule = getMemberRule(containerDescription);
+				final var rule = getMemberRule(containerDescription);
 				if (rule != null) {
-					final BlockExpressionContextDescription description =
+					final var description =
 							getCodeElementExtractor().visitMemberElements(containerDescription, rule, null,
 								(it, grammarContainer, memberContainer, classifier) -> {
-									final Assignment expressionAssignment = findAssignmentFromTerminalPattern(
+									final var expressionAssignment = findAssignmentFromTerminalPattern(
 											memberContainer,
 											getExpressionConfig().getBlockExpressionGrammarPattern());
-									final CodeElementExtractor.ElementDescription memberDescription =
+									final var memberDescription =
 											it.newElementDescription(
 													classifier.getName(), memberContainer,
 													classifier, XExpression.class);
-									final String keyword = ensureMemberDeclarationKeyword(memberDescription);
+									final var keyword = ensureMemberDeclarationKeyword(memberDescription);
 									if (expressionAssignment != null && keyword != null) {
 										return new BlockExpressionContextDescription(
 												containerDescription,

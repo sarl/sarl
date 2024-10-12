@@ -60,7 +60,7 @@ public class SarlProcessorInstanceForJvmTypeProvider extends ProcessorInstanceFo
 	 */
 	public static JvmType filterActiveProcessorType(JvmType type, CommonTypeComputationServices services) {
 		if (AccessorsProcessor.class.getName().equals(type.getQualifiedName())) {
-			final JvmType filteredType = services.getTypeReferences().findDeclaredType(SarlAccessorsProcessor.class, type);
+			final var filteredType = services.getTypeReferences().findDeclaredType(SarlAccessorsProcessor.class, type);
 			if (filteredType != null) {
 				return filteredType;
 			}

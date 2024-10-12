@@ -247,21 +247,20 @@ public abstract class AbstractDoclet implements Doclet {
 	@Override
 	public final boolean run(DocletEnvironment environment) {
 		try {
-			if (environment instanceof SarlDocletEnvironment) {
-				final SarlDocletEnvironment sarlEnvironment = (SarlDocletEnvironment) environment;
+			if (environment instanceof SarlDocletEnvironment sarlEnvironment) {
 				getElementUtils().setElements(sarlEnvironment.getElementUtils());
 				getElementUtils().setTypes(sarlEnvironment.getTypeUtils());
 				getTagletManager().init(sarlEnvironment, this);
 				return generate(sarlEnvironment);
 			}
 		} catch (Exception ex) {
-			final Reporter rep = getReporter();
+			final var rep = getReporter();
 			if (rep == null) {
 				throw new RuntimeException(ex);
 			}
-			final StringWriter writer = new StringWriter();
-			try (final PrintWriter printWriter = new PrintWriter(writer)) {
-				String msg = ex.getLocalizedMessage();
+			final var writer = new StringWriter();
+			try (final var printWriter = new PrintWriter(writer)) {
+				var msg = ex.getLocalizedMessage();
 				if (Strings.isNullOrEmpty(msg)) {
 					msg = ex.getMessage();
 				}

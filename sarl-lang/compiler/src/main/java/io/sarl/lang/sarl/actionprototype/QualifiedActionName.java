@@ -101,7 +101,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		}
 
 		if (this.getClass() == obj.getClass()) {
-			final QualifiedActionName k = (QualifiedActionName) obj;
+			final var k = (QualifiedActionName) obj;
 			return Objects.equal(this.resourceID, k.resourceID)
 					&& Objects.equal(
 							this.declaringType.get().getQualifiedName(),
@@ -113,7 +113,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
+		var hash = 1;
 		hash = 31 * hash + this.resourceID.hashCode();
 		hash = 31 * hash + this.declaringType.hashCode();
 		hash = 31 * hash + this.functionName.hashCode();
@@ -138,7 +138,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		if (otherName == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = this.resourceID.compareTo(otherName.resourceID);
+		var cmp = this.resourceID.compareTo(otherName.resourceID);
 		if (cmp != 0) {
 			return cmp;
 		}

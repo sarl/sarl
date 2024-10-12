@@ -27,10 +27,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.TypeVariable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -139,9 +137,9 @@ public class SarlDocumentationParser {
 	@Inject
 	public void setOutputLanguage(@Named(Constants.LANGUAGE_NAME) String outputLanguage) {
 		if (!Strings.isNullOrEmpty(outputLanguage)) {
-			final String[] parts = outputLanguage.split("\\.+"); //$NON-NLS-1$
+			final var parts = outputLanguage.split("\\.+"); //$NON-NLS-1$
 			if (parts.length > 0) {
-				final String simpleName = parts[parts.length - 1];
+				final var simpleName = parts[parts.length - 1];
 				if (!Strings.isNullOrEmpty(simpleName)) {
 					this.languageName = simpleName;
 					return;
@@ -305,7 +303,7 @@ public class SarlDocumentationParser {
 	 * @return the regular expression pattern.
 	 */
 	public String getPattern(Tag tag) {
-		final String pattern = this.rawPatterns.get(tag);
+		final var pattern = this.rawPatterns.get(tag);
 		if (pattern == null) {
 			return tag.getDefaultPattern();
 		}
@@ -318,13 +316,13 @@ public class SarlDocumentationParser {
 	 * @return the tag or {@code null}.
 	 */
 	public Tag getTagForPattern(CharSequence text) {
-		for (final Tag tag : Tag.values()) {
-			Pattern pattern = this.compiledPatterns.get(tag);
+		for (final var tag : Tag.values()) {
+			var pattern = this.compiledPatterns.get(tag);
 			if (pattern == null) {
 				pattern = Pattern.compile("^\\s*" + getPattern(tag), Pattern.DOTALL); //$NON-NLS-1$
 				this.compiledPatterns.put(tag, pattern);
 			}
-			final Matcher matcher = pattern.matcher(text);
+			final var matcher = pattern.matcher(text);
 			if (matcher.find()) {
 				return tag;
 			}
@@ -562,7 +560,7 @@ public class SarlDocumentationParser {
 	 */
 	public String getLineSeparator() {
 		if (Strings.isNullOrEmpty(this.lineSeparator)) {
-			final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
+			final var nl = System.getProperty("line.separator"); //$NON-NLS-1$
 			if (Strings.isNullOrEmpty(nl)) {
 				return "\n"; //$NON-NLS-1$
 			}
@@ -580,9 +578,9 @@ public class SarlDocumentationParser {
 	}
 
 	private String buildGeneralTagPattern() {
-		final StringBuilder pattern = new StringBuilder();
-		int nbTags = 0;
-		for (final Tag tag : Tag.values()) {
+		final var pattern = new StringBuilder();
+		var nbTags = 0;
+		for (final var tag : Tag.values()) {
 			if (nbTags >= 1) {
 				pattern.append("|"); //$NON-NLS-1$
 			}
@@ -623,8 +621,8 @@ public class SarlDocumentationParser {
 	 */
 	protected void extractDynamicName(Tag tag, CharSequence name, OutParameter<String> dynamicName) {
 		if (tag.hasDynamicName()) {
-			final Pattern pattern = Pattern.compile(getDynamicNameExtractionPattern());
-			final Matcher matcher = pattern.matcher(name);
+			final var pattern = Pattern.compile(getDynamicNameExtractionPattern());
+			final var matcher = pattern.matcher(name);
 			if (matcher.matches()) {
 				dynamicName.set(Strings.nullToEmpty(matcher.group(1)));
 				return;
@@ -634,9 +632,9 @@ public class SarlDocumentationParser {
 	}
 
 	private static int findFirstGroup(Matcher matcher, int startIdx) {
-		final int len = matcher.groupCount();
-		for (int i = startIdx + 1; i <= len; ++i) {
-			final String value = matcher.group(i);
+		final var len = matcher.groupCount();
+		for (var i = startIdx + 1; i <= len; ++i) {
+			final var value = matcher.group(i);
 			if (value != null) {
 				return i;
 			}
@@ -684,16 +682,16 @@ public class SarlDocumentationParser {
 	 * @return the raw file context.
 	 */
 	public String transform(CharSequence content, File inputFile) {
-		final ParsingContext rootContextForReplacements = new ParsingContext();
+		final var rootContextForReplacements = new ParsingContext();
 		initializeContext(rootContextForReplacements);
-		CharSequence rawContent = preProcessing(content);
+		var rawContent = preProcessing(content);
 		Stage stage = Stage.first();
 		do {
-			final ContentParserInterceptor interceptor = new ContentParserInterceptor();
+			final var interceptor = new ContentParserInterceptor();
 			// Reset the lineno and offset because they are not reset between the different stages.
 			rootContextForReplacements.setLineNo(1);
 			rootContextForReplacements.setOffset(0);
-			final boolean hasChanged = parse(rawContent, inputFile, 0, stage, rootContextForReplacements, interceptor);
+			final var hasChanged = parse(rawContent, inputFile, 0, stage, rootContextForReplacements, interceptor);
 			if (hasChanged) {
 				rawContent = interceptor.getResult();
 			}
@@ -718,12 +716,12 @@ public class SarlDocumentationParser {
 	 * @return the post-processed text.
 	 */
 	protected String postProcessing(CharSequence text) {
-		final String lineContinuation = getLineContinuation();
+		final var lineContinuation = getLineContinuation();
 		if (lineContinuation != null) {
-			final Pattern pattern = Pattern.compile(
+			final var pattern = Pattern.compile(
 					"\\s*\\\\[\\n\\r]+\\s*", //$NON-NLS-1$
 					Pattern.DOTALL);
-			final Matcher matcher = pattern.matcher(text.toString().trim());
+			final var matcher = pattern.matcher(text.toString().trim());
 			return matcher.replaceAll(lineContinuation);
 		}
 		return text.toString().trim();
@@ -738,8 +736,8 @@ public class SarlDocumentationParser {
 	public void extractValidationComponents(File inputFile,
 			Procedure1<Map<Tag, List<ValidationComponentData>>> observer) {
 		final String content;
-		final AtomicInteger nblines = new AtomicInteger();
-		try (FileReader reader = new FileReader(inputFile)) {
+		final var nblines = new AtomicInteger();
+		try (var reader = new FileReader(inputFile)) {
 			content = read(reader, nblines);
 		} catch (IOException exception) {
 			reportError(Messages.SarlDocumentationParser_0, exception);
@@ -758,7 +756,7 @@ public class SarlDocumentationParser {
 	public void extractValidationComponents(Reader reader, File inputFile,
 			Procedure1<Map<Tag, List<ValidationComponentData>>> observer) {
 		final String content;
-		final AtomicInteger nblines = new AtomicInteger();
+		final var nblines = new AtomicInteger();
 		try {
 			content = read(reader, nblines);
 		} catch (IOException exception) {
@@ -780,18 +778,18 @@ public class SarlDocumentationParser {
 		//
 		// STEP 1: Extract the raw text
 		//
-		final Map<Tag, List<ValidationComponentData>> components = new TreeMap<>();
-		final ContentParserInterceptor interceptor = new ContentParserInterceptor(new ParserInterceptor() {
+		final var components = new TreeMap<Tag, List<ValidationComponentData>>();
+		final var interceptor = new ContentParserInterceptor(new ParserInterceptor() {
 			@Override
 			public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter,
 					String blockValue) {
 				if (tag.isOpeningTag() || tag.hasParameter()) {
-					List<ValidationComponentData> values = components.get(tag);
+					var values = components.get(tag);
 					if (values == null) {
 						values = new ArrayList<>();
 						components.put(tag, values);
 					}
-					final ValidationComponentData data = new ValidationComponentData();
+					final var data = new ValidationComponentData();
 					data.file = context.getCurrentFile();
 					data.lineno = context.getLineNo();
 					data.endLineno = context.getEndLineNo();
@@ -806,18 +804,18 @@ public class SarlDocumentationParser {
 				}
 			}
 		});
-		final ParsingContext rootContextForReplacements = new ParsingContext(true, true);
+		final var rootContextForReplacements = new ParsingContext(true, true);
 		initializeContext(rootContextForReplacements);
 		parse(content, inputFile, 0, Stage.FIRST, rootContextForReplacements, interceptor);
 		//
 		// STEP 2: Do macro replacement in the captured elements.
 		//
-		final Collection<List<ValidationComponentData>> allTexts = new ArrayList<>(components.values());
-		for (final List<ValidationComponentData> values : allTexts) {
-			for (final ValidationComponentData data : values) {
-				final ContentParserInterceptor localInterceptor = new ContentParserInterceptor(interceptor);
+		final var allTexts = new ArrayList<>(components.values());
+		for (final var values : allTexts) {
+			for (final var data : values) {
+				final var localInterceptor = new ContentParserInterceptor(interceptor);
 				parse(data.code, inputFile, 0, Stage.SECOND, rootContextForReplacements, localInterceptor);
-				final String newCapturedText = localInterceptor.getResult();
+				final var newCapturedText = localInterceptor.getResult();
 				data.code = newCapturedText;
 			}
 		}
@@ -847,7 +845,7 @@ public class SarlDocumentationParser {
 	 */
 	protected boolean parse(CharSequence source, File file, int startIndex, Stage stage,
 			ParsingContext parentContext, ParserInterceptor interceptor) {
-		final ParsingContext context = this.injector.getInstance(ParsingContext.class);
+		final var context = this.injector.getInstance(ParsingContext.class);
 		context.setParser(this);
 		context.setText(source);
 		context.setCurrentFile(file);
@@ -859,10 +857,10 @@ public class SarlDocumentationParser {
 		context.setLineSeparator(getLineSeparator());
 		context.setOutputLanguage(getOutputLanguage());
 		context.setStage(stage);
-		final String regex = buildGeneralTagPattern();
+		final var regex = buildGeneralTagPattern();
 		if (!Strings.isNullOrEmpty(regex)) {
-			final Pattern patterns = Pattern.compile(regex, PATTERN_COMPILE_OPTIONS);
-			final Matcher matcher = patterns.matcher(source);
+			final var patterns = Pattern.compile(regex, PATTERN_COMPILE_OPTIONS);
+			final var matcher = patterns.matcher(source);
 			context.setMatcher(matcher);
 			if (parentContext != null) {
 				context.linkTo(parentContext);
@@ -881,32 +879,32 @@ public class SarlDocumentationParser {
 	protected boolean parse(ParsingContext context) {
 		try {
 			context.getParserInterceptor().openContext(context);
-			boolean specialTagFound = false;
-			final String lineSeparator = getLineSeparator();
+			var specialTagFound = false;
+			final var lineSeparator = getLineSeparator();
 			while (context.getMatcher().find()) {
-				int groupIndex = findFirstGroup(context.getMatcher(), 0);
-				final String tagName = context.getMatcher().group(groupIndex);
+				var groupIndex = findFirstGroup(context.getMatcher(), 0);
+				final var tagName = context.getMatcher().group(groupIndex);
 				if (lineSeparator.equals(tagName)) {
 					context.incrementLineNo();
 					context.incrementOffset(lineSeparator.length());
 					continue;
 				}
 
-				final int regionOffset = context.getMatcher().start();
-				final int regionLength = context.getMatcher().end() - regionOffset;
+				final var regionOffset = context.getMatcher().start();
+				final var regionLength = context.getMatcher().end() - regionOffset;
 				context.setOffset(regionOffset);
 				context.setLength(regionLength);
-				final int startLine = context.getLineNo();
-				final int nbLines = countLines(context.getMatcher().group());
-				final int endLine = startLine + nbLines - 1;
+				final var startLine = context.getLineNo();
+				final var nbLines = countLines(context.getMatcher().group());
+				final var endLine = startLine + nbLines - 1;
 				context.setEndLineNo(endLine);
 
-				final Tag tag = getTagForPattern(tagName);
+				final var tag = getTagForPattern(tagName);
 				if (tag != null) {
 					if (tag.isActive(context)) {
 						final String tagDynamicName;
 						if (tag.hasDynamicName()) {
-							final OutParameter<String> dname = new OutParameter<>();
+							final var dname = new OutParameter<String>();
 							extractDynamicName(tag, tagName, dname);
 							tagDynamicName = dname.get();
 						} else {
@@ -915,10 +913,10 @@ public class SarlDocumentationParser {
 						final String parameterValue;
 						if (tag.hasParameter()) {
 							groupIndex = findFirstGroup(context.getMatcher(), groupIndex);
-							final String parameter = Strings.nullToEmpty(context.getMatcher().group(groupIndex));
-							final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
-							final boolean inBlock = context.setInBlock(false);
-							final boolean inParam = context.setInParameter(true);
+							final var parameter = Strings.nullToEmpty(context.getMatcher().group(groupIndex));
+							final var subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+							final var inBlock = context.setInBlock(false);
+							final var inParam = context.setInParameter(true);
 							parse(parameter, context.getCurrentFile(),
 									context.getMatcher().start(groupIndex) + context.getStartIndex(),
 									context.getStage(),
@@ -933,10 +931,10 @@ public class SarlDocumentationParser {
 						final String blockContent;
 						if (tag.isOpeningTag()) {
 							groupIndex = findFirstGroup(context.getMatcher(), groupIndex);
-							final String tagContent = context.getMatcher().group(groupIndex);
-							final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
-							final boolean inBlock = context.setInBlock(true);
-							final boolean inParam = context.setInParameter(false);
+							final var tagContent = context.getMatcher().group(groupIndex);
+							final var subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+							final var inBlock = context.setInBlock(true);
+							final var inParam = context.setInParameter(false);
 							context.setVisibleInBlock(false);
 							parse(Strings.nullToEmpty(tagContent), context.getCurrentFile(),
 									context.getMatcher().start(groupIndex) + context.getStartIndex(),
@@ -972,7 +970,7 @@ public class SarlDocumentationParser {
 		} catch (ParsingException exception) {
 			throw exception;
 		} catch (Throwable exception) {
-			final Throwable rootException = Throwables.getRootCause(exception);
+			final var rootException = Throwables.getRootCause(exception);
 			throw new ParsingException(
 					rootException.getClass().getName() + " - " + rootException.getLocalizedMessage(), //$NON-NLS-1$
 					context.getCurrentFile(),
@@ -982,7 +980,7 @@ public class SarlDocumentationParser {
 	}
 
 	private int countLines(String text) {
-		final String[] lines = text.split(Pattern.quote(getLineSeparator()));
+		final var lines = text.split(Pattern.quote(getLineSeparator()));
 		return lines.length;
 	}
 
@@ -994,22 +992,22 @@ public class SarlDocumentationParser {
 	 * @param parameter additional parameter, starting at {4}.
 	 */
 	protected static void reportError(ParsingContext context, String message, Object... parameter) {
-		final File file = context.getCurrentFile();
-		final int offset = context.getMatcher().start() + context.getStartIndex();
-		final int lineno = context.getLineNo();
+		final var file = context.getCurrentFile();
+		final var offset = context.getMatcher().start() + context.getStartIndex();
+		final var lineno = context.getLineNo();
 		Throwable cause = null;
-		for (final Object param : parameter) {
-			if (param instanceof Throwable) {
-				cause = (Throwable) param;
+		for (final var param : parameter) {
+			if (param instanceof Throwable cvalue) {
+				cause = cvalue;
 				break;
 			}
 		}
-		final Object[] args = new Object[parameter.length + 3];
+		final var args = new Object[parameter.length + 3];
 		args[0] = file;
 		args[1] = Integer.valueOf(lineno);
 		args[2] = Integer.valueOf(offset);
 		System.arraycopy(parameter, 0, args, 3, parameter.length);
-		final String msg = MessageFormat.format(message, args);
+		final var msg = MessageFormat.format(message, args);
 		if (cause != null) {
 			throw new ParsingException(msg, file, lineno, Throwables.getRootCause(cause));
 		}
@@ -1023,12 +1021,12 @@ public class SarlDocumentationParser {
 	 */
 	protected static void reportError(String message, Object... parameters) {
 		Throwable cause = null;
-		for (int i = 0; cause == null && i < parameters.length; ++i) {
-			if (parameters[i] instanceof Throwable) {
-				cause = (Throwable) parameters[i];
+		for (var i = 0; cause == null && i < parameters.length; ++i) {
+			if (parameters[i] instanceof Throwable cvalue) {
+				cause = cvalue;
 			}
 		}
-		final String msg = MessageFormat.format(message, parameters);
+		final var msg = MessageFormat.format(message, parameters);
 		if (cause != null) {
 			throw new ParsingException(msg, null, 1, Throwables.getRootCause(cause));
 		}
@@ -1043,11 +1041,11 @@ public class SarlDocumentationParser {
 	 * @throws IOException if the content cannot be read.
 	 */
 	protected static String read(ParsingContext context, File file) throws IOException {
-		File filename = file;
+		var filename = file;
 		if (context != null && !filename.isAbsolute()) {
 			filename = FileSystem.makeAbsolute(filename, context.getCurrentDirectory());
 		}
-		try (FileReader reader = new FileReader(filename)) {
+		try (var reader = new FileReader(filename)) {
 			return read(reader, null);
 		}
 	}
@@ -1063,9 +1061,9 @@ public class SarlDocumentationParser {
 		if (nblines != null) {
 			nblines.set(0);
 		}
-		final StringBuilder content = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(file)) {
-			String line = reader.readLine();
+		final var content = new StringBuilder();
+		try (var reader = new BufferedReader(file)) {
+			var line = reader.readLine();
 			boolean first = true;
 			while (line != null) {
 				if (nblines != null) {
@@ -1091,15 +1089,15 @@ public class SarlDocumentationParser {
 	 * @return the formatted text.
 	 */
 	protected static String formatBlockText(String content, String languageName, Function2<String, String, String> blockFormat) {
-		String replacement = Strings.nullToEmpty(content);
-		final String[] lines = replacement.trim().split("[\n\r]+"); //$NON-NLS-1$
-		int minIndent = Integer.MAX_VALUE;
-		final Pattern wpPattern = Pattern.compile("^(\\s*)[^\\s]"); //$NON-NLS-1$
-		for (int i = lines.length > 1 ? 1 : 0; i < lines.length; ++i) {
-			final String line = lines[i];
-			final Matcher matcher = wpPattern.matcher(line);
+		var replacement = Strings.nullToEmpty(content);
+		final var lines = replacement.trim().split("[\n\r]+"); //$NON-NLS-1$
+		var minIndent = Integer.MAX_VALUE;
+		final var wpPattern = Pattern.compile("^(\\s*)[^\\s]"); //$NON-NLS-1$
+		for (var i = lines.length > 1 ? 1 : 0; i < lines.length; ++i) {
+			final var line = lines[i];
+			final var matcher = wpPattern.matcher(line);
 			if (matcher.find()) {
-				final int n = matcher.group(1).length();
+				final var n = matcher.group(1).length();
 				if (n < minIndent) {
 					minIndent = n;
 					if (minIndent <= 0) {
@@ -1108,11 +1106,11 @@ public class SarlDocumentationParser {
 				}
 			}
 		}
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append(lines[0]);
 		buffer.append("\n"); //$NON-NLS-1$
-		for (int i = 1; i < lines.length; ++i) {
-			final String line = lines[i];
+		for (var i = 1; i < lines.length; ++i) {
+			final var line = lines[i];
 			buffer.append(line.replaceFirst("^\\s{0," + minIndent + "}", "")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			buffer.append("\n"); //$NON-NLS-1$
 		}
@@ -1468,7 +1466,7 @@ public class SarlDocumentationParser {
 		 * @return the old value of the flag.
 		 */
 		public boolean setInBlock(boolean inblock) {
-			final boolean old = this.inBlock;
+			final var old = this.inBlock;
 			this.inBlock = inblock;
 			return old;
 		}
@@ -1487,7 +1485,7 @@ public class SarlDocumentationParser {
 		 * @return the old value of the flag.
 		 */
 		public boolean setInParameter(boolean inparam) {
-			final boolean old = this.inParameter;
+			final var old = this.inParameter;
 			this.inParameter = inparam;
 			return old;
 		}
@@ -1804,7 +1802,7 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void openContext(ParsingContext context) {
-			final ParserInterceptor delegate = getDelegate();
+			final var delegate = getDelegate();
 			if (delegate != null) {
 				delegate.openContext(context);
 			}
@@ -1812,7 +1810,7 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void closeContext(ParsingContext context) {
-			final ParserInterceptor delegate = getDelegate();
+			final var delegate = getDelegate();
 			if (delegate != null) {
 				delegate.closeContext(context);
 			}
@@ -1820,7 +1818,7 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
-			final ParserInterceptor delegate = getDelegate();
+			final var delegate = getDelegate();
 			if (delegate != null) {
 				delegate.tag(context, tag, dynamicName, parameter, blockValue);
 			}
@@ -1828,7 +1826,7 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void outline(ParsingContext context) {
-			final ParserInterceptor delegate = getDelegate();
+			final var delegate = getDelegate();
 			if (delegate != null) {
 				delegate.outline(context);
 			}
@@ -1853,9 +1851,9 @@ public class SarlDocumentationParser {
 		 * @param delegate the delegate.
 		 */
 		ContentParserInterceptor(ParserInterceptor delegate) {
-			ParserInterceptor del = delegate;
-			while (del instanceof ContentParserInterceptor) {
-				del = ((ContentParserInterceptor) del).getDelegate();
+			var del = delegate;
+			while (del instanceof ContentParserInterceptor cvalue) {
+				del = cvalue.getDelegate();
 			}
 			setDelegate(del);
 		}
@@ -1892,8 +1890,8 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
-			final boolean isVisible = context.isVisible();
-			final String replacement = tag.passThrough(context, dynamicName, parameter, blockValue);
+			final var isVisible = context.isVisible();
+			final var replacement = tag.passThrough(context, dynamicName, parameter, blockValue);
 			context.getMatcher().appendReplacement(getVisibleBuffer(isVisible), replacement);
 			super.tag(context, tag, dynamicName, parameter, blockValue);
 		}
@@ -2070,7 +2068,7 @@ public class SarlDocumentationParser {
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
 				context.getParserInterceptor().outline(context);
 				if (!context.isTestingPhase()) {
-					final String tag = context.getOutlineOutputTag();
+					final var tag = context.getOutlineOutputTag();
 					if (!Strings.isNullOrEmpty(tag)) {
 						return Strings.nullToEmpty(context.getOutlineOutputTag());
 					}
@@ -2123,20 +2121,20 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_2, name());
 					return null;
 				}
-				final File filename = FileSystem.convertStringToFile(parameter);
+				final var filename = FileSystem.convertStringToFile(parameter);
 				try {
-					final int oldLine = context.getLineNo();
-					final int oldEndLine = context.getEndLineNo();
-					final int oldOffset = context.getOffset();
-					final int oldLength = context.getLength();
-					final File oldFile = context.getCurrentFile();
-					final String fileContent = read(context, filename);
+					final var oldLine = context.getLineNo();
+					final var oldEndLine = context.getEndLineNo();
+					final var oldOffset = context.getOffset();
+					final var oldLength = context.getLength();
+					final var oldFile = context.getCurrentFile();
+					final var fileContent = read(context, filename);
 					context.setLineNo(1);
 					context.setEndLineNo(1);
 					context.setOffset(0);
 					context.setLength(0);
 					context.setCurrentFile(filename);
-					final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+					final var subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
 					context.getParser().parse(
 							fileContent,
 							filename,
@@ -2250,25 +2248,25 @@ public class SarlDocumentationParser {
 					return null;
 				}
 				if (!context.isTestingPhase()) {
-					String code = parameter;
+					var code = parameter;
 					if (Strings.isNullOrEmpty(code)) {
 						code = blockValue;
 					}
 					if (!Strings.isNullOrEmpty(code)) {
-						final ScriptExecutor executor = context.getScriptExecutor();
+						final var executor = context.getScriptExecutor();
 						if (executor != null) {
 							System.setProperty(ScriptExecutor.PROP_CURRENT_FILE, context.getCurrentFile().getAbsolutePath());
 							System.setProperty(ScriptExecutor.PROP_CURRENT_FOLDER, context.getCurrentFile().getParentFile().getAbsolutePath());
 							try {
-								final Object result = executor.execute(context.getLineNo(), code);
+								final var result = executor.execute(context.getLineNo(), code);
 								if (result != null) {
-									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+									final var stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return stringResult;
 								}
 							} catch (NoXtextResourceException exception) {
 								// Ignore this exception because it is already logged by the SARL compiler
 							} catch (Throwable exception) {
-								final Throwable root = Throwables.getRootCause(exception);
+								final var root = Throwables.getRootCause(exception);
 								Throwables.throwIfUnchecked(root);
 							    throw new RuntimeException(root);
 							}
@@ -2326,25 +2324,25 @@ public class SarlDocumentationParser {
 					return null;
 				}
 				if (!context.isTestingPhase()) {
-					String code = blockValue;
+					var code = blockValue;
 					if (Strings.isNullOrEmpty(code)) {
 						code = parameter;
 					}
 					if (!Strings.isNullOrEmpty(code)) {
-						final ScriptExecutor executor = context.getScriptExecutor();
+						final var executor = context.getScriptExecutor();
 						if (executor != null) {
 							System.setProperty(ScriptExecutor.PROP_CURRENT_FILE, context.getCurrentFile().getAbsolutePath());
 							System.setProperty(ScriptExecutor.PROP_CURRENT_FOLDER, context.getCurrentFile().getParentFile().getAbsolutePath());
 							try {
-								final Object result = executor.execute(context.getLineNo(), code);
+								final var result = executor.execute(context.getLineNo(), code);
 								if (result != null) {
-									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+									final var stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
 								}
 							} catch (NoXtextResourceException exception) {
 								// Ignore this exception because it is already logged by the SARL compiler
 							} catch (Throwable exception) {
-								final Throwable root = Throwables.getRootCause(exception);
+								final var root = Throwables.getRootCause(exception);
 								Throwables.throwIfUnchecked(root);
 							    throw new RuntimeException(root);
 							}
@@ -2581,9 +2579,6 @@ public class SarlDocumentationParser {
 
 			@Override
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
-				/*final String text = Strings.nullToEmpty(blockValue);
-				final String[] lines = text.split(Pattern.quote(context.getLineSeparator()));
-				context.incrementLineNo_(lines.length);*/
 				return new String();
 			}
 
@@ -2666,8 +2661,8 @@ public class SarlDocumentationParser {
 			private void appendGenericTypes(StringBuilder it, Class<?> type) {
 				if (type.getTypeParameters() != null && type.getTypeParameters().length > 0) {
 					it.append("<"); //$NON-NLS-1$
-					boolean first = true;
-					for (final TypeVariable<?> genType : type.getTypeParameters()) {
+					var first = true;
+					for (final var genType : type.getTypeParameters()) {
 						if (first) {
 							first = false;
 						} else {
@@ -2680,7 +2675,7 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractCapacity(Class<? extends Capacity> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("capacity ").append(type.getSimpleName()); //$NON-NLS-1$
 				if (type.getSuperclass() != null && !Capacity.class.equals(type.getSuperclass())) {
 					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
@@ -2692,7 +2687,7 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractEvent(Class<? extends Event> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("event ").append(type.getSimpleName()); //$NON-NLS-1$
 				if (type.getSuperclass() != null && !Event.class.equals(type.getSuperclass())) {
 					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
@@ -2704,7 +2699,7 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractInterface(Class<?> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
 				appendGenericTypes(it, type);
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
@@ -2717,10 +2712,10 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractEnumeration(Class<?> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("enum ").append(type.getSimpleName()); //$NON-NLS-1$
 				it.append(" {\n"); //$NON-NLS-1$
-				for (final Object cst : type.getEnumConstants()) {
+				for (final var cst : type.getEnumConstants()) {
 					it.append("\t").append(((Enum<?>) cst).name()).append(",\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -2728,7 +2723,7 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractAnnotation(Class<?> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("annotation ").append(type.getSimpleName()); //$NON-NLS-1$
 				it.append(" {\n"); //$NON-NLS-1$
 				ReflectExtensions.appendPublicMethods(it, true, type);
@@ -2737,7 +2732,7 @@ public class SarlDocumentationParser {
 			}
 
 			private String extractClass(Class<?> type) {
-				final StringBuilder it = new StringBuilder();
+				final var it = new StringBuilder();
 				it.append("class ").append(type.getSimpleName()); //$NON-NLS-1$
 				appendGenericTypes(it, type);
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
@@ -2750,8 +2745,8 @@ public class SarlDocumentationParser {
 						it.append(" "); //$NON-NLS-1$
 					}
 					it.append("implements "); //$NON-NLS-1$
-					boolean first = true;
-					for (final Class<?> interfaceType : type.getInterfaces()) {
+					var first = true;
+					for (final var interfaceType : type.getInterfaces()) {
 						if (first) {
 							first = false;
 						} else {
@@ -2807,9 +2802,9 @@ public class SarlDocumentationParser {
 
 			@Override
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
-				final String replacement = getCapturedValue(context, dynamicTag);
+				final var replacement = getCapturedValue(context, dynamicTag);
 				if (!context.isInBlock() && !context.isInParameter()) {
-					final String format = context.getInlineCodeFormat();
+					final var format = context.getInlineCodeFormat();
 					if (!Strings.isNullOrEmpty(format)) {
 						return MessageFormat.format(format, replacement);
 					}
@@ -3057,9 +3052,9 @@ public class SarlDocumentationParser {
 			if (!Strings.isNullOrEmpty(tagName)) {
 				replacement = context.getReplacement(tagName);
 				if (replacement == null) {
-					for (final Properties provider : context.getParser().getPropertyProvidersByPriority()) {
+					for (final var provider : context.getParser().getPropertyProvidersByPriority()) {
 						if (provider != null) {
-							final Object obj = provider.getOrDefault(tagName, null);
+							final var obj = provider.getOrDefault(tagName, null);
 							if (obj != null) {
 								replacement = obj.toString();
 								break;

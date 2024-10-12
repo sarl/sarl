@@ -43,21 +43,21 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	@Override
 	public XtendTypeDeclarationImpl<? extends XtendTypeDeclaration> toXtendTypeDeclaration(XtendTypeDeclaration delegate) {
-		if (delegate instanceof SarlAgent) {
-			final SarlAgentDeclarationImpl declaration = new SarlAgentDeclarationImpl();
-			declaration.setDelegate((SarlAgent) delegate);
+		if (delegate instanceof SarlAgent cvalue) {
+			final var declaration = new SarlAgentDeclarationImpl();
+			declaration.setDelegate(cvalue);
 			declaration.setCompilationUnit(this);
 			return declaration;
 		}
-		if (delegate instanceof SarlBehavior) {
-			final SarlBehaviorDeclarationImpl declaration = new SarlBehaviorDeclarationImpl();
-			declaration.setDelegate((SarlBehavior) delegate);
+		if (delegate instanceof SarlBehavior cvalue) {
+			final var declaration = new SarlBehaviorDeclarationImpl();
+			declaration.setDelegate(cvalue);
 			declaration.setCompilationUnit(this);
 			return declaration;
 		}
-		if (delegate instanceof SarlSkill) {
-			final SarlSkillDeclarationImpl declaration = new SarlSkillDeclarationImpl();
-			declaration.setDelegate((SarlSkill) delegate);
+		if (delegate instanceof SarlSkill cvalue) {
+			final var declaration = new SarlSkillDeclarationImpl();
+			declaration.setDelegate(cvalue);
 			declaration.setCompilationUnit(this);
 			return declaration;
 		}

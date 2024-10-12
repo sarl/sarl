@@ -60,18 +60,18 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 			if (project.hasNature(IMavenConstants.NATURE_ID)
 					&& project.hasNature(JavaCore.NATURE_ID)
 					&& project.hasNature(SARLEclipseConfig.NATURE_ID)) {
-				final IMavenProjectFacade facade = MavenPluginActivator.getDefault()
+				final var facade = MavenPluginActivator.getDefault()
 						.getMavenProjectManager().getProject(project);
 				if (facade == null) {
 					return null;
 				}
-				final IJavaProject javaProject = JavaCore.create(project);
-				final IClasspathEntry[] classpath = javaProject.getResolvedClasspath(true);
+				final var javaProject = JavaCore.create(project);
+				final var classpath = javaProject.getResolvedClasspath(true);
 				if (classpath == null) {
 					return null;
 				}
-				for (final IClasspathEntry dep : classpath) {
-					final IPath depPath = dep.getPath();
+				for (final var dep : classpath) {
+					final var depPath = dep.getPath();
 					if (SARLRuntime.isPackedSRE(depPath)) {
 						return new MavenProjectSREProvider(
 								facade.getArtifactKey().toString()
@@ -125,7 +125,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 
 		@Override
 		public ISREInstall getProjectSREInstall() {
-			final ManifestBasedSREInstall tmpSre = new ManifestBasedSREInstall(this.id);
+			final var tmpSre = new ManifestBasedSREInstall(this.id);
 			tmpSre.setJarFile(this.artifactFile);
 			return tmpSre;
 		}

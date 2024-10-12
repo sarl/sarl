@@ -57,9 +57,9 @@ public final class ExtraLanguageTypeConverter {
 	private boolean isImplicitJvmTypes;
 
 	static {
-		final String[] basePackage = Agent.class.getPackage().getName().split(Pattern.quote(PACKAGE_SEPARATOR));
-		final StringBuilder name = new StringBuilder();
-		for (int i = 0; i < 2 && i < basePackage.length; ++i) {
+		final var basePackage = Agent.class.getPackage().getName().split(Pattern.quote(PACKAGE_SEPARATOR));
+		final var name = new StringBuilder();
+		for (var i = 0; i < 2 && i < basePackage.length; ++i) {
 			name.append(basePackage[i]).append(PACKAGE_SEPARATOR);
 		}
 		IMPLICIT_PACKAGE = name.toString();
@@ -126,7 +126,7 @@ public final class ExtraLanguageTypeConverter {
 	 * @return the mapping table.
 	 */
 	protected Map<String, String> initMapping() {
-		final Map<String, String> map = new TreeMap<>();
+		final var map = new TreeMap<String, String>();
 		if (!this.converterReader.initializeConversions(map, this.context) && this.initializer != null) {
 			this.initializer.initializeConversions((simpleName, source, target) -> {
 				map.put(source,  target);
@@ -163,7 +163,7 @@ public final class ExtraLanguageTypeConverter {
 		if (this.mapping == null) {
 			this.mapping = initMapping();
 		}
-		final String map = this.mapping.get(type);
+		final var map = this.mapping.get(type);
 		if (map != null) {
 			if (map.isEmpty() && !isImplicitJvmTypes()) {
 				return null;

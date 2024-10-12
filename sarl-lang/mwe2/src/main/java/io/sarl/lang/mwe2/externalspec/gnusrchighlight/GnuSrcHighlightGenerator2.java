@@ -62,8 +62,8 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final StringBuilder punctuationPattern = new StringBuilder();
-		for (final String punct : punctuation) {
+		final var punctuationPattern = new StringBuilder();
+		for (final var punct : punctuation) {
 			if (punctuationPattern.length() > 0) {
 				punctuationPattern.append("|"); //$NON-NLS-1$
 			}
@@ -72,8 +72,8 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 					.replaceAll(Pattern.quote("|"), Matcher.quoteReplacement("\\|"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		final StringBuilder keywordPattern = new StringBuilder();
-		for (final String keyword : sortedConcat(expressionKeywords, modifiers, primitiveTypes, typeDeclarationKeywords,
+		final var keywordPattern = new StringBuilder();
+		for (final var keyword : sortedConcat(expressionKeywords, modifiers, primitiveTypes, typeDeclarationKeywords,
 				specialKeywords)) {
 			if (keywordPattern.length() > 0) {
 				keywordPattern.append("|"); //$NON-NLS-1$
@@ -81,8 +81,8 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 			keywordPattern.append(keyword);
 		}
 
-		final StringBuilder literalPattern = new StringBuilder();
-		for (final String literal : literals) {
+		final var literalPattern = new StringBuilder();
+		for (final var literal : literals) {
 			if (literalPattern.length() > 0) {
 				literalPattern.append("|"); //$NON-NLS-1$
 			}
@@ -92,8 +92,8 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 		it.appendHeader();
 
 		if (!specialKeywords.isEmpty()) {
-			final StringBuilder preproc = new StringBuilder();
-			for (final String specialKeyword : specialKeywords) {
+			final var preproc = new StringBuilder();
+			for (final var specialKeyword : specialKeywords) {
 				if (preproc.length() > 0) {
 					preproc.append(","); //$NON-NLS-1$
 				}
@@ -121,8 +121,8 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 		it.newLine();
 		if (!typeDeclarationKeywords.isEmpty()) {
 			it.appendComment("Highlight the type declarations"); //$NON-NLS-1$
-			final StringBuilder tdkeywords = new StringBuilder();
-			for (final String typeDeclarationKeyword : typeDeclarationKeywords) {
+			final var tdkeywords = new StringBuilder();
+			for (final var typeDeclarationKeyword : typeDeclarationKeywords) {
 				if (tdkeywords.length() > 0) {
 					tdkeywords.append("|"); //$NON-NLS-1$
 				}

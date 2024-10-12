@@ -51,7 +51,7 @@ public final class PyPreferenceAccess {
 	 * @param store the preference store access.
 	 */
 	public static void loadPreferences(PyGeneratorConfiguration generatorConfig, IPreferenceStore store) {
-		final String key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
+		final var key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
 				PyPreferenceAccess.JYTHON_COMPLIANCE_PROPERTY);
 		if (store.contains(key)) {
 			generatorConfig.setImplicitJvmTypes(store.getBoolean(key));

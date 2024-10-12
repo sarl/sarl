@@ -136,13 +136,13 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	private void fixFilesToOpen(IProject project) {
 		if (this.filesToOpen != null) {
-			final List<FileToOpen> fixedList = new ArrayList<>();
-			for (final FileToOpen file : this.filesToOpen) {
-				if (!(file instanceof ProjectFileToOpen)) {
-					final ProjectFileToOpen projectFile = new ProjectFileToOpen(project, file);
-					fixedList.add(projectFile);
-				} else {
+			final var fixedList = new ArrayList<FileToOpen>();
+			for (final var file : this.filesToOpen) {
+				if (file instanceof ProjectFileToOpen) {
 					fixedList.add(file);
+				} else {
+					final var projectFile = new ProjectFileToOpen(project, file);
+					fixedList.add(projectFile);
 				}
 			}
 			this.filesToOpen = fixedList;
@@ -152,17 +152,17 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	@Override
 	protected void installProject(ProjectDescriptor projectDescriptor, IProgressMonitor progressMonitor)
 			throws Exception {
-		final SubMonitor mon = SubMonitor.convert(progressMonitor, 2);
+		final var mon = SubMonitor.convert(progressMonitor, 2);
 		super.installProject(projectDescriptor, mon.newChild(1));
 		postProjectInstallation(projectDescriptor, mon.newChild(1));
 	}
 
 	private static JavaVersion parseVersion(AbstractVMInstall vmInstall, String minVersion) {
-		final String vmVersion = vmInstall.getJavaVersion();
-		final JavaVersion minJversion = JavaVersion.fromQualifier(minVersion);
-		JavaVersion jversion = JavaVersion.fromQualifier(vmVersion);
+		final var vmVersion = vmInstall.getJavaVersion();
+		final var minJversion = JavaVersion.fromQualifier(minVersion);
+		var jversion = JavaVersion.fromQualifier(vmVersion);
 		if (jversion == null) {
-			final Version vers = Version.parseVersion(vmVersion);
+			final var vers = Version.parseVersion(vmVersion);
 			// This is a hard-coded support for the different version formats (1.x or x)
 			// when using Java 9 or higher.
 			if (vers.getMajor() >= MIN_JDK_VERSION) {
@@ -184,20 +184,19 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 * @throws Exception if the post process cannot be applied.
 	 */
 	protected void postProjectInstallation(ProjectDescriptor projectDescriptor, IProgressMonitor progressMonitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(progressMonitor, 3);
+		final var mon = SubMonitor.convert(progressMonitor, 3);
 
 		// Force the natures of the project
-		final IProject project = projectDescriptor.getProject();
+		final var project = projectDescriptor.getProject();
 
-		final IFile pomFile = project.getFile(Path.fromOSString("pom.xml")); //$NON-NLS-1$
-		final boolean hasPomFile = pomFile.exists();
+		final var pomFile = project.getFile(Path.fromOSString("pom.xml")); //$NON-NLS-1$
+		final var hasPomFile = pomFile.exists();
 		if (hasPomFile) {
 			// Search for specific keywords into the pom file, and replace them by the user configuration.
-			String compliance = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
-			final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-			if (vmInstall instanceof AbstractVMInstall) {
-				final AbstractVMInstall jvmInstall = (AbstractVMInstall) vmInstall;
-				final JavaVersion jversion = parseVersion(jvmInstall, compliance);
+			var compliance = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
+			final var vmInstall = JavaRuntime.getDefaultVMInstall();
+			if (vmInstall instanceof AbstractVMInstall jvmInstall) {
+				final var jversion = parseVersion(jvmInstall, compliance);
 				if (jversion != null) {
 					compliance = jversion.getQualifier();
 				}
@@ -206,8 +205,8 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		}
 		if (this.configurationPage.isMavenNatureEnabled() && pomFile.exists()) {
 			// The project should be a Maven project.
-			final IPath descriptionFilename = project.getFile(new Path(IProjectDescription.DESCRIPTION_FILE_NAME)).getLocation();
-			final File projectDescriptionFile = descriptionFilename.toFile();
+			final var descriptionFilename = project.getFile(new Path(IProjectDescription.DESCRIPTION_FILE_NAME)).getLocation();
+			final var projectDescriptionFile = descriptionFilename.toFile();
 			// Project was open by the super class. Close it because Maven fails when a project already exists.
 			project.close(mon.newChild(1));
 			// Delete the Eclipse project definition because Maven fails when a project already exists.
@@ -242,8 +241,8 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		// Install the launch configuration(s)
 		if (this.configurationPage.isLaunchConfigurationInstallable()) {
 			try {
-				final List<ConfigurationToLaunch> configs = getConfigurationsToLaunch(project);
-				for (final ConfigurationToLaunch it : configs) {
+				final var configs = getConfigurationsToLaunch(project);
+				for (final var it : configs) {
 					try {
 						if (it.isAgentLaunch()) {
 							createAgentLaunchConfiguration(project, it.getType(), it.getName(), it.getLogLevel());
@@ -272,9 +271,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	private static void updatePomContent(IFile pomFile, String jdkCompliance) {
 		// Read the pom
-		final StringBuilder content = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(pomFile.getContents()))) {
-			String line = reader.readLine();
+		final var content = new StringBuilder();
+		try (var reader = new BufferedReader(new InputStreamReader(pomFile.getContents()))) {
+			var line = reader.readLine();
 			while (line != null) {
 				line = line.replaceAll(Pattern.quote(USER_JAVA_VERSION_KEY), jdkCompliance);
 				content.append(line).append("\n"); //$NON-NLS-1$
@@ -290,7 +289,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			throw new RuntimeException(exception);
 		}
 		// Write the pom
-		try (StringInputStream is = new StringInputStream(content.toString())) {
+		try (var is = new StringInputStream(content.toString())) {
 			pomFile.create(is, true, new NullProgressMonitor());
 		} catch (CoreException exception) {
 			throw new RuntimeException(exception);
@@ -310,14 +309,14 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	public List<ConfigurationToLaunch> getConfigurationsToLaunch(IProject project) throws CoreException {
 		if (this.configurationsToLaunch == null) {
 			this.configurationsToLaunch = new ArrayList<>();
-			final IPath rootLocation = project.getWorkspace().getRoot().getLocation();
-			final IPath configLocation = rootLocation.append(project.getName()).append(LAUNCH_PROPERTY_FILE);
-			final File jFile = configLocation.toFile();
+			final var rootLocation = project.getWorkspace().getRoot().getLocation();
+			final var configLocation = rootLocation.append(project.getName()).append(LAUNCH_PROPERTY_FILE);
+			final var jFile = configLocation.toFile();
 			if (jFile.canRead()) {
-				final Document document = readXmlContent(jFile);
+				final var document = readXmlContent(jFile);
 				if (document != null) {
 					readLaunchConfigurationFromXml(document, null, (type, name, isAgent, rootFolder, logLevel) -> {
-						final ConfigurationToLaunch ctl = new ConfigurationToLaunch();
+						final var ctl = new ConfigurationToLaunch();
 						ctl.setType(type);
 						ctl.setName(name);
 						ctl.setAgentLaunch(isAgent.booleanValue());
@@ -341,9 +340,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 */
 	protected void createApplicationLaunchConfiguration(IProject project, String mainClassfullyQualifedName,
 			String configurationName, String logLevel) throws CoreException {
-		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
+		final var configurator = getLaunchConfigurationConfigurator();
 		if (configurator != null) {
-			final String projectName = project.getName();
+			final var projectName = project.getName();
 			configurator.newApplicationLaunchConfiguration(projectName,
 					configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class, logLevel);
 		}
@@ -360,9 +359,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 */
 	protected void createAgentLaunchConfiguration(IProject project, String agentFullyQualifiedName,
 			String configurationName, String logLevel) throws CoreException {
-		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
+		final var configurator = getLaunchConfigurationConfigurator();
 		if (configurator != null) {
-			final String projectName = project.getName();
+			final var projectName = project.getName();
 			configurator.newAgentLaunchConfiguration(projectName,
 					configurationName, agentFullyQualifiedName, logLevel);
 		}
@@ -384,9 +383,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	/** Close the welcome page.
 	 */
 	protected static void closeWelcomePage() {
-		final IIntroManager introManager = PlatformUI.getWorkbench().getIntroManager();
+		final var introManager = PlatformUI.getWorkbench().getIntroManager();
 		if (introManager != null) {
-			final IIntroPart intro = introManager.getIntro();
+			final var intro = introManager.getIntro();
 			if (intro != null) {
 				introManager.closeIntro(intro);
 			}
@@ -422,10 +421,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 		@Override
 		public void createControl(Composite parent) {
-			final Composite composite = new Composite(parent, SWT.NONE);
-			final GridLayout layout = new GridLayout(2, false);
-			final int margin = -5;
-			final int spacing = 3;
+			final var composite = new Composite(parent, SWT.NONE);
+			final var layout = new GridLayout(2, false);
+			final var margin = -5;
+			final var spacing = 3;
 			layout.marginTop = margin;
 			layout.marginLeft = margin;
 			layout.marginRight = margin;
@@ -500,14 +499,14 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		 */
 		public IFile findProjectFile() {
 			if (this.projectFile == null) {
-				final IProject prj = this.project.get();
+				final var prj = this.project.get();
 				if (prj != null) {
 					// 3 cases for location:
 					// * prj / src folder / source path
 					// * src folder / source path
 					// * source path
-					final IPath path0 = Path.fromPortableString(getLocation());
-					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path0);
+					final var path0 = Path.fromPortableString(getLocation());
+					var file = ResourcesPlugin.getWorkspace().getRoot().getFile(path0);
 					if (file != null && file.exists()) {
 						this.projectFile = file;
 					} else {
@@ -515,8 +514,8 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 						if (file != null && file.exists()) {
 							this.projectFile = file;
 						} else {
-							final IPath srcFolder = Path.fromOSString(SARLConfig.FOLDER_SOURCE_SARL);
-							final IPath path1 = srcFolder.append(path0);
+							final var srcFolder = Path.fromOSString(SARLConfig.FOLDER_SOURCE_SARL);
+							final var path1 = srcFolder.append(path0);
 							file = prj.getFile(path1);
 							if (file != null && file.exists()) {
 								this.projectFile = file;
@@ -531,7 +530,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		@Override
 		public IFile getWorkspaceFile() {
 			if (this.workspaceFile == null) {
-				final IFile projectFile = findProjectFile();
+				final var projectFile = findProjectFile();
 				if (projectFile != null) {
 					this.workspaceFile = projectFile;
 				} else {

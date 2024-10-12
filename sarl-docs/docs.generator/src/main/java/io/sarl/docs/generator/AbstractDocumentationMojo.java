@@ -26,6 +26,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.DirectoryStream;
@@ -38,14 +39,13 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javax.inject.Inject;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -61,17 +61,14 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.repository.RepositorySystem;
-import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
@@ -81,7 +78,6 @@ import io.sarl.docs.generator.parser.SarlDocumentationParser;
 import io.sarl.docs.generator.parser.SarlDocumentationParser.ParsingException;
 import io.sarl.docs.validator.DocumentationLogger;
 import io.sarl.docs.validator.DocumentationSetup;
-import io.sarl.docs.validator.ScriptExecutor;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 
 /** Abstract Maven MOJO for the documentation of the SARL project.
@@ -184,17 +180,17 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private Properties propertyDefaultValues;
 
-	@Component
+	@Inject
 	private ToolchainManager toolchainManager;
 
-	@Component
+	@Inject
 	private RepositorySystem repositorySystem;
 
 	private ReflectExtensions reflect;
 	
 	private static boolean isFileExtension(File filename, String[] extensions) {
-		final String extension = FileSystem.extension(filename);
-		for (final String ext : extensions) {
+		final var extension = FileSystem.extension(filename);
+		for (final var ext : extensions) {
 			if (Strings.equal(ext, extension)) {
 				return true;
 			}
@@ -212,7 +208,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 
 	@Override
 	public final void execute() throws MojoExecutionException  {
-		final String skipMessage = getSkippingMessage();
+		final var skipMessage = getSkippingMessage();
 		if (!Strings.isEmpty(skipMessage)) {
 			getLog().info(skipMessage);
 			return;
@@ -235,9 +231,9 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		getLog().info(Messages.AbstractDocumentationMojo_0);
 
 		// Fix the logger configuration
-		final Logger docLogger = DocumentationLogger.getLogger();
-		final Handler[] handlers = docLogger.getHandlers();
-		for (final Handler handler : handlers) {
+		final var docLogger = DocumentationLogger.getLogger();
+		final var handlers = docLogger.getHandlers();
+		for (final var handler : handlers) {
 			docLogger.removeHandler(handler);
 		}
 		docLogger.setUseParentHandlers(false);
@@ -254,7 +250,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		this.targetLanguageFileExtension = this.injector.getInstance(Key.get(String.class, Names.named(
 				org.eclipse.xtext.Constants.FILE_EXTENSIONS)));
 
-		final String errorMessage = internalExecute();
+		final var errorMessage = internalExecute();
 		if (!Strings.isEmpty(errorMessage)) {
 			throw new MojoExecutionException(errorMessage);
 		}
@@ -266,7 +262,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected String internalExecute() {
 		getLog().info(Messages.AbstractDocumentationMojo_1);
-		final Map<File, File> files = getFiles();
+		final var files = getFiles();
 		getLog().info(MessageFormat.format(Messages.AbstractDocumentationMojo_2, Integer.valueOf(files.size())));
 		return internalExecute(files);
 	}
@@ -291,15 +287,15 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	protected String internalExecute(Map<File, File> files, File outputFolder) {
 		String firstErrorMessage = null;
 
-		for (final Entry<File, File> entry : files.entrySet()) {
-			final File inputFile = entry.getKey();
+		for (final var entry : files.entrySet()) {
+			final var inputFile = entry.getKey();
 			try {
-				final AbstractMarkerLanguageParser parser = createLanguageParser(inputFile);
-				final File sourceFolder = entry.getValue();
-				final File relativePath = FileSystem.makeRelative(inputFile, sourceFolder);
+				final var parser = createLanguageParser(inputFile);
+				final var sourceFolder = entry.getValue();
+				final var relativePath = FileSystem.makeRelative(inputFile, sourceFolder);
 				internalExecute(sourceFolder, inputFile, relativePath, outputFolder, parser);
 			} catch (Throwable exception) {
-				final String errorMessage = formatErrorMessage(inputFile, exception);
+				final var errorMessage = formatErrorMessage(inputFile, exception);
 				getLog().error(errorMessage);
 				if (Strings.isEmpty(firstErrorMessage)) {
 					firstErrorMessage = errorMessage;
@@ -335,12 +331,11 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected String formatErrorMessage(File inputFile, Throwable exception) {
 		File filename;
-		int lineno = 0;
+		var lineno = 0;
 		final boolean addExceptionName;
-		if (exception instanceof ParsingException) {
+		if (exception instanceof ParsingException pexception) {
 			addExceptionName = false;
-			final ParsingException pexception = (ParsingException) exception;
-			final File file = pexception.getFile();
+			final var file = pexception.getFile();
 			if (file != null) {
 				filename = file;
 			} else {
@@ -351,8 +346,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			addExceptionName = true;
 			filename = inputFile;
 		}
-		for (final String sourceDir : this.session.getCurrentProject().getCompileSourceRoots()) {
-			final File root = new File(sourceDir);
+		for (final var sourceDir : this.session.getCurrentProject().getCompileSourceRoots()) {
+			final var root = new File(sourceDir);
 			if (isParentFile(filename, root)) {
 				try {
 					filename = FileSystem.makeRelative(filename, root);
@@ -362,21 +357,21 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 				break;
 			}
 		}
-		final StringBuilder msg = new StringBuilder();
+		final var msg = new StringBuilder();
 		msg.append(filename.toString());
 		if (lineno > 0) {
 			msg.append(":").append(lineno); //$NON-NLS-1$
 		}
 		msg.append(": "); //$NON-NLS-1$
-		final Throwable rootEx = Throwables.getRootCause(exception);
+		final var rootEx = Throwables.getRootCause(exception);
 		if (rootEx != null && (addExceptionName || rootEx != exception)) {
 			msg.append(rootEx.getClass().getName());
 			msg.append(" - "); //$NON-NLS-1$
 		}
 		if (rootEx != null) {
 			msg.append(rootEx.getLocalizedMessage());
-			try (StringWriter swriter = new StringWriter()) {
-				try (PrintWriter writer = new PrintWriter(swriter)) {
+			try (var swriter = new StringWriter()) {
+				try (var writer = new PrintWriter(swriter)) {
 					rootEx.printStackTrace(writer);
 				}
 				msg.append("\n"); //$NON-NLS-1$
@@ -391,9 +386,9 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	private static boolean isParentFile(File file, File root) {
 		if (file.isAbsolute() && root.isAbsolute()) {
 			try {
-				final String[] components1 = FileSystem.split(file.getCanonicalFile());
-				final String[] components2 = FileSystem.split(root.getCanonicalFile());
-				for (int i = 0; i < components2.length; ++i) {
+				final var components1 = FileSystem.split(file.getCanonicalFile());
+				final var components2 = FileSystem.split(root.getCanonicalFile());
+				for (var i = 0; i < components2.length; ++i) {
 					if (i >= components1.length || !Strings.equal(components2[i], components1[i])) {
 						return false;
 					}
@@ -414,7 +409,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws IOException if a classpath entry cannot be found.
 	 */
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
-		final JavaVersion javaVersion = SarlBatchCompilerUtils.parseJavaVersion(this.source);
+		final var javaVersion = SarlBatchCompilerUtils.parseJavaVersion(this.source);
 
 		final AbstractMarkerLanguageParser parser;
 		if (isFileExtension(inputFile, MarkdownParser.MARKDOWN_FILE_EXTENSIONS)) {
@@ -424,7 +419,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 		parser.setGithubExtensionEnable(this.githubExtension);
 
-		final SarlDocumentationParser internalParser = parser.getDocumentParser();
+		final var internalParser = parser.getDocumentParser();
 
 		if (this.isLineContinuationEnable) {
 			internalParser.setLineContinuation(SarlDocumentationParser.DEFAULT_LINE_CONTINUATION);
@@ -432,19 +427,19 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			internalParser.addLowPropertyProvider(createProjectProperties());
 		}
 
-		final ScriptExecutor scriptExecutor = internalParser.getScriptExecutor();
-		final StringBuilder cp = new StringBuilder();
-		final List<File> fullCp = getClassPath();
-		for (final File cpElement : fullCp) {
+		final var scriptExecutor = internalParser.getScriptExecutor();
+		final var cp = new StringBuilder();
+		final var fullCp = getClassPath();
+		for (final var cpElement : fullCp) {
 			if (cp.length() > 0) {
 				cp.append(File.pathSeparator);
 			}
 			cp.append(cpElement.getAbsolutePath());
 		}
 		scriptExecutor.setClassPath(cp.toString());
-		final StringBuilder mp = new StringBuilder();
-		final List<File> fullMp = getModulePath();
-		for (final File mpElement : fullMp) {
+		final var mp = new StringBuilder();
+		final var fullMp = getModulePath();
+		for (final var mpElement : fullMp) {
 			if (mp.length() > 0) {
 				mp.append(File.pathSeparator);
 			}
@@ -460,7 +455,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		internalParser.addLowPropertyProvider(this.session.getUserProperties());
 		internalParser.addLowPropertyProvider(this.session.getSystemProperties());
 		internalParser.addLowPropertyProvider(createGeneratorProperties());
-		final Properties defaultValues = createDefaultValueProperties();
+		final var defaultValues = createDefaultValueProperties();
 		if (defaultValues != null) {
 			internalParser.addLowPropertyProvider(defaultValues);
 		}
@@ -472,8 +467,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	}
 
 	private Properties createProjectProperties() {
-		final Properties props = new Properties();
-		final MavenProject prj = this.session.getCurrentProject();
+		final var props = new Properties();
+		final var prj = this.session.getCurrentProject();
 		props.put("project.groupId", Strings.emptyIfNull(prj.getGroupId())); //$NON-NLS-1$
 		props.put("project.artifactId", Strings.emptyIfNull(prj.getArtifactId())); //$NON-NLS-1$
 		props.put("project.basedir", prj.getBasedir() != null ? prj.getBasedir().getAbsolutePath() : ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -488,8 +483,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	}
 
 	private Properties createGeneratorProperties() {
-		final Properties props = new Properties();
-		final PluginDescriptor descriptor = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
+		final var props = new Properties();
+		final var descriptor = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
 		props.put("generator.name", Strings.emptyIfNull(descriptor.getArtifactId())); //$NON-NLS-1$
 		props.put("generator.version", Strings.emptyIfNull(descriptor.getVersion())); //$NON-NLS-1$
 		return props;
@@ -500,14 +495,14 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @return the map from the source files to the corresponding source folders.
 	 */
 	protected Map<File, File> getFiles() {
-		final Map<File, File> files = new TreeMap<>();
-		for (final String rootName : this.inferredSourceDirectories) {
-			File root = FileSystem.convertStringToFile(rootName);
+		final var files = new TreeMap<File, File>();
+		for (final var rootName : this.inferredSourceDirectories) {
+			var root = FileSystem.convertStringToFile(rootName);
 			if (!root.isAbsolute()) {
 				root = FileSystem.makeAbsolute(root, this.baseDirectory);
 			}
 			getLog().debug(MessageFormat.format(Messages.AbstractDocumentationMojo_4, root.getName()));
-			for (final File file : Files.fileTraverser().breadthFirst(root)) {
+			for (final var file : Files.fileTraverser().breadthFirst(root)) {
 				if (file.exists() && file.isFile() && !file.isHidden() && file.canRead() && hasExtension(file)) {
 					files.put(file, root);
 				}
@@ -517,7 +512,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	}
 
 	private boolean hasExtension(File file) {
-		final String extension = FileSystem.extension(file);
+		final var extension = FileSystem.extension(file);
 		return this.fileExtensions.contains(extension);
 	}
 
@@ -528,10 +523,10 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @return the package name.
 	 */
 	protected static String toPackageName(String rootPackage,  File packageName) {
-		final StringBuilder name = new StringBuilder();
-		File tmp = packageName;
+		final var name = new StringBuilder();
+		var tmp = packageName;
 		while (tmp != null) {
-			final String elementName = tmp.getName();
+			final var elementName = tmp.getName();
 			if (!Strings.equal(FileSystem.CURRENT_DIRECTORY, elementName)
 					&& !Strings.equal(FileSystem.PARENT_DIRECTORY, elementName)) {
 				if (name.length() > 0) {
@@ -557,7 +552,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected static File toPackageFolder(String packageName) {
 		File file = null;
-		for (final String element : packageName.split("[.]")) { //$NON-NLS-1$
+		for (final var element : packageName.split("[.]")) { //$NON-NLS-1$
 			if (file == null) {
 				file = new File(element);
 			} else {
@@ -573,21 +568,21 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws IOException on failure.
 	 */
 	protected List<File> getClassPath() throws IOException {
-		final Set<String> classPath = new LinkedHashSet<>();
-		final MavenProject curProj = this.session.getCurrentProject();
+		final var classPath = new LinkedHashSet<String>();
+		final var curProj = this.session.getCurrentProject();
 		classPath.add(curProj.getBuild().getSourceDirectory());
 		try {
 			classPath.addAll(curProj.getCompileClasspathElements());
 		} catch (DependencyResolutionRequiredException e) {
 			throw new IOException(e.getLocalizedMessage(), e);
 		}
-		for (final Artifact dep : curProj.getArtifacts()) {
+		for (final var dep : curProj.getArtifacts()) {
 			classPath.add(dep.getFile().getAbsolutePath());
 		}
 		classPath.remove(curProj.getBuild().getOutputDirectory());
-		final List<File> files = new ArrayList<>();
-		for (final String filename : classPath) {
-			final File file = new File(filename);
+		final var files = new ArrayList<File>();
+		for (final var filename : classPath) {
+			final var file = new File(filename);
 			if (file.exists()) {
 				files.add(file);
 			}
@@ -603,8 +598,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	@SuppressWarnings("static-method")
 	protected List<File> getModulePath() throws IOException {
-		final List<File> files = new ArrayList<>();
-		return files;
+		return new ArrayList<>();
 	}
 
 	/** Replies a class loader that is able to read the classes from the Maven class path.
@@ -616,20 +610,20 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	private ClassLoader getProjectClassLoader(ClassLoader parent, Iterable<File> classPath, int size) {
 		try {
-			final URL[] urls = new URL[size];
-			int i = 0;
-			for (final File localFile : classPath) {
-				final URL localUrl = FileSystem.convertFileToURL(localFile);
+			final var urls = new URL[size];
+			var i = 0;
+			for (final var localFile : classPath) {
+				final var localUrl = FileSystem.convertFileToURL(localFile);
 				if (localFile.isDirectory()) {
-					final String name = localUrl.toExternalForm() + "/"; //$NON-NLS-1$
-					urls[i] = new URL(name);
+					final var name = localUrl.toExternalForm() + "/"; //$NON-NLS-1$
+					urls[i] = new URI(name).toURL();
 				} else {
 					urls[i] = localUrl;
 				}
 				++i;
 			}
 			return new URLClassLoader(urls, getClass().getClassLoader());
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			throw new IOError(exception);
 		}
 	}
@@ -642,21 +636,19 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	@Deprecated(forRemoval = true, since = "0.12")
 	protected String getBootClassPath() throws IOException {
-		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.session); //$NON-NLS-1$
-		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
-			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
-			final ToolchainPrivate privateJavaToolChain = (ToolchainPrivate) toolchain;
+		final var toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.session); //$NON-NLS-1$
+		if (toolchain instanceof JavaToolchain javaToolChain && toolchain instanceof ToolchainPrivate privateJavaToolChain) {
 			String[] includes = {"jre/lib/*", "jre/lib/ext/*", "jre/lib/endorsed/*"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			String[] excludes = new String[0];
-			final Xpp3Dom config = (Xpp3Dom) privateJavaToolChain.getModel().getConfiguration();
+			var excludes = new String[0];
+			final var config = (Xpp3Dom) privateJavaToolChain.getModel().getConfiguration();
 			if (config != null) {
-				final Xpp3Dom bootClassPath = config.getChild("bootClassPath"); //$NON-NLS-1$
+				final var bootClassPath = config.getChild("bootClassPath"); //$NON-NLS-1$
 				if (bootClassPath != null) {
-					final Xpp3Dom includeParent = bootClassPath.getChild("includes"); //$NON-NLS-1$
+					final var includeParent = bootClassPath.getChild("includes"); //$NON-NLS-1$
 					if (includeParent != null) {
 						includes = getValues(includeParent.getChildren("include")); //$NON-NLS-1$
 					}
-					final Xpp3Dom excludeParent = bootClassPath.getChild("excludes"); //$NON-NLS-1$
+					final var excludeParent = bootClassPath.getChild("excludes"); //$NON-NLS-1$
 					if (excludeParent != null) {
 						excludes = getValues(excludeParent.getChildren("exclude")); //$NON-NLS-1$
 					}
@@ -674,14 +666,14 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 
 	@SuppressWarnings("resource")
 	private static String scanBootclasspath(String javaHome, String[] includes, String[] excludes) {
-		final File javaHomeFile = FileSystem.convertStringToFile(javaHome);
-		final Path javaHomePath = javaHomeFile.toPath();
+		final var javaHomeFile = FileSystem.convertStringToFile(javaHome);
+		final var javaHomePath = javaHomeFile.toPath();
 		
-        final java.nio.file.FileSystem fs = javaHomePath.getFileSystem();
+        final var fs = javaHomePath.getFileSystem();
         final PathMatcher[] includeMatchers;
         if (includes != null && includes.length > 0) {
         	includeMatchers = new PathMatcher[includes.length];
-        	for (int i = 0; i < includes.length; ++i) {
+        	for (var i = 0; i < includes.length; ++i) {
         		includeMatchers[i] = fs.getPathMatcher("glob:" + includes[i]); //$NON-NLS-1$
         	}
         } else {
@@ -691,7 +683,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         final PathMatcher[] excludeMatchers;
         if (excludes != null && excludes.length > 0) {
         	excludeMatchers = new PathMatcher[excludes.length];
-        	for (int i = 0; i < excludes.length; ++i) {
+        	for (var i = 0; i < excludes.length; ++i) {
         		excludeMatchers[i] = fs.getPathMatcher("glob:" + excludes[i]); //$NON-NLS-1$
         	}
         } else {
@@ -704,15 +696,15 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         		included = true;
         	} else {
         		included = false;
-        		for (int i = 0; i < includeMatchers.length && !included; ++i) {
-        			final PathMatcher matcher = includeMatchers[i];
+        		for (var i = 0; i < includeMatchers.length && !included; ++i) {
+        			final var matcher = includeMatchers[i];
         			included = matcher.matches(entry.getFileName());
         		}
         	}
         	if (included) {
             	if (includeMatchers != null) {
-	            	for (int i = 0; i < includeMatchers.length && !included; ++i) {
-	        			final PathMatcher matcher = includeMatchers[i];
+	            	for (var i = 0; i < includeMatchers.length && !included; ++i) {
+	        			final var matcher = includeMatchers[i];
 	        			if (matcher.matches(entry.getFileName())) {
 	        				return false;
 	        			}
@@ -723,17 +715,17 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
         	return false;
         };
 
-		final List<Path> includedFiles = new ArrayList<>();
-        try (DirectoryStream<Path> stream = java.nio.file.Files.newDirectoryStream(javaHomeFile.toPath(), filter)) {
-			 for (Path entry: stream) {
+		final var includedFiles = new ArrayList<Path>();
+        try (var stream = java.nio.file.Files.newDirectoryStream(javaHomeFile.toPath(), filter)) {
+			 for (final var entry: stream) {
 				 includedFiles.add(entry);
 			 }
 		} catch (IOException ex) {
 			throw new IOError(ex);
 		}
 
-		final StringBuilder bootClassPath = new StringBuilder();
-		for (int i = 0; i < includedFiles.size(); i++) {
+		final var bootClassPath = new StringBuilder();
+		for (var i = 0; i < includedFiles.size(); i++) {
 			if (i > 0) {
 				bootClassPath.append(File.pathSeparator);
 			}
@@ -743,8 +735,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	}
 
 	private static String[] getValues(Xpp3Dom[] children) {
-		final String[] values = new String[children.length];
-		for (int i = 0; i < values.length; i++) {
+		final var values = new String[children.length];
+		for (var i = 0; i < values.length; i++) {
 			values[i] = children[i].getValue();
 		}
 		return values;
@@ -772,7 +764,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @since 0.13
 	 */
 	protected Set<Artifact> resolve(String groupId, String artifactId, String version, String type) throws MojoExecutionException {
-		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		final var request = new ArtifactResolutionRequest();
 		request.setResolveRoot(true);
 		request.setResolveTransitively(true);
 		request.setLocalRepository(this.session.getLocalRepository());
@@ -784,7 +776,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		request.setProxies(this.session.getRequest().getProxies());
 		request.setArtifact(createArtifact(groupId, artifactId, version, type));
 
-		final ArtifactResolutionResult result = resolve(request);
+		final var result = resolve(request);
 
 		return result.getArtifacts();
 	}

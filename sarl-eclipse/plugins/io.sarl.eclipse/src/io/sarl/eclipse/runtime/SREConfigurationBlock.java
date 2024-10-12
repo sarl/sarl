@@ -167,12 +167,12 @@ public class SREConfigurationBlock {
 
 	private void firePropertyChange() {
 		if (this.notify) {
-			final PropertyChangeEvent event = new PropertyChangeEvent(this,
+			final var event = new PropertyChangeEvent(this,
 					PROPERTY_SRE_CONFIGURATION, null,
 					getSelectedSRE());
-			final Object[] listeners = this.listeners.getListeners();
-			for (int i = 0; i < listeners.length; i++) {
-				final IPropertyChangeListener listener = (IPropertyChangeListener) listeners[i];
+			finalvar listeners = this.listeners.getListeners();
+			for (var i = 0; i < listeners.length; i++) {
+				final var listener = (IPropertyChangeListener) listeners[i];
 				listener.propertyChange(event);
 			}
 		}
@@ -183,13 +183,13 @@ public class SREConfigurationBlock {
 			return null;
 		}
 		if (this.projectProvider == null) {
-			final IProject project = this.project.getProject();
+			final var project = this.project.getProject();
 			if (project == null) {
 				return null;
 			}
-			final Iterator<ProjectSREProviderFactory> iterator = this.projectProviderFactories.iterator();
+			final var iterator = this.projectProviderFactories.iterator();
 			while (this.projectProvider == null && iterator.hasNext()) {
-				final ProjectSREProviderFactory factory = iterator.next();
+				final var factory = iterator.next();
 				this.projectProvider = factory.getProjectSREProvider(project);
 			}
 			if (this.projectProvider == null) {
@@ -240,7 +240,7 @@ public class SREConfigurationBlock {
 
 	private void createSystemWideSelector(Group parent) {
 		if (this.enableSystemWideSelector) {
-			final ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
+			final var wideSystemSRE = SARLRuntime.getDefaultSREInstall();
 			final String wideSystemSRELabel;
 			if (wideSystemSRE == null) {
 				wideSystemSRELabel = Messages.SREConfigurationBlock_0;
@@ -312,8 +312,8 @@ public class SREConfigurationBlock {
 		this.control = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
-		final int nbColumns = this.enableSystemWideSelector ? 3 : 2;
-		final Group group = SWTFactory.createGroup(this.control,
+		final var nbColumns = this.enableSystemWideSelector ? 3 : 2;
+		final var group = SWTFactory.createGroup(this.control,
 				MoreObjects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
 				nbColumns, 1, GridData.FILL_HORIZONTAL);
 
@@ -345,7 +345,7 @@ public class SREConfigurationBlock {
 	 */
 	public void updateExternalSREButtonLabels() {
 		if (this.enableSystemWideSelector) {
-			final ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
+			final var wideSystemSRE = SARLRuntime.getDefaultSREInstall();
 			final String wideSystemSRELabel;
 			if (wideSystemSRE == null) {
 				wideSystemSRELabel = Messages.SREConfigurationBlock_0;
@@ -356,7 +356,7 @@ public class SREConfigurationBlock {
 					Messages.SREConfigurationBlock_1, wideSystemSRELabel));
 		}
 		if (!this.projectProviderFactories.isEmpty()) {
-			final ISREInstall projectSRE = retreiveProjectSRE();
+			final var projectSRE = retreiveProjectSRE();
 			final String projectSRELabel;
 			if (projectSRE == null) {
 				projectSRELabel = Messages.SREConfigurationBlock_0;
@@ -441,29 +441,29 @@ public class SREConfigurationBlock {
 	 * @return {@code true} if the selection changed.
 	 */
 	public boolean selectSpecificSRE(ISREInstall sre) {
-		ISREInstall theSRE = sre;
+		var theSRE = sre;
 		if (theSRE == null) {
 			theSRE = SARLRuntime.getDefaultSREInstall();
 		}
 		if (theSRE != null) {
-			boolean changed = false;
-			final boolean oldNotify = this.notify;
+			var changed = false;
+			final var oldNotify = this.notify;
 			try {
 				this.notify = false;
 				if (isSystemWideDefaultSRE()) {
 					doSpecificSREButtonClick();
 					changed = true;
 				}
-				final ISREInstall oldSRE = getSelectedSRE();
+				final var oldSRE = getSelectedSRE();
 				if (oldSRE != theSRE) {
-					final int index = indexOf(theSRE);
+					final var index = indexOf(theSRE);
 					if (index >= 0) {
 						this.runtimeEnvironmentCombo.select(index);
 						changed = true;
 					}
 				}
 				if (!this.runtimeEnvironments.isEmpty()) {
-					int selection = this.runtimeEnvironmentCombo.getSelectionIndex();
+					var selection = this.runtimeEnvironmentCombo.getSelectionIndex();
 					if (selection < 0 || selection >= this.runtimeEnvironments.size()) {
 						// Ensure that there is a selected element
 						selection = indexOf(theSRE);
@@ -484,9 +484,9 @@ public class SREConfigurationBlock {
 
 	private int indexOf(ISREInstall sre) {
 		if (sre != null) {
-			final Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
-			for (int i = 0; iterator.hasNext(); ++i) {
-				final ISREInstall knownSRE = iterator.next();
+			final var iterator = this.runtimeEnvironments.iterator();
+			for (var i = 0; iterator.hasNext(); ++i) {
+				final var knownSRE = iterator.next();
 				if  (knownSRE.getId().equals(sre.getId())) {
 					return i;
 				}
@@ -496,8 +496,8 @@ public class SREConfigurationBlock {
 	}
 
 	private String[] getSRELabels() {
-		final String[] labels = new String[this.runtimeEnvironments.size()];
-		for (int i = 0; i < this.runtimeEnvironments.size(); ++i) {
+		final var labels = new String[this.runtimeEnvironments.size()];
+		for (var i = 0; i < this.runtimeEnvironments.size(); ++i) {
 			labels[i] = this.runtimeEnvironments.get(i).getName();
 		}
 		return labels;
@@ -545,7 +545,7 @@ public class SREConfigurationBlock {
 	 * @see #isSystemWideDefaultSRE()
 	 */
 	public ISREInstall getSpecificSRE() {
-		final int index = this.runtimeEnvironmentCombo.getSelectionIndex();
+		final var index = this.runtimeEnvironmentCombo.getSelectionIndex();
 		if (index >= 0 && index < this.runtimeEnvironments.size()) {
 			return this.runtimeEnvironments.get(index);
 		}
@@ -555,8 +555,8 @@ public class SREConfigurationBlock {
 	/** Update the enable state of the block.
 	 */
 	public void updateEnableState() {
-		boolean comboEnabled = !this.runtimeEnvironments.isEmpty();
-		boolean searchEnabled = true;
+		var comboEnabled = !this.runtimeEnvironments.isEmpty();
+		var searchEnabled = true;
 		if (isSystemWideDefaultSRE() || isProjectSRE()) {
 			comboEnabled = false;
 			searchEnabled = false;
@@ -572,7 +572,7 @@ public class SREConfigurationBlock {
 	public void initialize() {
 		// Initialize the SRE list
 		this.runtimeEnvironments.clear();
-		final ISREInstall[] sres = SARLRuntime.getSREInstalls();
+		final var sres = SARLRuntime.getSREInstalls();
 		Arrays.sort(sres, new Comparator<ISREInstall>() {
 			@Override
 			public int compare(ISREInstall o1, ISREInstall o2) {
@@ -580,7 +580,7 @@ public class SREConfigurationBlock {
 			}
 		});
 		final List<String> labels = new ArrayList<>(sres.length);
-		for (int i = 0; i < sres.length; ++i) {
+		for (var i = 0; i < sres.length; ++i) {
 			if (sres[i].getValidity().isOK()) {
 				this.runtimeEnvironments.add(sres[i]);
 				labels.add(sres[i].getName());
@@ -698,7 +698,7 @@ public class SREConfigurationBlock {
 
 		@Override
 		public void sreRemoved(ISREInstall sre) {
-			int index = indexOf(sre);
+			var index = indexOf(sre);
 			if (index >= 0) {
 				SREConfigurationBlock.this.runtimeEnvironments.remove(index);
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
@@ -716,11 +716,11 @@ public class SREConfigurationBlock {
 			if (!PROPERTY_NAME.equals(event.getProperty()) && !PROPERTY_MAINCLASS.equals(event.getProperty())) {
 				return;
 			}
-			final ISREInstall sre = (ISREInstall) event.getSource();
+			final var sre = (ISREInstall) event.getSource();
 			if (indexOf(sre) >= 0) {
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
 				// Update the selection
-				int index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getSelectionIndex();
+				var index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getSelectionIndex();
 				if (index < 0) {
 					index = indexOf(sre);
 					if (index < 0) {
@@ -738,11 +738,11 @@ public class SREConfigurationBlock {
 		@Override
 		public void sreAdded(ISREInstall sre) {
 			if (sre.getValidity().isOK()) {
-				final ISREInstall current = getSpecificSRE();
+				final var current = getSpecificSRE();
 				SREConfigurationBlock.this.runtimeEnvironments.add(sre);
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
 				updateEnableState();
-				int index = indexOf(current);
+				var index = indexOf(current);
 				if (index < 0
 						&& SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() > 0) {
 					index = 0;

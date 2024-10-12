@@ -50,10 +50,8 @@
 
 package io.sarl.docs.doclet2.html.types;
 
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Types;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -305,37 +303,37 @@ public class SarlTypeDocumentationGeneratorSelector implements TypeDocumentation
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isSubtypeStrict(SarlDocletEnvironment environment, TypeMirror t1, TypeMirror t2) {
-		final Types types = environment.getTypeUtils();
+		final var types = environment.getTypeUtils();
 		return types.isSubtype(t1, t2) && !types.isSameType(t1, t2);
 	}
 
 	@Override
 	public TypeDocumentationGenerator getTypeGeneratorFor(final TypeElement element, final SarlDocletEnvironment environment) {
 		if (element != null) {
-			final ElementKind kind = element.getKind();
+			final var kind = element.getKind();
 			if (kind != null) {
-				final TypeMirror elementType = element.asType();
+				final var elementType = element.asType();
 				switch (kind) {
 				case CLASS:
-					final TypeMirror agentType = getElementUtils().getSymbol(Agent.class.getName());
+					final var agentType = getElementUtils().getSymbol(Agent.class.getName());
 					if (isSubtypeStrict(environment, elementType, agentType)) {
 						return this.agentGeneratorProvider.get();
 					}
-					final TypeMirror eventType = getElementUtils().getSymbol(Event.class.getName());
+					final var eventType = getElementUtils().getSymbol(Event.class.getName());
 					if (isSubtypeStrict(environment, elementType, eventType)) {
 						return this.eventGeneratorProvider.get();
 					}
-					final TypeMirror skillType = getElementUtils().getSymbol(Skill.class.getName());
+					final var skillType = getElementUtils().getSymbol(Skill.class.getName());
 					if (isSubtypeStrict(environment, elementType, skillType)) {
 						return this.skillGeneratorProvider.get();
 					}
-					final TypeMirror behaviorType = getElementUtils().getSymbol(Behavior.class.getName());
+					final var behaviorType = getElementUtils().getSymbol(Behavior.class.getName());
 					if (isSubtypeStrict(environment, elementType, behaviorType)) {
 						return this.behaviorGeneratorProvider.get();
 					}
 					return this.classGeneratorProvider.get();
 				case INTERFACE:
-					final TypeMirror capacityType = getElementUtils().getSymbol(Capacity.class.getName());
+					final var capacityType = getElementUtils().getSymbol(Capacity.class.getName());
 					if (isSubtypeStrict(environment, elementType, capacityType)) {
 						return this.capacityGeneratorProvider.get();
 					}

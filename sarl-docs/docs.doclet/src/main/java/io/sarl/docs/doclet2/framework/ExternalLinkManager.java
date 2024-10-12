@@ -119,7 +119,7 @@ public interface ExternalLinkManager {
 	 * @return the URI, or {@code null} if there is no known external resource.
 	 */
 	default URL getExternalURL(Element element, String anchorName, ExternalLinkManagerContext context) {
-		final URI uri = getExternalLink(element, anchorName, context);
+		final var uri = getExternalLink(element, anchorName, context);
 		if (uri != null) {
 			try {
 				return uri.toURL();
@@ -137,7 +137,7 @@ public interface ExternalLinkManager {
 	 * @return the URL, or {@code null} if there is no known external resource.
 	 */
 	default URL getExternalURL(TypeElement element, HtmlFactoryContext context) {
-		final URI uri = getExternalLink(element, context);
+		final var uri = getExternalLink(element, context);
 		if (uri != null) {
 			try {
 				return uri.toURL();
@@ -155,7 +155,7 @@ public interface ExternalLinkManager {
 	 * @return the URL, or {@code null} if there is no known external resource.
 	 */
 	default URL getExternalURL(VariableElement element, HtmlFactoryContext context) {
-		final URI uri = getExternalLink(element.getEnclosingElement(), element.getSimpleName().toString(), context);
+		final var uri = getExternalLink(element.getEnclosingElement(), element.getSimpleName().toString(), context);
 		if (uri != null) {
 			try {
 				return uri.toURL();
@@ -173,7 +173,7 @@ public interface ExternalLinkManager {
 	 * @return the URL, or {@code null} if there is no known external resource.
 	 */
 	default URL getExternalURL(ExecutableElement element, HtmlFactoryContext context) {
-		final URI uri = getExternalLink(element.getEnclosingElement(), element.getSimpleName().toString(), context);
+		final var uri = getExternalLink(element.getEnclosingElement(), element.getSimpleName().toString(), context);
 		if (uri != null) {
 			try {
 				return uri.toURL();

@@ -51,7 +51,6 @@
 package io.sarl.docs.doclet2.html.taglets.block;
 
 import java.text.MessageFormat;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,44 +97,42 @@ public class DeprecatedTaglet extends AbstractSarlTaglet {
 	
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		final Deque<Element> candidates = new LinkedList<>();
+		final var candidates = new LinkedList<Element>();
 		candidates.addLast(element);
 		while (!candidates.isEmpty()) {
-			final Element current = candidates.removeFirst();
-			final boolean deprecated = referenceExtractor.getContext().getEnvironment().getElementUtils().isDeprecated(current);
+			final var current = candidates.removeFirst();
+			final var deprecated = referenceExtractor.getContext().getEnvironment().getElementUtils().isDeprecated(current);
 			if (deprecated) {
-				final boolean inEnclosing = current != element;
+				final var inEnclosing = current != element;
 				if (inEnclosing) {
-					final org.jsoup.nodes.Element prefix = getHtmlFactory().createSpanTag(parent, getTextCssStyle(style));
+					final var prefix = getHtmlFactory().createSpanTag(parent, getTextCssStyle(style));
 					prefix.appendText(MessageFormat.format(Messages.DeprecatedTaglet_0, element.getSimpleName()));
 					getHtmlFactory().createSecableSpace(parent);
 				}
 			} else {
-				final Element container = current.getEnclosingElement();
+				final var container = current.getEnclosingElement();
 				if (container != null) {
 					candidates.addLast(container);
 				}
 			}
 		}
-		boolean changed = false;
-		for (final DocTree tr : tags) {
+		var changed = false;
+		for (final var tr : tags) {
 			if (changed) {
 				if (!parent.html().toString().endsWith(".")) { //$NON-NLS-1$
 					parent.appendText("."); //$NON-NLS-1$
 				}
 				getHtmlFactory().createSecableSpace(parent);
 			}
-			if (tr instanceof DeprecatedTree) {
-				final DeprecatedTree dt = (DeprecatedTree) tr;
+			if (tr instanceof DeprecatedTree dt) {
 		    	changed = appendCommentTextWithSpace(parent, dt.getBody(), element, getTextCssStyle(style), referenceExtractor.getContext())
 		    			|| changed;
-			} else if (tr instanceof UnknownBlockTagTree) {
-				final UnknownBlockTagTree ubtt = (UnknownBlockTagTree) tr;
+			} else if (tr instanceof UnknownBlockTagTree ubtt) {
 		    	changed = appendCommentTextWithSpace(parent, ubtt.getContent(), element, getTextCssStyle(style), referenceExtractor.getContext())
 		    			|| changed;
 			}
 		}
-		final boolean deprecated0 = referenceExtractor.getContext().getEnvironment().getElementUtils().isDeprecated(element);
+		final var deprecated0 = referenceExtractor.getContext().getEnvironment().getElementUtils().isDeprecated(element);
 		if (!deprecated0) {
 			referenceExtractor.getContext().getReporter().print(Kind.WARNING, MessageFormat.format(Messages.DeprecatedTaglet_1, 
 					getElementUtils().getFullyQualifiedName(element, true), Deprecated.class.getName()));

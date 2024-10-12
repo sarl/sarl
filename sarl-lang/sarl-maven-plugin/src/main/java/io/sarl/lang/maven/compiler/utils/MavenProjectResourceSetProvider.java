@@ -51,7 +51,7 @@ public class MavenProjectResourceSetProvider implements Provider<ResourceSet> {
 
 	@Override
 	public ResourceSet get() {
-		ResourceSet rs = this.resourceSet;
+		var rs = this.resourceSet;
 		if (rs == null) {
 			rs = new XtextResourceSet();
 			MavenProjectAdapter.install(rs, this.project);

@@ -81,7 +81,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 			if (JavaRuntime.isModularProject(this.project)) {
 				return true;
 			}
-			IVMInstall vm = JavaRuntime.getVMInstall(this.project);
+			var vm = JavaRuntime.getVMInstall(this.project);
 			if (vm == null) {
 				vm = JavaRuntime.getDefaultVMInstall();
 			}
@@ -97,7 +97,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	 * @return the bundle symbolic names of the dependencies.
 	 */
 	public final Set<String> getBundleDependencies() {
-		final Set<String> bundles = new TreeSet<>();
+		final var bundles = new TreeSet<String>();
 		updateBundleList(bundles);
 		return bundles;
 	}
@@ -114,7 +114,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	@Override
 	public final synchronized IClasspathEntry[] getClasspathEntries() {
 		if (this.entries == null) {
-			final Set<IClasspathEntry> newEntries = new TreeSet<>(CLASSPATH_ENTRY_COMPARATOR);
+			final var newEntries = new TreeSet<IClasspathEntry>(CLASSPATH_ENTRY_COMPARATOR);
 			updateClasspathEntries(newEntries);
 			this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
 		}

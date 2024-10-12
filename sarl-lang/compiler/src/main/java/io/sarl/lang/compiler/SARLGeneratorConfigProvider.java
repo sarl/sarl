@@ -24,7 +24,6 @@ package io.sarl.lang.compiler;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.util.JavaVersion;
@@ -50,16 +49,15 @@ public class SARLGeneratorConfigProvider extends GeneratorConfigProvider {
 	@Override
 	public GeneratorConfig get(EObject context) {
 		// Search for the Eclipse configuration
-		final ResourceSet resourceSet = EcoreUtil2.getResourceSet(context);
+		final var resourceSet = EcoreUtil2.getResourceSet(context);
 		if (resourceSet != null) {
-			final GeneratorConfigProvider.GeneratorConfigAdapter adapter =
-					GeneratorConfigProvider.GeneratorConfigAdapter.findInEmfObject(resourceSet);
+			final var adapter = GeneratorConfigProvider.GeneratorConfigAdapter.findInEmfObject(resourceSet);
 			if (adapter != null && adapter.getLanguage2GeneratorConfig().containsKey(this.languageId)) {
 				return adapter.getLanguage2GeneratorConfig().get(this.languageId);
 			}
 		}
 		// Create the default configuration
-		final GeneratorConfig config = createDefaultGeneratorConfig();
+		final var config = createDefaultGeneratorConfig();
 		return config;
 	}
 
@@ -68,7 +66,7 @@ public class SARLGeneratorConfigProvider extends GeneratorConfigProvider {
 	 * @return the configuration.
 	 */
 	protected GeneratorConfig createDefaultGeneratorConfig() {
-		final GeneratorConfig config = new GeneratorConfig();
+		final var config = new GeneratorConfig();
 		if (this.defaultVersion == null) {
 			this.defaultVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version")); //$NON-NLS-1$
 			if (this.defaultVersion != null) {

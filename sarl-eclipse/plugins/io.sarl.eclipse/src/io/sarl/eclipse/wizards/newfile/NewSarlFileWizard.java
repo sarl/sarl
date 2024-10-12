@@ -79,8 +79,8 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		final IFile file = this.pageOne.createNewFile();
-		final boolean result = file != null;
+		final var file = this.pageOne.createNewFile();
+		final var result = file != null;
 
 		if (result) {
 			try {

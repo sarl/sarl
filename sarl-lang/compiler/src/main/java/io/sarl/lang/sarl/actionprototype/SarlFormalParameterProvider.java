@@ -72,9 +72,9 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public JvmTypeReference getFormalParameterTypeReference(int position, boolean isVarargs) {
-		final XtendParameter param = this.parameters.get(position);
+		final var param = this.parameters.get(position);
 		assert param != null;
-		JvmTypeReference type = param.getParameterType();
+		var type = param.getParameterType();
 		if (type != null && isVarargs) {
 			type = this.references.createArrayType(type);
 		}
@@ -83,9 +83,9 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
-		final XtendParameter parameter = this.parameters.get(position);
-		if (parameter instanceof SarlFormalParameter) {
-			return ((SarlFormalParameter) parameter).getDefaultValue() != null;
+		final var parameter = this.parameters.get(position);
+		if (parameter instanceof SarlFormalParameter cvalue) {
+			return cvalue.getDefaultValue() != null;
 		}
 		return false;
 	}
@@ -99,9 +99,9 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public XExpression getFormalParameterDefaultValue(int position) {
-		final XtendParameter parameter = this.parameters.get(position);
-		if (parameter instanceof SarlFormalParameter) {
-			return ((SarlFormalParameter) parameter).getDefaultValue();
+		final var parameter = this.parameters.get(position);
+		if (parameter instanceof SarlFormalParameter cvalue) {
+			return cvalue.getDefaultValue();
 		}
 		return null;
 	}

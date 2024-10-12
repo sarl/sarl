@@ -53,15 +53,15 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		final String editorArea = layout.getEditorArea();
+		final var editorArea = layout.getEditorArea();
 
-		final IFolderLayout projectManagementFolder = layout.createFolder("left", IPageLayout.LEFT, //$NON-NLS-1$
+		final var projectManagementFolder = layout.createFolder("left", IPageLayout.LEFT, //$NON-NLS-1$
 				LEFT_PANEL_RATIO, editorArea);
 		projectManagementFolder.addView(SARLPackageExplorerPart.ID_PACKAGES);
 		projectManagementFolder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		projectManagementFolder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
 
-		final IFolderLayout outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, //$NON-NLS-1$
+		final var outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, //$NON-NLS-1$
 				BOTTOM_PANEL_RATIO, editorArea);
 		outputfolder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		outputfolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
@@ -73,7 +73,7 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		outputfolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 		outputfolder.addPlaceholder(JavaUI.ID_PACKAGES);
 
-		final IFolderLayout outlineFolder = layout.createFolder("right", IPageLayout.RIGHT, //$NON-NLS-1$
+		final var outlineFolder = layout.createFolder("right", IPageLayout.RIGHT, //$NON-NLS-1$
 				RIGHT_PANEL_RATIO, editorArea);
 		outlineFolder.addView(IPageLayout.ID_OUTLINE);
 

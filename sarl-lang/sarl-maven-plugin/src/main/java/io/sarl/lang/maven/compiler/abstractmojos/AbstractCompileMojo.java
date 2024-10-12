@@ -27,8 +27,6 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -221,7 +219,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	@Override
 	protected File getTempDirectory() {
 		if (this.tempDirectory == null) {
-			final File targetDir = new File(getProject().getBuild().getDirectory());
+			final var targetDir = new File(getProject().getBuild().getDirectory());
 			return makeAbsolute(new File(targetDir, STUB_FOLDER));
 		}
 		return makeAbsolute(this.tempDirectory);
@@ -234,7 +232,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 				this.javaCompilerInstance = JavaCompiler.valueOfCaseInsensitive(this.javaCompiler);
 				if (this.javaCompilerInstance == null) {
 					String values = null;
-					for (final JavaCompiler comp : JavaCompiler.values()) {
+					for (final var comp : JavaCompiler.values()) {
 						if (values == null) {
 							values = comp.getNameInMavenConfiguration();
 						} else {
@@ -260,7 +258,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 				this.optimizationInstance = OptimizationLevel.valueOfCaseInsensitive(this.optimization);
 				if (this.optimizationInstance == null) {
 					String values = null;
-					for (final OptimizationLevel lvl : OptimizationLevel.values()) {
+					for (final var lvl : OptimizationLevel.values()) {
 						if (values == null) {
 							values = lvl.getCaseInsensitiveName();
 						} else {
@@ -339,7 +337,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	protected void ensureDefaultParameterValues() {
 		super.ensureDefaultParameterValues();
 		if (Strings.isNullOrEmpty(this.encoding)) {
-			final Properties properties = this.mavenHelper.getSession().getCurrentProject().getProperties();
+			final var properties = this.mavenHelper.getSession().getCurrentProject().getProperties();
 			this.encoding = properties.getProperty("project.build.sourceEncoding", null); //$NON-NLS-1$
 			if (Strings.isNullOrEmpty(this.encoding)) {
 				this.encoding = Charset.defaultCharset().name();
@@ -359,21 +357,21 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	}
 
 	private void ensureSARLVersions() throws MojoExecutionException, MojoFailureException {
-		final String compilerVersionString = this.mavenHelper.getConfig("plugin.version"); //$NON-NLS-1$
-		final ArtifactVersion compilerVersion = new DefaultArtifactVersion(compilerVersionString);
-		final ArtifactVersion maxCompilerVersion = new DefaultArtifactVersion(
+		final var compilerVersionString = this.mavenHelper.getConfig("plugin.version"); //$NON-NLS-1$
+		final var compilerVersion = new DefaultArtifactVersion(compilerVersionString);
+		final var maxCompilerVersion = new DefaultArtifactVersion(
 				compilerVersion.getMajorVersion() + "." //$NON-NLS-1$
 				+ (compilerVersion.getMinorVersion() + 1)
 				+ ".0"); //$NON-NLS-1$
 		getLogger().info(MessageFormat.format(Messages.AbstractCompileMojo_5, compilerVersionString, maxCompilerVersion));
-		final StringBuilder classpath = new StringBuilder();
-		final Set<String> foundVersions = findSARLLibrary(compilerVersion, maxCompilerVersion, classpath,
+		final var classpath = new StringBuilder();
+		final var foundVersions = findSARLLibrary(compilerVersion, maxCompilerVersion, classpath,
 				isTychoEnvironment());
 		if (foundVersions.isEmpty()) {
 			throw new MojoFailureException(MessageFormat.format(Messages.AbstractCompileMojo_6, classpath.toString()));
 		}
-		final StringBuilder versions = new StringBuilder();
-		for (final String version : foundVersions) {
+		final var versions = new StringBuilder();
+		for (final var version : foundVersions) {
 			if (versions.length() > 0) {
 				versions.append(", "); //$NON-NLS-1$
 			}
@@ -388,12 +386,12 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 
 	private Set<String> findSARLLibrary(ArtifactVersion compilerVersion, ArtifactVersion maxCompilerVersion,
 			StringBuilder classpath, boolean enableTycho) throws MojoExecutionException, MojoFailureException {
-		final String sarlLibGroupId = this.mavenHelper.getConfig("sarl-lib.groupId"); //$NON-NLS-1$
-		final String sarlLibArtifactId = this.mavenHelper.getConfig("sarl-lib.artifactId"); //$NON-NLS-1$
-		final String sarlLibGroupIdTycho = "p2.eclipse-plugin"; //$NON-NLS-1$
-		final String sarlLibArtifactIdTycho = this.mavenHelper.getConfig("sarl-lib.osgiBundleId"); //$NON-NLS-1$
-		final Set<String> foundVersions = new TreeSet<>();
-		for (final Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
+		final var sarlLibGroupId = this.mavenHelper.getConfig("sarl-lib.groupId"); //$NON-NLS-1$
+		final var sarlLibArtifactId = this.mavenHelper.getConfig("sarl-lib.artifactId"); //$NON-NLS-1$
+		final var sarlLibGroupIdTycho = "p2.eclipse-plugin"; //$NON-NLS-1$
+		final var sarlLibArtifactIdTycho = this.mavenHelper.getConfig("sarl-lib.osgiBundleId"); //$NON-NLS-1$
+		final var foundVersions = new TreeSet<String>();
+		for (final var dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
 			getLogger().debug(MessageFormat.format(Messages.AbstractCompileMojo_9, dep.getGroupId(), dep.getArtifactId(), dep.getVersion()));
 			if (classpath.length() > 0) {
 				classpath.append(":"); //$NON-NLS-1$
@@ -414,7 +412,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 				aid = sarlLibArtifactIdTycho;
 			}
 			if (gid != null && aid != null) {
-				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
+				final var dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
 				if (!containsVersion(dependencyVersion, compilerVersion, maxCompilerVersion)) {
 					final String shortMessage = MessageFormat.format(Messages.AbstractCompileMojo_10,
 							gid, aid, dependencyVersion.toString(),
@@ -431,38 +429,38 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	}
 
 	private void validateDependencyVersions() throws MojoExecutionException, MojoFailureException {
-		final Map<String, Artifact> projectDependencyTree = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
+		final var projectDependencyTree = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
 		validateSarlSdk(projectDependencyTree);
 		validateSreOnClasspath(projectDependencyTree);
 	}
 
 	private void validateSarlSdk(Map<String, Artifact> projectDependencyTree) throws MojoExecutionException, MojoFailureException {
 		getLogger().info(Messages.AbstractCompileMojo_12);
-		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
-		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
+		final var sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
+		final var sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
 
-		boolean hasError = false;
-		final String sdkArtifactKey = ArtifactUtils.versionlessKey(sarlSdkGroupId, sarlSdkArtifactId);
-		final Artifact sdkArtifact = projectDependencyTree.get(sdkArtifactKey);
+		var hasError = false;
+		final var sdkArtifactKey = ArtifactUtils.versionlessKey(sarlSdkGroupId, sarlSdkArtifactId);
+		final var sdkArtifact = projectDependencyTree.get(sdkArtifactKey);
 		if (sdkArtifact != null) {
-			final Map<String, ArtifactVersion> pluginDependencyTree = new TreeMap<>();
-			final Set<Artifact> pluginScopeDependencies = this.mavenHelper.resolveDependencies(sdkArtifactKey, false);
-			for (final Artifact pluginScopeDependency : pluginScopeDependencies) {
-				final ArtifactVersion pluginScopeDependencyVersion = new DefaultArtifactVersion(pluginScopeDependency.getVersion());
-				final String pluginScopeDependencyKey = ArtifactUtils.versionlessKey(pluginScopeDependency);
-				final ArtifactVersion currentVersion = pluginDependencyTree.get(pluginScopeDependencyKey);
+			final var pluginDependencyTree = new TreeMap<String, ArtifactVersion>();
+			final var pluginScopeDependencies = this.mavenHelper.resolveDependencies(sdkArtifactKey, false);
+			for (final var pluginScopeDependency : pluginScopeDependencies) {
+				final var pluginScopeDependencyVersion = new DefaultArtifactVersion(pluginScopeDependency.getVersion());
+				final var pluginScopeDependencyKey = ArtifactUtils.versionlessKey(pluginScopeDependency);
+				final var currentVersion = pluginDependencyTree.get(pluginScopeDependencyKey);
 				if (currentVersion == null || pluginScopeDependencyVersion.compareTo(currentVersion) > 0) {
 					pluginDependencyTree.put(pluginScopeDependencyKey, pluginScopeDependencyVersion);
 				}
 			}
 
-			for (final Entry<String, Artifact> projectDependency : projectDependencyTree.entrySet()) {
-				final ArtifactVersion pluginDependencyArtifactVersion = pluginDependencyTree.get(projectDependency.getKey());
+			for (final var projectDependency : projectDependencyTree.entrySet()) {
+				final var pluginDependencyArtifactVersion = pluginDependencyTree.get(projectDependency.getKey());
 				if (pluginDependencyArtifactVersion != null) {
-					final Artifact projectArtifact = projectDependency.getValue();
-					final ArtifactVersion projectDependencyVersion = new DefaultArtifactVersion(projectArtifact.getVersion());
+					final var projectArtifact = projectDependency.getValue();
+					final var projectDependencyVersion = new DefaultArtifactVersion(projectArtifact.getVersion());
 					if (Utils.compareMajorMinorVersions(pluginDependencyArtifactVersion, projectDependencyVersion) != 0) {
-						final String message = MessageFormat.format(Messages.AbstractCompileMojo_13,
+						final var message = MessageFormat.format(Messages.AbstractCompileMojo_13,
 								projectArtifact.getGroupId(), projectArtifact.getArtifactId(),
 								pluginDependencyArtifactVersion.toString(), projectDependencyVersion.toString());
 						getLogger().error(message);
@@ -480,15 +478,15 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	private void validateSreOnClasspath(Map<String, Artifact> projectDependencyTree) {
 		if (this.verifySREInDependencies) {
 			getLogger().info(Messages.AbstractCompileMojo_15);
-			for (final Artifact artifact : projectDependencyTree.values()) {
-				final File file = artifact.getFile();
-				boolean found = false;
+			for (final var artifact : projectDependencyTree.values()) {
+				final var file = artifact.getFile();
+				var found = false;
 				if (file != null) {
 					if (file.isDirectory()) {
-						final File sreServiceFile = FileSystem.join(file, METAINF_FOLDER_NAME, METAINF_SERVICE_FOLDER_NAME, SREBootstrap.class.getName());
+						final var sreServiceFile = FileSystem.join(file, METAINF_FOLDER_NAME, METAINF_SERVICE_FOLDER_NAME, SREBootstrap.class.getName());
 						found = sreServiceFile.exists();
 					} else {
-						try (final JarFile jarFile = new JarFile(file)) {
+						try (final var jarFile = new JarFile(file)) {
 							found = jarFile.getEntry(METAINF_FOLDER_NAME + JAR_SEPARATOR + METAINF_SERVICE_FOLDER_NAME + JAR_SEPARATOR + SREBootstrap.class.getName()) != null;
 						} catch (IOException ex) {
 							// Ignore this error. Assume the given file is not a valid SRE implementation

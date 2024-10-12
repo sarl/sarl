@@ -48,7 +48,7 @@ public class SARLJvmTypeReferencesValidator extends JvmTypeReferencesValidator {
 
 	@Override
 	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
-		final IssueSeverities severities = super.getIssueSeverities(context, eObject);
+		final var severities = super.getIssueSeverities(context, eObject);
 		return this.warningSuppressor.getIssueSeverities(context, eObject, severities);
 	}
 

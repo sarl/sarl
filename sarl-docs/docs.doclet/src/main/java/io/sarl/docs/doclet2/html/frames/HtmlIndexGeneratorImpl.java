@@ -66,8 +66,6 @@ import java.util.Collection;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.DocumentType;
 import org.jsoup.nodes.Element;
 
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
@@ -168,16 +166,16 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 		getReporter().print(Kind.NOTE, Messages.HtmlIndexGeneratorImpl_0);
 		computePaths(getPathBuilder().htmlIndexFile(), true);
 		//
-		final Path outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
+		final var outputPath = getDocletOptions().getOutputDirectory().resolve(getRelativePath());
 		//
-		final DocumentType docType = getHtmlFactory().createDocumentType(
+		final var docType = getHtmlFactory().createDocumentType(
 				"html", //$NON-NLS-1$
 				"-//W3C//DTD XHTML 1.0 Frameset//EN", //$NON-NLS-1$
 				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"); //$NON-NLS-1$
-		final Document document = getHtmlFactory().createDocument(docType, cliOptions.getCharset(), this);
-		final String title = getDocumentTitleFor(null);
+		final var document = getHtmlFactory().createDocument(docType, cliOptions.getCharset(), this);
+		final var title = getDocumentTitleFor(null);
 		setLastTitle(title);
-		final Element htmlTag = getHtmlAccessor().getRootElement(document);
+		final var htmlTag = getHtmlAccessor().getRootElement(document);
 		//
 		generateContentHead(htmlTag);
 		generateContentBody(htmlTag);
@@ -193,9 +191,9 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 	 * @param content the content.
 	 */
 	protected void generateContentHead(Element content) {
-		final Element head = getHtmlFactory().createHeadTag(content);
+		final var head = getHtmlFactory().createHeadTag(content);
 		getHtmlFactory().createTitleTag(head, getDocumentationTitle());
-		final Element script = getHtmlFactory().createScriptTag(head, "text/javascript"); //$NON-NLS-1$
+		final var script = getHtmlFactory().createScriptTag(head, "text/javascript"); //$NON-NLS-1$
 		script.append(SCRIPT_0);
 	}
 
@@ -204,45 +202,45 @@ public class HtmlIndexGeneratorImpl extends AbstractDocumentationGenerator imple
 	 * @param content the content.
 	 */
 	protected void generateContentBody(Element content) {
-		final Element bodyTag = getHtmlFactory().createBodyTag(content);
+		final var bodyTag = getHtmlFactory().createBodyTag(content);
 		bodyTag.remove();
 		//
-		final Element docFrame = getHtmlFactory().createFramesetTag(content);
+		final var docFrame = getHtmlFactory().createFramesetTag(content);
 		docFrame.attr(COLS_ATTR, "20%,80%"); //$NON-NLS-1$
 		docFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_2);
 		docFrame.attr(ONLOAD_ATTR, "top.loadFrames()"); //$NON-NLS-1$
 		//
-		final Element leftFrames = getHtmlFactory().createFramesetTag(docFrame);
+		final var leftFrames = getHtmlFactory().createFramesetTag(docFrame);
 		leftFrames.attr(ROWS_ATTR, "30%,70%"); //$NON-NLS-1$
 		leftFrames.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_3);
 		leftFrames.attr(ONLOAD_ATTR, "top.loadFrames()"); //$NON-NLS-1$
 		//
-		final Element leftOverviewFrame = getHtmlFactory().createFrameTag(leftFrames);
+		final var leftOverviewFrame = getHtmlFactory().createFrameTag(leftFrames);
 		Path path = getPathToRoot().resolve(getPathBuilder().overviewFrame());
 		leftOverviewFrame.attr(SRC_ATTR, getHtmlFactory().path2UrlPath(path));
 		leftOverviewFrame.attr(NAME_ATTR, "packageListFrame"); //$NON-NLS-1$
 		leftOverviewFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_7);
 		//
-		final Element allClassFrame = getHtmlFactory().createFrameTag(leftFrames);
+		final var allClassFrame = getHtmlFactory().createFrameTag(leftFrames);
 		path = getPathToRoot().resolve(getPathBuilder().allTypesFrame());
 		allClassFrame.attr(SRC_ATTR, getHtmlFactory().path2UrlPath(path));
 		allClassFrame.attr(NAME_ATTR, MAIN_PACKAGE_FRAME_NAME);
 		allClassFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_8);
 		//
-		final Element typeFrame = getHtmlFactory().createFrameTag(docFrame);
+		final var typeFrame = getHtmlFactory().createFrameTag(docFrame);
 		path = getPathToRoot().resolve(getPathBuilder().overviewSummary());
 		typeFrame.attr(SRC_ATTR, getHtmlFactory().path2UrlPath(path));
 		typeFrame.attr(NAME_ATTR, MAIN_TYPE_FRAME_NAME);
 		typeFrame.attr(TITLE_ATTR, Messages.HtmlIndexGeneratorImpl_9);
 		typeFrame.attr(SCROLLING_ATTR, BOOLEAN_YES_ATTR_VALUE);
 		//
-		final Element noframes = getHtmlFactory().createNoFramesTag(docFrame);
-		final Element noscript = getHtmlFactory().createNoScriptTag(noframes);
-		final Element noscriptDiv = getHtmlFactory().createDivTag(noscript, null);
+		final var noframes = getHtmlFactory().createNoFramesTag(docFrame);
+		final var noscript = getHtmlFactory().createNoScriptTag(noframes);
+		final var noscriptDiv = getHtmlFactory().createDivTag(noscript, null);
 		noscriptDiv.appendText(Messages.HtmlIndexGeneratorImpl_4);
-		final Element title = getHtmlFactory().createDivTag(noframes, null);
+		final var title = getHtmlFactory().createDivTag(noframes, null);
 		title.appendText(Messages.HtmlIndexGeneratorImpl_5);
-		final Element alert = getHtmlFactory().createDivTag(noframes, null);
+		final var alert = getHtmlFactory().createDivTag(noframes, null);
 		alert.append(Messages.HtmlIndexGeneratorImpl_6);
 	}
 

@@ -70,11 +70,9 @@ import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.TITLE_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.VERSION_OPTION;
 import static io.sarl.docs.doclet2.html.SarlHtmlDocletOptions.WINDOWTITLE_OPTION;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -85,7 +83,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -108,9 +105,7 @@ import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.docs.doclet2.framework.AbstractDoclet;
-import io.sarl.docs.doclet2.framework.CustomTag;
 import io.sarl.docs.doclet2.framework.CustomTagLocation;
-import io.sarl.docs.doclet2.framework.CustomTagParser;
 import io.sarl.docs.doclet2.framework.ElementFilter;
 import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
 import io.sarl.docs.doclet2.framework.SarlTagletFactory;
@@ -132,9 +127,7 @@ import io.sarl.docs.doclet2.html.summaries.PackageSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.PackageTreeSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.TreeSummaryGenerator;
 import io.sarl.docs.doclet2.html.taglets.block.CustomTaglet;
-import io.sarl.docs.doclet2.html.types.TypeDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.TypeDocumentationGeneratorSelector;
-
 /** SARL Doclet that is generated the HTML documentation.
  *
  * <p>This version of the SARL doc let is an adaptation of the
@@ -256,9 +249,9 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			new Option(DOCTITLE_OPTION, Messages.SarlHtmlDoclet_37, Messages.SarlHtmlDoclet_23) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
-					final StringBuilder b = new StringBuilder();
-					boolean first = true;
-					for (final String s : arguments) {
+					final var b = new StringBuilder();
+					var first = true;
+					for (final var s : arguments) {
 						if (first) {
 							first = false;
 						} else {
@@ -281,11 +274,11 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					if (arguments.size() >= 2) {
-						final String heading = arguments.get(0);
+						final var heading = arguments.get(0);
 						if (!Strings.isEmpty(heading)) {
-							final String patterns = arguments.get(1);
+							final var patterns = arguments.get(1);
 							if (!Strings.isEmpty(patterns)) {
-								final String[] groupPatterns = patterns.split(Pattern.quote(":")); //$NON-NLS-1$
+								final var groupPatterns = patterns.split(Pattern.quote(":")); //$NON-NLS-1$
 								if (groupPatterns != null && groupPatterns.length > 0) {
 									getDocletOptions().addGroup(heading, groupPatterns);
 									return true;
@@ -314,9 +307,9 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 				@Override
 				public boolean process(String option, List<String> arguments) {
 					try {
-						final URL url = new URL(arguments.get(0));
+						final var url = new URI(arguments.get(0)).toURL();
 						getExternalLinkManager().addExternalLink(url);
-					} catch (MalformedURLException ex) {
+					} catch (Exception ex) {
 						throw new RuntimeException(ex);
 					}
 					return true;				
@@ -339,7 +332,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			new Option(TAG_OPTION, Messages.SarlHtmlDoclet_8, Messages.SarlHtmlDoclet_9) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
-					final String tagName = arguments.get(0);
+					final var tagName = arguments.get(0);
 					if (!Strings.isEmpty(tagName)) {
 						getDocletOptions().addUserTag(tagName);
 					}
@@ -349,13 +342,13 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			new Option(TAGLET_OPTION, Messages.SarlHtmlDoclet_13, Messages.SarlHtmlDoclet_14) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
-					final String classname = arguments.get(0);
+					final var classname = arguments.get(0);
 					if (!Strings.isEmpty(classname)) {
 						try {
-							final Class<?> tagletType = Class.forName(classname);
+							final var tagletType = Class.forName(classname);
 							if (Taglet.class.isAssignableFrom(tagletType)) {
-								final Class<? extends Taglet> tagletTypeType = tagletType.asSubclass(Taglet.class);
-								final Taglet taglet = SarlHtmlDoclet.this.getSarlTagletFactory().newTaglet(tagletTypeType);
+								final var tagletTypeType = tagletType.asSubclass(Taglet.class);
+								final var taglet = SarlHtmlDoclet.this.getSarlTagletFactory().newTaglet(tagletTypeType);
 								if (taglet != null) {
 									SarlHtmlDoclet.this.getTagletManager().addTaglet(taglet, false);
 								} else {
@@ -376,9 +369,9 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			new Option(TITLE_OPTION, Messages.SarlHtmlDoclet_22, Messages.SarlHtmlDoclet_23) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
-					final StringBuilder b = new StringBuilder();
-					boolean first = true;
-					for (final String s : arguments) {
+					final var b = new StringBuilder();
+					var first = true;
+					for (final var s : arguments) {
 						if (first) {
 							first = false;
 						} else {
@@ -407,9 +400,9 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			new Option(WINDOWTITLE_OPTION, Messages.SarlHtmlDoclet_37, Messages.SarlHtmlDoclet_23) {
 				@Override
 				public boolean process(String option, List<String> arguments) {
-					final StringBuilder b = new StringBuilder();
-					boolean first = true;
-					for (final String s : arguments) {
+					final var b = new StringBuilder();
+					var first = true;
+					for (final var s : arguments) {
 						if (first) {
 							first = false;
 						} else {
@@ -816,8 +809,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	/** Register the registered taglets in the task manager.
 	 */
 	protected void registerTagletsToTagletManager() {
-		for (final Provider<? extends Taglet> tagletProvider : getRegisteredTaglets()) {
-			final Taglet taglet = tagletProvider.get();
+		for (final var tagletProvider : getRegisteredTaglets()) {
+			final var taglet = tagletProvider.get();
 			getTagletManager().addTaglet(taglet, false);
 		}
 	}
@@ -825,11 +818,11 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	/** Register the custom tags in the task manager.
 	 */
 	protected void registerCustomTagsToTagletManager() {
-		final CustomTagParser parser = getCustomTagParser();
-		for (final String userTag : getDocletOptions().getUserTags()) {
-			final CustomTag ctag = parser.parse(userTag, CustomTagLocation.EVERYWHERE, null);
+		final var parser = getCustomTagParser();
+		for (final var userTag : getDocletOptions().getUserTags()) {
+			final var ctag = parser.parse(userTag, CustomTagLocation.EVERYWHERE, null);
 			if (ctag != null) {
-				final CustomTaglet ctaglet = new CustomTaglet(ctag);
+				final var ctaglet = new CustomTaglet(ctag);
 				getCustomTagletInjector().injectMembers(ctaglet);
 				getTagletManager().addTaglet(ctaglet, false);
 			}
@@ -847,12 +840,12 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	protected boolean generate(SarlDocletEnvironment environment) throws Exception {
 		// Delete existing output folder.
 		if (!getDocletOptions().isFakeOutput()) {
-			final Path outputDir = getOutputDirectory();
+			final var outputDir = getOutputDirectory();
 			getReporter().print(Kind.NOTE, MessageFormat.format(Messages.SarlHtmlDoclet_4, outputDir.toString()));
 			Files.cleanFolder(outputDir.toFile(), null, false, false);
 		}
 		// Build the list of types
-		Iterable<? extends TypeElement> typeElements = getElementFilter().extractTypeElements(environment);
+		var typeElements = getElementFilter().extractTypeElements(environment);
 		// Build data structures
 		buildTypeRepository(typeElements, environment);
 		buildTypeHierarchy(typeElements, environment);
@@ -886,7 +879,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateIndex(Iterable<? extends TypeElement> typeElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getIndexGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -897,7 +890,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateRawModuleList(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getRawModuleListGenerator().generate(environment, opts, getReporter());
 	}
 
@@ -907,7 +900,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateRawPackageList(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getRawPackageListGenerator().generate(environment, opts, getReporter());
 	}
 
@@ -917,7 +910,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateHtmlIndex(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getHtmlIndexGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -928,7 +921,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateOverviewFrame(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getOverviewFrameGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -939,7 +932,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateAllTypesFrame(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getAllTypesFrameGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -951,7 +944,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateOverviewSummary(Iterable<? extends TypeElement> typeElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getOverviewSummaryGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -963,7 +956,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 */
 	protected void generateDeprecatedList(SarlDocletEnvironment environment) throws Exception {
 		if (getDocletOptions().isDeprecatedFeaturesEnabled()) {
-			final DocletOptions opts = getDocletOptions();
+			final var opts = getDocletOptions();
 			getDeprecatedListGenerator().generate(getMapOfCssSheets().values(), 
 					getMapOfJsScripts().values(), environment, opts, getReporter());
 		}
@@ -975,7 +968,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateTreeSummary(SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getTreeSummaryGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -987,8 +980,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generatePackageTreeSummary(Iterable<? extends PackageElement> packageElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
-		for (final PackageElement packageElement : packageElements) {
+		final var opts = getDocletOptions();
+		for (final var packageElement : packageElements) {
 			getPackageTreeSummaryGenerator().generate(packageElement, getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 		}
@@ -1001,7 +994,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateAllTypesSummary(Iterable<? extends TypeElement> typeElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
+		final var opts = getDocletOptions();
 		getAllTypeSummaryGenerator().generate(getMapOfCssSheets().values(), 
 				getMapOfJsScripts().values(), environment, opts, getReporter());
 	}
@@ -1013,8 +1006,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateModuleSummary(Iterable<? extends ModuleElement> moduleElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
-		for (final ModuleElement moduleElement : moduleElements) {
+		final var opts = getDocletOptions();
+		for (final var moduleElement : moduleElements) {
 			getModuleSummaryGenerator().generate(moduleElement, getMapOfCssSheets().values(), 
 					getMapOfJsScripts().values(), environment, opts, getReporter());
 		}
@@ -1027,8 +1020,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generatePackageSummary(Iterable<? extends PackageElement> packageElements, SarlDocletEnvironment environment) throws Exception {
-		final DocletOptions opts = getDocletOptions();
-		for (final PackageElement packageElement : packageElements) {
+		final var opts = getDocletOptions();
+		for (final var packageElement : packageElements) {
 			getPackageSummaryGenerator().generate(packageElement, getMapOfCssSheets().values(), 
 					getMapOfJsScripts().values(), environment, opts, getReporter());
 		}
@@ -1043,7 +1036,7 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	@SuppressWarnings("static-method")
 	protected void findLocalResource(String basename, Consumer<URL> resourceCallback) throws Exception {
 		assert resourceCallback != null;
-		final URL url = Resources.getResource(SarlHtmlDoclet.class, basename);
+		final var url = Resources.getResource(SarlHtmlDoclet.class, basename);
 		if (url != null) {
 			resourceCallback.accept(url);
 		} else {
@@ -1052,8 +1045,8 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	}
 
 	private static String basename(URL url) {
-		String bn = url.getPath();
-		final int idx = bn.lastIndexOf('/');
+		var bn = url.getPath();
+		final var idx = bn.lastIndexOf('/');
 		if (idx >= 0) {
 			return bn.substring(idx + 1);
 		}
@@ -1069,12 +1062,12 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 		if (this.cssResources == null) {
 			this.cssResources = new LinkedHashMap<>();
 			final Consumer<URL> consumer = it -> {
-				final String basename = basename(it);
-				final Path target = Path.of(CSS_FOLDER_NAME, basename);
+				final var basename = basename(it);
+				final var target = Path.of(CSS_FOLDER_NAME, basename);
 				this.cssResources.put(it, target);
 			};
 			//
-			for (final String cssResource : CssStyles.CSS_RESOURCES) {
+			for (final var cssResource : CssStyles.CSS_RESOURCES) {
 				findLocalResource(cssResource, consumer);
 			}
 		}
@@ -1090,12 +1083,12 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 		if (this.jsResources == null) {
 			this.jsResources = new LinkedHashMap<>();
 			final Consumer<URL> consumer = it -> {
-				final String basename = basename(it);
-				final Path target = Path.of(JS_FOLDER_NAME, basename);
+				final var basename = basename(it);
+				final var target = Path.of(JS_FOLDER_NAME, basename);
 				this.jsResources.put(it, target);
 			};
 			//
-			for (final String cssResource : CssStyles.JS_RESOURCES) {
+			for (final var cssResource : CssStyles.JS_RESOURCES) {
 				findLocalResource(cssResource, consumer);
 			}
 		}
@@ -1108,17 +1101,17 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if some error occurs during the copy.
 	 */
 	protected void copyResourceFiles(SarlDocletEnvironment environment) throws Exception {
-		final Path outputDir = getOutputDirectory();
+		final var outputDir = getOutputDirectory();
 		getReporter().print(Kind.NOTE, MessageFormat.format(Messages.SarlHtmlDoclet_10, outputDir.toString()));
 		//
-		final Iterable<Entry<URL, Path>> listOfResources = Iterables.concat(getMapOfCssSheets().entrySet(), getMapOfJsScripts().entrySet());
-		for (final Entry<URL, Path> copying : listOfResources) {
-			final URL source = copying.getKey();
-			final Path target = copying.getValue();
-			final Path rtarget = outputDir.resolve(target);
+		final var listOfResources = Iterables.concat(getMapOfCssSheets().entrySet(), getMapOfJsScripts().entrySet());
+		for (final var copying : listOfResources) {
+			final var source = copying.getKey();
+			final var target = copying.getValue();
+			final var rtarget = outputDir.resolve(target);
 			try {
 				java.nio.file.Files.createDirectories(rtarget.getParent());
-				try (final InputStream is = source.openStream()) {
+				try (final var is = source.openStream()) {
 					java.nio.file.Files.copy(is, rtarget, StandardCopyOption.REPLACE_EXISTING);
 				}
 			} catch (Throwable ex) {
@@ -1126,18 +1119,18 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 			}
 		}
 		// TODO: Fixing issue in maven-javadoc-plugin
-		final Path optionsPath = getDocletOptions().getOutputDirectory().resolve("options"); //$NON-NLS-1$
+		final var optionsPath = getDocletOptions().getOutputDirectory().resolve("options"); //$NON-NLS-1$
 		if (!java.nio.file.Files.exists(optionsPath)) {
 			if (!java.nio.file.Files.exists(optionsPath.getParent())) {
 				java.nio.file.Files.createDirectories(optionsPath.getParent());
 			}
-			try (BufferedWriter writer = java.nio.file.Files.newBufferedWriter(optionsPath)) {
+			try (var writer = java.nio.file.Files.newBufferedWriter(optionsPath)) {
 				//
 			}
 		}
 		// TODO: Fixing issue in maven-javadoc-plugin
-		final Path packagelistPath = getDocletOptions().getOutputDirectory().resolve("package-list"); //$NON-NLS-1$
-		final Path packagesPath = getDocletOptions().getOutputDirectory().resolve("packages"); //$NON-NLS-1$
+		final var packagelistPath = getDocletOptions().getOutputDirectory().resolve("package-list"); //$NON-NLS-1$
+		final var packagesPath = getDocletOptions().getOutputDirectory().resolve("packages"); //$NON-NLS-1$
 		java.nio.file.Files.copy(packagelistPath, packagesPath);
 	}
 
@@ -1168,10 +1161,10 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected void generateTypeDocumentation(Iterable<? extends TypeElement> typeElements, SarlDocletEnvironment environment) throws Exception {
-		final TypeDocumentationGeneratorSelector selector = getTypeDocumentationGeneratorSelector();
-		final DocletOptions opts = getDocletOptions();
-		for (final TypeElement element : typeElements) {
-			final TypeDocumentationGenerator generator = selector.getTypeGeneratorFor(element, environment);
+		final var selector = getTypeDocumentationGeneratorSelector();
+		final var opts = getDocletOptions();
+		for (final var element : typeElements) {
+			final var generator = selector.getTypeGeneratorFor(element, environment);
 			if (generator == null) {
 				throw new Exception(MessageFormat.format(Messages.SarlHtmlDoclet_2, element.getQualifiedName().toString()));
 			}

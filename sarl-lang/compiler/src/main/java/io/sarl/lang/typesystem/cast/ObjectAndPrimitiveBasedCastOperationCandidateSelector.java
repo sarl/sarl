@@ -21,14 +21,8 @@
 
 package io.sarl.lang.typesystem.cast;
 
-import java.util.List;
-
 import com.google.inject.Singleton;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.scoping.batch.IIdentifiableElementDescription;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
@@ -127,7 +121,7 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 		@SuppressWarnings("static-method")
 		protected String getValidClassSimpleName(String name) {
 			if (name.startsWith(CLASS_PREFIX)) {
-				final String nm = Strings.toFirstUpper(name.substring(CLASS_PREFIX.length()));
+				final var nm = Strings.toFirstUpper(name.substring(CLASS_PREFIX.length()));
 				if (!Strings.isEmpty(nm)) {
 					return nm;
 				}
@@ -142,7 +136,7 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 		 */
 		protected String getValidPrimitiveSimpleName(String name) {
 			if (this.primitiveCast && name.endsWith(PRIMITIVE_POSTFIX)) {
-				final String nm = name.substring(0, name.length() - PRIMITIVE_POSTFIX.length()).toLowerCase();
+				final var nm = name.substring(0, name.length() - PRIMITIVE_POSTFIX.length()).toLowerCase();
 				if (!Strings.isEmpty(nm)) {
 					return nm;
 				}
@@ -171,13 +165,13 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 		 * @return {@code true} if the return type is valid; otherwise {@code false}.
 		 */
 		protected boolean isValidParameters(JvmOperation operation) {
-			final List<JvmFormalParameter> parameters = operation.getParameters();
+			final var parameters = operation.getParameters();
 			if (parameters.size() == 0) {
-				final JvmType originType = operation.getDeclaringType();
+				final var originType = operation.getDeclaringType();
 				return this.expressionType.isSubtypeOf(originType);
 			} else if (parameters.size() == 1) {
-				final JvmTypeReference parameterType = parameters.get(0).getParameterType();
-				final LightweightTypeReference paramType = this.state.getReferenceOwner().toLightweightTypeReference(parameterType);
+				final var parameterType = parameters.get(0).getParameterType();
+				final var paramType = this.state.getReferenceOwner().toLightweightTypeReference(parameterType);
 				if (parameterType != null) {
 					return paramType.isAssignableFrom(this.expressionType);
 				}
@@ -186,7 +180,7 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 		}
 
 		private boolean validatePrototype(String expectedTypeName, JvmOperation operation) {
-			final LightweightTypeReference concreteReturnType = this.state.getResolvedTypes().getActualType(operation);
+			final var concreteReturnType = this.state.getResolvedTypes().getActualType(operation);
 			if (isValidReturnType(expectedTypeName, concreteReturnType)) {
 				return isValidParameters(operation);
 			}
@@ -198,18 +192,16 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 			if (description instanceof ScopeProviderAccess.ErrorDescription || !description.isVisible()) {
 				return false;
 			}
-			final JvmIdentifiableElement operatorFunction = description.getElementOrProxy();
-			if (!(operatorFunction instanceof JvmOperation)) {
-				return false;
-			}
-			final JvmOperation executable = (JvmOperation) operatorFunction;
-			final String objectTypeName = getValidClassSimpleName(executable.getSimpleName());
-			if (objectTypeName != null) {
-				return validatePrototype(objectTypeName, executable);
-			}
-			final String primitiveTypeName = getValidPrimitiveSimpleName(executable.getSimpleName());
-			if (primitiveTypeName != null) {
-				return validatePrototype(primitiveTypeName, executable);
+			final var operatorFunction = description.getElementOrProxy();
+			if (operatorFunction instanceof JvmOperation executable) {
+				final var objectTypeName = getValidClassSimpleName(executable.getSimpleName());
+				if (objectTypeName != null) {
+					return validatePrototype(objectTypeName, executable);
+				}
+				final var primitiveTypeName = getValidPrimitiveSimpleName(executable.getSimpleName());
+				if (primitiveTypeName != null) {
+					return validatePrototype(primitiveTypeName, executable);
+				}
 			}
 			return false;
 		}

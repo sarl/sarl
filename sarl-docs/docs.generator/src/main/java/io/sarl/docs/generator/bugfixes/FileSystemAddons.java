@@ -22,7 +22,7 @@
 package io.sarl.docs.generator.bugfixes;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -59,7 +59,7 @@ public final class FileSystemAddons {
 			return null;
 		}
 		try {
-			File thefile = file;
+			var thefile = file;
 			if (FileSystem.isWindowsNativeFilename(file.toString())) {
 				thefile = FileSystem.normalizeWindowsNativeFilename(file.toString());
 				if (thefile == null) {
@@ -70,18 +70,18 @@ public final class FileSystemAddons {
 			if (thefile.isAbsolute() || !allowRelativePath) {
 				url = thefile.toURI().toURL();
 			} else {
-				final String[] elements = FileSystem.split(thefile);
-				final StringBuilder path = new StringBuilder();
-				for (final String element : elements) {
+				final var elements = FileSystem.split(thefile);
+				final var path = new StringBuilder();
+				for (final var element : elements) {
 					if (path.length() > 0) {
 						path.append(FileSystem.URL_PATH_SEPARATOR);
 					}
 					path.append(element);
 				}
-				url = new URL(URISchemeType.FILE.name().toLowerCase(), null, path.toString());
+				url = new URI(URISchemeType.FILE.name().toLowerCase(), null, path.toString()).toURL();
 			}
 			return FileSystem.toShortestURL(url);
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

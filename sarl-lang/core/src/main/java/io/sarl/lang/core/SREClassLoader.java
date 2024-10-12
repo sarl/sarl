@@ -88,7 +88,7 @@ public final class SREClassLoader {
 		} catch (ClassNotFoundException exception) {
 			ex = exception;
 		}
-		final Class<?> type = loadClass(classname);
+		final var type = loadClass(classname);
 		if (type == null) {
 			if (ex != null) {
 				throw ex;
@@ -115,7 +115,7 @@ public final class SREClassLoader {
 	 * @since 0.13
 	 */
 	public static <T extends ClassLoader> T getPreferredSREClassloader(Class<T> type) {
-		final ClassLoader cl = getPreferredSREClassloader();
+		final var cl = getPreferredSREClassloader();
 		if (type.isInstance(cl)) {
 			return type.cast(cl);
 		}

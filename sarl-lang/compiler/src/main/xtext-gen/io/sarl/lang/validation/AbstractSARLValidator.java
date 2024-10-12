@@ -23,15 +23,17 @@
  */
 package io.sarl.lang.validation;
 
+import io.sarl.lang.extralanguage.validator.ExtraLanguageValidatorSupport;
+import io.sarl.lang.validation.subvalidators.SARLJvmGeneraticTypeValidator;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtend.core.validation.AnnotationValidation;
-import org.eclipse.xtend.core.validation.XtendValidator;
 import org.eclipse.xtext.validation.ComposedChecks;
+import org.eclipse.xtext.xbase.annotations.validation.XbaseWithAnnotationsValidator;
 
-@ComposedChecks(validators = {AnnotationValidation.class})
-public abstract class AbstractSARLValidator extends XtendValidator {
+@ComposedChecks(validators = {AnnotationValidation.class, SARLJvmGeneraticTypeValidator.class, ExtraLanguageValidatorSupport.class})
+public abstract class AbstractSARLValidator extends XbaseWithAnnotationsValidator {
 	
 	@Override
 	protected List<EPackage> getEPackages() {

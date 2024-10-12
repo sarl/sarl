@@ -51,26 +51,26 @@ public class SARLDebugPerspectiveFactory implements IPerspectiveFactory {
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		final IFolderLayout consoleFolder = layout.createFolder(IInternalDebugUIConstants.ID_CONSOLE_FOLDER_VIEW,
+		final var consoleFolder = layout.createFolder(IInternalDebugUIConstants.ID_CONSOLE_FOLDER_VIEW,
 				IPageLayout.BOTTOM, BOTTOM_PANEL_RATIO, layout.getEditorArea());
 		consoleFolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		consoleFolder.addView(IPageLayout.ID_TASK_LIST);
 		consoleFolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		consoleFolder.addPlaceholder(IPageLayout.ID_PROP_SHEET);
 
-		final IFolderLayout navFolder = layout.createFolder(IInternalDebugUIConstants.ID_NAVIGATOR_FOLDER_VIEW,
+		final var navFolder = layout.createFolder(IInternalDebugUIConstants.ID_NAVIGATOR_FOLDER_VIEW,
 				IPageLayout.TOP, NAVIGATION_PANEL_RATIO, layout.getEditorArea());
 		navFolder.addView(IDebugUIConstants.ID_DEBUG_VIEW);
 		navFolder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
 
-		final IFolderLayout toolsFolder = layout.createFolder(IInternalDebugUIConstants.ID_TOOLS_FOLDER_VIEW,
+		final var toolsFolder = layout.createFolder(IInternalDebugUIConstants.ID_TOOLS_FOLDER_VIEW,
 				IPageLayout.RIGHT, TOOL_PANEL_RATIO, IInternalDebugUIConstants.ID_NAVIGATOR_FOLDER_VIEW);
 		toolsFolder.addView(IDebugUIConstants.ID_VARIABLE_VIEW);
 		toolsFolder.addView(IDebugUIConstants.ID_BREAKPOINT_VIEW);
 		toolsFolder.addPlaceholder(IDebugUIConstants.ID_EXPRESSION_VIEW);
 		toolsFolder.addPlaceholder(IDebugUIConstants.ID_REGISTER_VIEW);
 
-		final IFolderLayout outlineFolder = layout.createFolder(IInternalDebugUIConstants.ID_OUTLINE_FOLDER_VIEW,
+		final var outlineFolder = layout.createFolder(IInternalDebugUIConstants.ID_OUTLINE_FOLDER_VIEW,
 				IPageLayout.RIGHT, OUTLINE_PANEL_RATIO, layout.getEditorArea());
 		outlineFolder.addView(IPageLayout.ID_OUTLINE);
 

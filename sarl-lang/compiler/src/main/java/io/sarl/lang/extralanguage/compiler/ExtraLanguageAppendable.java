@@ -60,7 +60,7 @@ public class ExtraLanguageAppendable extends AbstractStringBuilderBasedAppendabl
 	 */
 	public ExtraLanguageAppendable(ImportManager importManager) {
 		super(false);
-		ImportManager im = importManager;
+		var im = importManager;
 		if (im == null) {
 			im = new ImportManager(true);
 		}
@@ -75,7 +75,7 @@ public class ExtraLanguageAppendable extends AbstractStringBuilderBasedAppendabl
 	 */
 	public ExtraLanguageAppendable(String indentation, String lineSeparator, ImportManager importManager) {
 		super(indentation, lineSeparator, false);
-		ImportManager im = importManager;
+		var im = importManager;
 		if (im == null) {
 			im = new ImportManager(true);
 		}

@@ -88,7 +88,7 @@ public final class M2EUtilities {
 		// Detect the snapshot
 		final boolean isSnapshot;
 		final String coreVersion;
-		Matcher matcher = Artifact.VERSION_FILE_PATTERN.matcher(version);
+		var matcher = Artifact.VERSION_FILE_PATTERN.matcher(version);
 		if (matcher.matches()) {
 			coreVersion = matcher.group(1);
 			isSnapshot = true;
@@ -104,9 +104,9 @@ public final class M2EUtilities {
 		}
 
 		// Parse the numbers
-		final String[] parts = coreVersion.split("[.]"); //$NON-NLS-1$
-		final int[] numbers = new int[] {0, 0, 0};
-		int i = 0;
+		final var parts = coreVersion.split("[.]"); //$NON-NLS-1$
+		final var numbers = new int[] {0, 0, 0};
+		var i = 0;
 		while (i < numbers.length && i < parts.length) {
 			try {
 				numbers[i] = Integer.parseInt(parts[i]);
@@ -140,9 +140,9 @@ public final class M2EUtilities {
 	 * @since 0.10
 	 */
 	public static Version getPreviousOsgiVersion(Version vers) {
-		int major = vers.getMajor();
-		int minor = vers.getMinor();
-		int micro = vers.getMicro();
+		var major = vers.getMajor();
+		var minor = vers.getMinor();
+		var micro = vers.getMicro();
 		if (micro <= 0) {
 			micro = MAX_NUMBER;
 			--minor;

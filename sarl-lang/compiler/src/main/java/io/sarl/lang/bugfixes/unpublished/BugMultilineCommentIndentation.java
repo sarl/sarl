@@ -24,7 +24,6 @@ package io.sarl.lang.bugfixes.unpublished;
 import java.util.List;
 
 import com.google.inject.Singleton;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;
 import org.eclipse.xtext.formatting2.IFormattableDocument;
@@ -32,10 +31,7 @@ import org.eclipse.xtext.formatting2.ITextReplacer;
 import org.eclipse.xtext.formatting2.ITextReplacerContext;
 import org.eclipse.xtext.formatting2.regionaccess.IComment;
 import org.eclipse.xtext.formatting2.regionaccess.IHiddenRegion;
-import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion;
-import org.eclipse.xtext.formatting2.regionaccess.ITextRegionAccess;
 import org.eclipse.xtext.formatting2.regionaccess.ITextReplacement;
-import org.eclipse.xtext.formatting2.regionaccess.ITextSegment;
 import org.eclipse.xtext.util.Strings;
 
 /** FIXME: Xtext upgrade, Fixing a bug in Xtext Formatter2 API that avoid to have a good
@@ -57,11 +53,11 @@ public class BugMultilineCommentIndentation {
 	 */
 	@SuppressWarnings("static-method")
 	public ITextReplacerContext fix(final ITextReplacerContext context, IComment comment) {
-		final IHiddenRegion hiddenRegion = comment.getHiddenRegion();
+		final var hiddenRegion = comment.getHiddenRegion();
 		if (detectBugSituation(hiddenRegion) && fixBug(hiddenRegion)) {
 			// Indentation of the first comment line
-			final ITextRegionAccess access = comment.getTextRegionAccess();
-			final ITextSegment target = access.regionForOffset(comment.getOffset(), 0);
+			final var access = comment.getTextRegionAccess();
+			final var target = access.regionForOffset(comment.getOffset(), 0);
 			context.addReplacement(target.replaceWith(context.getIndentationString(1)));
 			// Indentation of the comment's lines
 			return new FixedReplacementContext(context);
@@ -71,11 +67,11 @@ public class BugMultilineCommentIndentation {
 
 	private static boolean detectBugSituation(IHiddenRegion hiddenRegion) {
 		if (hiddenRegion != null) {
-			final ISemanticRegion semanticRegion = hiddenRegion.getPreviousSemanticRegion();
+			final var semanticRegion = hiddenRegion.getPreviousSemanticRegion();
 			if (semanticRegion != null) {
-				final EObject element = semanticRegion.getGrammarElement();
-				if (element instanceof Keyword
-						&& Strings.equal(((Keyword) element).getValue(), "{")) { //$NON-NLS-1$
+				final var element = semanticRegion.getGrammarElement();
+				if (element instanceof Keyword kw
+						&& Strings.equal(kw.getValue(), "{")) { //$NON-NLS-1$
 					return true;
 				}
 			}
@@ -85,11 +81,11 @@ public class BugMultilineCommentIndentation {
 
 	private static boolean fixBug(IHiddenRegion hiddenRegion) {
 		boolean needBugFix = true;
-		final ISemanticRegion semanticRegion = hiddenRegion.getNextSemanticRegion();
+		final var semanticRegion = hiddenRegion.getNextSemanticRegion();
 		if (semanticRegion != null) {
-			final EObject element = semanticRegion.getGrammarElement();
-			if (element instanceof Keyword
-					&& Strings.equal(((Keyword) element).getValue(), "}")) { //$NON-NLS-1$
+			final var element = semanticRegion.getGrammarElement();
+			if (element instanceof Keyword kw
+					&& Strings.equal(kw.getValue(), "}")) { //$NON-NLS-1$
 				needBugFix = false;
 			}
 		}

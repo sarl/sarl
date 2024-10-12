@@ -89,12 +89,12 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected Pair<IResourceDescription.Event, Integer> mergePendingDeltas() {
-			Map<URI, IResourceDescription.Delta> uriToDelta = Maps.newLinkedHashMap();
+			var uriToDelta = Maps.newLinkedHashMap();
 			@SuppressWarnings("unchecked")
-			Iterator<IResourceDescription.Delta> iter = this.hpendingChanges.get(this).iterator();
-			int size = 0;
+			var iter = this.hpendingChanges.get(this).iterator();
+			var size = 0;
 			while(iter.hasNext()) {
-				IResourceDescription.Delta delta = iter.next();
+				var delta = iter.next();
 				URI uri = null;
 				try {
 					uri = delta.getUri();
@@ -102,7 +102,7 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 					uri = null;
 				}
 				if (uri != null) {
-					IResourceDescription.Delta prev = uriToDelta.get(uri);
+					var prev = uriToDelta.get(uri);
 					if (prev == null) {
 						uriToDelta.put(uri, delta);
 					} else if (prev.getOld() != delta.getNew()){
@@ -117,7 +117,7 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 							Messages.FixedDirtyStateEditorSupport_0));
 				}
 			}
-			IResourceDescription.Event event = new ResourceDescriptionChangeEvent(uriToDelta.values());
+			var event = new ResourceDescriptionChangeEvent(uriToDelta.values());
 			return Tuples.create(event, Integer.valueOf(size));
 		}
 	}

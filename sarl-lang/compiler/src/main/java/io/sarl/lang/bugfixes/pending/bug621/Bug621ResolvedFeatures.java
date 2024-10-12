@@ -152,8 +152,8 @@ public class Bug621ResolvedFeatures extends ResolvedFeatures {
 		}
 		final SuperTypes superTypes = new SuperTypes(rootType);
 		for(JvmType superClass: superTypes.getSuperTypesNoInterfaces()) {
-			if (superClass instanceof JvmDeclaredType) {
-				computeAllOperations((JvmDeclaredType) superClass, processedOperations);
+			if (superClass instanceof JvmDeclaredType jdt) {
+				computeAllOperations(jdt, processedOperations);
 			}
 		}
 		
@@ -297,9 +297,8 @@ public class Bug621ResolvedFeatures extends ResolvedFeatures {
 			}
 		}
 		if (conflictingOperations != null) {
-			if (conflictingOperations.size() == 1 && conflictingOperations.get(0) instanceof ConflictingDefaultOperation) {
+			if (conflictingOperations.size() == 1 && conflictingOperations.get(0) instanceof ConflictingDefaultOperation conflictingDefaultOperation) {
 				// The current operation contributes to the already existing conflict
-				ConflictingDefaultOperation conflictingDefaultOperation = (ConflictingDefaultOperation) conflictingOperations.get(0);
 				boolean isOverridden = false;
 				for (IResolvedOperation conflictingOp : conflictingDefaultOperation.getConflictingOperations()) {
 					if (conflictingOp.getResolvedDeclarator().isSubtypeOf(operation.getDeclaringType())) {

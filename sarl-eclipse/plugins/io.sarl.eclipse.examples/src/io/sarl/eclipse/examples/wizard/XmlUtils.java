@@ -59,9 +59,9 @@ public final class XmlUtils {
 	 * @throws CoreException if some error occurs.
 	 */
 	public static Document readXmlContent(File jFile) throws CoreException {
-		try (InputStream stream = new FileInputStream(jFile)) {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
+		try (var stream = new FileInputStream(jFile)) {
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
 			return builder.parse(stream);
 		} catch (ParserConfigurationException | IOException | SAXException exception) {
 			throw new CoreException(SARLExamplePlugin.createStatus(exception));
@@ -75,8 +75,8 @@ public final class XmlUtils {
 	 * @return the value of the attribute.
 	 */
 	public static String readXmlAttribute(Node xmlNode, String attributeName) {
-		final NamedNodeMap attributes = xmlNode.getAttributes();
-		final Node field = attributes.getNamedItem(attributeName);
+		final var attributes = xmlNode.getAttributes();
+		final var field = attributes.getNamedItem(attributeName);
 		if (field != null) {
 			return field.getTextContent();
 		}

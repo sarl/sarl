@@ -85,7 +85,7 @@ public class ApplicationMetadata2Module implements BQModule {
 			description  = null;
 		}
 
-		final ApplicationMetadata.Builder builder = ApplicationMetadata
+		final var builder = ApplicationMetadata
 			.builder(name)
 			.description(description)
 			.addOptions(options);

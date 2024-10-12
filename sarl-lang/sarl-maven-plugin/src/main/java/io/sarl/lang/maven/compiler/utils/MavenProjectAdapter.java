@@ -21,10 +21,7 @@
 
 package io.sarl.lang.maven.compiler.utils;
 
-import java.util.Iterator;
-
 import org.apache.maven.project.MavenProject;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
@@ -49,9 +46,9 @@ public final class MavenProjectAdapter extends AdapterImpl {
 	 * @return the maven project.
 	 */
 	public static MavenProject get(ResourceSet rs) {
-		for (final Adapter a : rs.eAdapters()) {
-			if (a instanceof MavenProjectAdapter) {
-				return ((MavenProjectAdapter) a).project;
+		for (final var a : rs.eAdapters()) {
+			if (a instanceof MavenProjectAdapter cvalue) {
+				return cvalue.project;
 			}
 		}
 		throw new RuntimeException(Messages.MavenProjectAdapter_0);
@@ -63,7 +60,7 @@ public final class MavenProjectAdapter extends AdapterImpl {
 	 * @param project the project.
 	 */
 	public static void install(ResourceSet rs, MavenProject project) {
-		final Iterator<Adapter> iterator = rs.eAdapters().iterator();
+		final var iterator = rs.eAdapters().iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next() instanceof MavenProjectAdapter) {
 				iterator.remove();

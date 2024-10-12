@@ -64,16 +64,16 @@ public abstract class AbstractScriptHighlightingFragment2 extends AbstractExtern
 
 		@Override
 		public void appendComment(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			final var comment = applyFormat(text, parameters);
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl("# " + line.trim()); //$NON-NLS-1$
 			}
 		}
 
 		@Override
 		public void appendHeader() {
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "#")); //$NON-NLS-1$//$NON-NLS-2$
 			}
 			appendNl("# Style for {0} {1}", getLanguageSimpleName(), getLanguageVersion()); //$NON-NLS-1$

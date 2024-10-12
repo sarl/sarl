@@ -56,11 +56,10 @@ import java.util.List;
 import javax.lang.model.element.Element;
 
 import com.google.common.collect.Iterables;
-import com.sun.source.doctree.BlockTagTree;
-import com.sun.source.doctree.DocCommentTree;
-import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.AuthorTree;
+import com.sun.source.doctree.BlockTagTree;
 import com.sun.source.doctree.DeprecatedTree;
+import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.ParamTree;
 import com.sun.source.doctree.ProvidesTree;
 import com.sun.source.doctree.ReturnTree;
@@ -70,7 +69,6 @@ import com.sun.source.doctree.ThrowsTree;
 import com.sun.source.doctree.UsesTree;
 import com.sun.source.doctree.VersionTree;
 
-import io.sarl.docs.doclet2.framework.SarlDocletEnvironment;
 import io.sarl.docs.doclet2.html.framework.CssStyles;
 import io.sarl.docs.doclet2.html.framework.HtmlFactoryContentExtractor;
 import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
@@ -110,25 +108,17 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 	}
 
 	private static boolean isSameBlockTag(DocTree hidder, DocTree hidden) {
-		if (hidder instanceof ParamTree && hidden instanceof ParamTree) {
-			final ParamTree phidder = (ParamTree) hidder;
-			final ParamTree phidden = (ParamTree) hidden;
+		if (hidder instanceof ParamTree phidder && hidden instanceof ParamTree phidden) {
 			return phidder.isTypeParameter() == phidden.isTypeParameter()
 					&& phidder.getName().toString().equals(phidden.getName().toString());
 		}
-		if (hidder instanceof ThrowsTree && hidden instanceof ThrowsTree) {
-			final ThrowsTree phidder = (ThrowsTree) hidder;
-			final ThrowsTree phidden = (ThrowsTree) hidden;
+		if (hidder instanceof ThrowsTree phidder && hidden instanceof ThrowsTree phidden) {
 			return phidder.getExceptionName().getSignature().equals(phidden.getExceptionName().getSignature());
 		}
-		if (hidder instanceof ProvidesTree && hidden instanceof ProvidesTree) {
-			final ProvidesTree phidder = (ProvidesTree) hidder;
-			final ProvidesTree phidden = (ProvidesTree) hidden;
+		if (hidder instanceof ProvidesTree phidder && hidden instanceof ProvidesTree phidden) {
 			return phidder.getServiceType().getSignature().equals(phidden.getServiceType().getSignature());
 		}
-		if (hidder instanceof UsesTree && hidden instanceof UsesTree) {
-			final UsesTree phidder = (UsesTree) hidder;
-			final UsesTree phidden = (UsesTree) hidden;
+		if (hidder instanceof UsesTree phidder && hidden instanceof UsesTree phidden) {
 			return phidder.getServiceType().getSignature().equals(phidden.getServiceType().getSignature());
 		}
 		if ((hidder instanceof AuthorTree && hidden instanceof AuthorTree)
@@ -152,11 +142,11 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 	 * @see #appendFromInheritedMainDocumentation(org.jsoup.nodes.Element, Element, DocTree, HtmlFactoryContentExtractor)
 	 */
 	protected boolean appendFromInheritedBlockTagDocumentation(org.jsoup.nodes.Element parent, Element element, DocTree sourceDocumentation, HtmlFactoryContentExtractor referenceExtractor) {
-		final SarlDocletEnvironment env = referenceExtractor.getContext().getEnvironment();
-		final DocCommentTree fullComment = referenceExtractor.getContext().getDocUtils().getInheritedFullDocumentation(element, env);
+		final var env = referenceExtractor.getContext().getEnvironment();
+		final var fullComment = referenceExtractor.getContext().getDocUtils().getInheritedFullDocumentation(element, env);
 		if (fullComment != null) {
-			final List<? extends DocTree> blocks = fullComment.getBlockTags();
-			final DocTree inheritedDoc = Iterables.find(blocks, it -> {
+			final var blocks = fullComment.getBlockTags();
+			final var inheritedDoc = Iterables.find(blocks, it -> {
 				return isSameBlockTag(sourceDocumentation, it);
 			});
 			if (inheritedDoc != null) {
@@ -176,8 +166,8 @@ public class InheritDocTaglet extends AbstractSarlTaglet {
 	 * @see #appendFromInheritedBlockTagDocumentation(org.jsoup.nodes.Element, Element, DocTree, HtmlFactoryContentExtractor)
 	 */
 	protected boolean appendFromInheritedMainDocumentation(org.jsoup.nodes.Element parent, Element element, DocTree sourceDocumentation, HtmlFactoryContentExtractor referenceExtractor) {
-		final SarlDocletEnvironment env = referenceExtractor.getContext().getEnvironment();
-		final List<? extends DocTree> documentation = referenceExtractor.getContext().getDocUtils().getInheritedDocumentation(element, env);
+		final var env = referenceExtractor.getContext().getEnvironment();
+		final var documentation = referenceExtractor.getContext().getDocUtils().getInheritedDocumentation(element, env);
 		if (!documentation.isEmpty()) {
 			return appendCommentText(parent, documentation, element, " ", false, null, referenceExtractor.getContext()); //$NON-NLS-1$
 		}

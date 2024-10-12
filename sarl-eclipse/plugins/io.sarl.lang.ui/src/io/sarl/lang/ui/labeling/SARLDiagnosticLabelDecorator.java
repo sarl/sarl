@@ -72,7 +72,7 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	private IImageDescriptorHelper imageDescriptorHelper;
 
 	private static boolean inside(INode node, ICompositeNode parentCandidate) {
-		INode current = node;
+		var current = node;
 		while (current != null) {
 			if (current.equals(parentCandidate)) {
 				return true;
@@ -89,20 +89,19 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 * @return the {@link Image} associated with the description or {@code null}
 	 */
 	protected Image convertToImage(Object imageDescription) {
-		if (imageDescription instanceof Image) {
-			return (Image) imageDescription;
-		} else if (imageDescription instanceof ImageDescriptor) {
-			return this.imageHelper.getImage((ImageDescriptor) imageDescription);
-		} else if (imageDescription instanceof String) {
-			return this.imageHelper.getImage((String) imageDescription);
+		if (imageDescription instanceof Image cvalue) {
+			return cvalue;
+		} else if (imageDescription instanceof ImageDescriptor cvalue) {
+			return this.imageHelper.getImage(cvalue);
+		} else if (imageDescription instanceof String cvalue) {
+			return this.imageHelper.getImage(cvalue);
 		}
 		return null;
 	}
 
 	private static boolean hasParserIssue(ICompositeNode node, Iterable<Resource.Diagnostic> issues) {
-		for (final Resource.Diagnostic resourceDiagnostic : issues) {
-			if (resourceDiagnostic instanceof AbstractDiagnostic) {
-				final AbstractDiagnostic diag = (AbstractDiagnostic) resourceDiagnostic;
+		for (final var resourceDiagnostic : issues) {
+			if (resourceDiagnostic instanceof AbstractDiagnostic diag) {
 				final INode diagNode;
 				try {
 					diagNode = (INode) GET_NODE_METHOD.invoke(diag);
@@ -124,7 +123,7 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 */
 	@SuppressWarnings("static-method")
 	protected int getIssueAdornment(XtendMember element) {
-		final ICompositeNode node = NodeModelUtils.getNode(element);
+		final var node = NodeModelUtils.getNode(element);
 		if (node == null) {
 			return 0;
 		}
@@ -132,12 +131,12 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 		// Order of checks:
 		// - parser error (from the resource) or semantic error (from Diagnostician)
 		// - parser warning or semantic warning
-		final Resource resource = element.eResource();
+		final var resource = element.eResource();
 		if (!resource.getURI().isArchive()) {
 			if (hasParserIssue(node, resource.getErrors())) {
 				return JavaElementImageDescriptor.ERROR;
 			}
-			final Diagnostic diagnostic = Diagnostician.INSTANCE.validate(element);
+			final var diagnostic = Diagnostician.INSTANCE.validate(element);
 	        switch (diagnostic.getSeverity()) {
 	        case Diagnostic.ERROR:
 	        	return JavaElementImageDescriptor.ERROR;
@@ -163,11 +162,11 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 
 	@Override
 	public Image decorateImage(Image image, Object element) {
-		if (element instanceof XtendMember) {
-			final int adornment = getIssueAdornment((XtendMember) element);
+		if (element instanceof XtendMember cvalue) {
+			final var adornment = getIssueAdornment(cvalue);
 			if (adornment != 0) {
-				final ImageDescriptor descriptor = this.imageDescriptorHelper.getImageDescriptor(image);
-				final ImageDescriptor newDescriptor = new JavaElementImageDescriptor(descriptor, adornment, imagesSize());
+				final var descriptor = this.imageDescriptorHelper.getImageDescriptor(image);
+				final var newDescriptor = new JavaElementImageDescriptor(descriptor, adornment, imagesSize());
 				return convertToImage(newDescriptor);
 			}
 		}

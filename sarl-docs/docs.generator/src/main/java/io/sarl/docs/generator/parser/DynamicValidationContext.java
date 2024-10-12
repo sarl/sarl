@@ -60,7 +60,7 @@ public class DynamicValidationContext {
 
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append("sources = ").append(getSourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append("resources = ").append(getResourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append("tmp = ").append(getTempResourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -131,7 +131,7 @@ public class DynamicValidationContext {
 	 * @return the root folders.
 	 */
 	public List<String> getTempResourceRoots() {
-		final List<String> tmp = this.tmpResources == null ? Collections.emptyList() : this.tmpResources;
+		final var tmp = this.tmpResources == null ? Collections.<String>emptyList() : this.tmpResources;
 		this.tmpResources = null;
 		return tmp;
 	}
@@ -165,12 +165,12 @@ public class DynamicValidationContext {
 			receiver.decreaseIndentation().newLine();
 			receiver.append("}"); //$NON-NLS-1$
 		}
-		for (final String resource : getResourceRoots()) {
-			final File fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+		for (final var resource : getResourceRoots()) {
+			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
 			appendSafeFileExistenceTest(receiver, fileInResource);
 		}
-		for (final String resource : getTempResourceRoots()) {
-			final File fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+		for (final var resource : getTempResourceRoots()) {
+			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
 			appendSafeFileExistenceTest(receiver, fileInResource);
 		}
 		receiver.newLine();
@@ -191,19 +191,19 @@ public class DynamicValidationContext {
 			return;
 		}
 
-		final File fileWithoutExtension = FileSystem.removeExtension(relativeFile);
+		final var fileWithoutExtension = FileSystem.removeExtension(relativeFile);
 
-		for (final String newExtension : extensions) {
-			final File fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
+		for (final var newExtension : extensions) {
+			final var fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
 			if (relativeFile.isAbsolute()) {
 				appendSafeFileExistenceTest(receiver, fileWithNewExtension);
 			} else {
-				for (final String resource : getResourceRoots()) {
-					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+				for (final var resource : getResourceRoots()) {
+					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
 					appendSafeFileExistenceTest(receiver, fileInResource);
 				}
-				for (final String resource : getTempResourceRoots()) {
-					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+				for (final var resource : getTempResourceRoots()) {
+					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
 					appendSafeFileExistenceTest(receiver, fileInResource);
 				}
 			}
@@ -213,8 +213,8 @@ public class DynamicValidationContext {
 		receiver.append(Strings.convertToJavaString(errorLabel));
 		receiver.append(": ").append(Strings.convertToJavaString(fileWithoutExtension.toString())); //$NON-NLS-1$
 		receiver.append("["); //$NON-NLS-1$
-		boolean first = true;
-		for (final String ext : extensions) {
+		var first = true;
+		for (final var ext : extensions) {
 			if (first) {
 				first = false;
 			} else {
@@ -242,8 +242,8 @@ public class DynamicValidationContext {
 	}
 
 	private static boolean hasExtension(File file, Iterable<String> extensions) {
-		final String extension = FileSystem.extension(file);
-		for (final String ext : extensions) {
+		final var extension = FileSystem.extension(file);
+		for (final var ext : extensions) {
 			if (Strings.equal(ext, extension)) {
 				return true;
 			}
@@ -265,7 +265,7 @@ public class DynamicValidationContext {
 			return;
 		}
 
-		final File fileWithoutExtension = FileSystem.removeExtension(relativeFile);
+		final var fileWithoutExtension = FileSystem.removeExtension(relativeFile);
 
 		receiver.append(Pattern.class).append(" sectionPattern = "); //$NON-NLS-1$
 		receiver.append(Pattern.class).append(".compile(\""); //$NON-NLS-1$
@@ -275,24 +275,24 @@ public class DynamicValidationContext {
 		receiver.append(Set.class).append(" alternatives = new "); //$NON-NLS-1$
 		receiver.append(TreeSet.class).append("<>();").newLine(); //$NON-NLS-1$
 
-		for (final String newExtension : extensions) {
-			final File fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
+		for (final var newExtension : extensions) {
+			final var fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
 			if (relativeFile.isAbsolute()) {
 				appendSafeTitleAnchorExistenceTest(receiver, fileWithNewExtension, anchor);
 			} else {
-				for (final String resource : getDestinationRoots()) {
-					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+				for (final var resource : getDestinationRoots()) {
+					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
 					appendSafeTitleAnchorExistenceTest(receiver, fileInResource, anchor);
 				}
-				for (final String resource : getTempResourceRoots()) {
-					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+				for (final var resource : getTempResourceRoots()) {
+					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
 					appendSafeTitleAnchorExistenceTest(receiver, fileInResource, anchor);
 				}
 			}
 		}
 		receiver.newLine();
 
-		final StringBuilder errorFilename = new StringBuilder();
+		final var errorFilename = new StringBuilder();
 		errorFilename.append(Strings.convertToJavaString(fileWithoutExtension.toString()));
 		errorFilename.append(".*"); //$NON-NLS-1$
 

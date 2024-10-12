@@ -50,7 +50,6 @@
 
 package io.sarl.docs.doclet2.html.framework;
 
-import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
@@ -60,12 +59,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.lang.model.element.ExecutableElement;
@@ -82,10 +78,8 @@ import javax.tools.Diagnostic.Kind;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sun.source.doctree.BlockTagTree;
-import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
 import jdk.javadoc.doclet.Reporter;
-import jdk.javadoc.doclet.Taglet;
 import jdk.javadoc.doclet.Taglet.Location;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
@@ -103,8 +97,6 @@ import io.sarl.docs.doclet2.framework.StandardQualifiedNameSetBuilder;
 import io.sarl.docs.doclet2.framework.TagletManager;
 import io.sarl.docs.doclet2.framework.TypeHierarchy;
 import io.sarl.docs.doclet2.framework.TypeRepository;
-import io.sarl.docs.doclet2.html.framework.HtmlFactory.CommentTextMemory;
-import io.sarl.docs.doclet2.html.framework.HtmlFactory.HtmlTabsFactory;
 import io.sarl.docs.doclet2.html.taglets.SarlTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ExcludeFromApidocTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.HiddenTaglet;
@@ -481,20 +473,20 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @see #getPathToRoot()
 	 */
 	protected void computePaths(String element, boolean isTypeName) {
-		final String[] elements = isTypeName ? element.split("[$.]") : new String[] {element}; //$NON-NLS-1$
-		final StringBuilder baseUri = new StringBuilder("file:"); //$NON-NLS-1$
+		final var elements = isTypeName ? element.split("[$.]") : new String[] {element}; //$NON-NLS-1$
+		final var baseUri = new StringBuilder("file:"); //$NON-NLS-1$
 		Path relativePath = null;
 		Path pathToRoot = null;
-		for (int i = 0; i < elements.length - 1; ++i) {
+		for (var i = 0; i < elements.length - 1; ++i) {
 			baseUri.append(elements[i]);
 			baseUri.append('/');
-			final Path currentPath = Path.of(elements[i]);
+			final var currentPath = Path.of(elements[i]);
 			if (relativePath == null) {
 				relativePath = currentPath;
 			} else {
 				relativePath = relativePath.resolve(currentPath);
 			}
-			final Path currentParent = Path.of(".."); //$NON-NLS-1$
+			final var currentParent = Path.of(".."); //$NON-NLS-1$
 			if (pathToRoot == null) {
 				pathToRoot = currentParent;
 			} else {
@@ -502,7 +494,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			}
 		}
 		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot; //$NON-NLS-1$
-		String basename = elements[elements.length - 1];
+		var basename = elements[elements.length - 1];
 		if (!basename.endsWith(".html")) { //$NON-NLS-1$
 			basename += ".html"; //$NON-NLS-1$
 		}
@@ -525,20 +517,20 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @see #getPathToRoot()
 	 */
 	protected void computePaths(Path element, boolean addHtmlExtension) {
-		final int n = element.getNameCount();
-		final StringBuilder baseUri = new StringBuilder("file:"); //$NON-NLS-1$
+		final var n = element.getNameCount();
+		final var baseUri = new StringBuilder("file:"); //$NON-NLS-1$
 		Path relativePath = null;
 		Path pathToRoot = null;
-		for (int i = 0; i < n - 1; ++i) {
+		for (var i = 0; i < n - 1; ++i) {
 			baseUri.append(element.getName(i));
 			baseUri.append('/');
-			final Path currentPath = element.getName(i);
+			final var currentPath = element.getName(i);
 			if (relativePath == null) {
 				relativePath = currentPath;
 			} else {
 				relativePath = relativePath.resolve(currentPath);
 			}
-			final Path currentParent = Path.of(".."); //$NON-NLS-1$
+			final var currentParent = Path.of(".."); //$NON-NLS-1$
 			if (pathToRoot == null) {
 				pathToRoot = currentParent;
 			} else {
@@ -546,7 +538,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			}
 		}
 		this.pathToRoot = pathToRoot == null ? Path.of(".") : pathToRoot; //$NON-NLS-1$
-		String basename = element.getFileName().toString();
+		var basename = element.getFileName().toString();
 		if (addHtmlExtension && !basename.endsWith(".html")) { //$NON-NLS-1$
 			basename += ".html"; //$NON-NLS-1$
 		}
@@ -564,7 +556,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @throws Exception if an error occurred during the generation.
 	 */
 	protected static void mkdirs(Path filename) throws Exception {
-		final Path par = filename.getParent();
+		final var par = filename.getParent();
 		if (!Files.exists(par)) {
 			Files.createDirectories(par);
 		}
@@ -578,7 +570,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected static void writeDocument(Path filename, Document htmlDocument) throws Exception {
 		mkdirs(filename);
-		try (BufferedWriter writer = Files.newBufferedWriter(filename)) {
+		try (var writer = Files.newBufferedWriter(filename)) {
 			writer.write(htmlDocument.toString());
 		}
 	}
@@ -591,7 +583,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 */
 	protected static void writeDocument(Path filename, String htmlDocument) throws Exception {
 		mkdirs(filename);
-		try (BufferedWriter writer = Files.newBufferedWriter(filename)) {
+		try (var writer = Files.newBufferedWriter(filename)) {
 			writer.write(htmlDocument.toString());
 		}
 	}
@@ -655,23 +647,22 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			List<BlockTagTree> tagTrees, Element parent, CssStyles style,
 			QualifiedNameSetBuilder defaultPackages) {
 		if (!tagTrees.isEmpty() ) {
-			final String tagName = tagTrees.get(0).getTagName();
-			final Taglet taglet = getTagletManager().getBlockTaglet(tagLocation, tagName);
+			final var tagName = tagTrees.get(0).getTagName();
+			final var taglet = getTagletManager().getBlockTaglet(tagLocation, tagName);
 			if (taglet != null) {
-				final Element dtTag = getHtmlFactory().createDtTag(parent, style);
-				final Element ddTag = getHtmlFactory().createDdTag(parent, style);
-				if (taglet instanceof SarlTaglet) {
-					final SarlTaglet staglet = (SarlTaglet) taglet;
+				final var dtTag = getHtmlFactory().createDtTag(parent, style);
+				final var ddTag = getHtmlFactory().createDdTag(parent, style);
+				if (taglet instanceof SarlTaglet staglet) {
 					if (staglet.isActiveTaglet(getDocletOptions())) {
 						dtTag.appendText(staglet.getTagBlockLabel());
-						final TagContentExtractor extractor = new TagContentExtractor();
+						final var extractor = new TagContentExtractor();
 						staglet.appendNode(ddTag, tagTrees, documentedElement, null, style, extractor);
 					}
 				} else {
 					dtTag.appendText(SarlTaglet.buildBlockLabel(taglet.getName()));
-					boolean changed = false;
-					final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(ddTag, documentedElement, this);
-					for (final BlockTagTree tagTree : tagTrees) {
+					var changed = false;
+					final var memory = getHtmlFactory().createCommentTextMemory(ddTag, documentedElement, this);
+					for (final var tagTree : tagTrees) {
 						if (changed) {
 							ddTag.append(","); //$NON-NLS-1$
 							getHtmlFactory().createSecableSpace(ddTag);
@@ -689,8 +680,8 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	@Override
 	public QualifiedNameSetBuilder getQualifiedNameSetBuilder(javax.lang.model.element.Element element) {
-		final PackageElement defaultPackage = getEnvironment().getElementUtils().getPackageOf(element);
-		final QualifiedNameSetBuilder defaultPackages = buildCallbackForTypeFinding(defaultPackage,
+		final var defaultPackage = getEnvironment().getElementUtils().getPackageOf(element);
+		final var defaultPackages = buildCallbackForTypeFinding(defaultPackage,
 				buildImportedPackageSet(element));
 		return defaultPackages;
 	}
@@ -702,9 +693,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @return the imported package set.
 	 */
 	protected Set<String> buildImportedPackageSet(javax.lang.model.element.Element element) {
-		final ImportScanner importScanner = new ImportScanner();
+		final var importScanner = new ImportScanner();
 		importScanner.build(element);
-		final Set<String> importedPackages = importScanner.getBaseSearchpath();
+		final var importedPackages = importScanner.getBaseSearchpath();
 		return importedPackages;
 	}
 
@@ -728,7 +719,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	@SuppressWarnings("static-method")
 	protected boolean isPropertyGetterName(String name) {
 		if (!Strings.isEmpty(name)) {
-			final Matcher matcher = PROPERTY_GETTER_PATTERN.matcher(name);
+			final var matcher = PROPERTY_GETTER_PATTERN.matcher(name);
 			if (matcher.matches()) {
 				return true;
 			}
@@ -744,7 +735,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	@SuppressWarnings("static-method")
 	protected boolean isPropertySetterName(String name) {
 		if (!Strings.isEmpty(name)) {
-			final Matcher matcher = PROPERTY_SETTER_PATTERN.matcher(name);
+			final var matcher = PROPERTY_SETTER_PATTERN.matcher(name);
 			if (matcher.matches()) {
 				return true;
 			}
@@ -760,9 +751,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	@SuppressWarnings("static-method")
 	protected String getterName2property(String getterName) {
 		if (!Strings.isEmpty(getterName)) {
-			final Matcher matcher = PROPERTY_GETTER_PATTERN.matcher(getterName);
+			final var matcher = PROPERTY_GETTER_PATTERN.matcher(getterName);
 			if (matcher.matches()) {
-				final String name = matcher.group(1);
+				final var name = matcher.group(1);
 				if (!Strings.isEmpty(name)) {
 					return Strings.toFirstLower(name);
 				}
@@ -779,9 +770,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	@SuppressWarnings("static-method")
 	protected String setterName2property(String setterName) {
 		if (!Strings.isEmpty(setterName)) {
-			final Matcher matcher = PROPERTY_SETTER_PATTERN.matcher(setterName);
+			final var matcher = PROPERTY_SETTER_PATTERN.matcher(setterName);
 			if (matcher.matches()) {
-				final String name = matcher.group(1);
+				final var name = matcher.group(1);
 				if (!Strings.isEmpty(name)) {
 					return Strings.toFirstLower(name);
 				}
@@ -822,9 +813,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param parent the container.
 	 */
 	protected void createCopyrightBox(Element parent) {
-		final String copyrightText = getDocletOptions().getCopyrightText();
+		final var copyrightText = getDocletOptions().getCopyrightText();
 		if (!Strings.isEmpty(copyrightText)) {
-			final Element copyrightDiv = getHtmlFactory().createDivTag(parent, CssStyles.COPYRIGHT_BOX);
+			final var copyrightDiv = getHtmlFactory().createDivTag(parent, CssStyles.COPYRIGHT_BOX);
 			copyrightDiv.append(Messages.AbstractDocumentationGenerator_1);
 			getHtmlFactory().createSecableSpace(copyrightDiv);
 			copyrightDiv.appendText(copyrightText);
@@ -850,18 +841,18 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			Function1<T, String> keyExtractor,
 			Function1<T, Collection<? extends Node>> titleExtractor,
 			Function1<T, Collection<? extends Node>> contentExtractor) {
-		final Element rootBox = getHtmlFactory().createDivTag(null, CssStyles.DETAIL_BOX);
+		final var rootBox = getHtmlFactory().createDivTag(null, CssStyles.DETAIL_BOX);
 		if (!Strings.isEmpty(boxId)) {
 			rootBox.id(boxId);
 			getNavigation().addDetailBoxAnchor(boxId);
 		}
-		final Element btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.DETAIL_BOX_TITLE);
+		final var btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.DETAIL_BOX_TITLE);
 		btitle.appendText(boxTitle);
 		//
 		final Iterable<? extends T> theElements;
 		if (sorter != null) {
-			final List<T> sortedList = new ArrayList<>();
-			for (final T element : elements) {
+			final var sortedList = new ArrayList<T>();
+			for (final var element : elements) {
 				sortedList.add(element);
 			}
 			Collections.sort(sortedList, sorter);
@@ -869,18 +860,18 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		} else {
 			theElements = elements;
 		}
-		final Element elementsDiv = getHtmlFactory().createDlTag(null, CssStyles.DETAIL_BOX);
+		final var elementsDiv = getHtmlFactory().createDlTag(null, CssStyles.DETAIL_BOX);
 		boolean hasElements = false;
-		for (final T element : theElements) {
+		for (final var element : theElements) {
 			hasElements = true;
 			final Element elementTitleDiv = getHtmlFactory().createDtTag(elementsDiv, CssStyles.DETAIL_BOX);
 			if (keyExtractor != null) {
-				final String id = keyExtractor.apply(element);
+				final var id = keyExtractor.apply(element);
 				if (!Strings.isEmpty(id)) {
 					elementTitleDiv.id(id);
 				}
 			}
-			final Element elementDescriptionDiv = getHtmlFactory().createDdTag(elementsDiv, CssStyles.DETAIL_BOX);
+			final var elementDescriptionDiv = getHtmlFactory().createDdTag(elementsDiv, CssStyles.DETAIL_BOX);
 			elementTitleDiv.appendChildren(titleExtractor.apply(element));
 			elementDescriptionDiv.appendChildren(contentExtractor.apply(element));
 		}
@@ -952,31 +943,31 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			Element receiver, Map<String, Iterable<? extends T>> elements, Comparator<? super T> sorter,
 			Function1<T, Collection<? extends Node>> contentExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
-		final Element rootBox = getHtmlFactory().createDivTag(null, CssStyles.SUMMARY_BOX);
+		final var rootBox = getHtmlFactory().createDivTag(null, CssStyles.SUMMARY_BOX);
 		if (!Strings.isEmpty(boxId)) {
 			rootBox.id(boxId);
 			getNavigation().addSummaryBoxAnchor(boxId);
 		}
-		final Element btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_TITLE);
+		final var btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_TITLE);
 		btitle.appendText(boxTitle);
 		//
-		final HtmlTabsFactory tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
+		final var tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
 		//
-		boolean hasElements = false;
-		for (final Entry<String, Iterable<? extends T>> tabEntry : elements.entrySet()) {
+		var hasElements = false;
+		for (final var tabEntry : elements.entrySet()) {
 			tabsFactory.addTab(tabEntry.getKey());
 			//
-			final Element table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
-			final Element tableHeader = getHtmlFactory().createTableHeaderTag(table, CssStyles.SUMMARY_TABLE);
-			final Element tableHeaderRow = getHtmlFactory().createTableRowTag(tableHeader, CssStyles.SUMMARY_TABLE);
-			final Element tableColumnHeader0 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
+			final var table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
+			final var tableHeader = getHtmlFactory().createTableHeaderTag(table, CssStyles.SUMMARY_TABLE);
+			final var tableHeaderRow = getHtmlFactory().createTableRowTag(tableHeader, CssStyles.SUMMARY_TABLE);
+			final var tableColumnHeader0 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
 			tableColumnHeader0.appendText(tableColumn);
 			//
-			final Element tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
+			final var tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
 			final Iterable<? extends T> theElements;
 			if (sorter != null) {
-				final List<T> sortedList = new ArrayList<>();
-				for (final T element : tabEntry.getValue()) {
+				final var sortedList = new ArrayList<T>();
+				for (final var element : tabEntry.getValue()) {
 					sortedList.add(element);
 				}
 				Collections.sort(sortedList, sorter);
@@ -984,13 +975,13 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			} else {
 				theElements = tabEntry.getValue();
 			}
-			boolean hasTabElements = false;
-			for (final T element : theElements) {
+			var hasTabElements = false;
+			for (final var element : theElements) {
 				hasElements = true;
 				hasTabElements = true;
-				final Element tableRow = getHtmlFactory().createTableRowTag(tableBody, CssStyles.SUMMARY_TABLE);
-				final Element typeCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
-				final Collection<? extends Node> typeText = contentExtractor.apply(element);
+				final var tableRow = getHtmlFactory().createTableRowTag(tableBody, CssStyles.SUMMARY_TABLE);
+				final var typeCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
+				final var typeText = contentExtractor.apply(element);
 				typeCell.appendChildren(typeText);
 			}
 			if (!hasTabElements) {
@@ -1003,11 +994,11 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		}
 		//
 		if (inheritedExtractor != null) {
-			final Collection<? extends Node> inheritedNodes = inheritedExtractor.apply();
+			final var inheritedNodes = inheritedExtractor.apply();
 			if (inheritedNodes != null && !inheritedNodes.isEmpty()) {
 				hasElements = true;
-				final Element inheritedDiv = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_INHERITED);
-				final Element inheritedSpan = getHtmlFactory().createSpanTag(inheritedDiv, CssStyles.SUMMARY_BOX_INHERITED);
+				final var inheritedDiv = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_INHERITED);
+				final var inheritedSpan = getHtmlFactory().createSpanTag(inheritedDiv, CssStyles.SUMMARY_BOX_INHERITED);
 				inheritedSpan.appendText(Messages.AbstractDocumentationGenerator_2);
 				getHtmlFactory().createSecableSpace(inheritedSpan);
 				inheritedDiv.appendChildren(inheritedNodes);
@@ -1063,7 +1054,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			Function1<T, Collection<? extends Node>> typeExtractor,
 			Function1<T, Collection<? extends Node>> descriptionExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
-		final Map<String, Iterable<? extends T>> tabElements = Collections.singletonMap(tableTitle, elements);
+		final var tabElements = Collections.<String, Iterable<? extends T>>singletonMap(tableTitle, elements);
 		createSummaryBox2(boxTitle, tableTypeColumn, tableDescriptionColumn, boxId, receiver,
 				tabElements, sorter, typeExtractor, descriptionExtractor, inheritedExtractor);
 	}
@@ -1089,33 +1080,33 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			Function1<T, Collection<? extends Node>> typeExtractor,
 			Function1<T, Collection<? extends Node>> descriptionExtractor,
 			Function0<Collection<? extends Node>> inheritedExtractor) {
-		final Element rootBox = getHtmlFactory().createDivTag(null, CssStyles.SUMMARY_BOX);
+		final var rootBox = getHtmlFactory().createDivTag(null, CssStyles.SUMMARY_BOX);
 		if (!Strings.isEmpty(boxId)) {
 			rootBox.id(boxId);
 			getNavigation().addSummaryBoxAnchor(boxId);
 		}
-		final Element btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_TITLE);
+		final var btitle = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_TITLE);
 		btitle.appendText(boxTitle);
 		//
-		final HtmlTabsFactory tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
+		final var tabsFactory = getHtmlFactory().createTabBox(CssStyles.SUMMARY_BOX_TAB_TITLE, CssStyles.SUMMARY_BOX_TAB_CONTENT);
 		//
-		boolean hasElements = false;
-		for (final Entry<String, Iterable<? extends T>> tabEntry : elements.entrySet()) {
+		var hasElements = false;
+		for (final var tabEntry : elements.entrySet()) {
 			tabsFactory.addTab(tabEntry.getKey());
 			//
-			final Element table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
-			final Element tableHeader = getHtmlFactory().createTableHeaderTag(table, CssStyles.SUMMARY_TABLE);
-			final Element tableHeaderRow = getHtmlFactory().createTableRowTag(tableHeader, CssStyles.SUMMARY_TABLE);
-			final Element tableColumnHeader0 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
+			final var table = getHtmlFactory().createTableTag(tabsFactory.getLastContent(), CssStyles.SUMMARY_TABLE);
+			final var tableHeader = getHtmlFactory().createTableHeaderTag(table, CssStyles.SUMMARY_TABLE);
+			final var tableHeaderRow = getHtmlFactory().createTableRowTag(tableHeader, CssStyles.SUMMARY_TABLE);
+			final var tableColumnHeader0 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
 			tableColumnHeader0.appendText(tableTypeColumn);
-			final Element tableColumnHeader1 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
+			final var tableColumnHeader1 = getHtmlFactory().createTableColumnHeadTag(tableHeaderRow, CssStyles.SUMMARY_TABLE);
 			tableColumnHeader1.appendText(tableDescriptionColumn);
 			//
-			final Element tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
+			final var tableBody = getHtmlFactory().createTableBodyTag(table, CssStyles.SUMMARY_TABLE);
 			final Iterable<? extends T> theElements;
 			if (sorter != null) {
-				final List<T> sortedList = new ArrayList<>();
-				for (final T element : tabEntry.getValue()) {
+				final var sortedList = new ArrayList<T>();
+				for (final var element : tabEntry.getValue()) {
 					sortedList.add(element);
 				}
 				Collections.sort(sortedList, sorter);
@@ -1123,16 +1114,16 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			} else {
 				theElements = tabEntry.getValue();
 			}
-			boolean hasTabElements = false;
-			for (final T element : theElements) {
+			var hasTabElements = false;
+			for (final var element : theElements) {
 				hasElements = true;
 				hasTabElements = true;
-				final Element tableRow = getHtmlFactory().createTableRowTag(tableBody, CssStyles.SUMMARY_TABLE);
-				final Element typeCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
-				final Collection<? extends Node> typeText = typeExtractor.apply(element);
+				final var tableRow = getHtmlFactory().createTableRowTag(tableBody, CssStyles.SUMMARY_TABLE);
+				final var typeCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
+				final var typeText = typeExtractor.apply(element);
 				typeCell.appendChildren(typeText);
-				final Element descriptionCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
-				final Collection<? extends Node> descriptionText = descriptionExtractor.apply(element);
+				final var descriptionCell = getHtmlFactory().createTableCellTag(tableRow, CssStyles.SUMMARY_TABLE);
+				final var descriptionText = descriptionExtractor.apply(element);
 				descriptionCell.appendChildren(descriptionText);
 			}
 			if (!hasTabElements) {
@@ -1144,15 +1135,15 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			tabsFactory.createContents(rootBox);
 		}
 		if (inheritedExtractor != null) {
-			final Collection<? extends Node> inheritedNodes = inheritedExtractor.apply();
+			final var inheritedNodes = inheritedExtractor.apply();
 			if (inheritedNodes != null && !inheritedNodes.isEmpty()) {
 				hasElements = true;
-				final Element inheritedDiv = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_INHERITED);
-				final Element inheritedSpan = getHtmlFactory().createSpanTag(inheritedDiv, CssStyles.SUMMARY_BOX_INHERITED);
+				final var inheritedDiv = getHtmlFactory().createDivTag(rootBox, CssStyles.SUMMARY_BOX_INHERITED);
+				final var inheritedSpan = getHtmlFactory().createSpanTag(inheritedDiv, CssStyles.SUMMARY_BOX_INHERITED);
 				inheritedSpan.appendText(Messages.AbstractDocumentationGenerator_2);
 				getHtmlFactory().createSecableSpace(inheritedSpan);
-				boolean first = true;
-				for (final Node node : inheritedNodes) {
+				var first = true;
+				for (final var node : inheritedNodes) {
 					if (first) {
 						first = false;
 					} else {
@@ -1173,7 +1164,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @return the documentation title.
 	 */
 	protected String getDocumentationTitle() {
-		final String cli = getDocletOptions().getTitle();
+		final var cli = getDocletOptions().getTitle();
 		if (!Strings.isEmpty(cli)) {
 			return cli;
 		}
@@ -1187,13 +1178,13 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param addTitle indicates if the prefix title must be added.
 	 */
 	protected void createShortDeprecationMessage(javax.lang.model.element.Element element, List<Node> nodes, boolean addTitle) {
-		final javax.lang.model.element.Element deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(element);
+		final var deprecatedElement = getElementUtils().getFirstEnclosingDeprecatedElement(element);
 		if (deprecatedElement != null) {
-			final Element deprecatedDiv = getHtmlFactory().createDivTag(null, CssStyles.DEPRECATION_INFO);
-			final boolean isForRemoval = getElementUtils().isDeprecatedForRemoval(deprecatedElement);
-			final String since = getElementUtils().getDeprecatedSince(deprecatedElement);
+			final var deprecatedDiv = getHtmlFactory().createDivTag(null, CssStyles.DEPRECATION_INFO);
+			final var isForRemoval = getElementUtils().isDeprecatedForRemoval(deprecatedElement);
+			final var since = getElementUtils().getDeprecatedSince(deprecatedElement);
 			if (addTitle) {
-				final Element prefix = getHtmlFactory().createSpanTag(null, CssStyles.DEPRECATION_INFO_TITLE);
+				final var prefix = getHtmlFactory().createSpanTag(null, CssStyles.DEPRECATION_INFO_TITLE);
 				if (Strings.isEmpty(since)) {
 					if (isForRemoval) {
 						prefix.appendText(Messages.AbstractDocumentationGenerator_4);
@@ -1208,13 +1199,13 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 				deprecatedDiv.appendChild(prefix);
 				deprecatedDiv.appendChild(getHtmlFactory().createSecableSpace(null));
 			}
-			final List<? extends DocTree> deprs = getDocUtils().getBlockTags(deprecatedElement, DocTree.Kind.DEPRECATED, getEnvironment());
+			final var deprs = getDocUtils().getBlockTags(deprecatedElement, DocTree.Kind.DEPRECATED, getEnvironment());
 			if (!deprs.isEmpty()) {
-				for (final DocTree comment : deprs) {
-					final List<? extends DocTree> text = getDocUtils().getCommentForDeprecatedTag(comment);
+				for (final var comment : deprs) {
+					final var text = getDocUtils().getCommentForDeprecatedTag(comment);
 					if (!text.isEmpty()) {
-						final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(deprecatedDiv, deprecatedElement, this);
-						for (final DocTree tree : text) {
+						final var memory = getHtmlFactory().createCommentTextMemory(deprecatedDiv, deprecatedElement, this);
+						for (final var tree : text) {
 							getHtmlFactory().createCommentText(memory, tree, CssStyles.DEPRECATION_INFO);
 						}
 					}
@@ -1244,25 +1235,25 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param div indicates if the description must be enclosed by a {@code <div/>}.
 	 */
 	protected void createFirstSentence(javax.lang.model.element.Element element, List<Node> nodes, boolean newLine, boolean div) {
-		final SarlDocletEnvironment env = getEnvironment();
-		final DocCommentTree docTree = env.getDocTrees().getDocCommentTree(element);
+		final var env = getEnvironment();
+		final var docTree = env.getDocTrees().getDocCommentTree(element);
 		if (docTree != null) {
-			final List<? extends DocTree> description = docTree.getFirstSentence();
+			final var description = docTree.getFirstSentence();
 			if (description != null && !description.isEmpty()) {
 				if (newLine) {
 					nodes.add(getHtmlFactory().createNewLineTag());
 				}
 				if (div) {
-					final Element container = getHtmlFactory().createDivTag(null, null);
+					final var container = getHtmlFactory().createDivTag(null, null);
 					nodes.add(container);
-					final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(container, element, this);
-					for (final DocTree docTreeElement : description) {
+					final var memory = getHtmlFactory().createCommentTextMemory(container, element, this);
+					for (final var docTreeElement : description) {
 						getHtmlFactory().createCommentText(memory, docTreeElement, null);
 					}
 				} else {
-					final Element container = getHtmlFactory().createSpanTag(null, null);
-					final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(container, element, this);
-					for (final DocTree docTreeElement : description) {
+					final var container = getHtmlFactory().createSpanTag(null, null);
+					final var memory = getHtmlFactory().createCommentTextMemory(container, element, this);
+					for (final var docTreeElement : description) {
 						getHtmlFactory().createCommentText(memory, docTreeElement, null);
 					}
 					nodes.addAll(container.childNodes());
@@ -1279,25 +1270,25 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param div indicates if the description must be enclosed by a {@code <div/>}.
 	 */
 	protected void createFullDescriptionBody(javax.lang.model.element.Element element, List<Node> nodes, boolean newLine, boolean div) {
-		final SarlDocletEnvironment env = getEnvironment();
-		final DocCommentTree docTree = env.getDocTrees().getDocCommentTree(element);
+		final var env = getEnvironment();
+		final var docTree = env.getDocTrees().getDocCommentTree(element);
 		if (docTree != null) {
-			final List<? extends DocTree> description = docTree.getFullBody();
+			final var description = docTree.getFullBody();
 			if (description != null && !description.isEmpty()) {
 				if (newLine) {
 					nodes.add(getHtmlFactory().createNewLineTag());
 				}
 				if (div) {
-					final Element container = getHtmlFactory().createDivTag(null, null);
+					final var container = getHtmlFactory().createDivTag(null, null);
 					nodes.add(container);
-					final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(container, element, this);
-					for (final DocTree docTreeElement : description) {
+					final var memory = getHtmlFactory().createCommentTextMemory(container, element, this);
+					for (final var docTreeElement : description) {
 						getHtmlFactory().createCommentText(memory, docTreeElement, null);
 					}
 				} else {
-					final Element container = getHtmlFactory().createSpanTag(null, null);
-					final CommentTextMemory memory = getHtmlFactory().createCommentTextMemory(container, element, this);
-					for (final DocTree docTreeElement : description) {
+					final var container = getHtmlFactory().createSpanTag(null, null);
+					final var memory = getHtmlFactory().createCommentTextMemory(container, element, this);
+					for (final var docTreeElement : description) {
 						getHtmlFactory().createCommentText(memory, docTreeElement, null);
 					}
 					nodes.addAll(container.childNodes());
@@ -1314,7 +1305,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param style the CSS style to use.
 	 */
 	protected void createBlockTagsFor(javax.lang.model.element.Element element, List<Node> nodes, Location tagLocation, CssStyles style) {
-		final Element dlTag = getHtmlFactory().createDlTag(null, style);
+		final var dlTag = getHtmlFactory().createDlTag(null, style);
 		createTagInfo(dlTag, element, tagLocation, style);
 		if (dlTag.childNodeSize() > 0) {
 			nodes.add(dlTag);
@@ -1329,24 +1320,24 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 	 * @param style the CSS style.
 	 */
 	protected void createTagInfo(Element dlTag, javax.lang.model.element.Element element, Location tagLocation, CssStyles style) {
-		final List<? extends BlockTagTree> comments = getDocUtils().getBlockTags(element, getEnvironment());
+		final var comments = getDocUtils().getBlockTags(element, getEnvironment());
 		if (!comments.isEmpty()) {
-			final PackageElement currentPackage = getEnvironment().getElementUtils().getPackageOf(element);
+			final var currentPackage = getEnvironment().getElementUtils().getPackageOf(element);
 			//
-			final QualifiedNameSetBuilder defaultPackages = buildCallbackForTypeFinding(currentPackage,
+			final var defaultPackages = buildCallbackForTypeFinding(currentPackage,
 					buildImportedPackageSet(element));
 			// Build the groups of block tags
-			final SortedMap<String, List<BlockTagTree>> groups = new TreeMap<>(getBlockTagSorter());
-			for (final BlockTagTree comment : comments) {
-				final String tagName = comment.getTagName().toLowerCase();
-				final List<BlockTagTree> list = groups.computeIfAbsent(tagName, it -> new ArrayList<>());
+			final var groups = new TreeMap<String, List<BlockTagTree>>(getBlockTagSorter());
+			for (final var comment : comments) {
+				final var tagName = comment.getTagName().toLowerCase();
+				final var list = groups.computeIfAbsent(tagName, it -> new ArrayList<>());
 				if (!ExcludeFromApidocTaglet.TAG_NAME.equalsIgnoreCase(tagName)
 					&& !HiddenTaglet.TAG_NAME.equalsIgnoreCase(tagName)) {
 					list.add(comment);
 				}
 			}
 			// Generate the block tags
-			for (final List<BlockTagTree> group : groups.values()) {
+			for (final var group : groups.values()) {
 				createBlockTagStructure(tagLocation, element, group, dlTag, style, defaultPackages);
 			}
 		}
@@ -1404,9 +1395,9 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 		private void addQN(String fullyQualifiedName) {
 			if (!Strings.isEmpty(fullyQualifiedName)) {
-				final int index = fullyQualifiedName.lastIndexOf('.');
+				final var index = fullyQualifiedName.lastIndexOf('.');
 				if (index >= 1) {
-					final String pkg = fullyQualifiedName.substring(0, index);
+					final var pkg = fullyQualifiedName.substring(0, index);
 					this.searchpath.add(pkg);
 				}
 			}
@@ -1432,8 +1423,8 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 		 */
 		public void build(javax.lang.model.element.Element element) {
 			final TypeElement type;
-			if (element instanceof TypeElement) {
-				type = (TypeElement) element;
+			if (element instanceof TypeElement cvalue) {
+				type = cvalue;
 			} else {
 				type = getElementUtils().getEnclosingTypeElement(element);
 			}
@@ -1450,8 +1441,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			}
 			// Add the enclosing types
 			while (elt != null) {
-				if (elt instanceof TypeElement) {
-					final TypeElement te = (TypeElement) elt;
+				if (elt instanceof TypeElement te) {
 					addQN(te.getQualifiedName().toString());
 					elt = te.getEnclosingElement();
 				} else {
@@ -1470,7 +1460,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 		@Override
 		public Void visitType(TypeElement e, Void p) {
-			for(TypeMirror interfaceType : e.getInterfaces()) {
+			for( final var interfaceType : e.getInterfaces()) {
 				add(interfaceType);
 			}
 			add(e.getSuperclass());
@@ -1482,7 +1472,7 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 			if(e.getReturnType().getKind() == TypeKind.DECLARED) {
 				add(e.getReturnType());
 			}
-			for (final TypeMirror tm : e.getThrownTypes()) {
+			for (final var tm : e.getThrownTypes()) {
 				if(tm.getKind() == TypeKind.DECLARED) {
 					add(tm);
 				}

@@ -36,14 +36,12 @@ import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.DocumentationTool;
 import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 import com.google.common.base.Strings;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandOutcome;
-import io.bootique.command.ManagedCommand;
 import io.bootique.di.BQInject;
 import org.arakhne.afc.vmutil.FileSystem;
 
@@ -88,8 +86,8 @@ public class SarldocCommand extends AbstractSarldocCommand {
 		CommandOutcome outcome;
 		try {
 			logger.info(Messages.SarldocCommand_1);
-			final CommandManager cmdManager = this.commandManagerProvider.get();
-			final ManagedCommand compilerCommand = cmdManager.lookupByType(CompilerCommand.class);
+			final var cmdManager = this.commandManagerProvider.get();
+			final var compilerCommand = cmdManager.lookupByType(CompilerCommand.class);
 			outcome = compilerCommand.getCommand().run(cli);
 		} catch (Exception e) {
 			outcome = CommandOutcome.failed(1, e);
@@ -104,12 +102,12 @@ public class SarldocCommand extends AbstractSarldocCommand {
 	 * @since 0.13
 	 */
 	protected static String formatDiagnosticMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
-		final String code = diagnostic.getCode();
-		final JavaFileObject source = diagnostic.getSource();
-		final long line = diagnostic.getLineNumber();
-		final long column = diagnostic.getColumnNumber();
+		final var code = diagnostic.getCode();
+		final var source = diagnostic.getSource();
+		final var line = diagnostic.getLineNumber();
+		final var column = diagnostic.getColumnNumber();
 
-		String diagMessage = diagnostic.getMessage(null);
+		var diagMessage = diagnostic.getMessage(null);
 		if (Strings.isNullOrEmpty(diagMessage)) {
 			diagMessage = MessageFormat.format(Messages.SarldocCommand_10, code);
 		}
@@ -151,7 +149,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 			AtomicInteger warningCount) {
 		// Execute the Javadoc
 		try {
-			final File outFolder = paths.getDocumentationOutputPath().getAbsoluteFile();
+			final var outFolder = paths.getDocumentationOutputPath().getAbsoluteFile();
 			logger.info(MessageFormat.format(Messages.SarldocCommand_5, outFolder.getAbsolutePath()));
 			FileSystem.delete(outFolder);
 			outFolder.mkdirs();
@@ -179,17 +177,17 @@ public class SarldocCommand extends AbstractSarldocCommand {
 				}
 			};
 
-			final DocumentationTool docTool = ToolProvider.getSystemDocumentationTool();
-			final StandardJavaFileManager fileManager = docTool.getStandardFileManager(diagnosticListener, null, null);
+			final var docTool = ToolProvider.getSystemDocumentationTool();
+			final var fileManager = docTool.getStandardFileManager(diagnosticListener, null, null);
 
-			final Iterable<? extends JavaFileObject> javaFiles = fileManager.getJavaFileObjectsFromFiles(sourceFiles);
+			final var javaFiles = fileManager.getJavaFileObjectsFromFiles(sourceFiles);
 
 			fileManager.setLocation(DocumentationTool.Location.DOCUMENTATION_OUTPUT, Arrays.asList(outFolder));
 
-			final DocumentationTool.DocumentationTask docTask = docTool.getTask(
+			final var docTask = docTool.getTask(
 					new ErrorWriter(logger, errorCount),
 					fileManager, diagnosticListener, docletClass, javadocOptions, javaFiles);
-			final boolean result = docTask.call().booleanValue();
+			final var result = docTask.call().booleanValue();
 			if (result) {
 				return CommandOutcome.succeeded();
 			}
@@ -239,7 +237,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 		@Override
 		public final void write(char[] cbuf, int off, int len) throws IOException {
-			String message = new String(cbuf, off, len);
+			var message = new String(cbuf, off, len);
 			message = message.trim();
 			if (!Strings.isNullOrEmpty(message)) {
 				log(message);

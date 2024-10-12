@@ -23,7 +23,6 @@ package io.sarl.lang.compiler.batch;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -48,9 +47,9 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @return the OS-dependent path.
 	 */
 	protected static String buildPath(Iterable<File> path, IProgressMonitor progress) {
-		final StringBuilder cmd = new StringBuilder();
-		boolean first = true;
-		for (final File classpathPath : path) {
+		final var cmd = new StringBuilder();
+		var first = true;
+		for (final var classpathPath : path) {
 			if (progress.isCanceled()) {
 				return null;
 			}
@@ -74,7 +73,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @see #addFolderIfJavaFileDeeply(List, File)
 	 */
 	protected boolean addJavaFilesDeeply(List<String> list, File root) {
-		final Deque<File> folders = new LinkedList<>();
+		final var folders = new LinkedList<File>();
 		if (root.exists()) {
 			if (root.isDirectory()) {
 				folders.addLast(root);
@@ -83,11 +82,11 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 				return true;
 			}
 		}
-		boolean changed = false;
+		var changed = false;
 		while (!folders.isEmpty()) {
-			final File current = folders.removeFirst();
+			final var current = folders.removeFirst();
 			assert current.isDirectory();
-			for (final File subfile : current.listFiles()) {
+			for (final var subfile : current.listFiles()) {
 				if (subfile.isDirectory()) {
 					folders.addLast(subfile);
 				} else if (isJavaExtension(subfile)) {
@@ -108,14 +107,14 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @see #addJavaFilesDeeply(List, File)
 	 */
 	protected boolean addFolderIfJavaFileDeeply(List<String> list, File root) {
-		final Deque<File> folders = new LinkedList<>();
+		final var folders = new LinkedList<File>();
 		if (root.exists() && root.isDirectory()) {
 			folders.addLast(root);
 		}
 		while (!folders.isEmpty()) {
-			final File current = folders.removeFirst();
+			final var current = folders.removeFirst();
 			assert current.isDirectory();
-			for (final File subfile : current.listFiles()) {
+			for (final var subfile : current.listFiles()) {
 				if (subfile.isDirectory()) {
 					folders.addLast(subfile);
 				} else if (isJavaExtension(subfile)) {
@@ -138,8 +137,8 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 			if (file.isDirectory()) {
 				return true;
 			}
-			final String name = file.getName();
-			final int index = name.lastIndexOf('.');
+			final var name = file.getName();
+			final var index = name.lastIndexOf('.');
 			if (index > 1 && ".java".equalsIgnoreCase(name.substring(index))) { //$NON-NLS-1$
 				return true;
 			}
@@ -159,7 +158,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 			PrintWriter errWriter,
 			Logger logger,
 			IProgressMonitor progress) {
-		final JavaVersion jversion = SarlBatchCompilerUtils.parseJavaVersion(javaVersion);
+		final var jversion = SarlBatchCompilerUtils.parseJavaVersion(javaVersion);
 		return compile(classDirectory, sourcePathDirectories, classPathEntries, modulePathEntries,
 				jversion, SarlBatchCompilerUtils.isModuleSupported(jversion),
 				encoding, isCompilerMoreVerbose, optimizationLevel, outWriter, errWriter, logger, progress);

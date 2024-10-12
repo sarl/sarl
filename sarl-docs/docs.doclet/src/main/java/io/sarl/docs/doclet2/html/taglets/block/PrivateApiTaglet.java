@@ -93,12 +93,12 @@ public class PrivateApiTaglet extends AbstractSarlTaglet {
 	
 	@Override
 	public boolean appendNode(org.jsoup.nodes.Element parent, List<? extends DocTree> tags, Element element, DocTree sourceDocumentation, CssStyles style, HtmlFactoryContentExtractor referenceExtractor) {
-		final org.jsoup.nodes.Element prefix = getHtmlFactory().createSpanTag(parent, getTextCssStyle(style));
+		final var prefix = getHtmlFactory().createSpanTag(parent, getTextCssStyle(style));
 		prefix.appendText(Messages.PrivateApiTaglet_0);
 		getHtmlFactory().createSecableSpace(parent);
 		
-		boolean first = true;
-		for (final DocTree tr : tags) {
+		var first = true;
+		for (final var tr : tags) {
 			if (first) {
 				first = false;
 			} else {
@@ -107,8 +107,7 @@ public class PrivateApiTaglet extends AbstractSarlTaglet {
 				}
 				getHtmlFactory().createSecableSpace(parent);
 			}
-			if (tr instanceof UnknownBlockTagTree) {
-				final UnknownBlockTagTree ubtt = (UnknownBlockTagTree) tr;
+			if (tr instanceof UnknownBlockTagTree ubtt) {
 		    	appendCommentTextWithSpace(parent, ubtt.getContent(), element, getTextCssStyle(style), referenceExtractor.getContext());
 			}
 		}

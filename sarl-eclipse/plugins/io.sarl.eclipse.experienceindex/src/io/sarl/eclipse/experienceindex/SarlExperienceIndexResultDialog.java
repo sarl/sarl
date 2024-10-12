@@ -100,34 +100,34 @@ public class SarlExperienceIndexResultDialog extends IconAndMessageDialog {
 	 *         dialog's close window decoration or the ESC key was used.
 	 */
 	public static int open(Shell parent, SEI sei) {
-		final SarlExperienceIndexResultDialog dialog = new SarlExperienceIndexResultDialog(parent, sei);
+		final var dialog = new SarlExperienceIndexResultDialog(parent, sei);
 		return dialog.open();
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		final Composite composite = (Composite) super.createDialogArea(parent);
+		final var composite = (Composite) super.createDialogArea(parent);
 		createMessageArea(composite);
 		return composite;
 	}
 
 	@Override
 	protected Image getImage() {
-		Image img = this.globalImage != null ? this.globalImage.get() : null;
+		var img = this.globalImage != null ? this.globalImage.get() : null;
 		if (img == null) {
-			final Display display = getShell().getDisplay();
+			final var display = getShell().getDisplay();
 			img = new Image(display, GLOBAL_ICON_SIZE, GLOBAL_ICON_SIZE);
-			final GC gc = new GC(img);
-			final Image backimg = SarlExperienceIndexPlugin.getDefault().getImage(BACKGROUND_IMAGE);
+			final var gc = new GC(img);
+			final var backimg = SarlExperienceIndexPlugin.getDefault().getImage(BACKGROUND_IMAGE);
 			gc.setAntialias(SWT.ON);
 			gc.drawImage(backimg, 0, 0);
 			backimg.dispose();
 			gc.setForeground(new Color(display, SEI_FONT_COLOR_RED, SEI_FONT_COLOR_GREEN, SEI_FONT_COLOR_BLUE));
-			final Font newFont = new Font(display, SEI_FONT, SEI_FONT_SIZE, SEI_FONT_STYLE);
+			final var newFont = new Font(display, SEI_FONT, SEI_FONT_SIZE, SEI_FONT_STYLE);
 			gc.setFont(newFont);
-			final String text = MessageFormat.format(Messages.SarlExperienceIndexResultDialog_1,
+			final var text = MessageFormat.format(Messages.SarlExperienceIndexResultDialog_1,
 					Float.valueOf(this.sei.getBaseScore()));
-			final Point size = gc.textExtent(text);
+			final var size = gc.textExtent(text);
 			gc.drawText(text,
 					(GLOBAL_ICON_SIZE - size.x) / 2,
 					(GLOBAL_ICON_SIZE - size.y) / 2,

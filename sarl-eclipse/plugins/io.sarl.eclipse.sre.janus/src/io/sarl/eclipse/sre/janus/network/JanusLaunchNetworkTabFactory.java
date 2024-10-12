@@ -43,7 +43,7 @@ public class JanusLaunchNetworkTabFactory implements ISarlLaunchConfigurationPan
 	@Override
 	public ILaunchConfigurationTab newLaunchConfigurationPanel(ILaunchConfigurationDialog dialog, String mode,
 			List<ILaunchConfigurationTab> list, ISarlRuntimeEnvironmentTab runtimeTab) {
-		final JanusLaunchNetworkTab tab = new JanusLaunchNetworkTab();
+		final var tab = new JanusLaunchNetworkTab();
 		/*if (runtimeTab != null) {
 			runtimeTab.addSreChangeListener(tab);
 		}*/

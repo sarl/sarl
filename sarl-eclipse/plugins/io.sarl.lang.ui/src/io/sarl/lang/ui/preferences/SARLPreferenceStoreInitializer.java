@@ -67,7 +67,7 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 		// Initialize the default visibilities for the optional issue codes.
 		setupIssueCodesDefaults(preferenceStoreAccess);
 
-		final IPreferenceStore preferenceStore = org.eclipse.jdt.ui.PreferenceConstants.getPreferenceStore();
+		final var preferenceStore = org.eclipse.jdt.ui.PreferenceConstants.getPreferenceStore();
 		preferenceStore.addPropertyChangeListener(this);
 
 		// Copy the Subword navigation from the JDT plugin.
@@ -84,8 +84,8 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 	}
 
 	private void setupIssueCodesDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
-		final IPreferenceStore store = preferenceStoreAccess.getWritablePreferenceStore();
-		for (final PreferenceKey prefKey : this.issueCodes.getConfigurableIssueCodes().values()) {
+		final var store = preferenceStoreAccess.getWritablePreferenceStore();
+		for (final var prefKey : this.issueCodes.getConfigurableIssueCodes().values()) {
 			store.setDefault(prefKey.getId(), prefKey.getDefaultValue());
 		}
 	}

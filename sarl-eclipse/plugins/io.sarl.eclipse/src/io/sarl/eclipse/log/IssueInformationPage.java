@@ -89,28 +89,28 @@ public class IssueInformationPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		// create a composite with standard margins and spacing
-		final Composite composite = new Composite(parent, SWT.NONE);
-		final GridLayout layout = new GridLayout();
+		final var composite = new Composite(parent, SWT.NONE);
+		final var layout = new GridLayout();
 		layout.numColumns = 2;
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		if (this.link != null) {
-			final Link linkWidget = new Link(composite, SWT.BORDER);
+			final var linkWidget = new Link(composite, SWT.BORDER);
 			linkWidget.setText(MessageFormat.format(Messages.IssueInformationPage_9, this.link.toString()));
 			linkWidget.setFont(composite.getFont());
-			final GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			final var gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = 2;
 			linkWidget.setLayoutData(gd);
 			linkWidget.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent event) {
 					try {
-						final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser();
+						final var browser = PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser();
 						browser.openURL(IssueInformationPage.this.link);
-						final IWizard wizard = IssueInformationPage.this.getWizard();
-						if (wizard instanceof SubmitEclipseLogWizard) {
-							final WizardDialog dialog = ((SubmitEclipseLogWizard) wizard).getWizardDialog();
+						final var wizard = IssueInformationPage.this.getWizard();
+						if (wizard instanceof SubmitEclipseLogWizard cvalue) {
+							final var dialog = cvalue.getWizardDialog();
 							if (dialog != null) {
 								dialog.close();
 							}
@@ -192,7 +192,7 @@ public class IssueInformationPage extends WizardPage {
 	/** Set the initial values to the fields.
 	 */
 	protected void initFields() {
-		final IEclipsePreferences prefs = SARLEclipsePlugin.getDefault().getPreferences();
+		final var prefs = SARLEclipsePlugin.getDefault().getPreferences();
 		this.trackerLogin.setText(prefs.get(PREFERENCE_LOGIN, "")); //$NON-NLS-1$
 	}
 
@@ -225,8 +225,8 @@ public class IssueInformationPage extends WizardPage {
 	 * @return {@code true} for closing the wizard; {@code false} for keeping it open.
 	 */
 	public boolean performFinish() {
-		final IEclipsePreferences prefs = SARLEclipsePlugin.getDefault().getPreferences();
-		final String login = this.trackerLogin.getText();
+		final var prefs = SARLEclipsePlugin.getDefault().getPreferences();
+		final var login = this.trackerLogin.getText();
 		if (Strings.isEmpty(login)) {
 			prefs.remove(PREFERENCE_LOGIN);
 		} else {

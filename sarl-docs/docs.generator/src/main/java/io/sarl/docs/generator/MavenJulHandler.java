@@ -49,8 +49,8 @@ final class MavenJulHandler extends Handler {
 
 	@Override
 	public void publish(LogRecord record) {
-		final int level = record.getLevel().intValue();
-		final Throwable exception = record.getThrown();
+		final var level = record.getLevel().intValue();
+		final var exception = record.getThrown();
 		if (level >= Level.SEVERE.intValue()) {
 			if (exception != null) {
 				this.mavenLogger.error(record.getMessage(), exception);

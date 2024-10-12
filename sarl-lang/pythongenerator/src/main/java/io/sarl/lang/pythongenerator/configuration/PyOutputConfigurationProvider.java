@@ -56,7 +56,7 @@ public class PyOutputConfigurationProvider implements IOutputConfigurationProvid
 
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
-		final OutputConfiguration pythonOutput = new OutputConfiguration(OUTPUT_CONFIGURATION_NAME);
+		final var pythonOutput = new OutputConfiguration(OUTPUT_CONFIGURATION_NAME);
 		pythonOutput.setDescription(Messages.PyOutputConfigurationProvider_0);
 		pythonOutput.setOutputDirectory(OUTPUT_FOLDER);
 		pythonOutput.setOverrideExistingResources(true);

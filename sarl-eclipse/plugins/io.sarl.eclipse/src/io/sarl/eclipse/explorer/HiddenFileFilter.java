@@ -41,14 +41,13 @@ public class HiddenFileFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		if (element instanceof IResource) {
-			final IResource resource = (IResource) element;
-			if (resource.isHidden() || resource.isDerived() || resource.isPhantom()) {
+		if (element instanceof IResource resource) {
+		if (resource.isHidden() || resource.isDerived() || resource.isPhantom()) {
 				return false;
 			}
-			final IPath path2 = resource.getRawLocation();
+			final var path2 = resource.getRawLocation();
 			if (path2 != null) {
-				final File rawFile = path2.toFile();
+				final var rawFile = path2.toFile();
 				return rawFile != null && !rawFile.isHidden();
 			}
 		}

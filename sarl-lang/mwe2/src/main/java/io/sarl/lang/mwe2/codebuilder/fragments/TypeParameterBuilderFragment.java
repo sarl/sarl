@@ -35,10 +35,7 @@ import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
-import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
-
-import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for type parameters.
  *
@@ -89,8 +86,8 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 	/** Generate the type parameter builder interface.
 	 */
 	protected void generateITypeParameterBuilder() {
-		final TypeReference builder = getTypeParameterBuilderInterface();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builder = getTypeParameterBuilderInterface();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -111,16 +108,16 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the formal parameter builder implementation.
 	 */
 	protected void generateTypeParameterBuilderImpl() {
-		final TypeReference builderInterface = getTypeParameterBuilderInterface();
-		final TypeReference builder = getTypeParameterBuilderImpl();
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getTypeParameterBuilderInterface();
+		final var builder = getTypeParameterBuilderImpl();
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -145,19 +142,19 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the formal parameter appender.
 	 */
 	protected void generateTypeParameterAppender() {
-		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getTypeParameter();
-		final String accessor = "get" //$NON-NLS-1$
+		final var parameter = getCodeElementExtractor().getTypeParameter();
+		final var accessor = "get" //$NON-NLS-1$
 				+ Strings.toFirstUpper(parameter.elementType().getSimpleName()) + "()"; //$NON-NLS-1$
-		final TypeReference builderInterface = getTypeParameterBuilderInterface();
-		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("TypeParameter"); //$NON-NLS-1$
-		final StringConcatenationClient content = new StringConcatenationClient() {
+		final var builderInterface = getTypeParameterBuilderInterface();
+		final var appender = getCodeElementExtractor().getElementAppenderImpl("TypeParameter"); //$NON-NLS-1$
+		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
@@ -183,7 +180,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 			}
 		};
-		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final var javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -194,7 +191,7 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 	 * @return the code.
 	 */
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getTypeParameter();
+		final var parameter = getCodeElementExtractor().getTypeParameter();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {

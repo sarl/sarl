@@ -25,7 +25,6 @@ import java.util.Optional;
 import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.config.ConfigValueMetadata;
-import io.bootique.meta.module.ModuleMetadata;
 import io.bootique.meta.module.ModulesMetadata;
 
 /** Module for the compiler application metadata version 2.
@@ -51,7 +50,7 @@ public final class DeclaredVariableMetaCompiler {
 	 * @return the value's metadata
 	 */
 	public static Optional<ConfigValueMetadata> compileIfValid(DeclaredVariable var, ModulesMetadata modulesMetadata) {
-		for (final ModuleMetadata mm : modulesMetadata.getModules()) {
+		for (final var mm : modulesMetadata.getModules()) {
 			// TODO: 'findConfig' does a String split over and over again as we iterate through the loop.
 			//  Precalculate this once.
 			final Optional<ConfigMetadataNode> cmn = mm.findConfig(var.getConfigPath());

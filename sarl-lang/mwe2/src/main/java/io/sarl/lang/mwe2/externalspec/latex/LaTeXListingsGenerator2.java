@@ -36,8 +36,6 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
 
 import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
-import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.Color;
-import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.ColorConfig;
 import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
 
 /**
@@ -264,19 +262,19 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
 			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
 			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
-		final ColorConfig colors = getHighlightingConfig().getColors();
+		final var colors = getHighlightingConfig().getColors();
 
-		final Set<String> texKeywords = sortedConcat(expressionKeywords, modifiers, primitiveTypes,
+		final var texKeywords = sortedConcat(expressionKeywords, modifiers, primitiveTypes,
 				specialKeywords, typeDeclarationKeywords, literals);
 
 		it.appendHeader();
 
-		final String basename = getBasename(
+		final var basename = getBasename(
 				MessageFormat.format(getBasenameTemplate(), getLanguageSimpleName().toLowerCase()));
-		final String simpleBasename = Files.getNameWithoutExtension(basename);
+		final var simpleBasename = Files.getNameWithoutExtension(basename);
 
 		it.appendNl("\\NeedsTeXFormat{LaTeX2e}[1995/12/01]"); //$NON-NLS-1$
-		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
+		final var dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
 		it.appendNl("\\ProvidesPackage'{'{0}'}'[{1}]", simpleBasename, dateFormat.format(new Date())); //$NON-NLS-1$
 
 		if (generateOptions(it)) {
@@ -286,11 +284,11 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.appendNl("\\RequirePackage{algpseudocode}"); //$NON-NLS-1$
 		it.appendNl("\\RequirePackage{listings}"); //$NON-NLS-1$
 		it.appendNl("\\RequirePackage{xspace}"); //$NON-NLS-1$
-		Collection<String> requirements = this.requirements;
+		var requirements = this.requirements;
 		if (requirements == null) {
 			requirements = Arrays.asList(DEFAULT_REQUIREMENTS);
 		}
-		for (final String requirement : requirements) {
+		for (final var requirement : requirements) {
 			it.appendNl("\\RequirePackage'{'{0}'}'", requirement); //$NON-NLS-1$
 		}
 		if (getEnableColors()) {
@@ -298,7 +296,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		}
 
 		if (getEnableColors()) {
-			for (final Color color : colors.getColors().values()) {
+			for (final var color : colors.getColors().values()) {
 				it.appendNl("\\definecolor'{'{0}'}{'RGB'}{'{1},{2},{3}'}'", //$NON-NLS-1$
 						color.getName(),
 						Integer.valueOf(color.getRed()),
@@ -312,7 +310,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			it.appendNl("\\colorlet'{'SARLlinenumber'}{'{0}'}'", colors.getLineNumberColor()); //$NON-NLS-1$
 		}
 
-		final String langName = getLanguageSimpleName().toUpperCase();
+		final var langName = getLanguageSimpleName().toUpperCase();
 		it.appendNl("\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
 		it.appendNl("   morecomment=[l]{//},"); //$NON-NLS-1$
 		it.appendNl("   morecomment=[s]{/*}{*/},"); //$NON-NLS-1$
@@ -322,7 +320,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		it.appendNl("\\lstset{%"); //$NON-NLS-1$
 
-		String floatBasicStyle = this.floatBasicStyle;
+		var floatBasicStyle = this.floatBasicStyle;
 		if (floatBasicStyle == null) {
 			floatBasicStyle = getEnableColors() ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
 		}
@@ -340,28 +338,28 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.append("   keepspaces=true, % keeps spaces in text, useful for keeping "); //$NON-NLS-1$
 		it.appendNl("indentation of code (possibly needs columns=flexible)"); //$NON-NLS-1$
 
-		String identifierStyle = this.identifierStyle;
+		var identifierStyle = this.identifierStyle;
 		if (identifierStyle == null) {
 			identifierStyle = getEnableColors() ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
 		}
 		identifierStyle = Strings.emptyIfNull(identifierStyle);
 		it.appendNl("   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
 
-		String commentStyle = this.commentStyle;
+		var commentStyle = this.commentStyle;
 		if (commentStyle == null) {
 			commentStyle = getEnableColors() ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
 		}
 		commentStyle = Strings.emptyIfNull(commentStyle);
 		it.appendNl("   commentstyle={0},", commentStyle); //$NON-NLS-1$
 
-		String stringStyle = this.stringStyle;
+		var stringStyle = this.stringStyle;
 		if (stringStyle == null) {
 			stringStyle = getEnableColors() ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
 		}
 		stringStyle = Strings.emptyIfNull(stringStyle);
 		it.appendNl("   stringstyle={0},", stringStyle); //$NON-NLS-1$
 
-		String keywordStyle = this.keywordStyle;
+		var keywordStyle = this.keywordStyle;
 		if (keywordStyle == null) {
 			keywordStyle = getEnableColors() ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
 		}
@@ -398,7 +396,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.appendNl("\\tiny,"); //$NON-NLS-1$
 		it.appendNl("}"); //$NON-NLS-1$
 
-		String inlineBasicStyle = this.inlineBasicStyle;
+		var inlineBasicStyle = this.inlineBasicStyle;
 		if (inlineBasicStyle == null) {
 			inlineBasicStyle = getEnableColors() ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
 		}
@@ -467,16 +465,16 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		@Override
 		public void appendComment(String text, Object... parameters) {
-			final String comment = applyFormat(text, parameters);
-			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+			final var comment = applyFormat(text, parameters);
+			for (final var line : comment.split("[\n\r]")) { //$NON-NLS-1$
 				appendNl("% " + line.trim()); //$NON-NLS-1$
 			}
 		}
 
 		@Override
 		public void appendHeader() {
-			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-			for (final String headerLine : header) {
+			final var header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			for (final var headerLine : header) {
 				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "%")); //$NON-NLS-1$//$NON-NLS-2$
 			}
 		}

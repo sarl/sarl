@@ -21,7 +21,6 @@
 
 package io.sarl.lang.mwe2.codebuilder.extractor;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -73,7 +72,7 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 		if (classifier == null) {
 			return new TypeReference(Object.class);
 		}
-		final String name = GenModelUtil2.getJavaTypeName(classifier, classifier.eResource().getResourceSet());
+		final var name = GenModelUtil2.getJavaTypeName(classifier, classifier.eResource().getResourceSet());
 		if (Strings.isEmpty(name)) {
 			return new TypeReference(Object.class);
 		}
@@ -83,11 +82,11 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Override
 	public ElementDescription newElementDescription(String name, EObject grammarComponent, EClassifier elementType,
 			TypeReference commonType) {
-		final TypeReference interfaceType = getElementBuilderInterface(name);
-		final TypeReference implementationType = getElementBuilderImpl(name);
-		final TypeReference customImplementationType = getElementBuilderImplCustom(name);
-		final TypeReference appenderType = getElementAppenderImpl(name);
-		final boolean isAnnotationInfo = findAction(grammarComponent, getAnnotationInfoFieldName()) != null;
+		final var interfaceType = getElementBuilderInterface(name);
+		final var implementationType = getElementBuilderImpl(name);
+		final var customImplementationType = getElementBuilderImplCustom(name);
+		final var appenderType = getElementAppenderImpl(name);
+		final var isAnnotationInfo = findAction(grammarComponent, getAnnotationInfoFieldName()) != null;
 		return new ElementDescription(
 				Strings.toFirstUpper(name), grammarComponent,
 				newTypeReference(elementType), commonType,
@@ -111,7 +110,7 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	 * @return the assignment component.
 	 */
 	protected static Action findAction(EObject grammarComponent, String assignmentName) {
-		for (final Action action : GrammarUtil.containedActions(grammarComponent)) {
+		for (final var action : GrammarUtil.containedActions(grammarComponent)) {
 			if (GrammarUtil.isAssignedAction(action)) {
 				if (Objects.equals(assignmentName, action.getFeature())) {
 					return action;
@@ -126,8 +125,8 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 		if (grammarElement == null) {
 			return null;
 		}
-		if (grammarElement instanceof AbstractRule) {
-			return getGeneratedTypeFor((AbstractRule) grammarElement);
+		if (grammarElement instanceof AbstractRule cvalue) {
+			return getGeneratedTypeFor(cvalue);
 		}
 		try {
 			return Iterables.find(GrammarUtil.containedActions(grammarElement),
@@ -139,7 +138,7 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 
 	@Override
 	public EClassifier getGeneratedTypeFor(AbstractRule rule) {
-		final List<Action> actions = GrammarUtil.containedActions(rule);
+		final var actions = GrammarUtil.containedActions(rule);
 		final EClassifier classifier;
 		if (actions.isEmpty()) {
 			classifier = rule.getType().getClassifier();
@@ -156,15 +155,15 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	 * @return the container of the content.
 	 */
 	protected EObject getContainerInRule(EObject root, EObject content) {
-		EObject container = content;
+		var container = content;
 		do {
-			final EClassifier classifier = getGeneratedTypeFor(container);
+			final var classifier = getGeneratedTypeFor(container);
 			if (classifier != null) {
 				return container;
 			}
 			container = container.eContainer();
 		} while (container != root);
-		final EClassifier classifier = getGeneratedTypeFor(root);
+		final var classifier = getGeneratedTypeFor(root);
 		if (classifier != null) {
 			return root;
 		}
@@ -196,9 +195,9 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Pure
 	@Override
 	public String getLanguageBasePackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		final String ecorePackage = basePackage + "." //$NON-NLS-1$
+		final var grammar = getGrammar();
+		final var basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final var ecorePackage = basePackage + "." //$NON-NLS-1$
 				+ GrammarUtil.getSimpleName(grammar).toLowerCase();
 		return ecorePackage;
 	}
@@ -206,16 +205,16 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Pure
 	@Override
 	public TypeReference getLanguageScriptInterface() {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), this.configuration.getScriptRuleName());
-		final EClassifier type = getGeneratedTypeFor(rule);
+		final var rule = GrammarUtil.findRuleForName(getGrammar(), this.configuration.getScriptRuleName());
+		final var type = getGeneratedTypeFor(rule);
 		return newTypeReference(type);
 	}
 
 	@Pure
 	@Override
 	public String getBasePackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final var grammar = getGrammar();
+		final var basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".codebuilder"; //$NON-NLS-1$
 	}
 
@@ -228,8 +227,8 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Pure
 	@Override
 	public String getDocumentationPackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final var grammar = getGrammar();
+		final var basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".documentation"; //$NON-NLS-1$
 	}
 
@@ -243,8 +242,8 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Pure
 	@Override
 	public String getSerializerPackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final var grammar = getGrammar();
+		final var basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".serializer"; //$NON-NLS-1$
 	}
 
@@ -305,8 +304,8 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 
 	@Override
 	public TypeReference getLanguageKeywordAccessor() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = this.naming.getRuntimeBasePackage(grammar);
+		final var grammar = getGrammar();
+		final var basePackage = this.naming.getRuntimeBasePackage(grammar);
 		return new TypeReference(basePackage + ".services." //$NON-NLS-1$
 				+ GrammarUtil.getSimpleName(grammar).toUpperCase() + "GrammarKeywordAccess"); //$NON-NLS-1$
 	}
@@ -319,15 +318,15 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 
 	@Override
 	public ElementDescription getFormalParameter() {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
-		final EClassifier classifier = getGeneratedTypeFor(rule);
+		final var rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
+		final var classifier = getGeneratedTypeFor(rule);
 		return newElementDescription(classifier.getName(), rule, classifier, classifier);
 	}
 
 	@Override
 	public ElementDescription getTypeParameter() {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTypeParameterRuleName());
-		final EClassifier classifier = getGeneratedTypeFor(rule);
+		final var rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTypeParameterRuleName());
+		final var classifier = getGeneratedTypeFor(rule);
 		return newElementDescription(classifier.getName(), rule, classifier, classifier);
 	}
 

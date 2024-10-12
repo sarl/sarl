@@ -28,10 +28,8 @@ import javax.inject.Singleton;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
-import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod;
-import org.eclipse.xtend.lib.macro.declaration.ResolvedParameter;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
 import org.eclipse.xtend.lib.macro.declaration.Visibility;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
@@ -57,14 +55,14 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 
 	@Override
 	protected void _transform(MutableFieldDeclaration it, TransformationContext context) {
-		final AccessorsProcessor.Util util = new Util(context);
+		final var util = new Util(context);
 		if (util.shouldAddGetter(it)) {
-			Visibility visibility = util.toVisibility(util.getGetterType(it));
+			var visibility = util.toVisibility(util.getGetterType(it));
 			visibility = applyMinMaxVisibility(visibility, it, context);
 			util.addGetter(it, visibility);
 		}
 		if (util.shouldAddSetter(it)) {
-			Visibility visibility = util.toVisibility(util.getSetterType(it));
+			var visibility = util.toVisibility(util.getSetterType(it));
 			visibility = applyMinMaxVisibility(visibility, it, context);
 			util.addSetter(it, visibility);
 		}
@@ -111,13 +109,13 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 		@Override
 		public void addSetter(MutableFieldDeclaration field, Visibility visibility) {
 			validateSetter(field);
-			final String name = getSetterName(field);
-			final MutableTypeDeclaration type = field.getDeclaringType();
-			final boolean isVarArgs = isInheritedVarargMethod(type, name, orObject(field.getType()));
+			final var name = getSetterName(field);
+			final var type = field.getDeclaringType();
+			final var isVarArgs = isInheritedVarargMethod(type, name, orObject(field.getType()));
 			type.addMethod(name, it -> {
 				this.context.setPrimarySourceElement(it, this.context.getPrimarySourceElement(field));
 				it.setReturnType(this.context.getPrimitiveVoid());
-				final MutableParameterDeclaration param = it.addParameter(field.getSimpleName(),
+				final var param = it.addParameter(field.getSimpleName(),
 						orObject(field.getType()));
 				it.setBody(new StringConcatenationClient() {
 					@Override
@@ -145,9 +143,9 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 		 */
 		protected boolean isInheritedVarargMethod(MutableTypeDeclaration type, String name, TypeReference paramType) {
 			if (paramType.isArray()) {
-				final TypeReference ref = this.context.newTypeReference(type);
-				for (final TypeReference superType : ref.getDeclaredSuperTypes()) {
-					for (final ResolvedMethod method : superType.getAllResolvedMethods()) {
+				final var ref = this.context.newTypeReference(type);
+				for (final var superType : ref.getDeclaredSuperTypes()) {
+					for (final var method : superType.getAllResolvedMethods()) {
 						if (Objects.equals(name, method.getDeclaration().getSimpleName())
 							&& isSingleVarargParameter(method, paramType)) {
 							return true;
@@ -159,8 +157,8 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 		}
 
 		private boolean isSingleVarargParameter(ResolvedMethod method, TypeReference paramType) {
-			boolean first = true;
-			for (final ResolvedParameter parameter : method.getResolvedParameters()) {
+			var first = true;
+			for (final var parameter : method.getResolvedParameters()) {
 				if (paramType.equals(parameter.getResolvedType())) {
 					return first && method.getDeclaration().isVarArgs();
 				}

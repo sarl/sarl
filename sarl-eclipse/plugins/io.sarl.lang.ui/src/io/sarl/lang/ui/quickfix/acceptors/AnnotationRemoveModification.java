@@ -50,7 +50,7 @@ public final class AnnotationRemoveModification extends SARLSemanticModification
 	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		final AnnotationRemoveModification modification = new AnnotationRemoveModification();
+		final var modification = new AnnotationRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,

@@ -133,7 +133,7 @@ public class Doclet implements jdk.javadoc.doclet.Doclet {
 
 	@Override
 	public boolean run(DocletEnvironment environment) {
-		final DocletEnvironmentFactory factory = getInjector().getInstance(DocletEnvironmentFactory.class);
+		final var factory = getInjector().getInstance(DocletEnvironmentFactory.class);
 		return getInjectedDoclet().run(factory.newDocletEnvironment(environment));
 	}
 

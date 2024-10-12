@@ -50,20 +50,17 @@ public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContext
 	@Override
 	protected void searchAnnotatedElements(final EObject element, final IAcceptor<Pair<JvmAnnotationType, XAnnotation>> acceptor) {
 		try {
-			if (element instanceof SarlAgent) {
-				final SarlAgent elt = (SarlAgent) element;
+			if (element instanceof SarlAgent elt) {
 				registerMacroAnnotations(elt, acceptor);
 				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
 				return;
 			}
-			if (element instanceof SarlBehavior) {
-				final SarlBehavior elt = (SarlBehavior) element;
+			if (element instanceof SarlBehavior elt) {
 				registerMacroAnnotations(elt, acceptor);
 				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
 				return;
 			}
-			if (element instanceof SarlSkill) {
-				final SarlSkill elt = (SarlSkill) element;
+			if (element instanceof SarlSkill elt) {
 				registerMacroAnnotations(elt, acceptor);
 				elt.getMembers().forEach(it -> searchAnnotatedElements(it, acceptor));
 				return;

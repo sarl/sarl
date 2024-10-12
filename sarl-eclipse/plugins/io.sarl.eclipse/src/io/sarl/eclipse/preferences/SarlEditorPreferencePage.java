@@ -114,13 +114,13 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 		//noDefaultAndApplyButton();
 
 		// define container & its gridding
-		final Composite pageComponent = new Composite(parent, SWT.NULL);
-		final GridLayout layout = new GridLayout();
+		final var pageComponent = new Composite(parent, SWT.NULL);
+		final var layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		pageComponent.setLayout(layout);
-		final GridData data = new GridData();
+		final var data = new GridData();
 		data.verticalAlignment = GridData.FILL;
 		data.horizontalAlignment = GridData.FILL;
 		pageComponent.setLayoutData(data);
@@ -155,7 +155,7 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 				enableButtons();
 			}
 		});
-		final Group codeminingGroup = SWTFactory.createGroup(parent, Messages.SarlEditorPreferencePage_2, 1, 2, GridData.FILL_HORIZONTAL);
+		final var codeminingGroup = SWTFactory.createGroup(parent, Messages.SarlEditorPreferencePage_2, 1, 2, GridData.FILL_HORIZONTAL);
 		this.codeminingFieldTypeButton = SWTFactory.createCheckButton(codeminingGroup,
 				Messages.SarlEditorPreferencePage_3,
 				null,
@@ -190,7 +190,7 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	 * Enables the buttons.
 	 */
 	private void enableButtons() {
-		final boolean isCodeminingEnabled = this.codeminingButton.getSelection();
+		final var isCodeminingEnabled = this.codeminingButton.getSelection();
 		this.codeminingFieldTypeButton.setEnabled(isCodeminingEnabled);
 		this.codeminingVariableTypeButton.setEnabled(isCodeminingEnabled);
 		this.codeminingActionReturnTypeButton.setEnabled(isCodeminingEnabled);
@@ -212,7 +212,7 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	@Override
 	public boolean performOk() {
 		getSourceViewerPreferenceAccessor().setAutoFormattingEnabled(Boolean.valueOf(this.autoformattingButton.getSelection()));
-		final SARLCodeminingPreferenceAccess codeminingAccessor = getCodeminingPreferenceAccessor();
+		final var codeminingAccessor = getCodeminingPreferenceAccessor();
 		codeminingAccessor.setCodeminingFieldTypeEnabled(Boolean.valueOf(this.codeminingFieldTypeButton.getSelection()));
 		codeminingAccessor.setCodeminingVariableTypeEnabled(Boolean.valueOf(this.codeminingVariableTypeButton.getSelection()));
 		codeminingAccessor.setCodeminingActionReturnTypeEnabled(Boolean.valueOf(this.codeminingActionReturnTypeButton.getSelection()));

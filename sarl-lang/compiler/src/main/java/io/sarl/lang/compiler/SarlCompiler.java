@@ -36,7 +36,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Lists;
@@ -52,7 +51,6 @@ import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmByteAnnotationValue;
 import org.eclipse.xtext.common.types.JvmCharAnnotationValue;
 import org.eclipse.xtext.common.types.JvmCustomAnnotationValue;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmDoubleAnnotationValue;
 import org.eclipse.xtext.common.types.JvmEnumAnnotationValue;
 import org.eclipse.xtext.common.types.JvmExecutable;
@@ -93,7 +91,6 @@ import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.eclipse.xtext.xbase.scoping.batch.IFeatureNames;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
@@ -184,63 +181,63 @@ public class SarlCompiler extends XtendCompiler {
 	private ReflectExtensions reflect;
 
 	private static String getAnnotationStringValue(JvmAnnotationValue value) {
-		if (value instanceof JvmAnnotationAnnotationValue) {
-			return ((JvmAnnotationAnnotationValue) value).getValues().get(0).getAnnotation().getIdentifier();
+		if (value instanceof JvmAnnotationAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).getAnnotation().getIdentifier();
 		}
-		if (value instanceof JvmBooleanAnnotationValue) {
-			return ((JvmBooleanAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmBooleanAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmByteAnnotationValue) {
-			return ((JvmByteAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmByteAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmCharAnnotationValue) {
-			return ((JvmCharAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmCharAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmCustomAnnotationValue) {
-			final EObject evalue = ((JvmCustomAnnotationValue) value).getValues().get(0);
-			if (evalue instanceof XStringLiteral) {
-				return ((XStringLiteral) evalue).getValue();
+		if (value instanceof JvmCustomAnnotationValue cvalue) {
+			final var evalue = cvalue.getValues().get(0);
+			if (evalue instanceof XStringLiteral cvalue0) {
+				return cvalue0.getValue();
 			}
-			if (evalue instanceof XNumberLiteral) {
-				return ((XNumberLiteral) evalue).getValue();
+			if (evalue instanceof XNumberLiteral cvalue0) {
+				return cvalue0.getValue();
 			}
-			if (evalue instanceof XBooleanLiteral) {
-				return ((XNumberLiteral) evalue).getValue();
+			if (evalue instanceof XBooleanLiteral cvalue0) {
+				return Boolean.toString(cvalue0.isIsTrue());
 			}
-			if (evalue instanceof XTypeLiteral) {
-				return ((XTypeLiteral) evalue).getType().getIdentifier();
+			if (evalue instanceof XTypeLiteral cvalue0) {
+				return cvalue0.getType().getIdentifier();
 			}
 		}
-		if (value instanceof JvmDoubleAnnotationValue) {
-			return ((JvmDoubleAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmDoubleAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmEnumAnnotationValue) {
-			return ((JvmEnumAnnotationValue) value).getValues().get(0).getSimpleName();
+		if (value instanceof JvmEnumAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).getSimpleName();
 		}
-		if (value instanceof JvmFloatAnnotationValue) {
-			return ((JvmFloatAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmFloatAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmIntAnnotationValue) {
-			return ((JvmIntAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmIntAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmLongAnnotationValue) {
-			return ((JvmLongAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmLongAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmShortAnnotationValue) {
-			return ((JvmShortAnnotationValue) value).getValues().get(0).toString();
+		if (value instanceof JvmShortAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).toString();
 		}
-		if (value instanceof JvmStringAnnotationValue) {
-			return ((JvmStringAnnotationValue) value).getValues().get(0);
+		if (value instanceof JvmStringAnnotationValue cvalue) {
+			return cvalue.getValues().get(0);
 		}
-		if (value instanceof JvmTypeAnnotationValue) {
-			return ((JvmTypeAnnotationValue) value).getValues().get(0).getIdentifier();
+		if (value instanceof JvmTypeAnnotationValue cvalue) {
+			return cvalue.getValues().get(0).getIdentifier();
 		}
 		return null;
 	}
 
 	private static Collection<JvmTypeReference> getAnnotationTypeValue(JvmAnnotationValue value) {
-		if (value instanceof JvmTypeAnnotationValue) {
-			return ((JvmTypeAnnotationValue) value).getValues();
+		if (value instanceof JvmTypeAnnotationValue cvalue) {
+			return cvalue.getValues();
 		}
 		return Collections.emptyList();
 	}
@@ -248,12 +245,12 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
 		// Overridden for fixing the @Inline behavior
-		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
+		final var inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
 
 		String formatString = null;
-		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
-		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
-			final String valueName = annotationValue.getValueName();
+		final var importedTypes = Lists.<JvmTypeReference>newArrayListWithCapacity(2);
+		for (final var annotationValue: inlineAnnotation.getValues()) {
+			final var valueName = annotationValue.getValueName();
 			if (Strings.isEmpty(valueName)) {
 				// Special case: the annotation value as no associated operation.
 				// If it appends, we could assumes that the operation is "value()"
@@ -275,15 +272,14 @@ public class SarlCompiler extends XtendCompiler {
 			throw new IllegalStateException();
 		}
 
-		final IResolvedTypes resolvedTypes = this.batchTypeResolver.resolveTypes(call);
+		final var resolvedTypes = this.batchTypeResolver.resolveTypes(call);
 
-		final List<XExpression> arguments = getActualArguments(call);
-		final JvmIdentifiableElement calledFeature = call.getFeature();
-		int numberVariadicParameter = 0;
+		final var arguments = getActualArguments(call);
+		final var calledFeature = call.getFeature();
+		var numberVariadicParameter = 0;
 		final int numberFormalParameters;
 		JvmFormalParameter formalVariadicParameter = null;
-		if (calledFeature instanceof JvmExecutable) {
-			final JvmExecutable jvmexec = (JvmExecutable) calledFeature;
+		if (calledFeature instanceof JvmExecutable jvmexec) {
 			numberFormalParameters = jvmexec.getParameters().size();
 			if (numberFormalParameters > 0) {
 				formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);
@@ -294,47 +290,47 @@ public class SarlCompiler extends XtendCompiler {
 		} else {
 			numberFormalParameters = arguments.size();
 		}
-		final Matcher matcher = INLINE_VARIABLE_PATTERN.matcher(formatString);
-		int prevEnd = 0;
+		final var matcher = INLINE_VARIABLE_PATTERN.matcher(formatString);
+		var prevEnd = 0;
 
 
 		while (matcher.find()) {
-			final int start = matcher.start();
+			final var start = matcher.start();
 			if (start != prevEnd) {
 				target.append(formatString.substring(prevEnd, start));
 			}
-			final String indexOrDollar = matcher.group(1);
+			final var indexOrDollar = matcher.group(1);
 			if (INLINE_VARIABLE_PREFIX.equals(indexOrDollar)) {
 				target.append(INLINE_VARIABLE_PREFIX);
 			} else {
-				final int index = Integer.parseInt(indexOrDollar) - 1;
+				final var index = Integer.parseInt(indexOrDollar) - 1;
 				// Treat the $0 parameter in the inline expression
 				if (index < 0) {
-					final boolean hasReceiver = appendReceiver(call, target, true);
+					final var hasReceiver = appendReceiver(call, target, true);
 					if (hasReceiver) {
 						target.append("."); //$NON-NLS-1$
 					}
 				} else {
-					final int numberImports = importedTypes.size();
-					final int numberFormalParametersImports = numberFormalParameters + numberImports;
+					final var numberImports = importedTypes.size();
+					final var numberFormalParametersImports = numberFormalParameters + numberImports;
 					if (numberVariadicParameter != 0 && index < arguments.size() && index == (numberFormalParameters - 1)) {
-						XExpression argument = arguments.get(index);
+						var argument = arguments.get(index);
 						appendArgument(argument, target, index > 0);
-						for (int i = index + 1; i < arguments.size(); ++i) {
+						for (var i = index + 1; i < arguments.size(); ++i) {
 							target.append(", "); //$NON-NLS-1$
 							argument = arguments.get(i);
 							appendArgument(argument, target, true);
 						}
 					} else if (index > numberFormalParametersImports) {
-						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(call);
-						final LightweightTypeReference typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
+						final var typeArguments = resolvedTypes.getActualTypeArguments(call);
+						final var typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
 						serialize(typeArgument.getRawTypeReference().toTypeReference(), call, target);
 					} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
 						serialize(importedTypes.get(index - numberFormalParameters), call, target);
 					} else if (index == numberFormalParametersImports) {
 						appendTypeArguments(call, target);
 					} else if (index < arguments.size()) {
-						final XExpression argument = arguments.get(index);
+						final var argument = arguments.get(index);
 						appendArgument(argument, target, index > 0);
 					} else if (formalVariadicParameter != null) {
 						appendNullValue(formalVariadicParameter.getParameterType(), calledFeature, target);
@@ -370,9 +366,9 @@ public class SarlCompiler extends XtendCompiler {
 			ITreeAppendable appendable) {
 		// Overridden for fixing the @Inline behavior
 		String formatString = null;
-		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
-		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
-			final String valueName = annotationValue.getValueName();
+		final var importedTypes = Lists.<JvmTypeReference>newArrayListWithCapacity(2);
+		for (final var annotationValue: inlineAnnotation.getValues()) {
+			final var valueName = annotationValue.getValueName();
 			if (Strings.isEmpty(valueName)) {
 				// Special case: the annotation value as no associated operation.
 				// If it appends, we could assumes that the operation is "value()"
@@ -394,11 +390,10 @@ public class SarlCompiler extends XtendCompiler {
 			throw new IllegalStateException();
 		}
 
-		int numberVariadicParameter = 0;
+		var numberVariadicParameter = 0;
 		final int numberFormalParameters;
 		JvmFormalParameter formalVariadicParameter = null;
-		if (calledFeature instanceof JvmExecutable) {
-			final JvmExecutable jvmexec = (JvmExecutable) calledFeature;
+		if (calledFeature instanceof JvmExecutable jvmexec) {
 			numberFormalParameters = jvmexec.getParameters().size();
 			if (numberFormalParameters > 0) {
 				formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);
@@ -409,28 +404,28 @@ public class SarlCompiler extends XtendCompiler {
 		} else {
 			numberFormalParameters = arguments.size();
 		}
-		final Matcher matcher = INLINE_VARIABLE_PATTERN.matcher(formatString);
-		int prevEnd = 0;
 
+		final var matcher = INLINE_VARIABLE_PATTERN.matcher(formatString);
+		var prevEnd = 0;
 
 		while (matcher.find()) {
-			final int start = matcher.start();
+			final var start = matcher.start();
 			if (start != prevEnd) {
 				appendable.append(formatString.substring(prevEnd, start));
 			}
-			final String indexOrDollar = matcher.group(1);
+			final var indexOrDollar = matcher.group(1);
 			if (INLINE_VARIABLE_PREFIX.equals(indexOrDollar)) {
 				appendable.append(INLINE_VARIABLE_PREFIX);
 			} else {
-				final int index = Integer.parseInt(indexOrDollar) - 1;
+				final var index = Integer.parseInt(indexOrDollar) - 1;
 				// Treat the $0 parameter in the inline expression
 				if (index < 0) {
-					boolean hasReceiver = true;
+					var hasReceiver = true;
 					if (receiver != null) {
 						internalToJavaExpression(receiver, appendable);
-						if (receiver instanceof XAbstractFeatureCall) {
-							if (((XAbstractFeatureCall) receiver).getFeature() instanceof JvmType) {
-								final String referenceName = getReferenceName(receiver, appendable);
+						if (receiver instanceof XAbstractFeatureCall cvalue) {
+							if (cvalue.getFeature() instanceof JvmType) {
+								final var referenceName = getReferenceName(receiver, appendable);
 								if (referenceName != null && referenceName.length() == 0) {
 									hasReceiver = false;
 								}
@@ -443,12 +438,12 @@ public class SarlCompiler extends XtendCompiler {
 						appendable.append("."); //$NON-NLS-1$
 					}
 				} else {
-					final int numberImports = importedTypes.size();
-					final int numberFormalParametersImports = numberFormalParameters + numberImports;
+					final var numberImports = importedTypes.size();
+					final var numberFormalParametersImports = numberFormalParameters + numberImports;
 					if (numberVariadicParameter != 0 && index < arguments.size() && index == (numberFormalParameters - 1)) {
 						XExpression argument = arguments.get(index);
 						appendArgument(argument, appendable, index > 0);
-						for (int i = index + 1; i < arguments.size(); ++i) {
+						for (var i = index + 1; i < arguments.size(); ++i) {
 							appendable.append(", "); //$NON-NLS-1$
 							argument = arguments.get(i);
 							appendArgument(argument, appendable, true);
@@ -479,12 +474,12 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
 		// Overridden for enabling the expressions that are specific to SARL
-		if (obj instanceof SarlBreakExpression) {
-			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
-		} else if (obj instanceof SarlContinueExpression) {
-			_toJavaStatement((SarlContinueExpression) obj, appendable, isReferenced);
-		} else if (obj instanceof SarlAssertExpression) {
-			_toJavaStatement((SarlAssertExpression) obj, appendable, isReferenced);
+		if (obj instanceof SarlBreakExpression cvalue) {
+			_toJavaStatement(cvalue, appendable, isReferenced);
+		} else if (obj instanceof SarlContinueExpression cvalue) {
+			_toJavaStatement(cvalue, appendable, isReferenced);
+		} else if (obj instanceof SarlAssertExpression cvalue) {
+			_toJavaStatement(cvalue, appendable, isReferenced);
 		} else {
 			try {
 				super.doInternalToJavaStatement(obj, appendable, isReferenced);
@@ -498,12 +493,12 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
 		// Overridden for enabling the expressions that are specific to SARL
-		if (obj instanceof SarlBreakExpression) {
-			_toJavaExpression((SarlBreakExpression) obj, appendable);
-		} else if (obj instanceof SarlContinueExpression) {
-			_toJavaExpression((SarlContinueExpression) obj, appendable);
-		} else if (obj instanceof SarlAssertExpression) {
-			_toJavaExpression((SarlAssertExpression) obj, appendable);
+		if (obj instanceof SarlBreakExpression cvalue) {
+			_toJavaExpression(cvalue, appendable);
+		} else if (obj instanceof SarlContinueExpression cvalue) {
+			_toJavaExpression(cvalue, appendable);
+		} else if (obj instanceof SarlAssertExpression cvalue) {
+			_toJavaExpression(cvalue, appendable);
 		} else {
 			try {
 				super.internalToConvertedExpression(obj, appendable);
@@ -542,8 +537,8 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is implemented in order to generate static inner class when the closure
 		// cannot be represented neither by a Java 8 lambda nor a not-static inner class.
 		// It solves the issues related to the serialization and deserialization of the closures.
-		final LightweightTypeReference type = getLightweightType(closure);
-		final JvmOperation operation = findImplementingOperation(type);
+		final var type = getLightweightType(closure);
+		final var operation = findImplementingOperation(type);
 		if (!canCompileToJavaLambda(closure, type, operation) && !canBeNotStaticAnonymousClass(closure, type, operation)) {
 			toSerializableAnonymousClassProxyDefinition(closure, appendable, type, operation);
 		}
@@ -558,18 +553,18 @@ public class SarlCompiler extends XtendCompiler {
 	 */
 	protected void _toJavaStatement(SarlAssertExpression assertExpression, ITreeAppendable appendable, boolean isReferenced) {
 		if (!assertExpression.isIsStatic() && assertExpression.getCondition() != null && isAtLeastJava8(assertExpression)) {
-			final XExpression condition = assertExpression.getCondition();
-			final LightweightTypeReference actualType = getLightweightType(condition);
+			final var condition = assertExpression.getCondition();
+			final var actualType = getLightweightType(condition);
 			if (actualType != null) {
-				final Boolean booleanConstant = this.sarlExpressionHelper.toBooleanPrimitiveWrapperConstant(condition);
+				final var booleanConstant = this.sarlExpressionHelper.toBooleanPrimitiveWrapperConstant(condition);
 				if (booleanConstant != null) {
 					appendable.newLine().append("assert "); //$NON-NLS-1$
 					appendable.append(booleanConstant.toString());
 				} else {
 					// Get the local variables.
-					final Map<XVariableDeclaration, XFeatureCall> localVariables = getReferencedLocalVariable(condition, true);
+					final var localVariables = getReferencedLocalVariable(condition, true);
 
-					final String className = appendable.declareUniqueNameVariable(assertExpression, "$AssertEvaluator$"); //$NON-NLS-1$
+					final var className = appendable.declareUniqueNameVariable(assertExpression, "$AssertEvaluator$"); //$NON-NLS-1$
 
 					appendable.openScope();
 					try {
@@ -579,16 +574,16 @@ public class SarlCompiler extends XtendCompiler {
 						appendable.increaseIndentation().newLine();
 						appendable.append("final boolean $$result;").newLine(); //$NON-NLS-1$
 						appendable.append(className).append("("); //$NON-NLS-1$
-						boolean first = true;
+						var first = true;
 						for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
 							if (first) {
 								first = false;
 							} else {
 								appendable.append(", "); //$NON-NLS-1$
 							}
-							final JvmTypeReference localVariableType = getType(localVariable.getValue());
+							final var localVariableType = getType(localVariable.getValue());
 							appendable.append("final ").append(toLightweight(localVariableType, assertExpression)); //$NON-NLS-1$
-							String referenceName = getReferenceName(localVariable.getValue(), appendable);
+							var referenceName = getReferenceName(localVariable.getValue(), appendable);
 							if (Strings.isEmpty(referenceName)) {
 								referenceName = localVariable.getKey().getName();
 							}
@@ -608,13 +603,13 @@ public class SarlCompiler extends XtendCompiler {
 						appendable.newLine();
 						appendable.append("assert new ").append(className).append("("); //$NON-NLS-1$ //$NON-NLS-2$
 						first = true;
-						for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
+						for (final var localVariable : localVariables.entrySet()) {
 							if (first) {
 								first = false;
 							} else {
 								appendable.append(", "); //$NON-NLS-1$
 							}
-							String referenceName = getReferenceName(localVariable.getValue(), appendable);
+							var referenceName = getReferenceName(localVariable.getValue(), appendable);
 							if (Strings.isEmpty(referenceName)) {
 								referenceName = localVariable.getKey().getName();
 							}
@@ -648,12 +643,11 @@ public class SarlCompiler extends XtendCompiler {
 	 */
 	@SuppressWarnings("static-method")
 	protected Map<XVariableDeclaration, XFeatureCall> getReferencedLocalVariable(XExpression expression, boolean onlyWritable) {
-		final Map<XVariableDeclaration, XFeatureCall> localVariables = new TreeMap<>((k1, k2) -> {
+		final var localVariables = new TreeMap<XVariableDeclaration, XFeatureCall>((k1, k2) -> {
 			return k1.getIdentifier().compareTo(k2.getIdentifier());
 		});
-		for (final XFeatureCall featureCall : EcoreUtil2.getAllContentsOfType(expression, XFeatureCall.class)) {
-			if (featureCall.getFeature() instanceof XVariableDeclaration) {
-				final XVariableDeclaration localVariable = (XVariableDeclaration) featureCall.getFeature();
+		for (final var featureCall : EcoreUtil2.getAllContentsOfType(expression, XFeatureCall.class)) {
+			if (featureCall.getFeature() instanceof XVariableDeclaration localVariable) {
 				if ((!onlyWritable || localVariable.isWriteable()) && !localVariables.containsKey(localVariable)) {
 					localVariables.put(localVariable, featureCall);
 				}
@@ -705,18 +699,17 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Override
 	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
-		final XExpression target = expr.getTarget();
-		final LightweightTypeReference fromType = toLightweight(getType(target), expr);
-		final LightweightTypeReference toType = toLightweight(expr.getType(), expr);
-		if (expr instanceof SarlCastedExpression) {
-			final SarlCastedExpression cast = (SarlCastedExpression) expr;
-			final JvmOperation operation = cast.getFeature();
+		final var target = expr.getTarget();
+		final var fromType = toLightweight(getType(target), expr);
+		final var toType = toLightweight(expr.getType(), expr);
+		if (expr instanceof SarlCastedExpression cast) {
+			final var operation = cast.getFeature();
 			if (operation != null) {
-				final boolean hasNullInputTest = !fromType.isPrimitive() && !fromType.isPrimitiveVoid()
+				final var hasNullInputTest = !fromType.isPrimitive() && !fromType.isPrimitiveVoid()
 						&& !isLiteral(target);
 
-				final XExpression receiver = cast.getReceiver();
-				final XExpression argument = cast.getArgument();
+				final var receiver = cast.getReceiver();
+				final var argument = cast.getArgument();
 
 				if (hasNullInputTest) {
 					appendable.append("("); //$NON-NLS-1$
@@ -727,7 +720,7 @@ public class SarlCompiler extends XtendCompiler {
 				}
 
 				final Later callGeneration = it -> {
-					final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(operation);
+					final var inlineAnnotation = this.expressionHelper.findInlineAnnotation(operation);
 					if (inlineAnnotation != null) {
 						final XExpression concreteReceiver;
 						if (operation.isStatic()) {
@@ -745,8 +738,8 @@ public class SarlCompiler extends XtendCompiler {
 								cast, appendable);
 					} else {
 						if (operation.isStatic()) {
-							final JvmDeclaredType operationContainer = operation.getDeclaringType();
-							final JvmTypeReference operationContainerType = getTypeComputationServices()
+							final var operationContainer = operation.getDeclaringType();
+							final var operationContainerType = getTypeComputationServices()
 									.getTypeReferences().createTypeRef(operationContainer);
 							serialize(operationContainerType, expr, it);
 							it.append("."); //$NON-NLS-1$
@@ -790,7 +783,7 @@ public class SarlCompiler extends XtendCompiler {
 					}
 				};
 
-				final LightweightTypeReference concreteType = toLightweight(operation.getReturnType(), expr);
+				final var concreteType = toLightweight(operation.getReturnType(), expr);
 				doConversion(toType, concreteType, appendable, expr, callGeneration);
 
 				if (hasNullInputTest) {
@@ -815,8 +808,8 @@ public class SarlCompiler extends XtendCompiler {
 				});
 			} else {
 				// Force cast when the type is refined, e.g. into an "instanceof" block
-				final IResolvedTypes resolvedTypes = getResolvedTypes(expr);
-				final boolean refined = resolvedTypes.isRefinedType(target);
+				final var resolvedTypes = getResolvedTypes(expr);
+				final var refined = resolvedTypes.isRefinedType(target);
 				if (refined) {
 					doCastConversion(toType, appendable, it -> {
 						final ITreeAppendable it1 = it.trace(expr, true);
@@ -858,10 +851,10 @@ public class SarlCompiler extends XtendCompiler {
 			name = "/* name is null */"; //$NON-NLS-1$
 		}
 		if (operation.isStatic()) {
-			final JvmDeclaredType operationContainer = operation.getDeclaringType();
-			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(sourceObject);
-			final JvmType containerType = EcoreUtil2.getContainerOfType(container, JvmType.class);
-			final LightweightTypeReference reference = newTypeReferenceOwner(sourceObject)
+			final var operationContainer = operation.getDeclaringType();
+			final var container = getLogicalContainerProvider().getNearestLogicalContainer(sourceObject);
+			final var containerType = EcoreUtil2.getContainerOfType(container, JvmType.class);
+			final var reference = newTypeReferenceOwner(sourceObject)
 					.toLightweightTypeReference(operationContainer);
 			if (!reference.isAssignableFrom(containerType)) {
 				appendable.append(operationContainer);
@@ -899,7 +892,7 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	protected boolean isVariableDeclarationRequired(XExpression expression, ITreeAppendable appendable, boolean recursive) {
 		// Add the following test for avoiding to create an variable declaration when the expression has already a name.
-		final String refName = getReferenceName(expression, appendable);
+		final var refName = getReferenceName(expression, appendable);
 		if (!Strings.isEmpty(refName)) {
 			return false;
 		}
@@ -910,7 +903,7 @@ public class SarlCompiler extends XtendCompiler {
 		if (expression instanceof SarlContinueExpression) {
 			return false;
 		}
-		final EObject container = expression.eContainer();
+		final var container = expression.eContainer();
 		if (container instanceof SarlAssertExpression) {
 			return false;
 		}
@@ -945,7 +938,7 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is redefined in order to take care about the SARL early exit statements
 		// that are not Java early exit statements.
 		// In this case, a Java "return" statement must be applied.
-		final boolean isPrimitiveVoidExpected = expectedReturnType.isPrimitiveVoid();
+		final var isPrimitiveVoidExpected = expectedReturnType.isPrimitiveVoid();
 		if (!isPrimitiveVoidExpected && expr instanceof XBlockExpression) {
 			this.isOnJavaEarlyExit = true;
 		}
@@ -957,13 +950,13 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is implemented in order to generate static inner class when the closure
 		// cannot be represented neither by a Java 8 lambda nor a not-static inner class.
 		// It solves the issues related to the serialization and deserialization of the closures.
-		final List<XAbstractFeatureCall> references = new ArrayList<>();
-		final Set<String> identifiers = new TreeSet<>();
-		for (final XAbstractFeatureCall featureCall : EcoreUtil2.getAllContentsOfType(expression, XAbstractFeatureCall.class)) {
+		final var references = new ArrayList<XAbstractFeatureCall>();
+		final var identifiers = new TreeSet<String>();
+		for (final var featureCall : EcoreUtil2.getAllContentsOfType(expression, XAbstractFeatureCall.class)) {
 			if (featureCall instanceof XMemberFeatureCall || featureCall instanceof XFeatureCall) {
-				final JvmIdentifiableElement feature = featureCall.getFeature();
+				final var feature = featureCall.getFeature();
 				XAbstractFeatureCall selected = null;
-				boolean forceNaming = false;
+				var forceNaming = false;
 				XAbstractFeatureCall root = null;
 				JvmOperation operationToTest = null;
 				if (feature instanceof JvmFormalParameter) {
@@ -979,19 +972,19 @@ public class SarlCompiler extends XtendCompiler {
 				} else if (feature instanceof JvmField) {
 					selected = featureCall;
 					forceNaming = true;
-				} else if (featureCall instanceof XFeatureCall) {
+				} else if (featureCall instanceof XFeatureCall cvalue) {
 					// Special case: the XFeatureCall could be considered as a XMemberFeatureCall
 					// with an implicit "it". In this case, the standard treatment
 					// for XMemberFeatureCall must be applied
-					if (isReferenceToIt((XFeatureCall) featureCall)) {
-						if (feature instanceof JvmOperation) {
-							operationToTest = (JvmOperation) feature;
+					if (isReferenceToIt(cvalue)) {
+						if (feature instanceof JvmOperation cvalue0) {
+							operationToTest = cvalue0;
 						}
 					} else {
 						selected = featureCall;
 					}
-				} else if (featureCall instanceof XMemberFeatureCall && feature instanceof JvmOperation) {
-					operationToTest = (JvmOperation) feature;
+				} else if (featureCall instanceof XMemberFeatureCall && feature instanceof JvmOperation cvalue) {
+					operationToTest = cvalue;
 				}
 				if (operationToTest != null && operationToTest.isStatic()) {
 					root = Utils.getRootFeatureCall(featureCall, expression, exclusion);
@@ -1005,9 +998,9 @@ public class SarlCompiler extends XtendCompiler {
 					}
 					if (root != null) {
 						if (enableExpressionNaming) {
-							final String refName = getReferenceName(root, appendable);
+							final var refName = getReferenceName(root, appendable);
 							if (!forceNaming || Strings.isEmpty(refName)) {
-								final String proposedName = SarlUtils.HIDDEN_MEMBER_CHARACTER + makeJavaIdentifier(getFavoriteVariableName(root));
+								final var proposedName = SarlUtils.HIDDEN_MEMBER_CHARACTER + makeJavaIdentifier(getFavoriteVariableName(root));
 								appendable.declareSyntheticVariable(root, proposedName);
 							}
 						}
@@ -1030,16 +1023,16 @@ public class SarlCompiler extends XtendCompiler {
 	protected boolean isReferenceToIt(XFeatureCall featureCall) {
 		assert featureCall != null;
 		if (!featureCall.isTypeLiteral() && !featureCall.isPackageFragment()) {
-			final String itKeyword = IFeatureNames.IT.getFirstSegment();
-			XFeatureCall theFeatureCall = featureCall;
+			final var itKeyword = IFeatureNames.IT.getFirstSegment();
+			var theFeatureCall = featureCall;
 			do {
-				final String name =  theFeatureCall.getFeature().getSimpleName();
+				final var name =  theFeatureCall.getFeature().getSimpleName();
 				if (Strings.equal(itKeyword, name)) {
 					return true;
 				}
-				final XExpression expr = theFeatureCall.getImplicitReceiver();
-				if (expr instanceof XFeatureCall) {
-					theFeatureCall = (XFeatureCall) expr;
+				final var expr = theFeatureCall.getImplicitReceiver();
+				if (expr instanceof XFeatureCall cvalue) {
+					theFeatureCall = cvalue;
 				} else {
 					theFeatureCall = null;
 				}
@@ -1050,7 +1043,7 @@ public class SarlCompiler extends XtendCompiler {
 
 	private static void updateReferenceList(List<XAbstractFeatureCall> references, Set<String> identifiers,
 			XAbstractFeatureCall featureCall) {
-		final JvmIdentifiableElement feature = featureCall.getFeature();
+		final var feature = featureCall.getFeature();
 		if (feature instanceof JvmFormalParameter || feature instanceof XVariableDeclaration || feature instanceof JvmField) {
 			if (identifiers.add(feature.getIdentifier())) {
 				references.add(featureCall);
@@ -1065,12 +1058,10 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is implemented in order to generate static inner class when the closure
 		// cannot be represented neither by a Java 8 lambda nor a not-static inner class.
 		// It solves the issues related to the serialization and deserialization of the closures.
-		if (arg instanceof XAbstractFeatureCall && appendable instanceof ContextAwareTreeAppendable) {
-			final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) arg;
-			final ContextAwareTreeAppendable cappendable = (ContextAwareTreeAppendable) appendable;
+		if (arg instanceof XAbstractFeatureCall featureCall && appendable instanceof ContextAwareTreeAppendable cappendable) {
 			final List<XAbstractFeatureCall> localReferences = cappendable.getContextualValue(SERIALIZABLE_CLOSURE_LOCAL_REFERENCES);
 			if (localReferences != null) {
-				final XAbstractFeatureCall root = Utils.getRootFeatureCall(featureCall);
+				final var root = Utils.getRootFeatureCall(featureCall);
 				if (localReferences.contains(root)) {
 					return;
 				}
@@ -1084,7 +1075,7 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is implemented in order to generate static inner class when the closure
 		// cannot be represented neither by a Java 8 lambda nor a not-static inner class.
 		// It solves the issues related to the serialization and deserialization of the closures.
-		final String implementationType = appendable.declareUniqueNameVariable(type, "$SerializableClosureProxy"); //$NON-NLS-1$
+		final var implementationType = appendable.declareUniqueNameVariable(type, "$SerializableClosureProxy"); //$NON-NLS-1$
 		appendable.newLine().append("class "); //$NON-NLS-1$
 		appendable.append(implementationType);
 		if (type.isInterfaceType()) {
@@ -1098,41 +1089,41 @@ public class SarlCompiler extends XtendCompiler {
 
 		appendable.openPseudoScope();
 		try {
-			final List<JvmFormalParameter> closureParams = closure.getFormalParameters();
-			final List<XAbstractFeatureCall> localReferences = getReferencedExternalCalls(
+			final var closureParams = closure.getFormalParameters();
+			final var localReferences = getReferencedExternalCalls(
 					closure.getExpression(), closureParams, true, appendable);
 			try {
 				appendable.openScope();
 
-				for (final XAbstractFeatureCall call : localReferences) {
-					final LightweightTypeReference exprType = toLightweight(getType(call), closure);
-					final String paramName = getReferenceName(call, appendable);
+				for (final var call : localReferences) {
+					final var exprType = toLightweight(getType(call), closure);
+					final var paramName = getReferenceName(call, appendable);
 					appendable.newLine().newLine().append("private final ").append(exprType); //$NON-NLS-1$
 					appendable.append(" ").append(paramName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
 				appendable.newLine().newLine().append("public ").append(implementationType).append("("); //$NON-NLS-1$//$NON-NLS-2$
-				boolean first = true;
-				for (final XAbstractFeatureCall call : localReferences) {
+				var first = true;
+				for (final var call : localReferences) {
 					if (first) {
 						first = false;
 					} else {
 						appendable.append(", "); //$NON-NLS-1$
 					}
-					final LightweightTypeReference exprType = toLightweight(getType(call), closure);
-					final String paramName = getReferenceName(call, appendable);
+					final var exprType = toLightweight(getType(call), closure);
+					final var paramName = getReferenceName(call, appendable);
 					appendable.append("final ").append(exprType).append(" ").append(paramName); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
 				appendable.append(") {").increaseIndentation(); //$NON-NLS-1$
-				for (final XAbstractFeatureCall call : localReferences) {
-					final String varName = getReferenceName(call, appendable);
+				for (final var call : localReferences) {
+					final var varName = getReferenceName(call, appendable);
 					appendable.newLine().append("this.").append(varName).append(" = ");  //$NON-NLS-1$//$NON-NLS-2$
 					appendable.append(varName).append(";"); //$NON-NLS-1$
 				}
 				appendable.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
 
-				final LightweightTypeReference returnType = getClosureOperationReturnType(type, operation);
+				final var returnType = getClosureOperationReturnType(type, operation);
 				appendOperationVisibility(appendable, operation);
 				if (!operation.getTypeParameters().isEmpty()) {
 					appendTypeParameters(appendable, operation, type);
@@ -1140,10 +1131,10 @@ public class SarlCompiler extends XtendCompiler {
 				appendable.append(returnType);
 				appendable.append(" ").append(operation.getSimpleName()); //$NON-NLS-1$
 				appendable.append("("); //$NON-NLS-1$
-				final boolean isVarArgs = operation.isVarArgs();
-				for (int i = 0; i < closureParams.size(); i++) {
-					final JvmFormalParameter closureParam = closureParams.get(i);
-					final LightweightTypeReference parameterType = getClosureOperationParameterType(type, operation, i);
+				final var isVarArgs = operation.isVarArgs();
+				for (var i = 0; i < closureParams.size(); i++) {
+					final var closureParam = closureParams.get(i);
+					final var parameterType = getClosureOperationParameterType(type, operation, i);
 					if (isVarArgs && i == closureParams.size() - 1 && parameterType.isArray()) {
 						appendClosureParameterVarArgs(closureParam, parameterType.getComponentType(), appendable);
 					} else {
@@ -1156,7 +1147,7 @@ public class SarlCompiler extends XtendCompiler {
 				appendable.append(")"); //$NON-NLS-1$
 				if (!operation.getExceptions().isEmpty()) {
 					appendable.append(" throws "); //$NON-NLS-1$
-					for (int i = 0; i < operation.getExceptions().size(); ++i) {
+					for (var i = 0; i < operation.getExceptions().size(); ++i) {
 						serialize(operation.getExceptions().get(i), closure, appendable, false, false, false, false);
 						if (i != operation.getExceptions().size() - 1) {
 							appendable.append(", "); //$NON-NLS-1$
@@ -1166,7 +1157,7 @@ public class SarlCompiler extends XtendCompiler {
 				appendable.append(" {"); //$NON-NLS-1$
 				appendable.increaseIndentation();
 				reassignThisInClosure(appendable, null);
-				final ContextAwareTreeAppendable contextAppendable = new ContextAwareTreeAppendable(appendable);
+				final var contextAppendable = new ContextAwareTreeAppendable(appendable);
 				contextAppendable.defineContextualValue(SERIALIZABLE_CLOSURE_LOCAL_REFERENCES, localReferences);
 				compile(closure.getExpression(),
 						contextAppendable,
@@ -1202,12 +1193,11 @@ public class SarlCompiler extends XtendCompiler {
 		// This function is implemented in order to generate static inner class when the closure
 		// cannot be represented neither by a Java 8 lambda nor a not-static inner class.
 		// It solves the issues related to the serialization and deserialization of the closures.
-		final List<JvmFormalParameter> closureParams = closure.getFormalParameters();
+		final var closureParams = closure.getFormalParameters();
 		appendable.openPseudoScope();
 		try {
-			final List<XAbstractFeatureCall> localReferences = getReferencedExternalCalls(
-					closure.getExpression(), closureParams, false, appendable);
-			final LightweightTypeReference returnType = getClosureOperationReturnType(type, operation);
+			final var localReferences = getReferencedExternalCalls(closure.getExpression(), closureParams, false, appendable);
+			final var returnType = getClosureOperationReturnType(type, operation);
 			appendable.append("new ").append(type).append("() {"); //$NON-NLS-1$ //$NON-NLS-2$
 			appendable.increaseIndentation();
 			String selfVariable = null;
@@ -1227,10 +1217,10 @@ public class SarlCompiler extends XtendCompiler {
 				appendable.append(returnType);
 				appendable.append(" ").append(operation.getSimpleName()); //$NON-NLS-1$
 				appendable.append("("); //$NON-NLS-1$
-				final boolean isVarArgs = operation.isVarArgs();
-				for (int i = 0; i < closureParams.size(); i++) {
-					final JvmFormalParameter closureParam = closureParams.get(i);
-					final LightweightTypeReference parameterType = getClosureOperationParameterType(type, operation, i);
+				final var isVarArgs = operation.isVarArgs();
+				for (var i = 0; i < closureParams.size(); i++) {
+					final var closureParam = closureParams.get(i);
+					final var parameterType = getClosureOperationParameterType(type, operation, i);
 					if (isVarArgs && i == closureParams.size() - 1 && parameterType.isArray()) {
 						appendClosureParameterVarArgs(closureParam, parameterType.getComponentType(), appendable);
 					} else {
@@ -1243,7 +1233,7 @@ public class SarlCompiler extends XtendCompiler {
 				appendable.append(")"); //$NON-NLS-1$
 				if (!operation.getExceptions().isEmpty()) {
 					appendable.append(" throws "); //$NON-NLS-1$
-					for (int i = 0; i < operation.getExceptions().size(); ++i) {
+					for (var i = 0; i < operation.getExceptions().size(); ++i) {
 						serialize(operation.getExceptions().get(i), closure, appendable, false, false, false, false);
 						if (i != operation.getExceptions().size() - 1) {
 							appendable.append(", "); //$NON-NLS-1$
@@ -1275,7 +1265,7 @@ public class SarlCompiler extends XtendCompiler {
 			}
 			appendable.append("return new ").append(SerializableProxy.class); //$NON-NLS-1$
 			appendable.append("(").append(appendable.getName(type)).append(".class"); //$NON-NLS-1$ //$NON-NLS-2$
-			for (final XAbstractFeatureCall call : localReferences) {
+			for (final var call : localReferences) {
 				appendable.append(", "); //$NON-NLS-1$
 				compileAsJavaExpression(call, appendable, returnType);
 			}
@@ -1337,18 +1327,17 @@ public class SarlCompiler extends XtendCompiler {
 			ITreeAppendable appendable,
 			Later expression) {
 		// BEGIN Specific
-		final String defaultValue = primitive.isType(boolean.class) ? "false" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+		final var defaultValue = primitive.isType(boolean.class) ? "false" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
 		// END Specific
-		final XExpression normalized = normalizeBlockExpression(context);
-		if (normalized instanceof XAbstractFeatureCall && !(context.eContainer() instanceof XAbstractFeatureCall)) {
+		final var normalized = normalizeBlockExpression(context);
+		if (normalized instanceof XAbstractFeatureCall featureCall && !(context.eContainer() instanceof XAbstractFeatureCall)) {
 			// Avoid javac bug
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=410797
 			// TODO make that dependent on the compiler version (javac 1.7 fixed that bug)
-			final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) normalized;
 			if (featureCall.isStatic()) {
-				final JvmIdentifiableElement feature = featureCall.getFeature();
-				if (feature instanceof JvmOperation) {
-					if (!((JvmOperation) feature).getTypeParameters().isEmpty()) {
+				final var feature = featureCall.getFeature();
+				if (feature instanceof JvmOperation cvalue) {
+					if (!(cvalue.getTypeParameters().isEmpty())) {
 						// BEGIN Specific
 						appendable.append("(("); //$NON-NLS-1$
 						expression.exec(appendable);

@@ -70,7 +70,7 @@ public abstract class AbstractExtraLanguageValidatorProvider implements IExtraLa
 
 	@Override
 	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
-		final IProject project = ProjectAdapter.getProject(resource);
+		final var project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
 				getPreferenceID(),
 				project)) {

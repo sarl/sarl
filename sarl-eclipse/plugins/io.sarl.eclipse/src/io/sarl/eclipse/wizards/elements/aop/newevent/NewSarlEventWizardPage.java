@@ -75,7 +75,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void doStatusUpdate() {
-		final IStatus[] status = new IStatus[] {
+		final var status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -88,10 +88,10 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 3);
-		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+		final var mon = SubMonitor.convert(monitor, 3);
+		final var scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
-		final ISarlEventBuilder event = scriptBuilder.addSarlEvent(getTypeName());
+		final var event = scriptBuilder.addSarlEvent(getTypeName());
 		event.setExtends(getSuperClass());
 		event.setDocumentation(comment);
 		mon.worked(1);

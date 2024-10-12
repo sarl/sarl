@@ -53,7 +53,7 @@ public class LogConfigModule implements BQModule {
 	@Override
 	public void configure(Binder binder) {
 		VariableDecls.extend(binder).declareVar(LogConfig.LEVEL);
-		final String cpDescription = MessageFormat.format(Messages.LogConfigModule_0,
+		final var cpDescription = MessageFormat.format(Messages.LogConfigModule_0,
 				VariableNames.toEnvironmentVariableName(LogConfig.LEVEL),
 				LOG_LONG_OPTION,
 				LogConfig.DEFAULT_LEVEL.toJsonString(),
@@ -75,7 +75,7 @@ public class LogConfigModule implements BQModule {
 	@Provides
 	@Singleton
 	public LogConfig provideLogConfig(ConfigurationFactory configFactory, Injector injector) {
-		final LogConfig config = LogConfig.getConfiguration(configFactory);
+		final var config = LogConfig.getConfiguration(configFactory);
 		injector.injectMembers(config);
 		return config;
 	}

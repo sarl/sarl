@@ -58,20 +58,19 @@ public class RemoveSarlNatureHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
-		if (currentSelection instanceof IStructuredSelection) {
-			final IStructuredSelection structuredSelection = (IStructuredSelection) currentSelection;
-			final List<IProject> projects = new ArrayList<>();
-			final Iterator<?> iterator = structuredSelection.iterator();
+		final var currentSelection = HandlerUtil.getCurrentSelection(event);
+		if (currentSelection instanceof IStructuredSelection structuredSelection) {
+			final var projects = new ArrayList<IProject>();
+			final var iterator = structuredSelection.iterator();
 			while (iterator.hasNext()) {
-				final Object obj = iterator.next();
-				if (obj instanceof IJavaProject) {
-					projects.add(((IJavaProject) obj).getProject());
-				} else if (obj instanceof IProject) {
-					projects.add((IProject) obj);
+				final var obj = iterator.next();
+				if (obj instanceof IJavaProject cvalue) {
+					projects.add(cvalue.getProject());
+				} else if (obj instanceof IProject cvalue) {
+					projects.add(cvalue);
 				}
 			}
-			final Shell activeShell = HandlerUtil.getActiveShell(event);
+			final var activeShell = HandlerUtil.getActiveShell(event);
 			convertAllWithProgress(activeShell, projects);
 		}
 		return null;
@@ -82,9 +81,9 @@ public class RemoveSarlNatureHandler extends AbstractHandler {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask(Messages.RemoveSarlNatureHandler_0, projects.size());
-				final SubMonitor mon = SubMonitor.convert(monitor);
+				final var mon = SubMonitor.convert(monitor);
 				try {
-					for (final IProject project : projects) {
+					for (final var project : projects) {
 						doConvert(project, mon.newChild(1));
 					}
 				} catch (ExecutionException e) {
@@ -114,7 +113,7 @@ public class RemoveSarlNatureHandler extends AbstractHandler {
 	 */
 	protected void doConvert(IProject project, IProgressMonitor monitor) throws ExecutionException {
 		monitor.setTaskName(MessageFormat.format(Messages.RemoveSarlNatureHandler_2, project.getName()));
-		final SubMonitor mon = SubMonitor.convert(monitor, 2);
+		final var mon = SubMonitor.convert(monitor, 2);
 		if (this.configurator.canUnconfigure(project, mon.newChild(1))) {
 			try {
 				this.configurator.unconfigure(project, mon.newChild(1));

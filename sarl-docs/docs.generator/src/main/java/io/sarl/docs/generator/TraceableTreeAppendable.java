@@ -88,7 +88,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public String toString() {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			return p.toString();
 		}
@@ -97,7 +97,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable append(JvmType type) {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.append(type);
 		} else {
@@ -108,7 +108,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable append(Class<?> type) {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.append(type);
 		} else {
@@ -119,7 +119,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable append(CharSequence string) {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.append(string);
 		} else {
@@ -130,7 +130,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable append(LightweightTypeReference typeRef) {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.append(typeRef);
 		} else {
@@ -141,7 +141,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable decreaseIndentation() {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.decreaseIndentation();
 		} else {
@@ -152,7 +152,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable increaseIndentation() {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.increaseIndentation();
 		} else {
@@ -163,7 +163,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 
 	@Override
 	public ITreeAppendable newLine() {
-		final TraceableTreeAppendable p = getParent();
+		final var p = getParent();
 		if (p != null) {
 			p.newLine();
 		} else {
@@ -184,7 +184,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 		if (this.location != null) {
 			regions.add(getTraceRegion());
 		}
-		for (final TraceableTreeAppendable child : this.children) {
+		for (final var child : this.children) {
 			child.getTraceRegions(regions);
 		}
 	}
@@ -194,7 +194,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 	 * @return the trace regions.
 	 */
 	public List<AbstractTraceRegion> getTraceRegions() {
-		final List<AbstractTraceRegion> regions = new ArrayList<>();
+		final var regions = new ArrayList<AbstractTraceRegion>();
 		getTraceRegions(regions);
 		return regions;
 	}
@@ -216,8 +216,7 @@ class TraceableTreeAppendable extends StringBuilderBasedAppendable implements IT
 	@Override
 	public ITreeAppendable trace(ILocationData location, boolean useForDebugging) {
 		if (useForDebugging) {
-			final TraceableTreeAppendable child = new TraceableTreeAppendable(
-					this, useForDebugging, location);
+			final var child = new TraceableTreeAppendable(this, useForDebugging, location);
 			this.children.add(child);
 			return child;
 		}

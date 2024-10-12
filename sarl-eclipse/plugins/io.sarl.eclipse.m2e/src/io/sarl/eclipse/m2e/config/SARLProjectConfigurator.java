@@ -83,8 +83,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	protected void addPreferences(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
-		final IPath outputPath = makeProjectRelativePath(facade, config.getOutput());
-		final IPath testOutputPath = addTestFolders ? makeProjectRelativePath(facade, config.getTestOutput()) : null;
+		final var outputPath = makeProjectRelativePath(facade, config.getOutput());
+		final var testOutputPath = addTestFolders ? makeProjectRelativePath(facade, config.getTestOutput()) : null;
 		// Set the SARL preferences
 		SARLPreferences.setSpecificSARLConfigurationFor(
 				facade.getProject(),
@@ -94,7 +94,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private static IPath makeFullPath(IMavenProjectFacade facade, File file) {
 		assert file != null;
-		final IProject project = facade.getProject();
+		final var project = facade.getProject();
 		final IPath path;
 		if (!file.isAbsolute()) {
 			path =  Path.fromOSString(file.getPath());
@@ -106,7 +106,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private static IPath makeProjectRelativePath(IMavenProjectFacade facade, File file) {
 		assert file != null;
-		final IProject project = facade.getProject();
+		final var project = facade.getProject();
 		if (!file.isAbsolute()) {
 			return Path.fromOSString(file.getPath());
 		}
@@ -115,7 +115,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private static IFolder ensureFolderExists(IMavenProjectFacade facade, IPath path, boolean derived,
 			IProgressMonitor monitor) throws CoreException {
-		final IFolder folder = facade.getProject().getFolder(path.makeRelativeTo(facade.getProject().getFullPath()));
+		final var folder = facade.getProject().getFolder(path.makeRelativeTo(facade.getProject().getFullPath()));
 		assert folder != null;
 		if (!folder.exists()) {
 			M2EUtils.createFolder(folder, derived || folder.isDerived(), monitor);
@@ -132,20 +132,20 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 */
 	@SuppressWarnings("static-method")
 	protected void removeSourceFolder(IPath path, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		final var subMonitor = SubMonitor.convert(monitor, 3);
 
 		if (path == null) {
 			subMonitor.done();
 			return;
 		}
 
-		final IClasspathEntry[] entries = classpath.getEntries();
+		final var entries = classpath.getEntries();
 		subMonitor.worked(1);
 
-		final SubMonitor subMonitor0 = SubMonitor.convert(subMonitor, entries.length);
+		final var subMonitor0 = SubMonitor.convert(subMonitor, entries.length);
 
-		for (final IClasspathEntry entry : entries) {
-			final int type = entry.getEntryKind();
+		for (final var entry : entries) {
+			final var type = entry.getEntryKind();
 			if (type == IClasspathEntry.CPE_SOURCE && path.equals(entry.getPath())) {
 				classpath.removeEntry(entry.getPath());
 				subMonitor0.done();
@@ -176,23 +176,23 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 8);
-		final String encoding = config.getEncoding();
+		final var subMonitor = SubMonitor.convert(monitor, 8);
+		final var encoding = config.getEncoding();
 
 		//
 		// Add the source folders
 		//
 		// Input folder, e.g. "src/main/sarl"
-		final IPath inputPath = makeFullPath(facade, config.getInput());
+		final var inputPath = makeFullPath(facade, config.getInput());
 		removeSourceFolder(inputPath, classpath, subMonitor.newChild(1));
-		final IFolder inputFolder = ensureFolderExists(facade, inputPath, false, subMonitor);
+		final var inputFolder = ensureFolderExists(facade, inputPath, false, subMonitor);
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
 		// Remove any previous definition of the source entry
 		classpath.touchEntry(inputPath);
 		// Add the source entry
-		IClasspathEntryDescriptor descriptor = classpath.addSourceEntry(
+		var descriptor = classpath.addSourceEntry(
 				inputPath,
 				facade.getOutputLocation(),
 				false);
@@ -200,9 +200,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subMonitor.worked(1);
 
 		// Input folder, e.g. "src/main/generated-sources/sarl"
-		final IPath outputPath = makeFullPath(facade, config.getOutput());
+		final var outputPath = makeFullPath(facade, config.getOutput());
 		removeSourceFolder(outputPath, classpath, subMonitor.newChild(1));
-		final IFolder outputFolder = ensureFolderExists(facade, outputPath, true, subMonitor);
+		final var outputFolder = ensureFolderExists(facade, outputPath, true, subMonitor);
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
 		}
@@ -219,9 +219,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		if (addTestFolders) {
 			// Test input folder, e.g. "src/test/sarl"
-			final IPath testInputPath = makeFullPath(facade, config.getTestInput());
+			final var testInputPath = makeFullPath(facade, config.getTestInput());
 			removeSourceFolder(testInputPath, classpath, subMonitor.newChild(1));
-			final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
+			final var testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
 			if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
 				testInputFolder.setDefaultCharset(encoding, monitor);
 			}
@@ -241,9 +241,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		if (addTestFolders) {
 			// Test input folder, e.g. "src/it/sarl"
-			final IPath integrationTestInputPath = makeFullPath(facade, config.getIntegrationTestInput());
+			final var integrationTestInputPath = makeFullPath(facade, config.getIntegrationTestInput());
 			removeSourceFolder(integrationTestInputPath, classpath, subMonitor.newChild(1));
-			final IFolder integrationTestInputFolder = ensureFolderExists(facade, integrationTestInputPath, false, subMonitor);
+			final var integrationTestInputFolder = ensureFolderExists(facade, integrationTestInputPath, false, subMonitor);
 			if (encoding != null && integrationTestInputFolder != null && integrationTestInputFolder.exists()) {
 				integrationTestInputFolder.setDefaultCharset(encoding, monitor);
 			}
@@ -263,9 +263,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		if (addTestFolders) {
 			// Test input folder, e.g. "src/test/generated-sources/sarl"
-			final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
+			final var testOutputPath = makeFullPath(facade, config.getTestOutput());
 			removeSourceFolder(testOutputPath, classpath, subMonitor.newChild(1));
-			final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
+			final var testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
 			if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
 				testOutputFolder.setDefaultCharset(encoding, monitor);
 			}
@@ -297,7 +297,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 */
 	protected <T> T getParameterValue(MavenProject project, String parameter, Class<T> asType,
 			MojoExecution mojoExecution, IProgressMonitor monitor, T defaultValue) throws CoreException {
-		T value = getParameterValue(project, parameter, asType, mojoExecution, monitor);
+		var value = getParameterValue(project, parameter, asType, mojoExecution, monitor);
 		if (value == null) {
 			value = defaultValue;
 		}
@@ -317,9 +317,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		SARLConfiguration initConfig = null;
 		SARLConfiguration compileConfig = null;
 
-		final List<MojoExecution> mojos = getMojoExecutions(request, monitor);
-		for (final MojoExecution mojo : mojos) {
-			final String goal = mojo.getGoal();
+		final var mojos = getMojoExecutions(request, monitor);
+		for (final var mojo : mojos) {
+			final var goal = mojo.getGoal();
 			switch (goal) {
 			case "initialize": //$NON-NLS-1$
 				initConfig = readInitializeConfiguration(request, mojo, monitor);
@@ -350,23 +350,23 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private SARLConfiguration readInitializeConfiguration(
 			ProjectConfigurationRequest request, MojoExecution mojo, IProgressMonitor monitor)
 					throws CoreException {
-		final SARLConfiguration config = new SARLConfiguration();
+		final var config = new SARLConfiguration();
 
-		final MavenProject project = request.mavenProject();
+		final var project = request.mavenProject();
 
-		final File input = getParameterValue(project, "input", File.class, mojo, monitor, //$NON-NLS-1$
+		final var input = getParameterValue(project, "input", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_SOURCE_SARL));
-		final File output = getParameterValue(project, "output", File.class, mojo, monitor, //$NON-NLS-1$
+		final var output = getParameterValue(project, "output", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_SOURCE_GENERATED));
-		final File binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor, //$NON-NLS-1$
+		final var binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_BIN));
-		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor, //$NON-NLS-1$
+		final var testInput = getParameterValue(project, "testInput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_SARL));
-		final File integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor, //$NON-NLS-1$
+		final var integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_INTEGRATION_TEST_SOURCE_SARL));
-		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor, //$NON-NLS-1$
+		final var testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_GENERATED));
-		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor, //$NON-NLS-1$
+		final var testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_BIN));
 
 		config.setInput(input);
@@ -391,17 +391,17 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private SARLConfiguration readCompileConfiguration(
 			ProjectConfigurationRequest request, MojoExecution mojo, IProgressMonitor monitor)
 					throws CoreException {
-		final SARLConfiguration config = new SARLConfiguration();
+		final var config = new SARLConfiguration();
 
-		final MavenProject project = request.mavenProject();
+		final var project = request.mavenProject();
 
-		final File input = getParameterValue(project, "input", File.class, mojo, monitor); //$NON-NLS-1$
-		final File output = getParameterValue(project, "output", File.class, mojo, monitor); //$NON-NLS-1$
-		final File binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor); //$NON-NLS-1$
-		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor); //$NON-NLS-1$
-		final File integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor); //$NON-NLS-1$
-		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor); //$NON-NLS-1$
-		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor); //$NON-NLS-1$
+		final var input = getParameterValue(project, "input", File.class, mojo, monitor); //$NON-NLS-1$
+		final var output = getParameterValue(project, "output", File.class, mojo, monitor); //$NON-NLS-1$
+		final var binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor); //$NON-NLS-1$
+		final var testInput = getParameterValue(project, "testInput", File.class, mojo, monitor); //$NON-NLS-1$
+		final var integrationTestInput = getParameterValue(project, "integrationTestInput", File.class, mojo, monitor); //$NON-NLS-1$
+		final var testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor); //$NON-NLS-1$
+		final var testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor); //$NON-NLS-1$
 
 		config.setInput(input);
 		config.setOutput(output);
@@ -411,13 +411,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		config.setTestOutput(testOutput);
 		config.setTestBinOutput(testBinOutput);
 
-		final String inputCompliance = getParameterValue(project, "source", String.class, mojo, monitor); //$NON-NLS-1$
-		final String outputCompliance = getParameterValue(project, "target", String.class, mojo, monitor); //$NON-NLS-1$
+		final var inputCompliance = getParameterValue(project, "source", String.class, mojo, monitor); //$NON-NLS-1$
+		final var outputCompliance = getParameterValue(project, "target", String.class, mojo, monitor); //$NON-NLS-1$
 
 		config.setInputCompliance(inputCompliance);
 		config.setOutputCompliance(outputCompliance);
 
-		final String encoding = getParameterValue(project, "encoding", String.class, mojo, monitor); //$NON-NLS-1$
+		final var encoding = getParameterValue(project, "encoding", String.class, mojo, monitor); //$NON-NLS-1$
 		config.setEncoding(encoding);
 
 		return config;
@@ -438,13 +438,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 */
 	@SuppressWarnings("static-method")
 	protected void addSarlLibraries(IClasspathDescriptor classpath) {
-		final IClasspathEntry entry = JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
+		final var entry = JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 		classpath.addEntry(entry);
 	}
 
 	private static void setVersion(Properties props, String propName, String value, String minValue, String incompatibleValue) {
-		final String currentVersion = props.getProperty(propName);
-		String newVersion = value;
+		final var currentVersion = props.getProperty(propName);
+		var newVersion = value;
 
 		if (M2EUtilities.compareOsgiVersions(currentVersion, newVersion) > 0) {
 			newVersion = currentVersion;
@@ -460,14 +460,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	}
 
 	private static void forceMavenCompilerConfiguration(IMavenProjectFacade facade, SARLConfiguration config) {
-		final Properties props = facade.getMavenProject().getProperties();
+		final var props = facade.getMavenProject().getProperties();
 		setVersion(props, "maven.compiler.source", config.getInputCompliance(), //$NON-NLS-1$
 				SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
 				SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		setVersion(props, "maven.compiler.target", config.getOutputCompliance(), //$NON-NLS-1$
 				SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
 				SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
-		final String encoding = config.getEncoding();
+		final var encoding = config.getEncoding();
 		if (encoding != null && !encoding.isEmpty()) {
 			props.setProperty("maven.compiler.encoding", encoding); //$NON-NLS-1$
 		}
@@ -487,14 +487,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@Override
 	public void configure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
-		final IMavenProjectFacade facade = request.mavenProjectFacade();
+		final var facade = request.mavenProjectFacade();
 
 		final SubMonitor subMonitor;
 		subMonitor = SubMonitor.convert(monitor, 5);
 		try {
-			final IProject project = request.mavenProjectFacade().getProject();
+			final var project = request.mavenProjectFacade().getProject();
 
-			final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
+			final var config = readConfiguration(request, subMonitor.newChild(1));
 			subMonitor.worked(1);
 			forceMavenCompilerConfiguration(facade, config);
 			subMonitor.worked(1);
@@ -504,18 +504,18 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 					subMonitor.newChild(1));
 			subMonitor.worked(1);
 
-			final IJavaProject javaProject = JavaCore.create(project);
+			final var javaProject = JavaCore.create(project);
 			if (javaProject != null) {
-				final IClasspathDescriptor classpath = getMutableClasspath(javaProject);
+				final var classpath = getMutableClasspath(javaProject);
 				
 				// Change the project configuration for SARL
 				removeSarlLibraries(classpath);
 				configureSarlProject(facade, config, classpath, true, subMonitor.newChild(1));
 				
 				// Save the new classpath of the project
-				final MavenProject mavenProject = request.mavenProject();
-				final IPath outputPath = makeFullPath(facade, new File(mavenProject.getBuild().getOutputDirectory()));
-				final IClasspathEntry[] classpathEntries = classpath.getEntries();
+				final var mavenProject = request.mavenProject();
+				final var outputPath = makeFullPath(facade, new File(mavenProject.getBuild().getOutputDirectory()));
+				final var classpathEntries = classpath.getEntries();
 				sortClasspathEntries(classpathEntries);
 				javaProject.setRawClasspath(classpathEntries, outputPath, subMonitor.newChild(1));
 				MavenJdtPlugin.getDefault().getBuildpathManager().updateClasspath(project, subMonitor.newChild(1));
@@ -541,21 +541,21 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	
 	private static void sortClasspathEntries(IClasspathEntry[] entries) {
 		Arrays.sort(entries, (a, b) -> {
-			final String na = a.getPath().toPortableString();
-			final String nb = b.getPath().toPortableString();
-			final int nameCmp = na.compareTo(nb);
+			final var na = a.getPath().toPortableString();
+			final var nb = b.getPath().toPortableString();
+			final var nameCmp = na.compareTo(nb);
 			if (nameCmp == 0) {
 				return 0;
 			}
-			final int ta = a.getEntryKind();
-			final int tb = b.getEntryKind();
+			final var ta = a.getEntryKind();
+			final var tb = b.getEntryKind();
 			if (ta == tb) {
 				if (ta == IClasspathEntry.CPE_SOURCE) {
-					final int testCmp = Boolean.compare(a.isTest(), b.isTest());
+					final var testCmp = Boolean.compare(a.isTest(), b.isTest());
 					if (testCmp != 0) {
 						return testCmp;
 					}
-					final int orderCmp = Integer.compare(getFolderOrder(na), getFolderOrder(nb));
+					final var orderCmp = Integer.compare(getFolderOrder(na), getFolderOrder(nb));
 					if (orderCmp != 0) {
 						return orderCmp;
 					}
@@ -567,11 +567,11 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	}
 
 	private static IClasspathDescriptor getMutableClasspath(IJavaProject project) throws CoreException {
-		final IClasspathDescriptor classpath = new ClasspathDescriptor(true);
+		final var classpath = new ClasspathDescriptor(true);
 		// Mark all the existing classpath entries in order to be not ignored when the getEntries() function is invoked.
 		// It is preserving all the entities in the replied classspath.
-		final IPath pfp = project.getProject().getFullPath();
-		for (final IClasspathEntry cpe : project.getRawClasspath()) {
+		final var pfp = project.getProject().getFullPath();
+		for (final var cpe : project.getRawClasspath()) {
 			if (!pfp.equals(cpe.getPath())) {
 				classpath.addEntry(cpe);
 			}
@@ -581,7 +581,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath, boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subm = SubMonitor.convert(monitor, 2);
+		final var subm = SubMonitor.convert(monitor, 2);
 		addSourceFolders(facade, config, classpath, addTestFolders, subm.newChild(1));
 		subm.worked(1);
 		addPreferences(facade, config, addTestFolders, subm.newChild(1));
@@ -591,9 +591,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@Override
 	public void unconfigure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
-		final IJavaProject javaProject = JavaCore.create(request.mavenProjectFacade().getProject());
+		final var javaProject = JavaCore.create(request.mavenProjectFacade().getProject());
 		if (javaProject != null) {
-			final IClasspathDescriptor classpath = getMutableClasspath(javaProject);
+			final var classpath = getMutableClasspath(javaProject);
 			addSarlLibraries(classpath);
 			javaProject.setRawClasspath(classpath.getEntries(), null);
 			MavenJdtPlugin.getDefault().getBuildpathManager().updateClasspath(request.mavenProjectFacade().getProject(), null);
@@ -611,9 +611,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public void configureRawClasspath(ProjectConfigurationRequest request,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
-		final SubMonitor subm = SubMonitor.convert(monitor, 4);
-		final IMavenProjectFacade facade = request.mavenProjectFacade();
-		final SARLConfiguration config = readConfiguration(request, subm.newChild(1));
+		final var subm = SubMonitor.convert(monitor, 4);
+		final var facade = request.mavenProjectFacade();
+		final var config = readConfiguration(request, subm.newChild(1));
 		subm.worked(1);
 		removeSarlLibraries(classpath);
 		subm.worked(2);

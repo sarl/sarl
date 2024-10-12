@@ -80,7 +80,7 @@ public class SarldocFakeCommand extends AbstractSarldocCommand {
 			Logger logger,
 			AtomicInteger errorCount,
 			AtomicInteger warningCount) {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		buffer.add("documentation.output", docconfig.getDocumentationOutputDirectory()); //$NON-NLS-1$
 		buffer.add("source.files", sourceFiles); //$NON-NLS-1$
 		buffer.add("javadoc.options", javadocOptions); //$NON-NLS-1$

@@ -25,9 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.google.inject.ImplementedBy;
@@ -55,7 +53,7 @@ public final class FactExtensions {
 	private static IPureOperationNameValidator getOperationNameValidator() {
 		synchronized (FactExtensions.class) {
 			if (nameValidator == null) {
-				ImplementedBy anno = IPureOperationNameValidator.class.getAnnotation(ImplementedBy.class);
+				final var anno = IPureOperationNameValidator.class.getAnnotation(ImplementedBy.class);
 				assert anno != null;
 				try {
 					nameValidator = (IPureOperationNameValidator) anno.value().getDeclaredConstructor().newInstance();
@@ -76,9 +74,9 @@ public final class FactExtensions {
 	 */
 	public static Field findField(Class<?> type, Function3<Class<?>, Field, Boolean, Boolean> matcher) {
 		if (matcher != null) {
-			for (final Field field : type.getDeclaredFields()) {
-				final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
-				final boolean deprecated = deprecatedAnnotation != null;
+			for (final var field : type.getDeclaredFields()) {
+				final var deprecatedAnnotation = field.getAnnotation(Deprecated.class);
+				final var deprecated = deprecatedAnnotation != null;
 				if (matcher.apply(type, field, Boolean.valueOf(deprecated)).booleanValue()) {
 					return field;
 				}
@@ -95,9 +93,9 @@ public final class FactExtensions {
 	 */
 	public static boolean allFields(Class<?> type, Function3<Class<?>, Field, Boolean, Boolean> matcher) {
 		if (matcher != null) {
-			for (final Field field : type.getDeclaredFields()) {
-				final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
-				final boolean deprecated = deprecatedAnnotation != null;
+			for (final var field : type.getDeclaredFields()) {
+				final var deprecatedAnnotation = field.getAnnotation(Deprecated.class);
+				final var deprecated = deprecatedAnnotation != null;
 				if (!matcher.apply(type, field, Boolean.valueOf(deprecated)).booleanValue()) {
 					return false;
 				}
@@ -113,11 +111,11 @@ public final class FactExtensions {
 	 * @return {@code true} if the arguments are equal.
 	 */
 	public static boolean similarTo(Iterable<?> iter1, Iterable<?> iter2) {
-		Iterator<?> iterator1 = iter1.iterator();
-		Iterator<?> iterator2 = iter2.iterator();
+		final var iterator1 = iter1.iterator();
+		final var iterator2 = iter2.iterator();
 		while (iterator1.hasNext() && iterator2.hasNext()) {
-			final Object obj1 = iterator1.next();
-			final Object obj2 = iterator2.next();
+			final var obj1 = iterator1.next();
+			final var obj2 = iterator2.next();
 			if (!Objects.equals(obj1, obj2)) {
 				return false;
 			}
@@ -132,16 +130,16 @@ public final class FactExtensions {
 	 * @return {@code true} if the arguments are equal.
 	 */
 	public static boolean similarTo(Map<?, ?> map1, Map<?, ?> map2) {
-		final Map<?, ?> m1 = new HashMap<>(map1);
-		final Map<?, ?> m2 = new HashMap<>(map2);
-		final Iterator<?> iterator1 = m1.entrySet().iterator();
+		final var m1 = new HashMap<>(map1);
+		final var m2 = new HashMap<>(map2);
+		final var iterator1 = m1.entrySet().iterator();
 		while (iterator1.hasNext()) {
-			final Entry<?,?> entry = (Entry<?,?>) iterator1.next();
+			final var entry = iterator1.next();
 			iterator1.remove();
 			if (!m2.containsKey(entry.getKey())) {
 				return false;
 			}
-			final Object v = m2.remove(entry.getKey());
+			final var v = m2.remove(entry.getKey());
 			if (!Objects.equals(entry.getValue(), v)) {
 				return false;
 			}

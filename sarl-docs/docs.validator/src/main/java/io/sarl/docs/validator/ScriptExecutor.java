@@ -110,8 +110,8 @@ public interface ScriptExecutor {
 	 * @throws Exception if compilation failed.
 	 */
 	default List<String> compile(int lineno, String code) throws Exception {
-		List<String> issues = new ArrayList<>();
-		final CompiledFile file = compile(lineno, code, issues, null);
+		var issues = new ArrayList<String>();
+		final var file = compile(lineno, code, issues, null);
 		if (file != null && file.getRootFolder() != null) {
 			FileSystem.delete(file.getRootFolder());
 		}

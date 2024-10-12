@@ -76,7 +76,7 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 	@Override
 	public ImageDescriptor getBaseImageDescriptor(IJavaElement element, int renderFlags) {
 		if (element.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			final ImageDescriptor desc = getPackageFragmentIcon((IPackageFragment) element);
+			final var desc = getPackageFragmentIcon((IPackageFragment) element);
 			if (desc != null) {
 				return desc;
 			}
@@ -90,7 +90,7 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 	 * @return the descriptor.
 	 */
 	private ImageDescriptor getPackageFragmentIcon(IPackageFragment fragment) {
-		boolean containsJavaElements = false;
+		var containsJavaElements = false;
 		try {
 			containsJavaElements = fragment.hasChildren();
 		} catch (JavaModelException e) {
@@ -98,9 +98,9 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 		}
 		try {
 			if (!containsJavaElements) {
-				final Object[] resources = fragment.getNonJavaResources();
+				final var resources = fragment.getNonJavaResources();
 				if (resources.length > 0) {
-					for (final Object child : resources) {
+					for (final var child : resources) {
 						if (isSarlResource(child)) {
 							return JavaPluginImages.DESC_OBJS_PACKAGE;
 						}
@@ -123,8 +123,7 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 	 * @return {@code true} if the given resource is a SARL resource.
 	 */
 	protected boolean isSarlResource(Object resource) {
-		if (resource instanceof IFile) {
-			final IFile file = (IFile) resource;
+		if (resource instanceof IFile file) {
 			return getFileExtensions().contains(file.getFileExtension());
 		}
 		return false;

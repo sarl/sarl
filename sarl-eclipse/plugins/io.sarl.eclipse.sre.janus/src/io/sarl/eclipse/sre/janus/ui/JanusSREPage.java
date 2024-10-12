@@ -75,8 +75,8 @@ public class JanusSREPage extends AbstractSREInstallPage {
 	@Override
 	public void createControl(Composite parent) {
 		// create a composite with standard margins and spacing
-		final Composite composite = new Composite(parent, SWT.NONE);
-		final GridLayout layout = new GridLayout();
+		final var composite = new Composite(parent, SWT.NONE);
+		final var layout = new GridLayout();
 		layout.numColumns = 2;
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -131,10 +131,10 @@ public class JanusSREPage extends AbstractSREInstallPage {
 	private void initializeFields() {
 		this.sreLibraryTextField.setText(Strings.nullToEmpty(this.originalSRE.getLocation()));
 		//
-		final String name = this.originalSRE.getName();
+		final var name = this.originalSRE.getName();
 		this.sreNameTextField.setText(Strings.nullToEmpty(name));
 		//
-		final String mainClass = this.originalSRE.getMainClass();
+		final var mainClass = this.originalSRE.getMainClass();
 		this.sreMainClassTextField.setText(Strings.nullToEmpty(mainClass));
 		//
 		this.sreIdTextField.setText(this.originalSRE.getId());

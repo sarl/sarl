@@ -183,16 +183,16 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	@Override
 	protected Control doCreateContents(Composite parent) {
-		final PixelConverter pixelConverter = new PixelConverter(parent);
+		final var pixelConverter = new PixelConverter(parent);
 		setShell(parent.getShell());
-		final Composite mainComp = new Composite(parent, SWT.NONE);
+		final var mainComp = new Composite(parent, SWT.NONE);
 		mainComp.setFont(parent.getFont());
-		final GridLayout layout = new GridLayout();
+		final var layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		mainComp.setLayout(layout);
-		final Composite othersComposite = createGeneratorContent(mainComp);
-		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
+		final var othersComposite = createGeneratorContent(mainComp);
+		final var gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gridData.heightHint = pixelConverter.convertHeightInCharsToPixels(HEIGHT);
 		othersComposite.setLayoutData(gridData);
 		validateSettings(null, null, null);
@@ -200,22 +200,22 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	}
 
 	private Composite createGeneratorContent(Composite parent) {
-		final ScrolledPageContent pageContent = new ScrolledPageContent(parent);
-		final int columns = 3;
-		final GridLayout layout = new GridLayout();
+		final var pageContent = new ScrolledPageContent(parent);
+		final var columns = 3;
+		final var layout = new GridLayout();
 		layout.numColumns = columns;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 
-		final Composite composite = pageContent.getBody();
+		final var composite = pageContent.getBody();
 		composite.setLayout(layout);
 
 		if (isExperimental()) {
 			createExperimentalWarningMessage(composite);
 		}
 
-		ExpandableComposite excomposite = createStyleSection(composite, Messages.AbstractGeneratorConfigurationBlock_4, columns);
-		Composite othersComposite = new Composite(excomposite, SWT.NONE);
+		var excomposite = createStyleSection(composite, Messages.AbstractGeneratorConfigurationBlock_4, columns);
+		var othersComposite = new Composite(excomposite, SWT.NONE);
 		excomposite.setClient(othersComposite);
 		othersComposite.setLayout(new GridLayout(columns, false));
 		createGeneralSectionItems(othersComposite);
@@ -256,8 +256,8 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @return the output configuration.
 	 */
 	protected OutputConfiguration getOutputConfiguration() {
-		final Set<OutputConfiguration> outputConfigurations = this.configurationProvider.getOutputConfigurations(getProject());
-		final String expectedName = ExtraLanguageOutputConfigurations.createOutputConfigurationName(getPreferenceID());
+		final var outputConfigurations = this.configurationProvider.getOutputConfigurations(getProject());
+		final var expectedName = ExtraLanguageOutputConfigurations.createOutputConfigurationName(getPreferenceID());
 		return Iterables.find(outputConfigurations, it -> expectedName.equals(it.getName()));
 	}
 
@@ -312,7 +312,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param parentComposite the parent.
 	 */
 	protected void createTypeConversionSectionItems(Composite parentComposite) {
-		final TypeConversionTable typeConversionTable = new TypeConversionTable(
+		final var typeConversionTable = new TypeConversionTable(
 				this, getTargetLanguageImage(),
 				getPreferenceStore(), getPreferenceID());
 		typeConversionTable.doCreate(parentComposite, getDialogSettings());
@@ -321,12 +321,12 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	}
 
 	private static ScrolledPageContent getParentScrolledComposite(Control control) {
-		Control parent = control.getParent();
+		var parent = control.getParent();
 		while (!(parent instanceof ScrolledPageContent) && parent != null) {
 			parent = parent.getParent();
 		}
-		if (parent instanceof ScrolledPageContent) {
-			return (ScrolledPageContent) parent;
+		if (parent instanceof ScrolledPageContent cvalue) {
+			return cvalue;
 		}
 		return null;
 	}
@@ -336,7 +336,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param control the control to adapt to.
 	 */
 	protected static void makeScrollableCompositeAware(Control control) {
-		final ScrolledPageContent parentScrolledComposite = getParentScrolledComposite(control);
+		final var parentScrolledComposite = getParentScrolledComposite(control);
 		if (parentScrolledComposite != null) {
 			parentScrolledComposite.adaptChild(control);
 		}
@@ -347,7 +347,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param parentComposite the parent.
 	 */
 	protected void createFeatureConversionSectionItems(Composite parentComposite) {
-		final FeatureNameConversionTable typeConversionTable = new FeatureNameConversionTable(
+		final var typeConversionTable = new FeatureNameConversionTable(
 				this, getTargetLanguageImage(),
 				getPreferenceStore(), getPreferenceID());
 		typeConversionTable.doCreate(parentComposite, getDialogSettings());
@@ -366,9 +366,9 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param composite the parent.
 	 */
 	protected void createExperimentalWarningMessage(Composite composite) {
-		final Label dangerIcon = new Label(composite, SWT.WRAP);
+		final var dangerIcon = new Label(composite, SWT.WRAP);
 		dangerIcon.setImage(getImage(IMAGE));
-		final GridData labelLayoutData = new GridData();
+		final var labelLayoutData = new GridData();
 		labelLayoutData.horizontalIndent = 0;
 		dangerIcon.setLayoutData(labelLayoutData);
 	}
@@ -379,7 +379,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @return the image.
 	 */
 	protected final Image getImage(String imagePath) {
-		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final var descriptor = getImageDescriptor(imagePath);
 		if (descriptor == null) {
 			return null;
 		}
@@ -393,9 +393,9 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	@SuppressWarnings("static-method")
 	protected ImageDescriptor getImageDescriptor(String imagePath) {
-		final LangActivator activator = LangActivator.getInstance();
-		final ImageRegistry registry = activator.getImageRegistry();
-		ImageDescriptor descriptor = registry.getDescriptor(imagePath);
+		final var activator = LangActivator.getInstance();
+		final var registry = activator.getImageRegistry();
+		var descriptor = registry.getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = ResourceLocator.imageDescriptorFromBundle(activator.getBundle().getSymbolicName(), imagePath).orElse(null);
 			if (descriptor != null) {
@@ -418,7 +418,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	@Override
 	protected Job getBuildJob(IProject project) {
-		final Job buildJob = new OptionsConfigurationBlock.BuildJob(Messages.AbstractGeneratorConfigurationBlock_3, project);
+		final var buildJob = new OptionsConfigurationBlock.BuildJob(Messages.AbstractGeneratorConfigurationBlock_3, project);
 		buildJob.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
 		buildJob.setUser(true);
 		return buildJob;
@@ -442,7 +442,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	@Override
 	public void dispose() {
-		IDialogSettings section = getDialogSettings().getSection(SETTINGS_SECTION_NAME);
+		var section = getDialogSettings().getSection(SETTINGS_SECTION_NAME);
 		if (section == null) {
 			section = getDialogSettings().addNewSection(SETTINGS_SECTION_NAME);
 		}
@@ -458,7 +458,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	@Override
 	public void controlChanged(String preferenceKey, String preferenceValue) {
-		final String oldValue = setValue(preferenceKey, preferenceValue);
+		final var oldValue = setValue(preferenceKey, preferenceValue);
 		validateSettings(preferenceKey, oldValue, preferenceValue);
 	}
 
@@ -491,7 +491,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param outputConfiguration the output configuration.
 	 */
 	protected void createOutputSectionItems(Composite composite, OutputConfiguration outputConfiguration) {
-		final Text defaultDirectoryField = addTextField(composite,
+		final var defaultDirectoryField = addTextField(composite,
 				org.eclipse.xtext.builder.preferences.Messages.OutputConfigurationPage_Directory,
 				BuilderPreferenceAccess.getKey(outputConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY), 0, 0);
@@ -515,11 +515,11 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 				org.eclipse.xtext.builder.preferences.Messages.OutputConfigurationPage_CleanDirectory,
 				BuilderPreferenceAccess.getKey(outputConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_CLEAN_DIRECTORY), BOOLEAN_VALUES, 0);
-		final Button installAsPrimaryButton = addCheckBox(composite,
+		final var installAsPrimaryButton = addCheckBox(composite,
 				org.eclipse.xtext.builder.preferences.Messages.BuilderConfigurationBlock_InstallDslAsPrimarySource,
 				BuilderPreferenceAccess.getKey(outputConfiguration,
 						EclipseOutputConfigurationProvider.INSTALL_DSL_AS_PRIMARY_SOURCE), BOOLEAN_VALUES, 0);
-		final Button hideLocalButton = addCheckBox(composite,
+		final var hideLocalButton = addCheckBox(composite,
 				org.eclipse.xtext.builder.preferences.Messages.BuilderConfigurationBlock_hideSyntheticLocalVariables,
 				BuilderPreferenceAccess.getKey(outputConfiguration,
 						EclipseOutputConfigurationProvider.HIDE_LOCAL_SYNTHETIC_VARIABLES), BOOLEAN_VALUES, 0);
@@ -530,7 +530,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 				hideLocalButton.setEnabled(installAsPrimaryButton.getSelection());
 			}
 		});
-		final GridData hideLocalButtonData = new GridData();
+		final var hideLocalButtonData = new GridData();
 		hideLocalButtonData.horizontalIndent = INDENT_AMOUNT;
 		hideLocalButton.setLayoutData(hideLocalButtonData);
 		addCheckBox(composite,
@@ -539,11 +539,11 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 						EclipseOutputConfigurationProvider.OUTPUT_KEEP_LOCAL_HISTORY), BOOLEAN_VALUES, 0);
 
 		if (getProject() != null && !outputConfiguration.getSourceFolders().isEmpty()) {
-			final Button outputPerSourceButton = addCheckBox(composite,
+			final var outputPerSourceButton = addCheckBox(composite,
 					org.eclipse.xtext.builder.preferences.Messages.OutputConfigurationPage_UseOutputPerSourceFolder,
 					BuilderPreferenceAccess.getKey(outputConfiguration,
 							EclipseOutputConfigurationProvider.USE_OUTPUT_PER_SOURCE_FOLDER), BOOLEAN_VALUES, 0);
-			final Table table = createOutputFolderTable(composite, outputConfiguration, defaultDirectoryField);
+			final var table = createOutputFolderTable(composite, outputConfiguration, defaultDirectoryField);
 			table.setVisible(outputPerSourceButton.getSelection());
 			outputPerSourceButton.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -556,7 +556,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	private Table createOutputFolderTable(Composite othersComposite, OutputConfiguration outputConfiguration,
 			Text defaultDirectoryField) {
-		final Table table = new Table(othersComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		final var table = new Table(othersComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		new TableColumn(table, SWT.NONE).setText(
 				org.eclipse.xtext.builder.preferences.Messages.OutputConfigurationPage_IgnoreSourceFolder);
 		new TableColumn(table, SWT.NONE).setText(
@@ -570,22 +570,22 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		for (final String source : outputConfiguration.getSourceFolders()) {
-			final String outputForSourceFolderKey = BuilderPreferenceAccess.getOutputForSourceFolderKey(outputConfiguration, source);
+		for (final var source : outputConfiguration.getSourceFolders()) {
+			final var outputForSourceFolderKey = BuilderPreferenceAccess.getOutputForSourceFolderKey(outputConfiguration, source);
 			registerKey(outputForSourceFolderKey);
-			final String ignoreSourceFolderKey = BuilderPreferenceAccess.getIgnoreSourceFolderKey(outputConfiguration, source);
+			final var ignoreSourceFolderKey = BuilderPreferenceAccess.getIgnoreSourceFolderKey(outputConfiguration, source);
 			registerKey(ignoreSourceFolderKey);
-			final String defaultOutputDirectoryKey = BuilderPreferenceAccess.getKey(outputConfiguration,
+			final var defaultOutputDirectoryKey = BuilderPreferenceAccess.getKey(outputConfiguration,
 					EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-			final TableItemData data = new TableItemData(source, outputForSourceFolderKey, ignoreSourceFolderKey,
+			final var data = new TableItemData(source, outputForSourceFolderKey, ignoreSourceFolderKey,
 					defaultOutputDirectoryKey);
 
-			final TableItem item = new TableItem(table, SWT.NONE, 0);
+			final var item = new TableItem(table, SWT.NONE, 0);
 			this.tableItems.add(item);
 			item.setData(data);
 			refreshItem(item);
 
-			final TableEditor directoryEditor = new TableEditor(table);
+			final var directoryEditor = new TableEditor(table);
 			directoryEditor.grabHorizontal = true;
 			table.addSelectionListener(new SelectionAdapter() {
 				@SuppressWarnings("synthetic-access")
@@ -597,12 +597,12 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 					if (isIgnored(item)) {
 						return;
 					}
-					final Control oldDirectoryField = directoryEditor.getEditor();
+					final var oldDirectoryField = directoryEditor.getEditor();
 					if (oldDirectoryField != null) {
 						oldDirectoryField.dispose();
 					}
 
-					final Text directoryField = new Text(table, SWT.NONE);
+					final var directoryField = new Text(table, SWT.NONE);
 					directoryField.setText(getOutputDirectory(item));
 					directoryField.addModifyListener(new ModifyListener() {
 						@Override
@@ -622,9 +622,9 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 					directoryEditor.setEditor(directoryField, item, 2);
 				}
 			});
-			final TableEditor ignoreEditor = new TableEditor(table);
+			final var ignoreEditor = new TableEditor(table);
 			ignoreEditor.grabHorizontal = true;
-			final Button ignoreField = new Button(table, SWT.CHECK);
+			final var ignoreField = new Button(table, SWT.CHECK);
 			ignoreEditor.setEditor(ignoreField, item, 0);
 			ignoreField.setSelection(isIgnored(item));
 			ignoreField.addSelectionListener(new SelectionAdapter() {
@@ -647,9 +647,9 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	}
 
 	private void refreshItem(final TableItem item) {
-		final TableItemData data = (TableItemData) item.getData();
+		final var data = (TableItemData) item.getData();
 		item.setText(1, data.getSourceFolder());
-		final String outputDirectory = getOutputDirectory(item);
+		final var outputDirectory = getOutputDirectory(item);
 		if ("".equals(outputDirectory)) { //$NON-NLS-1$
 			item.setForeground(2, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			item.setText(2, getValue(data.getDefaultOutputDirectoryKey()));
@@ -665,19 +665,19 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	}
 
 	private String getOutputDirectory(TableItem item) {
-		final TableItemData data = (TableItemData) item.getData();
+		final var data = (TableItemData) item.getData();
 		return getValue(data.getOutputDirectoryKey());
 	}
 
 	private boolean isIgnored(TableItem item)  {
-		final TableItemData data = (TableItemData) item.getData();
+		final var data = (TableItemData) item.getData();
 		return Boolean.parseBoolean(getValue(data.getIgnoreKey()));
 	}
 
 	@Override
 	protected void updateControls() {
 		super.updateControls();
-		for (final TableItem item : this.tableItems) {
+		for (final var item : this.tableItems) {
 			refreshItem(item);
 		}
 		for (final IExtraControl control : this.extraControls) {
@@ -693,6 +693,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static class TableItemData {
+
 		private String sourceFolder;
 
 		private String outputDirectoryKey;

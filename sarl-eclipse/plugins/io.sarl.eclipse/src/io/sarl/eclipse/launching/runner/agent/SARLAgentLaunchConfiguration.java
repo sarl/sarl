@@ -66,33 +66,33 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	@Override
 	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre, String standardProgramArguments) throws CoreException {
 		// Retrieve the classname of the boot agent.
-		final String bootAgent = getAgentName(configuration);
+		final var bootAgent = getAgentName(configuration);
 
 		// Special case: the boot class is a simple one provided within the SARL library.
 		if (Objects.equals(sre.getMainClass(), SRE.class.getName())) {
 			return join(bootAgent, standardProgramArguments);
 		}
 
-		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
+		final var substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 
 		// Retrieve the SRE arguments from the SRE configuration
-		final String sreArgs1 = substitutor.performStringSubstitution(sre.getSREArguments());
+		final var sreArgs1 = substitutor.performStringSubstitution(sre.getSREArguments());
 
 		// Retrieve the SRE arguments from the launch configuration
-		final String sreArgs2 = substitutor.performStringSubstitution(getConfigurationAccessor().getSRELaunchingArguments(configuration));
+		final var sreArgs2 = substitutor.performStringSubstitution(getConfigurationAccessor().getSRELaunchingArguments(configuration));
 
 		// Retrieve the extra SRE arguments from the launch configuration
-		final String sreArgs3 = substitutor.performStringSubstitution(getConfigurationAccessor().getExtraSRELaunchingArguments(configuration));
+		final var sreArgs3 = substitutor.performStringSubstitution(getConfigurationAccessor().getExtraSRELaunchingArguments(configuration));
 
 		// Add the options corresponding to the general setting of the launch configuration.
-		final Map<String, String> cliOptions = sre.getAvailableCommandLineOptions();
+		final var cliOptions = sre.getAvailableCommandLineOptions();
 		assert cliOptions != null;
 		String options = null;
 
-		final String logOption = getConfigurationAccessor().getLogArgumentName(configuration);
-		final String logValue = getConfigurationAccessor().getLogArgumentValue(configuration);
+		final var logOption = getConfigurationAccessor().getLogArgumentName(configuration);
+		final var logValue = getConfigurationAccessor().getLogArgumentValue(configuration);
 		if (!Strings.isNullOrEmpty(logOption) && !Strings.isNullOrEmpty(logValue)) {
-			final String fullOption = CliUtilities.getUnixCommandLineOption(logOption, logValue);
+			final var fullOption = CliUtilities.getUnixCommandLineOption(logOption, logValue);
 			if (!Strings.isNullOrEmpty(fullOption)) {
 				options = join(options, fullOption);
 			}
@@ -102,7 +102,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_EMBEDDED));
 		}
 
-		final RootContextIdentifierType type = getConfigurationAccessor().getDefaultContextIdentifier(configuration);
+		final var type = getConfigurationAccessor().getDefaultContextIdentifier(configuration);
 		switch (type) {
 		case RANDOM_CONTEXT_ID:
 			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID));
@@ -120,7 +120,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 
 		// Add the command line option that mark the difference between the SRE's options and
 		// the arguments for the boot agent
-		final String noMoreOption = cliOptions.get(SRECommandLineOptions.CLI_NO_MORE_OPTION);
+		final var noMoreOption = cliOptions.get(SRECommandLineOptions.CLI_NO_MORE_OPTION);
 
 		// Make the complete command line
 		return join(sreArgs1, sreArgs2, sreArgs3, options, bootAgent, noMoreOption, standardProgramArguments);
@@ -138,7 +138,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	 * @since 0.11
 	 */
 	public static String getAgentName(ILaunchConfigurationAccessor accessor, ILaunchConfiguration configuration) throws CoreException {
-		final String agentName = accessor.getAgent(configuration);
+		final var agentName = accessor.getAgent(configuration);
 		if (agentName == null) {
 			return null;
 		}
@@ -168,7 +168,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	 *     unspecified
 	 */
 	protected void verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
-		final String name = getAgentName(configuration);
+		final var name = getAgentName(configuration);
 		if (name == null) {
 			abort(
 					io.sarl.eclipse.launching.dialog.Messages.MainLaunchConfigurationTab_2,

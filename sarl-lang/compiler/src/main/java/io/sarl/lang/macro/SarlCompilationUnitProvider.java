@@ -45,7 +45,7 @@ public class SarlCompilationUnitProvider implements Provider<CompilationUnitImpl
 
 	@Override
 	public CompilationUnitImpl get() {
-		final CompilationUnitImpl unit = new SarlCompilationUnitImpl();
+		final var unit = new SarlCompilationUnitImpl();
 		this.injector.injectMembers(unit);
 		return unit;
 	}

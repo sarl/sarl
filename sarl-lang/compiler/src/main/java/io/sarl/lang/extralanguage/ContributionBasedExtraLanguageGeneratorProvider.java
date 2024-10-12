@@ -48,18 +48,18 @@ public class ContributionBasedExtraLanguageGeneratorProvider implements IExtraLa
 
 	@Override
 	public Iterable<IRootGenerator> getGenerators(IGeneratorContext context, Resource resource) {
-		final List<IRootGenerator> generators = new ArrayList<>();
+		final var generators = new ArrayList<IRootGenerator>();
 		if (this.providers == null) {
 			this.providers = new ArrayList<>();
-			for (final IExtraLanguageContribution contribution : this.source.getContributions()) {
-				final IExtraLanguageGeneratorProvider provider = contribution.getGeneratorProvider();
+			for (final var contribution : this.source.getContributions()) {
+				final var provider = contribution.getGeneratorProvider();
 				if (provider != null) {
 					this.providers.add(provider);
 				}
 			}
 		}
-		for (final IExtraLanguageGeneratorProvider provider : this.providers) {
-			for (final IRootGenerator gen : provider.getGenerators(context, resource)) {
+		for (final var provider : this.providers) {
+			for (final var gen : provider.getGenerators(context, resource)) {
 				generators.add(gen);
 			}
 		}
