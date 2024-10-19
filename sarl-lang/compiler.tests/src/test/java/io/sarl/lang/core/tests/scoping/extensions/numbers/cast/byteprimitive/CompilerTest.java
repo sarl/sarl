@@ -50,7 +50,6 @@ import io.sarl.lang.validation.IssueCodes;
 @SuppressWarnings("all")
 @DisplayName("Compiling byte cast operator")
 @Tag("core")
-@Tag("compileToJava")
 public class CompilerTest extends AbstractSarlTest {
 
 	private static final String AS_BYTE_SARL = multilineString(
@@ -61,9 +60,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_BYTE_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -83,6 +82,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as byte")
 	public void as_byte_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BYTE_SARL))
 		.assertNoErrors(
@@ -109,9 +110,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_SHORT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -131,6 +132,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as short")
 	public void as_short_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_SHORT_SARL))
 		.assertNoErrors(
@@ -157,9 +160,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_INT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -179,6 +182,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as int")
 	public void as_int_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_INT_SARL))
 		.assertNoErrors(
@@ -205,9 +210,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_LONG_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -227,6 +232,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as long")
 	public void as_long_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_LONG_SARL))
 		.assertNoErrors(
@@ -253,9 +260,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_FLOAT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -275,6 +282,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as float")
 	public void as_float_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_FLOAT_SARL))
 		.assertNoErrors(
@@ -301,9 +310,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_DOUBLE_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -323,6 +332,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as double")
 	public void as_double_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_DOUBLE_SARL))
 		.assertNoErrors(
@@ -349,9 +360,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_BYTE_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -371,6 +382,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Byte")
 	public void as_Byte_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BYTE_OBJECT_SARL))
 		.assertNoErrors(
@@ -397,9 +410,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_SHORT_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -419,6 +432,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Short")
 	public void as_Short_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_SHORT_OBJECT_SARL))
 		.assertNoErrors(
@@ -446,9 +461,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_INTEGER_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -468,6 +483,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Integer")
 	public void as_Integer_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_INTEGER_OBJECT_SARL))
 		.assertNoErrors(
@@ -495,9 +512,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_LONG_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -517,6 +534,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Long")
 	public void as_Long_issues() throws Exception {
 		SarlScript script = file(getParseHelper(), AS_LONG_OBJECT_SARL);
 		validate(getValidationHelper(), getInjector(), script)
@@ -545,9 +564,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_FLOAT_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -567,6 +586,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Float")
 	public void as_Float_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_FLOAT_OBJECT_SARL))
 		.assertNoErrors(
@@ -594,9 +615,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_DOUBLE_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -616,6 +637,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Double")
 	public void as_Double_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_DOUBLE_OBJECT_SARL))
 		.assertNoErrors(
@@ -644,9 +667,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_ATOMICINTEGER_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.concurrent.atomic.AtomicInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -667,6 +690,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as AtomicInteger")
 	public void as_AtomicInteger_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICINTEGER_OBJECT_SARL))
 		.assertNoErrors(
@@ -694,9 +719,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_ATOMICLONG_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.concurrent.atomic.AtomicLong;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -717,6 +742,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as AtomicLong")
 	public void as_AtomicLong_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICLONG_OBJECT_SARL))
 		.assertNoErrors(
@@ -746,9 +773,9 @@ public class CompilerTest extends AbstractSarlTest {
 
 	private static final String AS_ATOMICDOUBLE_OBJECT_JAVA = multilineString(
 			"import com.google.common.util.concurrent.AtomicDouble;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -768,6 +795,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as AtomicDouble")
 	public void as_AtomicDouble_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICDOUBLE_OBJECT_SARL))
 		.assertNoErrors(
@@ -795,9 +824,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_BIGINTEGER_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -818,6 +847,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as BigInteger")
 	public void as_BigInteger_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BIGINTEGER_OBJECT_SARL))
 		.assertNoErrors(
@@ -845,9 +876,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_BIGDECIMAL_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.math.BigDecimal;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -868,6 +899,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as BigDecimal")
 	public void as_BigDecimal_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BIGDECIMAL_OBJECT_SARL))
 		.assertNoErrors(
@@ -894,9 +927,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_NUMBER_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -916,6 +949,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as Number")
 	public void as_Number_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_NUMBER_OBJECT_SARL))
 		.assertNoErrors(
@@ -943,9 +978,9 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String AS_STRING_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -965,6 +1000,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as String")
 	public void as_String_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_STRING_OBJECT_SARL))
 		.assertNoErrors(
@@ -993,6 +1030,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
+	@DisplayName("Parsing: byte as UUID")
 	public void as_UUID_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_UUID_OBJECT_SARL))
 		.assertNoErrors()

@@ -62,6 +62,7 @@ org.apache.maven.plugins:
   maven-assembly-plugin: 3.7.1
   maven-clean-plugin: 3.4.0
   maven-compiler-plugin: $maven.compiler.version
+  maven-dependency-plugin: 3.8.0
   maven-failsafe-plugin: 3.5.1
   maven-gpg-plugin: 3.2.7
   maven-jar-plugin: 3.4.2
@@ -69,6 +70,7 @@ org.apache.maven.plugins:
   maven-plugin-plugin: 3.15.0
   maven-resources-plugin: 3.3.1
   maven-source-plugin: 3.3.1
+  maven-surefire-plugin: 3.5.1
 
 org.apache.maven.plugin-tools:
   maven-plugin-annotations: 3.15.0

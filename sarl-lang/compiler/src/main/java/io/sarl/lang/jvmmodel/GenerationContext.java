@@ -41,7 +41,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
@@ -498,23 +497,6 @@ abstract class GenerationContext {
 	 * @return {@code true} if the member is supported, {@code false} for ignoring it.
 	 */
 	public abstract boolean isSupportedMember(XtendMember member);
-
-	/** Replies if the compiler is using Java8 or higher.
-	 *
-	 * @return {@code true} if the compiler uses Java8 or higher. Otherwise {@code false}.
-	 */
-	public boolean isAtLeastJava8() {
-		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
-	}
-
-	/** Replies if the compiler is using Java11 or higher.
-	 *
-	 * @return {@code true} if the compiler uses Java8 or higher. Otherwise {@code false}.
-	 * @since 0.10
-	 */
-	public boolean isAtLeastJava11() {
-		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA11);
-	}
 
 	/** Get the context for the action prototype provider.
 	 *

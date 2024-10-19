@@ -29,6 +29,7 @@ import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 
+import io.sarl.lang.compiler.batch.EcjBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
 
@@ -39,10 +40,10 @@ import io.sarl.lang.compiler.batch.SarlBatchCompiler;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@DisplayName("SarlBatchCompiler")
+@DisplayName("SarlBatchCompiler with ecj")
 @Tag("core")
 @Tag("compiler-run")
-public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
+public class EcjSarlBatchCompilerTest extends AbstractBatchCompilerTest {
 
 	@Inject
 	private Provider<SarlBatchCompiler> compilerProvider;
@@ -61,6 +62,9 @@ public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
 			issues.add(issue);
 		});
+		//
+		compiler.setJavaCompiler(new EcjBatchCompiler());
+		//
 		return compiler.compile();
 	}
 

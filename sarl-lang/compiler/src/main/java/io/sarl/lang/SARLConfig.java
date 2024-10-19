@@ -21,6 +21,10 @@
 
 package io.sarl.lang;
 
+import org.eclipse.xtext.util.JavaVersion;
+
+import io.sarl.lang.core.SARLVersion;
+
 /**
  * Provides the constants for the SARL projects.
  *
@@ -110,6 +114,25 @@ public final class SARLConfig {
 
 	private SARLConfig() {
 		//
+	}
+
+	/** Replies the minimal version of the JDK that must be used for running the SARL compilation
+	 * tools (IDE, or sarlc), e.g. {@code 17}.
+	 *
+	 * @return the version.
+	 * @since 0.14
+	 */
+	public static JavaVersion getMinimumJavaVersionForCompilation() {
+		return JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+	}
+
+	/** Replies the minimal version of the JDK that must be used on the classpath of SARL projects, e.g. {@code 17}.
+	 *
+	 * @return the version.
+	 * @since 0.14
+	 */
+	public static JavaVersion getMinimumJavaVersionForRunning() {
+		return JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 	}
 
 }

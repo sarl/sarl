@@ -21,10 +21,8 @@
 package io.sarl.lang.tests.api.tools;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.google.inject.Provider;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -83,7 +81,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlAgent agent(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlAgent) decls.get(decls.size() - 1);
 	}
 
@@ -107,7 +105,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlCapacity capacity(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlCapacity) decls.get(decls.size() - 1);
 	}
 
@@ -131,7 +129,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlEvent event(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlEvent) decls.get(decls.size() - 1);
 	}
 
@@ -155,7 +153,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlSkill skill(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlSkill) decls.get(decls.size() - 1);
 	}
 
@@ -179,7 +177,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlBehavior behavior(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlBehavior) decls.get(decls.size() - 1);
 	}
 
@@ -203,7 +201,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlClass clazz(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlClass) decls.get(decls.size() - 1);
 	}
 
@@ -227,7 +225,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlAnnotationType annotationType(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlAnnotationType) decls.get(decls.size() - 1);
 	}
 
@@ -251,7 +249,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlInterface interfaze(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlInterface) decls.get(decls.size() - 1);
 	}
 
@@ -275,7 +273,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlEnumeration enumeration(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string) throws Exception {
-		List<XtendTypeDeclaration> decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
+		final var decls = io.sarl.tests.api.tools.TestEObjects.file(parser, validationHelper, string).getXtendTypes();
 		return (SarlEnumeration) decls.get(decls.size() - 1);
 	}
 
@@ -301,7 +299,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static SarlAction function(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
-		SarlClass clazz = clazz(parser, validationHelper,
+		final var clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlAction) clazz.getMembers().get(0);
@@ -334,7 +332,7 @@ public class TestEObjects {
 	public static JvmOperation jvmOperation(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
 		assert associations != null;
-		SarlAction action = function(parser, validationHelper, string, prefix);
+		final var action = function(parser, validationHelper, string, prefix);
 		return (JvmOperation) associations.get().getPrimaryJvmElement(action);
 	}
 
@@ -361,7 +359,7 @@ public class TestEObjects {
 	 */
 	public static SarlAction functionSignature(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
-		SarlInterface interfaze = interfaze(parser, validationHelper,
+		final var interfaze = interfaze(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "interface Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlAction) interfaze.getMembers().get(0);
@@ -394,7 +392,7 @@ public class TestEObjects {
 	public static JvmOperation jvmOperationSignature(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
 		assert associations != null;
-		SarlAction action = functionSignature(parser, validationHelper, string, prefix);
+		final var action = functionSignature(parser, validationHelper, string, prefix);
 		return (JvmOperation) associations.get().getPrimaryJvmElement(action);
 	}
 
@@ -422,7 +420,7 @@ public class TestEObjects {
 	 */
 	public static SarlConstructor constructor(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
-		SarlClass clazz = clazz(parser, validationHelper,
+		final var clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlConstructor) clazz.getMembers().get(0);
@@ -455,7 +453,7 @@ public class TestEObjects {
 	public static JvmConstructor jvmConstructor(ParseHelper<SarlScript> parser, Provider<SarlJvmModelAssociations> associations,
 			ValidationTestHelper validationHelper, String string, String... prefix) throws Exception {
 		assert associations != null;
-		SarlConstructor constructor = constructor(parser, validationHelper, string, prefix);
+		final var constructor = constructor(parser, validationHelper, string, prefix);
 		return (JvmConstructor) associations.get().getPrimaryJvmElement(constructor);
 	}
 
@@ -482,7 +480,7 @@ public class TestEObjects {
 	 */
 	public static SarlField field(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
-		SarlClass clazz = clazz(parser, validationHelper,
+		final var clazz = clazz(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "class Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlField) clazz.getMembers().get(0);
@@ -511,7 +509,7 @@ public class TestEObjects {
 	 */
 	public static SarlBehaviorUnit behaviorUnit(ParseHelper<SarlScript> parser, ValidationTestHelper validationHelper,
 			String string, String... prefix) throws Exception {
-		SarlAgent agent = agent(parser, validationHelper,
+		final var agent = agent(parser, validationHelper,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "agent Foo { " + string + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
@@ -526,7 +524,7 @@ public class TestEObjects {
 	 * @throws Exception 
 	 */
 	public static JvmTypeReference getType(ParseHelper<SarlScript> parser, String typeName, String... prefix) throws Exception {
-		SarlAgent agent = agent(parser,
+		final var agent = agent(parser,
 				IterableExtensions.join(Arrays.asList(prefix), TestUtils.getLineSeparator())
 				+ TestUtils.getLineSeparator() + "agent Foo { var fooAttr : " + typeName + " }"); //$NON-NLS-1$ //$NON-NLS-2$
 		return ((SarlField) agent.getMembers().get(0)).getType();

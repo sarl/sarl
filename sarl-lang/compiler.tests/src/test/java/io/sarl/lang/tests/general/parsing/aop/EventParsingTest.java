@@ -21,9 +21,6 @@
 package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.CLASS_EXPECTED;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
-import static io.sarl.lang.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
 import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
@@ -33,6 +30,9 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED;
 import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_FIELD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -82,7 +82,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					CLASS_EXPECTED,
-					"Invalid supertype. Expecting a class.");
+					"Invalid supertype. Expecting a class");
 		}
 
 		@Test
@@ -97,7 +97,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+					"Supertype must be of type 'io.sarl.lang.core.Event'");
 		}
 
 		@Test
@@ -112,7 +112,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Agent'.");
+					"Supertype must be of type 'io.sarl.lang.core.Agent'");
 		}
 
 		@Test
@@ -127,7 +127,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Behavior'.");
+					"Supertype must be of type 'io.sarl.lang.core.Behavior'");
 		}
 
 		@Test
@@ -142,7 +142,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Skill'.");
+					"Supertype must be of type 'io.sarl.lang.core.Skill'");
 		}
 
 		@Test
@@ -368,7 +368,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, package, final or abstract");
 		}
 
 	}
@@ -600,7 +600,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, final, var or val");
 		}
 
 		@Test
@@ -692,7 +692,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
-					"'const' is not a valid identifier.");
+					"'const' is not a valid identifier");
 		}
 
 		@Test
@@ -739,7 +739,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -755,7 +755,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -774,7 +774,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-					"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.");
+					"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'");
 		}
 
 	}
@@ -1035,7 +1035,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, protected, package or private");
 		}
 
 		@Test

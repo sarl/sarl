@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -349,7 +349,7 @@ public class Bug736Test extends AbstractSarlTest {
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
-				DUPLICATE_MEMBER,
+				DUPLICATE_METHOD,
 				"Duplicate method " + Utils.getStaticConstructorName());
 	}
 

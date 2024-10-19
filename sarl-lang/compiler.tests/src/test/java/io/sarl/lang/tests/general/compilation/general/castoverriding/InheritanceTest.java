@@ -71,9 +71,9 @@ public class InheritanceTest extends AbstractSarlTest {
 			);
 
 	private static final String TO_A3_FROM_A1_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileToA3FromA1.A0;",
 			"import io.sarl.lang.core.tests.compileToA3FromA1.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -135,9 +135,9 @@ public class InheritanceTest extends AbstractSarlTest {
 			);
 
 	private static final String TO_A3_FROM_A4_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileToA3FromA4.A0;",
 			"import io.sarl.lang.core.tests.compileToA3FromA4.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -197,9 +197,9 @@ public class InheritanceTest extends AbstractSarlTest {
 			);
 
 	private static final String STATIC_TO_A3_FROM_A1_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A0;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A1;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A3;",
@@ -267,9 +267,9 @@ public class InheritanceTest extends AbstractSarlTest {
 			);
 
 	private static final String STATIC_TO_A3_FROM_A4_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A0;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A1;",
 			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A3;",

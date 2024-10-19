@@ -20,9 +20,6 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static io.sarl.lang.validation.IssueCodes.CLASS_EXPECTED;
-import static io.sarl.lang.validation.IssueCodes.CYCLIC_INHERITANCE;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
@@ -38,6 +35,10 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_FIELD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -120,7 +121,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					CLASS_EXPECTED,
-					"Invalid supertype. Expecting a class.");
+					"Invalid supertype. Expecting a class");
 		}
 
 		@Test
@@ -291,7 +292,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract and final are permitted");
 		}
 
 		@Test
@@ -304,7 +305,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract and final are permitted");
 		}
 
 		@Test
@@ -365,7 +366,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract and final are permitted");
 		}
 
 		@Test
@@ -426,7 +427,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract and final are permitted");
 		}
 
 		@Test
@@ -439,7 +440,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract and final are permitted");
 		}
 
 		@Test
@@ -565,7 +566,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					INVALID_MODIFIER,
-					"The definition of A1 can only set one of public / package / protected / private");
+					"The definition of A1 can only set one of public, package, abstract or final");
 		}
 
 	}
@@ -720,7 +721,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXBooleanLiteral(),
 					IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
-					"Discouraged boolean value. The guard is always true.");
+					"Discouraged boolean value. The guard is always true");
 		}
 
 		@Test
@@ -735,7 +736,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlBehaviorUnit(),
 					IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
-					"Dead code. The guard is always false.");
+					"Dead code. The guard is always false");
 		}
 
 		@Test
@@ -878,7 +879,7 @@ public class AgentParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -893,7 +894,7 @@ public class AgentParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -1041,7 +1042,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-					"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.");
+					"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'");
 		}
 
 		@Test
@@ -1303,7 +1304,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"package, protected, private, final, var, val or static");
 		}
 
 	}
@@ -1409,7 +1410,7 @@ public class AgentParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type A1");
 		}
 
@@ -2001,7 +2002,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"package, protected, private, static, abstract, dispatch, final, def, override or synchronized");
 		}
 
 		@Test

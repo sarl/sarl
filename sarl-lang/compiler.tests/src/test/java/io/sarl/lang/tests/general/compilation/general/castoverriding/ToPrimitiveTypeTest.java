@@ -91,9 +91,9 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			);
 
 	private static final String TYPE_JAVA_00 = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileLocal00.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -173,9 +173,9 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			);
 
 	private static final String TYPE_JAVA_02 = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileLocal02.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",

@@ -183,7 +183,6 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <generatedSourcesDirectory>src/main/xtext-gen</generatedSourcesDirectory>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
           <encoding>${project.build.sourceEncoding}</encoding>

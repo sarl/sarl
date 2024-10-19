@@ -65,9 +65,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String OBJECT_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileObjectToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -118,9 +118,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String STRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -171,9 +171,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String IFTHEN_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileIfThen.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -228,9 +228,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String CAST_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -285,9 +285,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String FUNCTION_CALL_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileFunctionCall.A0;",
 			"import io.sarl.lang.core.tests.compileFunctionCall.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -352,9 +352,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String LOCAL_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileLocalToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -433,9 +433,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String A1_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileA1ToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -492,9 +492,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String LOCAL_STATIC_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileLocalStaticToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -568,9 +568,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String SUPER_STATIC_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileSuperStaticToString.A1;",
 			"import io.sarl.lang.core.tests.compileSuperStaticToString.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -630,9 +630,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String SUPER_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileSuperToString.A1;",
 			"import io.sarl.lang.core.tests.compileSuperToString.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -685,9 +685,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String STATIC_IMPORT_TOSTRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileStaticImportToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -740,9 +740,9 @@ public class AsStringTest extends AbstractSarlTest {
 
 	private static final String EXTENSION_IMPORT_TOSTRING_JAVA = multilineString(
 			"import foo.FooUtils;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileExtensionImportToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -796,9 +796,9 @@ public class AsStringTest extends AbstractSarlTest {
 
 	private static final String EXTENSION_TOSTRING_JAVA = multilineString(
 			"import foo.FooUtils2;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileExtensionToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Extension;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -868,9 +868,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String BOOLEAN_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileBoolean.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -921,9 +921,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String INTEGER_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.tests.compileIntegerToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -972,9 +972,9 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String ARITH_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",

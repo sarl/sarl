@@ -115,7 +115,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -127,7 +127,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -177,7 +177,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -189,7 +189,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -201,7 +201,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -213,7 +213,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -225,7 +225,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -237,7 +237,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -249,7 +249,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -261,7 +261,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package and abstract are permitted");
 		}
 
 		@Test
@@ -273,7 +273,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The annotation type A1 can either be abstract or final, not both");
+				"The annotation A1 can either be abstract or final, not both");
 		}
 
 		@Test
@@ -285,7 +285,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The annotation type A1 can only set one of public / package / protected / private");
+				"The annotation A1 can only set one of public, package or abstract");
 		}
 
 	}
@@ -457,7 +457,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -471,7 +471,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -485,7 +485,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -499,7 +499,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -513,7 +513,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -527,7 +527,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -541,7 +541,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -555,7 +555,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The annotation type A1 can only set one of public / package / protected / private");
+				"The annotation A1 can only set one of public, package, protected, private, static or abstract");
 		}
 
 	}
@@ -810,7 +810,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"public / package / protected / private");
+				"package, protected, private, static or abstract");
 		}
 
 	}
@@ -982,7 +982,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -996,7 +996,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1010,7 +1010,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1024,7 +1024,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1038,7 +1038,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1052,7 +1052,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1066,7 +1066,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1080,7 +1080,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The annotation type A1 can only set one of public / package / protected / private");
+				"The annotation A1 can only set one of public, package, protected, private, static or abstract");
 		}
 
 	}
@@ -1260,7 +1260,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1275,7 +1275,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1290,7 +1290,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1305,7 +1305,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1320,7 +1320,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1335,7 +1335,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1350,7 +1350,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAnnotationType(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+					"Illegal modifier for the annotation A1; only public, package, protected, private, static and abstract are permitted");
 		}
 
 		@Test
@@ -1365,7 +1365,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAnnotationType(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The annotation type A1 can only set one of public / package / protected / private");
+				"The annotation A1 can only set one of public, package, protected, private, static or abstract");
 		}
 
 	}
@@ -1385,7 +1385,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the field field1; only public, static, final & val are permitted");
+					"Illegal modifier for the field field1; only public, static, final and val are permitted");
 		}
 	
 		@Test

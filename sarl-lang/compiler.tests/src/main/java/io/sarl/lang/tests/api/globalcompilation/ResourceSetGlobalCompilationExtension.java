@@ -26,20 +26,14 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsData.ResourceSetAdapter;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -87,7 +81,7 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		try {
-			Class<?> type = context.getRequiredTestClass();
+			final var type = context.getRequiredTestClass();
 			if (!Modifier.isStatic(type.getModifiers())) {
 				if (type.isMemberClass()) {
 					throw new IllegalStateException("Member class annoted with MassiveCompilationExtension extension must be declared with static modifier."); //$NON-NLS-1$
@@ -105,45 +99,45 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 	@Override
 	public void afterAll(ExtensionContext context) throws Exception {
 		try {
-			final ResourceSetGlobalCompilationContext compilationContext = getOrCreateCompilationContext(context);
+			final var compilationContext = getOrCreateCompilationContext(context);
 			if (compilationContext != null) {
-				final ResourceSet rs = compilationContext.getResourceSet();
+				final var rs = compilationContext.getResourceSet();
 				if (rs != null) {
 					// Remove the resources that are not XtextResource because they
 					// are causing issues related to their indexation (in the linking stage)
-					final Iterator<Resource> resources = rs.getResources().iterator();
+					final var resources = rs.getResources().iterator();
 					while (resources.hasNext()) {
-						final Resource resource = resources.next();
+						final var resource = resources.next();
 						if (!(resource instanceof XtextResource)) {
 							resources.remove();
 						}
 					}
 					// Remove the resource set descriptions in order to be installable during linking stage
-					final Iterator<Adapter> adapters = rs.eAdapters().iterator();
+					final var adapters = rs.eAdapters().iterator();
 					while (adapters.hasNext()) {
-						final Adapter adapter = adapters.next();
+						final var adapter = adapters.next();
 						if (adapter instanceof ResourceSetAdapter) {
 							adapters.remove();
 						}
 					}
 
-					final List<DynamicTest> dynamicTestResults = new ArrayList<>();
+					final var dynamicTestResults = new ArrayList<DynamicTest>();
 
 					// Do the compilation
 					this.compiler.compile(rs, it -> {
-						for (final Entry<String, Pair<String, String>> entry : compilationContext.getExpectedResults().entrySet()) {
-							final String id = entry.getKey();
-							final String actual = it.getGeneratedCode(entry.getKey());
-							final String functionName = entry.getValue().getKey();
-							final String expected = entry.getValue().getValue();
-							final DynamicTest test = dynamicTest("Java compilation - " + functionName, () -> { //$NON-NLS-1$
+						for (final var entry : compilationContext.getExpectedResults().entrySet()) {
+							final var id = entry.getKey();
+							final var actual = it.getGeneratedCode(entry.getKey());
+							final var functionName = entry.getValue().getKey();
+							final var expected = entry.getValue().getValue();
+							final var test = dynamicTest("Java compilation - " + functionName, () -> { //$NON-NLS-1$
 								assertEqualsExceptNewLines(expected, actual, () -> {
-									final String diff = TestUtils.differences(expected, actual);
+									final var diff = TestUtils.differences(expected, actual);
 									if (!Strings.isEmpty(functionName)) {
 										return functionName + ", RAW DIFF = " + diff; //$NON-NLS-1$
 									}
-									final int index1 = id.lastIndexOf('.');
-									final int index0 = id.lastIndexOf('.', index1 - 1) + 1;
+									final var index1 = id.lastIndexOf('.');
+									final var index0 = id.lastIndexOf('.', index1 - 1) + 1;
 									return entry.getKey().substring(index0, index1) + ", RAW DIFF = " + diff; //$NON-NLS-1$
 								});
 							});
@@ -152,7 +146,7 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 					});
 
 					// Generate the tests results
-					for(final DynamicTest test : dynamicTestResults) {
+					for(final var test : dynamicTestResults) {
 						test.getExecutable().execute();
 					}
 				}

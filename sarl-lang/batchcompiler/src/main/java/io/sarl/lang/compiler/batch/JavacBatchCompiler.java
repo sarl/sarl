@@ -144,10 +144,6 @@ public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 		commandLineArguments.add(javaVersion.getQualifier());
 		commandLineArguments.add("-target"); //$NON-NLS-1$
 		commandLineArguments.add(javaVersion.getQualifier());
-		if (javaVersion.isAtLeast(JavaVersion.JAVA11)) {
-			//TODO commandLineArguments.add("-release"); //$NON-NLS-1$
-			//TODO commandLineArguments.add(javaVersion.getQualifier());
-		}
 
 		//
 		// File encoding

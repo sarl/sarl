@@ -72,9 +72,11 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class MyTestAgent extends Agent {",
 			"  @Pure",
@@ -137,7 +139,7 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 			// Compile
 			final List<Issue> issues = new ArrayList();
 			final boolean result = runBatchCompiler(tempDirectory, sourceDirectory, sarlcOutputDirectory, javacOutputDirectory, buildDirectory, issues);
-			assertEquals(expectedFailure, !result);
+			assertEquals(expectedFailure, !result, "Unexpected return status for the batch compiler");
 			callback.apply(sarlcOutputDirectory, issues);
 		} finally {
 			FileSystem.delete(tempDirectory);

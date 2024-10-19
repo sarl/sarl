@@ -111,7 +111,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return Bug621Validator.class;
 	}
 
-	@SuppressWarnings({ "static-method", "javadoc" })
+	@SuppressWarnings("static-method")
 	public Class<? extends OverrideHelper> bindOverrideHelper() {
 		return Bug621OverrideHelper.class;
 	}

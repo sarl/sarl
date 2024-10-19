@@ -23,7 +23,6 @@ package io.sarl.lang.tests.api.globalcompilation;
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 import static org.junit.platform.commons.util.ReflectionUtils.isStatic;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -61,7 +60,7 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 	@Override
 	public boolean supportsTestTemplate(ExtensionContext context) {
 		if (isAnnotated(context.getTestMethod(), GlobalCompilationTestContribution.class)) {
-			final Method meth = context.getTestMethod().get();
+			final var meth = context.getTestMethod().get();
 			if (isStatic(meth)) {
 				throw new IllegalStateException("The massive compilation function must not have the static modifier"); //$NON-NLS-1$
 			}
@@ -83,8 +82,8 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 
 	@Override
 	public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-		final ResourceSetGlobalCompilationContext ctx = getOrCreateCompilationContext(context);
-		final Method meth = context.getRequiredTestMethod();
+		final var ctx = getOrCreateCompilationContext(context);
+		final var meth = context.getRequiredTestMethod();
 		ctx.setCurrentMethod(meth.getName());
 		return Stream.of(new DynamicContext(meth.getName()));
 	}

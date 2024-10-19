@@ -140,28 +140,6 @@ public final class SarlBatchCompilerUtils {
 		return JavaVersion.fromQualifier(version);
 	}
 
-	/** Replies if the given version of Java supports the modules.
-	 *
-	 * @param javaVersion the version of JAva to test.
-	 * @return {@code true} if the Java modules are supported.
-	 * @since 0.12
-	 */
-	@Pure
-	public static boolean isModuleSupported(String javaVersion) {
-		return isModuleSupported(parseJavaVersion(javaVersion));
-	}
-
-	/** Replies if the given version of Java supports the modules.
-	 *
-	 * @param javaVersion the version of JAva to test.
-	 * @return {@code true} if the Java modules are supported.
-	 * @since 0.12
-	 */
-	@Pure
-	public static boolean isModuleSupported(JavaVersion javaVersion) {
-		return javaVersion.isAtLeast(JavaVersion.JAVA9);
-	}
-
 	/** Replies if the given folder contains the definition of a module.
 	 * A module definition is written into a file named {@code module-info.java}.
 	 *

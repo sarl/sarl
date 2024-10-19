@@ -66,7 +66,6 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -84,7 +83,6 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.Later;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
@@ -161,9 +159,6 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private IBatchTypeResolver batchTypeResolver;
-
-	@Inject
-	private IGeneratorConfigProvider generatorConfigProvider;
 
 	@Inject
 	private SARLExpressionHelper sarlExpressionHelper;
@@ -552,7 +547,7 @@ public class SarlCompiler extends XtendCompiler {
 	 * @param isReferenced indicates if the expression is referenced.
 	 */
 	protected void _toJavaStatement(SarlAssertExpression assertExpression, ITreeAppendable appendable, boolean isReferenced) {
-		if (!assertExpression.isIsStatic() && assertExpression.getCondition() != null && isAtLeastJava8(assertExpression)) {
+		if (!assertExpression.isIsStatic() && assertExpression.getCondition() != null) {
 			final var condition = assertExpression.getCondition();
 			final var actualType = getLightweightType(condition);
 			if (actualType != null) {
@@ -656,15 +651,6 @@ public class SarlCompiler extends XtendCompiler {
 		return localVariables;
 	}
 
-	/** Replies if the generation is for Java version 8 at least.
-	 *
-	 * @param context the context.
-	 * @return {@code true} if Java 8 or newer.
-	 */
-	protected boolean isAtLeastJava8(EObject context) {
-		return this.generatorConfigProvider.get(EcoreUtil.getRootContainer(context)).getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
-	}
-
 	/** Generate the Java code related to the expression for the break keyword.
 	 *
 	 * @param breakExpression the expression.
@@ -691,8 +677,9 @@ public class SarlCompiler extends XtendCompiler {
 	 * @param assertExpression the expression.
 	 * @param appendable the output.
 	 */
+	@SuppressWarnings("static-method")
 	protected void _toJavaExpression(SarlAssertExpression assertExpression, ITreeAppendable appendable) {
-		if (!assertExpression.isIsStatic() && isAtLeastJava8(assertExpression)) {
+		if (!assertExpression.isIsStatic()) {
 			appendable.append("/* error - couldn't compile nested assert */"); //$NON-NLS-1$
 		}
 	}

@@ -21,9 +21,6 @@
 package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.CYCLIC_INHERITANCE;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
-import static io.sarl.lang.validation.IssueCodes.INTERFACE_EXPECTED;
 import static io.sarl.tests.api.tools.TestAssertions.assertNoMoreIssues;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
@@ -39,6 +36,9 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
 import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INTERFACE_EXPECTED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -416,7 +416,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
-					"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.");
+					"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior");
 		}
 
 		@Test
@@ -467,7 +467,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -480,7 +480,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -512,7 +512,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -525,7 +525,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -538,7 +538,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -551,7 +551,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -564,7 +564,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -577,7 +577,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -590,7 +590,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -603,7 +603,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -616,7 +616,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"Illegal modifier for the definition of C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public and package are permitted");
 		}
 
 		@Test
@@ -629,7 +629,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					INVALID_MODIFIER,
-					"The definition of C1 can only set one of public / package / protected / private");
+					"The definition of C1 can only set one of public or package");
 		}
 
 	}
@@ -695,7 +695,7 @@ public class CapacityParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type C1");
 		}
 
@@ -712,7 +712,7 @@ public class CapacityParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type S1");
 		}
 
@@ -953,7 +953,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, def or override");
 		}
 
 	}

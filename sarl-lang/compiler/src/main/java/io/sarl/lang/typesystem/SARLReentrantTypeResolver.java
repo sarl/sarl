@@ -39,13 +39,11 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
-import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.scoping.batch.IFeatureScopeSession;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.internal.ResolvedTypes;
@@ -77,11 +75,6 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 
 	@Inject
 	private AnnotationLookup annotationLookup;
-
-	/** The provider of generation configuration.
-	 */
-	@Inject
-	private IGeneratorConfigProvider generatorConfigProvider;
 
 	@Override
 	protected IFeatureScopeSession addExtensionFieldsToMemberSession(
@@ -191,11 +184,7 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 		// Overriding for proper lambda expression.
 		final var containingStructure = getNearestClosureOrTypeDeclaration(featureCall, resolvedTypes);
 		if (containingStructure instanceof XClosure && !EcoreUtil.isAncestor(containingStructure, variable)) {
-			final var generatorConfig = this.generatorConfigProvider.get(
-					EcoreUtil.getRootContainer(containingStructure));
-			if (generatorConfig != null && generatorConfig.getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8)) {
-				return null;
-			}
+			return null;
 		}
 		return super.getInvalidWritableVariableAccessMessage(variable, featureCall, resolvedTypes);
 	}

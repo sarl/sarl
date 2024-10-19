@@ -1117,7 +1117,7 @@ public final class TestAssertions {
 	public static void assertEqualsExceptNewLines(String expected, String actual, Supplier<String> message) {
 		var es = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		es = es.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		var as = expected.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		var as = actual.replaceAll("(\\r)|(\r)", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		as = as.replaceAll("(\\n)|(\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(es, as, message);
 	}

@@ -160,7 +160,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 			IProgressMonitor progress) {
 		final var jversion = SarlBatchCompilerUtils.parseJavaVersion(javaVersion);
 		return compile(classDirectory, sourcePathDirectories, classPathEntries, modulePathEntries,
-				jversion, SarlBatchCompilerUtils.isModuleSupported(jversion),
+				jversion, true,
 				encoding, isCompilerMoreVerbose, optimizationLevel, outWriter, errWriter, logger, progress);
 	}
 

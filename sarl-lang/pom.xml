@@ -33,6 +33,7 @@
         <module>pythongenerator</module>
         <module>batchcompiler</module>
         <module>sarl-maven-plugin</module>
+        <module>sarl-maven-plugin.tests</module>
       </modules>
     </profile>
     <profile>

@@ -21,7 +21,10 @@
 package io.sarl.lang.tests.general.parsing.general;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
+import static org.eclipse.xtend.core.validation.IssueCodes.*;
+import static io.sarl.lang.validation.IssueCodes.*;
+import static org.eclipse.xtext.validation.IssueCodes.*;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.*;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterVarArg;
@@ -382,7 +385,7 @@ public class VarArgsParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int, int[]) in type B1");
 		}
 

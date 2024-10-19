@@ -393,7 +393,19 @@ Workflow {
 
 			// SARL Validator
 			validator = ValidatorFragment2 auto-inject {
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLNamingValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLTypeValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLMemberValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLFeatureModifierValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLBehaviorUnitValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLFeatureCallsValidator"
     			composedCheck = "org.eclipse.xtend.core.validation.AnnotationValidation"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLSynchronizationValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLInheritanceValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLAnnotationValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLScriptValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.SARLDocumentationValidator"
+    			composedCheck = "io.sarl.lang.extralanguage.validator.ExtraLanguageValidatorSupport"
 			}
 
 			// SARL serializer

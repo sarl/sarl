@@ -737,13 +737,9 @@ public class SarlBatchCompiler {
 	 * @since 0.12
 	 */
 	public void setModulePath(String modulepath) {
-		if (isModuleSupported()) {
-			this.modulepath = new ArrayList<>();
-			for (final var path : Strings.split(modulepath, File.pathSeparator)) {
-				this.modulepath.add(normalizeFile(path));
-			}
-		} else {
-			this.modulepath = null;
+		this.modulepath = new ArrayList<>();
+		for (final var path : Strings.split(modulepath, File.pathSeparator)) {
+			this.modulepath.add(normalizeFile(path));
 		}
 	}
 
@@ -754,11 +750,7 @@ public class SarlBatchCompiler {
 	 * @since 0.12
 	 */
 	public void setModulePath(Collection<File> modulepath) {
-		if (isModuleSupported()) {
-			this.modulepath = new ArrayList<>(modulepath);
-		} else {
-			this.modulepath = null;
-		}
+		this.modulepath = new ArrayList<>(modulepath);
 	}
 
 	/** Replies the module-path.
@@ -928,16 +920,6 @@ public class SarlBatchCompiler {
 		return getGeneratorConfig().getJavaSourceVersion().getQualifier();
 	}
 
-	/** Replies if the current batch compiler (and its undergoing Java compiler) supports the Java modules.
-	 *
-	 * @return {@code true} if the Java modules are supported.
-	 * @since 0.12
-	 */
-	@Pure
-	public boolean isModuleSupported() {
-		return SarlBatchCompilerUtils.isModuleSupported(getJavaSourceVersion());
-	}
-
 	/** Replies if the current project is modular.
 	 * A project is module when it defines the "module-info.java" file.
 	 *
@@ -946,12 +928,10 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isModularProject() {
-		if (isModuleSupported()) {
-			for (final var folder : getSourcePaths()) {
-				final var infoFile = new File(folder, "module-info.java"); //$NON-NLS-1$
-				if (infoFile.isFile()) {
-					return true;
-				}
+		for (final var folder : getSourcePaths()) {
+			final var infoFile = new File(folder, "module-info.java"); //$NON-NLS-1$
+			if (infoFile.isFile()) {
+				return true;
 			}
 		}
 		return false;
@@ -1805,15 +1785,8 @@ public class SarlBatchCompiler {
 	protected CompilerStatus preCompileJava(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_51);
-		final Iterable<File> cp;
-		final Iterable<File> mp;
-		if (isModuleSupported()) {
-			cp = Iterables.concat(Collections.singleton(sourceDirectory), getClassPath());
-			mp = Collections.emptyList();
-		} else {
-			cp = Iterables.concat(Collections.singleton(sourceDirectory), getClassPath());
-			mp = Collections.emptyList();
-		}
+		final var cp = Iterables.concat(Collections.singleton(sourceDirectory), getClassPath());
+		final var mp = Collections.<File>emptyList();
 		return runJavaCompiler(classDirectory, getSourcePaths(),
 				cp, mp,
 				false, false, progress);
@@ -1841,11 +1814,7 @@ public class SarlBatchCompiler {
 		final var classpath = getClassPath();
 		final var modulepath = getModulePath();
 		if (getLogger().isLoggable(Level.FINEST)) {
-			if (isModuleSupported()) {
-				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_64, toPathString(classpath), toPathString(modulepath)));
-			} else {
-				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
-			}
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_64, toPathString(classpath), toPathString(modulepath)));
 		}
 		return runJavaCompiler(classOutputPath, sources, classpath, modulepath, true, true, progress);
 	}
@@ -2325,25 +2294,18 @@ public class SarlBatchCompiler {
 		final Iterable<File> classpath;
 		final Iterable<File> modulepath;
 		if (temporaryClassDirectory != null) {
-			if (isModuleSupported()) {
-				if (isModularProject()) {
-					classpath = getClassPath();
-					modulepath = Iterables.concat(
-							Collections.singletonList(temporaryClassDirectory),
-							getModulePath(), getSourcePaths());
-				} else {
-					classpath = Iterables.concat(
-							Collections.singletonList(temporaryClassDirectory),
-							getClassPath(), getSourcePaths());
-					modulepath = getModulePath();
-				}
+			if (isModularProject()) {
+				classpath = getClassPath();
+				modulepath = Iterables.concat(
+						Collections.singletonList(temporaryClassDirectory),
+						getModulePath(), getSourcePaths());
 			} else {
 				classpath = Iterables.concat(
 						Collections.singletonList(temporaryClassDirectory),
 						getClassPath(), getSourcePaths());
-				modulepath = Collections.emptyList();
+				modulepath = getModulePath();
 			}
-		} else if (isModuleSupported()) {
+		} else {
 			if (isModularProject()) {
 				classpath = getClassPath();
 				modulepath = Iterables.concat(
@@ -2353,9 +2315,6 @@ public class SarlBatchCompiler {
 						getClassPath(), getSourcePaths());
 				modulepath = getModulePath();
 			}
-		} else {
-			classpath = Iterables.concat(getClassPath(), getSourcePaths());
-			modulepath = Collections.emptyList();
 		}
 		if (getLogger().isLoggable(Level.FINEST)) {
 			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
@@ -2413,13 +2372,11 @@ public class SarlBatchCompiler {
 	 * @param parentClassLoader the parent class loader.
 	 * @return the class loader for the project.
 	 */
+	@SuppressWarnings("static-method")
 	protected ClassLoader createClassLoader(Iterable<File> classPath, Iterable<File> modulePath, ClassLoader parentClassLoader) {
-		if (isModuleSupported()) {
-			return new URLClassLoader(Iterables.toArray(
-					toURL(Iterables.concat(classPath, modulePath)),
-					URL.class), parentClassLoader);
-		}
-		return new URLClassLoader(Iterables.toArray(toURL(classPath), URL.class), parentClassLoader);
+		return new URLClassLoader(Iterables.toArray(
+				toURL(Iterables.concat(classPath, modulePath)),
+				URL.class), parentClassLoader);
 	}
 
 	/** Null-safe destruction of the given class loaders.

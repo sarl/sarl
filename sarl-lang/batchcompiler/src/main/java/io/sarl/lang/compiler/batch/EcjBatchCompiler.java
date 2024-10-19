@@ -136,7 +136,7 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Java version support
 		//
-		commandLineArguments.add("-" + javaVersion.getQualifier()); //$NON-NLS-1$
+		commandLineArguments.add("-" + ensureCompatibleJavaVersion(javaVersion)); //$NON-NLS-1$
 		//
 		// Error management
 		//
@@ -194,6 +194,27 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		final var status = BatchCompiler.compile(arguments, outWriter, errWriter,
 				new ProgressMonitorCompilationProgress(progress));
 		return status ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
+	}
+
+	/** Replies the Java version that is compatible with the command line of ECJ.
+	 *
+	 * @param javaVersion the Java version to validate.
+	 * @return the validated Java version.
+	 */
+	public static String ensureCompatibleJavaVersion(JavaVersion javaVersion) {
+		switch (javaVersion) {
+		case JAVA21:
+			// The command line of ECJ accepts the version 19 as the maximum
+			return "19"; //$NON-NLS-1$
+		case JAVA8:
+		case JAVA9:
+		case JAVA10:
+		case JAVA11:
+		case JAVA17:
+		default:
+			break;
+		}
+		return javaVersion.getQualifier();
 	}
 
 	/** Wrap a Eclipse IProgressMonitor into a JDT compilation progress.

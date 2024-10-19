@@ -21,11 +21,7 @@
 package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.CLASS_EXPECTED;
-import static io.sarl.lang.validation.IssueCodes.CYCLIC_INHERITANCE;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
 import static io.sarl.lang.validation.IssueCodes.DUPLICATE_TYPE_NAME;
-import static io.sarl.lang.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
@@ -40,6 +36,11 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_FIELD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -507,7 +508,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					INVALID_MODIFIER,
-					"The definition of B1 can only set one of public / package / protected / private");
+					"The definition of B1 can only set one of public, package, abstract or final");
 		}
 
 	}
@@ -573,7 +574,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
-				DUPLICATE_MEMBER,
+				DUPLICATE_METHOD,
 				"Duplicate method myaction(int) in type B1");
 		}
 
@@ -1156,7 +1157,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, package, protected, private, static, abstract, dispatch, final, def, override or synchronized");
 		}
 
 		@Test
@@ -1204,7 +1205,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
-				DUPLICATE_MEMBER,
+				DUPLICATE_FIELD,
 				"Duplicate field myfield");
 		}
 
@@ -1220,7 +1221,7 @@ public class BehaviorParsingTest {
 			));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
-				DUPLICATE_MEMBER,
+				DUPLICATE_FIELD,
 				"Duplicate field myfield");
 		}
 
@@ -1285,7 +1286,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
-				"'const' is not a valid identifier.");
+				"'const' is not a valid identifier");
 		}
 
 		@Test
@@ -1364,7 +1365,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-				"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.");
+				"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'");
 		}
 
 		@Test
@@ -1657,7 +1658,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, package, protected, private, static, final, var or val");
 		}
 
 	}
@@ -2034,7 +2035,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, protected, package or private");
 		}
 
 	}

@@ -21,7 +21,6 @@
 package io.sarl.lang.tests.general.parsing.general;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.TYPE_MUST_BE_ABSTRACT;
 import static io.sarl.tests.api.tools.TestAssertions.assertNoParameterVarArg;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
@@ -31,6 +30,7 @@ import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifi
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -2437,7 +2437,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					TYPE_MUST_BE_ABSTRACT,
+					CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -2458,7 +2458,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					TYPE_MUST_BE_ABSTRACT,
+					CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 

@@ -58,13 +58,15 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_BOOLEAN_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -81,6 +83,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as boolean")
 	public void string_as_boolean_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BOOLEAN_SARL))
 		.assertNoErrors(
@@ -97,6 +100,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as boolean")
 	public void string_as_boolean(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_BOOLEAN_SARL, STRING_AS_BOOLEAN_JAVA);
 	}
@@ -109,13 +113,15 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String BOOLEAN_AS_STRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -132,6 +138,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: boolean as String")
 	public void boolean_as_string_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), BOOLEAN_AS_STRING_SARL))
 		.assertNoErrors(
@@ -148,6 +155,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: boolean as String")
 	public void boolean_as_string(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(BOOLEAN_AS_STRING_SARL, BOOLEAN_AS_STRING_JAVA);
 	}
@@ -160,13 +168,15 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String CHAR_AS_STRING_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -183,6 +193,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: char as String")
 	public void char_as_string_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), CHAR_AS_STRING_SARL))
 		.assertNoErrors(
@@ -199,6 +210,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: char as String")
 	public void char_as_string(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(CHAR_AS_STRING_SARL, CHAR_AS_STRING_JAVA);
 	}
@@ -211,14 +223,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_BYTE_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -235,6 +249,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as byte")
 	public void string_as_byte_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BYTE_SARL))
 		.assertNoErrors(
@@ -251,6 +266,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as byte")
 	public void string_as_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_BYTE_SARL, STRING_AS_BYTE_JAVA);
 	}
@@ -263,19 +279,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_BYTEOBJ_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Byte fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toByte(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toByte(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -287,6 +305,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Byte")
 	public void string_as_Byte_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BYTEOBJ_SARL))
 		.assertNoErrors(
@@ -303,6 +322,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Byte")
 	public void string_as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_BYTEOBJ_SARL, STRING_AS_BYTEOBJ_JAVA);
 	}
@@ -315,14 +335,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_SHORT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -339,6 +361,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as short")
 	public void string_as_short_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_SHORT_SARL))
 		.assertNoErrors(
@@ -355,6 +378,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as short")
 	public void string_as_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_SHORT_SARL, STRING_AS_SHORT_JAVA);
 	}
@@ -367,19 +391,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_SHORTOBJ_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Short fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toShort(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toShort(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -391,6 +417,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Short")
 	public void string_as_Short_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_SHORTOBJ_SARL))
 		.assertNoErrors(
@@ -407,6 +434,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Short")
 	public void string_as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_SHORTOBJ_SARL, STRING_AS_SHORTOBJ_JAVA);
 	}
@@ -419,14 +447,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_INT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -443,6 +473,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as int")
 	public void string_as_int_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_INT_SARL))
 		.assertNoErrors(
@@ -457,6 +488,12 @@ public class CompilerTest extends AbstractSarlTest {
 				"'intValue'");
 	}
 
+	@GlobalCompilationTestContribution
+	@Tag("compileToJava")
+	@DisplayName("Compiling: String as int")
+	public void string_as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(STRING_AS_INT_SARL, STRING_AS_INT_JAVA);
+	}
 
 	private static final String STRING_AS_INTEGER_SARL = multilineString(
 			"class A {",
@@ -466,19 +503,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_INTEGER_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Integer fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toInteger(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toInteger(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -490,6 +529,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Integer")
 	public void string_as_integer_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_INTEGER_SARL))
 		.assertNoErrors(
@@ -506,6 +546,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Integer")
 	public void string_as_integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_INTEGER_SARL, STRING_AS_INTEGER_JAVA);
 	}
@@ -518,14 +559,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_LONG_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -542,6 +585,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as long")
 	public void string_as_long_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_LONG_SARL))
 		.assertNoErrors(
@@ -558,6 +602,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as long")
 	public void string_as_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_LONG_SARL, STRING_AS_LONG_JAVA);
 	}
@@ -571,19 +616,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_LONGOBJ_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Long fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toLong(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toLong(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -595,6 +642,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Long")
 	public void string_as_Long_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_LONGOBJ_SARL))
 		.assertNoErrors(
@@ -611,6 +659,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Long")
 	public void string_as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_LONGOBJ_SARL, STRING_AS_LONGOBJ_JAVA);
 	}
@@ -623,14 +672,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_FLOAT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -647,6 +698,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as float")
 	public void string_as_float_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_FLOAT_SARL))
 		.assertNoErrors(
@@ -663,6 +715,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as float")
 	public void string_as_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_FLOAT_SARL, STRING_AS_FLOAT_JAVA);
 	}
@@ -675,19 +728,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_FLOATOBJ_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Float fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toFloat(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toFloat(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -699,6 +754,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Float")
 	public void string_as_Float_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_FLOATOBJ_SARL))
 		.assertNoErrors(
@@ -715,6 +771,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Float")
 	public void string_as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_FLOATOBJ_SARL, STRING_AS_FLOATOBJ_JAVA);
 	}
@@ -727,14 +784,16 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_DOUBLE_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -751,6 +810,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as double")
 	public void string_as_double_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_DOUBLE_SARL))
 		.assertNoErrors(
@@ -767,6 +827,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as double")
 	public void string_as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_DOUBLE_SARL, STRING_AS_DOUBLE_JAVA);
 	}
@@ -779,19 +840,21 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_DOUBLEOBJ_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public Double fct(final String left) {",
-			"    return (left == null ? 0 : PrimitiveCastExtensions.toDouble(left));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toDouble(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -803,6 +866,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as Double")
 	public void string_as_Double_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_DOUBLEOBJ_SARL))
 		.assertNoErrors(
@@ -819,6 +883,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as Double")
 	public void string_as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_DOUBLEOBJ_SARL, STRING_AS_DOUBLEOBJ_JAVA);
 	}
@@ -832,20 +897,22 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_ATOMICINTEGER_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import java.util.concurrent.atomic.AtomicInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public AtomicInteger fct(final String left) {",
-			"    return (left == null ? null : new AtomicInteger(PrimitiveCastExtensions.intValue(left)));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toAtomicInteger(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -857,6 +924,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as AtomicInteger")
 	public void string_as_atomicinteger_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_ATOMICINTEGER_SARL))
 		.assertNoErrors(
@@ -873,6 +941,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as AtomicInteger")
 	public void string_as_atomicinteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_ATOMICINTEGER_SARL, STRING_AS_ATOMICINTEGER_JAVA);
 	}
@@ -886,20 +955,22 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_ATOMICLONG_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import java.util.concurrent.atomic.AtomicLong;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public AtomicLong fct(final String left) {",
-			"    return (left == null ? null : new AtomicLong(PrimitiveCastExtensions.longValue(left)));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toAtomicLong(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -911,6 +982,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as AtomicLong")
 	public void string_as_atomiclong_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_ATOMICLONG_SARL))
 		.assertNoErrors(
@@ -927,6 +999,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as AtomicLong")
 	public void string_as_atomiclong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_ATOMICLONG_SARL, STRING_AS_ATOMICLONG_JAVA);
 	}
@@ -941,19 +1014,21 @@ public class CompilerTest extends AbstractSarlTest {
 
 	private static final String STRING_AS_ATOMICDOUBLE_JAVA = multilineString(
 			"import com.google.common.util.concurrent.AtomicDouble;",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
 			"  public AtomicDouble fct(final String left) {",
-			"    return (left == null ? null : new AtomicDouble(PrimitiveCastExtensions.doubleValue(left)));",
+			"    return (left == null ? null : PrimitiveCastExtensions.toAtomicDouble(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -965,6 +1040,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as AtomicDouble")
 	public void string_as_atomicdouble_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_ATOMICDOUBLE_SARL))
 		.assertNoErrors(
@@ -981,6 +1057,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as AtomicDouble")
 	public void string_as_atomicdouble(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_ATOMICDOUBLE_SARL, STRING_AS_ATOMICDOUBLE_JAVA);
 	}
@@ -994,15 +1071,17 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_BIGINTEGER_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -1019,6 +1098,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as BigInteger")
 	public void string_as_biginteger_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BIGINTEGER_SARL))
 		.assertNoErrors(
@@ -1035,6 +1115,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as BigInteger")
 	public void string_as_biginteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_BIGINTEGER_SARL, STRING_AS_BIGINTEGER_JAVA);
 	}
@@ -1048,15 +1129,17 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_BIGDECIMAL_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import java.math.BigDecimal;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -1073,6 +1156,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as BigDecimal")
 	public void string_as_bigdecimal_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_BIGDECIMAL_SARL))
 		.assertNoErrors(
@@ -1089,6 +1173,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as BigDecimal")
 	public void string_as_bigdecimal(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_BIGDECIMAL_SARL, STRING_AS_BIGDECIMAL_JAVA);
 	}
@@ -1102,15 +1187,17 @@ public class CompilerTest extends AbstractSarlTest {
 			"}");
 
 	private static final String STRING_AS_UUID_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
-			"import java.uutil.UUID;",
+			"import io.sarl.lang.core.annotation.SarlElementType;",
+			"import io.sarl.lang.core.annotation.SarlSpecification;",
+			"import io.sarl.lang.core.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import java.util.UUID;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -1127,6 +1214,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	@Tag("sarlValidation")
+	@DisplayName("Parsing: String as UUID")
 	public void string_as_uuid_issues() throws Exception {
 		validate(getValidationHelper(), getInjector(), file(getParseHelper(), STRING_AS_UUID_SARL))
 		.assertNoErrors(
@@ -1143,6 +1231,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
 	@Tag("compileToJava")
+	@DisplayName("Compiling: String as UUID")
 	public void string_as_uuid(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_AS_UUID_SARL, STRING_AS_UUID_JAVA);
 	}

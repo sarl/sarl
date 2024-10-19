@@ -4,7 +4,7 @@
   <artifactId>compiler.tests</artifactId>
   <version>0.14.0-SNAPSHOT</version>
   <name>Compiler Test API</name>
-  <description>API for testing SARL compiler</description>
+  <description>Testing the SARL compiler</description>
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -139,6 +139,26 @@
           </dependency>
         </dependencies>
       </plugin>
+		<plugin>
+		     <groupId>org.apache.maven.plugins</groupId>
+		     <artifactId>maven-dependency-plugin</artifactId>
+		     <version>3.8.0</version>
+		     <executions>
+		         <execution>
+		             <goals>
+		                 <goal>properties</goal>
+		             </goals>
+		         </execution>
+		     </executions>
+		 </plugin>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <version>3.5.1</version>
+		    <configuration>
+		        <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+		    </configuration>
+		</plugin>
     </plugins>
   </build>
   <distributionManagement>

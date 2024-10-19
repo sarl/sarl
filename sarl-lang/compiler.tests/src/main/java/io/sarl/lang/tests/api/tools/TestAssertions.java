@@ -64,17 +64,17 @@ public final class TestAssertions {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void assertParameterDefaultValues(Iterable<? extends XtendParameter> actualFormalParameters, Object... expectedDefaultValues) {
-		int i = 0;
-		for (XtendParameter parameter : actualFormalParameters) {
+		var i = 0;
+		for (final var parameter : actualFormalParameters) {
 			if (expectedDefaultValues[i] == null) {
 				if (parameter instanceof SarlFormalParameter cvalue) {
 					assertNull("No default value expected", cvalue.getDefaultValue()); //$NON-NLS-1$
 				}
 			} else {
 				assertTrue(parameter instanceof SarlFormalParameter);
-				final int ii = i;
+				final var ii = i;
 				assertTrue(expectedDefaultValues[i] instanceof Class, () -> "The #" + ii + " in expectedDefaultValues is not a Class"); //$NON-NLS-1$ //$NON-NLS-2$
-				Class type = (Class) expectedDefaultValues[i];
+				var type = (Class) expectedDefaultValues[i];
 				assertTrue(type.isInstance(((SarlFormalParameter) parameter).getDefaultValue()), () -> "Unexpected type for the default value."); //$NON-NLS-1$
 				if (XNumberLiteral.class.isAssignableFrom(type)) {
 					++i;

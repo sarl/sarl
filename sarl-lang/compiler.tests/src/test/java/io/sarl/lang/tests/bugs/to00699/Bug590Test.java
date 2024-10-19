@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00699;
 
-import static io.sarl.lang.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;

@@ -124,7 +124,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 import org.eclipse.xtext.xtype.XComputedTypeReference;
 
-import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.compiler.IInlineExpressionCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
@@ -329,9 +328,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IDefaultVisibilityProvider defaultVisibilityProvider;
-
-	@Inject
-	private CodeBuilderFactory codeBuilder;
 
 	/** Generation contexts.
 	 */
@@ -1839,8 +1835,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			boolean enableFunctionBody;
 			if (container.isInterface()) {
 				enableFunctionBody = false;
-				if (context.isAtLeastJava8()
-						&& !Utils.toLightweightTypeReference(container, this.services).isSubtypeOf(Capacity.class)) {
+				if (!Utils.toLightweightTypeReference(container, this.services).isSubtypeOf(Capacity.class)) {
 					if (operation.isStatic()) {
 						enableFunctionBody = true;
 					} else if (source.getExpression() != null && !operation.isAbstract()) {
@@ -1906,8 +1901,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), operation);
 
 			// Add @Inline annotation
-			if (context.isAtLeastJava8()
-					&& context.getGeneratorConfig2().isGenerateInlineAnnotation()
+			if (context.getGeneratorConfig2().isGenerateInlineAnnotation()
 					&& !source.isAbstract() && !container.isInterface()
 					&& (source.isStatic() || source.isFinal() || container.isFinal())
 					&& context.getParentContext() == null
@@ -2046,33 +2040,28 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									operation2, container, isVarArgs,
 									otherSignature.getValue());
 
-							if (context.isAtLeastJava8()) {
-								operation2.setDefault(container.isInterface());
-								operation2.setAbstract(false);
-								setBody(operation2, it -> {
-									final var type = operation2.getReturnType();
-									if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
-										it.append("return "); //$NON-NLS-1$
-									}
-									final var ltr = Utils.toLightweightTypeReference(returnType2, this.services);
-									if (Utils.containsGenericType(ltr)) {
-										final var typeId = ltr.getRawTypeReference().getType().getQualifiedName('.');
-										final var javaId = ltr.getRawTypeReference().getJavaIdentifier();
-										final var fullId = ltr.getJavaIdentifier().replaceAll(
-												Pattern.quote(javaId), Matcher.quoteReplacement(typeId));
-										it.append("("); //$NON-NLS-1$
-										it.append(fullId);
-										it.append(")"); //$NON-NLS-1$
-									}
-									it.append(sourceName);
+							operation2.setDefault(container.isInterface());
+							operation2.setAbstract(false);
+							setBody(operation2, it -> {
+								final var type = operation2.getReturnType();
+								if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
+									it.append("return "); //$NON-NLS-1$
+								}
+								final var ltr = Utils.toLightweightTypeReference(returnType2, this.services);
+								if (Utils.containsGenericType(ltr)) {
+									final var typeId = ltr.getRawTypeReference().getType().getQualifiedName('.');
+									final var javaId = ltr.getRawTypeReference().getJavaIdentifier();
+									final var fullId = ltr.getJavaIdentifier().replaceAll(
+											Pattern.quote(javaId), Matcher.quoteReplacement(typeId));
 									it.append("("); //$NON-NLS-1$
-									it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-									it.append(");"); //$NON-NLS-1$
-								});
-							} else {
-								operation2.setDefault(false);
-								operation2.setAbstract(true);
-							}
+									it.append(fullId);
+									it.append(")"); //$NON-NLS-1$
+								}
+								it.append(sourceName);
+								it.append("("); //$NON-NLS-1$
+								it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
+								it.append(");"); //$NON-NLS-1$
+							});
 
 							// @Override annotation
 							if (source.isOverride()
@@ -2376,20 +2365,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				});
 
 				// Add the annotation dedicated to this particular method
-				if (context.isAtLeastJava8()) {
-					/*context.getPostFinalizationElements().add(() -> {
-						final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
-								+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-								+ ".class, ($0" + fieldName //$NON-NLS-1$
-								+ " == null || $0" + fieldName //$NON-NLS-1$
-								+ ".get() == null) ? ($0" + fieldName //$NON-NLS-1$
-								+ " = $0" + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
-								+ capacityType.getSimpleName()
-								+ ".class)) : $0" + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
-						this.inlineExpressionCompiler.appendInlineAnnotation(
-								operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
-					});*/
-				}
+				/*context.getPostFinalizationElements().add(() -> {
+					final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
+							+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+							+ ".class, ($0" + fieldName //$NON-NLS-1$
+							+ " == null || $0" + fieldName //$NON-NLS-1$
+							+ ".get() == null) ? ($0" + fieldName //$NON-NLS-1$
+							+ " = $0" + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
+							+ capacityType.getSimpleName()
+							+ ".class)) : $0" + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
+					this.inlineExpressionCompiler.appendInlineAnnotation(
+							operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
+				});*/
 				appendGeneratedAnnotation(operation, context);
 				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
 					addAnnotationSafe(operation, Pure.class);
@@ -4160,12 +4147,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isAccessibleTypeAccordingToJavaSpecifications(GenerationContext context, JvmDeclaredType type) {
-		if (context.isAtLeastJava11()) {
-			// TODO find and use an API-oriented way to have access to the module access definitions.
-			final var packageName = type.getPackageName();
-			if (!Strings.isNullOrEmpty(packageName)) {
-				return !packageName.contains(".internal"); //$NON-NLS-1$
-			}
+		// TODO find and use an API-oriented way to have access to the module access definitions.
+		final var packageName = type.getPackageName();
+		if (!Strings.isNullOrEmpty(packageName)) {
+			return !packageName.contains(".internal"); //$NON-NLS-1$
 		}
 		return true;
 	}

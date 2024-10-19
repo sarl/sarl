@@ -41,15 +41,15 @@ public class JavaVersionCheckExtension implements ExecutionCondition {
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
 		// Check if the minimal version of Java is used for running the tests.
-		final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version")); //$NON-NLS-1$
+		final var cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version")); //$NON-NLS-1$
 		if (cVersion == null) {
 			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+		final var mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		if (mVersion == null || !cVersion.isAtLeast(mVersion)) {
 			return ConditionEvaluationResult.disabled("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+		final var xVersion = JavaVersion.fromQualifier(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		// If null the max version that is specified into the SARL configuration is not yey supported by Xtext enumeration
 		if (xVersion != null && cVersion.isAtLeast(xVersion)) {
 			return ConditionEvaluationResult.disabled("You must use JDK strictly below " + SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " for running the tests."); //$NON-NLS-1$ //$NON-NLS-2$

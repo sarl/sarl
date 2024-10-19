@@ -51,6 +51,8 @@ import org.eclipse.xtext.xbase.typesystem.override.OverrideTester;
 import org.eclipse.xtext.xbase.typesystem.override.ResolvedFeatures;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
+import io.sarl.lang.SARLConfig;
+
 /**
  * Fixing the SARL issue 621: Error on multiple function inheritance.
  *
@@ -70,7 +72,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 @SuppressWarnings("all")
 public class Bug621ResolvedFeatures extends ResolvedFeatures {
 
-	private JavaVersion targetVersion = JavaVersion.JAVA17;
+	private JavaVersion targetVersion = SARLConfig.getMinimumJavaVersionForCompilation();
 	
 	public Bug621ResolvedFeatures(LightweightTypeReference type, OverrideTester overrideTester, JavaVersion targetVersion) {
 		super(type, overrideTester, targetVersion);
@@ -251,15 +253,7 @@ public class Bug621ResolvedFeatures extends ResolvedFeatures {
 	protected void computeAllOperations(boolean isSuperClassBranch, Multimap<String, AbstractResolvedOperation> superClassBranchOperations,
 			JvmDeclaredType type, Multimap<String, AbstractResolvedOperation> processedOperations) {
 		for (JvmOperation operation: type.getDeclaredOperations()) {
-			boolean addToResult = true;
-			if (targetVersion.isAtLeast(JavaVersion.JAVA8)) {
-				addToResult = handleOverridesAndConflicts(isSuperClassBranch, operation, processedOperations, superClassBranchOperations);
-			} else {
-				String simpleName = operation.getSimpleName();
-				if (processedOperations.containsKey(simpleName)) {
-					addToResult = !isOverridden(operation, processedOperations.get(simpleName));
-				}
-			}
+			final var addToResult = handleOverridesAndConflicts(isSuperClassBranch, operation, processedOperations, superClassBranchOperations);
 			if (addToResult) {
 				BottomResolvedOperation resolvedOperation = createResolvedOperation(operation);
 				processedOperations.put(operation.getSimpleName(), resolvedOperation);

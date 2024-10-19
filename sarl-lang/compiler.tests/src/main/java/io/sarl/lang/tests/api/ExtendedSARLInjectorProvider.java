@@ -91,7 +91,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 	public static class JavaCompilerProvider implements Provider<OnTheFlyJavaCompiler2> {
 
 		private static JavaVersion parseJavaVersion(String javaVersion) {
-			String version = javaVersion;
+			var version = javaVersion;
 			if (Strings.isEmpty(version)) {
 				version = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
 			}
@@ -100,7 +100,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
 		@Override
 		public OnTheFlyJavaCompiler2 get() {
-			final JavaVersion jversion = parseJavaVersion(null);
+			final var jversion = parseJavaVersion(null);
 			return new OnTheFlyJavaCompiler2(
 					SARLInjectorProvider.class.getClassLoader(),
 					jversion);
@@ -121,7 +121,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
 		@Override
 		public Logger get() {
-			final Logger logger = Logger.getAnonymousLogger();
+			final var logger = Logger.getAnonymousLogger();
 			logger.setLevel(Level.OFF);
 			return logger;
 		}

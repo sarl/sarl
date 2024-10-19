@@ -26,14 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.inject.Injector;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -159,7 +157,7 @@ public class ResourceSetGlobalCompilationContext {
 			idx = this.index;
 			++this.index;
 		}
-		final StringBuilder name = new StringBuilder();
+		final var name = new StringBuilder();
 		name.append(this.basePackage);
 		name.append(".test"); //$NON-NLS-1$
 		name.append(idx);
@@ -178,11 +176,11 @@ public class ResourceSetGlobalCompilationContext {
 	 * @throws Exception in case of error.
 	 */
 	public void compileTo(String sarlExpression, String javaExpression) throws Exception {
-		final String packageName = buildPackageName();
-		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
-		final SarlScript script = file(inputCode, isValidationRunInEachTestFunction(), true);
-		final String qualifiedName = packageName + "." + script.getXtendTypes().get(script.getXtendTypes().size() - 1).getName(); //$NON-NLS-1$
-		final String expectedJava = "package " + packageName + ";" //$NON-NLS-1$ //$NON-NLS-2$
+		final var packageName = buildPackageName();
+		final var inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
+		final var script = file(inputCode, isValidationRunInEachTestFunction(), true);
+		final var qualifiedName = packageName + "." + script.getXtendTypes().get(script.getXtendTypes().size() - 1).getName(); //$NON-NLS-1$
+		final var expectedJava = "package " + packageName + ";" //$NON-NLS-1$ //$NON-NLS-2$
 				+ TestUtils.getLineSeparator() + TestUtils.getLineSeparator()+ javaExpression;
 		this.expectedJava.put(qualifiedName, Pair.of(this.currentMethod, expectedJava));
 	}
@@ -197,7 +195,7 @@ public class ResourceSetGlobalCompilationContext {
 	 */
 	public synchronized void compileTo(String[] sarlExpressions, String typeName, String javaExpression) throws Exception {
 		SarlScript script = null;
-		for (final String sarlExpression : sarlExpressions) {
+		for (final var sarlExpression : sarlExpressions) {
 			if (this.resourceSet == null) {
 				script = this.parser.parse(sarlExpression);
 				this.resourceSet = script.eResource().getResourceSet();
@@ -216,8 +214,8 @@ public class ResourceSetGlobalCompilationContext {
 	 * @throws Exception in case of error.
 	 */
 	public void compileToUnexpectedCastError(String sarlExpression) throws Exception {
-		final String packageName = buildPackageName();
-		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
+		final var packageName = buildPackageName();
+		final var inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
 		validate(this.validator, this.injector,
 				file(inputCode, true, true).eResource()).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -237,10 +235,10 @@ public class ResourceSetGlobalCompilationContext {
 		if (this.resourceSet instanceof XtextResourceSet cvalue) {
 			cvalue.setClasspathURIContext(getClass());
 		}
-		Resource resource = script.eResource();
+		var resource = script.eResource();
 		assertEquals(0, resource.getErrors().size(), () -> resource.getErrors().toString());
 		if (validate) {
-			Collection<Issue> issues = Collections2.filter(this.validator.validate(resource), new Predicate<Issue>() {
+			var issues = Collections2.filter(this.validator.validate(resource), new Predicate<Issue>() {
 				@Override
 				public boolean apply(Issue input) {
 					return input.getSeverity() == Severity.ERROR;

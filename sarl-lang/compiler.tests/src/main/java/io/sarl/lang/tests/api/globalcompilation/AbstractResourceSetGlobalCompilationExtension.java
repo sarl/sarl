@@ -66,14 +66,14 @@ public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjec
 	 * @return the compilation context.
 	 */
 	ResourceSetGlobalCompilationContext getOrCreateCompilationContext(ExtensionContext context) {
-		final ExtensionContext root = context.getRoot();
+		final var root = context.getRoot();
 		return root.getStore(NAMESPACE).getOrComputeIfAbsent(
 				AbstractResourceSetGlobalCompilationExtension.CONTEXT_KEY,
 				it -> {
-					final ResourceSetGlobalCompilationContext ctx = new ResourceSetGlobalCompilationContext(
+					final var ctx = new ResourceSetGlobalCompilationContext(
 							context.getRequiredTestClass().getPackage().getName() + ".tests", //$NON-NLS-1$
 							this.injector, this.parseHelper, this.validator);
-					final GlobalCompilationTestContribution anno = context.getRequiredTestClass().getAnnotation(GlobalCompilationTestContribution.class);
+					final var anno = context.getRequiredTestClass().getAnnotation(GlobalCompilationTestContribution.class);
 					if (anno != null) {
 						ctx.setValidationRunInEachTestFunction(anno.getValidate());
 					}
@@ -88,7 +88,7 @@ public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjec
 	 */
 	@SuppressWarnings("static-method")
 	void clearCompilationContext(ExtensionContext context) {
-		final ExtensionContext root = context.getRoot();
+		final var root = context.getRoot();
 		root.getStore(NAMESPACE).remove(AbstractResourceSetGlobalCompilationExtension.CONTEXT_KEY);
 	}
 

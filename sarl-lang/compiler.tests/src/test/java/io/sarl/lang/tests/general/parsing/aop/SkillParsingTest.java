@@ -21,9 +21,7 @@
 package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.lang.tests.api.tools.TestAssertions.assertParameterDefaultValues;
-import static io.sarl.lang.validation.IssueCodes.CLASS_EXPECTED;
-import static io.sarl.lang.validation.IssueCodes.DUPLICATE_MEMBER;
-import static io.sarl.lang.validation.IssueCodes.TYPE_MUST_BE_ABSTRACT;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.*;
 import static io.sarl.tests.api.tools.TestAssertions.assertNoMoreIssues;
 import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
@@ -42,6 +40,9 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_FIELD;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -116,7 +117,7 @@ public class SkillParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-					"The feature 'C1' is already implemented by the super-type 'S1'.");
+					"The feature 'C1' is already implemented by the super-type 'S1'");
 		}
 
 		@Test
@@ -148,7 +149,7 @@ public class SkillParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-					"The feature 'C2' is already implemented by the super-type 'C3'.");
+					"The feature 'C2' is already implemented by the super-type 'C3'");
 		}
 
 		@Test
@@ -682,7 +683,7 @@ public class SkillParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, package, final or abstract");
 		}
 
 		@Test
@@ -695,7 +696,7 @@ public class SkillParsingTest {
 					"skill S1 implements C1 { }"));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					TYPE_MUST_BE_ABSTRACT,
+					CLASS_MUST_BE_ABSTRACT,
 					"class S1 must be defined abstract");
 		}
 
@@ -1189,7 +1190,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type C1");
 		}
 
@@ -1206,7 +1207,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type S1");
 		}
 
@@ -1333,7 +1334,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					TYPE_MUST_BE_ABSTRACT,
+					CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -1354,7 +1355,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					TYPE_MUST_BE_ABSTRACT,
+					CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -2062,7 +2063,7 @@ public class SkillParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"public / package / protected / private");
+					"public, package, protected, private, static, final, var or val");
 		}
 
 		@Test
@@ -2078,7 +2079,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -2095,7 +2096,7 @@ public class SkillParsingTest {
 					));
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					DUPLICATE_MEMBER,
+					DUPLICATE_FIELD,
 					"Duplicate field myfield");
 		}
 
@@ -2169,7 +2170,7 @@ public class SkillParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
+					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'");
 		}
 
 		@Test

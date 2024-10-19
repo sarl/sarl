@@ -109,7 +109,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -121,7 +121,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -152,7 +152,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -164,7 +164,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -176,7 +176,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -188,7 +188,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -200,7 +200,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -212,7 +212,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -224,7 +224,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -236,7 +236,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -248,7 +248,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public & package are permitted");
+					"Illegal modifier for the enum E1; only public and package are permitted");
 		}
 
 		@Test
@@ -272,7 +272,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlEnumeration(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The enum E1 can only set one of public / package / protected / private");
+				"The enum E1 can only set one of public or package");
 		}
 
 	}
@@ -402,7 +402,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -437,7 +437,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -451,7 +451,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -465,7 +465,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -479,7 +479,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -493,7 +493,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -507,7 +507,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -521,7 +521,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -535,7 +535,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlEnumeration(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The enum E1 can only set one of public / package / protected / private");
+				"The enum E1 can only set one of public, package, protected, private or static");
 		}
 
 	}
@@ -782,7 +782,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlEnumeration(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"public / package / protected / private");
+				"package, protected, private and static");
 		}
 
 	}
@@ -912,7 +912,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -947,7 +947,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -961,7 +961,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -975,7 +975,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -989,7 +989,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1003,7 +1003,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1017,7 +1017,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1031,7 +1031,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1045,7 +1045,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlEnumeration(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"The enum E1 can only set one of public / package / protected / private");
+					"The enum E1 can only set one of public, package, protected, private or static");
 		}
 
 	}
@@ -1181,7 +1181,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1218,7 +1218,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1233,7 +1233,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1248,7 +1248,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1263,7 +1263,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1278,7 +1278,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1293,7 +1293,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1308,7 +1308,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEnumeration(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the enum E1; only public, package, protected, private & static are permitted");
+					"Illegal modifier for the enum E1; only public, package, protected, private and static are permitted");
 		}
 
 		@Test
@@ -1323,7 +1323,7 @@ public class EnumerationParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlEnumeration(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The enum E1 can only set one of public / package / protected / private");
+				"The enum E1 can only set one of public, package, protected, private or static");
 		}
 
 	}

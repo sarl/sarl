@@ -38,6 +38,11 @@
         <version>2.0.0-M1</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-invoker</artifactId>
+        <version>3.3.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.eclipse.xtext</groupId>
         <artifactId>org.eclipse.xtext.testing</artifactId>
         <version>${xtext.version}</version>
@@ -90,6 +95,11 @@
       <dependency>
         <groupId>io.sarl.lang</groupId>
         <artifactId>compiler.tests</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.sarl.lang</groupId>
+        <artifactId>sarl-maven-plugin</artifactId>
         <version>${sarl.version}</version>
       </dependency>
       <dependency>
