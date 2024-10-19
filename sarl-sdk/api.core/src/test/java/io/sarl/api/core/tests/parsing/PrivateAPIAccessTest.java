@@ -50,7 +50,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_01() throws Exception {
 		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.lang.core.annotation.PrivateAPI",
 				"import io.sarl.api.core.AgentTask",
 				"import io.sarl.api.core.Schedules",
 				"",
@@ -76,9 +76,11 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
+				"@XbaseGenerated",
 				"@SuppressWarnings(\"all\")",
 				"public class Accessor extends Agent {",
 				"  private AgentTask t;",

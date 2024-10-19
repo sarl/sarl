@@ -20,7 +20,8 @@
  */
 package io.sarl.tests.api.tools;
 
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Utilities for executing a timeout.
@@ -176,9 +177,7 @@ public class TestTimeout {
 	 */
 	public static class TimeOutHandler implements Runnable {
 
-		private Thread thread;
-
-		private Thread threadToBreak;
+		private final ExecutorService executors = Executors.newSingleThreadExecutor();
 
 		private final AtomicBoolean continueLoop = new AtomicBoolean(true);
 		
@@ -202,16 +201,7 @@ public class TestTimeout {
 		/** Start the time out process.
 		 */
 		public void startAsync() {
-			this.threadToBreak = Thread.currentThread();
-			this.thread = new Thread() {
-				@Override
-				public void run() {
-					TimeOutHandler.this.run();
-				}
-			};
-			this.thread.setDaemon(true);
-			this.thread.setName("Test TimeOut Manager"); //$NON-NLS-1$
-			this.thread.start();
+			this.executors.submit(this);
 		}
 
 		@Override
@@ -241,23 +231,9 @@ public class TestTimeout {
 
 		/** Stop the time out process.
 		 */
-		@SuppressWarnings("removal")
 		public synchronized void stop() {
 			this.continueLoop.set(false);
-			if (this.thread != null) {
-				this.thread = null;
-				if (this.threadToBreak != null) {
-					try {
-						this.threadToBreak.stop();
-					} catch (ThreadDeath exception) {
-						if (this.timeout.get()) {
-							throw new RuntimeException(new TimeoutException());
-						}
-					} finally {
-						this.threadToBreak = null;
-					}
-				}
-			}
+			this.executors.shutdownNow();
 		}
 
 	}

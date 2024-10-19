@@ -107,9 +107,11 @@ public class Bug861Test extends AbstractSarlTest {
 		"import java.util.UUID;", //$NON-NLS-1$
 		"import javax.inject.Inject;", //$NON-NLS-1$
 		"import org.eclipse.xtext.xbase.lib.Extension;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Pure;", "", //$NON-NLS-1$ //$NON-NLS-2$
+		"import org.eclipse.xtext.xbase.lib.Pure;", //$NON-NLS-1$
+		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-1$ //$NON-NLS-2$
 		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-1$ //$NON-NLS-2$
 		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-1$ //$NON-NLS-2$
+		"@XbaseGenerated", //$NON-NLS-1$
 		"@SuppressWarnings(\"all\")", //$NON-NLS-1$
 		"public class BootAgent extends Agent {", //$NON-NLS-1$
 		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {", //$NON-NLS-1$
@@ -227,16 +229,13 @@ public class Bug861Test extends AbstractSarlTest {
 		"  @Override", //$NON-NLS-1$
 		"  public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {", //$NON-NLS-1$
 		"    super.$evaluateBehaviorGuards(event, callbacks);", //$NON-NLS-1$
-		"    if (event instanceof Initialize) {", //$NON-NLS-1$
-		"      final Initialize occurrence = (Initialize) event;", //$NON-NLS-1$
+		"    if (event instanceof Initialize occurrence) {", //$NON-NLS-1$
 		"      $guardEvaluator$Initialize(occurrence, callbacks);", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
-		"    if (event instanceof CommitSuicide) {", //$NON-NLS-1$
-		"      final CommitSuicide occurrence = (CommitSuicide) event;", //$NON-NLS-1$
+		"    if (event instanceof CommitSuicide occurrence) {", //$NON-NLS-1$
 		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
-		"    if (event instanceof Initialized) {", //$NON-NLS-1$
-		"      final Initialized occurrence = (Initialized) event;", //$NON-NLS-1$
+		"    if (event instanceof Initialized occurrence) {", //$NON-NLS-1$
 		"      $guardEvaluator$Initialized(occurrence, callbacks);", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
 		"  }", //$NON-NLS-1$
@@ -257,7 +256,6 @@ public class Bug861Test extends AbstractSarlTest {
 	private static final String EXPECTED_EMPTYAGENT_01 = multilineString2(false,
 		"package io.sarl.lang.tests.bug861;", //$NON-NLS-1$
 		"", //$NON-NLS-1$
-		"import com.google.common.base.Objects;", //$NON-NLS-1$
 		"import io.sarl.api.core.DefaultContextInteractions;", //$NON-NLS-1$
 		"import io.sarl.api.core.Initialize;", //$NON-NLS-1$
 		"import io.sarl.api.core.Lifecycle;", //$NON-NLS-1$
@@ -276,13 +274,16 @@ public class Bug861Test extends AbstractSarlTest {
 		"import io.sarl.lang.core.util.SerializableProxy;", //$NON-NLS-1$
 		"import java.io.ObjectStreamException;", //$NON-NLS-1$
 		"import java.util.Collection;", //$NON-NLS-1$
+		"import java.util.Objects;", //$NON-NLS-1$
 		"import java.util.Set;", //$NON-NLS-1$
 		"import java.util.UUID;", //$NON-NLS-1$
 		"import javax.inject.Inject;", //$NON-NLS-1$
 		"import org.eclipse.xtext.xbase.lib.Extension;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Pure;", "", //$NON-NLS-1$ //$NON-NLS-2$
+		"import org.eclipse.xtext.xbase.lib.Pure;", //$NON-NLS-1$
+		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-1$ //$NON-NLS-2$
 		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-1$ //$NON-NLS-2$
 		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-1$ //$NON-NLS-2$
+		"@XbaseGenerated", //$NON-NLS-1$
 		"@SuppressWarnings(\"all\")", //$NON-NLS-1$
 		"public class EmptyAgent extends Agent {", //$NON-NLS-1$
 		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {", //$NON-NLS-1$
@@ -301,14 +302,14 @@ public class Bug861Test extends AbstractSarlTest {
 		"      @Override", //$NON-NLS-1$
 		"      public boolean matches(final Address it) {", //$NON-NLS-1$
 		"        UUID _uUID = it.getID();", //$NON-NLS-1$
-		"        return Objects.equal(_uUID, $_spawner);", //$NON-NLS-1$
+		"        return Objects.equals(_uUID, $_spawner);", //$NON-NLS-1$
 		"      }", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
 		"    final Scope<Address> _function = new Scope<Address>() {", //$NON-NLS-1$
 		"      @Override", //$NON-NLS-1$
 		"      public boolean matches(final Address it) {", //$NON-NLS-1$
 		"        UUID _uUID = it.getID();", //$NON-NLS-1$
-		"        return Objects.equal(_uUID, occurrence.spawner);", //$NON-NLS-1$
+		"        return Objects.equals(_uUID, occurrence.spawner);", //$NON-NLS-1$
 		"      }", //$NON-NLS-1$
 		"      private Object writeReplace() throws ObjectStreamException {", //$NON-NLS-1$
 		"        return new SerializableProxy($SerializableClosureProxy.class, occurrence.spawner);", //$NON-NLS-1$
@@ -406,12 +407,10 @@ public class Bug861Test extends AbstractSarlTest {
 		"  @Override", //$NON-NLS-1$
 		"  public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {", //$NON-NLS-1$
 		"    super.$evaluateBehaviorGuards(event, callbacks);", //$NON-NLS-1$
-		"    if (event instanceof Initialize) {", //$NON-NLS-1$
-		"      final Initialize occurrence = (Initialize) event;", //$NON-NLS-1$
+		"    if (event instanceof Initialize occurrence) {", //$NON-NLS-1$
 		"      $guardEvaluator$Initialize(occurrence, callbacks);", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
-		"    if (event instanceof CommitSuicide) {", //$NON-NLS-1$
-		"      final CommitSuicide occurrence = (CommitSuicide) event;", //$NON-NLS-1$
+		"    if (event instanceof CommitSuicide occurrence) {", //$NON-NLS-1$
 		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);", //$NON-NLS-1$
 		"    }", //$NON-NLS-1$
 		"  }", //$NON-NLS-1$
@@ -429,7 +428,6 @@ public class Bug861Test extends AbstractSarlTest {
 		"}", //$NON-NLS-1$
 		""); //$NON-NLS-1$
 
-	@SuppressWarnings("javadoc")
 	@Test
 	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
@@ -438,7 +436,6 @@ public class Bug861Test extends AbstractSarlTest {
 		validator.assertNoErrors();
 	}
 
-	@SuppressWarnings("javadoc")
 	@Test
 	@Tag("compileToJava")
 	public void compiling_01() throws Exception {

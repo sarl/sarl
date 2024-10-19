@@ -82,9 +82,11 @@ public class Bug864Test extends AbstractSarlTest {
 			"import javax.inject.Inject;", //$NON-NLS-1$
 			"import org.eclipse.xtext.xbase.lib.Extension;", //$NON-NLS-1$
 			"import org.eclipse.xtext.xbase.lib.Pure;", //$NON-NLS-1$
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", //$NON-NLS-1$
 			"", //$NON-NLS-1$
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-1$ //$NON-NLS-2$
 			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-1$ //$NON-NLS-2$
+			"@XbaseGenerated", //$NON-NLS-1$
 			"@SuppressWarnings(\"all\")", //$NON-NLS-1$
 			"public class Boot extends Agent {", //$NON-NLS-1$
 			"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {", //$NON-NLS-1$
@@ -134,8 +136,7 @@ public class Bug864Test extends AbstractSarlTest {
 			"  @Override", //$NON-NLS-1$
 			"  public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {", //$NON-NLS-1$
 			"    super.$evaluateBehaviorGuards(event, callbacks);", //$NON-NLS-1$
-			"    if (event instanceof Initialize) {", //$NON-NLS-1$
-			"      final Initialize occurrence = (Initialize) event;", //$NON-NLS-1$
+			"    if (event instanceof Initialize occurrence) {", //$NON-NLS-1$
 			"      $guardEvaluator$Initialize(occurrence, callbacks);", //$NON-NLS-1$
 			"    }", //$NON-NLS-1$
 			"  }", //$NON-NLS-1$
