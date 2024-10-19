@@ -578,7 +578,6 @@ public final class ShouldExtensions {
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the method.
 	 */
-	@SuppressWarnings("rawtypes")
 	protected static Method shouldHaveMethod(Class<?> type, String name, boolean deprecated) {
 		final var pattern = Pattern.compile(
 				"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$

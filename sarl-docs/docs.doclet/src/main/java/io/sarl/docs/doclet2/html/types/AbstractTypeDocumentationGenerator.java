@@ -812,7 +812,7 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 			});
 			return mirrors.iterator().next();
 		});
-		final var capacityElements = new TreeSet<>(getElementUtils().getTypeElementComparator());
+		final TreeSet<TypeElement> capacityElements = new TreeSet<>(getElementUtils().getTypeElementComparator());
 		for (final var annotation : capacityUses) {
 			if (annotation.getElementValues().size() == 1) {
 				new SimpleAnnotationValueVisitor9<Void,Void>() {

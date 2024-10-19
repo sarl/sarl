@@ -78,7 +78,9 @@ public final class FileSystemAddons {
 					}
 					path.append(element);
 				}
-				url = new URI(URISchemeType.FILE.name().toLowerCase(), null, path.toString()).toURL();
+				path.insert(0, ':');
+				path.insert(0, URISchemeType.FILE.name().toLowerCase());
+				url = URI.create(path.toString()).toURL();
 			}
 			return FileSystem.toShortestURL(url);
 		} catch (Exception e) {

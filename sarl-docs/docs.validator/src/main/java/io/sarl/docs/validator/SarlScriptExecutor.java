@@ -47,7 +47,6 @@ import org.eclipse.xtext.xbase.validation.IssueCodes;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.interpreter.SarlExpressionInterpreter;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlField;
@@ -112,11 +111,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		this.sourceVersion = Strings.emptyIfNull(version);
 	}
 
-	@Override
-	public boolean isModuleSupported() {
-		return SarlBatchCompilerUtils.isModuleSupported(this.sourceVersion);
-	}
-
 	private File createRootFolder() throws IOException {
 		return FileSystem.createTempDirectory("sarldocs", null, this.tmpFolder); //$NON-NLS-1$
 	}
@@ -156,9 +150,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setGenerateSyntheticSuppressWarnings(true);
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(this.classPath);
-		if (isModuleSupported()) {
-			compiler.setModulePath(this.modulePath);
-		}
+		compiler.setModulePath(this.modulePath);
 		compiler.setJavaSourceVersion(this.sourceVersion);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);

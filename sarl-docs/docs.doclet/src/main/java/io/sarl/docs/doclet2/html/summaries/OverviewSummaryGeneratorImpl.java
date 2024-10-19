@@ -152,7 +152,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	}
 
 	private SortedSet<PackageElement> selectPackages(SortedSet<PackageElement> remainingPackages, Pattern pattern) {
-		final var selectedPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
+		final TreeSet<PackageElement> selectedPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
 		final var iterator = remainingPackages.iterator();
 		while (iterator.hasNext()) {
 			final var candidate = iterator.next();
@@ -172,7 +172,7 @@ public class OverviewSummaryGeneratorImpl extends AbstractSummaryGenerator imple
 	 * @return the {@code packages} that are not a member of a group.
 	 */
 	protected Collection<PackageElement> generateGroups(Element parent, Collection<PackageElement> packages) {
-		final var remainingPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
+		final TreeSet<PackageElement> remainingPackages = new TreeSet<>(getElementUtils().getPackageElementComparator());
 		remainingPackages.addAll(packages);
 		for (final var entry : getDocletOptions().getGroups()) {
 			final var selectedPackages = selectPackages(remainingPackages, entry.getValue());

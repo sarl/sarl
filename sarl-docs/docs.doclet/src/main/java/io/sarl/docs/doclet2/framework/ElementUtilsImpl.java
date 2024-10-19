@@ -652,7 +652,7 @@ public class ElementUtilsImpl implements ElementUtils {
 		final var enclosing = element.getEnclosingElement();
 		if (enclosing != null) {
 			final var enclosingType = enclosing.asType();
-			final var.Tester tester = new IDefaultVisibilityProvider.Tester() {
+			final var tester = new IDefaultVisibilityProvider.Tester() {
 				@Override
 				public boolean isInterface() {
 					return enclosing.getKind() == ElementKind.INTERFACE;

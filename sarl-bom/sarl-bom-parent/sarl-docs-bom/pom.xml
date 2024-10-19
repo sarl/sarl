@@ -121,6 +121,11 @@
         <artifactId>flexmark</artifactId>
         <version>0.64.8</version>
       </dependency>
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-text</artifactId>
+		<version>${apache.commons.text}</version>
+	</dependency>
     </dependencies>
   </dependencyManagement>
   <build>

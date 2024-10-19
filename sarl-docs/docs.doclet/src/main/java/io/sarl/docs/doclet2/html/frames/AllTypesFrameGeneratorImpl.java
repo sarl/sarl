@@ -55,6 +55,7 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.TreeSet;
 
+import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
 import jdk.javadoc.doclet.Reporter;
@@ -144,9 +145,9 @@ public class AllTypesFrameGeneratorImpl extends AbstractDocumentationGenerator i
 		typeListTitle.appendText(Messages.AllTypesFrameGeneratorImpl_2);
 		final var typeList = getHtmlFactory().createUlTag(typeListBlock, CssStyles.BULLET_LESS_LIST);
 		//
-		final var list = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
+		final TreeSet<TypeElement> list = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
 		list.addAll(getTypeRepository().getTypes());
-		for (final var type : list) {
+		for (final TypeElement type : list) {
 			final var typeLine = getHtmlFactory().createLiTag(typeList, CssStyles.BULLET_LESS_LIST);
 			final var link = getHtmlFactory().createTypeLink(type, true, null, this);
 			getHtmlFactory().addLinkTargetFrame(link, HtmlIndexGeneratorImpl.MAIN_TYPE_FRAME_NAME);

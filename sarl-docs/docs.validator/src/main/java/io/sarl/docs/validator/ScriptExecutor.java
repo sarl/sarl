@@ -28,7 +28,6 @@ import java.util.function.UnaryOperator;
 
 import com.google.inject.ImplementedBy;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 
@@ -93,14 +92,6 @@ public interface ScriptExecutor {
 	 * @param version the version.
 	 */
 	void setJavaSourceVersion(String version);
-
-	/** Replies if the version of Java supports Java modules.
-	 *
-	 * @return {@code true} if the Java modules are supported.
-	 * @since 0.12
-	 */
-	@Pure
-	boolean isModuleSupported();
 
 	/** Compile the given code and replies the issues.
 	 *

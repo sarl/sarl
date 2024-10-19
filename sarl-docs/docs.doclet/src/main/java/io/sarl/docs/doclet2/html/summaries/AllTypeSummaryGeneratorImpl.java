@@ -95,7 +95,7 @@ public class AllTypeSummaryGeneratorImpl extends AbstractSummaryGenerator implem
 	protected void generateBodyContent(Element parent) {
 		final var types = getTypeRepository().getTypes();
 		if (!types.isEmpty()) {
-			final var stypes = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
+			final TreeSet<TypeElement> stypes = new TreeSet<>(getElementUtils().getTypeElementBasenameComparator());
 			stypes.addAll(types);
 			final var list = getHtmlFactory().createUlTag(parent, null);
 			for (final var type : stypes) {

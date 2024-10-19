@@ -386,7 +386,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 				.append(Throwables.class).append(".getStackTraceAsString(exception));").decreaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("}").newLine(); //$NON-NLS-1$
 			it.append("if (result instanceof ").append(Boolean.class).append(" $c$value) {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
-			it.append("boolean boolResult = $c$value.booleanValue();").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("boolean boolResult = $c$value.booleanValue();").newLine(); //$NON-NLS-1$
 			it.append("if (!boolResult) {").increaseIndentation().newLine(); //$NON-NLS-1$
 			it.append("throw new ").append(AssertionFailedError.class) //$NON-NLS-1$
 				.append("(\"Invalid expression result [line: ").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$

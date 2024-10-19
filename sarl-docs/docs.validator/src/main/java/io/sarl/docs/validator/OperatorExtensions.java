@@ -538,7 +538,7 @@ public final class OperatorExtensions {
 
 		// Compute precedences
 		final var precBuffer = new HashMap<String, Integer>();
-		final var sortedOperators = new ArrayList<String>(operators);
+		final var sortedOperators = new ArrayList<>(operators);
 		final Comparator<String> comp = (op1, op2) -> {
 			final var key1 = op1 + "   " + op2; //$NON-NLS-1$
 			var cmp = precBuffer.get(key1);
