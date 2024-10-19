@@ -17,6 +17,10 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>io.sarl.apputils</groupId>
+      <artifactId>bootiqueapp</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.sarl.cli</groupId>
       <artifactId>sarlc</artifactId>
     </dependency>
@@ -263,20 +267,29 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+		<version>3.8.0</version>
         <executions>
           <execution>
             <id>remove-default-project-artifact</id>
             <phase>verify</phase>
             <goals>
-              <goal>remove-project-artifact</goal>
+              <goal>purge-local-repository</goal>
             </goals>
-            <configuration>
-              <removeAll>true</removeAll>
-            </configuration>
+			<configuration>
+				<includes>
+					<include>${project.groupId}:${project.artifactId1}</include>
+				</includes>
+			</configuration>
           </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
           <execution>
             <id>add-native-artifacts</id>
             <phase>package</phase>

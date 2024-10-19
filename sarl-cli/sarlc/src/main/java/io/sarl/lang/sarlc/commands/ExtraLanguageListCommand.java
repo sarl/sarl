@@ -21,7 +21,6 @@
 
 package io.sarl.lang.sarlc.commands;
 
-import java.util.Set;
 import java.util.TreeSet;
 
 import javax.inject.Provider;
@@ -33,7 +32,6 @@ import io.bootique.di.BQInject;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
 
-import io.sarl.lang.extralanguage.IExtraLanguageContribution;
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 
 /**

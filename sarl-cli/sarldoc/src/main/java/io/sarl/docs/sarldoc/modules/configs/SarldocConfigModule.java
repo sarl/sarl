@@ -42,7 +42,6 @@ import javax.inject.Singleton;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
-import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
@@ -187,16 +186,23 @@ public class SarldocConfigModule implements BQModule {
 	/** Replies the instance of the sarldoc configuration.
 	 *
 	 * @param configFactory accessor to the bootique factory.
-	 * @param injector the current injector.
 	 * @return the path configuration accessor.
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public SarldocConfig getSarldocConfig(ConfigurationFactory configFactory, Injector injector) {
-		final var config = SarldocConfig.getConfiguration(configFactory);
-		injector.injectMembers(config);
-		return config;
+	public SarldocConfig getSarldocConfig(ConfigurationFactory configFactory) {
+		// The following code is for debugging the creation of the config object.
+		//		try {
+		//			configFactory.config(SarldocConfig.class, "sarldoc");
+		//		} catch (Throwable ex) {
+		//			var swriter = new StringWriter();
+		//			var writer = new PrintWriter(swriter);
+		//			ex.printStackTrace(writer);
+		//			logger.get().log(Level.SEVERE, "YYYYYYYYYYYYYYYYYYYYYYYYYY" + swriter.toString());
+		//		}
+		//		return new SarldocConfig();
+		return SarldocConfig.getConfiguration(configFactory);
 	}
 
 }

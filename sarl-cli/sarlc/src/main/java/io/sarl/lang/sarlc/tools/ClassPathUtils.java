@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import org.eclipse.xtext.util.JavaVersion;
 
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
-import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /**
@@ -57,10 +56,6 @@ public final class ClassPathUtils {
 	public static SystemPath buildClassPath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
 			JavaVersion jversion, Logger logger) {
 		final var fullClassPath = new SystemPath();
-		// Boot class path
-		if (!SarlBatchCompilerUtils.isModuleSupported(jversion)) {
-			fullClassPath.addEntries(cfg.getBootClasspath());
-		}
 		logger.fine(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
 		// User class path
 		final var userClassPath = new SystemPath();
@@ -88,20 +83,18 @@ public final class ClassPathUtils {
 	public static SystemPath buildModulePath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
 			JavaVersion jversion, Logger logger) {
 		final var fullModulePath = new SystemPath();
-		if (SarlBatchCompilerUtils.isModuleSupported(jversion)) {
-			// User module path
-			final var userModulePath = new SystemPath();
-			userModulePath.addEntries(cfg.getModulePath());
-			if (userModulePath.isEmpty()) {
-				try {
-					classpathProvider.getModulePath(userModulePath, logger);
-				} catch (Throwable exception) {
-					logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
-				}
+		// User module path
+		final var userModulePath = new SystemPath();
+		userModulePath.addEntries(cfg.getModulePath());
+		if (userModulePath.isEmpty()) {
+			try {
+				classpathProvider.getModulePath(userModulePath, logger);
+			} catch (Throwable exception) {
+				logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 			}
-			logger.fine(MessageFormat.format(Messages.ClassPathUtils_2, userModulePath.toString()));
-			fullModulePath.addEntries(userModulePath);
 		}
+		logger.fine(MessageFormat.format(Messages.ClassPathUtils_2, userModulePath.toString()));
+		fullModulePath.addEntries(userModulePath);
 		return fullModulePath;
 	}
 

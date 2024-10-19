@@ -148,7 +148,6 @@ public class Tag {
 	 * @param text the string to parse.
 	 * @return the tag.
 	 */
-	@JsonCreator
 	public static List<Tag> valuesOf(String text) {
 		final var tags = new ArrayList<Tag>();
 		if (!Strings.isNullOrEmpty(text)) {
