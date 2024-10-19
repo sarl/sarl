@@ -195,6 +195,26 @@
           </execution>
         </executions>
       </plugin>
+		<plugin>
+		     <groupId>org.apache.maven.plugins</groupId>
+		     <artifactId>maven-dependency-plugin</artifactId>
+		     <version>3.8.0</version>
+		     <executions>
+		         <execution>
+		             <goals>
+		                 <goal>properties</goal>
+		             </goals>
+		         </execution>
+		     </executions>
+		 </plugin>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <version>3.5.1</version>
+		    <configuration>
+		        <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+		    </configuration>
+		</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>

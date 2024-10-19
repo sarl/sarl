@@ -30,7 +30,7 @@ import io.sarl.lang.core.SREClassLoader
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import java.io.File
-import java.net.URL
+import java.net.URI
 import java.util.List
 import java.util.regex.Pattern
 import javax.inject.Provider
@@ -140,7 +140,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 						if (URISchemeType::FILE.isURL(url)) {
 							val file = FileSystem::convertURLToFile(url)
 							if (file.isDirectory) {
-								url = new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath() + "/")
+								url = new URI(url.getProtocol(), null, url.getHost(), url.getPort(), url.getPath() + "/", null, null).toURL
 							}
 						}
 						//

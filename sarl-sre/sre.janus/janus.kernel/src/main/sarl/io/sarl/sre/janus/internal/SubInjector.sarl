@@ -115,7 +115,7 @@ class SubInjector extends DefaultInjector {
 		return list
 	}
 
-	override shutdown : void {
+	synchronized override shutdown : void {
 		this.injector.shutdown
 	}
 
