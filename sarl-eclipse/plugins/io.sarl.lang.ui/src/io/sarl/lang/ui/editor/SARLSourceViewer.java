@@ -21,13 +21,9 @@
 
 package io.sarl.lang.ui.editor;
 
-import java.lang.reflect.Field;
-
 import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRewriteTarget;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -47,6 +43,7 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLSourceViewer extends RichStringAwareSourceViewer {
 
 	@Inject

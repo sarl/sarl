@@ -21,8 +21,6 @@
 
 package io.sarl.eclipse.experienceindex;
 
-import java.util.Optional;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.swt.graphics.Image;

@@ -22,6 +22,8 @@
 package io.sarl.lang.pythongenerator.validator;
 
 import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -40,9 +42,12 @@ import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
+import org.osgi.framework.Bundle;
 
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator.ExtraLanguageSupportModule;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.lang.extralanguage.validator.AbstractExtraLanguageValidator;
+import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 import io.sarl.lang.pythongenerator.configuration.IPyGeneratorConfigurationProvider;
 import io.sarl.lang.pythongenerator.generator.PyInitializers;
 import io.sarl.lang.pythongenerator.generator.PyKeywordProvider;
@@ -93,6 +98,11 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	@Inject
 	private IdentifiableSimpleNameProvider simpleNameProvider;
 
+	/** Validator's logger.
+	 */
+	@Inject
+	private Logger log;
+
 	private IPyGeneratorConfigurationProvider configuration;
 
 	/** Constructor.
@@ -102,6 +112,29 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	@Inject
 	public PyValidator(PyKeywordProvider keywordProvider) {
 		super(keywordProvider);
+	}
+
+	/** Replies the support module for the initialization stage.
+	 *
+	 * @return the module, never {@code null}.
+	 * @since 0.14
+	 */
+	protected ExtraLanguageSupportModule getSupportModule() {
+		return new ExtraLanguageSupportModule() {
+
+			@Override
+			public Bundle getBundle() {
+				return PyGeneratorPlugin.getBundle();
+			}
+
+			@Override
+			public void logException(Throwable exception) {
+				if (exception != null) {
+					PyValidator.this.log.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+			
+		};
 	}
 
 	/** Change the provider of the generator's configuration.
@@ -123,12 +156,12 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 
 	@Override
 	protected IExtraLanguageConversionInitializer getTypeConverterInitializer() {
-		return PyInitializers.getTypeConverterInitializer();
+		return PyInitializers.getTypeConverterInitializer(getSupportModule());
 	}
 
 	@Override
 	protected IExtraLanguageConversionInitializer getFeatureConverterInitializer() {
-		return PyInitializers.getFeatureNameConverterInitializer();
+		return PyInitializers.getFeatureNameConverterInitializer(getSupportModule());
 	}
 
 	@Override

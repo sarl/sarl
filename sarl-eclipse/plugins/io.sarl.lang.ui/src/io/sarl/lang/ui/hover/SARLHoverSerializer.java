@@ -24,10 +24,8 @@ package io.sarl.lang.ui.hover;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.ide.hover.XtendHoverSerializer;
 import org.eclipse.xtext.common.types.JvmExecutable;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 
 import io.sarl.lang.util.Utils;
@@ -44,6 +42,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
+@SuppressWarnings("restriction")
 public class SARLHoverSerializer extends XtendHoverSerializer {
 
 	@Override

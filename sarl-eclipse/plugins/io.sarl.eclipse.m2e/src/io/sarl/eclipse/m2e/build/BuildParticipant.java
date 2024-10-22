@@ -30,8 +30,6 @@ import static io.sarl.eclipse.m2e.Constants.SARL_PLUGIN_ARTIFACT_ID;
 import static io.sarl.eclipse.m2e.Constants.SARL_PLUGIN_GROUP_ID;
 
 import java.text.MessageFormat;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
@@ -47,7 +45,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant2;
 import org.osgi.framework.Bundle;

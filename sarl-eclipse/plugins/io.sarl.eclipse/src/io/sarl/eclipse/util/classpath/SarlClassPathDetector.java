@@ -22,7 +22,6 @@
 package io.sarl.eclipse.util.classpath;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +30,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -48,16 +46,13 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.util.IClassFileReader;
-import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.corext.dom.IASTSharedValues;
 import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
 import org.eclipse.jdt.internal.ui.wizards.ClassPathDetector;
@@ -82,6 +77,7 @@ import io.sarl.lang.SARLConfig;
  * @since 0.10
  * @see ClassPathDetector
  */
+@SuppressWarnings("restriction")
 public class SarlClassPathDetector implements IResourceProxyVisitor {
 
 	private final SarlDefaultClassPathProvider defaultCPProvider;
@@ -173,7 +169,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @param name the name to test.
 	 * @return {@code true} if the name is valid.
 	 */
-	@SuppressWarnings("static-method")
 	@Pure
 	protected boolean isValidSarlCUName(String name) {
 		return FileSystem.hasExtension(name, SARLEclipseConfig.SARL_FILE_EXTENSION);
@@ -194,7 +189,6 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 *
 	 * @return the comparator
 	 */
-	@SuppressWarnings("static-method")
 	@Pure
 	public Comparator<IClasspathEntry> getCPEntryComparator() {
 		// TODO Define a Collator for SARL?

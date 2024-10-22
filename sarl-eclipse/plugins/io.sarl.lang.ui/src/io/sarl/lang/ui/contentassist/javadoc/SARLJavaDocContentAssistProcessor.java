@@ -30,6 +30,7 @@ import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProc
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLJavaDocContentAssistProcessor extends XtendJavaDocContentAssistProcessor {
 	//
 }

@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.extralanguage.properties;
 
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -35,7 +34,6 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -58,7 +56,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
@@ -77,6 +74,7 @@ import io.sarl.lang.ui.internal.LangActivator;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigurationBlock implements IExtraControlController {
 
 	/** Section name.
@@ -391,7 +389,6 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param imagePath the image path.
 	 * @return the image descriptor.
 	 */
-	@SuppressWarnings("static-method")
 	protected ImageDescriptor getImageDescriptor(String imagePath) {
 		final var activator = LangActivator.getInstance();
 		final var registry = activator.getImageRegistry();
@@ -588,7 +585,6 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 			final var directoryEditor = new TableEditor(table);
 			directoryEditor.grabHorizontal = true;
 			table.addSelectionListener(new SelectionAdapter() {
-				@SuppressWarnings("synthetic-access")
 				@Override
 				public void widgetSelected(SelectionEvent exception) {
 					if (exception.item != item) {
@@ -628,7 +624,6 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 			ignoreEditor.setEditor(ignoreField, item, 0);
 			ignoreField.setSelection(isIgnored(item));
 			ignoreField.addSelectionListener(new SelectionAdapter() {
-				@SuppressWarnings("synthetic-access")
 				@Override
 				public void widgetSelected(SelectionEvent exception) {
 					setValue(data.getIgnoreKey(),

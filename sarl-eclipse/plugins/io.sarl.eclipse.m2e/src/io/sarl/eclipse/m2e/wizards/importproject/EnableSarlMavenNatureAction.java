@@ -21,17 +21,12 @@
 
 package io.sarl.eclipse.m2e.wizards.importproject;
 
-import java.io.File;
-import java.util.Iterator;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -58,6 +53,7 @@ import io.sarl.eclipse.natures.SARLProjectConfigurator;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
+@SuppressWarnings("restriction")
 public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExecutableExtension {
 
 	/** Identifier of the action.
@@ -138,7 +134,6 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	 * @param project the project to configure.
 	 * @return the job.
 	 */
-	@SuppressWarnings("static-method")
 	protected Job createJobForMavenProject(IProject project) {
 		return new Job(Messages.EnableSarlMavenNatureAction_0) {
 
@@ -180,7 +175,6 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	 * @param project the project to configure.
 	 * @return the job.
 	 */
-	@SuppressWarnings("static-method")
 	protected Job createJobForJavaProject(IProject project) {
 		return new Job(Messages.EnableSarlMavenNatureAction_0) {
 

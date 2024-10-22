@@ -23,9 +23,7 @@ package io.sarl.lang.ui.quickfix;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Predicate;
@@ -34,7 +32,6 @@ import com.google.inject.Injector;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.validation.IssueCodes;
@@ -50,8 +47,6 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.ILeafNode;
-import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -110,7 +105,7 @@ import io.sarl.lang.validation.SyntaxIssueCodes;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("restriction")
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
@@ -540,7 +535,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			}
 			return node.getEndOffset();
 		}
-		final var lastFeature = IterableExtensions.last(container.getMembers());
+		final var lastFeature = IterableExtensions.lastOrNull(container.getMembers());
+		assert lastFeature != null;
 		final var node = NodeModelUtils.findActualNodeFor(lastFeature);
 		return node.getEndOffset();
 	}
@@ -679,7 +675,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.DUPLICATE_TYPE_NAME)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_TYPE)
 	public void fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
 		MemberRemoveModification.accept(this, issue, acceptor);
 	}
@@ -689,7 +685,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.DUPLICATE_FIELD)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_FIELD)
 	public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
 		MemberRemoveModification.accept(this, issue, acceptor);
 	}
@@ -699,7 +695,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.DUPLICATE_METHOD)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_METHOD)
 	public void fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
 		MemberRemoveModification.accept(this, issue, acceptor);
 	}
@@ -762,7 +758,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.OVERRIDDEN_FINAL)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.OVERRIDDEN_FINAL)
 	public void fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
 		final var modifications = new MultiModification(
 				this, issue, acceptor,
@@ -837,7 +833,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.CYCLIC_INHERITANCE)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.CYCLIC_INHERITANCE)
 	public void fixCyclicInheritance(final Issue issue, IssueResolutionAcceptor acceptor) {
 		ExtendedTypeRemoveModification.accept(this, issue, acceptor);
 	}
@@ -847,7 +843,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.INTERFACE_EXPECTED)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.INTERFACE_EXPECTED)
 	public void fixInteraceExpected(final Issue issue, IssueResolutionAcceptor acceptor) {
 		ExtendedTypeRemoveModification.accept(this, issue, acceptor);
 	}
@@ -857,7 +853,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param issue the issue.
 	 * @param acceptor the quick fix acceptor.
 	 */
-	@Fix(IssueCodes.CLASS_EXPECTED)
+	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.CLASS_EXPECTED)
 	public void fixClassExpected(final Issue issue, IssueResolutionAcceptor acceptor) {
 		ExtendedTypeRemoveModification.accept(this, issue, acceptor);
 	}
@@ -929,11 +925,14 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		}
 		XtendTypeDeclaration declaration = null;
 		String keyword = null;
-		if (container instanceof SarlAgent declaration) {
+		if (container instanceof SarlAgent declaration0) {
+			declaration = declaration0;
 			keyword = getGrammarAccess().getAgentKeyword();
-		} else if (container instanceof SarlBehavior declaration) {
+		} else if (container instanceof SarlBehavior declaration0) {
+			declaration = declaration0;
 			keyword = getGrammarAccess().getBehaviorKeyword();
-		} else if (container instanceof SarlSkill declaration) {
+		} else if (container instanceof SarlSkill declaration0) {
+			declaration = declaration0;
 			keyword = getGrammarAccess().getSkillKeyword();
 		}
 		if (declaration != null && keyword != null) {

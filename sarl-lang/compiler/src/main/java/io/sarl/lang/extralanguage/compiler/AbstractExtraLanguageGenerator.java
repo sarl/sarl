@@ -33,9 +33,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -60,11 +58,11 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.osgi.framework.Bundle;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlConstructor;
@@ -150,13 +148,10 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 *     to use the application classpath.
 	 * @param readerClass the class that has called this function. It is used for obtaining the resource if
 	 *     the bundled plugin is not provided.
-	 * @param statusBuilder the builder of a status that takes the exception as parameter and creates a status object.
-	 *     This builder is used only if the {@code bundledPlugin} is not {@code null}.
 	 * @return the loaded resources.
 	 */
-	public static List<Pair<String, String>> loadPropertyFile(String filename, Plugin bundledPlugin,
-			Class<?> readerClass,
-			Function1<IOException, IStatus> statusBuilder) {
+	public static List<Pair<String, String>> loadPropertyFile(String filename, ExtraLanguageSupportModule bundledPlugin,
+			Class<?> readerClass) {
 		final URL url;
 		if (bundledPlugin != null) {
 			url = FileLocator.find(
@@ -174,7 +169,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 			properties.load(is);
 		} catch (IOException exception) {
 			if (bundledPlugin != null) {
-				bundledPlugin.getLog().log(statusBuilder.apply(exception));
+				bundledPlugin.logException(exception);
 			} else {
 				throw new RuntimeException(exception);
 			}
@@ -825,6 +820,30 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		public List<Pair<String, String>> getOrderedProperties() {
 			return this.orderedElements;
 		}
+
+	}
+
+	/** Description of a module that provides extra language support.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	public interface ExtraLanguageSupportModule {
+
+		/** Replies the OSGi bundle for the module.
+		 *
+		 * @return the bundle.
+		 */
+		Bundle getBundle();
+
+		/** Log the given exception with the module's logger.
+		 *
+		 * @param exception the exception, never {@code null}.
+		 */
+		void logException(Throwable exception);
 
 	}
 

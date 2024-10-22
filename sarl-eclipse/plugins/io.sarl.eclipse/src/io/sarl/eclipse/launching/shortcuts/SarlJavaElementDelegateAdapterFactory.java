@@ -37,6 +37,7 @@ import org.eclipse.xtext.xbase.ui.launching.JavaElementDelegateAdapterFactory;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SarlJavaElementDelegateAdapterFactory extends JavaElementDelegateAdapterFactory {
 
 	@Inject

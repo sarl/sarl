@@ -28,7 +28,6 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import io.sarl.lang.extralanguage.validator.AbstractExtraLanguageValidator;

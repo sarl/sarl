@@ -23,14 +23,13 @@ package io.sarl.eclipse.wizards.sarlapp;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.jdt.internal.ui.wizards.JavaProjectWizard;
 import org.eclipse.jdt.ui.jarpackager.JarPackageData;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
 /**
  * SARL wizard for export a SARL application into a single Jar file.
- * Most part of the code of this class comes from {@link JavaProjectWizard}.
+ * Most part of the code of this class comes from {@code JavaProjectWizard}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -34,7 +34,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.base.Strings;
-import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import org.eclipse.core.resources.IContainer;
@@ -82,6 +81,7 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnconfigurator {
 
 	private final String fileExtension;
@@ -194,7 +194,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 * @param project the project.
 	 * @param monitor the progress monitor.
 	 */
-	@SuppressWarnings("static-method")
 	protected void safeRefresh(IProject project, IProgressMonitor monitor) {
 		try {
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);

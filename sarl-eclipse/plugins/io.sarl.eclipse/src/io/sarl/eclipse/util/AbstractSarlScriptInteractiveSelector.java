@@ -31,16 +31,12 @@ import java.util.List;
 import com.google.inject.Inject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -58,7 +54,6 @@ import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
-import org.eclipse.xtext.util.Pair;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
@@ -76,6 +71,7 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, JT> {
 
 	/** Mapping from storage resource to URI.
@@ -108,7 +104,6 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * @param resource the resource.
 	 * @return {@code true} if the resource could be explored.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isValidResource(IResource resource) {
 		return resource.isAccessible() && !resource.isHidden() && !resource.isPhantom() && !resource.isDerived();
 	}

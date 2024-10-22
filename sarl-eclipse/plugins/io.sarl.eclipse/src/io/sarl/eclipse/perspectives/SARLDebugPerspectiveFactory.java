@@ -23,7 +23,6 @@ package io.sarl.eclipse.perspectives;
 
 import org.eclipse.debug.internal.ui.IInternalDebugUIConstants;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
@@ -39,6 +38,7 @@ import io.sarl.eclipse.SARLEclipseConfig;
  * @mavenartifactid $ArtifactId$
  * @see SARLEclipseConfig#ID_SARL_DEBUG_PERSPECTIVE
  */
+@SuppressWarnings("restriction")
 public class SARLDebugPerspectiveFactory implements IPerspectiveFactory {
 
 	private static final float NAVIGATION_PANEL_RATIO = 0.45f;

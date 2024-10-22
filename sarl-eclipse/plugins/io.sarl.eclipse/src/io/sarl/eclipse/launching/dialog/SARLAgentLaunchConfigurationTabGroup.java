@@ -22,7 +22,6 @@
 package io.sarl.eclipse.launching.dialog;
 
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 /**
  * Tab group object for configuration the run of an agent.

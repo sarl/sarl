@@ -25,12 +25,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator;
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator.ExtraLanguageSupportModule;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
-import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 
 /** Initializers for Python 3.
  *
@@ -58,20 +57,19 @@ public final class PyInitializers {
 		//
 	}
 
-	private static List<Pair<String, String>> loadPropertyFile(String filename) {
-		return AbstractExtraLanguageGenerator.loadPropertyFile(filename,
-			PyGeneratorPlugin.getDefault(),
-			PyInitializers.class,
-			exception -> PyGeneratorPlugin.getDefault().createStatus(IStatus.ERROR, exception));
+	private static List<Pair<String, String>> loadPropertyFile(String filename, ExtraLanguageSupportModule supportModule) {
+		return AbstractExtraLanguageGenerator.loadPropertyFile(filename, supportModule, PyInitializers.class);
 	}
 
 	/** Replies the initializer for the type converter.
 	 *
+	 * @param supportModule the support module that is providing the accessors to the plugin components.
 	 * @return the initializer.
+	 * @since 0.14
 	 */
-	public static IExtraLanguageConversionInitializer getTypeConverterInitializer() {
+	public static IExtraLanguageConversionInitializer getTypeConverterInitializer(ExtraLanguageSupportModule supportModule) {
 		return it -> {
-			final var properties = loadPropertyFile(TYPE_CONVERSION_FILENAME);
+			final var properties = loadPropertyFile(TYPE_CONVERSION_FILENAME, supportModule);
 			if (!properties.isEmpty()) {
 				for (final var entry : properties) {
 					final var source = Objects.toString(entry.getKey());
@@ -91,11 +89,13 @@ public final class PyInitializers {
 
 	/** Replies the initializer for the feature name converter.
 	 *
+	 * @param supportModule the support module that is providing the accessors to the plugin components.
 	 * @return the initializer.
+	 * @since 0.14
 	 */
-	public static IExtraLanguageConversionInitializer getFeatureNameConverterInitializer() {
+	public static IExtraLanguageConversionInitializer getFeatureNameConverterInitializer(ExtraLanguageSupportModule supportModule) {
 		return it -> {
-			final var properties = loadPropertyFile(FEATURE_CONVERSION_FILENAME);
+			final var properties = loadPropertyFile(FEATURE_CONVERSION_FILENAME, supportModule);
 			if (!properties.isEmpty()) {
 				for (final var entry : properties) {
 					final var source = Objects.toString(entry.getKey());

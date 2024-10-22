@@ -27,8 +27,6 @@ import java.io.File;
 import java.lang.ref.SoftReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.inject.Inject;
@@ -36,17 +34,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.internal.launching.JRERuntimeClasspathEntryResolver;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -67,6 +62,7 @@ import io.sarl.eclipse.runtime.SARLRuntime;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunchConfigurationDelegate {
 
 	@Inject

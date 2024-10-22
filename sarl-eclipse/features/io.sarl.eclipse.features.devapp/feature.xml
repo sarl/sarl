@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2023 SARL.io, the Original Authors and Main Authors
+      Copyright 2014-2024 SARL.io, the Original Authors and Main Authors
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -222,37 +222,17 @@
    </url>
 
    <requires>
-      <import feature="io.sarl.eclipse.features.baseplatform" version="0.14.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.contribs" version="0.14.0.qualifier"/>
       <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
       <import feature="io.sarl.eclipse.features.sre.janus" version="0.14.0.qualifier"/>
-      <import feature="org.eclipse.e4.rcp" version="4.28.0.v20230525-0648"/>
-      <import feature="org.eclipse.equinox.p2.rcp.feature" version="1.4.2000.v20230510-1208"/>
-      <import feature="org.eclipse.rcp" version="4.28.0.v20230605-0440"/>
-      <import feature="org.eclipse.emf.mwe2.language.sdk" version="2.14.0.v20221117-1134"/>
-      <import feature="org.eclipse.emf.mwe2.launcher" version="2.14.0.v20221117-1134"/>
-      <import feature="org.eclipse.emf.mwe2.runtime.sdk" version="2.14.0.v20221117-1134"/>
-      <import feature="org.eclipse.xtend.sdk" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.docs" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.examples" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.redist" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.runtime" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.sdk" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.ui" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.xbase" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.xtext.ui" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.xtext.xtext.ui.graph" version="2.31.0.v20230529-0659"/>
-      <import feature="org.eclipse.jdt" version="3.19.100.v20230605-0440"/>
-      <import feature="org.eclipse.m2e.feature" version="2.3.0.20230523-2033"/>
-      <import feature="org.eclipse.m2e.lemminx.feature" version="2.0.4.20230520-0934"/>
+      <import feature="org.eclipse.xtext.sdk" version="2.36.0.v20240825-0714"/>
    </requires>
 
    <plugin
          id="io.sarl.eclipse.devapp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.eclipse.examples"
+         version="0.0.0"/>
 
 </feature>

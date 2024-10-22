@@ -34,6 +34,7 @@ import org.eclipse.jdt.internal.ui.packageview.PackageExplorerLabelProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 @ImplementedBy(DefaultPackageExplorerLabelProviderBuilder.class)
 public interface IPackageExplorerLabelProviderBuilder {
 

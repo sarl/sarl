@@ -3,14 +3,14 @@
       id="io.sarl.eclipse.features.sre.janus"
       label="Janus SRE for Eclipse"
       version="0.14.0.qualifier"
-      plugin="io.sarl.eclipse">
+      plugin="io.sarl.eclipse.sre.janus">
 
    <description url="http://www.sarl.io/about/">
       Contains the SRE for being used in SARL Eclipse
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2023 SARL.io, the Original Authors and Main Authors
+      Copyright 2014-2024 SARL.io, the Original Authors and Main Authors
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -223,35 +223,26 @@
 
    <requires>
       <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.baseplatform" version="0.14.0.qualifier"/>
    </requires>
 
    <plugin
          id="io.sarl.eclipse.sre.janus"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.sre.janus.janus.kernel"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.sre.janus.janus.network"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
-         id="com.hazelcast"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         id="io.sarl.sre.janus.janus.kernel.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sre.janus.janus.network.source"
+         version="0.0.0"/>
 
 </feature>

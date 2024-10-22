@@ -37,7 +37,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -57,6 +56,7 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab implements ISreChangeListener {
 
 	private volatile SoftReference<Image> image;
@@ -193,7 +193,6 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 			//
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();

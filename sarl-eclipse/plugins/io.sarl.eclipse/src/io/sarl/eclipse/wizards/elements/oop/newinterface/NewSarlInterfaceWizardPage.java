@@ -32,8 +32,6 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
-import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 
 /**
  * Wizard page for creating a new SARL class.
@@ -43,6 +41,7 @@ import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class NewSarlInterfaceWizardPage extends AbstractNewSarlElementWizardPage {
 
 	private static final String IMAGE_HEADER =

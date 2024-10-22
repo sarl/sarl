@@ -40,6 +40,7 @@ import org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractExtraLanguagePropertyPage extends PropertyAndPreferencePage {
 
 	private AbstractGeneratorConfigurationBlock builderConfigurationBlock;

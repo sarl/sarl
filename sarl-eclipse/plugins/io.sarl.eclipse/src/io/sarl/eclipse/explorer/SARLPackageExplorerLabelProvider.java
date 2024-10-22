@@ -41,6 +41,7 @@ import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SARLPackageExplorerLabelProvider extends PackageExplorerLabelProvider {
 
 	/**

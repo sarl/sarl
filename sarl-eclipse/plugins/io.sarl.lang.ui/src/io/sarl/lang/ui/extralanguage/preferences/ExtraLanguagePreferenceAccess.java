@@ -28,7 +28,6 @@ import java.util.StringTokenizer;
 
 import com.google.inject.Inject;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
@@ -73,7 +72,7 @@ public class ExtraLanguagePreferenceAccess {
 	/** Change the preference accessor.
 	 *
 	 * <p>The parameter is a preference store implementation in order to have access to the correct preference set.
-	 * It is an implementation choice from {@link OptionsConfigurationBlock}.
+	 * It is an implementation choice from {@code OptionsConfigurationBlock}.
 	 *
 	 * @param preferenceStoreAccess the accessor.
 	 */

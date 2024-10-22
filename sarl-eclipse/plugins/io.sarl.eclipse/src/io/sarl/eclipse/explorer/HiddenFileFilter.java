@@ -21,10 +21,7 @@
 
 package io.sarl.eclipse.explorer;
 
-import java.io.File;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 

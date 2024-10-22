@@ -25,11 +25,9 @@ import com.google.inject.Inject;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.ui.util.OpenTypeHierarchyUtil;
 import org.eclipse.jdt.ui.actions.OpenTypeHierarchyAction;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -37,7 +35,6 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.util.jdt.IJavaElementFinder;
 
-import io.sarl.eclipse.util.AbstractSarlScriptInteractiveSelector.ElementDescription;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 
 /**
@@ -49,6 +46,7 @@ import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public class OpenTypeHierarchyHandler extends AbstractHandler {
 
 	@Inject
@@ -70,9 +68,9 @@ public class OpenTypeHierarchyHandler extends AbstractHandler {
 				if (selectedElement.element instanceof IJavaElement cvalue) {
 					realJavaElement = cvalue;
 				} else if (selectedElement.element instanceof XtendTypeDeclaration cvalue) {
-					final var jvmElement = this.sarlAssociations.getPrimaryJvmElement(cvalue.element);
-					if (jvmElement instanceof JvmIdentifiableElement cvalue) {
-						realJavaElement = this.javaElementFinder.findElementFor(cvalue);
+					final var jvmElement = this.sarlAssociations.getPrimaryJvmElement(cvalue);
+					if (jvmElement instanceof JvmIdentifiableElement cvalue0) {
+						realJavaElement = this.javaElementFinder.findElementFor(cvalue0);
 					}
 				}
 				if (realJavaElement != null) {

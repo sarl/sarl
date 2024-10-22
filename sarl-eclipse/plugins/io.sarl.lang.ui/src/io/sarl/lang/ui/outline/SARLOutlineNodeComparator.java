@@ -34,7 +34,6 @@ import static org.eclipse.xtext.common.types.TypesPackage.Literals.JVM_OPERATION
 import static org.eclipse.xtext.xtype.XtypePackage.Literals.XIMPORT_SECTION;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -50,6 +49,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLOutlineNodeComparator extends DefaultComparator {
 
 	private static final int SCRIPT_PRIORITY = 0;

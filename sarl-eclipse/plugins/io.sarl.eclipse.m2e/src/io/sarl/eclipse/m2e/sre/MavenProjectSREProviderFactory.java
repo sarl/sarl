@@ -24,12 +24,9 @@ package io.sarl.eclipse.m2e.sre;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.MavenPluginActivator;
-import org.eclipse.m2e.core.project.IMavenProjectFacade;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
@@ -46,6 +43,7 @@ import io.sarl.eclipse.runtime.SARLRuntime;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory {
 
 	/** Construct the factory.

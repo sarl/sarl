@@ -26,22 +26,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -63,7 +58,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -88,6 +82,7 @@ import io.sarl.lang.core.util.CliUtilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab implements ISreChangeListener {
 
 	private volatile SoftReference<Image> image;
@@ -242,7 +237,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		final var group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
 		this.agentNameTextField = SWTFactory.createSingleText(group, 1);
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent event) {
 				SARLAgentMainLaunchConfigurationTab.this.lastAgentNameError = null;
@@ -402,7 +396,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 *
 	 * @return the validity state.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isValidContextIdentifierType() {
 		return true;
 	}
@@ -411,7 +404,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 *
 	 * @return the validity state.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isValidLaunchOptions() {
 		return true;
 	}
@@ -531,7 +523,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			final var nameRef = new String[1];
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
-					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -588,7 +579,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		if (status.isOK()) {
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
-					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -617,7 +607,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			try {
 				final var res = new boolean[1];
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
-					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -679,7 +668,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			//
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();

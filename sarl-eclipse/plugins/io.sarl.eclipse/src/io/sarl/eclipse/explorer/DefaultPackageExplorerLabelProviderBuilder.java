@@ -40,6 +40,7 @@ import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
  * @since 0.6
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class DefaultPackageExplorerLabelProviderBuilder implements IPackageExplorerLabelProviderBuilder {
 
 	private Injector injector;

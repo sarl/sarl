@@ -28,19 +28,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Base64;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.google.common.io.Files;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -186,7 +181,6 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the status.
 	 * @throws Exception when error.
 	 */
-	@SuppressWarnings("static-method")
 	protected IStatus submit(Charset charset, String title, String body, String login, String password,
 			IProgressMonitor progress) throws Exception {
 		final var subMonitor = SubMonitor.convert(progress, 10);
@@ -299,7 +293,6 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the content.
 	 * @throws IOException if the content cannot be built.
 	 */
-	@SuppressWarnings("static-method")
 	protected String buildContent(String description, Charset charset) throws IOException {
 		final var fullContent = new StringBuilder();
 

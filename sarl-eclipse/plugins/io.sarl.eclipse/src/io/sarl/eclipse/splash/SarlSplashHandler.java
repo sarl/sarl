@@ -39,6 +39,7 @@ import io.sarl.lang.core.SARLVersion;
  * @mavenartifactid $ArtifactId$
  * @see io.sarl.lang.SARLConfig
  */
+@SuppressWarnings("restriction")
 public class SarlSplashHandler extends EclipseSplashHandler {
 
 	private static final String BETA_PNG = "icons/splash/beta-decoration.png"; //$NON-NLS-1$

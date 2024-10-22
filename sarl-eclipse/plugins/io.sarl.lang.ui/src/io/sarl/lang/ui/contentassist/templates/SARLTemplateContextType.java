@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLTemplateContextType extends XbaseTemplateContextType {
 
 	@Override

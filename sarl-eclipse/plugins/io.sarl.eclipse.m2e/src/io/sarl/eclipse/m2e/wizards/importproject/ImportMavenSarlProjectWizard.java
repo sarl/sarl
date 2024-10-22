@@ -21,14 +21,10 @@
 
 package io.sarl.eclipse.m2e.wizards.importproject;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -57,6 +53,7 @@ import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 
 	private MavenImportWizardPage mainPageBuffer;
@@ -98,7 +95,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 		}
 
 		final var importJob = createImportJob(projects);
-		final var globalJob;
+		final WorkspaceJob globalJob;
 
 		// XXX: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
 		// Solution: Create a simple project, and switch to a real SARL project.

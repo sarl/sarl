@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.m2e.utils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;

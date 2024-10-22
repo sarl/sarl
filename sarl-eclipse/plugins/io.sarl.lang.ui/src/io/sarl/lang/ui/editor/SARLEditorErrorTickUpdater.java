@@ -22,25 +22,18 @@
 package io.sarl.lang.ui.editor;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtend.ide.editor.XtendEditorErrorTickUpdater;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -58,6 +51,7 @@ import io.sarl.lang.ui.internal.LangActivator;
  * @mavenartifactid $ArtifactId$
  * @since 0.8.6
  */
+@SuppressWarnings("restriction")
 public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 
 	private static final String MARKER_TYPE = "org.eclipse.xtext.ui.editor.error"; //$NON-NLS-1$

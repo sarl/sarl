@@ -34,6 +34,7 @@ import org.eclipse.xtext.builder.impl.PersistentDataAwareDirtyResource;
  * @mavenartifactid $ArtifactId$
  * @see "https://github.com/sarl/sarl/issues/1115"
  */
+@SuppressWarnings("restriction")
 public class FixedPersistentDataAwareDirtyResource extends PersistentDataAwareDirtyResource {
 
 	@Override

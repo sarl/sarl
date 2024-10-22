@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2023 SARL.io, the Original Authors and Main Authors
+      Copyright 2014-2024 SARL.io, the Original Authors and Main Authors
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -221,120 +221,140 @@
       <update label="SARL Snapshots" url="http://updates.sarl.io/snapshots/"/>
    </url>
 
-   <requires>
-      <import feature="io.sarl.eclipse.features.baseplatform" version="0.14.0.qualifier"/>
-   </requires>
+   <includes
+         id="org.eclipse.platform"
+         version="0.0.0"/>
 
-   <plugin
-         id="io.sarl.apputils.bootiqueapp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.jdt"
+         version="0.0.0"/>
 
-   <plugin
-         id="io.sarl.baseutils.afc.extension"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.e4.rcp"
+         version="0.0.0"/>
 
-   <plugin
-         id="io.sarl.lang.batchcompiler"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.epp.package.java.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="io.sarl.lang.compiler"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.equinox.core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.equinox.p2.core.feature"
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.lang.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.sdk.api.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.sdk.api.naming"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.sdk.api.probing"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.sdk.api.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.sdk.sdk"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.lang.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.lang.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.eclipse"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.eclipse.m2e"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.xtend.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         id="io.sarl.eclipse.pythongenerator"
+         version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.emf.mwe2.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         id="io.sarl.lang.compiler"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.ide"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.pythongenerator"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.ui"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.core"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.core.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.experienceindex"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.experienceindex.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.naming"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.naming.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.probing"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.probing.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.util"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.util.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.sdk"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.sdk.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.baseutils.afc.extension"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.apputils.bootiqueapp"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.apputils.bootiqueapp.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.baseutils.afc.extension.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.eclipse.experienceindex"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.compiler.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.core.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.lang.pythongenerator.source"
+         version="0.0.0"/>
 
 </feature>

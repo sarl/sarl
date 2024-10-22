@@ -49,6 +49,7 @@ import io.sarl.eclipse.wizards.sreinstall.AbstractSREInstallPage;
  * @mavenartifactid $ArtifactId$
  * @since 0.13
  */
+@SuppressWarnings("restriction")
 public class JanusSREPage extends AbstractSREInstallPage {
 
 	private Text sreLibraryTextField;

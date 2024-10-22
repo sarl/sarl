@@ -32,6 +32,7 @@ import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingStyles;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public interface SARLHighlightingStyles extends XtendHighlightingStyles {
 
 	/** Style for a call to a capacity's method.

@@ -42,6 +42,7 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public final class ModifierRemoveModification extends SARLSemanticModification {
 
 	private final String modifier;

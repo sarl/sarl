@@ -25,7 +25,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.outline.XtendOutlinePage;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -41,6 +40,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLOutlinePage extends XtendOutlinePage {
 
 	@Override

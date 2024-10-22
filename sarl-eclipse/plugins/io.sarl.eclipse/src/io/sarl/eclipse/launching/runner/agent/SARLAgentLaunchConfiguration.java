@@ -23,20 +23,17 @@ package io.sarl.eclipse.launching.runner.agent;
 
 import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
 
-import java.util.Map;
 import java.util.Objects;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
-import io.sarl.eclipse.launching.config.RootContextIdentifierType;
 import io.sarl.eclipse.launching.runner.general.AbstractLaunchProcess;
 import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
 import io.sarl.eclipse.launching.runner.general.ILaunchProcess;

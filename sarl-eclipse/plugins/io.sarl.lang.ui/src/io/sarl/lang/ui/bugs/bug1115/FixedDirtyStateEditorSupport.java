@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.bugs.bug1115;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Queue;
 
 import com.google.common.collect.Maps;
@@ -49,6 +48,7 @@ import io.sarl.lang.util.ReflectField;
  * @mavenartifactid $ArtifactId$
  * @see "https://github.com/sarl/sarl/issues/1115"
  */
+@SuppressWarnings("restriction")
 public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorSupport {
 
 	private static final ISchedulingRule SCHEDULING_RULE = ReflectField.of(FixedDirtyStateEditorSupport.class, ISchedulingRule.class, "SCHEDULING_RULE").get(); //$NON-NLS-1$
@@ -84,14 +84,13 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 			super(rule);
 		}
 
-		/** Re-implementation to avoid any error regarding the fact that the URI of the delta cannot be retreived.
+		/** Re-implementation to avoid any error regarding the fact that the URI of the delta cannot be retrieved.
 		 */
-		@SuppressWarnings("synthetic-access")
 		@Override
 		protected Pair<IResourceDescription.Event, Integer> mergePendingDeltas() {
-			var uriToDelta = Maps.newLinkedHashMap();
+			var uriToDelta = Maps.<URI, IResourceDescription.Delta>newLinkedHashMap();
 			@SuppressWarnings("unchecked")
-			var iter = this.hpendingChanges.get(this).iterator();
+			final Iterator<IResourceDescription.Delta> iter = this.hpendingChanges.get(this).iterator();
 			var size = 0;
 			while(iter.hasNext()) {
 				var delta = iter.next();

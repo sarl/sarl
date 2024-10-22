@@ -32,15 +32,11 @@ import org.eclipse.xtend.ide.hover.XtendHoverSignatureProvider;
 import org.eclipse.xtext.common.types.JvmAnyTypeReference;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmField;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XConstructorCall;
-import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 
 import io.sarl.lang.sarl.SarlAgent;
@@ -67,6 +63,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
+@SuppressWarnings("restriction")
 public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 
 	@Inject
@@ -83,7 +80,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlAgent agent, boolean typeAtEnd) {
 		return agent.getName();
 	}
@@ -94,7 +90,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlBehavior behavior, boolean typeAtEnd) {
 		return behavior.getName();
 	}
@@ -105,7 +100,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlCapacity capacity, boolean typeAtEnd) {
 		return capacity.getName();
 	}
@@ -116,7 +110,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlSkill skill, boolean typeAtEnd) {
 		return skill.getName();
 	}
@@ -127,7 +120,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlEvent event, boolean typeAtEnd) {
 		return event.getName();
 	}
@@ -138,7 +130,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlSpace space, boolean typeAtEnd) {
 		return space.getName();
 	}
@@ -149,7 +140,6 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	 * @param typeAtEnd ignored
 	 * @return the signature
 	 */
-	@SuppressWarnings("static-method")
 	protected String _signature(SarlArtifact artifact, boolean typeAtEnd) {
 		return artifact.getName();
 	}

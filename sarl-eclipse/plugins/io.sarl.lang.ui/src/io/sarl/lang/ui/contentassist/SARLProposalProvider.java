@@ -27,21 +27,15 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Assignment;
@@ -53,16 +47,12 @@ import org.eclipse.xtext.common.types.xtext.ui.TypeMatchFilters;
 import org.eclipse.xtext.conversion.IValueConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.nodemodel.ILeafNode;
-import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
-import org.eclipse.xtext.util.Pair;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
 import org.eclipse.xtext.xbase.typesystem.IExpressionScope;
-import org.eclipse.xtext.xbase.ui.contentassist.XbaseReferenceProposalCreator;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -98,6 +88,7 @@ import io.sarl.lang.ui.labeling.SARLImages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Inject
@@ -599,7 +590,6 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		 * @param context the content assit context.
 		 * @param searchFor the type of elements to search for.
 		 */
-		@SuppressWarnings("synthetic-access")
 		ExtensionFilter(ContentAssistContext context, int searchFor) {
 			super(searchFor);
 			this.modelFullName = SARLProposalProvider.this.qualifiedNameProvider.getFullyQualifiedName(

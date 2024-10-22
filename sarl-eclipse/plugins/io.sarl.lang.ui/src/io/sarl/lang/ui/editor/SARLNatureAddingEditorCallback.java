@@ -22,9 +22,7 @@
 package io.sarl.lang.ui.editor;
 
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.builder.nature.ToggleXtextNatureCommand;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -39,6 +37,7 @@ import org.eclipse.xtext.ui.resource.UriValidator;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public class SARLNatureAddingEditorCallback extends IXtextEditorCallback.NullImpl {
 
 	@Inject

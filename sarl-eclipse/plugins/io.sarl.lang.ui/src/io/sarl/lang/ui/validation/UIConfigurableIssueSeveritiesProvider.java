@@ -30,7 +30,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
-import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.xbase.ui.validation.XbaseIssueSeveritiesProvider;
 
@@ -53,6 +52,7 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * @since 0.5
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesProvider implements IConfigurableIssueSeveritiesProvider {
 
 	private final Map<String, Severity> overridingSeverities = Collections.synchronizedMap(new HashMap<>());

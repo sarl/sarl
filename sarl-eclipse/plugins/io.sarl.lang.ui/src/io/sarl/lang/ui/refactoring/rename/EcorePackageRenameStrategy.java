@@ -51,6 +51,7 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider.IInitializable {
 
 	/** Pattern for a package name.

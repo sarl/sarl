@@ -49,6 +49,7 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class ApplicationLaunchShortcut2 extends JavaApplicationLaunchShortcut {
 
 	@Inject
@@ -81,7 +82,6 @@ public class ApplicationLaunchShortcut2 extends JavaApplicationLaunchShortcut {
 	 *
 	 * @return the launch manager.
 	 */
-	@SuppressWarnings("static-method")
 	protected ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}

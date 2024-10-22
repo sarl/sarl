@@ -29,11 +29,8 @@ import java.util.Objects;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.EcoreUtil2;
@@ -51,6 +48,7 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParticipant {
 
 	@Inject

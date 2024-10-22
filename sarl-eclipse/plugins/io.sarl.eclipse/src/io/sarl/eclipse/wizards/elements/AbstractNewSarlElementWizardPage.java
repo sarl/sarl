@@ -31,9 +31,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -41,7 +39,6 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -51,16 +48,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
@@ -71,22 +63,17 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogFieldGroup;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
@@ -104,7 +91,6 @@ import io.sarl.eclipse.util.Jdt2Ecore.ActionBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.ConstructorBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
-import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
@@ -120,6 +106,7 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage {
 
 	/** filename extension for the Java code.
@@ -431,7 +418,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
-	@SuppressWarnings("static-method")
 	protected String getInvalidSubtypeErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -446,7 +432,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
-	@SuppressWarnings("static-method")
 	protected String getInvalidInterfaceTypeErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -461,7 +446,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
-	@SuppressWarnings("static-method")
 	protected String getMissedSuperInterfaceErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -666,7 +650,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return {@code true} if the type needs a super-interface;
 	 * {@code false} if not.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isSuperInterfaceNeeded() {
 		return false;
 	}
@@ -677,7 +660,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
-	@SuppressWarnings("static-method")
 	protected IType getRootSuperType() throws JavaModelException {
 		throw new UnsupportedOperationException();
 	}
@@ -688,7 +670,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
-	@SuppressWarnings("static-method")
 	protected IType getRootSuperInterface() throws JavaModelException {
 		throw new UnsupportedOperationException();
 	}
@@ -809,7 +790,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					throws JavaModelException {
 		final var typeFinder = getTypeFinder();
 
-		final var baseConstructors = Maps.<ActionParameterTypes, IMethod>newTreeMap((Comparator<ActionParameterTypes>) null);
+		final Map<ActionParameterTypes, IMethod> baseConstructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		this.jdt2sarl.populateInheritanceContext(
 				typeFinder,
 				null, null, null, null,
@@ -1162,7 +1143,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param multi indicates if the selection could be done on multiple elements.
 	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
-	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
 			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
@@ -1205,7 +1185,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param multi indicates if the selection could be done on multiple elements.
 	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
-	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(
 			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {

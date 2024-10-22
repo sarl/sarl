@@ -21,17 +21,13 @@
 
 package io.sarl.lang.ui.tasks;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.xtext.preferences.IPreferenceValues;
 import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
 import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.tasks.PreferenceTaskTagProvider;
-import org.eclipse.xtext.tasks.TaskTag;
 import org.eclipse.xtext.tasks.TaskTags;
 
 /** Provider for task tags.
@@ -41,6 +37,7 @@ import org.eclipse.xtext.tasks.TaskTags;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SarlTaskTagProvider implements ITaskTagProvider {
 
 	@Inject

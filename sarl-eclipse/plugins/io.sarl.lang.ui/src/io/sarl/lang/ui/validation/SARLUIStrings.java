@@ -21,8 +21,6 @@
 
 package io.sarl.lang.ui.validation;
 
-import java.util.Iterator;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.jface.preference.JFacePreferences;
@@ -54,6 +52,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @since 0.5
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SARLUIStrings extends UIStrings {
 
 	/**

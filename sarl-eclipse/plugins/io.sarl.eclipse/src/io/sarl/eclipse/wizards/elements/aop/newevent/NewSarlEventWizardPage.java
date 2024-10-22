@@ -38,8 +38,6 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
-import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.core.Event;
 
 /**
@@ -50,6 +48,7 @@ import io.sarl.lang.core.Event;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
 	/** Construct a wizard page.

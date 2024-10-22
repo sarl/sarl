@@ -21,15 +21,15 @@
 
 package io.sarl.eclipse.m2e.config;
 
+import static io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures;
+
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -47,7 +47,6 @@ import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
-import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.MavenJdtPlugin;
 import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
@@ -67,6 +66,7 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
 	private static final String ECLIPSE_PLUGIN_PACKAGING = "eclipse-plugin"; //$NON-NLS-1$
@@ -79,7 +79,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
-	@SuppressWarnings("static-method")
 	protected void addPreferences(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
@@ -130,7 +129,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
-	@SuppressWarnings("static-method")
 	protected void removeSourceFolder(IPath path, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		final var subMonitor = SubMonitor.convert(monitor, 3);
 
@@ -427,7 +425,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 *
 	 * @param classpath the classpath to update.
 	 */
-	@SuppressWarnings("static-method")
 	protected void removeSarlLibraries(IClasspathDescriptor classpath) {
 		classpath.removeEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 	}
@@ -436,7 +433,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 *
 	 * @param classpath the classpath to update.
 	 */
-	@SuppressWarnings("static-method")
 	protected void addSarlLibraries(IClasspathDescriptor classpath) {
 		final var entry = JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 		classpath.addEntry(entry);
@@ -479,7 +475,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @return {@code true} if the facade is for an Eclipse plugin.
 	 * @since 0.11
 	 */
-	@SuppressWarnings("static-method")
 	public boolean isEclipsePluginPackaging(IMavenProjectFacade facade) {
 		return ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(facade.getPackaging());
 	}
@@ -499,7 +494,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			forceMavenCompilerConfiguration(facade, config);
 			subMonitor.worked(1);
 
-			io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
+			addSarlNatures(
 					project,
 					subMonitor.newChild(1));
 			subMonitor.worked(1);

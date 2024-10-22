@@ -23,9 +23,7 @@ package io.sarl.eclipse.sre.janus.network;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
@@ -33,10 +31,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
-import org.osgi.framework.Bundle;
 
 import io.sarl.eclipse.util.BundleUtil;
-import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 
 /** Classpath provider dedicated to the Janus networking features.
  *

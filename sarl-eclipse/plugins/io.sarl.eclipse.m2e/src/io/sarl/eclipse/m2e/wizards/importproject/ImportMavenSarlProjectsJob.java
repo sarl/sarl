@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.m2e.core.project.IMavenProjectImportResult;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.ui.internal.Messages;
@@ -59,6 +58,7 @@ import org.eclipse.ui.IWorkingSet;
  * @since 0.8
  * @see ImportMavenProjectsJob
  */
+@SuppressWarnings("restriction")
 class ImportMavenSarlProjectsJob extends WorkspaceJob {
 
 	private final List<IWorkingSet> workingSets;

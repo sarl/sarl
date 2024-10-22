@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2023 SARL.io, the Original Authors and Main Authors
+      Copyright 2014-2024 SARL.io, the Original Authors and Main Authors
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -223,13 +223,15 @@
 
    <requires>
       <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sre.janus" version="0.14.0.qualifier"/>
    </requires>
 
    <plugin
          id="io.sarl.eclipse.ideapp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.eclipse.examples"
+         version="0.0.0"/>
 
 </feature>

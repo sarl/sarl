@@ -24,10 +24,8 @@ package io.sarl.lang.ui.compiler;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IStorage;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
-import org.eclipse.xtext.util.Pair;
 
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;

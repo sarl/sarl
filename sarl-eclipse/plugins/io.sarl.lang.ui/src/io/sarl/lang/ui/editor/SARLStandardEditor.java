@@ -21,7 +21,6 @@
 
 package io.sarl.lang.ui.editor;
 
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -35,6 +34,7 @@ import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public class SARLStandardEditor extends SARLEditor {
 
 	@Override

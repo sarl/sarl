@@ -26,7 +26,6 @@ import static io.sarl.eclipse.examples.wizard.SarlExampleLaunchConfiguration.rea
 import static io.sarl.eclipse.examples.wizard.XmlUtils.readXmlContent;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
@@ -42,7 +41,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -50,7 +48,6 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard;
 import org.eclipse.jdt.launching.AbstractVMInstall;
-import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -58,13 +55,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.intro.IIntroManager;
-import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.StringInputStream;
 import org.osgi.framework.Version;
-import org.w3c.dom.Document;
 
 import io.sarl.eclipse.examples.SARLExamplePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
@@ -85,6 +79,7 @@ import io.sarl.lang.core.SARLVersion;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	@Generated("maven")

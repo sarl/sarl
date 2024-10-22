@@ -80,8 +80,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
@@ -98,6 +96,7 @@ import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SREsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, ISelectionProvider {
 
 	/**
@@ -484,7 +483,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	@SuppressWarnings("unchecked")
 	protected void copySRE() {
 		final var selection = (IStructuredSelection) this.sresList.getSelection();
-		final var it = selection.iterator();
+		final Iterator<ISREInstall> it = selection.iterator();
 
 		final var newEntries = new ArrayList<ISREInstall>();
 		while (it.hasNext()) {
@@ -522,7 +521,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	protected void removeSREs() {
 		final var selection = (IStructuredSelection) this.sresList.getSelection();
 		final var vms = new ISREInstall[selection.size()];
-		final var iter = selection.iterator();
+		final Iterator<ISREInstall> iter = selection.iterator();
 		var i = 0;
 		while (iter.hasNext()) {
 			vms[i] = iter.next();
@@ -833,7 +832,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.editButton.setEnabled(selectionCount == 1);
 		this.copyButton.setEnabled(selectionCount > 0);
 		if (selectionCount > 0 && selectionCount <= this.sresList.getTable().getItemCount()) {
-			final var iterator = selection.iterator();
+			final Iterator<ISREInstall> iterator = selection.iterator();
 			while (iterator.hasNext()) {
 				final var install = iterator.next();
 				if (SARLRuntime.isPlatformSRE(install)) {

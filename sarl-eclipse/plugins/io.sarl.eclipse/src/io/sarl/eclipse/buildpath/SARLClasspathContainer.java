@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.osgi.framework.Bundle;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.BundleUtil;

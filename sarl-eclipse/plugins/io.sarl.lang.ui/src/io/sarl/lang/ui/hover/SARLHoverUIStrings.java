@@ -41,6 +41,7 @@ import io.sarl.lang.ui.validation.SARLUIStrings;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
+@SuppressWarnings("restriction")
 public class SARLHoverUIStrings extends HoverUiStrings {
 
 	@Inject

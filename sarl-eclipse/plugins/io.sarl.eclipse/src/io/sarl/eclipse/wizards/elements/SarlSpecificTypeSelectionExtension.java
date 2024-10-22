@@ -42,6 +42,7 @@ import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SarlSpecificTypeSelectionExtension extends TypeSelectionExtension
 		implements ITypeInfoImageProvider {
 

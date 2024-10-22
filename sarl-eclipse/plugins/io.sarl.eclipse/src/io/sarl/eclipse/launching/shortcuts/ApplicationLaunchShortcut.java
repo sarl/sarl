@@ -42,6 +42,7 @@ import io.sarl.lang.sarl.SarlClass;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class ApplicationLaunchShortcut extends AbstractSarlLaunchShortcut<SarlClass, Object> {
 
 	@Inject

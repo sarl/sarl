@@ -39,7 +39,6 @@ import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 import io.sarl.eclipse.sre.janus.buildpath.JanusClasspathContainer;
 import io.sarl.eclipse.sre.janus.buildpath.JanusClasspathContainerInitializer;
-import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.lang.core.SREBootstrap;
 import io.sarl.lang.core.util.CliUtilities;
 import io.sarl.sre.janus.boot.Boot;

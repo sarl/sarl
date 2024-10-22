@@ -45,6 +45,7 @@ import org.eclipse.xtext.xtype.XtypePackage;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLUIValidator extends XtendUIValidator {
 
 	@Override

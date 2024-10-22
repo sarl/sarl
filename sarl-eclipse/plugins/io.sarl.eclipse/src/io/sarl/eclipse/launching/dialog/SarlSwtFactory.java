@@ -23,10 +23,8 @@ package io.sarl.eclipse.launching.dialog;
 
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,6 +40,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public final class SarlSwtFactory extends SWTFactory {
 
 	private static final int DEFAULT_INCREMENT = 1;

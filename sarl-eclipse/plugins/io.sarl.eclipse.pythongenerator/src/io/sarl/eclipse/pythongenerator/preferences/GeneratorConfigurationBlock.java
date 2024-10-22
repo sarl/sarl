@@ -39,6 +39,7 @@ import io.sarl.lang.ui.extralanguage.properties.AbstractGeneratorConfigurationBl
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class GeneratorConfigurationBlock extends AbstractGeneratorConfigurationBlock {
 
 	private static final String PYTHON_ICON = "icons/python.png"; //$NON-NLS-1$

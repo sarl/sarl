@@ -26,7 +26,6 @@ import com.google.inject.Singleton;
 
 import io.sarl.eclipse.pythongenerator.configuration.PyGeneratorUiConfigurationProvider;
 import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
-import io.sarl.lang.pythongenerator.configuration.IPyGeneratorConfigurationProvider;
 import io.sarl.lang.pythongenerator.generator.PyGenerator;
 import io.sarl.lang.ui.extralanguage.compiler.AbstractExtraLanguageGeneratorProvider;
 

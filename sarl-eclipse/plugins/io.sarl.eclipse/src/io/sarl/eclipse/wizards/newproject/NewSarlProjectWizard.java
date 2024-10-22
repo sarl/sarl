@@ -32,8 +32,6 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import com.google.common.io.Resources;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -42,7 +40,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
@@ -56,10 +53,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.xtext.util.RuntimeIOException;
@@ -69,7 +63,6 @@ import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.SARLVersion;
@@ -85,6 +78,7 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
 	/** The base name of the file that contains a template of a pom file.
@@ -172,7 +166,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	private static String buildInvalidOutputPathMessageFragment(IJavaProject javaProject) {
-		final varsourceFolders = new StringBuilder();
+		final var sourceFolders = new StringBuilder();
 		try {
 			for (final var entry : javaProject.getRawClasspath()) {
 				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
@@ -332,7 +326,6 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 *
 	 * @return the default group id, never {@code null} nor empty string.
 	 */
-	@SuppressWarnings("static-method")
 	protected String getDefaultMavenGroupId() {
 		final var userdomain = System.getenv("userdomain"); //$NON-NLS-1$
 		if (Strings.isNullOrEmpty(userdomain)) {

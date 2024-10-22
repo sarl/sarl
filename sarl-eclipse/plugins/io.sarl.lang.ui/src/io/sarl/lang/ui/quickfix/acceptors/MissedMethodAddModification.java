@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -40,37 +39,25 @@ import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
-import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.document.DocumentSourceAppender.Factory.OptionalParameters;
 
 import io.sarl.lang.core.annotation.FiredEvent;
 import io.sarl.lang.core.annotation.SyntheticMember;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
-import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.sarl.actionprototype.InferredPrototype;
-import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
 import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
@@ -85,6 +72,7 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public final class MissedMethodAddModification extends SARLSemanticModification {
 
 	private static final String GENERATED_NAME = "Generated"; //$NON-NLS-1$

@@ -21,15 +21,12 @@
 
 package io.sarl.eclipse.wizards.sarlapp;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -70,6 +67,7 @@ import io.sarl.eclipse.launching.runner.general.SrePathUtils.ExtraClassPathProvi
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 
 	@Inject

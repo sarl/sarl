@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 
@@ -43,6 +42,7 @@ import io.sarl.eclipse.runtime.SREConfigurationBlock;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	/** Identifier of the property page.
@@ -146,7 +146,6 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	 * @param useSpecificOptions indicates if the specific options must be used.
 	 * @return {@code true} if the property was saved successfully.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean saveProjectSpecificOptions(IProject project, boolean useSpecificOptions) {
 		if (project != null) {
 			try {

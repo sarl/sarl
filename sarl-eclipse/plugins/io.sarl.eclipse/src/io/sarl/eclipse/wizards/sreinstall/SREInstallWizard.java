@@ -23,12 +23,10 @@ package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.Wizard;
 
@@ -140,7 +138,7 @@ public abstract class SREInstallWizard extends Wizard {
 
 	private static boolean isInstance(String classname, ISREInstall sre) {
 		if (!Strings.isNullOrEmpty(classname)) {
-			var type = sre.getClass();
+			Class<?> type = sre.getClass();
 			while (type != null && !Object.class.equals(type)) {
 				if (classname.equals(type.getName())) {
 					return true;

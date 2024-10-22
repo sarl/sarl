@@ -39,6 +39,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SarlParameterBuilder extends XtendParameterBuilder {
 
 	@Inject

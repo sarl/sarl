@@ -23,9 +23,7 @@ package io.sarl.eclipse.pythongenerator.configuration;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 import io.sarl.lang.pythongenerator.configuration.PyGeneratorConfiguration;

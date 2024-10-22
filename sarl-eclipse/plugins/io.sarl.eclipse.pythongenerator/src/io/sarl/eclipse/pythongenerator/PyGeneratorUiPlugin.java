@@ -32,6 +32,8 @@ import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator.ExtraLanguageSupportModule;
+
 /**
  * Utility functions for the plugin.
  *
@@ -40,7 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class PyGeneratorUiPlugin extends AbstractUIPlugin {
+public class PyGeneratorUiPlugin extends AbstractUIPlugin implements ExtraLanguageSupportModule {
 
 	/** Identifier of the plugin.
 	 *
@@ -108,7 +110,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
-		v descriptor = getImageRegistry().getDescriptor(imagePath);
+		var descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath).orElse(null);
 			if (descriptor != null) {
@@ -124,7 +126,6 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
 		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
@@ -134,6 +135,11 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin {
 			message = cause.getClass().getSimpleName();
 		}
 		return new Status(severity, PLUGIN_ID, message, cause);
+	}
+
+	@Override
+	public void logException(Throwable exception) {
+		getLog().log(createStatus(Status.ERROR, exception));
 	}
 
 }

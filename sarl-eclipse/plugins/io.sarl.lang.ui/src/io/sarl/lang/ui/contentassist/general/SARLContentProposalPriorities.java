@@ -39,6 +39,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.XbaseContentProposalPriorities;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SARLContentProposalPriorities extends XbaseContentProposalPriorities {
 
 	/** Priority for the contextual keywords, such as "it".

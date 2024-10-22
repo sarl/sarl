@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.ui.launching.JavaElementDelegateMainLaunch;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SarlJavaElementDelegateMainLaunch extends JavaElementDelegateMainLaunch {
 	//
 }

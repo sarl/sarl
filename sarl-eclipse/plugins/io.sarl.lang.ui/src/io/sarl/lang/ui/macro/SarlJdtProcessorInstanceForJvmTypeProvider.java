@@ -39,6 +39,7 @@ import io.sarl.lang.macro.SarlProcessorInstanceForJvmTypeProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
+@SuppressWarnings("restriction")
 public class SarlJdtProcessorInstanceForJvmTypeProvider extends JdtBasedProcessorProvider {
 
 	@Inject

@@ -37,6 +37,7 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLRenameStrategyProvider extends DefaultRenameStrategyProvider {
 
 	@Inject

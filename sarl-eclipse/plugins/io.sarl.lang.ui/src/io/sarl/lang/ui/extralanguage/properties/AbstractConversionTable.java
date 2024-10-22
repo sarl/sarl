@@ -187,7 +187,6 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 *
 	 * @return the introduction message, or {@code null} if there is no introduction message.
 	 */
-	@SuppressWarnings("static-method")
 	protected String getIntroductionLabel() {
 		return null;
 	}
@@ -197,6 +196,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * @param parentComposite the parent.
 	 * @param settings the dialog settings.
 	 */
+	@SuppressWarnings("restriction")
 	public void doCreate(Composite parentComposite, IDialogSettings settings) {
 		// Introduction
 		final var introductionMessage = getIntroductionLabel();
@@ -329,6 +329,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 */
 	protected CellEditor createClassCellEditor() {
 		return new DialogCellEditor(getControl()) {
+			@SuppressWarnings("restriction")
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
 				final var dialog = new OpenTypeSelectionDialog(
@@ -467,7 +468,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	protected void removeCurrentTypeConversion() {
 		final var selection = this.list.getStructuredSelection();
 		final var types = new String[selection.size()];
-		final var iter = selection.iterator();
+		final Iterator<ConversionMapping> iter = selection.iterator();
 		int i = 0;
 		while (iter.hasNext()) {
 			types[i] = iter.next().getSource();
@@ -484,7 +485,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		if (index > 0) {
 			final var endIndex = index + selection.size() - 1;
 			for (var i = 0; i < selection.size(); ++i) {
-				finalvar next = this.conversions.remove(endIndex);
+				final var next = this.conversions.remove(endIndex);
 				this.conversions.addFirst(next);
 			}
 			refreshListUI();
@@ -949,7 +950,6 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		 *
 		 * @return the default value.
 		 */
-		@SuppressWarnings("static-method")
 		protected String createDefaultValue() {
 			return new String();
 		}

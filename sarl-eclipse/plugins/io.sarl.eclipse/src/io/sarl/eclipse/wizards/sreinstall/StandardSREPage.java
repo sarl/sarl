@@ -59,6 +59,7 @@ import io.sarl.eclipse.util.Utilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class StandardSREPage extends AbstractSREInstallPage {
 
 	private Text sreLibraryTextField;

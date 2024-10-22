@@ -23,7 +23,6 @@ package io.sarl.lang.ui.codemining;
 
 import java.text.MessageFormat;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
@@ -33,7 +32,6 @@ import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.BadLocationException;
@@ -50,11 +48,8 @@ import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
@@ -78,7 +73,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.services.SARLGrammarAccess.AOPMemberElements;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.SARLUiPlugin;
 import io.sarl.lang.util.Utils;
@@ -97,6 +91,7 @@ import io.sarl.lang.util.Utils;
  * @since 0.8
  * @see "https://blogs.itemis.com/en/code-mining-support-in-xtext"
  */
+@SuppressWarnings("restriction")
 public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Inject
@@ -134,7 +129,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		if (this.codeminingPreferences.isCodeminingEnabled()) {
 			final Supplier<List<? extends ICodeMining>> task = () -> {
 				final CancelableUnitOfWork<List<ICodeMining>, XtextResource> uow = new CancelableUnitOfWork<>() {
-					@SuppressWarnings("synthetic-access")
 					@Override
 					public List<ICodeMining> exec(XtextResource resource, CancelIndicator uowCancelIndicator) throws Exception {
 						final var indicator = new CombinedCancelIndicator(monitor, uowCancelIndicator);
@@ -400,7 +394,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the node or {@code null} if no node found.
 	 * @since 0.12
 	 */
-	@SuppressWarnings("static-method")
 	protected INode findNode(EObject element, Predicate<EObject> reference) {
 		assert element != null;
 		assert reference != null;
@@ -428,7 +421,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
 	 * @since 0.12
 	 */
-	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor, Predicate<EObject> grammarEndAnchor) {
 		final var node = NodeModelUtils.findActualNodeFor(element);
 		assert grammarBeginAnchor != null;
@@ -469,7 +461,6 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
 	 * @since 0.12
 	 */
-	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor,
 			Predicate<Keyword> grammarContinuationAnchor, Predicate<EObject> grammarEndAnchor) {
 		final var node = NodeModelUtils.findActualNodeFor(element);

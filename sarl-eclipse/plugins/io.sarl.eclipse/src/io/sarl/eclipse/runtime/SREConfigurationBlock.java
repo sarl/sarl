@@ -26,11 +26,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.MoreObjects;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.internal.ui.SWTFactory;
@@ -60,6 +58,7 @@ import io.sarl.eclipse.preferences.SREsPreferencePage;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SREConfigurationBlock {
 
 	/** Property name for the SRE configuration.
@@ -170,7 +169,7 @@ public class SREConfigurationBlock {
 			final var event = new PropertyChangeEvent(this,
 					PROPERTY_SRE_CONFIGURATION, null,
 					getSelectedSRE());
-			finalvar listeners = this.listeners.getListeners();
+			final var listeners = this.listeners.getListeners();
 			for (var i = 0; i < listeners.length; i++) {
 				final var listener = (IPropertyChangeListener) listeners[i];
 				listener.propertyChange(event);

@@ -22,22 +22,17 @@
 package io.sarl.eclipse.runtime;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.SoftReference;
+import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
 import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -45,7 +40,6 @@ import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -54,8 +48,6 @@ import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities;
@@ -90,6 +82,7 @@ import io.sarl.eclipse.util.Utilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
@@ -457,7 +450,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 							URL javadoc = null;
 							try {
 								final var urlTxt = libraryNode.getAttribute(SREXmlPreferenceConstants.XML_JAVADOC_PATH);
-								javadoc = new URL(urlTxt);
+								javadoc = new URI(urlTxt).toURL();
 							} catch (Throwable exception) {
 								//
 							}

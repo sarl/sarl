@@ -25,13 +25,9 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -42,8 +38,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -51,7 +45,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.jarpackager.AbstractJarDestinationWizardPage;
@@ -77,7 +70,6 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.jarpackager.JarPackageData;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.resource.JFaceResources;
@@ -223,7 +215,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 		fLauchConfigurationModel.addAll(Arrays.asList(getLaunchConfigurations()));
 		var names= new String[fLauchConfigurationModel.size()];
-		for (var i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
+		for (int i = 0, size = fLauchConfigurationModel.size(); i < size; ++i) {
 			LaunchConfigurationElement element= fLauchConfigurationModel.get(i);
 			names[i]= element.getLaunchConfigurationName();
 		}
@@ -603,7 +595,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		}
 
 		var result= new ArrayList<IJavaProject>();
-		for (var i= 0, size= projectNames.size(); i < size; i++) {
+		for (int i = 0, size = projectNames.size(); i < size; ++i) {
 			var name= projectNames.get(i);
 			var project= getJavaProject(name);
 			if (project != null)
@@ -809,7 +801,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	public void dispose() {
 		super.dispose();
 		if (fLauchConfigurationModel != null) {
-			for (var i= 0, size= fLauchConfigurationModel.size(); i < size; i++) {
+			for (int i = 0, size = fLauchConfigurationModel.size(); i < size; ++i) {
 				LaunchConfigurationElement element= fLauchConfigurationModel.get(i);
 				element.dispose();
 			}

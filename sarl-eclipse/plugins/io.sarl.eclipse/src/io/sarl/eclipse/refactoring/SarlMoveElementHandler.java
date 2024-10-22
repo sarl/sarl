@@ -28,7 +28,6 @@ import com.google.inject.Provider;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtend.core.xtend.AnonymousClass;
@@ -38,12 +37,8 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
 import org.eclipse.xtext.ui.refactoring.ui.SyncUtil;
@@ -74,6 +69,7 @@ import io.sarl.lang.sarl.SarlSpace;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public class SarlMoveElementHandler extends AbstractHandler {
 
 	@Inject
@@ -186,7 +182,6 @@ public class SarlMoveElementHandler extends AbstractHandler {
 		return document.<XtextResource>priorityReadOnly(function);
 	}
 
-	@SuppressWarnings("static-method")
 	private XtendMember findSemanticObject(XtextResource resource, ITextSelection selection) {
 		final var parseResult = resource.getParseResult();
 		if (parseResult != null) {
@@ -222,7 +217,6 @@ public class SarlMoveElementHandler extends AbstractHandler {
 	 * @param element the element to move.
 	 * @param shell the UI shell.
 	 */
-	@SuppressWarnings("static-method")
 	protected void showUnsupportedElementError(XtendMember element, Shell shell) {
 		final var typeName = getTypeName(element);
 		SARLEclipsePlugin.getDefault().openError(shell,

@@ -21,7 +21,7 @@
 
 package io.sarl.eclipse.launching.runner.general;
 
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -73,8 +73,8 @@ public class EmbeddedNotModularVMRunner extends AbstractEmbeddedVMRunner {
 					path = path + SLASH;
 				}
 				try {
-					return new URL(URISchemeType.FILE.name(), null, path);
-				} catch (MalformedURLException e) {
+					return new URI(URISchemeType.FILE.name(), null, path, null).toURL();
+				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			});

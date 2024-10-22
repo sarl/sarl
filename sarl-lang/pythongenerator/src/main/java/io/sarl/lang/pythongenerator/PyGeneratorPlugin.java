@@ -21,10 +21,9 @@
 
 package io.sarl.lang.pythongenerator;
 
-import com.google.common.base.Strings;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 
 /**
  * Utility functions for the plugin.
@@ -34,56 +33,36 @@ import org.eclipse.core.runtime.Status;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class PyGeneratorPlugin extends Plugin {
+public class PyGeneratorPlugin implements BundleActivator {
 
-	/** Identifier of the plugin.
+	/**
+	 * Identifier of the plugin.
 	 */
-	public static final String PLUGIN_ID = "io.sarl.pythongenerator.generator"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "io.sarl.lang.pythongenerator"; //$NON-NLS-1$
 
-	/** Identifier of the preference container.
+	/**
+	 * Identifier of the preference container.
 	 */
 	public static final String PREFERENCE_ID = PLUGIN_ID;
 
-	private static PyGeneratorPlugin instance;
+	private static Bundle bundle;
 
-	/** Construct an Eclipse plugin for SARL.
+	/** Replies the bundle of this plugin.
+	 *
+	 * @return the bundle.
 	 */
-	public PyGeneratorPlugin() {
-		setDefault(this);
+	public static Bundle getBundle() {
+		return bundle;
 	}
 
-	/** Set the default instance of the plugin.
-	 *
-	 * @param defaultInstance the default plugin instance.
-	 */
-	public static void setDefault(PyGeneratorPlugin defaultInstance) {
-		instance = defaultInstance;
+	@Override
+	public void start(BundleContext context) throws Exception {
+		bundle = context.getBundle();
 	}
 
-	/** Replies the instance of the plugin.
-	 *
-	 * @return the default plugin instance.
-	 */
-	public static PyGeneratorPlugin getDefault() {
-		return instance;
-	}
-
-	/** Create a status.
-	 *
-	 * @param severity the severity level, see {@link IStatus}.
-	 * @param cause the cause of the problem.
-	 * @return the status.
-	 */
-	@SuppressWarnings("static-method")
-	public IStatus createStatus(int severity, Throwable cause) {
-		var message = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getMessage();
-		}
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getClass().getSimpleName();
-		}
-		return new Status(severity, PLUGIN_ID, message, cause);
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		//
 	}
 
 }

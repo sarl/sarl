@@ -24,8 +24,6 @@ package io.sarl.lang.ui.extralanguage.preferences;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter.TypeConverterRuleReader;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;

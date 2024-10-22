@@ -23,7 +23,6 @@ package io.sarl.eclipse.launching.runner.general;
 
 import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -36,8 +35,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IModuleDescription;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
 import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -47,7 +44,6 @@ import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 
 /** Implementation of a launching process, split in separated steps for
  * making easier the cancellation.
@@ -59,6 +55,7 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfiguration> implements ILaunchProcess {
 
 	private static final String OPTION_ENABLEASSERTIONS = "-ea"; //$NON-NLS-1$

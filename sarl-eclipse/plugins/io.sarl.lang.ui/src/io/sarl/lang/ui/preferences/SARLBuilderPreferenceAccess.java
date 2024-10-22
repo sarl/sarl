@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
@@ -88,7 +87,6 @@ public class SARLBuilderPreferenceAccess {
 	 * @param generatorConfig the configuration to set up.
 	 * @param context the context of the building.
 	 */
-	@SuppressWarnings("static-method")
 	public void loadBuilderPreferences(GeneratorConfig2 generatorConfig, IProject context) {
 		final var preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
 		if (preferenceStore != null) {

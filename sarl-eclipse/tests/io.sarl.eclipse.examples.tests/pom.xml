@@ -22,6 +22,12 @@
       <groupId>org.arakhne.afc.core</groupId>
       <artifactId>vmutils</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.sarl.lang</groupId>

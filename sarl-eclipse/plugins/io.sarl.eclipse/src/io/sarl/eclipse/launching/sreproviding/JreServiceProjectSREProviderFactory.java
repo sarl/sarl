@@ -22,10 +22,8 @@
 package io.sarl.eclipse.launching.sreproviding;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -49,6 +47,7 @@ import io.sarl.eclipse.runtime.SARLRuntime;
  * @since 0.7
  * @see EclipseIDEProjectSREProvider
  */
+@SuppressWarnings("restriction")
 public class JreServiceProjectSREProviderFactory implements ProjectSREProviderFactory {
 
 	/** Construct a factory of SRE provider.

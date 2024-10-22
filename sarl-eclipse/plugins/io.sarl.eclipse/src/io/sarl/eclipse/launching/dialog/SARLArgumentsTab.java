@@ -39,7 +39,6 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
@@ -56,6 +55,7 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	private static final int HEIGHT_HINT = 40;
@@ -148,7 +148,6 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		this.sreArgumentsText.setLayoutData(gd);
 		this.sreArgumentsText.setFont(font);
 		this.sreArgumentsText.addModifyListener(new ModifyListener() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent evt) {
 				scheduleUpdateJob();
@@ -161,7 +160,6 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		final var sreArgVariableButton = createPushButton(group, "", null); //$NON-NLS-1$
 		sreArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				final var dialog = new StringVariableSelectionDialog(getShell());

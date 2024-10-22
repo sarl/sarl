@@ -32,8 +32,6 @@ import org.eclipse.jdt.internal.ui.viewsupport.ProblemTreeViewer;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
@@ -58,6 +56,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	/**
@@ -148,7 +147,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 			return null;
 		}
 		final var view = activePage.findView(ID_PACKAGES);
-		if (view instanceof PackageExplorerPart cvalue) {
+		if (view instanceof SARLPackageExplorerPart cvalue) {
 			return cvalue;
 		}
 		return null;

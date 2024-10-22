@@ -42,6 +42,7 @@ import io.sarl.lang.ide.buildpath.SARLBundleBuildPath;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLContainerWizardPage extends NewElementWizardPage implements IClasspathContainerPage {
 
 	private IClasspathEntry containerEntry;

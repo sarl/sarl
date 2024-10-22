@@ -30,9 +30,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -42,7 +39,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.bidi.StructuredTextTypeHandlerFactory;
@@ -69,7 +65,6 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
-import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMStandin;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
@@ -83,7 +78,6 @@ import org.eclipse.jface.util.BidiUtils;
 import org.eclipse.jface.util.Policy;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.SWT;
@@ -91,7 +85,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -128,7 +121,7 @@ import io.sarl.lang.core.SARLVersion;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "restriction"})
 public class MainProjectWizardPage extends WizardPage implements SarlDefaultClassPathProvider {
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
@@ -506,8 +499,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			if (paths.length == 1
 					&& paths[0].getSegmentCount() != 0) {
 				final var candidate = paths[0].getSegment(0);
-				if (candidate instanceof IWorkingSet cvalue
-						&& isValidWorkingSet(cvalue) {
+				if (candidate instanceof IWorkingSet cvalue && isValidWorkingSet(cvalue)) {
 					return new IWorkingSet[] {cvalue};
 				}
 			}
@@ -953,7 +945,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 					.getExecutionEnvironments();
 			if (defaultVM != null) {
 				for (var i = 0; i < environments.length; i++) {
-					final var eDefaultVM = environments[i].getDefaultVM();
+					final var eeDefaultVM = environments[i].getDefaultVM();
 					if (eeDefaultVM != null && defaultVM.getId().equals(eeDefaultVM.getId())) {
 						return environments[i].getId();
 					}
@@ -1203,7 +1195,6 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			this.fDetect = false;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		public Control createControl(Composite parent) {
 
 			final var composite = new Composite(parent, SWT.NONE);

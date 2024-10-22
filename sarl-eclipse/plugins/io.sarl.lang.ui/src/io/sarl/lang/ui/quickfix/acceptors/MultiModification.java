@@ -23,7 +23,6 @@ package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -42,6 +41,7 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public final class MultiModification extends SARLSemanticModification {
 
 	private final Map<Class<?>, Class<? extends SARLSemanticModification>> modificationTypes = new HashMap<>();

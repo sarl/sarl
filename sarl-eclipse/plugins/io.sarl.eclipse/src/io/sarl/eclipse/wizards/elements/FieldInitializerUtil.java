@@ -26,16 +26,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
 import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 /** Utilities for field initialization in the wizards.
  *
@@ -53,7 +49,6 @@ public class FieldInitializerUtil {
 	 * @param selection the current selection.
 	 * @return the Java element.
 	 */
-	@SuppressWarnings("static-method")
 	public IJavaElement getSelectedResource(IStructuredSelection selection) {
 		IJavaElement elem = null;
 		if (selection != null && !selection.isEmpty()) {

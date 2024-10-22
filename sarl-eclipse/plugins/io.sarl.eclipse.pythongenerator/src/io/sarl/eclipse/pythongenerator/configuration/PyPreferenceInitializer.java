@@ -26,7 +26,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
-import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
+import io.sarl.eclipse.pythongenerator.PyGeneratorUiPlugin;
 import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 import io.sarl.lang.pythongenerator.generator.PyInitializers;
 import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
@@ -52,7 +52,7 @@ public class PyPreferenceInitializer implements IPreferenceStoreInitializer {
 	}
 
 	private static void initializeTypeConversion(IPreferenceStore store) {
-		final var tcInitializer = PyInitializers.getTypeConverterInitializer();
+		final var tcInitializer = PyInitializers.getTypeConverterInitializer(PyGeneratorUiPlugin.getDefault());
 		final var preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(tcInitializer);
 		final var key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
 				ExtraLanguagePreferenceAccess.TYPE_CONVERSION_PROPERTY);
@@ -61,7 +61,7 @@ public class PyPreferenceInitializer implements IPreferenceStoreInitializer {
 	}
 
 	private static void initializeFeatureNameConversion(IPreferenceStore store) {
-		final var fnInitializer = PyInitializers.getFeatureNameConverterInitializer();
+		final var fnInitializer = PyInitializers.getFeatureNameConverterInitializer(PyGeneratorUiPlugin.getDefault());
 		final var preferenceValue = ExtraLanguagePreferenceAccess.toConverterPreferenceValue(fnInitializer);
 		final var key = ExtraLanguagePreferenceAccess.getPrefixedKey(PyGeneratorPlugin.PREFERENCE_ID,
 				ExtraLanguagePreferenceAccess.FEATURE_NAME_CONVERSION_PROPERTY);

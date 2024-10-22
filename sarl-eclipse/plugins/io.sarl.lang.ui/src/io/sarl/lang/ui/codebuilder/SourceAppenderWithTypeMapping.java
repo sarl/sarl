@@ -23,7 +23,6 @@ package io.sarl.lang.ui.codebuilder;
 
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
-import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
@@ -36,6 +35,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 class SourceAppenderWithTypeMapping implements ISourceAppender {
 
 	private final ISourceAppender source;

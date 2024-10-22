@@ -25,9 +25,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingCalculator;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmGenericType;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.ide.editor.syntaxcoloring.IHighlightedPositionAcceptor;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
@@ -51,6 +49,7 @@ import io.sarl.lang.typesystem.InheritanceHelper;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 
 	@Inject

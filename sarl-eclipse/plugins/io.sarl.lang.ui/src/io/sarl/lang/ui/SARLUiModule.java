@@ -107,7 +107,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	 * 
 	 * @param binder the binder.
 	 */
-	@SuppressWarnings("static-method")
 	public void configureDebugMode(Binder binder) {
 		if (Boolean.getBoolean("io.sarl.lang.debug") //$NON-NLS-1$
 				|| Boolean.getBoolean("org.eclipse.xtext.xtend.debug")) { //$NON-NLS-1$

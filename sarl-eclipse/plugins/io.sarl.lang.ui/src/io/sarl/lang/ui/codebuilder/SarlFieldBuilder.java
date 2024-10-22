@@ -24,7 +24,6 @@ package io.sarl.lang.ui.codebuilder;
 import com.google.inject.Inject;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder;
-import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
@@ -40,6 +39,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SarlFieldBuilder extends XtendFieldBuilder {
 
 	@Inject

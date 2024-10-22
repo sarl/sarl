@@ -43,6 +43,7 @@ import io.sarl.lang.ui.labeling.SARLImages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, Agent> {
 
 	@Inject

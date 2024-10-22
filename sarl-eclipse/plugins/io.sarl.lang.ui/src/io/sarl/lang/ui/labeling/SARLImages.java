@@ -42,6 +42,7 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SARLImages extends XtendImages {
 
 	private static final boolean USE_LIGHT_ICONS = false;

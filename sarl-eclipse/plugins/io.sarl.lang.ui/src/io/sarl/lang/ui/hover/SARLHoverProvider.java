@@ -23,7 +23,6 @@ package io.sarl.lang.ui.hover;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
-import org.eclipse.xtext.common.types.JvmOperation;
 
 import io.sarl.lang.sarl.SarlCastedExpression;
 
@@ -38,6 +37,7 @@ import io.sarl.lang.sarl.SarlCastedExpression;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
+@SuppressWarnings("restriction")
 public class SARLHoverProvider extends XtendHoverProvider {
 
 	@Override

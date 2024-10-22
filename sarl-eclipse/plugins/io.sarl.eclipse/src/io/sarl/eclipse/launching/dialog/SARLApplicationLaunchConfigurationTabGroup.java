@@ -22,7 +22,6 @@
 package io.sarl.eclipse.launching.dialog;
 
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
 
 /**

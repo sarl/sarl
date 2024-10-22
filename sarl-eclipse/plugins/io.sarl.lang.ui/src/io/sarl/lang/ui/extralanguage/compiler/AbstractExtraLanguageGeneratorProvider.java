@@ -27,7 +27,6 @@ import java.util.Collections;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IGeneratorContext;
 

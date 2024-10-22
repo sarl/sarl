@@ -28,11 +28,8 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationTabGroupViewer;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
@@ -59,6 +56,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
 	@Inject
@@ -111,7 +109,6 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	 * @since 0.12
 	 * @see #setTabs(ILaunchConfigurationTab...)
 	 */
-	@SuppressWarnings("static-method")
 	protected ILaunchConfigurationTab[] buildTabList(
 			ILaunchConfigurationDialog dialog,
 			String mode,

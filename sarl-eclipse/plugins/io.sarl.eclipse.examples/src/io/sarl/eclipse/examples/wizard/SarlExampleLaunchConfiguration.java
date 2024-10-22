@@ -28,8 +28,6 @@ import java.io.File;
 import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure5;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /** Utilities related to the specification of launch configurations for examples.
  *

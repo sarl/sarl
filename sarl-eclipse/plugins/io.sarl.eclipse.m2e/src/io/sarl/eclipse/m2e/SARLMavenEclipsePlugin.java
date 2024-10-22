@@ -82,7 +82,6 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
 		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
@@ -100,7 +99,6 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 	 * @param message the status message.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, String message) {
 		return new Status(severity, PLUGIN_ID, message);
 	}

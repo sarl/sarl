@@ -22,9 +22,7 @@
 package io.sarl.lang.ide.buildpath;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.TreeSet;
 
 /** Classpath dedicated to the SARL environment that is independent of the UI.

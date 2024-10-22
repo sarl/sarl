@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -74,6 +74,7 @@ import org.xml.sax.SAXException;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public final class JavaClasspathParser {
 
     /**
@@ -194,7 +195,7 @@ public final class JavaClasspathParser {
 
     private static boolean hasUTF8BOM(byte[] bytes) {
         if (bytes.length > IContentDescription.BOM_UTF_8.length) {
-            for (var i = 0, length = IContentDescription.BOM_UTF_8.length; i < length; i++) {
+            for (int i = 0, length = IContentDescription.BOM_UTF_8.length; i < length; ++i) {
                 if (IContentDescription.BOM_UTF_8[i] != bytes[i]) {
                     return false;
                 }
@@ -309,7 +310,7 @@ public final class JavaClasspathParser {
         final var pathAttr = removeAttribute(ClasspathEntry.TAG_PATH, attributes);
 
         // ensure path is absolute
-        var path = new Path(pathAttr);
+        IPath path = new Path(pathAttr);
         final var kind = kindFromString(kindAttr);
         if (kind != IClasspathEntry.CPE_VARIABLE && kind != IClasspathEntry.CPE_CONTAINER && !path.isAbsolute()) {
             if (!(path.segmentCount() > 0 && path.segment(0).equals(ClasspathEntry.DOT_DOT))) {
@@ -317,7 +318,7 @@ public final class JavaClasspathParser {
             }
         }
         // source attachment info (optional)
-        var sourceAttachmentPath = element.hasAttribute(ClasspathEntry.TAG_SOURCEPATH)
+        IPath sourceAttachmentPath = element.hasAttribute(ClasspathEntry.TAG_SOURCEPATH)
                 ? new Path(removeAttribute(ClasspathEntry.TAG_SOURCEPATH, attributes)) : null;
         if (kind != IClasspathEntry.CPE_VARIABLE && sourceAttachmentPath != null && !sourceAttachmentPath.isAbsolute()) {
             sourceAttachmentPath = projectPath.append(sourceAttachmentPath);
@@ -376,7 +377,7 @@ public final class JavaClasspathParser {
             }
 
             // unknown children
-            for (var i = 0, length = foundChildren.length; i < length; i++) {
+            for (int i = 0, length = foundChildren.length; i < length; ++i) {
                 if (!foundChildren[i]) {
                     final var node = children.item(i);
                     if (node.getNodeType() != Node.ELEMENT_NODE) {
@@ -458,7 +459,7 @@ public final class JavaClasspathParser {
     }
 
     private static NodeList getChildAttributes(String childName, NodeList children, boolean[] foundChildren) {
-        for (var i = 0, length = foundChildren.length; i < length; i++) {
+        for (int i = 0, length = foundChildren.length; i < length; ++i) {
             final var node = children.item(i);
             if (childName.equals(node.getNodeName())) {
                 foundChildren[i] = true;

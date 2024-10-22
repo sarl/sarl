@@ -22,9 +22,9 @@
 package io.sarl.lang.ui.labeling;
 
 import java.lang.reflect.Method;
-import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -52,6 +52,7 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements ILabelDecorator {
 
 	private static final Method GET_NODE_METHOD;
@@ -121,7 +122,6 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 * @param element the model element.
 	 * @return the adornment.
 	 */
-	@SuppressWarnings("static-method")
 	protected int getIssueAdornment(XtendMember element) {
 		final var node = NodeModelUtils.getNode(element);
 		if (node == null) {
@@ -155,7 +155,6 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 *
 	 * @return {@link JavaElementImageProvider#SMALL_SIZE} or {@link JavaElementImageProvider#BIG_SIZE}
 	 */
-	@SuppressWarnings("static-method")
 	protected Point imagesSize() {
 		return JavaElementImageProvider.BIG_SIZE;
 	}

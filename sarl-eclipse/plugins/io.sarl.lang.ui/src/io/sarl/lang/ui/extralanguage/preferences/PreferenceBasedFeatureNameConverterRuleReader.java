@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageFeatureNameConverter;

@@ -26,7 +26,6 @@ import java.util.Set;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -49,6 +48,7 @@ import io.sarl.lang.ui.internal.LangActivator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public final class SARLPreferences {
 
 	/** Define the configuration entry for project specific entries.

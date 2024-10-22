@@ -33,6 +33,7 @@ import org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SarlCodeBuilderFactory extends CodeBuilderFactory {
 	//
 }

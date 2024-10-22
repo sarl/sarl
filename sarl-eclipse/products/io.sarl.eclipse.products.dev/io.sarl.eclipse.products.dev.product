@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.eclipse.products.dev" id="io.sarl.eclipse.devapp.io_sarl_eclipse_products_dev" application="org.eclipse.ui.ide.workbench" version="0.14.0.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="false">
+<product name="%product.name" uid="io.sarl.eclipse.products.dev" id="io.sarl.eclipse.devapp.io_sarl_eclipse_products_dev" application="org.eclipse.ui.ide.workbench" version="0.14.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="platform:/plugin/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
@@ -273,10 +273,6 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.eclipse.features.baseplatform" installMode="root"/>
-      <feature id="io.sarl.eclipse.features.contribs" installMode="root"/>
-      <feature id="io.sarl.eclipse.features.sarlcompiler" installMode="root"/>
-      <feature id="io.sarl.eclipse.features.sre.janus" installMode="root"/>
       <feature id="io.sarl.eclipse.features.devapp" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
@@ -289,13 +285,12 @@
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.runtime.sdk" installMode="root"/>
+      <feature id="io.sarl.eclipse.features.sarlcompiler" installMode="root"/>
       <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.m2e.lemminx.feature" installMode="root"/>
       <feature id="org.eclipse.xtend.sdk" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.launcher" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.launcher.source" installMode="root"/>
-      <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.xtext.sdk" installMode="root"/>
       <feature id="org.eclipse.xtext.runtime" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
@@ -303,14 +298,16 @@
       <feature id="org.eclipse.xtext.xbase" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.examples" installMode="root"/>
-      <feature id="org.eclipse.m2e.feature" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
       <feature id="org.eclipse.xtend.lib" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclientjava.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>
+      <feature id="io.sarl.eclipse.features.sre.janus" installMode="root"/>
+      <feature id="org.eclipse.epp.package.java.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.docs" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
       <feature id="org.eclipse.equinox.core.feature" installMode="root"/>

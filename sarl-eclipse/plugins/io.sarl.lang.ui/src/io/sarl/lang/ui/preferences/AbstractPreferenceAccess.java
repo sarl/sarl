@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.preferences;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 

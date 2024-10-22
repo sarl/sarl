@@ -4,11 +4,11 @@
    <extension
          point="io.sarl.lang.ui.extraGenerators">
       <extraGenerator
-            preferences="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.configuration.PyPreferenceInitializer"
-            generator="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.generator.PyGeneratorProvider"
-            validator="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.validator.PyValidatorProvider"
-            outputConfiguration="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.configuration.PyOutputConfigurationProvider"
-            keywords="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.generator.PyKeywordProvider">
+            preferences="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.eclipse.pythongenerator.configuration.PyPreferenceInitializer"
+            generator="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.eclipse.pythongenerator.generator.PyGeneratorProvider"
+            validator="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.eclipse.pythongenerator.validator.PyValidatorProvider"
+            outputConfiguration="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.lang.pythongenerator.configuration.PyOutputConfigurationProvider"
+            keywords="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.lang.pythongenerator.generator.PyKeywordProvider">
       </extraGenerator>
    </extension>
 
@@ -16,8 +16,8 @@
 	       point="org.eclipse.ui.preferencePages">
 	    <page
 	          category="io.sarl.lang.SARL.compiler.preferencePage"
-	          class="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.preferences.PropertyPage"
-	          id="io.sarl.pythongenerator.ui.preferencePage"
+	          class="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.eclipse.pythongenerator.preferences.PropertyPage"
+	          id="io.sarl.eclipse.pythongenerator.preferencePage"
 	          name="%preference.page">
 	    </page>
 	 </extension>
@@ -25,8 +25,8 @@
 	       point="org.eclipse.ui.propertyPages">
 	    <page
            category="io.sarl.lang.SARL.compiler.propertyPage"
-           class="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.preferences.PropertyPage"
-           id="io.sarl.pythongenerator.ui.propertyPage"
+           class="io.sarl.eclipse.pythongenerator.PyExecutableExtensionFactory:io.sarl.eclipse.pythongenerator.preferences.PropertyPage"
+           id="io.sarl.eclipse.pythongenerator.propertyPage"
            name="%preference.page">
 	        <enabledWhen>
 	            <adapt type="org.eclipse.core.resources.IProject"/>

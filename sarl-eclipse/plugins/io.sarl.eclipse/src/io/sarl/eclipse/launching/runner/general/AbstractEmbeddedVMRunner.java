@@ -21,12 +21,7 @@
 
 package io.sarl.eclipse.launching.runner.general;
 
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -52,6 +47,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 
 	/** Standard extension for JAR files.

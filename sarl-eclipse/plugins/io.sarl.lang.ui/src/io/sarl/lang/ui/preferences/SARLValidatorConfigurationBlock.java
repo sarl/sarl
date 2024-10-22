@@ -23,7 +23,6 @@ package io.sarl.lang.ui.preferences;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBlock;
 
@@ -36,6 +35,7 @@ import io.sarl.lang.validation.IssueCodes;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLValidatorConfigurationBlock extends XtendValidatorConfigurationBlock {
 
 	private static final String SECTION_NAME = SARLValidatorConfigurationBlock.class.getName();

@@ -30,8 +30,6 @@ import com.google.inject.Inject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Platform;
@@ -40,11 +38,9 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
 import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
 import io.sarl.eclipse.SARLEclipseConfig;
@@ -69,6 +65,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see JavaJRETab
  */
+@SuppressWarnings("restriction")
 public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntimeEnvironmentTab {
 
 	private final boolean resetJvaMainClass;
@@ -342,9 +339,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 		}
 
 		@Override
-		@SuppressWarnings("synthetic-access")
 		public IProject getProject() {
-			var config = getLaunchConfigurationWorkingCopy();
+			ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();
 			if (config == null) {
 				config = getLaunchConfiguration();
 			}

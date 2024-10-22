@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Label;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class JanusContainerWizardPage extends NewElementWizardPage implements IClasspathContainerPage {
 
 	private IClasspathEntry containerEntry;

@@ -23,8 +23,8 @@ package io.sarl.lang.ui.contentassist.javadoc;
 
 import java.text.MessageFormat;
 import java.util.List;
-import javax.inject.Singleton;
 
+import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
@@ -50,6 +50,7 @@ import io.sarl.lang.util.Utils;
  * @since 0.12
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SarlDocumentationProvider extends AbstractSarlDocumentationProvider {
 
 	@Override

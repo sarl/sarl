@@ -37,6 +37,7 @@ import org.eclipse.xtext.ui.editor.utils.TextStyle;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("restriction")
 public class SARLHighlightingConfiguration extends XtendHighlightingConfiguration {
 
 	@Override

@@ -39,8 +39,6 @@ import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
 import io.sarl.eclipse.wizards.elements.aop.newcapacity.SuperCapacitySelectionDialog;
-import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
-import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 

@@ -22,7 +22,6 @@
 package io.sarl.eclipse.examples;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;

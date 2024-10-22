@@ -36,6 +36,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public interface IQualifiedNameImageProvider {
 
 	/** Replies the image associated to the element with the qualified name.

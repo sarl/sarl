@@ -25,6 +25,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
@@ -72,11 +74,14 @@ import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.osgi.framework.Bundle;
 
 import io.sarl.lang.extralanguage.compiler.AbstractExpressionGenerator;
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator.ExtraLanguageSupportModule;
 import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;
+import io.sarl.lang.pythongenerator.PyGeneratorPlugin;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
@@ -98,6 +103,11 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	@Inject
 	private CommonTypeComputationServices typeServices;
 
+	/** Generator's logger.
+	 */
+	@Inject
+	private Logger log;
+
 	/** Constructor.
 	 *
 	 * @param keywordProvider the provider of Python keywords.
@@ -106,15 +116,38 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	public PyExpressionGenerator(PyKeywordProvider keywordProvider) {
 		super(keywordProvider);
 	}
+	
+	/** Replies the support module for the initialization stage.
+	 *
+	 * @return the module, never {@code null}.
+	 * @since 0.14
+	 */
+	protected ExtraLanguageSupportModule getSupportModule() {
+		return new ExtraLanguageSupportModule() {
+
+			@Override
+			public Bundle getBundle() {
+				return PyGeneratorPlugin.getBundle();
+			}
+
+			@Override
+			public void logException(Throwable exception) {
+				if (exception != null) {
+					PyExpressionGenerator.this.log.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+			
+		};
+	}
 
 	@Override
 	protected IExtraLanguageConversionInitializer getTypeConverterInitializer() {
-		return PyInitializers.getTypeConverterInitializer();
+		return PyInitializers.getTypeConverterInitializer(getSupportModule());
 	}
 
 	@Override
 	protected IExtraLanguageConversionInitializer getFeatureNameConverterInitializer() {
-		return PyInitializers.getFeatureNameConverterInitializer();
+		return PyInitializers.getFeatureNameConverterInitializer(getSupportModule());
 	}
 
 	private static void appendReturnIfExpectedReturnedExpression(IAppendable it, IExtraLanguageGeneratorContext context) {

@@ -38,6 +38,7 @@ import io.sarl.lang.SARLConfig;
  * @mavenartifactid $ArtifactId$
  * @since 0.13
  */
+@SuppressWarnings("restriction")
 public final class MavenSarlProjectWizardArtifactPage extends MavenProjectWizardArtifactPage {
 
 	  /** Constructor.

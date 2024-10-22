@@ -12,7 +12,7 @@
     <module>products</module>
   </modules>
   <properties>
-    <tycho.version>4.0.2</tycho.version>
+    <tycho.version>4.0.9</tycho.version>
     <tycho.scmUrl>${sarl.scm.url}</tycho.scmUrl>
     <timestamp-pattern>'v'yyyyMMdd-HHmm</timestamp-pattern>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -192,7 +192,7 @@
               <type>eclipse-plugin</type>
               <id>org.eclipse.equinox.registry</id>
               <restrictTo>
-                <version>3.11.300.v20230801-1826</version>
+<!--                <version>3.11.300.v20230801-1826</version>-->
               </restrictTo>
             </filter>
           </filters>

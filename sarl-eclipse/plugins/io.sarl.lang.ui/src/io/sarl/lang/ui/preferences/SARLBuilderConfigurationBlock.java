@@ -53,6 +53,7 @@ import io.sarl.lang.extralanguage.compiler.ExtraLanguageOutputConfigurations;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBlock {
 
 	@Inject

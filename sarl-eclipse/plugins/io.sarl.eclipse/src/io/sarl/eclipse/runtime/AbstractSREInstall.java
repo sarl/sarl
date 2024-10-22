@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -102,7 +101,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	@Override
 	public ISREInstall copy(String uId) {
-		final varInstall copy = clone();
+		final var copy = clone();
 		copy.id = uId;
 		return copy;
 	}

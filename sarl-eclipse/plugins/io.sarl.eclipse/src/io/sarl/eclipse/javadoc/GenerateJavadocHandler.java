@@ -27,8 +27,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
 import org.eclipse.xtext.ui.refactoring.ui.SyncUtil;
 
@@ -43,6 +41,7 @@ import io.sarl.lang.ui.contentassist.javadoc.ISarlDocumentationProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public class GenerateJavadocHandler extends AbstractHandler {
 
 	@Inject

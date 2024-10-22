@@ -23,10 +23,10 @@ package io.sarl.lang.ui.labeling;
 
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
-import javax.inject.Singleton;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
@@ -37,7 +37,6 @@ import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmEnumerationType;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
@@ -50,15 +49,12 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
@@ -90,6 +86,7 @@ import io.sarl.lang.ui.validation.SARLUIStrings;
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider"
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedNameImageProvider {
 
 	/** Max length of the text for the behavior units.
@@ -497,7 +494,6 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @param element the element.
 	 * @return the text.
 	 */
-	@SuppressWarnings("static-method")
 	protected StyledString text(SarlCapacityUses element) {
 		return new StyledString(Messages.SARLLabelProvider_0, StyledString.QUALIFIER_STYLER);
 	}
@@ -507,7 +503,6 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @param element the element.
 	 * @return the text.
 	 */
-	@SuppressWarnings("static-method")
 	protected StyledString text(SarlRequiredCapacity element) {
 		return new StyledString(Messages.SARLLabelProvider_1, StyledString.QUALIFIER_STYLER);
 	}

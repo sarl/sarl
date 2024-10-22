@@ -54,8 +54,6 @@ import org.eclipse.ui.PlatformUI;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 import io.sarl.eclipse.launching.config.LaunchConfigurationUtils;
-import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.InputExtraJreArguments;
-import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.OutputExtraJreArguments;
 import io.sarl.eclipse.sre.janus.JanusEclipsePlugin;
 import io.sarl.lang.core.util.CliUtilities;
 import io.sarl.sre.janus.network.boot.configs.JoinMethod;
@@ -71,6 +69,7 @@ import io.sarl.sre.janus.network.boot.configs.SreNetworkConfigModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("restriction")
 public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 	/**
@@ -369,7 +368,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			//
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			final var clickedObject = event.getSource();
@@ -381,7 +379,6 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			updateLaunchConfigurationDialog();
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void modifyText(ModifyEvent event) {
 			updateLaunchConfigurationDialog();

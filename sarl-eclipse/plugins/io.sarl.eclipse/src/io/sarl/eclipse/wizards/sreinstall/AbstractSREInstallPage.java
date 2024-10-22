@@ -89,7 +89,6 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * @return if the operation was successful. Only when returned
 	 * {@code true}, the wizard will close.
 	 */
-	@SuppressWarnings("static-method")
 	public boolean performCancel() {
 		return true;
 	}

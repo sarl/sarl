@@ -29,11 +29,9 @@ import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
@@ -45,6 +43,7 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public final class ActionAddModification extends SARLSemanticModification {
 
 	private final String actionName;

@@ -51,6 +51,7 @@ import org.eclipse.xtext.Constants;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@SuppressWarnings("restriction")
 public class SARLElementImageProvider extends JavaElementImageProvider {
 
 	private final Set<String> fileExtensions = new HashSet<>();

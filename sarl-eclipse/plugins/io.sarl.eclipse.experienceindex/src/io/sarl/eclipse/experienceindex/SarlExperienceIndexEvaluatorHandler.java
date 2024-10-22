@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.PlatformUI;
 
 import io.sarl.api.experienceindex.SarlExperienceIndex;
-import io.sarl.api.experienceindex.SarlExperienceIndex.SEI;
 
 /**
  * Launch the computation of the SARL experience index in the Eclipse environment.
@@ -61,7 +60,7 @@ public class SarlExperienceIndexEvaluatorHandler extends AbstractHandler {
 
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
-			final v experienceIndex = SarlExperienceIndex.getJanusExperienceIndex(() -> monitor.isCanceled());
+			final var experienceIndex = SarlExperienceIndex.getJanusExperienceIndex(() -> monitor.isCanceled());
 			if (!monitor.isCanceled()) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 					SarlExperienceIndexResultDialog.open(

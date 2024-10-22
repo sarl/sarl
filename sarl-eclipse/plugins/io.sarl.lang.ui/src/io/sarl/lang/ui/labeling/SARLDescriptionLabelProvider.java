@@ -21,14 +21,11 @@
 
 package io.sarl.lang.ui.labeling;
 
-import javax.inject.Singleton;
-
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xtype.XImportDeclaration;
@@ -56,6 +53,7 @@ import io.sarl.lang.sarl.SarlSkill;
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
 @Singleton
+@SuppressWarnings("restriction")
 public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider {
 
 	@Inject

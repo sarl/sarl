@@ -23,7 +23,6 @@ package io.sarl.lang.ui.tasks;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.tasks.DefaultTaskFinder;
@@ -39,6 +38,7 @@ import io.sarl.lang.services.SARLGrammarAccess;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
+@SuppressWarnings("restriction")
 public class SarlTaskFinder extends DefaultTaskFinder {
 
 	@Inject
