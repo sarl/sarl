@@ -2442,7 +2442,7 @@ public class Bug612Test {
 				validator.assertError(
 						XbasePackage.eINSTANCE.getXFeatureCall(),
 						FORBIDDEN_REFERENCE,
-						"Forbidden reference to not final field SVAL from a constructors default value expression");
+						"Forbidden reference to not final field SVAL from a constructor's default value expression");
 			}
 
 			private final String STATIC_FINAL_FIELD_EXPR = multilineString(
@@ -2524,7 +2524,7 @@ public class Bug612Test {
 				validator.assertError(
 						XbasePackage.eINSTANCE.getXFeatureCall(),
 						FORBIDDEN_REFERENCE,
-						"Forbidden reference to not final field SVAL from a constructors default value expression");
+						"Forbidden reference to not final field SVAL from a constructor's default value expression");
 			}
 
 			private final String STATIC_FUNCTION = multilineString(

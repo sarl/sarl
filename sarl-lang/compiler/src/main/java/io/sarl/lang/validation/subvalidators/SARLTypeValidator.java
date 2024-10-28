@@ -72,6 +72,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
+import io.sarl.lang.validation.IssueCodes;
 
 /**
  * A specialized validator to deal with SARL types.
@@ -96,11 +97,13 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 	 */
 	@Check
 	public void checkSpaceUse(SarlSpace space) {
-		error(MessageFormat.format(
+		warning(MessageFormat.format(
 				Messages.SARLTypeValidator_1,
 				getGrammarAccess().getSpaceKeyword()),
 				space,
-				null);
+				null,
+				INSIGNIFICANT_INDEX,
+				IssueCodes.UNSUPPORTED_STATEMENT);
 	}
 
 	/** Artifact keyword is reserved.
@@ -239,11 +242,13 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 					} 
 					final var dispatchMethodReturnType = getActualType(clazz, syntheticDispatchMethod);
 					if (dispatchOperations.size() == 1) {
-						final var singleOp = dispatchOperations.iterator().next();
-						final var function = getAssociations().getXtendFunction(singleOp);
-						addIssue(Messages.SARLTypeValidator_11, function, XTEND_MEMBER__MODIFIERS,
-								function.getModifiers().indexOf(getGrammarAccess().getDispatchKeyword()),
-								SINGLE_DISPATCH_FUNCTION);
+						if (!isIgnored(SINGLE_DISPATCH_FUNCTION)) {
+							final var singleOp = dispatchOperations.iterator().next();
+							final var function = getAssociations().getXtendFunction(singleOp);
+							addIssue(Messages.SARLTypeValidator_11, function, XTEND_MEMBER__MODIFIERS,
+									function.getModifiers().indexOf(getGrammarAccess().getDispatchKeyword()),
+									SINGLE_DISPATCH_FUNCTION);
+						}
 					} else {
 						final var signatures = HashMultimap.<List<JvmType>, JvmOperation>create();
 						final var allPrimitive = new boolean[signature.getArity()];
@@ -318,20 +323,22 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 								}
 							}
 						}
-						for (var i = 0; i < allPrimitive.length; ++i) {
-							if (allPrimitive[i]) {
-								final var operationIter = dispatchOperations.iterator();
-								final var paramType1 = operationIter.next().getParameters().get(i).getParameterType().getType();
-								while (operationIter.hasNext()) {
-									final var paramType2 = operationIter.next().getParameters().get(i).getParameterType().getType();
-									if (!paramType2.equals(paramType1)) {
-										for (final var jvmOperation : dispatchOperations) {
-											final var function = getAssociations().getXtendFunction(jvmOperation);
-											addIssue(Messages.SARLTypeValidator_17,
-													function, XTEND_EXECUTABLE__PARAMETERS, i,
-													DISPATCH_FUNCTIONS_DIFFERENT_PRIMITIVE_ARGS);
+						if (!isIgnored(DISPATCH_FUNCTIONS_DIFFERENT_PRIMITIVE_ARGS)) {
+							for (var i = 0; i < allPrimitive.length; ++i) {
+								if (allPrimitive[i]) {
+									final var operationIter = dispatchOperations.iterator();
+									final var paramType1 = operationIter.next().getParameters().get(i).getParameterType().getType();
+									while (operationIter.hasNext()) {
+										final var paramType2 = operationIter.next().getParameters().get(i).getParameterType().getType();
+										if (!paramType2.equals(paramType1)) {
+											for (final var jvmOperation : dispatchOperations) {
+												final var function = getAssociations().getXtendFunction(jvmOperation);
+												addIssue(Messages.SARLTypeValidator_17,
+														function, XTEND_EXECUTABLE__PARAMETERS, i,
+														DISPATCH_FUNCTIONS_DIFFERENT_PRIMITIVE_ARGS);
+											}
+											break;
 										}
-										break;
 									}
 								}
 							}

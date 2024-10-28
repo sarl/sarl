@@ -43,7 +43,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
 
 import javax.inject.Inject;
 
@@ -231,14 +230,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		getLog().info(Messages.AbstractDocumentationMojo_0);
 
 		// Fix the logger configuration
-		final var docLogger = DocumentationLogger.getLogger();
-		final var handlers = docLogger.getHandlers();
-		for (final var handler : handlers) {
-			docLogger.removeHandler(handler);
-		}
-		docLogger.setUseParentHandlers(false);
-		docLogger.setLevel(Level.ALL);
-		docLogger.addHandler(new MavenJulHandler(getLog()));
+		DocumentationLogger.initializeLogger(new MavenJulHandler(getLog()));
 
 		this.injector = DocumentationSetup.doSetup();
 		assert this.injector != null;

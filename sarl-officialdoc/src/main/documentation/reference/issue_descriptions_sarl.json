@@ -1,0 +1,374 @@
+[
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.ambiguous_interpretation_by_developper",
+		"message": "Potential ambiguous notation for *expression*. The minus unary operator is applied on the result of the call to function *name* and not on the argument value *value*",
+		"cause": "This warning message is generated for any expression of the form `-value.name`. In this case, the expression could be interpreted in the wrong way. For example, `-125.abs` is interpreted as `-(125.abs)` by SARL, i.e., `-abs(125)`. It is not interpreted as `abs(-125)`. If you would pass `-125` to the function, you must use parentheses, i.e. `(-125).abs`",
+		"solution": "Put parentheses around the minus unary operator and the value, i.e., `(-value).name`",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_boolean_expression",
+		"message": "Discouraged boolean value. The guard is always true",
+		"cause": "It is discouraged to have the constant `true` as condition of an behavior unit's guard. Indeed, a condition that is always evaluated to true makes the test void and time consuming for nothing",
+		"solution": "Remove the guard of the behavior unit",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_boolean_expression",
+		"message": "Unexpected assertion due to its positive test result",
+		"cause": "It is discouraged to have the constant `true` as condition of the `assert` statement. Indeed, a condition that is always evaluated to true for an assertion test makes this test void and time consuming for nothing",
+		"solution": "Remove the `assert` statement",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_capacity_definition",
+		"message": "Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior",
+		"cause": "Message is explicit. There no sense to create a capacity without action according to the SARL metamodel",
+		"solution": "Define an action within the capacity; or delete the capacity",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_function_name",
+		"message": "Invalid action name '*n*'. You must not give to an action a name with reserved characters",
+		"cause": "Several names are discouraged to be used by the SARL compiler. One reason may be because the name is expected to be used as part of the language in future releases. Or, the name is amgiguous. For example, the name \"self\" is discouraged by the SARL compiler",
+		"solution": "Change the function name",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_loop_breaking_keyword_use",
+		"message": "Discouraged use of the *name* keyword inside a basic loop",
+		"cause": "The SARL keyword with the *name* cannot be used in a loop. For example, `break` and `continue` statements enable to stop the execution of a loop step by continuing the execution after the loop itself or at the next loop step, respectivelly. However, according the algothimic best practices, it is not recommended to use the `break` or `continue` statement for stopping a loop. It may denote a poor algorithmic analysis",
+		"solution": "Rewrite the loop code",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
+		"message": "Possible invalid usage of '*name*'. An impure function is detected into the sequence of calls on '*name*'. Because an impure function has a possible side effect and side effect is not allowed on '*name*', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of '*name*' is valid",
+		"cause": "The keyword with *name* represents a read-only feature. It is usually `occurrence` that represents the current instance of the just-received event within a behavior unit. It is assumed within the SARL operational semantics that `occurrence` instance is an unmodifiable event in order to ensure consistency between the different behavior units that handle the `occurrence`. This message is generated one component of the `occurrence` event is used in a way that its value may be changed. The SARL compiler is not sure that a change is applied to the `occurrence` from the code analysis. It notifies you that you have to double check the usage of `occurrence` and validate that no side-effect exist on it. If the used component of `occurrence` is of immutable type, then this issue does not exist",
+		"solution": "Rewrite your code to avoid the use of the impure function(s)",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
+		"message": "Possible invalid usage of '*name*'. The value of the feature '*name*' or one of its component seems to be copied within a local variable. Because side effect is not allowed on '*name*', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of '*name*' is valid",
+		"cause": "The keyword with *name* is a read-only feature that seems to be used as an read-write variable",
+		"solution": "Rewrite your code to avoid the use of the impure function(s)",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
+		"message": "Possible invalid usage of '*name*'. The value of the feature '*name*' or one of its component is used as an argument of a function. This function is not marked as a pure function, i.e. without side effect. Because side effect is not allowed on '*name*', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of '*name*' is valid",
+		"cause": "The keyword with *name* is a read-only feature that seems to be used as an read-write variable",
+		"solution": "Mark with `@Pure` the function that takes the feature with *name* as argument; or Change your code to avoid the passing of the feature with *name*` to the concerned function",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.duplicate_type_name",
+		"message": "Duplicate type *name*",
+		"cause": "This warning message is generated two types are defined in the same file with the same name",
+		"solution": "Change the name of one of the duplicate types",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.generic_type_name_shadowing",
+		"message": "The generic type parameter '*name*' is hiding the generic type parameter of '*type-name*'",
+		"cause": "This error is generated when you declared a generic type parameter for an action that has the same name as another generic type parameter that is declared into the enclosing type (class, or interface)",
+		"solution": "Change the *name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.illegal_parameter_default_value_redefinition",
+		"message": "Illegal redefinition of the default value for the formal parameter *name*. Inherited value is: *original value*. While the current value is: *redefined value*",
+		"cause": "This error message is generated when you declared a default value for a formal parameter that is different from the corresponding default value that was declared into the super types. You cannot change the default value of a formal parameter because it may cause unexpected side-effects for the callers of the function",
+		"solution": "Remove the redundant declaration fo the default value",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.internal_error",
+		"message": "*any-message*",
+		"cause": "This error is generated when the SARL compiler has encountered an internal error",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_capacity_type",
+		"message": "Invalid type: '*type-name*'. Only *capacities* can be used after the keyword '*uses*'",
+		"cause": "The keyword `uses` enables to uses and import capacities within the scope of the entity (agent, behavior, etc.) in which the `uses` is specified. This error is generated when the type named *type-name* that is specified after an `uses` is not a sub-type of `Capacity`, i.e. it is not a capacity type",
+		"solution": "Remove the *type-name* after the keyword `uses`; or replace *type-name* by the name of an appropriate capacity",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_default_skill_annotation",
+		"message": "Invalid annotation value. *skill-name* is not an implementation of *capacity-name*",
+		"cause": "The `@DefaultSkill` annotation enables to specify programmatically the skill that may be used by default by an agent for implementing a capacity. The parameter named *skill-name* of the `@DefaultSill` must be a skill that implements the capacity *capacity-name*",
+		"solution": "Remove the `@DefaultSkill`; or replace *skill-name* by an appropriate skill type name",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_default_skill_annotation",
+		"message": "Invalid annotation value. It must be a type literal to a skill",
+		"cause": "The `@DefaultSkill` annotation enables to specify programmatically the skill that may be used by default by an agent for implementing a capacity. The parameter of the annotation must be the type name of a skill",
+		"solution": "Remove the `@DefaultSkill`; or replace *skill-name* by an appropriate skill type name",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_extended_type",
+		"message": "Supertype must be a subtype of '*type-name*'",
+		"cause": "This error message is generated when the provided type after the `extends` statement is invalid; because it is not a sub-type of *type-name* strictly (i.e., not *type-name* itself)",
+		"solution": "Remove the type after `extends`; or replace it by the appropriate name of a sub-type of *type-name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_extended_type",
+		"message": "Supertype must be of type '*type-name*'",
+		"cause": "This error message is generated when the provided type after the `extends` statement is invalid; because it is neither equals to *type-name* nor a sub-type of *type-name*",
+		"solution": "Remove the type after `extends`; or replace it by the appropriate name of a sub-type of *type-name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_extra_language_generation",
+		"message": "*any-message*",
+		"cause": "Extra-language generator is an extension module of the SARL compiler. It has the role to generate source code in a specific programming language, e.g., Python, that is not supported by the core generator of the SARL compiler, i.e., Java. When the extra-language generator encounters an issue (error, warning or information), it is notified with is issue code",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_firing_event_type",
+		"message": "Invalid type: '*type-name*'. Only events can be used after the keyword 'fires'",
+		"cause": "The keyword `fires` specifies the events that could be fired by a function. This error is generated when the type named *type-name* that is specified after an `fires` is not a sub-type of `Capacity`, i.e. it is not a capacity type",
+		"solution": "Remove the *type-name* after the keyword `fires`; or replace *type-name* by the name of an appropriate capacity",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_implemented_type",
+		"message": "Invalid implemented type: '*type-name*'. Only subtypes of '*expected-name*' are allowed for '*element-name*'",
+		"cause": "This error message is generated when the provided type named *type-name* is invalid when it is specified for an `implements` statement; because it is not a sub-type of *expected-name* strictly (i.e., not *expected-name* itself). When it is used for the definition of *element-name*, an implemented type must fullfil the previous typing constraint",
+		"solution": "Remove *type-name*; or replace it by the appropriate name of a sub-type of *expected-name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_implemented_type",
+		"message": "Invalid implemented type: '*type-name*'. Only the type '*expected-name*' and one of its subtypes are allowed for '*element-name*'",
+		"cause": "This error message is generated when the provided type named *type-name* is invalid when it is specified for an `implements` statement; because it is neither equals to *expected-name* nor a sub-type of *expected-name*. When it is used for the definition of *element-name*, an implemented type must fullfil the previous typing constraint",
+		"solution": "Remove *type-name*; or replace it by the appropriate name of a sub-type of *expected-name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_nested_definition",
+		"message": "Nested agents are not allowed inside *enclosing-type*",
+		"cause": "It is not allowed by the SARL language's syntax to define an `agent` inside another type declaration, named *enclosing-type*",
+		"solution": "Move the agent definition outside the enclosing type",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_nested_definition",
+		"message": "Nested behaviors are not allowed inside *enclosing-type*",
+		"cause": "It is not allowed by the SARL language's syntax to define a `behavior` inside another type declaration, named *enclosing-type*",
+		"solution": "Move the behavior definition outside the enclosing type",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_nested_definition",
+		"message": "Nested capacities are not allowed inside *enclosing-type*",
+		"cause": "It is not allowed by the SARL language's syntax to define a `capacity` inside another type declaration, named *enclosing-type*",
+		"solution": "Move the capacity definition outside the enclosing type",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_nested_definition",
+		"message": "Nested skills are not allowed inside *enclosing-type*",
+		"cause": "It is not allowed by the SARL language's syntax to define a `skill` inside another type declaration, named *enclosing-type*",
+		"solution": "Move the capacity definition outside the enclosing type",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_nested_definition",
+		"message": "Nested events are not allowed inside *enclosing-type*",
+		"cause": "It is not allowed by the SARL language's syntax to define an `event` inside another type declaration, named *enclosing-type*",
+		"solution": "Move the event definition outside the enclosing type",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_occurrence_readonly_use",
+		"message": "Invalid use of the unmodifiable feature '*name*'. You cannot use '*name*' at the left-side of an assignment operator",
+		"cause": "The keyword with the *name* is considered as a read-only construct. Usually it is `occurrence` that represents the current instance of the just-received event within a behavior unit. It is assumed within the SARL operational semantics that `occurrence` instance is an unmodifiable event in order to ensure consistency between the different behavior units that handle the `occurrence`. This error message is generated when you try to assign a value to an `occurrence`, that is forbidden",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_occurrence_readonly_use",
+		"message": "Invalid use of the unmodifiable feature '*name*'. You cannot use '*name*' as the operand of a postfix operator because it causes a side effect",
+		"cause": "Several SARL constructs must be considered as read-only, such as `occurrence` that represents the current instance of the just-received event within a behavior unit. In this example, it is assumed within the SARL operational semantics that the `occurrence` is an unmodifiable event in order to ensure consistency between the different behavior units that handle the `occurrence`. This error message is generated when you try to change the value of `occurrence` with a postfix operator, e.g., `++`, that is forbidden",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_sarl_lib_on_classpath",
+		"message": "Incompatible SARL library on the classpath. Actual: *actual-version*. Expected: *expected-version*",
+		"cause": "The SARL library found on the classpath (*actual-version*) is not compatible with the compiler's version (*expected-version*)",
+		"solution": "Reconfigure your project to have the SARL libraries with *expected-version* into the classpath",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.invalid_use_of_loop_breaking_keyword",
+		"message": "Invalid use of the *name* keyword. It could only be used inside loops",
+		"cause": "`break` and `continue` statements enable to stop the execution of a loop step by continuing the execution after the loop itself or at the next loop step, respectively. The keyword with *name* is not supposed to be used outside a loop expression",
+		"solution": "Remove the `break` statement",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.manual_inline_definition",
+		"message": "Discouraged manual definition of an inline expression. Inline expression definition is reserved for advanced usage",
+		"cause": "The `@Inline` annotation enables the SARL compiler to replace the call to the annotated function by the expression specified inside the annotation. It may be useful for making faster the generated Java code. However, the expression inside `@Inline` must be written in valid Java and following strict inlining rules. That's why, the explicit usage of `@Inline` is not recommended, except to advanced SARL developers",
+		"solution": "Remove the `@Inline` annotation",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.missing_body",
+		"message": "Missing code for a static constructor",
+		"cause": "A static constructor could be defined for initializing the static fields of a type. It is forbidden to define a static constructor without a block of code",
+		"solution": "Add a block of code to the static constructor",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.parameter_default_value_redefinition",
+		"message": "Redundant definition of the default value for the formal parameter *name*",
+		"cause": "This warning message is generated when you declared a default value for a formal parameter that has already a default value declared into one of the super types. It is not necessary to redefine the same default value for the formal parameter",
+		"solution": "Remove the redundant declaration fo the default value",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.potential_field_synchronization_problem",
+		"message": "The field *field-name* should be synchronized for avoiding value inconsistency due to parallel execution",
+		"cause": "Within the SARL operational semantic, a SARL program is executed in parallel, i.e., all the behavior units and the individual agent tasks are executed in different threaded tasks. Due to this run-time principle, the access to the fields within the scope of an agent (agent, behavior, skill) must be considered carefully. This issue code is generated by the compiler in order to notify the SARL developer that a synchronization issue may occur on the field named *field-name*. In this case, the SARL compiler cannot infer a default synchronization policy, it is recommended to the SARL developer to implement explicitly a synchronization method",
+		"solution": "Put the field access into a synchronization block",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion",
+		"message": "Potential inefficient value conversion. This operation is based on a call to the function '*func-name*', which may cause inefficient code execution",
+		"cause": "When the `as` casting operator is used, SARL compiler infers the best method to convert the origin expression to a target type. The possible methods are:\n1) Direct low-level cast that is natively supported by the virtual machine.\n2) If the target type is a primitive type, find a function named \"*type-name*Value()\" within the current scope.\n3) If the target type is not a primitive type, find a function named \"to*type-name*()\" within the current scope.\nIf none of these cases fits, an cast error is generated. However, the cases 2 and 3 means that a cast operator will be supported by a call to a function. Depending on the implementation of the called function, the call may be inefficient at run-time",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.potential_inefficient_value_conversion",
+		"message": "Potential inefficient value conversion. This operation is based on a call to the function '*func-name*', which generates a value of type '*origin-type*' that is converted on-the-fly to '*target-type*'",
+		"cause": "When the `as` casting operator is used, SARL compiler infers the best method to convert the origin expression of type *origin-type* to the target *target-type*. The possible methods are:\n1) Direct low-level cast that is natively supported by the virtual machine.\n2) If *target-type* is a primitive type, find a function named \"*target-type*Value()\" within the current scope.\n3) If *target-type* is not a primitive type, find a function named \"to*target-type*()\" within the current scope.\nIf none of these cases fits, an cast error is generated. However, the cases 2 and 3 means that a cast operator will be supported by a call to *func-name* function. Depending on the implementation of *func-name*, the call may be inefficient at run-time",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.potential_memory_sharing_outside_agent_control",
+		"message": "Potential problem of data sharing outside the control of the agent. The field '*name*' is declared with the static modifier. It enables the code to change the field value outside a direct control of the agent; that is breaking partly the agent autonomy principle",
+		"cause": "This warning message is generated when you declared a field with the `static` modifier into an agent or on of its components. Basically, a static field is defined outside an instance of agent or component. In other words, the static field could be used for sharing data between the components of the agents, and between the agents themselves. This method of data sharing is breaking the agent autonomy principle. It should be used only for sharing constant data between the agents",
+		"solution": "Remove the `static` modifier",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.programmatic_issue_annotation",
+		"message": "*any-message*",
+		"cause": "It is possible to generate issue messages when a feature is used or invoked from the SARL code. The specification of the issue message is done by using one of the annotations `@ErrorOnCall`, `@WarningOnCall` or `@InfoOnCall` that takes an message (*any-message*). This annotation is attached to the feature for which a call must generate the issue",
+		"level": "c/error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.redundant_capacity_use",
+		"message": "Redundant use of the capacity '*capacity-name*'",
+		"cause": "The capacity named *capacity-name* is specified more than one time after a `uses` statement. It is not necessary to specify a capacity name multiple name, since the compiler has already activated the access to the capacity's functions with the first occurrence of *capacity-name*",
+		"solution": "Remove the redundant *capacity-name* from the `uses` statement",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.redundant_interface_implementation",
+		"message": "Duplicate implemented feature '*interface-name*'",
+		"cause": "An interface, named *interface-name*, is implemented by a class. But, the interface with name *interface-name* is already implemented by the same class. It is not allowed by the SARL compiler to implement two time the same interface into a single class",
+		"solution": "Remove the redundant *interface-name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.redundant_interface_implementation",
+		"message": "The feature '*interface-name*' is already implemented by the super-type '*type-name*'",
+		"cause": "This error may occur in two cases.\nFirst, the interface named *interface-name* is implemented by the current class. But, it is also implemented by one of the super classes, named *type-name*, or it is a super-interface, named *type-name*, of another implemented interface by the class. The current specification of the interface implementation becomes redundant and unnecessary.\nSecond, the interface named *interface-name* is extended by the current interface. But, it is also defined as a super-interface for the super-interface named *type-name*. The current specification of the interface implementation becomes redundant and unnecessary",
+		"solution": "Remove the redundant *interface-name*",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.return_type_specification_is_recommended",
+		"message": "Expecting the return type *type-name*. It is recommended to write the return type, even if it is inferred from the overridden function",
+		"cause": "SARL compiler is able to infer the type of the return values of a function according to the inherited prototype for the same function. In this case, it is not mandatory to specify explitly the return type into the overiding prototypes. Nevertheless, it is considered as a good practice to specify the return type. This issue message informs the developer of this recommendation",
+		"solution": "Add the return type into the overriding function prototype",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.sarl_lib_not_on_classpath",
+		"message": "SARL library not found on the classpath. Error code: *code*; Resources on classpath are:\n*classpath*\nDeclared fields in SARLVersion class:\n*sarl-verison*",
+		"cause": "The SARL library is not on the *classpath*. The cause of the error is specified by the given *code* that is one of NO_SARL_VERSION_CLASS (SARL version class not found), NO_SARL_VERSION_DECLARED_TYPE (SARL version class is not a Xtext declared type), NO_SARL_VERSION_FIELD (SARL version field not found), NO_SARL_VERSION_VALUE (SARL version value not found), or INVALID_SARL_VERSION_BYTECODE (the byte code (the class) of `SARLVersion` does not contains the expected field)",
+		"solution": "Reconfigure your project to have the SARL libraries into the classpath",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unexpected_exception_throw",
+		"message": "Unexpected exception to a static constructor",
+		"cause": "A static constructor could be defined for initializing the static fields of a type. It is forbidden to define a list of thrown exceptions for a static constructor because they cannot be catched",
+		"solution": "Remove the `thrown` definition",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unexpected_formal_parameter",
+		"message": "Unexpected formal parameter to a static constructor",
+		"cause": "A static constructor could be defined for initializing the static fields of a type. It is forbidden to define a formal parameter for a static constructor because their is no way to assign values to the corresponding arguments",
+		"solution": "Remove the formal parameter(s) from static constructor",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unreachable_behavior_unit",
+		"message": "Dead code. The guard is always false",
+		"cause": "The guard that is specified for a behavior unit is evaluated by the compiler to be always false. In this case, the code of the behavior unit has absolutely no change to be executed. It may denote a problem is the design of the entity in which the behavior unit is defined, e.g. an agent",
+		"solution": "Change the guard condition; or remove the entier behavior unit",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unused_agent_capacity",
+		"message": "Unnecessary use of the capacity '*capacity-name*' because it is implemented by the current skill",
+		"cause": "This issue is generated when the capacity named *capacity-name* is specified after a `uses` keyword; and it is at the same time an implemented capacity by the skill in which the `uses` statement is specified. The `uses` specification is redundant, because the functions that are defined into the capacity *capacity-name* are already accessible due to their local implementation",
+		"solution": "Remove *capacity-name* from the `uses` statement",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unused_agent_capacity",
+		"message": "The capacity '*capacity-name*' is not used",
+		"cause": "This issue is generated when *capacity-name* is specified after a `uses` statement, but none of the capacity's functions is invoked from the current entity (agent, etc.)",
+		"solution": "Remove *capacity-name* from the `uses` statement",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.use_reserved_sarl_annotation",
+		"message": "Discouraged use of reserved annotation. @*name* is an annotation that is reserved for the compiler usage",
+		"cause": "SARL core library defines a collection of SARL annotations that are dedicated to the internal usage of the SARL compiler. They are supposed to never be in the SARL code directly. This issue message is generated when one of these SARL annotations is explicitly specified into the code",
+		"solution": "Remove the SARL annotation from your code",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.parser.SyntaxIssueCodes.used_reserved_keyword",
+		"message": "'*name*' is a reserved keyword which is not allowed as identifier. Please choose another word or alternatively confuse your co-workers by escaping it like this: \"*simple-solution*\"",
+		"cause": "You defined the name of a feature by using a *name* that is equal to a SARL keyword. As in all programming languages, it is forbidden to use a language keyword as identifier. This error message problem to you a *simple-solution*",
+		"solution": "Apply *name* to *simple-solution* or to another name that is not a SARL keyword",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.parser.SyntaxIssueCodes.used_reserved_keyword",
+		"message": "'*name*' is a reserved keyword which is not allowed as identifier. Please choose another word",
+		"cause": "You defined the name of a feature by using a *name* that is equal to a SARL keyword. As in all programming languages, it is forbidden to use a language keyword as identifier",
+		"solution": "Change *name* to another identifier that is not a SARL keyword",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unnecessary_fired_event",
+		"message": "The firing declaration of the event *type* is not considered by the SARL compiler. Only early-exit events are considered",
+		"cause": "An event is specified in the liste of fired events of an action. However, the specified event is not marked as an early-exit event. Consequently, the event is not yet supported by the SARL compiler",
+		"solution": "Remove the event from the list of fired events",
+		"level": "c/info"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unsupported_statement",
+		"message": "The statement '*name*' is not yet supported by the SARL compiler",
+		"cause": "The keyword with the *name* is recognized as a keyword y the SARL compiler. However, it is not yet fully supported by the compiler. The keyword is reserved for future usage",
+		"solution": "Remove the statement",
+		"level": "warning"
+	}
+]
+

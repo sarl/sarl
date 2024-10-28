@@ -27,11 +27,13 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -55,29 +57,69 @@ import io.sarl.lang.validation.SyntaxIssueCodes;
 public final class IssueDatabaseExtensions {
 
 	private static String DEFAULT_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions.json"; //$NON-NLS-1$
+
+	private static String DEFAULT_SARL_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions_sarl.json"; //$NON-NLS-1$
+
+	private static String DEFAULT_XTEND_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions_xtend.json"; //$NON-NLS-1$
+
+	private static String DEFAULT_XBASE_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions_xbase.json"; //$NON-NLS-1$
+
+	private static String DEFAULT_XTEXT_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions_xtext.json"; //$NON-NLS-1$
+
+	private static final String[] MESSAGES_TO_IGNORE = {
+			"AbstractSARLSubValidator_3", //$NON-NLS-1$
+			"AbstractSARLSubValidator_4", //$NON-NLS-1$
+			"AbstractSARLSubValidator_5", //$NON-NLS-1$
+			"AbstractSARLSubValidator_6", //$NON-NLS-1$
+			"AbstractSARLSubValidator_7", //$NON-NLS-1$
+			"AbstractSARLSubValidator_8", //$NON-NLS-1$
+			"SARLBehaviorUnitValidator_10", //$NON-NLS-1$
+			"SARLFeatureModifierValidator_1", //$NON-NLS-1$
+			"SARLFeatureModifierValidator_3", //$NON-NLS-1$
+			"SARLFeatureModifierValidator_11", //$NON-NLS-1$
+			"SARLInheritanceValidator_4", //$NON-NLS-1$
+			"SARLInheritanceValidator_5", //$NON-NLS-1$
+			"SARLMemberValidator_4", //$NON-NLS-1$
+			"SARLMemberValidator_5", //$NON-NLS-1$
+			"SARLMemberValidator_31",  //$NON-NLS-1$
+			"SARLMemberValidator_32", //$NON-NLS-1$
+			"SARLModifierValidator_4", //$NON-NLS-1$
+			"SARLModifierValidator_5", //$NON-NLS-1$
+			"SARLNamingValidator_3", //$NON-NLS-1$
+			"SARLNamingValidator_7", //$NON-NLS-1$
+			"SARLNamingValidator_8", //$NON-NLS-1$
+	};
+
+	private static final String HIDDEN_STRING = "****"; //$NON-NLS-1$
 	
-	/** Read the default property file that describes the issues of the SARL compiler.
+	/** Read the default property files for SARL that describes the issues of the SARL compiler.
+	 * The files are {@code issue_descriptions_sarl.json}, {@code issue_descriptions_xtend.json},
+	 * {@code issue_descriptions_xbase.json} and {@code issue_descriptions_xtext.json}.
 	 *
 	 * @return the description of the issues.
+	 * @since 0.14
 	 */
 	@Pure
-	public static List<IssueDescription> readIssueDescriptions() {
-		return readIssueDescriptions(DEFAULT_ISSUE_DESCRIPTION_FILENAME);
+	public static List<IssueDescription> readIssueDescriptionsFromSarlJsonFiles() {
+		final var props = new ArrayList<IssueDescription>();
+		readIssueDescriptions(DEFAULT_SARL_ISSUE_DESCRIPTION_FILENAME, props);
+		readIssueDescriptions(DEFAULT_XTEND_ISSUE_DESCRIPTION_FILENAME, props);
+		readIssueDescriptions(DEFAULT_XBASE_ISSUE_DESCRIPTION_FILENAME, props);
+		readIssueDescriptions(DEFAULT_XTEXT_ISSUE_DESCRIPTION_FILENAME, props);
+		return props;
 	}
-	/** Read a property file that describes the issues of the SARL compiler.
+
+	/** Read the default property file {@code issue_descriptions.json} that describes
+	 * the issues of the SARL compiler.
 	 *
-	 * @param filename the file to read.
 	 * @return the description of the issues.
+	 * @since 0.14
 	 */
 	@Pure
-	public static List<IssueDescription> readIssueDescriptions(String filename) {
-		var file = new File(filename);
-		if (!file.isAbsolute()) {
-			final var folder = FileSystem.convertStringToFile(System.getProperty(ScriptExecutor.PROP_CURRENT_FOLDER));
-			assert folder != null;
-			file  = FileSystem.makeAbsolute(file, folder);
-		}
-		return readIssueDescriptions(file);
+	public static List<IssueDescription> readIssueDescriptionsFromDefaultJsonFile() {
+		final var props = new ArrayList<IssueDescription>();
+		readIssueDescriptions(DEFAULT_ISSUE_DESCRIPTION_FILENAME, props);
+		return props;
 	}
 
 	/** Read a property file that describes the issues of the SARL compiler.
@@ -85,10 +127,53 @@ public final class IssueDatabaseExtensions {
 	 * @param filename the file to read.
 	 * @return the description of the issues.
 	 */
-	@SuppressWarnings("resource")
+	@Pure
+	public static List<IssueDescription> readIssueDescriptions(String filename) {
+		final var props = new ArrayList<IssueDescription>();
+		readIssueDescriptions(filename, props);
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7,
+				Integer.valueOf(props.size()), filename));
+		return props;
+	}
+
+	/** Read a property file that describes the issues of the SARL compiler.
+	 *
+	 * @param filename the file to read.
+	 * @param descriptions the description of the issues.
+	 * @since 0.14
+	 */
+	public static void readIssueDescriptions(String filename, List<IssueDescription> descriptions) {
+		var file = new File(filename);
+		if (!file.isAbsolute()) {
+			final var folder = FileSystem.convertStringToFile(System.getProperty(ScriptExecutor.PROP_CURRENT_FOLDER));
+			assert folder != null : "Folder not found in system properties: " + ScriptExecutor.PROP_CURRENT_FOLDER; //$NON-NLS-1$
+			file  = FileSystem.makeAbsolute(file, folder);
+			readIssueDescriptions(file, descriptions);
+		}
+	}
+
+	/** Read a property file that describes the issues of the SARL compiler.
+	 *
+	 * @param filename the file to read.
+	 * @return the description of the issues.
+	 */
 	@Pure
 	public static List<IssueDescription> readIssueDescriptions(File filename) {
 		final var props = new ArrayList<IssueDescription>();
+		readIssueDescriptions(filename, props);
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7,
+				Integer.valueOf(props.size()), filename.getName()));
+		return props;
+	}
+
+	/** Read a property file that describes the issues of the SARL compiler.
+	 *
+	 * @param filename the file to read.
+	 * @param descritions the description of the issues.
+	 * @since 0.14
+	 */
+	@SuppressWarnings("resource")
+	public static void readIssueDescriptions(File filename, List<IssueDescription> descriptions) {
 		final var gson = new Gson();
 		try (final var stream = new FileReader(filename)) {
 			final var reader = gson.newJsonReader(stream);
@@ -100,6 +185,7 @@ public final class IssueDatabaseExtensions {
 				String cause = null;
 				String solution = null;
 				String levelStr = null;
+				boolean checkJavaDef = true;
 				while (reader.hasNext()) {
 					final var name = reader.nextName();
 					switch (Strings.emptyIfNull(name)) {
@@ -117,6 +203,9 @@ public final class IssueDatabaseExtensions {
 						break;
 					case "level": //$NON-NLS-1$
 						levelStr = reader.nextString();
+						break;
+					case "ignoreMessageCheck": //$NON-NLS-1$
+						checkJavaDef = !reader.nextBoolean();
 						break;
 					default:
 						reader.skipValue();
@@ -161,16 +250,14 @@ public final class IssueDatabaseExtensions {
 					description.level = level;
 					description.delegate = Strings.isEmpty(delegate) ? null : delegate;
 					description.defaultLevel = defaultLevel;
-					props.add(description);
+					description.javaMessageDefinitionCheck = checkJavaDef;
+					descriptions.add(description);
 				}
 			}
 			reader.endArray();
 		} catch (IOException e) {
 			throw new RuntimeException(MessageFormat.format(Messages.IssueDatabaseExtensions_6, e.getLocalizedMessage()), e);
 		}
-		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7,
-				Integer.valueOf(props.size()), filename.getName()));
-		return props;
 	}
 
 	/** Replies a table description for the list of issues.
@@ -302,7 +389,7 @@ public final class IssueDatabaseExtensions {
 	 * @return {@code descriptions}
 	 */
 	@Pure
-	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
+	public static List<IssueDescription> validateSarlIssueCodes(List<IssueDescription> descriptions) {
 		final var definedCodes = buildSarlIssueCodeList();
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13,
 				Integer.valueOf(definedCodes.size())));
@@ -338,34 +425,19 @@ public final class IssueDatabaseExtensions {
 	 *
 	 * @param descriptions the list of issue descriptions to validate.
 	 * @param issueListList the classes that contains the issue codes.
+	 * @param sourceName the name of the source of the issue codes stored in {@code issueListList}. 
 	 * @return {@code descriptions}
+	 * @since 0.14
 	 */
 	@Pure
-	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
+	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList, String sourceName) {
 		final var definedCodes = buildIssueCodeList(issueListList);
 		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17,
 				Integer.valueOf(definedCodes.size())));
-		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) { //$NON-NLS-1$
-			throw new IllegalStateException(Messages.IssueDatabaseExtensions_18);
+		if (!validateIssueCodes(descriptions, definedCodes, sourceName)) {
+			throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_18, sourceName));
 		}
 		return descriptions;
-	}
-
-	private static Set<String> buildSarlIssueCodeList() {
-		final var codes = new TreeSet<String>();
-		// Validation issues
-		extractIssueCodes(IssueCodes.class, codes);
-		extractIssueCodes(org.eclipse.xtend.core.validation.IssueCodes.class, codes);
-		extractIssueCodes(org.eclipse.xtext.xbase.validation.IssueCodes.class, codes);
-		// Generation issues
-		extractIssueCodes(org.eclipse.xtext.validation.IssueCodes.class, codes);
-		// Syntax issues
-		extractIssueCodes(SyntaxIssueCodes.class, codes);
-		codes.add(Diagnostic.SYNTAX_DIAGNOSTIC);
-		codes.add(Diagnostic.SYNTAX_DIAGNOSTIC_WITH_RANGE);
-		// Linking issues
-		codes.add(Diagnostic.LINKING_DIAGNOSTIC);
-		return codes;
 	}
 
 	private static Set<String> buildIssueCodeList(Collection<Class<?>> types) {
@@ -390,6 +462,119 @@ public final class IssueDatabaseExtensions {
 				}
 			}
 		}
+	}
+
+	private static Set<String> buildSarlIssueCodeList() {
+		final var codes = new TreeSet<String>();
+		// Validation issues
+		extractIssueCodes(IssueCodes.class, codes);
+		extractIssueCodes(org.eclipse.xtend.core.validation.IssueCodes.class, codes);
+		extractIssueCodes(org.eclipse.xtext.xbase.validation.IssueCodes.class, codes);
+		// Generation issues
+		extractIssueCodes(org.eclipse.xtext.validation.IssueCodes.class, codes);
+		// Syntax issues
+		extractIssueCodes(SyntaxIssueCodes.class, codes);
+		codes.add(Diagnostic.SYNTAX_DIAGNOSTIC);
+		codes.add(Diagnostic.SYNTAX_DIAGNOSTIC_WITH_RANGE);
+		// Linking issues
+		codes.add(Diagnostic.LINKING_DIAGNOSTIC);
+		return codes;
+	}
+
+
+	private static Set<String> buildSarlIssueMessageSourceList() {
+		final var codes = new TreeSet<String>();
+		extractIssueMessages(io.sarl.lang.validation.Messages.class, codes);
+		extractIssueMessages(io.sarl.lang.validation.subvalidators.Messages.class, codes, MESSAGES_TO_IGNORE);
+		return codes;
+	}
+
+	private static void extractIssueMessages(Class<?> definitions, Set<String> messages, String... ignorableLabels) {
+		final var ignore = new TreeSet<>(Arrays.asList(ignorableLabels));
+		final var regex = Pattern.compile("^[a-zA-Z0-9_]+_[0-9]+$"); //$NON-NLS-1$
+		for (final var field : definitions.getDeclaredFields()) {
+			if (String.class.equals(field.getType()) && Modifier.isStatic(field.getModifiers())
+					&& Modifier.isPublic(field.getModifiers())
+					&& (ignore.isEmpty() || !ignore.contains(field.getName()))) {
+				final var matcher = regex.matcher(field.getName());
+				if (matcher.find()) {
+					try {
+						final var value = (String) field.get(null);
+						if (!Strings.isEmpty(value)) {
+							messages.add(value);
+						}
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+	}
+			
+	/** Validate all the issue messages to be defined in the SARL compiler code.
+	 *
+	 * @param descriptions the list of issue descriptions to validate.
+	 * @return {@code true} if all the messages are defined.
+	 * @since 0.14
+	 */
+	@Pure
+	public static boolean validateSarlIssueMessages(List<IssueDescription> descriptions) {
+		final var definedMessages = buildSarlIssueMessageSourceList();
+		final var logger = DocumentationLogger.getLogger();
+		logger.info(MessageFormat.format(Messages.IssueDatabaseExtensions_30,
+				Integer.valueOf(definedMessages.size())));
+
+		final var patternSelection0 = Pattern.compile("\\*+[^*]+\\*+"); //$NON-NLS-1$
+		final var documentedMessages = descriptions.stream()
+				.filter(it -> it.javaMessageDefinitionCheck)
+				.map(it -> canonicalMessage(it.message, patternSelection0))
+				.collect(Collectors.toSet());
+
+		final var count = Integer.valueOf(definedMessages.size());
+		var i = 1;
+		for (final var dm : definedMessages) {
+			final var definedMessage = canonicalMessage(dm);
+			if (!documentedMessages.remove(definedMessage)) {
+				throw new RuntimeException(MessageFormat.format(Messages.IssueDatabaseExtensions_31, dm, definedMessage, Integer.valueOf(i), count));
+			}
+			++i;
+		}
+
+		if (!documentedMessages.isEmpty()) {
+			if (documentedMessages.size() > 1) {
+				final var buffer = new StringBuilder();
+				for (final var message : documentedMessages) {
+					if (!Strings.isEmpty(message)) {
+						buffer.append(message).append("\n"); //$NON-NLS-1$
+					}
+				}
+				DocumentationLogger.getLogger().warning(MessageFormat.format(Messages.IssueDatabaseExtensions_33, buffer.toString()));
+			} else {
+				DocumentationLogger.getLogger().warning(MessageFormat.format(Messages.IssueDatabaseExtensions_32, documentedMessages.iterator().next()));
+			}
+		}
+	
+		return true;
+	}
+
+	private static String canonicalMessage(String message, Pattern pattern) {
+		if (!Strings.isEmpty(message)) {
+			final var matcher = pattern.matcher(message);
+			return matcher.replaceAll(HIDDEN_STRING);
+		}
+		return message;
+	}
+
+	private static String canonicalMessage(String message) {
+		if (!Strings.isEmpty(message) && message.contains("{")) { //$NON-NLS-1$
+			return MessageFormat.format(message, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING,
+					HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING,
+					HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING,
+					HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING, HIDDEN_STRING,
+					HIDDEN_STRING, HIDDEN_STRING).replaceAll(Pattern.quote(HIDDEN_STRING)
+							+ "(" + Pattern.quote(HIDDEN_STRING) + ")+", HIDDEN_STRING); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return message;
 	}
 
 	/** Description of an issue.
@@ -434,6 +619,15 @@ public final class IssueDatabaseExtensions {
 		 */
 		public IssueLevel defaultLevel;
 
+		/** Indicates if the definition of he message in the Java code should be checked.
+		 * Usually, only the SARL's messages are checking. Those from Xtext, Xbase and Xtend are ignored
+		 * because they cannot be retrieved programmatically.
+		 * By default, the check is enabled.
+		 *
+		 * @since 0.14
+		 */
+		public boolean javaMessageDefinitionCheck = true; 
+
 		/** Constructor.
 		 *
 		 * @param code the code; with possible {@code &amp;dot;} inside.
@@ -463,7 +657,9 @@ public final class IssueDatabaseExtensions {
 			buf.add("message", this.message); //$NON-NLS-1$
 			buf.add("cause", this.cause); //$NON-NLS-1$
 			buf.add("solving", this.solution); //$NON-NLS-1$
-			buf.add("level", this.level.toJson(this.delegate, this.defaultLevel.toJson(null, null))); //$NON-NLS-1$
+			final var substring = this.level.toJson(this.delegate,
+					this.defaultLevel == null ? null : this.defaultLevel.toJson(null, null));
+			buf.add("level", substring); //$NON-NLS-1$
 		}
 
 		/** Replies the raw code.

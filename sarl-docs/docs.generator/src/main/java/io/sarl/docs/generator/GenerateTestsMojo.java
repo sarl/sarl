@@ -89,7 +89,7 @@ import io.sarl.lang.util.Utils;
 	requiresDependencyResolution = ResolutionScope.TEST)
 public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
-	private static final String BASE_PACKAGE = "io.sarl.maven.docs"; //$NON-NLS-1$
+	private static final String BASE_PACKAGE = "io.sarl.docs.tests"; //$NON-NLS-1$
 
 	/**
 	 * Indicates if the references to the local files should be validated.
@@ -256,9 +256,11 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("public class ").append(generalTestName).append(" extends ") //$NON-NLS-1$ //$NON-NLS-2$
 			.append(BASE_PACKAGE).append(".AbstractBaseTest").append(" {").increaseIndentation().newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 		
+		final var absoluteInputFile = FileSystem.makeAbsolute(relativeInputFile, sourceFolder);
+		
 		generateTestsForSuccessCode(it, importManager, relativeInputFile, successCompilationComponents);
 		generateTestsForFailureCode(it, importManager, relativeInputFile, failureCompilationComponents);
-		generateTestsForFacts(it, importManager, relativeInputFile, factualComponents);
+		generateTestsForFacts(it, importManager, absoluteInputFile , factualComponents);
 		generateDynamicTests(it, importManager, relativeInputFile, specificComponents);
 
 		it.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
@@ -347,11 +349,11 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	}
 
 	private void generateTestsForFacts(ITreeAppendable parent, ImportManager importManager,
-			File inputFile, List<ValidationComponent> factualComponents) {
+			File absoluteInputFile, List<ValidationComponent> factualComponents) {
 		var i = 0;
 		for (final var component : factualComponents) {
 			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_3,
-					inputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
+					absoluteInputFile.getName(), Integer.valueOf(component.getLinenoInSourceFile()), component.getCode()));
 			final var actionName = toActionName("fact", component, i); //$NON-NLS-1$
 			final var displayName = toTestDisplayName(Messages.GenerateTestsMojo_9, i, component);
 			final var location = new LocationData(
@@ -373,6 +375,12 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Tag.class).append("(\"fact_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+			it.append(System.class).append(".setProperty(") //$NON-NLS-1$
+				.append(ScriptExecutor.class).append(".PROP_CURRENT_FILE, \"") //$NON-NLS-1$
+				.append(Strings.convertToJavaString(absoluteInputFile.getAbsolutePath(), false)).append("\");").newLine(); //$NON-NLS-1$
+			it.append(System.class).append(".setProperty(") //$NON-NLS-1$
+				.append(ScriptExecutor.class).append(".PROP_CURRENT_FOLDER, \"") //$NON-NLS-1$
+				.append(Strings.convertToJavaString(absoluteInputFile.getParentFile().getAbsolutePath(), false)).append("\");").newLine(); //$NON-NLS-1$
 			it.append("final String expected = ").append(Utils.class).append(".dump(") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Boolean.class).append(".TRUE, false) + \"\\nOR\\nObject {\\n}\\n\";").newLine(); //$NON-NLS-1$
 			it.append("Object result;").newLine(); //$NON-NLS-1$

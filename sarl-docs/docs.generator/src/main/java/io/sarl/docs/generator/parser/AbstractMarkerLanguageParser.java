@@ -54,7 +54,7 @@ public abstract class AbstractMarkerLanguageParser {
 	public static final String[] HTML_FILE_EXTENSIONS = new String[] {
 		".html", ".htm",  //$NON-NLS-1$//$NON-NLS-2$
 	};
-
+	
 	private SarlDocumentationParser parser;
 
 	private boolean githubExtension;

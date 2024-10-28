@@ -663,7 +663,8 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword(),
-					this.grammarAccess.getFinalKeyword()));
+					this.grammarAccess.getFinalKeyword(),
+					this.grammarAccess.getStrictfpKeyword()));
 		}
 		return this.classModifierValidator;
 	}

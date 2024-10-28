@@ -65,6 +65,10 @@ public class Messages extends NLS {
 	public static String IssueDatabaseExtensions_28;
 	public static String IssueDatabaseExtensions_29;
 	public static String IssueDatabaseExtensions_3;
+	public static String IssueDatabaseExtensions_30;
+	public static String IssueDatabaseExtensions_31;
+	public static String IssueDatabaseExtensions_32;
+	public static String IssueDatabaseExtensions_33;
 	public static String IssueDatabaseExtensions_4;
 	public static String IssueDatabaseExtensions_5;
 	public static String IssueDatabaseExtensions_6;

@@ -121,7 +121,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+					"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -133,7 +133,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+					"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -189,7 +189,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+					"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -201,7 +201,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+				"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -229,13 +229,23 @@ public class ClassParsingTest {
 		@Test
 		@Tag("sarlParsing")
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(getParseHelper(), multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp class C1 { }"));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlClass(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlClass clazz = getClazz(mas);
+			assertNotNull(clazz);
+			//
+			assertEquals("C1", clazz.getName());
+			assertNull(clazz.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
+			assertEquals(0, clazz.getMembers().size());
+			assertFalse(clazz.isAbstract());
+			assertFalse(clazz.isAnonymous());
+			assertFalse(clazz.isFinal());
+			assertFalse(clazz.isLocal());
+			assertFalse(clazz.isStatic());
+			assertTrue(clazz.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -247,7 +257,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+				"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -259,7 +269,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+				"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -271,7 +281,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+				"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -283,7 +293,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"Illegal modifier for the class C1; only public, package, abstract and final are permitted");
+				"Illegal modifier for the class C1; only public, package, abstract, final and strictfp are permitted");
 		}
 
 		@Test
@@ -319,7 +329,7 @@ public class ClassParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				"The class C1 can only set one of public, package, abstract or final");
+				"The class C1 can only set one of public, package, abstract, final or strictfp");
 		}
 
 		@Test

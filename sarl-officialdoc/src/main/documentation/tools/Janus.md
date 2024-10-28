@@ -97,7 +97,7 @@ The long code is provided by the SARL compiler at the end of the issue messages.
 | N. | Message and Description | Level | Code |
 | -- | ----------------------- | ----- | ---- |
 [:Dynamic:]{
-	readIssueDescriptions.validate(io.sarl.sre.janus.IssueCodes::issueCodeContainers).sort.asTable.renderToMarkdown
+	readIssueDescriptionsFromDefaultJsonFile.validate(io.sarl.sre.janus.IssueCodes::issueCodeContainers, "Janus SRE").sort.asTable.renderToMarkdown
 }
 
 

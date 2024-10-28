@@ -1890,10 +1890,15 @@ public class SarlDocumentationParser {
 
 		@Override
 		public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
-			final var isVisible = context.isVisible();
-			final var replacement = tag.passThrough(context, dynamicName, parameter, blockValue);
-			context.getMatcher().appendReplacement(getVisibleBuffer(isVisible), replacement);
-			super.tag(context, tag, dynamicName, parameter, blockValue);
+			try {
+				final var isVisible = context.isVisible();
+				final var replacement = tag.passThrough(context, dynamicName, parameter, blockValue);
+				context.getMatcher().appendReplacement(getVisibleBuffer(isVisible), replacement);
+				super.tag(context, tag, dynamicName, parameter, blockValue);
+			} catch (Throwable ex) {
+				throw new IllegalArgumentException("Invalid regex for tag: " + tag.toString() //$NON-NLS-1$
+					+ "; and dynamic name: " + dynamicName, ex); //$NON-NLS-1$
+			}
 		}
 
 	}

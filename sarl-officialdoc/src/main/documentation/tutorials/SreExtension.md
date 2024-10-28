@@ -269,7 +269,7 @@ Java framework defines a standard for discovering new features on the classpath:
 It is almost easy to provide your Bootique module provider to the Bootique framework.
 Indeed a Bootique module provider is assimilated to a Java service, and could be declared according to this Java standard.
 
-[:Fact:](io.sarl.lang.core.SARLVersion::MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH == "17")
+[:Fact:](io.sarl.lang.core.SARLVersion::MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH == "21")
 
 There is two methods for declared a Java service: one for Java 8 to 10, and one for Java 11 or higher.
 Even if SARL requires the version [:Dynamic:](io.sarl.lang.core.SARLVersion::MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH) of the Java Virtual Machine, The two methods are explained because

@@ -647,8 +647,6 @@ Examples:
 	}
 	abstract interface TopInterface3 {
 	}
-	strictfp interface TopInterface4 {
-	}
 [:End:]
 
 

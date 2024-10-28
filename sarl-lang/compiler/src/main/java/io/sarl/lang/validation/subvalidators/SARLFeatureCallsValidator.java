@@ -62,6 +62,7 @@ import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IFeatureCallValidator;
+import io.sarl.lang.validation.IssueCodes;
 
 /**
  * A specialized validator to deal with feature calls.
@@ -253,11 +254,13 @@ public class SARLFeatureCallsValidator extends AbstractSARLSubValidator {
 	@Check(CheckType.FAST)
 	public void checkAssumeKeywordUse(SarlAssertExpression expression) {
 		if (expression.isIsStatic()) {
-			error(MessageFormat.format(
+			warning(MessageFormat.format(
 					Messages.SARLFeatureCallsValidator_7,
 					getGrammarAccess().getIsStaticAssumeKeyword()),
 					expression,
-					null);
+					null,
+					INSIGNIFICANT_INDEX,
+					IssueCodes.UNSUPPORTED_STATEMENT);
 		}
 	}
 

@@ -350,7 +350,7 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 					return false;
 				}
 				if (SarlUtils.isHiddenMember(name)) { 
-					error(Messages.AbstractSARLSubValidator_2, nameAttribute, INVALID_MEMBER_NAME);
+					error(MessageFormat.format(Messages.AbstractSARLSubValidator_2, SarlUtils.HIDDEN_MEMBER_CHARACTER), nameAttribute, INVALID_MEMBER_NAME);
 					return false;
 				}
 			}

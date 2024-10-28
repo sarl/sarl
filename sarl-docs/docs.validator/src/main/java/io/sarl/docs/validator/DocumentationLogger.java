@@ -21,6 +21,8 @@
 
 package io.sarl.docs.validator;
 
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Extended Functions for obtaining information on SARL issues.
@@ -48,10 +50,49 @@ public final class DocumentationLogger {
 		}
 	}
 	
+	/** Initialize the documentation logger associated to the documentation tools.
+	 *
+	 * @param handler the logging handler that must be associated to the logger for generating the logging messages.
+	 * @return the logger.
+	 * @since 0.14
+	 */
+	public static Logger initializeLogger(Handler handler) {
+		if (handler == null) {
+			return getLogger();
+		}
+		synchronized (DocumentationLogger.class) {
+			LOGGER = Logger.getLogger(DocumentationLogger.class.getName());
+			final var handlers = LOGGER.getHandlers();
+			for (final var handler0 : handlers) {
+				LOGGER.removeHandler(handler0);
+			}
+			LOGGER.setUseParentHandlers(false);
+			LOGGER.setLevel(Level.ALL);
+			LOGGER.addHandler(handler);
+			return LOGGER;
+		}
+	}
+	
+	/** Initialize the documentation logger associated to the documentation tools.
+	 *
+	 * @param logger the plugin logger.
+	 * @since 0.14
+	 */
+	public static void initializeLogger(Logger logger) {
+		if (logger == null) {
+			throw new IllegalArgumentException();
+		}
+		synchronized (DocumentationLogger.class) {
+			LOGGER = logger;
+		}
+	}
+
 	/** Change the logger associated to the documentation tools.
 	 *
 	 * @param logger the logger.
+	 * @deprecated no replacement.
 	 */
+	@Deprecated(forRemoval = true, since = "0.14")
 	public static void setLogger(Logger logger) {
 		synchronized (DocumentationLogger.class) {
 			LOGGER = logger;

@@ -61,9 +61,6 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 
 		// Override the Xtend configuration
 		acceptor.accept(create(
-				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
-				SeverityConverter.SEVERITY_WARNING));
-		acceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
 				SeverityConverter.SEVERITY_IGNORE));
 		acceptor.accept(create(
@@ -138,6 +135,10 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				IssueCodes.AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.UNNECESSARY_FIRED_EVENT,
+				SeverityConverter.SEVERITY_INFO));
 	}
 
 }

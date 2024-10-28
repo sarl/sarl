@@ -148,6 +148,7 @@ import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 import io.sarl.lang.util.Utils;
+import io.sarl.lang.validation.IssueCodes;
 
 /**
  * A specialized validator to deal with members in SARL types.
@@ -192,7 +193,8 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 						event.getSimpleName()),
 						action,
 						SarlPackage.eINSTANCE.getSarlAction_FiredEvents(),
-						i);
+						i,
+						IssueCodes.UNNECESSARY_FIRED_EVENT);
 			}
 			++i;
 		}
@@ -208,7 +210,9 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 				Messages.SARLMemberValidator_1,
 				getGrammarAccess().getRequiresKeyword()),
 				statement,
-				null);
+				null,
+				INSIGNIFICANT_INDEX,
+				IssueCodes.UNSUPPORTED_STATEMENT);
 	}
 
 	/** Check the type of the capacity uses.

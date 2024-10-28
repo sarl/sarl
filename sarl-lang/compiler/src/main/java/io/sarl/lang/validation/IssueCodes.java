@@ -277,7 +277,23 @@ public final class IssueCodes {
 	 * @since 0.14
 	 */
 	public static final String DUPLICATE_TYPE_NAME =
-			ISSUE_CODE_PREFIX + "ducpliate_type_name"; //$NON-NLS-1$
+			ISSUE_CODE_PREFIX + "duplicate_type_name"; //$NON-NLS-1$
+
+	/**
+	 * Event that is specified in the {@code fires} construct is ignored because it is not early-exit event.
+	 *
+	 * @since 0.14
+	 */
+	public static final String UNNECESSARY_FIRED_EVENT =
+			ISSUE_CODE_PREFIX + "unnecessary_fired_event"; //$NON-NLS-1$
+
+	/**
+	 * The statement is not yet supported by the SARL compiler.
+	 *
+	 * @since 0.14
+	 */
+	public static final String UNSUPPORTED_STATEMENT =
+			ISSUE_CODE_PREFIX + "unsupported_statement"; //$NON-NLS-1$
 
 	private IssueCodes() {
 		//
