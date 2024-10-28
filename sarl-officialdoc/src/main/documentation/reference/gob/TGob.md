@@ -24,7 +24,7 @@ Goals and actions are defined in the TGob metamodel, as illustrated by the UML c
 The agent has goals and knows actions.
 The concepts of `Goal` and `Action` are defined as object-oriented interfaces, i.e., they impose the definition of functions but do not provide the concrete implementation.
 The SARL API designers have defined these two concepts as interface to enable the SARL developpers to define their own implementation of the goals and actions.
-However, a base implementation is provided for helping the SARL developpers to build an agent that is applying the TGob mechaism.
+However, a base implementation is provided for helping the SARL developpers to build an agent that is applying the TGob mechanism.
 They take the form of the two implementation classes `BaseGoal` and `BaseAction`.
 
 ### Goal

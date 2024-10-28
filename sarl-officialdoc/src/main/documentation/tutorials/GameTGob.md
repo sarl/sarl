@@ -1,7 +1,7 @@
 # Goal-oriented Action Selection from Video Game Field
 
 Goal-oriented behavior (GOB) is a general term that covers any technique taking into account goals of the agents.
-GOB is not supported by a single technique.
+GOB is not implemented by a single technique.
 This tutorial does a focus on GOB that are used in video games, and more specifically on a simple action selection
 mechanism that is including time constraints.
 
