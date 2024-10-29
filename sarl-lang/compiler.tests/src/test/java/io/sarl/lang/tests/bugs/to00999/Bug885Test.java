@@ -1983,6 +1983,7 @@ public class Bug885Test extends AbstractSarlTest {
 			assertEquals(EXPECTED_LOCAL_STATIC_FUNCTION_02, actual);
 		});
 	}
+
 	private static final String SNIPSET_NO_EXTERNAL_REFERENCE = multilineString(
 			"package io.sarl.lang.tests.bug885",
 			"import io.sarl.lang.core.Scope",
@@ -2009,7 +2010,6 @@ public class Bug885Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.util.SerializableProxy;",
 			"import java.io.ObjectStreamException;",
-			"import java.util.Objects;",
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
@@ -2031,14 +2031,14 @@ public class Bug885Test extends AbstractSarlTest {
 			"      @Override",
 			"      public boolean matches(final Address it) {",
 			"        UUID _uUID = it.getID();",
-			"        return Objects.equals(_uUID, null);",
+			"        return (((_uUID) == null && (null) == null) || ((_uUID) != null && (_uUID).equals((null).getID())));",
 			"      }",
 			"    }",
 			"    final Scope<Address> _function = new Scope<Address>() {",
 			"      @Override",
 			"      public boolean matches(final Address it) {",
 			"        UUID _uUID = it.getID();",
-			"        return Objects.equals(_uUID, null);",
+			"        return (((_uUID) == null && (null) == null) || ((_uUID) != null && (_uUID).equals((null).getID())));",
 			"      }",
 			"      private Object writeReplace() throws ObjectStreamException {",
 			"        return new SerializableProxy($SerializableClosureProxy.class);",
@@ -2633,8 +2633,9 @@ public class Bug885Test extends AbstractSarlTest {
 			"  }",
 			"  def f2(s : Scope<Address>) {",
 			"    f [ val p = it",
-			"        var sss : (Address) => UUID = [a|if(a != null) a.UUID else p.UUID]",
-			"        it.UUID == sss.apply(p) ]",
+			"        val sss : (Address) => UUID = [a|if(a !== null) a.ID else p.ID]",
+			"        return it.ID == sss.apply(p)",
+			"    ]",
 			"  }",
 			"}");
 
@@ -2669,58 +2670,48 @@ public class Bug885Test extends AbstractSarlTest {
 			"      ",
 			"      private final Address $_a;",
 			"      ",
-			"      private final UUID $_uUID;",
+			"      private final UUID $_iD;",
 			"      ",
-			"      public $SerializableClosureProxy(final Address $_a, final UUID $_uUID) {",
+			"      public $SerializableClosureProxy(final Address $_a, final UUID $_iD) {",
 			"        this.$_a = $_a;",
-			"        this.$_uUID = $_uUID;",
+			"        this.$_iD = $_iD;",
 			"      }",
 			"      ",
 			"      @Override",
 			"      public boolean matches(final Address it) {",
-			"        boolean _xblockexpression = false;",
-			"        {",
-			"          final Address p = it;",
-			"          final Function1<Address, UUID> _function = (Address a) -> {",
-			"            UUID _xifexpression = null;",
-			"            boolean _notEquals = (!Objects.equals($_a, null));",
-			"            if (_notEquals) {",
-			"              _xifexpression = $_uUID;",
-			"            } else {",
-			"              _xifexpression = p.getID();",
-			"            }",
-			"            return _xifexpression;",
-			"          };",
-			"          Function1<? super Address, ? extends UUID> sss = _function;",
-			"          UUID _uUID = it.getID();",
-			"          UUID _apply = sss.apply(p);",
-			"          _xblockexpression = Objects.equals(_uUID, _apply);",
-			"        }",
-			"        return _xblockexpression;",
+			"        final Address p = it;",
+			"        final Function1<Address, UUID> _function = (Address a) -> {",
+			"          UUID _xifexpression = null;",
+			"          if (($_a != null)) {",
+			"            _xifexpression = $_iD;",
+			"          } else {",
+			"            _xifexpression = p.getID();",
+			"          }",
+			"          return _xifexpression;",
+			"        };",
+			"        final Function1<? super Address, ? extends UUID> sss = _function;",
+			"        UUID _iD = it.getID();",
+			"        UUID _apply = sss.apply(p);",
+			"        return Objects.equals(_iD, _apply);",
 			"      }",
 			"    }",
 			"    final Scope<Address> _function = new Scope<Address>() {",
 			"      @Override",
 			"      public boolean matches(final Address it) {",
-			"        boolean _xblockexpression = false;",
-			"        {",
-			"          final Address p = it;",
-			"          final Function1<Address, UUID> _function = (Address a) -> {",
-			"            UUID _xifexpression = null;",
-			"            boolean _notEquals = (!Objects.equals(a, null));",
-			"            if (_notEquals) {",
-			"              _xifexpression = a.getID();",
-			"            } else {",
-			"              _xifexpression = p.getID();",
-			"            }",
-			"            return _xifexpression;",
-			"          };",
-			"          Function1<? super Address, ? extends UUID> sss = _function;",
-			"          UUID _uUID = it.getID();",
-			"          UUID _apply = sss.apply(p);",
-			"          _xblockexpression = Objects.equals(_uUID, _apply);",
-			"        }",
-			"        return _xblockexpression;",
+			"        final Address p = it;",
+			"        final Function1<Address, UUID> _function = (Address a) -> {",
+			"          UUID _xifexpression = null;",
+			"          if ((a != null)) {",
+			"            _xifexpression = a.getID();",
+			"          } else {",
+			"            _xifexpression = p.getID();",
+			"          }",
+			"          return _xifexpression;",
+			"        };",
+			"        final Function1<? super Address, ? extends UUID> sss = _function;",
+			"        UUID _iD = it.getID();",
+			"        UUID _apply = sss.apply(p);",
+			"        return Objects.equals(_iD, _apply);",
 			"      }",
 			"      private Object writeReplace() throws ObjectStreamException {",
 			"        return new SerializableProxy($SerializableClosureProxy.class, a, a.getID());",
@@ -2743,10 +2734,14 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	public void parsingComplexLambda02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	public void compilingComplexLambda02() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");

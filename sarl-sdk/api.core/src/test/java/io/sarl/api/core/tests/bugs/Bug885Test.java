@@ -53,7 +53,6 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
 @DisplayName("Bug #885")
 @SuppressWarnings("all")
 @Tag("core")
-@Tag("compileToJava")
 public class Bug885Test extends AbstractSarlTest {
 
 	@Inject
@@ -140,10 +139,19 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: local parameter")
+	@Tag("sarlValidation")
+	public void parsingLocalParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+
+	@Test
+	@DisplayName("Compile: local parameter")
+	@Tag("compileToJava")
+	public void compilingLocalParameter() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -234,10 +242,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalVariable() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: local variable")
+	@Tag("sarlValidation")
+	public void parseLocalVariable() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_VARIABLE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: local variable")
+	@Tag("compileToJava")
+	public void compilingLocalVariable() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -345,10 +361,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingField() throws Exception {
+	@DisplayName("Parse: field")
+	@Tag("sarlValidation")
+	public void parseField() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET_FIELD);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: field")
+	@Tag("compileToJava")
+	public void compilingField() throws Exception {
 		this.compiler.compile(SNIPSET_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -439,10 +463,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingSuperField() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET04);
+	@DisplayName("Parse: super's field")
+	@Tag("sarlValidation")
+	public void parseSuperField() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_SUPER_FIELD);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: super's field")
+	@Tag("compileToJava")
+	public void compilingSuperField() throws Exception {
 		this.compiler.compile(SNIPSET_SUPER_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -538,10 +570,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalFunction_01() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: local function with Address")
+	@Tag("sarlValidation")
+	public void parseLocalFunction_01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_FUNCTION_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: local function with Address")
+	@Tag("compileToJava")
+	public void compilingLocalFunction_01() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -638,10 +678,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalFunction_02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: local function with UUID")
+	@Tag("sarlValidation")
+	public void parseLocalFunction_02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_FUNCTION_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: local function with UUID")
+	@Tag("compileToJava")
+	public void compilingLocalFunction_02() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -732,10 +780,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingSuperFunction_01() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: inherited function with Address")
+	@Tag("sarlValidation")
+	public void parseSuperFunction_01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_SUPER_FUNCTION_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: inherited function with Address")
+	@Tag("compileToJava")
+	public void compilingSuperFunction_01() throws Exception {
 		this.compiler.compile(SNIPSET_SUPER_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -827,10 +883,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingSuperFunction_02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: inherited function with UUID")
+	@Tag("sarlValidation")
+	public void parseSuperFunction_02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_SUPER_FUNCTION_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: inherited function with UUID")
+	@Tag("compileToJava")
+	public void compilingSuperFunction_02() throws Exception {
 		this.compiler.compile(SNIPSET_SUPER_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -943,10 +1007,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingExtensionField() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse:: extension field")
+	@Tag("sarlValidation")
+	public void parseExtensionField() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_EXTENSION_FIELD);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile:: extension field")
+	@Tag("compileToJava")
+	public void compilingExtensionField() throws Exception {
 		this.compiler.compile(SNIPSET_EXTENSION_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1042,10 +1114,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingExtensionVariable() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: extension variable")
+	@Tag("sarlValidation")
+	public void parseExtensionVariable() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_EXTENSION_VARIABLE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: extension variable")
+	@Tag("compileToJava")
+	public void compilingExtensionVariable() throws Exception {
 		this.compiler.compile(SNIPSET_EXTENSION_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1138,10 +1218,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingExtensionParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: extension parameter")
+	@Tag("sarlValidation")
+	public void parseExtensionParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_EXTENSION_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Parse: extension parameter")
+	@Tag("compileToJava")
+	public void compilingExtensionParameter() throws Exception {
 		this.compiler.compile(SNIPSET_EXTENSION_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1232,10 +1320,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingStaticImport() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: static import")
+	@Tag("sarlValidation")
+	public void parseStaticImport() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_STATIC_IMPORT);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: static import")
+	@Tag("compileToJava")
+	public void compilingStaticImport() throws Exception {
 		this.compiler.compile(SNIPSET_STATIC_IMPORT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1326,10 +1422,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingStaticExtensionImport() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: extension static import")
+	@Tag("sarlValidation")
+	public void parseStaticExtensionImport() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_STATIC_EXTENSION_IMPORT);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: extension static import")
+	@Tag("compileToJava")
+	public void compilingStaticExtensionImport() throws Exception {
 		this.compiler.compile(SNIPSET_STATIC_EXTENSION_IMPORT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1426,10 +1530,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalInstanceCreation01() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: object creation in argument")
+	@Tag("sarlValidation")
+	public void parseLocalInstanceCreation01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_INSTANCE_CREATION_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: object creation in argument")
+	@Tag("compileToJava")
+	public void compilingLocalInstanceCreation01() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_INSTANCE_CREATION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1516,10 +1628,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalInstanceCreation02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: object creation")
+	@Tag("sarlValidation")
+	public void parseLocalInstanceCreation02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_INSTANCE_CREATION_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: object creation")
+	@Tag("compileToJava")
+	public void compilingLocalInstanceCreation02() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_INSTANCE_CREATION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1615,10 +1735,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingArithmetiParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: airthmetic expression as argument")
+	@Tag("sarlValidation")
+	public void parseArithmetiParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_ARITHMETIC_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: airthmetic expression as argument")
+	@Tag("compileToJava")
+	public void compilingArithmetiParameter() throws Exception {
 		this.compiler.compile(SNIPSET_ARITHMETIC_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1726,10 +1854,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingIfThenOnIt() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: branch on it")
+	@Tag("sarlValidation")
+	public void parseIfThenOnIt() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_IF_THEN_ON_IT);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: branch on it")
+	@Tag("compileToJava")
+	public void compilingIfThenOnIt() throws Exception {
 		this.compiler.compile(SNIPSET_IF_THEN_ON_IT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1840,10 +1976,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingIfThenOnLocalParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: branch in local parameter")
+	@Tag("sarlValidation")
+	public void parseIfThenOnLocalParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_IF_THEN_ON_LOCAL_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: branch in local parameter")
+	@Tag("compileToJava")
+	public void compilingIfThenOnLocalParameter() throws Exception {
 		this.compiler.compile(SNIPSET_IF_THEN_ON_LOCAL_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -1966,6 +2110,17 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@DisplayName("Parse: multiple lambdas")
+	@Tag("sarlValidation")
+	public void parseMultipleLambda() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_MULTIPLE_LAMBDA);
+		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: multiple lambdas")
+	@Tag("compileToJava")
 	public void compilingMultipleLambda() throws Exception {
 		this.compiler.compile(SNIPSET_MULTIPLE_LAMBDA, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2061,10 +2216,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalStaticFunction_01() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: local static function with Address")
+	@Tag("sarlValidation")
+	public void parseLocalStaticFunction_01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_STATIC_FUNCTION_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: local static function with Address")
+	@Tag("compileToJava")
+	public void compilingLocalStaticFunction_01() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_STATIC_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2161,16 +2324,25 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalStaticFunction_02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: local static function with UUID")
+	@Tag("sarlValidation")
+	public void parseLocalStaticFunction_02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_STATIC_FUNCTION_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: local static function with UUID")
+	@Tag("compileToJava")
+	public void compilingLocalStaticFunction_02() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_STATIC_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
 			assertEquals(EXPECTED_LOCAL_STATIC_FUNCTION_02, actual);
 		});
 	}
+
 	private static final String SNIPSET_NO_EXTERNAL_REFERENCE = multilineString(
 			"package io.sarl.lang.tests.bug885",
 			"import io.sarl.lang.core.Scope",
@@ -2197,7 +2369,6 @@ public class Bug885Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.util.SerializableProxy;",
 			"import java.io.ObjectStreamException;",
-			"import java.util.Objects;",
 			"import java.util.UUID;",
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
@@ -2219,14 +2390,14 @@ public class Bug885Test extends AbstractSarlTest {
 			"      @Override",
 			"      public boolean matches(final Address it) {",
 			"        UUID _uUID = it.getID();",
-			"        return Objects.equals(_uUID, null);",
+			"        return (((_uUID) == null && (null) == null) || ((_uUID) != null && (_uUID).equals((null).getID())));",
 			"      }",
 			"    }",
 			"    final Scope<Address> _function = new Scope<Address>() {",
 			"      @Override",
 			"      public boolean matches(final Address it) {",
 			"        UUID _uUID = it.getID();",
-			"        return Objects.equals(_uUID, null);",
+			"        return (((_uUID) == null && (null) == null) || ((_uUID) != null && (_uUID).equals((null).getID())));",
 			"      }",
 			"      private Object writeReplace() throws ObjectStreamException {",
 			"        return new SerializableProxy($SerializableClosureProxy.class);",
@@ -2249,10 +2420,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingNotExternalReference() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET01);
+	@DisplayName("Parse: without external reference")
+	@Tag("sarlValidation")
+	public void parseNotExternalReference() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_NO_EXTERNAL_REFERENCE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: without external reference")
+	@Tag("compileToJava")
+	public void compilingNotExternalReference() throws Exception {
 		this.compiler.compile(SNIPSET_NO_EXTERNAL_REFERENCE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2350,10 +2529,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingClosureVariable() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: variable in lambda")
+	@Tag("sarlValidation")
+	public void parsingClosureVariable() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_CLOSURE_VARIABLE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: variable in lambda")
+	@Tag("compileToJava")
+	public void compilingClosureVariable() throws Exception {
 		this.compiler.compile(SNIPSET_CLOSURE_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2451,10 +2638,19 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingLocalVariavleAsParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: variable in closure as argument")
+	@Tag("sarlValidation")
+	public void parsingLocalVariavleAsParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_LOCAL_VARIABLE_AS_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+
+	@Test
+	@DisplayName("Compile: variable in closure as argument")
+	@Tag("compileToJava")
+	public void compilingLocalVariavleAsParameter() throws Exception {
 		this.compiler.compile(SNIPSET_LOCAL_VARIABLE_AS_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2552,10 +2748,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingMultipleCallsToSameFunction() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: multiple function calls")
+	@Tag("sarlValidation")
+	public void parsingMultipleCallsToSameFunction() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_MULTIPLE_CALLS_TO_SAME_FUNCTION);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: multiple function calls")
+	@Tag("compileToJava")
+	public void compilingMultipleCallsToSameFunction() throws Exception {
 		this.compiler.compile(SNIPSET_MULTIPLE_CALLS_TO_SAME_FUNCTION, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2652,10 +2856,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingMultipleCallsToSameParameter() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: multiple calls to same parameter")
+	@Tag("sarlValidation")
+	public void parsingMultipleCallsToSameParameter() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_MULTIPLE_CALLS_TO_SAME_PARAMETER);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: multiple calls to same parameter")
+	@Tag("compileToJava")
+	public void compilingMultipleCallsToSameParameter() throws Exception {
 		this.compiler.compile(SNIPSET_MULTIPLE_CALLS_TO_SAME_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2800,10 +3012,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda01() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: lambda with loop and branch")
+	@Tag("sarlValidation")
+	public void parsingComplexLambda01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: lambda with loop and branch")
+	@Tag("compileToJava")
+	public void compilingComplexLambda01() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -2821,7 +3041,7 @@ public class Bug885Test extends AbstractSarlTest {
 			"  }",
 			"  def f2(s : Scope<Address>) {",
 			"    f [ val p = it",
-			"        var sss : (Address) => UUID = [a|if(a != null) a.UUID else p.UUID]",
+			"        var sss : (Address) => UUID = [a|if(a !== null) a.UUID else p.UUID]",
 			"        it.UUID == sss.apply(p) ]",
 			"  }",
 			"}");
@@ -2871,8 +3091,7 @@ public class Bug885Test extends AbstractSarlTest {
 			"          final Address p = it;",
 			"          final Function1<Address, UUID> _function = (Address a) -> {",
 			"            UUID _xifexpression = null;",
-			"            boolean _notEquals = (!Objects.equals($_a, null));",
-			"            if (_notEquals) {",
+			"            if (($_a != null)) {",
 			"              _xifexpression = $_uUID;",
 			"            } else {",
 			"              _xifexpression = p.getID();",
@@ -2895,8 +3114,7 @@ public class Bug885Test extends AbstractSarlTest {
 			"          final Address p = it;",
 			"          final Function1<Address, UUID> _function = (Address a) -> {",
 			"            UUID _xifexpression = null;",
-			"            boolean _notEquals = (!Objects.equals(a, null));",
-			"            if (_notEquals) {",
+			"            if ((a != null)) {",
 			"              _xifexpression = a.getID();",
 			"            } else {",
 			"              _xifexpression = p.getID();",
@@ -2931,10 +3149,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda02() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: lambda inside lambda")
+	@Tag("sarlValidation")
+	public void parsingComplexLambda02() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: lambda inside lambda")
+	@Tag("compileToJava")
+	public void compilingComplexLambda02() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -3029,10 +3255,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda03() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: lambda with loop")
+	@Tag("sarlValidation")
+	public void parseComplexLambda03() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_03);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: lambda with loop")
+	@Tag("compileToJava")
+	public void compilingComplexLambda03() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_03, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -3192,10 +3426,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda04() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: in catch statement")
+	@Tag("sarlValidation")
+	public void parseComplexLambda04() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_04);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: in catch statement")
+	@Tag("compileToJava")
+	public void compilingComplexLambda04() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_04, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
@@ -3298,10 +3540,18 @@ public class Bug885Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void compilingComplexLambda05() throws Exception {
-		/*SarlScript mas = file(getParseHelper(), SNIPSET02);
+	@DisplayName("Parse: it redefinition")
+	@Tag("sarlValidation")
+	public void parseComplexLambda05() throws Exception {
+		SarlScript mas = file(getParseHelper(), SNIPSET_COMPLEX_LAMBDA_05);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();*/
+		validator.assertNoErrors();
+	}
+
+	@Test
+	@DisplayName("Compile: it redefinition")
+	@Tag("compileToJava")
+	public void compilingComplexLambda05() throws Exception {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_05, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");

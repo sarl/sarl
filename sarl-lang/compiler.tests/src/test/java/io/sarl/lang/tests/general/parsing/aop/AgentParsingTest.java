@@ -645,7 +645,7 @@ public class AgentParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E {}",
 					"agent A1 {",
-					"on E [ occurrence.source != null] {}",
+					"on E [ occurrence.source !== null] {}",
 					"}"
 					));
 			assertEquals(2, mas.getXtendTypes().size());

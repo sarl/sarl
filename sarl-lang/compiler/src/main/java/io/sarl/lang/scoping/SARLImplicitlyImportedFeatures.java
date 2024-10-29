@@ -31,6 +31,7 @@ import io.sarl.lang.core.scoping.extensions.cast.GeneralCastImplicitlyImportedFe
 import io.sarl.lang.core.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
 import io.sarl.lang.core.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
 import io.sarl.lang.core.scoping.extensions.time.TimeExtensions;
+import io.sarl.lang.core.scoping.extensions.uuid.UUIDExtensions;
 
 
 /** Provider of the implicitly imported features in the SARL language.
@@ -64,7 +65,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 	@Override
 	protected List<Class<?>> getExtensionClasses() {
 		final var xtextList = super.getExtensionClasses();
-		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
+
 		xtextList.add(0, TimeExtensions.class);
 
 		// Add features related to numbers.
@@ -72,6 +73,9 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		//TODO: this.numberArithmeticFeatures.getImportedFeatures(xtextList);
 		this.numberCastFeatures.getImportedFeatures(xtextList);
 		this.generalCastFeatures.getImportedFeatures(xtextList);
+
+		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
+		xtextList.add(0, UUIDExtensions.class);
 
 		return xtextList;
 	}

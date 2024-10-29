@@ -206,4 +206,57 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 		return getSpaceID();
 	}
 
+	/** Replies if the identifier in this address is equal to the given identifier.
+	 * It is equivalent to {@code getID().equals(id)}.
+	 *
+	 * @param id the identifier to test.
+	 * @return {@code true} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) != null && ($1).equals($0getID()))", constantExpression = true)
+	public boolean operator_equals(UUID id) {
+		return id != null && id.equals(getID());
+	}
+
+	/** Replies if the identifier in this address is equal to the given identifier.
+	 * It is equivalent to {@code getID().equals(id)}.
+	 *
+	 * @param id the identifier to test.
+	 * @return {@code true} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) != null && ($1).equals($0getSpaceID()))", constantExpression = true)
+	public boolean operator_equals(SpaceID id) {
+		return id != null && id.equals(getSpaceID());
+	}
+
+
+	/** Replies if the identifier in this address is not equal to the given identifier.
+	 * It is equivalent to {@code !getID().equals(id)}.
+	 *
+	 * @param id the identifier to test.
+	 * @return {@code false} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) == null || !($1).equals($0getID()))", constantExpression = true)
+	public boolean operator_notEquals(UUID id) {
+		return id == null || !id.equals(getID());
+	}
+
+	/** Replies if the identifier in this address is not equal to the given identifier.
+	 * It is equivalent to {@code !getID().equals(id)}.
+	 *
+	 * @param id the identifier to test.
+	 * @return {@code false} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) == null || !($1).equals($0getSpaceID()))", constantExpression = true)
+	public boolean operator_notEquals(SpaceID id) {
+		return id == null || !id.equals(getSpaceID());
+	}
+
 }

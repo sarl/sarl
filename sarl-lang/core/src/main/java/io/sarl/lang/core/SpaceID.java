@@ -24,6 +24,7 @@ package io.sarl.lang.core;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -161,6 +162,34 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 			return cmp;
 		}
 		return this.id.compareTo(otherID.id);
+	}
+
+	/** Replies if the given identifier is equal to the identifier in the given identifier.
+	 * It is equivalent to {@code id.equals(address.getID())}.
+	 *
+	 * @param id the identifier to test.
+	 * @param address the address to test.
+	 * @return {@code true} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) != null && $-1 != null && ($0equals(($1).getSpaceID())))", constantExpression = true)
+	public boolean operator_equals(Address address) {
+		return address != null && equals(address.getSpaceID());
+	}
+
+	/** Replies if the given identifier is not equal to the identifier in the given identifier.
+	 * It is equivalent to {@code !id.equals(address.getID())}.
+	 *
+	 * @param id the identifier to test.
+	 * @param address the address to test.
+	 * @return {@code false} if the identifier is equal to the address' identifier.
+	 * @since 0.14
+	 */
+	@Pure
+	@Inline(value = "(($1) == null || $-1 == null || !($0equals(($1).getSpaceID())))", constantExpression = true)
+	public boolean operator_notEquals(Address address) {
+		return address == null || !equals(address.getSpaceID());
 	}
 
 }

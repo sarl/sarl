@@ -149,7 +149,7 @@ public class SarlCompiler extends XtendCompiler {
 	private static final String SERIALIZABLE_CLOSURE_LOCAL_REFERENCES = "serializableClosure.localReferences"; //$NON-NLS-1$
 
 	private static final Pattern INLINE_VARIABLE_PATTERN = Pattern.compile("\\" + INLINE_VARIABLE_PREFIX //$NON-NLS-1$
-			+ "(\\" + INLINE_VARIABLE_PREFIX + "|[0-9]+)"); //$NON-NLS-1$ //$NON-NLS-2$
+			+ "((?:\\" + INLINE_VARIABLE_PREFIX + ")|(?:\\-?[0-9]+))"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Inject
 	private Logger log;
@@ -299,10 +299,10 @@ public class SarlCompiler extends XtendCompiler {
 				target.append(INLINE_VARIABLE_PREFIX);
 			} else {
 				final var index = Integer.parseInt(indexOrDollar) - 1;
-				// Treat the $0 parameter in the inline expression
+				// Treat the $-1 and $0 parameters in the inline expression
 				if (index < 0) {
 					final var hasReceiver = appendReceiver(call, target, true);
-					if (hasReceiver) {
+					if (hasReceiver && index != -2) {
 						target.append("."); //$NON-NLS-1$
 					}
 				} else {

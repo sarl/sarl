@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
+import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 
 /**
@@ -77,6 +78,7 @@ public class AddressTest {
 	/**
 	 */
 	@Test
+	@DisplayName("getID")
 	public void getID() {
 		assertSame(this.agentID, this.adr.getID());
 	}
@@ -84,13 +86,15 @@ public class AddressTest {
 	/**
 	 */
 	@Test
-	public void getSpaceId() {
+	@DisplayName("getSpaceID")
+	public void getSpaceID() {
 		assertSame(this.spaceID, this.adr.getSpaceID());
 	}
 
 	/**
 	 */
 	@Test
+	@DisplayName("equals(Address)")
 	public void equalsAddress() {
 		Address newAdr;
 		UUID newAgentID = UUID.randomUUID();
@@ -106,6 +110,7 @@ public class AddressTest {
 	/**
 	 */
 	@Test
+	@DisplayName("equals(Object)")
 	public void equalsObject() {
 		Object newAdr;
 		UUID newAgentID = UUID.randomUUID();
@@ -123,6 +128,7 @@ public class AddressTest {
 	/**
 	 */
 	@Test
+	@DisplayName("compareTo")
 	public void compareTo() {
 		Address newAdr;
 		UUID newAgentID1 = UUID.fromString("00000000-0000-0000-0000-000000000000"); //$NON-NLS-1$
@@ -156,6 +162,76 @@ public class AddressTest {
 		assertEquals(
 				this.agentID.compareTo(newAgentID2),
 				this.adr.compareTo(newAdr));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this == (UUID) null")
+	public void operatorEqualsAddressUUIDNull() {
+		assertFalse(this.adr.operator_equals((UUID) null));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this == UUID")
+	public void operatorEqualsAddressUUID() {
+		assertTrue(this.adr.operator_equals(this.agentID));
+		assertFalse(this.adr.operator_equals(UUID.randomUUID()));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this == (SpaceID) null")
+	public void operatorEqualsAddressSpaceIDNull() {
+		assertFalse(this.adr.operator_equals((SpaceID) null));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this == SpaceID")
+	public void operatorEqualsAddressSpaceID() {
+		assertTrue(this.adr.operator_equals(this.spaceID));
+		assertFalse(this.adr.operator_equals(new SpaceID(UUID.randomUUID(), this.agentID, EventSpaceSpecification.class)));
+		assertFalse(this.adr.operator_equals(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), EventSpaceSpecification.class)));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this != (UUID) null")
+	public void operatorNotEqualsAddressUUIDNull() {
+		assertTrue(this.adr.operator_notEquals((UUID) null));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this != UUID")
+	public void operatorNotEqualsAddressUUID() {
+		assertFalse(this.adr.operator_notEquals(this.agentID));
+		assertTrue(this.adr.operator_notEquals(UUID.randomUUID()));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this != (SpaceID) null")
+	public void operatorNotEqualsAddressSpaceIDNull() {
+		assertTrue(this.adr.operator_notEquals((SpaceID) null));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("this != SpaceID")
+	public void operatorNotEqualsAddressSpaceID() {
+		assertFalse(this.adr.operator_notEquals(this.spaceID));
+		assertTrue(this.adr.operator_notEquals(new SpaceID(UUID.randomUUID(), this.agentID, EventSpaceSpecification.class)));
+		assertTrue(this.adr.operator_notEquals(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), EventSpaceSpecification.class)));
 	}
 
 }

@@ -34,6 +34,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 
 /**
@@ -182,6 +184,32 @@ public class SpaceIDWithoutSpecificationTest {
 		assertEquals(
 				cmp(uuid1, uuid2),
 				this.spaceID.compareTo(sid));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("SpaceID == this")
+	public void operatorEqualsSpaceIDAddress() {
+		UUID agentID = UUID.randomUUID();
+
+		assertTrue(this.spaceID.operator_equals(new Address(this.spaceID, agentID)));
+		assertTrue(this.spaceID.operator_equals(new Address(new SpaceID(this.contextID, this.id, EventSpaceSpecification.class), agentID)));
+		assertFalse(this.spaceID.operator_equals(new Address(new SpaceID(this.contextID, agentID, EventSpaceSpecification.class), agentID)));
+		assertFalse(this.spaceID.operator_equals(new Address(new SpaceID(UUID.randomUUID(), agentID, EventSpaceSpecification.class), agentID)));
+	}
+
+	/**
+	 */
+	@Test
+	@DisplayName("SpaceID != this")
+	public void operatorNotEqualsSpaceIDAddress() {
+		UUID agentID = UUID.randomUUID();
+
+		assertFalse(this.spaceID.operator_notEquals(new Address(this.spaceID, agentID)));
+		assertFalse(this.spaceID.operator_notEquals(new Address(new SpaceID(this.contextID, this.id, EventSpaceSpecification.class), agentID)));
+		assertTrue(this.spaceID.operator_notEquals(new Address(new SpaceID(this.contextID, agentID, EventSpaceSpecification.class), agentID)));
+		assertTrue(this.spaceID.operator_notEquals(new Address(new SpaceID(UUID.randomUUID(), agentID, EventSpaceSpecification.class), agentID)));
 	}
 
 }
