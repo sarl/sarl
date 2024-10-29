@@ -12,6 +12,21 @@ the SARL Run-time Environment (SRE).
 
 ### Since 0.12
 
+<table>
+<thead>
+<tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal?</th><th>Replacement</th></tr>
+</thead><tbody>
+<tr><td>io.sarl.lang.util.Utils</td><td>compareVersions(String, String)</td><td>Yes</td>
+	<td>Replace with <code>compareMajorMinorVersions(String, String)</code>.
+	</td></tr>
+<tr><td>io.sarl.docs.validator.DocumentationLogger</td><td>setLogger(Logger)</td><td>Yes</td>
+	<td>No replacement.
+	</td></tr>
+</tbody></table>
+
+
+### Since 0.12
+
 
 <table>
 <thead>
@@ -26,13 +41,13 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>AbstractSARLLaunchConfiguration</td><td>getClasspath</td>
-	<td>Replace `getClasspath(...)` by `getClasspathAndModulepath(...)`.
+	<td>Replace <code>getClasspath(...)</code> by <code>getClasspathAndModulepath(...)</code>.
 	</td></tr>
 
 
 
 <tr><td>Address</td><td>getUUID</td>
-	<td>Replace `getUUID` by `getID`.
+	<td>Replace <code>getUUID</code> by <code>getID</code>.
 	</td></tr>
 
 [:Success:]
@@ -54,7 +69,7 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>OpenEventSpace</td><td>register</td>
-	<td>Replace `register(listener, true)` by `registerWeakParticipant(listener)`, and `register(listener, false)` by `registerStrongParticipant(listener)`.
+	<td>Replace <code>register(listener, true)</code> by <code>registerWeakParticipant(listener)</code>, and <code>register(listener, false)</code> by <code>registerStrongParticipant(listener)</code>.
 	</td></tr>
 
 [:Success:]
@@ -74,10 +89,10 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>ReflectExtensions</td><td>getDefaultNameFormatter</td>
-	<td>Replace `getDefaultNameFormatter` by `getDefaultMethodNameFormatter`.
+	<td>Replace <code>getDefaultNameFormatter</code> by <code>getDefaultMethodNameFormatter</code>.
 	</td></tr>
 <tr><td>ReflectExtensions</td><td>setDefaultNameFormatter</td>
-	<td>Replace `setDefaultNameFormatter` by `setDefaultMethodNameFormatter`.
+	<td>Replace <code>setDefaultNameFormatter</code> by <code>setDefaultMethodNameFormatter</code>.
 	</td></tr>
 
 
@@ -130,8 +145,8 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>willReceive</td>
-	<td>Replace `receiver.willReceive(new [:myeventname!])` by `emit(new [:myeventname!]) [it.ID == receiver]`.
-	The number of functions in the API should be limited. This function is assumed to be redundant with `emit`.
+	<td>Replace <code>receiver.willReceive(new [:myeventname!])</code> by <code>emit(new [:myeventname!]) [it.ID == receiver]</code>.
+	The number of functions in the API should be limited. This function is assumed to be redundant with <code>emit</code>.
 	</td></tr>
 
 [:Success:]
@@ -148,13 +163,13 @@ the SARL Run-time Environment (SRE).
 [:End:]
 
 
-<tr><td>Lifecycle</td><td>return type of `spawn`</td>
+<tr><td>Lifecycle</td><td>return type of <code>spawn</code></td>
 	<td>In SRE 2.x, we could spawn an agent and get their assigned UUID code via the spawn method
-	the `Lifecycle` capacity, e.g.:
+	the <code>Lifecycle</code> capacity, e.g.:
 <pre><code>val agent_UUID = spawn(typeof([:myagentname!]))
 </code></pre>
-	Because of problems and inconsistencies caused by the parallel execution of the `spawn` function,
-	the return value of this method has been deprecated. The `spawn` function replies nothing since version
+	Because of problems and inconsistencies caused by the parallel execution of the <code>spawn</code> function,
+	the return value of this method has been deprecated. The <code>spawn</code> function replies nothing since version
 	0.11 of the API.
 	To spawn an agent and grab its UUID code, we first generate the identifier and then spawn the agent with it:
 [:Success:]
@@ -173,7 +188,7 @@ the SARL Run-time Environment (SRE).
         }
     }
 [:End:]
-	([:defaultContextCall:] is the short for `getDefaultContext` provided by [:dcicapacity:])
+	(<code>[:defaultContextCall!]</code> is the short for <code>getDefaultContext</code> provided by <code>[:dcicapacity!]</code>)
 	<br>
 	or, with the version 0.12 of the API:
 [:Success:]
@@ -196,8 +211,8 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>OpenEventSpace</td><td>register</td>
-	<td>Replace `space.register(participant, isWeak)` by `[:registerstrongparticipantfct!](participant)`
-	if `isWeak` is true, or `[:registerweakparticipantfct!](participant)` if `isWeak` is false. This change
+	<td>Replace <code>space.register(participant, isWeak)</code> by <code>[:registerstrongparticipantfct!](participant)</code>
+	if <code>isWeak</code> is true, or <code>[:registerweakparticipantfct!](participant)</code> if <code>isWeak</code> is false. This change
 	is applied by internal design on the space implementation.
 	</td></tr>
 
@@ -226,10 +241,10 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal Version</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>spawn</td><td></td>
-	<td>Replace `[:spawnfctname!](type, args)` by `[:lifecyclecapacity!].[:spawnfctname!](type, args)`.
-	The definition of the [:spawnfctname:]into `DefaultContextInteractions` is not expected by SARL
+	<td>Replace <code>[:spawnfctname!](type, args)</code> by <code>[:lifecyclecapacity!].[:spawnfctname!](type, args)</code>.
+	The definition of the <code>[:spawnfctname!]</code> into <code>DefaultContextInteractions</code> is not expected by SARL
 	users since this capacity seems to be
-	dedicated to interactions. [:lifecyclecapacity:] capacity is a better place for defining the `spawn`
+	dedicated to interactions. <code>[:lifecyclecapacity!]</code> capacity is a better place for defining the <code>spawn</code>
 	functions.
 
 [:Success:]
@@ -244,9 +259,10 @@ the SARL Run-time Environment (SRE).
     }
 [:End:]
 
-	</td></tr>
+</td></tr>
+
 <tr><td>Logging</td><td>println</td><td></td>
-	<td>Replace `println(msg)` by `[:infofctname!](msg)`. The semantic of `println` is linked to the system console.
+	<td>Replace <code>println(msg)</code> by <code>[:infofctname!](msg)</code>. The semantic of <code>println</code> is linked to the system console.
 	Agents are supposed to log their messages on the agent console.
 
 [:Success:]
@@ -260,24 +276,27 @@ the SARL Run-time Environment (SRE).
     }
 [:End:]
 
-	</td></tr>
+</td></tr>
+
 <tr><td>SarlSpecificationChecker</td><td>getSarlSpecificationVersion</td><td></td>
-	<td>Replaced by [:checkerfctname:]. Change due to the change of the return type
-	that is now of type [:versiontypename:].
+<td>Replaced by <code>[:checkerfctname!]</code>. Change due to the change of the return type that is now of type <code>[:versiontypename!]</code>.
 
 [:Success:]
+	[:Off]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.api.util.[:checkername](SarlSpecificationChecker)
+    import io.sarl.api.util.SarlSpecificationChecker
     import org.osgi.framework.Version
     agent X {
-        def fct(s : SarlSpecificationChecker, t : Class<?>) : [:versiontypename](Version) {
-			s.[:checkerfctname](getSarlSpecificationVersionObject)(t)
+        def fct(s : SarlSpecificationChecker, t : Class<?>) : [:versiontypename]{Version} {
+			s.[:checkerfctname]{getSarlSpecificationVersionObject}(t)
         }
     }
 [:End:]
 
-	</td/></tr>
+</td></tr>
+
 </tbody></table>
+
 
 
 ### Since 0.5
@@ -288,8 +307,8 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal Version</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>receive</td><td>0.10</td>
-	<td>Replace `receiver.receive(new Event)` by `emit(new Event) [it.ID == receiver]`. The number of
-	functions in the API should be limited. This function is assumed to be redundant with `emit`.
+	<td>Replace <code>receiver.receive(new Event)</code> by <code>emit(new Event) [it.ID == receiver]</code>. The number of
+	functions in the API should be limited. This function is assumed to be redundant with <code>emit</code>.
 	</td></tr>
 </tbody></table>
 
@@ -311,14 +330,14 @@ the SARL Run-time Environment (SRE).
 	that could be extended with plugins by only adding these plugins on the classpath of the application.
 	In the context of Janus, the network features were moved into a plugin. One could easily add the
 	network feature by adding the corresponding plugin jar file in the classpath (equivalent to the old
-	`Boot.offline = false`) or remove it from the classpath (equivalent to `Boot.offline = true`), or
+	<code>Boot.offline = false</code>) or remove it from the classpath (equivalent to <code>Boot.offline = true</code>), or
 	even add another networking plugin that is based on another technology (e.g. MQTT, etc.).
-	So, `Boot.offline` function is not any more into the Janus kernel (i.e. the Boot class, see below)
+	So, <code>Boot.offline</code> function is not any more into the Janus kernel (i.e. the Boot class, see below)
 	but into the configuration of the networking plugin. This plugin is under validation and is planned
 	to be back in SARL 0.12.
 	</td></tr>
 <tr><td>Boot</td><td>setVerboseLevel(level)</td><td>0.10</td>
-	<td>This function is removed from `Boot`. The `SRE` utility class provides the replacing function.
+	<td>This function is removed from <code>Boot</code>. The <code>SRE</code> utility class provides the replacing function.
 	Note that it must be called before any launch of agent since the configuration level of Janus is set at start up.
 
 [:Success:]

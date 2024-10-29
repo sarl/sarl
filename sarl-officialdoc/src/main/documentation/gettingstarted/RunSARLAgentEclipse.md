@@ -3,12 +3,12 @@
 [:Outline:]
 
 For running an agent, you must launch this agent on the runtime environment.
-In this document, we assume that the runtime environment is the [Janus platform](http://www.janusproject.io).
+In this document, we assume that the runtime environment is the [Janus platform](http://www.sarl.io/runtime/janus/).
 
 Two major methods are available for launching a SARL application inside the SARL Eclipse IDE:
 
-* Use a [SARL launch configuration](#create-a-sarl-launch-configuration).
-* Use a [Java launch configuration](#create-a-java-launch-configuration).
+* Use a [SARL launch configuration](#1-create-a-sarl-launch-configuration).
+* Use a [Java launch configuration](#2-create-a-java-launch-configuration).
 
 The SARL launch configuration is recommended.
 
@@ -55,7 +55,7 @@ At the bottom of this page, you may change configuration options for the runtime
 ### Add the Janus runtime environment
 
 For running your agent, you must specify a SARL runtime environment.
-In this tutorial, we assume that you want to use the [Janus platform](http://www.janusproject.io).
+In this tutorial, we assume that you want to use the [Janus platform](http://www.sarl.io/runtime/janus/).
 
 If you don't want to use the Janus platform, you must download the
 runtime environment that you want to use, and install it in the SARL Eclipse environment as follow.

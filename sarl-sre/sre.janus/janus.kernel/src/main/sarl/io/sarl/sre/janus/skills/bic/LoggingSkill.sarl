@@ -75,7 +75,7 @@ skill LoggingSkill extends Skill implements Logging {
 		this.logger.level = level
 	}
 
-	@Deprecated
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	def println(message : Object) {
 		info(message)
 	}

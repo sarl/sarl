@@ -170,17 +170,17 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 		}
 	}
 
-	@Deprecated
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	def willReceive(receiver : UUID, ^event : Event) {
 		^event.emit [it.ID == receiver]
 	}
 	
-	@Deprecated	
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	def receive(receiver : UUID, ^event : Event) {
 		receiver.willReceive(^event)
 	}
 
-	@Deprecated
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID {
 		throw new UnsupportedOperationException("Use Lifecycle capacity")
 	}

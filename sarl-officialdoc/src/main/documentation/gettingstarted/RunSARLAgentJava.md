@@ -6,7 +6,7 @@ For running an agent, you must launch this agent on the runtime environment.
 This document explains how to launch an agent on any SARL Run-time Environment (SRE)
 from a Java program or SARL class.
 
-The default SRE is the [Janus platform](http://www.janusproject.io). 
+The default SRE is the [Janus platform](http://www.sarl.io/runtime/janus/). 
 
 
 ## Definition of the SRE Bootstrap

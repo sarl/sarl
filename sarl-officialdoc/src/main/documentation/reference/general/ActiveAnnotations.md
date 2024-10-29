@@ -317,6 +317,107 @@ The previous code is equivalent to:
 [:End:]
 
 
+
+## @Inline
+
+The [:inlineannotation:] annotation is related to the feature of the SARL compiler that suggests that the compiler substitutes the code within the annotation definition in place of each call to that function.
+
+In theory, using [:inlineannotation:] functions can make your program faster because they eliminate the overhead associated with function calls.
+From background point-of-view, calling a function requires pushing the return address on the stack, pushing arguments onto the stack, jumping to the function body, and then executing a return instruction when the function finishes.
+This process is eliminated by inlining the function.
+The compiler also has different opportunities to optimize functions expanded inline versus those that aren't.
+A tradeoff of inline functions is that the overall size of your program can increase.
+
+The following code is an example of the usage of the [:inlineannotation:] annotation.
+The defined function is computing the double of the multiplication of the two arguments.
+The annotation specifies the **Java** expression that will be used as a replacement in the Java code for the function call to [:inlineannotationfunction:].
+
+[:Success:]
+	[:On]
+	import org.eclipse.xtext.xbase.lib.Inline
+	class MyClass {
+		[:inlineannotation](@Inline)("((﹩1) * (﹩2) * 2)")
+		def [:inlineannotationfunction](mul)(a : int, b : int) : int {
+			a * b * 2
+		}
+	}
+	[:Off]
+[:End:]
+
+As it is illustrated before, the value of the annotation represents the Java code replacement.
+This inline format string contains valid Java code with several placeholders like `$1`, `$2`, etc.
+The number after the dollar sign corresponds to the index of the information that is used during the replacement process.
+When the inlined function has `1..n` parameters, then `$1` to `$n` are used to represent there parameters, and the subsequent `m` values corresponds to the `m` types specified with the `imported` parameter of the [:inlineannotation:] annotation.
+The next index `$n+m+1`} can be used to insert all type parameters of the original declaration.
+And, finally the last indices refer to the upper bound substitute of the type parameters individually.
+
+In the case a not-static function, two special numbers are reserved: `$0` is replaced by the object expression for which the inlined function was called, followed by a `.` character; and `$-1` is replaced by the object expression for which the inlined function was called, without a following `.` character.
+
+Let the following example for illustrating the values of the [:inlineannotation:] placeholders.
+
+[:Success:]
+	import org.eclipse.xtext.xbase.lib.Inline
+	import java.math.BigDecimal
+	interface MyInterface {
+	[:On]
+		@Inline(value="......", imported = [:inlineannotationimported]{typeof(BigDecimal)})
+		def myMethod(p1 : String, p2 : String) : void with [:inlineannotationgenertics](T1, T2 extends Byte)
+	[:Off]
+	}
+[:End:]
+
+The call to the previously defined function is:
+
+[:Success:]
+	import org.eclipse.xtext.xbase.lib.Inline
+	import java.math.BigDecimal
+	interface MyInterface {
+		def myMethod(p1 : String, p2 : String) : void with T1, T2 extends [:inlineannotationT2super](Byte)
+	}
+	class MyClass {
+		def myCaller : void {
+		[:On]
+			var [:inlineannotationreceiver1](obj) : MyInterface
+			[:inlineannotationreceiver2](obj.)<Integer, Byte>myMethod([:inlineannotationparam1]("abc"), [:inlineannotationparam2]("def"))
+		[:Off]
+		}
+	}
+[:End:]
+
+The following table provides a synthetic view of the [:inlineannotation:] placeholders.
+
+| N.  | Description | In the example |
+| --- | ----------- | -------------- |
+| -1 | The calling receiver of the function without final dot character | [:inlineannotationreceiver1:] |
+| 0 | The calling receiver of the function with final dot character | [:inlineannotationreceiver2:] |
+| [1..n] | `n` parameters of the function | [:inlineannotationparam1:], [:inlineannotationparam2:] | 
+| (n..k] | `m` imported types (k=n+1+m) | [:inlineannotationimported:] |
+| k+1 | all of the `p` generic types of the function | [:inlineannotationgenertics:] | 
+| (k+1..i] | Upper bound of the type parameters (i=k+p+2) | `Object`, [:inlineannotationT2super:] |
+
+
+The [:inlineannotation:] annotation has different arguments:
+
+| Argument | Description |
+| -------- | ----------- |
+| [:inlineannotationvaluearg:] | The inline format string |
+| [:inlineannotationimportedarg:] | Types that should be imported to inline the operation |
+| [:inlineannotationstatementarg:] | Whether the inlined expression is a statement expression in the Java code |
+| [:inlineannotationconstantarg:] | Whether the compiled Java is a constant expression operator, i.e. `$0` is not automatically written as a prefix of the provided inline format string |
+
+[:Success:]
+	[:Off]
+	import org.eclipse.xtext.xbase.lib.Inline
+	interface MyInterface {
+		@Inline([:inlineannotationvaluearg](value)="",
+			[:inlineannotationimportedarg](imported) = typeof(Integer),
+			[:inlineannotationstatementarg](statementExpression) = false,
+			[:inlineannotationconstantarg](constantExpression) = false)
+		def myMethod(p1 : String, p2 : String) : void
+	}
+[:End:]
+
+
 ## @NoEqualityTestFunctionsGeneration
 
 The [:noeqtestannon:] annotation disables the generation the equality test functions, i.e. `equals()` and `hashCode()` from

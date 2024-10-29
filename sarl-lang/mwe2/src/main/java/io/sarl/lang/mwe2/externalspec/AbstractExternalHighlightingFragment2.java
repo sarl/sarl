@@ -771,7 +771,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		/** {@inheritDoc}.
 		 * @deprecated Deprecated
 		 */
-		@Deprecated
+		@Deprecated(since = "0.10", forRemoval = true)
 		@Override
 		public List<String> getImports() {
 			return Collections.emptyList();

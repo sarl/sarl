@@ -105,7 +105,7 @@ public class ExtraLanguageAppendable extends AbstractStringBuilderBasedAppendabl
 	/** {@inheritDoc}
 	 * @deprecated {@link #getImportManager()}.{@link ImportManager#getImports()}.
 	 */
-	@Deprecated(forRemoval = false)
+	@Deprecated(since = "0.10", forRemoval = false)
 	@Override
 	public List<String> getImports() {
 		return getImportManager().getImports();

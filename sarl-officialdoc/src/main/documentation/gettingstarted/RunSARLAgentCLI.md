@@ -4,13 +4,13 @@
 
 For running an agent, you must launch this agent on the runtime environment.
 This document explains how to launch an agent on the
-[Janus platform](http://www.janusproject.io) from the command line.
+[Janus platform](http://www.sarl.io/runtime/janus/) from the command line.
 
 Three methods could be used for launching an agent with Janus:
 
-* [Using the provided janus command-line tool](#use-the-janus-command-line-tool);
-* [Using the standard java method](#use-the-standard-java-method);
-* [Using Maven execution plugin](#use-maven-execution-plugin).
+* [Using the provided janus command-line tool](#1-use-the-janus-command-line-tool);
+* [Using the standard java method](#2-use-the-standard-java-method);
+* [Using Maven execution plugin](#3-use-maven-execution-plugin).
 
 
 ## Use the Janus command-line tool
@@ -110,7 +110,7 @@ the Janus jar file(s):
 java -cp /path/to/myapplication.jar:/path/to/[:janusjarfile](janus.kernel-<version>-with-dependencies.jar) [:fullbootclass!] myapp.MyAgent
 ```
 
-The [:janusjarfile:] file must be dowloaded from the [Janus website](http://www.janusproject.io/)
+The [:janusjarfile:] file must be dowloaded from the [Janus website](http://www.sarl.io/runtime/janus/)
 
 ### Creating [:jarfile!] with maven-assembly-plugin
 

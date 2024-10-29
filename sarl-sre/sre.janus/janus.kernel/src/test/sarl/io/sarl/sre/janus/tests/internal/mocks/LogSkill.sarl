@@ -30,7 +30,7 @@ skill LogSkill implements Logging {
 	override setLoggingName(name : String) {
 	}
 
-	@Deprecated
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	override println(message : Object) {
 	}
 

@@ -37,7 +37,7 @@ import io.sarl.lang.core.EventListener
  */
 class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
-	@Deprecated
+	@Deprecated(since = "3.0.10", forRemoval = true)
 	def register(entity : EventListener, weakParticipant : boolean) : Address {
 		entity.registerToSpace(weakParticipant)
 	}

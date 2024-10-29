@@ -402,7 +402,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @deprecated
 	 * @generated
 	 */
-	@Deprecated
+	@Deprecated(since = "0.10", forRemoval = false)
 	public static SarlPackage getPackage()
 	{
 		return SarlPackage.eINSTANCE;
