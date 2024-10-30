@@ -1658,7 +1658,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"public, package, protected, private, static, final, var or val");
+					"public, package, protected, private, static, final, extension, var or val");
 		}
 
 	}

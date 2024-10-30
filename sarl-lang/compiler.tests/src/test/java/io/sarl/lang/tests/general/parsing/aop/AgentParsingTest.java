@@ -1304,7 +1304,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					INVALID_MODIFIER,
-					"package, protected, private, final, var, val or static");
+					"package, protected, private, final, extension, var, val or static");
 		}
 
 	}

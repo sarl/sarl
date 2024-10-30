@@ -477,6 +477,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
 					this.grammarAccess.getFinalKeyword(),
+					this.grammarAccess.getExtensionExtensionKeyword(),
 					this.grammarAccess.getWriteableVarKeyword(),
 					this.grammarAccess.getValKeyword(),
 					this.grammarAccess.getStaticStaticKeyword()));
@@ -534,6 +535,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 					this.grammarAccess.getPrivateKeyword(),
 					this.grammarAccess.getStaticStaticKeyword(),
 					this.grammarAccess.getFinalKeyword(),
+					this.grammarAccess.getExtensionExtensionKeyword(),
 					this.grammarAccess.getWriteableVarKeyword(),
 					this.grammarAccess.getValKeyword()));
 		}
@@ -647,6 +649,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 					this.grammarAccess.getPrivateKeyword(),
 					this.grammarAccess.getStaticStaticKeyword(),
 					this.grammarAccess.getFinalKeyword(),
+					this.grammarAccess.getExtensionExtensionKeyword(),
 					this.grammarAccess.getWriteableVarKeyword(),
 					this.grammarAccess.getValKeyword()));
 		}
