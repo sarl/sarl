@@ -198,6 +198,15 @@ public interface SarlFactory extends EFactory
 	SarlArtifact createSarlArtifact();
 
 	/**
+	 * Returns a new object of class '<em>Protocol</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Protocol</em>'.
+	 * @generated
+	 */
+	SarlProtocol createSarlProtocol();
+
+	/**
 	 * Returns a new object of class '<em>Agent</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

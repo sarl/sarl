@@ -90,7 +90,7 @@ syn keyword sarlSpecial import package
 syn cluster sarlTop add=sarlSpecial
 
 " keywords for the 'sarlTypeDeclaration' family.
-syn keyword sarlTypeDeclaration agent annotation artifact behavior capacity class enum event interface skill space
+syn keyword sarlTypeDeclaration agent annotation artifact behavior capacity class enum event interface protocol skill space
 syn cluster sarlTop add=sarlTypeDeclaration
 
 " keywords for the 'sarlModifier' family.

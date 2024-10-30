@@ -163,6 +163,7 @@ import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -798,6 +799,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				final var javaType = this.typesFactory.createJvmGenericType();
 				if (!preIndexingPhase) {
 					doLaterExceptionSafe.add(() -> initialize(sarlArtifact, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlProtocol sarlProtocol) {
+				final var javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlProtocol, javaType));
 				}
 				return javaType;
 			}
@@ -1636,6 +1644,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@SuppressWarnings("static-method")
 	protected void initialize(SarlArtifact source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the space has no name.
+		assert source != null;
+		assert inferredJvmType != null;
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+	}
+
+	/** Initialize the SARL protocol type.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmType the JVM type.
+	 * @since 0.14
+	 */
+	@SuppressWarnings("static-method")
+	protected void initialize(SarlProtocol source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the space has no name.
 		assert source != null;
 		assert inferredJvmType != null;

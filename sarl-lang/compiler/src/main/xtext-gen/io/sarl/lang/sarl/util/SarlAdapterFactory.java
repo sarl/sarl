@@ -188,6 +188,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlArtifactAdapter();
 			}
 			@Override
+			public Adapter caseSarlProtocol(SarlProtocol object)
+			{
+				return createSarlProtocolAdapter();
+			}
+			@Override
 			public Adapter caseSarlAgent(SarlAgent object)
 			{
 				return createSarlAgentAdapter();
@@ -599,6 +604,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlArtifactAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlProtocol <em>Protocol</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlProtocol
+	 * @generated
+	 */
+	public Adapter createSarlProtocolAdapter()
 	{
 		return null;
 	}

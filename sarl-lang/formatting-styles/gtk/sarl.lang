@@ -146,6 +146,7 @@
    <keyword>package</keyword>
    <keyword>private</keyword>
    <keyword>protected</keyword>
+   <keyword>protocol</keyword>
    <keyword>public</keyword>
    <keyword>requires</keyword>
    <keyword>return</keyword>

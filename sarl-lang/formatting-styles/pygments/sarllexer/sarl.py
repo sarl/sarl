@@ -62,7 +62,7 @@ class SarlLexer(RegexLexer):
 			  Keyword.Type),
 			 (r'(package)(\s+)', bygroups(Keyword.Namespace, Text)),
 			 (r'(false|it|null|occurrence|this|true|void)\b', Keyword.Constant),
-			 (r'(agent|annotation|artifact|behavior|capacity|class|enum|event|interface|skill|space)(\s+)', bygroups(Keyword.Declaration, Text),
+			 (r'(agent|annotation|artifact|behavior|capacity|class|enum|event|interface|protocol|skill|space)(\s+)', bygroups(Keyword.Declaration, Text),
 			  'class'),
 			 (r'(import)(\s+)', bygroups(Keyword.Namespace, Text), 'import'),
 			 (r'"(\\\\|\\"|[^"])*"', String),

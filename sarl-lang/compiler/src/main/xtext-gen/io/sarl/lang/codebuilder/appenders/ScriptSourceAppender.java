@@ -32,6 +32,7 @@ import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -180,6 +181,14 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
 		 return this.builder.addSarlArtifact(name);
+	}
+
+	/** Create a SarlProtocol builder.
+	 * @param name the name of the SarlProtocol.
+	 * @return the builder.
+	 */
+	public ISarlProtocolBuilder addSarlProtocol(String name) {
+		 return this.builder.addSarlProtocol(name);
 	}
 
 	/** Create a SarlClass builder.

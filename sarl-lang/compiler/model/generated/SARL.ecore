@@ -28,6 +28,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlSpace" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SarlArtifact" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SarlProtocol" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SarlClass" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"

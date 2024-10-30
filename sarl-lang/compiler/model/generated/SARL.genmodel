@@ -25,6 +25,7 @@
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlSpace"/>
     <genClasses ecoreClass="SARL.ecore#//SarlArtifact"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlProtocol"/>
     <genClasses ecoreClass="SARL.ecore#//SarlClass">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlClass/typeParameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlClass/extends"/>

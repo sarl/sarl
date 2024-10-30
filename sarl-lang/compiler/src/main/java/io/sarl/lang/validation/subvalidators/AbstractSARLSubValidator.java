@@ -81,6 +81,7 @@ import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -577,6 +578,8 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 					fullLabel.append(getGrammarAccess().getSpaceKeyword());
 				} else if (declaration instanceof SarlArtifact) {
 					fullLabel.append(getGrammarAccess().getArtifactKeyword());
+				} else if (declaration instanceof SarlProtocol) {
+					fullLabel.append(getGrammarAccess().getProtocolKeyword());
 				} else {
 					throw new IllegalStateException();
 				}

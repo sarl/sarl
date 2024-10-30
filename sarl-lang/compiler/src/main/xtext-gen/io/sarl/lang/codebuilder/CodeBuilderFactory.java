@@ -47,6 +47,7 @@ import io.sarl.lang.codebuilder.appenders.SarlEnumerationSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlEventSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlFieldSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlInterfaceSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlProtocolSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSpaceSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
@@ -66,6 +67,7 @@ import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -769,6 +771,55 @@ public class CodeBuilderFactory {
 	@Pure
 	public SarlArtifactSourceAppender buildSarlArtifact(String name, Resource resource) {
 		SarlArtifactSourceAppender a = new SarlArtifactSourceAppender(createSarlArtifact(name, resource));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the factory for a Sarl SarlProtocol.
+	 * @param name the name of the SarlProtocol
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlProtocolBuilder createSarlProtocol(String name, ResourceSet resourceSet) {
+		 return createSarlProtocol(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlProtocol.
+	 * @param name the name of the SarlProtocol
+	 * @param resource the resource that must be used for
+	 *    containing the generated element, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlProtocolBuilder createSarlProtocol(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		return scriptBuilder.addSarlProtocol(name);
+	}
+
+	/** Create the appender for a Sarl SarlProtocol.
+	 * @param name the name of the SarlProtocol
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlProtocolSourceAppender buildSarlProtocol(String name, ResourceSet resourceSet) {
+		SarlProtocolSourceAppender a = new SarlProtocolSourceAppender(createSarlProtocol(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl SarlProtocol.
+	 * @param name the name of the SarlProtocol
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlProtocolSourceAppender buildSarlProtocol(String name, Resource resource) {
+		SarlProtocolSourceAppender a = new SarlProtocolSourceAppender(createSarlProtocol(name, resource));
 		getInjector().injectMembers(a);
 		return a;
 	}

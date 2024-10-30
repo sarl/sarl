@@ -138,6 +138,13 @@ ruleType:
 		    |
 		ruleCommonModifier
 		*
+		'protocol'
+		ruleValidID
+		'{'
+		'}'
+		    |
+		ruleCommonModifier
+		*
 		'class'
 		ruleValidID
 		(

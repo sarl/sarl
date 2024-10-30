@@ -311,6 +311,7 @@ Workflow {
 				typeDeclarationKeyword = 'enum'
 				typeDeclarationKeyword = 'annotation'
 				typeDeclarationKeyword = 'artifact'
+				typeDeclarationKeyword = 'protocol'
 
     			colors = auto-inject {
     				color = auto-inject {

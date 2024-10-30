@@ -84,6 +84,11 @@ Type returns xtend::XtendTypeDeclaration:
 		modifiers+=CommonModifier*
 		'artifact' name=ValidID '{' '}'
 	|
+		// Protocol
+		{SarlProtocol.annotationInfo = current}
+		modifiers+=CommonModifier*
+		'protocol' name=ValidID '{' '}'
+	|
 		// Class
 		{SarlClass.annotationInfo = current}
 		modifiers+=CommonModifier*

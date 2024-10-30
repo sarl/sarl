@@ -1428,6 +1428,88 @@ public interface SarlPackage extends EPackage
 	int SARL_ARTIFACT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolImpl <em>Protocol</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlProtocolImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocol()
+	 * @generated
+	 */
+	int SARL_PROTOCOL = 19;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__ANNOTATIONS = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__ANNOTATION_INFO = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__MODIFIERS = XtendPackage.XTEND_TYPE_DECLARATION__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__DECLARING_TYPE = XtendPackage.XTEND_TYPE_DECLARATION__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__NAME = XtendPackage.XTEND_TYPE_DECLARATION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Members</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
+
+	/**
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL__EXTENDS = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Protocol</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2204,6 +2286,27 @@ public interface SarlPackage extends EPackage
 	EReference getSarlArtifact_Extends();
 
 	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocol <em>Protocol</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Protocol</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocol
+	 * @generated
+	 */
+	EClass getSarlProtocol();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlProtocol#getExtends <em>Extends</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Extends</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocol#getExtends()
+	 * @see #getSarlProtocol()
+	 * @generated
+	 */
+	EReference getSarlProtocol_Extends();
+
+	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAgent <em>Agent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2661,6 +2764,24 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_ARTIFACT__EXTENDS = eINSTANCE.getSarlArtifact_Extends();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolImpl <em>Protocol</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlProtocolImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocol()
+		 * @generated
+		 */
+		EClass SARL_PROTOCOL = eINSTANCE.getSarlProtocol();
+
+		/**
+		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_PROTOCOL__EXTENDS = eINSTANCE.getSarlProtocol_Extends();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.

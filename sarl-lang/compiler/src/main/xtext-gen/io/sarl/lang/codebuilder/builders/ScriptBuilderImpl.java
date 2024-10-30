@@ -220,6 +220,19 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	@Inject
+	private Provider<ISarlProtocolBuilder> sarlProtocolProvider;
+
+	/** Create a SarlProtocol builder.
+	 * @param name the name of the SarlProtocol.
+	 * @return the builder.
+	 */
+	public ISarlProtocolBuilder addSarlProtocol(String name) {
+		ISarlProtocolBuilder builder = this.sarlProtocolProvider.get();
+		builder.eInit(getScript(), name, getTypeResolutionContext());
+		return builder;
+	}
+
+	@Inject
 	private Provider<ISarlClassBuilder> sarlClassProvider;
 
 	/** Create a SarlClass builder.

@@ -70,6 +70,7 @@ import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.validation.IssueCodes;
@@ -116,6 +117,20 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 				Messages.SARLTypeValidator_1,
 				getGrammarAccess().getSpaceKeyword()),
 				artifact,
+				null);
+	}
+
+	/** Protocol keyword is reserved.
+	 *
+	 * @param protocol the protocol to check.
+	 * @since 0.14
+	 */
+	@Check(CheckType.FAST)
+	public void checkProtocolUse(SarlProtocol protocol) {
+		error(MessageFormat.format(
+				Messages.SARLTypeValidator_1,
+				getGrammarAccess().getProtocolKeyword()),
+				protocol,
 				null);
 	}
 

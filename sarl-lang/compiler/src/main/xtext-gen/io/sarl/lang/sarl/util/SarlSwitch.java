@@ -274,6 +274,16 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case SarlPackage.SARL_PROTOCOL:
+			{
+				SarlProtocol sarlProtocol = (SarlProtocol)theEObject;
+				T result = caseSarlProtocol(sarlProtocol);
+				if (result == null) result = caseXtendTypeDeclaration(sarlProtocol);
+				if (result == null) result = caseXtendMember(sarlProtocol);
+				if (result == null) result = caseXtendAnnotationTarget(sarlProtocol);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case SarlPackage.SARL_AGENT:
 			{
 				SarlAgent sarlAgent = (SarlAgent)theEObject;
@@ -631,6 +641,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlArtifact(SarlArtifact object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Protocol</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Protocol</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSarlProtocol(SarlProtocol object)
 	{
 		return null;
 	}

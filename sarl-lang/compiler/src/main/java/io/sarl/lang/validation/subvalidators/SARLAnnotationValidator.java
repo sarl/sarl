@@ -96,6 +96,7 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 
@@ -130,6 +131,7 @@ public class SARLAnnotationValidator extends AbstractSARLSubValidatorWithParentL
 		result.put(SarlBehavior.class, ElementType.TYPE);
 		result.put(SarlSpace.class, ElementType.TYPE);
 		result.put(SarlArtifact.class, ElementType.TYPE);
+		result.put(SarlProtocol.class, ElementType.TYPE);
 		result.put(SarlClass.class, ElementType.TYPE);
 		result.put(SarlInterface.class, ElementType.TYPE);
 		result.put(SarlEnumeration.class, ElementType.TYPE);

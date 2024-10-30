@@ -516,6 +516,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getTypeAccess().getSpaceKeyword_2_5_2().getValue();
 	}
 
+	/** Keyword: {@code protocol}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getProtocolKeyword() {
+		return this.grammarAccess.getTypeAccess().getProtocolKeyword_2_7_2().getValue();
+	}
+
 	/** Keyword: {@code continue}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -898,6 +905,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getEnumKeyword());
 			kws.add(getAbstractKeyword());
 			kws.add(getUsesKeyword());
+			kws.add(getProtocolKeyword());
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
@@ -961,6 +969,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getAgentKeyword());
 			kws.add(getDispatchKeyword());
 			kws.add(getUsesKeyword());
+			kws.add(getProtocolKeyword());
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());

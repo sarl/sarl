@@ -125,6 +125,12 @@ public interface IScriptBuilder {
 	 */
 	ISarlArtifactBuilder addSarlArtifact(String name);
 
+	/** Create a SarlProtocol builder.
+	 * @param name the name of the SarlProtocol.
+	 * @return the builder.
+	 */
+	ISarlProtocolBuilder addSarlProtocol(String name);
+
 	/** Create a SarlClass builder.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.

@@ -61,8 +61,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_Member___LeftParenthesisKeyword_2_1_4_0_RightParenthesisKeyword_2_1_4_2__q;
 	protected AbstractElementAlias match_Member___LeftParenthesisKeyword_2_2_6_0_RightParenthesisKeyword_2_2_6_2__q;
 	protected AbstractElementAlias match_SarlScript_SemicolonKeyword_1_2_q;
-	protected AbstractElementAlias match_Type_SemicolonKeyword_2_9_6_q;
-	protected AbstractElementAlias match_Type___LeftCurlyBracketKeyword_2_0_5_0_RightCurlyBracketKeyword_2_0_5_2__q;
+	protected AbstractElementAlias match_Type_SemicolonKeyword_2_10_6_q;
+	protected AbstractElementAlias match_Type___LeftCurlyBracketKeyword_2_0_6_0_RightCurlyBracketKeyword_2_0_6_2__q;
 	protected AbstractElementAlias match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
 	protected AbstractElementAlias match_XExpressionInClosure_SemicolonKeyword_1_1_q;
@@ -95,8 +95,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_Member___LeftParenthesisKeyword_2_1_4_0_RightParenthesisKeyword_2_1_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getMemberAccess().getLeftParenthesisKeyword_2_1_4_0()), new TokenAlias(false, false, grammarAccess.getMemberAccess().getRightParenthesisKeyword_2_1_4_2()));
 		match_Member___LeftParenthesisKeyword_2_2_6_0_RightParenthesisKeyword_2_2_6_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getMemberAccess().getLeftParenthesisKeyword_2_2_6_0()), new TokenAlias(false, false, grammarAccess.getMemberAccess().getRightParenthesisKeyword_2_2_6_2()));
 		match_SarlScript_SemicolonKeyword_1_2_q = new TokenAlias(false, true, grammarAccess.getSarlScriptAccess().getSemicolonKeyword_1_2());
-		match_Type_SemicolonKeyword_2_9_6_q = new TokenAlias(false, true, grammarAccess.getTypeAccess().getSemicolonKeyword_2_9_6());
-		match_Type___LeftCurlyBracketKeyword_2_0_5_0_RightCurlyBracketKeyword_2_0_5_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getTypeAccess().getLeftCurlyBracketKeyword_2_0_5_0()), new TokenAlias(false, false, grammarAccess.getTypeAccess().getRightCurlyBracketKeyword_2_0_5_2()));
+		match_Type_SemicolonKeyword_2_10_6_q = new TokenAlias(false, true, grammarAccess.getTypeAccess().getSemicolonKeyword_2_10_6());
+		match_Type___LeftCurlyBracketKeyword_2_0_6_0_RightCurlyBracketKeyword_2_0_6_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getTypeAccess().getLeftCurlyBracketKeyword_2_0_6_0()), new TokenAlias(false, false, grammarAccess.getTypeAccess().getRightCurlyBracketKeyword_2_0_6_2()));
 		match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getXAnnotationAccess().getLeftParenthesisKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getXAnnotationAccess().getRightParenthesisKeyword_3_2()));
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
 		match_XExpressionInClosure_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getXExpressionInClosureAccess().getSemicolonKeyword_1_1());
@@ -184,10 +184,10 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Member___LeftParenthesisKeyword_2_2_6_0_RightParenthesisKeyword_2_2_6_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_SarlScript_SemicolonKeyword_1_2_q.equals(syntax))
 				emit_SarlScript_SemicolonKeyword_1_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_Type_SemicolonKeyword_2_9_6_q.equals(syntax))
-				emit_Type_SemicolonKeyword_2_9_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_Type___LeftCurlyBracketKeyword_2_0_5_0_RightCurlyBracketKeyword_2_0_5_2__q.equals(syntax))
-				emit_Type___LeftCurlyBracketKeyword_2_0_5_0_RightCurlyBracketKeyword_2_0_5_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_Type_SemicolonKeyword_2_10_6_q.equals(syntax))
+				emit_Type_SemicolonKeyword_2_10_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_Type___LeftCurlyBracketKeyword_2_0_6_0_RightCurlyBracketKeyword_2_0_6_2__q.equals(syntax))
+				emit_Type___LeftCurlyBracketKeyword_2_0_6_0_RightCurlyBracketKeyword_2_0_6_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q.equals(syntax))
 				emit_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_XBlockExpression_SemicolonKeyword_2_1_q.equals(syntax))
@@ -574,7 +574,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 
 	 * </pre>
 	 */
-	protected void emit_Type_SemicolonKeyword_2_9_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Type_SemicolonKeyword_2_10_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -586,10 +586,11 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     extends=JvmParameterizedTypeReference (ambiguity) (rule end)
 	 *     name=ValidID (ambiguity) (rule end)
+	 *     typeParameters+=JvmTypeParameter '&gt;' (ambiguity) (rule end)
 	 
 	 * </pre>
 	 */
-	protected void emit_Type___LeftCurlyBracketKeyword_2_0_5_0_RightCurlyBracketKeyword_2_0_5_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Type___LeftCurlyBracketKeyword_2_0_6_0_RightCurlyBracketKeyword_2_0_6_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

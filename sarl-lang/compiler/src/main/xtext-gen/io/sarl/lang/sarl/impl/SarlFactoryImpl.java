@@ -83,6 +83,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 			case SarlPackage.SARL_CASTED_EXPRESSION: return createSarlCastedExpression();
 			case SarlPackage.SARL_SPACE: return createSarlSpace();
 			case SarlPackage.SARL_ARTIFACT: return createSarlArtifact();
+			case SarlPackage.SARL_PROTOCOL: return createSarlProtocol();
 			case SarlPackage.SARL_AGENT: return createSarlAgent();
 			case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
 			case SarlPackage.SARL_BEHAVIOR: return createSarlBehavior();
@@ -331,6 +332,18 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @generated
 	 */
 	@Override
+	public SarlProtocol createSarlProtocol()
+	{
+		SarlProtocolImpl sarlProtocol = new SarlProtocolImpl();
+		return sarlProtocol;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public SarlAgent createSarlAgent()
 	{
 		SarlAgentImplCustom sarlAgent = new SarlAgentImplCustom();
@@ -402,7 +415,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @deprecated
 	 * @generated
 	 */
-	@Deprecated(since = "0.10", forRemoval = false)
+	@Deprecated
 	public static SarlPackage getPackage()
 	{
 		return SarlPackage.eINSTANCE;

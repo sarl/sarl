@@ -187,6 +187,25 @@ The general syntax of the service names is defined by the following BNF grammar 
 ARTIFACT_NAME = "artifact:" <ODSL> <UUID> <FRG>
 ```
 
+### Naming for Protocol
+
+A protocol is the specification of interactions between agents.
+When agents are running a given protocol, the interaction are supported by a protocol instance dedicated to the protocol and the participants.
+Please note that because the concept of protocol is not related to the agent definition itself, the underlying SRE may
+not provide a support for it.
+ 
+The path of the protocol name specifies the identification of the protocol instance, i.e. its identifier. You could refer a protocol instance with:
+
+* Referring a protocol instance from its identifier. In this case, you have to specify only the protocol's identifier, e.g. `protocol:37b13185-a9d5-43e5-9d7b-da2fa3ba3d54`. 
+
+Where, `37b13185-a9d5-43e5-9d7b-da2fa3ba3d54` is the identifier of the protocol instance.
+
+The general syntax of the service names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
+
+```text
+PROTOCOL_NAME = "protocol:" <ODSL> <UUID>
+```
+
 
 ## Namespace Service
 

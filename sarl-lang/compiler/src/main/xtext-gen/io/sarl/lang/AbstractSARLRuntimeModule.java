@@ -47,6 +47,7 @@ import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -65,6 +66,7 @@ import io.sarl.lang.codebuilder.builders.SarlEnumerationBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlEventBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlFieldBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlInterfaceBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlProtocolBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSpaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
@@ -499,6 +501,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public Class<? extends ISarlArtifactBuilder> bindISarlArtifactBuilder() {
 		return SarlArtifactBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends ISarlProtocolBuilder> bindISarlProtocolBuilder() {
+		return SarlProtocolBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2

@@ -24,6 +24,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
@@ -190,6 +191,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	private EClass sarlArtifactEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlProtocolEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -686,6 +694,28 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	@Override
+	public EClass getSarlProtocol()
+	{
+		return sarlProtocolEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSarlProtocol_Extends()
+	{
+		return (EReference)sarlProtocolEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getSarlAgent()
 	{
 		return sarlAgentEClass;
@@ -885,6 +915,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		sarlArtifactEClass = createEClass(SARL_ARTIFACT);
 		createEReference(sarlArtifactEClass, SARL_ARTIFACT__EXTENDS);
 
+		sarlProtocolEClass = createEClass(SARL_PROTOCOL);
+		createEReference(sarlProtocolEClass, SARL_PROTOCOL__EXTENDS);
+
 		sarlAgentEClass = createEClass(SARL_AGENT);
 		createEReference(sarlAgentEClass, SARL_AGENT__EXTENDS);
 
@@ -1020,6 +1053,11 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		initEReference(getSarlArtifact_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlArtifact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(sarlArtifactEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(sarlProtocolEClass, SarlProtocol.class, "SarlProtocol", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSarlProtocol_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlProtocol.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(sarlProtocolEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sarlAgentEClass, SarlAgent.class, "SarlAgent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAgent_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlAgent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
