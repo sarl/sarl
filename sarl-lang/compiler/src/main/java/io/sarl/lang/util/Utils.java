@@ -23,6 +23,7 @@ package io.sarl.lang.util;
 
 import static io.sarl.lang.core.util.SarlUtils.HIDDEN_MEMBER_CHARACTER;
 import static io.sarl.lang.core.util.SarlUtils.isHiddenMember;
+import static java.util.Collections.singletonMap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -86,11 +87,16 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.typesystem.conformance.RawTypeConformanceComputer;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
+import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.eclipse.xtext.xbase.typesystem.util.TypeParameterByConstraintSubstitutor;
+import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo;
 import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XtypeFactory;
 import org.osgi.framework.Version;
@@ -485,7 +491,7 @@ public final class Utils {
 	 */
 	public static String createNameForHiddenGuardEvaluatorMethod(String eventId, int handlerIndex) {
 		return PREFIX_GUARD + fixHiddenMember(eventId)
-			+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
+		+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
 	}
 
 	/** Create the name of the hidden method that is containing the event handler code.
@@ -1703,7 +1709,11 @@ public final class Utils {
 				if (st instanceof JvmTypeParameterDeclarator superType) {
 					int i = 0;
 					for (final var typeParameter : superType.getTypeParameters()) {
-						mapping.put(typeParameter.getIdentifier(), parameterizedTypeReference.getArguments().get(i));
+						if (i < parameterizedTypeReference.getArguments().size()) {
+							mapping.put(typeParameter.getIdentifier(), parameterizedTypeReference.getArguments().get(i));
+						} else {
+							mapping.put(typeParameter.getIdentifier(), null);
+						}
 						++i;
 					}
 				}
@@ -1817,7 +1827,7 @@ public final class Utils {
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) getFirstContainerForPredicate(featureCall,
-				it -> Boolean.valueOf(it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall)));
+					it -> Boolean.valueOf(it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall)));
 		} else {
 			rootFeatureCall = featureCall;
 		}
@@ -1944,6 +1954,158 @@ public final class Utils {
 			return Messages.Utils_0;
 		}
 		return text;
+	}
+
+	/** Replies the human-readable types arguments without showing the upper and lower bounds.
+	 *
+	 * @param arguments the list of type arguments.
+	 * @param grammarAccess the accessor to the grammar.
+	 * @return the string representation of the type arguments.
+	 * @since 0.14
+	 */
+	@Pure
+	public static String getHumanReadableTypeArgumentsWithoutBounds(List<LightweightTypeReference> arguments, SARLGrammarKeywordAccess grammarAccess) {
+		final var buffer = new StringBuilder();
+		if (arguments != null && !arguments.isEmpty()) {
+			buffer.append(grammarAccess.getLessThanSignKeyword());
+			var first = true;
+			for (final var argument : arguments) {
+				if (first) {
+					first = false;
+				} else {
+					buffer.append(grammarAccess.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+				buffer.append(argument.getHumanReadableName());
+			}
+			buffer.append(grammarAccess.getGreaterThanSignKeyword());
+		}
+		return buffer.toString();
+	}
+
+	/** Replies the human-readable types arguments without showing the upper and lower bounds.
+	 *
+	 * @param type the type for which the type arguments must be extracted.
+	 * @param grammarAccess the accessor to the grammar.
+	 * @return the string representation of the type arguments.
+	 * @since 0.14
+	 */
+	@Pure
+	public static String getHumanReadableTypeArgumentsWithoutBounds(LightweightTypeReference type, SARLGrammarKeywordAccess grammarAccess) {
+		return getHumanReadableTypeArgumentsWithoutBounds(type.getTypeArguments(), grammarAccess);
+	}
+
+	/** Replies the human-readable types arguments with showing the upper and lower bounds.
+	 *
+	 * @param arguments the list of type arguments.
+	 * @param grammarAccess the accessor to the grammar.
+	 * @return the string representation of the type arguments.
+	 * @since 0.14
+	 */
+	@Pure
+	public static String getHumanReadableTypeParametersWithBounds(List<JvmTypeParameter> arguments, SARLGrammarKeywordAccess grammarAccess) {
+		final var buffer = new StringBuilder();
+		if (arguments != null && !arguments.isEmpty()) {
+			buffer.append(grammarAccess.getLessThanSignKeyword());
+			var first = true;
+			for (final var argument : arguments) {
+				if (first) {
+					first = false;
+				} else {
+					buffer.append(grammarAccess.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+				buffer.append(argument.getSimpleName());
+				for (final var constraint : argument.getConstraints()) {
+					if (constraint instanceof JvmUpperBound upper) {
+						buffer.append(" ").append(grammarAccess.getExtendsKeyword()); //$NON-NLS-1$
+						buffer.append(" ").append(upper.getTypeReference().getSimpleName()); //$NON-NLS-1$
+					} else if (constraint instanceof JvmLowerBound lower) {
+						buffer.append(" ").append(grammarAccess.getSuperKeyword()); //$NON-NLS-1$
+						buffer.append(" ").append(lower.getTypeReference().getSimpleName()); //$NON-NLS-1$
+					}
+				}
+			}
+			buffer.append(grammarAccess.getGreaterThanSignKeyword());
+		}
+		return buffer.toString();
+	}
+
+	/** Replies the human-readable types arguments with showing the upper and lower bounds.
+	 *
+	 * @param arguments the list of type arguments.
+	 * @param grammarAccess the accessor to the grammar.
+	 * @return the string representation of the type arguments.
+	 * @since 0.14
+	 */
+	@Pure
+	public static String getHumanReadableTypeArgumentsWithBounds(List<LightweightTypeReference> arguments, SARLGrammarKeywordAccess grammarAccess) {
+		final var buffer = new StringBuilder();
+		if (arguments != null && arguments.isEmpty()) {
+			buffer.append(grammarAccess.getLessThanSignKeyword());
+			var first = true;
+			for (final var argument : arguments) {
+				if (first) {
+					first = false;
+				} else {
+					buffer.append(grammarAccess.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+				buffer.append(argument.getHumanReadableName());
+				buffer.append(" ").append(grammarAccess.getExtendsKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append(argument.getConstraintSubstitute().getHumanReadableName());
+			}
+			buffer.append(grammarAccess.getGreaterThanSignKeyword());
+		}
+		return buffer.toString();
+	}
+
+	/** Replies the human-readable types arguments with showing the upper and lower bounds.
+	 *
+	 * @param type the type for which the type arguments must be extracted.
+	 * @param grammarAccess the accessor to the grammar.
+	 * @return the string representation of the type arguments.
+	 * @since 0.14
+	 */
+	@Pure
+	public static String getHumanReadableTypeArgumentsWithBounds(LightweightTypeReference type, SARLGrammarKeywordAccess grammarAccess) {
+		return getHumanReadableTypeArgumentsWithBounds(type.getTypeArguments(), grammarAccess);
+	}
+
+	/** Replies the number of failures that corresponds to the type arguments and the declared type parameters.
+	 *
+	 * @param typeArguments the list of type parameters that are passed as arguments.
+	 * @param typeParameters the list of types parameters that have been declared.
+	 * @param referenceOwner the owner of the type reference.
+	 * @return {@code true} if the type arguments and type parameters are conform.
+	 * @since 0.14
+	 */
+	public static boolean isTypeArgumentConformant(List<LightweightTypeReference> typeArguments,
+			List<JvmTypeParameter> typeParameters, ITypeReferenceOwner referenceOwner) {
+		final var max = Math.min(typeArguments.size(), typeParameters.size());
+		if (max == 0) {
+			return true;
+		}
+		final var substitutor = new TypeParameterByConstraintSubstitutor(Collections.emptyMap(), referenceOwner);
+		for (var i = 0; i < max; ++i) {
+			final var argument = typeArguments.get(i);
+			final var declaration = typeParameters.get(i);
+			substitutor.enhanceMapping(singletonMap(declaration,
+					new LightweightMergedBoundTypeArgument(argument, VarianceInfo.INVARIANT)));
+		}
+		for (var i = 0; i < max; ++i) {
+			final var argument = typeArguments.get(i);
+			final var declaration = typeParameters.get(i);
+			final var conformanceComputer = argument.getOwner().getServices().getTypeConformanceComputer();
+			if (argument.getType() != declaration) {
+				final var reference = argument.getOwner().newParameterizedTypeReference(declaration);
+				for (final var superType: reference.getSuperTypes()) {
+					final var substitutedSuperType = substitutor.substitute(superType);
+					if ((conformanceComputer.isConformant(substitutedSuperType, argument, 
+							RawTypeConformanceComputer.ALLOW_BOXING | RawTypeConformanceComputer.ALLOW_RAW_TYPE_CONVERSION ) & RawTypeConformanceComputer.SUCCESS) == 0) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 }

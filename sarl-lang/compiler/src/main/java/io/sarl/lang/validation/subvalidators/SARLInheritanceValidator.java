@@ -237,6 +237,26 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 				Collections.<JvmTypeReference>emptyList());
 	}
 
+	@Override
+	protected void checkSuperTypes(EObject sourceType, JvmGenericType type) {
+			// Check the OOP concepts
+			super.checkSuperTypes(sourceType, type);
+
+			// Check super types' conformance
+			final var superTypes = type.getSuperTypes();
+			for (int i = 0; i < superTypes.size(); ++i) {
+				final var superType = superTypes.get(i);
+				final var associated = getSuperTypeSourceElement(superType);
+				if (associated == null) {
+					// we still record this supertype for possible duplication checks
+					continue; // synthetic superclass (e.g., Object)
+				}
+				final var eContainingFeature = associated.eContainingFeature();
+				final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
+				checkValidSuperTypeArgumentDefinition(lighweightSuperType, sourceType, eContainingFeature, i);
+			}
+	}
+
 	/** Check the super type.
 	 *
 	 * @param element the child type.

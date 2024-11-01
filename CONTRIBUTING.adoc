@@ -11,24 +11,22 @@ For setting up the development environment of SARL, please follow our recommenda
 
 == 1. Issues
 
-Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
+Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub].
 You must use this issue tracker to report and follow your issues.
-
-Additionally, you could have a look on the SARL developers' working plan on link:https://huboard.com/sarl/sarl[Huboard].
 
 In the issue description, provide the following information:
 
-* Your operating system (and version);
+* Your operating system and its version;
 * The version of SARL you are using;
 * Your language and/or locale (e.g. "en-US");
 * Clear steps to reproduce the bug (including a reduced-case user script, if applicable);
 * Any error messages seen in the Error Console;
 * A description of what you expected to happen;
-* A description of what actually happened;
+* A description of what actually happened.
 
-Note: You can use the wizard in the SARL product for submitting an issue with the technical information already filled.
+Note: You can use the wizard in the SARL product for submitting an issue with the technical information already filled up.
 The menu is accessible by selecting the menu `SARL > Submit issue to SARL tracker`.
-This wizard required to hae a valid Github account.
+This wizard required to have a valid Github account. It will query you to enter your password (this password is neither stored nor transmited outside the SARL product except to the Github authentification service).
 
 == 2. Guidelines for SARL developpers and contributors
 
@@ -40,16 +38,16 @@ The main SARL developpers are using the following development environment:
 
 * *Java Development Kit (JDK) 21* from OpenJDK or Oracle.
 * *Maven 3.9.9* (for shell command-line actions) from Apache.
-* *Eclipse 2024-09*, for Java and DSL Developers, and for RCP and RAP Developers
+* *Eclipse 2024-09*, version "for Java and DSL Developers", and version "for RCP and RAP Developers".
 
 
 === 2.2. Obtaining the SARL Source Code
 
-We recommend to fork the SARL project into your own Github account, in order to make easier the pull request that is needed for sending your contribution.
+We recommend to fork the SARL project into your own Github account, in order to make easier the pull request that is needed for sending your contribution to the master version of SARL.
 Forking the SARL project must be done through the Github web interface: click on the `Fork` button on the SARL project page.
 
 
-For obtaining the code of SARL, you must clone your fork from Github to your local harddisk:
+For obtaining the code of SARL, you must clone your fork repository from Github to your local harddisk:
 ```bash
 git clone https://github.com/<your_github_login>/sarl
 ```
@@ -80,22 +78,45 @@ Indeed, Maven generates several Java code files, and updates resource files with
 
 The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
 
-==== a) Linux or MacOS Operating Systems
+There is two major ways for compiling the SARL components: compile all the subprojects, and compile a single subproject.
 
-In a command-line shell, run the Bash script:
+==== Compilation of all the subprojects
+
+If you want to compile all the subprojects of SARL, you could use one of the shell scripts that are located in the root folder of the SARL project.
+
+* *Linux or MacOS Operating Systems:* in a command-line shell, run the Bash script:
 
 ```bash
 $> ./build-all.sh
 ```
 
-==== b) Windows Operating System
-
-A PowerShell script is provided for building all the projects of SARL:
+* *Windows Operating System:* a PowerShell script is provided for building all the projects of SARL:
 
 ```bash
 C:> build-all
 ```
 
+==== Compilation of a single subproject
+
+If you want to compile only one of the subprojects of SARL, you could go inside the subproject folder and use Maven.
+
+* *Linux or MacOS Operating Systems:* in a command-line shell
+
+```bash
+$> cd <subproject_folder>
+$> mvn clean install
+```
+
+where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
+
+* *Windows Operating System:* in a command-line shell
+
+```bash
+C:> cd <subproject_folder>
+C:> mvn clean install
+```
+
+where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
 
 
 === 2.5. Installing the Eclipse Development Environment

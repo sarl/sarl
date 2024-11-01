@@ -25,6 +25,9 @@ import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -2002,6 +2005,20 @@ public class ClassParsingTest {
 			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
 			assertEquals("X", constraint.getTypeReference().getIdentifier());
 			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		@DisplayName("Extends with generic parameters")
+		public void explicitExtendsF() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"class E1<T1, T2 extends Number, T3 extends Double> {}",
+					"class E2<T2 extends Number> extends E1<String, T2, String> {}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
+					SarlPackage.eINSTANCE.getSarlClass(),
+					TYPE_BOUNDS_MISMATCH,
+					"Bounds mismatch: The type arguments <String, T2, String> are not a valid substitute for the bounded type parameters <T1 extends Object, T2 extends Number, T3 extends Double> of the super type E1")
+				.assertNoErrors();
 		}
 
 	}
