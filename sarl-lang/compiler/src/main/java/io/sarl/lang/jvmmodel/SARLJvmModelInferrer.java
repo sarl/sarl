@@ -1419,6 +1419,74 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						source,
 						context);
 			}
+		
+			// Hidden function "matchesTypeBounds"
+			if (!source.getTypeParameters().isEmpty()) {
+				final var typeBoundMatchOperation = this.typesFactory.createJvmOperation();
+				typeBoundMatchOperation.setAbstract(false);
+				typeBoundMatchOperation.setNative(false);
+				typeBoundMatchOperation.setSynchronized(false);
+				typeBoundMatchOperation.setStrictFloatingPoint(false);
+				typeBoundMatchOperation.setFinal(false);
+				typeBoundMatchOperation.setVisibility(JvmVisibility.PUBLIC);
+				typeBoundMatchOperation.setStatic(true);
+				typeBoundMatchOperation.setSimpleName(SarlUtils.HIDDEN_MEMBER_CHARACTER + "matchesTypeBounds"); //$NON-NLS-1$
+				typeBoundMatchOperation.setReturnType(this._typeReferenceBuilder.typeRef(Boolean.TYPE));
+				// Add to container
+				inferredJvmType.getMembers().add(typeBoundMatchOperation);
+				this.associator.associate(source, typeBoundMatchOperation);
+				// First parameter: it
+				var jvmParam = this.typesFactory.createJvmFormalParameter();
+				jvmParam.setName(this.grammarKeywordAccess.getItKeyword());
+				jvmParam.setParameterType(this.typeReferences.createTypeRef(inferredJvmType));
+				this.associator.associate(source, jvmParam);
+				typeBoundMatchOperation.getParameters().add(jvmParam);
+				// Rest of parameters: bounds
+				jvmParam = this.typesFactory.createJvmFormalParameter();
+				jvmParam.setName("bounds"); //$NON-NLS-1$
+				jvmParam.setParameterType(this.typeReferences.createArrayType(
+						this.typeReferences.getTypeForName(Class.class, source)));
+				this.associator.associate(source, jvmParam);
+				typeBoundMatchOperation.getParameters().add(jvmParam);
+				typeBoundMatchOperation.setVarArgs(true);
+				// Body
+				final var declaredFields = source.getMembers().stream().filter(it0 -> it0 instanceof XtendField).map(it0 -> (XtendField) it0).toList();
+				setBody(typeBoundMatchOperation, it -> {
+					it.append("if (bounds != null && bounds.length == "); //$NON-NLS-1$
+					it.append(Integer.toString(source.getTypeParameters().size()));
+					it.append(") {").increaseIndentation(); //$NON-NLS-1$
+					var i = 0;
+					for (final var parameter : source.getTypeParameters()) {
+						final var matchableFields = declaredFields.stream().filter(it0 -> {
+							return it0.getType().getIdentifier().equals(parameter.getIdentifier());
+						}).toList();
+						if (!matchableFields.isEmpty()) {
+							it.newLine().append("if ("); //$NON-NLS-1$
+							var first = true;
+							for (final var matchField : matchableFields) {
+								if (first) {
+									first = false;
+								} else {
+									it.append(" || "); //$NON-NLS-1$
+								}
+								it.append("(it.").append(matchField.getName()).append(" != null && !bounds["); //$NON-NLS-1$ //$NON-NLS-2$
+								it.append(Integer.toString(i)).append("].isInstance(it."); //$NON-NLS-1$
+								it.append(matchField.getName()).append("))"); //$NON-NLS-1$
+							}
+							it.append(") {").increaseIndentation().newLine(); //$NON-NLS-1$
+							it.append("return false;").decreaseIndentation().newLine(); //$NON-NLS-1$
+							it.append("}"); //$NON-NLS-1$
+						}
+						++i;
+					}
+					it.newLine().append("return true;"); //$NON-NLS-1$
+					it.decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$
+					it.append("return false;"); //$NON-NLS-1$
+				});
+				// Annotations
+				appendGeneratedAnnotation(typeBoundMatchOperation, context);
+				addAnnotationSafe(typeBoundMatchOperation, Pure.class);
+			}
 
 			// Change the injectable flag
 			context.setInjectable(inferredJvmType.getExtendedClass());
@@ -2207,8 +2275,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Body function
 			//----------------
 			// Name
-			final var bodyMethodName = Utils.createNameForHiddenEventHandlerMethod(source.getName().getSimpleName(),
-					context.getBehaviorUnitIndex());
+			final var bodyMethodName = Utils.createNameForHiddenEventHandlerMethod(source.getName(), context.getBehaviorUnitIndex());
 			// Operation
 			final var bodyOperation = this.typesFactory.createJvmOperation();
 			bodyOperation.setAbstract(false);
@@ -2257,8 +2324,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Guard function
 				//----------------
 				// Name
-				final var guardMethodName = Utils.createNameForHiddenGuardEvaluatorMethod(source.getName().getSimpleName(),
-						context.getBehaviorUnitIndex());
+				final var guardMethodName = Utils.createNameForHiddenGuardEvaluatorMethod(source.getName(), context.getBehaviorUnitIndex());
 				// Operation
 				final var guardOperation = this.typesFactory.createJvmOperation();
 				guardOperation.setAbstract(false);
@@ -2775,14 +2841,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				return;
 			}
 
-			final var guardDefs = new TreeMap<JvmTypeReference, Set<String>>((a, b) -> {
+			final var guardDefs = new TreeMap<JvmTypeReference, Map<String, List<JvmTypeReference>>>((a, b) -> {
 				return a.getQualifiedName().compareTo(b.getQualifiedName());
 			});
 
 			for (final var evaluators : allEvaluators) {
 				final var behName = appendEventGuardEvaluatorForReflectMethod(evaluators, container, context);
-				final var functionNames = guardDefs.computeIfAbsent(evaluators.getKey().getName(), it -> new TreeSet<>());
-				functionNames.add(behName);
+				final var functionNames = guardDefs.computeIfAbsent(evaluators.getKey().getName(), it -> new TreeMap<>());
+				final List<JvmTypeReference> typeParameters = new ArrayList<>();
+				final var result = Utils.forEachTypeParameterName(evaluators.getKey().getName(), (name, i) -> {
+					typeParameters.add(name);
+				});
+				functionNames.put(behName, result == Boolean.TRUE ? typeParameters : Collections.emptyList());
 			}
 
 			var isRootType = true;
@@ -2807,7 +2877,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param context the generation context.
 	 * @since 0.12
 	 */
-	protected void appendEventGuardEvaluatorsForPolymorphicMethod(Map<JvmTypeReference, Set<String>> guardDefs,
+	protected void appendEventGuardEvaluatorsForPolymorphicMethod(Map<JvmTypeReference, Map<String, List<JvmTypeReference>>> guardDefs,
 			boolean isRootType, JvmGenericType container, GenerationContext context) {
 		final var voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 
@@ -2927,10 +2997,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				it.append(entry.getKey().getType());
 				it.append(" occurrence) {"); //$NON-NLS-1$
 				it.increaseIndentation();
-				for (final var meth : entry.getValue()) {
+				for (final var methSpec : entry.getValue().entrySet()) {
 					it.newLine();
-					it.append(meth);
+					var hasTypeParameters = !methSpec.getValue().isEmpty();
+					if (hasTypeParameters) {
+						it.append("if (").append(entry.getKey().getType()); //$NON-NLS-1$
+						it.append(".").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
+						it.append("matchesTypeBounds(occurrence"); //$NON-NLS-1$
+						for (final var typeParameter : methSpec.getValue()) {
+							it.append(", ").append(typeParameter.getType()).append(".class"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						it.append(")) {").increaseIndentation().newLine(); //$NON-NLS-1$
+					}
+					it.append(methSpec.getKey());
 					it.append("(occurrence, callbacks);"); //$NON-NLS-1$
+					if (hasTypeParameters) {
+						it.decreaseIndentation().newLine();
+						it.append("}"); //$NON-NLS-1$
+					}
 				}
 				it.decreaseIndentation().newLine();
 				it.append("}"); //$NON-NLS-1$
@@ -2954,7 +3038,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final var collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
 
 		// Determine the name of the operation for the behavior output
-		final var behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
+		final var behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName());
 
 		// Create the main function
 		final var operation = this.typesFactory.createJvmOperation();

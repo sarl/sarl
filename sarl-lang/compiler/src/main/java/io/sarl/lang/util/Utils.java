@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +51,7 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmConstraintOwner;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
@@ -474,13 +476,36 @@ public final class Utils {
 		return PREFIX_LOCAL_VARIABLE + fixHiddenMember(id);
 	}
 
+	private static StringBuilder buildNameForHiddenEventMethod(JvmParameterizedTypeReference eventId, String prefix) {
+		final var fullName = new StringBuilder(prefix);
+		final var fullName0 = new StringBuilder();
+		final var result = forEachTypeParameterName(eventId, (name, i) -> {
+			fullName0.append(HIDDEN_MEMBER_CHARACTER).append(HIDDEN_MEMBER_CHARACTER);
+			if (name == null) {
+				fullName0.append(fixHiddenMember(Object.class.getSimpleName()));
+			} else {
+				fullName0.append(fixHiddenMember(name.getSimpleName()));
+			}
+		});
+		if (result == null) {
+			fullName.append(fixHiddenMember(eventId.getSimpleName()));
+		} else {
+			fullName.append(fixHiddenMember(eventId.getType().getSimpleName()));
+			if (result.booleanValue()) {
+				fullName.append(fullName0);
+			}
+		}
+		return fullName;
+	}
+	
 	/** Create the name of the hidden method that is containing the evaluation of all the guards for a given event.
 	 *
 	 * @param eventId the id of the event.
 	 * @return the method name.
+	 * @since 0.14
 	 */
-	public static String createNameForHiddenGuardGeneralEvaluatorMethod(String eventId) {
-		return PREFIX_GUARD_EVALUATOR + fixHiddenMember(eventId);
+	public static String createNameForHiddenGuardGeneralEvaluatorMethod(JvmParameterizedTypeReference eventId) {
+		return buildNameForHiddenEventMethod(eventId, PREFIX_GUARD_EVALUATOR).toString();
 	}
 
 	/** Create the name of the hidden method that is containing the event guard evaluation.
@@ -488,10 +513,12 @@ public final class Utils {
 	 * @param eventId the id of the event.
 	 * @param handlerIndex the index of the handler in the container type.
 	 * @return the method name.
+	 * @since 0.14
 	 */
-	public static String createNameForHiddenGuardEvaluatorMethod(String eventId, int handlerIndex) {
-		return PREFIX_GUARD + fixHiddenMember(eventId)
-		+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
+	public static String createNameForHiddenGuardEvaluatorMethod(JvmParameterizedTypeReference eventId, int handlerIndex) {
+		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_GUARD);
+		fullName.append(HIDDEN_MEMBER_CHARACTER).append(handlerIndex);
+		return fullName.toString();
 	}
 
 	/** Create the name of the hidden method that is containing the event handler code.
@@ -499,9 +526,12 @@ public final class Utils {
 	 * @param eventId the id of the event.
 	 * @param handlerIndex the index of the handler in the container type.
 	 * @return the attribute name.
+	 * @since 0.14
 	 */
-	public static String createNameForHiddenEventHandlerMethod(String eventId, int handlerIndex) {
-		return PREFIX_EVENT_HANDLER + fixHiddenMember(eventId) + HIDDEN_MEMBER_CHARACTER + handlerIndex;
+	public static String createNameForHiddenEventHandlerMethod(JvmParameterizedTypeReference eventId, int handlerIndex) {
+		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_EVENT_HANDLER);
+		fullName.append(HIDDEN_MEMBER_CHARACTER).append(handlerIndex);
+		return fullName.toString();
 	}
 
 	/** Replies if the given reference is pointing to a class type.
@@ -2106,6 +2136,57 @@ public final class Utils {
 			}
 		}
 		return true;
+	}
+
+	/** Run the specified lambda to each of the type parameters.
+	 *
+	 * @param type the type to analyze.
+	 * @param consumer the consumer of the type parameter names.
+	 * @return {@code null} if there is no type parameter; {@code Boolean#TRUE} if a type parameter was found
+	 *      and one of them is explicitly specified; {@code Boolean#FALSE} if a type parameter was found but
+	 *      none is explicitly specified.
+	 * @since 0.14
+	 */
+	public static Boolean forEachTypeParameterName(JvmParameterizedTypeReference type, BiConsumer<JvmTypeReference, Integer> consumer) {
+		if (type != null && !type.getArguments().isEmpty() && type.getType() instanceof JvmTypeParameterDeclarator gtype) {
+			final var parameters = gtype.getTypeParameters();
+			var i = 0;
+			var foundExplicit = Boolean.FALSE;
+			for (final var argument : type.getArguments()) {
+				if (argument instanceof JvmWildcardTypeReference wargument) {
+					JvmTypeReference name = getUpperBoundFromConstraints(wargument);
+					if (name == null) {
+						try {
+							name = getUpperBoundFromConstraints(parameters.get(i));
+						} catch (Throwable ex) {
+							//
+						}
+					}
+					consumer.accept(name, Integer.valueOf(i));
+				} else {
+					consumer.accept(argument, Integer.valueOf(i));
+					foundExplicit = Boolean.TRUE;
+				}
+				++i;
+			}
+			return foundExplicit;
+		}
+		return null;
+	}
+
+	/** Replies the upper bounds from the constraints of the given generic type parameter.
+	 * This function may reply {@code null} if there is not specified bound.
+	 *
+	 * @param parameter the parameter to analyze.
+	 * @return the upper bound, or {@code null} if no bound is specified.
+	 * @since 0.14
+	 */
+	public static JvmTypeReference getUpperBoundFromConstraints(JvmConstraintOwner parameter) {
+		final var cst = parameter.getConstraints();
+		if (!cst.isEmpty()) {
+			return cst.get(0).getTypeReference();
+		}
+		return null;
 	}
 
 }

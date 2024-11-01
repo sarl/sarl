@@ -57,6 +57,26 @@ public class GenericEventParsingTest {
 	@Nested
 	public class DirectEventInheritance extends AbstractSarlTest {
 
+		//		@Test
+		//		@DisplayName("Unecessary generic types")
+		//		public void unecessaryTypes_withoutBlock() throws Exception {
+		//			SarlScript mas = file(getParseHelper(), "event E1<T1, T2 extends Number, T3 extends Double & Iterable<String>>");
+		//			validate(getValidationHelper(), getInjector(), mas)
+		//				.assertWarning(
+		//						SarlPackage.eINSTANCE.getSarlEvent(),
+		//						UNUSED_TYPE_PARAMETER,
+		//						"Type parameter T1 is never used")
+		//				.assertWarning(
+		//						SarlPackage.eINSTANCE.getSarlEvent(),
+		//						UNUSED_TYPE_PARAMETER,
+		//						"Type parameter T2 is never used")
+		//				.assertWarning(
+		//						SarlPackage.eINSTANCE.getSarlEvent(),
+		//						UNUSED_TYPE_PARAMETER,
+		//						"Type parameter T3 is never used")
+		//				.assertNoErrors();
+		//		}
+
 		@Test
 		@DisplayName("Empty event with block")
 		public void basicCompile_withBlock() throws Exception {

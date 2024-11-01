@@ -44,6 +44,7 @@ import io.sarl.lang.core.util.SarlUtils;
 public class SarlUtilsTest {
 
 	@Test
+	@DisplayName("isHiddenMember")
 	public void isHiddenMember() {
 		assertFalse(SarlUtils.isHiddenMember(""));
 		assertFalse(SarlUtils.isHiddenMember("abcde"));
