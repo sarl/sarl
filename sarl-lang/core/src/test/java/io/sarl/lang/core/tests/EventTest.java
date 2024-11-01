@@ -75,6 +75,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("getSource")
 	public void getSource() {
 		assertNull(this.event.getSource());
 		Address adr = mock(Address.class);
@@ -83,6 +84,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("setSource")
 	public void setSource() {
 		assertNull(this.event.getSource());
 		Address adr = mock(Address.class);
@@ -91,6 +93,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("equals(Object)")
 	public void equals() {
 		Event e;
 		Address adr1 = mock(Address.class);
@@ -113,6 +116,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("hashCode")
 	public void testHashCode() {
 		Event e;
 		Address adr1 = mock(Address.class);
@@ -131,6 +135,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("isFromAddress")
 	public void isFromAddress() {
 		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
 		this.event.setSource(adr);
@@ -145,6 +150,7 @@ public class EventTest {
 	}
 
 	@Test
+	@DisplayName("isFromUUID")
 	public void isFromUUID() {
 		UUID id = UUID.randomUUID();
 		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), id);

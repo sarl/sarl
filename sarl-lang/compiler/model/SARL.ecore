@@ -55,38 +55,27 @@
     <eOperations name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
+        eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
+        containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass"
-                name="SarlCastedExpression"
-                eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XCastedExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="SarlCastedExpression" eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XCastedExpression">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="@since 0.9"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference"
-                         name="feature"
-                         eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmOperation"
-                         containment="false">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmOperation">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation"
-                 value="Provide the feature to call in casting the value to target type."/>
+        <details key="documentation" value="Provide the feature to call in casting the value to target type."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference"
-                         name="receiver"
-                         eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-                         containment="false">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="receiver" eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation"
-                 value="Provide the receiver for the call to the feature, or null if the default should be applied."/>
+        <details key="documentation" value="Provide the receiver for the call to the feature, or null if the default should be applied."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference"
-                         name="argument"
-                         eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-                         containment="false">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="argument" eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation"
-                 value="Provide the argument to pass to the feature, or null if the feature does not need to have argument."/>
+        <details key="documentation" value="Provide the argument to pass to the feature, or null if the feature does not need to have argument."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

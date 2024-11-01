@@ -26,6 +26,7 @@ package io.sarl.lang.codebuilder.appenders;
 import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
+import io.sarl.lang.codebuilder.builders.ITypeParameterBuilder;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlScript;
 import java.io.IOException;
@@ -126,6 +127,14 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+	}
+
+	/** Add a type parameter.
+	 * @param name the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		return this.builder.addTypeParameter(name);
 	}
 
 	/** Create a SarlConstructor.

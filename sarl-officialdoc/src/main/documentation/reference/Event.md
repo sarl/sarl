@@ -14,8 +14,9 @@ inside a given [Space](./Space.md).
 Each event has:
 
 * a type, i.e. its qualified name;
-* a source, the identifier of the sender of the event; and
-* a collection of name-value pairs, i.e. the attributes of the event.
+* a source, the identifier of the sender of the event;
+* an optional list of generic type parameters; and
+* a collection of name-value pairs, i.e. the attributes of the event, where each pair may be of one of the generic type of a predefined type.
 
 
 ## Event vs. Message
@@ -24,14 +25,14 @@ In computer-science literature, there are two main approaches
 for communicating between entities: (1) an event and (2) a message.
 
 An event and a message are similar in that they each have a name 
-or type), a source, and optional data (arguments or parameters).
+(or type), a source, and optional data (arguments or parameters).
 The difference is in whether there is a receiver:
 an event does not specify a receiver,
 while a message needs to have at least
 one receiver (even if it is a group such as "all"  
 possible receivers).
 
-Because the event approach is more general, it is preferred 
+Because the event approach is more general and close to the typical agent definitions in SARL, it is preferred 
 by the designers of SARL.
 
 So, to send data to another entity in SARL,
@@ -133,6 +134,41 @@ If no constructor is defined in the event type and a super-type is declared, imp
 Implicit constructors has the same prototypes as the constructors of the super type.
 Details on implicit constructors are given in the reference documentation related to the
 [synthetic functions](./general/SyntheticFunctions.md).
+
+
+### Define an event with generic type parameter
+
+Generics are a facility of [generic programming](https://en.wikipedia.org/wiki/Generic_programming) that were added in several programming languages such as Java.
+They were designed to extend SARL type system to allow "a type or method to operate on objects of various types while providing compile-time type safety".
+
+A type parameter is an unqualified identifier.
+Type parameters are introduced by generic declarations, e.g. of events, classes, interfaces or actions/methods.
+
+A event is generic if it declares one or more type parameters.
+A generic event declaration defines a set of parameterized types, one for each possible invocation of the type parameter section.
+All of these parameterized types share the same class at runtime.
+
+Each type parameter is defined by:
+
+* a name, that is identifying the type parameter;
+* a bounding specification that specifies the accepted types for the values that are declared ith a type equal to this type parameter. The bound may represents the uppest type or the lowest type from a type hierarchy.
+
+To define the type parameters for an event, you should define them in a list between the characters lower-than `<` and upper-then `>`.
+In the following example, three type parameters are defined: [:typeparam1:], [:typeparam2:] and [:typeparam3:].
+The first type parameter [:typeparam1:] is defined without explicit bound, that means that all the values of [:typeparam1:] type must be a subtype of `Object`.
+The second type parameter [:typeparam2:] is defined to have all the values with a type being a subtype of [:typeparambound1:].
+The third type parameter [:typeparam3:] is defined to have all the values with a type being subtype of [:typeparambound2:] and [:typeparambound4:].
+THe type parameters [:typeparam1:], [:typeparam2:] and [:typeparam3:] are used as regular types for the declarations of the fields [:typeparamvalue1:], [:typeparamvalue2:] and [:typeparamvalue3:], respectively.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent<[:typeparam1](T1), [:typeparam2](T2) extends [:typeparambound1](String), [:typeparam3](T3) extends [:typeparambound2](Double) & [:typeparambound4](Iterable<Character>)> {
+		var [:typeparamvalue1](value0) : T1
+		var [:typeparamvalue2](value1) : T2
+		var [:typeparamvalue3](value2) : T3
+	}
+[:End:]
 
 
 ### Extending Events

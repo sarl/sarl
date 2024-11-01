@@ -1184,13 +1184,22 @@ public interface SarlPackage extends EPackage
 	int SARL_EVENT__EXTENDS = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Type Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_EVENT__TYPE_PARAMETERS = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Event</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SARL_EVENT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
+	int SARL_EVENT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlCastedExpressionImpl <em>Casted Expression</em>}' class.
@@ -1517,7 +1526,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
 	 * @generated
 	 */
-	int SARL_AGENT = 19;
+	int SARL_AGENT = 20;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1599,7 +1608,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
 	 * @generated
 	 */
-	int SARL_CAPACITY = 20;
+	int SARL_CAPACITY = 21;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1681,7 +1690,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR = 21;
+	int SARL_BEHAVIOR = 22;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1763,7 +1772,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
 	 * @generated
 	 */
-	int SARL_SKILL = 22;
+	int SARL_SKILL = 23;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1854,7 +1863,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
 	 * @generated
 	 */
-	int SARL_FORMAL_PARAMETER = 23;
+	int SARL_FORMAL_PARAMETER = 24;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -2195,6 +2204,17 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EReference getSarlEvent_Extends();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlEvent#getTypeParameters <em>Type Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Type Parameters</em>'.
+	 * @see io.sarl.lang.sarl.SarlEvent#getTypeParameters()
+	 * @see #getSarlEvent()
+	 * @generated
+	 */
+	EReference getSarlEvent_TypeParameters();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlCastedExpression <em>Casted Expression</em>}'.
@@ -2690,6 +2710,14 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_EVENT__EXTENDS = eINSTANCE.getSarlEvent_Extends();
+
+		/**
+		 * The meta object literal for the '<em><b>Type Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_EVENT__TYPE_PARAMETERS = eINSTANCE.getSarlEvent_TypeParameters();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlCastedExpressionImpl <em>Casted Expression</em>}' class.

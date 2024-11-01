@@ -45,7 +45,7 @@ public abstract class Event implements Serializable {
 
 	/** Constructs an Event without source.
 	 * The source must be set with {@link #setSource(Address)}
-	 * by the creator of the event, or by the emitting mechanism,
+	 * by the creator of the event, or by the sending mechanism,
 	 * before sending the event on the event bus.
 	 */
 	public Event() {
@@ -145,6 +145,55 @@ public abstract class Event implements Serializable {
 		final var iSource = getSource();
 		return (entityId != null) && (iSource != null)
 				&& entityId.equals(iSource.getID());
+	}
+
+	/** Types of generic bound.
+	 * The upper bounds corresponds to the type that a generic type must inherit.
+	 * The lower bounds corresponds to the that that a generic type must be a super type.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	public enum BoundType {
+
+		/** Upper bound, usually corresponds to an {@code extends}.
+		 */
+		UPPER_BOUND,
+
+		/** Lower bound, usually corresponds to a {@code super}.
+		 */
+		LOWER_BOUND
+
+	}
+
+	/** Definition of a bound for generic types.
+	 *
+	 * @param type the type associated to this generic type bound.
+	 * @param direction the type of bound for the record.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	public record Bound(Class<?> type, BoundType direction)  {
+
+		/** Creation a bound with the given type and direction.
+		 * If the arguments are {@code null}, then the default values are considered (see the documentation of each argument).
+		 *
+		 * @param type the type associated to this generic type bound. If it is {@code null}, {@code Object} is assumed.
+		 * @param direction the type of bound for the record. If it is {@code null}, {@link BoundType#UPPER_BOUND} is assumed.
+		 * @return the bound.
+		 */
+		public static Bound of(Class<?> type, BoundType direction) {
+			final var t = type == null ? Object.class : type;
+			final var d = direction == null ? BoundType.UPPER_BOUND : direction;
+			return new Bound(t, d);
+		}
+
 	}
 
 }

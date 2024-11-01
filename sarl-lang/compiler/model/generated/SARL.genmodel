@@ -8,6 +8,7 @@
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
     <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/typeParameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlCapacity">

@@ -46,6 +46,15 @@ ruleType:
 		'event'
 		ruleValidID
 		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
 			'extends'
 			ruleJvmParameterizedTypeReference
 		)?

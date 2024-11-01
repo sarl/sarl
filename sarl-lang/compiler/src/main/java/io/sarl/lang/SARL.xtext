@@ -40,7 +40,7 @@ Type returns xtend::XtendTypeDeclaration:
 	(	// Event
 		{SarlEvent.annotationInfo = current}
 		modifiers += CommonModifier*
-	    'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? 
+	    'event' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  ('extends' extends=JvmParameterizedTypeReference)? 
 	    ('{' members+=EventMember* '}')?
 	|
 		// Capacity

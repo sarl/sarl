@@ -5,17 +5,25 @@ package io.sarl.lang.sarl.impl;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImplCustom;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,6 +34,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlEventImpl#getExtends <em>Extends</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlEventImpl#getTypeParameters <em>Type Parameters</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,6 +50,16 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * @ordered
 	 */
 	protected JvmParameterizedTypeReference extends_;
+
+	/**
+	 * The cached value of the '{@link #getTypeParameters() <em>Type Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<JvmTypeParameter> typeParameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -119,6 +138,21 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * @generated
 	 */
 	@Override
+	public EList<JvmTypeParameter> getTypeParameters()
+	{
+		if (typeParameters == null)
+		{
+			typeParameters = new EObjectContainmentEList<JvmTypeParameter>(JvmTypeParameter.class, this, SarlPackage.SARL_EVENT__TYPE_PARAMETERS);
+		}
+		return typeParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public boolean isAbstract()
 	{
 		// TODO: implement this method
@@ -138,6 +172,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 		{
 			case SarlPackage.SARL_EVENT__EXTENDS:
 				return basicSetExtends(null, msgs);
+			case SarlPackage.SARL_EVENT__TYPE_PARAMETERS:
+				return ((InternalEList<?>)getTypeParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -154,6 +190,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 		{
 			case SarlPackage.SARL_EVENT__EXTENDS:
 				return getExtends();
+			case SarlPackage.SARL_EVENT__TYPE_PARAMETERS:
+				return getTypeParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -163,6 +201,7 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
@@ -170,6 +209,10 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 		{
 			case SarlPackage.SARL_EVENT__EXTENDS:
 				setExtends((JvmParameterizedTypeReference)newValue);
+				return;
+			case SarlPackage.SARL_EVENT__TYPE_PARAMETERS:
+				getTypeParameters().clear();
+				getTypeParameters().addAll((Collection<? extends JvmTypeParameter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -188,6 +231,9 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 			case SarlPackage.SARL_EVENT__EXTENDS:
 				setExtends((JvmParameterizedTypeReference)null);
 				return;
+			case SarlPackage.SARL_EVENT__TYPE_PARAMETERS:
+				getTypeParameters().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -204,6 +250,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements Sar
 		{
 			case SarlPackage.SARL_EVENT__EXTENDS:
 				return extends_ != null;
+			case SarlPackage.SARL_EVENT__TYPE_PARAMETERS:
+				return typeParameters != null && !typeParameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

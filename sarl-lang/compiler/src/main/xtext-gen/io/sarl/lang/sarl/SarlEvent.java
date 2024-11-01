@@ -2,9 +2,12 @@
  */
 package io.sarl.lang.sarl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,6 +19,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlEvent#getExtends <em>Extends</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlEvent#getTypeParameters <em>Type Parameters</em>}</li>
  * </ul>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlEvent()
@@ -45,6 +49,18 @@ public interface SarlEvent extends XtendTypeDeclaration
 	 * @generated
 	 */
 	void setExtends(JvmParameterizedTypeReference value);
+
+	/**
+	 * Returns the value of the '<em><b>Type Parameters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.xtext.common.types.JvmTypeParameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type Parameters</em>' containment reference list.
+	 * @see io.sarl.lang.sarl.SarlPackage#getSarlEvent_TypeParameters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<JvmTypeParameter> getTypeParameters();
 
 	/**
 	 * <!-- begin-user-doc -->

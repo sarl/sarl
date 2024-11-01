@@ -776,6 +776,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			if (declaration instanceof SarlEvent sarlEvent) {
 				final var javaType = this.typesFactory.createJvmGenericType();
+				copyTypeParameters(sarlEvent.getTypeParameters(), javaType);
 				if (!preIndexingPhase) {
 					doLaterExceptionSafe.add(() -> initialize(sarlEvent, javaType));
 				}
@@ -1407,6 +1408,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Event.class, SarlEvent.class, source.getExtends());
 
+			// Fixing the bounds of the type parameters
+			fixTypeParameters(inferredJvmType);
+			
 			// Issue #363: do not generate the event if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.

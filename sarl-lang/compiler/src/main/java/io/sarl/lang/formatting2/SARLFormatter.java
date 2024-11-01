@@ -190,6 +190,7 @@ public class SARLFormatter extends XtendFormatter {
 	protected void _format(SarlEvent event, IFormattableDocument document) {
 		formatAnnotations(event, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(event, document);
+		formatTypeParameters(event, event.getTypeParameters(), document);
 
 		final var regionFor = this.textRegionExtensions.regionFor(event);
 		document.append(regionFor.keyword(this.keywords.getEventKeyword()), ONE_SPACE);

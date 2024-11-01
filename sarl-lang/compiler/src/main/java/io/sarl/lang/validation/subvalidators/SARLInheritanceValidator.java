@@ -51,6 +51,7 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_SYNCHRONIZED
 import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.OVERRIDDEN_FINAL;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.OVERRIDE_REDUCES_VISIBILITY;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.WILDCARD_IN_SUPERTYPE;
 
 import java.text.MessageFormat;
@@ -78,6 +79,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
@@ -239,6 +241,50 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 
 	@Override
 	protected void checkSuperTypes(EObject sourceType, JvmGenericType type) {
+		// Since there is specific checks of super types implemented in this class
+		// we don't need to support them with the inherited function.
+		if (sourceType instanceof SarlAgent agent) {
+			checkSuperTypes(
+					agent,
+					SARL_AGENT__EXTENDS,
+					Utils.singletonList(agent.getExtends()),
+					Agent.class,
+					false);
+		} else if (sourceType instanceof SarlCapacity capacity) {
+			checkSuperTypes(
+					capacity,
+					SARL_CAPACITY__EXTENDS,
+					capacity.getExtends(),
+					Capacity.class,
+					false);
+		} else if (sourceType instanceof SarlBehavior behavior) {
+			checkSuperTypes(
+					behavior,
+					SARL_BEHAVIOR__EXTENDS,
+					Utils.singletonList(behavior.getExtends()),
+					Behavior.class,
+					false);
+		} else if (sourceType instanceof SarlEvent event) {
+			checkSuperTypes(
+					event,
+					SARL_EVENT__EXTENDS,
+					Utils.singletonList(event.getExtends()),
+					Event.class,
+					false);
+		} else if (sourceType instanceof SarlSkill skill) {
+			final int nbSuperTypes = checkSuperTypes(
+					skill,
+					SARL_SKILL__EXTENDS,
+					Utils.singletonList(skill.getExtends()),
+					Skill.class,
+					false);
+			checkImplementedTypes(
+					skill,
+					SARL_SKILL__IMPLEMENTS,
+					skill.getImplements(),
+					Capacity.class,
+					nbSuperTypes > 0 ? 0 : 1, true);
+		} else {
 			// Check the OOP concepts
 			super.checkSuperTypes(sourceType, type);
 
@@ -255,9 +301,13 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 				final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
 				checkValidSuperTypeArgumentDefinition(lighweightSuperType, sourceType, eContainingFeature, i);
 			}
+		}
 	}
 
 	/** Check the super type.
+	 * 
+	 * <p>This function supports the {@code expectedType} that is not
+	 * supported by the inherited {@link #checkSuperTypes(EObject, JvmGenericType)}.
 	 *
 	 * @param element the child type.
 	 * @param feature the syntactic feature related to the supertypes.
@@ -269,7 +319,7 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 	 */
 	private int checkSuperTypes(
 			XtendTypeDeclaration element,
-			EReference feature,
+			EStructuralFeature sourceFeature,
 			List<? extends JvmTypeReference> superTypes,
 			Class<?> expectedType,
 			boolean onlySubTypes) {
@@ -282,75 +332,88 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 			var superTypeIndex = 0;
 			for (final var superType : superTypes) {
 				var success = true;
-				final var jvmSuperType = (superType == null) ? null : superType.getType();
-				if (jvmSuperType != null) {
-					final var inferredSuperType =
-							(inferredSuperTypes.isEmpty()) ? null : inferredSuperTypes.removeFirst();
-					final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
-					if (!(jvmSuperType instanceof JvmGenericType cvalue)
-							|| (isExpectingInterface != cvalue.isInterface())) {
-						if (isExpectingInterface) {
-							error(
-									MessageFormat.format(Messages.SARLInheritanceValidator_3, Messages.SARLInheritanceValidator_4),
+				if (superType != null) {
+					final var feature = sourceFeature == null ? superType.eContainingFeature() : sourceFeature;
+					final var jvmSuperType = superType.getType();
+					if (jvmSuperType != null) {
+						final var inferredSuperType = inferredSuperTypes.isEmpty() ? null : inferredSuperTypes.removeFirst();
+						final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
+						if (!(jvmSuperType instanceof JvmGenericType cvalue)
+								|| (isExpectingInterface != cvalue.isInterface())) {
+							if (isExpectingInterface) {
+								getMessageAcceptor().acceptError(
+										MessageFormat.format(Messages.SARLInheritanceValidator_3, Messages.SARLInheritanceValidator_4),
+										element,
+										feature,
+										superTypeIndex,
+										INTERFACE_EXPECTED,
+										jvmSuperType.getIdentifier());
+							} else {
+								getMessageAcceptor().acceptError(
+										MessageFormat.format(Messages.SARLInheritanceValidator_3, Messages.SARLInheritanceValidator_5),
+										element,
+										feature,
+										superTypeIndex,
+										CLASS_EXPECTED,
+										jvmSuperType.getIdentifier());
+							}
+							success = false;
+						} else if (getParentValidator().isFinal(lighweightSuperType)) {
+							getMessageAcceptor().acceptError(Messages.SARLInheritanceValidator_6,
+									element,
 									feature,
 									superTypeIndex,
-									INTERFACE_EXPECTED,
+									OVERRIDDEN_FINAL,
+									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
+							success = false;
+						} else if (!lighweightSuperType.isSubtypeOf(expectedType)
+								|| (onlySubTypes && lighweightSuperType.isType(expectedType))) {
+							if (onlySubTypes) {
+								getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_7, expectedType.getName()),
+										element,
+										feature,
+										superTypeIndex,
+										INVALID_EXTENDED_TYPE,
+										jvmSuperType.getIdentifier());
+							} else {
+								getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_8, expectedType.getName()),
+										element,
+										feature,
+										superTypeIndex,
+										INVALID_EXTENDED_TYPE,
+										jvmSuperType.getIdentifier());
+							}
+							success = false;
+						} else if (inferredSuperType == null
+								|| !sameRawType(inferredSuperType.getType(), lighweightSuperType)
+								|| sameRawType(inferredType, lighweightSuperType)
+								|| hasCycleInHierarchy((JvmGenericType) inferredType, Sets.<JvmGenericType>newHashSet())) {
+							getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_9,
+									inferredType.getQualifiedName()),
+									element,
+									feature,
+									superTypeIndex,
+									CYCLIC_INHERITANCE,
+									jvmSuperType.getIdentifier());
+							success = false;
 						} else {
-							error(
-									MessageFormat.format(Messages.SARLInheritanceValidator_3, Messages.SARLInheritanceValidator_5),
-									feature,
-									superTypeIndex,
-									CLASS_EXPECTED,
-									jvmSuperType.getIdentifier());
+							success = checkValidSuperTypeArgumentDefinition(lighweightSuperType, element, feature, superTypeIndex);
 						}
-						success = false;
-					} else if (getParentValidator().isFinal(lighweightSuperType)) {
-						error(Messages.SARLInheritanceValidator_6,
-								feature,
-								superTypeIndex,
-								OVERRIDDEN_FINAL,
-								inferredType.getIdentifier(),
-								jvmSuperType.getIdentifier());
-						success = false;
-					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
-							|| (onlySubTypes && lighweightSuperType.isType(expectedType))) {
-						if (onlySubTypes) {
-							error(MessageFormat.format(Messages.SARLInheritanceValidator_7, expectedType.getName()),
-									feature,
-									superTypeIndex,
-									INVALID_EXTENDED_TYPE,
-									jvmSuperType.getIdentifier());
-						} else {
-							error(MessageFormat.format(Messages.SARLInheritanceValidator_8, expectedType.getName()),
-									feature,
-									superTypeIndex,
-									INVALID_EXTENDED_TYPE,
-									jvmSuperType.getIdentifier());
-						}
-						success = false;
-					} else if (inferredSuperType == null
-							|| !Objects.equal(inferredSuperType.getIdentifier(), jvmSuperType.getIdentifier())
-							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())
-							|| hasCycleInHierarchy((JvmGenericType) inferredType, Sets.<JvmGenericType>newHashSet())) {
-						error(MessageFormat.format(Messages.SARLInheritanceValidator_9,
+					} else {
+						getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_9,
 								inferredType.getQualifiedName()),
+								element,
 								feature,
 								superTypeIndex,
 								CYCLIC_INHERITANCE,
-								jvmSuperType.getIdentifier());
+								superType.getIdentifier());
 						success = false;
 					}
-				} else if (superType != null) {
-					error(MessageFormat.format(Messages.SARLInheritanceValidator_9,
-							inferredType.getQualifiedName()),
-							feature,
-							superTypeIndex,
-							CYCLIC_INHERITANCE,
-							superType.getIdentifier());
-					success = false;
+					if (success) {
+						checkWildcardSupertype(element, superType, feature, superTypeIndex);
+					}
 				}
-				checkWildcardSupertype(element, superType, feature, superTypeIndex);
 				++superTypeIndex;
 				if (success) {
 					++nbSuperTypes;
@@ -358,6 +421,36 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 			}
 		}
 		return nbSuperTypes;
+	}
+
+	private static boolean sameRawType(JvmType type0, LightweightTypeReference type1) {
+		final var id0 = type0.getIdentifier();
+		final var id1 = type1.getRawTypeReference().getIdentifier();
+		return Objects.equal(id0, id1);
+	}
+
+	private boolean checkValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context, EStructuralFeature feature, int superTypeIndex) {
+		final var superType = typeRef.getType();
+		if (superType instanceof JvmTypeParameterDeclarator cvalue) {
+			final var typeParameters = cvalue.getTypeParameters();
+			if (!typeParameters.isEmpty()) {
+				final var isConformant = Utils.isTypeArgumentConformant(
+						typeRef.getTypeArguments(), typeParameters, typeRef.getOwner());
+				if (!isConformant) {
+					getMessageAcceptor().acceptError(MessageFormat.format(
+							Messages.SARLInheritanceValidator_25,
+							Utils.getHumanReadableTypeArgumentsWithoutBounds(typeRef, getGrammarAccess()),
+							Utils.getHumanReadableTypeParametersWithBounds(typeParameters, getGrammarAccess()),
+							superType.getSimpleName()),
+							context,
+							feature,
+							superTypeIndex,
+							TYPE_BOUNDS_MISMATCH);
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/** Check the implemented type.
@@ -420,83 +513,6 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 			success = false;
 		}
 		return success;
-	}
-
-	/** Check if the supertype of the given capacity is a subtype of Capacity.
-	 *
-	 * @param capacity the type to test.
-	 */
-	@Check(CheckType.FAST)
-	public void checkSuperTypes(SarlCapacity capacity) {
-		checkSuperTypes(
-				capacity,
-				SARL_CAPACITY__EXTENDS,
-				capacity.getExtends(),
-				Capacity.class,
-				false);
-	}
-
-	/** Check if the supertype of the given skill is a subtype of Skill.
-	 *
-	 * @param skill the type to test.
-	 */
-	@Check(CheckType.FAST)
-	public void checkSuperType(SarlSkill skill) {
-		final int nbSuperTypes = checkSuperTypes(
-				skill,
-				SARL_SKILL__EXTENDS,
-				Utils.singletonList(skill.getExtends()),
-				Skill.class,
-				false);
-		checkImplementedTypes(
-				skill,
-				SARL_SKILL__IMPLEMENTS,
-				skill.getImplements(),
-				Capacity.class,
-				nbSuperTypes > 0 ? 0 : 1,
-						true);
-	}
-
-	/** Check if the supertype of the given event is a subtype of Event.
-	 *
-	 * @param event the type to test.
-	 */
-	@Check(CheckType.FAST)
-	public void checkSuperType(SarlEvent event) {
-		checkSuperTypes(
-				event,
-				SARL_EVENT__EXTENDS,
-				Utils.singletonList(event.getExtends()),
-				Event.class,
-				false);
-	}
-
-	/** Check if the supertype of the given behavior is a subtype of Behavior.
-	 *
-	 * @param behavior the type to test.
-	 */
-	@Check(CheckType.FAST)
-	public void checkSuperType(SarlBehavior behavior) {
-		checkSuperTypes(
-				behavior,
-				SARL_BEHAVIOR__EXTENDS,
-				Utils.singletonList(behavior.getExtends()),
-				Behavior.class,
-				false);
-	}
-
-	/** Check if the supertype of the given agent is a subtype of Agent.
-	 *
-	 * @param agent the type to test.
-	 */
-	@Check(CheckType.FAST)
-	public void checkSuperType(SarlAgent agent) {
-		checkSuperTypes(
-				agent,
-				SARL_AGENT__EXTENDS,
-				Utils.singletonList(agent.getExtends()),
-				Agent.class,
-				false);
 	}
 
 	/** Check if the super types is valid and have no wildcard.

@@ -1449,6 +1449,13 @@
 		"message": "The type *type-name* cannot extend or implement *other-type*. A supertype may not specify any wildcard",
 		"cause": "The super-type named *other-type* is defined with wildcard into its generic type parameters. It is forbidden to extends or implement a super-type with a wildcard",
 		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.type_bounds_missmatch",
+		"message": "Bounds mismatch: The type arguments *type-arguments* are not a valid substitute for the bounded type parameters *type-parameters* of the super type *super-type*",
+		"cause": "When the *super-type* is defined with generic *type-parameters*, a reference to this *super-type* is provided with *type-arguments* that are not compatible with the specified *type-parameters*, i.e., at least one of the specified bounds is not compatible with the provided *type-arguments*",
+		"solution": "Replace the invalid *type-argument* by a type that is compatible with the *type-parameters*",
+		"level": "error"
 	}
 ]
 

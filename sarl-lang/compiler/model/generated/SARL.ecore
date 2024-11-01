@@ -3,6 +3,9 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sarl" nsURI="http://www.sarl.io/lang/SARL" nsPrefix="sarl">
   <eClassifiers xsi:type="ecore:EClass" name="SarlScript" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendFile"/>
   <eClassifiers xsi:type="ecore:EClass" name="SarlEvent" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
