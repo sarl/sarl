@@ -369,6 +369,16 @@
 		"cause": "The keyword with the *name* is recognized as a keyword y the SARL compiler. However, it is not yet fully supported by the compiler. The keyword is reserved for future usage",
 		"solution": "Remove the statement",
 		"level": "warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.unused_type_parameter",
+		"message": "Unused type parameter *name*. This type parameter is not used for determining if a behavior unit matches a received event",
+		"cause": "This warning is generated whe you have declared a generic type parameter in an event that is not locally used in this event. When an event is received by an agent, this type parameter cannot be used to detemrine the activable behavior unit in that agent",
+		"solution": "Remove the type parameter",
+		"level": "warning"
 	}
+
+	
+	
 ]
 

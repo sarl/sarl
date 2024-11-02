@@ -37,6 +37,8 @@ import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import io.sarl.lang.sarl.SarlEvent;
+
 /**
  * Tools for implementing the validators.
  *
@@ -116,6 +118,14 @@ public interface ISARLValidator {
 	 * @return {@code true} if the {@code target} is marked as used in the container.
 	 */
 	boolean isLocallyUsed(EObject target, EObject containerToFindUsage);
+
+	/** Replies if the given type parameter is locally used in the given event.
+	 *
+	 * @param parameter the type parameter to search for a local usage.
+	 * @param event the container in which the local uses should be checked.
+	 * @return {@code true} if the type parameter is locally used.
+	 */
+	boolean isTypeParameterLocallyUsedInEvent(JvmTypeParameter parameter, SarlEvent event);
 
 	/** Add an issue.
 	 *

@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -56,26 +57,6 @@ public class GenericEventParsingTest {
 	@DisplayName("Direct Event inheritance")
 	@Nested
 	public class DirectEventInheritance extends AbstractSarlTest {
-
-		//		@Test
-		//		@DisplayName("Unecessary generic types")
-		//		public void unecessaryTypes_withoutBlock() throws Exception {
-		//			SarlScript mas = file(getParseHelper(), "event E1<T1, T2 extends Number, T3 extends Double & Iterable<String>>");
-		//			validate(getValidationHelper(), getInjector(), mas)
-		//				.assertWarning(
-		//						SarlPackage.eINSTANCE.getSarlEvent(),
-		//						UNUSED_TYPE_PARAMETER,
-		//						"Type parameter T1 is never used")
-		//				.assertWarning(
-		//						SarlPackage.eINSTANCE.getSarlEvent(),
-		//						UNUSED_TYPE_PARAMETER,
-		//						"Type parameter T2 is never used")
-		//				.assertWarning(
-		//						SarlPackage.eINSTANCE.getSarlEvent(),
-		//						UNUSED_TYPE_PARAMETER,
-		//						"Type parameter T3 is never used")
-		//				.assertNoErrors();
-		//		}
 
 		@Test
 		@DisplayName("Empty event with block")
@@ -996,6 +977,287 @@ public class GenericEventParsingTest {
 					XbasePackage.eINSTANCE.getXConstructorCall(),
 					INVALID_NUMBER_OF_TYPE_ARGUMENTS,
 					"Invalid number of type arguments. The constructor E1<T1, T2, T3><T1, T2 extends Number, T3 extends Double> is not applicable for the type arguments <String, Float, Double, String>")
+				.assertNoErrors();
+		}
+
+	}
+
+
+	@DisplayName("Event with generic-type fields")
+	@Nested
+	public class GenericTypeFieldEvent extends AbstractSarlTest {
+
+		@Test
+		@DisplayName("Field T1")
+		public void singleField1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1 : T1",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Field T2")
+		public void singleField2() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field2 : T2",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Field T3")
+		public void singleField3() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field3 : T3",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T1 T2")
+		public void twoField1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1 : T1",
+					"  var field2 : T2",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T1 T3")
+		public void twoField2() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1 : T1",
+					"  var field3 : T3",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T2 T3")
+		public void twoField3() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field2 : T2",
+					"  var field3 : T3",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T1 T2 T3")
+		public void threeField() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1 : T1",
+					"  var field2 : T2",
+					"  var field3 : T3",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T1 T1")
+		public void twoSingleTypeFields1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1a : T1",
+					"  var field1b : T1",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T2 T2")
+		public void twoSingleTypeFields2() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field2a : T2",
+					"  var field2b : T2",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T3 T3")
+		public void twoSingleTypeFields3() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field3a : T3",
+					"  var field3b : T3",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
+				.assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Fields T1 T1 T2")
+		public void twoSingleTypeFieldsOneField1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number, T3 extends Double> {",
+					"  var field1a : T1",
+					"  var field1b : T1",
+					"  var field2 : T2",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas)
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T1")
+				.assertNoWarnings(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T2")
+				.assertWarning(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					UNUSED_TYPE_PARAMETER,
+					"Unused type parameter T3")
 				.assertNoErrors();
 		}
 

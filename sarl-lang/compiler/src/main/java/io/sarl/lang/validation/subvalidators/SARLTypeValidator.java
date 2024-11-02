@@ -22,8 +22,10 @@
 package io.sarl.lang.validation.subvalidators;
 
 import static com.google.common.collect.Iterables.filter;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_EVENT__TYPE_PARAMETERS;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION;
 import static io.sarl.lang.validation.IssueCodes.INVALID_NESTED_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.UNUSED_TYPE_PARAMETER;
 import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_DIFFERENT_PRIMITIVE_ARGS;
 import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_MIXED_STATIC_AND_NON_STATIC;
 import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_NON_STATIC_EXPECTED;
@@ -490,5 +492,26 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 			checkNoJavaKeyword(p, TypesPackage.Literals.JVM_TYPE_PARAMETER__NAME);
 		}
 	}
+
+	@Check(CheckType.FAST)
+	public void checkEventTypeParameters(SarlEvent event) {
+		if (!isIgnored(UNUSED_TYPE_PARAMETER)) {
+			final var parameters = event.getTypeParameters();
+			if (!parameters.isEmpty()) {
+				var  i = 0;
+				for (final var parameter : parameters) {
+					if (!getParentValidator().isTypeParameterLocallyUsedInEvent(parameter, event)) { 
+						addIssue(MessageFormat.format(Messages.SARLTypeValidator_19, parameter.getSimpleName()),
+								event,
+								SARL_EVENT__TYPE_PARAMETERS,
+								i,
+								UNUSED_TYPE_PARAMETER);
+					}
+					++i;
+				}
+			}
+		}
+	}
+
 
 }

@@ -239,5 +239,6 @@ public class Messages extends NLS {
 	public static String SARLTypeValidator_16;
 	public static String SARLTypeValidator_17;
 	public static String SARLTypeValidator_18;
+	public static String SARLTypeValidator_19;
 
 }

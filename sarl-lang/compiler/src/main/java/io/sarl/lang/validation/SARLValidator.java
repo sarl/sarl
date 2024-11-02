@@ -47,6 +47,7 @@ import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.DeprecationUtil;
 import org.eclipse.xtext.util.Strings;
@@ -65,6 +66,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
@@ -72,6 +74,7 @@ import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.subvalidators.SARLCastValidator;
 
@@ -166,7 +169,27 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 	
 	@Override
 	public boolean isLocallyUsed(EObject target, EObject containerToFindUsage) {
-		return super.isLocallyUsed(target, containerToFindUsage);
+		final var result = super.isLocallyUsed(target, containerToFindUsage);
+		return result;
+	}
+
+	@Override
+	public boolean isTypeParameterLocallyUsedInEvent(JvmTypeParameter parameter, SarlEvent event) {
+		// Type parameters are used when they are referenced in the containerToFindUsage.
+		for (final var member : event.getMembers()) {
+			if (member instanceof XtendField field) {
+				if (field.getType() != null && field.getType().getType().getIdentifier().equals(parameter.getIdentifier())) {
+					return true;
+				}
+				if (field.getInitialValue() != null) {
+					final var usages = XbaseUsageCrossReferencer.find(parameter, field.getInitialValue());
+					if (!usages.isEmpty()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

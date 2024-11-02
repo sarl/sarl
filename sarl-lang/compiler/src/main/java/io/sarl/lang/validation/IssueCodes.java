@@ -295,6 +295,14 @@ public final class IssueCodes {
 	public static final String UNSUPPORTED_STATEMENT =
 			ISSUE_CODE_PREFIX + "unsupported_statement"; //$NON-NLS-1$
 
+	/** A generic parameter is defined in a type (usually, an event) that is not used.
+	 * This type cannot be used at run-time.
+	 *
+	 * @since 0.14
+	 */
+	public static final String UNUSED_TYPE_PARAMETER =
+			ISSUE_CODE_PREFIX + "unused_type_parameter"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

@@ -139,6 +139,10 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				IssueCodes.UNNECESSARY_FIRED_EVENT,
 				SeverityConverter.SEVERITY_INFO));
+
+		acceptor.accept(create(
+				IssueCodes.UNUSED_TYPE_PARAMETER,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }
