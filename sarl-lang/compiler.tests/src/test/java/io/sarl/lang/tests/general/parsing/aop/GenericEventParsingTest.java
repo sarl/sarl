@@ -834,7 +834,8 @@ public class GenericEventParsingTest {
 					"event E3<T2 extends Number> extends E1<String, Double, String>"
 					));
 			validate(getValidationHelper(), getInjector(), mas)
-				.assertError(SarlPackage.eINSTANCE.getSarlEvent(), TYPE_BOUNDS_MISMATCH,
+				.assertError(SarlPackage.eINSTANCE.getSarlEvent(),
+					TYPE_BOUNDS_MISMATCH,
 					"Bounds mismatch: The type arguments <String, Double, String> are not a valid substitute for the bounded type parameters <T1 extends Object, T2 extends Number, T3 extends Double> of the super type E1")
 				.assertNoErrors();
 		}
@@ -1259,6 +1260,123 @@ public class GenericEventParsingTest {
 					UNUSED_TYPE_PARAMETER,
 					"Unused type parameter T3")
 				.assertNoErrors();
+		}
+
+	}
+
+	@DisplayName("Multiple behavior units")
+	@Nested
+	public class MultipleBehaviorUnits extends AbstractSarlTest {
+
+		@Test
+		@DisplayName("Different erasures")
+		public void differentErasures1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number> {",
+					"  var field1 : T1",
+					"  var field2 : T2",
+					"}",
+					"agent X {",
+					"  on E1<?, ?> { System.out.println(\"2\") }",
+					"  on E1<String, ?> { System.out.println(\"3\") }",
+					"  on E1<Double, ?> { System.out.println(\"4a\") }",
+					"  on E1<Double, ?> { System.out.println(\"4b\") }",
+					"  on E1<?, Double> { System.out.println(\"5\") }",
+					"  on E1<String, Double> { System.out.println(\"6\") }",
+					"  on E1 { System.out.println(\"1\") }",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Different erasures with multiple events")
+		public void differentErasures2() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1, T2 extends Number> {",
+					"  var field1 : T1",
+					"  var field2 : T2",
+					"}",
+					"event E2<T3> {",
+					"  var field3 : T3",
+					"}",
+					"event E3",
+					"agent X {",
+					"  on E1<?, ?> { System.out.println(\"2\") }",
+					"  on E2<?> { System.out.println(\"7\") }",
+					"  on E1<String, ?> { System.out.println(\"3\") }",
+					"  on E1<Double, ?> { System.out.println(\"4a\") }",
+					"  on E2<String> { System.out.println(\"8\") }",
+					"  on E1<Double, ?> { System.out.println(\"4b\") }",
+					"  on E1<?, Double> { System.out.println(\"5\") }",
+					"  on E3 { System.out.println(\"9\") }",
+					"  on E1<String, Double> { System.out.println(\"6\") }",
+					"  on E1 { System.out.println(\"1\") }",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Too many type parameters 1")
+		public void illegalGeneric1() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1",
+					"agent X {",
+					"  on E1<?> {}",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					TYPE_ARGUMENT_ON_NON_GENERIC_TYPE,
+					"The type E1 is not generic; it cannot be parameterized with arguments <? >");
+		}
+
+		@Test
+		@DisplayName("Too many type parameters 2")
+		public void illegalGeneric2() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1>",
+					"agent X {",
+					"  on E1<?, ?> {}",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					INVALID_NUMBER_OF_TYPE_ARGUMENTS,
+					"Incorrect number of arguments for type E1<T1>");
+		}
+
+		@Test
+		@DisplayName("Not enough type parameters")
+		public void rawGeneric() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1>",
+					"agent X {",
+					"  on E1 {}",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					RAW_TYPE,
+					"E1 is a raw type");
+		}
+
+		@Test
+		@DisplayName("Invalid type parameter bound")
+		public void invalidBound() throws Exception {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"event E1<T1 extends Number> {",
+					"  var f : T1",
+					"}",
+					"agent X {",
+					"  on E1<String> {}",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehaviorUnit(),
+					TYPE_BOUNDS_MISMATCH,
+					"Bounds mismatch: The type arguments <String> are not a valid substitute for the bounded type parameters <T1 extends Number> of the super type E1");
 		}
 
 	}

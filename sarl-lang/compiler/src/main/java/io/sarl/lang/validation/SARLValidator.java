@@ -23,6 +23,7 @@ package io.sarl.lang.validation;
 
 import static org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -48,6 +49,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.DeprecationUtil;
 import org.eclipse.xtext.util.Strings;
@@ -75,6 +77,7 @@ import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.subvalidators.SARLCastValidator;
 
@@ -113,6 +116,9 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 
 	@Inject
 	private ReadAndWriteTracking readAndWriteTracking;
+
+	@Inject
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	private ValidationMessageAcceptor temporaryMessageAcceptor; 
 
@@ -300,7 +306,7 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 
 	
 	@Override
-	public void checkFinalFieldInitialization(JvmGenericType type, ValidationMessageAcceptor acceptor) {
+	public void doCheckFinalFieldInitialization(JvmGenericType type, ValidationMessageAcceptor acceptor) {
 		assert type != null;
 		this.temporaryMessageAcceptor = acceptor;
 		super.checkFinalFieldInitialization(type);
@@ -376,6 +382,33 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 			}
  		}
 		return false;
+	}
+
+	@Override
+	public boolean doCheckValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context,
+			EStructuralFeature feature, int superTypeIndex, boolean allowWildcard,
+			ValidationMessageAcceptor messageAcceptor) {
+		final var superType = typeRef.getType();
+		if (superType instanceof JvmTypeParameterDeclarator cvalue) {
+			final var typeParameters = cvalue.getTypeParameters();
+			if (!typeParameters.isEmpty()) {
+				final var isConformant = Utils.isTypeArgumentConformant(
+						typeRef.getTypeArguments(), typeParameters, typeRef.getOwner(), allowWildcard);
+				if (!isConformant) {
+					messageAcceptor.acceptError(MessageFormat.format(
+							Messages.SARLValidator_3,
+							Utils.getHumanReadableTypeArgumentsWithoutBounds(typeRef, this.grammarAccess),
+							Utils.getHumanReadableTypeParametersWithBounds(typeParameters, this.grammarAccess),
+							superType.getSimpleName()),
+							context,
+							feature,
+							superTypeIndex,
+							TYPE_BOUNDS_MISMATCH);
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 }

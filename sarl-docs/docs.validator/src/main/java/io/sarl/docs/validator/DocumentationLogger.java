@@ -35,6 +35,12 @@ import java.util.logging.Logger;
  */
 public final class DocumentationLogger {
 
+	/** Name of a global property that may refer to a logger for the documentation tools. The logger must be of type {@link Logger}.
+	 *
+	 * @since 0.14
+	 */
+	public static final String GLOBAL_PROPERTY_NAME = DocumentationLogger.class.getName() + ".EXTERNAL_LOGGER"; //$NON-NLS-1$
+	
 	private static Logger LOGGER;
 	
 	/** Replies the logger associated to the documentation tools.
@@ -44,7 +50,17 @@ public final class DocumentationLogger {
 	public static Logger getLogger() {
 		synchronized (DocumentationLogger.class) {
 			if (LOGGER == null) {
-				LOGGER = Logger.getLogger(DocumentationLogger.class.getName());
+				final var externalLogger = System.getProperties().get(GLOBAL_PROPERTY_NAME);
+				if (externalLogger instanceof Logger elogger) {
+					LOGGER = elogger;
+				} else {
+					final var junitLogger = Logger.getLogger("org.junit"); //$NON-NLS-1$
+					if (junitLogger == null) {
+						LOGGER = Logger.getLogger(DocumentationLogger.class.getName());
+					} else {
+						LOGGER = junitLogger;
+					}
+				}
 			}
 			return LOGGER;
 		}

@@ -61,7 +61,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 
+import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ElementKind;
@@ -70,6 +72,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleAnnotationValueVisitor14;
 import javax.lang.model.util.SimpleAnnotationValueVisitor9;
 import javax.lang.model.util.SimpleElementVisitor9;
 import javax.tools.Diagnostic.Kind;
@@ -284,6 +287,58 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		generateEventHandlersDetails(parent, typeElement);
 	}
 
+	private AnnotationValue getPeceptGuardEvaluatorAnnotationValue(AnnotatedConstruct element) {
+		if (element != null) {
+			for (final var annotationMirror : element.getAnnotationMirrors()) {
+				final var type = getElementUtils().asTypeElement(annotationMirror.getAnnotationType(), getEnvironment().getTypeUtils());
+				if (PerceptGuardEvaluator.class.getName().equals(type.getQualifiedName()) && !annotationMirror.getElementValues().isEmpty()) {
+					for (final var entry : annotationMirror.getElementValues().entrySet()) {
+						final var method = entry.getKey();
+						final var returnType = method.getReturnType();
+						if ("typeParameters".equals(method.getSimpleName()) && returnType.getKind() == TypeKind.ARRAY) { //$NON-NLS-1$
+							return entry.getValue();
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void extractTypeParameterBounds(AnnotatedConstruct element, Consumer<List<TypeMirror>> handler) {
+		if (handler != null) {
+			final var annotationValue = getPeceptGuardEvaluatorAnnotationValue(element);
+			if (annotationValue != null) {
+				annotationValue.accept(new SimpleAnnotationValueVisitor14<Void, Void>(null) {
+	                @Override
+	                public Void visitArray(List<? extends AnnotationValue> values, Void additionalParameter0) {
+	                    if (!values.isEmpty()) {
+	                    	final var types = new ArrayList<TypeMirror>();
+	                    	for (final var value : values) {
+	                    		value.accept(new SimpleAnnotationValueVisitor14<Void, Void>(null) {
+	                    			@Override
+	                    			public Void visitType(TypeMirror type, Void additionalParamter1) {
+	                    				types.add(type);
+	                    				return null;
+	                    			}
+	                    		}, null);
+	                    	}
+	                    	if (!types.isEmpty()) {
+	                    		handler.accept(types);
+	                    	}
+	                    }
+	                    return null;
+	                }
+	                @Override
+	                public Void visitType(TypeMirror t, Void p) {
+                    	handler.accept(Collections.singletonList(t));
+                    	return null;
+	                }
+	            }, null);
+			}
+		}
+	}
+	
 	/** Generate details of the constructors of the given type.
 	 *
 	 * @param parent the container.
@@ -309,6 +364,20 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					final var eventType = element.getParameters().get(0).asType();
 					final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 					nodes.add(new TextNode(eventTypeElement.getSimpleName().toString()));
+					extractTypeParameterBounds(element, bounds -> {
+						nodes.add(new TextNode(getSARLGrammarKeywordAccess().getLessThanSignKeyword()));
+						var first = true;
+						for (final var bound : bounds) {
+							if (first) {
+								first = false;
+							} else {
+								nodes.add(new TextNode(getSARLGrammarKeywordAccess().getCommaKeyword()));
+							}
+							final var boundType = getElementUtils().asTypeElement(bound, getEnvironment().getTypeUtils());
+							nodes.add(new TextNode(boundType.getSimpleName().toString()));
+						}
+						nodes.add(new TextNode(getSARLGrammarKeywordAccess().getGreaterThanSignKeyword()));
+					});
 					return nodes;
 				},
 				element -> {
@@ -318,6 +387,20 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					getHtmlFactory().createSecableSpace(prototype);
 					final var eventType = element.getParameters().get(0).asType();
 					prototype.appendChildren(getHtmlFactory().createTypeLink(eventType, false, null, this));
+					extractTypeParameterBounds(element, bounds -> {
+						prototype.appendText(getSARLGrammarKeywordAccess().getLessThanSignKeyword());
+						var first = true;
+						for (final var bound : bounds) {
+							if (first) {
+								first = false;
+							} else {
+								prototype.appendText(getSARLGrammarKeywordAccess().getCommaKeyword());
+							}
+							final var boundType = getElementUtils().asTypeElement(bound, getEnvironment().getTypeUtils());
+							prototype.appendText(boundType.getSimpleName().toString());
+						}
+						prototype.appendText(getSARLGrammarKeywordAccess().getGreaterThanSignKeyword());
+					});
 					nodes.add(prototype);
 					//
 					createFullDescriptionBody(element, nodes, false, true);
@@ -860,6 +943,20 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 					final var eventType = element.getParameters().get(0).asType();
 					final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 					label.add(new TextNode(eventTypeElement.getSimpleName().toString()));
+					extractTypeParameterBounds(element, bounds -> {
+						label.add(new TextNode(getSARLGrammarKeywordAccess().getLessThanSignKeyword()));
+						var first = true;
+						for (final var bound : bounds) {
+							if (first) {
+								first = false;
+							} else {
+								label.add(new TextNode(getSARLGrammarKeywordAccess().getCommaKeyword()));
+							}
+							final var boundType = getElementUtils().asTypeElement(bound, getEnvironment().getTypeUtils());
+							label.add(new TextNode(boundType.getSimpleName().toString()));
+						}
+						label.add(new TextNode(getSARLGrammarKeywordAccess().getGreaterThanSignKeyword()));
+					});
 					final var anchor = getHtmlFactory().toEventHandlerAnchor(element);
 					List<Node> elementLink = label;
 					try {
@@ -894,9 +991,24 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 						label.add(new TextNode("/")); //$NON-NLS-1$
 						label.add(new TextNode(getSARLGrammarKeywordAccess().getOnKeyword()));
 						label.add(getHtmlFactory().createSecableSpace(null));
-						final var eventType = ((ExecutableElement) element).getParameters().get(0).asType();
+						final var executableElement = (ExecutableElement) element;
+						final var eventType = executableElement.getParameters().get(0).asType();
 						final var eventTypeElement = getElementUtils().asTypeElement(eventType, getEnvironment().getTypeUtils());
 						label.add(new TextNode(eventTypeElement.getSimpleName().toString()));
+						extractTypeParameterBounds(executableElement, bounds -> {
+							label.add(new TextNode(getSARLGrammarKeywordAccess().getLessThanSignKeyword()));
+							var first = true;
+							for (final var bound : bounds) {
+								if (first) {
+									first = false;
+								} else {
+									label.add(new TextNode(getSARLGrammarKeywordAccess().getCommaKeyword()));
+								}
+								final var boundType = getElementUtils().asTypeElement(bound, getEnvironment().getTypeUtils());
+								label.add(new TextNode(boundType.getSimpleName().toString()));
+							}
+							label.add(new TextNode(getSARLGrammarKeywordAccess().getGreaterThanSignKeyword()));
+						});
 						List<Node> elementLink = label;
 						try {
 							elementLink = getHtmlFactory().createTypeLink(enclosingType, anchor, label, null, this);

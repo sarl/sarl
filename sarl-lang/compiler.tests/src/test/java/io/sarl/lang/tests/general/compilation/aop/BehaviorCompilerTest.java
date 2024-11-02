@@ -330,7 +330,6 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"    System.out.println(occurrence);",
 				"  }",
 				"  ",
-				"  @SyntheticMember",
 				"  @Pure",
 				"  private boolean $behaviorUnitGuard$E1$0(final E1 it, final E1 occurrence) {",
 				"    return (occurrence.i == 1);",

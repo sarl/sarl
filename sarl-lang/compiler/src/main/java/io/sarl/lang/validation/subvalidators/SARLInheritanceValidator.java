@@ -51,7 +51,6 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_SYNCHRONIZED
 import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.OVERRIDDEN_FINAL;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.OVERRIDE_REDUCES_VISIBILITY;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.WILDCARD_IN_SUPERTYPE;
 
 import java.text.MessageFormat;
@@ -79,7 +78,6 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
@@ -299,7 +297,8 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 				}
 				final var eContainingFeature = associated.eContainingFeature();
 				final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
-				checkValidSuperTypeArgumentDefinition(lighweightSuperType, sourceType, eContainingFeature, i);
+				getParentValidator().doCheckValidSuperTypeArgumentDefinition(lighweightSuperType, sourceType,
+						eContainingFeature, i, false, getMessageAcceptor());
 			}
 		}
 	}
@@ -398,7 +397,8 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 									jvmSuperType.getIdentifier());
 							success = false;
 						} else {
-							success = checkValidSuperTypeArgumentDefinition(lighweightSuperType, element, feature, superTypeIndex);
+							success = getParentValidator().doCheckValidSuperTypeArgumentDefinition(lighweightSuperType,
+									element, feature, superTypeIndex, false, getMessageAcceptor());
 						}
 					} else {
 						getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_9,
@@ -427,30 +427,6 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 		final var id0 = type0.getIdentifier();
 		final var id1 = type1.getRawTypeReference().getIdentifier();
 		return Objects.equal(id0, id1);
-	}
-
-	private boolean checkValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context, EStructuralFeature feature, int superTypeIndex) {
-		final var superType = typeRef.getType();
-		if (superType instanceof JvmTypeParameterDeclarator cvalue) {
-			final var typeParameters = cvalue.getTypeParameters();
-			if (!typeParameters.isEmpty()) {
-				final var isConformant = Utils.isTypeArgumentConformant(
-						typeRef.getTypeArguments(), typeParameters, typeRef.getOwner());
-				if (!isConformant) {
-					getMessageAcceptor().acceptError(MessageFormat.format(
-							Messages.SARLInheritanceValidator_25,
-							Utils.getHumanReadableTypeArgumentsWithoutBounds(typeRef, getGrammarAccess()),
-							Utils.getHumanReadableTypeParametersWithBounds(typeParameters, getGrammarAccess()),
-							superType.getSimpleName()),
-							context,
-							feature,
-							superTypeIndex,
-							TYPE_BOUNDS_MISMATCH);
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	/** Check the implemented type.

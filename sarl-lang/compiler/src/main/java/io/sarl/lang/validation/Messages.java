@@ -43,6 +43,7 @@ public class Messages extends NLS {
 
 	public static String SARLValidator_1;
 	public static String SARLValidator_2;
+	public static String SARLValidator_3;
 
 	public static String SARLSyntaxErrorMessageProvider_0;
 	public static String SARLSyntaxErrorMessageProvider_1;

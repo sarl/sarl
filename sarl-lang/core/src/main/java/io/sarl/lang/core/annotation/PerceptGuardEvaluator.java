@@ -38,5 +38,15 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)
 public @interface PerceptGuardEvaluator {
-	//
+
+	/** Replies the type parameters upper bounds that is supported by the associated method.
+	 * It should be defined when the associated received event is a generic event.
+	 * Then, the caller of the associated function could use the type parameters to determine
+	 * if the function should be called for treated the received event.
+	 *
+	 * @return the bounds of the type parameters.
+	 * @since 0.14
+	 */
+	Class<?>[] typeParameters() default {};
+	
 }

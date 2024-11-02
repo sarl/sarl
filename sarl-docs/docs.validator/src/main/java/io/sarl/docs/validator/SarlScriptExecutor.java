@@ -40,7 +40,9 @@ import com.google.inject.Provider;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
@@ -76,6 +78,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private Provider<IExpressionInterpreter> interpreterProvider;
 
+	private Provider<IEvaluationContext> contextProvider;
+
 	/** Change the injector.
 	 *
 	 * @param injector the new injector.
@@ -84,6 +88,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	public void setInjector(Injector injector) {
 		this.compilerProvider = injector.getProvider(SarlBatchCompiler.class);
 		this.interpreterProvider = injector.getProvider(IExpressionInterpreter.class);
+		this.contextProvider = injector.getProvider(IEvaluationContext.class);
 	}
 
 	@Override
@@ -202,7 +207,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 					final var expandClassLoader = exprEvaluator.expandClassLoader(this.classLoaderBuilder);
 					System.getProperties().put(ScriptExecutor.PROP_CLASS_LOADER, expandClassLoader);
 				}
-				final var result = interpreter.evaluate(xexpression);
+				final var executionContext = this.contextProvider.get();
+				final var result = interpreter.evaluate(xexpression, executionContext, CancelIndicator.NullImpl);
 				if (result.getException() == null) {
 					return result.getResult();
 				}

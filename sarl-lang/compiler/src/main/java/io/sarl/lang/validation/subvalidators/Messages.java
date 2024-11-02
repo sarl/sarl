@@ -136,7 +136,6 @@ public class Messages extends NLS {
 	public static String SARLInheritanceValidator_22;
 	public static String SARLInheritanceValidator_23;
 	public static String SARLInheritanceValidator_24;
-	public static String SARLInheritanceValidator_25;
 
 	public static String SARLMemberValidator_1;
 	public static String SARLMemberValidator_2;

@@ -29,6 +29,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
@@ -96,6 +97,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeA
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
+import org.eclipse.xtext.xbase.typesystem.references.WildcardTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.typesystem.util.TypeParameterByConstraintSubstitutor;
 import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo;
@@ -476,7 +478,8 @@ public final class Utils {
 		return PREFIX_LOCAL_VARIABLE + fixHiddenMember(id);
 	}
 
-	private static StringBuilder buildNameForHiddenEventMethod(JvmParameterizedTypeReference eventId, String prefix) {
+	private static StringBuilder buildNameForHiddenEventMethod(JvmParameterizedTypeReference eventId,
+			String prefix, boolean appendTypeSimpleName, boolean forceTypeParameterBoundsInName) {
 		final var fullName = new StringBuilder(prefix);
 		final var fullName0 = new StringBuilder();
 		final var result = forEachTypeParameterName(eventId, (name, i) -> {
@@ -488,10 +491,14 @@ public final class Utils {
 			}
 		});
 		if (result == null) {
-			fullName.append(fixHiddenMember(eventId.getSimpleName()));
+			if (appendTypeSimpleName) {
+				fullName.append(fixHiddenMember(eventId.getSimpleName()));
+			}
 		} else {
-			fullName.append(fixHiddenMember(eventId.getType().getSimpleName()));
-			if (result.booleanValue()) {
+			if (appendTypeSimpleName) {
+				fullName.append(fixHiddenMember(eventId.getType().getSimpleName()));
+			}
+			if (forceTypeParameterBoundsInName || result.isBoundInFunctionName()) {
 				fullName.append(fullName0);
 			}
 		}
@@ -505,7 +512,7 @@ public final class Utils {
 	 * @since 0.14
 	 */
 	public static String createNameForHiddenGuardGeneralEvaluatorMethod(JvmParameterizedTypeReference eventId) {
-		return buildNameForHiddenEventMethod(eventId, PREFIX_GUARD_EVALUATOR).toString();
+		return buildNameForHiddenEventMethod(eventId, PREFIX_GUARD_EVALUATOR, true, true).toString();
 	}
 
 	/** Create the name of the hidden method that is containing the event guard evaluation.
@@ -516,7 +523,7 @@ public final class Utils {
 	 * @since 0.14
 	 */
 	public static String createNameForHiddenGuardEvaluatorMethod(JvmParameterizedTypeReference eventId, int handlerIndex) {
-		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_GUARD);
+		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_GUARD, true, false);
 		fullName.append(HIDDEN_MEMBER_CHARACTER).append(handlerIndex);
 		return fullName.toString();
 	}
@@ -529,7 +536,7 @@ public final class Utils {
 	 * @since 0.14
 	 */
 	public static String createNameForHiddenEventHandlerMethod(JvmParameterizedTypeReference eventId, int handlerIndex) {
-		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_EVENT_HANDLER);
+		final var fullName = buildNameForHiddenEventMethod(eventId, PREFIX_EVENT_HANDLER, true, false);
 		fullName.append(HIDDEN_MEMBER_CHARACTER).append(handlerIndex);
 		return fullName.toString();
 	}
@@ -2099,16 +2106,17 @@ public final class Utils {
 		return getHumanReadableTypeArgumentsWithBounds(type.getTypeArguments(), grammarAccess);
 	}
 
-	/** Replies the number of failures that corresponds to the type arguments and the declared type parameters.
+	/** Replies if the given type arguments are conform to the type parameters.
 	 *
 	 * @param typeArguments the list of type parameters that are passed as arguments.
 	 * @param typeParameters the list of types parameters that have been declared.
 	 * @param referenceOwner the owner of the type reference.
+	 * @param allowWildcard indicates if wildcards are allowed in type conformance checking.
 	 * @return {@code true} if the type arguments and type parameters are conform.
 	 * @since 0.14
 	 */
 	public static boolean isTypeArgumentConformant(List<LightweightTypeReference> typeArguments,
-			List<JvmTypeParameter> typeParameters, ITypeReferenceOwner referenceOwner) {
+			List<JvmTypeParameter> typeParameters, ITypeReferenceOwner referenceOwner, boolean allowWildcard) {
 		final var max = Math.min(typeArguments.size(), typeParameters.size());
 		if (max == 0) {
 			return true;
@@ -2120,58 +2128,31 @@ public final class Utils {
 			substitutor.enhanceMapping(singletonMap(declaration,
 					new LightweightMergedBoundTypeArgument(argument, VarianceInfo.INVARIANT)));
 		}
+		final var opts = RawTypeConformanceComputer.ALLOW_BOXING | RawTypeConformanceComputer.ALLOW_RAW_TYPE_CONVERSION;
+		final var successFlags = RawTypeConformanceComputer.SUCCESS;
 		for (var i = 0; i < max; ++i) {
-			final var argument = typeArguments.get(i);
 			final var declaration = typeParameters.get(i);
+			final var argument = typeArguments.get(i);
 			final var conformanceComputer = argument.getOwner().getServices().getTypeConformanceComputer();
 			if (argument.getType() != declaration) {
 				final var reference = argument.getOwner().newParameterizedTypeReference(declaration);
 				for (final var superType: reference.getSuperTypes()) {
 					final var substitutedSuperType = substitutor.substitute(superType);
-					if ((conformanceComputer.isConformant(substitutedSuperType, argument, 
-							RawTypeConformanceComputer.ALLOW_BOXING | RawTypeConformanceComputer.ALLOW_RAW_TYPE_CONVERSION ) & RawTypeConformanceComputer.SUCCESS) == 0) {
+					var fixedArgument = argument;
+					if (allowWildcard && fixedArgument instanceof WildcardTypeReference cvalue
+							&& cvalue.getUpperBoundSubstitute().isType(Object.class)) {
+						final var arg = referenceOwner.newWildcardTypeReference();
+						arg.addUpperBound(substitutedSuperType.copyInto(referenceOwner));
+						fixedArgument = arg;
+					}
+					final var conformance = conformanceComputer.isConformant(substitutedSuperType, fixedArgument, opts);
+					if ((conformance & successFlags) == 0) {
 						return false;
 					}
 				}
 			}
 		}
 		return true;
-	}
-
-	/** Run the specified lambda to each of the type parameters.
-	 *
-	 * @param type the type to analyze.
-	 * @param consumer the consumer of the type parameter names.
-	 * @return {@code null} if there is no type parameter; {@code Boolean#TRUE} if a type parameter was found
-	 *      and one of them is explicitly specified; {@code Boolean#FALSE} if a type parameter was found but
-	 *      none is explicitly specified.
-	 * @since 0.14
-	 */
-	public static Boolean forEachTypeParameterName(JvmParameterizedTypeReference type, BiConsumer<JvmTypeReference, Integer> consumer) {
-		if (type != null && !type.getArguments().isEmpty() && type.getType() instanceof JvmTypeParameterDeclarator gtype) {
-			final var parameters = gtype.getTypeParameters();
-			var i = 0;
-			var foundExplicit = Boolean.FALSE;
-			for (final var argument : type.getArguments()) {
-				if (argument instanceof JvmWildcardTypeReference wargument) {
-					JvmTypeReference name = getUpperBoundFromConstraints(wargument);
-					if (name == null) {
-						try {
-							name = getUpperBoundFromConstraints(parameters.get(i));
-						} catch (Throwable ex) {
-							//
-						}
-					}
-					consumer.accept(name, Integer.valueOf(i));
-				} else {
-					consumer.accept(argument, Integer.valueOf(i));
-					foundExplicit = Boolean.TRUE;
-				}
-				++i;
-			}
-			return foundExplicit;
-		}
-		return null;
 	}
 
 	/** Replies the upper bounds from the constraints of the given generic type parameter.
@@ -2187,6 +2168,155 @@ public final class Utils {
 			return cst.get(0).getTypeReference();
 		}
 		return null;
+	}
+
+	/** Run the specified lambda to each of the type parameters.
+	 *
+	 * @param type the type to analyze.
+	 * @param consumer the consumer of the type parameter names.
+	 * @return the status of the parsing, never {@code null}.
+	 * @since 0.14
+	 */
+	public static TypeParameterStatus forEachTypeParameterName(JvmParameterizedTypeReference type, BiConsumer<JvmTypeReference, Integer> consumer) {
+		var status = TypeParameterStatus.NO_TYPE_PARAMETER;
+		if (type != null && type.getType() instanceof JvmTypeParameterDeclarator gtype) {
+			final var parameters = gtype.getTypeParameters();
+			final var arguments = type.getArguments();
+			var i = 0;
+			for (final var parameter : parameters) {
+				final var argument = i < arguments.size() ? arguments.get(i) : null;
+				if (argument == null) {
+					try {
+						consumer.accept(getUpperBoundFromConstraints(parameter), Integer.valueOf(i));
+					} catch (Throwable ex) {
+						//
+					}
+					status = status.or(TypeParameterStatus.DEFINITION_ROOT_BOUND);
+				} else if (argument instanceof JvmWildcardTypeReference wargument) {
+					JvmTypeReference name = getUpperBoundFromConstraints(wargument);
+					if (name == null) {
+						try {
+							name = getUpperBoundFromConstraints(parameter);
+						} catch (Throwable ex) {
+							//
+						}
+						status = status.or(TypeParameterStatus.DEFINITION_ROOT_BOUND);
+					} else {
+						status = status.or(TypeParameterStatus.EXPLICIT_BOUNDED_WILDCARD);
+					}
+					consumer.accept(name, Integer.valueOf(i));
+				} else {
+					consumer.accept(argument, Integer.valueOf(i));
+					status = status.or(TypeParameterStatus.EXPLICIT_DIRECT_TYPE);
+				}
+				++i;
+			}
+		}
+		return status;
+	}
+
+	/** Build and reply an identifier for the behavior unit dedicated to the given event.
+	 *
+	 * @param eventType the type of event to consider.
+	 * @return the identifier.
+	 * @since 0.14
+	 */
+	public static String createBehaviorUnitEventId(JvmParameterizedTypeReference eventType) {
+		final var id = eventType.getType().getIdentifier();
+		return buildNameForHiddenEventMethod(eventType, id, false, true).toString();
+	}
+
+	/** Replies an array that contains the types of the type parameter bound for the given event.
+	 *
+	 * @param eventType the type of event to consider.
+	 * @param typeReferences the tool for building the type references.
+	 * @return the bounds' types, or {@code null} if there is no generic type.
+	 * @since 0.14
+	 */
+	public static List<JvmTypeReference> getTypeParameterBoundsFor(JvmParameterizedTypeReference eventType, TypeReferences typeReferences) {
+		final var bounds = new ArrayList<JvmTypeReference>();
+		final var result = forEachTypeParameterName(eventType, (name, i) -> {
+			final JvmTypeReference ref;
+			if (name == null) {
+				ref = typeReferences.createTypeRef(typeReferences.findDeclaredType(Object.class, eventType));
+			} else {
+				ref = name;
+			}
+			bounds.add(ref);
+		});
+		if (result != TypeParameterStatus.NO_TYPE_PARAMETER) {
+			return bounds;
+		}
+		return null;
+	}
+
+	/**
+	 * Status of parsing the type parameters.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	public enum TypeParameterStatus {
+
+		/** No type parameter in the given type.
+		 */
+		NO_TYPE_PARAMETER {
+
+			@Override
+			public boolean isBoundInFunctionName() {
+				return false;
+			}
+		},
+
+		/** A type parameter is not explicitly specified and the root bound type from
+		 * the original type declaration is kept.
+		 */
+		DEFINITION_ROOT_BOUND {
+
+			@Override
+			public boolean isBoundInFunctionName() {
+				return true;
+			}
+		},
+
+		/** A type parameter is explicitly provided as a wild card with bound.
+		 */
+		EXPLICIT_BOUNDED_WILDCARD {
+
+			@Override
+			public boolean isBoundInFunctionName() {
+				return true;
+			}
+		},
+
+		/** A type parameter is specified with a direct type, without wildcard.
+		 */
+		EXPLICIT_DIRECT_TYPE {
+
+			@Override
+			public boolean isBoundInFunctionName() {
+				return true;
+			}
+		};
+
+		/** Replies the more precise status between the current and given statuses.
+		 *
+		 * @param status the second status.
+		 * @return the more precise status.
+		 */
+		public TypeParameterStatus or(TypeParameterStatus status) {
+			return status.ordinal() > ordinal() ? status : this;
+		}
+
+		/** Replies if this status enables to put the type parameter bounds in the generated function names.
+		 *
+		 * @return {@code true} if the bounds should be included in the function names.
+		 */
+		public abstract boolean isBoundInFunctionName();
+
 	}
 
 }

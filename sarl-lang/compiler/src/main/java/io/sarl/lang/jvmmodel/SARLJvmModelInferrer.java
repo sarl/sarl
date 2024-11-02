@@ -148,6 +148,7 @@ import io.sarl.lang.core.annotation.SarlSourceCode;
 import io.sarl.lang.core.annotation.SarlSpecification;
 import io.sarl.lang.core.annotation.SyntheticMember;
 import io.sarl.lang.core.util.SarlUtils;
+import io.sarl.lang.jvmmodel.GenerationContext.BehaviorUnitGuardEvaluators;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
@@ -178,6 +179,7 @@ import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
+import io.sarl.lang.util.Utils.TypeParameterStatus;
 
 /** Infers a JVM model from the source model.
  *
@@ -192,8 +194,8 @@ import io.sarl.lang.util.Utils;
  * <li>{@link io.sarl.lang.compiler.SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
+ * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1420,7 +1422,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 		
-			// Hidden function "matchesTypeBounds"
+			// Issue #902: Hidden function "matchesTypeBounds"
 			if (!source.getTypeParameters().isEmpty()) {
 				final var typeBoundMatchOperation = this.typesFactory.createJvmOperation();
 				typeBoundMatchOperation.setAbstract(false);
@@ -2305,7 +2307,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				addAnnotationSafe(bodyOperation, Pure.class);
 			}
 
-			final var evaluators = context.getGuardEvalationCodeFor(source);
+			final var evaluators = context.ensureGuardEvaluationCodeFor(source, this.typeReferences);
 			assert evaluators != null;
 
 			if (isTrueGuard) {
@@ -2355,7 +2357,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Body
 				setBody(guardOperation, guard);
 				// Annotations
-				appendGeneratedAnnotation(guardOperation, context);
 				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
 					addAnnotationSafe(guardOperation, Pure.class);
 				}
@@ -2841,18 +2842,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				return;
 			}
 
-			final var guardDefs = new TreeMap<JvmTypeReference, Map<String, List<JvmTypeReference>>>((a, b) -> {
-				return a.getQualifiedName().compareTo(b.getQualifiedName());
-			});
+			final var guardDefs = new BehaviorUnitDefinitions();
 
 			for (final var evaluators : allEvaluators) {
 				final var behName = appendEventGuardEvaluatorForReflectMethod(evaluators, container, context);
-				final var functionNames = guardDefs.computeIfAbsent(evaluators.getKey().getName(), it -> new TreeMap<>());
+				final var functionNames = guardDefs.getFunctionsFor(evaluators.eventType());
 				final List<JvmTypeReference> typeParameters = new ArrayList<>();
-				final var result = Utils.forEachTypeParameterName(evaluators.getKey().getName(), (name, i) -> {
+				final var result = Utils.forEachTypeParameterName(evaluators.eventType(), (name, i) -> {
 					typeParameters.add(name);
 				});
-				functionNames.put(behName, result == Boolean.TRUE ? typeParameters : Collections.emptyList());
+				functionNames.registerFunction(behName, result == TypeParameterStatus.EXPLICIT_DIRECT_TYPE ? typeParameters : Collections.emptyList());
 			}
 
 			var isRootType = true;
@@ -2877,7 +2876,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param context the generation context.
 	 * @since 0.12
 	 */
-	protected void appendEventGuardEvaluatorsForPolymorphicMethod(Map<JvmTypeReference, Map<String, List<JvmTypeReference>>> guardDefs,
+	protected void appendEventGuardEvaluatorsForPolymorphicMethod(BehaviorUnitDefinitions guardDefs,
 			boolean isRootType, JvmGenericType container, GenerationContext context) {
 		final var voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 
@@ -2893,7 +2892,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		eventTypeOperation.setFinal(false);
 		eventTypeOperation.setVisibility(JvmVisibility.PUBLIC);
 		eventTypeOperation.setStatic(false);
-		eventTypeOperation.setSimpleName("$getSupportedEvents"); //$NON-NLS-1$
+		eventTypeOperation.setSimpleName(SarlUtils.HIDDEN_MEMBER_CHARACTER + "getSupportedEvents"); //$NON-NLS-1$
 		eventTypeOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
 
 		final var jvmParam0 = this.typesFactory.createJvmFormalParameter();
@@ -2907,8 +2906,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(eventTypeOperation);
 
 		setBody(eventTypeOperation, it -> {
-			it.append("super.$getSupportedEvents(toBeFilled);"); //$NON-NLS-1$
-			for (final var type : guardDefs.keySet()) {
+			it.append("super.").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
+			it.append("getSupportedEvents(toBeFilled);"); //$NON-NLS-1$
+			for (final var type : guardDefs.getEventTypes()) {
 				it.newLine();
 				it.append("toBeFilled.add("); //$NON-NLS-1$
 				it.append(type.getType());
@@ -2928,7 +2928,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		eventSupportOperation.setFinal(false);
 		eventSupportOperation.setVisibility(JvmVisibility.PUBLIC);
 		eventSupportOperation.setStatic(false);
-		eventSupportOperation.setSimpleName("$isSupportedEvent"); //$NON-NLS-1$
+		eventSupportOperation.setSimpleName(SarlUtils.HIDDEN_MEMBER_CHARACTER + "isSupportedEvent"); //$NON-NLS-1$
 		eventSupportOperation.setReturnType(this._typeReferenceBuilder.typeRef(boolean.class));
 
 		final var jvmParam1 = this.typesFactory.createJvmFormalParameter();
@@ -2941,7 +2941,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(eventSupportOperation);
 
 		setBody(eventSupportOperation, it -> {
-			for (final var type : guardDefs.keySet()) {
+			for (final var type : guardDefs.getEventTypes()) {
 				it.append("if ("); //$NON-NLS-1$
 				it.append(type.getType());
 				it.append(".class.isAssignableFrom(event)) {"); //$NON-NLS-1$
@@ -2955,7 +2955,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (isRootType) {
 				it.append("false"); //$NON-NLS-1$
 			} else {
-				it.append("super.$isSupportedEvent(event)"); //$NON-NLS-1$
+				it.append("super.").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
+				it.append("isSupportedEvent(event)"); //$NON-NLS-1$
 			}
 			it.append(";"); //$NON-NLS-1$
 		});
@@ -2974,7 +2975,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		evaluateOperation.setFinal(false);
 		evaluateOperation.setVisibility(JvmVisibility.PUBLIC);
 		evaluateOperation.setStatic(false);
-		evaluateOperation.setSimpleName("$evaluateBehaviorGuards"); //$NON-NLS-1$
+		evaluateOperation.setSimpleName(SarlUtils.HIDDEN_MEMBER_CHARACTER + "evaluateBehaviorGuards"); //$NON-NLS-1$
 		evaluateOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
 
 		final var jvmParam2 = this.typesFactory.createJvmFormalParameter();
@@ -2990,26 +2991,27 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(evaluateOperation);
 
 		setBody(evaluateOperation, it -> {
-			it.append("super.$evaluateBehaviorGuards(event, callbacks);"); //$NON-NLS-1$
-			for (final var entry : guardDefs.entrySet()) {
+			it.append("super.").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
+			it.append("evaluateBehaviorGuards(event, callbacks);"); //$NON-NLS-1$
+			for (final var functions : guardDefs.getFunctions()) {
 				it.newLine();
 				it.append("if (event instanceof "); //$NON-NLS-1$
-				it.append(entry.getKey().getType());
+				it.append(functions.getEventType());
 				it.append(" occurrence) {"); //$NON-NLS-1$
 				it.increaseIndentation();
-				for (final var methSpec : entry.getValue().entrySet()) {
+				for (final var methSpec : functions.getFunctions()) {
 					it.newLine();
-					var hasTypeParameters = !methSpec.getValue().isEmpty();
+					var hasTypeParameters = !methSpec.bounds().isEmpty();
 					if (hasTypeParameters) {
-						it.append("if (").append(entry.getKey().getType()); //$NON-NLS-1$
+						it.append("if (").append(functions.getEventType()); //$NON-NLS-1$
 						it.append(".").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
 						it.append("matchesTypeBounds(occurrence"); //$NON-NLS-1$
-						for (final var typeParameter : methSpec.getValue()) {
+						for (final var typeParameter : methSpec.bounds) {
 							it.append(", ").append(typeParameter.getType()).append(".class"); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 						it.append(")) {").increaseIndentation().newLine(); //$NON-NLS-1$
 					}
-					it.append(methSpec.getKey());
+					it.append(methSpec.name());
 					it.append("(occurrence, callbacks);"); //$NON-NLS-1$
 					if (hasTypeParameters) {
 						it.decreaseIndentation().newLine();
@@ -3030,15 +3032,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @return the name of the generated function.
 	 * @since 0.12
 	 */
-	protected String appendEventGuardEvaluatorForReflectMethod(Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>> evaluators,
+	protected String appendEventGuardEvaluatorForReflectMethod(
+			BehaviorUnitGuardEvaluators evaluators,
 			JvmGenericType container, GenerationContext context) {
-		final var source = evaluators.getKey();
+		final var source = evaluators.source();
+		final var sourceId = evaluators.eventType();
 		final var voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 		final var runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
 		final var collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
 
+		// Force the event type to be expressed in its raw form in the guard function's prototype
+		final var rawEventId = sourceId.getType();
+		final var rawEventReference = this.typeReferences.createTypeRef(rawEventId);
+		rawEventReference.getArguments().clear();
+
 		// Determine the name of the operation for the behavior output
-		final var behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName());
+		final var behaviorUnitName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(sourceId);
 
 		// Create the main function
 		final var operation = this.typesFactory.createJvmOperation();
@@ -3046,13 +3055,31 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Annotation for the event bus
 
 		appendGeneratedAnnotation(operation, context);
-		addAnnotationSafe(operation, PerceptGuardEvaluator.class);
+		final var guardAnnotation = addAnnotationSafe(operation, PerceptGuardEvaluator.class);
+		if (guardAnnotation != null) {
+			final var bounds  = Utils.getTypeParameterBoundsFor(sourceId, this.typeReferences);
+			if (bounds != null && !bounds.isEmpty()) {
+				JvmOperation boundOperation = null;
+				for (final var guardAnnotationOperation : guardAnnotation.getAnnotation().getDeclaredOperations()) {
+					if ("typeParameters".equals(guardAnnotationOperation.getSimpleName())) { //$NON-NLS-1$
+						boundOperation = guardAnnotationOperation;
+						break;
+					}
+				}
+				final var generics = this.typesFactory.createJvmTypeAnnotationValue();
+				for (final var boundType : bounds) {
+					generics.getValues().add(this.typeBuilder.cloneWithProxies(boundType));
+				}
+				generics.setOperation(boundOperation);
+				guardAnnotation.getExplicitValues().add(generics);
+			}
+		}
 
 		// Guard evaluator unit parameters
 		// - Event occurrence
 		var jvmParam = this.typesFactory.createJvmFormalParameter();
 		jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
-		jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
+		jvmParam.setParameterType(rawEventReference);
 		this.associator.associate(source, jvmParam);
 		operation.getParameters().add(jvmParam);
 		// - List of runnables
@@ -3068,7 +3095,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		operation.setFinal(false);
 		operation.setVisibility(JvmVisibility.PRIVATE);
 		operation.setStatic(false);
-		operation.setSimpleName(behName);
+		operation.setSimpleName(behaviorUnitName);
 		operation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
 		container.getMembers().add(operation);
 
@@ -3080,7 +3107,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			it.append("assert "); //$NON-NLS-1$
 			it.append(RUNNABLE_COLLECTION);
 			it.append(" != null;"); //$NON-NLS-1$
-			for (final var code : evaluators.getValue()) {
+			for (final var code : evaluators.evaluators()) {
 				it.newLine();
 				code.apply(it);
 			}
@@ -3089,7 +3116,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		this.associator.associatePrimary(source, operation);
 		this.typeBuilder.copyDocumentationTo(source, operation);
 
-		return behName;
+		return behaviorUnitName;
 	}
 
 	/** Append the @FunctionalInterface to the given type if it is a functional interface according
@@ -4435,6 +4462,120 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				it.append("}"); //$NON-NLS-1$
 			});
 		}
+	}
+
+	/** Informations about the behavior units and the guards.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	private static class BehaviorUnitDefinitions implements Serializable {
+
+		private static final long serialVersionUID = 1382396220935311642L;
+
+		private final Map<JvmTypeReference, BehaviorUnitFunctions> definitions = new TreeMap<>((a, b) -> {
+			return geIdentifier(a).compareTo(geIdentifier(b));
+		});
+
+		private static String geIdentifier(JvmTypeReference type) {
+			return type.getType().getQualifiedName();
+		}
+		
+		/** Replies the types that have been used for definition behavior units.
+		 *
+		 * @return the types.
+		 */
+		public Iterable<JvmTypeReference> getEventTypes() {
+			return this.definitions.keySet();
+		}
+
+		/** Replies the declarations of the functions that are associated to the given type.
+		 *
+		 * @param type the type.
+		 * @return the definitions, never {@code null}.
+		 */
+		public BehaviorUnitFunctions getFunctionsFor(JvmTypeReference type) {
+			return this.definitions.computeIfAbsent(type, key -> new BehaviorUnitFunctions(type.getType()));
+		}
+
+		/** Replies all the declarations of the functions.
+		 *
+		 * @return the definitions, never {@code null}.
+		 */
+		public Iterable<BehaviorUnitFunctions> getFunctions() {
+			return this.definitions.values();
+		}
+
+	}
+
+	/** Functions about an event for the behavior units.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	private static class BehaviorUnitFunctions implements Serializable {
+
+		private static final long serialVersionUID = 8379370500334485114L;
+
+		private final JvmType eventType;
+		
+		private final Map<String, List<JvmTypeReference>> functions = new TreeMap<>();
+
+		/** Construct a function declaration container.
+		 *
+		 * @param eventType the associated event type.
+		 */
+		BehaviorUnitFunctions(JvmType eventType) {
+			this.eventType = eventType;
+		}
+		
+		/** Add a function with the given name and the associated generic type parameters.
+		 *
+		 * @param name the name of the function.
+		 * @param typeParameterBounds the bounds of the type parameters.
+		 */
+		public void registerFunction(String name, List<JvmTypeReference> typeParameterBounds) {
+			this.functions.put(name, typeParameterBounds);
+		}
+
+		/** Replies the event type associated to the functions.
+		 *
+		 * @return the event type, never {@code null}.
+		 */
+		public JvmType getEventType() {
+			return this.eventType;
+		}
+		
+		/** Replies all the registered functions.
+		 *
+		 * @return the registered functions.
+		 */
+		public Iterable<BehaviorUnitFunction> getFunctions() {
+			return this.functions.entrySet().stream().map(it -> {
+				return new BehaviorUnitFunction(it.getKey(), it.getValue());
+			}).toList();
+		}
+		
+	}
+
+	/** Functions about an event for the behavior units.
+	 *
+	 * @param name the name of the function.
+	 * @param bounds the upper bounds for generic type parameters.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	private record BehaviorUnitFunction(String name, List<JvmTypeReference> bounds) {
+		//
 	}
 
 	/** Internal error.

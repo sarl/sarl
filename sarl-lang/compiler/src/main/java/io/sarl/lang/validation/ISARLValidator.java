@@ -26,6 +26,7 @@ import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -140,7 +141,7 @@ public interface ISARLValidator {
 	 * @param type the type to check.
 	 * @param acceptor the message acceptor, may be {@code null}.
 	 */
-	void checkFinalFieldInitialization(JvmGenericType type, ValidationMessageAcceptor acceptor);
+	void doCheckFinalFieldInitialization(JvmGenericType type, ValidationMessageAcceptor acceptor);
 
 	/** Replies the generator configuration that is used for creating the JVM objects.
 	 * 
@@ -184,4 +185,18 @@ public interface ISARLValidator {
 	 */
 	ValidationMessageAcceptor getMessageAcceptor();
 	
+	/** Check if the given type has valid type arguments according to the type parameters of the referenced type.
+	 * 
+	 * @param typeRef the type reference to check.
+	 * @param context the context in which the reference is defined, for finding the other types.
+	 * @param feature the grammar feature that contains the {@code typeRef}.
+	 * @param superTypeIndex the index of the feature in the grammar.
+	 * @param allowWildcard indicates if wildcards are allowed in type conformance checking.
+	 * @param messageAcceptor the acceptor of error and warning messages to be used.
+	 * @return {@code true} of the reference is valid; {@code false} if the reference is invalid.
+	 */
+	boolean doCheckValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context,
+			EStructuralFeature feature, int superTypeIndex, boolean allowWildcard,
+			ValidationMessageAcceptor messageAcceptor);
+
 }

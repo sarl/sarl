@@ -39,13 +39,15 @@ import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -57,6 +59,7 @@ import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeContext;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.util.Utils;
 
 /** Describe generation context.
  *
@@ -125,8 +128,7 @@ abstract class GenerationContext {
 	/** Guard evaluators to generate. The keys are the event identifiers. The values are the code snipsets for
 	 * evaluating guards and returning the event handler runnables.
 	 */
-	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>> guardEvaluators
-	= CollectionLiterals.newHashMap();
+	private final Map<String, BehaviorUnitGuardEvaluators> guardEvaluators = new TreeMap<>();
 
 	/** The context object.
 	 */
@@ -240,29 +242,39 @@ abstract class GenerationContext {
 	 *
 	 * @return the guard evaluators.
 	 */
-	public Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>>
-	getGuardEvaluationCodes() {
+	public Collection<BehaviorUnitGuardEvaluators> getGuardEvaluationCodes() {
 		return this.guardEvaluators.values();
 	}
 
-	/** Replies the guard evaluation code for the given event.
+	/** Create and replies the guard evaluation code for the given event.
 	 *
 	 * @param source the source of the guard evaluation.
+	 * @param typeReferences the tool for creating type references that may be needed in this function.
 	 * @return the guard evaluators.
 	 */
-	public Collection<Procedure1<? super ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
+	public Collection<Procedure1<? super ITreeAppendable>> ensureGuardEvaluationCodeFor(SarlBehaviorUnit source,
+			TypeReferences typeReferences) {
 		assert source != null;
-		final var id = source.getName().getIdentifier();
-		final Collection<Procedure1<? super ITreeAppendable>> evaluators;
-		final var pair = this.guardEvaluators.get(id);
-		if (pair == null) {
-			evaluators = new ArrayList<>();
-			this.guardEvaluators.put(id, new Pair<>(source, evaluators));
-		} else {
-			evaluators = pair.getValue();
-			assert evaluators != null;
+		var eventType = source.getName();
+		// Ensure that the event type has a canonical name, i.e., if there is no type parameter specified,
+		// there are implicitly replaced by wildcards.
+		if (eventType.getArguments().isEmpty()
+				&& eventType.getType() instanceof JvmTypeParameterDeclarator cvalue
+				&& !cvalue.getTypeParameters().isEmpty()) {
+			final var max = cvalue.getTypeParameters().size();
+			final var tab = new JvmTypeReference[max];
+			for (var i = 0; i < max; ++i) {
+				tab[i] = typeReferences.wildCard();
+			}
+			eventType = typeReferences.createTypeRef(eventType.getType(), tab);
 		}
-		return evaluators;
+		final var id = Utils.createBehaviorUnitEventId(eventType);
+		final var finalEventType = eventType;
+		final var evaluators = this.guardEvaluators.computeIfAbsent(id, key -> {
+			return new BehaviorUnitGuardEvaluators(source, finalEventType, new ArrayList<>());
+		});
+		assert evaluators != null;
+		return evaluators.evaluators();
 	}
 
 	/** Replies the computed serial number.
@@ -667,6 +679,24 @@ abstract class GenerationContext {
 			}
 		}
 		return Collections.emptyList();
+	}
+
+	/** Define a group of guard evaluators.
+	 *
+	 * @param source the behavior unit.
+	 * @param eventType the event type associated to the guard evaluators.
+	 * @param evaluators the codes for evaluating the guards.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.14
+	 */
+	public record BehaviorUnitGuardEvaluators(
+			SarlBehaviorUnit source,
+			JvmParameterizedTypeReference eventType,
+			Collection<Procedure1<? super ITreeAppendable>> evaluators) {
+		//
 	}
 
 }

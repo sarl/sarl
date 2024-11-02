@@ -21,6 +21,7 @@
 
 package io.sarl.lang.validation.subvalidators;
 
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR_UNIT__NAME;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY_USES__CAPACITIES;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_FORMAL_PARAMETER__DEFAULT_VALUE;
 import static io.sarl.lang.validation.IssueCodes.ILLEGAL_PARAMETER_DEFAULT_VALUE_REDEFINITION;
@@ -136,6 +137,7 @@ import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
@@ -269,7 +271,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(SarlEvent event) {
 		final var inferredType = getAssociations().getInferredType(event);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -281,7 +283,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(SarlBehavior behavior) {
 		final var inferredType = getAssociations().getInferredType(behavior);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -293,7 +295,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(SarlSkill skill) {
 		final var inferredType = getAssociations().getInferredType(skill);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -305,7 +307,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(SarlAgent agent) {
 		final var inferredType = getAssociations().getInferredType(agent);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -317,7 +319,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(XtendClass clazz) {
 		final var inferredType = getAssociations().getInferredType(clazz);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -329,7 +331,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	public void checkFinalFieldInitialization(XtendInterface oopInterface) {
 		final var inferredType = getAssociations().getInferredType(oopInterface);
 		if (inferredType != null) {
-			getParentValidator().checkFinalFieldInitialization(inferredType, getMessageAcceptor());
+			getParentValidator().doCheckFinalFieldInitialization(inferredType, getMessageAcceptor());
 		}
 	}
 
@@ -1268,7 +1270,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	}
 
 	@Check(CheckType.EXPENSIVE)
-	protected void checkImplicitReturn(final XtendFunction method) {
+	public void checkImplicitReturn(final XtendFunction method) {
 		if (!isIgnored(IMPLICIT_RETURN)) {
 			final var jvmOperation = getAssociations().getDirectlyInferredOperation(method);
 			final var types = this.batchTypeResolver.resolveTypes(method);
@@ -1279,6 +1281,17 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 					}
 				});
 			}
+		}
+	}
+
+	@Check(CheckType.FAST)
+	public void checkBehaviourUnitEventTypeConformance(final SarlBehaviorUnit unit) {
+		final var event = unit.getName();
+		if (event != null) {
+			final var lref = getParentValidator().toLightweightTypeReference(event);
+			getParentValidator().doCheckValidSuperTypeArgumentDefinition(
+					lref, unit, SARL_BEHAVIOR_UNIT__NAME, INSIGNIFICANT_INDEX, true,
+					getMessageAcceptor());
 		}
 	}
 
