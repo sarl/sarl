@@ -378,7 +378,7 @@ an event handler using the following syntax:
 [:End:]
 
 
-[:eventnameref:] is the name of the events to wait for. [:guardref:] is the optional definition of a predicate
+[:eventnameref:] is the name of the events to wait for. It could contains generic type declaration. [:guardref:] is the optional definition of a predicate
 that may be true for executing the [:statementref:]. The statements are executed only if an event with the given name is
 received, __and__ if the guard is true.
 
@@ -712,6 +712,68 @@ In the following example, the agent execute its proactive behavior every second.
 		}
 	}
 [:End:]
+
+### Generic Events in Handlers
+
+Since the version `0.14` of SARL, it is possible to define an [event with generic types](./Event.md).
+The counterpart of this type of event definition is related to the definition of generic types in the event handlers.
+The specific of the generic types within the event handlers could be assimilated to an implict guard condition.
+In other word, the event handler is run only if the received event is matching the specific generic types.
+
+Let the following example in which the event [:genericeventname:] is defined with two generic types [:genericeventtype1name:] and [:genericeventtype2name:].
+Several event handlers have been defined for illustrating multiple cases.
+
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.api.core.Logging
+	event SomethingChanged
+	[:On]
+	event [:genericeventname](MyGenericEvent)<[:genericeventtype1name](T1), [:genericeventtype2name](T2) extends Number> {
+		var field0 : T1
+		var field1 : T2
+	}
+	
+	agent MyAgent {
+		uses Logging
+		[:genericeventhandler1](on MyGenericEvent) {
+			info("Run whatever the values of field0 and field1")
+		}
+		[:genericeventhandler2](on MyGenericEvent<?, ?>) {
+			info("Run whatever the values of field0 and field1")
+		}
+		[:genericeventhandler3](on MyGenericEvent<String, ?>) {
+			info("Run if field0 is a String, whatever the value of field1")
+		}
+		[:genericeventhandler4](on MyGenericEvent<?, Double>) {
+			info("Run if field1 is a Double, whatever the value of field0")
+		}
+		[:genericeventhandler5](on MyGenericEvent<String, Double>) {
+			info("Run only if field0 is a String and field1 is a Double")
+		}
+		[:genericeventhandler6](on MyGenericEvent<? extends String, Double>) {
+			info("Run only if field0 is a String and field1 is a Double")
+		}
+		[:genericeventhandler7](on MyGenericEvent<Number, Integer>) {
+			info("Run only if field0 is a String and field1 is a Double")
+		}
+	}
+[:End:]
+
+
+Basically, when an event [:genericeventname:] is received, it is associated to the definition of concrete types for [:genericeventtype1name:] and [:genericeventtype2name:].
+For example, the event corresponding to `new [:genericeventname!]<String, Double>` is received, then [:genericeventtype1name:] is assimilated to `String` and [:genericeventtype2name:] to `Double`.
+
+From this example of event occurrence, the activated event handlers will be because the declared geneic types ar ematching `<String, Double>` from the event:
+
+* [:genericeventhandler1:]
+* [:genericeventhandler2:]
+* [:genericeventhandler3:]
+* [:genericeventhandler4:]
+* [:genericeventhandler5:]
+* [:genericeventhandler6:]
+
+But, [:genericeventhandler7:] is not run because the generic types are not matching those from the event.
+
 
 ### Specific Agent Architectures
 
