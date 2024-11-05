@@ -1883,19 +1883,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		super.transform(source, container);
 		// Override the visibility
 		final var field = (JvmField) this.sarlAssociations.getPrimaryJvmElement(source);
-		setVisibility(field, source);
-
-		final var context = getContext(container);
-		if (context != null) {
-			final var name = source.getName();
-			if (!Strings.isNullOrEmpty(name)) {
-				context.incrementSerial(name.hashCode());
+		if (field != null) {
+			setVisibility(field, source);
+	
+			final var context = getContext(container);
+			if (context != null) {
+				final var name = source.getName();
+				if (!Strings.isNullOrEmpty(name)) {
+					context.incrementSerial(name.hashCode());
+				}
+				final var type = source.getType();
+				if (type != null) {
+					context.incrementSerial(type.getIdentifier().hashCode());
+				}
+				context.setInjectable(field);
 			}
-			final var type = source.getType();
-			if (type != null) {
-				context.incrementSerial(type.getIdentifier().hashCode());
-			}
-			context.setInjectable(field);
 		}
 	}
 
