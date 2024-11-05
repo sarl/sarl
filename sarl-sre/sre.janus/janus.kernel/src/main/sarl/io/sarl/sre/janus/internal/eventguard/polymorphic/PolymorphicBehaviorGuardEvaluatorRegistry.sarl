@@ -30,6 +30,7 @@ import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator
+import io.sarl.sre.janus.internal.TypeHierarchyDictionary
 import io.sarl.sre.janus.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import java.util.Comparator
@@ -103,13 +104,40 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	}
 
 	@Pure
+	override getBehaviorGuardEvaluatorsForRegisteredListeners(^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
+		assert ^event !== null
+		val eventTypes = TypeHierarchyDictionary::getFlattenHierarchy(^event.class)
+		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
+		val mapper = getInternalEvaluatorMapperForRegisteredListeners
+		val filter = getInternalEvaluatorFilterForRegisteredListeners
+		val dt = internalDataStructureForRegisteredListeners
+		for (eventType : eventTypes) {
+			val eventSubscribers = dt.get(eventType)
+			if (eventSubscribers !== null) {
+				for (guardedEvaluator : eventSubscribers) {
+					if (filter.apply(guardedEvaluator, ^event)) {
+						allEvaluators += mapper.apply(guardedEvaluator)
+					}
+				}
+			}
+		}
+		return allEvaluators
+	}
+
+	@Pure
 	override getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		assert listener !== null
 		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
 		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
 			if (listener.doIsSupportedEvent(^event.class)) {
-				allEvaluators += new PolymorphicBehaviorGuardEvaluator(listener, null)
+				val eventTypes = newHashSet
+				listener.doGetSupportedEvents(eventTypes)
+				for (eventType : eventTypes) {
+					if (eventType.isInstance(^event)) {
+						allEvaluators += new PolymorphicBehaviorGuardEvaluator(listener, eventType, null)
+					}
+				}
 			}
 		}
 		return allEvaluators
@@ -118,7 +146,6 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
 			val hasCallback = new MutableBoolean(callback !== null)
-			var evaluator = new PolymorphicBehaviorGuardEvaluator(listener, filter)
 
 			val events = newTreeSet(CLASS_COMPARATOR)
 			listener.doGetSupportedEvents(events)
@@ -129,6 +156,7 @@ class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEva
 					val evaluators = dt.computeIfAbsent(eventType) [
 						this.factories.concurrentCollectionFactory.<PolymorphicBehaviorGuardEvaluator>newSet(ObjectComparator::SINGLETON)
 					]
+					var evaluator = new PolymorphicBehaviorGuardEvaluator(listener, eventType, filter)
 					val success = evaluators += evaluator
 					if (!success) {
 						hasCallback.set(false)

@@ -19,9 +19,8 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.tests.internal.eventguard
+package io.sarl.sre.janus.tests.internal.eventguard.reflect
 
-import io.sarl.sre.janus.internal.eventguard.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestEvent0
 import java.util.Collection
@@ -32,6 +31,9 @@ import org.junit.jupiter.api.Test
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.janus.internal.eventguard.reflect.ReflectBehaviorGuardEvaluator
+import java.lang.reflect.Method
+import io.sarl.sre.janus.internal.eventguard.reflect.MethodProxy
 
 /** 
  * @author $Author: sgalland$
@@ -46,12 +48,16 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("sre-unit")
 class ReflectBehaviorGuardEvaluatorTest {
 
+	static def toProxy(method : Method) : MethodProxy {
+		new MethodProxy(method)
+	}
+
 	@Test
 	@DisplayName("evaluateGuard(Object, Collection<Runnable>)")
 	def evaluateGuard : void {
 		val method = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target = typeof(TestAgent1).mock
-		val evaluator = new ReflectBehaviorGuardEvaluator(target, method)
+		val evaluator = new ReflectBehaviorGuardEvaluator(target, method.toProxy)
 
 		val ^event = typeof(TestEvent0).mock
 		val runnables = newArrayList
@@ -65,7 +71,7 @@ class ReflectBehaviorGuardEvaluatorTest {
 	def getTarget : void {
 		val method = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target = typeof(TestAgent1).mock
-		val evaluator = new ReflectBehaviorGuardEvaluator(target, method)
+		val evaluator = new ReflectBehaviorGuardEvaluator(target, method.toProxy)
 		target.assertSame(evaluator.target)
 	}
 
@@ -75,8 +81,8 @@ class ReflectBehaviorGuardEvaluatorTest {
 		val method = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0),
 			typeof(Collection))
 		val target = typeof(TestAgent1).mock
-		val evaluator = new ReflectBehaviorGuardEvaluator(target, method)
-		method.assertSame(evaluator.method)
+		val evaluator = new ReflectBehaviorGuardEvaluator(target, method.toProxy)
+		method.assertSame(evaluator.method.guardMethod)
 	}
 	
 	@Test
@@ -84,15 +90,15 @@ class ReflectBehaviorGuardEvaluatorTest {
 	def testHashCode : void {
 		val method1 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1)
-		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1)
+		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
+		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
 
 		evaluator1a.hashCode.assertEquals(evaluator1a.hashCode)
 		evaluator1a.hashCode.assertEquals(evaluator1b.hashCode)
 
 		val method2 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2)
+		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2.toProxy)
 
 		evaluator1a.hashCode.assertNotEquals(evaluator2.hashCode)
 	}
@@ -102,8 +108,8 @@ class ReflectBehaviorGuardEvaluatorTest {
 	def testEquals : void {
 		val method1 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1)
-		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1)
+		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
+		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
 
 		evaluator1a.equals(null).assertFalse
 		evaluator1a.equals(evaluator1a).assertTrue
@@ -111,7 +117,7 @@ class ReflectBehaviorGuardEvaluatorTest {
 
 		val method2 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2)
+		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2.toProxy)
 
 		evaluator1a.equals(evaluator2).assertFalse
 	}
@@ -121,8 +127,8 @@ class ReflectBehaviorGuardEvaluatorTest {
 	def compareTo : void {
 		val method1 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1)
-		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1)
+		val evaluator1a = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
+		val evaluator1b = new ReflectBehaviorGuardEvaluator(target1, method1.toProxy)
 
 		evaluator1a.compareTo(null).assertStrictlyPositive
 		evaluator1a.compareTo(evaluator1a).assertZero
@@ -130,7 +136,7 @@ class ReflectBehaviorGuardEvaluatorTest {
 
 		val method2 = typeof(TestAgent1).getDeclaredMethod("$guardEvaluator$TestEvent0", typeof(TestEvent0), typeof(Collection))
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2)
+		val evaluator2 = new ReflectBehaviorGuardEvaluator(target2, method2.toProxy)
 
 		evaluator1a.compareTo(evaluator2).assertNotZero
 

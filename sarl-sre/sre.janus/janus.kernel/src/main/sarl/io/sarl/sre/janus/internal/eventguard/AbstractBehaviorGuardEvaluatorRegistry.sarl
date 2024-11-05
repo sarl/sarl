@@ -22,18 +22,14 @@
 package io.sarl.sre.janus.internal.eventguard
 
 import io.sarl.lang.core.Event
-import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator
-import java.lang.reflect.Method
 import java.util.Set
 import java.util.TreeSet
 import java.util.concurrent.ConcurrentMap
 import javax.inject.Provider
-
-import static extension io.sarl.sre.janus.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
 
 /** 
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a
@@ -76,19 +72,6 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehavior
 	 */
 	@Pure
 	protected abstract def getInternalEvaluatorMapperForRegisteredListeners : (REGT)=>IBehaviorGuardEvaluator
-
-	/** Replies the mapper from the internal guard evaluator description of direct-access listeners to the public description.
-	 * 
-	 * @param listener the listener for which the guard evaluator should be replied.
-	 * @return the internal data structure
-	 * @since 0.12
-	 */
-	@Pure
-	protected def getInternalEvaluatorMapperForDirectAccessListeners(listener : Object) : (Method)=>IBehaviorGuardEvaluator {
-		[
-			new ReflectBehaviorGuardEvaluator(listener, it)
-		]
-	}
 
 	/** Replies the filtering of evaluator.
 	 * 
@@ -162,27 +145,6 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<REGT> implements IBehavior
 			}
 		}
 		return false
-	}
-
-	@Pure
-	override getBehaviorGuardEvaluatorsForRegisteredListeners(^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
-		assert ^event !== null
-		val eventTypes = ^event.class.flattenHierarchy
-		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
-		val mapper = getInternalEvaluatorMapperForRegisteredListeners
-		val filter = getInternalEvaluatorFilterForRegisteredListeners
-		val dt = internalDataStructureForRegisteredListeners
-		for (eventType : eventTypes) {
-			val eventSubscribers = dt.get(eventType)
-			if (eventSubscribers !== null) {
-				for (guardedEvaluator : eventSubscribers) {
-					if (filter.apply(guardedEvaluator, ^event)) {
-						allEvaluators += mapper.apply(guardedEvaluator)
-					}
-				}
-			}
-		}
-		return allEvaluators
 	}
 
 	override getRegisteredEventListeners(type : Class<TT>, collection : Set<? super TT>) : int with TT {

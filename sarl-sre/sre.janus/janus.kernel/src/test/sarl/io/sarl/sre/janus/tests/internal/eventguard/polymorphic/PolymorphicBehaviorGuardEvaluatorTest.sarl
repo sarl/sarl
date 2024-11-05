@@ -51,7 +51,7 @@ class PolymorphicBehaviorGuardEvaluatorTest {
 	@DisplayName("getTarget w/o filter")
 	def getTarget : void {
 		val target = typeof(TestAgent1).mock
-		val evaluator = new PolymorphicBehaviorGuardEvaluator(target, null)
+		val evaluator = new PolymorphicBehaviorGuardEvaluator(target, typeof(TestEvent0), null)
 		target.assertSame(evaluator.target)
 	}
 
@@ -59,7 +59,7 @@ class PolymorphicBehaviorGuardEvaluatorTest {
 	@DisplayName("evaluateGuard(Object, Collection<Runnable>) w/o filter")
 	def evaluateGuard : void {
 		val target = new TestAgent1(UUID::randomUUID, UUID::randomUUID).spy
-		val evaluator = new PolymorphicBehaviorGuardEvaluator(target, null)
+		val evaluator = new PolymorphicBehaviorGuardEvaluator(target, typeof(TestEvent0), null)
 
 		val ^event = typeof(TestEvent0).mock
 		val runnables = newArrayList
@@ -72,14 +72,14 @@ class PolymorphicBehaviorGuardEvaluatorTest {
 	@DisplayName("hashCode w/o filter")
 	def testHashCode : void {
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, null)
-		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, null)
+		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
+		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
 
 		evaluator1a.hashCode.assertEquals(evaluator1a.hashCode)
 		evaluator1a.hashCode.assertEquals(evaluator1b.hashCode)
 
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, null)
+		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, typeof(TestEvent0), null)
 
 		evaluator1a.hashCode.assertNotEquals(evaluator2.hashCode)
 	}
@@ -88,15 +88,15 @@ class PolymorphicBehaviorGuardEvaluatorTest {
 	@DisplayName("equals(Object) w/o filter")
 	def testEquals : void {
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, null)
-		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, null)
+		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
+		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
 
 		evaluator1a.equals(null).assertFalse
 		evaluator1a.equals(evaluator1a).assertTrue
 		evaluator1a.equals(evaluator1b).assertTrue
 
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, null)
+		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, typeof(TestEvent0), null)
 
 		evaluator1a.equals(evaluator2).assertFalse
 	}
@@ -105,15 +105,15 @@ class PolymorphicBehaviorGuardEvaluatorTest {
 	@DisplayName("compareTo(IBehaviorGuardEvaluator) w/o filter")
 	def compareTo : void {
 		val target1 = typeof(TestAgent1).mock
-		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, null)
-		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, null)
+		val evaluator1a = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
+		val evaluator1b = new PolymorphicBehaviorGuardEvaluator(target1, typeof(TestEvent0), null)
 
 		evaluator1a.compareTo(null).assertStrictlyPositive
 		evaluator1a.compareTo(evaluator1a).assertZero
 		evaluator1a.compareTo(evaluator1b).assertZero
 
 		val target2 = typeof(TestAgent1).mock
-		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, null)
+		val evaluator2 = new PolymorphicBehaviorGuardEvaluator(target2, typeof(TestEvent0), null)
 
 		evaluator1a.compareTo(evaluator2).assertNotZero
 

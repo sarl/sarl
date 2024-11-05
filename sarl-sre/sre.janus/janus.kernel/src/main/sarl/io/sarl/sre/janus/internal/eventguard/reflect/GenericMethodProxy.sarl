@@ -1,0 +1,102 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.internal.eventguard.reflect
+
+import java.lang.reflect.Method
+import java.util.Arrays
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * It stores the information related to a given method.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.14
+ */
+class GenericMethodProxy extends MethodProxy {
+
+	/** 
+	 * The static function for testing the generic type matching of the event.
+	 */
+	@Accessors
+	val genericTypeMatchingMethod : Method
+
+	
+	/** 
+	 * The list of the type of the generic parameters of the considered method.
+	 */
+	@Accessors
+	val genericTypes : Class<?>[]
+
+	/** 
+	 * Creates a new method identifier according to the name and the list of parameter types of the considered method.
+	 * 
+	 * @param guardMethod
+	 * - the name of the method to be invoked for evaluating the guard.
+	 * @param genericTypeMatchingMethod
+	 * - the name of the method for testing the generic type matching for the event
+	 * @param parameterTypes
+	 * - The list of the type of the various parameters of the considered method.
+	 */
+	new (guardMethod : Method, genericTypeMatchingMethod : Method, genericTypes : Class<?>[]) {
+		super(guardMethod)
+		this.genericTypeMatchingMethod = genericTypeMatchingMethod
+		this.genericTypes = genericTypes
+	}
+
+	/** Replies if the given event matches the generic types.
+	 *
+	 * @param event the event to test.
+	 * @return {@code true} if the event matches the generic types.
+	 */
+	override matchesGenericTypes(^event : Object) : boolean {
+		if (^event !== null) {
+			val result = this.genericTypeMatchingMethod.invoke(null, ^event, this.genericTypes)
+			if (result instanceof Boolean) {
+				return result.booleanValue
+			}
+		}
+		return false
+	}
+
+	override equals(obj : Object) : boolean {
+		if (obj !== null && super.equals(obj)) {
+			if (obj instanceof GenericMethodProxy) {
+				return this.genericTypeMatchingMethod == obj.genericTypeMatchingMethod
+					&& this.genericTypes == obj.genericTypes
+			}
+		}
+		return false;
+	}
+
+	override hashCode : int {
+		var h = super.hashCode();
+		h = h * 31 +
+			if(this.genericTypeMatchingMethod != 0) System::identityHashCode(this.genericTypeMatchingMethod) else 0
+		h = h * 31 +
+			if(this.genericTypes != 0) Arrays::hashCode(this.genericTypes) else 0
+		return h
+	}
+
+}

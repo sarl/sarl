@@ -2978,6 +2978,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		evaluateOperation.setSimpleName(SarlUtils.HIDDEN_MEMBER_CHARACTER + "evaluateBehaviorGuards"); //$NON-NLS-1$
 		evaluateOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
 
+		final var jvmParam4 = this.typesFactory.createJvmFormalParameter();
+		jvmParam4.setName("eventType"); //$NON-NLS-1$
+		jvmParam4.setParameterType(this._typeReferenceBuilder.typeRef(Class.class, this._typeReferenceBuilder.wildcard()));
+		evaluateOperation.getParameters().add(jvmParam4);
+
 		final var jvmParam2 = this.typesFactory.createJvmFormalParameter();
 		jvmParam2.setName("event"); //$NON-NLS-1$
 		jvmParam2.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
@@ -2991,14 +2996,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(evaluateOperation);
 
 		setBody(evaluateOperation, it -> {
+			it.append("assert eventType != null;").newLine(); //$NON-NLS-1$
+			it.append("assert event != null;").newLine(); //$NON-NLS-1$
 			it.append("super.").append(SarlUtils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
-			it.append("evaluateBehaviorGuards(event, callbacks);"); //$NON-NLS-1$
+			it.append("evaluateBehaviorGuards(eventType, event, callbacks);"); //$NON-NLS-1$
 			for (final var functions : guardDefs.getFunctions()) {
 				it.newLine();
-				it.append("if (event instanceof "); //$NON-NLS-1$
+				it.append("if ("); //$NON-NLS-1$
 				it.append(functions.getEventType());
-				it.append(" occurrence) {"); //$NON-NLS-1$
-				it.increaseIndentation();
+				it.append(".class.equals(eventType)) {"); //$NON-NLS-1$
+				it.increaseIndentation().newLine();
+				it.append("final var occurrence = (").append(functions.getEventType()).append(") event;"); //$NON-NLS-1$ //$NON-NLS-2$
 				for (final var methSpec : functions.getFunctions()) {
 					it.newLine();
 					var hasTypeParameters = !methSpec.bounds().isEmpty();

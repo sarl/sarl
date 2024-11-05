@@ -19,12 +19,12 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.janus.internal.eventguard
+package io.sarl.sre.janus.internal.eventguard.reflect
 
 import com.google.common.base.Strings
 import io.sarl.sre.janus.IssueCodes
+import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 import java.text.MessageFormat
 import java.util.Collection
 
@@ -49,14 +49,14 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
     val target : Object
 
     /** {@code PerceptGuardEvaluator} method. */
-    val method : Method
+    val method : MethodProxy
 
     /** Creates a {@code Subscriber} for {@code method} on {@code listener}.
 	 *
 	 * @param target the listener
 	 * @param method the method to call to evaluate a guard
 	 */
-    new (target : Object, method : Method) {
+    new (target : Object, method : MethodProxy) {
     	assert target !== null
         this.target = target
         this.method = method
@@ -64,8 +64,10 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 
 	override evaluateGuard(^event : Object, behaviorsMethodsToExecute : Collection<Runnable>) : void {
 		try {
-			this.method.accessible = true
-			this.method.invoke(this.target, ^event, behaviorsMethodsToExecute)
+			this.method.guardMethod.accessible = true
+			if (this.method.matchesGenericTypes(^event)) {
+				this.method.guardMethod.invoke(this.target,^event, behaviorsMethodsToExecute)
+			}
 		} catch (e : IllegalArgumentException) {
 			throw new Error(
 				MessageFormat::format(Messages::ReflectBehaviorGuardEvaluator_0, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
@@ -89,7 +91,7 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 	 * @return the guard evaluation method.
 	 * @since 0.11
 	 */
-	def getMethod : Method {
+	def getMethod : MethodProxy {
 		this.method
 	}
 
@@ -127,13 +129,14 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 			return 1
 		}
 		
-		var cmpName = this.method.name <=> other.method.name
+		var cmpName = this.method.guardMethod.name <=> other.method.guardMethod.name
 		if (cmpName !== 0) {
 			return cmpName
 		}
 		
 		//Warning the targets could be equals but method declaring classes could be different, especially in the case of inherited methods		
-		if ((this.method.declaringClass === other.method.declaringClass) && (this.target === other.target)) {
+		if ((this.method.guardMethod.declaringClass === other.method.guardMethod.declaringClass) &&
+			(this.target === other.target)) {
 			return 0
 		}
 		val id0 = System::identityHashCode(this.target)
@@ -142,7 +145,7 @@ class ReflectBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 	}
 
 	override toString : String {
-		if (this.method === null) Strings::emptyToNull(null) else this.method.name
+		if(this.method === null) Strings::emptyToNull(null) else this.method.guardMethod.name
 	}
 
 }

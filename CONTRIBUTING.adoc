@@ -84,36 +84,40 @@ There is two major ways for compiling the SARL components: compile all the subpr
 
 If you want to compile all the subprojects of SARL, you could use one of the shell scripts that are located in the root folder of the SARL project.
 
-* *Linux or MacOS Operating Systems:* in a command-line shell, run the Bash script:
+* *Linux or MacOS Operating Systems:* in a command-line shell, run the Bash script (with or without tests):
 
 ```bash
 $> ./build-all.sh
+$> ./build-all.sh -Dmaven.test.skip=true
 ```
 
-* *Windows Operating System:* a PowerShell script is provided for building all the projects of SARL:
+* *Windows Operating System:* a PowerShell script is provided for building all the projects of SARL (with or without tests):
 
 ```bash
 C:> build-all
+C:> build-all -Dmaven.test.skip=true
 ```
 
 ==== Compilation of a single subproject
 
 If you want to compile only one of the subprojects of SARL, you could go inside the subproject folder and use Maven.
 
-* *Linux or MacOS Operating Systems:* in a command-line shell
+* *Linux or MacOS Operating Systems:* in a command-line shell (with or without tests)
 
 ```bash
 $> cd <subproject_folder>
 $> mvn clean install
+$> mvn clean install -Dmaven.test.skip=true
 ```
 
 where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
 
-* *Windows Operating System:* in a command-line shell
+* *Windows Operating System:* in a command-line shell (with or without tests)
 
 ```bash
 C:> cd <subproject_folder>
 C:> mvn clean install
+C:> mvn clean install -Dmaven.test.skip=true
 ```
 
 where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
@@ -199,6 +203,7 @@ Then,the "Run Configuration" to manage the detail of your launch config, switch 
 Prior to any sending of your contribution (see Section 2.5), you must ensure that your local copy of SARL compiles without error.
 
 The best and "sure" way to proceed is to use Maven on the command line, because it is the tool used by our compilation server for validating your contribution.
+Here, we recommend to not desactivate the runs of the tests.
 
 Type on the command-line:
 ```bash

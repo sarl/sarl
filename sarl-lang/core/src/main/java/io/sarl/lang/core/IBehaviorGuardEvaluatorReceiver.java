@@ -39,11 +39,26 @@ public interface IBehaviorGuardEvaluatorReceiver {
 
 	/** Evaluate the behavior unit's guards.
 	 *
+	 * @param eventType the type of event to be considered for evaluating the {@code event}.
 	 * @param event the event to evaluate.
 	 * @param callbacks the collection of callbacks to run.
+	 * @since 0.14
 	 */
-	default void $evaluateBehaviorGuards(Object event, Collection<Runnable> callbacks) {
+	default void $evaluateBehaviorGuards(Class<?> eventType, Object event, Collection<Runnable> callbacks) {
 		//
+	}
+
+	/** Evaluate the behavior unit's guards.
+	 *
+	 * @param eventType the type of event to be considered for evaluating the {@code event}.
+	 * @param event the event to evaluate.
+	 * @param callbacks the collection of callbacks to run.
+	 * @see #$evaluateBehaviorGuards(Class, Object, Collection)
+	 * @deprecated See {@link #$evaluateBehaviorGuards(Class, Object, Collection)} for replacement.
+	 */
+	@Deprecated(since = "0.14", forRemoval = true)
+	default void $evaluateBehaviorGuards(Object event, Collection<Runnable> callbacks) {
+		$evaluateBehaviorGuards(event.getClass(), event, callbacks);
 	}
 
 	/** Replies the list of the supported events by the receiver.

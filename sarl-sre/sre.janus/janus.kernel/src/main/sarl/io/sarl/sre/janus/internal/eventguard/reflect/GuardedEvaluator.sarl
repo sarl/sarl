@@ -18,33 +18,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.janus.skills.internal
 
-import io.sarl.sre.janus.capacities.InternalSchedules
-import io.sarl.sre.janus.internal.Factories
-import io.sarl.sre.janus.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluatorRegistry
-import java.util.function.Supplier
-import javax.inject.Provider
+package io.sarl.sre.janus.internal.eventguard.reflect
+
+import io.sarl.lang.core.Event
+import org.eclipse.xtend.lib.annotations.Data
 
 /** 
- * Factory of event bus that is using the polymorphic method for accessing the event handlers.
- * 
+ * Description of a set of guard evaluators with a shared activation guard.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.12
+ * @since 0.11
  */
-class PolymorphicEventBusFactory implements EventBusFactory {
+@Data
+class GuardedEvaluator implements Comparable<GuardedEvaluator> {
 
-	val factories : Provider<Factories>
+	val registrationGuard : (Event)=>Boolean
 
-	new (factories : Provider<Factories>) {
-		this.factories = factories
+	val evaluator : ReflectBehaviorGuardEvaluator
+
+	override compareTo(other : GuardedEvaluator) : int {
+		if (other === null) {
+			return 1
+		}
+		return this.evaluator <=> other.evaluator
 	}
 
-	override createEventBus(taskSchedulerProvider : Supplier<InternalSchedules>) : EventBus {
-		new EventBus(taskSchedulerProvider, new PolymorphicBehaviorGuardEvaluatorRegistry(this.factories), this.factories)
+	override equals(obj : Object) : boolean {
+		if (obj instanceof GuardedEvaluator) {
+			return this.evaluator == obj.evaluator
+		}
+		return false
+	}
+
+	override hashCode : int {
+		return this.evaluator.hashCode
 	}
 
 }

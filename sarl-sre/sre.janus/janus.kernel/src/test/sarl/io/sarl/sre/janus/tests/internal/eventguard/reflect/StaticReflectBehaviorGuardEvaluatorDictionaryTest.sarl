@@ -24,11 +24,11 @@ package io.sarl.sre.janus.tests.internal.eventguard.reflect
 import io.sarl.api.core.Destroy
 import io.sarl.api.core.Initialize
 import io.sarl.lang.core.Event
+import io.sarl.sre.janus.internal.eventguard.reflect.MethodProxy
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent0
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent1
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent2
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestEvent0
-import java.lang.reflect.Method
 import java.util.Collection
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Test
 
 import static io.sarl.sre.janus.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
 
-import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension org.junit.jupiter.api.Assertions.*
 
 /** 
@@ -51,24 +50,6 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("janus")
 @Tag("sre-unit")
 class StaticReflectBehaviorGuardEvaluatorDictionaryTest {
-
-	@Test
-	def getFlattenHierarchy_0 : void {
-		var classes = getFlattenHierarchy(typeof(TestAgent0))
-		classes.assertContains(typeof(TestAgent0))
-	}
-
-	@Test
-	def getFlattenHierarchy_1 : void {
-		var classes = getFlattenHierarchy(typeof(TestAgent1))
-		classes.assertContains(typeof(TestAgent1))
-	}
-
-	@Test
-	def getFlattenHierarchy_2 : void {
-		var classes = getFlattenHierarchy(typeof(TestAgent2))
-		classes.assertContains(typeof(TestAgent1), typeof(TestAgent2))
-	}
 	
 	@Test
 	def getAnnotedMethodsPerEvent_0 {
@@ -79,7 +60,7 @@ class StaticReflectBehaviorGuardEvaluatorDictionaryTest {
 	@Test
 	def getAnnotedMethodsPerEvent_1 {
 		var handlers = getAnnotedMethodsPerEvent(typeof(TestAgent1))
-		var methods : Collection<Method>
+		var methods : Collection<MethodProxy>
 
 		handlers.get(typeof(Event)).assertNull
 
@@ -97,7 +78,7 @@ class StaticReflectBehaviorGuardEvaluatorDictionaryTest {
 	@Test
 	def getAnnotedMethodsPerEvent_2 {
 		var handlers = getAnnotedMethodsPerEvent(typeof(TestAgent2))
-		var methods : Collection<Method>
+		var methods : Collection<MethodProxy>
 
 		handlers.get(typeof(Event)).assertNull
 

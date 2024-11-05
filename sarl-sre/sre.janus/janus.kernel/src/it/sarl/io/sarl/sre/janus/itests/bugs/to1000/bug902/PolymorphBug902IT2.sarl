@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -18,31 +18,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.sre.janus.itests.bugs.to1000.bug902
 
-package io.sarl.sre.janus.internal.eventguard
+import io.sarl.sre.janus.boot.configs.subconfigs.EventBusType
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 
-import org.eclipse.osgi.util.NLS
-
-/** Messages.
+/** Tests for issue #902: Possibility to have a Generic <T> in an Event.
+ *
+ * <p>See: https://github.com/sarl/sarl/issues/902
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @see "https://github.com/sarl/sarl/issues/902"
  */
-final class Messages extends NLS {
+@DisplayName("run: Bug #902 with polymorphic engine")
+class PolymorphBug902IT extends AbstractBug902 {
 
-	static val BUNDLE_NAME = typeof(Messages).getPackage.name + ".messages"
-	
-	static new {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
-	}
-	
-	public static var ReflectBehaviorGuardEvaluator_0 : String
-	public static var ReflectBehaviorGuardEvaluator_1 : String
-	
-	private new {
+	@BeforeEach
+	def setUp() {
+		this.eventBusType = EventBusType::POLYMORPHIC
 	}
 
 }

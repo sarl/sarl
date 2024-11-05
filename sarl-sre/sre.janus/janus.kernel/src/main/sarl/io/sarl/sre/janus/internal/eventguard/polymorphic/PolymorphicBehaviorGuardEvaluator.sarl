@@ -55,21 +55,26 @@ class PolymorphicBehaviorGuardEvaluator implements IBehaviorGuardEvaluator {
 	@Accessors
 	val filter : (Event)=>boolean
 
+	/** The type of event for which this evaluator is created. */
+	val eventType : Class<? extends Event>
+
 	/** Creates a {@code Subscriber}.
 	 * 
 	 * @param target the listener
+	 * @param eventType the type of event for which this evaluator is created
 	 * @param filter the filter
 	 */
-	new (target : IBehaviorGuardEvaluatorReceiver, filter : (Event) => boolean) {
+	new (target : IBehaviorGuardEvaluatorReceiver, eventType : Class<? extends Event>, filter : (Event) => boolean) {
 		assert target !== null
 		this.target = target
+		this.eventType = eventType
 		this.filter = filter
 	}
 
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
 	override evaluateGuard(^event : Object, behaviorsMethodsToExecute : Collection<Runnable>) {
-		getTarget.doEvaluateBehaviorGuards(^event, behaviorsMethodsToExecute)
+		getTarget.doEvaluateBehaviorGuards(this.eventType, ^event, behaviorsMethodsToExecute)
 	}
 
 	override getTarget : IBehaviorGuardEvaluatorReceiver {

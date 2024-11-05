@@ -27,8 +27,8 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.util.ConcurrentSet
-import io.sarl.sre.janus.internal.eventguard.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.janus.internal.eventguard.reflect.GuardedEvaluator
+import io.sarl.sre.janus.internal.eventguard.reflect.ReflectBehaviorGuardEvaluator
 import io.sarl.sre.janus.internal.eventguard.reflect.ReflectBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.sre.janus.tests.internal.eventguard.reflect.mocks.TestAgent0
@@ -138,7 +138,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -163,7 +163,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -188,7 +188,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 	
 	@Test
@@ -212,7 +212,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 
 		val callbackParam = typeof(Object).forClass
 		callback.verify(1.times).apply(callbackParam.capture)
@@ -242,7 +242,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 
 		val callbackParam = typeof(Object).forClass
 		callback.verify(1.times).apply(callbackParam.capture)
@@ -272,7 +272,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 
 		val callbackParam = typeof(Object).forClass
 		callback.verify(1.times).apply(callbackParam.capture)
@@ -318,7 +318,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -343,7 +343,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -368,7 +368,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -410,7 +410,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -434,7 +434,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 
 		val callbackParam = typeof(Object).forClass
 		callback.verify(1.times).apply(callbackParam.capture)
@@ -469,7 +469,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator = evaluator.evaluator
 		gevaluator.assertNotNull
 		listener.assertSame(gevaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -575,7 +575,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		} else {
 			listener1.assertSame(gevaluator.target)
 		}
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 
 		val callbackParam = typeof(Object).forClass
 		callback.verify(1.times).apply(callbackParam.capture)
@@ -616,7 +616,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		} else {
 			listener1.assertSame(gevaluator.target)
 		}
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -673,7 +673,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator0 = evaluator0.evaluator
 		gevaluator0.assertNotNull
 		listener0.assertSame(gevaluator0.target)
-		"$guardEvaluator$Initialize".assertEquals(gevaluator0.method.name)
+		"$guardEvaluator$Initialize".assertEquals(gevaluator0.method.guardMethod.name)
 
 		var collection1 = this.internalStructure.get(typeof(TestEvent0))
 		collection1.assertNotNull
@@ -684,7 +684,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator1 = evaluator1.evaluator
 		gevaluator1.assertNotNull
 		listener0.assertSame(gevaluator1.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator1.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator1.method.guardMethod.name)
 
 		var collection2 = this.internalStructure.get(typeof(Destroy))
 		collection2.assertNotNull
@@ -719,7 +719,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator0 = evaluator0.evaluator
 		gevaluator0.assertNotNull
 		listener0.assertSame(gevaluator0.target)
-		"$guardEvaluator$Initialize".assertEquals(gevaluator0.method.name)
+		"$guardEvaluator$Initialize".assertEquals(gevaluator0.method.guardMethod.name)
 
 		var collection1 = this.internalStructure.get(typeof(TestEvent0))
 		collection1.assertNotNull
@@ -730,7 +730,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var gevaluator1 = evaluator1.evaluator
 		gevaluator1.assertNotNull
 		listener0.assertSame(gevaluator1.target)
-		"$guardEvaluator$TestEvent0".assertEquals(gevaluator1.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(gevaluator1.method.guardMethod.name)
 
 		var collection2 = this.internalStructure.get(typeof(Destroy))
 		collection2.assertNotNull
@@ -783,7 +783,7 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var evaluator = evaluators.get(0) as ReflectBehaviorGuardEvaluator
 		evaluator.assertNotNull
 		listener0.assertSame(evaluator.target)
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator.method.guardMethod.name)
 	}
 
 	@Test
@@ -803,12 +803,12 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var evaluator0 = evaluators.get(0) as ReflectBehaviorGuardEvaluator
 		evaluator0.assertNotNull
 		listener1.assertSame(evaluator0.target)
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.guardMethod.name)
 
 		var evaluator1 = evaluators.get(0) as ReflectBehaviorGuardEvaluator
 		evaluator1.assertNotNull
 		listener1.assertSame(evaluator1.target)
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.guardMethod.name)
 	}
 
 	@Test
@@ -891,9 +891,9 @@ class ReflectBehaviorGuardEvaluatorRegistryTest {
 		var evaluator1 = evaluators.get(1) as ReflectBehaviorGuardEvaluator
 		var evaluator2 = evaluators.get(2) as ReflectBehaviorGuardEvaluator
 		
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.name)
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.name)
-		"$guardEvaluator$TestEvent0".assertEquals(evaluator2.method.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator0.method.guardMethod.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator1.method.guardMethod.name)
+		"$guardEvaluator$TestEvent0".assertEquals(evaluator2.method.guardMethod.name)
 		
 		val targets = <Agent>newLinkedList
 		targets += listener0

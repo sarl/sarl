@@ -49,384 +49,394 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #861")
 @Tag("core")
+@SuppressWarnings("all")
 public class Bug861Test extends AbstractSarlTest {
 
 	private static final String SNIPSET01 = multilineString(
-		"package io.sarl.lang.tests.bug861", //$NON-NLS-1$
-		"import io.sarl.api.core.DefaultContextInteractions", //$NON-NLS-1$
-		"import io.sarl.api.core.Initialize", //$NON-NLS-1$
-		"import io.sarl.api.core.Lifecycle", //$NON-NLS-1$
-		"import io.sarl.api.core.Logging", //$NON-NLS-1$
-		"event Initialized", //$NON-NLS-1$
-		"event CommitSuicide", //$NON-NLS-1$
-		"agent EmptyAgent {", //$NON-NLS-1$
-		"	uses Lifecycle, DefaultContextInteractions, Logging", //$NON-NLS-1$
-		"	on Initialize {", //$NON-NLS-1$
-		"		info(\"Empty-Init\")", //$NON-NLS-1$
-		"		emit(new Initialized)[it.UUID == occurrence.spawner]", //$NON-NLS-1$
-		"	}", //$NON-NLS-1$
-		"	on CommitSuicide {", //$NON-NLS-1$
-		"		info(\"Empty-Suicide\")", //$NON-NLS-1$
-		"		killMe", //$NON-NLS-1$
-		"	}", //$NON-NLS-1$
-		"}", //$NON-NLS-1$
-		"agent BootAgent {", //$NON-NLS-1$
-		"    uses Lifecycle, DefaultContextInteractions, Logging", //$NON-NLS-1$
-		"    on Initialize {", //$NON-NLS-1$
-		"    	info('Boot-Init')", //$NON-NLS-1$
-		"		spawn(EmptyAgent)", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"	on Initialized {", //$NON-NLS-1$
-		"		info('Boot-Reception')", //$NON-NLS-1$
-		"		emit(new CommitSuicide)", //$NON-NLS-1$
-		"	}",  //$NON-NLS-1$
-		"	on CommitSuicide {", //$NON-NLS-1$
-		"		info('Boot-Suicide')", //$NON-NLS-1$
-		"		killMe", //$NON-NLS-1$
-		"	}", //$NON-NLS-1$
-		"}"); //$NON-NLS-1$
+		"package io.sarl.lang.tests.bug861",
+		"import io.sarl.api.core.DefaultContextInteractions",
+		"import io.sarl.api.core.Initialize",
+		"import io.sarl.api.core.Lifecycle",
+		"import io.sarl.api.core.Logging",
+		"event Initialized",
+		"event CommitSuicide",
+		"agent EmptyAgent {",
+		"	uses Lifecycle, DefaultContextInteractions, Logging",
+		"	on Initialize {",
+		"		info(\"Empty-Init\")",
+		"		emit(new Initialized)[it.UUID == occurrence.spawner]",
+		"	}",
+		"	on CommitSuicide {",
+		"		info(\"Empty-Suicide\")",
+		"		killMe",
+		"	}",
+		"}",
+		"agent BootAgent {",
+		"    uses Lifecycle, DefaultContextInteractions, Logging",
+		"    on Initialize {",
+		"    	info('Boot-Init')",
+		"		spawn(EmptyAgent)",
+		"    }",
+		"	on Initialized {",
+		"		info('Boot-Reception')",
+		"		emit(new CommitSuicide)",
+		"	}", 
+		"	on CommitSuicide {",
+		"		info('Boot-Suicide')",
+		"		killMe",
+		"	}",
+		"}");
 
 	private static final String EXPECTED_BOOTAGENT_01 = multilineString2(false,
-		"package io.sarl.lang.tests.bug861;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"import io.sarl.api.core.DefaultContextInteractions;", //$NON-NLS-1$
-		"import io.sarl.api.core.Initialize;", //$NON-NLS-1$
-		"import io.sarl.api.core.Lifecycle;", //$NON-NLS-1$
-		"import io.sarl.api.core.Logging;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Agent;", //$NON-NLS-1$
-		"import io.sarl.lang.core.AtomicSkillReference;", //$NON-NLS-1$
-		"import io.sarl.lang.core.DynamicSkillProvider;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Event;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.ImportedCapacityFeature;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SarlElementType;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SarlSpecification;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SyntheticMember;", //$NON-NLS-1$
-		"import java.util.Collection;", //$NON-NLS-1$
-		"import java.util.Set;", //$NON-NLS-1$
-		"import java.util.UUID;", //$NON-NLS-1$
-		"import javax.inject.Inject;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Extension;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Pure;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-1$ //$NON-NLS-2$
-		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-1$ //$NON-NLS-2$
-		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-1$ //$NON-NLS-2$
-		"@XbaseGenerated", //$NON-NLS-1$
-		"@SuppressWarnings(\"all\")", //$NON-NLS-1$
-		"public class BootAgent extends Agent {", //$NON-NLS-1$
-		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {", //$NON-NLS-1$
-		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Init\");", //$NON-NLS-1$
-		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.spawn(EmptyAgent.class);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  private void $behaviorUnit$Initialized$1(final Initialized occurrence) {", //$NON-NLS-1$
-		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Reception\");", //$NON-NLS-1$
-		"    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();", //$NON-NLS-1$
-		"    CommitSuicide _commitSuicide = new CommitSuicide();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_commitSuicide);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  private void $behaviorUnit$CommitSuicide$2(final CommitSuicide occurrence) {", //$NON-NLS-1$
-		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Suicide\");", //$NON-NLS-1$
-		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.killMe();", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(Lifecycle.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private Lifecycle $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE = $getSkill(Lifecycle.class);", "    }", //$NON-NLS-1$ //$NON-NLS-2$
-		"    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(DefaultContextInteractions.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(Logging.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LOGGING;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private Logging $CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING = $getSkill(Logging.class);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @PerceptGuardEvaluator", //$NON-NLS-1$
-		"  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {", //$NON-NLS-1$
-		"    assert occurrence != null;", //$NON-NLS-1$
-		"    assert ___SARLlocal_runnableCollection != null;", //$NON-NLS-1$
-		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @PerceptGuardEvaluator", //$NON-NLS-1$
-		"  private void $guardEvaluator$CommitSuicide(final CommitSuicide occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {", //$NON-NLS-1$
-		"    assert occurrence != null;", //$NON-NLS-1$
-		"    assert ___SARLlocal_runnableCollection != null;", //$NON-NLS-1$
-		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$CommitSuicide$2(occurrence));", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @PerceptGuardEvaluator", //$NON-NLS-1$
-		"  private void $guardEvaluator$Initialized(final Initialized occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {", //$NON-NLS-1$
-		"    assert occurrence != null;", //$NON-NLS-1$
-		"    assert ___SARLlocal_runnableCollection != null;", //$NON-NLS-1$
-		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialized$1(occurrence));", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {", //$NON-NLS-1$
-		"    super.$getSupportedEvents(toBeFilled);", //$NON-NLS-1$
-		"    toBeFilled.add(Initialize.class);", //$NON-NLS-1$
-		"    toBeFilled.add(CommitSuicide.class);", //$NON-NLS-1$
-		"    toBeFilled.add(Initialized.class);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public boolean $isSupportedEvent(final Class<? extends Event> event) {",  //$NON-NLS-1$
-		"    if (Initialize.class.isAssignableFrom(event)) {", //$NON-NLS-1$
-		"      return true;", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (CommitSuicide.class.isAssignableFrom(event)) {", //$NON-NLS-1$
-		"      return true;", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (Initialized.class.isAssignableFrom(event)) {", //$NON-NLS-1$
-		"      return true;", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return false;",  //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {", //$NON-NLS-1$
-		"    super.$evaluateBehaviorGuards(event, callbacks);", //$NON-NLS-1$
-		"    if (event instanceof Initialize occurrence) {", //$NON-NLS-1$
-		"      $guardEvaluator$Initialize(occurrence, callbacks);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (event instanceof CommitSuicide occurrence) {", //$NON-NLS-1$
-		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (event instanceof Initialized occurrence) {", //$NON-NLS-1$
-		"      $guardEvaluator$Initialized(occurrence, callbacks);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  public BootAgent(final UUID arg0, final UUID arg1) {", //$NON-NLS-1$
-		"    super(arg0, arg1);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Inject", //$NON-NLS-1$
-		"  public BootAgent(final UUID arg0, final UUID arg1, final DynamicSkillProvider arg2) {", //$NON-NLS-1$
-		"    super(arg0, arg1, arg2);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"}", //$NON-NLS-1$
-		""); //$NON-NLS-1$
+		"package io.sarl.lang.tests.bug861;",
+		"",
+		"import io.sarl.api.core.DefaultContextInteractions;",
+		"import io.sarl.api.core.Initialize;",
+		"import io.sarl.api.core.Lifecycle;",
+		"import io.sarl.api.core.Logging;",
+		"import io.sarl.lang.core.Agent;",
+		"import io.sarl.lang.core.AtomicSkillReference;",
+		"import io.sarl.lang.core.DynamicSkillProvider;",
+		"import io.sarl.lang.core.Event;",
+		"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+		"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+		"import io.sarl.lang.core.annotation.SarlElementType;",
+		"import io.sarl.lang.core.annotation.SarlSpecification;",
+		"import io.sarl.lang.core.annotation.SyntheticMember;",
+		"import java.util.Collection;",
+		"import java.util.Set;",
+		"import java.util.UUID;",
+		"import javax.inject.Inject;",
+		"import org.eclipse.xtext.xbase.lib.Extension;",			
+		"import org.eclipse.xtext.xbase.lib.Pure;",
+		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-2$
+		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-2$
+		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-2$
+		"@XbaseGenerated",
+		"@SuppressWarnings(\"all\")",
+		"public class BootAgent extends Agent {",
+		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
+		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Init\");",
+		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.spawn(EmptyAgent.class);",
+		"  }",
+		"",
+		"  private void $behaviorUnit$Initialized$1(final Initialized occurrence) {",
+		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Reception\");",
+		"    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();",
+		"    CommitSuicide _commitSuicide = new CommitSuicide();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_commitSuicide);",
+		"  }",
+		"",
+		"  private void $behaviorUnit$CommitSuicide$2(final CommitSuicide occurrence) {",
+		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Boot-Suicide\");",
+		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.killMe();",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(Lifecycle.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private Lifecycle $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE = $getSkill(Lifecycle.class);", "    }", //$NON-NLS-2$
+		"    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE);",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(DefaultContextInteractions.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);",
+		"    }",
+		"    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS);",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(Logging.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LOGGING;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private Logging $CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING = $getSkill(Logging.class);",
+		"    }",
+		"    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @PerceptGuardEvaluator",
+		"  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+		"    assert occurrence != null;",
+		"    assert ___SARLlocal_runnableCollection != null;",
+		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @PerceptGuardEvaluator",
+		"  private void $guardEvaluator$CommitSuicide(final CommitSuicide occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+		"    assert occurrence != null;",
+		"    assert ___SARLlocal_runnableCollection != null;",
+		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$CommitSuicide$2(occurrence));",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @PerceptGuardEvaluator",
+		"  private void $guardEvaluator$Initialized(final Initialized occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+		"    assert occurrence != null;",
+		"    assert ___SARLlocal_runnableCollection != null;",
+		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialized$1(occurrence));",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {",
+		"    super.$getSupportedEvents(toBeFilled);",
+		"    toBeFilled.add(Initialize.class);",
+		"    toBeFilled.add(CommitSuicide.class);",
+		"    toBeFilled.add(Initialized.class);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public boolean $isSupportedEvent(final Class<? extends Event> event) {", 
+		"    if (Initialize.class.isAssignableFrom(event)) {",
+		"      return true;",
+		"    }",
+		"    if (CommitSuicide.class.isAssignableFrom(event)) {",
+		"      return true;",
+		"    }",
+		"    if (Initialized.class.isAssignableFrom(event)) {",
+		"      return true;",
+		"    }",
+		"    return false;", 
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public void $evaluateBehaviorGuards(final Class<?> eventType, final Object event, final Collection<Runnable> callbacks) {",
+		"    assert eventType != null;",
+		"    assert event != null;",
+		"    super.$evaluateBehaviorGuards(eventType, event, callbacks);",
+		"    if (Initialize.class.equals(eventType)) {",
+		"      final var occurrence = (Initialize) event;",
+		"      $guardEvaluator$Initialize(occurrence, callbacks);",
+		"    }",
+		"    if (CommitSuicide.class.equals(eventType)) {",
+		"      final var occurrence = (CommitSuicide) event;",
+		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);",
+		"    }",
+		"    if (Initialized.class.equals(eventType)) {",
+		"      final var occurrence = (Initialized) event;",
+		"      $guardEvaluator$Initialized(occurrence, callbacks);",
+		"    }",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  public BootAgent(final UUID arg0, final UUID arg1) {",
+		"    super(arg0, arg1);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Inject",
+		"  public BootAgent(final UUID arg0, final UUID arg1, final DynamicSkillProvider arg2) {",
+		"    super(arg0, arg1, arg2);",
+		"  }",
+		"}",
+		"");
 
 	private static final String EXPECTED_EMPTYAGENT_01 = multilineString2(false,
-		"package io.sarl.lang.tests.bug861;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"import io.sarl.api.core.DefaultContextInteractions;", //$NON-NLS-1$
-		"import io.sarl.api.core.Initialize;", //$NON-NLS-1$
-		"import io.sarl.api.core.Lifecycle;", //$NON-NLS-1$
-		"import io.sarl.api.core.Logging;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Address;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Agent;", //$NON-NLS-1$
-		"import io.sarl.lang.core.AtomicSkillReference;", //$NON-NLS-1$
-		"import io.sarl.lang.core.DynamicSkillProvider;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Event;", //$NON-NLS-1$
-		"import io.sarl.lang.core.Scope;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.ImportedCapacityFeature;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SarlElementType;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SarlSpecification;", //$NON-NLS-1$
-		"import io.sarl.lang.core.annotation.SyntheticMember;", //$NON-NLS-1$
-		"import io.sarl.lang.core.util.SerializableProxy;", //$NON-NLS-1$
-		"import java.io.ObjectStreamException;", //$NON-NLS-1$
-		"import java.util.Collection;", //$NON-NLS-1$
-		"import java.util.Objects;", //$NON-NLS-1$
-		"import java.util.Set;", //$NON-NLS-1$
-		"import java.util.UUID;", //$NON-NLS-1$
-		"import javax.inject.Inject;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Extension;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.Pure;", //$NON-NLS-1$
-		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-1$ //$NON-NLS-2$
-		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-1$ //$NON-NLS-2$
-		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-1$ //$NON-NLS-2$
-		"@XbaseGenerated", //$NON-NLS-1$
-		"@SuppressWarnings(\"all\")", //$NON-NLS-1$
-		"public class EmptyAgent extends Agent {", //$NON-NLS-1$
-		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {", //$NON-NLS-1$
-		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Empty-Init\");", //$NON-NLS-1$
-		"    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();", //$NON-NLS-1$
-		"    Initialized _initialized = new Initialized();", //$NON-NLS-1$
-		"    class $SerializableClosureProxy implements Scope<Address> {", //$NON-NLS-1$
-		"      ", //$NON-NLS-1$
-		"      private final UUID $_spawner;", //$NON-NLS-1$
-		"      ", //$NON-NLS-1$
-		"      public $SerializableClosureProxy(final UUID $_spawner) {", //$NON-NLS-1$
-		"        this.$_spawner = $_spawner;", //$NON-NLS-1$
-		"      }", //$NON-NLS-1$
-		"      ", //$NON-NLS-1$
-		"      @Override", //$NON-NLS-1$
-		"      public boolean matches(final Address it) {", //$NON-NLS-1$
-		"        UUID _uUID = it.getID();", //$NON-NLS-1$
-		"        return Objects.equals(_uUID, $_spawner);", //$NON-NLS-1$
-		"      }", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    final Scope<Address> _function = new Scope<Address>() {", //$NON-NLS-1$
-		"      @Override", //$NON-NLS-1$
-		"      public boolean matches(final Address it) {", //$NON-NLS-1$
-		"        UUID _uUID = it.getID();", //$NON-NLS-1$
-		"        return Objects.equals(_uUID, occurrence.spawner);", //$NON-NLS-1$
-		"      }", //$NON-NLS-1$
-		"      private Object writeReplace() throws ObjectStreamException {", //$NON-NLS-1$
-		"        return new SerializableProxy($SerializableClosureProxy.class, occurrence.spawner);", //$NON-NLS-1$
-		"      }", //$NON-NLS-1$
-		"    };", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_initialized, _function);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  private void $behaviorUnit$CommitSuicide$1(final CommitSuicide occurrence) {", //$NON-NLS-1$
-		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Empty-Suicide\");", //$NON-NLS-1$
-		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();", //$NON-NLS-1$
-		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.killMe();", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(Lifecycle.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private Lifecycle $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE = $getSkill(Lifecycle.class);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(DefaultContextInteractions.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @Extension", //$NON-NLS-1$
-		"  @ImportedCapacityFeature(Logging.class)", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LOGGING;", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Pure", //$NON-NLS-1$
-		"  private Logging $CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER() {", //$NON-NLS-1$
-		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING.get() == null) {", //$NON-NLS-1$
-		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING = $getSkill(Logging.class);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @PerceptGuardEvaluator", //$NON-NLS-1$
-		"  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {", //$NON-NLS-1$
-		"    assert occurrence != null;", //$NON-NLS-1$
-		"    assert ___SARLlocal_runnableCollection != null;", //$NON-NLS-1$
-		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @PerceptGuardEvaluator", //$NON-NLS-1$
-		"  private void $guardEvaluator$CommitSuicide(final CommitSuicide occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {", //$NON-NLS-1$
-		"    assert occurrence != null;", //$NON-NLS-1$
-		"    assert ___SARLlocal_runnableCollection != null;", //$NON-NLS-1$
-		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$CommitSuicide$1(occurrence));", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {", //$NON-NLS-1$
-		"    super.$getSupportedEvents(toBeFilled);", //$NON-NLS-1$
-		"    toBeFilled.add(Initialize.class);", //$NON-NLS-1$
-		"    toBeFilled.add(CommitSuicide.class);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public boolean $isSupportedEvent(final Class<? extends Event> event) {",  //$NON-NLS-1$
-		"    if (Initialize.class.isAssignableFrom(event)) {", //$NON-NLS-1$
-		"      return true;", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (CommitSuicide.class.isAssignableFrom(event)) {", //$NON-NLS-1$
-		"      return true;", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    return false;",  //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Override", //$NON-NLS-1$
-		"  public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {", //$NON-NLS-1$
-		"    super.$evaluateBehaviorGuards(event, callbacks);", //$NON-NLS-1$
-		"    if (event instanceof Initialize occurrence) {", //$NON-NLS-1$
-		"      $guardEvaluator$Initialize(occurrence, callbacks);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"    if (event instanceof CommitSuicide occurrence) {", //$NON-NLS-1$
-		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);", //$NON-NLS-1$
-		"    }", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  public EmptyAgent(final UUID arg0, final UUID arg1) {", //$NON-NLS-1$
-		"    super(arg0, arg1);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"", //$NON-NLS-1$
-		"  @SyntheticMember", //$NON-NLS-1$
-		"  @Inject", //$NON-NLS-1$
-		"  public EmptyAgent(final UUID arg0, final UUID arg1, final DynamicSkillProvider arg2) {", //$NON-NLS-1$
-		"    super(arg0, arg1, arg2);", //$NON-NLS-1$
-		"  }", //$NON-NLS-1$
-		"}", //$NON-NLS-1$
-		""); //$NON-NLS-1$
+		"package io.sarl.lang.tests.bug861;",
+		"",
+		"import io.sarl.api.core.DefaultContextInteractions;",
+		"import io.sarl.api.core.Initialize;",
+		"import io.sarl.api.core.Lifecycle;",
+		"import io.sarl.api.core.Logging;",
+		"import io.sarl.lang.core.Address;",
+		"import io.sarl.lang.core.Agent;",
+		"import io.sarl.lang.core.AtomicSkillReference;",
+		"import io.sarl.lang.core.DynamicSkillProvider;",
+		"import io.sarl.lang.core.Event;",
+		"import io.sarl.lang.core.Scope;",
+		"import io.sarl.lang.core.annotation.ImportedCapacityFeature;",
+		"import io.sarl.lang.core.annotation.PerceptGuardEvaluator;",
+		"import io.sarl.lang.core.annotation.SarlElementType;",
+		"import io.sarl.lang.core.annotation.SarlSpecification;",
+		"import io.sarl.lang.core.annotation.SyntheticMember;",
+		"import io.sarl.lang.core.util.SerializableProxy;",
+		"import java.io.ObjectStreamException;",
+		"import java.util.Collection;",
+		"import java.util.Objects;",
+		"import java.util.Set;",
+		"import java.util.UUID;",
+		"import javax.inject.Inject;",
+		"import org.eclipse.xtext.xbase.lib.Extension;",
+		"import org.eclipse.xtext.xbase.lib.Pure;",
+		"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", "", //$NON-NLS-2$
+		"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")", //$NON-NLS-2$
+		"@SarlElementType(" + SarlPackage.SARL_AGENT + ")", //$NON-NLS-2$
+		"@XbaseGenerated",
+		"@SuppressWarnings(\"all\")",
+		"public class EmptyAgent extends Agent {",
+		"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
+		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Empty-Init\");",
+		"    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();",
+		"    Initialized _initialized = new Initialized();",
+		"    class $SerializableClosureProxy implements Scope<Address> {",
+		"      ",
+		"      private final UUID $_spawner;",
+		"      ",
+		"      public $SerializableClosureProxy(final UUID $_spawner) {",
+		"        this.$_spawner = $_spawner;",
+		"      }",
+		"      ",
+		"      @Override",
+		"      public boolean matches(final Address it) {",
+		"        UUID _uUID = it.getID();",
+		"        return Objects.equals(_uUID, $_spawner);",
+		"      }",
+		"    }",
+		"    final Scope<Address> _function = new Scope<Address>() {",
+		"      @Override",
+		"      public boolean matches(final Address it) {",
+		"        UUID _uUID = it.getID();",
+		"        return Objects.equals(_uUID, occurrence.spawner);",
+		"      }",
+		"      private Object writeReplace() throws ObjectStreamException {",
+		"        return new SerializableProxy($SerializableClosureProxy.class, occurrence.spawner);",
+		"      }",
+		"    };",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_initialized, _function);",
+		"  }",
+		"",
+		"  private void $behaviorUnit$CommitSuicide$1(final CommitSuicide occurrence) {",
+		"    Logging _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER.info(\"Empty-Suicide\");",
+		"    Lifecycle _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER();",
+		"    _$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER.killMe();",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(Lifecycle.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private Lifecycle $CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE = $getSkill(Lifecycle.class);",
+		"    }",
+		"    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LIFECYCLE);",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(DefaultContextInteractions.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);",
+		"    }",
+		"    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_API_CORE_DEFAULTCONTEXTINTERACTIONS);",
+		"  }",
+		"",
+		"  @Extension",
+		"  @ImportedCapacityFeature(Logging.class)",
+		"  @SyntheticMember",
+		"  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_API_CORE_LOGGING;",
+		"",
+		"  @SyntheticMember",
+		"  @Pure",
+		"  private Logging $CAPACITY_USE$IO_SARL_API_CORE_LOGGING$CALLER() {",
+		"    if (this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING.get() == null) {",
+		"      this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING = $getSkill(Logging.class);",
+		"    }",
+		"    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_API_CORE_LOGGING);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @PerceptGuardEvaluator",
+		"  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+		"    assert occurrence != null;",
+		"    assert ___SARLlocal_runnableCollection != null;",
+		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @PerceptGuardEvaluator",
+		"  private void $guardEvaluator$CommitSuicide(final CommitSuicide occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+		"    assert occurrence != null;",
+		"    assert ___SARLlocal_runnableCollection != null;",
+		"    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$CommitSuicide$1(occurrence));",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {",
+		"    super.$getSupportedEvents(toBeFilled);",
+		"    toBeFilled.add(Initialize.class);",
+		"    toBeFilled.add(CommitSuicide.class);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public boolean $isSupportedEvent(final Class<? extends Event> event) {", 
+		"    if (Initialize.class.isAssignableFrom(event)) {",
+		"      return true;",
+		"    }",
+		"    if (CommitSuicide.class.isAssignableFrom(event)) {",
+		"      return true;",
+		"    }",
+		"    return false;", 
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Override",
+		"  public void $evaluateBehaviorGuards(final Class<?> eventType, final Object event, final Collection<Runnable> callbacks) {",
+		"    assert eventType != null;",
+		"    assert event != null;",
+		"    super.$evaluateBehaviorGuards(eventType, event, callbacks);",
+		"    if (Initialize.class.equals(eventType)) {",
+		"      final var occurrence = (Initialize) event;",
+		"      $guardEvaluator$Initialize(occurrence, callbacks);",
+		"    }",
+		"    if (CommitSuicide.class.equals(eventType)) {",
+		"      final var occurrence = (CommitSuicide) event;",
+		"      $guardEvaluator$CommitSuicide(occurrence, callbacks);",
+		"    }",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  public EmptyAgent(final UUID arg0, final UUID arg1) {",
+		"    super(arg0, arg1);",
+		"  }",
+		"",
+		"  @SyntheticMember",
+		"  @Inject",
+		"  public EmptyAgent(final UUID arg0, final UUID arg1, final DynamicSkillProvider arg2) {",
+		"    super(arg0, arg1, arg2);",
+		"  }",
+		"}",
+		"");
 
 	@Test
 	@Tag("sarlValidation")
@@ -440,8 +450,8 @@ public class Bug861Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, it -> {
-			assertEquals(EXPECTED_BOOTAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.BootAgent")); //$NON-NLS-1$
-			assertEquals(EXPECTED_EMPTYAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.EmptyAgent")); //$NON-NLS-1$
+			assertEquals(EXPECTED_BOOTAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.BootAgent"));
+			assertEquals(EXPECTED_EMPTYAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.EmptyAgent"));
 		});
 	}
 

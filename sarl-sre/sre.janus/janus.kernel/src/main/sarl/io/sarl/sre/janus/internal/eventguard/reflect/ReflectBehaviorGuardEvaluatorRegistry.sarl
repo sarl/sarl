@@ -30,8 +30,6 @@ import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator
 import io.sarl.sre.janus.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
-import io.sarl.sre.janus.internal.eventguard.ReflectBehaviorGuardEvaluator
-import java.lang.reflect.Method
 import java.util.Collection
 import java.util.Iterator
 import java.util.Map.Entry
@@ -42,6 +40,7 @@ import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Data
 
 import static extension io.sarl.sre.janus.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*
+import io.sarl.sre.janus.internal.TypeHierarchyDictionary
 
 /** 
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a
@@ -70,7 +69,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 */
-	val directEvaluators : ConcurrentMap<Class<?>, ConcurrentMap<Class<? extends Event>, ConcurrentSet<Method>>>
+	val directEvaluators : ConcurrentMap<Class<?>, ConcurrentMap<Class<? extends Event>, ConcurrentSet<MethodProxy>>>
 
 	/** 
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
@@ -94,7 +93,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * @since 0.12
 	 */
 	@Pure
-	def getInternalDataStructureForDirectAccessListeners : ConcurrentMap<Class<?>, ConcurrentMap<Class<? extends Event>, ConcurrentSet<Method>>> {
+	def getInternalDataStructureForDirectAccessListeners : ConcurrentMap<Class<?>, ConcurrentMap<Class<? extends Event>, ConcurrentSet<MethodProxy>>> {
 		this.directEvaluators
 	}
 
@@ -120,7 +119,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * @since 0.12
 	 */
 	@Pure
-	protected def getInternalEvaluatorMapperForDirectAccessListeners(listener : Object) : (Method)=>IBehaviorGuardEvaluator {
+	protected def getInternalEvaluatorMapperForDirectAccessListeners(listener : Object) : (MethodProxy)=>IBehaviorGuardEvaluator {
 		[
 			new ReflectBehaviorGuardEvaluator(listener, it)
 		]
@@ -131,14 +130,14 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * @param listenerType is the listener to explore.
 	 * @return the list oh guard evaluators.
 	 */
-	protected def buildDirectAccessGuardEvaluators(listenerType : Class<?>) : ConcurrentMap<Class<? extends Event>, ConcurrentSet<Method>> {
-		val content : ConcurrentMap<Class<? extends Event>, ConcurrentSet<Method>> = new ConcurrentHashMap
+	protected def buildDirectAccessGuardEvaluators(listenerType : Class<?>) : ConcurrentMap<Class<? extends Event>, ConcurrentSet<MethodProxy>> {
+		val content : ConcurrentMap<Class<? extends Event>, ConcurrentSet<MethodProxy>> = new ConcurrentHashMap
 		var methodIterator = new MethodIterator(listenerType)
 		while (methodIterator.hasNext) {
 			val method = methodIterator.next
 			for (meth : method.methods) {
 				val evaluators = content.computeIfAbsent(method.type) [
-					this.factories.concurrentCollectionFactory.<Method>newSet(ObjectComparator::SINGLETON)
+					this.factories.concurrentCollectionFactory.<MethodProxy>newSet(ObjectComparator::SINGLETON)
 				]
 				evaluators += meth
 			}
@@ -147,12 +146,34 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	}
 
 	@Pure
+	override getBehaviorGuardEvaluatorsForRegisteredListeners(
+		^event : Event) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
+		assert ^event !== null
+		val eventTypes = TypeHierarchyDictionary::getFlattenHierarchy(^event.class)
+		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
+		val mapper = getInternalEvaluatorMapperForRegisteredListeners
+		val filter = getInternalEvaluatorFilterForRegisteredListeners
+		val dt = internalDataStructureForRegisteredListeners
+		for (eventType : eventTypes) {
+			val eventSubscribers = dt.get(eventType)
+			if (eventSubscribers !== null) {
+				for (guardedEvaluator : eventSubscribers) {
+					if (filter.apply(guardedEvaluator, ^event)) {
+						allEvaluators += mapper.apply(guardedEvaluator)
+					}
+				}
+			}
+		}
+		return allEvaluators
+	}
+
+	@Pure
 	override getBehaviorGuardEvaluatorsForDirectAccessListener(^event : Event, listener : Object) : ConcurrentCollection<? extends IBehaviorGuardEvaluator> {
 		assert ^event !== null
 		assert listener !== null
 		val allEvaluators = this.factories.concurrentCollectionFactory.newCollection
 		//
-		val eventTypes = ^event.class.flattenHierarchy
+		val eventTypes = TypeHierarchyDictionary::getFlattenHierarchy(^event.class)
 		val dt = internalDataStructureForDirectAccessListeners
 		val listenerType = listener.class
 		val mapper = getInternalEvaluatorMapperForDirectAccessListeners(listener)
@@ -248,7 +269,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 
 		val type : Class<? extends Event>
 
-		val methods : Collection<Method>		
+		val methods : Collection<MethodProxy>		
 
 	}
 	
@@ -262,7 +283,7 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 */
 	private static class MethodIterator implements Iterator<Evaluator> {
 
-		val methods : Iterator<Entry<Class<? extends Event>, Collection<Method>>>
+		val methods : Iterator<Entry<Class<? extends Event>, Collection<MethodProxy>>>
 
 		new (listener : Class<?>) {
 			this.methods = listener.annotedMethodsPerEvent.entrySet.iterator

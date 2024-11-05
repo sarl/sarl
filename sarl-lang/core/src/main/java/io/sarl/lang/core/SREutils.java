@@ -228,13 +228,28 @@ public final class SREutils {
 
 	/** Do the guard evaluations of the behavior units.
 	 *
+	 * @param eventType the type of event to be considered for evaluating the {@code event}.
+	 * @param receiver is the object that receives the events.
+	 * @param event is the event that causes the evaluation.
+	 * @param behaviorsMethodsToExecute receives the behavior unit methods.
+	 * @since 0.14
+	 */
+	public static void doEvaluateBehaviorGuards(IBehaviorGuardEvaluatorReceiver receiver, Class<?> eventType, Object event, Collection<Runnable> behaviorsMethodsToExecute) {
+		receiver.$evaluateBehaviorGuards(eventType, event, behaviorsMethodsToExecute);
+	}
+
+	/** Do the guard evaluations of the behavior units.
+	 *
 	 * @param receiver is the object that receives the events.
 	 * @param event is the event that causes the evaluation.
 	 * @param behaviorsMethodsToExecute receives the behavior unit methods.
 	 * @since 0.12
+	 * @see #doEvaluateBehaviorGuards(IBehaviorGuardEvaluatorReceiver, Class, Object, Collection)
+	 * @deprecated See {@link #doEvaluateBehaviorGuards(IBehaviorGuardEvaluatorReceiver, Class, Object, Collection)} for replacement
 	 */
+	@Deprecated(since = "0.14", forRemoval = true)
 	public static void doEvaluateBehaviorGuards(IBehaviorGuardEvaluatorReceiver receiver, Object event, Collection<Runnable> behaviorsMethodsToExecute) {
-		receiver.$evaluateBehaviorGuards(event, behaviorsMethodsToExecute);
+		doEvaluateBehaviorGuards(receiver, event.getClass().asSubclass(Event.class), event, behaviorsMethodsToExecute);
 	}
 
 	/** Retrieve the events' types that are supported by the given receiver.
