@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.cli</groupId>
   <artifactId>janus-cli-tests</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.15.0-SNAPSHOT</version>
   <name>Tests for Janus CLI tools</name>
   <description>Tests the Janus CLI tools</description>
   <packaging>jar</packaging>

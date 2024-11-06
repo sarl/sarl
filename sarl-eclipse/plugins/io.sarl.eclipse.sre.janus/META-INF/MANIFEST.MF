@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.sarl.eclipse.sre.janus;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse.sre.janus
-Bundle-Version: 0.14.0.qualifier
+Bundle-Version: 0.15.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Activator: io.sarl.eclipse.sre.janus.JanusEclipsePlugin
 Bundle-ActivationPolicy: lazy

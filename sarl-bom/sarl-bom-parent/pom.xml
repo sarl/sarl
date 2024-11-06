@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.bom</groupId>
   <artifactId>sarl-bom-parent</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.15.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Parent for all SARL Boms</name>
   <description>Root pom for SARL BOMs</description>

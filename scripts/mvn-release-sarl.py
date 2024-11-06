@@ -21,7 +21,7 @@ def read_user_configuration():
 
 	sarlrc_file = os.path.join(os.environ['HOME'], '.sarlrc')
 	if os.path.exists(sarlrc_file):
-		config = configparser.SafeConfigParser()
+		config = configparser.ConfigParser()
 		config.read(sarlrc_file)
 		MAVENSARLIO_URL = config.get('servers', 'MAVENSARLIO_URL')
 		UPDATESSARLIO_URL = config.get('servers', 'UPDATESSARLIO_URL')
@@ -90,7 +90,7 @@ def filterArgs(args):
 
 ##############################
 ## args: command-line arguments
-def execute_maven(args):
+def execute_maven(pass_phrase, args):
 	global MAVENSARLIO_URL
 	global UPDATESSARLIO_URL
 	global MAVENSARLIO_USER
@@ -129,6 +129,7 @@ def execute_maven(args):
 ##############################
 ##
 parser = argparse.ArgumentParser(description="Release SARL on the server")
+parser.add_argument("--pwd", help="Specify the passphrase for connecting to the server", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
 rargs = filterArgs(args.args)
@@ -136,10 +137,14 @@ rargs = filterArgs(args.args)
 read_user_configuration()
 check_configuration()
 
-pass_phrase = ask_pass()
+if args.pwd:
+	pass_phrase = args.pwd
+else:
+	pass_phrase = ask_pass()
+
 if pass_phrase:
 	print_configuration(pass_phrase)
-	r = execute_maven(rargs)
+	r = execute_maven(pass_phrase, rargs)
 	sys.exit(r)	
 else:
 	sys.exit(255)

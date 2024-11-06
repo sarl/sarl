@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.bom</groupId>
   <artifactId>sarl-properties</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.15.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Properties for SARL Projects</name>
   <description>Definition of the SARL properties in a BOM</description>

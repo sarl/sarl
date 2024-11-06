@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SARL Eclipse
 Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
-Bundle-Version: 0.14.0.qualifier
+Bundle-Version: 0.15.0.qualifier
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
  io.sarl.eclipse.explorer,
