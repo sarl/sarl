@@ -25,10 +25,10 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/eclipse/xtext-xtend/pull/192"
  */
 @SuppressWarnings("all")

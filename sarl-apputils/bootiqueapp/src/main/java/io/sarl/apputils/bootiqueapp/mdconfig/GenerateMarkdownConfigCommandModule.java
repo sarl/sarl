@@ -32,10 +32,10 @@ import io.bootique.meta.module.ModulesMetadata;
 
 /** Module for displaying the help for configuration parameters on the standard output using a Markdown format.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiqueapp 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 public class GenerateMarkdownConfigCommandModule implements BQModule {

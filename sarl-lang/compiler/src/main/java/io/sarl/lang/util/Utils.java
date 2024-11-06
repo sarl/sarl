@@ -118,10 +118,10 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /**
  * Utilities functions on JvmElements.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public final class Utils {
 
@@ -1488,10 +1488,10 @@ public final class Utils {
 	 * {@link Utils#getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
 	 * function.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.5
 	 */
 	public enum SarlLibraryErrorCode {
@@ -2253,10 +2253,10 @@ public final class Utils {
 	/**
 	 * Status of parsing the type parameters.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	public enum TypeParameterStatus {

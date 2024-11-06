@@ -31,10 +31,10 @@ import org.eclipse.xtext.xbase.interpreter.impl.XbaseInterpreter;
 
 /** Interpreter of SARL expressions (not SARL declaration types).
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.12
  */
 public class SarlExpressionInterpreter extends XbaseInterpreter {

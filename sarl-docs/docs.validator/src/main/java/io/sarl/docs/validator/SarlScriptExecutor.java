@@ -56,10 +56,10 @@ import io.sarl.lang.sarl.SarlScript;
 
 /** Sarl script executor.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.validator 0.14.0 20241106-161409
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public class SarlScriptExecutor implements ScriptExecutor {

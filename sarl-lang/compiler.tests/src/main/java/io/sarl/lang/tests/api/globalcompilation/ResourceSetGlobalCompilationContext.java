@@ -51,10 +51,10 @@ import io.sarl.tests.api.tools.TestUtils;
  * <p>The global compilation for a resource set enables to compile, i.e. generate the Java code
  * for all the source files into a given resource set in a single compilation step.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.9
  */
 public class ResourceSetGlobalCompilationContext {

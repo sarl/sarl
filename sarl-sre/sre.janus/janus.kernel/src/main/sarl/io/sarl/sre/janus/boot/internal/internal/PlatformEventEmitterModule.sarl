@@ -47,10 +47,10 @@ import javax.inject.Singleton
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class PlatformEventEmitterModule implements BQModule {
 
@@ -106,10 +106,10 @@ class PlatformEventEmitterModule implements BQModule {
 
 /** Provider of the module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class PlatformEventEmitterModuleProvider implements BQModuleProvider {

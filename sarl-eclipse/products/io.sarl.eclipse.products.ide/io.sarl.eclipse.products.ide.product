@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.eclipse.products.ide" id="io.sarl.eclipse.ideapp.io_sarl_eclipse_products_ide" application="org.eclipse.ui.ide.workbench" version="0.14.0.qualifier" type="features" includeLaunchers="true" includeJRE="true" autoIncludeRequirements="true">
+<product name="%product.name" uid="io.sarl.eclipse.products.ide" id="io.sarl.eclipse.ideapp.io_sarl_eclipse_products_ide" application="org.eclipse.ui.ide.workbench" version="0.14.0" type="features" includeLaunchers="true" includeJRE="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="platform:/plugin/io.sarl.eclipse/icons/eclipse-about-banner.png"/>

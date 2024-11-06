@@ -31,10 +31,10 @@ import com.google.common.base.Strings;
  * Provides additional function signatures according the semantic
  * associated to the parameter's default values.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class DefaultInferredPrototype implements InferredPrototype {
 
@@ -150,10 +150,10 @@ public class DefaultInferredPrototype implements InferredPrototype {
 
 	/** Iterator of the types of the action parameters.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class SignatureKeyIterator implements Iterator<ActionParameterTypes> {
 

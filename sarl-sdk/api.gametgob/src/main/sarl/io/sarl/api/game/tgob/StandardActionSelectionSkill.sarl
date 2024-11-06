@@ -27,10 +27,10 @@ import java.util.List
  * Skill that implements the standard action selection algorithm that is defined for
  * the game time-based goal-oriented behaviors.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.gametgob 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.gametgob
  * @since 0.13
  */
 skill StandardActionSelectionSkill implements SelectAction {

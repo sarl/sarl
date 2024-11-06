@@ -36,10 +36,10 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
  *
  * <p>This filter permits to hide/show the behavior units.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribution {
 

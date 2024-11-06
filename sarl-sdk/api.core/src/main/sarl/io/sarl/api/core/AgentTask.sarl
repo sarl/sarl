@@ -29,11 +29,11 @@ import io.sarl.lang.core.annotation.PrivateAPI
  * Description of a task an agent has schedule to be performed at a later time.
  * This class is not thread-safe.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.core 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 class AgentTask extends SRESpecificDataContainer {
 

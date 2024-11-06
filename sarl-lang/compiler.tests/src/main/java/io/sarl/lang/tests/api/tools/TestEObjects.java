@@ -49,10 +49,10 @@ import io.sarl.tests.api.tools.TestUtils;
 
 /** Set of additional utilities for created testing EObject, except those related to SARL concepts.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.11
  */
 public class TestEObjects {

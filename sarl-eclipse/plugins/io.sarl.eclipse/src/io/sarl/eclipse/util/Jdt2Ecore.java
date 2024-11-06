@@ -80,10 +80,10 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This class extends the {@link SarlUtils} from the {@code io.sarl.lang} project.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @Singleton
 @SuppressWarnings("restriction")
@@ -593,10 +593,10 @@ public class Jdt2Ecore {
 
 	/** Iterator on the super types of a given type.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class SuperTypeIterator implements Iterator<IType> {
 
@@ -718,10 +718,10 @@ public class Jdt2Ecore {
 
 	/** Provider of SARL formal parameters from a the JDT formal parameter list.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class JdtFormalParameterList implements FormalParameterProvider {
 
@@ -804,10 +804,10 @@ public class Jdt2Ecore {
 
 	/** The interface permits to find the JDT definition of a type.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface TypeFinder {
@@ -825,10 +825,10 @@ public class Jdt2Ecore {
 
 	/** Parameter builder.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	private interface ParameterBuilder {
@@ -837,10 +837,10 @@ public class Jdt2Ecore {
 
 	/** Action builder.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface ActionBuilder {
@@ -854,10 +854,10 @@ public class Jdt2Ecore {
 
 	/** Constructor builder.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface ConstructorBuilder {

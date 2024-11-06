@@ -68,10 +68,10 @@ import io.sarl.lang.ui.internal.LangActivator;
 
 /** Abstract implementation for the configuration block dedicated to an extra language generator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 @SuppressWarnings("restriction")
@@ -682,10 +682,10 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	/** Internal data.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	private static class TableItemData {
 

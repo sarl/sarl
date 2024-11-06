@@ -72,10 +72,10 @@ import io.sarl.lang.util.Utils;
 
 /** Abstract implementation for the generator from SARL to an extra language.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator implements IRootGenerator {
@@ -791,10 +791,10 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	/** Specific properties with reading order.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.8
 	 */
 	private static class OrderedProperties extends Properties {
@@ -825,10 +825,10 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 
 	/** Description of a module that provides extra language support.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	public interface ExtraLanguageSupportModule {

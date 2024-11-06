@@ -27,10 +27,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * The built-in capacities are assumed to be provided by
  * the runtime platform.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.6
  */
 public interface DynamicSkillProvider {

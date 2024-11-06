@@ -29,10 +29,10 @@ import javax.inject.Inject
 
 /** An injector of agent components that may be enable or disable according to the SRE configuration.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 @SuppressWarnings("raw_type")
@@ -56,10 +56,10 @@ interface ConfigurableAgentInjector {
 
 /** An injector of agent components that injects nothing (NOP).
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 @SuppressWarnings("raw_type")
@@ -77,10 +77,10 @@ class NopConfigurableAgentInjector implements ConfigurableAgentInjector {
 
 /** An injector of agent components that injects only the members of the agent traits..
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 @SuppressWarnings("raw_type")
@@ -110,10 +110,10 @@ class AgentTraitLevelConfigurableAgentInjector implements ConfigurableAgentInjec
  * This injector may be used when the component instance is created by hand ("new" operator),
  * and needs to be injected when it is marked with the {@code @Injectable} annotation. 
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 @SuppressWarnings("raw_type")

@@ -32,10 +32,10 @@ import io.sarl.lang.core.util.ConcurrentCollection;
  * collection of Spaces. Each context has a default context that provides a
  * basic interaction context.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public interface AgentContext {
 

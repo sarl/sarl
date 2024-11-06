@@ -54,10 +54,10 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
 /**
  * Command for launching sarldoc.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarldoc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocCommand extends AbstractSarldocCommand {
@@ -199,10 +199,10 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	/** Print writer that is able to output message with the logger as severe messages.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version sarldoc 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid sarldoc
 	 * @since 0.10
 	 */
 	private static class ErrorWriter extends Writer {

@@ -26,10 +26,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * A specific SRE runnable for kernel tasks.
  * See {@link Runnables} for creating an instance.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  * @see Runnables
  */

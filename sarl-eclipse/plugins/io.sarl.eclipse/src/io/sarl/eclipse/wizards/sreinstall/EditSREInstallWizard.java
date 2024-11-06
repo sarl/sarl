@@ -29,10 +29,10 @@ import io.sarl.eclipse.runtime.ISREInstall;
 /**
  * Wiazrd for SRE installation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class EditSREInstallWizard extends SREInstallWizard {
 

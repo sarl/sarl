@@ -29,10 +29,10 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 /**
  * Label provider for hyperlinks.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.5
  */
 public class SARLHyperLinkingLabelProvider extends SARLLabelProvider {

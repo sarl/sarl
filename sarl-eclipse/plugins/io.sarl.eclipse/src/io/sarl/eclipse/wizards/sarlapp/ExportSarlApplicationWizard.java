@@ -31,10 +31,10 @@ import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
  * SARL wizard for export a SARL application into a single Jar file.
  * Most part of the code of this class comes from {@code JavaProjectWizard}.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.8
  */
 public class ExportSarlApplicationWizard extends FixedFatJarExportWizard {

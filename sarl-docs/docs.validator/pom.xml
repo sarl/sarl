@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.docs</groupId>
   <artifactId>docs.validator</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <name>Documentation Validator</name>
   <description>API for the validation of the documentation</description>
   <packaging>jar</packaging>

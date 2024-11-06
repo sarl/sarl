@@ -32,10 +32,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * effects by a listener. Within a Space, the notion of {@link Scope} enables to
  * precisely control/filter the potential recipients of an event.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public abstract class Event implements Serializable {
 
@@ -153,10 +153,10 @@ public abstract class Event implements Serializable {
 	 * The upper bounds corresponds to the type that a generic type must inherit.
 	 * The lower bounds corresponds to the that that a generic type must be a super type.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.14
 	 */
 	public enum BoundType {
@@ -175,10 +175,10 @@ public abstract class Event implements Serializable {
 	 *
 	 * @param type the type associated to this generic type bound.
 	 * @param direction the type of bound for the record.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.14
 	 */
 	public record Bound(Class<?> type, BoundType direction)  {

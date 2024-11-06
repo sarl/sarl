@@ -41,10 +41,10 @@ import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.annotation.SarlSpecification;
 
 /**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.util 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  */
 @SuppressWarnings("all")
 @DisplayName("StandardSarlSpecificationChecker")

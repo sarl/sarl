@@ -34,10 +34,10 @@ import io.sarl.lang.core.annotation.DefaultValue;
 
 /** An object able to provide the name and the type of a formal parameter.
 *
-* @author $Author: sgalland$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
+* @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+* @version compiler 0.14.0 20241106-161406
+* @mavengroupid io.sarl.lang
+* @mavenartifactid compiler
 */
 class JvmFormalParameterProvider implements FormalParameterProvider {
 

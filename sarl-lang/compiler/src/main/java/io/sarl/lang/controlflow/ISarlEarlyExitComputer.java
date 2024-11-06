@@ -29,10 +29,10 @@ import io.sarl.lang.sarl.SarlAction;
 
 /** Compute the early-exit flag for the SARL statements.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 

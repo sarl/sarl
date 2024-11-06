@@ -94,10 +94,10 @@ import io.sarl.lang.util.Utils;
  * with a name starting with "get", "is", "has" is a pure function.
  * It also assumes that "equals", "hashCode", "clone" and "toString" are also pure functions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 @Singleton
@@ -1146,10 +1146,10 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Context for the side effect.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	public static final class SideEffectContext implements ISideEffectContext {
@@ -1359,10 +1359,10 @@ public class SARLOperationHelper implements IOperationHelper {
 
 		/** A context.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version compiler 0.14.0 20241106-161406
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid compiler
 		 * @since 0.6
 		 */
 		private static class InternalContext {
@@ -1476,10 +1476,10 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Adapter that enables to adda annotation when generating the Java code.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	public static class AnnotationJavaGenerationAdapter extends AdapterImpl {
@@ -1545,10 +1545,10 @@ public class SARLOperationHelper implements IOperationHelper {
 
 	/** Internal sub helper. This helper forces the use of a specific side effect context.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	private static class SubHelper implements IOperationHelper {

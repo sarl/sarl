@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sre</groupId>
   <artifactId>sarl-sre</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <packaging>pom</packaging>
   <name>SARL Runtime Environment</name>
   <description>Definition of the SARL Runtime Environment</description>
@@ -135,6 +135,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <!--
   <repositories>
     <repository>
       <id>io.sarl-maven</id>
@@ -152,4 +153,5 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  -->
 </project>

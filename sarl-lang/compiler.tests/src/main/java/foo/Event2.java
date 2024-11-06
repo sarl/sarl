@@ -26,9 +26,9 @@ import io.sarl.lang.core.Event;
 
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
  * @mavenartifactid $ArifactId$
  */
 @SuppressWarnings("all")

@@ -50,11 +50,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.network 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class HazelcastSpaceRepository extends LocalSpaceRepository {

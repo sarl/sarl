@@ -48,10 +48,10 @@ import io.sarl.lang.core.util.CliUtilities;
  * <p>This delegate is in charge of running a SARL agent with the specific
  * SRE.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguration {
 
@@ -177,10 +177,10 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	/** Definition of the launching process, split in separated steps for
 	 * making easier the cancellation.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private static class LaunchProcess extends AbstractLaunchProcess<SARLAgentLaunchConfiguration> {
 

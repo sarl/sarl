@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sdk</groupId>
   <artifactId>sdk</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <name>Full SDK for SARL Applications</name>
   <description>Provides all necessary dependencies to develop a MAS using SARL</description>
   <packaging>jar</packaging>
@@ -52,7 +52,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.14.0-SNAPSHOT</version>
+        <version>0.14.0</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>

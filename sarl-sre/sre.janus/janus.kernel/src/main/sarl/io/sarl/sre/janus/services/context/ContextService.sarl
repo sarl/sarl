@@ -35,11 +35,11 @@ import org.arakhne.afc.services.IService
 /** 
  * This service enables to store the contexts and to manage the spaces in the SRE platform.
  * 
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface ContextService extends IService {
 
@@ -100,10 +100,10 @@ interface ContextService extends IService {
 /** 
  * Listener on events related to the members of an external context.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface ExternalContextMemberListener extends EventListener {
 
@@ -136,10 +136,10 @@ interface ExternalContextMemberListener extends EventListener {
 /** 
  * Listener on events related to the membership within a context.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface InternalContextMembershipListener extends EventListener {
 
@@ -165,10 +165,10 @@ interface InternalContextMembershipListener extends EventListener {
 /** 
  * Factory of the listeners on events related to the membership within a context.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.7.0
  */
 interface InternalContextMembershipListenerFactory {

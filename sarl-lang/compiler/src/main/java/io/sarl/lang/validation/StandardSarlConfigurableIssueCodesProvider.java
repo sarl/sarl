@@ -30,10 +30,10 @@ import org.eclipse.xtext.validation.SeverityConverter;
 /**
  * Provider of issues that could be configured by the user.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurableIssueCodes {

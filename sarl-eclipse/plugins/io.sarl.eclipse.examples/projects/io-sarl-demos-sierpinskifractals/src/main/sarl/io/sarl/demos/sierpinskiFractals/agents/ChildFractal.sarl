@@ -33,8 +33,8 @@ import io.sarl.demos.sierpinskiFractals.objects.Square
  * Child fractal agent.
  * Contains other Fractal agent in its inner context.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 agent ChildFractal extends AbstractFractal {
 

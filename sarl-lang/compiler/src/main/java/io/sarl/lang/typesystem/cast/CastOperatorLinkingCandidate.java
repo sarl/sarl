@@ -44,10 +44,10 @@ import io.sarl.lang.sarl.SarlPackage;
 
 /** Linking candidate for cast operator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidate<XCastedExpression> implements ICastOperatorLinkingCandidate {
@@ -263,10 +263,10 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	 * The result of the comparison of two linking candidates.
 	 * FIXME: Remove when the CandidateCompareResult into the super type is visible.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.9
 	 */
 	private enum CandidateCompareResult {

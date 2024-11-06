@@ -38,10 +38,10 @@ import io.sarl.eclipse.util.BundleUtil;
  *
  * <p>The Janus networking library is an application library, i.e. it is included into the run-time classpath.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.sre.janus 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  * @since 0.12
  */
 public class JanusNetworkClasspathProvider extends StandardClasspathProvider {

@@ -24,10 +24,10 @@ import org.eclipse.osgi.util.NLS;
 
 /** Messages for the SRE configuration.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiqueapp 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

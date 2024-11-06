@@ -42,10 +42,10 @@ import org.arakhne.afc.services.IService
 /** 
  * Injectable implementation of the name space service.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
@@ -69,10 +69,10 @@ class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
 /** 
  * Module for the namespace services.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class NamespaceServiceModule implements BQModule {
@@ -96,10 +96,10 @@ class NamespaceServiceModule implements BQModule {
 
 /** Provider of the module for the namespace services.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class NamespaceServiceModuleProvider implements BQModuleProvider {

@@ -31,10 +31,10 @@ import java.lang.reflect.Constructor;
 /**
  * An object that could be used as a proxy for serializing an object.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.8.6
  */
 public class SerializableProxy implements Serializable {

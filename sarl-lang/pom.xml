@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.lang</groupId>
   <artifactId>sarl-lang</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <packaging>pom</packaging>
   <name>SARL Language</name>
   <description>Definition of the language and compilers for SARL</description>
@@ -183,6 +183,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <!--
   <repositories>
     <repository>
       <id>io.sarl-maven</id>
@@ -200,4 +201,5 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  -->
 </project>

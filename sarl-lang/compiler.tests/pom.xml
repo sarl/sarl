@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.lang</groupId>
   <artifactId>compiler.tests</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <name>Compiler Test API</name>
   <description>Testing the SARL compiler</description>
   <packaging>jar</packaging>

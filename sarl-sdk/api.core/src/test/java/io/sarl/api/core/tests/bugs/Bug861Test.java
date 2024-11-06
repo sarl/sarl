@@ -40,10 +40,10 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * 
  * <p>See: https://github.com/sarl/sarl/issues/861
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.core 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @see "https://github.com/sarl/sarl/issues/861"
  * @since 0.11
  */

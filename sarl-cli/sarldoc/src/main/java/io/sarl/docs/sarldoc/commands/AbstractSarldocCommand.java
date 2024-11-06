@@ -60,10 +60,10 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
  * Abstract command for launching sarldoc that is sharing all the code
  * between the real sarldoc command and its fake version.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarldoc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public abstract class AbstractSarldocCommand extends CommandWithMetadata {

@@ -47,10 +47,10 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/612
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.core 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @see https://github.com/sarl/sarl/issues/612
  */
 @DisplayName("Bug #612")
@@ -60,10 +60,10 @@ public class Bug612Test {
 
 	/** The container is a class. 
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Class Container")
 	@Nested
@@ -71,10 +71,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from function")
 		@Nested
@@ -215,10 +215,10 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static field reference from function")
 		@Nested
@@ -432,10 +432,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from function")
 		@Nested
@@ -539,10 +539,10 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Field reference from function")
 		@Nested
@@ -1116,10 +1116,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from function")
 		@Nested
@@ -1313,10 +1313,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from static function")
 		@Nested
@@ -1457,10 +1457,10 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static field reference from static function")
 		@Nested
@@ -1674,10 +1674,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from static function")
 		@Nested
@@ -1781,10 +1781,10 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Field reference from static function")
 		@Nested
@@ -1998,10 +1998,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from static function")
 		@Nested
@@ -2195,10 +2195,10 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from constructor")
 		@Nested
@@ -2668,10 +2668,10 @@ public class Bug612Test {
 
 	/** The container is an interface. 
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Interface Container")
 	@Nested
@@ -2679,10 +2679,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from function")
 		@Nested
@@ -2811,10 +2811,10 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static field reference from function")
 		@Nested
@@ -2948,10 +2948,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from function")
 		@Nested
@@ -3048,10 +3048,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from function")
 		@Nested
@@ -3229,10 +3229,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from static function")
 		@Nested
@@ -3363,10 +3363,10 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static field reference from static function")
 		@Nested
@@ -3502,10 +3502,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from static function")
 		@Nested
@@ -3603,10 +3603,10 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Field reference from static function")
 		@Nested
@@ -3742,10 +3742,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from static function")
 		@Nested
@@ -3928,10 +3928,10 @@ public class Bug612Test {
 
 	/** The container is an agent. 
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Agent Container")
 	@Nested
@@ -3939,10 +3939,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from function")
 		@Nested
@@ -4103,10 +4103,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from function")
 		@Nested
@@ -4199,10 +4199,10 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Field reference from function")
 		@Nested
@@ -4836,10 +4836,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from function")
 		@Nested
@@ -5053,10 +5053,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from static function")
 		@Nested
@@ -5216,10 +5216,10 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Static function reference from static function")
 		@Nested
@@ -5332,10 +5332,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from static function")
 		@Nested
@@ -5548,10 +5548,10 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from constructor")
 		@Nested
@@ -5864,10 +5864,10 @@ public class Bug612Test {
 
 	/** The container is a behavior. 
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Behavior Container")
 	@Nested
@@ -5875,10 +5875,10 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Constant reference from function")
 		@Nested
@@ -6023,10 +6023,10 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Field reference from function")
 		@Nested
@@ -6612,10 +6612,10 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from function")
 		@Nested
@@ -6813,10 +6813,10 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
-		 * @version $Name$ $Revision$ $Date$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+		 * @version api.core 0.14.0 20241106-161408
+		 * @mavengroupid io.sarl.sdk
+		 * @mavenartifactid api.core
 		 */
 		@DisplayName("Function reference from constructor")
 		@Nested
@@ -6991,10 +6991,10 @@ public class Bug612Test {
 
 	/** Test specific skill issues
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Skill Issues")
 	@Nested
@@ -7473,10 +7473,10 @@ public class Bug612Test {
 
 	/** Test specific parameter issues
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Parameter Issues")
 	@Nested
@@ -7781,10 +7781,10 @@ public class Bug612Test {
 
 	/** Test specific to capacity implementation issues
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Capacity Implementation Issues")
 	@Nested
@@ -7925,10 +7925,10 @@ public class Bug612Test {
 
 	/** Test specific to implementation issues
 	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version api.core 0.14.0 20241106-161408
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.core
 	 */
 	@DisplayName("Implementation Issues")
 	@Nested

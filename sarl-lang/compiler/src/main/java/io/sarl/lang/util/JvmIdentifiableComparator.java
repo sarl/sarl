@@ -29,10 +29,10 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 /**
  * Comparator of JvmIdentifiableElements.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class JvmIdentifiableComparator implements Comparator<JvmIdentifiableElement>, Serializable {
 	private static final long serialVersionUID = 2267225783238047934L;

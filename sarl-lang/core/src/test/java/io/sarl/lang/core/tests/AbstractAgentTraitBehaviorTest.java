@@ -48,10 +48,10 @@ import io.sarl.lang.core.UnimplementedCapacityException;
 import io.sarl.tests.api.Nullable;
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SuppressWarnings("all")
 @DisplayName("AbstractAgentTraitBehavior")
@@ -264,10 +264,10 @@ public abstract class AbstractAgentTraitBehaviorTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class AgentMock extends Agent {
 
@@ -283,10 +283,10 @@ public abstract class AbstractAgentTraitBehaviorTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static interface Capacity1 extends Capacity {
 		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
@@ -297,10 +297,10 @@ public abstract class AbstractAgentTraitBehaviorTest {
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {

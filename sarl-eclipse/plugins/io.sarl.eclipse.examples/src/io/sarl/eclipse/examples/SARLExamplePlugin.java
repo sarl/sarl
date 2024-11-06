@@ -37,10 +37,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * Utility functions for the plugin.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.examples 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples
  * @since 0.10
  */
 public class SARLExamplePlugin extends AbstractUIPlugin {

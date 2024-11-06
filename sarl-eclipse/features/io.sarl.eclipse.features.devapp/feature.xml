@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.eclipse.features.devapp"
       label="SARL IDE for SARL Contributors"
-      version="0.14.0.qualifier"
+      version="0.14.0"
       plugin="io.sarl.eclipse.devapp">
 
    <description url="http://www.sarl.io/about/">
@@ -222,8 +222,8 @@
    </url>
 
    <requires>
-      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier"/>
-      <import feature="io.sarl.eclipse.features.sre.janus" version="0.14.0.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.14.0"/>
+      <import feature="io.sarl.eclipse.features.sre.janus" version="0.14.0"/>
       <import feature="org.eclipse.xtext.sdk" version="2.36.0.v20240825-0714"/>
    </requires>
 

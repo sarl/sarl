@@ -23,10 +23,10 @@ package io.sarl.lang.pythongenerator.configuration;
 
 /** Configuration for the SARL-to-Python generator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version pythongenerator 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.8
  */
 public class PyGeneratorConfiguration {

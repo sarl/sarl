@@ -73,10 +73,10 @@ import io.sarl.lang.core.SARLVersion;
 
 /** An abstract implementation of a Doclet.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.doclet 0.14.0 20241106-161409
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public abstract class AbstractDoclet implements Doclet {
@@ -285,10 +285,10 @@ public abstract class AbstractDoclet implements Doclet {
 
 	/** Reporter that does nothing.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version docs.doclet 0.14.0 20241106-161409
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	private static class IddleReporter implements Reporter {

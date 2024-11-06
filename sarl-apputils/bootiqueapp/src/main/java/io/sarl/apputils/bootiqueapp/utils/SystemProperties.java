@@ -27,10 +27,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utilities methods for accessing the properties and the environment variables.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiqueapp 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.10
  */
 public final class SystemProperties {

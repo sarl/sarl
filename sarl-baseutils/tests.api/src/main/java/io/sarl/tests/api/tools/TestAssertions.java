@@ -54,10 +54,10 @@ import org.osgi.framework.Version;
 
 /** Set of utility classes that provide additional assertion functions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version tests.api 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public final class TestAssertions {
@@ -1137,10 +1137,10 @@ public final class TestAssertions {
 
 	/** Code to be run.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version tests.api 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface
@@ -1157,10 +1157,10 @@ public final class TestAssertions {
 	/** Verification code for exception.
 	 *
 	 * @param <T> the type of the exception.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version tests.api 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface
@@ -1178,10 +1178,10 @@ public final class TestAssertions {
 	/** Exception checker.
 	 *
 	 * @param <T> the type of the exception.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version tests.api 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	public static class ExceptionChecker<T extends Throwable> {

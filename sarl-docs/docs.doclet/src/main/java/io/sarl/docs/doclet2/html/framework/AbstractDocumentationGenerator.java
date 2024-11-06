@@ -104,10 +104,10 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Abstract implementation of a generator for the documentation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.doclet 0.14.0 20241106-161409
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public abstract class AbstractDocumentationGenerator implements HtmlFactoryContext {
@@ -1345,10 +1345,10 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	/** Implementation of an extractor for the tag content.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version docs.doclet 0.14.0 20241106-161409
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	protected class TagContentExtractor implements HtmlFactoryContentExtractor {
@@ -1383,10 +1383,10 @@ public abstract class AbstractDocumentationGenerator implements HtmlFactoryConte
 
 	/** Scanner of import statements from a Java code.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version docs.doclet 0.14.0 20241106-161409
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	protected class ImportScanner extends ElementScanner9<Void, Void> {

@@ -33,10 +33,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 
 /** Utility functions for the launch configurations.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.12
  */
 public final class LaunchConfigurationUtils {
@@ -118,10 +118,10 @@ public final class LaunchConfigurationUtils {
 	 * Arguments to a launch configuration.
 	 *
 	 * @param <T> the type of the arguments list
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public abstract static class OutputExtraArguments<T extends OutputExtraArguments<?>> {
@@ -327,10 +327,10 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments to a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public static class OutputExtraSreArguments extends OutputExtraArguments<OutputExtraSreArguments> {
@@ -355,10 +355,10 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments to a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public static class OutputExtraJreArguments extends OutputExtraArguments<OutputExtraJreArguments> {
@@ -384,10 +384,10 @@ public final class LaunchConfigurationUtils {
 	 * Arguments from a launch configuration.
 	 *
 	 * @param <T> the type of the arguments list
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public abstract static class InputExtraArguments<T extends InputExtraArguments<?>> {
@@ -655,10 +655,10 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments from a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public static class InputExtraSreArguments extends InputExtraArguments<InputExtraSreArguments> {
@@ -681,10 +681,10 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments from a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	public static class InputExtraJreArguments extends InputExtraArguments<InputExtraJreArguments> {

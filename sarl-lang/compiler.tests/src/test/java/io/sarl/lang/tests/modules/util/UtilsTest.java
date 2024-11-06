@@ -65,10 +65,10 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 
 /** This class tests the {@link SarlUtils} for SARL.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.10
  */
 @SuppressWarnings("all")

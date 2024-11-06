@@ -26,10 +26,10 @@ import org.osgi.framework.BundleContext;
 
 /** Activator of the bundle test.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version tests.api 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 public class TestPluginActivator implements BundleActivator {
 

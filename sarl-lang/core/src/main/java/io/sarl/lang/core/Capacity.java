@@ -23,20 +23,20 @@ package io.sarl.lang.core;
 
 /** Root type for all the capacities in the SARL language.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public interface Capacity {
 
 	/** Wrapper to a capacity that enable to manage and provide the caller to the capacity function.
 	 *
 	 * @param <C> the type of the wrapper capacity.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.5
 	 * @ExcludeFromApidoc
 	 */

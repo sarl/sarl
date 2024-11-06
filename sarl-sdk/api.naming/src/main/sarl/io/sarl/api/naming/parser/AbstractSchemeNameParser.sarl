@@ -29,10 +29,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Abstact implementation of a parser of names that is accepting URI-based syntax for a specific scheme
  * 
  * @param <N> the type of the name that is the result of the decoding.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.naming 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 abstract class AbstractSchemeNameParser<N extends SarlName> implements ISchemeNameParser<N> {

@@ -34,10 +34,10 @@ import org.eclipse.xtext.ui.editor.model.TerminalsTokenTypeToPartitionMapper;
  *
  * <p>It is created for enabling content assist in Javadoc.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public class SARLContentAssistFactory extends DefaultContentAssistantFactory {

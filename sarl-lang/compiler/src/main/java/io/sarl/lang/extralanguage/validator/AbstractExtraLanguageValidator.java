@@ -69,10 +69,10 @@ import io.sarl.lang.validation.IssueCodes;
  * <p>This abstract implementation is not a EValidator implementation because the Xtext EValidator infrastructure
  * has issues with error reporting when the validator is dynamically added (as it is in the support class).
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public abstract class AbstractExtraLanguageValidator {
@@ -491,10 +491,10 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Comparator of feature calls.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	private static final class FeatureCallComparator implements Comparator<XAbstractFeatureCall> {
@@ -517,10 +517,10 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Validation context.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	protected static class Context {
@@ -616,10 +616,10 @@ public abstract class AbstractExtraLanguageValidator {
 
 	/** Method wrapper.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	protected static class MethodWrapper {

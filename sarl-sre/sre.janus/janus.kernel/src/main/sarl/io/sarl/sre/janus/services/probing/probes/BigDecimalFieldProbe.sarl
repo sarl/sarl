@@ -34,10 +34,10 @@ import javax.inject.Provider
  * {@link #sync()} function must be invoked. Then, the new value is read
  * from the associated field, and the probe listeners are notified.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class BigDecimalFieldProbe extends AbstractFieldProbe<BigDecimal> {

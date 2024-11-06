@@ -28,10 +28,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("serialization: throws and fires in action prototypes")
 @Tag("core")

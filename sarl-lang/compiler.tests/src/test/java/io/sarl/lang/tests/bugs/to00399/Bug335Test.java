@@ -33,10 +33,10 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /** See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864">Xtext issue 481864</a>.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("Bug #335")
 @SuppressWarnings("all")

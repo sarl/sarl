@@ -35,10 +35,10 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the GNU source-highlight.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "https://www.gnu.org/software/src-highlite/"
  */
 public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragment2 {

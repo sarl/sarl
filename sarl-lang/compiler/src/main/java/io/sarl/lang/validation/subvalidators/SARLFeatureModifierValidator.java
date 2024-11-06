@@ -68,10 +68,10 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /**
  * A specialization of {@link JvmGenericTypeValidator} to deal with specific features of SARL.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
@@ -937,10 +937,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 
 	/** The modifier validator for constructors.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	protected class SARLModifierValidator {
 

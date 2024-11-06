@@ -39,10 +39,10 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/639
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("Bug #639")
 @SuppressWarnings("all")

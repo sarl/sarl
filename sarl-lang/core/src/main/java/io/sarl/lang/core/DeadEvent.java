@@ -34,10 +34,10 @@ import io.sarl.lang.core.annotation.SarlSpecification;
  * Directly copy from com.google.common.eventbus.DeadEvent
  * </p>
  *
- * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @deprecated no more used since 0.5.
  */
 @Deprecated(forRemoval = true, since = "0.5")

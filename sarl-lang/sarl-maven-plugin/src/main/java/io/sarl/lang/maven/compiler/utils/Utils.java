@@ -25,10 +25,10 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 /** Utilities for the SARL maven plugin.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarl-maven-plugin 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.8
  */
 public final class Utils {

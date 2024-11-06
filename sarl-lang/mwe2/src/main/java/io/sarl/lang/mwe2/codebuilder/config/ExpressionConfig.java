@@ -29,10 +29,10 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
 /**
  * A component for configuring the CodeBuilderFragment2.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class ExpressionConfig implements IGuiceAwareGeneratorComponent {
 

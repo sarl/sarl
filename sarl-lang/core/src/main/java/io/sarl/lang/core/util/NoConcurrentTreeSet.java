@@ -28,10 +28,10 @@ import java.util.TreeSet;
 /** Represent a set of objects which is not thread-safe.
  *
  * @param <T> the type of the objects in the set.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 class NoConcurrentTreeSet<T> extends TreeSet<T> implements ConcurrentSet<T> {

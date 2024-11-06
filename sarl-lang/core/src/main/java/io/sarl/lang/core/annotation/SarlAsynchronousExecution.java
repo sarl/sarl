@@ -32,10 +32,10 @@ import java.lang.annotation.Target;
  * It is an indicator that may be used by the SARL editor for displaying this function
  * in a different way to the SARL developper.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 @Target(ElementType.METHOD)

@@ -41,10 +41,10 @@ import io.sarl.api.experienceindex.SarlExperienceIndex.SEI;
 /**
  * Dialog that shows the results for the SARL experience index.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.experienceindex 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.experienceindex
  * @since 0.6
  */
 public class SarlExperienceIndexResultDialog extends IconAndMessageDialog {

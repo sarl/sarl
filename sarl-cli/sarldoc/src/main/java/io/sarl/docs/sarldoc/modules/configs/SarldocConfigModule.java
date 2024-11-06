@@ -54,10 +54,10 @@ import io.sarl.docs.sarldoc.configs.Visibility;
 /**
  * Module for creating and configuring the configuration that is specific to sarldoc.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarldoc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocConfigModule implements BQModule {

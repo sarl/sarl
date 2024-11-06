@@ -3,7 +3,7 @@
 
 	<groupId>io.sarl.cli</groupId>
 	<artifactId>sarl-cli</artifactId>
-	<version>0.14.0-SNAPSHOT</version>
+	<version>0.14.0</version>
 	<packaging>pom</packaging>
 	<name>SARL CLI Tools</name>
 	<description>Definition of command-line tools for SARL</description>
@@ -68,6 +68,7 @@
 		</license>
 	</licenses>
 
+	<!--
 	<repositories>
 	  <repository>
 	    <id>io.sarl-maven</id>
@@ -85,5 +86,6 @@
 	    </snapshots>
 	  </pluginRepository>
 	</pluginRepositories>
+	-->
 
 </project>

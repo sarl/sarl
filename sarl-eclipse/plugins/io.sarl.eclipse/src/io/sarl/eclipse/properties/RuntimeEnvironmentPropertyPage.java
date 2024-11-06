@@ -37,10 +37,10 @@ import io.sarl.eclipse.runtime.SREConfigurationBlock;
 /** Property page for selecting the SARL runtime environment
  * associated to this page.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {

@@ -59,10 +59,10 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for XExpressions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 
@@ -1344,10 +1344,10 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 	/** Description of the expression context.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version mwe2 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class ExpressionContextDescription {
 

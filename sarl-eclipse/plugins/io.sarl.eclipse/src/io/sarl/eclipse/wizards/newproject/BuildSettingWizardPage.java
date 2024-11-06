@@ -77,11 +77,11 @@ import io.sarl.lang.core.util.OutParameter;
  * The second page of the SARL new project wizard.
  * Most part of the code of this class is copy/paste from {@link NewJavaProjectWizardPageTwo}.
  *
- * @author $Author: ngaud$
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
@@ -714,10 +714,10 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	/** Task for updating the project.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class UpdateRunnable implements IRunnableWithProgress {
 		private IStatus infoStatus = Status.OK_STATUS;

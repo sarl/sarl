@@ -37,10 +37,10 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * <p>This type does not extend the {@code java.util.concurrent.atomic.AtomicReference} because
  * we don't want to exhibit several of its public functions.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.11
  */
 public class AtomicSkillReference implements Serializable, Cloneable {

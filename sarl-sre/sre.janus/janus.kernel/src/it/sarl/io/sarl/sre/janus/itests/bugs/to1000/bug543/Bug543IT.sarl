@@ -44,10 +44,10 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 /**
  * Unit test for the issue #543: Incomplete reset of the hidden buffers to skills.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/543
  */
 @ExtendWith(#[

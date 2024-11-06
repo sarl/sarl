@@ -30,10 +30,10 @@ import io.sarl.lang.core.SARLVersion;
 /**
  * Guice module dedicated to the SARL language generator.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class SarlLanguageGeneratorModule extends AbstractModule {
 

@@ -34,10 +34,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <p>If not specific injection configuration is defined, the {@link JavacBatchCompiler Javac batch compiler}
  * is used as the default implementation of this interface.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version batchcompiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.8
  */
 @ImplementedBy(EcjBatchCompiler.class)

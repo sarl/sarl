@@ -27,10 +27,10 @@ import com.google.common.base.Strings;
 /**
  * Enumeration of the Log4j levels.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiqueapp 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 15.0
  */
 public enum Level {

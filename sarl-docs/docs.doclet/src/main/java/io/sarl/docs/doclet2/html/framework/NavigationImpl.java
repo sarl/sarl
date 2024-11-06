@@ -75,10 +75,10 @@ import io.sarl.docs.doclet2.framework.TypeRepository;
 
 /** Represent the navigation bar.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.doclet 0.14.0 20241106-161409
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class NavigationImpl implements Navigation {

@@ -28,10 +28,10 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 
 /** provider of resource sets when comilig with Maven.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarl-maven-plugin 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 public class MavenProjectResourceSetProvider implements Provider<ResourceSet> {
 

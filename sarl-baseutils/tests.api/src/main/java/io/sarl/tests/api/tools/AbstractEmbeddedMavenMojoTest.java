@@ -28,10 +28,10 @@ import org.apache.maven.shared.verifier.VerificationException;
 
 /** Abstract test of Maven Mojo in the current process.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version tests.api 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 
@@ -76,10 +76,10 @@ public abstract class AbstractEmbeddedMavenMojoTest extends AbstractMojoTest  {
 
 	/** Wrapper for accessing the results of a Maven run.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version tests.api 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.13
 	 */
 	static class EmbeddedVerifier extends Verifier {

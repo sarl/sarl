@@ -42,10 +42,10 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the LaTeX listings.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragment2<IStyleAppendable> {
 
@@ -445,10 +445,10 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Appendable for tex-based styles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version mwe2 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class TeXAppendable extends AbstractAppendable {

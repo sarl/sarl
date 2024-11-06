@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SARL IDE for SARL Contributors
 Bundle-Vendor: SARL.io
-Bundle-Version: 0.14.0.qualifier
+Bundle-Version: 0.14.0
 Require-Bundle: io.sarl.eclipse;bundle-version="0.14.0"
 Bundle-SymbolicName: io.sarl.eclipse.devapp;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse.devapp

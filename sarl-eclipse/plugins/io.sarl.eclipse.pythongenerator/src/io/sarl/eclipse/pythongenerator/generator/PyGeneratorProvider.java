@@ -31,10 +31,10 @@ import io.sarl.lang.ui.extralanguage.compiler.AbstractExtraLanguageGeneratorProv
 
 /** The provider of a generator from SARL to the Python language.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.pythongenerator 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.pythongenerator
  * @since 0.6
  */
 @Singleton

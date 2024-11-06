@@ -27,10 +27,10 @@ import java.util.TreeSet;
 
 /** Classpath dedicated to the SARL environment that is independent of the UI.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ide 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ide
  * @since0.13
  */
 public class SARLBundleBuildPath {

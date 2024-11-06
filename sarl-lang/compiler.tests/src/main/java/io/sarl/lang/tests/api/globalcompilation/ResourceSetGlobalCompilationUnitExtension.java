@@ -47,10 +47,10 @@ import io.sarl.lang.tests.api.ExtendedSARLInjectorProvider;
  * <p>This extension should not directly be used. It is automatically invoked by the
  * {@link GlobalCompilationTestContribution} annotation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.11
  * @see GlobalCompilationTestContribution
  */
@@ -89,10 +89,10 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.11
 	 */
 	private class DynamicParameterResolver implements ParameterResolver {
@@ -112,10 +112,10 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 	}
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.11
 	 */
 	private class DynamicContext implements TestTemplateInvocationContext {

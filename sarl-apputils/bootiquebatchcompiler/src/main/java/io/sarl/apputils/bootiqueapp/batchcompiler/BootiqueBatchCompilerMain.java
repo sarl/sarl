@@ -33,10 +33,10 @@ import io.sarl.lang.SARLStandaloneSetup;
 /** Class that implements the standard main function for running a SARL application
  * with bootique and SARL batch compiler modules.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiquebatchcompiler 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 public class BootiqueBatchCompilerMain extends BootiqueMain {

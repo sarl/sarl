@@ -26,10 +26,10 @@ import java.util.concurrent.atomic.AtomicReference;
 /** 
  * Abstract implementation of a typical SRE service. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version afc.extension 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 0.7.0
  */
 public abstract class AbstractService implements IService {

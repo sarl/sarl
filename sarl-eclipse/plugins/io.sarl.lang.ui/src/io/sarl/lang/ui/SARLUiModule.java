@@ -43,19 +43,19 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  *
  * <p>DOT NOT ADD BINDINGS IN THIS CLASS. PREFER TO UPDATE THE MWE2 SCRIPT.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLUiModule extends AbstractSARLUiModule {
 
 	/** Provider of {@link UIConfigurableIssueSeveritiesProvider}.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.5
 	 */
 	private static class UIConfigurableIssueSeveritiesProviderProvider implements Provider<UIConfigurableIssueSeveritiesProvider> {

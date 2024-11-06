@@ -25,10 +25,10 @@ import io.sarl.lang.core.SARLVersion
 /**
  * Describes the version of the SARL SDK.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sdk 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid sdk
  * @since 0.13
  */
 final class SdkVersion {

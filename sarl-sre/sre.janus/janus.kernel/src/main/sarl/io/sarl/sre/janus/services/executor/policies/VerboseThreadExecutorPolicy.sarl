@@ -31,10 +31,10 @@ import javax.inject.Singleton
  * A handler for rejected tasks and uncaught exceptions that logs a warning on the platform logger
  * when a task is rejected, and an error for each uncaught exception.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see ThreadPoolExecutor.CallerRunsPolicy
  */
 @Singleton

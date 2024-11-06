@@ -52,10 +52,10 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for the networking features of the SRE. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.network 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 @BQConfig("Configuration for the SRE networking feature")
@@ -432,10 +432,10 @@ class SreNetworkConfig {
 /** 
  * Module for creating and configuring the networking features of the SRE.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.network 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class SreNetworkConfigModule implements BQModule {
@@ -473,10 +473,10 @@ class SreNetworkConfigModule implements BQModule {
 
 /** Provider of the module for creating and configuring the networking features of the SRE.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.network 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class SreNetworkConfigModuleProvider implements BQModuleProvider {

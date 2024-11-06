@@ -73,10 +73,10 @@ import io.sarl.lang.core.SARLVersion;
  * <p>This wizard extends the EMF wizard with the initialization of the SARL nature on the project,
  * the creation of launch configurations, and the closing of the welcome page of Eclipse.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.examples 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples
  * @since 0.6
  */
 @SuppressWarnings("restriction")
@@ -389,10 +389,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Configuration page.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse.examples 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.8
 	 */
 	public class ConfigurationPage extends WizardPage {
@@ -465,10 +465,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** A file to be opened that is associated to a project.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse.examples 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.10
 	 */
 	public static class ProjectFileToOpen extends FileToOpen {
@@ -539,10 +539,10 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Description of a launch configuration.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.eclipse.examples 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.examples
 	 * @since 0.10
 	 */
 	public static class ConfigurationToLaunch {

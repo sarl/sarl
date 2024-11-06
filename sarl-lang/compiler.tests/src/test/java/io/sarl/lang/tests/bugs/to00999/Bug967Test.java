@@ -41,10 +41,10 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/967
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/967"
  */
 @DisplayName("Bug #967")
@@ -54,10 +54,10 @@ public class Bug967Test {
 
 	/** In agent.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In agent")
@@ -260,10 +260,10 @@ public class Bug967Test {
 
 	/** In behavior.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In behavior")
@@ -442,10 +442,10 @@ public class Bug967Test {
 
 	/** In skill.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In skill")
@@ -649,10 +649,10 @@ public class Bug967Test {
 
 	/** Check field cases.
 	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("Field cases")

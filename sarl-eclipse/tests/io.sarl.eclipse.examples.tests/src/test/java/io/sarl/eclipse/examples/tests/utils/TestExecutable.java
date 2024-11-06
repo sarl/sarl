@@ -23,10 +23,10 @@ package io.sarl.eclipse.examples.tests.utils;
 
 /** The code of a test.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.examples.tests 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  * @since 0.11
  */
 @FunctionalInterface

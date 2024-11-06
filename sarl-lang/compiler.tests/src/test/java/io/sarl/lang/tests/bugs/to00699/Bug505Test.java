@@ -38,10 +38,10 @@ import io.sarl.lang.validation.IssueCodes;
 
 /** Text for issue 505: Reference instance methods or fields in abstract class.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/505"
  */
 @DisplayName("Bug #505")

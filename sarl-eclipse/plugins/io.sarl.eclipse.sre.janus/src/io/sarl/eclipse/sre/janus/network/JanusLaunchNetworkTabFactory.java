@@ -32,10 +32,10 @@ import io.sarl.eclipse.launching.dialog.ISarlRuntimeEnvironmentTab;
 /**
  * Provider of the launch configuration panel for the Janus network.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse.sre.janus 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  * @since 0.12
  */
 public class JanusLaunchNetworkTabFactory implements ISarlLaunchConfigurationPanelFactory {

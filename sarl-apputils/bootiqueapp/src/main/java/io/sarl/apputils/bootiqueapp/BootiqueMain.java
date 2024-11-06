@@ -40,10 +40,10 @@ import io.sarl.apputils.bootiqueapp.utils.JulPatternFormatter;
 /** Class that implements the standard main function for running a SARL application
  * with bootique modules.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version bootiqueapp 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.8
  */
 public class BootiqueMain {

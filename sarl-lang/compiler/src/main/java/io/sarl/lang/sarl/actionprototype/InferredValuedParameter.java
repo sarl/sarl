@@ -27,10 +27,10 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 /**
  * This class permits to wrap a default value when building the function signatures.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class InferredValuedParameter extends InferredStandardParameter {
 

@@ -31,10 +31,10 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 /**
  * Custom quickfixes.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @see "http://www.eclipse.org/Xtext/documentation.html#quickfixes"
  */
 public abstract class SARLSemanticModification implements ISemanticModification {

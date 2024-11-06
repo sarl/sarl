@@ -35,10 +35,10 @@ import io.sarl.lang.sarlc.tools.DefaultPathDetector;
 /**
  * Default implementation of a documentation path detector.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarldoc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.13
  */
 public class DefaultDocumentationPathDetector extends DefaultPathDetector implements DocumentationPathDetector {

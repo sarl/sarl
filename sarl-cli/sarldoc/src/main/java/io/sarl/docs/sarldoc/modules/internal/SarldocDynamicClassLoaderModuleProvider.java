@@ -27,10 +27,10 @@ import io.bootique.di.BQModule;
 
 /** Provider of the module for injecting the dynamic class loader.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarldoc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocDynamicClassLoaderModuleProvider implements BQModuleProvider {

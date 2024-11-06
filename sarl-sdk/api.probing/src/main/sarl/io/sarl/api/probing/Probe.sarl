@@ -26,10 +26,10 @@ import java.net.URI
  * Probe implementation.
  * 
  * @param <T> the type of value that is obtained by the probe.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.probing 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.probing
  * @since 0.12
  */
 interface Probe<T> {

@@ -54,13 +54,13 @@ import java.util.List;
 
 /** Custom tag.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.doclet 0.14.0 20241106-161409
  * @param name the name of the custom tag without the {@code @}.
  * @param locations the list of accepted locations.
  * @param header the header text.
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public record CustomTag(String name, List<CustomTagLocation> locations, String header) {

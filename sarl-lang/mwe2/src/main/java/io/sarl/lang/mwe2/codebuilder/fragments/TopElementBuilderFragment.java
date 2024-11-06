@@ -58,10 +58,10 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for top element types.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
@@ -1626,10 +1626,10 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 	/** Description of a top element.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version mwe2 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class TopElementDescription {
 

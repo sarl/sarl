@@ -33,10 +33,10 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
 /**
  * General utilities related to the class path.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sarlc 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.10
  */
 public final class ClassPathUtils {

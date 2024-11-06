@@ -31,10 +31,10 @@ import org.eclipse.xtext.util.RuntimeIOException;
  * <p>This implementation fix an issue in the xtext manager that is not adding
  * the source folder when ensuring the file system folder is existing.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class ProjectRelativeFileSystemAccess extends JDTAwareEclipseResourceFileSystemAccess2 {
 

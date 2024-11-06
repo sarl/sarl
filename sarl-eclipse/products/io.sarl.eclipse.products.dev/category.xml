@@ -12,16 +12,16 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
       </description>
    </category-def>
 
-   <feature id="io.sarl.eclipse.features.sarlcompiler" version="0.14.0.qualifier">
+   <feature id="io.sarl.eclipse.features.sarlcompiler" version="0.14.0">
       <category name="io.sarl"/>
    </feature>
-   <feature id="io.sarl.eclipse.features.sarlcompiler.source" version="0.14.0.qualifier">
+   <feature id="io.sarl.eclipse.features.sarlcompiler.source" version="0.14.0">
       <category name="io.sarl.sources"/>
    </feature>
-   <feature id="io.sarl.eclipse.features.sre.janus" version="0.14.0.qualifier">
+   <feature id="io.sarl.eclipse.features.sre.janus" version="0.14.0">
       <category name="io.sarl"/>
    </feature>
-   <feature id="io.sarl.eclipse.features.sre.janus.source" version="0.14.0.qualifier">
+   <feature id="io.sarl.eclipse.features.sre.janus.source" version="0.14.0">
       <category name="io.sarl.sources"/>
    </feature>
    <feature id="io.sarl.eclipse.features.devapp">

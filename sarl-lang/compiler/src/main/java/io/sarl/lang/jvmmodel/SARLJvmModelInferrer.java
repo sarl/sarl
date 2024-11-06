@@ -194,11 +194,11 @@ import io.sarl.lang.util.Utils.TypeParameterStatus;
  * <li>{@link io.sarl.lang.compiler.SarlCompiler}: Generate the Java code for the XExpression objects.</li>
  * </ul>
  *
- * @author $Author: sgalland$
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
@@ -680,10 +680,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			/** Safe runnable.
 			 *
-			 * @author $Author: sgalland$
-			 * @version $FullVersion$
-			 * @mavengroupid $GroupId$
-			 * @mavenartifactid $ArtifactId$
+			 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+			 * @version compiler 0.14.0 20241106-161406
+			 * @mavengroupid io.sarl.lang
+			 * @mavenartifactid compiler
 			 */
 			final class SafeRunnable implements Runnable {
 
@@ -4476,10 +4476,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Informations about the behavior units and the guards.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	private static class BehaviorUnitDefinitions implements Serializable {
@@ -4523,10 +4523,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Functions about an event for the behavior units.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	private static class BehaviorUnitFunctions implements Serializable {
@@ -4578,10 +4578,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param name the name of the function.
 	 * @param bounds the upper bounds for generic type parameters.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	private record BehaviorUnitFunction(String name, List<JvmTypeReference> bounds) {
@@ -4590,10 +4590,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Internal error.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private abstract static class InternalError extends RuntimeException {
 
@@ -4607,10 +4607,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Internal error.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class GenerationContextNotFoundInternalError extends InternalError {
 

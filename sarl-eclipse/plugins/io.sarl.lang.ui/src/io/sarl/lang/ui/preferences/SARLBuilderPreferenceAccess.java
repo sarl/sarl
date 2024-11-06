@@ -30,10 +30,10 @@ import io.sarl.lang.compiler.GeneratorConfig2;
 
 /** Accessors to the preferences for the SARL builder.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLBuilderPreferenceAccess {
 
@@ -121,10 +121,10 @@ public class SARLBuilderPreferenceAccess {
 
 	/** Initializer of the preference store.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version io.sarl.lang.ui 0.14.0 20241106-161410
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	public static class Initializer implements IPreferenceStoreInitializer {
 

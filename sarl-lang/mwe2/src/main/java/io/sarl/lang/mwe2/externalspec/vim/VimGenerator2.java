@@ -41,10 +41,10 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the Vim editor.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version mwe2 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.6
  * @see "http://vimdoc.sourceforge.net/htmldoc/syntax.html"
  * @see "http://vim.wikia.com/wiki/Creating_your_own_syntax_files"
@@ -625,10 +625,10 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 
 	/** Appendable for Vim styles.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version mwe2 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected static class VimAppendable extends AbstractAppendable {
@@ -667,10 +667,10 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 
 	/** Syntax groups in vim.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version mwe2 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 * @since 0.6
 	 */
 	protected enum VimSyntaxGroup {

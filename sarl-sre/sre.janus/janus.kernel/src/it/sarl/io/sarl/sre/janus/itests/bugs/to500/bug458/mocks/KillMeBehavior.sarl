@@ -24,10 +24,10 @@ package io.sarl.sre.janus.itests.bugs.to500.bug458.mocks
 import io.sarl.api.core.Lifecycle
 
 /**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 behavior KillMeBehavior {
 

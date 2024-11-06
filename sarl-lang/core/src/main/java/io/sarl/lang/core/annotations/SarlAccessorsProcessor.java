@@ -44,10 +44,10 @@ import io.sarl.lang.core.Agent;
  * than the visibility allowed into the containing type.</li>
  * </ul>
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.9
  */
 @Singleton
@@ -93,10 +93,10 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 
 	/** Utilities for the accessor processor. This class is overridden for fixing Issue #1073.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.12
 	 */
 	public class Util extends AccessorsProcessor.Util {

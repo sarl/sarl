@@ -27,10 +27,10 @@ import javax.inject.Qualifier
 /** 
  * Annotation for injection of the kernel.
  * 
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Qualifier
 @Target(#[FIELD, PARAMETER, METHOD])

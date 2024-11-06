@@ -90,10 +90,10 @@ import io.sarl.lang.validation.subvalidators.SARLCastValidator;
  * <li>{@link CheckType#EXPENSIVE}: is executed by right clicking ANYWHERE in the editor window and chooseing "Validate".</li>
  * </ul>
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @see "https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation"
  */
 @Singleton

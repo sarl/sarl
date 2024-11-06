@@ -30,10 +30,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * and no implementation has been mapped. To define the skill use
  * {@link Agent#setSkill(Skill, Class...)} or {@link Agent#setSkillIfAbsent(Skill, Class...)}.
  *
- * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public class UnimplementedCapacityException extends RuntimeException {
 

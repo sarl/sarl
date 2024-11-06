@@ -32,10 +32,10 @@ import java.util.logging.Logger
  * thrown to the Java execution layer. If a logger is not defined, the exceptions are thrown
  * to the Java execution layer. 
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version janus.kernel 3.0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6
  * @see Runnables
  */

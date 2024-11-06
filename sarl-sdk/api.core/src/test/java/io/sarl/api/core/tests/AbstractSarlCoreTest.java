@@ -34,10 +34,10 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 /** Abstract implementation that provides tools for testing the "io.sarl.core" classes.
  *
  * @param <T> - the type of the expected loaded class.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.core 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 

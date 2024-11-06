@@ -37,10 +37,10 @@ import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
  *
  * <p>This specific implementation uses the SARL IQualifiedNameImageProvider.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class SarlSpecificTypeSelectionExtension extends TypeSelectionExtension

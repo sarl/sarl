@@ -24,10 +24,10 @@ package io.sarl.eclipse.preferences;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized Messages.
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.eclipse 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

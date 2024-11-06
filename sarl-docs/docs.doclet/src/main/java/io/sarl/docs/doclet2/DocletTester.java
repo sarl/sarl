@@ -54,10 +54,10 @@ package io.sarl.docs.doclet2;
  *
  * <p>This utility class launch the Javadoc tool with the SARL doclet. Paths are hard coded.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version docs.doclet 0.14.0 20241106-161409
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public final class DocletTester {

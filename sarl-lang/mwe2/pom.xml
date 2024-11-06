@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.lang</groupId>
   <artifactId>mwe2</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   <name>MWE2 Generator</name>
   <description>MWE2-based Generator of the SARL Compiler</description>
   <packaging>jar</packaging>

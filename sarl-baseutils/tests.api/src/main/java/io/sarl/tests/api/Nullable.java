@@ -29,10 +29,10 @@ import java.lang.annotation.Target;
 
 /** Mark as nullable field.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version tests.api 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

@@ -61,10 +61,10 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
 /**
  * Context for running the SRE. This context is thread-safe.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sre.tests.api 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.11
  */
 interface SreRunContext {
@@ -391,10 +391,10 @@ interface SreRunContext {
 /**
  * Context for running the SRE. This context is thread-safe.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version sre.tests.api 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.11
  */
 class SreRunContextImpl implements SreRunContext {

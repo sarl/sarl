@@ -32,8 +32,8 @@ import javafx.scene.paint.Color
 /**
  * Data structure used to represent a rocket position.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 class RocketsPos {
 

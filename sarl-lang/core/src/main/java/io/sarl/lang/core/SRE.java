@@ -43,10 +43,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * done by creating a file into the folder {@code META-INF/services/io.sarl.lang.core.SREBootstrap}.
  * This file contains a single line that is the fully qualified name of the {@link SRE}'s implementation.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version core 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.6
  * @see ServiceLoader
  */
@@ -209,10 +209,10 @@ public final class SRE {
 	/**
 	 * Private API: not documented.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version core 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.6
 	 * @ExcludeFromApidoc
 	 */

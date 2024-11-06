@@ -39,10 +39,10 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
 
 /** Module for the compiler application metadata version 2.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version afc.extension 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 public class ApplicationMetadata2Module implements BQModule {

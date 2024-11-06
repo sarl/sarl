@@ -35,10 +35,10 @@ import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateProposalProvider;
  *
  * <p>This provider is overridden for provided the correct template's icon.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version io.sarl.lang.ui 0.14.0 20241106-161410
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings({"deprecation", "restriction"})
 public class SARLTemplateProposalProvider extends XbaseTemplateProposalProvider {

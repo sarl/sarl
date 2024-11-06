@@ -27,10 +27,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Default implementation of an action that could be done by the agent in the game time-based
  * goal-oriented behavior.
  * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version api.gametgob 0.14.0 20241106-161408
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.gametgob
  * @since 0.13
  */
  class BaseAction extends AbstractGob implements Action {

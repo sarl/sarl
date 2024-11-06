@@ -29,10 +29,10 @@ import io.sarl.lang.sarl.SarlField;
 /**
  * Comparator of Attribute.
  *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class AttributeComparator implements Comparator<SarlField>, Serializable {
 	private static final long serialVersionUID = 4577741984021468692L;

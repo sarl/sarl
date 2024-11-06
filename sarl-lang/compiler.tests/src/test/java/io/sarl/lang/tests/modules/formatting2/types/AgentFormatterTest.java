@@ -31,10 +31,10 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 
 /** Tests for formatting agents.
  *
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @version compiler.tests 0.14.0 20241106-161406
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 @DisplayName("format: agent")
@@ -43,10 +43,10 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 public class AgentFormatterTest {
 
 	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+	 * @version compiler.tests 0.14.0 20241106-161406
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	public class FullFormatterAPITest extends AbstractFormatterTest {
