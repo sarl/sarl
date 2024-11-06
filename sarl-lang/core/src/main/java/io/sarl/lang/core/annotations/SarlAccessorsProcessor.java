@@ -53,6 +53,12 @@ import io.sarl.lang.core.Agent;
 @Singleton
 public class SarlAccessorsProcessor extends AccessorsProcessor {
 
+	/** Constructor.
+	 */
+	public SarlAccessorsProcessor() {
+		//
+	}
+
 	@Override
 	protected void _transform(MutableFieldDeclaration it, TransformationContext context) {
 		final var util = new Util(context);

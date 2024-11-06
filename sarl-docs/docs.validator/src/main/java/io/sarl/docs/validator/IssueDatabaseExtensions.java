@@ -169,7 +169,7 @@ public final class IssueDatabaseExtensions {
 	/** Read a property file that describes the issues of the SARL compiler.
 	 *
 	 * @param filename the file to read.
-	 * @param descritions the description of the issues.
+	 * @param descriptions the description of the issues.
 	 * @since 0.14
 	 */
 	@SuppressWarnings("resource")

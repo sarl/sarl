@@ -32,14 +32,17 @@ OUTDIR="$CDIR/target/maven-central-bundles"
 rm -rf "$OUTDIR"
 mkdir -p "$OUTDIR"
 
+# Ask for a passphrase
+PASS_PHRASE=`ssh-askpass "Please enter your passphrase for signing the files:"`
+
 # Build BOMs
-run_prepare "$CDIR/sarl-bom" "build of materials" "$OUTDIR" "$@"
+run_prepare "$CDIR/sarl-bom" "build of materials" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
 
 # Build SARL core modules
-run_prepare "$CDIR/sarl-baseutils" "base utilities" "$OUTDIR" "$@"
-run_prepare "$CDIR/sarl-lang" "SARL language tools" "$OUTDIR" "$@"
-run_prepare "$CDIR/sarl-sdk" "SARL Standard Development Kit - SDK" "$OUTDIR" "$@"
-run_prepare "$CDIR/sarl-apputils" "SARL application utilities" "$OUTDIR" "$@"
-run_prepare "$CDIR/sarl-sre" "SARL Runtime Environment -SRE" "$OUTDIR" "$@"
-run_prepare "$CDIR/sarl-docs" "documentation tools and doclets" "$OUTDIR" "$@"
+run_prepare "$CDIR/sarl-baseutils" "base utilities" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
+run_prepare "$CDIR/sarl-lang" "SARL language tools" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
+run_prepare "$CDIR/sarl-sdk" "SARL Standard Development Kit - SDK" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
+run_prepare "$CDIR/sarl-apputils" "SARL application utilities" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
+run_prepare "$CDIR/sarl-sre" "SARL Runtime Environment -SRE" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
+run_prepare "$CDIR/sarl-docs" "documentation tools and doclets" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
 

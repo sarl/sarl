@@ -351,6 +351,7 @@
               </execution>
             </executions>
             <configuration>
+              <doclint>all,-missing</doclint>
               <docencoding>${project.build.sourceEncoding}</docencoding>
               <encoding>${project.build.sourceEncoding}</encoding>
               <charset>${project.build.sourceEncoding}</charset>

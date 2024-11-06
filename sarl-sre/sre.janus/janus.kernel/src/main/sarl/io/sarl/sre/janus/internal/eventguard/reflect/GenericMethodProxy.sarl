@@ -56,7 +56,7 @@ class GenericMethodProxy extends MethodProxy {
 	 * - the name of the method to be invoked for evaluating the guard.
 	 * @param genericTypeMatchingMethod
 	 * - the name of the method for testing the generic type matching for the event
-	 * @param parameterTypes
+	 * @param genericTypes
 	 * - The list of the type of the various parameters of the considered method.
 	 */
 	new (guardMethod : Method, genericTypeMatchingMethod : Method, genericTypes : Class<?>[]) {

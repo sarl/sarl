@@ -35,6 +35,12 @@ import java.util.Comparator;
  */
 public class DefaultConcurrentCollectionFactory implements ConcurrentCollectionFactory {
 
+	/** Constructor.
+	 */
+	public DefaultConcurrentCollectionFactory() {
+		//
+	}
+
 	@Override
 	public <T> ConcurrentCollection<T> newCollection() {
 		return new ConcurrentCollectionLinkedDeque<>();

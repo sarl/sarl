@@ -36,6 +36,12 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
+	/** Constructor.
+	 */
+	public AgentProtectedAPIObject() {
+		//
+	}
+
 	@Override
 	@Pure
 	public final String toString() {

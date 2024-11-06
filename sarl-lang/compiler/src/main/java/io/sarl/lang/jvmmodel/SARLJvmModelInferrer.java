@@ -3476,7 +3476,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Remove the type parameters from the given type.
 	 *
-	 * <p><table>
+	 * <table>
 	 * <caption>Criteria for removal</caption>
 	 * <thead><tr><th>Referenced type</th><th>Input</th><th>Replied referenced type</th><th>Output</th></tr></thead>
 	 * <tbody>

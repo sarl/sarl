@@ -50,7 +50,6 @@ public interface IBehaviorGuardEvaluatorReceiver {
 
 	/** Evaluate the behavior unit's guards.
 	 *
-	 * @param eventType the type of event to be considered for evaluating the {@code event}.
 	 * @param event the event to evaluate.
 	 * @param callbacks the collection of callbacks to run.
 	 * @see #$evaluateBehaviorGuards(Class, Object, Collection)

@@ -313,7 +313,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 
 	/** Check if all the fields are initialized in a class.
 	 *
-	 * @param agent the agent.
+	 * @param clazz the class.
 	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkFinalFieldInitialization(XtendClass clazz) {
@@ -325,7 +325,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 
 	/** Check if all the fields are initialized in an interface.
 	 *
-	 * @param agent the agent.
+	 * @param oopInterface the interface.
 	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkFinalFieldInitialization(XtendInterface oopInterface) {
@@ -781,7 +781,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 
 	/** Check the local usage of the functions.
 	 *
-	 * @param uses the capacity use declaration.
+	 * @param function the function.
 	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkLocalUsageOfDeclaredXtendFunction(XtendFunction function) {
@@ -1214,7 +1214,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 
 	/** Check the type parameters for a function.
 	 *
-	 * @param xtendClass the type to check.
+	 * @param xtendFunction the function to check.
 	 */
 	@Check(CheckType.NORMAL)
 	public void checkTypeParameterForwardReferences(XtendFunction xtendFunction) {

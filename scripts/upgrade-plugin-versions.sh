@@ -28,7 +28,7 @@ function run_upgrade {
 cd "$CDIR"
 
 # Ugrade BOMs
-run_upgrade "$CDIR/sarl-bom" "build of materials" "$@"
+run_upgrade "$CDIR/sarl-bom" "build of materials" "$@" --pom "$CDIR/scripts/pom-aggregate-javadoc.xml"
 
 # Ugrade SARL core modules
 run_upgrade "$CDIR/sarl-baseutils" "base utilities" "$@"

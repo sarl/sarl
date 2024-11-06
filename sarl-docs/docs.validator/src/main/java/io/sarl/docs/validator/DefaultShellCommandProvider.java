@@ -39,6 +39,12 @@ import com.google.inject.Singleton;
 public class DefaultShellCommandProvider implements ShellCommandProvider {
 
 	private final Map<String, ShellCommand> map = new HashMap<>();
+
+	/** Constructor.
+	 */
+	public DefaultShellCommandProvider() {
+		//
+	}
 	
 	@Override
 	public ShellCommand getShellCommand(String commandName) {

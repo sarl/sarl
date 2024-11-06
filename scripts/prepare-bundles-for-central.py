@@ -9,6 +9,7 @@ def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--pwd", help="Specify the passphrase for signing the files", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
@@ -20,13 +21,19 @@ retcode = 255
 
 if is_exe(binary):
 	cmd = [ binary,
-		"--create",
+		"--create" ]
+	if args.pwd:
+		cmd = cmd + [ '--pwd=' + args.pwd ]
+	cmd = cmd + [
 		"--",
 		"-Dmaven.test.skip=true",
 		"-Dcheckstyle.skip=true",
 		"-DperformRelease=true",
 		"-DpublicSarlApiModuleSet=true" ]
 	cmd = cmd + args.args
+	
+	#print("CMD: " + str(cmd))
+	
 	retcode = r = subprocess.call(cmd)
 else:
 	print >> sys.stderr, "Cannot run mvn-central-bundles.py"

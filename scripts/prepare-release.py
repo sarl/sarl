@@ -23,7 +23,7 @@ def readXMLRootNode(filename):
 #########################
 ## name: the name of the person for which the id should be built
 def buildIdFromName(name):
-	elements = re.split("[ \n\r\t\-_]+", name)
+	elements = re.split("[ \n\r\t\\-_]+", name)
 	if len(elements) > 1:
 		s = ''
 		for e in elements[0:-1]:
@@ -175,7 +175,7 @@ def replaceAuthors(filename, contributors):
 		data = myfile.readlines()
 	data2 = []
 	for line in data:
-		line2 = re.sub("\$Author[ \t]*\:[ \t]*([^$]+)\$", lambda x : doAuthorReplacement(x, contributors, filename), line)
+		line2 = re.sub("\\$Author[ \t]*\\:[ \t]*([^$]+)\\$", lambda x : doAuthorReplacement(x, contributors, filename), line)
 		data2.append(line2)
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
@@ -222,14 +222,14 @@ def replaceMaven(filename, generation_date, exclusions):
 				data = myfile.readlines()
 			data2 = []
 			for line in data:
-				line2 = re.sub("\$GroupId\$", groupId, line)
-				line2 = re.sub("\$ArtifactId\$", artifactId, line2)
-				line2 = re.sub("\$Name\$", artifactId, line2)
-				line2 = re.sub("\$Version\$", version, line2)
-				line2 = re.sub("\$Revision\$", version, line2)
-				line2 = re.sub("\$Date\$", generation_date, line2)
-				line2 = re.sub("\$FullVersion\$", full_version, line2)
-				line2 = re.sub("\$Filename\$", os.path.basename(filename), line2)
+				line2 = re.sub("\\$GroupId\\$", groupId, line)
+				line2 = re.sub("\\$ArtifactId\\$", artifactId, line2)
+				line2 = re.sub("\\$Name\\$", artifactId, line2)
+				line2 = re.sub("\\$Version\\$", version, line2)
+				line2 = re.sub("\\$Revision\\$", version, line2)
+				line2 = re.sub("\\$Date\\$", generation_date, line2)
+				line2 = re.sub("\\$FullVersion\\$", full_version, line2)
+				line2 = re.sub("\\$Filename\\$", os.path.basename(filename), line2)
 				data2.append(line2)
 			with open (filename, "w") as myfile:
 				myfile.write("".join(data2))
@@ -263,9 +263,9 @@ def replaceCopyrights(filename):
 		]
 	for line in data:
 		for name in names:
-			line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+-)[0-9]+ " + name,
+			line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+-)[0-9]+ " + name,
 				lambda x : doCopyrightReplacement0(x, this_year), line)
-			line2 = re.sub("(Copyright (?:\(C\) )?[0-9]+) " + name,
+			line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+) " + name,
 				lambda x : doCopyrightReplacement1(x, this_year), line2)
 		data2.append(line2)
 	with open (filename, "w") as myfile:

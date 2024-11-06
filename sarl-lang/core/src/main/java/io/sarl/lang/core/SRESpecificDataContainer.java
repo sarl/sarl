@@ -37,6 +37,12 @@ public abstract class SRESpecificDataContainer {
 
 	private transient volatile Object sreSpecificData;
 
+	/** Constructor.
+	 */
+	public SRESpecificDataContainer() {
+		//
+	}
+
 	/** Replies the data associated to this agent trait by the SRE.
 	 *
 	 * @param <S> the type of the data.

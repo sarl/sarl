@@ -183,7 +183,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 
 	/** Check the modifiers for the actions and methods.
 	 *
-	 * @param constructor the construct.
+	 * @param function the construct.
 	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendFunction function) {
@@ -240,9 +240,9 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 		}
 	}
 
-	/** Check the modifiers for the actions and methods.
+	/** Check the modifiers for the fields and attributes.
 	 *
-	 * @param constructor the construct.
+	 * @param field the construct.
 	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendField field) {

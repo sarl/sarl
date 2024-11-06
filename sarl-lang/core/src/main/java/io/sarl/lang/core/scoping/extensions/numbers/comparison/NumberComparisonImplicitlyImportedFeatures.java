@@ -37,6 +37,12 @@ import javax.inject.Singleton;
 @Singleton
 public class NumberComparisonImplicitlyImportedFeatures {
 
+	/** Constructor.
+	 */
+	public NumberComparisonImplicitlyImportedFeatures() {
+		//
+	}
+
 	/** Fill the given list with the implicitly imported features.
 	 *
 	 * @param features the list to fill.

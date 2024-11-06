@@ -40,9 +40,12 @@ def run_verify():
 
 ##############################
 ##
-def run_fix():
+def run_fix(pwd, args):
 	nb_files = 0
-	pass_phrase = ask_pass()
+	if (pwd):
+		pass_phrase = pwd
+	else:
+		pass_phrase = ask_pass()
 	if pass_phrase:
 		for root, dirs, files in os.walk("."):
 			for filename in files:
@@ -115,11 +118,14 @@ def create_maven_central_bundles():
 
 ##############################
 ## args: command line arguments
-def run_create(args):
+def run_create(pwd, args):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
-	pass_phrase = ask_pass()
+	if (pwd):
+		pass_phrase = pwd
+	else:
+		pass_phrase = ask_pass()
 	if pass_phrase:
 		print("Assuming 'maven-javadoc-plugin:jar' is activated")
 		print("Assuming 'maven-sources-plugin:jar' is activated")
@@ -167,6 +173,7 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument("--verify", help="verify the signatures of the Central bundles", action="store_true")
 group.add_argument("--fix", help="fix the signatures of the Central bundles", action="store_true")
 group.add_argument("--create", help="create the Central bundles", action="store_true")
+parser.add_argument("--pwd", help="Specify the passphrase for signing the files", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
 rargs = filterArgs(args.args)
@@ -175,9 +182,9 @@ retcode = 255
 if args.verify:
 	retcode = run_verify()
 elif args.fix:
-	retcode = run_fix()
+	retcode = run_fix(args.pwd, rargs)
 elif args.create:
-	retcode = run_create(rargs)
+	retcode = run_create(args.pwd, rargs)
 else:
 	parser.print_help(sys.stderr)
 

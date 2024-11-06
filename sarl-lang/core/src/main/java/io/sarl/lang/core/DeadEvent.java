@@ -48,6 +48,8 @@ public final class DeadEvent extends Event {
 
 	private static final long serialVersionUID = 1117818766135181831L;
 
+	/** The event that could not be delivered.
+	 */
 	private final Object event;
 
 	/**

@@ -167,6 +167,7 @@ def replaceInEclipsePlatform(root, version_mapping, ignores):
 ##
 parser = argparse.ArgumentParser(description="Update Maven plugin versions")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
+parser.add_argument('--pom', help="path to an additional pom file to treat", action='append')
 parser.add_argument('--properties', help="path to the property file", action='append')
 parser.add_argument('--ignore', help="groupId:artifactId to ignore", action='append')
 parser.add_argument('--nodependency', help="ignore Maven dependencies", action='store_true')
@@ -184,6 +185,9 @@ for arg in args.args:
 	readVersionMappings(version_mapping, arg[0], properties)
 
 pom_files = buildMavenFileList();
+
+if args.pom:
+	pom_files = pom_files + args.pom
 
 for pom_file in pom_files:
 	print("Scanning " + pom_file)

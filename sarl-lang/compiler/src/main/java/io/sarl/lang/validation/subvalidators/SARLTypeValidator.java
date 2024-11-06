@@ -467,18 +467,26 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 
 	/** Check the type parameters for an interface.
 	 *
-	 * @param xtendClass the type to check.
+	 * @param xtendInterface the type to check.
 	 */
 	@Check(CheckType.NORMAL)
 	public void checkTypeParameterForwardReferences(XtendInterface xtendInterface) {
 		getParentValidator().doCheckTypeParameterForwardReference(xtendInterface.getTypeParameters());
 	}
 
+	/** Check the usage of JAva keywords as names.
+	 *
+	 * @param member the member to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkJavaKeywordConflict(XtendTypeDeclaration member) {
 		checkNoJavaKeyword(member, XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME);
 	}
 
+	/** Check the usage of JAva keywords as names.
+	 *
+	 * @param member the member to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkJavaKeywordConflict(XtendClass member) {
 		for (final var p : member.getTypeParameters()) {
@@ -486,6 +494,10 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 		}
 	}
 
+	/** Check the usage of JAva keywords as names..
+	 *
+	 * @param member the member to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkJavaKeywordConflict(XtendInterface member) {
 		for (final var p : member.getTypeParameters()) {
@@ -493,6 +505,10 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 		}
 	}
 
+	/** Check the type parameters of the event.
+	 *
+	 * @param event the event to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkEventTypeParameters(SarlEvent event) {
 		if (!isIgnored(UNUSED_TYPE_PARAMETER)) {

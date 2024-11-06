@@ -65,6 +65,7 @@ final class TypeHierarchyDictionary {
 	 * by these super-classes.
 	 * 
 	 * @param concreteClass the class you find the hierarchy
+	 * @param expectedType the expected type that is used as the root type in the hierarchy.
 	 * @return the set of class in the hierarchy of the specified class
 	 */
 	@Pure
@@ -86,7 +87,7 @@ final class TypeHierarchyDictionary {
 
 	/** Explore the type hierarchy of the given type
 	 *
-	 * @param type the type to explore.
+	 * @param concreteClass the type to explore.
 	 * @return the collection of super types.
 	 */
 	static def exploreTypeHierarchy(concreteClass : Class<?>) : Iterable<Class<?>> {

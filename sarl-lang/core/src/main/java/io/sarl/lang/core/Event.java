@@ -41,6 +41,8 @@ public abstract class Event implements Serializable {
 
 	private static final long serialVersionUID = -4314428111329600890L;
 
+	/** Sender of the event.
+	 */
 	private Address source;
 
 	/** Constructs an Event without source.

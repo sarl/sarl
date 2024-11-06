@@ -68,14 +68,14 @@ public interface ISARLValidator {
 
 	/** Create a lightweight type reference from the given type.
 	 *
-	 * @param type the type to point to.
+	 * @param typeRef the type to point to.
 	 * @return the reference.
 	 */
 	LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef);
 
 	/** Create a lightweight type reference from the given type.
 	 *
-	 * @param type the type to point to.
+	 * @param typeRef the type to point to.
 	 * @param keepUnboundWildcardInformation indicates if the wildcard information is kept.
 	 * @return the reference.
 	 */

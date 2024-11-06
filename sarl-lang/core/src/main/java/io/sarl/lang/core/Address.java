@@ -42,8 +42,12 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 
 	private static final long serialVersionUID = 1519844913685586094L;
 
+	/** Identifier of the participant.
+	 */
 	private final UUID participantId;
 
+	/** Identifier of the interaction space.
+	 */
 	private final SpaceID spaceId;
 
 	/**

@@ -167,7 +167,6 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	/** Replies if the given identifier is equal to the identifier in the given identifier.
 	 * It is equivalent to {@code id.equals(address.getID())}.
 	 *
-	 * @param id the identifier to test.
 	 * @param address the address to test.
 	 * @return {@code true} if the identifier is equal to the address' identifier.
 	 * @since 0.14
@@ -181,7 +180,6 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	/** Replies if the given identifier is not equal to the identifier in the given identifier.
 	 * It is equivalent to {@code !id.equals(address.getID())}.
 	 *
-	 * @param id the identifier to test.
 	 * @param address the address to test.
 	 * @return {@code false} if the identifier is equal to the address' identifier.
 	 * @since 0.14

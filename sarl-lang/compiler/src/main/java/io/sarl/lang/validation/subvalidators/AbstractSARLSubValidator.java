@@ -47,7 +47,6 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -415,7 +414,7 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 
 	/** Replies the expected type of the given expression.
 	 *
-	 * @param identifiable the expression to evaluate.
+	 * @param expression the expression to evaluate.
 	 * @return the expected type of the expressiont.
 	 */
 	protected LightweightTypeReference getExpectedType(XExpression expression) {
@@ -507,7 +506,6 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 	 * @param wrapToPrimitives indicates if the object types must be wrapped to primitive type equivalent.
 	 * @return the list of types.
 	 * @since 0.8
-	 * @see #getParamTypes(JvmOperation, boolean)
 	 */
 	protected List<LightweightTypeReference> getParamTypeReferences(JvmExecutable jvmExecutable,
 			boolean wrapFromPrimitives, boolean wrapToPrimitives) {
@@ -546,7 +544,7 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 
 	/** Replies the label for the given type that is composed by the type's label and the type's name.
 	 *
-	 * @param type the type to analyse.
+	 * @param declaration the declaration to analyse.
 	 * @return the label for the type.
 	 * @since 0.14
 	 */

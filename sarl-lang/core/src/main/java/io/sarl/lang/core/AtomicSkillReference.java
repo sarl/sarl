@@ -47,6 +47,8 @@ public class AtomicSkillReference implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -2985132547428365532L;
 
+	/** Reference to the skill.
+	 */
 	private volatile Skill reference;
 
 	/** Constructor.
