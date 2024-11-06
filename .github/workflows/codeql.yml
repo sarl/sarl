@@ -11,65 +11,134 @@ on:
     - cron: '27 17 * * 4'
 
 jobs:
-  analyze:
-    name: Analyze
-    # Runner size impacts CodeQL analysis time. To learn more, please see:
-    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
-    #   - https://gh.io/supported-runners-and-hardware-resources
-    #   - https://gh.io/using-larger-runners
-    # Consider using larger runners for possible analysis time improvements.
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+  CompileOnLinux:
+    name: Compiling on Linux
+    runs-on: 'ubuntu-latest'
+    timeout-minutes: 360
     permissions:
       actions: read
       contents: read
       security-events: write
-
     strategy:
       fail-fast: false
       matrix:
         language: [ 'java' ]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
     - name: Selecting Java Version
       uses: actions/setup-java@v4
       with:
         distribution: oracle
         java-version: 21
-
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.9
-
     - name: Cache Maven packages
       uses: actions/cache@v4
+      continue-on-error: true
       with:
-        path: ~/.m2
+        path: ~/.m2/repository
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-      
-    # Initializes the CodeQL tools for scanning.
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ matrix.language }}
+          ${{ runner.os }}-maven-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
-
-    # Command-line programs to run using the OS shell.
-    # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
     - run: |
          echo "Run, Build Application using script"
          ./build-all.sh -Dmaven.test.skip=true
-
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+  CompileOnMacOS:
+    name: Compiling on MacOS
+    runs-on: 'macos-latest'
+    timeout-minutes: 360
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Selecting Java Version
+      uses: actions/setup-java@v4
+      with:
+        distribution: oracle
+        java-version: 21
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.9
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      continue-on-error: true
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ matrix.language }}
+          ${{ runner.os }}-maven-
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+    - run: |
+         echo "Run, Build Application using script"
+         ./build-all.sh -Dmaven.test.skip=true
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+  CompileOnWindows:
+    name: Compiling on Windows
+    runs-on: 'windows-latest'
+    timeout-minutes: 360
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Selecting Java Version
+      uses: actions/setup-java@v4
+      with:
+        distribution: oracle
+        java-version: 21
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.9
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      continue-on-error: true
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ matrix.language }}
+          ${{ runner.os }}-maven-
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+    - run: |
+         echo "Run, Build Application using script"
+         ./build-all.ps1 -Dmaven.test.skip=true
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
