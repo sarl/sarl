@@ -1,0 +1,53 @@
+---
+name: "Snaphot Deployment"
+
+on:
+  workflow_run:
+    workflows: ["Compilation on Linux"]
+    types: [completed] #requested
+
+jobs:
+  on-success:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deployment to Maven Snapshot Repository
+    runs-on: 'ubuntu-latest'
+    timeout-minutes: 360
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Selecting Java Version
+      uses: actions/setup-java@v4
+      with:
+        distribution: oracle
+        java-version: 21
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.9
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      continue-on-error: true
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ matrix.language }}
+          ${{ runner.os }}-maven-
+    - run: |
+         echo "Deployment using script"
+         ./scripts/release.sh
+      env:
+        MAVENSARLIO_URL: ${{ secrets.SARL_MAVENSARLIO_URL }}
+        UPDATESSARLIO_URL: ${{ secrets.SARL_UPDATESSARLIO_URL }}
+        DEPENDENCIESSARLIO_URL: ${{ secrets.SARL_DEPENDENCIESSARLIO_URL }}
+        MAVENSARLIO_USER: ${{ secrets.SARL_MAVENSARLIO_USER }}
+        MAVENSARLIO_PWD: ${{ secrets.SARL_MAVENSARLIO_PWD }}
+

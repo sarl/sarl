@@ -30,7 +30,7 @@ run_mvn "$CDIR/sarl-baseutils" "base utilities" "$@"
 run_mvn "$CDIR/sarl-lang" "SARL language tools" "$@"
 run_mvn "$CDIR/sarl-sdk" "SARL Standard Development Kit - SDK" "$@"
 run_mvn "$CDIR/sarl-apputils" "SARL application utilities" "$@"
-run_mvn "$CDIR/sarl-sre" "SARL Runtime Environment -SRE" "$@"
+run_mvn "$CDIR/sarl-sre" "SARL Runtime Environment - SRE" "$@"
 run_mvn "$CDIR/sarl-docs" "documentation tools and doclets" "$@"
 run_mvn "$CDIR/sarl-cli" "shell command-line tools" "$@"
 

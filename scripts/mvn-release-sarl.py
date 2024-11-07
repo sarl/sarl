@@ -143,7 +143,7 @@ else:
 	pass_phrase = ask_pass()
 
 if pass_phrase:
-	print_configuration(pass_phrase)
+	#print_configuration(pass_phrase)
 	r = execute_maven(pass_phrase, rargs)
 	sys.exit(r)	
 else:

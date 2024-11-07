@@ -11,7 +11,7 @@ function Run_Mvn {
 	Write-Host "[INFO] ================================================================================="
 	Write-Host "[INFO]"
 	Set-Location "$path"
-	mvn clean install $additionalargs
+	mvn clean install "-Dmaven.test.skip=true" $additionalargs
 	if ($LastExitCode -ne 0) {
 		exit $LastExitCode
 	}

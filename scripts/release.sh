@@ -28,7 +28,12 @@ function run_release {
 cd "$CDIR"
 
 # Ask for a passphrase
-PASS_PHRASE=`ssh-askpass "Please enter your passphrase for connecting to the server:"`
+if test -z "$MAVENSARLIO_PWD"
+then
+	PASS_PHRASE=`ssh-askpass "Please enter your passphrase for connecting to the server:"`
+else
+	PASS_PHRASE="$MAVENSARLIO_PASSWORD"	
+fi
 
 # Build BOMs
 run_release "$CDIR/sarl-bom" "build of materials" --pwd="$PASS_PHRASE" "$@"
