@@ -6,7 +6,7 @@
 	<property name="archive_folder" location="target/example-archives" />
 	<property name="target_folder" location="contents" />
 	<property name="relative_path_to_pom_template" value="io/sarl/eclipse/wizards/newproject/pom_template.xml" />
-	<property name="relative_path_to_source_folder_of_pom_template" value="/home/sgalland/git/sarl.dsl/sarl-eclipse/plugins/io.sarl.eclipse.examples/../io.sarl.eclipse/src" />
+	<property name="relative_path_to_source_folder_of_pom_template" value="../io.sarl.eclipse/src" />
 
 	<target name="zip_all_examples" depends="retrieve_pom_template">
 		<mkdir dir="${target_folder}" />

@@ -79,13 +79,13 @@ public final class DocletTester {
 				"-private", //$NON-NLS-1$
 				"-source", "11", //$NON-NLS-1$ //$NON-NLS-2$
 				"-doclet", Doclet.class.getName(), //$NON-NLS-1$
-				"-sourcepath", "/home/sgalland/git/sarl.dsl/main/coreplugins/io.sarl.lang.core/src", //$NON-NLS-1$ //$NON-NLS-2$
-				"-sourcepath", "/home/sgalland/git/sarl.dsl/main/coreplugins/io.sarl.lang/src", //$NON-NLS-1$ //$NON-NLS-2$
-				//"-sourcepath", "/home/sgalland/git/sarl.dsl/main/apiplugins/io.sarl.api.bootiquebase/src/main/generated-sources/sarl", //$NON-NLS-1$ //$NON-NLS-2$
-				"-sourcepath", "/home/sgalland/git/sarl.dsl/main/apiplugins/io.sarl.api.naming/src/main/generated-sources/sarl", //$NON-NLS-1$ //$NON-NLS-2$
+				"-sourcepath", "~/git/sarl.dsl/main/coreplugins/io.sarl.lang.core/src", //$NON-NLS-1$ //$NON-NLS-2$
+				"-sourcepath", "~/git/sarl.dsl/main/coreplugins/io.sarl.lang/src", //$NON-NLS-1$ //$NON-NLS-2$
+				//"-sourcepath", "~/git/sarl.dsl/main/apiplugins/io.sarl.api.bootiquebase/src/main/generated-sources/sarl", //$NON-NLS-1$ //$NON-NLS-2$
+				"-sourcepath", "~/git/sarl.dsl/main/apiplugins/io.sarl.api.naming/src/main/generated-sources/sarl", //$NON-NLS-1$ //$NON-NLS-2$
 				"-subpackages", ":io", //$NON-NLS-1$ //$NON-NLS-2$
 				"-link", "https://docs.oracle.com/en/java/javase/11/docs/api/", //$NON-NLS-1$ //$NON-NLS-2$
-				"-d", "/home/sgalland/tmp/gen-site", //$NON-NLS-1$ //$NON-NLS-2$
+				"-d", "~/tmp/gen-site", //$NON-NLS-1$ //$NON-NLS-2$
 				//"-fake",
 				//"-offline",
 				"-copyright", "ABC", //$NON-NLS-1$ //$NON-NLS-2$

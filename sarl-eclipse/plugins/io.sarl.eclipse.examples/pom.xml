@@ -142,10 +142,12 @@
 									<token>(token="OPENJFX_VERSION" +value=")([^"]+)(")</token>
 									<value>$1${openjfx.version}$3</value>
 								</replacement>
+								<!--
 								<replacement>
 									<token>(name="relative_path_to_source_folder_of_pom_template" +value=")([^"]+)(")</token>
 									<value>$1${path_to_pom_template_jar}$3</value>
 								</replacement>
+								-->
 							</replacements>
 						</configuration>
 					</execution>
