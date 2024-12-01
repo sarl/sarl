@@ -35,6 +35,7 @@ import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.tools.TestUtils;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
 /** Testing class for issue: Invalid error when extending a Capacity.
@@ -110,7 +111,8 @@ public class Bug1092Test extends AbstractSarlTest {
 			"}",
 			"");
 
-	private final String JAVA_CODE_01 = "package io.sarl.lang.tests.bug1092;\n\n" + JAVA_CODE_BASE;
+	private final String JAVA_CODE_01 = "package io.sarl.lang.tests.bug1092;"
+			+ TestUtils.getLineSeparator() + TestUtils.getLineSeparator() + JAVA_CODE_BASE;
 
 	private final String JAVA_CODE_BASE_B = multilineString(
 			"import io.sarl.lang.core.AgentTrait;",
@@ -145,7 +147,8 @@ public class Bug1092Test extends AbstractSarlTest {
 			"}",
 			"");
 
-	private final String JAVA_CODE_01_B = "package io.sarl.lang.tests.bug1092;\n\n" + JAVA_CODE_BASE_B;
+	private final String JAVA_CODE_01_B = "package io.sarl.lang.tests.bug1092;"
+			+ TestUtils.getLineSeparator() + TestUtils.getLineSeparator() + JAVA_CODE_BASE_B;
 
 	@Test
 	@DisplayName("Parsing code")

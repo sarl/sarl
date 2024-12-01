@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.google.common.io.Files;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
@@ -262,7 +263,7 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 		if (os.isUnixCompliant()) {
 			invoker.setMavenHome(new File("", "usr"));
 		} else {
-			invoker.setMavenHome(new File("C:", "Program Files"));
+			invoker.setMavenHome(findMavenHome());
 		}
 		var result = invoker.execute(request);
 		if (result == null) {
@@ -275,4 +276,14 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 		return result.getExitCode();
 	}
 
+	private static File findMavenHome() {
+		for (final var path : System.getenv("PATH").split(Pattern.quote(File.pathSeparator))) {
+			final var pathFile = FileSystem.convertStringToFile(path);
+			final var command = FileSystem.join(pathFile, "mvn");
+			if (command != null && command.isFile()) {
+				return pathFile.getParentFile();
+			}
+		}
+		return null;
+	}
 }

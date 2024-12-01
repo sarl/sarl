@@ -34,6 +34,8 @@ import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -48,6 +50,7 @@ import io.sarl.lang.sarl.SarlPackage;
 @DisplayName("SARL Maven Compiler")
 @Tag("core")
 @Tag("compiler-run")
+@DisabledOnOs(value = OS.WINDOWS)
 public class SarlMavenCompilerIT extends AbstractSarlMavenCompilerIT {
 
 	private static final String VALID_SARL_CODE = multilineString(
