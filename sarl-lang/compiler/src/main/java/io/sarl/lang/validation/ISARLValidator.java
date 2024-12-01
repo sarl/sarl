@@ -191,12 +191,17 @@ public interface ISARLValidator {
 	 * @param context the context in which the reference is defined, for finding the other types.
 	 * @param feature the grammar feature that contains the {@code typeRef}.
 	 * @param superTypeIndex the index of the feature in the grammar.
-	 * @param allowWildcard indicates if wildcards are allowed in type conformance checking.
+	 * @param allowWildcardAsAny indicates if wildcards are allowed in type conformance checking for representing "any" type that is conformant.
+	 *     Usually, this argument is {@code false} when type checking a construct declaration, e.g., {@code extends A<B>}. It is
+	 *     {@code true} when type checking specific usage of the type, e.g., {@code on A<?>}.
+	 * @param rawTypeWarningIfNoArgument indicates if a warning "Raw Type" is generated when there is no type argument provided.
+	 *     If it is {@code true}, and there is no type argument, only the warning is generated and the type conformance is not checked.
+	 *     If it is {code false}, the type conformance is always checked.
 	 * @param messageAcceptor the acceptor of error and warning messages to be used.
 	 * @return {@code true} of the reference is valid; {@code false} if the reference is invalid.
 	 */
 	boolean doCheckValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context,
-			EStructuralFeature feature, int superTypeIndex, boolean allowWildcard,
+			EStructuralFeature feature, int superTypeIndex, boolean allowWildcardAsAny, boolean rawTypeWarningIfNoArgument,
 			ValidationMessageAcceptor messageAcceptor);
 
 }

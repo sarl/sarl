@@ -23,7 +23,6 @@ package io.sarl.lang.util;
 
 import static io.sarl.lang.core.util.SarlUtils.HIDDEN_MEMBER_CHARACTER;
 import static io.sarl.lang.core.util.SarlUtils.isHiddenMember;
-import static java.util.Collections.singletonMap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -90,17 +89,11 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.typesystem.conformance.RawTypeConformanceComputer;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
-import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
-import org.eclipse.xtext.xbase.typesystem.references.WildcardTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
-import org.eclipse.xtext.xbase.typesystem.util.TypeParameterByConstraintSubstitutor;
-import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo;
 import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XtypeFactory;
 import org.osgi.framework.Version;
@@ -770,10 +763,10 @@ public final class Utils {
 		// Remove the SNAPSHOT version.
 		//final String fixedv1 = v1.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		//final String fixedv2 = v2.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		//final Version vobject1 = Version.parseVersion(fixedv1);
-		//final Version vobject2 = Version.parseVersion(fixedv2);
-		final var vobject1 = Version.parseVersion(v1);
-		final var vobject2 = Version.parseVersion(v2);
+		//final Version vobject1 = parseVersion(fixedv1);
+		//final Version vobject2 = parseVersion(fixedv2);
+		final var vobject1 = parseVersion(v1);
+		final var vobject2 = parseVersion(v2);
 		return vobject1.compareTo(vobject2);
 	}
 
@@ -787,9 +780,9 @@ public final class Utils {
 	 * @since 0.13
 	 */
 	public static int compareMajorMinorVersions(String v1, String v2) {
-		final var vobject1 = Version.parseVersion(v1);
+		final var vobject1 = parseVersion(v1);
 		final var vo1 = new Version(vobject1.getMajor(), vobject1.getMinor(), 0);
-		final var vobject2 = Version.parseVersion(v2);
+		final var vobject2 = parseVersion(v2);
 		final var vo2 = new Version(vobject2.getMajor(), vobject2.getMinor(), 0);
 		return vo1.compareTo(vo2);
 	}
@@ -1130,6 +1123,9 @@ public final class Utils {
 	 * @return the qualified name of the element.
 	 */
 	public static QualifiedName getQualifiedName(JvmIdentifiableElement element) {
+		if (element == null) {
+			return null;
+		}
 		return QualifiedName.create(element.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 	}
 
@@ -1175,12 +1171,38 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleSARLLibraryVersion(String version) {
 		if (version != null) {
-			final var currentVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
-			final var paramVersion = Version.parseVersion(version);
-			return currentVersion.getMajor() == paramVersion.getMajor()
-					&& currentVersion.getMinor() == paramVersion.getMinor();
+			final var currentVersion = parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+			assert currentVersion != null;
+			final var paramVersion = parseVersion(version);
+			if (paramVersion != null) {
+				return currentVersion.getMajor() == paramVersion.getMajor()
+						&& currentVersion.getMinor() == paramVersion.getMinor();
+			}
 		}
 		return false;
+	}
+
+	/** Parse the given string to extract a version number.
+	 * This function is safer than {@link Version#parseVersion(String)} because it automatically
+	 * adds the suffix {@code .0} to the provided version if it is not recognized as-is.
+	 * 
+	 * @param version the string to parse.
+	 * @return the version number or {@code null} if there is no valid version number in the string.
+	 * @since 0.15
+	 */
+	public static Version parseVersion(String version) {
+		if (version != null) {
+			try {
+				return Version.parseVersion(version);
+			} catch (Throwable ex0) {
+				try {
+					return Version.parseVersion(new StringBuilder(version).append(".0").toString()); //$NON-NLS-1$
+				} catch (Throwable ex1) {
+					//
+				}
+			}
+		}
+		return null;
 	}
 
 	/** Check if a version of the JDK is compatible with the SARL compilation environment.
@@ -1195,13 +1217,13 @@ public final class Utils {
 	 * @see io.sarl.lang.core.SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
 	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment(String version) {
-		if (version != null && !version.isEmpty()) {
-			final var current = Version.parseVersion(version);
+		if (version != null) {
+			final var current = parseVersion(version);
 			if (current != null) {
-				final var minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+				final var minJdk = parseVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 				assert minJdk != null;
 				if (current.compareTo(minJdk) >= 0) {
-					final var maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+					final var maxJdk = parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 					assert maxJdk != null;
 					return current.compareTo(maxJdk) < 0;
 				}
@@ -1237,12 +1259,12 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleJDKVersionWhenInSARLProjectClasspath(String version) {
 		if (version != null && !version.isEmpty()) {
-			final var current = Version.parseVersion(version);
+			final var current = parseVersion(version);
 			if (current != null) {
-				final var minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+				final var minJdk = parseVersion(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 				assert minJdk != null;
 				if (current.compareTo(minJdk) >= 0) {
-					final var maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+					final var maxJdk = parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 					assert maxJdk != null;
 					return current.compareTo(maxJdk) < 0;
 				}
@@ -1323,29 +1345,28 @@ public final class Utils {
 		if (type == null) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_CLASS;
 		}
-		if (!(type instanceof JvmDeclaredType)) {
-			return SarlLibraryErrorCode.NO_SARL_VERSION_DECLARED_TYPE;
-		}
-		final var sarlVersionType = (JvmDeclaredType) type;
-		JvmField versionField = null;
-		final var iterator = sarlVersionType.getDeclaredFields().iterator();
-		while (versionField == null && iterator.hasNext()) {
-			final var field = iterator.next();
-			if (SARL_VERSION_FIELD_NAME_STR.equals(field.getSimpleName())) {
-				versionField = field;
+		if (type instanceof JvmDeclaredType sarlVersionType) {
+			JvmField versionField = null;
+			final var iterator = sarlVersionType.getDeclaredFields().iterator();
+			while (versionField == null && iterator.hasNext()) {
+				final var field = iterator.next();
+				if (SARL_VERSION_FIELD_NAME_STR.equals(field.getSimpleName())) {
+					versionField = field;
+				}
 			}
+			if (versionField == null) {
+				return SarlLibraryErrorCode.NO_SARL_VERSION_FIELD;
+			}
+			final var value = versionField.getConstantValueAsString();
+			if (Strings.isNullOrEmpty(value)) {
+				return SarlLibraryErrorCode.NO_SARL_VERSION_VALUE;
+			}
+			if (version != null) {
+				version.set(value);
+			}
+			return SarlLibraryErrorCode.SARL_FOUND;
 		}
-		if (versionField == null) {
-			return SarlLibraryErrorCode.NO_SARL_VERSION_FIELD;
-		}
-		final var value = versionField.getConstantValueAsString();
-		if (Strings.isNullOrEmpty(value)) {
-			return SarlLibraryErrorCode.NO_SARL_VERSION_VALUE;
-		}
-		if (version != null) {
-			version.set(value);
-		}
-		return SarlLibraryErrorCode.SARL_FOUND;
+		return SarlLibraryErrorCode.NO_SARL_VERSION_DECLARED_TYPE;
 	}
 
 	/** Replies if the given annotation is an annotation from the SARL core library.
@@ -1996,12 +2017,13 @@ public final class Utils {
 	/** Replies the human-readable types arguments without showing the upper and lower bounds.
 	 *
 	 * @param arguments the list of type arguments.
+	 * @param numberOfArgumentsIfNotProvider indicates the number of arguments that are expected if the given type does not provide them.
 	 * @param grammarAccess the accessor to the grammar.
 	 * @return the string representation of the type arguments.
-	 * @since 0.14
+	 * @since 0.15
 	 */
 	@Pure
-	public static String getHumanReadableTypeArgumentsWithoutBounds(List<LightweightTypeReference> arguments, SARLGrammarKeywordAccess grammarAccess) {
+	public static String getHumanReadableTypeArgumentsWithoutBounds(List<LightweightTypeReference> arguments, int numberOfArgumentsIfNotProvider, SARLGrammarKeywordAccess grammarAccess) {
 		final var buffer = new StringBuilder();
 		if (arguments != null && !arguments.isEmpty()) {
 			buffer.append(grammarAccess.getLessThanSignKeyword());
@@ -2015,6 +2037,15 @@ public final class Utils {
 				buffer.append(argument.getHumanReadableName());
 			}
 			buffer.append(grammarAccess.getGreaterThanSignKeyword());
+		} else {
+			buffer.append(grammarAccess.getLessThanSignKeyword());
+			for (var i = 0; i < numberOfArgumentsIfNotProvider; ++i) {
+				if (i > 0) {
+					buffer.append(grammarAccess.getCommaKeyword());
+				}
+				buffer.append(grammarAccess.getQuestionMarkKeyword());
+			}
+			buffer.append(grammarAccess.getGreaterThanSignKeyword());
 		}
 		return buffer.toString();
 	}
@@ -2022,13 +2053,14 @@ public final class Utils {
 	/** Replies the human-readable types arguments without showing the upper and lower bounds.
 	 *
 	 * @param type the type for which the type arguments must be extracted.
+	 * @param numberOfArgumentsIfNotProvider indicates the number of arguments that are expected if the given type does not provide them.
 	 * @param grammarAccess the accessor to the grammar.
 	 * @return the string representation of the type arguments.
-	 * @since 0.14
+	 * @since 0.15
 	 */
 	@Pure
-	public static String getHumanReadableTypeArgumentsWithoutBounds(LightweightTypeReference type, SARLGrammarKeywordAccess grammarAccess) {
-		return getHumanReadableTypeArgumentsWithoutBounds(type.getTypeArguments(), grammarAccess);
+	public static String getHumanReadableTypeArgumentsWithoutBounds(LightweightTypeReference type, int numberOfArgumentsIfNotProvider, SARLGrammarKeywordAccess grammarAccess) {
+		return getHumanReadableTypeArgumentsWithoutBounds(type.getTypeArguments(), numberOfArgumentsIfNotProvider, grammarAccess);
 	}
 
 	/** Replies the human-readable types arguments with showing the upper and lower bounds.
@@ -2104,55 +2136,6 @@ public final class Utils {
 	@Pure
 	public static String getHumanReadableTypeArgumentsWithBounds(LightweightTypeReference type, SARLGrammarKeywordAccess grammarAccess) {
 		return getHumanReadableTypeArgumentsWithBounds(type.getTypeArguments(), grammarAccess);
-	}
-
-	/** Replies if the given type arguments are conform to the type parameters.
-	 *
-	 * @param typeArguments the list of type parameters that are passed as arguments.
-	 * @param typeParameters the list of types parameters that have been declared.
-	 * @param referenceOwner the owner of the type reference.
-	 * @param allowWildcard indicates if wildcards are allowed in type conformance checking.
-	 * @return {@code true} if the type arguments and type parameters are conform.
-	 * @since 0.14
-	 */
-	public static boolean isTypeArgumentConformant(List<LightweightTypeReference> typeArguments,
-			List<JvmTypeParameter> typeParameters, ITypeReferenceOwner referenceOwner, boolean allowWildcard) {
-		final var max = Math.min(typeArguments.size(), typeParameters.size());
-		if (max == 0) {
-			return true;
-		}
-		final var substitutor = new TypeParameterByConstraintSubstitutor(Collections.emptyMap(), referenceOwner);
-		for (var i = 0; i < max; ++i) {
-			final var argument = typeArguments.get(i);
-			final var declaration = typeParameters.get(i);
-			substitutor.enhanceMapping(singletonMap(declaration,
-					new LightweightMergedBoundTypeArgument(argument, VarianceInfo.INVARIANT)));
-		}
-		final var opts = RawTypeConformanceComputer.ALLOW_BOXING | RawTypeConformanceComputer.ALLOW_RAW_TYPE_CONVERSION;
-		final var successFlags = RawTypeConformanceComputer.SUCCESS;
-		for (var i = 0; i < max; ++i) {
-			final var declaration = typeParameters.get(i);
-			final var argument = typeArguments.get(i);
-			final var conformanceComputer = argument.getOwner().getServices().getTypeConformanceComputer();
-			if (argument.getType() != declaration) {
-				final var reference = argument.getOwner().newParameterizedTypeReference(declaration);
-				for (final var superType: reference.getSuperTypes()) {
-					final var substitutedSuperType = substitutor.substitute(superType);
-					var fixedArgument = argument;
-					if (allowWildcard && fixedArgument instanceof WildcardTypeReference cvalue
-							&& cvalue.getUpperBoundSubstitute().isType(Object.class)) {
-						final var arg = referenceOwner.newWildcardTypeReference();
-						arg.addUpperBound(substitutedSuperType.copyInto(referenceOwner));
-						fixedArgument = arg;
-					}
-					final var conformance = conformanceComputer.isConformant(substitutedSuperType, fixedArgument, opts);
-					if ((conformance & successFlags) == 0) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
 	}
 
 	/** Replies the upper bounds from the constraints of the given generic type parameter.

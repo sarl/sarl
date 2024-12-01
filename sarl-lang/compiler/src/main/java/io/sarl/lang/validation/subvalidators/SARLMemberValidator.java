@@ -1290,7 +1290,7 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		if (event != null) {
 			final var lref = getParentValidator().toLightweightTypeReference(event);
 			getParentValidator().doCheckValidSuperTypeArgumentDefinition(
-					lref, unit, SARL_BEHAVIOR_UNIT__NAME, INSIGNIFICANT_INDEX, true,
+					lref, unit, SARL_BEHAVIOR_UNIT__NAME, INSIGNIFICANT_INDEX, true, false,
 					getMessageAcceptor());
 		}
 	}

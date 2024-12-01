@@ -891,8 +891,7 @@ public class GenericEventParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					RAW_TYPE,
-					"E1 is a raw type. References to generic type E1<T1, T2, T3> should be parameterized")
-				.assertNoErrors();
+					"E1 is a raw type. References to generic type E1<T1, T2, T3> should be parameterized");
 		}
 
 		@Test

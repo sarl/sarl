@@ -292,13 +292,12 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 				final var superType = superTypes.get(i);
 				final var associated = getSuperTypeSourceElement(superType);
 				if (associated == null) {
-					// we still record this supertype for possible duplication checks
 					continue; // synthetic superclass (e.g., Object)
 				}
 				final var eContainingFeature = associated.eContainingFeature();
 				final var lighweightSuperType = getParentValidator().toLightweightTypeReference(superType);
 				getParentValidator().doCheckValidSuperTypeArgumentDefinition(lighweightSuperType, sourceType,
-						eContainingFeature, i, false, getMessageAcceptor());
+						eContainingFeature, i, false, true, getMessageAcceptor());
 			}
 		}
 	}
@@ -398,7 +397,7 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 							success = false;
 						} else {
 							success = getParentValidator().doCheckValidSuperTypeArgumentDefinition(lighweightSuperType,
-									element, feature, superTypeIndex, false, getMessageAcceptor());
+									element, feature, superTypeIndex, false, true, getMessageAcceptor());
 						}
 					} else {
 						getMessageAcceptor().acceptError(MessageFormat.format(Messages.SARLInheritanceValidator_9,

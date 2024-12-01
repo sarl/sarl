@@ -26,6 +26,7 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NA
 import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Iterables;
@@ -69,6 +70,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
@@ -78,6 +80,7 @@ import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.ISARLTypeChecker;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.subvalidators.SARLCastValidator;
 
@@ -119,6 +122,9 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 
 	@Inject
 	private SARLGrammarKeywordAccess grammarAccess;
+
+	@Inject
+	private ISARLTypeChecker sarlTypeChecker;
 
 	private ValidationMessageAcceptor temporaryMessageAcceptor; 
 
@@ -386,18 +392,41 @@ public class SARLValidator extends AbstractSARLValidator implements ISARLValidat
 
 	@Override
 	public boolean doCheckValidSuperTypeArgumentDefinition(LightweightTypeReference typeRef, EObject context,
-			EStructuralFeature feature, int superTypeIndex, boolean allowWildcard,
+			EStructuralFeature feature, int superTypeIndex, boolean allowWildcardAsAny, boolean rawTypeWarningIfNoArgument,
 			ValidationMessageAcceptor messageAcceptor) {
 		final var superType = typeRef.getType();
 		if (superType instanceof JvmTypeParameterDeclarator cvalue) {
 			final var typeParameters = cvalue.getTypeParameters();
 			if (!typeParameters.isEmpty()) {
-				final var isConformant = Utils.isTypeArgumentConformant(
-						typeRef.getTypeArguments(), typeParameters, typeRef.getOwner(), allowWildcard);
+				final var initialTypeArguments = typeRef.getTypeArguments();
+
+				if (rawTypeWarningIfNoArgument && (initialTypeArguments == null || initialTypeArguments.isEmpty())) {
+					if (!isIgnored(IssueCodes.RAW_TYPE)) {
+						messageAcceptor.acceptWarning(MessageFormat.format(Messages.SARLValidator_4,
+								typeRef.getSimpleName(),
+								Utils.getHumanReadableTypeParametersWithBounds(typeParameters, this.grammarAccess)),
+								context,
+								feature,
+								superTypeIndex,
+								IssueCodes.RAW_TYPE);
+					}
+					return true;
+				}
+
+				final List<LightweightTypeReference> typeArguments;
+				if (allowWildcardAsAny) {
+					typeArguments = this.sarlTypeChecker.substituteRootWildcard(initialTypeArguments, typeParameters,
+							typeRef.getOwner());
+				} else {
+					typeArguments = initialTypeArguments;
+				}
+
+				final var isConformant = this.sarlTypeChecker.isTypeArgumentConformant(
+						typeArguments, typeParameters, typeRef.getOwner());
 				if (!isConformant) {
 					messageAcceptor.acceptError(MessageFormat.format(
 							Messages.SARLValidator_3,
-							Utils.getHumanReadableTypeArgumentsWithoutBounds(typeRef, this.grammarAccess),
+							Utils.getHumanReadableTypeArgumentsWithoutBounds(typeRef, typeParameters.size(), this.grammarAccess),
 							Utils.getHumanReadableTypeParametersWithBounds(typeParameters, this.grammarAccess),
 							superType.getSimpleName()),
 							context,

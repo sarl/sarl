@@ -19,35 +19,28 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.validation;
+package foo.ecore;
 
-import org.eclipse.osgi.util.NLS;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
 
-/** Localized Messages.
+
+/**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.15
  */
 @SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class SubGenEvent<T extends Number> extends Event {
+
+	public SubGenEvent() {
+		super();
 	}
 
-	private Messages() {
+	public SubGenEvent(Address source) {
+		super(source);
 	}
 
-	public static String SARLValidator_1;
-	public static String SARLValidator_2;
-	public static String SARLValidator_3;
-	public static String SARLValidator_4;
-
-	public static String SARLSyntaxErrorMessageProvider_0;
-	public static String SARLSyntaxErrorMessageProvider_1;
-	
-	public static String SARLEarlyExitValidator_0;
 }
