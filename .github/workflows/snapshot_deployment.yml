@@ -41,13 +41,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-${{ matrix.language }}
           ${{ runner.os }}-maven-
-    - run: |
-         echo "Deployment using script"
-         ./scripts/release.sh
-      env:
+    - env:
         MAVENSARLIO_URL: ${{ secrets.SARL_MAVENSARLIO_URL }}
         UPDATESSARLIO_URL: ${{ secrets.SARL_UPDATESSARLIO_URL }}
         DEPENDENCIESSARLIO_URL: ${{ secrets.SARL_DEPENDENCIESSARLIO_URL }}
         MAVENSARLIO_USER: ${{ secrets.SARL_MAVENSARLIO_USER }}
         MAVENSARLIO_PWD: ${{ secrets.SARL_MAVENSARLIO_PWD }}
+    - run: |
+         echo "Deployment using script"
+         ./scripts/release.sh
 
