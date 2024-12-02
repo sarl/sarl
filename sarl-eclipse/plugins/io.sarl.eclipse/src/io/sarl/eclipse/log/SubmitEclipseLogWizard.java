@@ -181,6 +181,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the status.
 	 * @throws Exception when error.
 	 */
+	@SuppressWarnings("static-method")
 	protected IStatus submit(Charset charset, String title, String body, String login, String password,
 			IProgressMonitor progress) throws Exception {
 		final var subMonitor = SubMonitor.convert(progress, 10);
@@ -293,6 +294,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the content.
 	 * @throws IOException if the content cannot be built.
 	 */
+	@SuppressWarnings("static-method")
 	protected String buildContent(String description, Charset charset) throws IOException {
 		final var fullContent = new StringBuilder();
 

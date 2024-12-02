@@ -86,7 +86,7 @@ import io.sarl.tests.api.Nullable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"nls", "incomplete-switch"})
+@SuppressWarnings("all")
 @DisplayName("DefaultActionPrototypeProvider")
 @Tag("core")
 @Tag("unit")

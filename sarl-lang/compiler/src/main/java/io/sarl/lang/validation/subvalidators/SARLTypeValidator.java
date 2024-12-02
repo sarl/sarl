@@ -238,6 +238,10 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 		}
 	}
 
+	/** Check if the dispatch functions in the given class.
+	 * 
+	 * @param clazz the class to test.
+	 */
 	@Check(CheckType.NORMAL)
 	public void checkDispatchFunctions(XtendClass clazz) {
 		final var type = getAssociations().getInferredType(clazz);

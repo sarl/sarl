@@ -341,6 +341,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 				MessageFormat.format(Messages.SARLFeatureModifierValidator_11, skill.getName()));
 	}
 
+	/** Check the modifiers of the interface.
+	 * 
+	 * @param oopInterface the interface to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendInterface oopInterface) {
 		final var econtainer = oopInterface.eContainer();
@@ -357,6 +361,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check the modifiers of the class.
+	 * 
+	 * @param oopClass the class to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendClass oopClass) {
 		final var econtainer = oopClass.eContainer();
@@ -376,6 +384,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check the modifiers of the enumeration.
+	 * 
+	 * @param oopEnum the class to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendEnum oopEnum) {
 		final var econtainer = oopEnum.eContainer();
@@ -392,6 +404,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check the modifiers of the annotation type.
+	 * 
+	 * @param oopAnnotationType the annotation type to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkModifiers(XtendAnnotationType oopAnnotationType) {
 		final var econtainer = oopAnnotationType.eContainer();

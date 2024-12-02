@@ -24,6 +24,7 @@ import io.sarl.lang.core.Event;
 
 /** For test only.
  */
+@SuppressWarnings("all")
 public class Evt extends Event {
 
 	private static final long serialVersionUID = -2140441307296468555L;

@@ -326,6 +326,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 *
 	 * @return the default group id, never {@code null} nor empty string.
 	 */
+	@SuppressWarnings("static-method")
 	protected String getDefaultMavenGroupId() {
 		final var userdomain = System.getenv("userdomain"); //$NON-NLS-1$
 		if (Strings.isNullOrEmpty(userdomain)) {

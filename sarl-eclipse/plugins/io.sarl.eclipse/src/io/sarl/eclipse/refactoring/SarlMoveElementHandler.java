@@ -182,7 +182,7 @@ public class SarlMoveElementHandler extends AbstractHandler {
 		return document.<XtextResource>priorityReadOnly(function);
 	}
 
-	private XtendMember findSemanticObject(XtextResource resource, ITextSelection selection) {
+	private static XtendMember findSemanticObject(XtextResource resource, ITextSelection selection) {
 		final var parseResult = resource.getParseResult();
 		if (parseResult != null) {
 			final var rootNode = parseResult.getRootNode();
@@ -217,6 +217,7 @@ public class SarlMoveElementHandler extends AbstractHandler {
 	 * @param element the element to move.
 	 * @param shell the UI shell.
 	 */
+	@SuppressWarnings("static-method")
 	protected void showUnsupportedElementError(XtendMember element, Shell shell) {
 		final var typeName = getTypeName(element);
 		SARLEclipsePlugin.getDefault().openError(shell,

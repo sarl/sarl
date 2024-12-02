@@ -55,7 +55,7 @@
 					<filter token="JAVA_VERSION" value="21"/>
 					<filter token="RELEASE_YEAR" value="2024"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.13.0"/>
-					<filter token="OPENJFX_VERSION" value="21.0.4-ea+1"/>
+					<filter token="OPENJFX_VERSION" value="21.0.6-ea+2"/>
 				</filterset>
 			</copy>
 			<copy file="@{pomtemplate}" tofile="@{archive}/@{name}/pom.xml" overwrite="false"
@@ -70,7 +70,7 @@
 					<filter token="JAVA_VERSION" value="21"/>
 					<filter token="RELEASE_YEAR" value="2024"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.13.0"/>
-					<filter token="OPENJFX_VERSION" value="21.0.4-ea+1"/>
+					<filter token="OPENJFX_VERSION" value="21.0.6-ea+2"/>
 				</filterset>
 			</copy>
 			<mkdir dir="@{target}" />

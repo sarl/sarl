@@ -87,6 +87,7 @@ public class SARLBuilderPreferenceAccess {
 	 * @param generatorConfig the configuration to set up.
 	 * @param context the context of the building.
 	 */
+	@SuppressWarnings("static-method")
 	public void loadBuilderPreferences(GeneratorConfig2 generatorConfig, IProject context) {
 		final var preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
 		if (preferenceStore != null) {

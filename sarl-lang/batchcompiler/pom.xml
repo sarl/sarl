@@ -36,8 +36,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+          <groupId>org.eclipse.xtext</groupId>
+          <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -107,7 +107,7 @@
       <plugin>
         <groupId>biz.aQute.bnd</groupId>
         <artifactId>bnd-maven-plugin</artifactId>
-        <version>7.0.0</version>
+        <version>7.1.0</version>
         <extensions>true</extensions>
         <executions>
           <execution>
@@ -127,7 +127,7 @@
 						# Version of Google Guice are forced because BND plugin does not compute the correct version for the
 						# imported packages from Guice
 						Import-Package: \
-							com.google.inject.*;version=!, \
+							com.google.inject.*;version=!,\
 							*
 					</bnd>
         </configuration>
@@ -168,37 +168,37 @@
           </dependency>
         </dependencies>
       </plugin>
-		<plugin>
-		     <groupId>org.apache.maven.plugins</groupId>
-		     <artifactId>maven-dependency-plugin</artifactId>
-		     <version>3.8.0</version>
-		     <executions>
-		         <execution>
-		             <goals>
-		                 <goal>properties</goal>
-		             </goals>
-		         </execution>
-		     </executions>
-		 </plugin>
-		<plugin>
-		    <groupId>org.apache.maven.plugins</groupId>
-		    <artifactId>maven-surefire-plugin</artifactId>
-		    <version>3.5.1</version>
-		    <configuration>
-		        <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
-		        <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
-		            <disable>false</disable>
-		            <encoding>UTF-8</encoding>
-		            <usePhrasedFileName>false</usePhrasedFileName>
-		        </consoleOutputReporter>
-		        <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
-		            <disable>false</disable>
-		            <usePhrasedFileName>false</usePhrasedFileName>
-		            <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
-		            <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
-		        </statelessTestsetInfoReporter>
-		    </configuration>
-		</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.8.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+        <configuration>
+          <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+          <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+            <disable>false</disable>
+            <encoding>UTF-8</encoding>
+            <usePhrasedFileName>false</usePhrasedFileName>
+          </consoleOutputReporter>
+          <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+            <disable>false</disable>
+            <usePhrasedFileName>false</usePhrasedFileName>
+            <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+            <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+          </statelessTestsetInfoReporter>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -229,7 +229,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version>
+            <version>3.11.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

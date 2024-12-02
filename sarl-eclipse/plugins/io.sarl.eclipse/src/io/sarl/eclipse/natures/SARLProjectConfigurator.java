@@ -194,6 +194,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 * @param project the project.
 	 * @param monitor the progress monitor.
 	 */
+	@SuppressWarnings("static-method")
 	protected void safeRefresh(IProject project, IProgressMonitor monitor) {
 		try {
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);

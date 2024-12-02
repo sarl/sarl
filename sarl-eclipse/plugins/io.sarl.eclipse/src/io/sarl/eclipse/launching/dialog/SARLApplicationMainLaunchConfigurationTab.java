@@ -193,6 +193,7 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 			//
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();

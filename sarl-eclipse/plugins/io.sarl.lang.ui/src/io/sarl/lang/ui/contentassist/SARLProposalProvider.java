@@ -590,6 +590,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		 * @param context the content assit context.
 		 * @param searchFor the type of elements to search for.
 		 */
+		@SuppressWarnings("synthetic-access")
 		ExtensionFilter(ContentAssistContext context, int searchFor) {
 			super(searchFor);
 			this.modelFullName = SARLProposalProvider.this.qualifiedNameProvider.getFullyQualifiedName(

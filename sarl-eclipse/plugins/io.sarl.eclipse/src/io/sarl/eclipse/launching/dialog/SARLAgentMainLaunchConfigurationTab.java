@@ -237,6 +237,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		final var group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
 		this.agentNameTextField = SWTFactory.createSingleText(group, 1);
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent event) {
 				SARLAgentMainLaunchConfigurationTab.this.lastAgentNameError = null;
@@ -396,6 +397,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 *
 	 * @return the validity state.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isValidContextIdentifierType() {
 		return true;
 	}
@@ -404,6 +406,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 *
 	 * @return the validity state.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isValidLaunchOptions() {
 		return true;
 	}
@@ -523,6 +526,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			final var nameRef = new String[1];
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -579,6 +583,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		if (status.isOK()) {
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -607,6 +612,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			try {
 				final var res = new boolean[1];
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
@@ -668,6 +674,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			//
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();

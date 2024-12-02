@@ -116,7 +116,7 @@ if (project.dependencyManagement &amp;&amp; project.dependencyManagement.depende
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <type>pom</type>
-            <version>4.0.23</version>
+            <version>4.0.24</version>
           </dependency>
         </dependencies>
       </plugin>

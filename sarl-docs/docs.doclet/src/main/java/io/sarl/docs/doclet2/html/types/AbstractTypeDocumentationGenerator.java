@@ -291,11 +291,11 @@ public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumen
 		if (element != null) {
 			for (final var annotationMirror : element.getAnnotationMirrors()) {
 				final var type = getElementUtils().asTypeElement(annotationMirror.getAnnotationType(), getEnvironment().getTypeUtils());
-				if (PerceptGuardEvaluator.class.getName().equals(type.getQualifiedName()) && !annotationMirror.getElementValues().isEmpty()) {
+				if (PerceptGuardEvaluator.class.getName().equals(type.getQualifiedName().toString()) && !annotationMirror.getElementValues().isEmpty()) {
 					for (final var entry : annotationMirror.getElementValues().entrySet()) {
 						final var method = entry.getKey();
 						final var returnType = method.getReturnType();
-						if ("typeParameters".equals(method.getSimpleName()) && returnType.getKind() == TypeKind.ARRAY) { //$NON-NLS-1$
+						if ("typeParameters".equals(method.getSimpleName().toString()) && returnType.getKind() == TypeKind.ARRAY) { //$NON-NLS-1$
 							return entry.getValue();
 						}
 					}

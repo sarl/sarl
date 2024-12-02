@@ -1,20 +1,20 @@
 biz.aQute.bnd:
-  bnd-maven-plugin: 7.0.0
+  bnd-maven-plugin: 7.1.0
 
 com.akathist.maven.plugins.launch4j:
   launch4j-maven-plugin: 2.5.2
 
 com.vladsch.flexmark:
-  flexmark: 0.64.8
+  flexmark: $flexmark.version
 
 commons-io:
-  commons-io: 2.17.0
+  commons-io: $apache.commons.io
 
 io.bootique:
-  bootique: 3.0.M1
+  bootique: $bootique.version
 
 io.bootique.di:
-  bootique-di: 3.0.M1
+  bootique-di: $bootique.version
 
 io.sarl.apputils:
   bootiqueapp: $sarl.version
@@ -43,40 +43,40 @@ io.sarl.sre.janus:
   janus.network: $janus.version
 
 me.tongfei:
-  progressbar: 0.10.1
+  progressbar: $cliprogressbar.version
 
 net.jsign:
   jsign-maven-plugin: "6.0"
 
 net.sf.jopt-simple:
-  jopt-simple: 5.0.4
+  jopt-simple: $jopt.version
 
 org.apache.geronimo.specs:
   geronimo-atinject_1.0_spec: "1.2"
 
 org.apache.groovy:
-  groovy-all: 4.0.23
+  groovy-all: 4.0.24
 
 org.apache.maven.plugins:
   maven-antrun-plugin: 3.1.0
   maven-assembly-plugin: 3.7.1
-  maven-clean-plugin: 3.4.0
+  maven-clean-plugin: $maven.plugins.clean
   maven-compiler-plugin: $maven.compiler.version
-  maven-dependency-plugin: 3.8.0
-  maven-failsafe-plugin: 3.5.1
+  maven-dependency-plugin: 3.8.1
+  maven-failsafe-plugin: 3.5.2
   maven-gpg-plugin: 3.2.7
   maven-jar-plugin: 3.4.2
-  maven-javadoc-plugin: 3.10.1
-  maven-plugin-plugin: 3.15.0
+  maven-javadoc-plugin: 3.11.1
+  maven-plugin-plugin: 3.15.1
   maven-resources-plugin: 3.3.1
   maven-source-plugin: 3.3.1
-  maven-surefire-plugin: 3.5.1
+  maven-surefire-plugin: 3.5.2
 
 org.apache.maven.plugin-tools:
-  maven-plugin-annotations: 3.15.0
+  maven-plugin-annotations: $maven.plugins.annotations
 
 org.apache.maven.shared:
-  maven-verifier: 2.0.0-M1
+  maven-verifier: $maven.plugins.verifier
 
 org.apache.maven.wagon:
   wagon-webdav-jackrabbit: 3.5.3
@@ -91,22 +91,23 @@ org.codehaus.mojo:
   wagon-maven-plugin: 2.0.2
 
 org.eclipse.emf:
-  org.eclipse.emf.mwe2.launch: 2.19.0
+  org.eclipse.emf.mwe2.launch: 2.20.0
 
 org.eclipse.m2e:
+  # Don't change this version number
   lifecycle-mapping: 1.0.0
 
 com.google.code.maven-replacer-plugin:
   replacer: 1.5.3
 
 org.jsoup:
-  jsoup: 1.18.1
+  jsoup: $jsoup.version
 
 org.junit.jupiter:
   junit-jupiter-engine: $junit.jupiter.version
 
 org.junit.platform:
-  junit-platform-launcher: 1.11.2
+  junit-platform-launcher: 1.11.3
 
 org.mockito:
   mockito-core: $junit.mockito.version

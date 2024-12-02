@@ -494,6 +494,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @param element the element.
 	 * @return the text.
 	 */
+	@SuppressWarnings("static-method")
 	protected StyledString text(SarlCapacityUses element) {
 		return new StyledString(Messages.SARLLabelProvider_0, StyledString.QUALIFIER_STYLER);
 	}
@@ -503,6 +504,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @param element the element.
 	 * @return the text.
 	 */
+	@SuppressWarnings("static-method")
 	protected StyledString text(SarlRequiredCapacity element) {
 		return new StyledString(Messages.SARLLabelProvider_1, StyledString.QUALIFIER_STYLER);
 	}

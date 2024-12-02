@@ -883,6 +883,8 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 	 * <li>not generating an error when a return type is missed. Indeed, the return type is "void" by default.</li>
 	 * <li>generating a warning when "abstract" is missed.</li>
 	 * </ul>
+	 *
+	 * @param function the function to check.
 	 */
 	@Check(CheckType.FAST)
 	public void checkAbstract(XtendFunction function) {
@@ -964,6 +966,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given field has a valid type for extension mechanism.
+	 * 
+	 * @param field the field to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkValidExtension(XtendField field) {
 		if (field.isExtension()) {
@@ -974,6 +980,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given formal parameter has a valid type for extension mechanism.
+	 * 
+	 * @param parameter the parameter to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkValidExtension(XtendFormalParameter parameter) {
 		// catch clauses validate their types against java.lang.Throwable
@@ -982,6 +992,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given variable has a valid type for extension mechanism.
+	 * 
+	 * @param variableDeclaration the variable to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkValidExtension(XtendVariableDeclaration variableDeclaration) {
 		if (variableDeclaration.isExtension()) {
@@ -989,6 +1003,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given parameter has a valid type for extension mechanism.
+	 * 
+	 * @param parameter the parameter to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkValidExtension(XtendParameter parameter) {
 		if (parameter.isExtension()) {
@@ -1030,6 +1048,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given field has an inferred type that is not raw.
+	 * 
+	 * @param field the field to check.
+	 */
 	@Check
 	public void checkNonRawTypeInferred(XtendField field) {
 		if (field.getType() == null) {
@@ -1042,6 +1064,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given function has an inferred return type that is not raw.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkNonRawTypeInferred(XtendFunction function) {
 		if (function.getReturnType() == null) {
@@ -1054,6 +1080,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the parameter is not marked as extension and variadic at the same time.
+	 * 
+	 * @param param the parameter to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkVarArgIsNotExtension(XtendParameter param) {
 		if (param.isVarArg() && param.isExtension()) {
@@ -1061,6 +1091,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the variadic parameter is the last parameter of the enclosing function.
+	 * 
+	 * @param param the parameter to check.
+	 */
 	@SuppressWarnings("unchecked")
 	@Check(CheckType.FAST)
 	public void checkVarArgComesLast(XtendParameter param) {
@@ -1072,6 +1106,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the parameters' names are valid.
+	 * 
+	 * @param function the function for which the parameters' names must be checked.
+	 */
 	@Check(CheckType.FAST)
 	public void checkParameterNames(XtendFunction function) {
 		for (int i = 0; i < function.getParameters().size(); ++i) {
@@ -1081,48 +1119,58 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 				if (Objects.equals(leftParameterName, function.getCreateExtensionInfo().getName())) {
 					error(MessageFormat.format(Messages.SARLMemberValidator_35, leftParameterName),
 							XTEND_EXECUTABLE__PARAMETERS, i, DUPLICATE_PARAMETER_NAME);
-					if (function.getCreateExtensionInfo().eIsSet(CREATE_EXTENSION_INFO__NAME))
+					if (function.getCreateExtensionInfo().eIsSet(CREATE_EXTENSION_INFO__NAME)) {
 						error(MessageFormat.format(Messages.SARLMemberValidator_35, leftParameterName),
 								function.getCreateExtensionInfo(),
 								CREATE_EXTENSION_INFO__NAME, DUPLICATE_PARAMETER_NAME);
-					else
+					} else {
 						error(MessageFormat.format(Messages.SARLMemberValidator_36,
 								getGrammarAccess().getItKeyword()),
 								function.getCreateExtensionInfo(),
 								CREATE_EXTENSION_INFO__NAME, DUPLICATE_PARAMETER_NAME);
+					}
 				}
 			}
 		}
 	}
 
+	/** Check if the given dispatch function has a valid set of formal parameters and type parameters and has
+	 * a valid function name.
+	 * 
+	 * @param function the dispatch function to check.
+	 */
 	@Check(CheckType.FAST)
-	public void dispatchFuncWithTypeParams(XtendFunction func) {
-		if (func.isDispatch()) {
+	public void dispatchFuncWithTypeParams(XtendFunction function) {
+		if (function.isDispatch()) {
 			final var dkw = getGrammarAccess().getDispatchKeyword();
-			if (func.getParameters().isEmpty()) {
-				error(Messages.SARLMemberValidator_37, func, 
-						XTEND_MEMBER__MODIFIERS, func.getModifiers().indexOf(dkw),
+			if (function.getParameters().isEmpty()) {
+				error(Messages.SARLMemberValidator_37, function, 
+						XTEND_MEMBER__MODIFIERS, function.getModifiers().indexOf(dkw),
 						DISPATCH_FUNC_WITHOUT_PARAMS);
 			}
-			if (!func.getTypeParameters().isEmpty()) {
-				error(Messages.SARLMemberValidator_38, func,
-						XTEND_MEMBER__MODIFIERS, func.getModifiers().indexOf(dkw),
+			if (!function.getTypeParameters().isEmpty()) {
+				error(Messages.SARLMemberValidator_38, function,
+						XTEND_MEMBER__MODIFIERS, function.getModifiers().indexOf(dkw),
 						DISPATCH_FUNC_WITH_TYPE_PARAMS);
 			}
-			if (func.getName().startsWith("_")) { //$NON-NLS-1$
-				error(Messages.SARLMemberValidator_39, func, XTEND_FUNCTION__NAME,
+			if (function.getName().startsWith("_")) { //$NON-NLS-1$
+				error(Messages.SARLMemberValidator_39, function, XTEND_FUNCTION__NAME,
 						DISPATCH_FUNC_NAME_STARTS_WITH_UNDERSCORE);
 			}
 		}
 	}
 
+	/** Check if there is no {@code return} statement in a creation extension.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
-	public void checkNoReturnsInCreateExtensions(XtendFunction func) {
-		if (func.getCreateExtensionInfo() == null) {
+	public void checkNoReturnsInCreateExtensions(XtendFunction function) {
+		if (function.getCreateExtensionInfo() == null) {
 			return;
 		}
 		final var found = new ArrayList<XReturnExpression>();
-		collectReturnExpressions(func.getCreateExtensionInfo().getCreateExpression(), found);
+		collectReturnExpressions(function.getCreateExtensionInfo().getCreateExpression(), found);
 		for (final var xReturnExpression : found) {
 			error(Messages.SARLMemberValidator_40, xReturnExpression, null, INVALID_EARLY_EXIT);
 		}
@@ -1142,48 +1190,64 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if a creation function is not of type {@code void}.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkCreateFunctionIsNotTypeVoid(XtendFunction func) {
-		if (func.getCreateExtensionInfo() == null) {
+	public void checkCreateFunctionIsNotTypeVoid(XtendFunction function) {
+		if (function.getCreateExtensionInfo() == null) {
 			return;
 		}
-		if (func.getReturnType() == null) {
-			final var operation = getAssociations().getDirectlyInferredOperation(func);
+		if (function.getReturnType() == null) {
+			final var operation = getAssociations().getDirectlyInferredOperation(function);
 			if (operation != null && getParentValidator().isPrimitiveVoid(operation.getReturnType())) {
-				error(MessageFormat.format(Messages.SARLMemberValidator_41, func.getName()), func,
+				error(MessageFormat.format(Messages.SARLMemberValidator_41, function.getName()), function,
 						XtendPackage.Literals.XTEND_FUNCTION__NAME, INVALID_USE_OF_TYPE);
 			}
-		} else if (getParentValidator().isPrimitiveVoid(func.getReturnType())) {
-			if (func.getReturnType() != null) {
-				error(MessageFormat.format(Messages.SARLMemberValidator_42, func.getName()), func.getReturnType(),
+		} else if (getParentValidator().isPrimitiveVoid(function.getReturnType())) {
+			if (function.getReturnType() != null) {
+				error(MessageFormat.format(Messages.SARLMemberValidator_42, function.getName()), function.getReturnType(),
 						null, INVALID_USE_OF_TYPE);
 			} else {
-				error(MessageFormat.format(Messages.SARLMemberValidator_43, func.getName()),
-						func.getReturnType(), null, INVALID_USE_OF_TYPE);
+				error(MessageFormat.format(Messages.SARLMemberValidator_43, function.getName()),
+						function.getReturnType(), null, INVALID_USE_OF_TYPE);
 			}
 		}
 	}
 
+	/** Check if a creation function is not of defined with type parameters.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkCreateFunctionIsNotGeneric(XtendFunction func) {
-		if (func.getCreateExtensionInfo() != null && !func.getTypeParameters().isEmpty()) {
-			error(Messages.SARLMemberValidator_44, func, 
-					XTEND_MEMBER__MODIFIERS, func.getModifiers().indexOf(
+	public void checkCreateFunctionIsNotGeneric(XtendFunction function) {
+		if (function.getCreateExtensionInfo() != null && !function.getTypeParameters().isEmpty()) {
+			error(Messages.SARLMemberValidator_44, function, 
+					XTEND_MEMBER__MODIFIERS, function.getModifiers().indexOf(
 							getGrammarAccess().getStaticStaticKeyword()),
 					INVALID_USE_OF_STATIC);
 		}
 	}
 
+	/** Check if there is a creation function is defined as static.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkCreateFunctionIsNotStatic(XtendFunction func) {
-		if (func.getCreateExtensionInfo() != null && func.isStatic()) {
-			error(Messages.SARLMemberValidator_45, func, 
-					XTEND_MEMBER__MODIFIERS, func.getModifiers().indexOf(
+	public void checkCreateFunctionIsNotStatic(XtendFunction function) {
+		if (function.getCreateExtensionInfo() != null && function.isStatic()) {
+			error(Messages.SARLMemberValidator_45, function, 
+					XTEND_MEMBER__MODIFIERS, function.getModifiers().indexOf(
 							getGrammarAccess().getStaticStaticKeyword()),
 					INVALID_USE_OF_STATIC);
 		}
 	}
 
+	/** Check the usage of local fields.
+	 * 
+	 * @param field the field to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkLocalUsageOfDeclaredFields(XtendField field){
 		if (doCheckValidMemberName(field) && !isIgnored(UNUSED_PRIVATE_MEMBER)) {
@@ -1221,6 +1285,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		getParentValidator().doCheckTypeParameterForwardReference(xtendFunction.getTypeParameters());
 	}
 
+	/** Check that the given constructor has no type parameter declared.
+	 * 
+	 * @param constructor the constructor to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkTypeParametersAreUnsupported(XtendConstructor constructor){
 		if (!constructor.getTypeParameters().isEmpty()) {
@@ -1230,31 +1298,47 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given field has a name that is not conflicting a keyword of Java.
+	 * 
+	 * @param field the field to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkJavaKeywordConflict(XtendField member) {
-		checkNoJavaKeyword(member, XtendPackage.Literals.XTEND_FIELD__NAME);
+	public void checkJavaKeywordConflict(XtendField field) {
+		checkNoJavaKeyword(field, XtendPackage.Literals.XTEND_FIELD__NAME);
 	}
 
+	/** Check if the given function and its type parameters have names that are not conflicting a keyword of Java.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkJavaKeywordConflict(XtendFunction member) {
-		if (member.eContainer() instanceof XtendAnnotationType
-				&& getGrammarAccess().getDoKeyword().equals(member.getName())) {
+	public void checkJavaKeywordConflict(XtendFunction function) {
+		if (function.eContainer() instanceof XtendAnnotationType
+				&& getGrammarAccess().getDoKeyword().equals(function.getName())) {
 			return;
 		}
-		checkNoJavaKeyword(member, XtendPackage.Literals.XTEND_FUNCTION__NAME);
-		for (final var p : member.getTypeParameters()) {
+		checkNoJavaKeyword(function, XtendPackage.Literals.XTEND_FUNCTION__NAME);
+		for (final var p : function.getTypeParameters()) {
 			checkNoJavaKeyword(p, TypesPackage.Literals.JVM_TYPE_PARAMETER__NAME);
 		}
 	}
 
+	/** Check if the type parameters of given constructor have names that are not conflicting a keyword of Java.
+	 * 
+	 * @param constructor the constructor to check.
+	 */
 	@Check(CheckType.FAST)
-	public void checkJavaKeywordConflict(XtendConstructor member) {
-		for (final var p : member.getTypeParameters()) {
+	public void checkJavaKeywordConflict(XtendConstructor constructor) {
+		for (final var p : constructor.getTypeParameters()) {
 			checkNoJavaKeyword(p, TypesPackage.Literals.JVM_TYPE_PARAMETER__NAME);
 		}
 	}
 
-	@Check(CheckType.EXPENSIVE)
+	/** Check if the field is initialized or has a declared type.
+	 * 
+	 * @param field the field to check.
+	 */
+	@Check(CheckType.FAST)
 	public void checkNonInitializedFieldsHaveAType(XtendField field) {
 		if (field.getType() == null && field.getInitialValue() == null) {
 			error(MessageFormat.format(Messages.SARLMemberValidator_50,  field.getName()),
@@ -1262,6 +1346,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the field has a name that is not {@code "self"}.
+	 * 
+	 * @param field the field to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkFieldsAreCalledSelf(XtendField field) {
 		if ("self".equals(field.getName())) { //$NON-NLS-1$
@@ -1269,14 +1357,18 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the function has an implicit return statement.
+	 * 
+	 * @param function the function to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
-	public void checkImplicitReturn(final XtendFunction method) {
+	public void checkImplicitReturn(final XtendFunction function) {
 		if (!isIgnored(IMPLICIT_RETURN)) {
-			final var jvmOperation = getAssociations().getDirectlyInferredOperation(method);
-			final var types = this.batchTypeResolver.resolveTypes(method);
+			final var jvmOperation = getAssociations().getDirectlyInferredOperation(function);
+			final var types = this.batchTypeResolver.resolveTypes(function);
 			if (jvmOperation == null || !types.getActualType(jvmOperation).isPrimitiveVoid()) { 
-				this.implicitReturnFinder.findImplicitReturns(method.getExpression(), implicitReturn -> {
-					if (method.getExpression() != implicitReturn) {
+				this.implicitReturnFinder.findImplicitReturns(function.getExpression(), implicitReturn -> {
+					if (function.getExpression() != implicitReturn) {
 						addIssue(Messages.SARLMemberValidator_52, implicitReturn, IMPLICIT_RETURN);
 					}
 				});
@@ -1284,6 +1376,10 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 		}
 	}
 
+	/** Check if the given behavior unit has an event specification that is conform to the event's declaration.
+	 * 
+	 * @param unit the event handler to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkBehaviourUnitEventTypeConformance(final SarlBehaviorUnit unit) {
 		final var event = unit.getName();

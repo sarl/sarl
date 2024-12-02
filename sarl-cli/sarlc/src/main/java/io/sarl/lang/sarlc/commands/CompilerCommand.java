@@ -213,6 +213,7 @@ public class CompilerCommand extends CommandWithMetadata {
 
 		private final ProgressBarBuilder builder;
 
+		@SuppressWarnings("resource")
 		private ProgressBar bar;
 
 		private boolean isCanceled;
@@ -225,6 +226,7 @@ public class CompilerCommand extends CommandWithMetadata {
 			this.builder = new ProgressBarBuilder().setStyle(style.toBackgroundStyle());
 		}
 
+		@SuppressWarnings("resource")
 		private void ensureBar() {
 			if (this.bar == null) {
 				this.bar = this.builder.build();

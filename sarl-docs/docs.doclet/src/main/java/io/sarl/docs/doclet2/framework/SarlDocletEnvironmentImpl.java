@@ -167,6 +167,7 @@ public class SarlDocletEnvironmentImpl implements SarlDocletEnvironment {
 		return getParent().isSelected(e);
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public JavaFileManager getJavaFileManager() {
 		return getParent().getJavaFileManager();

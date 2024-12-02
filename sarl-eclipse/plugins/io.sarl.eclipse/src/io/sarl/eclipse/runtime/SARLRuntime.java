@@ -824,7 +824,7 @@ public final class SARLRuntime {
 			clearSREConfiguration();
 			// Reset the internal data structures.
 			final var previous = getDefaultSREInstall();
-			final var oldSREs = new HashMap<String, ISREInstall>(ALL_SRE_INSTALLS);
+			final var oldSREs = new HashMap<>(ALL_SRE_INSTALLS);
 			ALL_SRE_INSTALLS.clear();
 			platformSREInstalls = null;
 			defaultSREId = null;

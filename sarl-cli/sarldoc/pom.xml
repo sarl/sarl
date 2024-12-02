@@ -267,9 +267,9 @@
         </executions>
       </plugin>
       <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-dependency-plugin</artifactId>
-		<version>3.8.0</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.8.1</version>
         <executions>
           <execution>
             <id>remove-default-project-artifact</id>
@@ -277,11 +277,11 @@
             <goals>
               <goal>purge-local-repository</goal>
             </goals>
-			<configuration>
-				<includes>
-					<include>${project.groupId}:${project.artifactId1}</include>
-				</includes>
-			</configuration>
+            <configuration>
+              <includes>
+                <include>${project.groupId}:${project.artifactId1}</include>
+              </includes>
+            </configuration>
           </execution>
         </executions>
       </plugin>

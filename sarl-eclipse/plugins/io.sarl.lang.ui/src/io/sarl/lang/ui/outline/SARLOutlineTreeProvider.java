@@ -374,6 +374,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param modelElement the model element.
 	 * @return {@code true} if it is a leaf, {@code false} otherwise.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(XtendMember modelElement) {
 		return true;
 	}
@@ -383,6 +384,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param modelElement the model element.
 	 * @return {@code true} if it is a leaf, {@code false} otherwise.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(JvmIdentifiableElement modelElement) {
 		return true;
 	}

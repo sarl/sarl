@@ -104,6 +104,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * @param resource the resource.
 	 * @return {@code true} if the resource could be explored.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isValidResource(IResource resource) {
 		return resource.isAccessible() && !resource.isHidden() && !resource.isPhantom() && !resource.isDerived();
 	}

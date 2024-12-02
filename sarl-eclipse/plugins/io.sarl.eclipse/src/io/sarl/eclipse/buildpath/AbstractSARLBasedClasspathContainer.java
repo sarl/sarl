@@ -113,7 +113,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	@Override
 	public final synchronized IClasspathEntry[] getClasspathEntries() {
 		if (this.entries == null) {
-			final var newEntries = new TreeSet<IClasspathEntry>(CLASSPATH_ENTRY_COMPARATOR);
+			final var newEntries = new TreeSet<>(CLASSPATH_ENTRY_COMPARATOR);
 			updateClasspathEntries(newEntries);
 			this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
 		}

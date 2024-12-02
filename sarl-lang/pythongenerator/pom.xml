@@ -75,7 +75,7 @@
       <plugin>
         <groupId>biz.aQute.bnd</groupId>
         <artifactId>bnd-maven-plugin</artifactId>
-        <version>7.0.0</version>
+        <version>7.1.0</version>
         <extensions>true</extensions>
         <executions>
           <execution>
@@ -166,7 +166,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version>
+            <version>3.11.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

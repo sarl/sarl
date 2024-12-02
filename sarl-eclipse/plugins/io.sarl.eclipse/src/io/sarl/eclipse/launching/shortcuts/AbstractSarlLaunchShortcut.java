@@ -133,7 +133,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 						}
 					}
 				} else {
-					final var stack = new LinkedList<Object>();
+					final var stack = new LinkedList<>();
 					stack.add(element);
 					final var evalidType = getValidEObjectType();
 					final var jvalidType = getValidJavaType();
@@ -310,6 +310,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 * @param configList list of configurations to choose from.
 	 * @return configuration to launch or {@code null} to cancel.
 	 */
+	@SuppressWarnings("static-method")
 	protected ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList) {
 		final var labelProvider = DebugUITools.newDebugModelPresentation();
 		final var dialog = new ElementListSelectionDialog(getShell(), labelProvider);

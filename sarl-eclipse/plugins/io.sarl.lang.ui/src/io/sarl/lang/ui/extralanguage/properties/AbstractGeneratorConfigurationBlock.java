@@ -389,6 +389,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 * @param imagePath the image path.
 	 * @return the image descriptor.
 	 */
+	@SuppressWarnings("static-method")
 	protected ImageDescriptor getImageDescriptor(String imagePath) {
 		final var activator = LangActivator.getInstance();
 		final var registry = activator.getImageRegistry();
@@ -601,6 +602,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 					final var directoryField = new Text(table, SWT.NONE);
 					directoryField.setText(getOutputDirectory(item));
 					directoryField.addModifyListener(new ModifyListener() {
+						@SuppressWarnings("synthetic-access")
 						@Override
 						public void modifyText(ModifyEvent me) {
 							setValue(data.getOutputDirectoryKey(), directoryField.getText());
@@ -624,6 +626,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 			ignoreEditor.setEditor(ignoreField, item, 0);
 			ignoreField.setSelection(isIgnored(item));
 			ignoreField.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("synthetic-access")
 				@Override
 				public void widgetSelected(SelectionEvent exception) {
 					setValue(data.getIgnoreKey(),

@@ -187,6 +187,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 *
 	 * @return the introduction message, or {@code null} if there is no introduction message.
 	 */
+	@SuppressWarnings("static-method")
 	protected String getIntroductionLabel() {
 		return null;
 	}
@@ -950,7 +951,8 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		 *
 		 * @return the default value.
 		 */
-		protected String createDefaultValue() {
+		@SuppressWarnings("static-method")
+	protected String createDefaultValue() {
 			return new String();
 		}
 

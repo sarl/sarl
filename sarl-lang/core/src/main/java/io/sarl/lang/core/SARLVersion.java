@@ -95,7 +95,7 @@ public final class SARLVersion {
 	/** The minimal Xtext version to use SARL features, e.g. {@code 2.31.0}.
 	 */
 	@Generated(value = "maven")
-	public static final String MINIMAL_XTEXT_VERSION = "2.36.0"; //$NON-NLS-1$
+	public static final String MINIMAL_XTEXT_VERSION = "2.37.0"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used for running the SARL compilation tools (IDE, or sarlc), e.g. {@code 17}.
 	 *

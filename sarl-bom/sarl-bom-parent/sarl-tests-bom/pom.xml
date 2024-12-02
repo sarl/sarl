@@ -35,12 +35,12 @@
       <dependency>
         <groupId>org.apache.maven.shared</groupId>
         <artifactId>maven-verifier</artifactId>
-        <version>2.0.0-M1</version>
+        <version>${maven.plugins.verifier}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.shared</groupId>
         <artifactId>maven-invoker</artifactId>
-        <version>3.3.0</version>
+        <version>${maven.plugins.invoker}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.xtext</groupId>
@@ -70,7 +70,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.17.0</version>
+        <version>${apache.commons.io}</version>
       </dependency>
       <dependency>
         <groupId>org.arakhne.afc.core</groupId>

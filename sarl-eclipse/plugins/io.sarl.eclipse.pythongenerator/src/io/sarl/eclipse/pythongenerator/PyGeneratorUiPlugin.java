@@ -126,6 +126,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin implements ExtraLangua
 	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
 		var message = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(message)) {
@@ -139,7 +140,7 @@ public class PyGeneratorUiPlugin extends AbstractUIPlugin implements ExtraLangua
 
 	@Override
 	public void logException(Throwable exception) {
-		getLog().log(createStatus(Status.ERROR, exception));
+		getLog().log(createStatus(IStatus.ERROR, exception));
 	}
 
 }

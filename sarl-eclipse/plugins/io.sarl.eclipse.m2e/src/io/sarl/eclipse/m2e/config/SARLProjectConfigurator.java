@@ -79,6 +79,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
+	@SuppressWarnings("static-method")
 	protected void addPreferences(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
@@ -129,6 +130,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
+	@SuppressWarnings("static-method")
 	protected void removeSourceFolder(IPath path, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		final var subMonitor = SubMonitor.convert(monitor, 3);
 
@@ -425,6 +427,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 *
 	 * @param classpath the classpath to update.
 	 */
+	@SuppressWarnings("static-method")
 	protected void removeSarlLibraries(IClasspathDescriptor classpath) {
 		classpath.removeEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 	}
@@ -433,6 +436,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 *
 	 * @param classpath the classpath to update.
 	 */
+	@SuppressWarnings("static-method")
 	protected void addSarlLibraries(IClasspathDescriptor classpath) {
 		final var entry = JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 		classpath.addEntry(entry);
@@ -475,6 +479,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @return {@code true} if the facade is for an Eclipse plugin.
 	 * @since 0.11
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isEclipsePluginPackaging(IMavenProjectFacade facade) {
 		return ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(facade.getPackaging());
 	}

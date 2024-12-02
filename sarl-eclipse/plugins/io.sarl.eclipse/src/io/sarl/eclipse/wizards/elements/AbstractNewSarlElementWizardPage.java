@@ -418,6 +418,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
+	@SuppressWarnings("static-method")
 	protected String getInvalidSubtypeErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -432,6 +433,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
+	@SuppressWarnings("static-method")
 	protected String getInvalidInterfaceTypeErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -446,6 +448,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the error message.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
+	@SuppressWarnings("static-method")
 	protected String getMissedSuperInterfaceErrorMessage() {
 		throw new UnsupportedOperationException();
 	}
@@ -650,6 +653,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return {@code true} if the type needs a super-interface;
 	 * {@code false} if not.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isSuperInterfaceNeeded() {
 		return false;
 	}
@@ -660,6 +664,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
+	@SuppressWarnings("static-method")
 	protected IType getRootSuperType() throws JavaModelException {
 		throw new UnsupportedOperationException();
 	}
@@ -670,6 +675,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
 	 * @throws UnsupportedOperationException a runtime exception
 	 */
+	@SuppressWarnings("static-method")
 	protected IType getRootSuperInterface() throws JavaModelException {
 		throw new UnsupportedOperationException();
 	}
@@ -1143,6 +1149,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param multi indicates if the selection could be done on multiple elements.
 	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
+	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
 			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
@@ -1185,6 +1192,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param multi indicates if the selection could be done on multiple elements.
 	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
+	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(
 			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {

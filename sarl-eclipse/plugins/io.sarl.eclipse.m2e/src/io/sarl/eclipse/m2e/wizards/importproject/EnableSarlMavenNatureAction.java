@@ -134,6 +134,7 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	 * @param project the project to configure.
 	 * @return the job.
 	 */
+	@SuppressWarnings("static-method")
 	protected Job createJobForMavenProject(IProject project) {
 		return new Job(Messages.EnableSarlMavenNatureAction_0) {
 
@@ -175,6 +176,7 @@ public class EnableSarlMavenNatureAction implements IObjectActionDelegate, IExec
 	 * @param project the project to configure.
 	 * @return the job.
 	 */
+	@SuppressWarnings("static-method")
 	protected Job createJobForJavaProject(IProject project) {
 		return new Job(Messages.EnableSarlMavenNatureAction_0) {
 

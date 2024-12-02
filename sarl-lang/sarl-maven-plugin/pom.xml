@@ -42,8 +42,8 @@
       <artifactId>vmutils</artifactId>
       <exclusions>
         <exclusion>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+          <groupId>org.eclipse.xtext</groupId>
+          <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -172,7 +172,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.15.0</version>
+        <version>3.15.1</version>
         <configuration>
           <goalPrefix>sarl</goalPrefix>
           <mojoDependencies />
@@ -275,7 +275,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version>
+            <version>3.11.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

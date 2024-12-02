@@ -600,6 +600,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @param size the size of the class path.
 	 * @return the class loader.
 	 */
+	@SuppressWarnings("resource")
 	private ClassLoader getProjectClassLoader(ClassLoader parent, Iterable<File> classPath, int size) {
 		try {
 			final var urls = new URL[size];

@@ -30,7 +30,7 @@
 	<key>foldingStartMarker</key>
 	<string>\{\s*(//.*)?$</string>
 	<key>__sarlVersion</key>
-	<string>0.14</string>
+	<string>0.15</string>
 	<key>scopeName</key>
 	<string>source.sarl</string>
 	<key>patterns</key>
@@ -239,9 +239,9 @@
 	<key>foldingStopMarker</key>
 	<string>^\s*\}</string>
 	<key>version</key>
-	<string>0.14</string>
+	<string>0.15</string>
 	<key>uuid</key>
-	<string>2726E05D-1C01-363B-8742-FDBB3D89C0BC</string>
+	<string>9FFC7A03-C195-3674-BA8C-0A7369460097</string>
 	<key>fileTypes</key>
 	<array>
 		<string>sarl</string>

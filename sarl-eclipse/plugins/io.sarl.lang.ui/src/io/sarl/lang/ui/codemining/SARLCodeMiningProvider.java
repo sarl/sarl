@@ -129,6 +129,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 		if (this.codeminingPreferences.isCodeminingEnabled()) {
 			final Supplier<List<? extends ICodeMining>> task = () -> {
 				final CancelableUnitOfWork<List<ICodeMining>, XtextResource> uow = new CancelableUnitOfWork<>() {
+					@SuppressWarnings("synthetic-access")
 					@Override
 					public List<ICodeMining> exec(XtextResource resource, CancelIndicator uowCancelIndicator) throws Exception {
 						final var indicator = new CombinedCancelIndicator(monitor, uowCancelIndicator);
@@ -394,6 +395,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the node or {@code null} if no node found.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected INode findNode(EObject element, Predicate<EObject> reference) {
 		assert element != null;
 		assert reference != null;
@@ -421,6 +423,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor, Predicate<EObject> grammarEndAnchor) {
 		final var node = NodeModelUtils.findActualNodeFor(element);
 		assert grammarBeginAnchor != null;
@@ -461,6 +464,7 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * @return the region, never {@code null}. The region may contains {@code null} nodes.
 	 * @since 0.12
 	 */
+	@SuppressWarnings("static-method")
 	protected CodeRegion findNode(EObject element, Predicate<EObject> grammarBeginAnchor,
 			Predicate<Keyword> grammarContinuationAnchor, Predicate<EObject> grammarEndAnchor) {
 		final var node = NodeModelUtils.findActualNodeFor(element);

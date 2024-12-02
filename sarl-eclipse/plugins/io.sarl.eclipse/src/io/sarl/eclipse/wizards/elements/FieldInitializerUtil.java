@@ -49,6 +49,7 @@ public class FieldInitializerUtil {
 	 * @param selection the current selection.
 	 * @return the Java element.
 	 */
+	@SuppressWarnings("static-method")
 	public IJavaElement getSelectedResource(IStructuredSelection selection) {
 		IJavaElement elem = null;
 		if (selection != null && !selection.isEmpty()) {

@@ -1880,6 +1880,7 @@ public class SarlBatchCompiler {
 						progress);
 	}
 
+	@SuppressWarnings("resource")
 	private PrintWriter getDebugCompilerOutputWriter() {
 		final var debugWriter = new Writer() {
 			@Override
@@ -1903,6 +1904,7 @@ public class SarlBatchCompiler {
 		return new PrintWriter(debugWriter);
 	}
 
+	@SuppressWarnings("resource")
 	private PrintWriter getErrorCompilerOutputWriter() {
 		final var debugWriter = new Writer() {
 			@Override
@@ -1924,6 +1926,7 @@ public class SarlBatchCompiler {
 		return new PrintWriter(debugWriter);
 	}
 
+	@SuppressWarnings("resource")
 	private PrintWriter getInfoCompilerOutputWriter() {
 		final var debugWriter = new Writer() {
 			@Override
@@ -2372,7 +2375,7 @@ public class SarlBatchCompiler {
 	 * @param parentClassLoader the parent class loader.
 	 * @return the class loader for the project.
 	 */
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({ "static-method", "resource" })
 	protected ClassLoader createClassLoader(Iterable<File> classPath, Iterable<File> modulePath, ClassLoader parentClassLoader) {
 		return new URLClassLoader(Iterables.toArray(
 				toURL(Iterables.concat(classPath, modulePath)),

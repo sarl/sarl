@@ -15,12 +15,12 @@
       <dependency>
         <groupId>io.bootique.di</groupId>
         <artifactId>bootique-di</artifactId>
-        <version>3.0.M1</version>
+        <version>${bootique.version}</version>
       </dependency>
       <dependency>
         <groupId>io.bootique</groupId>
         <artifactId>bootique</artifactId>
-        <version>3.0.M1</version>
+        <version>${bootique.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.platform</groupId>
@@ -30,7 +30,7 @@
       <dependency>
         <groupId>me.tongfei</groupId>
         <artifactId>progressbar</artifactId>
-        <version>0.10.1</version>
+        <version>${cliprogressbar.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.inject</groupId>
@@ -150,7 +150,7 @@
       <dependency>
         <groupId>net.sf.jopt-simple</groupId>
         <artifactId>jopt-simple</artifactId>
-        <version>5.0.4</version>
+        <version>${jopt.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

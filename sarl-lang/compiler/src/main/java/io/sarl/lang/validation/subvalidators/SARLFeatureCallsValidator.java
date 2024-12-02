@@ -264,6 +264,10 @@ public class SARLFeatureCallsValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check the signatures of the operator's function.
+	 * 
+	 * @param function the operator function to check.
+	 */
 	@Check(CheckType.NORMAL)
 	public void checkOperatorSignature(XtendFunction function) {
 		final var functionName = function.getName();
@@ -317,6 +321,10 @@ public class SARLFeatureCallsValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check if the left side of an assignment is a valid variable.
+	 *
+	 * @param assignment the assignment operator to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkLeftHandSideIsVariable(XAssignment assignment){
 		final var concreteSyntaxFeatureName = assignment.getConcreteSyntaxFeatureName();
@@ -326,6 +334,10 @@ public class SARLFeatureCallsValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Check if a ternary expression is defined outside another ternary expression.
+	 *
+	 * @param exp the if statement to check.
+	 */
 	@Check(CheckType.FAST)
 	public void checkTernaryExpressionUsed(XIfExpression exp) {
 		if (exp.isConditionalExpression()) {

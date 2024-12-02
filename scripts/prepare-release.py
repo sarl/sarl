@@ -131,13 +131,15 @@ def buildReadmeFileList(enableParent):
 	candidates = [
 		'README',
 		'CONTRIBUTING',
-		'RELEASE_README'
+		'RELEASE_README',
+		'NOTICE'
 		]
 	if enableParent:
 		candidates = candidates + [
 			os.path.join('..', 'README'),
 			os.path.join('..', 'CONTRIBUTING'),
-			os.path.join('..', 'RELEASE_README')
+			os.path.join('..', 'RELEASE_README'),
+			os.path.join('..', 'NOTICE')
 			]
 	extensions = [ '', '.txt', '.md', '.adoc' ]
 	fileList = []

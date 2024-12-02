@@ -80,6 +80,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, String message, Throwable cause) {
 		return new Status(severity, PLUGIN_ID, message, cause);
 	}
@@ -92,6 +93,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, int code, String message, Throwable cause) {
 		return new Status(severity, PLUGIN_ID, code, message, cause);
 	}
@@ -137,6 +139,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, String message) {
 		return new Status(severity, PLUGIN_ID, message);
 	}
@@ -148,6 +151,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, int code, String message) {
 		return new Status(severity, PLUGIN_ID, code, message, null);
 	}
@@ -156,6 +160,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createOkStatus() {
 		return Status.OK_STATUS;
 	}

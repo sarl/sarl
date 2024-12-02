@@ -49,7 +49,7 @@ public class SarldocDynamicClassLoaderModule implements BQModule {
 	 * @param injector the current injector.
 	 * @return the class loader;
 	 */
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({ "static-method", "resource" })
 	@Provides
 	@Singleton
 	@SarldocDynamicClassLoader

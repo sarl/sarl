@@ -82,6 +82,7 @@ public class ApplicationLaunchShortcut2 extends JavaApplicationLaunchShortcut {
 	 *
 	 * @return the launch manager.
 	 */
+	@SuppressWarnings("static-method")
 	protected ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}

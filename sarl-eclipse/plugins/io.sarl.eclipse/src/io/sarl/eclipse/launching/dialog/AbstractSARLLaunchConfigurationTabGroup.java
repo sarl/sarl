@@ -109,6 +109,7 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	 * @since 0.12
 	 * @see #setTabs(ILaunchConfigurationTab...)
 	 */
+	@SuppressWarnings("static-method")
 	protected ILaunchConfigurationTab[] buildTabList(
 			ILaunchConfigurationDialog dialog,
 			String mode,

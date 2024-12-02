@@ -104,6 +104,7 @@ public class Jdt2Ecore {
 	 * @param project the project to wrap.
 	 * @return the type finder based on the given Java project.
 	 */
+	@SuppressWarnings("static-method")
 	public TypeFinder toTypeFinder(final IJavaProject project) {
 		return new TypeFinder() {
 			@Override
@@ -120,6 +121,7 @@ public class Jdt2Ecore {
 	 * @param typeName the name of the type to test.
 	 * @return {@code true} if the given type name is valid.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isValidSuperType(String typeName) {
 		return !Strings.isNullOrEmpty(typeName) && !"java.lang.Object".equals(typeName); //$NON-NLS-1$
 	}
@@ -135,6 +137,7 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @see #toTypeFinder(IJavaProject)
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isVisible(TypeFinder typeFinder, IType fromType, IMember target) throws JavaModelException {
 		final var flags = target.getFlags();
 		if (Flags.isPublic(flags)) {
@@ -323,6 +326,7 @@ public class Jdt2Ecore {
 	 * @param qualifiedName the qualified name of the element.
 	 * @return the annotation, or {@code null} if the element is not annoted.
 	 */
+	@SuppressWarnings("static-method")
 	public IAnnotation getAnnotation(IAnnotatable element, String qualifiedName) {
 		if (element != null) {
 			try {

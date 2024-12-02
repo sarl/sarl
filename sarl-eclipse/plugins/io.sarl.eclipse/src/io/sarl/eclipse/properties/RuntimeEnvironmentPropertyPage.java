@@ -146,6 +146,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	 * @param useSpecificOptions indicates if the specific options must be used.
 	 * @return {@code true} if the property was saved successfully.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean saveProjectSpecificOptions(IProject project, boolean useSpecificOptions) {
 		if (project != null) {
 			try {

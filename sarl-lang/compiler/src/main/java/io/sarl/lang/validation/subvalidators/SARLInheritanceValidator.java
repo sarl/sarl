@@ -532,6 +532,10 @@ public class SARLInheritanceValidator extends AbstractSARLJvmGenericTypeValidato
 		return false;
 	}
 
+	/** Check if there is no name shadowing for the given type declaration.
+	 * 
+	 * @param type the type to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkNoTypeNameShadowing(XtendTypeDeclaration type) {
 		final var name = type.getName();

@@ -24,6 +24,7 @@ import io.sarl.lang.core.Capacity;
 
 /** For test only.
  */
+@SuppressWarnings("all")
 public interface EvtCapacity extends Capacity {
 
 	void setSymptoms(String s);

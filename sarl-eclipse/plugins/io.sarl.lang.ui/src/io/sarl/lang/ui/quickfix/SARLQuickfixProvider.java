@@ -336,6 +336,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces before the identifier until the separator
@@ -369,6 +370,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param script the script to consider for the insertion
 	 * @return the insertion index.
 	 */
+	@SuppressWarnings("static-method")
 	public int getImportInsertOffset(SarlScript script) {
 		final var node = NodeModelUtils.findActualNodeFor(script.getImportSection());
 		if (node == null) {
@@ -390,6 +392,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces after the identifier until the separator
@@ -428,6 +431,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return {@code true} if one keyword was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
 			String keyword1, String... otherKeywords) throws BadLocationException {
 		// Skip spaces before the element
@@ -472,6 +476,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return {@code true} if the separator was found, {@code false} if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean removeBetweenSeparators(Issue issue, IXtextDocument document,
 			String beginSeparator, String endSeparator) throws BadLocationException {
 		var offset = issue.getOffset().intValue();
@@ -525,6 +530,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param container the container to consider for the insertion
 	 * @return the insertion index.
 	 */
+	@SuppressWarnings("static-method")
 	public int getInsertOffset(XtendTypeDeclaration container) {
 		if (container.getMembers().isEmpty()) {
 			final var node = NodeModelUtils.findActualNodeFor(container);
@@ -548,6 +554,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return the number of whitespaces at the given offset.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
+	@SuppressWarnings("static-method")
 	public int getSpaceSize(IXtextDocument document, int offset) throws BadLocationException {
 		var size = 0;
 		var c = document.getChar(offset + size);
@@ -566,6 +573,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return the offset (greater or equal to the startOffset), or {@code -1} if the pattern
 	 *     cannot be recognized.
 	 */
+	@SuppressWarnings("static-method")
 	public int getOffsetForPattern(IXtextDocument document, int startOffset, String pattern) {
 		final var compiledPattern = Pattern.compile(pattern);
 		final var matcher = compiledPattern.matcher(document.get());
@@ -581,6 +589,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param name the name.
 	 * @return the qualified name.
 	 */
+	@SuppressWarnings("static-method")
 	public QualifiedName qualifiedName(String name) {
 		if (!com.google.common.base.Strings.isNullOrEmpty(name)) {
 			final var segments = Strings.split(name, "."); //$NON-NLS-1$
@@ -666,6 +675,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param character the character to test.
 	 * @return {@code true} if the given character is a basic space or a tabulation character.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isBasicSpace(char character) {
 		return character == ' ' || character == '\t';
 	}

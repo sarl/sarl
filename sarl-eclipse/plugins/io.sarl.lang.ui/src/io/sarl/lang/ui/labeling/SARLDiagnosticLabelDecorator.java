@@ -122,6 +122,7 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 * @param element the model element.
 	 * @return the adornment.
 	 */
+	@SuppressWarnings("static-method")
 	protected int getIssueAdornment(XtendMember element) {
 		final var node = NodeModelUtils.getNode(element);
 		if (node == null) {
@@ -155,6 +156,7 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 *
 	 * @return {@link JavaElementImageProvider#SMALL_SIZE} or {@link JavaElementImageProvider#BIG_SIZE}
 	 */
+	@SuppressWarnings("static-method")
 	protected Point imagesSize() {
 		return JavaElementImageProvider.BIG_SIZE;
 	}

@@ -400,6 +400,10 @@ public class SARLAnnotationValidator extends AbstractSARLSubValidatorWithParentL
 				|| type instanceof XtendAnnotationType;
 	}
 
+	/** Check the annotations for the given annotation target.
+	 * 
+	 * @param annotation the annotation to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkAnnotationTarget(XAnnotation annotation) {
 		final var annotationType = annotation.getAnnotationType();
@@ -468,6 +472,10 @@ public class SARLAnnotationValidator extends AbstractSARLSubValidatorWithParentL
 		return eContainer;
 	}
 
+	/** Check if there is multiple annotations. 
+	 * 
+	 * @param annotationTarget the annotation receiver to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkMultipleAnnotations(final XtendAnnotationTarget annotationTarget) {
 		if (annotationTarget.getAnnotations().size() <= 1 || !isRelevantAnnotationTarget(annotationTarget)) {

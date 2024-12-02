@@ -170,6 +170,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @return {@code true} if the name is valid.
 	 */
 	@Pure
+	@SuppressWarnings("static-method")
 	protected boolean isValidSarlCUName(String name) {
 		return FileSystem.hasExtension(name, SARLEclipseConfig.SARL_FILE_EXTENSION);
 	}
@@ -190,6 +191,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * @return the comparator
 	 */
 	@Pure
+	@SuppressWarnings("static-method")
 	public Comparator<IClasspathEntry> getCPEntryComparator() {
 		// TODO Define a Collator for SARL?
 		final var collator = Collator.getInstance();

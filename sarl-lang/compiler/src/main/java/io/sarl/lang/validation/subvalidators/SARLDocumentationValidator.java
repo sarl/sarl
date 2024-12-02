@@ -59,6 +59,10 @@ public class SARLDocumentationValidator extends AbstractSARLSubValidator {
 	@Inject
 	private IQualifiedNameConverter qualifiedNameConverter;
 
+	/** Check the documentation reference links of the given member.
+	 *
+	 * @param member the member to check.
+	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkJavaDocRefs(XtendMember member) {
 		if (isIgnored(JAVA_DOC_LINKING_DIAGNOSTIC)) {

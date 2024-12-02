@@ -34,7 +34,7 @@ import io.sarl.lang.core.Event;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"static-method"})
+@SuppressWarnings("all")
 public class BasicInlineTest {
 
 	public boolean isMe(Address adr) {

@@ -234,6 +234,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createOkStatus() {
 		return Status.OK_STATUS;
 	}
@@ -252,6 +253,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param status the status to put in the same status instance.
 	 * @return the status.
 	 */
+	@SuppressWarnings("static-method")
 	public IStatus createMultiStatus(Iterable<? extends IStatus> status) {
 		final var max = findMax(status);
 		final MultiStatus multiStatus;
@@ -290,6 +292,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @param message the debug message to log
 	 */
+	@SuppressWarnings("static-method")
 	public void logDebugMessage(String message) {
 		Debug.println(message);
 	}
@@ -299,6 +302,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @param cause the cause of the message log.
 	 */
+	@SuppressWarnings("static-method")
 	public void logDebugMessage(Throwable cause) {
 		Debug.printStackTrace(cause);
 	}
@@ -309,6 +313,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param message the debug message to log
 	 * @param cause the cause of the message log.
 	 */
+	@SuppressWarnings("static-method")
 	public void logDebugMessage(String message, Throwable cause) {
 		Debug.println(message);
 		if (cause != null) {
@@ -340,6 +345,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 *
 	 * @return the Eclipse preferences, never {@code null}.
 	 */
+	@SuppressWarnings("static-method")
 	public IEclipsePreferences getPreferences() {
 		return InstanceScope.INSTANCE.getNode(PLUGIN_ID);
 	}

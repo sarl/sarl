@@ -338,6 +338,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 			//
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public IProject getProject() {
 			ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();

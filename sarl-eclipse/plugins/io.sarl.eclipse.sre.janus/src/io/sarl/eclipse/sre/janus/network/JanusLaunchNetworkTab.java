@@ -368,6 +368,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			//
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			final var clickedObject = event.getSource();
@@ -379,6 +380,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 			updateLaunchConfigurationDialog();
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void modifyText(ModifyEvent event) {
 			updateLaunchConfigurationDialog();

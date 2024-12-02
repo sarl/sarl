@@ -86,6 +86,7 @@ public class FixedDirtyStateEditorSupport extends JvmTypesAwareDirtyStateEditorS
 
 		/** Re-implementation to avoid any error regarding the fact that the URI of the delta cannot be retrieved.
 		 */
+		@SuppressWarnings("synthetic-access")
 		@Override
 		protected Pair<IResourceDescription.Event, Integer> mergePendingDeltas() {
 			var uriToDelta = Maps.<URI, IResourceDescription.Delta>newLinkedHashMap();

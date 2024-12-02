@@ -111,6 +111,10 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return Bug621Validator.class;
 	}
 
+	/** Replies the helping tool related to the overriding of types.
+	 * 
+	 * @return the tool.
+	 */
 	@SuppressWarnings("static-method")
 	public Class<? extends OverrideHelper> bindOverrideHelper() {
 		return Bug621OverrideHelper.class;

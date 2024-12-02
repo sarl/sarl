@@ -1195,6 +1195,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			this.fDetect = false;
 		}
 
+		@SuppressWarnings("synthetic-access")
 		public Control createControl(Composite parent) {
 
 			final var composite = new Composite(parent, SWT.NONE);

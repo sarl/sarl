@@ -125,6 +125,7 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 	 * @param receiver the receiver.
 	 * @return {@code true} if the receiver has a SARL nature.
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean hasSarlNatureOnProject(Object receiver) {
 		if (receiver instanceof IJavaProject project) {
 			try {
