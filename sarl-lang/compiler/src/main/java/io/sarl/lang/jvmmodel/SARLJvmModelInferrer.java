@@ -44,6 +44,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import javax.annotation.processing.Generated;
 
@@ -616,20 +617,37 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void inferTypeSceleton(final XtendTypeDeclaration declaration, final IJvmDeclaredTypeAcceptor acceptor, 
 			boolean preIndexingPhase, XtendFile xtendFile, List<Runnable> doLater, JvmDeclaredType containerSceleton) {
 		// Generate the elements for a 1-to-many mapping between SARL and JVM
-		var inferredSceletons = doInferTypeSceletons(declaration, acceptor, preIndexingPhase, xtendFile, doLater);
-		if (inferredSceletons != null && inferredSceletons.length > 0) {
-			for (final var inferredSceleton : inferredSceletons) {
-				setNameAndAssociate(xtendFile, declaration, inferredSceleton);
-				if(containerSceleton != null) {
-					containerSceleton.getMembers().add(inferredSceleton);
+		Stream<? extends JvmDeclaredType> inferredSkeletons = null;
+		try {
+			inferredSkeletons = doInferTypeSkeletons(declaration, acceptor, preIndexingPhase, xtendFile, doLater);
+		} catch (InternalError internalError) {
+			throw internalError;
+		} catch (Exception exception) {
+			logInternalError(exception);
+			inferredSkeletons = null;
+		}
+		if (inferredSkeletons != null) {
+			this.associator.removeAllAssociation(declaration);
+			final var iterator = inferredSkeletons.iterator();
+			boolean first = true;
+			while (iterator.hasNext()) {
+				final var inferredSkeleton = iterator.next();
+				if (!Strings.isNullOrEmpty(inferredSkeleton.getSimpleName())) {
+					inferredSkeleton.setPackageName(xtendFile.getPackage());
+					inferredSkeleton.setVisibility(JvmVisibility.PUBLIC);
+					setFileHeader(xtendFile, inferredSkeleton);
+					if (first) {
+						first = false;
+						this.associator.associatePrimary(declaration, inferredSkeleton);
+					} else {
+						this.associator.associate(declaration, inferredSkeleton);
+					}
+					if (containerSceleton != null) {
+						containerSceleton.getMembers().add(inferredSkeleton);
+					}
+					acceptor.accept(inferredSkeleton);
 				}
-				acceptor.accept(inferredSceleton);
 			}
-			/*for(XtendMember member: declaration.getMembers()) {
-				if (member instanceof XtendTypeDeclaration) {
-					inferTypeSceleton((XtendTypeDeclaration) member, acceptor, preIndexingPhase, xtendFile, doLater, inferredSceleton);
-				}
-			}*/
 		} else {
 			// Generate the elements for a 1-to-1 mapping between SARL and JVM
 			super.inferTypeSceleton(declaration, acceptor, preIndexingPhase, xtendFile, doLater, containerSceleton);
@@ -717,37 +735,37 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @return the list of created JVM types.
 	 * @since 0.14
 	 */
-	protected JvmDeclaredType[] doInferTypeSceletons(
+	protected Stream<? extends JvmDeclaredType> doInferTypeSkeletons(
 			XtendTypeDeclaration declaration,
 			IJvmDeclaredTypeAcceptor acceptor, boolean preIndexingPhase,
 			XtendFile sarlFile, List<Runnable> doLater) {
 		if (Strings.isNullOrEmpty(declaration.getName())) {
 			return null;
 		}
-		try {
-			// Autowrap the provided runnable elements in order to avoid the internal exceptions
-			// to stop the JVM generation too early.
-			final var doLaterExceptionSafe = wrapDoLaterList(doLater);
-			if (declaration instanceof SarlSpace sarlSpace) {
-				final var javaType = this.typesFactory.createJvmGenericType();
-				//final JvmGenericType event1Type = this.typesFactory.createJvmGenericType();
-				//final JvmGenericType event2Type = this.typesFactory.createJvmGenericType();
-				if (!preIndexingPhase) {
-					doLaterExceptionSafe.add(() -> initialize(sarlSpace, javaType));
-				}
-				return new JvmDeclaredType[] {
-						javaType,
-						//event1Type,
-						//event2Type
-				};
+
+		// Autowrap the provided runnable elements in order to avoid the internal exceptions
+		// to stop the JVM generation too early.
+		final var doLaterExceptionSafe = wrapDoLaterList(doLater);
+
+		if (declaration instanceof SarlProtocol sarlProtocol) {
+			final var javaTypes = new DefaultJvmGenericTypeProvider();
+			initialize(sarlProtocol, (JvmGenericTypeFactory) javaTypes);
+			if (!preIndexingPhase) {
+				doLaterExceptionSafe.add(() -> initialize(sarlProtocol, (JvmGenericTypeProvider) javaTypes));
 			}
-			return null;
-		} catch (InternalError internalError) {
-			throw internalError;
-		} catch (Exception exception) {
-			logInternalError(exception);
-			return null;
+			return javaTypes.stream();
 		}
+
+		if (declaration instanceof SarlSpace sarlSpace) {
+			final var javaTypes = new DefaultJvmGenericTypeProvider();
+			initialize(sarlSpace, (JvmGenericTypeFactory) javaTypes);
+			if (!preIndexingPhase) {
+				doLaterExceptionSafe.add(() -> initialize(sarlSpace, (JvmGenericTypeProvider) javaTypes));
+			}
+			return javaTypes.stream();
+		}
+
+		return null;
 	}
 
 	@Override
@@ -802,13 +820,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				final var javaType = this.typesFactory.createJvmGenericType();
 				if (!preIndexingPhase) {
 					doLaterExceptionSafe.add(() -> initialize(sarlArtifact, javaType));
-				}
-				return javaType;
-			}
-			if (declaration instanceof SarlProtocol sarlProtocol) {
-				final var javaType = this.typesFactory.createJvmGenericType();
-				if (!preIndexingPhase) {
-					doLaterExceptionSafe.add(() -> initialize(sarlProtocol, javaType));
 				}
 				return javaType;
 			}
@@ -1696,16 +1707,26 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		appendCapacityContextAwareWrapper(source, inferredJvmType);
 	}
 
+	/** Prepare the initialization of the space types.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmTypes the factory for the JVM types.
+	 * @since 0.15
+	 */
+	protected void initialize(SarlSpace source, JvmGenericTypeFactory inferredJvmTypes) {
+		//
+	}
+
 	/** Initialize the SARL space type.
 	 *
 	 * @param source the source.
-	 * @param inferredJvmType the JVM type.
+	 * @param inferredJvmTypes the created JVM types.
 	 */
 	@SuppressWarnings("static-method")
-	protected void initialize(SarlSpace source, JvmGenericType inferredJvmType) {
+	protected void initialize(SarlSpace source, JvmGenericTypeProvider inferredJvmTypes) {
 		// Issue #356: do not generate if the space has no name.
 		assert source != null;
-		assert inferredJvmType != null;
+		assert inferredJvmTypes != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
@@ -1725,20 +1746,68 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return;
 		}
 	}
-
-	/** Initialize the SARL protocol type.
+	
+	/** Prepare the initialization of the protocol types.
 	 *
 	 * @param source the source.
-	 * @param inferredJvmType the JVM type.
-	 * @since 0.14
+	 * @param inferredJvmTypes the factory for the JVM types.
+	 * @since 0.15
 	 */
 	@SuppressWarnings("static-method")
-	protected void initialize(SarlProtocol source, JvmGenericType inferredJvmType) {
+	protected void initialize(SarlProtocol source, JvmGenericTypeFactory inferredJvmTypes) {
+		inferredJvmTypes
+			.createReceiver(0, source.getName())
+			.createReceiver(1, source.getName() + "Impl"); //$NON-NLS-1$
+	}
+
+	/** Initialize the SARL protocol types.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmTypes the accessor to the created JVM types.
+	 * @since 0.14
+	 */
+	protected void initialize(SarlProtocol source, JvmGenericTypeProvider inferredJvmTypes) {
 		// Issue #356: do not generate if the space has no name.
 		assert source != null;
-		assert inferredJvmType != null;
+		assert inferredJvmTypes != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
+		}
+
+		// First type
+		
+		// Create the generation context that is used by the other transformation functions.
+		final var type0 = inferredJvmTypes.getGenericType(0);
+		final var context0 = openContext(source, type0, Collections.singleton(SarlField.class));
+		try {
+			type0.setInterface(true);
+			type0.setAbstract(false);
+			setVisibility(type0, source);
+			type0.setStatic(false);
+			type0.setStrictFloatingPoint(false);
+			type0.setFinal(false);
+			// Resolving any name conflict with the generated JVM type
+			this.nameClashResolver.resolveNameClashes(type0);
+		} finally {
+			closeContext(context0);
+		}
+
+		// Second type
+		
+		// Create the generation context that is used by the other transformation functions.
+		final var type1 = inferredJvmTypes.getGenericType(1);
+		final var context1 = openContext(source, type1, Collections.singleton(SarlField.class));
+		try {
+			type1.setInterface(false);
+			type1.setAbstract(false);
+			setVisibility(type1, source);
+			type1.setStatic(false);
+			type1.setStrictFloatingPoint(false);
+			type1.setFinal(false);
+			// Resolving any name conflict with the generated JVM type
+			this.nameClashResolver.resolveNameClashes(type0);
+		} finally {
+			closeContext(context1);
 		}
 	}
 
@@ -4620,6 +4689,95 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			super("generation context cannot be found for: " + type.getIdentifier()); //$NON-NLS-1$
 		}
 
+	}
+
+	/** Factory of JVM type for the 1-to-many generation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.15
+	 * @see JvmGenericTypeFactory
+	 */
+	@FunctionalInterface
+	protected interface JvmGenericTypeProvider {
+		
+		/** Replies the generic type that was created at the given slot.
+		 *
+		 * @param index the slot index of the generic type.
+		 * @return the generic type, never {@code null}.
+		 */
+		JvmGenericType getGenericType(int index);
+		
+	}
+
+	/** Factory of JVM type for the 1-to-many generation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.15
+	 * @see JvmGenericTypeProvider
+	 */
+	protected interface JvmGenericTypeFactory {
+		
+		/** Create a generic type that was created at the given slot.
+		 *
+		 * @param index the slot index of the generic type.
+		 * @param name the name of the generic type. It must not be empty.
+		 * @return {@code this}.
+		 */
+		JvmGenericTypeFactory createReceiver(int index, String name);
+
+	}
+
+	/** Factory of JVM type for the 1-to-many generation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.15
+	 */
+	protected class DefaultJvmGenericTypeProvider implements JvmGenericTypeFactory, JvmGenericTypeProvider {
+
+		private final Map<Integer, JvmGenericType> createdTypes = new HashMap<>();
+		
+		/** Constructor.
+		 */
+		public DefaultJvmGenericTypeProvider() {
+			//
+		}
+		
+		@Override
+		public JvmGenericTypeFactory createReceiver(int index, String name) {
+			assert index >= 0 && !Strings.isNullOrEmpty(name);
+			this.createdTypes.computeIfAbsent(Integer.valueOf(index), it -> {
+				final var type = SARLJvmModelInferrer.this.typesFactory.createJvmGenericType();
+				type.setSimpleName(name);
+				return type;
+			});
+			return this;
+		}
+		
+		@Override
+		public JvmGenericType getGenericType(int index) {
+			assert index >= 0;
+			final var type = this.createdTypes.get(Integer.valueOf(index));
+			assert type != null;
+			return type;
+		}
+
+		/** Replies the stream on the created JVM types.
+		 *
+		 * @return the stream, never {@code null}.
+		 */
+		public Stream<JvmGenericType> stream() {
+			return this.createdTypes.values().stream();
+		}
+		
 	}
 
 }

@@ -28,17 +28,19 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.ComparisonFailure;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.inject.Injector;
 
 /** Set of utilities for validating SARL code.
  *
@@ -154,6 +156,16 @@ public class TestValidator {
 		 * @return the validator.
 		 */
 		Validator assertError(EClass objectType, String code, String... messageParts);
+
+		/** Check if the list of issues contains an error with the given description.
+		 * The matching errors are removed from the validator memory.
+		 *
+		 * @param objectType the type of object on which the error must be attached.
+		 * @param messageParts the parts of the message that must be found.
+		 * @return the validator.
+		 * @since 0.15
+		 */
+		Validator assertErrorWithoutCode(EClass objectType, String... messageParts);
 
 		/** Check if the list of issues contains an issue with the given description.
 		 * The matching errors are removed from the validator memory.
@@ -365,10 +377,15 @@ public class TestValidator {
 					-1, severity, issues, messageParts);
 			if (isEmpty(fissues)) {
 				final var message = new StringBuilder("Expected ") //$NON-NLS-1$
-					.append(severity)
-					.append(" '") //$NON-NLS-1$
-					.append(code)
-					.append("' on ") //$NON-NLS-1$
+					.append(severity);
+				if (!Strings.isEmpty(code)) {
+					message.append("'") //$NON-NLS-1$
+						.append(code)
+						.append("' "); //$NON-NLS-1$
+				} else {
+					message.append("error "); //$NON-NLS-1$
+				}
+				message.append("on ") //$NON-NLS-1$
 					.append(objectType.getName())
 					.append(" but got\n"); //$NON-NLS-1$
 				message.append(this.testHelper.getIssuesAsString(this.resource, issues, message));
@@ -385,6 +402,12 @@ public class TestValidator {
 		@Override
 		public Validator assertError(EClass objectType, String code, String... messageParts) {
 			assertIssue(Severity.ERROR, objectType, code, -1, messageParts);
+			return this;
+		}
+		
+		@Override
+		public Validator assertErrorWithoutCode(EClass objectType, String... messageParts) {
+			assertIssue(Severity.ERROR, objectType, null, -1, messageParts);
 			return this;
 		}
 
