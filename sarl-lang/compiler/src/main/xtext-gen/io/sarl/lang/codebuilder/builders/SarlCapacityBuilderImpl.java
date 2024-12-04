@@ -43,6 +43,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlCapacity.
+ * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCapacityBuilder {
@@ -56,6 +57,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Initialize the Ecore element when inside a script.
+	 * @see TopElementBuilderFragment.java : appendTo : 1383
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -70,6 +72,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Replies the generated SarlCapacity.
+	 * @see TopElementBuilderFragment.java : appendTo : 1523
 	 */
 	@Pure
 	public SarlCapacity getSarlCapacity() {
@@ -77,6 +80,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Replies the resource to which the SarlCapacity is attached.
+	 * @see TopElementBuilderFragment.java : appendTo : 1560
 	 */
 	@Pure
 	public Resource eResource() {
@@ -88,6 +92,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -109,14 +114,24 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 
 	/** Add the super type.
 	 * @param superType the qualified name of the super type.
+	 * @see TopElementBuilderFragment.java : appendTo : 1597
 	 */
 	public void addExtends(String superType) {
-		if (!Strings.isEmpty(superType)
-				&& !Capacity.class.getName().equals(superType)) {
+		if (!Strings.isEmpty(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.sarlCapacity, superType);
+			addExtends(superTypeRef);
+		}
+	}
+
+	/** Add the super type.
+	 * @param superType the super type.
+	 * @see TopElementBuilderFragment.java : appendTo : 1680
+	 */
+	public void addExtends(JvmParameterizedTypeReference superType) {
+		if (superType != null && !Capacity.class.getName().equals(superType.getType().getIdentifier())) {
 			JvmTypeReference baseTypeRef = findType(this.sarlCapacity, Capacity.class.getCanonicalName());
-			if (isSubTypeOf(this.sarlCapacity, superTypeRef, baseTypeRef)) {
-				this.sarlCapacity.getExtends().add(superTypeRef);
+			if (isSubTypeOf(this.sarlCapacity, superType, baseTypeRef)) {
+				this.sarlCapacity.getExtends().add(superType);
 				return;
 			}
 		}
@@ -124,6 +139,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see TopElementBuilderFragment.java : appendTo : 2082
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -137,6 +153,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -147,6 +164,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -158,6 +176,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 697
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.addDefSarlAction(name);

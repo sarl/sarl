@@ -32,6 +32,8 @@ import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -103,6 +105,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " formal parameter."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -132,6 +137,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " formal parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -169,6 +177,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
 						+ " formal parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -257,6 +268,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -284,6 +298,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -305,11 +322,120 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(JvmType.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context in which the type is defined"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Notifier.class);
+					it.append(" context, "); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(context, type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -334,6 +460,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t * @param context the context of the formal parameter."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param name the name of the formal parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -387,6 +516,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the parameter."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -422,6 +554,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param container the feature call that is supposed to contains the replied identifiable element."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -485,6 +620,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t/** Replies the resource to which the formal parameter is attached."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -514,6 +652,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param type the formal parameter type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -557,12 +698,54 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Change the type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param type the formal parameter type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append("void set"); //$NON-NLS-1$
+				it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterTypeGrammarName()));
+				it.append("("); //$NON-NLS-1$
+				it.append(JvmParameterizedTypeReference.class);
+				it.append(" type)"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					if (forAppender) {
+						it.append("\t\tthis.builder.set"); //$NON-NLS-1$
+						it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterTypeGrammarName()));
+						it.append("(type);"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tthis.parameter.set"); //$NON-NLS-1$
+						it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterTypeGrammarName()));
+						it.append("(type);"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
 				if (!Strings.isEmpty(getCodeBuilderConfig().getParameterVarArgGrammarName())) {
 					it.append("\t/** Change the variadic property of the parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t *"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param isVariadic indicates if the parameter is variadic."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -591,10 +774,50 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				if (!Strings.isEmpty(getCodeBuilderConfig().getParameterExtensionGrammarName())) {
+					it.append("\t/** Change the extension flag of the parameter."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t *"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param isExtension indicates if the parameter is defined as an extension."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void set"); //$NON-NLS-1$
+					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterExtensionGrammarName()));
+					it.append("(boolean isExtension)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\tthis.builder.set"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tthis.parameter.set"); //$NON-NLS-1$
+						}
+						it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterExtensionGrammarName()));
+						it.append("(isExtension);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 				if (exparameter.getDefaultValueAssignment() != null) {
 					it.append("\t/** Replies the default value of the parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the default value builder."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -683,6 +906,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -690,6 +916,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();

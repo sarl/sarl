@@ -27,6 +27,8 @@ import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -35,6 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <p>This builder is provided for helping to create Sarl Ecore elements.
  *
  * <p>Do not forget to invoke {@link #finalizeScript()} for creating imports, etc.
+ * @see ScriptBuilderFragment.java : appendTo : 587
  */
 @SuppressWarnings("all")
 public interface IScriptBuilder {
@@ -42,6 +45,7 @@ public interface IScriptBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see ScriptBuilderFragment.java : appendTo : 723
 	 */
 	JvmParameterizedTypeReference newTypeRef(String typeName);
 
@@ -49,24 +53,54 @@ public interface IScriptBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see ScriptBuilderFragment.java : appendTo : 753
 	 */
 	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ScriptBuilderFragment.java : appendTo : 785
+	 */
+	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ScriptBuilderFragment.java : appendTo : 819
+	 */
+	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param context the context in which the type is defined
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ScriptBuilderFragment.java : appendTo : 855
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see ScriptBuilderFragment.java : appendTo : 889
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Create the internal Sarl script.
+	 * @see ScriptBuilderFragment.java : appendTo : 942
 	 */
 	void eInit(Resource resource, String packageName, IJvmTypeProvider context);
 
 	/** Replies the Sarl script.
+	 * @see ScriptBuilderFragment.java : appendTo : 1005
 	 */
 	@Pure
 	SarlScript getScript();
 
 	/** Replies the resource to which the script is attached.
+	 * @see ScriptBuilderFragment.java : appendTo : 1036
 	 */
 	@Pure
 	Resource eResource();
@@ -76,82 +110,96 @@ public interface IScriptBuilder {
 	 * <p>The finalization includes: <ul>
 	 * <li>The import section is created.</li>
 	 * </ul>
+	 * @see ScriptBuilderFragment.java : appendTo : 1071
 	 */
 	void finalizeScript();
 
 	/** Replies if the script was finalized.
+	 * @see ScriptBuilderFragment.java : appendTo : 1178
 	 */
 	boolean isFinalized();
 
 	/** Create a SarlEvent builder.
 	 * @param name the name of the SarlEvent.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlEventBuilder addSarlEvent(String name);
 
 	/** Create a SarlCapacity builder.
 	 * @param name the name of the SarlCapacity.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlCapacityBuilder addSarlCapacity(String name);
 
 	/** Create a SarlAgent builder.
 	 * @param name the name of the SarlAgent.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlAgentBuilder addSarlAgent(String name);
 
 	/** Create a SarlBehavior builder.
 	 * @param name the name of the SarlBehavior.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlBehaviorBuilder addSarlBehavior(String name);
 
 	/** Create a SarlSkill builder.
 	 * @param name the name of the SarlSkill.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlSkillBuilder addSarlSkill(String name);
 
 	/** Create a SarlSpace builder.
 	 * @param name the name of the SarlSpace.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlSpaceBuilder addSarlSpace(String name);
 
 	/** Create a SarlArtifact builder.
 	 * @param name the name of the SarlArtifact.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlArtifactBuilder addSarlArtifact(String name);
 
 	/** Create a SarlProtocol builder.
 	 * @param name the name of the SarlProtocol.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlProtocolBuilder addSarlProtocol(String name);
 
 	/** Create a SarlClass builder.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlClassBuilder addSarlClass(String name);
 
 	/** Create a SarlInterface builder.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlInterfaceBuilder addSarlInterface(String name);
 
 	/** Create a SarlEnumeration builder.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlEnumerationBuilder addSarlEnumeration(String name);
 
 	/** Create a SarlAnnotationType builder.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);
 

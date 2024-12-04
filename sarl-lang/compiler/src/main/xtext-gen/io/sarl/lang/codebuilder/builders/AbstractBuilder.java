@@ -60,6 +60,7 @@ import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /** Abstract implementation of a builder for the Sarl language.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 83
  */
 @SuppressWarnings("all")
 public abstract class AbstractBuilder {
@@ -119,6 +120,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies the script's file extension.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 237
 	 */
 	@Pure
 	public String getScriptFileExtension() {
@@ -128,6 +130,7 @@ public abstract class AbstractBuilder {
 	/** Replies the builder of type references.
 	 *
 	 * @return the type reference builder.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 258
 	 */
 	@Pure
 	protected TypeReferences getTypeReferences() {
@@ -137,6 +140,7 @@ public abstract class AbstractBuilder {
 	/** Replies the primitive type tools.
 	 *
 	 * @return the primitive type tools.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 281
 	 */
 	@Pure
 	protected Primitives getPrimitiveTypes() {
@@ -179,12 +183,14 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies the type reference for the given name in the given context.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 399
 	 */
 	public JvmParameterizedTypeReference newTypeRef(String typeName) {
 		return newTypeRef(eResource(), typeName);
 	}
 
 	/** Replies the type reference for the given name in the given context.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 415
 	 */
 	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
 		JvmTypeReference typeReference;
@@ -213,7 +219,37 @@ public abstract class AbstractBuilder {
 			}
 		}
 		final TypeReferences typeRefs = getTypeReferences();
-		return typeRefs.createTypeRef(baseType.getType(), args);
+		final JvmParameterizedTypeReference result = typeRefs.createTypeRef(baseType.getType(), args);
+		getImportManager().addImportFor(result.getType());
+		return result;
+	}
+
+	/** Replies the type reference for the given type and type parameters.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 521
+	 */
+	public JvmParameterizedTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args) {
+		final TypeReferences typeRefs = getTypeReferences();
+		final JvmParameterizedTypeReference ref = typeRefs.createTypeRef(typeName, args);
+		getImportManager().addImportFor(ref.getType());
+		return ref;
+	}
+
+	/** Replies the type reference for the given type and type parameters.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 551
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+		return newTypeRef(eResource(), type, args);
+	}
+
+	/** Replies the type reference for the given type and type parameters.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 571
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+		final TypeReferences typeRefs = getTypeReferences();
+		final JvmType type0 = typeRefs.findDeclaredType(type, context);
+		final JvmParameterizedTypeReference ref = typeRefs.createTypeRef(type0, args);
+		getImportManager().addImportFor(type0);
+		return ref;
 	}
 
 	/** Replies if the first parameter is a subtype of the second parameter.
@@ -222,6 +258,7 @@ public abstract class AbstractBuilder {
 	 * @param subType the subtype to test.
 	 * @param superType the expected super type.
 	 * @return the type reference.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 617
 	 */
 	@Pure
 	protected boolean isSubTypeOf(EObject context, JvmTypeReference subType, JvmTypeReference superType) {
@@ -235,6 +272,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the given object is a valid type reference.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 662
 	 */
 	@Pure
 	protected boolean isTypeReference(JvmTypeReference typeReference) {
@@ -254,6 +292,7 @@ public abstract class AbstractBuilder {
 	/** Compute a unused URI for a synthetic resource.
 	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 707
 	 */
 	@Pure
 	protected URI computeUnusedUri(ResourceSet resourceSet) {
@@ -277,6 +316,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the type could contains functions with a body.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 766
 	 */
 	@Pure
 	protected boolean isActionBodyAllowed(XtendTypeDeclaration type) {
@@ -289,6 +329,7 @@ public abstract class AbstractBuilder {
 	/** Replies the import manager that stores the imported types.
 	 *
 	 * @return the import manager.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 807
 	 */
 	@Pure
 	protected ImportManager getImportManager() {

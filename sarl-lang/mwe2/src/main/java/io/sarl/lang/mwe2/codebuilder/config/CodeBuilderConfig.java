@@ -123,6 +123,13 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final String PARAMETER_VARARG_GRAMMAR_NAME = "varArg"; //$NON-NLS-1$
 
+	/** Default name of the assignment in the grammar that is used for representing the extension
+	 * flag of a formal parameter.
+	 *
+	 * @since 0.15
+	 */
+	private static final String PARAMETER_EXTENSION_GRAMMAR_NAME = "extension"; //$NON-NLS-1$
+
 	/** Default name of the assignment in the grammar that is used for representing the default value of a formal parameter.
 	 */
 	private static final String PARAMETER_DEFAULT_VALUE_GRAMMAR_NAME = "defaultValue"; //$NON-NLS-1$
@@ -199,6 +206,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String parameterVarArgGrammarName = PARAMETER_VARARG_GRAMMAR_NAME;
 
+	private String parameterExtensionGrammarName = PARAMETER_EXTENSION_GRAMMAR_NAME;
+
 	private String parameterDefaultValueGrammarName = PARAMETER_DEFAULT_VALUE_GRAMMAR_NAME;
 
 	private String parameterListGrammarName = PARAMETER_LIST_GRAMMAR_NAME;
@@ -206,6 +215,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private boolean isXtendSupportEnable = XTEND_SUPPORT_ENABLED;
 
 	private final Map<String, String> superTypeMapping = new TreeMap<>();
+
+	private final Map<String, String> implementedSuperTypeMapping = new TreeMap<>();
 
 	private final Map<String, List<String>> modifiers = new TreeMap<>();
 
@@ -406,6 +417,28 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	@Pure
 	public String getParameterVarArgGrammarName() {
 		return this.parameterVarArgGrammarName;
+	}
+
+	/** Set the name that is used for representing the extension flag of a formal parameter in the grammar's assignments.
+	 *
+	 * @param name the name of the assignment for the extension of a formal parameter.
+	 * @since 0.15
+	 */
+	public void setParameterExtensionGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.parameterExtensionGrammarName = name;
+		}
+	}
+
+	/** Replies the name that is used for representing the extension flag
+	 * of a formal parameter in the grammar's assignments.
+	 *
+	 * @return the name of the assignment for the name of an extension for formal parameter.
+	 * @since 0.15
+	 */
+	@Pure
+	public String getParameterExtensionGrammarName() {
+		return this.parameterExtensionGrammarName;
 	}
 
 	/** Set the name that is used for representing the type of a formal parameter in the grammar's assignments.
@@ -794,6 +827,27 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	@Pure
 	public Map<String, String> getDefaultSupers() {
 		return this.superTypeMapping;
+	}
+
+	/** Add a default super type for implementations.
+	 *
+	 * @param mapping the mapping for the super type.
+	 * @since 0.15
+	 */
+	public void addDefaultImplementedSuper(SuperTypeMapping mapping) {
+		if (mapping != null) {
+			this.implementedSuperTypeMapping.put(mapping.getType(), mapping.getSuper());
+		}
+	}
+
+	/** Replies the default super types for implementations.
+	 *
+	 * @return the default super types for implementations.
+	 * @since 0.15
+	 */
+	@Pure
+	public Map<String, String> getDefaultImplementedSupers() {
+		return this.implementedSuperTypeMapping;
 	}
 
 	/** Change the name of the grammar rule that defines the script.

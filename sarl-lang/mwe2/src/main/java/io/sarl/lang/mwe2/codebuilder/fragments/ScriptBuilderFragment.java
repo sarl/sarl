@@ -39,6 +39,7 @@ import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.util.EmfFormatter;
@@ -132,6 +133,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -155,6 +159,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * @param resource the resource in which the script is created."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -181,6 +188,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -218,6 +228,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -247,6 +260,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t * @param resourceSet the resource set in which the script is created."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -279,6 +295,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t * @param resource the resource in which the script is created."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -313,6 +332,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -349,6 +371,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -388,6 +413,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("class "); //$NON-NLS-1$
@@ -417,6 +445,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -473,6 +504,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * @param name the name of the " + topElementName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append("\t * @return the builder."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -549,6 +583,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append(" * <p>Do not forget to invoke {@link #finalizeScript()} for creating imports, etc."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -583,6 +620,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** Appender of " + getLanguageName() + " scripts."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" *"); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -679,6 +719,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -706,6 +749,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -727,11 +773,120 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(JvmType.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context in which the type is defined"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Notifier.class);
+					it.append(" context, "); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(context, type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -782,6 +937,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 				it.append("\t/** Create the internal " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -843,6 +1001,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -870,6 +1031,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Replies the resource to which the script is attached."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -902,6 +1066,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * <li>The import section is created.</li>"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * </ul>"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -1006,6 +1173,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Replies if the script was finalized."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

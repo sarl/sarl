@@ -27,6 +27,8 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -34,6 +36,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl XExpression.
+ * @see ExpressionBuilderFragment.java : appendTo : 112
  */
 @SuppressWarnings("all")
 public interface IExpressionBuilder {
@@ -41,6 +44,7 @@ public interface IExpressionBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 246
 	 */
 	JvmParameterizedTypeReference newTypeRef(String typeName);
 
@@ -48,28 +52,58 @@ public interface IExpressionBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 276
 	 */
 	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 308
+	 */
+	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 342
+	 */
+	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param context the context in which the type is defined
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 378
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see ExpressionBuilderFragment.java : appendTo : 412
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the expression.
 	 * @param context the context of the expressions.
 	 * @param setter the object that permits to assign the expression to the context.
+	 * @see ExpressionBuilderFragment.java : appendTo : 439
 	 */
 	void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext);
 
 	/** Replies the last created expression.
 	 *
 	 * @return the last created expression.
+	 * @see ExpressionBuilderFragment.java : appendTo : 484
 	 */
 	@Pure
 	XExpression getXExpression();
 
 	/** Replies the resource to which the XExpression is attached.
+	 * @see ExpressionBuilderFragment.java : appendTo : 515
 	 */
 	@Pure
 	Resource eResource();
@@ -77,12 +111,14 @@ public interface IExpressionBuilder {
 	/** Change the expression in the container.
 	 *
 	 * @param expression the textual representation of the expression.
+	 * @see ExpressionBuilderFragment.java : appendTo : 546
 	 */
 	void setExpression(String expression);
 
 	/** Change the expression in the container.
 	 *
 	 * @param expression the expression.
+	 * @see ExpressionBuilderFragment.java : appendTo : 579
 	 */
 	void setXExpression(XExpression expression);
 
@@ -90,38 +126,60 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
+	 * @see ExpressionBuilderFragment.java : appendTo : 838
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(String type);
 
+	/** Replies the XExpression for the default value associated to the given type.
+	 * @param type the type for which the default value should be determined.
+	 * @return the default value.
+	 * @see ExpressionBuilderFragment.java : appendTo : 995
+	 */
+	@Pure
+	XExpression getDefaultXExpressionForType(JvmParameterizedTypeReference type);
+
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
+	 * @see ExpressionBuilderFragment.java : appendTo : 1032
 	 */
 	@Pure
 	String getDefaultValueForType(String type);
+
+	/** Replies the default value for the given type.
+	 * @param type the type for which the default value should be determined.
+	 * @return the default value.
+	 * @see ExpressionBuilderFragment.java : appendTo : 1134
+	 */
+	@Pure
+	String getDefaultValueForType(JvmParameterizedTypeReference type);
 
 	/** Change the documentation of the element.
 	 *
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	void setDocumentation(String doc);
 
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 1194
 	 */
 	XFeatureCall createReferenceToThis();
 
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
+	 * @see ExpressionBuilderFragment.java : appendTo : 1254
 	 */
 	XFeatureCall createReferenceToSuper();
 
 	/** Dispose the resource.
+	 * @see ExpressionBuilderFragment.java : appendTo : 1346
 	 */
 	void dispose();
 

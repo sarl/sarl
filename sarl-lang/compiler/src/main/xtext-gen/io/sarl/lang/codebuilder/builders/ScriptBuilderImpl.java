@@ -50,6 +50,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private boolean isFinalized;
 
 	/** Create the internal Sarl script.
+	 * @see ScriptBuilderFragment.java : appendTo : 942
 	 */
 	public void eInit(Resource resource, String packageName, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -67,6 +68,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	/** Replies the Sarl script.
+	 * @see ScriptBuilderFragment.java : appendTo : 1005
 	 */
 	@Pure
 	public SarlScript getScript() {
@@ -74,6 +76,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	/** Replies the resource to which the script is attached.
+	 * @see ScriptBuilderFragment.java : appendTo : 1036
 	 */
 	@Pure
 	public Resource eResource() {
@@ -85,6 +88,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 * <p>The finalization includes: <ul>
 	 * <li>The import section is created.</li>
 	 * </ul>
+	 * @see ScriptBuilderFragment.java : appendTo : 1071
 	 */
 	public void finalizeScript() {
 		if (this.isFinalized) {
@@ -117,6 +121,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	/** Replies if the script was finalized.
+	 * @see ScriptBuilderFragment.java : appendTo : 1178
 	 */
 	public boolean isFinalized() {
 		return this.isFinalized;
@@ -134,6 +139,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlEvent builder.
 	 * @param name the name of the SarlEvent.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlEventBuilder addSarlEvent(String name) {
 		ISarlEventBuilder builder = this.sarlEventProvider.get();
@@ -147,6 +153,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlCapacity builder.
 	 * @param name the name of the SarlCapacity.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlCapacityBuilder addSarlCapacity(String name) {
 		ISarlCapacityBuilder builder = this.sarlCapacityProvider.get();
@@ -160,6 +167,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlAgent builder.
 	 * @param name the name of the SarlAgent.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlAgentBuilder addSarlAgent(String name) {
 		ISarlAgentBuilder builder = this.sarlAgentProvider.get();
@@ -173,6 +181,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlBehavior builder.
 	 * @param name the name of the SarlBehavior.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlBehaviorBuilder addSarlBehavior(String name) {
 		ISarlBehaviorBuilder builder = this.sarlBehaviorProvider.get();
@@ -186,6 +195,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlSkill builder.
 	 * @param name the name of the SarlSkill.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlSkillBuilder addSarlSkill(String name) {
 		ISarlSkillBuilder builder = this.sarlSkillProvider.get();
@@ -199,6 +209,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlSpace builder.
 	 * @param name the name of the SarlSpace.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlSpaceBuilder addSarlSpace(String name) {
 		ISarlSpaceBuilder builder = this.sarlSpaceProvider.get();
@@ -212,6 +223,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlArtifact builder.
 	 * @param name the name of the SarlArtifact.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
 		ISarlArtifactBuilder builder = this.sarlArtifactProvider.get();
@@ -225,6 +237,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlProtocol builder.
 	 * @param name the name of the SarlProtocol.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlProtocolBuilder addSarlProtocol(String name) {
 		ISarlProtocolBuilder builder = this.sarlProtocolProvider.get();
@@ -238,6 +251,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlClass builder.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.sarlClassProvider.get();
@@ -251,6 +265,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlInterface builder.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.sarlInterfaceProvider.get();
@@ -264,6 +279,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlEnumeration builder.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.sarlEnumerationProvider.get();
@@ -277,6 +293,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	/** Create a SarlAnnotationType builder.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
+	 * @see ScriptBuilderFragment.java : appendTo : 509
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.sarlAnnotationTypeProvider.get();

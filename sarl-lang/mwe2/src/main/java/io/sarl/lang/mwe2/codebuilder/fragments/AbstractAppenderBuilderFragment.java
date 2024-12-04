@@ -36,6 +36,8 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
 import org.eclipse.xtext.common.types.xtext.ClasspathBasedTypeScopeProvider;
@@ -136,6 +138,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append("/** Abstract implementation of an appender for the " //$NON-NLS-1$
 						+ getLanguageName() + " language."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -187,6 +192,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t * @param formatting {@code true} if the appender is formatting the generated code."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic void setFormatting(boolean formatting) {"); //$NON-NLS-1$
@@ -202,6 +210,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t * @return {@code true} if the appender is formatting the generated code."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic boolean isFormatting() {"); //$NON-NLS-1$
@@ -215,6 +226,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t * @return the context, or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tprotected abstract "); //$NON-NLS-1$
@@ -225,6 +239,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append("\t/** Build the source code and put it into the given appender."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param appender the object that permits to create the source code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -240,6 +257,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append("\t * @param object the object to serialize"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param appender the object that permits to create the source code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -440,6 +460,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t/** Replies the type reference for the given name in the given context."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic abstract "); //$NON-NLS-1$
@@ -449,6 +472,9 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t/** Replies the type reference for the given name in the given context."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic abstract "); //$NON-NLS-1$
@@ -456,6 +482,22 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(" newTypeRef("); //$NON-NLS-1$
 				it.append(Notifier.class);
 				it.append(" context, String typeName);"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the type reference for the given type and type parameters."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic abstract "); //$NON-NLS-1$
+				it.append(JvmParameterizedTypeReference.class);
+				it.append(" newTypeRef("); //$NON-NLS-1$
+				it.append(JvmType.class);
+				it.append(" typeName, "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append("... args);"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("}"); //$NON-NLS-1$

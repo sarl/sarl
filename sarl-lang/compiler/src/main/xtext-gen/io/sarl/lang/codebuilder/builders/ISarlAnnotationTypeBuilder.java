@@ -29,10 +29,13 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlAnnotationType.
+ * @see TopElementBuilderFragment.java : appendTo : 307
  */
 @SuppressWarnings("all")
 public interface ISarlAnnotationTypeBuilder {
@@ -40,6 +43,7 @@ public interface ISarlAnnotationTypeBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see TopElementBuilderFragment.java : appendTo : 1142
 	 */
 	JvmParameterizedTypeReference newTypeRef(String typeName);
 
@@ -47,32 +51,64 @@ public interface ISarlAnnotationTypeBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see TopElementBuilderFragment.java : appendTo : 1172
 	 */
 	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TopElementBuilderFragment.java : appendTo : 1204
+	 */
+	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TopElementBuilderFragment.java : appendTo : 1238
+	 */
+	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param context the context in which the type is defined
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TopElementBuilderFragment.java : appendTo : 1274
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see TopElementBuilderFragment.java : appendTo : 1308
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Dispose the resource.
+	 * @see TopElementBuilderFragment.java : appendTo : 1332
 	 */
 	void dispose();
 
 	/** Initialize the Ecore element when inside a script.
+	 * @see TopElementBuilderFragment.java : appendTo : 1383
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Initialize the Ecore element when inner type declaration.
+	 * @see TopElementBuilderFragment.java : appendTo : 1460
 	 */
 	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlAnnotationType.
+	 * @see TopElementBuilderFragment.java : appendTo : 1523
 	 */
 	@Pure
 	SarlAnnotationType getSarlAnnotationType();
 
 	/** Replies the resource to which the SarlAnnotationType is attached.
+	 * @see TopElementBuilderFragment.java : appendTo : 1560
 	 */
 	@Pure
 	Resource eResource();
@@ -82,23 +118,27 @@ public interface ISarlAnnotationTypeBuilder {
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	void setDocumentation(String doc);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see TopElementBuilderFragment.java : appendTo : 2082
 	 */
 	void addModifier(String modifier);
 
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlFieldBuilder addVarSarlField(String name);
 
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlFieldBuilder addValSarlField(String name);
 
@@ -106,30 +146,35 @@ public interface ISarlAnnotationTypeBuilder {
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 697
 	 */
 	ISarlFieldBuilder addSarlField(String name);
 
 	/** Create a SarlClass.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlClassBuilder addSarlClass(String name);
 
 	/** Create a SarlInterface.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlInterfaceBuilder addSarlInterface(String name);
 
 	/** Create a SarlEnumeration.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlEnumerationBuilder addSarlEnumeration(String name);
 
 	/** Create a SarlAnnotationType.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);
 

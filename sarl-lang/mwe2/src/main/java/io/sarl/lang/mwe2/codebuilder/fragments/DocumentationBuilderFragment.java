@@ -281,6 +281,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Format a documentation string."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public interface "); //$NON-NLS-1$
@@ -291,6 +294,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Replies the characters that must be used as prefix of each line in a multiline comment."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the prefix."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -304,6 +310,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the symbols."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -316,6 +325,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the symbols."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -327,6 +339,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Replies the string that must be used as prefix of a singleline comment."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the prefix."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -341,6 +356,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param doc the documentation text. It may be on multiple lines."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -358,6 +376,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -371,6 +392,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param doc the documentation text. It may be on multiple lines."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -390,6 +414,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -407,6 +434,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param context the formatting context."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param comment the comment to format out."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -426,6 +456,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -442,6 +475,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -455,6 +491,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param doc the documentation text. It may be on multiple lines."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -474,6 +513,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -491,6 +533,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param context the formatting context."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param comment the comment to format out."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -523,6 +568,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string for specific objects."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public interface "); //$NON-NLS-1$
@@ -533,6 +581,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Replies the grammar rule that corresponds to multiline comments."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the ML grammar rule."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -548,6 +599,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the SL grammar rule."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -561,6 +615,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Replies the documentation formatter used by this builder."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return documentation formatter."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -580,6 +637,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -595,6 +655,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @return {@code true} if multiline comment is the default."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t *      Otherwise singleline comment is the default."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -623,6 +686,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Formatter a documentation string."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -2145,6 +2211,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$
@@ -2425,6 +2494,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Provider a documentation string."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$
@@ -2507,6 +2579,12 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Syntactic sequencer which supports documentations of Ecore elements."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();

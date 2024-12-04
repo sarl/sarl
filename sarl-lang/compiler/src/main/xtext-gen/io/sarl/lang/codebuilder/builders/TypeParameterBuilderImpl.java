@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmLowerBound;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.TypesFactory;
@@ -35,6 +36,7 @@ import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl type parameter.
+ * @see TypeParameterBuilderFragment.java : appendTo : 132
  */
 @SuppressWarnings("all")
 public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypeParameterBuilder {
@@ -51,6 +53,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	 * The container is responsible of adding the type parameter in its internal object.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 408
 	 */
 	public void eInit(EObject context, String name, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);
@@ -63,6 +66,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 480
 	 */
 	@Pure
 	public JvmTypeParameter getJvmTypeParameter() {
@@ -70,6 +74,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	}
 
 	/** Replies the resource to which the type parameter is attached.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 515
 	 */
 	@Pure
 	public Resource eResource() {
@@ -84,19 +89,37 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 
 	/** Add upper type bounds.
 	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 599
 	 */
 	public void addUpperConstraint(String type) {
+		addUpperConstraint(newTypeRef(this.context, type));
+	}
+
+	/** Add upper type bounds.
+	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 629
+	 */
+	public void addUpperConstraint(JvmParameterizedTypeReference type) {
 		final JvmUpperBound constraint = this.jvmTypesFactory.createJvmUpperBound();
-		constraint.setTypeReference(newTypeRef(this.context, type));
+		constraint.setTypeReference(type);
 		getJvmTypeParameter().getConstraints().add(constraint);
 	}
 
 	/** Add lower type bounds.
 	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 670
 	 */
 	public void addLowerConstraint(String type) {
+		addLowerConstraint(newTypeRef(this.context, type));
+	}
+
+	/** Add lower type bounds.
+	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 700
+	 */
+	public void addLowerConstraint(JvmParameterizedTypeReference type) {
 		final JvmLowerBound constraint = this.jvmTypesFactory.createJvmLowerBound();
-		constraint.setTypeReference(newTypeRef(this.context, type));
+		constraint.setTypeReference(type);
 		getJvmTypeParameter().getConstraints().add(constraint);
 	}
 

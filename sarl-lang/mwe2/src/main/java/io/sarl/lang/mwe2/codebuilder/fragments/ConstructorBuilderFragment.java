@@ -99,6 +99,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -126,6 +129,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -176,6 +182,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -212,6 +221,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();

@@ -517,6 +517,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 				it.newLine();
 				it.append("\t * @param doc the documentation."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -766,6 +769,19 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			}
 		}
 		return null;
+	}
+
+	/** Replies the filename and the code line of the caller of this function.
+	 *
+	 * @return file and line number.
+	 * @since 0.15
+	 */
+	protected static String getFileAndLineNumber() {
+		final var trace = Thread.currentThread().getStackTrace()[2];
+		return new StringBuilder(trace.getFileName())
+				.append(" : ").append(trace.getMethodName()) //$NON-NLS-1$
+				.append(" : ").append(trace.getLineNumber()) //$NON-NLS-1$
+				.toString();
 	}
 
 }

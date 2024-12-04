@@ -46,6 +46,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlBehavior.
+ * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBehaviorBuilder {
@@ -59,6 +60,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	}
 
 	/** Initialize the Ecore element when inside a script.
+	 * @see TopElementBuilderFragment.java : appendTo : 1383
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -73,6 +75,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	}
 
 	/** Replies the generated SarlBehavior.
+	 * @see TopElementBuilderFragment.java : appendTo : 1523
 	 */
 	@Pure
 	public SarlBehavior getSarlBehavior() {
@@ -80,6 +83,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	}
 
 	/** Replies the resource to which the SarlBehavior is attached.
+	 * @see TopElementBuilderFragment.java : appendTo : 1560
 	 */
 	@Pure
 	public Resource eResource() {
@@ -91,6 +95,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -113,14 +118,27 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Change the super type.
 	 * @param superType the qualified name of the super type,
 	 *     or {@code null} if the default type.
+	 * @see TopElementBuilderFragment.java : appendTo : 1614
 	 */
 	public void setExtends(String superType) {
-		if (!Strings.isEmpty(superType)
-				&& !Behavior.class.getName().equals(superType)) {
+		if (!Strings.isEmpty(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.sarlBehavior, superType);
+			setExtends(superTypeRef);
+		} else {
+			setExtends((JvmParameterizedTypeReference) null);
+		}
+	}
+
+	/** Change the super type.
+	 * @param superType the super type,
+	 *     or {@code null} if the default type.
+	 * @see TopElementBuilderFragment.java : appendTo : 1699
+	 */
+	public void setExtends(JvmParameterizedTypeReference superType) {
+		if (superType != null && !Behavior.class.getName().equals(superType.getType().getIdentifier())) {
 			JvmTypeReference baseTypeRef = findType(this.sarlBehavior, Behavior.class.getCanonicalName());
-			if (isSubTypeOf(this.sarlBehavior, superTypeRef, baseTypeRef)) {
-				this.sarlBehavior.setExtends(superTypeRef);
+			if (isSubTypeOf(this.sarlBehavior, superType, baseTypeRef)) {
+				this.sarlBehavior.setExtends(superType);
 				return;
 			}
 		}
@@ -129,6 +147,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see TopElementBuilderFragment.java : appendTo : 2082
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -141,6 +160,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 
 	/** Create a SarlConstructor.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		ISarlConstructorBuilder builder = this.iSarlConstructorBuilderProvider.get();
@@ -154,8 +174,20 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
+		ISarlBehaviorUnitBuilder builder = this.iSarlBehaviorUnitBuilderProvider.get();
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
+		return builder;
+	}
+
+	/** Create a SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 615
+	 */
+	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(JvmParameterizedTypeReference name) {
 		ISarlBehaviorUnitBuilder builder = this.iSarlBehaviorUnitBuilderProvider.get();
 		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
@@ -167,6 +199,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -177,6 +210,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -188,6 +222,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 697
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.addVarSarlField(name);
@@ -199,6 +234,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -209,6 +245,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -220,6 +257,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 697
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.addDefSarlAction(name);
@@ -231,6 +269,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlClass.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
@@ -244,6 +283,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlInterface.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
@@ -257,6 +297,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlEnumeration.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
@@ -270,6 +311,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	/** Create a SarlAnnotationType.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
@@ -279,6 +321,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 
 	/** Create a SarlCapacityUses.
 	 * @param name the types referenced by the SarlCapacityUses.
+	 * @see TopElementBuilderFragment.java : appendTo : 775
 	 */
 	public void addSarlCapacityUses(String... name) {
 		if (name != null && name.length > 0) {
@@ -295,8 +338,28 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 
 	}
 
+	/** Create a SarlCapacityUses.
+	 * @param name the types referenced by the SarlCapacityUses.
+	 * @see TopElementBuilderFragment.java : appendTo : 861
+	 */
+	public void addSarlCapacityUses(JvmParameterizedTypeReference... name) {
+		if (name != null) {
+			SarlCapacityUses member = SarlFactory.eINSTANCE.createSarlCapacityUses();
+			this.sarlBehavior.getMembers().add(member);
+			member.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+			Collection<JvmParameterizedTypeReference> thecollection = member.getCapacities();
+			for (final JvmParameterizedTypeReference aname : name) {
+				if (aname != null) {
+					thecollection.add(aname);
+				}
+			}
+		}
+
+	}
+
 	/** Create a SarlRequiredCapacity.
 	 * @param name the types referenced by the SarlRequiredCapacity.
+	 * @see TopElementBuilderFragment.java : appendTo : 775
 	 */
 	public void addSarlRequiredCapacity(String... name) {
 		if (name != null && name.length > 0) {
@@ -307,6 +370,25 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 			for (final String aname : name) {
 				if (!Strings.isEmpty(aname)) {
 					thecollection.add(newTypeRef(this.sarlBehavior, aname));
+				}
+			}
+		}
+
+	}
+
+	/** Create a SarlRequiredCapacity.
+	 * @param name the types referenced by the SarlRequiredCapacity.
+	 * @see TopElementBuilderFragment.java : appendTo : 861
+	 */
+	public void addSarlRequiredCapacity(JvmParameterizedTypeReference... name) {
+		if (name != null) {
+			SarlRequiredCapacity member = SarlFactory.eINSTANCE.createSarlRequiredCapacity();
+			this.sarlBehavior.getMembers().add(member);
+			member.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+			Collection<JvmParameterizedTypeReference> thecollection = member.getCapacities();
+			for (final JvmParameterizedTypeReference aname : name) {
+				if (aname != null) {
+					thecollection.add(aname);
 				}
 			}
 		}

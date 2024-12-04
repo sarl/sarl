@@ -31,12 +31,15 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Appender of a Sarl formal parameter.
+ * @see FormalParameterBuilderFragment.java : appendTo : 182
  */
 @SuppressWarnings("all")
 public class FormalParameterSourceAppender extends AbstractSourceAppender implements IFormalParameterBuilder {
@@ -54,6 +57,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 272
 	 */
 	public JvmParameterizedTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -63,9 +67,41 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 302
 	 */
 	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
+	}
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 334
+	 */
+	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+		return this.builder.newTypeRef(type, args);
+	}
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 368
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+		return this.builder.newTypeRef(type, args);
+	}
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param context the context in which the type is defined
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 404
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+		return this.builder.newTypeRef(context, type, args);
 	}
 
 	public IJvmTypeProvider getTypeResolutionContext() {
@@ -75,6 +111,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Initialize the formal parameter.
 	 * @param context the context of the formal parameter.
 	 * @param name the name of the formal parameter.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 465
 	 */
 	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
 		this.builder.eInit(context, name, typeContext);
@@ -83,6 +120,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 520
 	 */
 	@Pure
 	public SarlFormalParameter getSarlFormalParameter() {
@@ -92,12 +130,14 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
 	 * @param container the feature call that is supposed to contains the replied identifiable element.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 559
 	 */
 	public void setReferenceInto(XFeatureCall container) {
 		this.builder.setReferenceInto(container);
 	}
 
 	/** Replies the resource to which the formal parameter is attached.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 624
 	 */
 	@Pure
 	public Resource eResource() {
@@ -107,21 +147,42 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Change the type.
 	 *
 	 * @param type the formal parameter type.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 657
 	 */
 	public void setParameterType(String type) {
+		this.builder.setParameterType(type);
+	}
+
+	/** Change the type.
+	 *
+	 * @param type the formal parameter type.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 708
+	 */
+	public void setParameterType(JvmParameterizedTypeReference type) {
 		this.builder.setParameterType(type);
 	}
 
 	/** Change the variadic property of the parameter.
 	 *
 	 * @param isVariadic indicates if the parameter is variadic.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 748
 	 */
 	public void setVarArg(boolean isVariadic) {
 		this.builder.setVarArg(isVariadic);
 	}
 
+	/** Change the extension flag of the parameter.
+	 *
+	 * @param isExtension indicates if the parameter is defined as an extension.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 785
+	 */
+	public void setExtension(boolean isExtension) {
+		this.builder.setExtension(isExtension);
+	}
+
 	/** Replies the default value of the parameter.
 	 * @return the default value builder.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 820
 	 */
 	@Pure
 	public IExpressionBuilder getDefaultValue() {
@@ -129,6 +190,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Dispose the resource.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 921
 	 */
 	public void dispose() {
 		this.builder.dispose();

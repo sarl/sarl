@@ -250,6 +250,10 @@ Workflow {
 					type = "SarlSkill"
 					super = "io.sarl.lang.core.Skill"
 				}
+				defaultImplementedSuper = {
+					type = "SarlSkill"
+					super = "io.sarl.lang.core.Capacity"
+				}
 				defaultSuper = {
 					type = "SarlSpace"
 					super = "io.sarl.lang.core.Space"

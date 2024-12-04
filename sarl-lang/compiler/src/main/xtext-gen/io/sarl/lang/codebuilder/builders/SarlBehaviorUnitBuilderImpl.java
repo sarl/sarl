@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -44,6 +45,7 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlBehaviorUnit.
+ * @see AbstractMemberBuilderFragment.java : appendTo : 150
  */
 @SuppressWarnings("all")
 public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISarlBehaviorUnitBuilder {
@@ -61,19 +63,30 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		eInit(container, newTypeRef(container, name), context);
+	}
+
+	/** Initialize the Ecore element.
+	 * @param container the container of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 702
+	 */
+	public void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
 		if (this.sarlBehaviorUnit == null) {
 			this.container = container;
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 			this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
-			this.sarlBehaviorUnit.setName(newTypeRef(container, name));
+			this.sarlBehaviorUnit.setName(name);
 			container.getMembers().add(this.sarlBehaviorUnit);
 		}
 	}
 
 	/** Replies the generated element.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -81,6 +94,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
 	 */
 	@Pure
 	public Resource eResource() {
@@ -92,6 +106,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -113,6 +128,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1288
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {
@@ -127,6 +143,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Create the block of code.
 	 * @return the block builder.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();

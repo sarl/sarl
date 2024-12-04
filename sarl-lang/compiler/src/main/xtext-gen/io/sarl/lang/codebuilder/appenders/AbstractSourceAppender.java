@@ -36,6 +36,8 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
 import org.eclipse.xtext.formatting.impl.AbstractTokenStream;
@@ -48,6 +50,7 @@ import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
 import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
 
 /** Abstract implementation of an appender for the Sarl language.
+ * @see AbstractAppenderBuilderFragment.java : appendTo : 142
  */
 @SuppressWarnings("all")
 public abstract class AbstractSourceAppender {
@@ -69,6 +72,7 @@ public abstract class AbstractSourceAppender {
 	/** Set if this building is formatting the generated code.
 	 *
 	 * @param formatting {@code true} if the appender is formatting the generated code.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 196
 	 */
 	public void setFormatting(boolean formatting) {
 		this.isFormatting = formatting;
@@ -77,6 +81,7 @@ public abstract class AbstractSourceAppender {
 	/** Replies if this building is formatting the generated code.
 	 *
 	 * @return {@code true} if the appender is formatting the generated code.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 214
 	 */
 	public boolean isFormatting() {
 		return this.isFormatting;
@@ -84,17 +89,20 @@ public abstract class AbstractSourceAppender {
 
 	/** Replies the context for type resolution.
 	 * @return the context, or {@code null} if the Ecore object is the context.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 230
 	 */
 	protected abstract IJvmTypeProvider getTypeResolutionContext();
 
 	/** Build the source code and put it into the given appender.
 	 * @param appender the object that permits to create the source code.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 244
 	 */
 	public abstract void build(ISourceAppender appender) throws IOException;
 
 	/** Build the source code and put it into the given appender.
 	 * @param object the object to serialize
 	 * @param appender the object that permits to create the source code.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 262
 	 */
 	protected void build(EObject object, ISourceAppender appender) throws IOException {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
@@ -167,12 +175,19 @@ public abstract class AbstractSourceAppender {
 	}
 
 	/** Replies the type reference for the given name in the given context.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 464
 	 */
 	public abstract JvmParameterizedTypeReference newTypeRef(String typeName);
 
 	/** Replies the type reference for the given name in the given context.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 476
 	 */
 	public abstract JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+
+	/** Replies the type reference for the given type and type parameters.
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 490
+	 */
+	public abstract JvmParameterizedTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args);
 
 }
 

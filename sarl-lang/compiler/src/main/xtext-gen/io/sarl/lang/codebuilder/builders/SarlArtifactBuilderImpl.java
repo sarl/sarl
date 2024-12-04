@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlArtifact.
+ * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArtifactBuilder {
@@ -51,6 +52,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Initialize the Ecore element when inside a script.
+	 * @see TopElementBuilderFragment.java : appendTo : 1383
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -65,6 +67,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Replies the generated SarlArtifact.
+	 * @see TopElementBuilderFragment.java : appendTo : 1523
 	 */
 	@Pure
 	public SarlArtifact getSarlArtifact() {
@@ -72,6 +75,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Replies the resource to which the SarlArtifact is attached.
+	 * @see TopElementBuilderFragment.java : appendTo : 1560
 	 */
 	@Pure
 	public Resource eResource() {
@@ -83,6 +87,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -104,6 +109,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see TopElementBuilderFragment.java : appendTo : 2082
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {

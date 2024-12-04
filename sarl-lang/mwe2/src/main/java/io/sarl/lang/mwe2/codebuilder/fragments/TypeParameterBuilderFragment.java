@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -93,6 +95,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 					+ " type parameter."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -122,6 +127,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 					+ " type parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -159,6 +167,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
 					+ " type parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -221,6 +232,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -248,6 +262,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -269,6 +286,112 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(JvmType.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context in which the type is defined"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Notifier.class);
+					it.append(" context, "); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(context, type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 
 				it.append("\t/** Initialize the type parameter."); //$NON-NLS-1$
@@ -280,6 +403,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t * @param name the name of the type parameter."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param typeContext the provider of types or null."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -323,6 +449,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -346,6 +475,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -378,6 +510,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Replies the resource to which the type parameter is attached."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -431,6 +566,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -438,6 +576,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					it.newLine();
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -453,6 +594,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Add upper type bounds."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param type the type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -470,11 +614,43 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					if (forAppender) {
 						it.append("this.builder.addUpperConstraint(type);"); //$NON-NLS-1$
 					} else {
+						it.append("addUpperConstraint(newTypeRef(this.context, type));"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Add upper type bounds."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param type the type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append("void addUpperConstraint("); //$NON-NLS-1$
+				it.append(JvmParameterizedTypeReference.class);
+				it.append(" type)"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.addUpperConstraint(type);"); //$NON-NLS-1$
+					} else {
 						it.append("final "); //$NON-NLS-1$
 						it.append(JvmUpperBound.class);
 						it.append(" constraint = this.jvmTypesFactory.createJvmUpperBound();"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\tconstraint.setTypeReference(newTypeRef(this.context, type));"); //$NON-NLS-1$
+						it.append("\t\tconstraint.setTypeReference(type);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tget"); //$NON-NLS-1$
 						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));
@@ -489,6 +665,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t/** Add lower type bounds."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param type the type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -506,11 +685,43 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 					if (forAppender) {
 						it.append("this.builder.addLowerConstraint(type);"); //$NON-NLS-1$
 					} else {
+						it.append("addLowerConstraint(newTypeRef(this.context, type));"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Add lower type bounds."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param type the type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append("void addLowerConstraint("); //$NON-NLS-1$
+				it.append(JvmParameterizedTypeReference.class);
+				it.append(" type)"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.addLowerConstraint(type);"); //$NON-NLS-1$
+					} else {
 						it.append("final "); //$NON-NLS-1$
 						it.append(JvmLowerBound.class);
 						it.append(" constraint = this.jvmTypesFactory.createJvmLowerBound();"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\tconstraint.setTypeReference(newTypeRef(this.context, type));"); //$NON-NLS-1$
+						it.append("\t\tconstraint.setTypeReference(type);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tget"); //$NON-NLS-1$
 						it.append(Strings.toFirstUpper(parameter.elementType().getSimpleName()));

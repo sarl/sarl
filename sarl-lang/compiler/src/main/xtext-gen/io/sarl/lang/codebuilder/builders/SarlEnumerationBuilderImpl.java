@@ -42,6 +42,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumeration.
+ * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarlEnumerationBuilder {
@@ -57,6 +58,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Initialize the Ecore element when inside a script.
+	 * @see TopElementBuilderFragment.java : appendTo : 1383
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -72,6 +74,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Initialize the Ecore element when inner type declaration.
+	 * @see TopElementBuilderFragment.java : appendTo : 1460
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		if (this.sarlEnumeration == null) {
@@ -85,6 +88,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the generated SarlEnumeration.
+	 * @see TopElementBuilderFragment.java : appendTo : 1523
 	 */
 	@Pure
 	public SarlEnumeration getSarlEnumeration() {
@@ -92,6 +96,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource to which the SarlEnumeration is attached.
+	 * @see TopElementBuilderFragment.java : appendTo : 1560
 	 */
 	@Pure
 	public Resource eResource() {
@@ -103,6 +108,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -124,6 +130,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see TopElementBuilderFragment.java : appendTo : 2082
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -137,6 +144,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	/** Create a SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 551
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {
 		ISarlEnumLiteralBuilder builder = this.iSarlEnumLiteralBuilderProvider.get();

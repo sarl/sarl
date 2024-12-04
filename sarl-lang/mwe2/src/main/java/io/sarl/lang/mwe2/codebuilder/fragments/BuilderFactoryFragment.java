@@ -86,6 +86,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/**"); //$NON-NLS-1$
 				it.append(" * Creates {@code ICodeBuilder} to insert SARL code snippets."); //$NON-NLS-1$
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -177,6 +180,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the uri."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -213,6 +219,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the script's file extension."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -230,6 +239,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the resource factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -251,6 +263,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the name of the foo package."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -271,6 +286,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the name of the foo type."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -288,6 +306,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the name of the foo type member."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -308,6 +329,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * @param resourceSet the resourceSet."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the resource."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -338,6 +362,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t/** Replies the injector."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -372,6 +399,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t * @param module the overriding module."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the new injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -459,6 +489,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the provider."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -537,6 +570,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** User-defined builder factory of the " + getLanguageName() //$NON-NLS-1$
 						+ " scripts."); //$NON-NLS-1$
 				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("class "); //$NON-NLS-1$
@@ -566,6 +602,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder factory of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
+				it.newLine();
+				it.append(" * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();

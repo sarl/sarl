@@ -44,6 +44,7 @@ import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
@@ -129,6 +130,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the factory."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -159,6 +163,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t *    containing the generated element, and resolving types from names."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the factory."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -205,6 +212,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @return the appender."); //$NON-NLS-1$
 						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
+						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t@"); //$NON-NLS-1$
@@ -243,6 +253,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @return the appender."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
@@ -287,8 +300,11 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-							+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
-							+ "."); //$NON-NLS-1$
+					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
+					+ "."); //$NON-NLS-1$
+					it.newLine();
+					it.append(" * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -333,8 +349,11 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Source adapter of a " + getLanguageName() //$NON-NLS-1$
-							+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
-							+ "."); //$NON-NLS-1$
+					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
+					+ "."); //$NON-NLS-1$
+					it.newLine();
+					it.append(" * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -384,8 +403,11 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-							+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
-							+ "."); //$NON-NLS-1$
+					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
+					+ "."); //$NON-NLS-1$
+					it.newLine();
+					it.append(" * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -511,7 +533,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
-						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					if (hasName.get()) {
 						it.append("\t * @param name the "); //$NON-NLS-1$
@@ -524,6 +546,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 					}
 					it.append("\t * @return the builder."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -578,6 +603,66 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					if (hasName.get() && hasTypeName.get()) {
+						it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
+								+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+						it.newLine();
+						it.append("\t * @param name the type of the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						it.newLine();
+						it.append("\t * @return the builder."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
+						it.newLine();
+						it.append("\t */"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t"); //$NON-NLS-1$
+						if (!forInterface) {
+							it.append("public "); //$NON-NLS-1$
+						}
+						it.append(builderType);
+						it.append(" "); //$NON-NLS-1$
+						it.append(functionName);
+						it.append("("); //$NON-NLS-1$
+						it.append(JvmParameterizedTypeReference.class);
+						it.append(" name"); //$NON-NLS-1$
+						it.append(")"); //$NON-NLS-1$
+						if (forInterface) {
+							it.append(";"); //$NON-NLS-1$
+						} else {
+							it.append(" {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t"); //$NON-NLS-1$
+							if (forAppender) {
+								it.append("return this.builder."); //$NON-NLS-1$
+								it.append(functionName);
+								it.append("("); //$NON-NLS-1$
+								it.append("name"); //$NON-NLS-1$
+								it.append(");"); //$NON-NLS-1$
+							} else {
+								it.append(builderType);
+								it.append(" builder = this."); //$NON-NLS-1$
+								it.append(Strings.toFirstLower(builderType.getSimpleName()));
+								it.append("Provider.get();"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\tbuilder.eInit("); //$NON-NLS-1$
+								it.append(getGeneratedTypeAccessor(topElementDescription.getElementDescription().elementType()));
+								it.append(", name"); //$NON-NLS-1$
+								if (!Strings.isEmpty(modifier) && modifiers.size() > 1) {
+									it.append(", \""); //$NON-NLS-1$
+									it.append(Strings.convertToJavaString(modifier));
+									it.append("\""); //$NON-NLS-1$
+								}
+								it.append(", getTypeResolutionContext());"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\treturn builder;"); //$NON-NLS-1$
+							}
+							it.newLine();
+							it.append("\t}"); //$NON-NLS-1$
+						}
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
 				}
 			});
 		}
@@ -589,7 +674,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
-						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.append("\t *"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * <p>This function is equivalent to {@link #"); //$NON-NLS-1$
@@ -607,6 +692,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 					}
 					it.append("\t * @return the builder."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -679,9 +767,12 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
-						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					it.append("\t * @param name the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -730,7 +821,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 									getCodeBuilderConfig().getUnnamedMemberExtensionGrammarNames(),
 									(it2) -> findAssignmentFromFeatureName(memberDescription.grammarComponent(),
 											it2) != null,
-									null);
+											null);
 							it.append("\t\t\t"); //$NON-NLS-1$
 							it.append(Collection.class);
 							it.append("<"); //$NON-NLS-1$
@@ -761,6 +852,92 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @param name the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void "); //$NON-NLS-1$
+					it.append(functionName);
+					it.append("("); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append("... name)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						if (forAppender) {
+							it.append("this.builder."); //$NON-NLS-1$
+							it.append(functionName);
+							it.append("(name);"); //$NON-NLS-1$
+						} else {
+							it.append("if (name != null) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(classifier);
+							it.append(" member = "); //$NON-NLS-1$
+							it.append(getXFactoryFor(topElementDescription.getElementDescription().elementType()));
+							it.append(".eINSTANCE.create"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(memberDescription.elementType().getSimpleName()));
+							it.append("();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tthis."); //$NON-NLS-1$
+							it.append(generatedObjectFieldName);
+							it.append(".getMembers().add(member);"); //$NON-NLS-1$
+							it.newLine();
+							if (memberDescription.annotationInfo()) {
+								final var commonType = memberDescription.commonSuperType();
+								it.append("\t\t\tmember.setAnnotationInfo("); //$NON-NLS-1$
+								it.append(getXFactoryFor(commonType));
+								it.append(".eINSTANCE.create"); //$NON-NLS-1$
+								it.append(Strings.toFirstUpper(commonType.getSimpleName()));
+								it.append("());"); //$NON-NLS-1$
+								it.newLine();
+							}
+							String field = Iterables.find(
+									getCodeBuilderConfig().getUnnamedMemberExtensionGrammarNames(),
+									(it2) -> findAssignmentFromFeatureName(memberDescription.grammarComponent(),
+											it2) != null,
+											null);
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(Collection.class);
+							it.append("<"); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append("> thecollection = member.get"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(field));
+							it.append("();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tfor (final "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" aname : name) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\tif (aname != null) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\tthecollection.add(aname);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t}"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t}"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+							it.newLine();
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();				
 				}
 			});
 		}
@@ -772,7 +949,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
-						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.append("\t *"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * <p>This function is equivalent to {@link #"); //$NON-NLS-1$
@@ -780,6 +957,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("}."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param name the type referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -824,14 +1004,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			final var rule = getMemberRule(containerDescription);
 			if (rule != null) {
 				getCodeElementExtractor().visitMemberElements(containerDescription, rule, null,
-					(it, grammarContainer, memberContainer, classifier) -> {
-						memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
-						return null;
-					},
-					(it, grammarContainer, memberContainer, classifier) -> {
-						memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
-						return null;
-					});
+						(it, grammarContainer, memberContainer, classifier) -> {
+							memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
+							return null;
+						},
+						(it, grammarContainer, memberContainer, classifier) -> {
+							memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
+							return null;
+						});
 			}
 		}
 		memberElements.retainAll(topElements);
@@ -887,7 +1067,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
 				hasModifiers.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getTypeParameterListGrammarName(), assignment.getFeature())) {
-					hasTypeParameters.set(true);
+				hasTypeParameters.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getAnnotationListGrammarName(), assignment.getFeature())) {
 				isAnnotated.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getTypeExtensionGrammarName(), assignment.getFeature())) {
@@ -958,6 +1138,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -985,6 +1168,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -1006,11 +1192,120 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(JvmType.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Find the reference to the type with the given type parameters."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context in which the type is defined"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the type to reference"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param args the type parameters to add to the to reference to the given type"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the type reference."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" newTypeRef("); //$NON-NLS-1$
+					it.append(Notifier.class);
+					it.append(" context, "); //$NON-NLS-1$
+					it.append(Class.class);
+					it.append(" type, "); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append("... args)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.builder.newTypeRef(context, type, args);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1033,6 +1328,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -1040,6 +1338,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1077,6 +1378,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 				it.append("\t/** Initialize the Ecore element when inside a script."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -1152,6 +1456,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (description.isMemberElement()) {
 					it.append("\t/** Initialize the Ecore element when inner type declaration."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -1212,6 +1519,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t/** Replies the generated " //$NON-NLS-1$
 						+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1245,6 +1555,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the resource to which the " //$NON-NLS-1$
 						+ description.getElementDescription().elementType().getSimpleName() + " is attached."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber());
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -1280,6 +1593,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @param superType the qualified name of the super type."); //$NON-NLS-1$
 						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
+						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
@@ -1293,6 +1609,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t * @param superType the qualified name of the super type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or {@code null} if the default type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
@@ -1316,14 +1635,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						} else {
 							it.append("\t\tif (!"); //$NON-NLS-1$
 							it.append(Strings.class);
-							it.append(".isEmpty(superType)"); //$NON-NLS-1$
-							if (!Strings.isEmpty(defaultType)) {
-								it.newLine();
-								it.append("\t\t\t\t&& !"); //$NON-NLS-1$
-								it.append(new TypeReference(defaultType));
-								it.append(".class.getName().equals(superType)"); //$NON-NLS-1$
-							}
-							it.append(") {"); //$NON-NLS-1$
+							it.append(".isEmpty(superType)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t"); //$NON-NLS-1$
 							it.append(JvmParameterizedTypeReference.class);
@@ -1334,6 +1646,87 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.append(generatedObjectFieldName);
 							}
 							it.append(", superType);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							if (isExtendsKeywordFound.get()) {
+								it.append("add"); //$NON-NLS-1$
+							} else {
+								it.append("set"); //$NON-NLS-1$
+							}
+							it.append("Extends(superTypeRef);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+							if (!isExtendsKeywordFound.get()) {
+								it.append(" else {"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\t\tsetExtends(("); //$NON-NLS-1$
+								it.append(JvmParameterizedTypeReference.class);
+								it.append(") null);"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\t}"); //$NON-NLS-1$
+							}
+							it.newLine();
+						}
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					if (isExtendsKeywordFound.get()) {
+						it.append("\t/** Add the super type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @param superType the super type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
+						it.newLine();
+						it.append("\t */"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t"); //$NON-NLS-1$
+						if (!forInterface) {
+							it.append("public "); //$NON-NLS-1$
+						}
+						it.append("void addExtends("); //$NON-NLS-1$
+						it.append(JvmParameterizedTypeReference.class);
+						it.append(" superType)"); //$NON-NLS-1$
+					} else {
+						it.append("\t/** Change the super type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @param superType the super type,"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t *     or {@code null} if the default type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @see "); //$NON-NLS-1$
+						it.append(getFileAndLineNumber());
+						it.newLine();
+						it.append("\t */"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t"); //$NON-NLS-1$
+						if (!forInterface) {
+							it.append("public "); //$NON-NLS-1$
+						}
+						it.append("void setExtends("); //$NON-NLS-1$
+						it.append(JvmParameterizedTypeReference.class);
+						it.append(" superType)"); //$NON-NLS-1$
+					}
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							if (isExtendsKeywordFound.get()) {
+								it.append("\t\tthis.builder.addExtends(superType);"); //$NON-NLS-1$
+							} else {
+								it.append("\t\tthis.builder.setExtends(superType);"); //$NON-NLS-1$
+							}
+						} else {
+							it.append("\t\tif (superType != null"); //$NON-NLS-1$
+							if (!Strings.isEmpty(defaultType)) {
+								it.append(" && !"); //$NON-NLS-1$
+								it.append(new TypeReference(defaultType));
+								it.append(".class.getName().equals(superType.getType().getIdentifier())"); //$NON-NLS-1$
+							}
+							it.append(") {"); //$NON-NLS-1$
 							it.newLine();
 							if (!Strings.isEmpty(defaultType)) {
 								it.append("\t\t\t"); //$NON-NLS-1$
@@ -1354,7 +1747,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								} else {
 									it.append(generatedObjectFieldName);
 								}
-								it.append(", superTypeRef, baseTypeRef)) {"); //$NON-NLS-1$
+								it.append(", superType, baseTypeRef)) {"); //$NON-NLS-1$
 								it.newLine();
 								it.append("\t\t\t\t"); //$NON-NLS-1$
 							} else {
@@ -1363,9 +1756,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append("this."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
 							if (isExtendsKeywordFound.get()) {
-								it.append(".getExtends().add(superTypeRef);"); //$NON-NLS-1$
+								it.append(".getExtends().add(superType);"); //$NON-NLS-1$
 							} else {
-								it.append(".setExtends(superTypeRef);"); //$NON-NLS-1$
+								it.append(".setExtends(superType);"); //$NON-NLS-1$
 							}
 							it.newLine();
 							if (!Strings.isEmpty(defaultType)) {
@@ -1390,97 +1783,211 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t}"); //$NON-NLS-1$
 					}
 					it.newLineIfNotEmpty();
-					it.newLine();
+					it.newLine();				
 				}
 				if (isImplementKeywordFound.get()) {
+					var defaultType = getCodeBuilderConfig().getDefaultImplementedSupers().get(
+							description.getElementDescription().elementType().getSimpleName());
 					if (isImplementsKeywordFound.get()) {
 						it.append("\t/** Add an implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the qualified name of the implemented type."); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t */"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t"); //$NON-NLS-1$
-						if (!forInterface) {
-							it.append("public "); //$NON-NLS-1$
-						}
-						it.append("void addImplements(String type)"); //$NON-NLS-1$
-						if (forInterface) {
-							it.append(";"); //$NON-NLS-1$
-						} else {
-							it.append(" {"); //$NON-NLS-1$
-							it.newLine();
-							if (forAppender) {
-								it.append("\t\tthis.builder.addImplements(type);"); //$NON-NLS-1$
-							} else {
-								it.append("\t\tif (!"); //$NON-NLS-1$
-								it.append(Strings.class);
-								it.append(".isEmpty(type)) {"); //$NON-NLS-1$
-								it.newLine();
-								it.append("\t\t\tthis."); //$NON-NLS-1$
-								it.append(generatedObjectFieldName);
-								it.append(".getImplements().add(newTypeRef(this."); //$NON-NLS-1$
-								if (description.isMemberElement()) {
-									it.append("container"); //$NON-NLS-1$
-								} else {
-									it.append(generatedObjectFieldName);
-								}
-								it.append(", type));"); //$NON-NLS-1$
-								it.newLine();
-								it.append("\t\t}"); //$NON-NLS-1$
-							}
-							it.newLine();
-							it.append("\t}"); //$NON-NLS-1$
-						}
-						it.newLineIfNotEmpty();
-						it.newLine();
 					} else {
 						it.append("\t/** Change the implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the qualified name of the implemented type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or {@code null} for nothing."); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void "); //$NON-NLS-1$
+					if (isImplementsKeywordFound.get()) {
+						it.append("add"); //$NON-NLS-1$
+					} else {
+						it.append("set"); //$NON-NLS-1$
+					}
+					it.append("Implements(String type)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t */"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t"); //$NON-NLS-1$
-						if (!forInterface) {
-							it.append("public "); //$NON-NLS-1$
-						}
-						it.append("void setImplements(String type)"); //$NON-NLS-1$
-						if (forInterface) {
-							it.append(";"); //$NON-NLS-1$
-						} else {
-							it.append(" {"); //$NON-NLS-1$
-							it.newLine();
-							if (forAppender) {
-								it.append("\t\tthis.builder.setImplements(type);"); //$NON-NLS-1$
+						if (forAppender) {
+							it.append("\t\tthis.builder."); //$NON-NLS-1$
+							if (isImplementsKeywordFound.get()) {
+								it.append("add"); //$NON-NLS-1$
 							} else {
-								it.append("\t\tthis."); //$NON-NLS-1$
+								it.append("set"); //$NON-NLS-1$
+							}
+							it.append("Implements(type);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tif (!"); //$NON-NLS-1$
+							it.append(Strings.class);
+							it.append(".isEmpty(type)) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" superTypeRef = newTypeRef(this."); //$NON-NLS-1$
+							if (description.isMemberElement()) {
+								it.append("container"); //$NON-NLS-1$
+							} else {
 								it.append(generatedObjectFieldName);
-								it.append(".setImplements("); //$NON-NLS-1$
+							}
+							it.append(", type);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							if (isImplementsKeywordFound.get()) {
+								it.append("add"); //$NON-NLS-1$
+							} else {
+								it.append("set"); //$NON-NLS-1$
+							}
+							it.append("Implements(superTypeRef);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+							if (!isImplementsKeywordFound.get()) {
+								it.append(" else {"); //$NON-NLS-1$
 								it.newLine();
-								it.append("\t\t\t("); //$NON-NLS-1$
-								it.append(Strings.class);
-								it.append(".isEmpty(type)) ? null : newTypeRef(this."); //$NON-NLS-1$
+								it.append("\t\t\tsetImplements(("); //$NON-NLS-1$
+								it.append(JvmParameterizedTypeReference.class);
+								it.append(") null);"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\t}"); //$NON-NLS-1$
+							}
+							it.newLine();
+						}
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					if (isImplementsKeywordFound.get()) {
+						it.append("\t/** Add an implemented type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @param type the implemented type."); //$NON-NLS-1$
+					} else {
+						it.append("\t/** Change the implemented type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @param type the implemented type,"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t *     or {@code null} for nothing."); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void "); //$NON-NLS-1$
+					if (isImplementsKeywordFound.get()) {
+						it.append("add"); //$NON-NLS-1$
+					} else {
+						it.append("set"); //$NON-NLS-1$
+					}
+					it.append("Implements("); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" type)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\tthis.builder."); //$NON-NLS-1$
+							if (isImplementsKeywordFound.get()) {
+								it.append("add"); //$NON-NLS-1$
+							} else {
+								it.append("set"); //$NON-NLS-1$
+							}
+							it.append("Implements(type);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tif (type != null"); //$NON-NLS-1$
+							if (!Strings.isEmpty(defaultType)) {
+								it.newLine();
+								it.append(" && !"); //$NON-NLS-1$
+								it.append(new TypeReference(defaultType));
+								it.append(".class.getName().equals(type.getType().getIdentifier())"); //$NON-NLS-1$
+							}
+							it.append(") {"); //$NON-NLS-1$
+							it.newLine();
+							if (!Strings.isEmpty(defaultType)) {
+								it.append("\t\t\t"); //$NON-NLS-1$
+								it.append(JvmTypeReference.class);
+								it.append(" baseTypeRef = findType(this."); //$NON-NLS-1$
 								if (description.isMemberElement()) {
 									it.append("container"); //$NON-NLS-1$
 								} else {
 									it.append(generatedObjectFieldName);
 								}
-								it.append(", type));"); //$NON-NLS-1$
+								it.append(", "); //$NON-NLS-1$
+								it.append(new TypeReference(defaultType));
+								it.append(".class.getCanonicalName());"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\t\tif (isSubTypeOf(this."); //$NON-NLS-1$
+								if (description.isMemberElement()) {
+									it.append("container"); //$NON-NLS-1$
+								} else {
+									it.append(generatedObjectFieldName);
+								}
+								it.append(", type, baseTypeRef)) {"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\t\t\t"); //$NON-NLS-1$
+							} else {
+								it.append("\t\t\t"); //$NON-NLS-1$
+							}
+							it.append("this."); //$NON-NLS-1$
+							it.append(generatedObjectFieldName);
+							it.append("."); //$NON-NLS-1$
+							if (isImplementsKeywordFound.get()) {
+								it.append("getImplements().add("); //$NON-NLS-1$
+							} else {
+								it.append("setImplements("); //$NON-NLS-1$
+							}
+							it.append("type);"); //$NON-NLS-1$
+							if (!Strings.isEmpty(defaultType)) {
+								it.newLine();
+								if (!isImplementsKeywordFound.get()) {
+									it.append("\t\t\t\treturn;"); //$NON-NLS-1$
+									it.newLine();
+								}
+								it.append("\t\t\t}"); //$NON-NLS-1$
+							} else if (!isImplementsKeywordFound.get()) {
+								it.newLine();
+								it.append("\t\t\treturn;"); //$NON-NLS-1$
 							}
 							it.newLine();
-							it.append("\t}"); //$NON-NLS-1$
+							it.append("\t\t}"); //$NON-NLS-1$
 						}
-						it.newLineIfNotEmpty();
+						if (!isImplementsKeywordFound.get()) {
+							it.newLine();
+							it.append("\tthis;"); //$NON-NLS-1$
+							it.append(generatedObjectFieldName);
+							it.append(".setImplements(null);"); //$NON-NLS-1$
+						}
 						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
 					}
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 				if (isAnnotated.get()) {
 					it.append("\t/** Add an annotation."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param type the qualified name of the annotation."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1502,18 +2009,57 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".isEmpty(type)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t"); //$NON-NLS-1$
-							it.append(XAnnotation.class);
-							it.append(" annotation = "); //$NON-NLS-1$
-							it.append(XAnnotationsFactory.class);
-							it.append(".eINSTANCE.createXAnnotation();"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\tannotation.setAnnotationType(newTypeRef(this."); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" ref = newTypeRef(this."); //$NON-NLS-1$
 							if (description.isMemberElement()) {
 								it.append("container"); //$NON-NLS-1$
 							} else {
 								it.append(generatedObjectFieldName);
 							}
-							it.append(", type).getType());"); //$NON-NLS-1$
+							it.append(", type);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\taddAnotation(ref);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Add an annotation."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the annotation type."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void addAnnotation("); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" type)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\tthis.builder.addAnnotation(type);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tif (type != null) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(XAnnotation.class);
+							it.append(" annotation = "); //$NON-NLS-1$
+							it.append(XAnnotationsFactory.class);
+							it.append(".eINSTANCE.createXAnnotation();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tannotation.setAnnotationType(type.getType());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
@@ -1531,6 +2077,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t/** Add a modifier."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param modifier the modifier to add."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1581,6 +2130,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t * @param name the simple name of the type parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the builder of type parameter."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @see "); //$NON-NLS-1$
+					it.append(getFileAndLineNumber());
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();

@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumLiteral.
+ * @see AbstractMemberBuilderFragment.java : appendTo : 150
  */
 @SuppressWarnings("all")
 public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarlEnumLiteralBuilder {
@@ -57,6 +58,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -69,6 +71,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the generated element.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
 	 */
 	@Pure
 	public SarlEnumLiteral getSarlEnumLiteral() {
@@ -76,6 +79,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
 	 */
 	@Pure
 	public Resource eResource() {
@@ -87,6 +91,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {

@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -45,6 +46,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlAction.
+ * @see AbstractMemberBuilderFragment.java : appendTo : 150
  */
 @SuppressWarnings("all")
 public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActionBuilder {
@@ -62,6 +64,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlAction.
 	 * @param name the name of the SarlAction.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -81,6 +84,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/** Replies the generated element.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
 	 */
 	@Pure
 	public SarlAction getSarlAction() {
@@ -88,6 +92,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/** Replies the resource.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
 	 */
 	@Pure
 	public Resource eResource() {
@@ -99,6 +104,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
 	 */
 	public void setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -120,6 +126,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 966
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
@@ -129,26 +136,59 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1010
 	 */
 	public void addException(String type) {
-		this.sarlAction.getExceptions().add(newTypeRef(this.container, type));
+		JvmParameterizedTypeReference ref = newTypeRef(this.container, type);
+		addException(ref);
 	}
 
-	/** Add a fired exception.
+	/** Add a throwable exception.
+	 * @param type the exception.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1050
+	 */
+	public void addException(JvmParameterizedTypeReference type) {
+		this.sarlAction.getExceptions().add(type);
+	}
+
+	/** Add a fired event.
 	 * @param type the fully qualified name of the event.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1092
 	 */
 	public void addFiredEvent(String type) {
-		this.sarlAction.getFiredEvents().add(newTypeRef(this.container, type));
+		JvmParameterizedTypeReference ref = newTypeRef(this.container, type);
+		addFiredEvent(ref);
+	}
+
+	/** Add a fired event.
+	 * @param type the event.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1132
+	 */
+	public void addFiredEvent(JvmParameterizedTypeReference type) {
+		this.sarlAction.getFiredEvents().add(type);
 	}
 
 	/** Change the return type.
 	 @param type the return type of the member.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1174
 	 */
 	public void setReturnType(String type) {
-		if (!Strings.isEmpty(type)
-				&& !Objects.equals("void", type)
-				&& !Objects.equals(Void.class.getName(), type)) {
-			this.sarlAction.setReturnType(newTypeRef(container, type));
+		if (!Strings.isEmpty(type)) {
+			JvmParameterizedTypeReference ref = newTypeRef(container, type);
+			setReturnType(ref);
+		} else {
+			setReturnType((JvmParameterizedTypeReference) null);
+		}
+	}
+
+	/** Change the return type.
+	 @param type the return type of the member.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1227
+	 */
+	public void setReturnType(JvmParameterizedTypeReference type) {
+		if (type != null && !Objects.equals("void", type.getType().getIdentifier())
+				&& !Objects.equals(Void.class.getName(), type.getType().getIdentifier())) {
+			this.sarlAction.setReturnType(type);
 		} else {
 			this.sarlAction.setReturnType(null);
 		}
@@ -156,6 +196,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Create the block of code.
 	 * @return the block builder.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
@@ -167,17 +208,30 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Add an annotation.
 	 * @param type the qualified name of the annotation
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1408
 	 */
 	public void addAnnotation(String type) {
 		if (!Strings.isEmpty(type)) {
+			JvmParameterizedTypeReference ref = newTypeRef(getSarlAction(), type);
+			addAnnotation(ref);
+		}
+	}
+
+	/** Add an annotation.
+	 * @param type the annotation type
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1449
+	 */
+	public void addAnnotation(JvmParameterizedTypeReference type) {
+		if (type != null) {
 			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
-			annotation.setAnnotationType(newTypeRef(getSarlAction(), type).getType());
+			annotation.setAnnotationType(type.getType());
 			getSarlAction().getAnnotations().add(annotation);
 		}
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1496
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -197,6 +251,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1574
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();

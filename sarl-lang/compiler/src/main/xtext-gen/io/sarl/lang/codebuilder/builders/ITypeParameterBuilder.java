@@ -27,11 +27,14 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl type parameter.
+ * @see TypeParameterBuilderFragment.java : appendTo : 99
  */
 @SuppressWarnings("all")
 public interface ITypeParameterBuilder {
@@ -39,6 +42,7 @@ public interface ITypeParameterBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 236
 	 */
 	JvmParameterizedTypeReference newTypeRef(String typeName);
 
@@ -46,47 +50,92 @@ public interface ITypeParameterBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 266
 	 */
 	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 298
+	 */
+	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 332
+	 */
+	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+
+	/** Find the reference to the type with the given type parameters.
+	 * @param context the context in which the type is defined
+	 * @param type the type to reference
+	 * @param args the type parameters to add to the to reference to the given type
+	 * @return the type reference.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 368
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Initialize the type parameter.
 	 * <p>Caution: This initialization function does not add the type parameter in its container.
 	 * The container is responsible of adding the type parameter in its internal object.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 408
 	 */
 	void eInit(EObject context, String name, IJvmTypeProvider typeContext);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 453
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 480
 	 */
 	@Pure
 	JvmTypeParameter getJvmTypeParameter();
 
 	/** Replies the resource to which the type parameter is attached.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 515
 	 */
 	@Pure
 	Resource eResource();
 
 	/** Dispose the resource.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 570
 	 */
 	void dispose();
 
 	/** Add upper type bounds.
 	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 599
 	 */
 	void addUpperConstraint(String type);
 
+	/** Add upper type bounds.
+	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 629
+	 */
+	void addUpperConstraint(JvmParameterizedTypeReference type);
+
 	/** Add lower type bounds.
 	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 670
 	 */
 	void addLowerConstraint(String type);
+
+	/** Add lower type bounds.
+	 * @param type the type.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 700
+	 */
+	void addLowerConstraint(JvmParameterizedTypeReference type);
 
 }
 

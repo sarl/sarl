@@ -49,6 +49,8 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Syntactic sequencer which supports documentations of Ecore elements.
+ * @see DocumentationBuilderFragment.java : appendTo : 2584
+	 * @see DocumentationBuilderFragment.java : appendTo : 2587
  */
 public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSequencer {
 

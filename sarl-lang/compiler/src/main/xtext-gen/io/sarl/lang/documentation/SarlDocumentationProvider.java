@@ -30,6 +30,7 @@ import org.eclipse.xtend.core.documentation.XtendDocumentationProvider;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Provider a documentation string.
+ * @see DocumentationBuilderFragment.java : appendTo : 2498
  */
 public class SarlDocumentationProvider extends XtendDocumentationProvider {
 

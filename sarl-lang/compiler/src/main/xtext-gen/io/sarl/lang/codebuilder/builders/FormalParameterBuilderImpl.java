@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -45,6 +46,7 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl formal parameter.
+ * @see FormalParameterBuilderFragment.java : appendTo : 142
  */
 @SuppressWarnings("all")
 public class FormalParameterBuilderImpl extends AbstractBuilder implements IFormalParameterBuilder {
@@ -67,6 +69,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	/** Initialize the formal parameter.
 	 * @param context the context of the formal parameter.
 	 * @param name the name of the formal parameter.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 465
 	 */
 	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);
@@ -80,6 +83,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 520
 	 */
 	@Pure
 	public SarlFormalParameter getSarlFormalParameter() {
@@ -89,6 +93,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
 	 * @param container the feature call that is supposed to contains the replied identifiable element.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 559
 	 */
 	public void setReferenceInto(XFeatureCall container) {
 		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
@@ -105,6 +110,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	}
 
 	/** Replies the resource to which the formal parameter is attached.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 624
 	 */
 	@Pure
 	public Resource eResource() {
@@ -114,6 +120,7 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	/** Change the type.
 	 *
 	 * @param type the formal parameter type.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 657
 	 */
 	public void setParameterType(String type) {
 		String typeName;
@@ -125,16 +132,36 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 		this.parameter.setParameterType(newTypeRef(this.context, typeName));
 	}
 
+	/** Change the type.
+	 *
+	 * @param type the formal parameter type.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 708
+	 */
+	public void setParameterType(JvmParameterizedTypeReference type) {
+		this.parameter.setParameterType(type);
+	}
+
 	/** Change the variadic property of the parameter.
 	 *
 	 * @param isVariadic indicates if the parameter is variadic.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 748
 	 */
 	public void setVarArg(boolean isVariadic) {
 		this.parameter.setVarArg(isVariadic);
 	}
 
+	/** Change the extension flag of the parameter.
+	 *
+	 * @param isExtension indicates if the parameter is defined as an extension.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 785
+	 */
+	public void setExtension(boolean isExtension) {
+		this.parameter.setExtension(isExtension);
+	}
+
 	/** Replies the default value of the parameter.
 	 * @return the default value builder.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 820
 	 */
 	@Pure
 	public IExpressionBuilder getDefaultValue() {

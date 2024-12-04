@@ -35,6 +35,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Build a documentation string.
+	 * @see DocumentationBuilderFragment.java : appendTo : 2215
  */
 public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 

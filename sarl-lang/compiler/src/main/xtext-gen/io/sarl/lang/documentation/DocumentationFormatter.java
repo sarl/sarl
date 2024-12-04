@@ -47,6 +47,7 @@ import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Formatter a documentation string.
+ * @see DocumentationBuilderFragment.java : appendTo : 691
  */
 public class DocumentationFormatter implements IDocumentationFormatter {
 
