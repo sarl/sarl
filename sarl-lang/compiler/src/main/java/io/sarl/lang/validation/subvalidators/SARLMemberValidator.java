@@ -30,8 +30,10 @@ import static io.sarl.lang.validation.IssueCodes.INVALID_FIRING_EVENT_TYPE;
 import static io.sarl.lang.validation.IssueCodes.MISSING_BODY;
 import static io.sarl.lang.validation.IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION;
 import static io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE;
+import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_DEFAULT_VALUE;
 import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_EXCEPTION_THROW;
 import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_FORMAL_PARAMETER;
+import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_TYPE_PARAMETER;
 import static io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY;
 import static org.eclipse.xtend.core.validation.IssueCodes.ABSTRACT_METHOD_WITH_BODY;
 import static org.eclipse.xtend.core.validation.IssueCodes.ANNOTATION_WRONG_TARGET;
@@ -47,9 +49,11 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_STATIC
 import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT_IN_ANONYMOUS;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.UNUSED_PRIVATE_MEMBER;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.CREATE_EXTENSION_INFO__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_EXECUTABLE__PARAMETERS;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_EXECUTABLE__TYPE_PARAMETERS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_MEMBER__MODIFIERS;
@@ -78,8 +82,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -129,6 +131,9 @@ import org.eclipse.xtext.xbase.validation.ProxyAwareUIStrings;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 import org.eclipse.xtext.xtype.XComputedTypeReference;
 
+import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
+
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -140,6 +145,7 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFormalParameter;
@@ -1388,6 +1394,52 @@ public class SARLMemberValidator extends AbstractSARLSubValidatorWithParentLink 
 			getParentValidator().doCheckValidSuperTypeArgumentDefinition(
 					lref, unit, SARL_BEHAVIOR_UNIT__NAME, INSIGNIFICANT_INDEX, true, false,
 					getMessageAcceptor());
+		}
+	}
+
+	/** Check the definition of a Java main function.
+	 * 
+	 * @param function the function to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkJavaMainFunction(final SarlAction function) {
+		if (Utils.isNameForJavaMainFunction(function.getName())) {
+			final var container = function.getDeclaringType();
+			if (container instanceof SarlClass) {
+				if (!function.isStatic()) {
+					if (!isIgnored(MISSING_STATIC_MODIFIER)) {
+						final var staticKeyword = getGrammarAccess().getStaticStaticKeyword();
+						addIssue(MessageFormat.format(Messages.SARLMemberValidator_54, staticKeyword),
+								function,
+								MISSING_STATIC_MODIFIER);
+					}
+				} else {
+					// Check type parameters (generic types)
+					if (!function.getTypeParameters().isEmpty()) {
+						error(Messages.SARLMemberValidator_56,
+								function, XTEND_EXECUTABLE__TYPE_PARAMETERS, UNEXPECTED_TYPE_PARAMETER);
+					}
+					// Check parameter types and default values
+					int i = 0;
+					for (final var formalParameter : function.getParameters()) {
+						// Parameter type
+						var type = toLightweightTypeReference(formalParameter.getParameterType());
+						if (type.isArray()) {
+							type = type.getComponentType();
+						}
+						if (!type.isType(String.class)) {
+							error(MessageFormat.format(Messages.SARLMemberValidator_55, String.class.getSimpleName(), formalParameter.getName()),
+									function, XTEND_EXECUTABLE__PARAMETERS, i, INVALID_TYPE);
+						}
+						// Default value
+						if (formalParameter instanceof SarlFormalParameter sarlParameter && sarlParameter.getDefaultValue() != null) {
+							error(MessageFormat.format(Messages.SARLMemberValidator_53, formalParameter.getName()),
+									function, XTEND_EXECUTABLE__PARAMETERS, i, UNEXPECTED_DEFAULT_VALUE);
+						}
+						++i;
+					}
+				}
+			}
 		}
 	}
 

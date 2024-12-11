@@ -22,6 +22,13 @@ CDIR=`pwd`
 # Show tools versions
 mvn --version
 
+# Usefull options to pass to Maven
+echo
+echo "Usefull options to pass to Maven:"
+echo "* -Dmaven.test.skip=true         to disable tests"
+echo "* -Declipse.p2.mirrors=false     to disable P2 mirroring"
+echo
+
 # Build BOMs
 run_mvn "$CDIR/sarl-bom" "build of materials" "$@"
 

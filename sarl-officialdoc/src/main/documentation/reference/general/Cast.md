@@ -123,7 +123,7 @@ For object types, an explicit cast is required if you need to convert from a bas
 	class Animal {}
 	class Giraffe extends Animal {}
 	class Test {
-	    static def Main : Object {
+	    static def prog : Object {
 	    	[:On]
 	    	// Create a new derived type
 	        var g = new Giraffe
@@ -181,16 +181,16 @@ that fails at run time will cause an [:classcastexception:] to be thrown.
 	class [:mammaltype](Mammal) extends Animal {}
 	
 	class Test {
-	    static def main {
+	    static def program {
 	    	test(new Mammal())
 	    }
 
-		static def test(a : Animal) {
-			// Cause a [:classcastexception](ClassCastException) at run time
-			// because [:mammaltype!] is not convertible to [:reptiletype].
-			var r : Reptile
-			r = a as Reptile
-		}
+	    static def test(a : Animal) {
+	    	// Cause a [:classcastexception](ClassCastException) at run time
+	    	// because [:mammaltype!] is not convertible to [:reptiletype].
+	    	var r : Reptile
+	    	r = a as Reptile
+	    }
 	}
     [:Off]
 [:End:]
@@ -204,7 +204,7 @@ the result of an expression can be converted to a specified type. It has the syn
 [:Success:]
 	class type { }
 	class Test {
-	    static def main(expr : Object) {
+	    static def prog(expr : Object) {
 	    	[:On]
 	    	[:exprvar](expr) [:instanceofoperator](instanceof) [:typevar](type)
 	    	[:Off]
@@ -249,7 +249,7 @@ for proceeding the cast.
 		def [:tointegerfct](toInteger) : [:integertype](Integer) { 0 }
 	}
 	class Test {
-	    def main {
+	    static def program {
 	    	var obj : Type
 	    	var value = [:castexpr1](obj as Integer)
 	    }
@@ -268,11 +268,11 @@ for proceeding the cast.
 	class Type {
 	}
 	class Test {
-	    def main {
+	    static def program {
 	    	var obj : Type
 	    	var value = obj as Integer
 	    }
-		def [:tointegerfct!](v : Type) : [:integertype](Integer) { 0 }
+	    def [:tointegerfct!](v : Type) : [:integertype](Integer) { 0 }
 	}
 	[:Off]
 [:End:]
@@ -292,7 +292,7 @@ The declarations of the [:tointegerfct:] are replaced by declarations of [:intva
 		def [:intvaluefct](intValue) : [:inttype!] { 0 }
 	}
 	class Test {
-	    def main {
+	    static def program {
 	    	var obj : Type
 	    	var value = obj as int
 	    }
@@ -306,11 +306,11 @@ The declarations of the [:tointegerfct:] are replaced by declarations of [:intva
 	class Type {
 	}
 	class Test {
-	    def main {
+	    def program {
 	    	var obj : Type
 	    	var value = obj as int
 	    }
-		def [:intvaluefct!](v : Type) : [:inttype!] { 0 }
+	    def [:intvaluefct!](v : Type) : [:inttype!] { 0 }
 	}
 	[:Off]
 [:End:]

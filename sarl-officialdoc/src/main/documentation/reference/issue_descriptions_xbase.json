@@ -767,6 +767,13 @@
 	},
 	{
 		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.invalid_type",
+		"message": "Invalid type for the parameter '*name*'. Only the type *type-name* is allowed in the declaration of the main function of the program",
+		"cause": "You have specified a type for the formal parameter *name* of the main function. This type is invalid since only the type *type-name* is allowed by the operating system",
+		"solution": "Replace the parameter's type by *type-name*",
+		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.invalid_type",
 		"message": "Undefined type for the formal parameter *name*",
 		"cause": "A type specification is missed for the formal parameter with the given *name*",
 		"solution": "Add a type to the formal parameter",

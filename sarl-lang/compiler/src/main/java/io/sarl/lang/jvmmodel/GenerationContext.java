@@ -29,11 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -50,11 +48,17 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.inject.Inject;
 
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.core.annotation.Injectable;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeContext;
@@ -70,6 +74,8 @@ import io.sarl.lang.util.Utils;
  */
 abstract class GenerationContext {
 
+	private static final String MAIN_FUNCTION_PARAMETER_TYPE = String.class.getName() + "[]"; //$NON-NLS-1$
+	
 	private JvmDeclaredType target;
 
 	/** Indicate if the object is injectable.
@@ -162,6 +168,11 @@ abstract class GenerationContext {
 	private AnnotationLookup annotationFinder;
 
 	private Map<String, List<Object>> userData = new TreeMap<>();
+
+	@Inject
+	private CommonTypeComputationServices services;
+
+	private Boolean isMainFunctionManuallyDefined;
 
 	/** Construct a information about the generation.
 	 *
@@ -379,6 +390,42 @@ abstract class GenerationContext {
 		getInheritedOperationsToImplement().remove(prototype);
 		getInheritedOverridableOperations().remove(prototype);
 		this.localOperations.put(prototype, operation);
+	}
+
+	/** Replies if a main function (with the standard prototype) is defined in the source code.
+	 *
+	 * @return {@code true} if a main function is defined.
+	 * @since 0.15
+	 */
+	public boolean isMainFunctionManuallyDefined() {
+		if (this.isMainFunctionManuallyDefined == null) {
+			if (getContextObject() instanceof SarlClass sarlClass) {
+				this.isMainFunctionManuallyDefined = Boolean.valueOf(sarlClass.getMembers().stream().anyMatch(it -> {
+					return it instanceof XtendFunction action && Utils.isMainFunctionDeclaration(action, this.services);
+				}));
+			} else {
+				this.isMainFunctionManuallyDefined = Boolean.FALSE;
+			}
+		}
+		return this.isMainFunctionManuallyDefined.booleanValue();
+	}
+
+	/** Replies if a main function (with the standard prototype) is generated from the source code or as synthetic.
+	 *
+	 * @return {@code true} if a main function is generated.
+	 * @since 0.15
+	 */
+	public boolean isMainFunctionGenerated() {
+		var parameters = new ActionParameterTypes(false, 1);
+		parameters.add(MAIN_FUNCTION_PARAMETER_TYPE);
+		var prototype = new ActionPrototype(Utils.getNameForJavaMainFunction(), parameters, true);
+		if (this.localOperations.containsKey(prototype)) {
+			return true;
+		}
+		parameters = new ActionParameterTypes(true, 1);
+		parameters.add(MAIN_FUNCTION_PARAMETER_TYPE);
+		prototype = new ActionPrototype(Utils.getNameForJavaMainFunction(), parameters, true);
+		return this.localOperations.containsKey(prototype);
 	}
 
 	/** Replies the inherited operation with the given prototype.

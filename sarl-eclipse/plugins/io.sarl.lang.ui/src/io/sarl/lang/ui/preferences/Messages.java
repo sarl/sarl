@@ -50,6 +50,14 @@ public class Messages extends NLS {
 	public static String SARLBuilderConfigurationBlock_6;
 	public static String SARLValidatorConfigurationBlock_0;
 	public static String SARLValidatorConfigurationBlock_1;
+	public static String SARLValidatorConfigurationBlock_2;
+	public static String SARLValidatorConfigurationBlock_3;
+	public static String SARLValidatorConfigurationBlock_4;
+	public static String SARLValidatorConfigurationBlock_5;
+	public static String SARLValidatorConfigurationBlock_6;
+	public static String SARLValidatorConfigurationBlock_7;
+	public static String SARLValidatorConfigurationBlock_8;
+	public static String SARLValidatorConfigurationBlock_9;
 	public static String SARLValidatorConfigurationBlock_10;
 	public static String SARLValidatorConfigurationBlock_11;
 	public static String SARLValidatorConfigurationBlock_12;
@@ -60,15 +68,16 @@ public class Messages extends NLS {
 	public static String SARLValidatorConfigurationBlock_17;
 	public static String SARLValidatorConfigurationBlock_18;
 	public static String SARLValidatorConfigurationBlock_19;
-	public static String SARLValidatorConfigurationBlock_2;
 	public static String SARLValidatorConfigurationBlock_20;
 	public static String SARLValidatorConfigurationBlock_21;
 	public static String SARLValidatorConfigurationBlock_22;
-	public static String SARLValidatorConfigurationBlock_3;
-	public static String SARLValidatorConfigurationBlock_4;
-	public static String SARLValidatorConfigurationBlock_5;
-	public static String SARLValidatorConfigurationBlock_6;
-	public static String SARLValidatorConfigurationBlock_7;
-	public static String SARLValidatorConfigurationBlock_8;
-	public static String SARLValidatorConfigurationBlock_9;
+	public static String SARLValidatorConfigurationBlock_23;
+	public static String SARLValidatorConfigurationBlock_24;
+	public static String SARLValidatorConfigurationBlock_25;
+	public static String SARLValidatorConfigurationBlock_26;
+	public static String SARLValidatorConfigurationBlock_27;
+	public static String SARLValidatorConfigurationBlock_28;
+	public static String SARLValidatorConfigurationBlock_29;
+	public static String SARLValidatorConfigurationBlock_30;
+
 }

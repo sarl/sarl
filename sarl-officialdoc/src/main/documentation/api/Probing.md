@@ -121,7 +121,7 @@ To use the probe service, you have to get it from the SRE, as illustrated below:
 	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def prog(arguments : String*) {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			var probeService = bootstrap.getService(typeof(ProbeService))
@@ -140,7 +140,7 @@ The example loops for displaying the observed value (of course it is not the mos
 	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def prog(arguments : String*) {
 			var bootstrap = SRE::getBootstrap
 			var probeService = bootstrap.getService(typeof(ProbeService))
 			[:On]
@@ -159,7 +159,7 @@ value (of course it is not the most efficient usage of a probe).
 	import io.sarl.lang.core.SRE
 	import io.sarl.api.probing.ProbeService
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def prog(arguments : String*) {
 			var bootstrap = SRE::getBootstrap
 			var probeService = bootstrap.getService(typeof(ProbeService))
 			var probe = probeService.probe("", typeof(Integer), "")

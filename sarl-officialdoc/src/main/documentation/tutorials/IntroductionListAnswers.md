@@ -92,7 +92,7 @@
 			return n
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(countStrings(original))
 		}
 	}
@@ -104,7 +104,7 @@
 			list.filter[it.length >= 2 && it.charAt(0) == it.charAt(it.length - 1)].size
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(countStrings(original))
 		}
 	}
@@ -119,7 +119,7 @@
 	class Solution {
 		static var original = #[#[2, 5], #[1, 2], #[4, 4], #[2, 3], #[2, 1]]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = original.sortWith[a, b | 
 				a.get(1) <=> b.get(1)
 			]
@@ -232,7 +232,7 @@
 	class Solution {
 		static var original = #['Red', 'Green', 'White', 'Black', 'Pink', 'Yellow']
 
-		static def main(args : String*) {
+		static def main : void {
 			original.remove(5)
 			original.remove(4)
 			original.remove(0)
@@ -247,7 +247,7 @@
 	package io.sarl.docs.tutorials.listexercises
 	[:On]
 	class Solution1 {
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			for (a : 1..3) {
 				var dim2 = newArrayList
@@ -265,7 +265,7 @@
 	}
 
 	class Solution2 {
-		static def main(args : String*) {
+		static def main : void {
 			var result = (1..3).map[
 				(1..4).map[
 					(1..6).map['*'].toList
@@ -311,7 +311,7 @@
 
 		static var original = #['Red', 'Green', 'White', 'Black', 'Pink', 'Yellow']
 
-		static def main(args : String*) {
+		static def main : void {
 			original.shuffle
 			println(original)
 		}
@@ -383,7 +383,7 @@
 	class Solution1 {
 		static var original = #[5, 15, 35, 8, 98]
 
-		static def main(args : String*) {
+		static def main : void {
 			var i = 0
 			for (element : original) {
 				println(i + " " + element)
@@ -395,7 +395,7 @@
 	class Solution2 {
 		static var original = #[5, 15, 35, 8, 98]
 
-		static def main(args : String*) {
+		static def main : void {
 			for (var i = 0; i < original.size; i++) {
 				println(i + " " + original.get(i))
 			}
@@ -405,7 +405,7 @@
 	class Solution3 {
 		static var original = #[5, 15, 35, 8, 98]
 
-		static def main(args : String*) {
+		static def main : void {
 			original.forEach [element, index |
 				println(index + " " + element)
 			]
@@ -422,7 +422,7 @@
 	class Solution1 {
 		static var original : List<Character> = #['h', 'e', 'l', 'l', 'o']
 
-		static def main(args : String*) {
+		static def main : void {
 			var str = ""
 			for (c : original) {
 				str += c
@@ -434,7 +434,7 @@
 	class Solution2 {
 		static var original : List<Character> = #['h', 'e', 'l', 'l', 'o']
 
-		static def main(args : String*) {
+		static def main : void {
 			var str_buffer = new StringBuilder
 			for (c : original) {
 				str_buffer.append(c)
@@ -447,7 +447,7 @@
 	class Solution3 {
 		static var original : List<Character> = #['h', 'e', 'l', 'l', 'o']
 
-		static def main(args : String*) {
+		static def main : void {
 			var str = original.join("")
 			println(str)
 		}
@@ -474,7 +474,7 @@
 			return -1
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.findIndexOf('h'))
 			println(original.findIndexOf('e'))
 			println(original.findIndexOf('l'))
@@ -485,7 +485,7 @@
 	class Solution2 {
 		static var original : List<Character> = #['h', 'e', 'l', 'l', 'o']
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.indexOf('h'))
 			println(original.indexOf('e'))
 			println(original.indexOf('l'))
@@ -513,7 +513,7 @@
 			return output
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.flattenList)
 		}
 	}
@@ -529,7 +529,7 @@
 			return output
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.flattenList)
 		}
 	}
@@ -537,7 +537,7 @@
 	class Solution3 {
 		static var original = #[#[4], #[0, 658, 4, 6], #[1, 2, 3]]
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.flatten.toList)
 		}
 	}
@@ -552,7 +552,7 @@
 		static var original1 = #[1, 45, 8, 6, 1]
 		static var original2 = #[457, -1, 5]
 
-		static def main(args : String*) {
+		static def main : void {
 			for (c : original2) {
 				original1 += c
 			}
@@ -564,7 +564,7 @@
 		static var original1 = #[1, 45, 8, 6, 1]
 		static var original2 = #[457, -1, 5]
 
-		static def main(args : String*) {
+		static def main : void {
 			original1 += original2
 			println(original1)
 		}
@@ -580,7 +580,7 @@
 	class Solution {
 		static var original = #[1, 45, 8, 6, 1]
 
-		static def main(args : String*) {
+		static def main : void {
 			var random = new Random
 			var element = original.get(random.nextInt(original.size))
 			println(element)
@@ -622,7 +622,7 @@
 		    return false
 		}
    
-		static def main(args : String*) {
+		static def main : void {
 			println(circularly_identical(list1, list2))
 		}
 	}
@@ -636,7 +636,7 @@
 	class Solution1 {
 		static var original = #[1, 45, -45, 2, 987]
 
-		static def main(args : String*) {
+		static def main : void {
 			var smaller : Integer = null
 			for (c : original) {
 				if (smaller === null || c < smaller) {
@@ -656,7 +656,7 @@
 	class Solution2 {
 		static var original = #[1, 45, -45, 2, 987]
 
-		static def main(args : String*) {
+		static def main : void {
 			var smaller = original.min
 			var secondSmaller = original.filter[it > smaller].min
 			println(secondSmaller)
@@ -683,7 +683,7 @@
 			return uniq
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(get_uniq(original))
 		}
 	}
@@ -697,7 +697,7 @@
 			return uniq.toList
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(get_uniq(original))
 		}
 	}
@@ -722,7 +722,7 @@
 			return map
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(frequency(original))
 		}
 	}
@@ -758,7 +758,7 @@
 			return false
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(is_sublist(original, #[1, 2, 987]))
 			println(is_sublist(original, #[1, 987, 2]))
 		}
@@ -797,7 +797,7 @@
 	    	}
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			sieve_of_eratosthenes(10)
 			sieve_of_eratosthenes(20)
 		}
@@ -825,7 +825,7 @@
 			}
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			sieve_of_eratosthenes(10)
 			sieve_of_eratosthenes(20)
 		}
@@ -849,7 +849,7 @@
 			return new_list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(concat(#['p', 'q'], 5))
 		}
 	}
@@ -872,7 +872,7 @@
 			return common_list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(common(#[1, 2, 4, 6], #[2, 34, 6, 122]))
 		}
 	}
@@ -895,7 +895,7 @@
 			return new_list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(change(#[0,1,2,3,4,5]))
 		}
 	}
@@ -925,7 +925,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(merge(#[11, 33, 50]))
 		}
 	}
@@ -956,7 +956,7 @@
 			return map
 		} 
 
-		static def main(args : String*) {
+		static def main : void {
 			println(split_by_letter(original))
 		}
 	}
@@ -973,7 +973,7 @@
 			return words.groupBy[it.charAt(0)]
 		} 
 
-		static def main(args : String*) {
+		static def main : void {
 			println(split_by_letter(original))
 		}
 	}
@@ -985,7 +985,7 @@
 	package io.sarl.docs.tutorials.listexercises
 	[:On]
 	class Solution1 {
-		static def main(args : String*) {
+		static def main : void {
 			var result = newHashMap
 			for (i : 1..10) {
 				result.computeIfAbsent(i) [newArrayList]
@@ -995,7 +995,7 @@
 	}
 
 	class Solution2 {
-		static def main(args : String*) {
+		static def main : void {
 			var result = (1..10).toInvertedMap[newArrayList]
 			println(result)
 		}
@@ -1013,7 +1013,7 @@
 			#[1, 2], #[3, 4], #[3, 4], #[7, 8], #[9, 10]
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			for (tuple : original) {
 				for (element : tuple) {
@@ -1032,7 +1032,7 @@
 			#[1, 2], #[3, 4], #[3, 4], #[7, 8], #[9, 10]
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newTreeSet(null)
 			for (tuple : original) {
 				for (element : tuple) {
@@ -1049,7 +1049,7 @@
 			#[1, 2], #[3, 4], #[3, 4], #[7, 8], #[9, 10]
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newTreeSet(null)
 			for (tuple : original) {
 				result += tuple
@@ -1067,7 +1067,7 @@
 	class Solution1 {
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			for (value : original) {
 				if ((value % 2) != 0) {
@@ -1081,7 +1081,7 @@
 	class Solution2 {
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = original.filter[(it % 2) != 0].toList
 			println(result)
 		}
@@ -1106,7 +1106,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(appendBefore(original, 34))
 		}
 	}
@@ -1121,7 +1121,7 @@
 	class Solution {
 		static var original = #[#['assign1', 'assign2'], #['final','assign4'], #['exam','study']]
 
-		static def main(args : String*) {
+		static def main : void {
 			for (list : original) {
 				if (!list.isEmpty) {
 					var iter = list.iterator
@@ -1145,7 +1145,7 @@
 		static var originalNames = #["Black", "Red", "Maroon", "Yellow"]
 		static var originalColors = #["#000000", "#FF0000", "#800000", "#FFFF00"]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			var iter1 = originalNames.iterator
 			var iter2 = originalColors.iterator
@@ -1185,7 +1185,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(split_at_n(original, 5))
 		}
 	}
@@ -1211,7 +1211,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(difference(a, b))
 			println(difference(b, a))
 		}
@@ -1232,7 +1232,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(replace_last(#[1, 3, 5, 7, 9, 10], #[2, 4, 6, 8]))
 		}
 	}
@@ -1249,7 +1249,7 @@
 			0 <= position && position < list.size
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(exist_in(#[1, 3, 5, 7, 9, 10], 3))
 			println(exist_in(#[1, 3, 5, 7, 9, 10], 8))
 		}
@@ -1273,7 +1273,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(append_prefix(original, "emp"))
 		}
 	}
@@ -1285,7 +1285,7 @@
 			list.map[prefix + it].toList
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(append_prefix(original, "emp"))
 		}
 	}
@@ -1312,7 +1312,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			for (tuple : zip(original1, original2)) {
 				println(tuple)
 			}
@@ -1340,7 +1340,7 @@
 			]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			for (tuple : zip(original1, original2)) {
 				println(tuple)
 			}
@@ -1369,7 +1369,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(flatten_list(original))
 		}
 	}
@@ -1384,7 +1384,7 @@
 	class Solution {
 		static var original = #[0, 0, 1, 2, 3, 4, 4, 5, 6, 6, 6, 7, 8, 9, 4, 4]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			for (element : original) {
 				if (result.isEmpty || element != result.get(result.size - 1)) {
@@ -1405,7 +1405,7 @@
 	class Solution {
 		static var original = #[0, 0, 1, 2, 3, 4, 4, 5, 6, 6, 6, 7, 8, 9, 4, 4]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			var pack : List<Integer> = null
 			var prev : Integer = null
@@ -1447,7 +1447,7 @@
 			return new_list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(insert_at(original, 3, 12))
 		}
 	}
@@ -1481,7 +1481,7 @@
 			return new_list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(extract_random(original, 3))
 		}
 	}
@@ -1495,7 +1495,7 @@
 	class Solution {
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = newArrayList
 			for (var i = 0; i < original.size - 1; i++) {
 				var elt0 = original.get(i)
@@ -1517,7 +1517,7 @@
 	class Solution1 {
 		static var original = #[22.4, 4.0, -16.22, -9.1, 11.0, -12.22, 14.2, -5.2, 17.5]
 
-		static def main(args : String*) {
+		static def main : void {
 			var sum = 0l
 			for (element : original) {
 				sum += Math::round(element)
@@ -1529,7 +1529,7 @@
 	class Solution2 {
 		static var original = #[22.4, 4.0, -16.22, -9.1, 11.0, -12.22, 14.2, -5.2, 17.5]
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = original.size * original.map[Math::floor(it)].reduce[accumulator, current| accumulator + current]
 			println(result)
 		}
@@ -1555,7 +1555,7 @@
 			return list
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(create_multidimensional_list(3, 2))
 		}
 	}
@@ -1591,7 +1591,7 @@
 			return sum
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var matrix = input_matrix(args)
 			var result = sum_diag(matrix)
 			println(result)
@@ -1632,7 +1632,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = zip(original1, original2)
 			println(result)
 		}
@@ -1668,7 +1668,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = extract(original, 2)
 			println(result)
 		}
@@ -1697,7 +1697,7 @@
 			return sum / count
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = average(original1, original2)
 			println(result)
 		}
@@ -1728,7 +1728,7 @@
 			return count
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(count_integers(original))
 		}
 	}
@@ -1740,7 +1740,7 @@
 			list.filter[it instanceof Integer || it instanceof Long || it instanceof BigInteger].size
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(count_integers(original))
 		}
 	}
@@ -1766,7 +1766,7 @@
 			return rows
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(remove_column(original, 1))
 		}
 	}
@@ -1789,7 +1789,7 @@
 			return column
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(get_column(original, 1))
 		}
 	}

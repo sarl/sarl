@@ -115,7 +115,9 @@ import io.sarl.lang.scoping.SARLScopeProvider;
 import io.sarl.lang.scoping.SARLSerializerScopeProvider;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
+import io.sarl.lang.services.ITypeDefaultValueProvider;
 import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.TypeDefaultValueProviderImpl;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.typesystem.SARLTypeComputer;
@@ -531,6 +533,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public Class<? extends IScriptBuilder> bindIScriptBuilder() {
 		return ScriptBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.typesystem.TypeSystemToolsFragment2
+	public Class<? extends ITypeDefaultValueProvider> bindITypeDefaultValueProvider() {
+		return TypeDefaultValueProviderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

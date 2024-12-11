@@ -7,28 +7,28 @@
       <repository location="https://download.eclipse.org/releases/2024-12"/>
 	    <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.4.600.v20241030-2121"/>
 	    <unit id="org.eclipse.e4.rcp.feature.group" version="4.34.0.v20241113-2009"/>
-	    <unit id="org.eclipse.egit.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.epp.package.dsl.feature.feature.group" version="4.34.0.20241121-0709"/>
-	    <unit id="org.eclipse.epp.package.java.feature.feature.group" version="4.34.0.20241121-0709"/>
-	    <unit id="org.eclipse.epp.package.rcp.feature.feature.group" version="4.34.0.20241121-0709"/>
+	    <unit id="org.eclipse.egit.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.epp.package.dsl.feature.feature.group" version="4.34.0.20241128-0756"/>
+	    <unit id="org.eclipse.epp.package.java.feature.feature.group" version="4.34.0.20241128-0756"/>
+	    <unit id="org.eclipse.epp.package.rcp.feature.feature.group" version="4.34.0.20241128-0756"/>
 	    <unit id="org.eclipse.equinox.core.feature.feature.group" version="1.15.300.v20241030-2121"/>
 	    <unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.25.300.v20241030-2121"/>
 	    <unit id="org.eclipse.equinox.executable.feature.group" version="3.8.2700.v20240929-1145"/>
 	    <unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="3.9.0.202210162353"/>
-	    <unit id="org.eclipse.jdt.feature.group" version="3.20.0.v20241113-1800"/>
-	    <unit id="org.eclipse.jgit.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.jgit.gpg.bc.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.jgit.http.apache.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.jgit.ssh.apache.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.jgit.ssh.jsch.feature.group" version="7.1.0.202411191359-rc1"/>
-	    <unit id="org.eclipse.m2e.feature.feature.group" version="2.7.0.20241011-1559"/>
-	    <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="2.7.0.20241011-1559"/>
+	    <unit id="org.eclipse.jdt.feature.group" version="3.20.0.v20241120-1800"/>
+	    <unit id="org.eclipse.jgit.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.jgit.gpg.bc.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.jgit.http.apache.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.jgit.ssh.apache.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.jgit.ssh.jsch.feature.group" version="7.1.0.202411261347-r"/>
+	    <unit id="org.eclipse.m2e.feature.feature.group" version="2.7.0.20241126-1642"/>
+	    <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="2.7.0.20241126-1642"/>
 	    <unit id="org.eclipse.oomph.preferences.feature.group" version="1.18.0.v20240510-1552"/>
 	    <unit id="org.eclipse.oomph.targlets.feature.group" version="1.27.0.v20241111-0625"/>
 	    <unit id="org.eclipse.oomph.version.feature.group" version="1.22.0.v20240821-0658"/>
 	    <unit id="org.eclipse.oomph.workingsets.feature.group" version="1.19.0.v20240510-1552"/>
-	    <unit id="org.eclipse.platform.feature.group" version="4.34.0.v20241113-2009"/>
-	    <unit id="org.eclipse.platform.ide" version="4.34.0.I20241113-1800"/>
+	    <unit id="org.eclipse.platform.feature.group" version="4.34.0.v20241120-1800"/>
+	    <unit id="org.eclipse.platform.ide" version="4.34.0.I20241120-1800"/>
 	    <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.36.0.v202409282004"/>
 	    <unit id="org.eclipse.xsd.feature.group" version="2.22.0.v20240911-0848"/>
 	    <unit id="org.eclipse.xtext.sdk.feature.group" version="2.37.0.v20241119-0857"/>
@@ -99,6 +99,26 @@
 				  <groupId>io.bootique</groupId>
 				  <artifactId>bootique</artifactId>
 				  <version>3.0.M1</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,runtime,system" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.baseutils</groupId>
+				  <artifactId>tests.api</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.lang</groupId>
+				  <artifactId>compiler.tests</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>

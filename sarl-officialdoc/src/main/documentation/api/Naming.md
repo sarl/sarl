@@ -232,7 +232,7 @@ To use this service, you have to get it from the SRE, as illustrated below:
 	import io.sarl.lang.core.SRE
 	import io.sarl.api.naming.namespace.NamespaceService
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def prog {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			var namingService = bootstrap.getService(typeof(NamespaceService))

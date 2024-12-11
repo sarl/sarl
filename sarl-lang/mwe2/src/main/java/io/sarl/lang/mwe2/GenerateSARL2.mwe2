@@ -42,6 +42,7 @@ import io.sarl.lang.mwe2.codebuilder.*
 import io.sarl.lang.mwe2.codebuilder.config.* 
 import io.sarl.lang.mwe2.keywords.* 
 import io.sarl.lang.mwe2.bugfixes.unpublished.* 
+import io.sarl.lang.mwe2.typesystem.* 
 
 
 // Path to the folder that contains all the Xtext project to be updated by MWE2 script, excluding the UI projects
@@ -73,7 +74,7 @@ var eclipseIdeProjectSrcPath = "${eclipseIdeProjectPath}/src"
 var eclipseIdeProjectSrcGenPath = "${eclipseIdeProjectPath}/src-gen"
 
 // Project for the UI tests
-var eclipseIdeTestProjectName = "io.sarl.eclipse.tests.api.ui"
+var eclipseIdeTestProjectName = "io.sarl.lang.ui.tests"
 var eclipseIdeTestProjectPath = "${rootPathForAllUiXtextProjects}/tests/${eclipseIdeTestProjectName}"
 var eclipseIdeTestProjectMetaInfPath = "${eclipseIdeTestProjectPath}/META-INF"
 var eclipseIdeTestProjectSrcPath = "${eclipseIdeTestProjectPath}/src"
@@ -357,6 +358,10 @@ Workflow {
     				lineNumberColor = "SARLblue"
     			}
 			}
+   			// Configuration for type system tools
+			typeSystemTools = auto-inject {
+				
+			}
 		}
 		
 		// Generator for SARL
@@ -510,6 +515,10 @@ Workflow {
     		fragment = VimGenerator2 auto-inject {
 				output = vimToolPath
     		}
+
+			// Generate an helpful accessors to the grammar keywords.
+			fragment = TypeSystemToolsFragment2 auto-inject {
+			}
 
     		// SARL specific bindings
     		fragment = InjectionFragment2 auto-inject {

@@ -303,6 +303,20 @@ public final class IssueCodes {
 	public static final String UNUSED_TYPE_PARAMETER =
 			ISSUE_CODE_PREFIX + "unused_type_parameter"; //$NON-NLS-1$
 
+	/** A default value is defined in a place where it is not expected.
+	 *
+	 * @since 0.15
+	 */
+	public static final String UNEXPECTED_DEFAULT_VALUE =
+			ISSUE_CODE_PREFIX + "unexpected_default_value"; //$NON-NLS-1$
+
+	/** A type parameter is defined in a place where it is not expected.
+	 *
+	 * @since 0.15
+	 */
+	public static final String UNEXPECTED_TYPE_PARAMETER =
+			ISSUE_CODE_PREFIX + "unexpected_type_parameter"; //$NON-NLS-1$
+	
 	private IssueCodes() {
 		//
 	}

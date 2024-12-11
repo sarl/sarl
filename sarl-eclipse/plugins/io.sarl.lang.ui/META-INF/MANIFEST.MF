@@ -50,9 +50,9 @@ Require-Bundle: io.sarl.lang.ide;bundle-version="0.15.0",
  org.eclipse.ui.forms;bundle-version="3.13.400",
  org.eclipse.jdt.ui;bundle-version="3.33.200",
  org.eclipse.compare;bundle-version="3.11.200",
- org.eclipse.ui,
- org.eclipse.ui.editors,
- org.eclipse.jdt.debug.ui
+ org.eclipse.ui;bundle-version="3.207.0",
+ org.eclipse.ui.editors;bundle-version="3.19.0",
+ org.eclipse.jdt.debug.ui;bundle-version="3.13.600"
 Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Automatic-Module-Name: io.sarl.lang.ui
 Bundle-ActivationPolicy: lazy

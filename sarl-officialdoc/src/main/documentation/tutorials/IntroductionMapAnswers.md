@@ -21,7 +21,7 @@
 			original.entrySet.sortWith[a, b | b.value <=> a.value]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(ascending_sort(original))
 			println(descending_sort(original))
 		}
@@ -37,7 +37,7 @@
 	class Solution {
 		static var original = #{0 -> 10, 1 -> 20}
 
-		static def main(args : String*) {
+		static def main : void {
 			original.put(2, 30)
 			println(original)
 		}
@@ -55,7 +55,7 @@
 		static var dic2 = #{3 -> 30, 4 -> 40}
 		static var dic3 = #{5 -> 50, 6-> 60}
 
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (e : dic1.entrySet) {
 				newmap.put(e.key, e.value)
@@ -75,7 +75,7 @@
 		static var dic2 = #{3 -> 30, 4 -> 40}
 		static var dic3 = #{5 -> 50, 6-> 60}
 
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			newmap.putAll(dic1)
 			newmap.putAll(dic2)
@@ -93,7 +93,7 @@
 	[:On]
 	class Solution {
 		static var dic = #{1 -> 10, 2 -> 20}
-		static def main(args : String*) {
+		static def main : void {
 			println(dic.containsKey(1))
 			println(dic.containsKey(5))
 		}
@@ -109,7 +109,7 @@
 	class Solution {
 		static var dic = #{1 -> 10, 2 -> 20}
 
-		static def main(args : String*) {
+		static def main : void {
 			for (e : dic.entrySet) {
 				println(e.key + " -> " + e.value)
 			}
@@ -133,7 +133,7 @@
 			return map
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(generate(5))
 		}
 	}
@@ -143,7 +143,7 @@
 			(1..n).toInvertedMap[it**2]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(generate(5))
 		}
 	}
@@ -156,7 +156,7 @@
 	package io.sarl.docs.tutorials.mapexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main : void {
 			println((1..15).toInvertedMap[it**2 as int])
 		}
 	}
@@ -180,7 +180,7 @@
 			return newmap
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(merge(original1, original2))
 		}
 	}
@@ -189,7 +189,7 @@
 		static var original1 = #{1 -> 154, 2 -> 44, 3 -> 9}
 		static var original2 = #{4 -> 16, 5 -> 25}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original1.union(original2))
 		}
 	}
@@ -213,7 +213,7 @@
 			return s
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(sum(original))
 		}
 	}
@@ -225,7 +225,7 @@
 			m.values.reduce[accumulator, current | accumulator + current]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(sum(original))
 		}
 	}
@@ -249,7 +249,7 @@
 			return s
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(mul(original))
 		}
 	}
@@ -261,7 +261,7 @@
 			m.values.reduce[accumulator, current | accumulator * current]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(mul(original))
 		}
 	}
@@ -277,7 +277,7 @@
 	class Solution {
 		static var original = #{1 -> 154, 2 -> 44, 3 -> 9}
 
-		static def main(args : String*) {
+		static def main : void {
 			original.remove(2)
 			println(original)
 		}
@@ -295,7 +295,7 @@
 		static var original1 = #[1, 2, 9]
 		static var original2 = #[154, 44, 9]
 
-		static def main(args : String*) {
+		static def main : void {
 			var map = newHashMap
 			var iter1 = original1.iterator
 			var iter2 = original2.iterator
@@ -310,7 +310,7 @@
 		static var original1 = #[1, 2, 9]
 		static var original2 = #[154, 44, 9]
 
-		static def main(args : String*) {
+		static def main : void {
 			var iter1 = original1.iterator
 			var map = original2.toMap[iter1.next]
 			println(map)
@@ -328,7 +328,7 @@
 	class Solution {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44}
 
-		static def main(args : String*) {
+		static def main : void {
 			var sortedMap = newTreeSet(null)
 			sortedMap.addAll(original)
 			println(sortedMap)
@@ -345,7 +345,7 @@
 	class Solution1 {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44}
 
-		static def main(args : String*) {
+		static def main : void {
 			var min = Integer::MAX_VALUE
 			var max = Integer::MIN_VALUE
 			for (e : original.entrySet) {
@@ -364,7 +364,7 @@
 	class Solution2 {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44}
 
-		static def main(args : String*) {
+		static def main : void {
 			var min = original.values.min
 			var max = original.values.max
 			println("Min = " + min)
@@ -382,7 +382,7 @@
 	class Solution {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44, 6 -> 9}
 
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (e : original.entrySet) {
 				if (!newmap.containsValue(e.value)) {
@@ -403,7 +403,7 @@
 	class Solution1 {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44, 6 -> 9}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.isEmpty)
 		}
 	}
@@ -411,7 +411,7 @@
 	class Solution2 {
 		static var original = #{1 -> 154, 3 -> 9, 2 -> 44, 6 -> 9}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.size == 0)
 		}
 	}
@@ -427,7 +427,7 @@
 		static var d1 = #{'a' -> 100, 'b' -> 200, 'c' -> 300}
 		static var d2 = #{'a' -> 300, 'b' -> 200, 'd' -> 400}
 
-		static def main(args : String*) {
+		static def main : void {
 			var m = newHashMap
 			for (e : d1.entrySet) {
 				var v = d2.get(e.key)
@@ -459,7 +459,7 @@
 			#{"VIII" -> "S007"}
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var m = newTreeSet(null)
 			for (e : original) {
 				m.addAll(e.values)
@@ -476,7 +476,7 @@
 			#{"VIII" -> "S007"}
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var m = newTreeSet(null)
 			original.forEach[m.addAll(it.values)]
 			println(m)
@@ -493,7 +493,7 @@
 	class Solution {
 		static var original = #{'1' -> #['a','b'], '2' -> #['c','d']}
 
-		static def main(args : String*) {
+		static def main : void {
 			var m = newArrayList
 			var candidates = original.get(1)
 			if (candidates.isNullOrEmpty) {
@@ -527,7 +527,7 @@
 		static var original = #{'A' -> 67, 'B' -> 23, 'C' -> 45,
                    'D' -> 56, 'E' -> 12, 'F' -> 69} 
 
-		static def main(args : String*) {
+		static def main : void {
 			var iter = original.entrySet.iterator
 			var en = iter.next
 			var max0 = en.value
@@ -566,7 +566,7 @@
 		static var original = #{'A' -> 67, 'B' -> 23, 'C' -> 45,
                    'D' -> 56, 'E' -> 12, 'F' -> 69} 
 
-		static def main(args : String*) {
+		static def main : void {
 			var max0 = original.values.max
 			var max1 = original.values.filter[it < max0].max
 			var max2 = original.values.filter[it < max1].max
@@ -589,7 +589,7 @@
 			#{'item' -> 'item1', 'amount' -> 750}
 		] 
 
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (m : original) {
 				newmap.put(m.get("item"), m.get("amount"))
@@ -617,7 +617,7 @@
 			return map
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(letters("w3resource"))
 		}
 	}
@@ -636,7 +636,7 @@
  			3 -> #["Lauren", 21, 'OOPS with java']
 		}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var i = 1
 			var row = original.get(i)
 			while (row !== null) {
@@ -664,7 +664,7 @@
 	class Solution1 {
 		static var original = #{'n1' -> #[2, 3, 1], 'n2' -> #[5, 1, 2], 'n3' -> #[3, 2, 4]}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (e : original.entrySet) {
 				var nv = e.value.sort
@@ -677,7 +677,7 @@
 	class Solution2 {
 		static var original = #{'n1' -> #[2, 3, 1], 'n2' -> #[5, 1, 2], 'n3' -> #[3, 2, 4]}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = original.mapValues[it.sort]
 			println(newmap)
 		}
@@ -693,7 +693,7 @@
 	class Solution {
 		static var original = #{'P 01' -> 'DBMS', 'P 02' -> 'OS', 'P 0 3 ' -> 'Soft Computing'}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (e : original.entrySet) {
 				var nk = e.key.replaceAll("\\s+", "")
@@ -713,7 +713,7 @@
 	class Solution1 {
 		static var original = #{'item1' -> 45.50, 'item2' -> 35.0, 'item3' -> 41.30, 'item4' -> 55.0, 'item5' -> 24.0}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var iter = original.entrySet.iterator
 			var en = iter.next
 			var max0 = en.value
@@ -752,7 +752,7 @@
 	class Solution2 {
 		static var original = #{'item1' -> 45.50, 'item2' -> 35.0, 'item3' -> 41.30, 'item4' -> 55.0, 'item5' -> 24.0}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var max0 = original.values.max
 			var max1 = original.values.filter[it < max0].max
 			var max2 = original.values.filter[it < max1].max
@@ -773,7 +773,7 @@
 	class Solution {
 		static var original = #{1 -> 10, 2 -> 20, 3 -> 30, 4 -> 40, 5 -> 50, 6 -> 60}
 		
-		static def main(args : String*) {
+		static def main : void {
 			for (e : original.entrySet) {
 				println(e.key + "\t" + e.value + "\t" + e)
 			}
@@ -790,7 +790,7 @@
 	class Solution {
 		static var original = #{1 -> 10, 2 -> 20, 3 -> 30, 4 -> 40, 5 -> 50, 6 -> 60}
 		
-		static def main(args : String*) {
+		static def main : void {
 			for (e : original.entrySet) {
 				println(e.key + "\t" + e.value)
 			}
@@ -810,7 +810,7 @@
 			'David' -> #['subj1', 'subj2']
 		}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var sum = 0
 			for (v : original.values) {
 				sum += v.size
@@ -825,7 +825,7 @@
 			'David' -> #['subj1', 'subj2']
 		}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var sum = original.values.map[it.size].reduce(accumulator, current | accumulator + current)
 			println(sum)
 		}
@@ -843,7 +843,7 @@
 			'Math' -> 81, 'Physics' -> 83, 'Chemistry' -> 87
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var result = original.entrySet.sortWith[a, b | b.value <=> a.value].map[#[it.key, it.value]].toList
 			println(result)
 		}
@@ -860,7 +860,7 @@
 		static var original1 = #['Class-V', 'Class-VI', 'Class-VII', 'Class-VIII']
 		static var original2 = #[1, 2, 2, 3]
 		
-		static def main(args : String*) {
+		static def main : void {
 			var iter1 = original1.iterator
 			var iter2 = original2.iterator
 			var newmap = newHashMap
@@ -882,7 +882,7 @@
 		static var original1 = #{'key1' -> 1, 'key2' -> 3, 'key3' -> 2}
 		static var original2 = #{'key1' -> 1, 'key2' -> 2}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = newHashMap
 			for (e1 : original1.entrySet) {
 				var v2 = original2.get(e1.key)
@@ -946,7 +946,7 @@
 			}
 		}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var json = new StringBuilder
 			original.toJson(json)
 			println(json.toString)
@@ -961,7 +961,7 @@
 	package io.sarl.docs.tutorials.mapexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main : void {
 			var map = #{
 				"x" -> (11..20).toList,
 				"y" -> (21..30).toList,
@@ -987,7 +987,7 @@
 	class Solution {
 		static var original = #{'c1' -> 'Red', 'c2' -> 'Green', 'c3' -> null}
 		
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = original.filter[k, v | v.isNullOrEmpty]
 			println(newmap)
 		}
@@ -1003,7 +1003,7 @@
 	class Solution {
 		static var original = #{'Cierra Vega' -> 175, 'Alden Cantrell' -> 180, 'Kierra Gentry' -> 165, 'Pierre Cox' -> 190}
 
-		static def main(args : String*) {
+		static def main : void {
 			var newmap = original.filter[k, v | v > 170]
 			println(newmap)
 		}
@@ -1021,7 +1021,7 @@
 		static var original2 = #['Adina Park', 'Leyton Marsh', 'Duncan Boyle', 'Saim Richards']
 		static var original3 = #[85, 98, 89, 92]
 
-		static def main(args : String*) {
+		static def main : void {
 			var iter1 = original1.iterator
 			var iter2 = original2.iterator
 			var iter3 = original3.iterator
@@ -1049,7 +1049,7 @@
 			'Kierra Gentry' -> #[6.0, 68],
 			'Pierre Cox' -> #[5.8, 66]}
 
-		static def main(args : String*) {
+		static def main : void {
 			val height = 6.0
 			val weight = 70.0
 			var newmap = original.filter[k, v | v.get(0) > height && v.get(1) > weight]
@@ -1081,7 +1081,7 @@
 			return true
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.check(12))
 			println(original.check(10))
 		}
@@ -1098,7 +1098,7 @@
 			map.values.forall[it == n]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(original.check(12))
 			println(original.check(10))
 		}
@@ -1116,7 +1116,7 @@
 			#['yellow', 1], #['blue', 2], #['yellow', 3], #['blue', 4], #['red', 1]
 		]
 
-		static def main(args : String*) {
+		static def main : void {
 			var map = newHashMap
 			for (e : original) {
 				var list = map.computeIfAbsent(e.get(0)) [newArrayList]
@@ -1157,7 +1157,7 @@
 		    return list
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(list_of_dicts(original))
 		}
 	}
@@ -1189,7 +1189,7 @@
 			return newlist
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(remove_color(original, '#FF0000'))
 		}
 	}
@@ -1206,7 +1206,7 @@
 			colors.filter[it.get("id") != id].toList
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(remove_color(original, '#FF0000'))
 		}
 	}
@@ -1247,7 +1247,7 @@
 			return newlist
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(numbers(original))
 		}
 	}
@@ -1275,7 +1275,7 @@
 			]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(numbers(original))
 		}
 	}
@@ -1300,7 +1300,7 @@
 			return newmap
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(clear(original))
 		}
 	}
@@ -1312,7 +1312,7 @@
 			map.mapValues[newArrayList]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
 			println(clear(original))
 		}
 	}
@@ -1345,7 +1345,7 @@
 			return newmap
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var m = original.update("Math", 1)
    			m = m.update("Physics", -2)
 			println(m)
@@ -1368,7 +1368,7 @@
 			)
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var m = original.update("Math", 1)
    			m = m.update("Physics", -2)
 			println(m)
@@ -1402,7 +1402,7 @@
 			return scores
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.extract("Science"))
 		}
 	}
@@ -1418,7 +1418,7 @@
 			list.map[it.get(name)]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.extract("Science"))
 		}
 	}
@@ -1450,7 +1450,7 @@
 			return scores
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.extract("Science"))
 		}
 	}
@@ -1462,7 +1462,7 @@
 			map.values.toInvertedMap[it.length]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.sizes)
 		}
 	}
@@ -1495,7 +1495,7 @@
 			return 0
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.depth)
 		}
 	}
@@ -1510,7 +1510,7 @@
 			return 0
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.depth)
 		}
 	}
@@ -1525,7 +1525,7 @@
 	class Solution {
 		static var original = #{'physics' -> 80, 'math' -> 90, 'chemistry' -> 86}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			for (i : 0..<3) {
 	   			println(i + " = " + original.keySet.get(i))
    			}
@@ -1555,7 +1555,7 @@
 			return list
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.make_list)
 		}
 	}
@@ -1567,7 +1567,7 @@
 			map.entrySet.map[#[it.key, it.value] as List<Object>].toList
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.make_list)
 		}
 	}
@@ -1601,7 +1601,7 @@
 			return newmap
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.even_numbers)
 		}
 	}
@@ -1616,7 +1616,7 @@
 			map.mapValues[it.filter[(it % 2) == 0].toList]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.even_numbers)
 		}
 	}
@@ -1658,7 +1658,7 @@
 			return list
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.combinations)
 		}
 	}
@@ -1680,7 +1680,7 @@
    			map.entrySet.sortWith[a, b | b.value <=> a.value].map[it.key].take(n)
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.max_values(1))
    			println(original.max_values(2))
    			println(original.max_values(5))
@@ -1706,7 +1706,7 @@
    			map.entrySet.filter[it.value.size == min].map[it.key].toList
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.shorted_list)
 		}
 	}
@@ -1741,7 +1741,7 @@
    			return result
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.extract("student_id", "name", "class"))
    			println(original.extract("student_id", "name"))
    			println(original.extract("name", "class"))
@@ -1762,7 +1762,7 @@
 			#[5, 'Zachary Simon', 'VII']
 		]
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var result = original.toMap(
    				[it.get(0) as Integer],
    				[#[it.get(1) as String, it.get(2) as String]]
@@ -1783,7 +1783,7 @@
 			5 -> #['Zachary Simon']
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var result = #[original.mapValues[it.get(0)]]
    			println(result)
 		}
@@ -1800,7 +1800,7 @@
 		static var original = #{'#FF0000' -> 'Red', '#800000' -> 'Maroon',
 			'#FFFF00' -> 'Yellow', '#808000' -> 'Olive'}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var result = original.values.map[it.length]
    				.reduce[accumulator, current | accumulator + current]
    			println(result)
@@ -1834,7 +1834,7 @@
 			return false
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.check("name", "Lynne Foster"))
    			println(original.check("class", "VI"))
 		}
@@ -1853,7 +1853,7 @@
 			persons.exists[it.get(key) == value]
 		}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			println(original.check("name", "Lynne Foster"))
    			println(original.check("class", "VI"))
 		}
@@ -1870,7 +1870,7 @@
 		static var original = #{'Ora Mckinney' -> 8, 'Theodore Hollandl' -> 7,
 			'Mae Fleming' -> 7, 'Mathew Gilbert' -> 8, 'Ivan Little' -> 7}
 
-   		static def main(args : String*) {
+   		static def main : void {
    			var map = newHashMap
    			for (e : original.entrySet) {
    				var list = map.computeIfAbsent(e.value) [newArrayList]

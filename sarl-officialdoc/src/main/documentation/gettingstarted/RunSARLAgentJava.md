@@ -32,7 +32,7 @@ In the following Java code, the [:sre:] utility type is used for retrieving the 
 	import io.sarl.lang.core.SRE
 	class MyProgram {
 	
-		static def main(arguments : String*) {
+		static def main : void {
 			var bootstrap = [:sre](SRE)::getBootstrap
 		}
 	
@@ -61,7 +61,7 @@ It is the role of the SARL run-time environment to create this instance for you,
 	}
 	class MyProgram {
 	
-		static def main(arguments : String*) {
+		static def main : void {
 			var bootstrap = [:sre!]::getBootstrap
 			bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
 		}

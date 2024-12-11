@@ -8,7 +8,7 @@
 	package io.sarl.docs.tutorials.strexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.get(0).length)
 		}
 	}
@@ -21,7 +21,7 @@
 	package io.sarl.docs.tutorials.strexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main : void {
 			var map = newHashMap
 			for (b : "google.com".bytes) {
 				var c = b as char
@@ -40,7 +40,7 @@
 	package io.sarl.docs.tutorials.strexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var input = args.get(0)
 			var output = ""
 			if (input.length >= 2) {
@@ -58,7 +58,7 @@
 	package io.sarl.docs.tutorials.strexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var input = args.get(0)
 			var output = ""
 			if (input.length >= 1) {
@@ -85,7 +85,7 @@
 			if (value.length >= 2) value.substring(2, value.length) else ""
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			if (args.length >= 2) {
 				var in0 = args.get(0)
 				var in1 = args.get(1)
@@ -111,7 +111,7 @@
 			}
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (value : args) {
 				println(value.add_ing)
 			}
@@ -127,7 +127,7 @@
 	[:On]
 	import java.util.regex.Pattern
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var pattern = Pattern::compile("not.+?poor") 
 			for (value : args) {
 				var matcher = pattern.matcher(value)
@@ -160,7 +160,7 @@
 			}
 			return null
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.longuest_word)
 		}
 	}
@@ -169,7 +169,7 @@
 		static def longuest_word(words : String[]) : Object[] {
 			words.sortWith[a, b | b.length <=> a.length].map[#[it, it.length]].get(0)
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.longuest_word)
 		}
 	}
@@ -185,7 +185,7 @@
 		static def remove_char(word : String, index : int) : String {
 			word.substring(0, index) + word.substring(index + 1, word.length)
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.remove_char(arg.length / 2))
 			}
@@ -213,7 +213,7 @@
 				word
 			}
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.swap_bounds)
 			}
@@ -235,7 +235,7 @@
 			}
 			return str
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.remove_odd_chars)
 			}
@@ -250,7 +250,7 @@
 			}
 			return str.toString
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.remove_odd_chars)
 			}
@@ -274,7 +274,7 @@
 			}
 			return map
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.count_words)
 			}
@@ -289,7 +289,7 @@
 	package io.sarl.docs.tutorials.strexercises
 	[:On]
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.toUpperCase)
 				println(arg.toLowerCase)
@@ -306,7 +306,7 @@
 	[:On]
 	import java.util.List
 	class Solution {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var words = args.map[newArrayList(it.split("\\s*,\\s*"))]
 				.reduce[accumulator : List<String>, current : List<String> |
 					(accumulator + current) as List<String>
@@ -338,7 +338,7 @@
 			}
 			return str
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.to_html)
 		}
 	}
@@ -359,7 +359,7 @@
 			}
 			return str.toString
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.to_html)
 		}
 	}
@@ -376,7 +376,7 @@
 			var m = str.length / 2
 			str.substring(0, m) + inside + str.substring(m, str.length)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("{{}}".insert_middle("SARL"))
 			println("[[]]".insert_middle("SARL"))
 		}
@@ -397,7 +397,7 @@
 			}
 			return str
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".duplicate_last)
 			println("Exercices".duplicate_last)
 		}
@@ -418,7 +418,7 @@
 			}
 			return str
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".duplicate_last)
 			println("Exercices".duplicate_last)
 		}
@@ -435,7 +435,7 @@
 		static def begin(str : String) : String {
 			if (str.length <= 3) str else str.substring(0, 3)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".begin)
 			println("Exercices".begin)
 		}
@@ -452,7 +452,7 @@
 		static def reverse(str : String) : String {
 			if ((str.length%4) != 0) str else new String(str.bytes.reverse)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".reverse)
 			println("Exercices".reverse)
 		}
@@ -470,7 +470,7 @@
 			var num_upper = 0 str.bytes.take(4).filter[Character::isUpperCase(it)].size
 			if (num_upper >= 2) str.toUpperCase else str
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".selective_uppercase)
 			println("Exercices".selective_uppercase)
 		}
@@ -487,7 +487,7 @@
 		static def sort(str : String) : String {
 			new String(str.toCharArray.sort)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".sort)
 			println("Exercices".sort)
 		}
@@ -504,7 +504,7 @@
 		static def remove_nl(str : String) : String {
 			str.replaceAll("[\n\r]+", "")
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".remove_nl)
 			println("Exercices".remove_nl)
 		}
@@ -529,7 +529,7 @@
 			}
 			return true
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".starts_with("SA"))
 			println("SARL".starts_with("Sa"))
 		}
@@ -550,7 +550,7 @@
 			}
 			new String(tab)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".caesarCipher(-3))
 			println("SARL".caesarCipher(4))
 		}
@@ -560,7 +560,7 @@
 		static def caesarCipher(str : String, delta : int) : String {
 			new String(str.toCharArray.map[(it + delta) as char])
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL".caesarCipher(-3))
 			println("SARL".caesarCipher(4))
 		}
@@ -591,7 +591,7 @@
 			}
 			return out.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL\n\tline2\n    line3".remove_indent)
 		}
 	}
@@ -600,7 +600,7 @@
 		static def remove_indent(str : String) : String {
 			str.replaceFirst("^\\s+", "").replaceAll("[\n\r]\\s*", "\n")
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL\n\tline2\n    line3".remove_indent)
 		}
 	}
@@ -632,7 +632,7 @@
 			}
 			return out.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL\n\tline2\n    line3".add_prefix("---"))
 		}
 	}
@@ -641,7 +641,7 @@
 		static def add_prefix(str : String, prefix : String) : String {
 			str.replaceFirst("^\\s+", prefix).replaceAll("[\n\r]\\s*", "\n" + prefix)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL\n\tline2\n    line3".add_prefix("---"))
 		}
 	}
@@ -669,7 +669,7 @@
 			}
 			return str.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -678,7 +678,7 @@
 		static def format_number(value : double) : String {
 			MessageFormat::format("#0.00", value)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -705,7 +705,7 @@
 			}
 			return str.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -714,7 +714,7 @@
 		static def format_number(value : double) : String {
 			MessageFormat::format("+#0.00", value)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -733,7 +733,7 @@
 			str.append(value as long)
 			return str.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -742,7 +742,7 @@
 		static def format_number(value : double) : String {
 			MessageFormat::format("+#0", value)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.456789.format_number)
 		}
 	}
@@ -763,7 +763,7 @@
 			}
 			return buffer.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.format_number(10))
 		}
 	}
@@ -772,7 +772,7 @@
 		static def format_number(value : int, width : int) : String {
 			String::format("%0" + width + "d", value)
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.format_number(10))
 		}
 	}
@@ -793,7 +793,7 @@
 			}
 			return buffer.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(123.format_number(10))
 		}
 	}
@@ -831,7 +831,7 @@
 			}
 			return count
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(count_sub(args.get(0), args.get(1)))
 		}
 	}
@@ -851,7 +851,7 @@
 			}
 			return new String(chars)
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.reverse)
 			}
@@ -862,7 +862,7 @@
 		static def reverse(str : String) : String {
 			new String(str.toCharArray.reverseView)
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.reverse)
 			}
@@ -888,7 +888,7 @@
 			}
 			return nwords.toString
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.reverse_words)
 			}
@@ -899,7 +899,7 @@
 		static def reverse_words(str : String) : String {
 			str.split("\\s+").reverseView.join(" ")
 		}
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (arg : args) {
 				println(arg.reverse_words)
 			}
@@ -915,7 +915,7 @@
 	[:On]
 	import static extension com.google.common.base.Strings.repeat
 	class Solution {
-		static def main(args : String*) {
+		static def main : void {
 			var area = 1256.66
 			var volume = 1254.725
 			var decimals = 2
@@ -943,7 +943,7 @@
 			}
 			return -1
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("w3resource".index_of('w'))
 			println("w3resource".index_of('3'))
 			println("w3resource".index_of('r'))
@@ -956,7 +956,7 @@
 	}
 
 	class Solution2 {
-		static def main(args : String*) {
+		static def main : void {
 			println("w3resource".indexOf('w'))
 			println("w3resource".indexOf('3'))
 			println("w3resource".indexOf('r'))
@@ -995,7 +995,7 @@
 			}
 			return true
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("w3resource".is_alphabet)
 		}
 	}
@@ -1024,7 +1024,7 @@
 			return list
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (sentence : args) {
 				println(sentence.split_words)
 			}
@@ -1032,7 +1032,7 @@
 	}
 
 	class Solution2 {
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			for (sentence : args) {
 				println(sentence.split("\\s+"))
 			}
@@ -1061,7 +1061,7 @@
 			return word.toString
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3RESOURCE".lowercase(3))
 		}
 	}
@@ -1074,7 +1074,7 @@
 			return str.substring(0, n).toLowerCase + str.substring(n, str.length)
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3RESOURCE".lowercase(3))
 		}
 	}
@@ -1105,7 +1105,7 @@
 			}
 			return out.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("W3RESOURCE".swap)
 		}
 	}
@@ -1127,7 +1127,7 @@
 				}
 			].toArray.join
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("10,153.2568".swap)
 		}
 	}
@@ -1152,7 +1152,7 @@
 			return count
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3RESOURCE".vowels)
 		}
 	}
@@ -1164,7 +1164,7 @@
 			str.toCharArray.filter[VOWELS.contains(it)].size
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3RESOURCE".vowels)
 		}
 	}
@@ -1195,7 +1195,7 @@
 			return #[part0.toString, part1.toString]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3,RESOURCE,id".split_last(","))
 		}
 	}
@@ -1212,7 +1212,7 @@
 			return #[str]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("W3,RESOURCE,id".split_last(","))
 		}
 	}
@@ -1240,7 +1240,7 @@
 			return char_order.findFirst[ctr.get(it) == 1] as Character
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(first_non_repeating_character('abcdef'))
 			println(first_non_repeating_character('abcabcdef'))
 			println(first_non_repeating_character('aabbcc'))
@@ -1275,7 +1275,7 @@
 			return result
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(all_repeat('xyz', 3))
 			println(all_repeat('xyz', 2))
 			println(all_repeat('abcd', 4))
@@ -1305,7 +1305,7 @@
 			return char_order.findFirst[ctr.get(it) >= 1] as Character
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(first_repeating_character('abcdef'))
 			println(first_repeating_character('abcabcdef'))
 			println(first_repeating_character('aabbcc'))
@@ -1342,7 +1342,7 @@
 			return -1
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(first_second('abcabcdef', 'a'))
 			println(first_second('abcabcdef', 'b'))
 			println(first_second('abcabcdef', 'c'))
@@ -1358,7 +1358,7 @@
 			return -1
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(first_second('abcabcdef', 'a'))
 			println(first_second('abcabcdef', 'b'))
 			println(first_second('abcabcdef', 'c'))
@@ -1384,7 +1384,7 @@
 			return null
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(first_repeated_word("ab ca bc ab"))
 			println(first_repeated_word("ab ca bc ab ca ab bc"))
 			println(first_repeated_word("ab ca bc ca ab bc"))
@@ -1411,7 +1411,7 @@
 			return e.key
 		}
     
-		static def main(args : String*) {
+		static def main : void {
 			println(word_count("Both of these issues are fixed by postponing the evaluation of annotations. Instead of compiling code which executes expressions in annotations at their definition time, the compiler stores the annotation in a string form equivalent to the AST of the expression in question. If needed, annotations can be resolved at runtime using typing.get_type_hints(). In the common case where this is not required, the annotations are cheaper to store (since short strings are interned by the interpreter) and make startup time faster."))
 		}
 	}
@@ -1435,7 +1435,7 @@
 			return out.toString
 		}
     
-		static def main(args : String*) {
+		static def main : void {
 			println(remove_spaces("Both of these issues are fixed by postponing the evaluation of annotations."))
 		}
 	}
@@ -1445,7 +1445,7 @@
 			str.replaceAll("\\s+", "")
 		}
     
-		static def main(args : String*) {
+		static def main : void {
 			println(remove_spaces("Both of these issues are fixed by postponing the evaluation of annotations."))
 		}
 	}
@@ -1481,7 +1481,7 @@
 			return common_dict.sort.join
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var str1 = 'Python'
 			var str2 = 'PHP'
 			println("Two strings: " + str1 + ' : ' + str2)
@@ -1533,7 +1533,7 @@
 			return ctr
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			var str1 = args.get(0)
 			var str2 = args.get(1)
 			println(make_anagram(str1, str2))
@@ -1566,7 +1566,7 @@
 			return newElements.toString
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("aaaaabbbbbb".remove_duplicates)
 			println("geeksforgeeks".remove_duplicates)
 			println("aabccba".remove_duplicates)
@@ -1612,7 +1612,7 @@
 			return lcs_set
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println(longest_substring('abcdefgh', 'xswerabcdwd'))
 		}
 	}
@@ -1645,7 +1645,7 @@
 			return #[upper_ctr, lower_ctr, number_ctr, special_ctr]
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			var str = "@W3Resource.Com"
 			println("Original Substrings:" + str)
 			var t = count_chars(str)
@@ -1687,7 +1687,7 @@
 			return buffer.toString
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("The quick brown fox.".wrap(10))
 		}
 	}
@@ -1715,7 +1715,7 @@
 			return out.toString
 		}
 
-		static def main(args : String*) {
+		static def main : void {
 			println("SARL eXERiCISES".swap)
 		}
 	}
@@ -1745,7 +1745,7 @@
 			return r
 		}
 
-		static def main(args : String*) {
+		static def main(args : String*) : void {
 			println(args.get(0).check_string)
 		}
 	}
@@ -1771,7 +1771,7 @@
 			}
 			return out.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(original.convert)
 		}
 	}
@@ -1782,7 +1782,7 @@
 		static def convert(list : List<?>) : String {
 			list.join(',')
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println(original.convert)
 		}
 	}
@@ -1818,7 +1818,7 @@
 			}
 			return out
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("red 12 black 45 green".extract)
 		}
 	}
@@ -1838,7 +1838,7 @@
 		static def extract(str : String) : List<? extends Number> {
 			str.split("\\s+").map[it as Number].filter[it !== null].toList
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("red 12 black 45 green".extract)
 		}
 	}
@@ -1869,7 +1869,7 @@
 			}
 			return out.toString
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("Count the lowercase letters in the said list of words:".hide)
 		}
 	}
@@ -1884,7 +1884,7 @@
 				}
 			].join(" ")
 		}
-		static def main(args : String*) {
+		static def main : void {
 			println("Count the lowercase letters in the said list of words:".hide)
 		}
 	}

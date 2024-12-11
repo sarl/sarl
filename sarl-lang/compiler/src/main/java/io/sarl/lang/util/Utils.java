@@ -40,8 +40,6 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -98,6 +96,10 @@ import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XtypeFactory;
 import org.osgi.framework.Version;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.annotation.EarlyExit;
 import io.sarl.lang.core.util.OutParameter;
@@ -153,6 +155,10 @@ public final class Utils {
 
 	private static final Pattern IMPLICIT_LAMBDA_PARAMETER_PATTERN = Pattern.compile("^\\$[0-9]+$"); //$NON-NLS-1$
 
+	/** @since 0.15
+	 */
+	private static final String JAVA_MAIN_FUNCTION_NAME = "main"; //$NON-NLS-1$
+
 	static {
 		final var name = new StringBuilder();
 		final var components = EarlyExit.class.getPackage().getName().split("\\."); //$NON-NLS-1$
@@ -166,6 +172,64 @@ public final class Utils {
 
 	private Utils() {
 		//
+	}
+
+	/** Replies if the given name is for a function that could be considered as the main (Java) entry point of the program.
+	 *
+	 * @param name the name of the function to test.
+	 * @return {@code true} if the given name is for a main Java function.
+	 * @since 0.15
+	 */
+	public static boolean isNameForJavaMainFunction(String name) {
+		return Objects.equal(JAVA_MAIN_FUNCTION_NAME, name);
+	}
+
+	/** Replies the name for a function that could be considered as the main (Java) entry point of the program.
+	 *
+	 * @return the function simple name.
+	 * @since 0.15
+	 */
+	public static String getNameForJavaMainFunction() {
+		return JAVA_MAIN_FUNCTION_NAME;
+	}
+
+	/** Replies if the given function is a main function.
+	 *
+	 * @param function the function.
+	 * @param services the services for comparing the types.
+	 * @return {@code true} if the function is a main function.
+	 * @since 0.15
+	 */
+	public static boolean isMainFunctionDeclaration(XtendFunction function, CommonTypeComputationServices services) {
+		if (isMainFunctionDeclarationExcludingReturnType(function, services)) {
+			var retType = toLightweightTypeReference(function.getReturnType(), services);
+			if (retType == null || retType.isPrimitiveVoid()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Replies if the given function is a main function without considering the return type.
+	 *
+	 * @param function the function.
+	 * @param services the services for comparing the types.
+	 * @return {@code true} if the function is a main function.
+	 * @since 0.15
+	 */
+	public static boolean isMainFunctionDeclarationExcludingReturnType(XtendFunction function, CommonTypeComputationServices services) {
+		if (isNameForJavaMainFunction(function.getName()) && function.isStatic() && !function.isDispatch()) {
+			if (function.getParameters().size() == 1) {
+				final var providedArg = function.getParameters().get(0);
+				var argType = toLightweightTypeReference(providedArg.getParameterType(), services);
+				final var isVarArgsFromSource = isVarArg(function.getParameters());
+				if (!isVarArgsFromSource && argType.isArray()) {
+					argType = argType.getComponentType();
+				}
+				return argType.isType(String.class);
+			}
+		}
+		return false;
 	}
 
 	/** Replies if the given name is the hidden name for a parameter's default value.

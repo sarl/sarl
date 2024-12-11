@@ -66,6 +66,9 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
 				SeverityConverter.SEVERITY_WARNING));
+		acceptor.accept(create(
+				org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER,
+				SeverityConverter.SEVERITY_ERROR));
 
 		// Add warnings from SARL
 		acceptor.accept(create(

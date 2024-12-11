@@ -21,12 +21,14 @@
 
 package io.sarl.lang.ui.preferences;
 
+import static io.sarl.lang.validation.IssueCodes.*;
+import static org.eclipse.xtend.core.validation.IssueCodes.*;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.*;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBlock;
-
-import io.sarl.lang.validation.IssueCodes;
 
 /** Preference page that permits to configure the SARL validator.
  *
@@ -77,54 +79,50 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	@Override
 	protected void fillCodingStyleSection(ComboBoxBuilder builder) {
 		super.fillCodingStyleSection(builder);
-		builder.addComboBox(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
-		builder.addComboBox(IssueCodes.REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
-		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
-		builder.addComboBox(IssueCodes.DISCOURAGED_FUNCTION_NAME, Messages.SARLValidatorConfigurationBlock_12);
-		builder.addComboBox(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE, Messages.SARLValidatorConfigurationBlock_17);
-		builder.addComboBox(IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION, Messages.SARLValidatorConfigurationBlock_19);
+		builder.addComboBox(IMPORT_DUPLICATE, Messages.SARLValidatorConfigurationBlock_28);
+		builder.addComboBox(REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
+		builder.addComboBox(UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
+		builder.addComboBox(REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
+		builder.addComboBox(DISCOURAGED_FUNCTION_NAME, Messages.SARLValidatorConfigurationBlock_12);
+		builder.addComboBox(DISCOURAGED_LOOP_BREAKING_KEYWORD_USE, Messages.SARLValidatorConfigurationBlock_17);
+		builder.addComboBox(POTENTIAL_INEFFICIENT_VALUE_CONVERSION, Messages.SARLValidatorConfigurationBlock_19);
 	}
 
 	@Override
 	protected void fillPotentialProgrammingProblemsSection(ComboBoxBuilder builder) {
 		super.fillPotentialProgrammingProblemsSection(builder);
-		builder.addComboBox(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-				Messages.SARLValidatorConfigurationBlock_13);
-		builder.addComboBox(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-				Messages.SARLValidatorConfigurationBlock_2);
-		builder.addComboBox(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, Messages.SARLValidatorConfigurationBlock_3);
-		builder.addComboBox(org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-				Messages.SARLValidatorConfigurationBlock_14);
-		builder.addComboBox(org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-				Messages.SARLValidatorConfigurationBlock_15);
-		builder.addComboBox(IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
-				Messages.SARLValidatorConfigurationBlock_16);
-		builder.addComboBox(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				Messages.SARLValidatorConfigurationBlock_6);
-		builder.addComboBox(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
-				Messages.SARLValidatorConfigurationBlock_18);
-		builder.addComboBox(IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION,
-				Messages.SARLValidatorConfigurationBlock_20);
-		builder.addComboBox(IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL,
-				Messages.SARLValidatorConfigurationBlock_21);
-		builder.addComboBox(IssueCodes.AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER,
-				Messages.SARLValidatorConfigurationBlock_22);
+		builder.addComboBox(IMPORT_UNRESOLVED, Messages.SARLValidatorConfigurationBlock_29);
+		builder.addComboBox(POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL, Messages.SARLValidatorConfigurationBlock_21);
+		builder.addComboBox(DUPLICATE_TYPE, Messages.SARLValidatorConfigurationBlock_27);
+		builder.addComboBox(POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM, Messages.SARLValidatorConfigurationBlock_18);
+		builder.addComboBox(MISSING_OVERRIDE, Messages.SARLValidatorConfigurationBlock_14);
+		builder.addComboBox(ABSTRACT_METHOD_INVOCATION, Messages.SARLValidatorConfigurationBlock_26);
+		builder.addComboBox(MISSING_ABSTRACT, Messages.SARLValidatorConfigurationBlock_15);
+		builder.addComboBox(MISSING_STATIC_MODIFIER, Messages.SARLValidatorConfigurationBlock_25);
+		builder.addComboBox(PARAMETER_DEFAULT_VALUE_REDFINITION, Messages.SARLValidatorConfigurationBlock_20);
+		builder.addComboBox(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED, Messages.SARLValidatorConfigurationBlock_16);
+		builder.addComboBox(DISCOURAGED_OCCURRENCE_READONLY_USE, Messages.SARLValidatorConfigurationBlock_6);
+		builder.addComboBox(RAW_TYPE, Messages.SARLValidatorConfigurationBlock_30);
+		builder.addComboBox(VARIABLE_NAME_SHADOWING, Messages.SARLValidatorConfigurationBlock_13);
+		builder.addComboBox(VARIABLE_NAME_SHADOWING, Messages.SARLValidatorConfigurationBlock_2);
+		builder.addComboBox(DISCOURAGED_BOOLEAN_EXPRESSION, Messages.SARLValidatorConfigurationBlock_3);
+		builder.addComboBox(AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER, Messages.SARLValidatorConfigurationBlock_22);
 	}
 
 	@Override
 	protected void fillRestrictedApiSection(ComboBoxBuilder builder) {
 		super.fillRestrictedApiSection(builder);
-		builder.addComboBox(IssueCodes.MANUAL_INLINE_DEFINITION,
-				Messages.SARLValidatorConfigurationBlock_8);
-		builder.addComboBox(IssueCodes.USED_RESERVED_SARL_ANNOTATION,
-				Messages.SARLValidatorConfigurationBlock_7);
+		builder.addComboBox(MANUAL_INLINE_DEFINITION, Messages.SARLValidatorConfigurationBlock_8);
+		builder.addComboBox(USED_RESERVED_SARL_ANNOTATION, Messages.SARLValidatorConfigurationBlock_7);
 	}
 
 	@Override
 	protected void fillUnusedCodeSection(ComboBoxBuilder builder) {
 		super.fillUnusedCodeSection(builder);
-		builder.addComboBox(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
-		builder.addComboBox(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
+		builder.addComboBox(DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
+		builder.addComboBox(UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
+		builder.addComboBox(UNUSED_TYPE_PARAMETER, Messages.SARLValidatorConfigurationBlock_24);
+		builder.addComboBox(UNNECESSARY_FIRED_EVENT, Messages.SARLValidatorConfigurationBlock_23);
 	}
 
 }

@@ -30,5 +30,5 @@ Require-Bundle: io.sarl.eclipse;bundle-version="0.15.0",
  org.eclipse.core.runtime;bundle-version="3.32.0",
  org.eclipse.core.resources;bundle-version="3.22.0",
  org.eclipse.osgi;bundle-version="3.22.0",
- org.eclipse.ui.ide;bundle-version="3.22.300",
+ org.eclipse.ui.ide;bundle-version="3.22.400",
  org.eclipse.jface;bundle-version="3.35.100"

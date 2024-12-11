@@ -446,6 +446,13 @@
 	},
 	{
 		"code": "org.eclipse.xtend.core.validation.IssueCodes.missing_static_modifier",
+		"message": "Potential missing of the *name* modifier. This function has the same name as the main function of the program and therefore should be declared with this modifier",
+		"cause": "You have declared a function that has the same name as the usual main function of the program. If it is the main function, the modifier *name* is mandatory",
+		"solution": "Add *name* modifier to the function",
+		"level": "c/error"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.missing_static_modifier",
 		"message": "Nested classes must be static",
 		"cause": "SARL specification forces to have static inner classes due to implementation of Xtext/Xtend",
 		"solution": "Add `static` modifier to the nested class",

@@ -64,6 +64,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.util.Utils;
 
 /**
  * A specialization of {@link JvmGenericTypeValidator} to deal with specific features of SARL.
@@ -145,6 +146,8 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	private SARLModifierValidator nestedEnumerationInAgentModifierValidator;
 
 	private SARLModifierValidator nestedAnnotationTypeInAgentModifierValidator;
+	
+	private SARLModifierValidator mainFunctionModifierValidator;
 
 	@Check(CheckType.FAST)
 	protected void checkModifierMatchesTypename(XtendClass xtendClass) {
@@ -205,6 +208,9 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 				final var typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				getMethodInBehaviorModifierValidator().checkModifiers(function,
 						MessageFormat.format(Messages.SARLFeatureModifierValidator_3, function.getName(), typeName));
+			} else if (declaringType instanceof XtendClass && Utils.isNameForJavaMainFunction(function.getName())) {
+				// Special case of the main function, whatever the notation of the main function
+				getMainFunctionModifierValidator().checkModifiers(function, memberName(function));
 			} else {
 				final var abstractIndex = function.getModifiers().indexOf(getGrammarAccess().getAbstractKeyword());
 				if (declaringType instanceof XtendClass || declaringType instanceof AnonymousClass) {
@@ -949,6 +955,22 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 					this.grammarAccess.getAbstractKeyword()));
 		}
 		return this.nestedAnnotationTypeInAgentModifierValidator;
+	}
+
+
+	/** Replies the modifier validator for main function in a class.
+	 *
+	 * @return the validator.
+	 * @since 0.15
+	 */
+	protected SARLModifierValidator getMainFunctionModifierValidator() {
+		if (this.mainFunctionModifierValidator == null) {
+			this.mainFunctionModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+					this.grammarAccess.getPublicKeyword(),
+					this.grammarAccess.getStaticStaticKeyword(),
+					this.grammarAccess.getDefKeyword()));
+		}
+		return this.mainFunctionModifierValidator;
 	}
 
 	/** The modifier validator for constructors.

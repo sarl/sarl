@@ -45,7 +45,7 @@ In the following SARL code (it may be Java or Groovy code), the [:sre:] utility 
 	import io.sarl.lang.core.SRE
 	class MyProgram {
 		[:On]
-		static def main(arguments : String*) {
+		static def main : void {
 			var [:bootstrapvar](bootstrap) = [:sre](SRE)::getBootstrap
 		}
 		[:Off]			
@@ -64,7 +64,7 @@ It is the role of the SRE to create this instance for you, with the proper initi
 	agent [:myagent](MyAgent) {}
 	class MyProgram {
 		[:On]
-		static def main(arguments : String*) {
+		static def main : void {
 			var bootstrap = [:sre!]::getBootstrap
 			bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
 		}
@@ -96,7 +96,7 @@ For starting the SRE without agent, you have to invoke [:startWithoutAgentFct:]:
 	package io.sarl.docs.bootstrap
 	import io.sarl.lang.core.SRE
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			var context = bootstrap.[:startWithoutAgentFct](startWithoutAgent)
@@ -119,7 +119,7 @@ Both of them are launching an agent of a given type. For example, the following 
 	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.[:startAgentFct](startAgent)(typeof([:myagent!]))
@@ -137,7 +137,7 @@ In the following example, [:numberofagents!] agents are launched into the SRE.
 	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.startAgent([:numberofagents](5), typeof([:myagent!]))
@@ -157,7 +157,7 @@ precision floating point number [:param2:].
 	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.startAgent(typeof([:myagent!]), [:param1]$"arg1"$, [:param2]$4.5$)
@@ -198,7 +198,7 @@ This function enables to pass initialization arguments to the launched agent.
 	agent [:myagent!] {}
 	class MyProgram {
 		static def computeOrGetTheAgentIdentifier : UUID { null }
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var theIdentifier : UUID = computeOrGetTheAgentIdentifier()
 			var bootstrap = SRE::getBootstrap
@@ -219,7 +219,7 @@ Two functions are provided to determine if the SRE is running or not:
 	package io.sarl.docs.bootstrap
 	import io.sarl.lang.core.SRE
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			var bootstrap = SRE::getBootstrap
 			var b0 : boolean = bootstrap.[:isRunningFct](isRunning)
 			var b1 : boolean = bootstrap.[:isActiveFct](isActive)
@@ -243,7 +243,7 @@ the SRE is stopping. The following code shows you the start and stop of the SRE.
 	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.startAgent([:numberofagents!], typeof([:myagent!]))
@@ -263,7 +263,7 @@ In the following example, we are waiting 15 seconds for stopping the SRE.
 	import io.sarl.lang.core.SRE
 	agent [:myagent!] {}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.startAgent([:numberofagents!], typeof([:myagent!]))
@@ -296,7 +296,7 @@ The following functions are provided on the SRE bootstrap to change the SRE conf
 	import io.sarl.lang.core.SRE
 	import java.util.UUID
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			var bootstrap = SRE::getBootstrap
 			bootstrap.[:setRandomContextUUID]$setRandomContextUUID$
 			bootstrap.[:setBootAgentTypeContextUUID]$setBootAgentTypeContextUUID$
@@ -321,7 +321,7 @@ it means that the SRE was not launched.
 	import io.sarl.lang.core.SRE
 	import java.util.logging.Logger
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			var logger : Logger = bootstrap.[:getKernelLoggerFct](getKernelLogger)
@@ -340,7 +340,7 @@ You could control in a generic way the verbose level of the kernel logger by cal
 	import io.sarl.lang.core.SRE
 	import java.util.logging.Logger
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.[:setVerboseLevelFct](setVerboseLevel)(2)
@@ -393,7 +393,7 @@ Assuming that the SRE is implementing this service, you could get the service's 
 		def use() : void
 	}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var bootstrap = SRE::getBootstrap
 			bootstrap.startWithoutAgent
@@ -462,7 +462,7 @@ Then, you could register the listener on the SRE as illustrated below:
 		override sreStopped(bs : SREBootstrap) {}
 	}
 	class MyProgram {
-		static def main(arguments : String*) {
+		static def main : void {
 			[:On]
 			var listener = new MyListener
 			

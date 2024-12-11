@@ -10,7 +10,7 @@
 	class MyClass {
 	}
 	class Solution {
-		def main(args : String*) {
+		static def main {
 			println(typeof(MyClass).^package.name)
 		}
 	}
@@ -24,7 +24,7 @@
 	class MyClass {
 	}
 	class Solution {
-		def main(args : String*) {
+		static def main {
 			var obj = new MyClass
 			println(obj.class.^package.name)
 		}
@@ -38,7 +38,7 @@
 	[:On]
 	import static java.lang.Math.abs
 	class Solution {
-		def main(args : String*) {
+		static def main {
 			println(abs(-155))
 		}
 	}
@@ -94,7 +94,7 @@
 	class Mark {
 	}
 	class Solution {
-		def main(args : String*) {
+		static def main {
 			var a = new Student
 			var b = new Mark
 			println("a is Student class = " + (a instanceof Student))
@@ -120,7 +120,7 @@
 		var name : String
 	}
 	class Solution {
-		def main(args : String*) {
+		static def main {
 			var student1 = new Student
 			student1.setAge(15)
 			student1.setName("First name")
@@ -154,11 +154,11 @@
 		val marks : List<Float> = newArrayList
 	}
 	class Main {
-		def main(args : String*) {
+		static def main : void {
 			var s = new Student
 			println(s.means)
 		}
-		def means(student : Student) : float {
+		static def means(student : Student) : float {
 			var mean = 0f
 			if (!student.marks.empty) {
 				for (mark : student.marks) {
@@ -195,7 +195,7 @@
 		}
 	}
 	class Main {
-		def main(args : String*) {
+		static def main {
 			println(IntRomanConverter::convert(1))
 			println(IntRomanConverter::convert(1994))
 		}
@@ -223,7 +223,7 @@
    		}
 	}
 	class Main {
-		def main(args : String*) {
+		static def main {
 			println(RomanIntConverter::convert("I"))
 			println(RomanIntConverter::convert("MCMXCIV"))
 		}
@@ -261,7 +261,7 @@
 		}
 	}
 	class Main {
-		def main(args : String*) {
+		static def main {
 			var a = new Vector(124, 45)
 			var b = new Vector(-456, 78)
 			var c = a.add(b)
@@ -303,7 +303,7 @@
 		}
 	}
 	class Main {
-		def main(args : String*) {
+		static def main {
 			var a = new Vector(124, 45)
 			var b = new Vector(-456, 78)
 			var c = a + b

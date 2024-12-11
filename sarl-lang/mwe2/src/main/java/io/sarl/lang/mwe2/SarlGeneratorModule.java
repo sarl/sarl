@@ -28,6 +28,7 @@ import org.eclipse.xtext.xtext.generator.DefaultGeneratorModule;
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig;
 import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
+import io.sarl.lang.mwe2.typesystem.TypeSystemToolsConfig;
 
 /**
  * The generation module for SARL.
@@ -44,6 +45,8 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 	private CodeBuilderConfig codeBuilderConfig = new CodeBuilderConfig();
 
 	private GrammarKeywordAccessConfig grammarKeywordConfig = new GrammarKeywordAccessConfig();
+
+	private TypeSystemToolsConfig typeSystemToolsConfig = new TypeSystemToolsConfig();
 
 	/** Configure the injection of the highlighting configuration.
 	 *
@@ -107,7 +110,7 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 		binder.bind(GrammarKeywordAccessConfig.class).toInstance(this.grammarKeywordConfig);
 	}
 
-	/** Set the configuration for the grammar keyword access configuration.
+	/** Set the configuration for the grammar keyword access.
 	 *
 	 * @param config the configuration.
 	 */
@@ -117,13 +120,41 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 		}
 	}
 
-	/** Replies the configuration for the grammar keyword access configuration.
+	/** Replies the configuration for the grammar keyword access.
 	 *
 	 * @return the configuration.
 	 */
 	@Pure
 	public GrammarKeywordAccessConfig getGrammarKeywordAccess() {
 		return this.grammarKeywordConfig;
+	}
+
+
+	/** Configure the injection of the type system tools configuration.
+	 *
+	 * @param binder the injection binder.
+	 */
+	public void configureTypeSystemTools(Binder binder) {
+		binder.bind(TypeSystemToolsConfig.class).toInstance(this.typeSystemToolsConfig);
+	}
+
+	/** Set the configuration for the type system tools.
+	 *
+	 * @param config the configuration.
+	 */
+	public void setTypeSystemTools(TypeSystemToolsConfig config) {
+		if (config != null) {
+			this.typeSystemToolsConfig = config;
+		}
+	}
+
+	/** Replies the configuration for the type system tools.
+	 *
+	 * @return the configuration.
+	 */
+	@Pure
+	public TypeSystemToolsConfig getTypeSystemTools() {
+		return this.typeSystemToolsConfig;
 	}
 
 }

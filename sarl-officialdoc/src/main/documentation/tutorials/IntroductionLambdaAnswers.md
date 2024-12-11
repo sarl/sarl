@@ -45,7 +45,7 @@
 		static def computeLambda(n : int) : (int) => int {
 			[x | x * n]
 		}
-		static def main(args : String*) {
+		static def main {
 			var result = computeLambda(2)
 			println("Double the number of 15 =" + result.apply(15))
 			result = computeLambda(3)
@@ -61,7 +61,7 @@
 		static def computeLambda(n : int) : (int) => int {
 			[it * n]
 		}
-		static def main(args : String*) {
+		static def main {
 			var result = computeLambda(2)
 			println("Double the number of 15 =" + result.apply(15))
 			result = computeLambda(3)
@@ -89,7 +89,7 @@
 			#['Social sciences', 82]
 		])
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of tuples: " + marks)
 			marks.sort [a, b | (a.get(1) as Integer) <=> (b.get(1) as Integer)]
 			println("Sorting the List of tuples: " + marks)
@@ -112,7 +112,7 @@
 			#{'make' -> 'Samsung', 'model' -> 7, 'color' -> 'Blue'}
 		])
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of maps: " + maps)
 			maps.sort [a, b | (b.get("model") as Integer) <=> (a.get("model") as Integer)]
 			println("Sorting the list of maps: " + maps)
@@ -132,7 +132,7 @@
 
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of integers: " + original)
 
 			var evenNumbers = original.stream.filter[(it % 2) == 0].collect(Collectors::toList)
@@ -148,7 +148,7 @@
 
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of integers: " + original)
 
 			var evenNumbers = original.filter[(it % 2) == 0].toList
@@ -172,7 +172,7 @@
 
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of integers: " + original)
 
 			var squareNumbers = original.stream.map[it.doubleValue ** 2].collect(Collectors::toList)
@@ -188,7 +188,7 @@
 
 		static var original = #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			println("Original list of integers: " + original)
 
 			var squareNumbers = original.map[it.doubleValue ** 2].toList
@@ -209,7 +209,7 @@
 	[:On]
 	class Solution {
 
-		static def main(args : String*) {
+		static def main {
 			var starts_with = [x : String | x.startsWith('P')]
 			println(starts_with.apply('Python'))
 			println(starts_with.apply('Java'))
@@ -227,7 +227,7 @@
 	import java.util.Calendar
 	class Solution {
 
-		static def main(args : String*) {
+		static def main {
 			var now = Calendar::instance
 			println(now)
 
@@ -265,7 +265,7 @@
 			println(n + " : " + is_num.apply(n))
 		}
 
-		static def main(args : String*) {
+		static def main {
 			dotest("26587")
 			dotest("4.2365")
 			dotest("-12547")
@@ -297,7 +297,7 @@
 			]
 		}
 
-		static def main(args : String*) {
+		static def main {
 			println(fibonacci(2))
 			println(fibonacci(5))
 			println(fibonacci(6))
@@ -319,7 +319,7 @@
 		static var content1 = #[1, 2, 3, 5, 7, 8, 9, 10]
 		static var content2 = #[1, 2, 4, 8, 9]
 
-		static def main(args : String*) {
+		static def main {
 			var result = content2.filter[content1.contains(it)].toList 
 			println(result)
 		}
@@ -338,7 +338,7 @@
 
 		static var content : Integer[] = #[-1, 2, -3, 5, 7, 8, 9, -10]
 
-		static def main(args : String*) {
+		static def main {
 			var result = newArrayList(content)
 			result.sort[a, b |
 				if (a.signum == b.signum) {
@@ -365,7 +365,7 @@
 
 		static var content = #[1, 2, 3, 5, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			var ecount = content.filter[(it%2) == 0].size
 			var ocount = content.filter[(it%2) != 0].size
 			println("Original arrays: " + content)
@@ -379,7 +379,7 @@
 
 		static var content = #[1, 2, 3, 5, 7, 8, 9, 10]
 
-		static def main(args : String*) {
+		static def main {
 			var ecount = content.stream.filter[(it%2) == 0].count
 			var ocount = content.stream.filter[(it%2) != 0].count
 			println("Original arrays: " + content)
@@ -400,7 +400,7 @@
 
 		static var weekdays = #['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-		static def main(args : String*) {
+		static def main {
 			var result = weekdays.filter[it.length == 6].toList
 			println(result)
 		}
@@ -420,7 +420,7 @@
 		static var content1 : List<Integer> = #[1, 2, 3]
 		static var content2 : List<Integer> = #[4, 5, 6]
 
-		static def main(args : String*) {
+		static def main {
 			var result : List<Integer>
 			if (content1.size > content2.size) {
 				var iter = content1.iterator
@@ -452,7 +452,7 @@
 			#['G GHOSH', 1.0]
 		]
 
-		static def main(args : String*) {
+		static def main {
 			var result = marks
 				.sortWith [a, b | (b.get(1) as Double) <=> (a.get(1) as Double)]
 			var firstMark = result.get(0).get(1) as Double
@@ -488,7 +488,7 @@
 
 		static var original = #[19, 65, 57, 39, 152, 639, 121, 44, 90, 190]
 
-		static def main(args : String*) {
+		static def main {
 			var result = original.filter [(it % 19) == 0 || (it % 13) == 0].toList
 			println("Orginal list: " + original)
 			println("Numbers of the above list divisible by nineteen or thirteen: " + result)
@@ -507,7 +507,7 @@
 
 		static var original = #['php', 'w3r', 'SARL', 'abcd', 'Java', 'aaa']
 
-		static def main(args : String*) {
+		static def main {
 			var result = original.filter[it.palindrome].toList
 			println("List of palindromes: " + result)
 		}
@@ -537,7 +537,7 @@
 
 		static var original = #['bcda', 'abce', 'cbda', 'cbea', 'adcb']
 
-		static def main(args : String*) {
+		static def main {
 			var search_for = "abcd".counter
 			var result = original.filter[
 				(search_for == it.counter)
@@ -567,7 +567,7 @@
 
 		static var original = "sdf 23 safs8 5 sdfsd8 sdfs 56 21sfs 20 5"
 
-		static def main(args : String*) {
+		static def main {
 			var words = original.split("\\s+")
 			var numbers = words.filter[isInteger].map[it as Integer].sort.toList
 			println("Numbers in sorted form: " + numbers)
@@ -597,7 +597,7 @@
 
 		static var original = #[2, 4, 6, 9, 11]
 
-		static def main(args : String*) {
+		static def main {
 			var search_for = 2
 			var result = original.map[it * search_for].toList
 			println(result)			
@@ -616,7 +616,7 @@
 
 		static var original = #['sally', 'Dylan', 'rebecca', 'Diana', 'Joanne', 'keith']
 
-		static def main(args : String*) {
+		static def main {
 			var result = original.filter[it.charAt(0).isUpperCase].map[it.length]
 				.reduce[accumulator, current | accumulator + current]
 			println(result)
@@ -635,7 +635,7 @@
 
 		static var original = #[2, 4, -6, -9, 11, -12, 14, -5, 17]
 
-		static def main(args : String*) {
+		static def main {
 			var positive = original.filter[it >= 0].sum
 			var negative = original.filter[it < 0].sum
 			println("Sum of the positive numbers: " + positive)
@@ -666,7 +666,7 @@
 			].toList
 		}
 
-		static def main(args : String*) {
+		static def main {
 			println(divisible_by_digits(1,22))
    		}
 	}
@@ -699,7 +699,7 @@
 			println("Next bigger number: " + rearrange_bigger(n))
 		}
 
-		static def main(args : String*) {
+		static def main {
 			dotest(12)
 			dotest(10)
 			dotest(201)
@@ -731,7 +731,7 @@
 		    return #[min_length, min_list]
 		}
       
-		static def main(args : String*) {
+		static def main {
 			println("Original list: " + original)
 			println("List with maximum length of lists: " + max_length_list(original))
 			println("List with minimum length of lists: " + min_length_list(original))
@@ -754,7 +754,7 @@
 			#['white', 'black', 'orange']
 		]
 	
-		static def main(args : String*) {
+		static def main {
 			var result = original.map[it.sort]
 			println(result)
    		}
@@ -774,7 +774,7 @@
 			#[2], #[0], #[1, 3], #[0, 7], #[9, 11], #[13, 15, 17]
 		]
 	
-		static def main(args : String*) {
+		static def main {
 			var result = original.map[it.sort].sortWith[a, b | a <=> b] 
 			println(result)
    		}
@@ -810,7 +810,7 @@
 
 		static var original = #['SARL', 3, 2, 4, 5, 'version']
 	
-		static def main(args : String*) {
+		static def main {
 			var result = original.filter[it instanceof Number].map[(it as Number).longValue].max
 			println(result)
    		}
@@ -842,7 +842,7 @@
 			m.reduce[accumulator, current | accumulator + current]
 		}
 
-		static def main(args : String*) {
+		static def main {
 			println(sort_matrix(original1))
 			println(sort_matrix(original2))
    		}

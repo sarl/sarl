@@ -9,18 +9,17 @@
 
 	<artifactId>sarl-eclipse-tests</artifactId>
 	<packaging>pom</packaging>
-	<name>Eclipse Plugin Tests</name>
-	<description>Tests of the Eclipse Plugins</description>
+	<name>Tests for SARL Eclipse Plugins</name>
+	<description>Unit and run-time tests for the Eclipse plugins</description>
 
 	<modules>
-		<module>io.sarl.eclipse.tests.api.ui</module>
-		<module>io.sarl.eclipse.examples.tests</module>
+		<module>io.sarl.lang.ui.tests</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+	
 	<build>
 		<extensions>
 			<extension>
