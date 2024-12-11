@@ -25,6 +25,7 @@
 -Declipse.p2.max.threads=10
 -Doomph.update.url=https://download.eclipse.org/oomph/updates/milestone/latest
 -Doomph.redirection.index.redirection=index:/-&gt;http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/
+-Declipse.e4.inject.javax.warning=false
       </vmArgs>
       <vmArgsLin>-Dosgi.instance.area.default=@user.home/sarl-workspace
       </vmArgsLin>
