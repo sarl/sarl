@@ -44,6 +44,7 @@ import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.impl.ITypeFactory;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
@@ -247,7 +248,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Boolean)")
 		public void getDefaultValueForType_Boolean() {
-			assertEquals("null", this.builder.getDefaultValueForType(Boolean.class.getName()));
+			assertEquals("false", this.builder.getDefaultValueForType(Boolean.class.getName()));
 		}
 
 		@Test
@@ -259,7 +260,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Byte)")
 		public void getDefaultValueForType_Byte() {
-			assertEquals("null", this.builder.getDefaultValueForType(Byte.class.getName()));
+			assertEquals("(0 as byte)", this.builder.getDefaultValueForType(Byte.class.getName()));
 		}
 
 		@Test
@@ -271,7 +272,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Short)")
 		public void getDefaultValueForType_Short() {
-			assertEquals("null", this.builder.getDefaultValueForType(Short.class.getName()));
+			assertEquals("(0 as short)", this.builder.getDefaultValueForType(Short.class.getName()));
 		}
 
 		@Test
@@ -283,7 +284,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Integer)")
 		public void getDefaultValueForType_Integer() {
-			assertEquals("null", this.builder.getDefaultValueForType(Integer.class.getName()));
+			assertEquals("0", this.builder.getDefaultValueForType(Integer.class.getName()));
 		}
 
 		@Test
@@ -295,7 +296,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Long)")
 		public void getDefaultValueForType_Long() {
-			assertEquals("null", this.builder.getDefaultValueForType(Long.class.getName()));
+			assertEquals("0", this.builder.getDefaultValueForType(Long.class.getName()));
 		}
 
 		@Test
@@ -307,7 +308,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Float)")
 		public void getDefaultValueForType_Float() {
-			assertEquals("null", this.builder.getDefaultValueForType(Float.class.getName()));
+			assertEquals("0.0f", this.builder.getDefaultValueForType(Float.class.getName()));
 		}
 
 		@Test
@@ -319,7 +320,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Double)")
 		public void getDefaultValueForType_Double() {
-			assertEquals("null", this.builder.getDefaultValueForType(Double.class.getName()));
+			assertEquals("0.0", this.builder.getDefaultValueForType(Double.class.getName()));
 		}
 
 		@Test
@@ -331,7 +332,7 @@ public class ComponentBuildersTest {
 		@Test
 		@DisplayName("getDefaultValueForType(Character)")
 		public void getDefaultValueForType_Character() {
-			assertEquals("null", this.builder.getDefaultValueForType(Character.class.getName()));
+			assertEquals("(0 as char)", this.builder.getDefaultValueForType(Character.class.getName()));
 		}
 
 		@Test
@@ -375,8 +376,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_byte() {
 			var expr = this.builder.getDefaultXExpressionForType("byte");
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(byte.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test
@@ -384,8 +387,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_Byte() {
 			var expr = this.builder.getDefaultXExpressionForType(Byte.class.getName());
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(byte.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test
@@ -393,8 +398,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_short() {
 			var expr = this.builder.getDefaultXExpressionForType("short");
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(short.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test
@@ -402,8 +409,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_Short() {
 			var expr = this.builder.getDefaultXExpressionForType(Short.class.getName());
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(short.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test
@@ -483,8 +492,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_char() {
 			var expr = this.builder.getDefaultXExpressionForType("char");
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(char.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test
@@ -492,8 +503,10 @@ public class ComponentBuildersTest {
 		public void getDefaultXExpressionForType_Character() {
 			var expr = this.builder.getDefaultXExpressionForType(Character.class.getName());
 			assertNotNull(expr);
-			var value = Assertions.assertInstanceOf(XNumberLiteral.class, expr);
-			assertEquals("0", value.getValue());
+			var cst = Assertions.assertInstanceOf(XCastedExpression.class, expr);
+			assertEquals(char.class.getName(), cst.getType().getIdentifier());
+			var cexpr = Assertions.assertInstanceOf(XNumberLiteral.class, cst.getTarget());
+			assertEquals("0", cexpr.getValue());
 		}
 
 		@Test

@@ -22,6 +22,7 @@
 package io.sarl.lang.tests.modules.codebuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 import static io.sarl.tests.api.tools.TestAssertions.*;
@@ -297,7 +298,9 @@ public class MemberBuildersTest {
 			assertEquals(1, parameters.size());
 			final var param = parameters.get(0);
 			assertEquals("P", param.getName());
-			assertEquals(0, param.getConstraints().size());
+			assertEquals(1, param.getConstraints().size());
+			var cst = assertInstanceOf(JvmUpperBound.class, param.getConstraints().get(0));
+			assertEquals(Object.class.getName(), cst.getTypeReference().getIdentifier());
 		}
 
 		@Test
@@ -516,7 +519,9 @@ public class MemberBuildersTest {
 			assertEquals(1, parameters.size());
 			final var param = parameters.get(0);
 			assertEquals("P", param.getName());
-			assertEquals(0, param.getConstraints().size());
+			assertEquals(1, param.getConstraints().size());
+			var cst = assertInstanceOf(JvmUpperBound.class, param.getConstraints().get(0));
+			assertEquals(Object.class.getName(), cst.getTypeReference().getIdentifier());
 		}
 
 		@Test
@@ -713,7 +718,9 @@ public class MemberBuildersTest {
 			assertEquals(1, parameters.size());
 			final var param = parameters.get(0);
 			assertEquals("P", param.getName());
-			assertEquals(0, param.getConstraints().size());
+			assertEquals(1, param.getConstraints().size());
+			var cst = assertInstanceOf(JvmUpperBound.class, param.getConstraints().get(0));
+			assertEquals(Object.class.getName(), cst.getTypeReference().getIdentifier());
 		}
 
 		@Test
