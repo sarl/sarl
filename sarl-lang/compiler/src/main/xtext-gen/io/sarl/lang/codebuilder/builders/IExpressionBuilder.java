@@ -26,7 +26,6 @@ package io.sarl.lang.codebuilder.builders;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -36,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl XExpression.
- * @see ExpressionBuilderFragment.java : appendTo : 112
+	 * @see ExpressionBuilderFragment.java : appendTo : 122
  */
 @SuppressWarnings("all")
 public interface IExpressionBuilder {
@@ -44,66 +43,67 @@ public interface IExpressionBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 246
+	 * @see ExpressionBuilderFragment.java : appendTo : 262
 	 */
-	JvmParameterizedTypeReference newTypeRef(String typeName);
+	JvmTypeReference newTypeRef(String typeName);
 
 	/** Find the reference to the type with the given name.
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 276
+	 * @see ExpressionBuilderFragment.java : appendTo : 290
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 308
+	 * @see ExpressionBuilderFragment.java : appendTo : 320
 	 */
-	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 342
+	 * @see ExpressionBuilderFragment.java : appendTo : 352
 	 */
-	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param context the context in which the type is defined
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 378
+	 * @see ExpressionBuilderFragment.java : appendTo : 386
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see ExpressionBuilderFragment.java : appendTo : 412
+	 * @see ExpressionBuilderFragment.java : appendTo : 418
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the expression.
 	 * @param context the context of the expressions.
 	 * @param setter the object that permits to assign the expression to the context.
-	 * @see ExpressionBuilderFragment.java : appendTo : 439
+	 * @param typeContext the context for type resolution.
+	 * @see ExpressionBuilderFragment.java : appendTo : 452
 	 */
 	void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext);
 
 	/** Replies the last created expression.
 	 *
 	 * @return the last created expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 484
+	 * @see ExpressionBuilderFragment.java : appendTo : 495
 	 */
 	@Pure
 	XExpression getXExpression();
 
 	/** Replies the resource to which the XExpression is attached.
-	 * @see ExpressionBuilderFragment.java : appendTo : 515
+	 * @see ExpressionBuilderFragment.java : appendTo : 524
 	 */
 	@Pure
 	Resource eResource();
@@ -111,22 +111,24 @@ public interface IExpressionBuilder {
 	/** Change the expression in the container.
 	 *
 	 * @param expression the textual representation of the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 546
+	 * @return {@code this}
+	 * @see ExpressionBuilderFragment.java : appendTo : 555
 	 */
-	void setExpression(String expression);
+	IExpressionBuilder setExpression(String expression);
 
 	/** Change the expression in the container.
 	 *
 	 * @param expression the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 579
+	 * @return {@code this}
+	 * @see ExpressionBuilderFragment.java : appendTo : 591
 	 */
-	void setXExpression(XExpression expression);
+	IExpressionBuilder setXExpression(XExpression expression);
 
 
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 838
+	 * @see ExpressionBuilderFragment.java : appendTo : 845
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(String type);
@@ -134,15 +136,15 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 995
+	 * @see ExpressionBuilderFragment.java : appendTo : 878
 	 */
 	@Pure
-	XExpression getDefaultXExpressionForType(JvmParameterizedTypeReference type);
+	XExpression getDefaultXExpressionForType(JvmTypeReference type);
 
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1032
+	 * @see ExpressionBuilderFragment.java : appendTo : 913
 	 */
 	@Pure
 	String getDefaultValueForType(String type);
@@ -150,36 +152,37 @@ public interface IExpressionBuilder {
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1134
+	 * @see ExpressionBuilderFragment.java : appendTo : 945
 	 */
 	@Pure
-	String getDefaultValueForType(JvmParameterizedTypeReference type);
+	String getDefaultValueForType(JvmTypeReference type);
 
 	/** Change the documentation of the element.
 	 *
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	void setDocumentation(String doc);
+	IExpressionBuilder setDocumentation(String doc);
 
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1194
+	 * @see ExpressionBuilderFragment.java : appendTo : 1004
 	 */
 	XFeatureCall createReferenceToThis();
 
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1254
+	 * @see ExpressionBuilderFragment.java : appendTo : 1062
 	 */
 	XFeatureCall createReferenceToSuper();
 
 	/** Dispose the resource.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1346
+	 * @see ExpressionBuilderFragment.java : appendTo : 1152
 	 */
 	void dispose();
 

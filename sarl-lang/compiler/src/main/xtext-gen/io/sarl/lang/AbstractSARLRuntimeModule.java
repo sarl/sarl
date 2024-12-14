@@ -112,9 +112,9 @@ import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.SARLImportedNamespaceScopeProvider;
 import io.sarl.lang.scoping.SARLQualifiedNameConverter;
 import io.sarl.lang.scoping.SARLScopeProvider;
-import io.sarl.lang.scoping.SARLSerializerScopeProvider;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
+import io.sarl.lang.serializer.SARLSerializerScopeProvider;
 import io.sarl.lang.services.ITypeDefaultValueProvider;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.services.TypeDefaultValueProviderImpl;
@@ -421,7 +421,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
+	public void configureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
 		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(ClasspathBasedTypeScopeProvider.class);
 	}
 	
@@ -531,6 +531,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public void configureSerializerIScopeProvider(Binder binder) {
+		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(SARLSerializerScopeProvider.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public Class<? extends IScriptBuilder> bindIScriptBuilder() {
 		return ScriptBuilderImpl.class;
 	}
@@ -615,11 +620,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
 		return GeneratorConfigProvider2.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public void configureSerializerIScopeProvider(Binder binder) {
-		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(SARLSerializerScopeProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

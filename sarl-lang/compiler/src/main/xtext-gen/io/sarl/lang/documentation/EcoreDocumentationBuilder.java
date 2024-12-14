@@ -35,23 +35,47 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Build a documentation string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 2215
+	 * @see DocumentationBuilderFragment.java : appendTo : 2289
  */
 public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2299
+	 */
 	private AbstractRule mlRule;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2305
+	 */
 	private AbstractRule slRule;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2311
+	 */
 	private String mlStartSymbols;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2315
+	 */
 	private String mlEndTagSymbols;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2319
+	 */
 	private String slStartSymbols;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2323
+	 */
 	@Inject
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2327
+	 */
 	private IDocumentationFormatter documentationFormatter;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2333
+	 */
 	@Inject
 	public void setGrammarAccess(SARLGrammarAccess access) {
 		this.mlRule = access.getML_COMMENTRule();
@@ -72,26 +96,41 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2398
+	 */
 	@Pure
 	public AbstractRule getMLCommentRule() {
 		return this.mlRule;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2411
+	 */
 	@Pure
 	public AbstractRule getSLCommentRule() {
 		return this.slRule;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2424
+	 */
 	@Pure
 	public IDocumentationFormatter getDocumentationFormatter() {
 		return this.documentationFormatter;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2437
+	 */
 	@Pure
 	public boolean isMultilineCommentFor(Class<?> type) {
 		return XtendMember.class.isAssignableFrom(type);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2466
+	 */
 	@Pure
 	public String build(String doc, Class<?> objectType) {
 		String givenDocumentation = Strings.emptyIfNull(doc).trim();
@@ -118,6 +157,9 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 		return formatter.formatSinglelineComment(documentation.toString());
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2523
+	 */
 	private static boolean isNewLine(char character) {
 		if (character == '\n' || character == '\r' || character == '\f') {
 			return true;

@@ -31,6 +31,8 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -38,13 +40,16 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlProtocol.
- * @see TopElementBuilderFragment.java : appendTo : 410
+	 * @see TopElementBuilderFragment.java : appendTo : 400
  */
 @SuppressWarnings("all")
 public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlProtocolBuilder {
 
 	private SarlProtocol sarlProtocol;
 
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -52,30 +57,51 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	}
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlProtocol is added.
+	 * @param name the simple name of the SarlProtocol.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
 		if (this.sarlProtocol == null) {
 			this.sarlProtocol = SarlFactory.eINSTANCE.createSarlProtocol();
-			script.getXtendTypes().add(this.sarlProtocol);
 			this.sarlProtocol.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
-			if (!Strings.isEmpty(name)) {
-				this.sarlProtocol.setName(name);
-			}
+			this.sarlProtocol.setName(name);
+			script.getXtendTypes().add(this.sarlProtocol);
 		}
 	}
 
 	/** Replies the generated SarlProtocol.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	public SarlProtocol getSarlProtocol() {
 		return this.sarlProtocol;
 	}
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlProtocolReference() {
+		SarlProtocol ecoreObject = getSarlProtocol();
+		return getTypeReferenceFor(ecoreObject);
+	}
+
+	/** Replies the JVM declared type for this generated SarlProtocol.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	public JvmDeclaredType getJvmDeclaredType() {
+		return getAssociatedElement(JvmDeclaredType.class, getSarlProtocol(), eResource(), true);
+	}
+
 	/** Replies the resource to which the SarlProtocol is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	public Resource eResource() {
@@ -87,9 +113,10 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlProtocolBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlProtocol().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -105,16 +132,19 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	public void addModifier(String modifier) {
+	public ISarlProtocolBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
 			this.sarlProtocol.getModifiers().add(modifier);
 		}
+		return this;
 	}
 
 }

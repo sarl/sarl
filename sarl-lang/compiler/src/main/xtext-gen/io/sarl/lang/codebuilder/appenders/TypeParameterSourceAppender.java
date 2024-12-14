@@ -26,18 +26,19 @@ package io.sarl.lang.codebuilder.appenders;
 import io.sarl.lang.codebuilder.builders.ITypeParameterBuilder;
 import java.io.IOException;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Appender of a Sarl type parameter.
- * @see TypeParameterBuilderFragment.java : appendTo : 172
+	 * @see TypeParameterBuilderFragment.java : appendTo : 170
  */
 @SuppressWarnings("all")
 public class TypeParameterSourceAppender extends AbstractSourceAppender implements ITypeParameterBuilder {
@@ -48,6 +49,12 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getJvmTypeParameter(), appender);
 	}
@@ -55,9 +62,9 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 236
+	 * @see TypeParameterBuilderFragment.java : appendTo : 239
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -65,9 +72,9 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 266
+	 * @see TypeParameterBuilderFragment.java : appendTo : 267
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -75,9 +82,9 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 298
+	 * @see TypeParameterBuilderFragment.java : appendTo : 297
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -85,9 +92,9 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 332
+	 * @see TypeParameterBuilderFragment.java : appendTo : 329
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -96,23 +103,46 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 368
+	 * @see TypeParameterBuilderFragment.java : appendTo : 363
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
 	/** Initialize the type parameter.
 	 * <p>Caution: This initialization function does not add the type parameter in its container.
 	 * The container is responsible of adding the type parameter in its internal object.
+	 * However, this function sets the declarator of the type parameter by calling
+	 * {@link JvmTypeParameter#setDeclarator(JvmTypeParameterDeclarator)}.
+	 * @param context the container of the type parameter.
+	 * @param declarator the container of the type parameter.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
 	 * @see TypeParameterBuilderFragment.java : appendTo : 408
 	 */
-	public void eInit(EObject context, String name, IJvmTypeProvider typeContext) {
-		this.builder.eInit(context, name, typeContext);
+	public void eInit(XtendTypeDeclaration context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext) {
+		this.builder.eInit(context, declarator, name, typeContext);
 	}
 
+	/** Initialize the type parameter.
+	 * <p>Caution: This initialization function does not add the type parameter in its container.
+	 * The container is responsible of adding the type parameter in its internal object.
+	 * However, this function sets the declarator of the type parameter by calling
+	 * {@link JvmTypeParameter#setDeclarator(JvmTypeParameterDeclarator)}.
+	 * @param context the container of the type parameter.
+	 * @param declarator the container of the type parameter.
+	 * @param name the name of the type parameter.
+	 * @param typeContext the provider of types or null.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 455
+	 */
+	public void eInit(XtendExecutable context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext) {
+		this.builder.eInit(context, declarator, name, typeContext);
+	}
+
+	/** Replies the context for type resolution.
+	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 546
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
@@ -120,15 +150,25 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 480
+	 * @see TypeParameterBuilderFragment.java : appendTo : 565
 	 */
 	@Pure
 	public JvmTypeParameter getJvmTypeParameter() {
 		return this.builder.getJvmTypeParameter();
 	}
 
+	/** Replies a reference to the created parameter.
+	 *
+	 * @return the reference to the parameter.
+	 * @see TypeParameterBuilderFragment.java : appendTo : 602
+	 */
+	@Pure
+	public JvmTypeReference getJvmTypeParameterReference() {
+		return this.builder.getJvmTypeParameterReference();
+	}
+
 	/** Replies the resource to which the type parameter is attached.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 515
+	 * @see TypeParameterBuilderFragment.java : appendTo : 635
 	 */
 	@Pure
 	public Resource eResource() {
@@ -136,7 +176,7 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Dispose the resource.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 581
+	 * @see TypeParameterBuilderFragment.java : appendTo : 698
 	 */
 	public void dispose() {
 		this.builder.dispose();
@@ -144,34 +184,42 @@ public class TypeParameterSourceAppender extends AbstractSourceAppender implemen
 
 	/** Add upper type bounds.
 	 * @param type the type.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 599
+	 * @return {@code this}
+	 * @see TypeParameterBuilderFragment.java : appendTo : 716
 	 */
-	public void addUpperConstraint(String type) {
+	public ITypeParameterBuilder addUpperConstraint(String type) {
 		this.builder.addUpperConstraint(type);
+		return this;
 	}
 
 	/** Add upper type bounds.
 	 * @param type the type.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 629
+	 * @return {@code this}
+	 * @see TypeParameterBuilderFragment.java : appendTo : 749
 	 */
-	public void addUpperConstraint(JvmParameterizedTypeReference type) {
+	public ITypeParameterBuilder addUpperConstraint(JvmTypeReference type) {
 		this.builder.addUpperConstraint(type);
+		return this;
 	}
 
 	/** Add lower type bounds.
 	 * @param type the type.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 670
+	 * @return {@code this}
+	 * @see TypeParameterBuilderFragment.java : appendTo : 801
 	 */
-	public void addLowerConstraint(String type) {
+	public ITypeParameterBuilder addLowerConstraint(String type) {
 		this.builder.addLowerConstraint(type);
+		return this;
 	}
 
 	/** Add lower type bounds.
 	 * @param type the type.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 700
+	 * @return {@code this}
+	 * @see TypeParameterBuilderFragment.java : appendTo : 834
 	 */
-	public void addLowerConstraint(JvmParameterizedTypeReference type) {
+	public ITypeParameterBuilder addLowerConstraint(JvmTypeReference type) {
 		this.builder.addLowerConstraint(type);
+		return this;
 	}
 
 }

@@ -27,6 +27,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -34,7 +35,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlCapacity.
- * @see TopElementBuilderFragment.java : appendTo : 307
+	 * @see TopElementBuilderFragment.java : appendTo : 301
  */
 @SuppressWarnings("all")
 public interface ISarlCapacityBuilder {
@@ -42,67 +43,85 @@ public interface ISarlCapacityBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1142
+	 * @see TopElementBuilderFragment.java : appendTo : 1143
 	 */
-	JvmParameterizedTypeReference newTypeRef(String typeName);
+	JvmTypeReference newTypeRef(String typeName);
 
 	/** Find the reference to the type with the given name.
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1172
+	 * @see TopElementBuilderFragment.java : appendTo : 1171
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1204
+	 * @see TopElementBuilderFragment.java : appendTo : 1201
 	 */
-	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1238
+	 * @see TopElementBuilderFragment.java : appendTo : 1233
 	 */
-	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param context the context in which the type is defined
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1274
+	 * @see TopElementBuilderFragment.java : appendTo : 1267
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see TopElementBuilderFragment.java : appendTo : 1308
+	 * @see TopElementBuilderFragment.java : appendTo : 1299
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1332
+	 * @see TopElementBuilderFragment.java : appendTo : 1321
 	 */
 	void dispose();
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlCapacity is added.
+	 * @param name the simple name of the SarlCapacity.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlCapacity.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	SarlCapacity getSarlCapacity();
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlCapacityReference();
+
+	/** Replies the JVM declared type for this generated SarlCapacity.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	JvmDeclaredType getJvmDeclaredType();
+
 	/** Replies the resource to which the SarlCapacity is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	Resource eResource();
@@ -112,39 +131,43 @@ public interface ISarlCapacityBuilder {
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	void setDocumentation(String doc);
+	ISarlCapacityBuilder setDocumentation(String doc);
 
 	/** Add the super type.
 	 * @param superType the qualified name of the super type.
-	 * @see TopElementBuilderFragment.java : appendTo : 1597
+	 * @return {@code this}
+	 * @see TopElementBuilderFragment.java : appendTo : 1683
 	 */
-	void addExtends(String superType);
+	ISarlCapacityBuilder addExtends(String superType);
 
 	/** Add the super type.
 	 * @param superType the super type.
-	 * @see TopElementBuilderFragment.java : appendTo : 1680
+	 * @return {@code this}
+	 * @see TopElementBuilderFragment.java : appendTo : 1782
 	 */
-	void addExtends(JvmParameterizedTypeReference superType);
+	ISarlCapacityBuilder addExtends(JvmParameterizedTypeReference superType);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	void addModifier(String modifier);
+	ISarlCapacityBuilder addModifier(String modifier);
 
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 551
+	 * @see TopElementBuilderFragment.java : appendTo : 540
 	 */
 	ISarlActionBuilder addDefSarlAction(String name);
 
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 551
+	 * @see TopElementBuilderFragment.java : appendTo : 540
 	 */
 	ISarlActionBuilder addOverrideSarlAction(String name);
 
@@ -152,7 +175,7 @@ public interface ISarlCapacityBuilder {
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 697
+	 * @see TopElementBuilderFragment.java : appendTo : 682
 	 */
 	ISarlActionBuilder addSarlAction(String name);
 

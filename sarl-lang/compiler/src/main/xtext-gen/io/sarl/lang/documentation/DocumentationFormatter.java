@@ -47,18 +47,42 @@ import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Formatter a documentation string.
- * @see DocumentationBuilderFragment.java : appendTo : 691
+	 * @see DocumentationBuilderFragment.java : appendTo : 654
  */
 public class DocumentationFormatter implements IDocumentationFormatter {
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 662
+	 */
 	private static final String SPACE_CHAR = " ";
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 665
+	 */
 	private static final String NL_CHAR = "\n";
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 668
+	 */
 	private static final String EMPTY_STR = "";
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 671
+	 */
 	private String mlLinePrefix;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 674
+	 */
 	private String mlStart;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 677
+	 */
 	private String mlEnd;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 680
+	 */
 	private String slPrefix;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 684
+	 */
 	protected static boolean isNewLine(char character) {
 		if (character == '\n' || character == '\r' || character == '\f') {
 			return true;
@@ -67,38 +91,62 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			| (1 << Character.PARAGRAPH_SEPARATOR)) >> Character.getType((int) character)) & 1) != 0;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 700
+	 */
 	@Pure
 	public String getMultilineCommentStartSymbols() {
 		return this.mlStart;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 711
+	 */
 	public void setMultilineCommentStartSymbols(String symbols) {
 		this.mlStart = symbols;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 719
+	 */
 	@Pure
 	public String getMultilineCommentEndSymbols() {
 		return this.mlEnd;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 730
+	 */
 	public void setMultilineCommentEndSymbols(String symbols) {
 		this.mlEnd = symbols;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 738
+	 */
 	@Pure
 	public String getMultilineCommentLinePrefix() {
 		return this.mlLinePrefix;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 749
+	 */
 	public void setMultilineCommentLinePrefix(String prefix) {
 		this.mlLinePrefix = prefix;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 757
+	 */
 	@Pure
 	public String getSinglelineCommentPrefix() {
 		return this.slPrefix;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 768
+	 */
 	@Pure
 	protected Set<Character> getSinglelineCommentSpecialChars() {
 		final Set<Character> set = new TreeSet<>();
@@ -109,10 +157,16 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return set;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 795
+	 */
 	public void setSinglelineCommentPrefix(String prefix) {
 		this.slPrefix = prefix;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 803
+	 */
 	@Inject
 	public void setGrammarAccess(SARLGrammarAccess access) {
 		if (this.mlStart == null || this.mlEnd == null) {
@@ -139,11 +193,17 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 878
+	 */
 	@Pure
 	public String formatMultilineComment(String doc) {
 		return formatMultilineComment(doc, (String) null);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 889
+	 */
 	@Pure
 	public String formatMultilineComment(String doc, String indentation) {
 		IAppendable appendable = new StringBuilderBasedAppendable();
@@ -151,11 +211,17 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return appendable.getContent();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 908
+	 */
 	@Pure
 	public void formatMultilineComment(String doc, IAppendable appendable) {
 		formatMultilineComment(doc, null, appendable);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 921
+	 */
 	@Pure
 	public void formatMultilineComment(String doc, String indentation, IAppendable appendable) {
 		if (!Strings.isEmpty(doc)) {
@@ -164,16 +230,25 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 946
+	 */
 	@Pure
 	public void formatMultilineComment(ITextReplacerContext context, IComment comment) {
 		formatMultlineComment(context.getIndentationString(), context.getNewLinesString(1), new RegionAccessor(context, comment));
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 961
+	 */
 	@Pure
 	public String formatSinglelineComment(String doc) {
 		return formatSinglelineComment(doc, (String) null);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 972
+	 */
 	@Pure
 		public String formatSinglelineComment(String doc, String indentation) {
 		StringBuilderBasedAppendable appendable = new StringBuilderBasedAppendable();
@@ -181,11 +256,17 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return appendable.getContent();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 991
+	 */
 	@Pure
 	public void formatSinglelineComment(String doc, IAppendable appendable) {
 		formatSinglelineComment(doc, null, appendable);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1004
+	 */
 	@Pure
 	public void formatSinglelineComment(String doc, String indentation, IAppendable appendable) {
 		if (!Strings.isEmpty(doc)) {
@@ -204,10 +285,16 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1049
+	 */
 	public void formatSinglelineComment(ITextReplacerContext context, IComment comment) {
 		formatSinglelineComment(context.getIndentationString(), new RegionAccessor(context, comment));
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1061
+	 */
 	private <T> void formatSinglelineComment(String indentationString, FormattedTextAccessor<T> backend) {
 		final String indent = Strings.emptyIfNull(indentationString);
 		final String comment = backend.getCommentText();
@@ -289,6 +376,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		backend.applyReplacements();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1227
+	 */
 	private static String safeSubstring(String text, int start, int length) {
 		if (text == null) {
 			return EMPTY_STR;
@@ -298,10 +388,16 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return text.substring(index, index + len);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1245
+	 */
 	private static boolean startsWith(String text, int start, String pattern) {
 		return safeSubstring(text, start, pattern.length()).equals(pattern);
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1253
+	 */
 	private static String makeWhiteSpaces(int nb) {
 		final StringBuilder b = new StringBuilder();
 		for (int i = 0; i < nb; ++i) {
@@ -310,17 +406,29 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return b.toString();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1269
+	 */
 	protected int getWhiteSpacesOnFirstLine() {
 		return 1;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1277
+	 */
 	protected int getWhiteSpacesOnOtherLines() {
 		return 1;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1285
+	 */
 	protected <T> void formatLineText(String lineText, boolean isMultlineComment, FormattedTextAccessor<T> backend) {
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1291
+	 */
 	private <T> boolean formatMultlineCommentFirstLine(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {
 		// Skip the comment characters that corresponds to the Javadoc format: /**.
 		int realCommentStart = 0;
@@ -363,6 +471,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return false;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1375
+	 */
 	private <T> boolean formatMultlineCommentOtherLines(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {
 		// Search for the comment prefix (usually " * "
 		int realCommentStart = 0;
@@ -411,6 +522,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		return false;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1471
+	 */
 	private <T> void formatMultlineComment(String indentationString, String newLineString, FormattedTextAccessor<T> backend) {
 		final String indent = Strings.emptyIfNull(indentationString);
 		final String comment = backend.getCommentText();
@@ -464,6 +578,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		backend.applyReplacements();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1578
+	 */
 	public interface FormattedTextAccessor<T> {
 		T getFirstLine(int offset);
 		T getNextLine(T currentLine);
@@ -477,49 +594,103 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		void applyReplacements();
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1604
+	 */
 	public class SubAccessor<T> implements FormattedTextAccessor<T> {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1607
+	 */
 		private final FormattedTextAccessor<T> parent;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1610
+	 */
 		private final int offsetInParent;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1613
+	 */
 		public SubAccessor(FormattedTextAccessor<T> parent, int offsetInParent) {
 			assert parent != null;
 			this.parent = parent;
 			this.offsetInParent = offsetInParent;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1624
+	 */
 		public T getFirstLine(int offset) {
 			return this.parent.getFirstLine(offset);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1631
+	 */
 		public T getNextLine(T currentLine) {
 			return this.parent.getNextLine(currentLine);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1638
+	 */
 		public int getLineOffset(T currentLine) {
 			return this.parent.getLineOffset(currentLine);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1645
+	 */
 		public int getLineLength(T currentLine) {
 			return this.parent.getLineLength(currentLine);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1652
+	 */
 		public String getLineText(T line) {
 			return this.parent.getLineText(line);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1659
+	 */
 		public String getCommentText() {
 			return this.parent.getCommentText();
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1666
+	 */
 		public int getCommentOffset() {
 			return this.parent.getCommentOffset();
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1673
+	 */
 		public int getCommentEndOffset() {
 			return this.parent.getCommentEndOffset();
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1680
+	 */
 		public Replacement replace(int offset, int length, String newText) {
 			return this.parent.replace(this.offsetInParent + offset, length, newText);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1687
+	 */
 		public final void applyReplacements() {
 			throw new UnsupportedOperationException();
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1697
+	 */
 	public static class Line {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1700
+	 */
 		private final int offset;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1703
+	 */
 		private final int length;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1706
+	 */
 		public static Line newInstance(String text, int offset) {
 			if (offset < 0 || offset >= text.length()) {
 				return null;
@@ -536,44 +707,83 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			final int length = Math.max(0, eoffset - soffset);
 			return new Line(soffset, length);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1741
+	 */
 		private Line(int offset, int length) {
 			this.offset = offset;
 			this.length = length;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1750
+	 */
 		public int getOffset() {
 			return this.offset;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1757
+	 */
 		public int getLength() {
 			return this.length;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1764
+	 */
 		public String toString() {
 			return "offset: " + getOffset() + "; length: " + getLength();
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1774
+	 */
 	public static abstract class AbstractReplacementAccessor<T> implements FormattedTextAccessor<T> {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1777
+	 */
 		private final String documentation;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1780
+	 */
 		private SortedMap<Integer, Replacement> replacements;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1785
+	 */
 		private boolean applied;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1788
+	 */
 		public AbstractReplacementAccessor(String documentation, SortedMap<Integer, Replacement> replacements) {
 			this.documentation = documentation;
 			this.replacements = replacements;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1799
+	 */
 		protected final void checkNotApplied() {
 			if (this.applied) {
 				throw new IllegalStateException("Changes are already applied");
 			}
 			this.applied = true;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1812
+	 */
 		public String getCommentText() {
 			return this.documentation;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1819
+	 */
 		protected SortedMap<Integer, Replacement> getReplacements() {
 			if (this.replacements == null) {
 				this.replacements = new TreeMap<>();
 			}
 			return this.replacements;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1836
+	 */
 		public Replacement replace(int offset, int length, String newText) {
 			Replacement rep = getReplacements().remove(offset);
 			if (rep == null) {
@@ -584,6 +794,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			getReplacements().put(offset, rep);
 			return rep;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1857
+	 */
 		protected static void applyReplacements(IAppendable appendable, String text, Map<Integer, Replacement> replacements) {
 			int offset = 0;
 			for (final Replacement replacement : replacements.values()) {
@@ -606,16 +819,31 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1905
+	 */
 	public static abstract class AbstractDebuggingAccessor<T> extends AbstractReplacementAccessor<T> {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1908
+	 */
 		private String buffer;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1911
+	 */
 		public AbstractDebuggingAccessor(String text, SortedMap<Integer, Replacement> replacements) {
 			super(text, replacements);
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1920
+	 */
 		private String computeBuffer() {
 			IAppendable appendable = new FakeTreeAppendable();
 			applyReplacements(appendable, getCommentText(), getReplacements());
 			return appendable.getContent();
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1935
+	 */
 		public String toString() {
 			if (this.buffer == null) {
 				this.buffer = computeBuffer();
@@ -623,6 +851,9 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			return this.buffer;
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1949
+	 */
 		public Replacement replace(int offset, int length, String newText) {
 			final Replacement rep = super.replace(offset, length, newText);
 			this.buffer = computeBuffer();
@@ -631,10 +862,25 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1964
+	 */
 	public static class RegionAccessor extends AbstractReplacementAccessor<ILineRegion> {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1969
+	 */
 		private final ITextReplacerContext context;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1974
+	 */
 		private final ITextRegionAccess access;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1979
+	 */
 		private final IComment comment;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 1984
+	 */
 		public RegionAccessor(ITextReplacerContext context, IComment comment) {
 			super(comment.getText(), null);
 			this.context = context;
@@ -642,39 +888,66 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			this.access = comment.getTextRegionAccess();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2002
+	 */
 		public String getCommentText() {
 			return this.comment.getText();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2010
+	 */
 		public String getLineText(ILineRegion line) {
 			ITextSegment segment = this.access.regionForOffset(line.getOffset(), line.getLength());
 			return segment.getText();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2024
+	 */
 		public int getCommentOffset() {
 			return this.comment.getOffset();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2032
+	 */
 		public int getCommentEndOffset() {
 			return this.comment.getEndOffset();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2040
+	 */
 		public ILineRegion getFirstLine(int offset) {
 			return this.access.regionForLineAtOffset(offset);
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2050
+	 */
 		public ILineRegion getNextLine(ILineRegion currentLine) {
 			return currentLine.getNextLine();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2062
+	 */
 		public int getLineOffset(ILineRegion currentLine) {
 			return currentLine.getOffset() - getCommentOffset();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2072
+	 */
 		public int getLineLength(ILineRegion currentLine) {
 			return currentLine.getLength();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2082
+	 */
 		public void applyReplacements() {
 			checkNotApplied();
 			for (Replacement replacement : getReplacements().values()) {
@@ -685,10 +958,25 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2103
+	 */
 	private static class AppendableAccessor extends AbstractReplacementAccessor<Line> {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2106
+	 */
 		private final IAppendable target;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2111
+	 */
 		private final int commentOffset;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2114
+	 */
 		private final int commentEndOffset;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2117
+	 */
 		public AppendableAccessor(IAppendable target, String documentation, SortedMap<Integer, Replacement> replacements, int commentOffset, int commentEndOffset) {
 			super(documentation, replacements);
 			this.target = target;
@@ -696,10 +984,16 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			this.commentEndOffset = commentEndOffset;
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2135
+	 */
 		public Line getFirstLine(int offset) {
 			return Line.newInstance(getCommentText(), offset);
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2143
+	 */
 		public Line getNextLine(Line currentLine) {
 			int index = getCommentText().indexOf(NL_CHAR, currentLine.getOffset());
 			if (index < 0) {
@@ -708,27 +1002,45 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			return Line.newInstance(getCommentText(), index + 1);
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2159
+	 */
 		public int getLineOffset(Line currentLine) {
 			return currentLine.getOffset();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2167
+	 */
 		public int getLineLength(Line currentLine) {
 			return currentLine.getLength();
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2175
+	 */
 		public String getLineText(Line line) {
 			final int offset = line.getOffset();
 			return getCommentText().substring(offset, offset + line.getLength());
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2185
+	 */
 		public int getCommentOffset() {
 			return this.commentOffset;
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2193
+	 */
 		public int getCommentEndOffset() {
 			return this.commentEndOffset;
 		}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2201
+	 */
 		public void applyReplacements() {
 			checkNotApplied();
 			applyReplacements(this.target, getCommentText(), getReplacements());
@@ -736,24 +1048,51 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2214
+	 */
 	public static class Replacement {
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2217
+	 */
 		private final int offset;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2220
+	 */
 		private final int length;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2223
+	 */
 		private final String text;
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2226
+	 */
 		public Replacement(int offset, int length, String text) {
 			this.offset = offset;
 			this.length = length;
 			this.text = text;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2237
+	 */
 		public int getOffset() {
 			return this.offset;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2244
+	 */
 		public int getLength() {
 			return this.length;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2251
+	 */
 		public String getText() {
 			return this.text;
 		}
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2258
+	 */
 		public String toString() {
 			return "offset: " + getOffset() + "; length: " + getLength() + "; new text: " + getText();
 		}

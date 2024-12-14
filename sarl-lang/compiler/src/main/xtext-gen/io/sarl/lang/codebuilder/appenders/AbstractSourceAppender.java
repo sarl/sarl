@@ -35,7 +35,8 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -44,35 +45,48 @@ import org.eclipse.xtext.formatting.impl.AbstractTokenStream;
 import org.eclipse.xtext.resource.SaveOptions;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.serializer.impl.Serializer;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
 import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
 
 /** Abstract implementation of an appender for the Sarl language.
- * @see AbstractAppenderBuilderFragment.java : appendTo : 142
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 144
  */
 @SuppressWarnings("all")
 public abstract class AbstractSourceAppender {
 
 	public static final String OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME = "io.sarl.lang.codebuilder.appenders.SourceAppender.providerType";
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 159
+	 */
 	@Inject
 	private Injector originalInjector;
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 168
+	 */
 	@Inject
 	@Named(OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME)
 	private AbstractTypeScopeProvider scopeProvider;
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 181
+	 */
 	@Inject
 	private TypeScopes typeScopes;
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 190
+	 */
 	private boolean isFormatting;
 
 	/** Set if this building is formatting the generated code.
 	 *
 	 * @param formatting {@code true} if the appender is formatting the generated code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 196
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 200
 	 */
 	public void setFormatting(boolean formatting) {
 		this.isFormatting = formatting;
@@ -81,7 +95,7 @@ public abstract class AbstractSourceAppender {
 	/** Replies if this building is formatting the generated code.
 	 *
 	 * @return {@code true} if the appender is formatting the generated code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 214
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 216
 	 */
 	public boolean isFormatting() {
 		return this.isFormatting;
@@ -95,16 +109,17 @@ public abstract class AbstractSourceAppender {
 
 	/** Build the source code and put it into the given appender.
 	 * @param appender the object that permits to create the source code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 244
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 242
 	 */
 	public abstract void build(ISourceAppender appender) throws IOException;
 
 	/** Build the source code and put it into the given appender.
 	 * @param object the object to serialize
 	 * @param appender the object that permits to create the source code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 262
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 258
 	 */
-	protected void build(EObject object, ISourceAppender appender) throws IOException {
+	public void build(EObject object, ISourceAppender appender) throws IOException {
+		resolvesTypes(object);
 		final IJvmTypeProvider provider = getTypeResolutionContext();
 		if (provider != null) {
 			final Map<Key<?>, Binding<?>> bindings = this.originalInjector.getBindings();
@@ -117,9 +132,7 @@ public abstract class AbstractSourceAppender {
 			} finally {
 				try {
 					final Field f = DelegatingScopes.class.getDeclaredField("delegate");
-					if (!f.isAccessible()) {
-						f.setAccessible(true);
-					}
+					f.setAccessible(true);
 					f.set(this.typeScopes, oldDelegate);
 				} catch (Exception exception) {
 					throw new Error(exception);
@@ -128,6 +141,20 @@ public abstract class AbstractSourceAppender {
 		} else {
 			final AppenderSerializer serializer = this.originalInjector.getProvider(AppenderSerializer.class).get();
 			serializer.serialize(object, appender, isFormatting());
+		}
+	}
+
+	/** Resolves the pending types in the resource associated to the associated Ecore element.
+	 * @param object the object to resolve
+	 * @since 0.15
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 351
+	 */
+	protected void resolvesTypes(EObject object) {
+		if (object != null) {
+			final Resource resource = object.eResource();
+			if (resource != null) {
+				EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
+			}
 		}
 	}
 
@@ -148,46 +175,63 @@ public abstract class AbstractSourceAppender {
 
 	}
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 425
+	 */
 	private static class AppenderBasedTokenStream extends AbstractTokenStream {
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 431
+	 */
 		private final ISourceAppender appender;
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 437
+	 */
 		public AppenderBasedTokenStream(ISourceAppender appender) {
 			this.appender = appender;
 		}
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 447
+	 */
 		public String toString() {
 			return this.appender.toString();
 		}
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 455
+	 */
 		public void writeHidden(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
 				this.appender.append(value);
 			}
 		}
 
+	/**
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 473
+	 */
 		public void writeSemantic(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
 				this.appender.append(value);
 			}
 		}
-
 	}
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 464
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 495
 	 */
-	public abstract JvmParameterizedTypeReference newTypeRef(String typeName);
+	public abstract JvmTypeReference newTypeRef(String typeName);
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 476
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 505
 	 */
-	public abstract JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+	public abstract JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 490
+	 * @see AbstractAppenderBuilderFragment.java : appendTo : 517
 	 */
-	public abstract JvmParameterizedTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args);
+	public abstract JvmTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args);
 
 }
 

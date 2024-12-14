@@ -28,14 +28,14 @@ import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumeration.
- * @see TopElementBuilderFragment.java : appendTo : 307
+	 * @see TopElementBuilderFragment.java : appendTo : 301
  */
 @SuppressWarnings("all")
 public interface ISarlEnumerationBuilder {
@@ -43,72 +43,93 @@ public interface ISarlEnumerationBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1142
+	 * @see TopElementBuilderFragment.java : appendTo : 1143
 	 */
-	JvmParameterizedTypeReference newTypeRef(String typeName);
+	JvmTypeReference newTypeRef(String typeName);
 
 	/** Find the reference to the type with the given name.
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1172
+	 * @see TopElementBuilderFragment.java : appendTo : 1171
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1204
+	 * @see TopElementBuilderFragment.java : appendTo : 1201
 	 */
-	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1238
+	 * @see TopElementBuilderFragment.java : appendTo : 1233
 	 */
-	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
 	/** Find the reference to the type with the given type parameters.
 	 * @param context the context in which the type is defined
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1274
+	 * @see TopElementBuilderFragment.java : appendTo : 1267
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see TopElementBuilderFragment.java : appendTo : 1308
+	 * @see TopElementBuilderFragment.java : appendTo : 1299
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1332
+	 * @see TopElementBuilderFragment.java : appendTo : 1321
 	 */
 	void dispose();
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlEnumeration is added.
+	 * @param name the simple name of the SarlEnumeration.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Initialize the Ecore element when inner type declaration.
-	 * @see TopElementBuilderFragment.java : appendTo : 1460
+	 * @param container the Ecore type that must contain this new SarlEnumeration.
+	 * @param name the simple name of the SarlEnumeration.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1458
 	 */
 	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlEnumeration.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	SarlEnumeration getSarlEnumeration();
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlEnumerationReference();
+
+	/** Replies the JVM declared type for this generated SarlEnumeration.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	JvmDeclaredType getJvmDeclaredType();
+
 	/** Replies the resource to which the SarlEnumeration is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	Resource eResource();
@@ -118,20 +139,22 @@ public interface ISarlEnumerationBuilder {
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	void setDocumentation(String doc);
+	ISarlEnumerationBuilder setDocumentation(String doc);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	void addModifier(String modifier);
+	ISarlEnumerationBuilder addModifier(String modifier);
 
 	/** Create a SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 551
+	 * @see TopElementBuilderFragment.java : appendTo : 540
 	 */
 	ISarlEnumLiteralBuilder addSarlEnumLiteral(String name);
 

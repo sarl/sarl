@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source appender of a Sarl SarlBehaviorUnit.
- * @see AbstractMemberBuilderFragment.java : appendTo : 192
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 189
  */
 @SuppressWarnings("all")
 public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender implements ISarlBehaviorUnitBuilder {
@@ -50,6 +50,12 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlBehaviorUnit(), appender);
 	}
@@ -57,9 +63,9 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 343
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 347
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -67,9 +73,9 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 373
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 375
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -79,7 +85,7 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 405
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -87,9 +93,9 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 439
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 437
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -98,19 +104,23 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 475
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 471
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 518
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 510
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
+	/** Replies the context for type resolution.
+	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 539
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
@@ -118,7 +128,8 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
@@ -127,14 +138,15 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 702
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 757
 	 */
 	public void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -142,7 +154,7 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	public Resource eResource() {
@@ -154,15 +166,17 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlBehaviorUnitBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);
+		return this;
 	}
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1288
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1382
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {
@@ -171,12 +185,15 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		return this.builder.getExpression();
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 */
 	@Override
 	@Pure
 	public String toString() {

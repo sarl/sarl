@@ -31,6 +31,8 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -38,13 +40,16 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlArtifact.
- * @see TopElementBuilderFragment.java : appendTo : 410
+	 * @see TopElementBuilderFragment.java : appendTo : 400
  */
 @SuppressWarnings("all")
 public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArtifactBuilder {
 
 	private SarlArtifact sarlArtifact;
 
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -52,30 +57,51 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlArtifact is added.
+	 * @param name the simple name of the SarlArtifact.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
 		if (this.sarlArtifact == null) {
 			this.sarlArtifact = SarlFactory.eINSTANCE.createSarlArtifact();
-			script.getXtendTypes().add(this.sarlArtifact);
 			this.sarlArtifact.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
-			if (!Strings.isEmpty(name)) {
-				this.sarlArtifact.setName(name);
-			}
+			this.sarlArtifact.setName(name);
+			script.getXtendTypes().add(this.sarlArtifact);
 		}
 	}
 
 	/** Replies the generated SarlArtifact.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	public SarlArtifact getSarlArtifact() {
 		return this.sarlArtifact;
 	}
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlArtifactReference() {
+		SarlArtifact ecoreObject = getSarlArtifact();
+		return getTypeReferenceFor(ecoreObject);
+	}
+
+	/** Replies the JVM declared type for this generated SarlArtifact.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	public JvmDeclaredType getJvmDeclaredType() {
+		return getAssociatedElement(JvmDeclaredType.class, getSarlArtifact(), eResource(), true);
+	}
+
 	/** Replies the resource to which the SarlArtifact is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	public Resource eResource() {
@@ -87,9 +113,10 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlArtifactBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlArtifact().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -105,16 +132,19 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	public void addModifier(String modifier) {
+	public ISarlArtifactBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
 			this.sarlArtifact.getModifiers().add(modifier);
 		}
+		return this;
 	}
 
 }

@@ -34,25 +34,25 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlBehaviorUnit.
-
- * @see AbstractMemberBuilderFragment.java : appendTo : 113 */
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 113
+ */
 @SuppressWarnings("all")
 public interface ISarlBehaviorUnitBuilder {
 
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 343
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 347
 	 */
-	JvmParameterizedTypeReference newTypeRef(String typeName);
+	JvmTypeReference newTypeRef(String typeName);
 
 	/** Find the reference to the type with the given name.
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 373
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 375
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
+	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Find the reference to the type and type parameters.
 	 * @param type the type to reference
@@ -60,58 +60,60 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 405
 	 */
-	JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
 	/** Find the reference to the type and type parameters.
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 439
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 437
 	 */
-	JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
 	/** Find the reference to the type and type parameters.
 	 * @param context the context in which the type is defined
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 475
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 471
 	 */
-	JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
+	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 507
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 501
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 536
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 526
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 702
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 757
 	 */
 	void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	SarlBehaviorUnit getSarlBehaviorUnit();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	Resource eResource();
@@ -121,20 +123,21 @@ public interface ISarlBehaviorUnitBuilder {
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	void setDocumentation(String doc);
+	ISarlBehaviorUnitBuilder setDocumentation(String doc);
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1288
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1382
 	 */
 	@Pure
 	IExpressionBuilder getGuard();
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	IBlockExpressionBuilder getExpression();
 

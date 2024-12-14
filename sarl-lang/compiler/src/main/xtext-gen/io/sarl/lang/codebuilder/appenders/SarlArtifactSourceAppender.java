@@ -29,7 +29,7 @@ import io.sarl.lang.sarl.SarlScript;
 import java.io.IOException;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source adapter of a Sarl SarlArtifact.
- * @see TopElementBuilderFragment.java : appendTo : 356
+	 * @see TopElementBuilderFragment.java : appendTo : 348
  */
 @SuppressWarnings("all")
 public class SarlArtifactSourceAppender extends AbstractSourceAppender implements ISarlArtifactBuilder {
@@ -48,6 +48,12 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlArtifact(), appender);
 	}
@@ -55,9 +61,9 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1142
+	 * @see TopElementBuilderFragment.java : appendTo : 1143
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -65,9 +71,9 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1172
+	 * @see TopElementBuilderFragment.java : appendTo : 1171
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -75,9 +81,9 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1204
+	 * @see TopElementBuilderFragment.java : appendTo : 1201
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -85,9 +91,9 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1238
+	 * @see TopElementBuilderFragment.java : appendTo : 1233
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -96,9 +102,9 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1274
+	 * @see TopElementBuilderFragment.java : appendTo : 1267
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
@@ -107,12 +113,15 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	}
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1343
+	 * @see TopElementBuilderFragment.java : appendTo : 1330
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -120,22 +129,44 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	}
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlArtifact is added.
+	 * @param name the simple name of the SarlArtifact.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		this.builder.eInit(script, name, context);
 	}
 
 	/** Replies the generated SarlArtifact.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	public SarlArtifact getSarlArtifact() {
 		return this.builder.getSarlArtifact();
 	}
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlArtifactReference() {
+		return this.builder.getSarlArtifactReference();
+	}
+
+	/** Replies the JVM declared type for this generated SarlArtifact.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	public JvmDeclaredType getJvmDeclaredType() {
+		return this.builder.getJvmDeclaredType();
+	}
+
 	/** Replies the resource to which the SarlArtifact is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	public Resource eResource() {
@@ -147,18 +178,22 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlArtifactBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);
+		return this;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	public void addModifier(String modifier) {
+	public ISarlArtifactBuilder addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+		return this;
 	}
 
 }

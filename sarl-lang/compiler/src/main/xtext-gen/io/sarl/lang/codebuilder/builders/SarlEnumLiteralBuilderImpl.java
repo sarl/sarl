@@ -40,38 +40,65 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumLiteral.
- * @see AbstractMemberBuilderFragment.java : appendTo : 150
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 149
  */
 @SuppressWarnings("all")
 public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarlEnumLiteralBuilder {
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 293
+	 */
 	@Inject
 	private Provider<IFormalParameterBuilder> parameterProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 304
+	 */
 	@Inject
 	private Provider<IBlockExpressionBuilder> blockExpressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 315
+	 */
 	@Inject
 	private Provider<IExpressionBuilder> expressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 326
+	 */
 	private EObject container;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 332
+	 */
 	private SarlEnumLiteral sarlEnumLiteral;
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		setTypeResolutionContext(context);
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
 		if (this.sarlEnumLiteral == null) {
-			this.container = container;
 			this.sarlEnumLiteral = SarlFactory.eINSTANCE.createSarlEnumLiteral();
+			internalEInit(container, context);
 			this.sarlEnumLiteral.setName(name);
-			container.getMembers().add(this.sarlEnumLiteral);
 		}
 	}
 
+	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		assert this.sarlEnumLiteral != null;
+		setTypeResolutionContext(context);
+		this.container = container;
+		container.getMembers().add(this.sarlEnumLiteral);
+		this.sarlEnumLiteral.setDeclaringType(container);
+	}
+
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	public SarlEnumLiteral getSarlEnumLiteral() {
@@ -79,7 +106,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	public Resource eResource() {
@@ -91,9 +118,10 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlEnumLiteralBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlEnumLiteral().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -109,8 +137,12 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 */
 	@Override
 	@Pure
 	public String toString() {

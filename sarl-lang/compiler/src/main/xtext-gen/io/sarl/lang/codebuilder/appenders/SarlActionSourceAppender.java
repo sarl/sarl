@@ -32,7 +32,6 @@ import java.io.IOException;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -40,7 +39,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source appender of a Sarl SarlAction.
- * @see AbstractMemberBuilderFragment.java : appendTo : 192
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 189
  */
 @SuppressWarnings("all")
 public class SarlActionSourceAppender extends AbstractSourceAppender implements ISarlActionBuilder {
@@ -51,6 +50,12 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlAction(), appender);
 	}
@@ -58,9 +63,9 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 343
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 347
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -68,9 +73,9 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 373
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 375
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -80,7 +85,7 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 405
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -88,9 +93,9 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 439
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 437
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -99,19 +104,23 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 475
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 471
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 518
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 510
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
+	/** Replies the context for type resolution.
+	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 539
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
@@ -119,14 +128,16 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlAction.
 	 * @param name the name of the SarlAction.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param modifier the major/default modifier to be associated to the member.
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, modifier, context);
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	public SarlAction getSarlAction() {
@@ -134,7 +145,7 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	public Resource eResource() {
@@ -146,15 +157,17 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlActionBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);
+		return this;
 	}
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 966
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1049
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		return this.builder.addParameter(name);
@@ -162,55 +175,65 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1010
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1093
 	 */
-	public void addException(String type) {
+	public ISarlActionBuilder addException(String type) {
 		this.builder.addException(type);
+		return this;
 	}
 
 	/** Add a throwable exception.
 	 * @param type the exception.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1050
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1136
 	 */
-	public void addException(JvmParameterizedTypeReference type) {
+	public ISarlActionBuilder addException(JvmTypeReference type) {
 		this.builder.addException(type);
+		return this;
 	}
 
 	/** Add a fired event.
 	 * @param type the fully qualified name of the event.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1092
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1181
 	 */
-	public void addFiredEvent(String type) {
+	public ISarlActionBuilder addFiredEvent(String type) {
 		this.builder.addFiredEvent(type);
+		return this;
 	}
 
 	/** Add a fired event.
 	 * @param type the event.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1132
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1222
 	 */
-	public void addFiredEvent(JvmParameterizedTypeReference type) {
+	public void addFiredEvent(JvmTypeReference type) {
 		this.builder.addFiredEvent(type);
 	}
 
 	/** Change the return type.
 	 @param type the return type of the member.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1174
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1264
 	 */
-	public void setReturnType(String type) {
+	public ISarlActionBuilder setReturnType(String type) {
 		this.builder.setReturnType(type);
+		return this;
 	}
 
 	/** Change the return type.
 	 @param type the return type of the member.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1227
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1320
 	 */
-	public void setReturnType(JvmParameterizedTypeReference type) {
+	public ISarlActionBuilder setReturnType(JvmTypeReference type) {
 		this.builder.setReturnType(type);
+		return this;
 	}
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		return this.builder.getExpression();
@@ -218,28 +241,37 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 
 	/** Add an annotation.
 	 * @param type the qualified name of the annotation
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1408
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1500
 	 */
-	public void addAnnotation(String type) {
+	public ISarlActionBuilder addAnnotation(String type) {
 		this.builder.addAnnotation(type);
+		return this;
 	}
 
 	/** Add an annotation.
 	 * @param type the annotation type
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1449
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1544
 	 */
-	public void addAnnotation(JvmParameterizedTypeReference type) {
+	public ISarlActionBuilder addAnnotation(JvmTypeReference type) {
 		this.builder.addAnnotation(type);
+		return this;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1496
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
 	 */
-	public void addModifier(String modifier) {
+	public ISarlActionBuilder addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+		return this;
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -249,7 +281,7 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1574
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1675
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		return this.builder.addTypeParameter(name);

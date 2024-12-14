@@ -30,10 +30,13 @@ import org.eclipse.xtend.core.documentation.XtendDocumentationProvider;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Provider a documentation string.
- * @see DocumentationBuilderFragment.java : appendTo : 2498
+	 * @see DocumentationBuilderFragment.java : appendTo : 2584
  */
 public class SarlDocumentationProvider extends XtendDocumentationProvider {
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2594
+	 */
 	public String getDocumentation(EObject o) {
 		// Get the documentation from the Xtext grammar hidden nodes.
 		String text = super.getDocumentation(o);

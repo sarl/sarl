@@ -38,6 +38,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.JvmAnyTypeReference;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
@@ -53,6 +55,7 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.imports.IImportsConfiguration;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -60,44 +63,92 @@ import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /** Abstract implementation of a builder for the Sarl language.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 83
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 86
  */
 @SuppressWarnings("all")
 public abstract class AbstractBuilder {
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 96
+	 */
 	@Inject
-		private IQualifiedNameProvider qualifiedNameProvider;
+	private IQualifiedNameProvider qualifiedNameProvider;
+
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 105
+	 */
 	@Inject
 	private JvmModelAssociator associations;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 114
+	 */
 	@Inject
 	private CommonTypeComputationServices services;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 123
+	 */
 	@Inject
 	private ImportManager importManager;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 132
+	 */
+	@Inject
+	private JvmTypeReferenceBuilder.Factory typeReferenceBuilderFactory;
+
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 141
+	 */
+	private JvmTypeReferenceBuilder typeReferenceBuilder;
+
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 147
+	 */
 	@Inject
 	private TypeReferences typeReferences;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 156
+	 */
 	@Inject
 	private Primitives primitives;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 165
+	 */
 	@Inject
 	private IImportsConfiguration importsConfiguration;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 174
+	 */
 	@Inject
 	private IResourceFactory resourceFactory;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 183
+	 */
 	private String fileExtension;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 187
+	 */
 	private IJvmTypeProvider typeResolutionContext;
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 193
+	 */
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
 		this.fileExtension = fileExtensions.split("[:;,]+")[0];
 	}
 
-	protected <T> T getAssociatedElement(Class<T> expectedType, EObject dslObject, Resource resource) {
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 208
+	 */
+	protected <T> T getAssociatedElement(Class<T> expectedType, EObject dslObject, Resource resource, boolean failIfNotFound) {
 		for (final EObject obj : this.associations.getJvmElements(dslObject)) {
 			if (expectedType.isInstance(obj)) {
 				return expectedType.cast(obj);
@@ -106,21 +157,30 @@ public abstract class AbstractBuilder {
 		if (resource instanceof DerivedStateAwareResource $c$value) {
 			$c$value.discardDerivedState();
 			$c$value.getContents();
-			return getAssociatedElement(expectedType, dslObject, null);
+			return getAssociatedElement(expectedType, dslObject, null, failIfNotFound);
 		}
-		throw new IllegalStateException("No JvmFormalParameter associated to " + dslObject + " in " + dslObject.eContainer());
+		if (failIfNotFound) {
+			throw new IllegalStateException("No " + expectedType.getSimpleName() + " associated to " + dslObject + " in " + dslObject.eContainer());
+		}
+		return null;
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 252
+	 */
 	protected void setTypeResolutionContext(IJvmTypeProvider context) {
 		this.typeResolutionContext = context;
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 262
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.typeResolutionContext;
 	}
 
 	/** Replies the script's file extension.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 237
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 274
 	 */
 	@Pure
 	public String getScriptFileExtension() {
@@ -130,9 +190,19 @@ public abstract class AbstractBuilder {
 	/** Replies the builder of type references.
 	 *
 	 * @return the type reference builder.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 258
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 293
 	 */
 	@Pure
+	protected JvmTypeReferenceBuilder getTypeReferenceBuilder() {
+		if (this.typeReferenceBuilder == null) {
+			this.typeReferenceBuilder = this.typeReferenceBuilderFactory.create(eResource().getResourceSet());
+		}
+		return this.typeReferenceBuilder;
+	}
+
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 314
+	 */
 	protected TypeReferences getTypeReferences() {
 		return this.typeReferences;
 	}
@@ -140,29 +210,34 @@ public abstract class AbstractBuilder {
 	/** Replies the primitive type tools.
 	 *
 	 * @return the primitive type tools.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 281
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 330
 	 */
 	@Pure
 	protected Primitives getPrimitiveTypes() {
 		return this.primitives;
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 345
+	 */
 	private JvmTypeReference innerFindType(Notifier context, String typeName) {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
 		JvmType type = null;
 		if (provider != null) {
 			type = provider.findTypeByName(typeName);
 		}
-		TypeReferences typeRefs = getTypeReferences();
 		if (type == null) {
-			type = typeRefs.findDeclaredType(typeName, context);
+			type = getTypeReferences().findDeclaredType(typeName, context);
 		}
 		if (type == null) {
 			return null;
 		}
-		return typeRefs.createTypeRef(type);
+		return getTypeReferenceBuilder().typeRef(type);
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 383
+	 */
 	protected JvmTypeReference findType(Notifier context, String typeName) {
 		final JvmTypeReference type = innerFindType(context, typeName);
 		if (!isTypeReference(type)) {
@@ -178,77 +253,108 @@ public abstract class AbstractBuilder {
 		return type;
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 425
+	 */
 	protected static XtextResource toResource(Notifier context) {
 		return (XtextResource) (context instanceof Resource ? context : ((EObject) context).eResource());
 	}
 
-	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 399
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 443
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	private void addImport(JvmTypeReference reference) {
+		if (reference != null) {
+			final JvmType type = reference.getType();
+			if (type instanceof JvmDeclaredType) {
+				getImportManager().addImportFor(type);
+			}
+		}
+	}
+
+	/** Replies the type reference for the given name in the given context.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 469
+	 */
+	public JvmTypeReference newTypeRef(String typeName) {
 		return newTypeRef(eResource(), typeName);
 	}
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 415
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 483
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		JvmTypeReference typeReference;
 		try {
 			typeReference = findType(context, typeName);
-			getImportManager().addImportFor(typeReference.getType());
-			return (JvmParameterizedTypeReference) typeReference;
+			addImport(typeReference);
+			return typeReference;
 		} catch (TypeNotPresentException exception) {
 		}
-		final JvmParameterizedTypeReference pref = ExpressionBuilderImpl.parseType(context, typeName, this);
+		final JvmTypeReference pref = ExpressionBuilderImpl.parseType(context, typeName, this);
 		final JvmTypeReference baseType = findType(context, pref.getType().getIdentifier());
-		final int len = pref.getArguments().size();
-		final JvmTypeReference[] args = new JvmTypeReference[len];
-		for (int i = 0; i < len; ++i) {
-			final JvmTypeReference original = pref.getArguments().get(i);
-			if (original instanceof JvmAnyTypeReference) {
-				args[i] = EcoreUtil.copy(original);
-			} else if (original instanceof JvmWildcardTypeReference $c$value) {
-				final JvmWildcardTypeReference wc = EcoreUtil.copy($c$value);
-				for (final JvmTypeConstraint c : wc.getConstraints()) {
-					c.setTypeReference(newTypeRef(context, c.getTypeReference().getIdentifier()));
+		final JvmTypeReference result;
+		if (pref instanceof JvmParameterizedTypeReference ppref) {
+			final int len = ppref.getArguments().size();
+			if (len > 0) {
+				final JvmTypeReference[] args = new JvmTypeReference[len];
+				for (int i = 0; i < len; ++i) {
+					final JvmTypeReference original = ppref.getArguments().get(i);
+					if (original instanceof JvmAnyTypeReference) {
+						args[i] = EcoreUtil.copy(original);
+					} else if (original instanceof JvmWildcardTypeReference $c$value) {
+						final JvmWildcardTypeReference wc = EcoreUtil.copy($c$value);
+						for (final JvmTypeConstraint c : wc.getConstraints()) {
+							c.setTypeReference(newTypeRef(context, c.getTypeReference().getIdentifier()));
+						}
+						args[i] = wc;
+					} else {
+						args[i] = newTypeRef(context, original.getIdentifier());
+					}
 				}
-				args[i] = wc;
+				result = getTypeReferenceBuilder().typeRef(baseType.getType(), args);
 			} else {
-				args[i] = newTypeRef(context, original.getIdentifier());
+				result = getTypeReferenceBuilder().typeRef(baseType.getType());
 			}
+		} else {
+			result = getTypeReferenceBuilder().typeRef(baseType.getType());
 		}
-		final TypeReferences typeRefs = getTypeReferences();
-		final JvmParameterizedTypeReference result = typeRefs.createTypeRef(baseType.getType(), args);
-		getImportManager().addImportFor(result.getType());
+		addImport(result);
 		return result;
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 521
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 599
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args) {
-		final TypeReferences typeRefs = getTypeReferences();
-		final JvmParameterizedTypeReference ref = typeRefs.createTypeRef(typeName, args);
-		getImportManager().addImportFor(ref.getType());
+	public JvmTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args) {
+		final JvmTypeReference ref;
+		if (args != null && args.length > 0) {
+			ref = getTypeReferenceBuilder().typeRef(typeName, args);
+		} else {
+			ref = getTypeReferenceBuilder().typeRef(typeName);
+		}
+		addImport(ref);
 		return ref;
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 551
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 633
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return newTypeRef(eResource(), type, args);
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 571
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 651
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
-		final TypeReferences typeRefs = getTypeReferences();
-		final JvmType type0 = typeRefs.findDeclaredType(type, context);
-		final JvmParameterizedTypeReference ref = typeRefs.createTypeRef(type0, args);
-		getImportManager().addImportFor(type0);
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+		final JvmType type0 = getTypeReferences().findDeclaredType(type, context);
+		final JvmTypeReference ref;
+		if (args != null && args.length > 0) {
+			ref = getTypeReferenceBuilder().typeRef(type0, args);
+		} else {
+			ref = getTypeReferenceBuilder().typeRef(type0);
+		}
+		addImport(ref);
 		return ref;
 	}
 
@@ -258,7 +364,7 @@ public abstract class AbstractBuilder {
 	 * @param subType the subtype to test.
 	 * @param superType the expected super type.
 	 * @return the type reference.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 617
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 701
 	 */
 	@Pure
 	protected boolean isSubTypeOf(EObject context, JvmTypeReference subType, JvmTypeReference superType) {
@@ -272,7 +378,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the given object is a valid type reference.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 662
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 744
 	 */
 	@Pure
 	protected boolean isTypeReference(JvmTypeReference typeReference) {
@@ -283,6 +389,7 @@ public abstract class AbstractBuilder {
 	/** Replies the import's configuration.
 	 *
 	 * @return the import's configuration.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 767
 	 */
 	@Pure
 	protected IImportsConfiguration getImportsConfiguration() {
@@ -292,7 +399,7 @@ public abstract class AbstractBuilder {
 	/** Compute a unused URI for a synthetic resource.
 	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 707
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 788
 	 */
 	@Pure
 	protected URI computeUnusedUri(ResourceSet resourceSet) {
@@ -309,6 +416,7 @@ public abstract class AbstractBuilder {
 	/** Replies the resource factory.
 	 *
 	 * @return the resource factory.
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 829
 	 */
 	@Pure
 	protected IResourceFactory getResourceFactory() {
@@ -316,7 +424,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the type could contains functions with a body.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 766
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 846
 	 */
 	@Pure
 	protected boolean isActionBodyAllowed(XtendTypeDeclaration type) {
@@ -329,24 +437,70 @@ public abstract class AbstractBuilder {
 	/** Replies the import manager that stores the imported types.
 	 *
 	 * @return the import manager.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 807
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 885
 	 */
 	@Pure
 	protected ImportManager getImportManager() {
 		return this.importManager;
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 900
+	 */
 	protected String getQualifiedName(EObject object) {
 		return this.qualifiedNameProvider.getFullyQualifiedName(object).toString();
 	}
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 910
+	 */
 	@Pure
 	public abstract Resource eResource();
 
+	/**
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 919
+	 */
 	public void dispose() {
 		Resource resource = eResource();
 		ResourceSet resourceSet = resource.getResourceSet();
 		resourceSet.getResources().remove(resource);
+	}
+
+	/** Replies the reference to the generated Ecore element.
+	 * @param ecoreObject the object to get a reference to.
+	 * @param args the generic type arguments to put inside the reference.
+	 * @since 0.15
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 943
+	 */
+	@Pure
+	protected JvmTypeReference getTypeReferenceFor(EObject ecoreObject, JvmTypeReference... args) {
+		assert ecoreObject != null;
+		JvmType jvmObject = getAssociatedElement(JvmType.class, ecoreObject, ecoreObject.eResource(), false);
+		if (jvmObject == null) {
+			final var qn = getQualifiedName(ecoreObject);
+			final var provider = getTypeResolutionContext();
+			if (provider != null) {
+				jvmObject = provider.findTypeByName(qn);
+			}
+			if (jvmObject == null) {
+				jvmObject = getTypeReferences().findDeclaredType(qn, ecoreObject);
+			}
+			if (jvmObject == null) {
+				return null;
+			}
+		}
+		return newTypeRef(jvmObject, args);
+	}
+
+	/** Replies the reference to the generated Ecore element.
+	 * @param ecoreObject the object to get a reference to.
+	 * @since 0.15
+	 * @see AbstractBuilderBuilderFragment.java : appendTo : 1002
+	 */
+	@Pure
+	protected JvmExecutable getExecutableReferenceFor(EObject ecoreObject) {
+		assert ecoreObject != null;
+		return getAssociatedElement(JvmExecutable.class, ecoreObject, ecoreObject.eResource(), true);
 	}
 
 }

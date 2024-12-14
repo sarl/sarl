@@ -23,9 +23,11 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import com.google.inject.Inject;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.services.ITypeDefaultValueProvider;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -45,32 +47,45 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.XBooleanLiteral;
-import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl XExpression.
- * @see ExpressionBuilderFragment.java : appendTo : 145
+	 * @see ExpressionBuilderFragment.java : appendTo : 153
  */
 @SuppressWarnings("all")
 public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressionBuilder {
 
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 226
+	 */
 	private EObject context;
 
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 232
+	 */
 	private Procedure1<? super XExpression> setter;
 
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 240
+	 */
 	private XExpression expr;
+
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 246
+	 */
+	@Inject
+	private ITypeDefaultValueProvider defaultValueProvider;
 
 	/** Initialize the expression.
 	 * @param context the context of the expressions.
 	 * @param setter the object that permits to assign the expression to the context.
-	 * @see ExpressionBuilderFragment.java : appendTo : 439
+	 * @param typeContext the context for type resolution.
+	 * @see ExpressionBuilderFragment.java : appendTo : 452
 	 */
 	public void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);
@@ -82,7 +97,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the last created expression.
 	 *
 	 * @return the last created expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 484
+	 * @see ExpressionBuilderFragment.java : appendTo : 495
 	 */
 	@Pure
 	public XExpression getXExpression() {
@@ -90,7 +105,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	}
 
 	/** Replies the resource to which the XExpression is attached.
-	 * @see ExpressionBuilderFragment.java : appendTo : 515
+	 * @see ExpressionBuilderFragment.java : appendTo : 524
 	 */
 	@Pure
 	public Resource eResource() {
@@ -100,38 +115,48 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Change the expression in the container.
 	 *
 	 * @param expression the textual representation of the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 546
+	 * @return {@code this}
+	 * @see ExpressionBuilderFragment.java : appendTo : 555
 	 */
-	public void setExpression(String expression) {
+	public IExpressionBuilder setExpression(String expression) {
 		this.expr = fromString(expression);
 		this.setter.apply(this.expr);
+		return this;
 	}
 
 	/** Change the expression in the container.
 	 *
 	 * @param expression the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 579
+	 * @return {@code this}
+	 * @see ExpressionBuilderFragment.java : appendTo : 591
 	 */
-	public void setXExpression(XExpression expression) {
+	public IExpressionBuilder setXExpression(XExpression expression) {
 		this.expr = expression;
 		this.setter.apply(this.expr);
+		return this;
 	}
 
 	/** Generate a piece of Sarl code that permits to compile an XExpression.
 	 *
 	 * @param expression the expression to compile.
 	 * @return the Sarl code.
-	 * @see ExpressionBuilderFragment.java : appendTo : 621
+	 * @see ExpressionBuilderFragment.java : appendTo : 634
 	 */
 	static String generateExpressionCode(String expression) {
 		return "event ____synthesis { var ____fakefield = " + expression + " }";
 	}
 
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 648
+	 */
 	static String generateTypenameCode(String typeName) {
 		return "event ____synthesis { var ____fakefield : " + typeName + " }";
 	}
 
-	static JvmParameterizedTypeReference parseType(Notifier context, String typeName, AbstractBuilder caller) {
+	/**
+	 * @see ExpressionBuilderFragment.java : appendTo : 660
+	 */
+	static JvmTypeReference parseType(Notifier context, String typeName, AbstractBuilder caller) {
 		ResourceSet resourceSet = toResource(context).getResourceSet();
 		URI uri = caller.computeUnusedUri(resourceSet);
 		Resource resource = caller.getResourceFactory().createResource(uri);
@@ -145,22 +170,21 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 			if (reference instanceof JvmParameterizedTypeReference pref) {
 				if (!pref.getArguments().isEmpty()) {
 					EcoreUtil2.resolveAll(resource);
-					return pref;
 				}
 			}
+			return reference;
 		} catch (Exception exception) {
 			throw new TypeNotPresentException(typeName, exception);
 		} finally {
 			resourceSet.getResources().remove(resource);
 		}
-		throw new TypeNotPresentException(typeName, null);
 	}
 
 	/** Create an expression but does not change the container.
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 749
+	 * @see ExpressionBuilderFragment.java : appendTo : 758
 	 */
 	@Pure
 	protected XExpression fromString(String expression) {
@@ -187,123 +211,40 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 838
+	 * @see ExpressionBuilderFragment.java : appendTo : 845
 	 */
 	@Pure
 	public XExpression getDefaultXExpressionForType(String type) {
-		//TODO: Check if a similar function exists in the Xbase library.
-		XExpression expr = null;
-		if (type != null && !"void".equals(type) && !Void.class.getName().equals(type)) {
-			switch (type) {
-			case "boolean":
-			case "java.lang.Boolean":
-				XBooleanLiteral booleanLiteral = XbaseFactory.eINSTANCE.createXBooleanLiteral();
-				booleanLiteral.setIsTrue(false);
-				expr = booleanLiteral;
-				break;
-			case "float":
-			case "java.lang.Float":
-				XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
-				numberLiteral.setValue("0.0f");
-				expr = numberLiteral;
-				break;
-			case "double":
-			case "java.lang.Double":
-			case "java.lang.BigDecimal":
-				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
-				numberLiteral.setValue("0.0");
-				expr = numberLiteral;
-				break;
-			case "int":
-			case "long":
-			case "java.lang.Integer":
-			case "java.lang.Long":
-			case "java.lang.BigInteger":
-				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
-				numberLiteral.setValue("0");
-				expr = numberLiteral;
-				break;
-			case "byte":
-			case "short":
-			case "char":
-			case "java.lang.Byte":
-			case "java.lang.Short":
-			case "java.lang.Character":
-				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
-				numberLiteral.setValue("0");
-				XCastedExpression castExpression = XbaseFactory.eINSTANCE.createXCastedExpression();
-				castExpression.setTarget(numberLiteral);
-				castExpression.setType(newTypeRef(this.context, type));
-				expr = numberLiteral;
-				break;
-			default:
-				expr = XbaseFactory.eINSTANCE.createXNullLiteral();
-				break;
-			}
-		}
-		return expr;
+		return this.defaultValueProvider.getDefaultValueXExpression(type, this.context);
 	}
 
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 995
+	 * @see ExpressionBuilderFragment.java : appendTo : 878
 	 */
 	@Pure
-	public XExpression getDefaultXExpressionForType(JvmParameterizedTypeReference type) {
+	public XExpression getDefaultXExpressionForType(JvmTypeReference type) {
 		return getDefaultXExpressionForType(type.getType().getIdentifier());
 	}
 
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1032
+	 * @see ExpressionBuilderFragment.java : appendTo : 913
 	 */
 	@Pure
 	public String getDefaultValueForType(String type) {
-		//TODO: Check if a similar function exists in the Xbase library.
-		String defaultValue = "";
-		if (!Strings.isEmpty(type) && !"void".equals(type)) {
-			switch (type) {
-			case "boolean":
-				defaultValue = "false";
-				break;
-			case "double":
-				defaultValue = "0.0";
-				break;
-			case "float":
-				defaultValue = "0.0f";
-				break;
-			case "int":
-				defaultValue = "0";
-				break;
-			case "long":
-				defaultValue = "0";
-				break;
-			case "byte":
-				defaultValue = "(0 as byte)";
-				break;
-			case "short":
-				defaultValue = "(0 as short)";
-				break;
-			case "char":
-				defaultValue = "(0 as char)";
-				break;
-			default:
-				defaultValue = "null";
-				break;
-			}
-		}
-		return defaultValue;
+		return this.defaultValueProvider.getDefaultValueInSarlSyntax(type);
 	}
 
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1134
+	 * @see ExpressionBuilderFragment.java : appendTo : 945
 	 */
 	@Pure
-	public String getDefaultValueForType(JvmParameterizedTypeReference type) {
+	public String getDefaultValueForType(JvmTypeReference type) {
 		return getDefaultValueForType(type.getType().getIdentifier());
 	}
 
@@ -312,9 +253,10 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public IExpressionBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getXExpression().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -330,6 +272,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	@Override
@@ -341,12 +284,12 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1194
+	 * @see ExpressionBuilderFragment.java : appendTo : 1004
 	 */
 	public XFeatureCall createReferenceToThis() {
 		final XExpression expr = getXExpression();
 		XtendTypeDeclaration type = EcoreUtil2.getContainerOfType(expr, XtendTypeDeclaration.class);
-		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource());
+		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource(), true);
 		final XFeatureCall thisFeature = XbaseFactory.eINSTANCE.createXFeatureCall();
 		thisFeature.setFeature(jvmObject);
 		return thisFeature;
@@ -355,12 +298,12 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1254
+	 * @see ExpressionBuilderFragment.java : appendTo : 1062
 	 */
 	public XFeatureCall createReferenceToSuper() {
 		final XExpression expr = getXExpression();
 		XtendTypeDeclaration type = EcoreUtil2.getContainerOfType(expr, XtendTypeDeclaration.class);
-		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource());
+		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource(), true);
 		final XFeatureCall superFeature = XbaseFactory.eINSTANCE.createXFeatureCall();
 		JvmIdentifiableElement feature;
 		if (jvmObject instanceof JvmDeclaredType $c$value) {

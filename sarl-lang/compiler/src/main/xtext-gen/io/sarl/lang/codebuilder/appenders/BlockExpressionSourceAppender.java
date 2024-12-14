@@ -32,7 +32,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -42,7 +41,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Appender of a Sarl XBlockExpression.
- * @see BlockExpressionBuilderFragment.java : appendTo : 183
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 178
  */
 @SuppressWarnings("all")
 public class BlockExpressionSourceAppender extends AbstractSourceAppender implements IBlockExpressionBuilder {
@@ -53,6 +52,12 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getXBlockExpression(), appender);
 	}
@@ -60,9 +65,9 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 272
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 266
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -70,9 +75,9 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 302
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 294
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -80,9 +85,9 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 334
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 324
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -90,9 +95,9 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 368
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 356
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -101,18 +106,23 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 404
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 390
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
+	/** Replies the context for type resolution.
+	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 435
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
 
 	/** Create the XBlockExpression.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 461
+	 * @param context the context for type resolution.
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 452
 	 */
 	public void eInit(IJvmTypeProvider context) {
 		this.builder.eInit(context);
@@ -120,7 +130,7 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 
 	/** Replies the string for "auto-generated" comments.
 	 * @return the comment text.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 500
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 489
 	 */
 	@Pure
 	public String getAutoGeneratedActionString() {
@@ -130,7 +140,7 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	/** Replies the string for "auto-generated" comments.
 	 * @param resource the resource for which the comment must be determined.
 	 * @return the comment text.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 534
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 521
 	 */
 	@Pure
 	public String getAutoGeneratedActionString(Resource resource) {
@@ -139,7 +149,7 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 
 	/** An empty block expression.
 	 * @return the block expression.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 586
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 571
 	 */
 	@Pure
 	public XBlockExpression getXBlockExpression() {
@@ -147,7 +157,7 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Replies the resource to which the XBlockExpression is attached.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 617
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 600
 	 */
 	@Pure
 	public Resource eResource() {
@@ -159,9 +169,10 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * <p>getXBlockExpression()
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setInnerDocumentation(String doc) {
+	public IBlockExpressionBuilder setInnerDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getXBlockExpression().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -177,11 +188,12 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Add an expression inside the block.
 	 * @return the expression builder.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 650
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 632
 	 */
 	public IExpressionBuilder addExpression() {
 		return this.builder.addExpression();
@@ -191,12 +203,39 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	 * <p>Any previously added content is removed.
 	 * @param type the expected type of the block (the last instruction), or
 	    {@code null} for no type.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 716
+	 * @return {@code this}
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 698
 	 */
-	public void setDefaultAutoGeneratedContent(String type) {
+	public IBlockExpressionBuilder setDefaultAutoGeneratedContent(String type) {
 		this.builder.setDefaultAutoGeneratedContent(type);
+		return this;
 	}
 
+	/** Fill the block with the standard "auto-generated" content.
+	 * <p>Any previously added content is removed.
+	 * @param type the expected type of the block (the last instruction), or
+	    {@code null} for no type.
+	 * @return {@code this}
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 764
+	 */
+	public IBlockExpressionBuilder setDefaultAutoGeneratedContent(JvmTypeReference type) {
+		this.builder.setDefaultAutoGeneratedContent(type);
+		return this;
+	}
+
+	/** Fill the block with the standard "auto-generated" content assuming that there is no value to return.
+	 * <p>Any previously added content is removed.
+	 * @return {@code this}
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 826
+	 */
+	public IBlockExpressionBuilder setDefaultAutoGeneratedContent() {
+		this.builder.setDefaultAutoGeneratedContent();
+		return this;
+	}
+
+	/**
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 856
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -204,7 +243,7 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Dispose the resource.
-	 * @see BlockExpressionBuilderFragment.java : appendTo : 808
+	 * @see BlockExpressionBuilderFragment.java : appendTo : 891
 	 */
 	public void dispose() {
 		this.builder.dispose();

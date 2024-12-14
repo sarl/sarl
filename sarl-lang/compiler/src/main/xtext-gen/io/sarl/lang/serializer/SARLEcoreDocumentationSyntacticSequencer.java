@@ -49,25 +49,45 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Syntactic sequencer which supports documentations of Ecore elements.
- * @see DocumentationBuilderFragment.java : appendTo : 2584
-	 * @see DocumentationBuilderFragment.java : appendTo : 2587
+	 * @see DocumentationBuilderFragment.java : appendTo : 2669
  */
 public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSequencer {
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2679
+	 */
 	private final Set<EObject> documentedSemanticObjects = new HashSet<>();
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2689
+	 */
 	private final Set<EObject> indocumentedSemanticObjects = new HashSet<>();
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2699
+	 */
 	private InnerBlockDocumentationAdapter lastInnerBlock;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2705
+	 */
 	@Inject
 	private IEcoreDocumentationBuilder documentationBuilder;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2714
+	 */
 	@Inject
 	private SARLGrammarKeywordAccess keywords;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2723
+	 */
 	private ISequenceAcceptor trailingSequenceAcceptor;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2729
+	 */
 	public void init(ISerializationContext context, EObject semanticObject,
 				ISyntacticSequenceAcceptor sequenceAcceptor, ISerializationDiagnostic.Acceptor errorAcceptor) {
 		super.init(context, semanticObject, sequenceAcceptor, errorAcceptor);
@@ -79,6 +99,9 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		this.lastInnerBlock = null;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2761
+	 */
 	protected ISequenceAcceptor getTrailingSequenceAcceptor() {
 		if (this.trailingSequenceAcceptor == null) {
 			try {
@@ -92,6 +115,9 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		return this.trailingSequenceAcceptor;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2795
+	 */
 	protected void emitDocumentation(Class<?> semanticObjectType, String comment) {
 		final String fmtcomment = this.documentationBuilder.build(comment, semanticObjectType);
 		if (!Strings.isEmpty(fmtcomment)) {
@@ -100,6 +126,9 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2815
+	 */
 	protected void emitDocumentation(EObject semanticObject) {
 		if (this.documentedSemanticObjects.add(semanticObject)) {
 			DocumentationAdapter documentationAdapter = (DocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), DocumentationAdapter.class);
@@ -109,6 +138,9 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2843
+	 */
 	protected void emitInnerDocumentation(EObject semanticObject) {
 		if (this.indocumentedSemanticObjects.add(semanticObject)) {
 			InnerBlockDocumentationAdapter documentationAdapter = (InnerBlockDocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), InnerBlockDocumentationAdapter.class);
@@ -118,6 +150,9 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2871
+	 */
 	private InnerBlockDocumentationAdapter getInnerDocumentation(EObject semanticObject) {
 		if (this.indocumentedSemanticObjects.add(semanticObject)) {
 			return (InnerBlockDocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), InnerBlockDocumentationAdapter.class);
@@ -125,15 +160,21 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		return null;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2891
+	 */
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition,
 				INode fromNode, INode toNode) {
 		super.emitUnassignedTokens(semanticObject, transition, fromNode, toNode);
 		emitDocumentation(semanticObject);
-		if (semanticObject instanceof XBlockExpression) {
-			this.lastInnerBlock = getInnerDocumentation(semanticObject);
+		if (semanticObject instanceof XBlockExpression cblock) {
+			this.lastInnerBlock = getInnerDocumentation(cblock);
 		}
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 2919
+	 */
 	protected void accept(ISynState emitter, INode node, RuleCallStack stack) {
 		super.accept(emitter, node, stack);
 		final InnerBlockDocumentationAdapter documentation = this.lastInnerBlock;

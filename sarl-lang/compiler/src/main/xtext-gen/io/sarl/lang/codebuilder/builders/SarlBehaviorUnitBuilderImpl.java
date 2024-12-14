@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -45,48 +46,86 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlBehaviorUnit.
- * @see AbstractMemberBuilderFragment.java : appendTo : 150
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 149
  */
 @SuppressWarnings("all")
 public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISarlBehaviorUnitBuilder {
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 293
+	 */
 	@Inject
 	private Provider<IFormalParameterBuilder> parameterProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 304
+	 */
 	@Inject
 	private Provider<IBlockExpressionBuilder> blockExpressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 315
+	 */
 	@Inject
 	private Provider<IExpressionBuilder> expressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 326
+	 */
 	private EObject container;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 332
+	 */
 	private SarlBehaviorUnit sarlBehaviorUnit;
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		eInit(container, newTypeRef(container, name), context);
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 607
+		if (this.sarlBehaviorUnit == null) {
+			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
+			internalEInit(container, context);
+			JvmTypeReference ref = newTypeRef(container, name);
+			if (ref instanceof JvmParameterizedTypeReference pref) {
+				this.sarlBehaviorUnit.setName(pref);
+			} else {
+				throw new IllegalArgumentException(name);
+			}
+		}
 	}
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 702
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 757
 	 */
 	public void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
-		setTypeResolutionContext(context);
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 787
 		if (this.sarlBehaviorUnit == null) {
-			this.container = container;
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
-			this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+			internalEInit(container, context);
 			this.sarlBehaviorUnit.setName(name);
-			container.getMembers().add(this.sarlBehaviorUnit);
 		}
 	}
 
+	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		assert this.sarlBehaviorUnit != null;
+		setTypeResolutionContext(context);
+		this.container = container;
+		this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+		container.getMembers().add(this.sarlBehaviorUnit);
+		this.sarlBehaviorUnit.setDeclaringType(container);
+	}
+
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -94,7 +133,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	public Resource eResource() {
@@ -106,9 +145,10 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlBehaviorUnitBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlBehaviorUnit().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -124,11 +164,12 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1288
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1382
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {
@@ -143,7 +184,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
@@ -153,6 +194,9 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 		return block;
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 */
 	@Override
 	@Pure
 	public String toString() {

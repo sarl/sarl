@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -42,7 +44,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumeration.
- * @see TopElementBuilderFragment.java : appendTo : 410
+	 * @see TopElementBuilderFragment.java : appendTo : 400
  */
 @SuppressWarnings("all")
 public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarlEnumerationBuilder {
@@ -51,6 +53,9 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 
 	private EObject container;
 
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 */
 	@Override
 	@Pure
 	public String toString() {
@@ -58,45 +63,68 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Initialize the Ecore element when inside a script.
-	 * @see TopElementBuilderFragment.java : appendTo : 1383
+	 * @param script the SARL script in which this SarlEnumeration is added.
+	 * @param name the simple name of the SarlEnumeration.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1379
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
 		if (this.sarlEnumeration == null) {
 			this.container = script;
 			this.sarlEnumeration = SarlFactory.eINSTANCE.createSarlEnumeration();
-			script.getXtendTypes().add(this.sarlEnumeration);
 			this.sarlEnumeration.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
-			if (!Strings.isEmpty(name)) {
-				this.sarlEnumeration.setName(name);
-			}
+			this.sarlEnumeration.setName(name);
+			script.getXtendTypes().add(this.sarlEnumeration);
 		}
 	}
 
 	/** Initialize the Ecore element when inner type declaration.
-	 * @see TopElementBuilderFragment.java : appendTo : 1460
+	 * @param container the Ecore type that must contain this new SarlEnumeration.
+	 * @param name the simple name of the SarlEnumeration.
+	 * @param context the context in which the resolution of types must be done.
+	 * @see TopElementBuilderFragment.java : appendTo : 1458
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlEnumeration == null) {
 			this.container = container;
 			this.sarlEnumeration = SarlFactory.eINSTANCE.createSarlEnumeration();
+			this.sarlEnumeration.setName(name);
 			container.getMembers().add(this.sarlEnumeration);
-			if (!Strings.isEmpty(name)) {
-				this.sarlEnumeration.setName(name);
-			}
 		}
 	}
 
 	/** Replies the generated SarlEnumeration.
-	 * @see TopElementBuilderFragment.java : appendTo : 1523
+	 * @see TopElementBuilderFragment.java : appendTo : 1515
 	 */
 	@Pure
 	public SarlEnumeration getSarlEnumeration() {
 		return this.sarlEnumeration;
 	}
 
+	/** Replies the reference to the generated SarlAgent.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 */
+	@Pure
+	public JvmTypeReference getSarlEnumerationReference() {
+		SarlEnumeration ecoreObject = getSarlEnumeration();
+		return getTypeReferenceFor(ecoreObject);
+	}
+
+	/** Replies the JVM declared type for this generated SarlEnumeration.
+	 * @return the type, never {@code null}.
+	 * @since 0.15
+	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 */
+	@Pure
+	public JvmDeclaredType getJvmDeclaredType() {
+		return getAssociatedElement(JvmDeclaredType.class, getSarlEnumeration(), eResource(), true);
+	}
+
 	/** Replies the resource to which the SarlEnumeration is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1560
+	 * @see TopElementBuilderFragment.java : appendTo : 1645
 	 */
 	@Pure
 	public Resource eResource() {
@@ -108,9 +136,10 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlEnumerationBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlEnumeration().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -126,25 +155,31 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see TopElementBuilderFragment.java : appendTo : 2082
+	 * @return {@code this}.
+	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
-	public void addModifier(String modifier) {
+	public ISarlEnumerationBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
 			this.sarlEnumeration.getModifiers().add(modifier);
 		}
+		return this;
 	}
 
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 */
 	@Inject
 	private Provider<ISarlEnumLiteralBuilder> iSarlEnumLiteralBuilderProvider;
 
 	/** Create a SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 551
+	 * @see TopElementBuilderFragment.java : appendTo : 540
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {
 		ISarlEnumLiteralBuilder builder = this.iSarlEnumLiteralBuilderProvider.get();

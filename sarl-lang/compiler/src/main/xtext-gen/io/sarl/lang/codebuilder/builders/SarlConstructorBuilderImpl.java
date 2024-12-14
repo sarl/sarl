@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
@@ -43,37 +43,64 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlConstructor.
- * @see AbstractMemberBuilderFragment.java : appendTo : 150
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 149
  */
 @SuppressWarnings("all")
 public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarlConstructorBuilder {
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 293
+	 */
 	@Inject
 	private Provider<IFormalParameterBuilder> parameterProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 304
+	 */
 	@Inject
 	private Provider<IBlockExpressionBuilder> blockExpressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 315
+	 */
 	@Inject
 	private Provider<IExpressionBuilder> expressionProvider;
+
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 326
+	 */
 	private EObject container;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 332
+	 */
 	private SarlConstructor sarlConstructor;
 
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlConstructor.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 572
+	 * @param context the context in which type resolution must be applied.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
 	 */
 	public void eInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		setTypeResolutionContext(context);
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
 		if (this.sarlConstructor == null) {
-			this.container = container;
 			this.sarlConstructor = SarlFactory.eINSTANCE.createSarlConstructor();
-			this.sarlConstructor.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
-			container.getMembers().add(this.sarlConstructor);
+			internalEInit(container, context);
 		}
 	}
 
+	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		assert this.sarlConstructor != null;
+		setTypeResolutionContext(context);
+		this.container = container;
+		this.sarlConstructor.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+		container.getMembers().add(this.sarlConstructor);
+		this.sarlConstructor.setDeclaringType(container);
+	}
+
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 817
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
 	 */
 	@Pure
 	public SarlConstructor getSarlConstructor() {
@@ -81,7 +108,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 853
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
 	 */
 	@Pure
 	public Resource eResource() {
@@ -93,9 +120,10 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	 * <p>The documentation will be displayed just before the element.
 	 *
 	 * @param doc the documentation.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 521
+	 * @return {@code this}.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
 	 */
-	public void setDocumentation(String doc) {
+	public ISarlConstructorBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
 			getSarlConstructor().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
@@ -111,11 +139,12 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 			}
 			adapter.setDocumentation(doc);
 		}
+		return this;
 	}
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 966
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1049
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
@@ -125,24 +154,28 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1010
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1093
 	 */
-	public void addException(String type) {
-		JvmParameterizedTypeReference ref = newTypeRef(this.container, type);
+	public ISarlConstructorBuilder addException(String type) {
+		JvmTypeReference ref = newTypeRef(this.container, type);
 		addException(ref);
+		return this;
 	}
 
 	/** Add a throwable exception.
 	 * @param type the exception.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1050
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1136
 	 */
-	public void addException(JvmParameterizedTypeReference type) {
+	public ISarlConstructorBuilder addException(JvmTypeReference type) {
 		this.sarlConstructor.getExceptions().add(type);
+		return this;
 	}
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1353
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
@@ -154,32 +187,40 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1496
+	 * @return {@code this}
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
 	 */
-	public void addModifier(String modifier) {
+	public ISarlConstructorBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
 			getSarlConstructor().getModifiers().add(modifier);
 		}
+		return this;
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 */
 	@Override
 	@Pure
 	public String toString() {
 		return EmfFormatter.objToStr(getSarlConstructor());
 	}
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1657
+	 */
 	@Inject
 	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
 
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1574
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1675
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();
 		final SarlConstructor object = getSarlConstructor();
-		builder.eInit(object, name, getTypeResolutionContext());
+		builder.eInit(object, getExecutableReferenceFor(object), name, getTypeResolutionContext());
 		object.getTypeParameters().add(builder.getJvmTypeParameter());
 		return builder;
 	}

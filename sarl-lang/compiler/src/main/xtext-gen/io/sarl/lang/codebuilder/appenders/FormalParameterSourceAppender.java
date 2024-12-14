@@ -30,7 +30,6 @@ import java.io.IOException;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -39,7 +38,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Appender of a Sarl formal parameter.
- * @see FormalParameterBuilderFragment.java : appendTo : 182
+	 * @see FormalParameterBuilderFragment.java : appendTo : 177
  */
 @SuppressWarnings("all")
 public class FormalParameterSourceAppender extends AbstractSourceAppender implements IFormalParameterBuilder {
@@ -50,6 +49,12 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 		this.builder = builder;
 	}
 
+	/** Fill the given receiver with the serialization of the element that is associated to this appender.
+	 *
+	 * @param appender the receiver of the source code.
+	 * @throws IOException if there is error during the serialization.
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlFormalParameter(), appender);
 	}
@@ -57,9 +62,9 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 272
+	 * @see FormalParameterBuilderFragment.java : appendTo : 271
 	 */
-	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
 	}
 
@@ -67,9 +72,9 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 302
+	 * @see FormalParameterBuilderFragment.java : appendTo : 299
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
 	}
 
@@ -77,9 +82,9 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 334
+	 * @see FormalParameterBuilderFragment.java : appendTo : 329
 	 */
-	public JvmParameterizedTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -87,9 +92,9 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 368
+	 * @see FormalParameterBuilderFragment.java : appendTo : 361
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
 	}
 
@@ -98,12 +103,16 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 404
+	 * @see FormalParameterBuilderFragment.java : appendTo : 395
 	 */
-	public JvmParameterizedTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
+	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
+	/** Replies the context for type resolution.
+	 * @return the context or {@code null} if the Ecore object is the context.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 440
+	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
@@ -111,7 +120,8 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Initialize the formal parameter.
 	 * @param context the context of the formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 465
+	 * @param typeContext the context for type resolution.
+	 * @see FormalParameterBuilderFragment.java : appendTo : 461
 	 */
 	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
 		this.builder.eInit(context, name, typeContext);
@@ -120,24 +130,26 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 520
+	 * @see FormalParameterBuilderFragment.java : appendTo : 514
 	 */
 	@Pure
 	public SarlFormalParameter getSarlFormalParameter() {
 		return this.builder.getSarlFormalParameter();
 	}
 
-	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
+	/** Add a reference to this formal parameter in the given container.
 	 *
 	 * @param container the feature call that is supposed to contains the replied identifiable element.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 559
+	 * @return {@code this}
+	 * @see FormalParameterBuilderFragment.java : appendTo : 553
 	 */
-	public void setReferenceInto(XFeatureCall container) {
+	public IFormalParameterBuilder setReferenceInto(XFeatureCall container) {
 		this.builder.setReferenceInto(container);
+		return this;
 	}
 
 	/** Replies the resource to which the formal parameter is attached.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 624
+	 * @see FormalParameterBuilderFragment.java : appendTo : 619
 	 */
 	@Pure
 	public Resource eResource() {
@@ -147,42 +159,50 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	/** Change the type.
 	 *
 	 * @param type the formal parameter type.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 657
+	 * @return {@code this}
+	 * @see FormalParameterBuilderFragment.java : appendTo : 652
 	 */
-	public void setParameterType(String type) {
+	public IFormalParameterBuilder setParameterType(String type) {
 		this.builder.setParameterType(type);
+		return this;
 	}
 
 	/** Change the type.
 	 *
 	 * @param type the formal parameter type.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 708
+	 * @return {@code this}
+	 * @see FormalParameterBuilderFragment.java : appendTo : 706
 	 */
-	public void setParameterType(JvmParameterizedTypeReference type) {
+	public IFormalParameterBuilder setParameterType(JvmTypeReference type) {
 		this.builder.setParameterType(type);
+		return this;
 	}
 
 	/** Change the variadic property of the parameter.
 	 *
 	 * @param isVariadic indicates if the parameter is variadic.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 748
+	 * @return {@code this}
+	 * @see FormalParameterBuilderFragment.java : appendTo : 749
 	 */
-	public void setVarArg(boolean isVariadic) {
+	public IFormalParameterBuilder setVarArg(boolean isVariadic) {
 		this.builder.setVarArg(isVariadic);
+		return this;
 	}
 
 	/** Change the extension flag of the parameter.
 	 *
 	 * @param isExtension indicates if the parameter is defined as an extension.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 785
+	 * @return {@code this}
+	 * @see FormalParameterBuilderFragment.java : appendTo : 789
 	 */
-	public void setExtension(boolean isExtension) {
+	public IFormalParameterBuilder setExtension(boolean isExtension) {
 		this.builder.setExtension(isExtension);
+		return this;
 	}
 
 	/** Replies the default value of the parameter.
 	 * @return the default value builder.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 820
+	 * @see FormalParameterBuilderFragment.java : appendTo : 825
 	 */
 	@Pure
 	public IExpressionBuilder getDefaultValue() {
@@ -190,7 +210,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Dispose the resource.
-	 * @see FormalParameterBuilderFragment.java : appendTo : 921
+	 * @see FormalParameterBuilderFragment.java : appendTo : 923
 	 */
 	public void dispose() {
 		this.builder.dispose();

@@ -26,19 +26,35 @@ package io.sarl.lang.documentation;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 227
+	 */
 public class InnerBlockDocumentationAdapter extends AdapterImpl {
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 235
+	 */
 	private String documentation;
+
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 239
+	 */
 	@Pure
 	public String getDocumentation() {
 
 		return this.documentation;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 251
+	 */
 	public void setDocumentation(String documentation) {
 		this.documentation = documentation;
 	}
 
+	/**
+	 * @see DocumentationBuilderFragment.java : appendTo : 259
+	 */
 	@Pure
 	public boolean isAdapterForType(Object type) {
 		return type == InnerBlockDocumentationAdapter.class;
