@@ -23,8 +23,6 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.util.regex.Pattern;
 
-import com.google.common.collect.Iterators;
-import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -44,18 +42,19 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.XBooleanLiteral;
-import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
+import com.google.common.collect.Iterators;
+import com.google.inject.Inject;
+
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
+import io.sarl.lang.mwe2.typesystem.TypeSystemToolsConfig;
 
 /** Generator of the builder for XExpressions.
  *
@@ -68,6 +67,18 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 	@Inject
 	private BuilderFactoryContributions builderFactoryContributions;
+
+	@Inject
+	private TypeSystemToolsConfig typeSystemToolsConfig;
+
+	/** Replies the type of the interface for the types' default value provider.
+	 *
+	 * @return the type.
+	 */
+	@Pure
+	public TypeReference getTypeDefaultValueProviderInterface() {
+		return this.typeSystemToolsConfig.getDefaultValueProviderInterface(getGrammar());
+	}
 
 	/** Replies the custom implementation for the expression builder.
 	 *
@@ -108,9 +119,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -141,9 +150,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -178,9 +185,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -218,11 +223,13 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				if (!forInterface && !forAppender) {
+					appendEmptyComment(it);
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(EObject.class);
 					it.append(" context;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(Procedures.Procedure1.class);
 					it.append("<? super "); //$NON-NLS-1$
@@ -230,9 +237,19 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("> setter;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(XExpression.class);
 					it.append(" expr;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					appendEmptyComment(it);
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Inject.class);
+					it.newLine();
+					it.append("\tprivate "); //$NON-NLS-1$
+					it.append(getTypeDefaultValueProviderInterface());
+					it.append(" defaultValueProvider;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
 				} else {
@@ -242,16 +259,14 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef(String typeName)"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -272,16 +287,14 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, String typeName)"); //$NON-NLS-1$
@@ -304,16 +317,14 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(JvmType.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -338,16 +349,14 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Class.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -374,16 +383,14 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, "); //$NON-NLS-1$
@@ -408,9 +415,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -419,6 +424,13 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 				} else if (forAppender) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
 					it.append(IJvmTypeProvider.class);
 					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
@@ -435,9 +447,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @param setter the object that permits to assign the expression to the context."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @param typeContext the context for type resolution."); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -480,9 +492,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the last created expression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -511,9 +521,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the resource to which the XExpression is attached."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -542,16 +550,17 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @param expression the textual representation of the expression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @return {@code this}"); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append("void setExpression(String expression)"); //$NON-NLS-1$
+				it.append(getExpressionBuilderInterface());
+				it.append(" setExpression(String expression)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
@@ -565,6 +574,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t\tthis.setter.apply(this.expr);"); //$NON-NLS-1$
 					}
 					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
+					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
 				it.newLineIfNotEmpty();
@@ -575,16 +586,17 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @param expression the expression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @return {@code this}"); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append("void setXExpression("); //$NON-NLS-1$
+				it.append(getExpressionBuilderInterface());
+				it.append(" setXExpression("); //$NON-NLS-1$
 				it.append(XExpression.class);
 				it.append(" expression)"); //$NON-NLS-1$
 				if (forInterface) {
@@ -599,6 +611,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t\tthis.setter.apply(this.expr);"); //$NON-NLS-1$
 					}
+					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
@@ -617,9 +631,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(getLanguageName());
 					it.append(" code."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tstatic String generateExpressionCode(String expression) {"); //$NON-NLS-1$
@@ -633,6 +645,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\tstatic String generateTypenameCode(String typeName) {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn \""); //$NON-NLS-1$
@@ -644,8 +657,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\tstatic "); //$NON-NLS-1$
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" parseType("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, String typeName, "); //$NON-NLS-1$
@@ -710,11 +724,11 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(EcoreUtil2.class);
 					it.append(".resolveAll(resource);"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\t\t\t\treturn pref;"); //$NON-NLS-1$
-					it.newLine();
 					it.append("\t\t\t\t}"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\treturn reference;"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t} catch ("); //$NON-NLS-1$
 					it.append(Exception.class);
@@ -730,10 +744,6 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t\t}"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\tthrow new "); //$NON-NLS-1$
-					it.append(TypeNotPresentException.class);
-					it.append("(typeName, null);"); //$NON-NLS-1$
-					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();					
@@ -745,9 +755,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the expression."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -834,9 +842,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -856,129 +862,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					if (forAppender) {
 						it.append("\t\treturn this.builder.getDefaultXExpressionForType(type);"); //$NON-NLS-1$
 					} else {
-						it.append("\t\t//TODO: Check if a similar function exists in the Xbase library."); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t"); //$NON-NLS-1$
-						it.append(XExpression.class);
-						it.append(" expr = null;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\tif (type != null && !\"void\".equals(type) && !Void.class.getName().equals(type)) {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tswitch (type) {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"boolean\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Boolean\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\t"); //$NON-NLS-1$
-						it.append(XBooleanLiteral.class);
-						it.append(" booleanLiteral = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXBooleanLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbooleanLiteral.setIsTrue(false);"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = booleanLiteral;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"float\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Float\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\t"); //$NON-NLS-1$
-						it.append(XNumberLiteral.class);
-						it.append(" numberLiteral = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXNumberLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral.setValue(\"0.0f\");"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = numberLiteral;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"double\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Double\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.BigDecimal\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXNumberLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral.setValue(\"0.0\");"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = numberLiteral;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"int\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"long\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Integer\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Long\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.BigInteger\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXNumberLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral.setValue(\"0\");"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = numberLiteral;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"byte\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"short\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"char\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Byte\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Short\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"java.lang.Character\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXNumberLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tnumberLiteral.setValue(\"0\");"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\t"); //$NON-NLS-1$
-						it.append(XCastedExpression.class);
-						it.append(" castExpression = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXCastedExpression();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tcastExpression.setTarget(numberLiteral);"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tcastExpression.setType(newTypeRef(this.context, type));"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = numberLiteral;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tdefault:"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\texpr = "); //$NON-NLS-1$
-						it.append(XbaseFactory.class);
-						it.append(".eINSTANCE.createXNullLiteral();"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t}"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t}"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\treturn expr;"); //$NON-NLS-1$
+						it.append("\t\treturn this.defaultValueProvider.getDefaultValueXExpression(type, this.context);"); //$NON-NLS-1$
 					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -991,9 +875,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1005,7 +887,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.append(XExpression.class);
 				it.append(" getDefaultXExpressionForType("); //$NON-NLS-1$
-				it.append(JvmParameterizedTypeReference.class);
+				it.append(JvmTypeReference.class);
 				it.append(" type)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -1028,9 +910,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1049,75 +929,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					if (forAppender) {
 						it.append("\t\treturn this.builder.getDefaultValueForType(type);"); //$NON-NLS-1$
 					} else {
-						it.append("\t\t//TODO: Check if a similar function exists in the Xbase library."); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\tString defaultValue = \"\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\tif (!"); //$NON-NLS-1$
-						it.append(Strings.class);
-						it.append(".isEmpty(type) && !\"void\".equals(type)) {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tswitch (type) {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"boolean\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"false\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"double\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"0.0\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"float\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"0.0f\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"int\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"0\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"long\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"0\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"byte\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"(0 as byte)\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"short\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"(0 as short)\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tcase \"char\":"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"(0 as char)\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tdefault:"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tdefaultValue = \"null\";"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t}"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t}"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\treturn defaultValue;"); //$NON-NLS-1$
+						it.append("\t\treturn this.defaultValueProvider.getDefaultValueInSarlSyntax(type);"); //$NON-NLS-1$
 					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -1130,9 +942,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1143,7 +953,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("public "); //$NON-NLS-1$
 				}
 				it.append("String getDefaultValueForType("); //$NON-NLS-1$
-				it.append(JvmParameterizedTypeReference.class);
+				it.append(JvmTypeReference.class);
 				it.append(" type)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -1160,7 +970,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append(generateStandardCommentFunctions(forInterface, forAppender, "getXExpression()")); //$NON-NLS-1$
+				it.append(generateStandardCommentFunctions(forInterface, forAppender, "getXExpression()", //$NON-NLS-1$
+						getExpressionBuilderInterface()));
 				if (!forInterface) {
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(Override.class);
@@ -1190,9 +1001,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the reference."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -1226,7 +1035,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append(JvmType.class);
 						it.append(" jvmObject = getAssociatedElement("); //$NON-NLS-1$
 						it.append(JvmType.class);
-						it.append(".class, type, expr.eResource());"); //$NON-NLS-1$
+						it.append(".class, type, expr.eResource(), true);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tfinal "); //$NON-NLS-1$
 						it.append(XFeatureCall.class);
@@ -1250,9 +1059,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the reference."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -1286,7 +1093,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append(JvmType.class);
 						it.append(" jvmObject = getAssociatedElement("); //$NON-NLS-1$
 						it.append(JvmType.class);
-						it.append(".class, type, expr.eResource());"); //$NON-NLS-1$
+						it.append(".class, type, expr.eResource(), true);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tfinal "); //$NON-NLS-1$
 						it.append(XFeatureCall.class);
@@ -1342,9 +1149,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -1353,9 +1158,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tpublic void dispose() {"); //$NON-NLS-1$
@@ -1451,9 +1254,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
@@ -1479,9 +1280,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
@@ -1532,9 +1331,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
@@ -1563,9 +1360,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$

@@ -80,6 +80,14 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	}
 
 	@Override
+	public TypeReference newTypeReference(Class<?> type) {
+		if (type == null) {
+			return new TypeReference(Object.class);
+		}
+		return new TypeReference(type);
+	}
+
+	@Override
 	public ElementDescription newElementDescription(String name, EObject grammarComponent, EClassifier elementType,
 			TypeReference commonType) {
 		final var interfaceType = getElementBuilderInterface(name);
@@ -310,6 +318,22 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 				+ GrammarUtil.getSimpleName(grammar).toUpperCase() + "GrammarKeywordAccess"); //$NON-NLS-1$
 	}
 
+	@Pure
+	@Override
+	public TypeReference getSerializerScopeProvider() {
+		final var grammar = getGrammar();
+		return new TypeReference(getSerializerScopeProviderPackage() + "." //$NON-NLS-1$
+				+ GrammarUtil.getSimpleName(grammar).toUpperCase() + "SerializerScopeProvider"); //$NON-NLS-1$
+	}
+
+	@Pure
+	@Override
+	public TypeReference getSerializerTypeParameterScope() {
+		final var grammar = getGrammar();
+		return new TypeReference(getSerializerScopeProviderPackage() + "." //$NON-NLS-1$
+				+ GrammarUtil.getSimpleName(grammar).toUpperCase() + "TypeParameterScope"); //$NON-NLS-1$
+	}
+	
 	@Override
 	public TypeReference getFormalParameterContainerType() {
 		return new TypeReference(

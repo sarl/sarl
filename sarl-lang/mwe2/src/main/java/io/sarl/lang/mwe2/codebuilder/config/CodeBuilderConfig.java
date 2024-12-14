@@ -30,15 +30,18 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.eclipse.xtend.core.scoping.TypeParameterScope;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
+import org.eclipse.xtext.xtext.generator.util.BooleanGeneratorOption;
+
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
-import org.eclipse.xtext.xtext.generator.util.BooleanGeneratorOption;
 
 /**
  * A component for configuring the CodeBuilderFragment2.
@@ -154,6 +157,10 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final String FORBIDDEN_LOGGER = "Logger"; //$NON-NLS-1$
 
+	/** Default type for the implemented type parameter scope class.
+	 */
+	private static final Class<? extends IScope> TYPE_PARAMETER_SCOPE = TypeParameterScope.class;
+
 	private boolean googleInjectionTypes = true;
 
 	private String scriptRuleName;
@@ -231,6 +238,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private final Set<String> forbiddenInjectionPrefixes = new TreeSet<>(Collections.singleton(FORBIDDEN_GOOGLE_INJECT));
 
 	private final Set<String> forbiddenInjectionPostfixes = new TreeSet<>(Collections.singleton(FORBIDDEN_LOGGER));
+
+	private Class<? extends IScope> superTypeParameterScopeType = TYPE_PARAMETER_SCOPE;
 
 	/** Add a prefix of typenames that should not be considered for injection overriding.
 	 *
@@ -1023,6 +1032,24 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 			return Singleton.class;
 		}
 		return javax.inject.Singleton.class;
+	}
+
+	/** Replies the type of the super type for the type-parameter scope.
+	 *
+	 * @return the super type.
+	 * @since 0.15
+	 */
+	public Class<? extends IScope> getSuperTypeParameterScopeType() {
+		return this.superTypeParameterScopeType;
+	}
+
+	/** Change the type of the super type for the type-parameter scope.
+	 *
+	 * @param type the super type.
+	 * @since 0.15
+	 */
+	public void setSuperTypeParameterScopeType(Class<? extends IScope> type) {
+		this.superTypeParameterScopeType = type;
 	}
 
 }

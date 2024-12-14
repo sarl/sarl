@@ -21,9 +21,6 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import com.google.common.collect.Iterators;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -31,7 +28,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Keyword;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -46,6 +42,10 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import com.google.common.collect.Iterators;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
@@ -109,9 +109,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -142,9 +140,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -179,9 +175,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
 						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -219,6 +213,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				if (!forInterface && !forAppender) {
+					appendEmptyComment(it);
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(getInjectType());
 					it.newLine();
@@ -227,6 +222,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append(" taskTagProvider;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(getInjectType());
 					it.newLine();
@@ -236,6 +232,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append(getExpressionBuilderInterface());
 					it.append("> expressionProvider;"); //$NON-NLS-1$
 					it.newLine();
+					appendEmptyComment(it);
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(XBlockExpression.class);
 					it.append(" block;"); //$NON-NLS-1$
@@ -247,9 +244,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the provider."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tprotected "); //$NON-NLS-1$
@@ -268,16 +263,14 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef(String typeName)"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -298,16 +291,14 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, String typeName)"); //$NON-NLS-1$
@@ -330,16 +321,14 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(JvmType.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -364,16 +353,14 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Class.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -400,16 +387,14 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, "); //$NON-NLS-1$
@@ -434,9 +419,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -445,6 +428,13 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 				} else if (forAppender) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
 					it.append(IJvmTypeProvider.class);
 					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
@@ -457,9 +447,9 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.append("\t/** Create the XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -496,9 +486,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the comment text."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -530,9 +518,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the comment text."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -582,9 +568,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the block expression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -613,9 +597,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t/** Replies the resource to which the XBlockExpression is attached."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -641,14 +623,13 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(generateCommentFunction(forInterface, false, "getXBlockExpression()", //$NON-NLS-1$
 						"setInnerDocumentation", //$NON-NLS-1$
 						"getXBlockExpression()", //$NON-NLS-1$
-						adapter));
+						adapter,
+						getBlockExpressionBuilderInterface()));
 				it.append("\t/** Add an expression inside the block."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the expression builder."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -712,16 +693,17 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t    {@code null} for no type."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @return {@code this}"); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append("void setDefaultAutoGeneratedContent(String type)"); //$NON-NLS-1$
+				it.append(getBlockExpressionBuilderInterface());
+				it.append(" setDefaultAutoGeneratedContent(String type)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
@@ -763,11 +745,115 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("\t\t}"); //$NON-NLS-1$
 					}
 					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Fill the block with the standard \"auto-generated\" content."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * <p>Any previously added content is removed."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param type the expected type of the block (the last instruction), or"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t    {@code null} for no type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return {@code this}"); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(getBlockExpressionBuilderInterface());
+				it.append(" setDefaultAutoGeneratedContent("); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" type)"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					if (forAppender) {
+						it.append("\t\tthis.builder.setDefaultAutoGeneratedContent(type);"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tgetXBlockExpression().getExpressions().clear();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (type == null || type.eIsProxy()) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tsetInnerDocumentation(getAutoGeneratedActionString());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t} else {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t"); //$NON-NLS-1$
+						it.append(getExpressionBuilderInterface());
+						it.append(" expr = addExpression();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tString defaultValue = expr.getDefaultValueForType(type);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif ("); //$NON-NLS-1$
+						it.append(Strings.class);
+						it.append(".isEmpty(defaultValue)) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tsetInnerDocumentation(getAutoGeneratedActionString());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t} else {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\texpr.setExpression(defaultValue);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\texpr.setDocumentation(getAutoGeneratedActionString());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Fill the block with the standard \"auto-generated\" content assuming that there is no value to return."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * <p>Any previously added content is removed."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return {@code this}"); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(getBlockExpressionBuilderInterface());
+				it.append(" setDefaultAutoGeneratedContent()"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					if (forAppender) {
+						it.append("\t\tthis.builder.setDefaultAutoGeneratedContent();"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tsetDefaultAutoGeneratedContent(("); //$NON-NLS-1$
+						it.append(JvmTypeReference.class);
+						it.append(") null);"); //$NON-NLS-1$
+						it.newLine();
+					}
+					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
+					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
 				if (!forInterface) {
+					appendEmptyComment(it);
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(Override.class);
 					it.newLine();
@@ -793,9 +879,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -804,9 +888,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tpublic void dispose() {"); //$NON-NLS-1$
@@ -838,9 +920,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -870,9 +950,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @return the factory."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -926,9 +1004,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -960,9 +1036,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t * @return the appender."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$

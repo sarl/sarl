@@ -31,10 +31,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -43,8 +39,10 @@ import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.RuleCall;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
@@ -54,6 +52,11 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
@@ -130,9 +133,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the factory."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -164,9 +165,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the factory."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t@"); //$NON-NLS-1$
@@ -212,9 +211,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @return the appender."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
-						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t@"); //$NON-NLS-1$
@@ -254,9 +251,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @return the appender."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
-						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t@"); //$NON-NLS-1$
@@ -303,9 +298,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
 					+ "."); //$NON-NLS-1$
 					it.newLine();
-					it.append(" * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -352,9 +345,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
 					+ "."); //$NON-NLS-1$
 					it.newLine();
-					it.append(" * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -406,9 +397,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					+ " " + element.getElementDescription().elementType().getSimpleName() //$NON-NLS-1$
 					+ "."); //$NON-NLS-1$
 					it.newLine();
-					it.append(" * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -507,6 +496,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			clients.add(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
+					appendEmptyComment(it);
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(getInjectType());
 					it.newLine();
@@ -547,9 +537,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.append("\t * @return the builder."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -611,9 +599,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @return the builder."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
-						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
@@ -693,9 +679,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.append("\t * @return the builder."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -771,16 +755,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param name the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
+					it.append("\t * @return {@code this}."); //$NON-NLS-1$
 					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append("void "); //$NON-NLS-1$
+					it.append(topElementDescription.getElementDescription().builderInterfaceType());
+					it.append(" "); //$NON-NLS-1$
 					it.append(functionName);
 					it.append("(String... name)"); //$NON-NLS-1$
 					if (forInterface) {
@@ -836,17 +821,34 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(Strings.class);
 							it.append(".isEmpty(aname)) {"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t\t\t\tthecollection.add(newTypeRef(this."); //$NON-NLS-1$
+							it.append("\t\t\t\t\t"); //$NON-NLS-1$
+							it.append(JvmTypeReference.class);
+							it.append(" ref = newTypeRef(this."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
-							it.append(", aname));"); //$NON-NLS-1$
+							it.append(", aname);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\tif (ref instanceof "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" pref) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\t\tthecollection.add(pref);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\t} else {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\t\tthrow new "); //$NON-NLS-1$
+							it.append(TypeNotPresentException.class);
+							it.append("(aname, null);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
-							it.newLine();
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
@@ -857,16 +859,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param name the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
+					it.append("\t * @return {@code this}."); //$NON-NLS-1$
 					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append("void "); //$NON-NLS-1$
+					it.append(topElementDescription.getElementDescription().builderInterfaceType());
+					it.append(" "); //$NON-NLS-1$
 					it.append(functionName);
 					it.append("("); //$NON-NLS-1$
 					it.append(JvmParameterizedTypeReference.class);
@@ -931,8 +934,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append("\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
-							it.newLine();
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
@@ -958,9 +962,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param name the type referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -1138,16 +1140,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef(String typeName)"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -1168,16 +1168,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, String typeName)"); //$NON-NLS-1$
@@ -1200,16 +1198,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(JvmType.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -1234,16 +1230,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Class.class);
 					it.append(" type, "); //$NON-NLS-1$
@@ -1270,16 +1264,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the type reference."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" newTypeRef("); //$NON-NLS-1$
 					it.append(Notifier.class);
 					it.append(" context, "); //$NON-NLS-1$
@@ -1304,9 +1296,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -1328,9 +1318,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (forInterface) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tvoid dispose();"); //$NON-NLS-1$
@@ -1339,9 +1327,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else if (forAppender) {
 					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\tpublic void dispose() {"); //$NON-NLS-1$
@@ -1353,6 +1339,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 				if (!forInterface) {
+					appendEmptyComment(it);
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(Override.class);
 					it.newLine();
@@ -1379,9 +1366,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.append("\t/** Initialize the Ecore element when inside a script."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @param script the SARL script in which this "); //$NON-NLS-1$
+				it.append(description.getElementDescription().elementType().getSimpleName());
+				it.append(" is added."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @param name the simple name of the "); //$NON-NLS-1$
+				it.append(description.getElementDescription().elementType().getSimpleName());
+				it.append("."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param context the context in which the resolution of types must be done."); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
@@ -1419,12 +1414,6 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append(Strings.toFirstUpper(description.getElementDescription().elementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\tscript."); //$NON-NLS-1$
-						it.append(getLanguageScriptMemberGetter());
-						it.append("().add(this."); //$NON-NLS-1$
-						it.append(generatedObjectFieldName);
-						it.append(");"); //$NON-NLS-1$
-						it.newLine();
 						if (description.isAnnotationInfo()) {
 							final TypeReference commonType = description.getElementDescription().commonSuperType();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
@@ -1436,15 +1425,15 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append("());"); //$NON-NLS-1$
 							it.newLine();
 						}
-						it.append("\t\t\tif (!"); //$NON-NLS-1$
-						it.append(Strings.class);
-						it.append(".isEmpty(name)) {"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\t\tthis."); //$NON-NLS-1$
+						it.append("\t\t\tthis."); //$NON-NLS-1$
 						it.append(generatedObjectFieldName);
 						it.append(".setName(name);"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.append("\t\t\tscript."); //$NON-NLS-1$
+						it.append(getLanguageScriptMemberGetter());
+						it.append("().add(this."); //$NON-NLS-1$
+						it.append(generatedObjectFieldName);
+						it.append(");"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t}"); //$NON-NLS-1$
 					}
@@ -1456,9 +1445,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (description.isMemberElement()) {
 					it.append("\t/** Initialize the Ecore element when inner type declaration."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
+					it.append("\t * @param container the Ecore type that must contain this new "); //$NON-NLS-1$
+					it.append(description.getElementDescription().elementType().getSimpleName());
+					it.append("."); //$NON-NLS-1$
 					it.newLine();
+					it.append("\t * @param name the simple name of the "); //$NON-NLS-1$
+					it.append(description.getElementDescription().elementType().getSimpleName());
+					it.append("."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context in which the resolution of types must be done."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -1478,6 +1475,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						if (forAppender) {
 							it.append("\t\tthis.builder.eInit(container, name, context);"); //$NON-NLS-1$
 						} else {
+							it.append("\t\tsetTypeResolutionContext(context);"); //$NON-NLS-1$
+							it.newLine();
 							it.append("\t\tif (this."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
 							it.append(" == null) {"); //$NON-NLS-1$
@@ -1492,21 +1491,15 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(Strings.toFirstUpper(description.getElementDescription().elementType().getSimpleName()));
 							it.append("();"); //$NON-NLS-1$
 							it.newLine();
+							it.append("\t\t\tthis."); //$NON-NLS-1$
+							it.append(generatedObjectFieldName);
+							it.append(".setName(name);"); //$NON-NLS-1$
+							it.newLine();
 							it.append("\t\t\tcontainer."); //$NON-NLS-1$
 							it.append(getLanguageContainerMemberGetter());
 							it.append("().add(this."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
 							it.append(");"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\tif (!"); //$NON-NLS-1$
-							it.append(Strings.class);
-							it.append(".isEmpty(name)) {"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t\tthis."); //$NON-NLS-1$
-							it.append(generatedObjectFieldName);
-							it.append(".setName(name);"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
 						}
@@ -1519,9 +1512,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t/** Replies the generated " //$NON-NLS-1$
 						+ description.getElementDescription().elementType().getSimpleName() + "."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1553,12 +1544,105 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Replies the reference to the generated SarlAgent."); //$NON-NLS-1$
+				it.newLine();
+				if (hasTypeParameters.get()) {
+					it.append("\t * @param args the generic type arguments to put inside the reference."); //$NON-NLS-1$
+					it.newLine();
+				}
+				it.append("\t * @since 0.15"); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" get"); //$NON-NLS-1$
+				it.append(description.getElementDescription().elementType());
+				it.append("Reference("); //$NON-NLS-1$
+				if (hasTypeParameters.get()) {
+					it.append(JvmTypeReference.class);
+					it.append("... args"); //$NON-NLS-1$
+				}
+				it.append(")"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					if (forAppender) {
+						it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
+						it.append(description.getElementDescription().elementType());
+						it.append("Reference("); //$NON-NLS-1$
+						if (hasTypeParameters.get()) {
+							it.append("args"); //$NON-NLS-1$
+						}
+						it.append(");"); //$NON-NLS-1$
+					} else {
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(description.getElementDescription().elementType());
+						it.append(" ecoreObject = "); //$NON-NLS-1$
+						it.append(getGeneratedTypeAccessor(description.getElementDescription().elementType()));
+						it.append(";"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn getTypeReferenceFor(ecoreObject"); //$NON-NLS-1$
+						if (hasTypeParameters.get()) {
+							it.append(", args"); //$NON-NLS-1$
+						}
+						it.append(");"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the JVM declared type for this generated "); //$NON-NLS-1$
+				it.append(description.getElementDescription().elementType());
+				it.append("."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the type, never {@code null}."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @since 0.15"); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(JvmDeclaredType.class);
+				it.append(" getJvmDeclaredType()"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn "); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.getJvmDeclaredType();"); //$NON-NLS-1$
+					} else {
+						it.append("getAssociatedElement("); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(".class, "); //$NON-NLS-1$
+						it.append(getGeneratedTypeAccessor(description.getElementDescription().elementType()));
+						it.append(", eResource(), true);"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
 				it.append("\t/** Replies the resource to which the " //$NON-NLS-1$
 						+ description.getElementDescription().elementType().getSimpleName() + " is attached."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -1584,7 +1668,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateStandardCommentFunctions(forInterface, forAppender,
-						getGeneratedTypeAccessor(description.getElementDescription().elementType())));
+						getGeneratedTypeAccessor(description.getElementDescription().elementType()),
+						description.getElementDescription().builderInterfaceType()));
 				if (isExtendKeywordFound.get()) {
 					var defaultType = getCodeBuilderConfig().getDefaultSupers().get(
 							description.getElementDescription().elementType().getSimpleName());
@@ -1593,16 +1678,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @param superType the qualified name of the super type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
 						if (!forInterface) {
 							it.append("public "); //$NON-NLS-1$
 						}
-						it.append("void addExtends(String superType)"); //$NON-NLS-1$
+						it.append(description.getElementDescription().builderInterfaceType());
+						it.append(" addExtends(String superType)"); //$NON-NLS-1$
 					} else {
 						it.append("\t/** Change the super type."); //$NON-NLS-1$
 						it.newLine();
@@ -1610,16 +1696,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t *     or {@code null} if the default type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
 						if (!forInterface) {
 							it.append("public "); //$NON-NLS-1$
 						}
-						it.append("void setExtends(String superType)"); //$NON-NLS-1$
+						it.append(description.getElementDescription().builderInterfaceType());
+						it.append(" setExtends(String superType)"); //$NON-NLS-1$
 					}
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -1638,7 +1725,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".isEmpty(superType)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t"); //$NON-NLS-1$
-							it.append(JvmParameterizedTypeReference.class);
+							it.append(JvmTypeReference.class);
 							it.append(" superTypeRef = newTypeRef(this."); //$NON-NLS-1$
 							if (description.isMemberElement()) {
 								it.append("container"); //$NON-NLS-1$
@@ -1647,13 +1734,25 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							}
 							it.append(", superType);"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append("\t\t\tif (superTypeRef instanceof "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" pref) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t"); //$NON-NLS-1$
 							if (isExtendsKeywordFound.get()) {
 								it.append("add"); //$NON-NLS-1$
 							} else {
 								it.append("set"); //$NON-NLS-1$
 							}
-							it.append("Extends(superTypeRef);"); //$NON-NLS-1$
+							it.append("Extends(pref);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t} else {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\tthrow new "); //$NON-NLS-1$
+							it.append(IllegalArgumentException.class);
+							it.append("();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
 							if (!isExtendsKeywordFound.get()) {
@@ -1665,8 +1764,10 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 								it.append("\t\t}"); //$NON-NLS-1$
 							}
-							it.newLine();
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
 					it.newLineIfNotEmpty();
@@ -1676,16 +1777,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @param superType the super type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
 						if (!forInterface) {
 							it.append("public "); //$NON-NLS-1$
 						}
-						it.append("void addExtends("); //$NON-NLS-1$
+						it.append(description.getElementDescription().builderInterfaceType());
+						it.append(" addExtends("); //$NON-NLS-1$
 						it.append(JvmParameterizedTypeReference.class);
 						it.append(" superType)"); //$NON-NLS-1$
 					} else {
@@ -1695,17 +1797,18 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t *     or {@code null} if the default type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @see "); //$NON-NLS-1$
-						it.append(getFileAndLineNumber());
+						it.append("\t * @return {@code this}."); //$NON-NLS-1$
 						it.newLine();
+						appendFileLineComment(it);
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t"); //$NON-NLS-1$
 						if (!forInterface) {
 							it.append("public "); //$NON-NLS-1$
 						}
-						it.append("void setExtends("); //$NON-NLS-1$
-						it.append(JvmParameterizedTypeReference.class);
+						it.append(description.getElementDescription().builderInterfaceType());
+						it.append(" setExtends("); //$NON-NLS-1$
+						it.append(JvmTypeReference.class);
 						it.append(" superType)"); //$NON-NLS-1$
 					}
 					if (forInterface) {
@@ -1720,7 +1823,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.append("\t\tthis.builder.setExtends(superType);"); //$NON-NLS-1$
 							}
 						} else {
-							it.append("\t\tif (superType != null"); //$NON-NLS-1$
+							it.append("\t\tif (superType instanceof "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" psuperType"); //$NON-NLS-1$
 							if (!Strings.isEmpty(defaultType)) {
 								it.append(" && !"); //$NON-NLS-1$
 								it.append(new TypeReference(defaultType));
@@ -1756,15 +1861,15 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append("this."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
 							if (isExtendsKeywordFound.get()) {
-								it.append(".getExtends().add(superType);"); //$NON-NLS-1$
+								it.append(".getExtends().add(psuperType);"); //$NON-NLS-1$
 							} else {
-								it.append(".setExtends(superType);"); //$NON-NLS-1$
+								it.append(".setExtends(psuperType);"); //$NON-NLS-1$
 							}
 							it.newLine();
 							if (!Strings.isEmpty(defaultType)) {
-								it.append("\t\t\t\treturn;"); //$NON-NLS-1$
+								it.append("\t\t\t\treturn this;"); //$NON-NLS-1$
 							} else {
-								it.append("\t\t\treturn;"); //$NON-NLS-1$
+								it.append("\t\t\treturn this;"); //$NON-NLS-1$
 							}
 							it.newLine();
 							if (!Strings.isEmpty(defaultType)) {
@@ -1772,18 +1877,20 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 							}
 							it.append("\t\t}"); //$NON-NLS-1$
-							it.newLine();
 							if (!isExtendsKeywordFound.get()) {
+								it.newLine();
 								it.append("\t\tthis."); //$NON-NLS-1$
 								it.append(generatedObjectFieldName);
 								it.append(".setExtends(null);"); //$NON-NLS-1$
-								it.newLine();
 							}
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
+						it.newLine();			
 						it.append("\t}"); //$NON-NLS-1$
 					}
 					it.newLineIfNotEmpty();
-					it.newLine();				
+					it.newLine();			
 				}
 				if (isImplementKeywordFound.get()) {
 					var defaultType = getCodeBuilderConfig().getDefaultImplementedSupers().get(
@@ -1792,24 +1899,27 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t/** Add an implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the qualified name of the implemented type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 					} else {
 						it.append("\t/** Change the implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the qualified name of the implemented type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or {@code null} for nothing."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 					}
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append("void "); //$NON-NLS-1$
+					it.append(description.getElementDescription().builderInterfaceType());
+					it.append(" "); //$NON-NLS-1$
 					if (isImplementsKeywordFound.get()) {
 						it.append("add"); //$NON-NLS-1$
 					} else {
@@ -1835,7 +1945,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".isEmpty(type)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t"); //$NON-NLS-1$
-							it.append(JvmParameterizedTypeReference.class);
+							it.append(JvmTypeReference.class);
 							it.append(" superTypeRef = newTypeRef(this."); //$NON-NLS-1$
 							if (description.isMemberElement()) {
 								it.append("container"); //$NON-NLS-1$
@@ -1844,13 +1954,25 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							}
 							it.append(", type);"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append("\t\t\tif (superTypeRef instanceof "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" pref) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t"); //$NON-NLS-1$
 							if (isImplementsKeywordFound.get()) {
 								it.append("add"); //$NON-NLS-1$
 							} else {
 								it.append("set"); //$NON-NLS-1$
 							}
-							it.append("Implements(superTypeRef);"); //$NON-NLS-1$
+							it.append("Implements(pref);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t} else {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\tthrow new "); //$NON-NLS-1$
+							it.append(IllegalArgumentException.class);
+							it.append("(type);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
 							if (!isImplementsKeywordFound.get()) {
@@ -1862,8 +1984,10 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 								it.append("\t\t}"); //$NON-NLS-1$
 							}
-							it.newLine();
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
 					it.newLineIfNotEmpty();
@@ -1872,31 +1996,34 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t/** Add an implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the implemented type."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 					} else {
 						it.append("\t/** Change the implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t * @param type the implemented type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or {@code null} for nothing."); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t * @return {@code this}"); //$NON-NLS-1$
 					}
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append("void "); //$NON-NLS-1$
+					it.append(description.getElementDescription().builderInterfaceType());
+					it.append(" "); //$NON-NLS-1$
 					if (isImplementsKeywordFound.get()) {
 						it.append("add"); //$NON-NLS-1$
 					} else {
 						it.append("set"); //$NON-NLS-1$
 					}
 					it.append("Implements("); //$NON-NLS-1$
-					it.append(JvmParameterizedTypeReference.class);
+					it.append(JvmTypeReference.class);
 					it.append(" type)"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -1912,9 +2039,10 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							}
 							it.append("Implements(type);"); //$NON-NLS-1$
 						} else {
-							it.append("\t\tif (type != null"); //$NON-NLS-1$
+							it.append("\t\tif (type instanceof "); //$NON-NLS-1$
+							it.append(JvmParameterizedTypeReference.class);
+							it.append(" ptype"); //$NON-NLS-1$
 							if (!Strings.isEmpty(defaultType)) {
-								it.newLine();
 								it.append(" && !"); //$NON-NLS-1$
 								it.append(new TypeReference(defaultType));
 								it.append(".class.getName().equals(type.getType().getIdentifier())"); //$NON-NLS-1$
@@ -1954,7 +2082,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							} else {
 								it.append("setImplements("); //$NON-NLS-1$
 							}
-							it.append("type);"); //$NON-NLS-1$
+							it.append("ptype);"); //$NON-NLS-1$
 							if (!Strings.isEmpty(defaultType)) {
 								it.newLine();
 								if (!isImplementsKeywordFound.get()) {
@@ -1976,6 +2104,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".setImplements(null);"); //$NON-NLS-1$
 						}
 						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
 					it.newLineIfNotEmpty();
@@ -1986,9 +2116,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param type the qualified name of the annotation."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -2009,7 +2137,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".isEmpty(type)) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t"); //$NON-NLS-1$
-							it.append(JvmParameterizedTypeReference.class);
+							it.append(JvmTypeReference.class);
 							it.append(" ref = newTypeRef(this."); //$NON-NLS-1$
 							if (description.isMemberElement()) {
 								it.append("container"); //$NON-NLS-1$
@@ -2031,9 +2159,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param type the annotation type."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -2078,16 +2204,17 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @param modifier the modifier to add."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
+					it.append("\t * @return {@code this}."); //$NON-NLS-1$
 					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
 					if (!forInterface) {
 						it.append("public "); //$NON-NLS-1$
 					}
-					it.append("void addModifier(String modifier)"); //$NON-NLS-1$
+					it.append(description.getElementDescription().builderInterfaceType());
+					it.append(" addModifier(String modifier)"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
 					} else {
@@ -2106,6 +2233,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
 						}
+						it.newLine();
+						it.append("\t\treturn this;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
@@ -2131,9 +2260,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t * @return the builder of type parameter."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @see "); //$NON-NLS-1$
-					it.append(getFileAndLineNumber());
-					it.newLine();
+					appendFileLineComment(it);
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t"); //$NON-NLS-1$
@@ -2160,7 +2287,15 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(getGeneratedTypeAccessor(description.getElementDescription().elementType()));
 							it.append(";"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\tbuilder.eInit(object, name, getTypeResolutionContext());"); //$NON-NLS-1$
+							it.append("\t\t"); //$NON-NLS-1$
+							it.append(JvmType.class);
+							it.append(" jvmType = get"); //$NON-NLS-1$
+							it.append(description.getElementDescription().elementType());
+							it.append("Reference().getType();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tbuilder.eInit(object, jvmType instanceof "); //$NON-NLS-1$
+							it.append(JvmTypeParameterDeclarator.class);
+							it.append(" declarator ? declarator : null, name, getTypeResolutionContext());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\tobject.getTypeParameters().add(builder.getJvmTypeParameter());"); //$NON-NLS-1$
 							it.newLine();

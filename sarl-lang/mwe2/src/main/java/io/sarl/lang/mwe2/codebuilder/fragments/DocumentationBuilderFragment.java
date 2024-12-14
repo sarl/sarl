@@ -224,6 +224,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 		final var content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
+				appendEmptyComment(it);
 				it.append("public class "); //$NON-NLS-1$
 				it.append(adapter.getSimpleName());
 				it.append(" extends "); //$NON-NLS-1$
@@ -231,8 +232,11 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String documentation;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -244,6 +248,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void setDocumentation(String documentation) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.documentation = documentation;"); //$NON-NLS-1$
@@ -251,6 +256,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -281,9 +287,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Format a documentation string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public interface "); //$NON-NLS-1$
@@ -295,9 +299,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the prefix."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -310,9 +312,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the symbols."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -325,9 +325,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the symbols."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -340,9 +338,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the prefix."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -357,9 +353,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -376,9 +370,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -393,9 +385,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -414,9 +404,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -435,9 +423,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param comment the comment to format out."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -456,9 +442,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -475,9 +459,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -492,9 +474,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -513,9 +493,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param appendable the receiver of the formatted string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -534,9 +512,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @param comment the comment to format out."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -568,9 +544,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string for specific objects."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public interface "); //$NON-NLS-1$
@@ -582,9 +556,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the ML grammar rule."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -599,9 +571,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the SL grammar rule."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -616,9 +586,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return documentation formatter."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -637,9 +605,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * @return the formatted comment."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -656,9 +622,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t *      Otherwise singleline comment is the default."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -687,9 +651,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Formatter a documentation string."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class DocumentationFormatter implements "); //$NON-NLS-1$
@@ -697,21 +659,29 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static final String SPACE_CHAR = \" \";"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static final String NL_CHAR = \"\\n\";"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static final String EMPTY_STR = \"\";"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String mlLinePrefix;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String mlStart;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String mlEnd;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String slPrefix;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected static boolean isNewLine(char character) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tif (character == '\\n' || character == '\\r' || character == '\\f') {"); //$NON-NLS-1$
@@ -727,6 +697,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -737,6 +708,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void setMultilineCommentStartSymbols(String symbols) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.mlStart = symbols;"); //$NON-NLS-1$
@@ -744,6 +716,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -754,6 +727,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void setMultilineCommentEndSymbols(String symbols) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.mlEnd = symbols;"); //$NON-NLS-1$
@@ -761,6 +735,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -771,6 +746,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void setMultilineCommentLinePrefix(String prefix) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.mlLinePrefix = prefix;"); //$NON-NLS-1$
@@ -778,6 +754,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -788,6 +765,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -814,6 +792,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void setSinglelineCommentPrefix(String prefix) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.slPrefix = prefix;"); //$NON-NLS-1$
@@ -821,6 +800,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -895,6 +875,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -905,6 +886,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -923,6 +905,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -935,6 +918,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -959,6 +943,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -973,6 +958,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -983,6 +969,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -1001,6 +988,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -1013,6 +1001,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -1057,6 +1046,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void formatSinglelineComment("); //$NON-NLS-1$
 				it.append(ITextReplacerContext.class);
 				it.append(" context, "); //$NON-NLS-1$
@@ -1068,6 +1058,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate <T> void formatSinglelineComment(String indentationString, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal String indent = "); //$NON-NLS-1$
@@ -1233,6 +1224,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static String safeSubstring(String text, int start, int length) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tif (text == null) {"); //$NON-NLS-1$
@@ -1250,6 +1242,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static boolean startsWith(String text, int start, String pattern) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn safeSubstring(text, start, pattern.length()).equals(pattern);"); //$NON-NLS-1$
@@ -1257,6 +1250,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static String makeWhiteSpaces(int nb) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal StringBuilder b = new StringBuilder();"); //$NON-NLS-1$
@@ -1272,6 +1266,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected int getWhiteSpacesOnFirstLine() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn 1;"); //$NON-NLS-1$
@@ -1279,6 +1274,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected int getWhiteSpacesOnOtherLines() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn 1;"); //$NON-NLS-1$
@@ -1286,11 +1282,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected <T> void formatLineText(String lineText, boolean isMultlineComment, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate <T> boolean formatMultlineCommentFirstLine(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t// Skip the comment characters that corresponds to the Javadoc format: /**."); //$NON-NLS-1$
@@ -1374,6 +1372,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate <T> boolean formatMultlineCommentOtherLines(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t// Search for the comment prefix (usually \" * \""); //$NON-NLS-1$
@@ -1469,6 +1468,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate <T> void formatMultlineComment(String indentationString, String newLineString, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal String indent = Strings.emptyIfNull(indentationString);"); //$NON-NLS-1$
@@ -1575,6 +1575,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic interface FormattedTextAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tT getFirstLine(int offset);"); //$NON-NLS-1$
@@ -1600,12 +1601,16 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic class SubAccessor<T> implements FormattedTextAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final FormattedTextAccessor<T> parent;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int offsetInParent;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic SubAccessor(FormattedTextAccessor<T> parent, int offsetInParent) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tassert parent != null;"); //$NON-NLS-1$
@@ -1616,60 +1621,70 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic T getFirstLine(int offset) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getFirstLine(offset);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic T getNextLine(T currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getNextLine(currentLine);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineOffset(T currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getLineOffset(currentLine);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineLength(T currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getLineLength(currentLine);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getLineText(T line) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getLineText(line);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getCommentText();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getCommentOffset();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentEndOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.getCommentEndOffset();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.parent.replace(this.offsetInParent + offset, length, newText);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic final void applyReplacements() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthrow new UnsupportedOperationException();"); //$NON-NLS-1$
@@ -1679,12 +1694,16 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic static class Line {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int offset;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int length;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic static Line newInstance(String text, int offset) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tif (offset < 0 || offset >= text.length()) {"); //$NON-NLS-1$
@@ -1719,6 +1738,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate Line(int offset, int length) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthis.offset = offset;"); //$NON-NLS-1$
@@ -1727,18 +1747,21 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.offset;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLength() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.length;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn \"offset: \" + getOffset() + \"; length: \" + getLength();"); //$NON-NLS-1$
@@ -1748,16 +1771,21 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic static abstract class AbstractReplacementAccessor<T> implements FormattedTextAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final String documentation;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate "); //$NON-NLS-1$
 				it.append(SortedMap.class);
 				it.append("<Integer, Replacement> replacements;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate boolean applied;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic AbstractReplacementAccessor(String documentation, "); //$NON-NLS-1$
 				it.append(SortedMap.class);
 				it.append("<Integer, Replacement> replacements) {"); //$NON-NLS-1$
@@ -1768,6 +1796,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprotected final void checkNotApplied() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tif (this.applied) {"); //$NON-NLS-1$
@@ -1780,12 +1809,14 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.documentation;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprotected "); //$NON-NLS-1$
 				it.append(SortedMap.class);
 				it.append("<Integer, Replacement> getReplacements() {"); //$NON-NLS-1$
@@ -1802,6 +1833,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tReplacement rep = getReplacements().remove(offset);"); //$NON-NLS-1$
@@ -1822,6 +1854,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprotected static void applyReplacements("); //$NON-NLS-1$
 				it.append(IAppendable.class);
 				it.append(" appendable, String text, "); //$NON-NLS-1$
@@ -1869,10 +1902,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic static abstract class AbstractDebuggingAccessor<T> extends AbstractReplacementAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate String buffer;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic AbstractDebuggingAccessor(String text, "); //$NON-NLS-1$
 				it.append(SortedMap.class);
 				it.append("<Integer, Replacement> replacements) {"); //$NON-NLS-1$
@@ -1881,6 +1917,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate String computeBuffer() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t"); //$NON-NLS-1$
@@ -1895,6 +1932,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tif (this.buffer == null) {"); //$NON-NLS-1$
@@ -1908,6 +1946,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfinal Replacement rep = super.replace(offset, length, newText);"); //$NON-NLS-1$
@@ -1922,22 +1961,27 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic static class RegionAccessor extends AbstractReplacementAccessor<"); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append("> {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(ITextReplacerContext.class);
 				it.append(" context;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(ITextRegionAccess.class);
 				it.append(" access;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(IComment.class);
 				it.append(" comment;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic RegionAccessor("); //$NON-NLS-1$
 				it.append(ITextReplacerContext.class);
 				it.append(" context, "); //$NON-NLS-1$
@@ -1955,6 +1999,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.comment.getText();"); //$NON-NLS-1$
@@ -1962,6 +2007,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getLineText("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" line) {"); //$NON-NLS-1$
@@ -1975,6 +2021,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.comment.getOffset();"); //$NON-NLS-1$
@@ -1982,6 +2029,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentEndOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.comment.getEndOffset();"); //$NON-NLS-1$
@@ -1989,6 +2037,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic "); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" getFirstLine(int offset) {"); //$NON-NLS-1$
@@ -1998,6 +2047,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic "); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" getNextLine("); //$NON-NLS-1$
@@ -2009,6 +2059,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineOffset("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
@@ -2018,6 +2069,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineLength("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
@@ -2027,6 +2079,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic void applyReplacements() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tcheckNotApplied();"); //$NON-NLS-1$
@@ -2047,16 +2100,21 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static class AppendableAccessor extends AbstractReplacementAccessor<Line> {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(IAppendable.class);
 				it.append(" target;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int commentOffset;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int commentEndOffset;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic AppendableAccessor("); //$NON-NLS-1$
 				it.append(IAppendable.class);
 				it.append(" target, String documentation, "); //$NON-NLS-1$
@@ -2074,6 +2132,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Line getFirstLine(int offset) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn Line.newInstance(getCommentText(), offset);"); //$NON-NLS-1$
@@ -2081,6 +2140,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Line getNextLine(Line currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tint index = getCommentText().indexOf(NL_CHAR, currentLine.getOffset());"); //$NON-NLS-1$
@@ -2096,6 +2156,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineOffset(Line currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn currentLine.getOffset();"); //$NON-NLS-1$
@@ -2103,6 +2164,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLineLength(Line currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn currentLine.getLength();"); //$NON-NLS-1$
@@ -2110,6 +2172,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getLineText(Line line) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfinal int offset = line.getOffset();"); //$NON-NLS-1$
@@ -2119,6 +2182,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.commentOffset;"); //$NON-NLS-1$
@@ -2126,6 +2190,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getCommentEndOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.commentEndOffset;"); //$NON-NLS-1$
@@ -2133,6 +2198,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic void applyReplacements() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tcheckNotApplied();"); //$NON-NLS-1$
@@ -2145,14 +2211,19 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic static class Replacement {"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int offset;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final int length;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final String text;"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic Replacement(int offset, int length, String text) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthis.offset = offset;"); //$NON-NLS-1$
@@ -2163,24 +2234,28 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getOffset() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.offset;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic int getLength() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.length;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String getText() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn this.text;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn \"offset: \" + getOffset() + \"; length: \" + getLength() + \"; new text: \" + getText();"); //$NON-NLS-1$
@@ -2211,9 +2286,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$
@@ -2223,33 +2296,41 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(AbstractRule.class);
 				it.append(" mlRule;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(AbstractRule.class);
 				it.append(" slRule;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String mlStartSymbols;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String mlEndTagSymbols;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String slStartSymbols;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(getIDocumentationFormatter());
 				it.append(" documentationFormatter;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -2314,6 +2395,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -2326,6 +2408,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -2338,6 +2421,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -2350,6 +2434,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -2378,6 +2463,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
@@ -2434,6 +2520,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static boolean isNewLine(char character) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tif (character == '\\n' || character == '\\r' || character == '\\f') {"); //$NON-NLS-1$
@@ -2494,9 +2581,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Provider a documentation string."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$
@@ -2506,6 +2591,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic String getDocumentation("); //$NON-NLS-1$
 				it.append(EObject.class);
 				it.append(" o) {"); //$NON-NLS-1$
@@ -2580,12 +2666,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Syntactic sequencer which supports documentations of Ecore elements."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$
@@ -2595,6 +2676,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate final "); //$NON-NLS-1$
 				it.append(Set.class);
 				it.append("<"); //$NON-NLS-1$
@@ -2604,6 +2686,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("<>();"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate final "); //$NON-NLS-1$
 				it.append(Set.class);
 				it.append("<"); //$NON-NLS-1$
@@ -2613,11 +2696,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("<>();"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(innerBlockComment);
 				it.append(" lastInnerBlock;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -2626,6 +2711,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" documentationBuilder;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -2634,11 +2720,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" keywords;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(ISequenceAcceptor.class);
 				it.append(" trailingSequenceAcceptor;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tpublic void init("); //$NON-NLS-1$
 				it.append(ISerializationContext.class);
 				it.append(" context, "); //$NON-NLS-1$
@@ -2670,6 +2758,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected "); //$NON-NLS-1$
 				it.append(ISequenceAcceptor.class);
 				it.append(" getTrailingSequenceAcceptor() {"); //$NON-NLS-1$
@@ -2703,6 +2792,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected void emitDocumentation(Class<?> semanticObjectType, String comment) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal String fmtcomment = this.documentationBuilder.build(comment, semanticObjectType);"); //$NON-NLS-1$
@@ -2722,6 +2812,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected void emitDocumentation("); //$NON-NLS-1$
 				it.append(EObject.class);
 				it.append(" semanticObject) {"); //$NON-NLS-1$
@@ -2749,6 +2840,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected void emitInnerDocumentation("); //$NON-NLS-1$
 				it.append(EObject.class);
 				it.append(" semanticObject) {"); //$NON-NLS-1$
@@ -2776,6 +2868,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(innerBlockComment);
 				it.append(" getInnerDocumentation(EObject semanticObject) {"); //$NON-NLS-1$
@@ -2795,6 +2888,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected void emitUnassignedTokens("); //$NON-NLS-1$
 				it.append(EObject.class);
 				it.append(" semanticObject, "); //$NON-NLS-1$
@@ -2813,15 +2907,16 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tif (semanticObject instanceof "); //$NON-NLS-1$
 				it.append(XBlockExpression.class);
-				it.append(") {"); //$NON-NLS-1$
+				it.append(" cblock) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.lastInnerBlock = getInnerDocumentation(semanticObject);"); //$NON-NLS-1$
+				it.append("\t\t\tthis.lastInnerBlock = getInnerDocumentation(cblock);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprotected void accept("); //$NON-NLS-1$
 				it.append(ISynState.class);
 				it.append(" emitter, "); //$NON-NLS-1$

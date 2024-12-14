@@ -640,12 +640,6 @@ Workflow {
     				to = "io.sarl.lang.jvmmodel.SARLReadAndWriteTracking"
    				}
     			runtime = {
-    				bind = "org.eclipse.xtext.scoping.IScopeProvider"
-    				annotatedWith = "org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding"
-    				to = "io.sarl.lang.scoping.SARLSerializerScopeProvider"
-    				functionName = "configureSerializerIScopeProvider"
-   				}
-    			runtime = {
     				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
     				to = "io.sarl.lang.extralanguage.JavaPluginExtraLanguageContributions"
     			}

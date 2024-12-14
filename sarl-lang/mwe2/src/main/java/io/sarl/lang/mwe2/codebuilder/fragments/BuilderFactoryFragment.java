@@ -84,11 +84,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				it.append("/**"); //$NON-NLS-1$
-				it.append(" * Creates {@code ICodeBuilder} to insert SARL code snippets."); //$NON-NLS-1$
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("/** Creates {@code ICodeBuilder} to insert SARL code snippets."); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -98,6 +96,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_PREFIXES = new String[] {"); //$NON-NLS-1$
 				it.newLine();
 				for (final var forbiddenPackage : getCodeBuilderConfig().getForbiddenInjectionPrefixes()) {
@@ -112,6 +111,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t};"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_POSTFIXES = new String[] {"); //$NON-NLS-1$
 				it.newLine();
 				for (final var forbiddenPostfix : getCodeBuilderConfig().getForbiddenInjectionPostfixes()) {
@@ -126,6 +126,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t};"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -134,9 +135,11 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" resourceFactory;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate String fileExtension;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -147,6 +150,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("> importManagerProvider;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -155,11 +159,13 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" originalInjector;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(Injector.class);
 				it.append(" builderInjector;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(getInjectType());
 				it.newLine();
@@ -180,9 +186,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the uri."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -219,9 +223,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the script's file extension."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -240,9 +242,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the resource factory."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -263,9 +263,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the name of the foo package."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -286,9 +284,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the name of the foo type."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -307,9 +303,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the name of the foo type member."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -330,9 +324,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the resource."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -363,9 +355,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the injector."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -400,9 +390,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the new injector."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic static "); //$NON-NLS-1$
@@ -454,6 +442,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();				
+				appendEmptyComment(it);
 				it.append("\tprivate static boolean isValid(String name) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfor (final String prefix : FORBIDDEN_INJECTION_PREFIXES) {"); //$NON-NLS-1$
@@ -489,9 +478,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t * @return the provider."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -506,16 +493,19 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\tprivate static class CodeBuilderModule extends "); //$NON-NLS-1$
 				it.append(AbstractModule.class);
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(ImportManager.class);
 				it.append(" importManager;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\tpublic CodeBuilderModule("); //$NON-NLS-1$
 				it.append(ImportManager.class);
 				it.append(" importManager) {"); //$NON-NLS-1$
@@ -525,6 +515,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				appendEmptyComment(it);
 				it.append("\t\t@Override"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tprotected void configure() {"); //$NON-NLS-1$
@@ -570,9 +561,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("/** User-defined builder factory of the " + getLanguageName() //$NON-NLS-1$
 						+ " scripts."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("class "); //$NON-NLS-1$
@@ -603,9 +592,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder factory of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
 				it.newLine();
-				it.append(" * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
-				it.newLine();
+				appendFileLineComment(it);
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("public class "); //$NON-NLS-1$

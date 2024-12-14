@@ -24,8 +24,6 @@ package io.sarl.lang.mwe2.codebuilder.extractor;
 import java.util.Collections;
 import java.util.HashSet;
 
-import com.google.common.collect.Iterables;
-import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.Grammar;
@@ -33,6 +31,9 @@ import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions.Function4;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+
+import com.google.common.collect.Iterables;
+import com.google.inject.Singleton;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 

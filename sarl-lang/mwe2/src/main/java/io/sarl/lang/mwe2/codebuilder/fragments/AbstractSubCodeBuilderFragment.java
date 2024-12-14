@@ -31,13 +31,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
+import org.eclipse.xtend2.lib.StringConcatenationClient.TargetStringConcatenation;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Grammar;
@@ -55,6 +54,9 @@ import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.model.FileAccessFactory;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 import io.sarl.lang.mwe2.codebuilder.config.ExpressionConfig;
@@ -82,6 +84,39 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	@Inject
 	private XtextGeneratorNaming naming;
+
+	/** Append a full Java comment to the argument with the filename and line number in the "see" tag.
+	 *
+	 * @param it the receiver of the comment.
+	 * @see #appendFileLineComment(TargetStringConcatenation)
+	 */
+	protected static void appendEmptyComment(TargetStringConcatenation it) {
+		it.append("\t/**"); //$NON-NLS-1$
+		it.newLine();
+		appendFileLineComment(it, 2);
+		it.append("\t */"); //$NON-NLS-1$
+		it.newLine();
+	}
+	
+	/** Append only the filename and line number in a "see" tag with the Javadoc syntax.
+	 *
+	 * @param it the receiver of the comment.
+	 * @see #appendEmptyComment(TargetStringConcatenation)
+	 */
+	protected static void appendFileLineComment(TargetStringConcatenation it) {
+		appendFileLineComment(it, 2);
+	}
+
+	/** Append only the filename and line number in a "see" tag with the Javadoc syntax.
+	 *
+	 * @param it the receiver of the comment.
+	 * @see #appendEmptyComment(TargetStringConcatenation)
+	 */
+	protected static void appendFileLineComment(TargetStringConcatenation it, int shift) {
+		it.append("\t * @see "); //$NON-NLS-1$
+		it.append(getFileAndLineNumber(shift));
+		it.newLine();
+	}
 
 	@Override
 	public void initialize(Injector injector) {
@@ -471,6 +506,17 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Fill the given receiver with the serialization of the element that is associated to this appender."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param appender the receiver of the source code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @throws IOException if there is error during the serialization."); //$NON-NLS-1$
+				it.newLine();
+				appendFileLineComment(it);
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\tpublic void build("); //$NON-NLS-1$
 				it.append(ISourceAppender.class);
 				it.append(" appender) throws "); //$NON-NLS-1$
@@ -496,13 +542,15 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param functionName the name of the function.
 	 * @param comment the comment for the function.
 	 * @param documentationAdapterType the type of the documentation adapter.
+	 * @param builderType the type of the building that contains the generated function.
 	 * @return the code.
+	 * @since 0.15
 	 */
 	@SuppressWarnings("static-method")
 	protected StringConcatenationClient generateCommentFunction(
 			boolean forInterface, boolean forAppender,
 			String elementAccessor, String functionName, String comment,
-			TypeReference documentationAdapterType) {
+			TypeReference documentationAdapterType, TypeReference builderType) {
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -517,16 +565,17 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 				it.newLine();
 				it.append("\t * @param doc the documentation."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @see "); //$NON-NLS-1$
-				it.append(getFileAndLineNumber());
+				it.append("\t * @return {@code this}."); //$NON-NLS-1$
 				it.newLine();
+				appendFileLineComment(it);
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append("void "); //$NON-NLS-1$
+				it.append(builderType);
+				it.append(" "); //$NON-NLS-1$
 				it.append(functionName);
 				it.append("(String doc)"); //$NON-NLS-1$
 				if (forInterface) {
@@ -594,6 +643,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 						it.append("\t\t}"); //$NON-NLS-1$
 					}
 					it.newLine();
+					it.append("\t\treturn this;"); //$NON-NLS-1$
+					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
 				it.newLineIfNotEmpty();
@@ -606,18 +657,21 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 *
 	 * @param forInterface indicates if the code must be generated for an interface.
 	 * @param forAppender indicates if the code must be generated for an appender.
+	 * @param elementType the simple name of the element's type.
 	 * @param elementAccessor the code for accessing to the generated element.
+	 * @param builderType the type of the building that contains the generated function.
 	 * @return the code.
+	 * @since 0.15
 	 */
 	protected StringConcatenationClient generateStandardCommentFunctions(boolean forInterface, boolean forAppender,
-			String elementAccessor) {
+			String elementAccessor, TypeReference builderType) {
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append(generateCommentFunction(forInterface, forAppender, elementAccessor,
 						"setDocumentation", //$NON-NLS-1$
 						"The documentation will be displayed just before the element.", //$NON-NLS-1$
-						getPreDocumentationAdapter()));
+						getPreDocumentationAdapter(), builderType));
 			}
 		};
 	}
@@ -773,11 +827,12 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the filename and the code line of the caller of this function.
 	 *
+	 * @param shift the shift to apply to the stack trace.
 	 * @return file and line number.
 	 * @since 0.15
 	 */
-	protected static String getFileAndLineNumber() {
-		final var trace = Thread.currentThread().getStackTrace()[2];
+	protected static String getFileAndLineNumber(int shift) {
+		final var trace = Thread.currentThread().getStackTrace()[2 + shift];
 		return new StringBuilder(trace.getFileName())
 				.append(" : ").append(trace.getMethodName()) //$NON-NLS-1$
 				.append(" : ").append(trace.getLineNumber()) //$NON-NLS-1$
