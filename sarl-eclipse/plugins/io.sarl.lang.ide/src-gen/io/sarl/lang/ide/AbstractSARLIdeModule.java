@@ -86,7 +86,7 @@ public abstract class AbstractSARLIdeModule extends DefaultXbaseIdeModule {
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
+	public void configureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
 		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(org.eclipse.xtext.common.types.xtext.ui.JdtBasedSimpleTypeScopeProvider.class);
 	}
 	

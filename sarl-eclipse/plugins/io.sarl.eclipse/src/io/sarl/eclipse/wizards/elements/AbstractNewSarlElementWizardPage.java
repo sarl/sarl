@@ -71,10 +71,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
@@ -89,6 +89,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.ActionBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.ConstructorBuilder;
+import io.sarl.eclipse.util.Jdt2Ecore.ConversionContext;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
@@ -203,6 +204,13 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	@Inject
 	protected CodeBuilderFactory codeBuilderFactory;
+
+	/** Tool for accessing the Ecore types and references.
+	 *
+	 * @since 0.15
+	 */
+	@Inject
+	protected TypeReferences ecoreTypeReferences;
 
 	/** Provider of the resource set associated to a project.
 	 */
@@ -765,10 +773,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param superTypeQualifiedName the qualified name of the super type.
 	 * @param superInterfaceQualifiedNames the qualified names of the super interfaces.
 	 * @throws JavaModelException if the java model is invalid.
+	 * @since 0.15
 	 */
 	protected void createInheritedMembers(
 			String defaultSuperTypeQualifiedName,
-			XtendTypeDeclaration context, boolean generateActionBlocks,
+			ConversionContext context, boolean generateActionBlocks,
 			ConstructorBuilder constructorBuilder, ActionBuilder actionBuilder,
 			String superTypeQualifiedName, String... superInterfaceQualifiedNames)
 					throws JavaModelException {
@@ -787,18 +796,21 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param superTypeQualifiedName the qualified name of the super type.
 	 * @param superInterfaceQualifiedNames the qualified names of the super interfaces.
 	 * @throws JavaModelException if the java model is invalid.
+	 * @since 0.15
 	 */
 	protected void createInheritedMembers(
 			String defaultSuperTypeQualifiedName,
-			XtendTypeDeclaration context, boolean generateActionBlocks,
+			ConversionContext context, boolean generateActionBlocks,
 			ConstructorBuilder constructorBuilder, ActionBuilder actionBuilder,
 			String superTypeQualifiedName, List<String> superInterfaceQualifiedNames)
 					throws JavaModelException {
+		assert context != null;
+
 		final var typeFinder = getTypeFinder();
 
 		final Map<ActionParameterTypes, IMethod> baseConstructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		this.jdt2sarl.populateInheritanceContext(
-				typeFinder,
+				context, typeFinder,
 				null, null, null, null,
 				baseConstructors,
 				defaultSuperTypeQualifiedName,
@@ -819,14 +831,14 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		}
 
 		this.jdt2sarl.populateInheritanceContext(
-				typeFinder,
+				context, typeFinder,
 				null, null, null,
 				operationsToImplement,
 				constructors,
 				superTypeQualifiedName,
 				superInterfaceQualifiedNames);
 
-		if (context != null) {
+		if (context.getEcoreContext() != null) {
 			if (constructors != null && constructorBuilder != null) {
 				for (final var constructor : constructors.entrySet()) {
 					if (!baseConstructors.containsKey(constructor.getKey())) {
@@ -1200,7 +1212,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private static void createInfoCall(IExpressionBuilder builder, String message) {
-		final var capacity = builder.newTypeRef(null, LOGGING_CAPACITY_NAME);
+		final var capacity = builder.newTypeRef(LOGGING_CAPACITY_NAME);
 		final var objectType = Object.class.getName();
 		final var objectArrayType = objectType + "[]"; //$NON-NLS-1$
 		final var infoMethod = Iterables.find(

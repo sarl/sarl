@@ -32,6 +32,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 
 /**
@@ -87,7 +88,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		final var superType = getSuperClass();
 		// Do not add the "Object" type because it is the default.
 		if (Strings.isNullOrEmpty(superType) || Object.class.getName().equals(superType)) {
-			clazz.setExtends(null);
+			clazz.setExtends((String) null);
 		} else {
 			clazz.setExtends(superType);
 		}
@@ -98,7 +99,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		mon.worked(1);
 		createInheritedMembers(
 			Object.class.getCanonicalName(),
-			clazz.getSarlClass(),
+			Jdt2Ecore.contextualize(clazz.getSarlClass(), this.ecoreTypeReferences),
 			true,
 			() -> clazz.addSarlConstructor(),
 			name -> clazz.addOverrideSarlAction(name),

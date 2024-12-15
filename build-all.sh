@@ -11,7 +11,7 @@ function run_mvn {
 	echo "[INFO] Compiling $BLOCKNAME"
 	echo "[INFO] ================================================================================="
 	echo "[INFO]"
-	mvn clean install "$@"
+	mvn "$@" clean install
 }
 
 # Force the script to fail if any command is failing

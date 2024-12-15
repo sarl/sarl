@@ -35,6 +35,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
@@ -100,7 +101,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 		if (agent.getSarlAgent().getExtends() != null) {
 			createInheritedMembers(
 				Agent.class.getCanonicalName(),
-				agent.getSarlAgent(),
+				Jdt2Ecore.contextualize(agent.getSarlAgent(), this.ecoreTypeReferences),
 				true,
 				() -> agent.addSarlConstructor(),
 				name -> agent.addOverrideSarlAction(name),

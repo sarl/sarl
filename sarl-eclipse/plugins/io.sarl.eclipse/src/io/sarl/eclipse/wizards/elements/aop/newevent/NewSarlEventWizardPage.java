@@ -35,6 +35,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
@@ -97,7 +98,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 		if (event.getSarlEvent().getExtends() != null) {
 			createInheritedMembers(
 					Event.class.getCanonicalName(),
-					event.getSarlEvent(),
+					Jdt2Ecore.contextualize(event.getSarlEvent(), this.ecoreTypeReferences),
 					false,
 					() -> event.addSarlConstructor(),
 					null,

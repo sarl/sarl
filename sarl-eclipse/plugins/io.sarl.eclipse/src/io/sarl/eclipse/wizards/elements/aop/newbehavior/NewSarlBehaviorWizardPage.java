@@ -35,6 +35,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
@@ -100,7 +101,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		if (behavior.getSarlBehavior().getExtends() != null) {
 			createInheritedMembers(
 				Behavior.class.getCanonicalName(),
-				behavior.getSarlBehavior(),
+				Jdt2Ecore.contextualize(behavior.getSarlBehavior(), this.ecoreTypeReferences),
 				true,
 				() -> behavior.addSarlConstructor(),
 				name -> behavior.addOverrideSarlAction(name),
