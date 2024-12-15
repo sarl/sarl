@@ -337,6 +337,15 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.append(";"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					if (hasBlock.get()) {
+						appendEmptyComment(it);
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(getBlockExpressionBuilderInterface());
+						it.append(" internalBlockExpression"); //$NON-NLS-1$
+						it.append(";"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
 				} else {
 					it.append("\t/** Find the reference to the type with the given name."); //$NON-NLS-1$
 					it.newLine();
@@ -1467,20 +1476,28 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						} else {
 							it.append("\t\t"); //$NON-NLS-1$
 							it.append(getBlockExpressionBuilderInterface());
-							it.append(" block = this.blockExpressionProvider.get();"); //$NON-NLS-1$
+							it.append(" block = this.internalBlockExpression;"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\tblock.eInit(getTypeResolutionContext());"); //$NON-NLS-1$
+							it.append("\t\tif (block == null) {"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t"); //$NON-NLS-1$
+							it.append("\t\t\tblock = this.blockExpressionProvider.get();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tblock.eInit(getTypeResolutionContext());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
 							it.append(XBlockExpression.class);
 							it.append(" expr = block.getXBlockExpression();"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\tthis."); //$NON-NLS-1$
+							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
 							it.append(".set"); //$NON-NLS-1$
 							it.append(Strings.toFirstUpper(getCodeBuilderConfig()
 									.getMemberBlockExpressionExtensionGrammarName()));
 							it.append("(expr);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tthis.internalBlockExpression = block;"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn block;"); //$NON-NLS-1$
 						}

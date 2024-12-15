@@ -79,14 +79,19 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 */
 	private SarlBehaviorUnit sarlBehaviorUnit;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 341
+	 */
+	private IBlockExpressionBuilder internalBlockExpression;
+
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 607
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 616
 		if (this.sarlBehaviorUnit == null) {
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 			internalEInit(container, context);
@@ -103,10 +108,10 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 757
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 766
 	 */
 	public void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 787
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 796
 		if (this.sarlBehaviorUnit == null) {
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 			internalEInit(container, context);
@@ -115,7 +120,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
 		assert this.sarlBehaviorUnit != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -125,7 +130,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -133,7 +138,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -169,7 +174,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1382
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1391
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {
@@ -184,18 +189,22 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1454
 	 */
 	public IBlockExpressionBuilder getExpression() {
-		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit(getTypeResolutionContext());
-		XBlockExpression expr = block.getXBlockExpression();
-		this.sarlBehaviorUnit.setExpression(expr);
+		IBlockExpressionBuilder block = this.internalBlockExpression;
+		if (block == null) {
+			block = this.blockExpressionProvider.get();
+			block.eInit(getTypeResolutionContext());
+			XBlockExpression expr = block.getXBlockExpression();
+			this.sarlBehaviorUnit.setExpression(expr);
+			this.internalBlockExpression = block;
+		}
 		return block;
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure

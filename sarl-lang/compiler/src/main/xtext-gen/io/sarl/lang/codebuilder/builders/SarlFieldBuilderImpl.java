@@ -82,10 +82,10 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	 * @param name the name of the SarlField.
 	 * @param modifier the major/default modifier to be associated to the member.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 692
 		if (this.sarlField == null) {
 			this.sarlField = SarlFactory.eINSTANCE.createSarlField();
 			internalEInit(container, context);
@@ -100,7 +100,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
 		assert this.sarlField != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -110,7 +110,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlField getSarlField() {
@@ -118,7 +118,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -155,7 +155,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 965
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 974
 	 */
 	public ISarlFieldBuilder setType(String type) {
 		JvmTypeReference ref = newTypeRef(this.container, type);
@@ -166,7 +166,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1007
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1016
 	 */
 	public ISarlFieldBuilder setType(JvmTypeReference type) {
 		this.sarlField.setType(type);
@@ -175,7 +175,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 
 	/** Replies the initialValue.
 	 * @return the value of the initialValue. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1382
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1391
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {
@@ -191,7 +191,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1611
 	 */
 	public ISarlFieldBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -201,7 +201,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure

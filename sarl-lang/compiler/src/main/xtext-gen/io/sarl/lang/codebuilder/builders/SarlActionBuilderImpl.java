@@ -79,15 +79,20 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 */
 	private SarlAction sarlAction;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 341
+	 */
+	private IBlockExpressionBuilder internalBlockExpression;
+
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @param modifier the major/default modifier to be associated to the member.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 692
 		if (this.sarlAction == null) {
 			this.sarlAction = SarlFactory.eINSTANCE.createSarlAction();
 			internalEInit(container, context);
@@ -102,7 +107,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
 		assert this.sarlAction != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -112,7 +117,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlAction getSarlAction() {
@@ -120,7 +125,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -156,7 +161,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1049
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1058
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
@@ -167,7 +172,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1093
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1102
 	 */
 	public ISarlActionBuilder addException(String type) {
 		JvmTypeReference ref = newTypeRef(this.container, type);
@@ -178,7 +183,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a throwable exception.
 	 * @param type the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1136
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlActionBuilder addException(JvmTypeReference type) {
 		this.sarlAction.getExceptions().add(type);
@@ -188,7 +193,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a fired event.
 	 * @param type the fully qualified name of the event.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1181
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1190
 	 */
 	public ISarlActionBuilder addFiredEvent(String type) {
 		JvmTypeReference ref = newTypeRef(this.container, type);
@@ -198,7 +203,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Add a fired event.
 	 * @param type the event.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1222
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1231
 	 */
 	public void addFiredEvent(JvmTypeReference type) {
 		this.sarlAction.getFiredEvents().add(type);
@@ -207,7 +212,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Change the return type.
 	 @param type the return type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1264
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1273
 	 */
 	public ISarlActionBuilder setReturnType(String type) {
 		if (!Strings.isEmpty(type)) {
@@ -222,7 +227,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Change the return type.
 	 @param type the return type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1320
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1329
 	 */
 	public ISarlActionBuilder setReturnType(JvmTypeReference type) {
 		if (type != null && !Objects.equals("void", type.getType().getIdentifier())
@@ -236,20 +241,24 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1454
 	 */
 	public IBlockExpressionBuilder getExpression() {
-		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit(getTypeResolutionContext());
-		XBlockExpression expr = block.getXBlockExpression();
-		this.sarlAction.setExpression(expr);
+		IBlockExpressionBuilder block = this.internalBlockExpression;
+		if (block == null) {
+			block = this.blockExpressionProvider.get();
+			block.eInit(getTypeResolutionContext());
+			XBlockExpression expr = block.getXBlockExpression();
+			this.sarlAction.setExpression(expr);
+			this.internalBlockExpression = block;
+		}
 		return block;
 	}
 
 	/** Add an annotation.
 	 * @param type the qualified name of the annotation
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1500
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1517
 	 */
 	public ISarlActionBuilder addAnnotation(String type) {
 		if (!Strings.isEmpty(type)) {
@@ -262,7 +271,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add an annotation.
 	 * @param type the annotation type
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1544
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1561
 	 */
 	public ISarlActionBuilder addAnnotation(JvmTypeReference type) {
 		if (type != null) {
@@ -276,7 +285,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1611
 	 */
 	public ISarlActionBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -286,7 +295,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure
@@ -295,7 +304,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1657
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1674
 	 */
 	@Inject
 	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
@@ -303,7 +312,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1675
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1692
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();

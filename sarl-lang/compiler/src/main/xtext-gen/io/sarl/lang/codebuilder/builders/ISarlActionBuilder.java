@@ -41,7 +41,7 @@ public interface ISarlActionBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 347
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 356
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -49,7 +49,7 @@ public interface ISarlActionBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 375
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 384
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -57,7 +57,7 @@ public interface ISarlActionBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 405
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 414
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -65,7 +65,7 @@ public interface ISarlActionBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 437
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 446
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -74,18 +74,18 @@ public interface ISarlActionBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 471
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 480
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 501
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 510
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 526
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 535
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -94,18 +94,18 @@ public interface ISarlActionBuilder {
 	 * @param name the name of the SarlAction.
 	 * @param modifier the major/default modifier to be associated to the member.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	SarlAction getSarlAction();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	Resource eResource();
@@ -122,82 +122,82 @@ public interface ISarlActionBuilder {
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1049
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1058
 	 */
 	IFormalParameterBuilder addParameter(String name);
 
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1093
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1102
 	 */
 	ISarlActionBuilder addException(String type);
 
 	/** Add a throwable exception.
 	 * @param type the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1136
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1145
 	 */
 	ISarlActionBuilder addException(JvmTypeReference type);
 
 	/** Add a fired event.
 	 * @param type the fully qualified name of the event.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1181
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1190
 	 */
 	ISarlActionBuilder addFiredEvent(String type);
 
 	/** Add a fired event.
 	 * @param type the event.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1222
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1231
 	 */
 	void addFiredEvent(JvmTypeReference type);
 
 	/** Change the return type.
 	 @param type the return type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1264
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1273
 	 */
 	ISarlActionBuilder setReturnType(String type);
 
 	/** Change the return type.
 	 @param type the return type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1320
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1329
 	 */
 	ISarlActionBuilder setReturnType(JvmTypeReference type);
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1454
 	 */
 	IBlockExpressionBuilder getExpression();
 
 	/** Add an annotation.
 	 * @param type the qualified name of the annotation
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1500
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1517
 	 */
 	ISarlActionBuilder addAnnotation(String type);
 
 	/** Add an annotation.
 	 * @param type the annotation type
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1544
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1561
 	 */
 	ISarlActionBuilder addAnnotation(JvmTypeReference type);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1611
 	 */
 	ISarlActionBuilder addModifier(String modifier);
 
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1675
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1692
 	 */
 	ITypeParameterBuilder addTypeParameter(String name);
 

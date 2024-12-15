@@ -76,13 +76,18 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	 */
 	private SarlConstructor sarlConstructor;
 
+	/**
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 341
+	 */
+	private IBlockExpressionBuilder internalBlockExpression;
+
 	/** Initialize the Ecore element.
 	 * @param container the container of the SarlConstructor.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 692
 		if (this.sarlConstructor == null) {
 			this.sarlConstructor = SarlFactory.eINSTANCE.createSarlConstructor();
 			internalEInit(container, context);
@@ -90,7 +95,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
 		assert this.sarlConstructor != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -100,7 +105,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlConstructor getSarlConstructor() {
@@ -108,7 +113,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -144,7 +149,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Add a formal parameter.
 	 * @param name the name of the formal parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1049
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1058
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
@@ -155,7 +160,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	/** Add a throwable exception.
 	 * @param type the fully qualified name of the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1093
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1102
 	 */
 	public ISarlConstructorBuilder addException(String type) {
 		JvmTypeReference ref = newTypeRef(this.container, type);
@@ -166,7 +171,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	/** Add a throwable exception.
 	 * @param type the exception.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1136
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlConstructorBuilder addException(JvmTypeReference type) {
 		this.sarlConstructor.getExceptions().add(type);
@@ -175,20 +180,24 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1454
 	 */
 	public IBlockExpressionBuilder getExpression() {
-		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit(getTypeResolutionContext());
-		XBlockExpression expr = block.getXBlockExpression();
-		this.sarlConstructor.setExpression(expr);
+		IBlockExpressionBuilder block = this.internalBlockExpression;
+		if (block == null) {
+			block = this.blockExpressionProvider.get();
+			block.eInit(getTypeResolutionContext());
+			XBlockExpression expr = block.getXBlockExpression();
+			this.sarlConstructor.setExpression(expr);
+			this.internalBlockExpression = block;
+		}
 		return block;
 	}
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1594
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1611
 	 */
 	public ISarlConstructorBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -198,7 +207,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure
@@ -207,7 +216,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1657
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1674
 	 */
 	@Inject
 	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
@@ -215,7 +224,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1675
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1692
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();

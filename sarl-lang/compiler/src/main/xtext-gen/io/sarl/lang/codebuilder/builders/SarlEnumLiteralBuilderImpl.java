@@ -77,10 +77,10 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * @param container the container of the SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 683
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 692
 		if (this.sarlEnumLiteral == null) {
 			this.sarlEnumLiteral = SarlFactory.eINSTANCE.createSarlEnumLiteral();
 			internalEInit(container, context);
@@ -89,7 +89,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 860
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
 		assert this.sarlEnumLiteral != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -98,7 +98,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlEnumLiteral getSarlEnumLiteral() {
@@ -106,7 +106,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -141,7 +141,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure

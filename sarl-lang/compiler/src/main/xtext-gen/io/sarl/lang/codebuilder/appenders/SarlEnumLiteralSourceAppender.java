@@ -60,7 +60,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 347
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 356
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -70,7 +70,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 375
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 384
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -80,7 +80,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 405
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 414
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -90,7 +90,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 437
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 446
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -101,14 +101,14 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 471
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 480
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 510
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 519
 	 */
 	public void dispose() {
 		this.builder.dispose();
@@ -116,7 +116,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 539
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 548
 	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
@@ -126,14 +126,14 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @param container the container of the SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 573
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 897
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
 	 */
 	@Pure
 	public SarlEnumLiteral getSarlEnumLiteral() {
@@ -141,7 +141,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 931
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
 	 */
 	@Pure
 	public Resource eResource() {
@@ -162,7 +162,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1630
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
 	 */
 	@Override
 	@Pure
