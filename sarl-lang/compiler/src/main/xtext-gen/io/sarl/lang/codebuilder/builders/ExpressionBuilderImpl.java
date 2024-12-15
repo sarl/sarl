@@ -109,14 +109,18 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 */
 	@Pure
 	public Resource eResource() {
-		return getXExpression().eResource();
+		final var expr = getXExpression();
+		if (expr != null) {
+			return expr.eResource();
+		}
+		return this.context.eResource();
 	}
 
 	/** Change the expression in the container.
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 555
+	 * @see ExpressionBuilderFragment.java : appendTo : 567
 	 */
 	public IExpressionBuilder setExpression(String expression) {
 		this.expr = fromString(expression);
@@ -128,7 +132,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 *
 	 * @param expression the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 591
+	 * @see ExpressionBuilderFragment.java : appendTo : 603
 	 */
 	public IExpressionBuilder setXExpression(XExpression expression) {
 		this.expr = expression;
@@ -140,21 +144,21 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 *
 	 * @param expression the expression to compile.
 	 * @return the Sarl code.
-	 * @see ExpressionBuilderFragment.java : appendTo : 634
+	 * @see ExpressionBuilderFragment.java : appendTo : 646
 	 */
 	static String generateExpressionCode(String expression) {
 		return "event ____synthesis { var ____fakefield = " + expression + " }";
 	}
 
 	/**
-	 * @see ExpressionBuilderFragment.java : appendTo : 648
+	 * @see ExpressionBuilderFragment.java : appendTo : 660
 	 */
 	static String generateTypenameCode(String typeName) {
 		return "event ____synthesis { var ____fakefield : " + typeName + " }";
 	}
 
 	/**
-	 * @see ExpressionBuilderFragment.java : appendTo : 660
+	 * @see ExpressionBuilderFragment.java : appendTo : 672
 	 */
 	static JvmTypeReference parseType(Notifier context, String typeName, AbstractBuilder caller) {
 		ResourceSet resourceSet = toResource(context).getResourceSet();
@@ -184,7 +188,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return the expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 758
+	 * @see ExpressionBuilderFragment.java : appendTo : 770
 	 */
 	@Pure
 	protected XExpression fromString(String expression) {
@@ -211,7 +215,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 845
+	 * @see ExpressionBuilderFragment.java : appendTo : 857
 	 */
 	@Pure
 	public XExpression getDefaultXExpressionForType(String type) {
@@ -221,7 +225,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 878
+	 * @see ExpressionBuilderFragment.java : appendTo : 890
 	 */
 	@Pure
 	public XExpression getDefaultXExpressionForType(JvmTypeReference type) {
@@ -231,7 +235,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 913
+	 * @see ExpressionBuilderFragment.java : appendTo : 925
 	 */
 	@Pure
 	public String getDefaultValueForType(String type) {
@@ -241,7 +245,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 945
+	 * @see ExpressionBuilderFragment.java : appendTo : 957
 	 */
 	@Pure
 	public String getDefaultValueForType(JvmTypeReference type) {
@@ -284,7 +288,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1004
+	 * @see ExpressionBuilderFragment.java : appendTo : 1016
 	 */
 	public XFeatureCall createReferenceToThis() {
 		final XExpression expr = getXExpression();
@@ -298,7 +302,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1062
+	 * @see ExpressionBuilderFragment.java : appendTo : 1074
 	 */
 	public XFeatureCall createReferenceToSuper() {
 		final XExpression expr = getXExpression();

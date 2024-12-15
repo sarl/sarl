@@ -414,7 +414,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1257
+	 * @see ExpressionBuilderFragment.java : appendTo : 1269
 	 */
 	public IExpressionBuilder createXExpression(ResourceSet resourceSet) {
 		return createXExpression(createResource(resourceSet));	}
@@ -423,7 +423,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1283
+	 * @see ExpressionBuilderFragment.java : appendTo : 1295
 	 */
 	public IExpressionBuilder createXExpression(Resource resource) {
 		final IScriptBuilder script = createScript(getFooPackageName(), resource);
@@ -436,7 +436,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1334
+	 * @see ExpressionBuilderFragment.java : appendTo : 1346
 	 */
 	public ExpressionSourceAppender buildXExpression(ResourceSet resourceSet) {
 		return new ExpressionSourceAppender(createXExpression(resourceSet));
@@ -446,7 +446,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1363
+	 * @see ExpressionBuilderFragment.java : appendTo : 1375
 	 */
 	public ExpressionSourceAppender buildXExpression(Resource resource) {
 		return new ExpressionSourceAppender(createXExpression(resource));

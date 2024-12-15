@@ -142,14 +142,14 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	 */
 	@Pure
 	public Resource eResource() {
-		return getXExpression().eResource();
+		return this.builder.eResource();
 	}
 
 	/** Change the expression in the container.
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 555
+	 * @see ExpressionBuilderFragment.java : appendTo : 567
 	 */
 	public IExpressionBuilder setExpression(String expression) {
 		this.builder.setExpression(expression);
@@ -160,7 +160,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	 *
 	 * @param expression the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 591
+	 * @see ExpressionBuilderFragment.java : appendTo : 603
 	 */
 	public IExpressionBuilder setXExpression(XExpression expression) {
 		this.builder.setXExpression(expression);
@@ -171,7 +171,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 845
+	 * @see ExpressionBuilderFragment.java : appendTo : 857
 	 */
 	@Pure
 	public XExpression getDefaultXExpressionForType(String type) {
@@ -181,7 +181,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 878
+	 * @see ExpressionBuilderFragment.java : appendTo : 890
 	 */
 	@Pure
 	public XExpression getDefaultXExpressionForType(JvmTypeReference type) {
@@ -191,7 +191,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 913
+	 * @see ExpressionBuilderFragment.java : appendTo : 925
 	 */
 	@Pure
 	public String getDefaultValueForType(String type) {
@@ -201,7 +201,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 945
+	 * @see ExpressionBuilderFragment.java : appendTo : 957
 	 */
 	@Pure
 	public String getDefaultValueForType(JvmTypeReference type) {
@@ -230,7 +230,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1004
+	 * @see ExpressionBuilderFragment.java : appendTo : 1016
 	 */
 	public XFeatureCall createReferenceToThis() {
 		return this.builder.createReferenceToThis();
@@ -239,7 +239,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1062
+	 * @see ExpressionBuilderFragment.java : appendTo : 1074
 	 */
 	public XFeatureCall createReferenceToSuper() {
 		return this.builder.createReferenceToSuper();
@@ -247,7 +247,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Dispose the resource.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1161
+	 * @see ExpressionBuilderFragment.java : appendTo : 1173
 	 */
 	public void dispose() {
 		this.builder.dispose();

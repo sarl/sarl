@@ -112,7 +112,7 @@ public interface IExpressionBuilder {
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 555
+	 * @see ExpressionBuilderFragment.java : appendTo : 567
 	 */
 	IExpressionBuilder setExpression(String expression);
 
@@ -120,7 +120,7 @@ public interface IExpressionBuilder {
 	 *
 	 * @param expression the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 591
+	 * @see ExpressionBuilderFragment.java : appendTo : 603
 	 */
 	IExpressionBuilder setXExpression(XExpression expression);
 
@@ -128,7 +128,7 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 845
+	 * @see ExpressionBuilderFragment.java : appendTo : 857
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(String type);
@@ -136,7 +136,7 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 878
+	 * @see ExpressionBuilderFragment.java : appendTo : 890
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(JvmTypeReference type);
@@ -144,7 +144,7 @@ public interface IExpressionBuilder {
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 913
+	 * @see ExpressionBuilderFragment.java : appendTo : 925
 	 */
 	@Pure
 	String getDefaultValueForType(String type);
@@ -152,7 +152,7 @@ public interface IExpressionBuilder {
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 945
+	 * @see ExpressionBuilderFragment.java : appendTo : 957
 	 */
 	@Pure
 	String getDefaultValueForType(JvmTypeReference type);
@@ -170,19 +170,19 @@ public interface IExpressionBuilder {
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1004
+	 * @see ExpressionBuilderFragment.java : appendTo : 1016
 	 */
 	XFeatureCall createReferenceToThis();
 
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1062
+	 * @see ExpressionBuilderFragment.java : appendTo : 1074
 	 */
 	XFeatureCall createReferenceToSuper();
 
 	/** Dispose the resource.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1152
+	 * @see ExpressionBuilderFragment.java : appendTo : 1164
 	 */
 	void dispose();
 

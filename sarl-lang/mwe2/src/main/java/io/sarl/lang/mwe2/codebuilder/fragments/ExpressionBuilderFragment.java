@@ -538,7 +538,19 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\treturn getXExpression().eResource();"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("\t\treturn this.builder.eResource();"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tfinal var expr = getXExpression();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (expr != null) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\treturn expr.eResource();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn this.context.eResource();"); //$NON-NLS-1$
+					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
