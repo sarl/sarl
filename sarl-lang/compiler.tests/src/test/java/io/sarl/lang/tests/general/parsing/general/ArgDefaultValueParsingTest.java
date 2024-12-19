@@ -76,7 +76,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) {",
-					"System.out.println(arg)",
+					"System.^out.println(arg)",
 					"}",
 					"}"
 					));
@@ -136,7 +136,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) : boolean {",
-					"System.out.println(arg)",
+					"System.^out.println(arg)",
 					"return true",
 					"}",
 					"}"
@@ -165,7 +165,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -193,7 +193,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -221,7 +221,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -249,7 +249,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -277,7 +277,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -305,7 +305,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -333,7 +333,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -361,7 +361,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -389,7 +389,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -417,7 +417,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -461,7 +461,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -493,7 +493,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -525,7 +525,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -557,10 +557,10 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
-					"		System.out.println(\"valid\")",
+					"		System.^out.println(\"valid\")",
 					"	}",
 					"	def myaction(arg0 : int, arg1 : int*) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"}"
 					));
@@ -609,7 +609,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg : int=4) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg)",
+					"System.^out.println(arg)",
 					"}",
 					"}"
 					));
@@ -667,7 +667,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -693,7 +693,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -719,7 +719,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -745,7 +745,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -771,7 +771,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -797,7 +797,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -823,7 +823,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -855,7 +855,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -887,7 +887,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -914,7 +914,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -958,7 +958,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -989,7 +989,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -1020,7 +1020,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"	new(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"		super(null) // must be never null during runtime",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -1068,7 +1068,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : double=18, arg2 : int) {",
 					"super(null) // must be never null during runtime",
-					"System.out.println(arg0)",
+					"System.^out.println(arg0)",
 					"}",
 					"}"
 					));
@@ -2259,10 +2259,10 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"}",
 					"skill S1 implements C1 {",
 					"	def capAction {",
-					"		System.out.println(\"ok\");",
+					"		System.^out.println(\"ok\");",
 					"	}",
 					"	def myaction(arg0 : int, arg1 : int, arg2 : int*) {",
-					"		System.out.println(\"ok\");",
+					"		System.^out.println(\"ok\");",
 					"	}",
 					"}"
 					));
@@ -2313,10 +2313,10 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
-					"		System.out.println(\"valid\")",
+					"		System.^out.println(\"valid\")",
 					"	}",
 					"	def myaction(arg0 : int, arg1 : int*) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"}"
 					));
@@ -2489,7 +2489,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : double=18, arg2 : int) {",
-					"		System.out.println(arg0)",
+					"		System.^out.println(arg0)",
 					"	}",
 					"}"
 					));
@@ -2537,10 +2537,10 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
-					"		System.out.println(\"valid\")",
+					"		System.^out.println(\"valid\")",
 					"	}",
 					"	def myaction(arg0 : int, arg1 : int*) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"}"
 					));

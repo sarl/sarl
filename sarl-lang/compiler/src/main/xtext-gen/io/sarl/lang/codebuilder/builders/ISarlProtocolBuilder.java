@@ -28,6 +28,7 @@ import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -131,7 +132,7 @@ public interface ISarlProtocolBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	ISarlProtocolBuilder setDocumentation(String doc);
 
@@ -141,6 +142,34 @@ public interface ISarlProtocolBuilder {
 	 * @see TopElementBuilderFragment.java : appendTo : 2209
 	 */
 	ISarlProtocolBuilder addModifier(String modifier);
+
+	/** Create a SarlProtocolParameter.
+	 * @param name the name of the SarlProtocolParameter.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 */
+	ISarlProtocolParameterBuilder addSarlProtocolParameter(String name);
+
+	/** Create a SarlProtocolCall.
+	 * @param name the type of the SarlProtocolCall.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 */
+	ISarlProtocolCallBuilder addSarlProtocolCall(String name);
+
+	/** Create a SarlProtocolCall.
+	 * @param name the type of the SarlProtocolCall.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 602
+	 */
+	ISarlProtocolCallBuilder addSarlProtocolCall(JvmParameterizedTypeReference name);
+
+	/** Create a SarlProtocolMessage.
+	 * @param name the name of the SarlProtocolMessage.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 */
+	ISarlProtocolMessageBuilder addSarlProtocolMessage(String name);
 
 }
 

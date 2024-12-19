@@ -52,7 +52,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -118,7 +118,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : float=4.5f) {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -184,7 +184,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : boolean=true) {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -250,7 +250,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : double=4.5) {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -316,7 +316,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : long=450) {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -382,7 +382,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : String=\"abcd\") {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -448,7 +448,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : char='d') {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"}",
 					"}"
 					);
@@ -514,7 +514,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) : boolean {",
-					"  System.out.println(arg)",
+					"  System.^out.println(arg)",
 					"  return true",
 					"}",
 					"}"
@@ -582,7 +582,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
-					"  System.out.println(arg0)",
+					"  System.^out.println(arg0)",
 					"}",
 					"}"
 					);
@@ -648,7 +648,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
-					"  System.out.println(arg0)",
+					"  System.^out.println(arg0)",
 					"}",
 					"}"
 					);
@@ -714,7 +714,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
-					"  System.out.println(arg0)",
+					"  System.^out.println(arg0)",
 					"}",
 					"}"
 					);
@@ -780,7 +780,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
-					"  System.out.println(arg0)",
+					"  System.^out.println(arg0)",
 					"}",
 					"}"
 					);
@@ -846,7 +846,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
-					"  System.out.println(arg0)",
+					"  System.^out.println(arg0)",
 					"}",
 					"}"
 					);
@@ -912,7 +912,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1000,7 +1000,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) : boolean {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"    return true",
 					"  }",
 					"}"
@@ -1068,7 +1068,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1134,7 +1134,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1200,7 +1200,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1282,7 +1282,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int, arg1 : int=45, arg2 : int*) : boolean {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"    return true",
 					"  }",
 					"}"
@@ -1350,7 +1350,7 @@ public class ArgDefaultValueCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg0 : int=45, arg1 : int=56, arg2 : int=78, arg3 : int=14) {",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1470,7 +1470,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : int=4) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1524,7 +1524,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : float=4.5f) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1578,7 +1578,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : boolean=true) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1632,7 +1632,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : double=4.5) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1686,7 +1686,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : long=450) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1740,7 +1740,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : String=\"abcd\") {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1794,7 +1794,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg : char='d') {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -1848,7 +1848,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1902,7 +1902,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -1956,7 +1956,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2010,7 +2010,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2064,7 +2064,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2118,7 +2118,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2194,7 +2194,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2248,7 +2248,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2302,7 +2302,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2372,7 +2372,7 @@ public class ArgDefaultValueCompilerTest {
 					"behavior B1 {",
 					"  new(arg0 : int=45, arg1 : int=56, arg2 : int=78, arg3 : int=14) {",
 					"      super(null) // must be never null in real code",
-					"    System.out.println(arg0)",
+					"    System.^out.println(arg0)",
 					"  }",
 					"}"
 					);
@@ -2927,7 +2927,7 @@ public class ArgDefaultValueCompilerTest {
 					"}",
 					"skill S1 implements C1, C2 {",
 					"  def myaction1(x : int) {",
-					"    System.out.println(x);",
+					"    System.^out.println(x);",
 					"  }",
 					"  def myaction2(y : float, z : boolean) {",
 					"    System.err.println(y);",

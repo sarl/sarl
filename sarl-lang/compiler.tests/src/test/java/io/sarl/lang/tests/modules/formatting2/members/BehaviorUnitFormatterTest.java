@@ -53,40 +53,40 @@ public class BehaviorUnitFormatterTest {
 
 		@Test
 		public void simple() throws Exception {
-			String source = unformattedCode("on Event{System.out.println(occurrence)}");
+			String source = unformattedCode("on Event{System.^out.println(occurrence)}");
 			String expected = formattedCode(
 					"	on Event {",
-					"		System.out.println(occurrence)",
+					"		System.^out.println(occurrence)",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void trueGuard() throws Exception {
-			String source = unformattedCode("on Event[true]{System.out.println(occurrence)}");
+			String source = unformattedCode("on Event[true]{System.^out.println(occurrence)}");
 			String expected = formattedCode(
 					"	on Event [true] {",
-					"		System.out.println(occurrence)",
+					"		System.^out.println(occurrence)",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void falseGuard() throws Exception {
-			String source = unformattedCode("on Event[false]{System.out.println(occurrence)}");
+			String source = unformattedCode("on Event[false]{System.^out.println(occurrence)}");
 			String expected = formattedCode(
 					"	on Event [false] {",
-					"		System.out.println(occurrence)",
+					"		System.^out.println(occurrence)",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void guard() throws Exception {
-			String source = unformattedCode("on Event[occurrence.forMe]{System.out.println(occurrence)}");
+			String source = unformattedCode("on Event[occurrence.forMe]{System.^out.println(occurrence)}");
 			String expected = formattedCode(
 					"	on Event [occurrence.forMe] {",
-					"		System.out.println(occurrence)",
+					"		System.^out.println(occurrence)",
 					"	}");
 			assertFormatted(source, expected);
 		}

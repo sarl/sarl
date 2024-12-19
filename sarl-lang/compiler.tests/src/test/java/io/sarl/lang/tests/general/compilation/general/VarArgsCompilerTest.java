@@ -55,7 +55,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg : int*) {",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -99,7 +99,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"agent A1 {",
 					"  def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);
@@ -148,7 +148,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"behavior B1 {",
 					"  def myaction(arg : int*) {",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -184,7 +184,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"behavior B1 {",
 					"  def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);
@@ -221,7 +221,7 @@ public class VarArgsCompilerTest {
 					"behavior B1 {",
 					"  new(arg : int*) {",
 					"    super(null) // must be never null in real code",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -252,7 +252,7 @@ public class VarArgsCompilerTest {
 					"behavior B1 {",
 					"  new(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"    super(null) // must be never null in real code",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);
@@ -382,7 +382,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"event E1 {",
 					"  new(arg : int*) {",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -415,7 +415,7 @@ public class VarArgsCompilerTest {
 			String source = multilineString(
 					"event E1 {",
 					"  new(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);
@@ -454,7 +454,7 @@ public class VarArgsCompilerTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"  def myaction(arg : int*) {",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -522,7 +522,7 @@ public class VarArgsCompilerTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"  def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);
@@ -569,7 +569,7 @@ public class VarArgsCompilerTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"  new(arg : int*) {",
-					"    System.out.println(arg)",
+					"    System.^out.println(arg)",
 					"  }",
 					"}"
 					);
@@ -604,7 +604,7 @@ public class VarArgsCompilerTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"  new(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"    System.out.println(arg3)",
+					"    System.^out.println(arg3)",
 					"  }",
 					"}"
 					);

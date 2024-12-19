@@ -21,14 +21,17 @@
 
 package io.sarl.lang.mwe2.codebuilder.extractor;
 
-import com.google.inject.ImplementedBy;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.xbase.lib.Functions.Function4;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import com.google.inject.ImplementedBy;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessFragment2;
@@ -313,11 +316,38 @@ public interface CodeElementExtractor {
 	 */
 	TypeReference getFormalParameterContainerType();
 
+	/** Replies the type of the formal parameters' super type.
+	 *
+	 * @param set the resource set that corresponds to the current EClass scope.
+	 * @return the type of the formal parameters' super type.
+	 * @since 0.15
+	 * @see #getFormalParameterSuperEClass()
+	 */
+	TypeReference getFormalParameterSuperType(ResourceSet set);
+
+	/** Replies the type of the formal parameters' super type.
+	 *
+	 * @return the type of the formal parameters' super type.
+	 * @since 0.15
+	 * @see #getFormalParameterSuperType(ResourceSet)
+	 */
+	EClass getFormalParameterSuperEClass();
+
 	/** Replies the description of the type parameters.
 	 *
 	 * @return the description of the type parameter.
 	 */
 	ElementDescription getTypeParameter();
+
+	/** Replies the interface that correponds to the builder of a complex parameter.
+	 *
+	 * @param parameter the type of the complex parameter. 
+	 * @return the interface type.
+	 * @since 0.15
+	 */
+	default TypeReference getComplexParameterBuilderInterface(TypeReference parameter) {
+		return getElementBuilderInterface(parameter.getSimpleName());
+	}
 
 	/** Description of an element.
 	 *

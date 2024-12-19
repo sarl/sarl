@@ -55,7 +55,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 *
 	 * @param appender the receiver of the source code.
 	 * @throws IOException if there is error during the serialization.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 549
 	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlEvent(), appender);
@@ -183,7 +183,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlEventBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);

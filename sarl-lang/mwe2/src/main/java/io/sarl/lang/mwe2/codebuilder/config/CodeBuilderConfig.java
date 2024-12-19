@@ -30,7 +30,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.scoping.TypeParameterScope;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -143,7 +147,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	/** Default type for the formal parameter container.
 	 */
-	private static final String PARAMETER_CONTAINER_TYPE = "org.eclipse.xtend.core.xtend.XtendExecutable"; //$NON-NLS-1$
+	private static final Class<? extends EObject> PARAMETER_CONTAINER_TYPE = XtendExecutable.class;
 
 	/** Default flag that is indicating if Xtend support is enable.
 	 */
@@ -161,6 +165,11 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final Class<? extends IScope> TYPE_PARAMETER_SCOPE = TypeParameterScope.class;
 
+	/** Default type for the super type of all the formal parameters.
+	 * @since 0.15
+	 */
+	private static final EClass FORMAL_PARAMETER_SUPER_TYPE = XtendPackage.eINSTANCE.getXtendParameter();
+
 	private boolean googleInjectionTypes = true;
 
 	private String scriptRuleName;
@@ -171,7 +180,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String formalParameterRuleName;
 
-	private String formalParameterContainerType = PARAMETER_CONTAINER_TYPE;
+	private Class<? extends EObject> formalParameterContainerType = PARAMETER_CONTAINER_TYPE;
 
 	private final Set<String> multilineCommentedTypes = new HashSet<>();
 
@@ -240,6 +249,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private final Set<String> forbiddenInjectionPostfixes = new TreeSet<>(Collections.singleton(FORBIDDEN_LOGGER));
 
 	private Class<? extends IScope> superTypeParameterScopeType = TYPE_PARAMETER_SCOPE;
+
+	private EClass formalParameterSuperType = FORMAL_PARAMETER_SUPER_TYPE;
 
 	/** Add a prefix of typenames that should not be considered for injection overriding.
 	 *
@@ -387,6 +398,28 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	@Pure
 	public String getParameterListGrammarName() {
 		return this.parameterListGrammarName;
+	}
+
+
+	/** Set the name of the super type for all formal parameters.
+	 *
+	 * @param type the formal parameter super type.
+	 * @since 0.15
+	 */
+	public void setFormalParameterSuperType(EClass type) {
+		if (type != null) {
+			this.formalParameterSuperType = type;
+		}
+	}
+
+	/** Replies the name of the super type for all formal parameters.
+	 *
+	 * @return the name of formal parameter super type.
+	 * @since 0.15
+	 */
+	@Pure
+	public EClass getFormalParameterSuperType() {
+		return this.formalParameterSuperType;
 	}
 
 	/** Set the name that is used for representing the default value of a formal parameter in the grammar's assignments.
@@ -919,9 +952,10 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	/** Change the name of the type that is a formal parameter container.
 	 *
 	 * @param name the name of the type.
+	 * @since 0.15
 	 */
-	public void setFormalParameterContainerType(String name) {
-		if (!Strings.isEmpty(name)) {
+	public void setFormalParameterContainerType(Class<? extends EObject> name) {
+		if (name != null) {
 			this.formalParameterContainerType = name;
 		}
 	}
@@ -929,9 +963,10 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	/** Replies the name of the type that is a formal parameter container.
 	 *
 	 * @return the name of the type.
+	 * @since 0.15
 	 */
 	@Pure
-	public String getFormalParameterContainerType() {
+	public Class<? extends EObject> getFormalParameterContainerType() {
 		return this.formalParameterContainerType;
 	}
 

@@ -54,7 +54,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 *
 	 * @param appender the receiver of the source code.
 	 * @throws IOException if there is error during the serialization.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 517
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 549
 	 */
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlEnumeration(), appender);
@@ -191,7 +191,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlEnumerationBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);

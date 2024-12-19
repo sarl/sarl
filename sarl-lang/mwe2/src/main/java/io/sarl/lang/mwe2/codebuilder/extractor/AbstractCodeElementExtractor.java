@@ -24,10 +24,10 @@ package io.sarl.lang.mwe2.codebuilder.extractor;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Grammar;
@@ -37,6 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import org.eclipse.xtext.xtext.generator.util.GenModelUtil2;
+
+import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 
@@ -56,10 +59,10 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 
 	@Inject
 	private CodeBuilderConfig configuration;
-
+	
 	private Grammar grammar;
 
-	/** Replies the code builder condifugration.
+	/** Replies the code builder configuration.
 	 *
 	 * @return the configuration.
 	 */
@@ -336,8 +339,17 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	
 	@Override
 	public TypeReference getFormalParameterContainerType() {
-		return new TypeReference(
-				getCodeBuilderConfig().getFormalParameterContainerType());
+		return new TypeReference(getCodeBuilderConfig().getFormalParameterContainerType());
+	}
+	
+	@Override
+	public TypeReference getFormalParameterSuperType(ResourceSet set) {
+		return new TypeReference(getFormalParameterSuperEClass(), set);
+	}
+
+	@Override
+	public EClass getFormalParameterSuperEClass() {
+		return getCodeBuilderConfig().getFormalParameterSuperType();
 	}
 
 	@Override

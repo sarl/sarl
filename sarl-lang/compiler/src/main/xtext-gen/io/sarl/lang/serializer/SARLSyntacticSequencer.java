@@ -50,6 +50,12 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_AOPMember___LeftParenthesisKeyword_2_5_6_0_RightParenthesisKeyword_2_5_6_2__q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_0_7_q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_3_6_q;
+	protected AbstractElementAlias match_BsplProtocolMember_ParameterKeyword_2_1_2_q;
+	protected AbstractElementAlias match_BsplProtocolMember_SemicolonKeyword_2_0_4_q;
+	protected AbstractElementAlias match_BsplProtocolMember_SemicolonKeyword_2_1_7_q;
+	protected AbstractElementAlias match_BsplProtocolMember_SemicolonKeyword_2_2_6_q;
+	protected AbstractElementAlias match_BsplProtocolMember_SemicolonKeyword_2_3_8_q;
+	protected AbstractElementAlias match_BsplProtocolMember_SemicolonKeyword_2_4_10_q;
 	protected AbstractElementAlias match_CapacityMember_SemicolonKeyword_11_1_q;
 	protected AbstractElementAlias match_CapacityMember___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q;
 	protected AbstractElementAlias match_EventMember_SemicolonKeyword_2_0_4_q;
@@ -84,6 +90,12 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_AOPMember___LeftParenthesisKeyword_2_5_6_0_RightParenthesisKeyword_2_5_6_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getAOPMemberAccess().getLeftParenthesisKeyword_2_5_6_0()), new TokenAlias(false, false, grammarAccess.getAOPMemberAccess().getRightParenthesisKeyword_2_5_6_2()));
 		match_AnnotationField_SemicolonKeyword_2_0_7_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_0_7());
 		match_AnnotationField_SemicolonKeyword_2_3_6_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_3_6());
+		match_BsplProtocolMember_ParameterKeyword_2_1_2_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getParameterKeyword_2_1_2());
+		match_BsplProtocolMember_SemicolonKeyword_2_0_4_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getSemicolonKeyword_2_0_4());
+		match_BsplProtocolMember_SemicolonKeyword_2_1_7_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getSemicolonKeyword_2_1_7());
+		match_BsplProtocolMember_SemicolonKeyword_2_2_6_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getSemicolonKeyword_2_2_6());
+		match_BsplProtocolMember_SemicolonKeyword_2_3_8_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getSemicolonKeyword_2_3_8());
+		match_BsplProtocolMember_SemicolonKeyword_2_4_10_q = new TokenAlias(false, true, grammarAccess.getBsplProtocolMemberAccess().getSemicolonKeyword_2_4_10());
 		match_CapacityMember_SemicolonKeyword_11_1_q = new TokenAlias(false, true, grammarAccess.getCapacityMemberAccess().getSemicolonKeyword_11_1());
 		match_CapacityMember___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getCapacityMemberAccess().getLeftParenthesisKeyword_8_0()), new TokenAlias(false, false, grammarAccess.getCapacityMemberAccess().getRightParenthesisKeyword_8_2()));
 		match_EventMember_SemicolonKeyword_2_0_4_q = new TokenAlias(false, true, grammarAccess.getEventMemberAccess().getSemicolonKeyword_2_0_4());
@@ -162,6 +174,18 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_AnnotationField_SemicolonKeyword_2_0_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_AnnotationField_SemicolonKeyword_2_3_6_q.equals(syntax))
 				emit_AnnotationField_SemicolonKeyword_2_3_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_ParameterKeyword_2_1_2_q.equals(syntax))
+				emit_BsplProtocolMember_ParameterKeyword_2_1_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_SemicolonKeyword_2_0_4_q.equals(syntax))
+				emit_BsplProtocolMember_SemicolonKeyword_2_0_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_SemicolonKeyword_2_1_7_q.equals(syntax))
+				emit_BsplProtocolMember_SemicolonKeyword_2_1_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_SemicolonKeyword_2_2_6_q.equals(syntax))
+				emit_BsplProtocolMember_SemicolonKeyword_2_2_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_SemicolonKeyword_2_3_8_q.equals(syntax))
+				emit_BsplProtocolMember_SemicolonKeyword_2_3_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BsplProtocolMember_SemicolonKeyword_2_4_10_q.equals(syntax))
+				emit_BsplProtocolMember_SemicolonKeyword_2_4_10_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_CapacityMember_SemicolonKeyword_11_1_q.equals(syntax))
 				emit_CapacityMember_SemicolonKeyword_11_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_CapacityMember___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q.equals(syntax))
@@ -357,6 +381,98 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * </pre>
 	 */
 	protected void emit_AnnotationField_SemicolonKeyword_2_3_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     'parameter'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     modifiers+='private' (ambiguity) modifiers+=BsplParameterModifier
+	 *     modifiers+='private' (ambiguity) name=ValidID
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_ParameterKeyword_2_1_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     names+=ValidID (ambiguity) (rule end)
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_SemicolonKeyword_2_0_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     modifiers+=BsplParameterModifier (ambiguity) (rule end)
+	 *     name=ValidID (ambiguity) (rule end)
+	 *     type=JvmTypeReference (ambiguity) (rule end)
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_SemicolonKeyword_2_1_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     modifiers+=BsplParameterModifier (ambiguity) (rule end)
+	 *     name=ValidID (ambiguity) (rule end)
+	 *     type=JvmTypeReference (ambiguity) (rule end)
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_SemicolonKeyword_2_2_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     name=JvmTypeReference '(' '|' ')' (ambiguity) (rule end)
+	 *     parameters+=BsplMessageParameter ')' (ambiguity) (rule end)
+	 *     roles+=ValidID '|' ')' (ambiguity) (rule end)
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_SemicolonKeyword_2_3_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     name=ValidID '(' ')' (ambiguity) (rule end)
+	 *     parameters+=BsplMessageParameter ')' (ambiguity) (rule end)
+	 
+	 * </pre>
+	 */
+	protected void emit_BsplProtocolMember_SemicolonKeyword_2_4_10_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

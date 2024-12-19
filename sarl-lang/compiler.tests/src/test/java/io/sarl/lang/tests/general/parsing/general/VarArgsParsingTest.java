@@ -75,7 +75,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg : int*) {",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -103,7 +103,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));
@@ -153,7 +153,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg : int*) {",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -182,7 +182,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));
@@ -228,7 +228,7 @@ public class VarArgsParsingTest {
 					"behavior B1 {",
 					"	new(arg : int*) {",
 					"		super(null) // must be never null during runtime",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -255,7 +255,7 @@ public class VarArgsParsingTest {
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		super(null) // must be never null during runtime",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));
@@ -298,10 +298,10 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"	def myaction {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"}"
 					));
@@ -336,10 +336,10 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"	def myaction(arg0 : int) {",
-					"		System.out.println(\"invalid\")",
+					"		System.^out.println(\"invalid\")",
 					"	}",
 					"}"
 					));
@@ -401,7 +401,7 @@ public class VarArgsParsingTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg : int*) {",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -437,7 +437,7 @@ public class VarArgsParsingTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));
@@ -490,7 +490,7 @@ public class VarArgsParsingTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new(arg : int*) {",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -523,7 +523,7 @@ public class VarArgsParsingTest {
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));
@@ -650,7 +650,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
 					"	new(arg : int*) {",
-					"		System.out.println(arg)",
+					"		System.^out.println(arg)",
 					"	}",
 					"}"
 					));
@@ -676,7 +676,7 @@ public class VarArgsParsingTest {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
-					"		System.out.println(arg3)",
+					"		System.^out.println(arg3)",
 					"	}",
 					"}"
 					));

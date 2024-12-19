@@ -129,9 +129,9 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"    var i : List<Integer>",
 				"    var j = 45",
 				"    var k : double = 45",
-				"    System.out.println(i)",
-				"    System.out.println(j)",
-				"    System.out.println(k)",
+				"    System.^out.println(i)",
+				"    System.^out.println(j)",
+				"    System.^out.println(k)",
 				"  }",
 				"}"
 				);
@@ -261,8 +261,8 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"  def myaction {",
 				"    val j = 45",
 				"    val k : double = 45",
-				"    System.out.println(j)",
-				"    System.out.println(k)",
+				"    System.^out.println(j)",
+				"    System.^out.println(k)",
 				"  }",
 				"}"
 				);
@@ -312,7 +312,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"  var list : List<Integer>",
 				"  def myaction {",
 				"    for( i : list) {",
-				"      System.out.println(i)",
+				"      System.^out.println(i)",
 				"    }",
 				"  }",
 				"}"
@@ -381,7 +381,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"  var list : List<Integer>",
 				"  def myaction {",
 				"    for( i as Number : list) {",
-				"      System.out.println(i)",
+				"      System.^out.println(i)",
 				"    }",
 				"  }",
 				"}"
@@ -448,10 +448,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"agent A1 {",
 				"  def myaction {",
 				"    try {",
-				"      System.out.println(\"G\")",
+				"      System.^out.println(\"G\")",
 				"    }",
 				"    catch(e : Throwable) {",
-				"      System.out.println(e)",
+				"      System.^out.println(e)",
 				"    }",
 				"  }",
 				"}"
@@ -507,13 +507,13 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"agent A1 {",
 				"  def myaction {",
 				"    try {",
-				"      System.out.println(\"G\")",
+				"      System.^out.println(\"G\")",
 				"    }",
 				"    catch(e : Exception) {",
-				"      System.out.println(e)",
+				"      System.^out.println(e)",
 				"    }",
 				"    catch(e : Throwable) {",
-				"      System.out.println(e)",
+				"      System.^out.println(e)",
 				"    }",
 				"  }",
 				"}"

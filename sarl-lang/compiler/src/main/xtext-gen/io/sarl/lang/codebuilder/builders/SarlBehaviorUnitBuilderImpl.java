@@ -46,41 +46,34 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlBehaviorUnit.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 149
- */
+ * AbstractMemberBuilderFragment.java : appendTo : 154 */
 @SuppressWarnings("all")
 public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISarlBehaviorUnitBuilder {
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 293
-	 */
-	@Inject
-	private Provider<IFormalParameterBuilder> parameterProvider;
-
-	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 304
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 333
 	 */
 	@Inject
 	private Provider<IBlockExpressionBuilder> blockExpressionProvider;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 315
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 346
 	 */
 	@Inject
 	private Provider<IExpressionBuilder> expressionProvider;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 326
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 358
 	 */
 	private EObject container;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 332
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 364
 	 */
 	private SarlBehaviorUnit sarlBehaviorUnit;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 341
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 373
 	 */
 	private IBlockExpressionBuilder internalBlockExpression;
 
@@ -88,10 +81,10 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
 	 */
-	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 616
+	public void eInit(EObject container, String name, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 663
 		if (this.sarlBehaviorUnit == null) {
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 			internalEInit(container, context);
@@ -108,10 +101,10 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 766
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 813
 	 */
-	public void eInit(XtendTypeDeclaration container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 796
+	public void eInit(EObject container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 843
 		if (this.sarlBehaviorUnit == null) {
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 			internalEInit(container, context);
@@ -119,18 +112,20 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 		}
 	}
 
-	private void internalEInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 869
+	private void internalEInit(EObject container, IJvmTypeProvider context) {
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 916
 		assert this.sarlBehaviorUnit != null;
 		setTypeResolutionContext(context);
 		this.container = container;
 		this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
-		container.getMembers().add(this.sarlBehaviorUnit);
-		this.sarlBehaviorUnit.setDeclaringType(container);
+		if (container instanceof XtendTypeDeclaration typeDeclaration) {
+			typeDeclaration.getMembers().add(this.sarlBehaviorUnit);
+			this.sarlBehaviorUnit.setDeclaringType(typeDeclaration);
+		}
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -138,7 +133,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
 	 */
 	@Pure
 	public Resource eResource() {
@@ -151,7 +146,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlBehaviorUnitBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -172,24 +167,9 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 		return this;
 	}
 
-	/** Replies the guard.
-	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1391
-	 */
-	@Pure
-	public IExpressionBuilder getGuard() {
-		IExpressionBuilder exprBuilder = this.expressionProvider.get();
-		exprBuilder.eInit(getSarlBehaviorUnit(), new Procedures.Procedure1<XExpression>() {
-				public void apply(XExpression expr) {
-					getSarlBehaviorUnit().setGuard(expr);
-				}
-			}, getTypeResolutionContext());
-		return exprBuilder;
-	}
-
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1454
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1442
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.internalBlockExpression;
@@ -204,12 +184,27 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1647
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1635
 	 */
 	@Override
 	@Pure
 	public String toString() {
 		return EmfFormatter.objToStr(getSarlBehaviorUnit());
+	}
+
+	/** Replies the guard.
+	 * @return the value of the guard. It may be {@code null}.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1726
+	 */
+	@Pure
+	public IExpressionBuilder getGuard() {
+		IExpressionBuilder exprBuilder = this.expressionProvider.get();
+		exprBuilder.eInit(getSarlBehaviorUnit(), new Procedures.Procedure1<XExpression>() {
+				public void apply(XExpression expr) {
+					getSarlBehaviorUnit().setGuard(expr);
+				}
+			}, getTypeResolutionContext());
+		return exprBuilder;
 	}
 
 }

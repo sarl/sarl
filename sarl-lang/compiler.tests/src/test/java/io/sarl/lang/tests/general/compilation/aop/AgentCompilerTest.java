@@ -184,7 +184,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"event E1",
 				"agent A1 {",
 				"  on E1 [ true ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				);
@@ -420,7 +420,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"event E1 { var i : int }",
 				"agent A1 {",
 				"  on E1 [ occurrence.i === 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				);

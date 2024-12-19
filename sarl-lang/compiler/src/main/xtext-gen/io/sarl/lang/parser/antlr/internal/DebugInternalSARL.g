@@ -150,6 +150,8 @@ ruleType:
 		'protocol'
 		ruleValidID
 		'{'
+		ruleBsplProtocolMember
+		*
 		'}'
 		    |
 		ruleCommonModifier
@@ -1075,6 +1077,120 @@ ruleXCastedExpression:
 		)
 		ruleJvmTypeReference
 	)*
+;
+
+// Rule BsplProtocolMember
+ruleBsplProtocolMember:
+	ruleXAnnotation
+	*
+	(
+		'role'
+		ruleValidID
+		(
+			','
+			ruleValidID
+		)*
+		';'?
+		    |
+		'private'
+		'parameter'?
+		ruleBsplParameterModifier
+		*
+		ruleValidID
+		ruleBsplParameterModifier
+		*
+		(
+			':'
+			ruleJvmTypeReference
+		)?
+		';'?
+		    |
+		'parameter'
+		ruleBsplParameterModifier
+		*
+		ruleValidID
+		ruleBsplParameterModifier
+		*
+		(
+			':'
+			ruleJvmTypeReference
+		)?
+		';'?
+		    |
+		'uses'
+		ruleJvmTypeReference
+		'('
+		(
+			ruleValidID
+			(
+				','
+				ruleValidID
+			)*
+		)?
+		'|'
+		(
+			ruleBsplMessageParameter
+			(
+				','
+				ruleBsplMessageParameter
+			)*
+		)?
+		')'
+		';'?
+		    |
+		ruleValidID
+		'->'
+		ruleBsplMessageModifier
+		?
+		ruleValidID
+		':'
+		ruleValidID
+		'('
+		(
+			ruleBsplMessageParameter
+			(
+				','
+				ruleBsplMessageParameter
+			)*
+		)?
+		')'
+		';'?
+	)
+;
+
+// Rule BsplMessageParameter
+ruleBsplMessageParameter:
+	ruleBsplParameterModifier
+	*
+	ruleValidID
+	ruleBsplParameterModifier
+	*
+;
+
+// Rule BsplParameterModifier
+ruleBsplParameterModifier:
+	(
+		'out'
+		    |
+		'in'
+		    |
+		'nil'
+		    |
+		'any'
+		    |
+		'opt'
+		    |
+		'key'
+	)
+;
+
+// Rule BsplMessageModifier
+ruleBsplMessageModifier:
+	(
+		'out'
+		    |
+		'in'
+	)
 ;
 
 // Rule XPrimaryExpression

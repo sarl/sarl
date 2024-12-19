@@ -85,5 +85,24 @@
     <genClasses ecoreClass="SARL.ecore#//SarlFormalParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlFormalParameter/defaultValue"/>
     </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlProtocolRole">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolRole/names"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlProtocolMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolMessage/from"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolMessage/to"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolMessage/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlProtocolMessage/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlProtocolParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolParameter/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlProtocolParameter/type"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlProtocolParameter/isPrivate"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlProtocolCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlProtocolCall/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlProtocolCall/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlProtocolCall/roles"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

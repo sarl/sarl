@@ -141,7 +141,7 @@ public class SarlClassBuilderImpl extends AbstractBuilder implements ISarlClassB
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlClassBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {

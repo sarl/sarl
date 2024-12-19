@@ -58,10 +58,10 @@ public class ActionFormatterTest {
 
 		@Test
 		public void noParamNoReturn() throws Exception {
-			String source = unformattedCode("def myfct {System.out.println(\"abc\")}");
+			String source = unformattedCode("def myfct {System.^out.println(\"abc\")}");
 			String expected = formattedCode(
 					"	def myfct {",
-					"		System.out.println(\"abc\")",
+					"		System.^out.println(\"abc\")",
 					"	}");
 			assertFormatted(source, expected);
 		}
@@ -78,20 +78,20 @@ public class ActionFormatterTest {
 
 		@Test
 		public void paramNoReturn() throws Exception {
-			String source = unformattedCode("def myfct(a:int){System.out.println(a)}");
+			String source = unformattedCode("def myfct(a:int){System.^out.println(a)}");
 			String expected = formattedCode(
 					"	def myfct(a : int) {",
-					"		System.out.println(a)",
+					"		System.^out.println(a)",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void paramsNoReturn() throws Exception {
-			String source = unformattedCode("def myfct(a:int,b:boolean){System.out.println(a)}");
+			String source = unformattedCode("def myfct(a:int,b:boolean){System.^out.println(a)}");
 			String expected = formattedCode(
 					"	def myfct(a : int, b : boolean) {",
-					"		System.out.println(a)",
+					"		System.^out.println(a)",
 					"	}");
 			assertFormatted(source, expected);
 		}

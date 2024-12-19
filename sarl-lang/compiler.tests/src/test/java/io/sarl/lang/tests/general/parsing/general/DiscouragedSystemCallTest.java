@@ -620,7 +620,7 @@ public class DiscouragedSystemCallTest {
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -638,7 +638,7 @@ public class DiscouragedSystemCallTest {
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -655,7 +655,7 @@ public class DiscouragedSystemCallTest {
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -673,7 +673,7 @@ public class DiscouragedSystemCallTest {
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -692,7 +692,7 @@ public class DiscouragedSystemCallTest {
 					"behavior B1 {",
 					"	new (a : Agent) {",
 					"		super(a)",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -710,7 +710,7 @@ public class DiscouragedSystemCallTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));
@@ -730,7 +730,7 @@ public class DiscouragedSystemCallTest {
 					"skill S1 implements C1 {",
 					"	new (a : Agent) {",
 					"		super(a)",
-					"		out.println(\"\")",
+					"		^out.println(\"\")",
 					"	}",
 					"}"
 					));

@@ -142,7 +142,7 @@ public interface ISarlInterfaceBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	ISarlInterfaceBuilder setDocumentation(String doc);
 

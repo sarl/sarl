@@ -1928,6 +1928,316 @@ public interface SarlPackage extends EPackage
 	 */
 	int SARL_FORMAL_PARAMETER_FEATURE_COUNT = XtendPackage.XTEND_PARAMETER_FEATURE_COUNT + 1;
 
+	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolRoleImpl <em>Protocol Role</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlProtocolRoleImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolRole()
+	 * @generated
+	 */
+	int SARL_PROTOCOL_ROLE = 25;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE__ANNOTATIONS = XtendPackage.XTEND_MEMBER__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE__ANNOTATION_INFO = XtendPackage.XTEND_MEMBER__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE__MODIFIERS = XtendPackage.XTEND_MEMBER__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE__DECLARING_TYPE = XtendPackage.XTEND_MEMBER__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Names</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE__NAMES = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Protocol Role</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_ROLE_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl <em>Protocol Message</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlProtocolMessageImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolMessage()
+	 * @generated
+	 */
+	int SARL_PROTOCOL_MESSAGE = 26;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__ANNOTATIONS = XtendPackage.XTEND_MEMBER__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__ANNOTATION_INFO = XtendPackage.XTEND_MEMBER__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__MODIFIERS = XtendPackage.XTEND_MEMBER__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__DECLARING_TYPE = XtendPackage.XTEND_MEMBER__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>From</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__FROM = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>To</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__TO = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__NAME = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__PARAMETERS = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of structural features of the '<em>Protocol Message</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 4;
+
+	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl <em>Protocol Parameter</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlProtocolParameterImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolParameter()
+	 * @generated
+	 */
+	int SARL_PROTOCOL_PARAMETER = 27;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__ANNOTATIONS = XtendPackage.XTEND_MEMBER__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__ANNOTATION_INFO = XtendPackage.XTEND_MEMBER__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__MODIFIERS = XtendPackage.XTEND_MEMBER__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__DECLARING_TYPE = XtendPackage.XTEND_MEMBER__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__NAME = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__TYPE = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Protocol Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolCallImpl <em>Protocol Call</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlProtocolCallImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolCall()
+	 * @generated
+	 */
+	int SARL_PROTOCOL_CALL = 28;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__ANNOTATIONS = XtendPackage.XTEND_MEMBER__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__ANNOTATION_INFO = XtendPackage.XTEND_MEMBER__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__MODIFIERS = XtendPackage.XTEND_MEMBER__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__DECLARING_TYPE = XtendPackage.XTEND_MEMBER__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__NAME = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__PARAMETERS = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL__ROLES = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Protocol Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_CALL_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 3;
+
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlScript <em>Script</em>}'.
@@ -2443,6 +2753,156 @@ public interface SarlPackage extends EPackage
 	EReference getSarlFormalParameter_DefaultValue();
 
 	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolRole <em>Protocol Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Protocol Role</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolRole
+	 * @generated
+	 */
+	EClass getSarlProtocolRole();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link io.sarl.lang.sarl.SarlProtocolRole#getNames <em>Names</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Names</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolRole#getNames()
+	 * @see #getSarlProtocolRole()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolRole_Names();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolMessage <em>Protocol Message</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Protocol Message</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage
+	 * @generated
+	 */
+	EClass getSarlProtocolMessage();
+
+	/**
+	 * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.SarlProtocolMessage#getFrom <em>From</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>From</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage#getFrom()
+	 * @see #getSarlProtocolMessage()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolMessage_From();
+
+	/**
+	 * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.SarlProtocolMessage#getTo <em>To</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>To</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage#getTo()
+	 * @see #getSarlProtocolMessage()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolMessage_To();
+
+	/**
+	 * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.SarlProtocolMessage#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage#getName()
+	 * @see #getSarlProtocolMessage()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolMessage_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlProtocolMessage#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage#getParameters()
+	 * @see #getSarlProtocolMessage()
+	 * @generated
+	 */
+	EReference getSarlProtocolMessage_Parameters();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolParameter <em>Protocol Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Protocol Parameter</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolParameter
+	 * @generated
+	 */
+	EClass getSarlProtocolParameter();
+
+	/**
+	 * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.SarlProtocolParameter#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolParameter#getName()
+	 * @see #getSarlProtocolParameter()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolParameter_Name();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlProtocolParameter#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Type</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolParameter#getType()
+	 * @see #getSarlProtocolParameter()
+	 * @generated
+	 */
+	EReference getSarlProtocolParameter_Type();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolCall <em>Protocol Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Protocol Call</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolCall
+	 * @generated
+	 */
+	EClass getSarlProtocolCall();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlProtocolCall#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Name</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolCall#getName()
+	 * @see #getSarlProtocolCall()
+	 * @generated
+	 */
+	EReference getSarlProtocolCall_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlProtocolCall#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolCall#getParameters()
+	 * @see #getSarlProtocolCall()
+	 * @generated
+	 */
+	EReference getSarlProtocolCall_Parameters();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link io.sarl.lang.sarl.SarlProtocolCall#getRoles <em>Roles</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Roles</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolCall#getRoles()
+	 * @see #getSarlProtocolCall()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolCall_Roles();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2908,6 +3368,126 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_FORMAL_PARAMETER__DEFAULT_VALUE = eINSTANCE.getSarlFormalParameter_DefaultValue();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolRoleImpl <em>Protocol Role</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlProtocolRoleImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolRole()
+		 * @generated
+		 */
+		EClass SARL_PROTOCOL_ROLE = eINSTANCE.getSarlProtocolRole();
+
+		/**
+		 * The meta object literal for the '<em><b>Names</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_ROLE__NAMES = eINSTANCE.getSarlProtocolRole_Names();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl <em>Protocol Message</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlProtocolMessageImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolMessage()
+		 * @generated
+		 */
+		EClass SARL_PROTOCOL_MESSAGE = eINSTANCE.getSarlProtocolMessage();
+
+		/**
+		 * The meta object literal for the '<em><b>From</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_MESSAGE__FROM = eINSTANCE.getSarlProtocolMessage_From();
+
+		/**
+		 * The meta object literal for the '<em><b>To</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_MESSAGE__TO = eINSTANCE.getSarlProtocolMessage_To();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_MESSAGE__NAME = eINSTANCE.getSarlProtocolMessage_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_PROTOCOL_MESSAGE__PARAMETERS = eINSTANCE.getSarlProtocolMessage_Parameters();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl <em>Protocol Parameter</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlProtocolParameterImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolParameter()
+		 * @generated
+		 */
+		EClass SARL_PROTOCOL_PARAMETER = eINSTANCE.getSarlProtocolParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_PARAMETER__NAME = eINSTANCE.getSarlProtocolParameter_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_PROTOCOL_PARAMETER__TYPE = eINSTANCE.getSarlProtocolParameter_Type();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolCallImpl <em>Protocol Call</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlProtocolCallImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlProtocolCall()
+		 * @generated
+		 */
+		EClass SARL_PROTOCOL_CALL = eINSTANCE.getSarlProtocolCall();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_PROTOCOL_CALL__NAME = eINSTANCE.getSarlProtocolCall_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_PROTOCOL_CALL__PARAMETERS = eINSTANCE.getSarlProtocolCall_Parameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Roles</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_CALL__ROLES = eINSTANCE.getSarlProtocolCall_Roles();
 
 	}
 

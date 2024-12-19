@@ -122,7 +122,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlSkillBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {

@@ -25,6 +25,10 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlProtocol;
+import io.sarl.lang.sarl.SarlProtocolCall;
+import io.sarl.lang.sarl.SarlProtocolMessage;
+import io.sarl.lang.sarl.SarlProtocolParameter;
+import io.sarl.lang.sarl.SarlProtocolRole;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
@@ -233,6 +237,34 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	private EClass sarlFormalParameterEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlProtocolRoleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlProtocolMessageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlProtocolParameterEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlProtocolCallEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -848,6 +880,160 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	@Override
+	public EClass getSarlProtocolRole()
+	{
+		return sarlProtocolRoleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolRole_Names()
+	{
+		return (EAttribute)sarlProtocolRoleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getSarlProtocolMessage()
+	{
+		return sarlProtocolMessageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolMessage_From()
+	{
+		return (EAttribute)sarlProtocolMessageEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolMessage_To()
+	{
+		return (EAttribute)sarlProtocolMessageEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolMessage_Name()
+	{
+		return (EAttribute)sarlProtocolMessageEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSarlProtocolMessage_Parameters()
+	{
+		return (EReference)sarlProtocolMessageEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getSarlProtocolParameter()
+	{
+		return sarlProtocolParameterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolParameter_Name()
+	{
+		return (EAttribute)sarlProtocolParameterEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSarlProtocolParameter_Type()
+	{
+		return (EReference)sarlProtocolParameterEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getSarlProtocolCall()
+	{
+		return sarlProtocolCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSarlProtocolCall_Name()
+	{
+		return (EReference)sarlProtocolCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSarlProtocolCall_Parameters()
+	{
+		return (EReference)sarlProtocolCallEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolCall_Roles()
+	{
+		return (EAttribute)sarlProtocolCallEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public SarlFactory getSarlFactory()
 	{
 		return (SarlFactory)getEFactoryInstance();
@@ -945,6 +1131,24 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlFormalParameterEClass = createEClass(SARL_FORMAL_PARAMETER);
 		createEReference(sarlFormalParameterEClass, SARL_FORMAL_PARAMETER__DEFAULT_VALUE);
+
+		sarlProtocolRoleEClass = createEClass(SARL_PROTOCOL_ROLE);
+		createEAttribute(sarlProtocolRoleEClass, SARL_PROTOCOL_ROLE__NAMES);
+
+		sarlProtocolMessageEClass = createEClass(SARL_PROTOCOL_MESSAGE);
+		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__FROM);
+		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__TO);
+		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__NAME);
+		createEReference(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__PARAMETERS);
+
+		sarlProtocolParameterEClass = createEClass(SARL_PROTOCOL_PARAMETER);
+		createEAttribute(sarlProtocolParameterEClass, SARL_PROTOCOL_PARAMETER__NAME);
+		createEReference(sarlProtocolParameterEClass, SARL_PROTOCOL_PARAMETER__TYPE);
+
+		sarlProtocolCallEClass = createEClass(SARL_PROTOCOL_CALL);
+		createEReference(sarlProtocolCallEClass, SARL_PROTOCOL_CALL__NAME);
+		createEReference(sarlProtocolCallEClass, SARL_PROTOCOL_CALL__PARAMETERS);
+		createEAttribute(sarlProtocolCallEClass, SARL_PROTOCOL_CALL__ROLES);
 	}
 
 	/**
@@ -1006,6 +1210,10 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		sarlBehaviorEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
 		sarlSkillEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
 		sarlFormalParameterEClass.getESuperTypes().add(theXtendPackage.getXtendParameter());
+		sarlProtocolRoleEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+		sarlProtocolMessageEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+		sarlProtocolParameterEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+		sarlProtocolCallEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(sarlScriptEClass, SarlScript.class, "SarlScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1100,6 +1308,26 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		initEClass(sarlFormalParameterEClass, SarlFormalParameter.class, "SarlFormalParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlFormalParameter_DefaultValue(), theXbasePackage.getXExpression(), null, "defaultValue", null, 0, 1, SarlFormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sarlProtocolRoleEClass, SarlProtocolRole.class, "SarlProtocolRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSarlProtocolRole_Names(), ecorePackage.getEString(), "names", null, 0, -1, SarlProtocolRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sarlProtocolMessageEClass, SarlProtocolMessage.class, "SarlProtocolMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSarlProtocolMessage_From(), ecorePackage.getEString(), "from", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolMessage_To(), ecorePackage.getEString(), "to", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolMessage_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlProtocolMessage_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sarlProtocolParameterEClass, SarlProtocolParameter.class, "SarlProtocolParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSarlProtocolParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlProtocolParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlProtocolParameter_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, SarlProtocolParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isPrivate", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(sarlProtocolCallEClass, SarlProtocolCall.class, "SarlProtocolCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSarlProtocolCall_Name(), theTypesPackage.getJvmTypeReference(), null, "name", null, 0, 1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlProtocolCall_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolCall_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

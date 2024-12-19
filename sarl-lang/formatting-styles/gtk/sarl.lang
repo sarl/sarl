@@ -103,6 +103,7 @@
    <keyword>abstract</keyword>
    <keyword>agent</keyword>
    <keyword>annotation</keyword>
+   <keyword>any</keyword>
    <keyword>artifact</keyword>
    <keyword>as</keyword>
    <keyword>assert</keyword>
@@ -135,21 +136,28 @@
    <keyword>if</keyword>
    <keyword>implements</keyword>
    <keyword>import</keyword>
+   <keyword>in</keyword>
    <keyword>instanceof</keyword>
    <keyword>int</keyword>
    <keyword>interface</keyword>
+   <keyword>key</keyword>
    <keyword>long</keyword>
    <keyword>native</keyword>
    <keyword>new</keyword>
+   <keyword>nil</keyword>
    <keyword>on</keyword>
+   <keyword>opt</keyword>
+   <keyword>out</keyword>
    <keyword>override</keyword>
    <keyword>package</keyword>
+   <keyword>parameter</keyword>
    <keyword>private</keyword>
    <keyword>protected</keyword>
    <keyword>protocol</keyword>
    <keyword>public</keyword>
    <keyword>requires</keyword>
    <keyword>return</keyword>
+   <keyword>role</keyword>
    <keyword>short</keyword>
    <keyword>skill</keyword>
    <keyword>space</keyword>

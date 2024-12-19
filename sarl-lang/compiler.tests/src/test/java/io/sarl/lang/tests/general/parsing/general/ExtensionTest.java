@@ -135,8 +135,8 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	def doSomething(e : Object) : int { 0 }",
 				"}",
 				"class ExtensionProviderTest {",
-				"	def extensionCall(parameter : Object, extension o : ExtensionProvider) : int {",
-				"		parameter.doSomething",
+				"	def extensionCall(^parameter : Object, extension o : ExtensionProvider) : int {",
+				"		^parameter.doSomething",
 				"	}",
 				"}",
 				""));

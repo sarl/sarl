@@ -140,7 +140,7 @@ public interface ISarlAnnotationTypeBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	ISarlAnnotationTypeBuilder setDocumentation(String doc);
 

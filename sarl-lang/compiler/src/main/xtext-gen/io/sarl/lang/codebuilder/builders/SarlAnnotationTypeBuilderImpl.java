@@ -137,7 +137,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlAnnotationTypeBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {

@@ -25,15 +25,15 @@ package io.sarl.lang.codebuilder.builders;
 
 import io.sarl.lang.sarl.SarlEnumLiteral;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEnumLiteral.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 113
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 117
  */
 @SuppressWarnings("all")
 public interface ISarlEnumLiteralBuilder {
@@ -41,7 +41,7 @@ public interface ISarlEnumLiteralBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 356
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 403
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -49,7 +49,7 @@ public interface ISarlEnumLiteralBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 384
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 431
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -57,7 +57,7 @@ public interface ISarlEnumLiteralBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 414
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 461
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -65,7 +65,7 @@ public interface ISarlEnumLiteralBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 446
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 493
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -74,18 +74,18 @@ public interface ISarlEnumLiteralBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 480
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 527
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 510
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 557
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 535
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -93,18 +93,18 @@ public interface ISarlEnumLiteralBuilder {
 	 * @param container the container of the SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
 	 */
-	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
+	void eInit(EObject container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 906
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
 	 */
 	@Pure
 	SarlEnumLiteral getSarlEnumLiteral();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 940
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
 	 */
 	@Pure
 	Resource eResource();
@@ -115,7 +115,7 @@ public interface ISarlEnumLiteralBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	ISarlEnumLiteralBuilder setDocumentation(String doc);
 

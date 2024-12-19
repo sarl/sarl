@@ -218,6 +218,26 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlFormalParameterAdapter();
 			}
 			@Override
+			public Adapter caseSarlProtocolRole(SarlProtocolRole object)
+			{
+				return createSarlProtocolRoleAdapter();
+			}
+			@Override
+			public Adapter caseSarlProtocolMessage(SarlProtocolMessage object)
+			{
+				return createSarlProtocolMessageAdapter();
+			}
+			@Override
+			public Adapter caseSarlProtocolParameter(SarlProtocolParameter object)
+			{
+				return createSarlProtocolParameterAdapter();
+			}
+			@Override
+			public Adapter caseSarlProtocolCall(SarlProtocolCall object)
+			{
+				return createSarlProtocolCallAdapter();
+			}
+			@Override
 			public Adapter caseXtendFile(XtendFile object)
 			{
 				return createXtendFileAdapter();
@@ -694,6 +714,66 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlFormalParameterAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlProtocolRole <em>Protocol Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlProtocolRole
+	 * @generated
+	 */
+	public Adapter createSarlProtocolRoleAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlProtocolMessage <em>Protocol Message</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage
+	 * @generated
+	 */
+	public Adapter createSarlProtocolMessageAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlProtocolParameter <em>Protocol Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlProtocolParameter
+	 * @generated
+	 */
+	public Adapter createSarlProtocolParameterAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlProtocolCall <em>Protocol Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlProtocolCall
+	 * @generated
+	 */
+	public Adapter createSarlProtocolCallAdapter()
 	{
 		return null;
 	}

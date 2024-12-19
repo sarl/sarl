@@ -55,16 +55,16 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				" *  @return     x",
 				" */",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"/** Hello",
 				"*    @param x",
 				" *  @return x",
 				"*/",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
@@ -74,7 +74,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return     x",
 				"\t */",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t/** Hello",
@@ -82,11 +82,11 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return x",
 				"\t */",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -101,16 +101,16 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				" *  @return     x",
 				" */",
 				"def fct0 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"/** Hello",
 				"*    @param x",
 				" *  @return x",
 				"*/",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
@@ -120,7 +120,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return     x",
 				"\t */",
 				"\tdef fct0 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t/** Hello",
@@ -128,11 +128,11 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return x",
 				"\t */",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -146,16 +146,16 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				" *  @return     x",
 				" */",
 				"def fct0 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"/** Hello",
 				"*    @param x",
 				" *  @return x",
 				"*/",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"",
 				"\t/** ",
@@ -164,7 +164,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return     x",
 				"\t */",
 				"\tdef fct0 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t/** Hello",
@@ -172,11 +172,11 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @return x",
 				"\t */",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -186,25 +186,25 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 		String source = unformattedCode(
 				"uses Logging, Schedules, Lifecycle",
 				"def fct0 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
 				"\tdef fct0 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -215,28 +215,28 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"uses Logging, Schedules, Lifecycle",
 				"// Hello",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"// Hello",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
 				"\t// Hello",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t// Hello",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -248,30 +248,30 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"",
 				"// Hello",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"",
 				"// Hello",
 				"",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
 				"\t// Hello",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t// Hello",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -284,31 +284,31 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"",
 				"// Hello",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
 				"",
 				"",
 				"// Hello",
 				"",
 				"def fct1 {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}",
-				"def fct2 { System.out.println(\"Z\") }");
+				"def fct2 { System.^out.println(\"Z\") }");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
 				"",
 				"\t// Hello",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\t// Hello",
 				"\tdef fct1 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}",
 				"",
 				"\tdef fct2 {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -322,7 +322,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"// Hello",
 				"// Hello2",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
@@ -330,7 +330,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t// Hello",
 				"\t// Hello2",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -345,7 +345,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"",
 				"// Hello2",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
@@ -353,7 +353,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t// Hello",
 				"\t// Hello2",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}
@@ -369,7 +369,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"",
 				"// Hello2",
 				"on Initialize {",
-				"  System.out.println(\"Z\")",
+				"  System.^out.println(\"Z\")",
 				"}");
 		String expected = formattedCode(
 				"\tuses Logging, Schedules, Lifecycle",
@@ -377,7 +377,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t// Hello",
 				"\t// Hello2",
 				"\ton Initialize {",
-				"\t\tSystem.out.println(\"Z\")",
+				"\t\tSystem.^out.println(\"Z\")",
 				"\t}");
 		assertFormatted(source, expected);
 	}

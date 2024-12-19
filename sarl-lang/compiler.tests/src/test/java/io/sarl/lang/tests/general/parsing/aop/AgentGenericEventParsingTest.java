@@ -54,7 +54,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number>",
 				"agent A1 {",
 				"  on E1<String, Double>  [ true ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -68,7 +68,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number>",
 				"agent A1 {",
 				"  on E1<String, Double> [ false ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -82,7 +82,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var i : T2 }",
 				"agent A1 {",
 				"  on E1<String, Double> [ occurrence.i == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -96,7 +96,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1<?, Double> [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -110,7 +110,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1 extends Number, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1<?, Double> [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -124,7 +124,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1 [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -138,7 +138,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1<?, ?> [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -152,7 +152,7 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1<? extends Number, Double> [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));
@@ -166,10 +166,10 @@ public class AgentGenericEventParsingTest extends AbstractSarlTest {
 				"event E1<T1, T2 extends Number> { var a : T1; var b : T2 }",
 				"agent A1 {",
 				"  on E1<? extends Number, Double> [ occurrence.a == 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"  on E1 {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				));

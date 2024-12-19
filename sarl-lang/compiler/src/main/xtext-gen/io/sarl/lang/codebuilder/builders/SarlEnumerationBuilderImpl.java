@@ -137,7 +137,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 570
+	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
 	public ISarlEnumerationBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {

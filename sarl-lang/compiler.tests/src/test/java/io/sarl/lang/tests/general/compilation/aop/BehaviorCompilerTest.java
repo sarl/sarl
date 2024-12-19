@@ -167,7 +167,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"event E1",
 				"behavior B1 {",
 				"  on E1 [ true ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				);
@@ -387,7 +387,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"event E1 { var i : int }",
 				"behavior B1 {",
 				"  on E1 [ occurrence.i === 1 ] {",
-				"    System.out.println(occurrence)",
+				"    System.^out.println(occurrence)",
 				"  }",
 				"}"
 				);

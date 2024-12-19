@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -42,6 +43,7 @@ import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.RuleCall;
+import org.eclipse.xtext.ecore.EcoreQualifiedNameProvider;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
@@ -84,6 +86,28 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	@Inject
 	private XtextGeneratorNaming naming;
+
+	@Inject
+	private EcoreQualifiedNameProvider nameProvider;
+
+	/** Replies if the left parameter could receive a value of type corresponding to the right parameter.
+	 * 
+	 * @param left the type of the receiver.
+	 * @param right the type of the value to copy.
+	 * @return {@code true} if right could be copied to left.
+	 * @since 0.15
+	 */
+	protected boolean isAssignableFrom(EClass left, EClass right) {
+		final var leftName = this.nameProvider.getFullyQualifiedName(left);
+		final var rightName = this.nameProvider.getFullyQualifiedName(right);
+		if (leftName.equals(rightName)) {
+			return true;
+		}
+		return right.getEAllSuperTypes().parallelStream().anyMatch(it -> {
+			final var candidate = this.nameProvider.getFullyQualifiedName(it);
+			return leftName.equals(candidate);
+		});
+	}
 
 	/** Append a full Java comment to the argument with the filename and line number in the "see" tag.
 	 *
@@ -173,6 +197,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		}
 	}
 
+	@Pure
+	private void checkNoNull(String name, Object value, Issues issues) {
+		if (value == null) {
+			issues.addError(MessageFormat.format("the configuration entry ''{0}'' is not set", name), this); //$NON-NLS-1$
+		}
+	}
+
 	@Override
 	@Pure
 	public void checkConfiguration(Issues issues) {
@@ -183,7 +214,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		} else {
 			checkNoEmpty("scriptRuleName", config.getScriptRuleName(), issues); //$NON-NLS-1$
 			checkNoEmpty("topElementRuleName", config.getTopElementRuleName(), issues); //$NON-NLS-1$
-			checkNoEmpty("formalParameterContainerType", config.getFormalParameterContainerType(), issues); //$NON-NLS-1$
+			checkNoNull("formalParameterContainerType", config.getFormalParameterContainerType(), issues); //$NON-NLS-1$
+			checkNoNull("formalParameterSuperType", config.getFormalParameterSuperType(), issues); //$NON-NLS-1$
 		}
 		if (this.subFragments == null) {
 			issues.addError("Sub generators are not created"); //$NON-NLS-1$

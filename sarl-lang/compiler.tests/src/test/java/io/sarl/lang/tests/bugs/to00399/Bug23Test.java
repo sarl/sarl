@@ -55,8 +55,8 @@ public class Bug23Test extends AbstractSarlTest {
 			"}",
 			"agent MyAgent {",
 			"  on MyAgentSpawned {",
-			"    System.out.println(occurrence.titi)",
-			"    System.out.println(occurrence.agentID)",
+			"    System.^out.println(occurrence.titi)",
+			"    System.^out.println(occurrence.agentID)",
 			"  }",
 			"}"
 			);

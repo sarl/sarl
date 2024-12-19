@@ -87,7 +87,7 @@ Type returns xtend::XtendTypeDeclaration:
 		// Protocol
 		{SarlProtocol.annotationInfo = current}
 		modifiers+=CommonModifier*
-		'protocol' name=ValidID '{' '}'
+		'protocol' name=ValidID '{' members+=BsplProtocolMember* '}'
 	|
 		// Class
 		{SarlClass.annotationInfo = current}
@@ -459,6 +459,38 @@ SarlCastedExpression returns xbase::XCastedExpression:
 XCastedExpression returns xbase::XExpression:
 	// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
 	XExponentExpression (=>({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
+;
+
+BsplProtocolMember returns xtend::XtendMember:
+	{xtend::XtendMember} annotations+=XAnnotation*
+	(
+		{SarlProtocolRole.annotationInfo = current}
+		'role' names+=ValidID (',' names+=ValidID)* ';'?
+	|
+		{SarlProtocolParameter.annotationInfo = current}
+		modifiers+='private' 'parameter'? modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier* (':' type=JvmTypeReference )? ';'?
+	|
+		{SarlProtocolParameter.annotationInfo = current}
+		'parameter' modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier* (':' type=JvmTypeReference )? ';'?
+	|
+		{SarlProtocolCall.annotationInfo = current}
+		'uses' name=JvmTypeReference '(' ( roles+=ValidID (',' roles+=ValidID)* )? '|' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' ';'?
+	|
+		{SarlProtocolMessage.annotationInfo = current}
+		from=ValidID '->' modifiers+=BsplMessageModifier? to=ValidID ':' name=ValidID  '(' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' ';'? 
+	)
+;
+
+BsplMessageParameter returns SarlProtocolParameter:
+	modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier*
+;
+
+BsplParameterModifier:
+	'out' | 'in' | 'nil' | 'any' | 'opt' | 'key'
+;
+
+BsplMessageModifier:
+	'out' | 'in'
 ;
 
 //-----------------------------------------------

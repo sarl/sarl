@@ -30,11 +30,14 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.GrammarUtil;
+import org.eclipse.xtext.RuleCall;
+import org.eclipse.xtext.TypeRef;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -48,6 +51,7 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
+import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -62,7 +66,7 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuilderFragment {
-
+	
 	/** Replies the members to generate.
 	 *
 	 * @return the members.
@@ -146,7 +150,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
 						+ " " + description.getElementDescription().name() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
-				appendFileLineComment(it);
+				it.append(" * "); //$NON-NLS-1$
+				it.append(getFileAndLineNumber(0));
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -222,6 +227,19 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		return "get" //$NON-NLS-1$
 				+ Strings.toFirstUpper(description.getElementDescription().elementType().getSimpleName()) + "()"; //$NON-NLS-1$
 	}
+	
+	/** Replies if the given type corresponds to a {@code parameters} feature for a formal parameter.
+	 *
+	 * @param referenceType the type that should be corresponds to the feature.
+	 * @return {@code true} if the given reference type corresponds to a formal parameter.
+	 */
+	protected boolean isFormalParameterFeature(TypeRef referenceType) {
+		if (referenceType.getClassifier() instanceof EClass clazz) {
+			final var superType = getCodeElementExtractor().getFormalParameterSuperEClass();
+			return isAssignableFrom(superType, clazz);
+		}
+		return false;
+	}
 
 	/** Generate the members of the builder.
 	 *
@@ -240,7 +258,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		final var hasName = new AtomicBoolean(false);
 		final var hasTypeName = new AtomicBoolean(false);
 		final var hasType = new AtomicBoolean(false);
-		final var hasParameters = new AtomicBoolean(false);
+		final var hasFormalParameters = new AtomicBoolean(false);
 		final var hasReturnType = new AtomicBoolean(false);
 		final var hasThrows = new AtomicBoolean(false);
 		final var hasFires = new AtomicBoolean(false);
@@ -248,6 +266,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		final var isAnnotated = new AtomicBoolean(false);
 		final var hasModifiers = new AtomicBoolean(false);
 		final var hasTypeParameters = new AtomicBoolean(false);
+		final var complexParameters = new HashSet<TypeReference>();
 		final var expressions = new ArrayList<String>();
 		for (final var assignment : GrammarUtil.containedAssignments(description.getElementDescription().grammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
@@ -266,7 +285,14 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				hasType.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getParameterListGrammarName(),
 					assignment.getFeature())) {
-				hasParameters.set(true);
+				if (assignment.getTerminal() instanceof RuleCall ruleCall) {
+					final var type = ruleCall.getRule().getType();
+					if (isFormalParameterFeature(type)) {
+						hasFormalParameters.set(true);
+					} else {
+						complexParameters.add(getCodeElementExtractor().newTypeReference(type.getClassifier()));
+					}
+				}
 			} else if (Objects.equals(getCodeBuilderConfig().getMemberThrowsExtensionGrammarName(),
 					assignment.getFeature())) {
 				hasThrows.set(true);
@@ -285,44 +311,50 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				expressions.add(assignment.getFeature());
 			}
 		}
-
+		
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				if (!forInterface && !forAppender) {
-					appendEmptyComment(it);
-					it.append("\t@"); //$NON-NLS-1$
-					it.append(Inject.class);
-					it.newLine();
-					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(Provider.class);
-					it.append("<"); //$NON-NLS-1$
-					it.append(getFormalParameterBuilderInterface());
-					it.append("> parameterProvider;"); //$NON-NLS-1$
-					it.newLineIfNotEmpty();
-					it.newLine();
-					appendEmptyComment(it);
-					it.append("\t@"); //$NON-NLS-1$
-					it.append(Inject.class);
-					it.newLine();
-					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(Provider.class);
-					it.append("<"); //$NON-NLS-1$
-					it.append(getBlockExpressionBuilderInterface());
-					it.append("> blockExpressionProvider;"); //$NON-NLS-1$
-					it.newLineIfNotEmpty();
-					it.newLine();
-					appendEmptyComment(it);
-					it.append("\t@"); //$NON-NLS-1$
-					it.append(Inject.class);
-					it.newLine();
-					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(Provider.class);
-					it.append("<"); //$NON-NLS-1$
-					it.append(getExpressionBuilderInterface());
-					it.append("> expressionProvider;"); //$NON-NLS-1$
-					it.newLineIfNotEmpty();
-					it.newLine();
+					if (hasFormalParameters.get()) {
+						appendEmptyComment(it);
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Inject.class);
+						it.newLine();
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(Provider.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(getFormalParameterBuilderInterface());
+						it.append("> parameterProvider;"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
+					if (hasBlock.get()) {
+						appendEmptyComment(it);
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Inject.class);
+						it.newLine();
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(Provider.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(getBlockExpressionBuilderInterface());
+						it.append("> blockExpressionProvider;"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
+					if (!expressions.isEmpty()) {
+						appendEmptyComment(it);
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Inject.class);
+						it.newLine();
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(Provider.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(getExpressionBuilderInterface());
+						it.append("> expressionProvider;"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
 					appendEmptyComment(it);
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(EObject.class);
@@ -343,6 +375,21 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append(getBlockExpressionBuilderInterface());
 						it.append(" internalBlockExpression"); //$NON-NLS-1$
 						it.append(";"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
+					for (final var complexParameter : complexParameters) {
+						appendEmptyComment(it);
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(getCodeBuilderConfig().getInjectType());
+						it.newLine();
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(Provider.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(getCodeElementExtractor().getComplexParameterBuilderInterface(complexParameter));
+						it.append("> "); //$NON-NLS-1$
+						it.append(Strings.toFirstLower(complexParameter.getSimpleName()));
+						it.append("BuilderProvider;"); //$NON-NLS-1$
 						it.newLineIfNotEmpty();
 						it.newLine();
 					}
@@ -587,7 +634,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.append("public "); //$NON-NLS-1$
 				}
 				it.append("void eInit("); //$NON-NLS-1$
-				it.append(getCodeElementExtractor().getLanguageTopElementType());
+				it.append(EObject.class);
 				it.append(" container, "); //$NON-NLS-1$
 				if (hasName.get()) {
 					it.append("String name, "); //$NON-NLS-1$
@@ -771,7 +818,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append("public "); //$NON-NLS-1$
 					}
 					it.append("void eInit("); //$NON-NLS-1$
-					it.append(getCodeElementExtractor().getLanguageTopElementType());
+					it.append(EObject.class);
 					it.append(" container, "); //$NON-NLS-1$
 					it.append(JvmParameterizedTypeReference.class);
 					it.append(" name, "); //$NON-NLS-1$
@@ -860,7 +907,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				}
 				if (!forAppender && !forInterface) {
 					it.append("\tprivate void internalEInit("); //$NON-NLS-1$
-					it.append(XtendTypeDeclaration.class);
+					it.append(EObject.class);
 					it.append(" container, "); //$NON-NLS-1$
 					it.append(IJvmTypeProvider.class);
 					it.append(" context) {"); //$NON-NLS-1$
@@ -887,15 +934,21 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append("());"); //$NON-NLS-1$
 						it.newLine();
 					}
-					it.append("\t\tcontainer.get"); //$NON-NLS-1$
+					it.append("\t\tif (container instanceof "); //$NON-NLS-1$
+					it.append(XtendTypeDeclaration.class);
+					it.append(" typeDeclaration) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\ttypeDeclaration.get"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()));
 					it.append("().add(this."); //$NON-NLS-1$
 					it.append(generatedFieldName);
 					it.append(");"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\tthis."); //$NON-NLS-1$
+					it.append("\t\t\tthis."); //$NON-NLS-1$
 					it.append(generatedFieldName);
-					it.append(".setDeclaringType(container);"); //$NON-NLS-1$
+					it.append(".setDeclaringType(typeDeclaration);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t}"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
@@ -1050,7 +1103,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
-				if (hasParameters.get()) {
+				if (hasFormalParameters.get()) {
 					it.append("\t/** Add a formal parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param name the name of the formal parameter."); //$NON-NLS-1$
@@ -1381,71 +1434,6 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
-				for (final var expressionName : expressions) {
-					it.append("\t/** Replies the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
-					it.newLine();
-					it.append("\t * @return the value of the "); //$NON-NLS-1$
-					it.append(expressionName);
-					it.append(". It may be {@code null}."); //$NON-NLS-1$
-					it.newLine();
-					appendFileLineComment(it);
-					it.append("\t */"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t@"); //$NON-NLS-1$
-					it.append(Pure.class);
-					it.newLine();
-					it.append("\t"); //$NON-NLS-1$
-					if (!forInterface) {
-						it.append("public "); //$NON-NLS-1$
-					}
-					it.append(getExpressionBuilderInterface());
-					it.append(" get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(expressionName));
-					it.append("()"); //$NON-NLS-1$
-					if (forInterface) {
-						it.append(";"); //$NON-NLS-1$
-					} else {
-						it.append(" {"); //$NON-NLS-1$
-						it.newLine();
-						if (forAppender) {
-							it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(expressionName));
-							it.append("();"); //$NON-NLS-1$
-						} else {
-							it.append("\t\t"); //$NON-NLS-1$
-							it.append(getExpressionBuilderInterface());
-							it.append(" exprBuilder = this.expressionProvider.get();"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\texprBuilder.eInit("); //$NON-NLS-1$
-							it.append(generatedFieldAccessor);
-							it.append(", new "); //$NON-NLS-1$
-							it.append(Procedures.class);
-							it.append(".Procedure1<"); //$NON-NLS-1$
-							it.append(XExpression.class);
-							it.append(">() {"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t\tpublic void apply("); //$NON-NLS-1$
-							it.append(XExpression.class);
-							it.append(" expr) {"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t\t\t"); //$NON-NLS-1$
-							it.append(generatedFieldAccessor);
-							it.append(".set"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(expressionName));
-							it.append("(expr);"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t\t}"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\t\t}, getTypeResolutionContext());"); //$NON-NLS-1$
-							it.newLine();
-							it.append("\t\treturn exprBuilder;"); //$NON-NLS-1$
-						}
-						it.newLine();
-						it.append("\t}"); //$NON-NLS-1$
-					}
-					it.newLineIfNotEmpty();
-					it.newLine();
-				}
 				if (hasBlock.get()) {
 					it.append("\t/** Create the block of code."); //$NON-NLS-1$
 					it.newLine();
@@ -1721,6 +1709,132 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.append("\t\tobject.getTypeParameters().add(builder.getJvmTypeParameter());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn builder;"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				for (final var expressionName : expressions) {
+					it.append("\t/** Replies the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @return the value of the "); //$NON-NLS-1$
+					it.append(expressionName);
+					it.append(". It may be {@code null}."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(getExpressionBuilderInterface());
+					it.append(" get"); //$NON-NLS-1$
+					it.append(Strings.toFirstUpper(expressionName));
+					it.append("()"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(expressionName));
+							it.append("();"); //$NON-NLS-1$
+						} else {
+							it.append("\t\t"); //$NON-NLS-1$
+							it.append(getExpressionBuilderInterface());
+							it.append(" exprBuilder = this.expressionProvider.get();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\texprBuilder.eInit("); //$NON-NLS-1$
+							it.append(generatedFieldAccessor);
+							it.append(", new "); //$NON-NLS-1$
+							it.append(Procedures.class);
+							it.append(".Procedure1<"); //$NON-NLS-1$
+							it.append(XExpression.class);
+							it.append(">() {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\tpublic void apply("); //$NON-NLS-1$
+							it.append(XExpression.class);
+							it.append(" expr) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t\t"); //$NON-NLS-1$
+							it.append(generatedFieldAccessor);
+							it.append(".set"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(expressionName));
+							it.append("(expr);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t\t}"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t}, getTypeResolutionContext());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\treturn exprBuilder;"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				for (final var complexParameter : complexParameters) {
+					it.append("\t/** Add a parameter of type {@code " + complexParameter.getName() + "}."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @param name the name of the parameter"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the builder for the parameter, never {@code null}."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(getCodeElementExtractor().getComplexParameterBuilderInterface(complexParameter));
+					it.append(" addParameter("); //$NON-NLS-1$
+					it.append(String.class);
+					it.append(" name)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\treturn this.builder.addParameter(name);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\t"); //$NON-NLS-1$
+							it.append(getCodeElementExtractor().getComplexParameterBuilderInterface(complexParameter));
+							it.append(" builder = this."); //$NON-NLS-1$
+							it.append(Strings.toFirstLower(complexParameter.getSimpleName()));
+							it.append("BuilderProvider.get();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tbuilder.eInit(this."); //$NON-NLS-1$
+							it.append(generatedFieldName);
+							it.append(", name, getTypeResolutionContext());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tif (!(this."); //$NON-NLS-1$
+							it.append(generatedFieldName);
+							it.append(" instanceof "); //$NON-NLS-1$
+							it.append(XtendTypeDeclaration.class);
+							it.append(")) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tthis."); //$NON-NLS-1$
+							it.append(generatedFieldName);
+							it.append(".get"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterListGrammarName()));
+							it.append("().add(builder.get"); //$NON-NLS-1$
+							it.append(Strings.toFirstUpper(complexParameter.getSimpleName()));
+							it.append("());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\treturn builder;"); //$NON-NLS-1$
+							it.newLine();
 						}
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$

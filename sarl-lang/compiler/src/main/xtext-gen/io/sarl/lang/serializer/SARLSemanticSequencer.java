@@ -46,6 +46,10 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlProtocol;
+import io.sarl.lang.sarl.SarlProtocolCall;
+import io.sarl.lang.sarl.SarlProtocolMessage;
+import io.sarl.lang.sarl.SarlProtocolParameter;
+import io.sarl.lang.sarl.SarlProtocolRole;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
@@ -388,6 +392,25 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				else break;
 			case SarlPackage.SARL_PROTOCOL:
 				sequence_Type(context, (SarlProtocol) semanticObject); 
+				return; 
+			case SarlPackage.SARL_PROTOCOL_CALL:
+				sequence_BsplProtocolMember(context, (SarlProtocolCall) semanticObject); 
+				return; 
+			case SarlPackage.SARL_PROTOCOL_MESSAGE:
+				sequence_BsplProtocolMember(context, (SarlProtocolMessage) semanticObject); 
+				return; 
+			case SarlPackage.SARL_PROTOCOL_PARAMETER:
+				if (rule == grammarAccess.getBsplMessageParameterRule()) {
+					sequence_BsplMessageParameter(context, (SarlProtocolParameter) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getBsplProtocolMemberRule()) {
+					sequence_BsplProtocolMember(context, (SarlProtocolParameter) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.SARL_PROTOCOL_ROLE:
+				sequence_BsplProtocolMember(context, (SarlProtocolRole) semanticObject); 
 				return; 
 			case SarlPackage.SARL_REQUIRED_CAPACITY:
 				sequence_AOPMember(context, (SarlRequiredCapacity) semanticObject); 
@@ -916,6 +939,14 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					sequence_AnnotationField_SarlAnnotationType_2_4_0_SarlClass_2_1_0_SarlEnumeration_2_3_0_SarlField_2_0_0_SarlInterface_2_2_0(context, (XtendMember) semanticObject); 
 					return; 
 				}
+				else if (action == grammarAccess.getBsplProtocolMemberAccess().getSarlProtocolRoleAnnotationInfoAction_2_0_0()
+						|| action == grammarAccess.getBsplProtocolMemberAccess().getSarlProtocolParameterAnnotationInfoAction_2_1_0()
+						|| action == grammarAccess.getBsplProtocolMemberAccess().getSarlProtocolParameterAnnotationInfoAction_2_2_0()
+						|| action == grammarAccess.getBsplProtocolMemberAccess().getSarlProtocolCallAnnotationInfoAction_2_3_0()
+						|| action == grammarAccess.getBsplProtocolMemberAccess().getSarlProtocolMessageAnnotationInfoAction_2_4_0()) {
+					sequence_BsplProtocolMember_SarlProtocolCall_2_3_0_SarlProtocolMessage_2_4_0_SarlProtocolParameter_2_1_0_SarlProtocolParameter_2_2_0_SarlProtocolRole_2_0_0(context, (XtendMember) semanticObject); 
+					return; 
+				}
 				else if (action == grammarAccess.getCapacityMemberAccess().getSarlActionAnnotationInfoAction_2()) {
 					sequence_CapacityMember_SarlAction_2(context, (XtendMember) semanticObject); 
 					return; 
@@ -1436,6 +1467,122 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * </pre>
 	 */
 	protected void sequence_BreakExpression(ISerializationContext context, SarlBreakExpression semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplMessageParameter returns SarlProtocolParameter
+	 *
+	 * Constraint:
+	 *     (modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier*)
+	 * </pre>
+	 */
+	protected void sequence_BsplMessageParameter(ISerializationContext context, SarlProtocolParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplProtocolMember returns SarlProtocolCall
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=BsplProtocolMember_SarlProtocolCall_2_3_0 
+	 *         name=JvmTypeReference 
+	 *         (roles+=ValidID roles+=ValidID*)? 
+	 *         (parameters+=BsplMessageParameter parameters+=BsplMessageParameter*)?
+	 *     )
+	 * </pre>
+	 */
+	protected void sequence_BsplProtocolMember(ISerializationContext context, SarlProtocolCall semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplProtocolMember.SarlProtocolRole_2_0_0 returns XtendMember
+	 *     BsplProtocolMember.SarlProtocolParameter_2_1_0 returns XtendMember
+	 *     BsplProtocolMember.SarlProtocolParameter_2_2_0 returns XtendMember
+	 *     BsplProtocolMember.SarlProtocolCall_2_3_0 returns XtendMember
+	 *     BsplProtocolMember.SarlProtocolMessage_2_4_0 returns XtendMember
+	 *
+	 * Constraint:
+	 *     annotations+=XAnnotation*
+	 * </pre>
+	 */
+	protected void sequence_BsplProtocolMember_SarlProtocolCall_2_3_0_SarlProtocolMessage_2_4_0_SarlProtocolParameter_2_1_0_SarlProtocolParameter_2_2_0_SarlProtocolRole_2_0_0(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplProtocolMember returns SarlProtocolMessage
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=BsplProtocolMember_SarlProtocolMessage_2_4_0 
+	 *         from=ValidID 
+	 *         modifiers+=BsplMessageModifier? 
+	 *         to=ValidID 
+	 *         name=ValidID 
+	 *         (parameters+=BsplMessageParameter parameters+=BsplMessageParameter*)?
+	 *     )
+	 * </pre>
+	 */
+	protected void sequence_BsplProtocolMember(ISerializationContext context, SarlProtocolMessage semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplProtocolMember returns SarlProtocolParameter
+	 *
+	 * Constraint:
+	 *     (
+	 *         (
+	 *             annotationInfo=BsplProtocolMember_SarlProtocolParameter_2_1_0 
+	 *             modifiers+='private' 
+	 *             modifiers+=BsplParameterModifier* 
+	 *             name=ValidID 
+	 *             modifiers+=BsplParameterModifier* 
+	 *             type=JvmTypeReference?
+	 *         ) | 
+	 *         (
+	 *             annotationInfo=BsplProtocolMember_SarlProtocolParameter_2_2_0 
+	 *             modifiers+=BsplParameterModifier* 
+	 *             name=ValidID 
+	 *             modifiers+=BsplParameterModifier* 
+	 *             type=JvmTypeReference?
+	 *         )
+	 *     )
+	 * </pre>
+	 */
+	protected void sequence_BsplProtocolMember(ISerializationContext context, SarlProtocolParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     BsplProtocolMember returns SarlProtocolRole
+	 *
+	 * Constraint:
+	 *     (annotationInfo=BsplProtocolMember_SarlProtocolRole_2_0_0 names+=ValidID names+=ValidID*)
+	 * </pre>
+	 */
+	protected void sequence_BsplProtocolMember(ISerializationContext context, SarlProtocolRole semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -2038,7 +2185,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     Type returns SarlProtocol
 	 *
 	 * Constraint:
-	 *     (annotationInfo=Type_SarlProtocol_2_7_0 modifiers+=CommonModifier* name=ValidID)
+	 *     (annotationInfo=Type_SarlProtocol_2_7_0 modifiers+=CommonModifier* name=ValidID members+=BsplProtocolMember*)
 	 * </pre>
 	 */
 	protected void sequence_Type(ISerializationContext context, SarlProtocol semanticObject) {

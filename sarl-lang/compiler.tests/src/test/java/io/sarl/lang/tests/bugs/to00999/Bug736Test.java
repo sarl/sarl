@@ -212,7 +212,7 @@ public class Bug736Test extends AbstractSarlTest {
 			"final class Messages {",
 			"  static val BUNDLE_NAME = typeof(Messages).getPackage.name + \".messages\"",
 			"  static new {",
-			"    System.out.println(BUNDLE_NAME)",
+			"    System.^out.println(BUNDLE_NAME)",
 			"  }",
 			"  private new {",
 			"  }",
