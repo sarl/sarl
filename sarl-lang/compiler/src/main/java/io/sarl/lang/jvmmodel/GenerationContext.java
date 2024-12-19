@@ -72,7 +72,7 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class GenerationContext {
+public abstract class GenerationContext {
 
 	private static final String MAIN_FUNCTION_PARAMETER_TYPE = String.class.getName() + "[]"; //$NON-NLS-1$
 	
