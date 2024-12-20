@@ -32,6 +32,10 @@ import io.sarl.lang.sarl.SarlProtocol;
 /** Fragment for inferred the protocols to the JVM model.
  *
  * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @author $Author: mbaldoni$
+ * @author $Author: cbaroglio$
+ * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
