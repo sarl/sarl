@@ -45,12 +45,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements ISarlProtocolParameterBuilder {
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 358
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 361
 	 */
 	private EObject container;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 364
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 367
 	 */
 	private SarlProtocolParameter sarlProtocolParameter;
 
@@ -58,10 +58,10 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	 * @param container the container of the SarlProtocolParameter.
 	 * @param name the name of the SarlProtocolParameter.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	public void eInit(EObject container, String name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 739
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 742
 		if (this.sarlProtocolParameter == null) {
 			this.sarlProtocolParameter = SarlFactory.eINSTANCE.createSarlProtocolParameter();
 			internalEInit(container, context);
@@ -70,7 +70,7 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	}
 
 	private void internalEInit(EObject container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 916
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 919
 		assert this.sarlProtocolParameter != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -82,7 +82,7 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	public SarlProtocolParameter getSarlProtocolParameter() {
@@ -90,7 +90,7 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	public Resource eResource() {
@@ -127,7 +127,7 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1027
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1030
 	 */
 	public ISarlProtocolParameterBuilder setType(String type) {
 		JvmTypeReference ref = newTypeRef(this.container, type);
@@ -138,27 +138,15 @@ public class SarlProtocolParameterBuilderImpl extends AbstractBuilder implements
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1069
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1072
 	 */
 	public ISarlProtocolParameterBuilder setType(JvmTypeReference type) {
 		this.sarlProtocolParameter.setType(type);
 		return this;
 	}
 
-	/** Add a modifier.
-	 * @param modifier the modifier to add.
-	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1599
-	 */
-	public ISarlProtocolParameterBuilder addModifier(String modifier) {
-		if (!Strings.isEmpty(modifier)) {
-			getSarlProtocolParameter().getModifiers().add(modifier);
-		}
-		return this;
-	}
-
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1635
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1638
 	 */
 	@Override
 	@Pure

@@ -23,8 +23,8 @@
  */
 package io.sarl.lang.codebuilder.appenders;
 
-import io.sarl.lang.codebuilder.builders.ISarlEnumLiteralBuilder;
-import io.sarl.lang.sarl.SarlEnumLiteral;
+import io.sarl.lang.codebuilder.builders.ISarlProtocolRoleBuilder;
+import io.sarl.lang.sarl.SarlProtocolRole;
 import java.io.IOException;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -35,15 +35,15 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Source appender of a Sarl SarlEnumLiteral.
+/** Source appender of a Sarl SarlProtocolRole.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 194
  */
 @SuppressWarnings("all")
-public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implements ISarlEnumLiteralBuilder {
+public class SarlProtocolRoleSourceAppender extends AbstractSourceAppender implements ISarlProtocolRoleBuilder {
 
-	private final ISarlEnumLiteralBuilder builder;
+	private final ISarlProtocolRoleBuilder builder;
 
-	public SarlEnumLiteralSourceAppender(ISarlEnumLiteralBuilder builder) {
+	public SarlProtocolRoleSourceAppender(ISarlProtocolRoleBuilder builder) {
 		this.builder = builder;
 	}
 
@@ -54,7 +54,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 549
 	 */
 	public void build(ISourceAppender appender) throws IOException {
-		build(this.builder.getSarlEnumLiteral(), appender);
+		build(this.builder.getSarlProtocolRole(), appender);
 	}
 
 	/** Find the reference to the type with the given name.
@@ -123,8 +123,8 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Initialize the Ecore element.
-	 * @param container the container of the SarlEnumLiteral.
-	 * @param name the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole.
 	 * @param context the context in which type resolution must be applied.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
@@ -136,8 +136,8 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
-	public SarlEnumLiteral getSarlEnumLiteral() {
-		return this.builder.getSarlEnumLiteral();
+	public SarlProtocolRole getSarlProtocolRole() {
+		return this.builder.getSarlProtocolRole();
 	}
 
 	/** Replies the resource.
@@ -145,7 +145,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 */
 	@Pure
 	public Resource eResource() {
-		return getSarlEnumLiteral().eResource();
+		return getSarlProtocolRole().eResource();
 	}
 
 	/** Change the documentation of the element.
@@ -156,7 +156,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return {@code this}.
 	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
-	public ISarlEnumLiteralBuilder setDocumentation(String doc) {
+	public ISarlProtocolRoleBuilder setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);
 		return this;
 	}

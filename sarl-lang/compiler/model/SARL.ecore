@@ -91,6 +91,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlProtocol" eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eOperations name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getRoles" unique="false" upperBound="-1" eType="#//SarlProtocolRole"/>
+    <eOperations name="getRoleNames" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getMessages" unique="false" upperBound="-1" eType="#//SarlProtocolMessage"/>
+    <eOperations name="getParameters" unique="false" upperBound="-1" eType="#//SarlProtocolParameter"/>
+    <eOperations name="getParameterNames" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
@@ -125,28 +130,50 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlProtocolRole" eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" upperBound="-1"
+    <eOperations name="setName">
+      <eParameters name="uniqueName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getProtocol" eType="#//SarlProtocol"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlProtocolMessage" eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
+    <eOperations name="getModifiers" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="isOutTargetRole" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isInTargetRole" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getProtocol" eType="#//SarlProtocol"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="from" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="to" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="#//SarlProtocolParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" unique="false"
+        upperBound="-1" eType="#//SarlProtocolParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rawTarget" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlProtocolParameter" eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
     <eOperations name="isPrivate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getModifiers" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="isKey" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isOut" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isIn" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isAny" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isNil" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isOptional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getProtocol" eType="#//SarlProtocol"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rawArguments" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlProtocolCall" eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
+    <eOperations name="getProtocol" eType="#//SarlProtocol"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="#//SarlProtocolParameter" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="roles" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" unique="false"
+        upperBound="-1" eType="#//SarlProtocolParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="roles" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

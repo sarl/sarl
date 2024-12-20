@@ -21,9 +21,11 @@
 
 package io.sarl.lang.sarl.impl;
 
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.sarl.SarlProtocol;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,9 +38,14 @@ import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
  * </ul>
  *
  * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @author $Author: mbaldoni$
+ * @author $Author: cbaroglio$
+ * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public class SarlProtocolRoleImplCustom extends SarlProtocolRoleImpl {
 
@@ -55,6 +62,18 @@ public class SarlProtocolRoleImplCustom extends SarlProtocolRoleImpl {
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
 		return IDefaultVisibilityProvider.getActionDefaultVisibilityIn(getDeclaringType());
+	}
+
+	@Override
+	public void setName(String uniqueName) {
+		final var names = getNames();
+		names.clear();
+		names.add(uniqueName);
+	}
+
+	@Override
+	public SarlProtocol getProtocol() {
+		return EcoreUtil2.getContainerOfType(eContainer(), SarlProtocol.class);
 	}
 
 }

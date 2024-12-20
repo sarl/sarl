@@ -42,7 +42,7 @@ public interface ISarlBehaviorUnitBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 403
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 406
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -50,7 +50,7 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 431
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 434
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -58,7 +58,7 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 461
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 464
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -66,7 +66,7 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 493
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 496
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -75,18 +75,18 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 527
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 530
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 557
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 560
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 585
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -94,7 +94,7 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	void eInit(EObject container, String name, IJvmTypeProvider context);
 
@@ -102,18 +102,18 @@ public interface ISarlBehaviorUnitBuilder {
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 813
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 816
 	 */
 	void eInit(EObject container, JvmParameterizedTypeReference name, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	SarlBehaviorUnit getSarlBehaviorUnit();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	Resource eResource();
@@ -130,13 +130,13 @@ public interface ISarlBehaviorUnitBuilder {
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1442
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
 	 */
 	IBlockExpressionBuilder getExpression();
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1726
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1729
 	 */
 	@Pure
 	IExpressionBuilder getGuard();

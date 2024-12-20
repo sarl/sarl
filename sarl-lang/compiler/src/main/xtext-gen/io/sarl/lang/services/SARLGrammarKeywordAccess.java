@@ -54,13 +54,6 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getTypeAccess().getArtifactKeyword_2_6_2().getValue();
 	}
 
-	/** Keyword: {@code nil}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getNilKeyword() {
-		return this.grammarAccess.getBsplParameterModifierAccess().getNilKeyword_2().getValue();
-	}
-
 	/** Keyword: {@code protected}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -115,13 +108,6 @@ public class SARLGrammarKeywordAccess {
 	 */
 	public String getNumberSignKeyword() {
 		return this.grammarAccess.getXListLiteralAccess().getNumberSignKeyword_1().getValue();
-	}
-
-	/** Keyword: {@code in}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getInKeyword() {
-		return this.grammarAccess.getBsplMessageModifierAccess().getInKeyword_1().getValue();
 	}
 
 	/** Keyword: {@code %}.
@@ -313,25 +299,11 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0().getValue();
 	}
 
-	/** Keyword: {@code role}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getRoleKeyword() {
-		return this.grammarAccess.getBsplProtocolMemberAccess().getRoleKeyword_2_0_1().getValue();
-	}
-
 	/** Keyword: {@code capacity}.
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getCapacityKeyword() {
 		return this.grammarAccess.getTypeAccess().getCapacityKeyword_2_1_2().getValue();
-	}
-
-	/** Keyword: {@code out}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getOutKeyword() {
-		return this.grammarAccess.getBsplMessageModifierAccess().getOutKeyword_0().getValue();
 	}
 
 	/** Keyword: {@code default}.
@@ -395,13 +367,6 @@ public class SARLGrammarKeywordAccess {
 	 */
 	public String getRightSquareBracketKeyword() {
 		return this.grammarAccess.getArrayBracketsAccess().getRightSquareBracketKeyword_1().getValue();
-	}
-
-	/** Keyword: {@code key}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getKeyKeyword() {
-		return this.grammarAccess.getBsplParameterModifierAccess().getKeyKeyword_5().getValue();
 	}
 
 	/** Keyword: {@code typeof}.
@@ -649,13 +614,6 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getOpOtherAccess().getHyphenMinusGreaterThanSignKeyword_0().getValue();
 	}
 
-	/** Keyword: {@code opt}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getOptKeyword() {
-		return this.grammarAccess.getBsplParameterModifierAccess().getOptKeyword_4().getValue();
-	}
-
 	/** Keyword: {@code extends}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -789,13 +747,6 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getTypeAccess().getSkillKeyword_2_4_2().getValue();
 	}
 
-	/** Keyword: {@code parameter}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getParameterKeyword() {
-		return this.grammarAccess.getBsplProtocolMemberAccess().getParameterKeyword_2_2_1().getValue();
-	}
-
 	/** Keyword: {@code ?:}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -831,13 +782,6 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getInnerVarIDAccess().getVolatileKeyword_22().getValue();
 	}
 
-	/** Keyword: {@code any}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getAnyKeyword() {
-		return this.grammarAccess.getBsplParameterModifierAccess().getAnyKeyword_3().getValue();
-	}
-
 	/** Keyword: {@code /=}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -870,7 +814,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getUsesKeyword() {
-		return this.grammarAccess.getBsplProtocolMemberAccess().getUsesKeyword_2_3_1().getValue();
+		return this.grammarAccess.getBsplProtocolMemberAccess().getUsesKeyword_2_1_1().getValue();
 	}
 
 	private static final String VOID = "void";
@@ -922,17 +866,13 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getAsKeyword());
 			kws.add(getIfKeyword());
 			kws.add(getSynchronizedKeyword());
-			kws.add(getRoleKeyword());
 			kws.add(getClassKeyword());
-			kws.add(getInKeyword());
 			kws.add(getVolatileKeyword());
-			kws.add(getParameterKeyword());
 			kws.add(getRequiresKeyword());
 			kws.add(getFalseKeyword());
 			kws.add(getWithKeyword());
 			kws.add(getWriteableVarKeyword());
 			kws.add(getItKeyword());
-			kws.add(getKeyKeyword());
 			kws.add(getSwitchKeyword());
 			kws.add(getExtendsKeyword());
 			kws.add(getFinalKeyword());
@@ -945,7 +885,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getReturnKeyword());
 			kws.add(getWhileKeyword());
 			kws.add(getAssertKeyword());
-			kws.add(getAnyKeyword());
 			kws.add(getSpaceKeyword());
 			kws.add(getInstanceofKeyword());
 			kws.add(getBreakKeyword());
@@ -957,9 +896,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getEventKeyword());
 			kws.add(getImportKeyword());
 			kws.add(getAgentKeyword());
-			kws.add(getOutKeyword());
 			kws.add(getTransientKeyword());
-			kws.add(getOptKeyword());
 			kws.add(getNullKeyword());
 			kws.add(getCaseKeyword());
 			kws.add(getInterfaceKeyword());
@@ -972,7 +909,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
-			kws.add(getNilKeyword());
 			kws.add(getContinueKeyword());
 			kws.add(getOverrideKeyword());
 			kws.add(getThrowKeyword());
@@ -1020,31 +956,23 @@ public class SARLGrammarKeywordAccess {
 		if (kws == null) {
 			kws = new HashSet<>();
 			kws.add(getAsKeyword());
-			kws.add(getRoleKeyword());
-			kws.add(getInKeyword());
-			kws.add(getParameterKeyword());
 			kws.add(getRequiresKeyword());
 			kws.add(getWithKeyword());
 			kws.add(getWriteableVarKeyword());
 			kws.add(getItKeyword());
-			kws.add(getKeyKeyword());
 			kws.add(getArtifactKeyword());
 			kws.add(getAnnotationKeyword());
-			kws.add(getAnyKeyword());
 			kws.add(getSpaceKeyword());
 			kws.add(getOnKeyword());
 			kws.add(getCapacityKeyword());
 			kws.add(getEventKeyword());
 			kws.add(getAgentKeyword());
-			kws.add(getOutKeyword());
-			kws.add(getOptKeyword());
 			kws.add(getDispatchKeyword());
 			kws.add(getUsesKeyword());
 			kws.add(getProtocolKeyword());
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
-			kws.add(getNilKeyword());
 			kws.add(getOverrideKeyword());
 			kws.add(getIsStaticAssumeKeyword());
 			kws.add(getBehaviorKeyword());

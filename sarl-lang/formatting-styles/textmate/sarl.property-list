@@ -107,7 +107,7 @@
       comment = 'Special Keywords'
     },
     {
-      match = '\b(?:(?:abstract)|(?:any)|(?:def)|(?:dispatch)|(?:extension)|(?:final)|(?:in)|(?:key)|(?:native)|(?:nil)|(?:opt)|(?:out)|(?:override)|(?:private)|(?:protected)|(?:public)|(?:static)|(?:strictfp)|(?:synchronized)|(?:transient)|(?:val)|(?:var)|(?:volatile))\b';
+      match = '\b(?:(?:abstract)|(?:def)|(?:dispatch)|(?:extension)|(?:final)|(?:native)|(?:override)|(?:private)|(?:protected)|(?:public)|(?:static)|(?:strictfp)|(?:synchronized)|(?:transient)|(?:val)|(?:var)|(?:volatile))\b';
       name = 'storage.modifier.sarl';
       comment = 'Modifiers'
     },
@@ -117,7 +117,7 @@
       comment = 'Type Declarations'
     },
     {
-      match = '\b(?:(?:as)|(?:assert)|(?:assume)|(?:break)|(?:case)|(?:catch)|(?:continue)|(?:default)|(?:do)|(?:else)|(?:extends)|(?:finally)|(?:fires)|(?:for)|(?:if)|(?:implements)|(?:instanceof)|(?:new)|(?:on)|(?:parameter)|(?:requires)|(?:return)|(?:role)|(?:super)|(?:switch)|(?:throw)|(?:throws)|(?:try)|(?:typeof)|(?:uses)|(?:while)|(?:with))\b';
+      match = '\b(?:(?:as)|(?:assert)|(?:assume)|(?:break)|(?:case)|(?:catch)|(?:continue)|(?:default)|(?:do)|(?:else)|(?:extends)|(?:finally)|(?:fires)|(?:for)|(?:if)|(?:implements)|(?:instanceof)|(?:new)|(?:on)|(?:requires)|(?:return)|(?:role)|(?:super)|(?:switch)|(?:throw)|(?:throws)|(?:try)|(?:typeof)|(?:uses)|(?:while)|(?:with))\b';
       name = 'keyword.control.sarl';
       comment = 'Standard Keywords'
     },

@@ -204,9 +204,13 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 */
 	protected StringConcatenationClient generateMembersFromConfig(Set<String> addedKeywords, Map<String, String> getters) {
 		final var clients = new ArrayList<StringConcatenationClient>();
+		final var scopedKeywords = this.configuration.getRemoveKeywordsDefinedInScopes()
+				? this.configuration.getAllKeywordsDefinedInScope()
+				: Collections.emptySet();
 		for (final var keyword : this.configuration.getKeywords()) {
 			final var id = keyword.toLowerCase();
-			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)
+					&& !scopedKeywords.contains(keyword)) {
 				clients.add(generateKeyword(keyword, getGrammar().getName(), getters));
 				addedKeywords.add(id);
 			}
@@ -238,10 +242,14 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	protected StringConcatenationClient generateMembers(Grammar grammar, Set<String> addedKeywords,
 			Map<String, String> getters) {
 		final var clients = new ArrayList<StringConcatenationClient>();
+		final var scopedKeywords = this.configuration.getRemoveKeywordsDefinedInScopes()
+				? this.configuration.getAllKeywordsDefinedInScope()
+				: Collections.emptySet();
 		for (final var grammarKeyword : getAllKeywords(grammar)) {
 			final var keyword = grammarKeyword.getValue().trim();
 			if (!keyword.isEmpty()) {
-				if (!addedKeywords.contains(keyword) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+				if (!addedKeywords.contains(keyword) && !this.configuration.getIgnoredKeywords().contains(keyword)
+						&& !scopedKeywords.contains(keyword)) {
 					clients.add(generateKeyword(grammarKeyword, grammar.getName(), getters));
 					addedKeywords.add(keyword);
 				}

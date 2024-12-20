@@ -3,6 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlProtocolCall;
 import io.sarl.lang.sarl.SarlProtocolParameter;
 
@@ -18,7 +19,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -169,9 +170,22 @@ public class SarlProtocolCallImpl extends XtendMemberImplCustom implements SarlP
 	{
 		if (roles == null)
 		{
-			roles = new EDataTypeUniqueEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_CALL__ROLES);
+			roles = new EDataTypeEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_CALL__ROLES);
 		}
 		return roles;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public SarlProtocol getProtocol()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

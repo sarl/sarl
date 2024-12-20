@@ -21,9 +21,17 @@
 
 package io.sarl.lang.sarl.impl;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
+import com.google.common.base.Strings;
+
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.sarl.SarlProtocol;
+import io.sarl.lang.util.BSPLConstants;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,11 +44,18 @@ import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
  * </ul>
  *
  * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @author $Author: mbaldoni$
+ * @author $Author: cbaroglio$
+ * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public class SarlProtocolMessageImplCustom extends SarlProtocolMessageImpl {
+
+	private final AtomicBoolean dispatched = new AtomicBoolean();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -55,6 +70,68 @@ public class SarlProtocolMessageImplCustom extends SarlProtocolMessageImpl {
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
 		return IDefaultVisibilityProvider.getActionDefaultVisibilityIn(getDeclaringType());
+	}
+
+	@Override
+	public EList<String> getModifiers() {
+		var mods = super.getModifiers();
+		if (!this.dispatched.getAndSet(true)) {
+			updateToModifiers();
+			mods = super.getModifiers();
+		}
+		return mods;
+	}
+
+
+	@Override
+	public String getTo() {
+		var to = super.getTo();
+		if (!this.dispatched.getAndSet(true)) {
+			updateToModifiers();
+			to = super.getTo();
+		}
+		return to;
+	}
+	
+	private void updateToModifiers() {
+		getModifiers().clear();
+		String to = null;
+		for (final var rp : getRawTarget()) {
+			if (BSPLConstants.MODIFIERS.contains(rp)) {
+				getModifiers().add(rp);
+			} else if (Strings.isNullOrEmpty(to)) {
+				to = rp;
+			} else {
+				getModifiers().add(rp);
+			}
+		}
+		if (!Strings.isNullOrEmpty(to)) {
+			setTo(to);
+		}
+	}
+
+	@Override
+	public boolean isInTargetRole() {
+		return getModifiers().contains(BSPLConstants.IN);
+	}
+
+	@Override
+	public boolean isOutTargetRole() {
+		return getModifiers().contains(BSPLConstants.OUT);
+	}
+
+	@Override
+	public String getIdentifier() {
+		final var buffer = new StringBuilder();
+		buffer.append(getName()).append(":"); //$NON-NLS-1$
+		buffer.append(getFrom()).append(":"); //$NON-NLS-1$
+		buffer.append(getTo());
+		return buffer.toString();
+	}
+
+	@Override
+	public SarlProtocol getProtocol() {
+		return EcoreUtil2.getContainerOfType(eContainer(), SarlProtocol.class);
 	}
 
 }

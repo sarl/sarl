@@ -183,6 +183,8 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 
 == 6. Authors and Contributors
 
+* image:https://avatars.githubusercontent.com/-[width="50px",link=https://www.unito.it/persone/mbaldoni] Matteo BALDONI, BSPL protocol implementation in SARL toolchain.
+* image:https://avatars.githubusercontent.com/-[width="50px",link=http://informatica.unito.it/persone/cristina.baroglio] Critina BAROGLIO, BSPL protocol implementation in SARL toolchain.
 * image:https://avatars.githubusercontent.com/klmp200[width="50px",link=https://github.com/klmp200] Antoine BARTUCCIO, fireworks and Sierpinski fractal examples.
 * image:https://avatars.githubusercontent.com/Lomadriel[width="50px",link=https://github.com/gb96] Gérôme BOULMIER, game of life example.
 * image:https://avatars.githubusercontent.com/gb96[width="50px",link=https://github.com/gb96] Greg BOWERING, fixes for localization support within the fireworks example.
@@ -193,11 +195,14 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 * image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.ciad-lab.fr/nicolas_gaud/[Nicolas GAUD], founder, original and active author.
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
 * image:https://avatars.githubusercontent.com/alexandrelombard[width="50px",link=https://github.com/alexandrelombard] link:http://www.ciad-lab.fr/alexandre_lombard/[Alexandre LOMBARD], active author.
+* image:https://avatars.githubusercontent.com/-[width="50px",link=https://www.unito.it/persone/rmicaliz] Roberto MICALIZIO, BSPL protocol implementation in SARL toolchain.
 * image:https://avatars.githubusercontent.com/RyuzakiKK[width="50px",link=https://github.com/RyuzakiKK] Ludovico de NITTIS, documentation contributor.
 * image:https://avatars.githubusercontent.com/pinam45[width="50px",link=https://github.com/pinam45] Maxime PINARD, game of life example.
 * image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, maven configuration.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://www.sebastianrodriguez.com.ar[Sebastian RODRIGUEZ], founder, original and active author.
 * image:https://avatars.githubusercontent.com/ssardina[width="50px",link=https://github.com/ssardina] Sebastian SARDINA, documentation contributor.
+* image:https://avatars.githubusercontent.com/stefanotedeschi[width="50px",link=https://github.com/stefanotedeschi] Stefano TEDESCHI, BSPL protocol implementation in SARL toolchain.
+
 
 == 7. License of SARL
 

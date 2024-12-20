@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlProtocol.
-	 * @see TopElementBuilderFragment.java : appendTo : 400
+	 * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlProtocolBuilder {
@@ -51,7 +51,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	private SarlProtocol sarlProtocol;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -63,7 +63,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	 * @param script the SARL script in which this SarlProtocol is added.
 	 * @param name the simple name of the SarlProtocol.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -76,7 +76,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	}
 
 	/** Replies the generated SarlProtocol.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlProtocol getSarlProtocol() {
@@ -85,7 +85,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlProtocolReference() {
@@ -96,7 +96,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	/** Replies the JVM declared type for this generated SarlProtocol.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -104,7 +104,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	}
 
 	/** Replies the resource to which the SarlProtocol is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -141,7 +141,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlProtocolBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -151,24 +151,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
-	 */
-	@Inject
-	private Provider<ISarlProtocolParameterBuilder> iSarlProtocolParameterBuilderProvider;
-
-	/** Create a SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter.
-	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
-	 */
-	public ISarlProtocolParameterBuilder addSarlProtocolParameter(String name) {
-		ISarlProtocolParameterBuilder builder = this.iSarlProtocolParameterBuilderProvider.get();
-		builder.eInit(getSarlProtocol(), name, getTypeResolutionContext());
-		return builder;
-	}
-
-	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlProtocolCallBuilder> iSarlProtocolCallBuilderProvider;
@@ -176,7 +159,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	/** Create a SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlProtocolCallBuilder addSarlProtocolCall(String name) {
 		ISarlProtocolCallBuilder builder = this.iSarlProtocolCallBuilderProvider.get();
@@ -187,7 +170,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	/** Create a SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 602
+	 * @see TopElementBuilderFragment.java : appendTo : 626
 	 */
 	public ISarlProtocolCallBuilder addSarlProtocolCall(JvmParameterizedTypeReference name) {
 		ISarlProtocolCallBuilder builder = this.iSarlProtocolCallBuilderProvider.get();
@@ -196,7 +179,7 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlProtocolMessageBuilder> iSarlProtocolMessageBuilderProvider;
@@ -204,10 +187,44 @@ public class SarlProtocolBuilderImpl extends AbstractBuilder implements ISarlPro
 	/** Create a SarlProtocolMessage.
 	 * @param name the name of the SarlProtocolMessage.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlProtocolMessageBuilder addSarlProtocolMessage(String name) {
 		ISarlProtocolMessageBuilder builder = this.iSarlProtocolMessageBuilderProvider.get();
+		builder.eInit(getSarlProtocol(), name, getTypeResolutionContext());
+		return builder;
+	}
+
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 780
+	 */
+	@Inject
+	private Provider<ISarlProtocolRoleBuilder> iSarlProtocolRoleBuilderProvider;
+
+	/** Create a SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 821
+	 */
+	public ISarlProtocolRoleBuilder addSarlProtocolRole(String name) {
+		ISarlProtocolRoleBuilder builder = this.iSarlProtocolRoleBuilderProvider.get();
+		builder.eInit(getSarlProtocol(), name, getTypeResolutionContext());
+		return builder;
+	}
+
+	/**
+	 * @see TopElementBuilderFragment.java : appendTo : 780
+	 */
+	@Inject
+	private Provider<ISarlProtocolParameterBuilder> iSarlProtocolParameterBuilderProvider;
+
+	/** Create a SarlProtocolParameter.
+	 * @param name the name of the SarlProtocolParameter.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 821
+	 */
+	public ISarlProtocolParameterBuilder addSarlProtocolParameter(String name) {
+		ISarlProtocolParameterBuilder builder = this.iSarlProtocolParameterBuilderProvider.get();
 		builder.eInit(getSarlProtocol(), name, getTypeResolutionContext());
 		return builder;
 	}

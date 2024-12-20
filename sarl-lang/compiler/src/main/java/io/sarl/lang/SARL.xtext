@@ -467,30 +467,27 @@ BsplProtocolMember returns xtend::XtendMember:
 		{SarlProtocolRole.annotationInfo = current}
 		'role' names+=ValidID (',' names+=ValidID)* ';'?
 	|
-		{SarlProtocolParameter.annotationInfo = current}
-		modifiers+='private' 'parameter'? modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier* (':' type=JvmTypeReference )? ';'?
-	|
-		{SarlProtocolParameter.annotationInfo = current}
-		'parameter' modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier* (':' type=JvmTypeReference )? ';'?
-	|
 		{SarlProtocolCall.annotationInfo = current}
 		'uses' name=JvmTypeReference '(' ( roles+=ValidID (',' roles+=ValidID)* )? '|' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' ';'?
 	|
+		// Parameter's name and modifiers are not explicitly defined in the grammar for avoiding conflict with the
+		// regular keywords from the SARL grammar, i.e., BSPL keywords must not be considered as SARL keywords.
+		// Therefore, name and modifiers are stored in "rawArguments" and they are dynamically extracted in
+		// a custom implementation of the Ecore object.
+		{SarlProtocolParameter.annotationInfo = current}
+		'var' rawArguments+=ValidID+ (':' type=JvmTypeReference )? ';'?
+	|
+		// Message's name and modifiers are not explicitly defined in the grammar for avoiding conflict with the
+		// regular keywords from the SARL grammar, i.e., BSPL keywords must not be considered as SARL keywords.
+		// Therefore, name and modifiers are stored in "rawTarget" and they are dynamically extracted in
+		// a custom implementation of the Ecore object.
 		{SarlProtocolMessage.annotationInfo = current}
-		from=ValidID '->' modifiers+=BsplMessageModifier? to=ValidID ':' name=ValidID  '(' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' ';'? 
+		from=ValidID '->' rawTarget+=ValidID+ ':' name=ValidID  ( '(' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' )? ';'? 
 	)
 ;
 
 BsplMessageParameter returns SarlProtocolParameter:
-	modifiers+=BsplParameterModifier* name=ValidID modifiers+=BsplParameterModifier*
-;
-
-BsplParameterModifier:
-	'out' | 'in' | 'nil' | 'any' | 'opt' | 'key'
-;
-
-BsplMessageModifier:
-	'out' | 'in'
+	rawArguments+=ValidID+
 ;
 
 //-----------------------------------------------

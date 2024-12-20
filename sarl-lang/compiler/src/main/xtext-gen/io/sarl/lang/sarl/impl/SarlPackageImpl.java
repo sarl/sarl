@@ -36,6 +36,7 @@ import io.sarl.lang.sarl.SarlSpace;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -957,6 +958,17 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	@Override
+	public EAttribute getSarlProtocolMessage_RawTarget()
+	{
+		return (EAttribute)sarlProtocolMessageEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getSarlProtocolParameter()
 	{
 		return sarlProtocolParameterEClass;
@@ -982,6 +994,17 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	public EReference getSarlProtocolParameter_Type()
 	{
 		return (EReference)sarlProtocolParameterEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSarlProtocolParameter_RawArguments()
+	{
+		return (EAttribute)sarlProtocolParameterEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -1140,10 +1163,12 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__TO);
 		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__NAME);
 		createEReference(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__PARAMETERS);
+		createEAttribute(sarlProtocolMessageEClass, SARL_PROTOCOL_MESSAGE__RAW_TARGET);
 
 		sarlProtocolParameterEClass = createEClass(SARL_PROTOCOL_PARAMETER);
 		createEAttribute(sarlProtocolParameterEClass, SARL_PROTOCOL_PARAMETER__NAME);
 		createEReference(sarlProtocolParameterEClass, SARL_PROTOCOL_PARAMETER__TYPE);
+		createEAttribute(sarlProtocolParameterEClass, SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS);
 
 		sarlProtocolCallEClass = createEClass(SARL_PROTOCOL_CALL);
 		createEReference(sarlProtocolCallEClass, SARL_PROTOCOL_CALL__NAME);
@@ -1281,6 +1306,16 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		addEOperation(sarlProtocolEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(sarlProtocolEClass, this.getSarlProtocolRole(), "getRoles", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolEClass, ecorePackage.getEString(), "getRoleNames", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolEClass, this.getSarlProtocolMessage(), "getMessages", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolEClass, this.getSarlProtocolParameter(), "getParameters", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolEClass, ecorePackage.getEString(), "getParameterNames", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(sarlAgentEClass, SarlAgent.class, "SarlAgent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAgent_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlAgent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1310,24 +1345,59 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		initEReference(getSarlFormalParameter_DefaultValue(), theXbasePackage.getXExpression(), null, "defaultValue", null, 0, 1, SarlFormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sarlProtocolRoleEClass, SarlProtocolRole.class, "SarlProtocolRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSarlProtocolRole_Names(), ecorePackage.getEString(), "names", null, 0, -1, SarlProtocolRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolRole_Names(), ecorePackage.getEString(), "names", null, 0, -1, SarlProtocolRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		EOperation op = addEOperation(sarlProtocolRoleEClass, null, "setName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "uniqueName", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolRoleEClass, this.getSarlProtocol(), "getProtocol", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sarlProtocolMessageEClass, SarlProtocolMessage.class, "SarlProtocolMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSarlProtocolMessage_From(), ecorePackage.getEString(), "from", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSarlProtocolMessage_To(), ecorePackage.getEString(), "to", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSarlProtocolMessage_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSarlProtocolMessage_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlProtocolMessage_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolMessage_RawTarget(), ecorePackage.getEString(), "rawTarget", null, 0, -1, SarlProtocolMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(sarlProtocolMessageEClass, ecorePackage.getEString(), "getModifiers", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolMessageEClass, ecorePackage.getEBoolean(), "isOutTargetRole", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolMessageEClass, ecorePackage.getEBoolean(), "isInTargetRole", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolMessageEClass, ecorePackage.getEString(), "getIdentifier", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolMessageEClass, this.getSarlProtocol(), "getProtocol", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sarlProtocolParameterEClass, SarlProtocolParameter.class, "SarlProtocolParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSarlProtocolParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlProtocolParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSarlProtocolParameter_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, SarlProtocolParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolParameter_RawArguments(), ecorePackage.getEString(), "rawArguments", null, 0, -1, SarlProtocolParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isPrivate", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEString(), "getModifiers", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isKey", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isOut", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isIn", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isAny", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isNil", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, ecorePackage.getEBoolean(), "isOptional", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(sarlProtocolParameterEClass, this.getSarlProtocol(), "getProtocol", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(sarlProtocolCallEClass, SarlProtocolCall.class, "SarlProtocolCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlProtocolCall_Name(), theTypesPackage.getJvmTypeReference(), null, "name", null, 0, 1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSarlProtocolCall_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSarlProtocolCall_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlProtocolCall_Parameters(), this.getSarlProtocolParameter(), null, "parameters", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlProtocolCall_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, SarlProtocolCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(sarlProtocolCallEClass, this.getSarlProtocol(), "getProtocol", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -91,7 +91,29 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		final var treatedMembers = new HashSet<String>();
 		for (final var nameAssignment : IterableExtensions.filter(
 				GrammarUtil.containedAssignments(container), passignment -> Boolean.valueOf(getCodeBuilderConfig()
-				.getUnnamedMemberExtensionGrammarNames().contains(passignment.getFeature())))) {
+				.getJvmTypeNamedMemberExtensionGrammarNames().contains(passignment.getFeature())))) {
+			// Get the container of the name assignment
+			final var assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
+			if (assignmentContainer != null) {
+				final var classifier = getGeneratedTypeFor(assignmentContainer);
+				if (!treatedMembers.contains(classifier.getName())) {
+					treatedMembers.add(classifier.getName());
+					final var retVal = memberCallback.apply(this, grammarContainer, assignmentContainer, classifier);
+					if (retVal != null) {
+						return retVal;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private <T> T visitIndirectlyNamedMembers(EObject grammarContainer, EObject container,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
+		final var treatedMembers = new HashSet<String>();
+		for (final var nameAssignment : IterableExtensions.filter(
+				GrammarUtil.containedAssignments(container), passignment -> Boolean.valueOf(getCodeBuilderConfig()
+				.getIndirectlyNamedMemberExtensionGrammarNames().contains(passignment.getFeature())))) {
 			// Get the container of the name assignment
 			final var assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
 			if (assignmentContainer != null) {
@@ -140,7 +162,9 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> constructorCallback,
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> namedMemberCallback,
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
-					? super EClassifier, ? extends T> typeReferencingMemberCallback) {
+					? super EClassifier, ? extends T> typeReferencingMemberCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
+					? super EClassifier, ? extends T> indirectlyNamedMemberCallback) {
 		// Treat the standard members
 		if (namedMemberCallback != null) {
 			final var retVal = visitMembers(grammarContainer,  grammarContainer, namedMemberCallback);
@@ -151,6 +175,13 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		// Treat the members that are referencing types.
 		if (typeReferencingMemberCallback != null) {
 			final var retVal = visitTypeReferencingMembers(grammarContainer,  grammarContainer, typeReferencingMemberCallback);
+			if (retVal != null) {
+				return retVal;
+			}
+		}
+		// Treat the named members that are indirectly named.
+		if (indirectlyNamedMemberCallback != null) {
+			final var retVal = visitIndirectlyNamedMembers(grammarContainer,  grammarContainer, indirectlyNamedMemberCallback);
 			if (retVal != null) {
 				return retVal;
 			}

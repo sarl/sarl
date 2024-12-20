@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source adapter of a Sarl SarlEnumeration.
-	 * @see TopElementBuilderFragment.java : appendTo : 348
+	 * @see TopElementBuilderFragment.java : appendTo : 354
  */
 @SuppressWarnings("all")
 public class SarlEnumerationSourceAppender extends AbstractSourceAppender implements ISarlEnumerationBuilder {
@@ -63,7 +63,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1143
+	 * @see TopElementBuilderFragment.java : appendTo : 1426
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -73,7 +73,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1171
+	 * @see TopElementBuilderFragment.java : appendTo : 1454
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -83,7 +83,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1201
+	 * @see TopElementBuilderFragment.java : appendTo : 1484
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -93,7 +93,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1233
+	 * @see TopElementBuilderFragment.java : appendTo : 1516
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -104,7 +104,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1267
+	 * @see TopElementBuilderFragment.java : appendTo : 1550
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
@@ -115,14 +115,14 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1330
+	 * @see TopElementBuilderFragment.java : appendTo : 1613
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -134,7 +134,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param script the SARL script in which this SarlEnumeration is added.
 	 * @param name the simple name of the SarlEnumeration.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		this.builder.eInit(script, name, context);
@@ -144,14 +144,14 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	 * @param container the Ecore type that must contain this new SarlEnumeration.
 	 * @param name the simple name of the SarlEnumeration.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1458
+	 * @see TopElementBuilderFragment.java : appendTo : 1741
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated SarlEnumeration.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlEnumeration getSarlEnumeration() {
@@ -160,7 +160,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlEnumerationReference() {
@@ -170,7 +170,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	/** Replies the JVM declared type for this generated SarlEnumeration.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -178,7 +178,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Replies the resource to which the SarlEnumeration is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -201,7 +201,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlEnumerationBuilder addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -211,7 +211,7 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	/** Create a SarlEnumLiteral.
 	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {
 		return this.builder.addSarlEnumLiteral(name);

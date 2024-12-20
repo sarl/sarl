@@ -35,7 +35,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlProtocol.
-	 * @see TopElementBuilderFragment.java : appendTo : 301
+	 * @see TopElementBuilderFragment.java : appendTo : 303
  */
 @SuppressWarnings("all")
 public interface ISarlProtocolBuilder {
@@ -43,7 +43,7 @@ public interface ISarlProtocolBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1143
+	 * @see TopElementBuilderFragment.java : appendTo : 1426
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -51,7 +51,7 @@ public interface ISarlProtocolBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1171
+	 * @see TopElementBuilderFragment.java : appendTo : 1454
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -59,7 +59,7 @@ public interface ISarlProtocolBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1201
+	 * @see TopElementBuilderFragment.java : appendTo : 1484
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -67,7 +67,7 @@ public interface ISarlProtocolBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1233
+	 * @see TopElementBuilderFragment.java : appendTo : 1516
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -76,18 +76,18 @@ public interface ISarlProtocolBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1267
+	 * @see TopElementBuilderFragment.java : appendTo : 1550
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see TopElementBuilderFragment.java : appendTo : 1299
+	 * @see TopElementBuilderFragment.java : appendTo : 1582
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1321
+	 * @see TopElementBuilderFragment.java : appendTo : 1604
 	 */
 	void dispose();
 
@@ -95,19 +95,19 @@ public interface ISarlProtocolBuilder {
 	 * @param script the SARL script in which this SarlProtocol is added.
 	 * @param name the simple name of the SarlProtocol.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlProtocol.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	SarlProtocol getSarlProtocol();
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlProtocolReference();
@@ -115,13 +115,13 @@ public interface ISarlProtocolBuilder {
 	/** Replies the JVM declared type for this generated SarlProtocol.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	JvmDeclaredType getJvmDeclaredType();
 
 	/** Replies the resource to which the SarlProtocol is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	Resource eResource();
@@ -139,37 +139,44 @@ public interface ISarlProtocolBuilder {
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	ISarlProtocolBuilder addModifier(String modifier);
-
-	/** Create a SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter.
-	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
-	 */
-	ISarlProtocolParameterBuilder addSarlProtocolParameter(String name);
 
 	/** Create a SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	ISarlProtocolCallBuilder addSarlProtocolCall(String name);
 
 	/** Create a SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 602
+	 * @see TopElementBuilderFragment.java : appendTo : 626
 	 */
 	ISarlProtocolCallBuilder addSarlProtocolCall(JvmParameterizedTypeReference name);
 
 	/** Create a SarlProtocolMessage.
 	 * @param name the name of the SarlProtocolMessage.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	ISarlProtocolMessageBuilder addSarlProtocolMessage(String name);
+
+	/** Create a SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 821
+	 */
+	ISarlProtocolRoleBuilder addSarlProtocolRole(String name);
+
+	/** Create a SarlProtocolParameter.
+	 * @param name the name of the SarlProtocolParameter.
+	 * @return the builder.
+	 * @see TopElementBuilderFragment.java : appendTo : 821
+	 */
+	ISarlProtocolParameterBuilder addSarlProtocolParameter(String name);
 
 }
 

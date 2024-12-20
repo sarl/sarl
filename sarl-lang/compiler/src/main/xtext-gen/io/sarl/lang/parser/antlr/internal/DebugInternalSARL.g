@@ -1092,31 +1092,6 @@ ruleBsplProtocolMember:
 		)*
 		';'?
 		    |
-		'private'
-		'parameter'?
-		ruleBsplParameterModifier
-		*
-		ruleValidID
-		ruleBsplParameterModifier
-		*
-		(
-			':'
-			ruleJvmTypeReference
-		)?
-		';'?
-		    |
-		'parameter'
-		ruleBsplParameterModifier
-		*
-		ruleValidID
-		ruleBsplParameterModifier
-		*
-		(
-			':'
-			ruleJvmTypeReference
-		)?
-		';'?
-		    |
 		'uses'
 		ruleJvmTypeReference
 		'('
@@ -1138,59 +1113,40 @@ ruleBsplProtocolMember:
 		')'
 		';'?
 		    |
+		'var'
+		ruleValidID
+		+
+		(
+			':'
+			ruleJvmTypeReference
+		)?
+		';'?
+		    |
 		ruleValidID
 		'->'
-		ruleBsplMessageModifier
-		?
 		ruleValidID
+		+
 		':'
 		ruleValidID
-		'('
 		(
-			ruleBsplMessageParameter
+			'('
 			(
-				','
 				ruleBsplMessageParameter
-			)*
+				(
+					','
+					ruleBsplMessageParameter
+				)*
+			)?
+			')'
 		)?
-		')'
 		';'?
 	)
 ;
 
 // Rule BsplMessageParameter
 ruleBsplMessageParameter:
-	ruleBsplParameterModifier
-	*
 	ruleValidID
-	ruleBsplParameterModifier
-	*
-;
-
-// Rule BsplParameterModifier
-ruleBsplParameterModifier:
-	(
-		'out'
-		    |
-		'in'
-		    |
-		'nil'
-		    |
-		'any'
-		    |
-		'opt'
-		    |
-		'key'
-	)
-;
-
-// Rule BsplMessageModifier
-ruleBsplMessageModifier:
-	(
-		'out'
-		    |
-		'in'
-	)
+	+
 ;
 
 // Rule XPrimaryExpression

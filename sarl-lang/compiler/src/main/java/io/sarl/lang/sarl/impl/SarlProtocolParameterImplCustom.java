@@ -21,9 +21,17 @@
 
 package io.sarl.lang.sarl.impl;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
+import com.google.common.base.Strings;
+
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.sarl.SarlProtocol;
+import io.sarl.lang.util.BSPLConstants;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,11 +45,18 @@ import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
  * </ul>
  *
  * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @author $Author: mbaldoni$
+ * @author $Author: cbaroglio$
+ * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public class SarlProtocolParameterImplCustom extends SarlProtocolParameterImpl {
+
+	private final AtomicBoolean dispatched = new AtomicBoolean();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -66,6 +81,79 @@ public class SarlProtocolParameterImplCustom extends SarlProtocolParameterImpl {
 	@Override
 	public boolean isPrivate() {
 		return getModifiers().contains("private"); //$NON-NLS-1$
+	}
+
+	@Override
+	public EList<String> getModifiers() {
+		var mods = super.getModifiers();
+		if (!this.dispatched.getAndSet(true)) {
+			updateNameModifiers();
+			mods = super.getModifiers();
+		}
+		return mods;
+	}
+
+
+	@Override
+	public String getName() {
+		var name = super.getName();
+		if (!this.dispatched.getAndSet(true)) {
+			updateNameModifiers();
+			name = super.getName();
+		}
+		return name;
+	}
+	
+	private void updateNameModifiers() {
+		getModifiers().clear();
+		String name = null;
+		for (final var rp : getRawArguments()) {
+			if (BSPLConstants.MODIFIERS.contains(rp)) {
+				getModifiers().add(rp);
+			} else if (Strings.isNullOrEmpty(name)) {
+				name = rp;
+			} else {
+				getModifiers().add(rp);
+			}
+		}
+		if (!Strings.isNullOrEmpty(name)) {
+			setName(name);
+		}
+	}
+
+	@Override
+	public boolean isKey() {
+		return getModifiers().contains(BSPLConstants.KEY);
+	}
+
+	@Override
+	public boolean isOut() {
+		return getModifiers().contains(BSPLConstants.OUT);
+	}
+
+	@Override
+	public boolean isIn() {
+		return getModifiers().contains(BSPLConstants.IN);
+	}
+
+	@Override
+	public boolean isAny() {
+		return getModifiers().contains(BSPLConstants.ANY);
+	}
+
+	@Override
+	public boolean isNil() {
+		return getModifiers().contains(BSPLConstants.NIL);
+	}
+
+	@Override
+	public boolean isOptional() {
+		return getModifiers().contains(BSPLConstants.OPT);
+	}
+
+	@Override
+	public SarlProtocol getProtocol() {
+		return EcoreUtil2.getContainerOfType(eContainer(), SarlProtocol.class);
 	}
 
 }

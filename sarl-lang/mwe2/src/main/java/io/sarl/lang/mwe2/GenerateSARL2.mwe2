@@ -225,7 +225,9 @@ Workflow {
 				scriptRuleName = "SarlScript"
 				topElementRuleName = "Type"
 				formalParameterRuleName = "Parameter"
-				unnamedMemberExtensionGrammarName = "capacities"
+				indirectlyNamedMemberExtensionGrammarName = "rawArguments"
+				indirectlyNamedMemberExtensionGrammarName = "names"
+				jvmTypeNamedMemberExtensionGrammarName = "capacities"
 				multilineCommentedType = "org.eclipse.xtend.core.xtend.XtendMember"
 				constructorFreeType = "SarlCapacity"
 				constructorFreeType = "SarlInterface"
@@ -295,6 +297,18 @@ Workflow {
 				ignoreKeyword = 'FOR'
 				ignoreKeyword = 'IF'
 				ignoreKeyword = 'SEPARATOR'
+				
+				scope = {
+					name = "bspl"
+					keyword = 'role'
+					keyword = 'parameter'
+					keyword = 'out'
+					keyword = 'in'
+					keyword = 'nil'
+					keyword = 'opt'
+					keyword = 'any'
+					keyword = 'key'
+				}
 			}
    			// Shared configuration between the generators of syntax highlighting formats
 			highlighting = auto-inject {
@@ -415,6 +429,7 @@ Workflow {
     			composedCheck = "io.sarl.lang.validation.subvalidators.SARLAnnotationValidator"
     			composedCheck = "io.sarl.lang.validation.subvalidators.SARLScriptValidator"
     			composedCheck = "io.sarl.lang.validation.subvalidators.SARLDocumentationValidator"
+    			composedCheck = "io.sarl.lang.validation.subvalidators.BSPLValidator"
     			composedCheck = "io.sarl.lang.extralanguage.validator.ExtraLanguageValidatorSupport"
 			}
 

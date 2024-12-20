@@ -47,7 +47,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlAgent.
-	 * @see TopElementBuilderFragment.java : appendTo : 400
+	 * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentBuilder {
@@ -55,7 +55,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	private SarlAgent sarlAgent;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -67,7 +67,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	 * @param script the SARL script in which this SarlAgent is added.
 	 * @param name the simple name of the SarlAgent.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -80,7 +80,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/** Replies the generated SarlAgent.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlAgent getSarlAgent() {
@@ -89,7 +89,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlAgentReference() {
@@ -100,7 +100,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Replies the JVM declared type for this generated SarlAgent.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -108,7 +108,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/** Replies the resource to which the SarlAgent is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -146,7 +146,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	 * @param superType the qualified name of the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1701
+	 * @see TopElementBuilderFragment.java : appendTo : 1984
 	 */
 	public ISarlAgentBuilder setExtends(String superType) {
 		if (!Strings.isEmpty(superType)) {
@@ -166,7 +166,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	 * @param superType the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 1802
+	 * @see TopElementBuilderFragment.java : appendTo : 2085
 	 */
 	public ISarlAgentBuilder setExtends(JvmTypeReference superType) {
 		if (superType instanceof JvmParameterizedTypeReference psuperType && !Agent.class.getName().equals(superType.getType().getIdentifier())) {
@@ -183,7 +183,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlAgentBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -193,14 +193,14 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlConstructorBuilder> iSarlConstructorBuilderProvider;
 
 	/** Create a SarlConstructor.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		ISarlConstructorBuilder builder = this.iSarlConstructorBuilderProvider.get();
@@ -209,7 +209,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlBehaviorUnitBuilder> iSarlBehaviorUnitBuilderProvider;
@@ -217,7 +217,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
 		ISarlBehaviorUnitBuilder builder = this.iSarlBehaviorUnitBuilderProvider.get();
@@ -228,7 +228,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 602
+	 * @see TopElementBuilderFragment.java : appendTo : 626
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(JvmParameterizedTypeReference name) {
 		ISarlBehaviorUnitBuilder builder = this.iSarlBehaviorUnitBuilderProvider.get();
@@ -237,7 +237,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlFieldBuilder> iSarlFieldBuilderProvider;
@@ -245,7 +245,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -256,7 +256,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -268,14 +268,14 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.addVarSarlField(name);
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlActionBuilder> iSarlActionBuilderProvider;
@@ -283,7 +283,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -294,7 +294,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -306,14 +306,14 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.addDefSarlAction(name);
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlClassBuilder> iSarlClassBuilderProvider;
@@ -321,7 +321,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlClass.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
@@ -330,7 +330,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlInterfaceBuilder> iSarlInterfaceBuilderProvider;
@@ -338,7 +338,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlInterface.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
@@ -347,7 +347,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlEnumerationBuilder> iSarlEnumerationBuilderProvider;
@@ -355,7 +355,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlEnumeration.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
@@ -364,7 +364,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlAnnotationTypeBuilder> iSarlAnnotationTypeBuilderProvider;
@@ -372,7 +372,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlAnnotationType.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
@@ -383,7 +383,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlCapacityUses.
 	 * @param name the types referenced by the SarlCapacityUses.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 760
+	 * @see TopElementBuilderFragment.java : appendTo : 1041
 	 */
 	public ISarlAgentBuilder addSarlCapacityUses(String... name) {
 		if (name != null && name.length > 0) {
@@ -408,7 +408,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlCapacityUses.
 	 * @param name the types referenced by the SarlCapacityUses.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 864
+	 * @see TopElementBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlAgentBuilder addSarlCapacityUses(JvmParameterizedTypeReference... name) {
 		if (name != null) {
@@ -428,7 +428,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlRequiredCapacity.
 	 * @param name the types referenced by the SarlRequiredCapacity.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 760
+	 * @see TopElementBuilderFragment.java : appendTo : 1041
 	 */
 	public ISarlAgentBuilder addSarlRequiredCapacity(String... name) {
 		if (name != null && name.length > 0) {
@@ -453,7 +453,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	/** Create a SarlRequiredCapacity.
 	 * @param name the types referenced by the SarlRequiredCapacity.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 864
+	 * @see TopElementBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlAgentBuilder addSarlRequiredCapacity(JvmParameterizedTypeReference... name) {
 		if (name != null) {

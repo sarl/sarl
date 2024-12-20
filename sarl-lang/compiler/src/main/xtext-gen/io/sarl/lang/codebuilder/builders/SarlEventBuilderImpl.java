@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlEvent.
-	 * @see TopElementBuilderFragment.java : appendTo : 400
+	 * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventBuilder {
@@ -54,7 +54,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	private SarlEvent sarlEvent;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -66,7 +66,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 * @param script the SARL script in which this SarlEvent is added.
 	 * @param name the simple name of the SarlEvent.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -79,7 +79,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/** Replies the generated SarlEvent.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlEvent getSarlEvent() {
@@ -89,7 +89,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Replies the reference to the generated SarlAgent.
 	 * @param args the generic type arguments to put inside the reference.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlEventReference(JvmTypeReference... args) {
@@ -100,7 +100,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Replies the JVM declared type for this generated SarlEvent.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -108,7 +108,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/** Replies the resource to which the SarlEvent is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -146,7 +146,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 * @param superType the qualified name of the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1701
+	 * @see TopElementBuilderFragment.java : appendTo : 1984
 	 */
 	public ISarlEventBuilder setExtends(String superType) {
 		if (!Strings.isEmpty(superType)) {
@@ -166,7 +166,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 * @param superType the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 1802
+	 * @see TopElementBuilderFragment.java : appendTo : 2085
 	 */
 	public ISarlEventBuilder setExtends(JvmTypeReference superType) {
 		if (superType instanceof JvmParameterizedTypeReference psuperType && !Event.class.getName().equals(superType.getType().getIdentifier())) {
@@ -183,7 +183,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlEventBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -198,7 +198,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see TopElementBuilderFragment.java : appendTo : 2263
+	 * @see TopElementBuilderFragment.java : appendTo : 2546
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();
@@ -210,14 +210,14 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlConstructorBuilder> iSarlConstructorBuilderProvider;
 
 	/** Create a SarlConstructor.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		ISarlConstructorBuilder builder = this.iSarlConstructorBuilderProvider.get();
@@ -226,7 +226,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 499
+	 * @see TopElementBuilderFragment.java : appendTo : 523
 	 */
 	@Inject
 	private Provider<ISarlFieldBuilder> iSarlFieldBuilderProvider;
@@ -234,7 +234,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -245,7 +245,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -257,7 +257,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.addVarSarlField(name);

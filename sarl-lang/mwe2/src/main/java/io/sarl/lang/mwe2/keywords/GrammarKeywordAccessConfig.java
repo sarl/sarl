@@ -21,16 +21,16 @@
 
 package io.sarl.lang.mwe2.keywords;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
 
 /**
  * A configuration for the accessor to the grammar keywords.
@@ -40,23 +40,36 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent {
+public class GrammarKeywordAccessConfig extends GrammarKeywordAccessKeywordConfig {
 
 	private boolean googleInjectionTypes = true;
-
-	private Set<String> additionalLiterals = new HashSet<>();
-
-	private Set<String> additionalKeywords = new HashSet<>();
-
-	private Set<String> ignoredKeywords = new HashSet<>();
 
 	private String protectionSymbol = "^"; //$NON-NLS-1$
 
 	private boolean isDependencyGrammarInheritance;
 
-	@Override
-	public void initialize(Injector injector) {
-		//
+	private boolean removeKeywordsDefinedInScopes = true;
+
+	private final List<NamedGrammarKeywordAccessConfig> scopes = new ArrayList<>();
+
+	/** Replies the configurations that are associated to named scopes.
+	 *
+	 * @return the configurations.
+	 * @since 0.15
+	 */
+	public List<NamedGrammarKeywordAccessConfig> getScopes() {
+		return this.scopes;
+	}
+
+	/** Add the configurations that are associated to named scopes.
+	 *
+	 * @param configuration the new configurations.
+	 * @since 0.15
+	 */
+	public void addScope(NamedGrammarKeywordAccessConfig configuration) {
+		if (configuration != null) {
+			this.scopes.add(configuration);
+		}
 	}
 
 	/** Change the symbol for protected keywords.
@@ -93,67 +106,12 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 		return this.isDependencyGrammarInheritance;
 	}
 
-	/** Add a literal to be exhibit into the grammar keyword access.
-	 *
-	 * @param literal the literal to add.
-	 */
-	public void addLiteral(String literal) {
-		if (!Strings.isNullOrEmpty(literal)) {
-			this.additionalLiterals.add(literal);
-		}
-	}
-
-	/** Replies the manually added literals.
-	 *
-	 * @return the literals.
-	 */
-	public Set<String> getLiterals() {
-		return this.additionalLiterals;
-	}
-
-	/** Add a keyword to be exhibit into the grammar keyword access.
-	 *
-	 * @param keyword the keyword to add.
-	 */
-	public void addKeyword(String keyword) {
-		if (!Strings.isNullOrEmpty(keyword)) {
-			this.additionalKeywords.add(keyword);
-		}
-	}
-
-	/** Replies the manually added keywords.
-	 *
-	 * @return the keywords.
-	 */
-	public Set<String> getKeywords() {
-		return this.additionalKeywords;
-	}
-
-	/** Ignore a keyword.
-	 *
-	 * @param keyword the keyword to be ignored.
-	 */
-	public void addIgnoreKeyword(String keyword) {
-		if (!Strings.isNullOrEmpty(keyword)) {
-			this.ignoredKeywords.add(keyword);
-		}
-	}
-
-	/** Replies the ignored keywords.
-	 *
-	 * @return the ignored keywords.
-	 */
-	public Set<String> getIgnoredKeywords() {
-		return this.ignoredKeywords;
-	}
-
-
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @return {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
 	 */
-	public boolean getGoolgeInjectionTypes() {
+	public boolean getGoogleInjectionTypes() {
 		return this.googleInjectionTypes;
 	}
 
@@ -162,7 +120,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 * @param isGoogle {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
 	 */
-	public void setGoolgeInjectionTypes(boolean isGoogle) {
+	public void setGoogleInjectionTypes(boolean isGoogle) {
 		this.googleInjectionTypes = isGoogle;
 	}
 
@@ -172,7 +130,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 * @since 0.14
 	 */
 	public Class<?> getInjectType() {
-		if (getGoolgeInjectionTypes()) {
+		if (getGoogleInjectionTypes()) {
 			return Inject.class;
 		}
 		return javax.inject.Inject.class;
@@ -184,7 +142,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 * @since 0.14
 	 */
 	public Class<?> getNamedType() {
-		if (getGoolgeInjectionTypes()) {
+		if (getGoogleInjectionTypes()) {
 			return Named.class;
 		}
 		return javax.inject.Named.class;
@@ -196,7 +154,7 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 * @since 0.14
 	 */
 	public Class<?> getProviderType() {
-		if (getGoolgeInjectionTypes()) {
+		if (getGoogleInjectionTypes()) {
 			return Provider.class;
 		}
 		return javax.inject.Provider.class;
@@ -208,10 +166,41 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 	 * @since 0.14
 	 */
 	public Class<?> getSingletonType() {
-		if (getGoolgeInjectionTypes()) {
+		if (getGoogleInjectionTypes()) {
 			return Singleton.class;
 		}
 		return javax.inject.Singleton.class;
+	}
+
+	/** Replies if the keywords defined in a scope are removed from the root accessor.
+	 *
+	 * @return {@code true} if keywords are removed.
+	 * @since 0.15
+	 */
+	public boolean getRemoveKeywordsDefinedInScopes() {
+		return this.removeKeywordsDefinedInScopes;
+	}
+
+	/** Change if the keywords defined in a scope are removed from the root accessor.
+	 *
+	 * @param remove {@code true} if keywords are removed.
+	 * @since 0.15
+	 */
+	public void setRemoveKeywordsDefinedInScopes(boolean remove) {
+		this.removeKeywordsDefinedInScopes = remove;
+	}
+
+	/** Replies all the keywords that are defined in a scope.
+	 *
+	 * @return the scoped keywords.
+	 * @since 0.15
+	 */
+	public Set<String> getAllKeywordsDefinedInScope() {
+		final var all = new TreeSet<String>();
+		for (final var scope : getScopes()) {
+			all.addAll(scope.getKeywords());
+		}
+		return all;
 	}
 
 }

@@ -3,15 +3,22 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlProtocolParameter;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 
 import org.eclipse.xtend.core.xtend.impl.XtendMemberImplCustom;
 
@@ -27,6 +34,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl#getType <em>Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl#getRawArguments <em>Raw Arguments</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,6 +70,16 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 	 * @ordered
 	 */
 	protected JvmTypeReference type;
+
+	/**
+	 * The cached value of the '{@link #getRawArguments() <em>Raw Arguments</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRawArguments()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> rawArguments;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -165,7 +183,113 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 	 * @generated
 	 */
 	@Override
+	public EList<String> getRawArguments()
+	{
+		if (rawArguments == null)
+		{
+			rawArguments = new EDataTypeEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS);
+		}
+		return rawArguments;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public boolean isPrivate()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isKey()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isOut()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isIn()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isAny()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isNil()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isOptional()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public SarlProtocol getProtocol()
 	{
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -202,6 +326,8 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 				return getName();
 			case SarlPackage.SARL_PROTOCOL_PARAMETER__TYPE:
 				return getType();
+			case SarlPackage.SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS:
+				return getRawArguments();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -211,6 +337,7 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
@@ -221,6 +348,10 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 				return;
 			case SarlPackage.SARL_PROTOCOL_PARAMETER__TYPE:
 				setType((JvmTypeReference)newValue);
+				return;
+			case SarlPackage.SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS:
+				getRawArguments().clear();
+				getRawArguments().addAll((Collection<? extends String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -242,6 +373,9 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 			case SarlPackage.SARL_PROTOCOL_PARAMETER__TYPE:
 				setType((JvmTypeReference)null);
 				return;
+			case SarlPackage.SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS:
+				getRawArguments().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -260,6 +394,8 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SarlPackage.SARL_PROTOCOL_PARAMETER__TYPE:
 				return type != null;
+			case SarlPackage.SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS:
+				return rawArguments != null && !rawArguments.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -277,6 +413,8 @@ public class SarlProtocolParameterImpl extends XtendMemberImplCustom implements 
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", rawArguments: ");
+		result.append(rawArguments);
 		result.append(')');
 		return result.toString();
 	}

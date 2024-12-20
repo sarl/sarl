@@ -2,6 +2,8 @@
  */
 package io.sarl.lang.sarl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -53,5 +55,45 @@ public interface SarlProtocol extends XtendTypeDeclaration
 	 * @generated
 	 */
 	boolean isAbstract();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<SarlProtocolRole> getRoles();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<String> getRoleNames();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<SarlProtocolMessage> getMessages();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<SarlProtocolParameter> getParameters();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<String> getParameterNames();
 
 } // SarlProtocol

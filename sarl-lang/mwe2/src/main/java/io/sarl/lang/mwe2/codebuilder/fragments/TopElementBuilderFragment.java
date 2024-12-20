@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -50,6 +51,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.Functions.Function4;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
@@ -310,15 +312,19 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append(element.getContent());
 					for (final var cons : generateMembers(element.getConstructors(),
-							element, true, false, true)) {
+							element, true, false, true, false)) {
 						it.append(cons);
 					}
 					for (final var mbr : generateMembers(element.getNamedMembers(),
-							element, true, false, true)) {
+							element, true, false, true, false)) {
 						it.append(mbr);
 					}
 					for (final var mbr : generateMembers(element.getUnnamedMembers(),
-							element, true, false, false)) {
+							element, true, false, false, false)) {
+						it.append(mbr);
+					}
+					for (final var mbr : generateMembers(element.getImplicitlyNamedMembers(),
+							element, true, false, false, true)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -364,15 +370,19 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							getGeneratedTypeAccessor(element.getElementDescription().elementType())));
 					it.append(element.getContent());
 					for (final var cons : generateMembers(element.getConstructors(), element,
-							false, true, true)) {
+							false, true, true, false)) {
 						it.append(cons);
 					}
 					for (final var mbr : generateMembers(element.getNamedMembers(), element,
-							false, true, true)) {
+							false, true, true, false)) {
 						it.append(mbr);
 					}
 					for (final var mbr : generateMembers(element.getUnnamedMembers(), element,
-							false, true, false)) {
+							false, true, false, false)) {
+						it.append(mbr);
+					}
+					for (final var mbr : generateMembers(element.getImplicitlyNamedMembers(), element,
+							false, true, false, true)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -413,15 +423,19 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append(element.getContent());
 					for (final var cons : generateMembers(element.getConstructors(), element,
-							false, false, true)) {
+							false, false, true, false)) {
 						it.append(cons);
 					}
 					for (final var mbr : generateMembers(element.getNamedMembers(), element,
-							false, false, true)) {
+							false, false, true, false)) {
 						it.append(mbr);
 					}
 					for (final var mbr : generateMembers(element.getUnnamedMembers(), element,
-							false, false, false)) {
+							false, false, false, false)) {
+						it.append(mbr);
+					}
+					for (final var mbr : generateMembers(element.getImplicitlyNamedMembers(), element,
+							false, false, false, true)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -436,37 +450,47 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	/** Generate the creators of members.
+	 * If {@code namedMembers} and {@code implicitlyNamedMembers} are both {@code false}, then
+	 * the members have a name that is a JVM type reference.
 	 *
 	 * @param grammarContainers the containers from which the members' definitions could be retreived.
 	 * @param description the description of the top element.
 	 * @param forInterface {@code true} if the generation is for an interface.
 	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
-	 * @param namedMembers {@code true} if the members have name.
+	 * @param namedMembers {@code true} if the members have explicit name attribute.
+	 * @param implicitlyNamedMembers {@code true} if the members have implicit name attribute.
 	 * @return the code.
 	 */
 	protected List<StringConcatenationClient> generateMembers(
 			Collection<CodeElementExtractor.ElementDescription> grammarContainers,
-			TopElementDescription description, boolean forInterface, boolean forAppender, boolean namedMembers) {
+			TopElementDescription description, boolean forInterface, boolean forAppender, boolean namedMembers, boolean implicitlyNamedMembers) {
 		final var clients = new ArrayList<StringConcatenationClient>();
 		for (final var elementDescription : grammarContainers) {
-			clients.addAll(generateMember(elementDescription, description, forInterface, forAppender, namedMembers));
+			clients.addAll(generateMember(elementDescription, description, forInterface, forAppender, namedMembers, implicitlyNamedMembers));
 		}
 		return clients;
 	}
 
 	/** Generate a member from the grammar.
+	 * If {@code namedMember} and {@code implicitlyNamedMember} are both {@code false}, then
+	 * the member has a name that is a JVM type reference.
 	 *
 	 * @param memberDescription the description of the member.
 	 * @param topElementDescription the description of the top element.
 	 * @param forInterface indicates if the generated code is for interfaces.
 	 * @param forAppender {@code true} if the generation is for the ISourceAppender.
-	 * @param namedMember {@code true} if the member has name.
+	 * @param namedMember {@code true} if the members have explicit name attribute.
+	 * @param implicitlyNamedMember {@code true} if the members have implicit name attribute.
 	 * @return the member functions.
 	 */
 	protected List<StringConcatenationClient> generateMember(CodeElementExtractor.ElementDescription memberDescription,
-			TopElementDescription topElementDescription, boolean forInterface, boolean forAppender, boolean namedMember) {
+			TopElementDescription topElementDescription, boolean forInterface, boolean forAppender, boolean namedMember,
+			boolean implicitlyNamedMember) {
 		if (namedMember) {
 			return generateNamedMember(memberDescription, topElementDescription, forInterface, forAppender);
+		}
+		if (implicitlyNamedMember) {
+			return generateImplicitlyNamedMember(memberDescription, topElementDescription, forInterface, forAppender);
 		}
 		return generateUnnamedMember(memberDescription, topElementDescription, forInterface, forAppender);
 	}
@@ -480,6 +504,263 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		final var hasTypeName = new AtomicBoolean(false);
 		for (final var assignment : GrammarUtil.containedAssignments(memberDescription.grammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getMemberNameExtensionGrammarName(), assignment.getFeature())) {
+				hasName.set(true);
+				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getTypeReferenceGrammarPattern())) {
+					hasTypeName.set(true);
+				}
+			}
+		}
+		var tmpModifiers = getCodeBuilderConfig().getModifiers().get(classifier.getSimpleName());
+		if (tmpModifiers == null || tmpModifiers.isEmpty()) {
+			tmpModifiers = Collections.singletonList(""); //$NON-NLS-1$
+		}
+		final var modifiers = tmpModifiers;
+		final var builderType = memberDescription.builderInterfaceType();
+		if (!forInterface && !forAppender) {
+			clients.add(new StringConcatenationClient() {
+				@Override
+				protected void appendTo(TargetStringConcatenation it) {
+					appendEmptyComment(it);
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(getInjectType());
+					it.newLine();
+					it.append("\tprivate "); //$NON-NLS-1$
+					it.append(Provider.class);
+					it.append("<"); //$NON-NLS-1$
+					it.append(builderType);
+					it.append("> "); //$NON-NLS-1$
+					it.append(Strings.toFirstLower(builderType.getSimpleName()));
+					it.append("Provider;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+			});
+		}
+		for (final var modifier : modifiers) {
+			final String functionName;
+			if (modifiers.size() > 1) {
+				functionName = "add" + Strings.toFirstUpper(modifier) + memberName; //$NON-NLS-1$
+			} else {
+				functionName = "add" + memberName; //$NON-NLS-1$
+			}
+			clients.add(new StringConcatenationClient() {
+				@Override
+				protected void appendTo(TargetStringConcatenation it) {
+					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					it.newLine();
+					if (hasName.get()) {
+						it.append("\t * @param name the "); //$NON-NLS-1$
+						if (hasTypeName.get()) {
+							it.append("type"); //$NON-NLS-1$
+						} else {
+							it.append("name"); //$NON-NLS-1$
+						}
+						it.append(" of the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						it.newLine();
+					}
+					it.append("\t * @return the builder."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(builderType);
+					it.append(" "); //$NON-NLS-1$
+					it.append(functionName);
+					it.append("("); //$NON-NLS-1$
+					if (hasName.get()) {
+						it.append("String name"); //$NON-NLS-1$
+					}
+					it.append(")"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						if (forAppender) {
+							it.append("return this.builder."); //$NON-NLS-1$
+							it.append(functionName);
+							it.append("("); //$NON-NLS-1$
+							if (hasName.get()) {
+								it.append("name"); //$NON-NLS-1$
+							}
+							it.append(");"); //$NON-NLS-1$
+						} else {
+							it.append(builderType);
+							it.append(" builder = this."); //$NON-NLS-1$
+							it.append(Strings.toFirstLower(builderType.getSimpleName()));
+							it.append("Provider.get();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tbuilder.eInit("); //$NON-NLS-1$
+							it.append(getGeneratedTypeAccessor(topElementDescription.getElementDescription().elementType()));
+							if (hasName.get()) {
+								it.append(", name"); //$NON-NLS-1$
+							}
+							if (!Strings.isEmpty(modifier) && modifiers.size() > 1) {
+								it.append(", \""); //$NON-NLS-1$
+								it.append(Strings.convertToJavaString(modifier));
+								it.append("\""); //$NON-NLS-1$
+							}
+							it.append(", getTypeResolutionContext());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\treturn builder;"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+					if (hasName.get() && hasTypeName.get()) {
+						it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
+								+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+						it.newLine();
+						it.append("\t * @param name the type of the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						it.newLine();
+						it.append("\t * @return the builder."); //$NON-NLS-1$
+						it.newLine();
+						appendFileLineComment(it);
+						it.append("\t */"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t"); //$NON-NLS-1$
+						if (!forInterface) {
+							it.append("public "); //$NON-NLS-1$
+						}
+						it.append(builderType);
+						it.append(" "); //$NON-NLS-1$
+						it.append(functionName);
+						it.append("("); //$NON-NLS-1$
+						it.append(JvmParameterizedTypeReference.class);
+						it.append(" name"); //$NON-NLS-1$
+						it.append(")"); //$NON-NLS-1$
+						if (forInterface) {
+							it.append(";"); //$NON-NLS-1$
+						} else {
+							it.append(" {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t"); //$NON-NLS-1$
+							if (forAppender) {
+								it.append("return this.builder."); //$NON-NLS-1$
+								it.append(functionName);
+								it.append("("); //$NON-NLS-1$
+								it.append("name"); //$NON-NLS-1$
+								it.append(");"); //$NON-NLS-1$
+							} else {
+								it.append(builderType);
+								it.append(" builder = this."); //$NON-NLS-1$
+								it.append(Strings.toFirstLower(builderType.getSimpleName()));
+								it.append("Provider.get();"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\tbuilder.eInit("); //$NON-NLS-1$
+								it.append(getGeneratedTypeAccessor(topElementDescription.getElementDescription().elementType()));
+								it.append(", name"); //$NON-NLS-1$
+								if (!Strings.isEmpty(modifier) && modifiers.size() > 1) {
+									it.append(", \""); //$NON-NLS-1$
+									it.append(Strings.convertToJavaString(modifier));
+									it.append("\""); //$NON-NLS-1$
+								}
+								it.append(", getTypeResolutionContext());"); //$NON-NLS-1$
+								it.newLine();
+								it.append("\t\treturn builder;"); //$NON-NLS-1$
+							}
+							it.newLine();
+							it.append("\t}"); //$NON-NLS-1$
+						}
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
+				}
+			});
+		}
+		if (modifiers.size() > 1) {
+			final var firstModifier = Strings.toFirstUpper(modifiers.get(0));
+			final var functionName = "add" + memberName; //$NON-NLS-1$
+			final var callFunctionName = "add" + firstModifier + memberName; //$NON-NLS-1$
+			clients.add(new StringConcatenationClient() {
+				@Override
+				protected void appendTo(TargetStringConcatenation it) {
+					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
+					+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
+					it.append("\t *"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * <p>This function is equivalent to {@link #"); //$NON-NLS-1$
+					it.append(callFunctionName);
+					it.append("}."); //$NON-NLS-1$
+					it.newLine();
+					if (hasName.get()) {
+						it.append("\t * @param name the "); //$NON-NLS-1$
+						if (hasTypeName.get()) {
+							it.append("type"); //$NON-NLS-1$
+						} else {
+							it.append("name"); //$NON-NLS-1$
+						}
+						it.append(" of the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						it.newLine();
+					}
+					it.append("\t * @return the builder."); //$NON-NLS-1$
+					it.newLine();
+					appendFileLineComment(it);
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(builderType);
+					it.append(" "); //$NON-NLS-1$
+					it.append(functionName);
+					it.append("("); //$NON-NLS-1$
+					if (hasName.get()) {
+						it.append("String name"); //$NON-NLS-1$
+					}
+					it.append(")"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn "); //$NON-NLS-1$
+						if (forAppender) {
+							it.append("this.builder."); //$NON-NLS-1$
+							it.append(functionName);
+							it.append("("); //$NON-NLS-1$
+							if (hasName.get()) {
+								it.append("name"); //$NON-NLS-1$
+							}
+							it.append(");"); //$NON-NLS-1$
+						} else {
+							it.append("this."); //$NON-NLS-1$
+							it.append(callFunctionName);
+							it.append("("); //$NON-NLS-1$
+							if (hasName.get()) {
+								it.append("name"); //$NON-NLS-1$
+							}
+							it.append(");"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+			});
+		}
+		return clients;
+	}
+
+	private List<StringConcatenationClient> generateImplicitlyNamedMember(CodeElementExtractor.ElementDescription memberDescription,
+			TopElementDescription topElementDescription, boolean forInterface, boolean forAppender) {
+		final var memberName = Strings.toFirstUpper(memberDescription.name());
+		final var classifier = memberDescription.elementType();
+		final var clients = new ArrayList<StringConcatenationClient>();
+		final var hasName = new AtomicBoolean(false);
+		final var hasTypeName = new AtomicBoolean(false);
+		for (final var assignment : GrammarUtil.containedAssignments(memberDescription.grammarComponent())) {
+			if (getCodeBuilderConfig().getIndirectlyNamedMemberExtensionGrammarNames().contains(assignment.getFeature())) {
 				hasName.set(true);
 				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getTypeReferenceGrammarPattern())) {
 					hasTypeName.set(true);
@@ -803,7 +1084,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 							}
 							String field = Iterables.find(
-									getCodeBuilderConfig().getUnnamedMemberExtensionGrammarNames(),
+									getCodeBuilderConfig().getJvmTypeNamedMemberExtensionGrammarNames(),
 									(it2) -> findAssignmentFromFeatureName(memberDescription.grammarComponent(),
 											it2) != null,
 											null);
@@ -909,7 +1190,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.newLine();
 							}
 							String field = Iterables.find(
-									getCodeBuilderConfig().getUnnamedMemberExtensionGrammarNames(),
+									getCodeBuilderConfig().getJvmTypeNamedMemberExtensionGrammarNames(),
 									(it2) -> findAssignmentFromFeatureName(memberDescription.grammarComponent(),
 											it2) != null,
 											null);
@@ -1005,15 +1286,12 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			topElements.add(containerDescription.elementType().getName());
 			final var rule = getMemberRule(containerDescription);
 			if (rule != null) {
-				getCodeElementExtractor().visitMemberElements(containerDescription, rule, null,
+				final Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends Object> callback =
 						(it, grammarContainer, memberContainer, classifier) -> {
 							memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
 							return null;
-						},
-						(it, grammarContainer, memberContainer, classifier) -> {
-							memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
-							return null;
-						});
+						};
+				getCodeElementExtractor().visitMemberElements(containerDescription, rule, null, callback, callback, callback);
 			}
 		}
 		memberElements.retainAll(topElements);
@@ -1108,6 +1386,11 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					},
 					(it, grammarContainer, memberContainer, classifier) -> {
 						description.getUnnamedMembers().add(it.newElementDescription(
+								classifier.getName(), memberContainer, classifier, commonSuperClassifier));
+						return null;
+					},
+					(it, grammarContainer, memberContainer, classifier) -> {
+						description.getImplicitlyNamedMembers().add(it.newElementDescription(
 								classifier.getName(), memberContainer, classifier, commonSuperClassifier));
 						return null;
 					});
@@ -2326,6 +2609,8 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 		private final Collection<CodeElementExtractor.ElementDescription> unnamedMemberCandidates = new ArrayList<>();
 
+		private final Collection<CodeElementExtractor.ElementDescription> implicitlyNnamedMemberCandidates = new ArrayList<>();
+
 		private final Collection<CodeElementExtractor.ElementDescription> constructorCandidates = new ArrayList<>();
 
 		private StringConcatenationClient content;
@@ -2392,6 +2677,16 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		@Pure
 		public Collection<CodeElementExtractor.ElementDescription> getUnnamedMembers() {
 			return this.unnamedMemberCandidates;
+		}
+
+		/** Replies the implicitly named members.
+		 *
+		 * @return the implicitly named members.
+		 * @since 0.15
+		 */
+		@Pure
+		public Collection<CodeElementExtractor.ElementDescription> getImplicitlyNamedMembers() {
+			return this.implicitlyNnamedMemberCandidates;
 		}
 
 		/** Replies the constructors.

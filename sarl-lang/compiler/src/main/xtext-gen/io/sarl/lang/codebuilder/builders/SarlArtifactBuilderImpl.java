@@ -40,7 +40,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlArtifact.
-	 * @see TopElementBuilderFragment.java : appendTo : 400
+	 * @see TopElementBuilderFragment.java : appendTo : 410
  */
 @SuppressWarnings("all")
 public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArtifactBuilder {
@@ -48,7 +48,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	private SarlArtifact sarlArtifact;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -60,7 +60,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	 * @param script the SARL script in which this SarlArtifact is added.
 	 * @param name the simple name of the SarlArtifact.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -73,7 +73,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Replies the generated SarlArtifact.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlArtifact getSarlArtifact() {
@@ -82,7 +82,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlArtifactReference() {
@@ -93,7 +93,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	/** Replies the JVM declared type for this generated SarlArtifact.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -101,7 +101,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	}
 
 	/** Replies the resource to which the SarlArtifact is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -138,7 +138,7 @@ public class SarlArtifactBuilderImpl extends AbstractBuilder implements ISarlArt
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlArtifactBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {

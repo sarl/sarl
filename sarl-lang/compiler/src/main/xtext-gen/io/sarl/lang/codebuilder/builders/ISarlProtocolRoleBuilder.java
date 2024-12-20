@@ -21,50 +21,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.codebuilder.appenders;
+package io.sarl.lang.codebuilder.builders;
 
-import io.sarl.lang.codebuilder.builders.ISarlEnumLiteralBuilder;
-import io.sarl.lang.sarl.SarlEnumLiteral;
-import java.io.IOException;
+import io.sarl.lang.sarl.SarlProtocolRole;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
-import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Source appender of a Sarl SarlEnumLiteral.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 194
+/** Builder of a Sarl SarlProtocolRole.
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 117
  */
 @SuppressWarnings("all")
-public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implements ISarlEnumLiteralBuilder {
-
-	private final ISarlEnumLiteralBuilder builder;
-
-	public SarlEnumLiteralSourceAppender(ISarlEnumLiteralBuilder builder) {
-		this.builder = builder;
-	}
-
-	/** Fill the given receiver with the serialization of the element that is associated to this appender.
-	 *
-	 * @param appender the receiver of the source code.
-	 * @throws IOException if there is error during the serialization.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 549
-	 */
-	public void build(ISourceAppender appender) throws IOException {
-		build(this.builder.getSarlEnumLiteral(), appender);
-	}
+public interface ISarlProtocolRoleBuilder {
 
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 406
 	 */
-	public JvmTypeReference newTypeRef(String typeName) {
-		return this.builder.newTypeRef(typeName);
-	}
+	JvmTypeReference newTypeRef(String typeName);
 
 	/** Find the reference to the type with the given name.
 	 * @param context the context for the type reference use
@@ -72,9 +51,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 434
 	 */
-	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
-		return this.builder.newTypeRef(context, typeName);
-	}
+	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Find the reference to the type and type parameters.
 	 * @param type the type to reference
@@ -82,9 +59,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 464
 	 */
-	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
-		return this.builder.newTypeRef(type, args);
-	}
+	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
 	/** Find the reference to the type and type parameters.
 	 * @param type the type to reference
@@ -92,9 +67,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 496
 	 */
-	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
-		return this.builder.newTypeRef(type, args);
-	}
+	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
 	/** Find the reference to the type and type parameters.
 	 * @param context the context in which the type is defined
@@ -103,50 +76,38 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return the type reference.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 530
 	 */
-	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
-		return this.builder.newTypeRef(context, type, args);
-	}
+	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 569
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 560
 	 */
-	public void dispose() {
-		this.builder.dispose();
-	}
+	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 598
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 585
 	 */
-	public IJvmTypeProvider getTypeResolutionContext() {
-		return this.builder.getTypeResolutionContext();
-	}
+	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
-	 * @param container the container of the SarlEnumLiteral.
-	 * @param name the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole.
 	 * @param context the context in which type resolution must be applied.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
-	public void eInit(EObject container, String name, IJvmTypeProvider context) {
-		this.builder.eInit(container, name, context);
-	}
+	void eInit(EObject container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated element.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
-	public SarlEnumLiteral getSarlEnumLiteral() {
-		return this.builder.getSarlEnumLiteral();
-	}
+	SarlProtocolRole getSarlProtocolRole();
 
 	/** Replies the resource.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
-	public Resource eResource() {
-		return getSarlEnumLiteral().eResource();
-	}
+	Resource eResource();
 
 	/** Change the documentation of the element.
 	 *
@@ -156,19 +117,7 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 * @return {@code this}.
 	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
-	public ISarlEnumLiteralBuilder setDocumentation(String doc) {
-		this.builder.setDocumentation(doc);
-		return this;
-	}
-
-	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1638
-	 */
-	@Override
-	@Pure
-	public String toString() {
-		return this.builder.toString();
-	}
+	ISarlProtocolRoleBuilder setDocumentation(String doc);
 
 }
 

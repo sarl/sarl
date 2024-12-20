@@ -23,13 +23,14 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlProtocolRole;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
@@ -37,10 +38,10 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Builder of a Sarl SarlEnumLiteral.
+/** Builder of a Sarl SarlProtocolRole.
  * AbstractMemberBuilderFragment.java : appendTo : 154 */
 @SuppressWarnings("all")
-public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarlEnumLiteralBuilder {
+public class SarlProtocolRoleBuilderImpl extends AbstractBuilder implements ISarlProtocolRoleBuilder {
 
 	/**
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 361
@@ -50,31 +51,32 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	/**
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 367
 	 */
-	private SarlEnumLiteral sarlEnumLiteral;
+	private SarlProtocolRole sarlProtocolRole;
 
 	/** Initialize the Ecore element.
-	 * @param container the container of the SarlEnumLiteral.
-	 * @param name the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole.
 	 * @param context the context in which type resolution must be applied.
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	public void eInit(EObject container, String name, IJvmTypeProvider context) {
 		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 742
-		if (this.sarlEnumLiteral == null) {
-			this.sarlEnumLiteral = SarlFactory.eINSTANCE.createSarlEnumLiteral();
+		if (this.sarlProtocolRole == null) {
+			this.sarlProtocolRole = SarlFactory.eINSTANCE.createSarlProtocolRole();
 			internalEInit(container, context);
-			this.sarlEnumLiteral.setName(name);
+			this.sarlProtocolRole.setName(name);
 		}
 	}
 
 	private void internalEInit(EObject container, IJvmTypeProvider context) {
 		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 919
-		assert this.sarlEnumLiteral != null;
+		assert this.sarlProtocolRole != null;
 		setTypeResolutionContext(context);
 		this.container = container;
+		this.sarlProtocolRole.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
 		if (container instanceof XtendTypeDeclaration typeDeclaration) {
-			typeDeclaration.getMembers().add(this.sarlEnumLiteral);
-			this.sarlEnumLiteral.setDeclaringType(typeDeclaration);
+			typeDeclaration.getMembers().add(this.sarlProtocolRole);
+			this.sarlProtocolRole.setDeclaringType(typeDeclaration);
 		}
 	}
 
@@ -82,8 +84,8 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
-	public SarlEnumLiteral getSarlEnumLiteral() {
-		return this.sarlEnumLiteral;
+	public SarlProtocolRole getSarlProtocolRole() {
+		return this.sarlProtocolRole;
 	}
 
 	/** Replies the resource.
@@ -91,7 +93,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 */
 	@Pure
 	public Resource eResource() {
-		return getSarlEnumLiteral().eResource();
+		return getSarlProtocolRole().eResource();
 	}
 
 	/** Change the documentation of the element.
@@ -102,19 +104,19 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * @return {@code this}.
 	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
 	 */
-	public ISarlEnumLiteralBuilder setDocumentation(String doc) {
+	public ISarlProtocolRoleBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
-			getSarlEnumLiteral().eAdapters().removeIf(new Predicate<Adapter>() {
+			getSarlProtocolRole().eAdapters().removeIf(new Predicate<Adapter>() {
 				public boolean test(Adapter adapter) {
 					return adapter.isAdapterForType(DocumentationAdapter.class);
 				}
 			});
 		} else {
 			DocumentationAdapter adapter = (DocumentationAdapter) EcoreUtil.getExistingAdapter(
-					getSarlEnumLiteral(), DocumentationAdapter.class);
+					getSarlProtocolRole(), DocumentationAdapter.class);
 			if (adapter == null) {
 				adapter = new DocumentationAdapter();
-				getSarlEnumLiteral().eAdapters().add(adapter);
+				getSarlProtocolRole().eAdapters().add(adapter);
 			}
 			adapter.setDocumentation(doc);
 		}
@@ -127,7 +129,7 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	@Override
 	@Pure
 	public String toString() {
-		return EmfFormatter.objToStr(getSarlEnumLiteral());
+		return EmfFormatter.objToStr(getSarlProtocolRole());
 	}
 
 }

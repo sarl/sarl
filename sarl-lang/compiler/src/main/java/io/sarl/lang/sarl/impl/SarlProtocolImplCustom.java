@@ -21,7 +21,13 @@
 
 package io.sarl.lang.sarl.impl;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.util.Strings;
+
+import io.sarl.lang.sarl.SarlProtocolMessage;
+import io.sarl.lang.sarl.SarlProtocolParameter;
+import io.sarl.lang.sarl.SarlProtocolRole;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,9 +40,14 @@ import org.eclipse.xtext.util.Strings;
  * </ul>
  *
  * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @author $Author: mbaldoni$
+ * @author $Author: cbaroglio$
+ * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public class SarlProtocolImplCustom extends SarlProtocolImpl {
 
@@ -61,6 +72,61 @@ public class SarlProtocolImplCustom extends SarlProtocolImpl {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public EList<String> getRoleNames() {
+		final var list = new BasicEList<String>();
+		for (final var member : getMembers()) {
+			if (member instanceof SarlProtocolRole role) {
+				list.addAll(role.getNames());
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public EList<SarlProtocolRole> getRoles() {
+		final var list = new BasicEList<SarlProtocolRole>();
+		for (final var member : getMembers()) {
+			if (member instanceof SarlProtocolRole role) {
+				list.add(role);
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public EList<String> getParameterNames() {
+		final var list = new BasicEList<String>();
+		for (final var member : getMembers()) {
+			if (member instanceof SarlProtocolParameter parameter) {
+				list.add(parameter.getName());
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public EList<SarlProtocolParameter> getParameters() {
+		final var list = new BasicEList<SarlProtocolParameter>();
+		for (final var member : getMembers()) {
+			if (member instanceof SarlProtocolParameter parameter) {
+				list.add(parameter);
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public EList<SarlProtocolMessage> getMessages() {
+		final var list = new BasicEList<SarlProtocolMessage>();
+		for (final var member : getMembers()) {
+			if (member instanceof SarlProtocolMessage message) {
+				list.add(message);
+			}
+		}
+		return list;
 	}
 
 }

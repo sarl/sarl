@@ -2075,13 +2075,22 @@ public interface SarlPackage extends EPackage
 	int SARL_PROTOCOL_MESSAGE__PARAMETERS = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Raw Target</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_MESSAGE__RAW_TARGET = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Protocol Message</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SARL_PROTOCOL_MESSAGE_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 4;
+	int SARL_PROTOCOL_MESSAGE_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl <em>Protocol Parameter</em>}' class.
@@ -2148,13 +2157,22 @@ public interface SarlPackage extends EPackage
 	int SARL_PROTOCOL_PARAMETER__TYPE = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Raw Arguments</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Protocol Parameter</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SARL_PROTOCOL_PARAMETER_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 2;
+	int SARL_PROTOCOL_PARAMETER_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlProtocolCallImpl <em>Protocol Call</em>}' class.
@@ -2828,6 +2846,17 @@ public interface SarlPackage extends EPackage
 	EReference getSarlProtocolMessage_Parameters();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link io.sarl.lang.sarl.SarlProtocolMessage#getRawTarget <em>Raw Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Raw Target</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolMessage#getRawTarget()
+	 * @see #getSarlProtocolMessage()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolMessage_RawTarget();
+
+	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolParameter <em>Protocol Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2858,6 +2887,17 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EReference getSarlProtocolParameter_Type();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link io.sarl.lang.sarl.SarlProtocolParameter#getRawArguments <em>Raw Arguments</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Raw Arguments</em>'.
+	 * @see io.sarl.lang.sarl.SarlProtocolParameter#getRawArguments()
+	 * @see #getSarlProtocolParameter()
+	 * @generated
+	 */
+	EAttribute getSarlProtocolParameter_RawArguments();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlProtocolCall <em>Protocol Call</em>}'.
@@ -3430,6 +3470,14 @@ public interface SarlPackage extends EPackage
 		EReference SARL_PROTOCOL_MESSAGE__PARAMETERS = eINSTANCE.getSarlProtocolMessage_Parameters();
 
 		/**
+		 * The meta object literal for the '<em><b>Raw Target</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_MESSAGE__RAW_TARGET = eINSTANCE.getSarlProtocolMessage_RawTarget();
+
+		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolParameterImpl <em>Protocol Parameter</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3454,6 +3502,14 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_PROTOCOL_PARAMETER__TYPE = eINSTANCE.getSarlProtocolParameter_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Raw Arguments</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SARL_PROTOCOL_PARAMETER__RAW_ARGUMENTS = eINSTANCE.getSarlProtocolParameter_RawArguments();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlProtocolCallImpl <em>Protocol Call</em>}' class.

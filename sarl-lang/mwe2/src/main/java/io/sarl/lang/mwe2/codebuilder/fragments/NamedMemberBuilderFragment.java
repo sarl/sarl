@@ -28,11 +28,15 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.inject.Inject;
+
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.Functions.Function4;
 
 import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
@@ -63,8 +67,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 				final var rule = getMemberRule(containerDescription);
 				if (rule != null) {
 					final var commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
-					getCodeElementExtractor().visitMemberElements(containerDescription, rule,
-							null,
+					final Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends Object> callback =
 							(it, grammarContainer, memberContainer, classifier) -> {
 								var memberName = Strings.toFirstUpper(classifier.getName());
 								var memberDescription = NamedMemberBuilderFragment.this.members.get(memberName);
@@ -93,8 +96,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 								}
 								containers.add(containerName);
 								return null;
-							},
-							null);
+							};
+					getCodeElementExtractor().visitMemberElements(containerDescription, rule, null, callback, null, callback);
 				}
 			}
 		}

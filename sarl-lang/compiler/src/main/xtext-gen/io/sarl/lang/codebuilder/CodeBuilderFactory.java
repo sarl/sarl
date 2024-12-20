@@ -50,6 +50,7 @@ import io.sarl.lang.codebuilder.appenders.SarlInterfaceSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlProtocolCallSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlProtocolMessageSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlProtocolParameterSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlProtocolRoleSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlProtocolSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSpaceSourceAppender;
@@ -74,6 +75,7 @@ import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlProtocolCallBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlProtocolMessageBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlProtocolParameterBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlProtocolRoleBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -510,7 +512,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlEventBuilder createSarlEvent(String name, ResourceSet resourceSet) {
@@ -522,7 +524,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlEventBuilder createSarlEvent(String name, Resource resource) {
@@ -535,7 +537,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlEventSourceAppender buildSarlEvent(String name, ResourceSet resourceSet) {
@@ -549,7 +551,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlEventSourceAppender buildSarlEvent(String name, Resource resource) {
@@ -563,7 +565,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlCapacityBuilder createSarlCapacity(String name, ResourceSet resourceSet) {
@@ -575,7 +577,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlCapacityBuilder createSarlCapacity(String name, Resource resource) {
@@ -588,7 +590,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlCapacitySourceAppender buildSarlCapacity(String name, ResourceSet resourceSet) {
@@ -602,7 +604,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlCapacitySourceAppender buildSarlCapacity(String name, Resource resource) {
@@ -616,7 +618,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlAgentBuilder createSarlAgent(String name, ResourceSet resourceSet) {
@@ -628,7 +630,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlAgentBuilder createSarlAgent(String name, Resource resource) {
@@ -641,7 +643,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlAgentSourceAppender buildSarlAgent(String name, ResourceSet resourceSet) {
@@ -655,7 +657,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlAgentSourceAppender buildSarlAgent(String name, Resource resource) {
@@ -669,7 +671,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlBehaviorBuilder createSarlBehavior(String name, ResourceSet resourceSet) {
@@ -681,7 +683,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlBehaviorBuilder createSarlBehavior(String name, Resource resource) {
@@ -694,7 +696,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlBehaviorSourceAppender buildSarlBehavior(String name, ResourceSet resourceSet) {
@@ -708,7 +710,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlBehaviorSourceAppender buildSarlBehavior(String name, Resource resource) {
@@ -722,7 +724,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlSkillBuilder createSarlSkill(String name, ResourceSet resourceSet) {
@@ -734,7 +736,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlSkillBuilder createSarlSkill(String name, Resource resource) {
@@ -747,7 +749,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlSkillSourceAppender buildSarlSkill(String name, ResourceSet resourceSet) {
@@ -761,7 +763,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlSkillSourceAppender buildSarlSkill(String name, Resource resource) {
@@ -775,7 +777,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlSpaceBuilder createSarlSpace(String name, ResourceSet resourceSet) {
@@ -787,7 +789,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlSpaceBuilder createSarlSpace(String name, Resource resource) {
@@ -800,7 +802,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlSpaceSourceAppender buildSarlSpace(String name, ResourceSet resourceSet) {
@@ -814,7 +816,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlSpaceSourceAppender buildSarlSpace(String name, Resource resource) {
@@ -828,7 +830,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlArtifactBuilder createSarlArtifact(String name, ResourceSet resourceSet) {
@@ -840,7 +842,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlArtifactBuilder createSarlArtifact(String name, Resource resource) {
@@ -853,7 +855,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlArtifactSourceAppender buildSarlArtifact(String name, ResourceSet resourceSet) {
@@ -867,7 +869,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlArtifactSourceAppender buildSarlArtifact(String name, Resource resource) {
@@ -881,7 +883,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlProtocolBuilder createSarlProtocol(String name, ResourceSet resourceSet) {
@@ -893,7 +895,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlProtocolBuilder createSarlProtocol(String name, Resource resource) {
@@ -906,7 +908,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlProtocolSourceAppender buildSarlProtocol(String name, ResourceSet resourceSet) {
@@ -920,7 +922,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlProtocolSourceAppender buildSarlProtocol(String name, Resource resource) {
@@ -934,7 +936,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlClassBuilder createSarlClass(String name, ResourceSet resourceSet) {
@@ -946,7 +948,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlClassBuilder createSarlClass(String name, Resource resource) {
@@ -959,7 +961,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlClassSourceAppender buildSarlClass(String name, ResourceSet resourceSet) {
@@ -973,7 +975,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlClassSourceAppender buildSarlClass(String name, Resource resource) {
@@ -987,7 +989,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlInterfaceBuilder createSarlInterface(String name, ResourceSet resourceSet) {
@@ -999,7 +1001,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlInterfaceBuilder createSarlInterface(String name, Resource resource) {
@@ -1012,7 +1014,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlInterfaceSourceAppender buildSarlInterface(String name, ResourceSet resourceSet) {
@@ -1026,7 +1028,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlInterfaceSourceAppender buildSarlInterface(String name, Resource resource) {
@@ -1040,7 +1042,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlEnumerationBuilder createSarlEnumeration(String name, ResourceSet resourceSet) {
@@ -1052,7 +1054,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlEnumerationBuilder createSarlEnumeration(String name, Resource resource) {
@@ -1065,7 +1067,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, ResourceSet resourceSet) {
@@ -1079,7 +1081,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, Resource resource) {
@@ -1093,7 +1095,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 136
+	 * @see TopElementBuilderFragment.java : appendTo : 138
 	 */
 	@Pure
 	public ISarlAnnotationTypeBuilder createSarlAnnotationType(String name, ResourceSet resourceSet) {
@@ -1105,7 +1107,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 168
+	 * @see TopElementBuilderFragment.java : appendTo : 170
 	 */
 	@Pure
 	public ISarlAnnotationTypeBuilder createSarlAnnotationType(String name, Resource resource) {
@@ -1118,7 +1120,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 214
+	 * @see TopElementBuilderFragment.java : appendTo : 216
 	 */
 	@Pure
 	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, ResourceSet resourceSet) {
@@ -1132,7 +1134,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 254
+	 * @see TopElementBuilderFragment.java : appendTo : 256
 	 */
 	@Pure
 	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, Resource resource) {
@@ -1196,7 +1198,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlProtocolMessageBuilder createSarlProtocolMessage(String name, ResourceSet resourceSet) {
@@ -1208,7 +1210,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlProtocolMessageBuilder createSarlProtocolMessage(String name, Resource resource) {
@@ -1222,7 +1224,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlProtocolMessageSourceAppender buildSarlProtocolMessage(String name, ResourceSet resourceSet) {
@@ -1236,7 +1238,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlProtocolMessageSourceAppender buildSarlProtocolMessage(String name, Resource resource) {
@@ -1250,7 +1252,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlProtocolParameterBuilder createSarlProtocolParameter(String name, ResourceSet resourceSet) {
@@ -1262,7 +1264,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlProtocolParameterBuilder createSarlProtocolParameter(String name, Resource resource) {
@@ -1276,7 +1278,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlProtocolParameterSourceAppender buildSarlProtocolParameter(String name, ResourceSet resourceSet) {
@@ -1290,7 +1292,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlProtocolParameterSourceAppender buildSarlProtocolParameter(String name, Resource resource) {
@@ -1304,7 +1306,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlActionBuilder createDefSarlAction(String name, ResourceSet resourceSet) {
@@ -1316,7 +1318,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlActionBuilder createDefSarlAction(String name, Resource resource) {
@@ -1330,7 +1332,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlActionSourceAppender buildDefSarlAction(String name, ResourceSet resourceSet) {
@@ -1344,7 +1346,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlActionSourceAppender buildDefSarlAction(String name, Resource resource) {
@@ -1358,7 +1360,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlActionBuilder createOverrideSarlAction(String name, ResourceSet resourceSet) {
@@ -1370,7 +1372,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlActionBuilder createOverrideSarlAction(String name, Resource resource) {
@@ -1384,7 +1386,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlActionSourceAppender buildOverrideSarlAction(String name, ResourceSet resourceSet) {
@@ -1398,11 +1400,65 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlActionSourceAppender buildOverrideSarlAction(String name, Resource resource) {
 		SarlActionSourceAppender a = new SarlActionSourceAppender(createOverrideSarlAction(name, resource));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the factory for a Sarl SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
+	 */
+	@Pure
+	public ISarlProtocolRoleBuilder createSarlProtocolRole(String name, ResourceSet resourceSet) {
+		return createSarlProtocolRole(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
+	 */
+	@Pure
+	public ISarlProtocolRoleBuilder createSarlProtocolRole(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		ISarlProtocolBuilder containerBuilder = scriptBuilder.addSarlProtocol(getFooTypeName());
+		return containerBuilder.addSarlProtocolRole(name);
+	}
+
+	/** Create the appender for a Sarl SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
+	 */
+	@Pure
+	public SarlProtocolRoleSourceAppender buildSarlProtocolRole(String name, ResourceSet resourceSet) {
+		SarlProtocolRoleSourceAppender a = new SarlProtocolRoleSourceAppender(createSarlProtocolRole(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl SarlProtocolRole.
+	 * @param name the name of the SarlProtocolRole
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
+	 */
+	@Pure
+	public SarlProtocolRoleSourceAppender buildSarlProtocolRole(String name, Resource resource) {
+		SarlProtocolRoleSourceAppender a = new SarlProtocolRoleSourceAppender(createSarlProtocolRole(name, resource));
 		getInjector().injectMembers(a);
 		return a;
 	}
@@ -1412,7 +1468,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlBehaviorUnitBuilder createSarlBehaviorUnit(String name, ResourceSet resourceSet) {
@@ -1424,7 +1480,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlBehaviorUnitBuilder createSarlBehaviorUnit(String name, Resource resource) {
@@ -1438,7 +1494,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, ResourceSet resourceSet) {
@@ -1452,7 +1508,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, Resource resource) {
@@ -1466,7 +1522,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlProtocolCallBuilder createSarlProtocolCall(String name, ResourceSet resourceSet) {
@@ -1478,7 +1534,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlProtocolCallBuilder createSarlProtocolCall(String name, Resource resource) {
@@ -1492,7 +1548,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlProtocolCallSourceAppender buildSarlProtocolCall(String name, ResourceSet resourceSet) {
@@ -1506,7 +1562,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlProtocolCallSourceAppender buildSarlProtocolCall(String name, Resource resource) {
@@ -1520,7 +1576,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlFieldBuilder createVarSarlField(String name, ResourceSet resourceSet) {
@@ -1532,7 +1588,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlFieldBuilder createVarSarlField(String name, Resource resource) {
@@ -1546,7 +1602,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildVarSarlField(String name, ResourceSet resourceSet) {
@@ -1560,7 +1616,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildVarSarlField(String name, Resource resource) {
@@ -1574,7 +1630,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlFieldBuilder createValSarlField(String name, ResourceSet resourceSet) {
@@ -1586,7 +1642,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlFieldBuilder createValSarlField(String name, Resource resource) {
@@ -1600,7 +1656,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildValSarlField(String name, ResourceSet resourceSet) {
@@ -1614,7 +1670,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildValSarlField(String name, Resource resource) {
@@ -1628,7 +1684,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 160
+	 * @see NamedMemberBuilderFragment.java : appendTo : 163
 	 */
 	@Pure
 	public ISarlEnumLiteralBuilder createSarlEnumLiteral(String name, ResourceSet resourceSet) {
@@ -1640,7 +1696,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 193
+	 * @see NamedMemberBuilderFragment.java : appendTo : 196
 	 */
 	@Pure
 	public ISarlEnumLiteralBuilder createSarlEnumLiteral(String name, Resource resource) {
@@ -1654,7 +1710,7 @@ public class CodeBuilderFactory {
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 248
+	 * @see NamedMemberBuilderFragment.java : appendTo : 251
 	 */
 	@Pure
 	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, ResourceSet resourceSet) {
@@ -1668,7 +1724,7 @@ public class CodeBuilderFactory {
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 289
+	 * @see NamedMemberBuilderFragment.java : appendTo : 292
 	 */
 	@Pure
 	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, Resource resource) {

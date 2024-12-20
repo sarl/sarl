@@ -40,7 +40,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source adapter of a Sarl SarlEvent.
-	 * @see TopElementBuilderFragment.java : appendTo : 348
+	 * @see TopElementBuilderFragment.java : appendTo : 354
  */
 @SuppressWarnings("all")
 public class SarlEventSourceAppender extends AbstractSourceAppender implements ISarlEventBuilder {
@@ -64,7 +64,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1143
+	 * @see TopElementBuilderFragment.java : appendTo : 1426
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -74,7 +74,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1171
+	 * @see TopElementBuilderFragment.java : appendTo : 1454
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -84,7 +84,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1201
+	 * @see TopElementBuilderFragment.java : appendTo : 1484
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -94,7 +94,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1233
+	 * @see TopElementBuilderFragment.java : appendTo : 1516
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -105,7 +105,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1267
+	 * @see TopElementBuilderFragment.java : appendTo : 1550
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
@@ -116,14 +116,14 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1330
+	 * @see TopElementBuilderFragment.java : appendTo : 1613
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -135,14 +135,14 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param script the SARL script in which this SarlEvent is added.
 	 * @param name the simple name of the SarlEvent.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		this.builder.eInit(script, name, context);
 	}
 
 	/** Replies the generated SarlEvent.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlEvent getSarlEvent() {
@@ -152,7 +152,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Replies the reference to the generated SarlAgent.
 	 * @param args the generic type arguments to put inside the reference.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlEventReference(JvmTypeReference... args) {
@@ -162,7 +162,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Replies the JVM declared type for this generated SarlEvent.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -170,7 +170,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Replies the resource to which the SarlEvent is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -194,7 +194,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param superType the qualified name of the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1701
+	 * @see TopElementBuilderFragment.java : appendTo : 1984
 	 */
 	public ISarlEventBuilder setExtends(String superType) {
 		this.builder.setExtends(superType);
@@ -205,7 +205,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * @param superType the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 1802
+	 * @see TopElementBuilderFragment.java : appendTo : 2085
 	 */
 	public ISarlEventBuilder setExtends(JvmTypeReference superType) {
 		this.builder.setExtends(superType);
@@ -215,7 +215,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlEventBuilder addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -225,7 +225,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Add a type parameter.
 	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
-	 * @see TopElementBuilderFragment.java : appendTo : 2263
+	 * @see TopElementBuilderFragment.java : appendTo : 2546
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
 		return this.builder.addTypeParameter(name);
@@ -233,7 +233,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 
 	/** Create a SarlConstructor.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		return this.builder.addSarlConstructor();
@@ -242,7 +242,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		return this.builder.addVarSarlField(name);
@@ -251,7 +251,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		return this.builder.addValSarlField(name);
@@ -261,7 +261,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.builder.addSarlField(name);

@@ -3,6 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlProtocolRole;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 
 import org.eclipse.xtend.core.xtend.impl.XtendMemberImplCustom;
 
@@ -71,9 +72,35 @@ public class SarlProtocolRoleImpl extends XtendMemberImplCustom implements SarlP
 	{
 		if (names == null)
 		{
-			names = new EDataTypeUniqueEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_ROLE__NAMES);
+			names = new EDataTypeEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_ROLE__NAMES);
 		}
 		return names;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setName(String uniqueName)
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public SarlProtocol getProtocol()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

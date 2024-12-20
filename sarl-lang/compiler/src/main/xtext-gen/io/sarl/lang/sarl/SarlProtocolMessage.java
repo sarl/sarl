@@ -19,6 +19,7 @@ import org.eclipse.xtend.core.xtend.XtendMember;
  *   <li>{@link io.sarl.lang.sarl.SarlProtocolMessage#getTo <em>To</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlProtocolMessage#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlProtocolMessage#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlProtocolMessage#getRawTarget <em>Raw Target</em>}</li>
  * </ul>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlProtocolMessage()
@@ -104,5 +105,57 @@ public interface SarlProtocolMessage extends XtendMember
 	 * @generated
 	 */
 	EList<SarlProtocolParameter> getParameters();
+
+	/**
+	 * Returns the value of the '<em><b>Raw Target</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Raw Target</em>' attribute list.
+	 * @see io.sarl.lang.sarl.SarlPackage#getSarlProtocolMessage_RawTarget()
+	 * @model unique="false"
+	 * @generated
+	 */
+	EList<String> getRawTarget();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	EList<String> getModifiers();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isOutTargetRole();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isInTargetRole();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	String getIdentifier();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	SarlProtocol getProtocol();
 
 } // SarlProtocolMessage

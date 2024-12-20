@@ -198,7 +198,9 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String memberNameGrammarName = MEMBER_NAME_GRAMMAR_NAME;
 
-	private final Set<String> unnamedMemberGrammarNames = new HashSet<>();
+	private final Set<String> jvmTypeNamedMemberGrammarNames = new HashSet<>();
+
+	private final Set<String> indirectlyNamedMemberGrammarNames = new HashSet<>();
 
 	private String memberTypeGrammarName = MEMBER_TYPE_GRAMMAR_NAME;
 
@@ -719,23 +721,48 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		return this.memberNameGrammarName;
 	}
 
-	/** Set the name that is used for representing the name of a member in the grammar's assignments.
+	/** Set the name that is used for representing the name of a member in the grammar's assignments and that is
+	 * a name based on JVM type.
 	 *
 	 * @param name the name of the assignment for the name of a member.
 	 */
-	public void addUnnamedMemberExtensionGrammarName(String name) {
+	public void addJvmTypeNamedMemberExtensionGrammarName(String name) {
 		if (!Strings.isEmpty(name)) {
-			this.unnamedMemberGrammarNames.add(name);
+			this.jvmTypeNamedMemberGrammarNames.add(name);
 		}
 	}
 
-	/** Replies the name that is used for representing the name of a member in the grammar's assignments.
+	/** Replies the name that is used for representing the name of a member in the grammar's assignments and that is
+	 * a name based on JVM type.
 	 *
 	 * @return the name of the assignment for the name of a member.
 	 */
 	@Pure
-	public Set<String> getUnnamedMemberExtensionGrammarNames() {
-		return this.unnamedMemberGrammarNames;
+	public Set<String> getJvmTypeNamedMemberExtensionGrammarNames() {
+		return this.jvmTypeNamedMemberGrammarNames;
+	}
+
+	/** Set the name that is used for representing a named member in the grammar's assignments and with a name
+	 * for the member that is implicitly computed.
+	 *
+	 * @param name the name of the assignment for the named member.
+	 * @since 0.15
+	 */
+	public void addIndirectlyNamedMemberExtensionGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.indirectlyNamedMemberGrammarNames.add(name);
+		}
+	}
+
+	/** Replies the name that is used for representing a named member in the grammar's assignments and with a name
+	 * for the member that is implicitly computed.
+	 *
+	 * @return the name of the assignment for the named member.
+	 * @since 0.15
+	 */
+	@Pure
+	public Set<String> getIndirectlyNamedMemberExtensionGrammarNames() {
+		return this.indirectlyNamedMemberGrammarNames;
 	}
 
 	/** Set the name that is used for representing collection of members in the grammar's assignments.

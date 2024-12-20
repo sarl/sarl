@@ -48,17 +48,17 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISarlProtocolCallBuilder {
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 358
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 361
 	 */
 	private EObject container;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 364
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 367
 	 */
 	private SarlProtocolCall sarlProtocolCall;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 382
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 385
 	 */
 	@Inject
 	private Provider<ISarlProtocolParameterBuilder> sarlProtocolParameterBuilderProvider;
@@ -67,10 +67,10 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	public void eInit(EObject container, String name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 663
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 666
 		if (this.sarlProtocolCall == null) {
 			this.sarlProtocolCall = SarlFactory.eINSTANCE.createSarlProtocolCall();
 			internalEInit(container, context);
@@ -87,10 +87,10 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 813
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 816
 	 */
 	public void eInit(EObject container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 843
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 846
 		if (this.sarlProtocolCall == null) {
 			this.sarlProtocolCall = SarlFactory.eINSTANCE.createSarlProtocolCall();
 			internalEInit(container, context);
@@ -99,7 +99,7 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	private void internalEInit(EObject container, IJvmTypeProvider context) {
-		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 916
+		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 919
 		assert this.sarlProtocolCall != null;
 		setTypeResolutionContext(context);
 		this.container = container;
@@ -111,7 +111,7 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	public SarlProtocolCall getSarlProtocolCall() {
@@ -119,7 +119,7 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	public Resource eResource() {
@@ -154,7 +154,7 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1635
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1638
 	 */
 	@Override
 	@Pure
@@ -165,7 +165,7 @@ public class SarlProtocolCallBuilderImpl extends AbstractBuilder implements ISar
 	/** Add a parameter of type {@code io.sarl.lang.sarl.SarlProtocolParameter}.
 	 * @param name the name of the parameter
 	 * @return the builder for the parameter, never {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1791
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1794
 	 */
 	public ISarlProtocolParameterBuilder addParameter(String name) {
 		ISarlProtocolParameterBuilder builder = this.sarlProtocolParameterBuilderProvider.get();

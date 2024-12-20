@@ -41,7 +41,7 @@ public interface ISarlProtocolMessageBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 403
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 406
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -49,7 +49,7 @@ public interface ISarlProtocolMessageBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 431
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 434
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -57,7 +57,7 @@ public interface ISarlProtocolMessageBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 461
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 464
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -65,7 +65,7 @@ public interface ISarlProtocolMessageBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 493
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 496
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -74,18 +74,18 @@ public interface ISarlProtocolMessageBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 527
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 530
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 557
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 560
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 585
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -93,18 +93,18 @@ public interface ISarlProtocolMessageBuilder {
 	 * @param container the container of the SarlProtocolMessage.
 	 * @param name the name of the SarlProtocolMessage.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	void eInit(EObject container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	SarlProtocolMessage getSarlProtocolMessage();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	Resource eResource();
@@ -119,17 +119,10 @@ public interface ISarlProtocolMessageBuilder {
 	 */
 	ISarlProtocolMessageBuilder setDocumentation(String doc);
 
-	/** Add a modifier.
-	 * @param modifier the modifier to add.
-	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1599
-	 */
-	ISarlProtocolMessageBuilder addModifier(String modifier);
-
 	/** Add a parameter of type {@code io.sarl.lang.sarl.SarlProtocolParameter}.
 	 * @param name the name of the parameter
 	 * @return the builder for the parameter, never {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1791
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1794
 	 */
 	ISarlProtocolParameterBuilder addParameter(String name);
 

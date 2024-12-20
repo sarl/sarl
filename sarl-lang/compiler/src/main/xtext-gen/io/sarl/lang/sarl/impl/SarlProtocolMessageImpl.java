@@ -3,6 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlProtocolMessage;
 import io.sarl.lang.sarl.SarlProtocolParameter;
 
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -35,6 +37,7 @@ import org.eclipse.xtend.core.xtend.impl.XtendMemberImplCustom;
  *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl#getTo <em>To</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlProtocolMessageImpl#getRawTarget <em>Raw Target</em>}</li>
  * </ul>
  *
  * @generated
@@ -110,6 +113,16 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 	 * @ordered
 	 */
 	protected EList<SarlProtocolParameter> parameters;
+
+	/**
+	 * The cached value of the '{@link #getRawTarget() <em>Raw Target</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRawTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> rawTarget;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -228,6 +241,73 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 	 * @generated
 	 */
 	@Override
+	public EList<String> getRawTarget()
+	{
+		if (rawTarget == null)
+		{
+			rawTarget = new EDataTypeEList<String>(String.class, this, SarlPackage.SARL_PROTOCOL_MESSAGE__RAW_TARGET);
+		}
+		return rawTarget;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isOutTargetRole()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isInTargetRole()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getIdentifier()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public SarlProtocol getProtocol()
+	{
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
 	{
 		switch (featureID)
@@ -256,6 +336,8 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 				return getName();
 			case SarlPackage.SARL_PROTOCOL_MESSAGE__PARAMETERS:
 				return getParameters();
+			case SarlPackage.SARL_PROTOCOL_MESSAGE__RAW_TARGET:
+				return getRawTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -284,6 +366,10 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends SarlProtocolParameter>)newValue);
 				return;
+			case SarlPackage.SARL_PROTOCOL_MESSAGE__RAW_TARGET:
+				getRawTarget().clear();
+				getRawTarget().addAll((Collection<? extends String>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -310,6 +396,9 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 			case SarlPackage.SARL_PROTOCOL_MESSAGE__PARAMETERS:
 				getParameters().clear();
 				return;
+			case SarlPackage.SARL_PROTOCOL_MESSAGE__RAW_TARGET:
+				getRawTarget().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -332,6 +421,8 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SarlPackage.SARL_PROTOCOL_MESSAGE__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
+			case SarlPackage.SARL_PROTOCOL_MESSAGE__RAW_TARGET:
+				return rawTarget != null && !rawTarget.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -353,6 +444,8 @@ public class SarlProtocolMessageImpl extends XtendMemberImplCustom implements Sa
 		result.append(to);
 		result.append(", name: ");
 		result.append(name);
+		result.append(", rawTarget: ");
+		result.append(rawTarget);
 		result.append(')');
 		return result.toString();
 	}

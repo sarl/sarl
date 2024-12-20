@@ -69,9 +69,17 @@ public interface SarlProtocolCall extends XtendMember
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Roles</em>' attribute list.
 	 * @see io.sarl.lang.sarl.SarlPackage#getSarlProtocolCall_Roles()
-	 * @model
+	 * @model unique="false"
 	 * @generated
 	 */
 	EList<String> getRoles();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	SarlProtocol getProtocol();
 
 } // SarlProtocolCall

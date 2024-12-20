@@ -62,7 +62,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 403
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 406
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -72,7 +72,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 431
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 434
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -82,7 +82,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 461
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 464
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -92,7 +92,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 493
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 496
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -103,14 +103,14 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 527
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 530
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
 	}
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 566
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 569
 	 */
 	public void dispose() {
 		this.builder.dispose();
@@ -118,7 +118,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 595
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 598
 	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
@@ -128,7 +128,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param container the container of the SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	public void eInit(EObject container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
@@ -138,14 +138,14 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	 * @param container the container of the SarlProtocolCall.
 	 * @param name the type of the SarlProtocolCall.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 813
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 816
 	 */
 	public void eInit(EObject container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	public SarlProtocolCall getSarlProtocolCall() {
@@ -153,7 +153,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	public Resource eResource() {
@@ -174,7 +174,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1635
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1638
 	 */
 	@Override
 	@Pure
@@ -185,7 +185,7 @@ public class SarlProtocolCallSourceAppender extends AbstractSourceAppender imple
 	/** Add a parameter of type {@code io.sarl.lang.sarl.SarlProtocolParameter}.
 	 * @param name the name of the parameter
 	 * @return the builder for the parameter, never {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1791
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1794
 	 */
 	public ISarlProtocolParameterBuilder addParameter(String name) {
 		return this.builder.addParameter(name);

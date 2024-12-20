@@ -257,7 +257,13 @@ public interface CodeElementExtractor {
 	 *     types, for example a kind of "import".
 	 *     The parameters of the callback function are: the grammar container given to the visiting function;
 	 *     the grammar container of the member, and the name of the member.
+	 * @param indirectlyNamedMemberCallback the function to call on each discovered member that is considered
+	 *     as a named member but without a direct attribute such as {@code name}. Another existing attribute
+	 *     must be provided. Usually, this attribute contains the value of the name.
+	 *     The parameters of the callback function are: the grammar container given to the visiting function;
+	 *     the grammar container of the member, and the name of the member.
 	 * @return the first value replied by the callback, or {@code null}.
+	 * @since 0.15
 	 */
 	<T> T visitMemberElements(
 			ElementDescription element,
@@ -265,7 +271,9 @@ public interface CodeElementExtractor {
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> constructorCallback,
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> namedMemberCallback,
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
-					? super EClassifier, ? extends T> typeReferencingMemberCallback);
+					? super EClassifier, ? extends T> typeReferencingMemberCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
+					? super EClassifier, ? extends T> indirectlyNamedMemberCallback);
 
 	/** Construct an element description.
 	 *

@@ -458,8 +458,55 @@
       <name>Thomas Piotrowski</name>
       <email>thomas.piotrowski@utbm.fr</email>
       <url>https://github.com/tpiotrow</url>
+      <properties>
+      	<id>tpiotrowski</id>
+      </properties>
       <roles>
         <role>Maven Configuration</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Stefano Tedeschi</name>
+      <email>s.tedeschi@univda.it</email>
+      <url>https://github.com/stefanotedeschi</url>
+      <properties>
+      	<id>stedeschi</id>
+      </properties>
+      <roles>
+        <role>BSPL implementation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Matteo Baldoni</name>
+      <email>baldoni@di.unito.it</email>
+      <url>https://www.unito.it/persone/mbaldoni</url>
+      <properties>
+      	<id>mbaldoni</id>
+      </properties>
+      <roles>
+        <role>BSPL implementation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Critina Baroglio</name>
+      <email>baroglio@di.unito.it</email>
+      <url>http://informatica.unito.it/persone/cristina.baroglio</url>
+      <properties>
+      	<id>cbaroglio</id>
+      </properties>
+      <roles>
+        <role>BSPL implementation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Roberto Micalizio</name>
+      <email>micalizio@di.unito.it</email>
+      <url>https://www.unito.it/persone/rmicaliz</url>
+      <properties>
+      	<id>rmicalizio</id>
+      </properties>
+      <roles>
+        <role>BSPL implementation</role>
       </roles>
     </contributor>
   </contributors>

@@ -280,6 +280,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getTypeReferenceGrammarPattern())) {
 					hasTypeName.set(true);
 				}
+			} else if (getCodeBuilderConfig().getIndirectlyNamedMemberExtensionGrammarNames().contains(assignment.getFeature())) {
+				hasName.set(true);
+				hasTypeName.set(false);
 			} else if (Objects.equals(getCodeBuilderConfig().getMemberTypeExtensionGrammarName(),
 					assignment.getFeature())) {
 				hasType.set(true);

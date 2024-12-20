@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Source adapter of a Sarl SarlAgent.
-	 * @see TopElementBuilderFragment.java : appendTo : 348
+	 * @see TopElementBuilderFragment.java : appendTo : 354
  */
 @SuppressWarnings("all")
 public class SarlAgentSourceAppender extends AbstractSourceAppender implements ISarlAgentBuilder {
@@ -70,7 +70,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1143
+	 * @see TopElementBuilderFragment.java : appendTo : 1426
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -80,7 +80,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1171
+	 * @see TopElementBuilderFragment.java : appendTo : 1454
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -90,7 +90,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1201
+	 * @see TopElementBuilderFragment.java : appendTo : 1484
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -100,7 +100,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1233
+	 * @see TopElementBuilderFragment.java : appendTo : 1516
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -111,7 +111,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1267
+	 * @see TopElementBuilderFragment.java : appendTo : 1550
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
@@ -122,14 +122,14 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1330
+	 * @see TopElementBuilderFragment.java : appendTo : 1613
 	 */
 	public void dispose() {
 		this.builder.dispose();
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1342
+	 * @see TopElementBuilderFragment.java : appendTo : 1625
 	 */
 	@Override
 	@Pure
@@ -141,14 +141,14 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param script the SARL script in which this SarlAgent is added.
 	 * @param name the simple name of the SarlAgent.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1379
+	 * @see TopElementBuilderFragment.java : appendTo : 1662
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		this.builder.eInit(script, name, context);
 	}
 
 	/** Replies the generated SarlAgent.
-	 * @see TopElementBuilderFragment.java : appendTo : 1515
+	 * @see TopElementBuilderFragment.java : appendTo : 1798
 	 */
 	@Pure
 	public SarlAgent getSarlAgent() {
@@ -157,7 +157,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1555
+	 * @see TopElementBuilderFragment.java : appendTo : 1838
 	 */
 	@Pure
 	public JvmTypeReference getSarlAgentReference() {
@@ -167,7 +167,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Replies the JVM declared type for this generated SarlAgent.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1610
+	 * @see TopElementBuilderFragment.java : appendTo : 1893
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -175,7 +175,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Replies the resource to which the SarlAgent is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1645
+	 * @see TopElementBuilderFragment.java : appendTo : 1928
 	 */
 	@Pure
 	public Resource eResource() {
@@ -199,7 +199,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param superType the qualified name of the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1701
+	 * @see TopElementBuilderFragment.java : appendTo : 1984
 	 */
 	public ISarlAgentBuilder setExtends(String superType) {
 		this.builder.setExtends(superType);
@@ -210,7 +210,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * @param superType the super type,
 	 *     or {@code null} if the default type.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 1802
+	 * @see TopElementBuilderFragment.java : appendTo : 2085
 	 */
 	public ISarlAgentBuilder setExtends(JvmTypeReference superType) {
 		this.builder.setExtends(superType);
@@ -220,7 +220,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2209
+	 * @see TopElementBuilderFragment.java : appendTo : 2492
 	 */
 	public ISarlAgentBuilder addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -229,7 +229,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 
 	/** Create a SarlConstructor.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		return this.builder.addSarlConstructor();
@@ -238,7 +238,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
 		return this.builder.addSarlBehaviorUnit(name);
@@ -247,7 +247,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 602
+	 * @see TopElementBuilderFragment.java : appendTo : 626
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(JvmParameterizedTypeReference name) {
 		return this.builder.addSarlBehaviorUnit(name);
@@ -256,7 +256,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		return this.builder.addVarSarlField(name);
@@ -265,7 +265,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		return this.builder.addValSarlField(name);
@@ -275,7 +275,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.builder.addSarlField(name);
@@ -284,7 +284,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
 		return this.builder.addDefSarlAction(name);
@@ -293,7 +293,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
 		return this.builder.addOverrideSarlAction(name);
@@ -303,7 +303,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 682
+	 * @see TopElementBuilderFragment.java : appendTo : 706
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.builder.addSarlAction(name);
@@ -312,7 +312,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlClass.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		return this.builder.addSarlClass(name);
@@ -321,7 +321,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlInterface.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		return this.builder.addSarlInterface(name);
@@ -330,7 +330,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlEnumeration.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		return this.builder.addSarlEnumeration(name);
@@ -339,7 +339,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlAnnotationType.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 540
+	 * @see TopElementBuilderFragment.java : appendTo : 564
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		return this.builder.addSarlAnnotationType(name);
@@ -348,7 +348,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlCapacityUses.
 	 * @param name the types referenced by the SarlCapacityUses.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 760
+	 * @see TopElementBuilderFragment.java : appendTo : 1041
 	 */
 	public ISarlAgentBuilder addSarlCapacityUses(String... name) {
 		this.builder.addSarlCapacityUses(name);
@@ -358,7 +358,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlCapacityUses.
 	 * @param name the types referenced by the SarlCapacityUses.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 864
+	 * @see TopElementBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlAgentBuilder addSarlCapacityUses(JvmParameterizedTypeReference... name) {
 		this.builder.addSarlCapacityUses(name);
@@ -368,7 +368,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlRequiredCapacity.
 	 * @param name the types referenced by the SarlRequiredCapacity.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 760
+	 * @see TopElementBuilderFragment.java : appendTo : 1041
 	 */
 	public ISarlAgentBuilder addSarlRequiredCapacity(String... name) {
 		this.builder.addSarlRequiredCapacity(name);
@@ -378,7 +378,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	/** Create a SarlRequiredCapacity.
 	 * @param name the types referenced by the SarlRequiredCapacity.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 864
+	 * @see TopElementBuilderFragment.java : appendTo : 1145
 	 */
 	public ISarlAgentBuilder addSarlRequiredCapacity(JvmParameterizedTypeReference... name) {
 		this.builder.addSarlRequiredCapacity(name);

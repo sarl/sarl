@@ -41,7 +41,7 @@ public interface ISarlFieldBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 403
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 406
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -49,7 +49,7 @@ public interface ISarlFieldBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 431
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 434
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -57,7 +57,7 @@ public interface ISarlFieldBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 461
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 464
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -65,7 +65,7 @@ public interface ISarlFieldBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 493
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 496
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -74,18 +74,18 @@ public interface ISarlFieldBuilder {
 	 * @param type the type to reference
 	 * @param args the type arguments to put in the reference to the given type
 	 * @return the type reference.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 527
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 530
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Dispose the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 557
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 560
 	 */
 	void dispose();
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 582
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 585
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -94,18 +94,18 @@ public interface ISarlFieldBuilder {
 	 * @param name the name of the SarlField.
 	 * @param modifier the major/default modifier to be associated to the member.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 629
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
 	 */
 	void eInit(EObject container, String name, String modifier, IJvmTypeProvider context);
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 959
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
 	 */
 	@Pure
 	SarlField getSarlField();
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 993
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
 	 */
 	@Pure
 	Resource eResource();
@@ -123,27 +123,27 @@ public interface ISarlFieldBuilder {
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1027
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1030
 	 */
 	ISarlFieldBuilder setType(String type);
 
 	/** Change the type.
 	 * @param type the type of the member.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1069
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1072
 	 */
 	ISarlFieldBuilder setType(JvmTypeReference type);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1599
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1602
 	 */
 	ISarlFieldBuilder addModifier(String modifier);
 
 	/** Replies the initialValue.
 	 * @return the value of the initialValue. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1726
+	 * @see AbstractMemberBuilderFragment.java : appendTo : 1729
 	 */
 	@Pure
 	IExpressionBuilder getInitialValue();
