@@ -371,6 +371,13 @@
 		"level": "warning"
 	},
 	{
+		"code": "io.sarl.lang.validation.IssueCodes.unsupported_statement",
+		"message": "Protocol calls are not yet supported by the SARL compiler",
+		"cause": "The protocol call that is defined in the BSPL protocol specification is not yet implemented in the SARL toolchain",
+		"solution": "Remove the protocol call",
+		"level": "error"
+	},
+	{
 		"code": "io.sarl.lang.validation.IssueCodes.unused_type_parameter",
 		"message": "Unused type parameter *name*. This type parameter is not used for determining if a behavior unit matches a received event",
 		"cause": "This warning is generated when you have declared a generic type parameter in an event that is not locally used in this event. When an event is received by an agent, this type parameter cannot be used to detemrine the activable behavior unit in that agent",
@@ -390,6 +397,67 @@
 		"cause": "This error is generated when you have declared a type parameter (or generic type) for a main function, when it is not allowed",
 		"solution": "Remove the type parameters",
 		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.duplicate_message",
+		"message": "Multiple declaration of the message '*name*' from '*sender*' to '*receiver*' in the protocol",
+		"cause": "This issue message is generated when a message is defined multiple times in a protocol. A message is identified by its *name*, and *sender* and *receiver* roles",
+		"solution": "Remove the extra declaration of the message",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.duplicate_parameter",
+		"message": "Multiple declaration of the parameter '*name*' in the protocol",
+		"cause": "This issue message is generated when you have declared multiple times the parameter with the *name*",
+		"solution": "Remove the extra declaration of the parameter with the *name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.duplicate_role",
+		"message": "Multiple declaration of the role '*name*' in the protocol",
+		"cause": "This issue message is generated when you have declared multiple times the role with the *name*",
+		"solution": "Remove the extra declaration of the role with the *name*",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.empty",
+		"message": "Discouraged protocol definition. The protocol '*name*' without role, parameter and message is not useful since it has nothing to do for an agent or a behavior",
+		"cause": "This issue message is generated when a protocol is defined with an empty block, i.e., without any declaration for a role, a parameter or message",
+		"solution": "Remove the protocol declaration, or complete its definition",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.missing_name",
+		"message": "Undefined name for the protocol parameter. You must declare a name to the parameter",
+		"cause": "This issue is output when you have declared a protocol parameter without specifying its name. A protocol parameter must have a name to be referencable in the message specifications",
+		"solution": "Provide a name to the protocol parameter",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.missing_name",
+		"message": "Undefined target role for the protocol message. You must declare a role that is receiving the message",
+		"cause": "This issue is output when you have declared a protocol message without a role for the receiver. A protocol message must have a receiver defined by a declared role",
+		"solution": "Provide the name of the role for the message receiver",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.undefined_parameter",
+		"message": "Undefined parameter '*name*' in the protocol",
+		"cause": "This isue message is generated when a parameter with *name* is mentionned in a message. But, no parameter with the given *name* is declared in the protocol",
+		"solution": "Declare the parameter *name*, or replace the *name* by a declared parameter in the protocol",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.undefined_role",
+		"message": "Undefined role '*name*' in the protocol",
+		"cause": "This isue message is generated when a role with *name* is mentionned as sender or receiver of a message. But, no role with the given *name* is declared in the protocol",
+		"solution": "Declare the role *name*, or replace the *name* by a declared role in the protocol",
+		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.protocol.undefined_role",
+		"message": "'*name*'",
+		"level": "ignore"
 	}
 ]
 

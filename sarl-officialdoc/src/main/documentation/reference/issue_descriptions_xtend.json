@@ -309,6 +309,34 @@
 		"level": "error"
 	},
 	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_modifier",
+		"message": "Invalid modifier '*name*' for the protocol parameter. Accepted modifiers are: *modifier-list*",
+		"cause": "You have specified a modifier with the given *name* to a protocol parameter. According to the BSPL protocol specification, the modifiers are specific and limited to the *modifier-list*",
+		"solution": "Replace *name* by a valid modifier",
+		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_modifier",
+		"message": "Invalid modifier '*name*' for the target role in the protocol message. Accepted modifiers are: *modifier-list*",
+		"cause": "You have specified a modifier with the given *name* as the receiving role in a protocol message. According to the BSPL protocol specification, the modifiers are specific and limited to the *modifier-list*",
+		"solution": "Replace *name* by a valid modifier",
+		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_modifier",
+		"message": "Invalid modifier '*name*' for the protocol parameter. This modifier cannot be specified at the same time as *other-name*",
+		"cause": "This issue message is generated when you have speicifed two modifers with the *name* and *other-name*. These two modifiers cannot be specified at the time for a protocol parameter",
+		"solution": "Remove *name* or *other-name*",
+		"level": "error"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_modifier",
+		"message": "Invalid modifier '*name*' for the target role of the protocol message. This modifier cannot be specified at the same time as *other-name*",
+		"cause": "This issue message is generated when you have speicifed two modifers with the *name* and *other-name*. These two modifiers cannot be specified at the time for the receiving role of a protocol message",
+		"solution": "Remove *name* or *other-name*",
+		"level": "error"
+	},
+	{
 		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_operator_signature",
 		"message": "The static operator '*name*' requires at least one argument",
 		"cause": "You try to use the operator *name* without argument, when it requires at least one",
@@ -506,6 +534,20 @@
 		"message": "The *name* modifier is unnecessary on *member-name*",
 		"cause": "This issue message is generated when the modifier *name* is specified on a member that has a default visibility equals to *name*",
 		"solution": "Remove the *name* modifier",
+		"level": "c/warning"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.unnecessary_modifier",
+		"message": "Duplicate modifier '*name*' for the protocol parameter",
+		"cause": "This issue message is generated when the modifier *name* is specified multiple times on a protocol parameter",
+		"solution": "Remove the extra *name* modifier",
+		"level": "c/warning"
+	},
+	{
+		"code": "org.eclipse.xtend.core.validation.IssueCodes.unnecessary_modifier",
+		"message": "Duplicate modifier '*name*' for the target role in the protocol message",
+		"cause": "This issue message is generated when the modifier *name* is specified multiple times on a receiver role of a protocol message",
+		"solution": "Remove the extra *name* modifier",
 		"level": "c/warning"
 	},
 	{
